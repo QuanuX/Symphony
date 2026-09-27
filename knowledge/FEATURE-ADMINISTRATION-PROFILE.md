@@ -10,15 +10,15 @@ Canonical reviewed policy for `symphony.knowledge.feature-administration-profile
 - SSFV source: `knowledge/ssfv/REGISTRY.md`
 - catalog scope: `registered_partial_catalog`
 - catalog complete: `false`
-- registered feature count: `113`
-- reviewed interaction expectations: `298`
+- registered feature count: `114`
+- reviewed interaction expectations: `299`
 - forward gate: `enforce_new_records`
 
-The 113 registered feature IDs appear exactly once. Their 298 reviewed expectations comprise 288 required, 9 prohibited and 1 not-applicable interactions. Runtime-only and system-orchestrated exceptions retain their owner evidence. The SCV increment adds explicit domain-engine operation mappings and a separately owned qxctl adapter for immutable corpus retention, profile/connection evidence and protected source/graph administration. A source or graph result is not permission, durable selection or a provider action.
+The 114 registered feature IDs appear exactly once. Their 299 reviewed expectations comprise 289 required, 9 prohibited and 1 not-applicable interactions. Runtime-only and system-orchestrated exceptions retain their owner evidence. The SCV increment adds explicit domain-engine operation mappings and a separately owned qxctl adapter for immutable corpus retention, profile/connection evidence and protected source/graph administration. A source or graph result is not permission, durable selection or a provider action.
 
 ## Exact Machine Evidence
 
-The profile digest is `sha256:882e888b91e457327db8c41c7a0d147c896d07362ea279518360e17aff3f5f65`. Its bound SSFV registry digest is `sha256:ec16660e2c437e18e5a444ff626111bf4d1f01ad8ebbb5918499027461330aa4`. The expected qxctl registry has 373 leaves with digest `sha256:67f3601102b36e9835b9ec2cde9f4d13430bd508aefff34da3638b5b8f81be83`. These are source-level mappings; actual installed acceptance also requires the selected engine descriptors, exact receipts and exercised authority/storage boundaries. Catalog completeness remains false.
+The profile digest is `sha256:c0e8269d4daf38dcfe2449593ec379a1e23b8d1bd084155db3d42432a14bbf26`. Its bound SSFV registry digest is `sha256:7dc87a73bed70b463dd0ce39578e89a26f127c2e47b5c0ae629e6ec7f16b61ca`. The expected qxctl registry has 373 leaves with digest `sha256:67f3601102b36e9835b9ec2cde9f4d13430bd508aefff34da3638b5b8f81be83`. These are source-level mappings; actual installed acceptance also requires the selected engine descriptors, exact receipts and exercised authority/storage boundaries. Catalog completeness remains false.
 
 ## Advancement
 
@@ -44,4 +44,4 @@ This bootstrap profile does not declare all Symphony features known, grant an ex
 
 The four SCLV historical-warning commands extend the existing governed-validation configure, discover and inspect expectations. They select exact historical-reference subjects and reuse local acknowledgement and reopening. They add no independent feature or expectation and do not supply delivery acceptance state.
 
-The SQV increment adds runtime-only invocation expectations for exact C++26 SQFV, SQMV and SQPV library contracts; no SQV command or process is inferred from those records.
+The SQV increment adds runtime-only invocation expectations for exact C++26 SQFV, SQMV, SQPV and SQDV library contracts; no SQV command or process is inferred from those records.

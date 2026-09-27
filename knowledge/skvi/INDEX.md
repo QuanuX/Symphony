@@ -14648,3 +14648,198 @@ These entries locate existing implementation and regression surfaces referenced 
 - deferred_projections: later owner-admitted adapters and platform profiles
 - notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
 - status: canonical
+
+##### SQDV Delivery Intent
+- path: `modules/sqdv-delivery-cpp/INTENT.md`
+- title: SQDV Delivery Intent
+- surface_type: owner intent
+- truth_role: bounded native library purpose
+- owner: SQDV Delivery module maintainers
+- scope: Describes the selected library purpose and open composition boundary.
+- relationships: implements -> `modules/sqdv-delivery-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQDV Delivery Manifest
+- path: `modules/sqdv-delivery-cpp/MANIFEST.md`
+- title: SQDV Delivery Manifest
+- surface_type: owner manifest
+- truth_role: exact module source membership
+- owner: SQDV Delivery module maintainers
+- scope: Lists the exact versioned package and its canonical implementation/test surfaces.
+- relationships: declares -> `modules/sqdv-delivery-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQDV Delivery Specification
+- path: `modules/sqdv-delivery-cpp/SPEC.md`
+- title: SQDV Delivery Specification
+- surface_type: owner contract
+- truth_role: exact native behavior and compatibility
+- owner: SQDV Delivery module maintainers
+- scope: Defines the bounded native API, identities, failure outcomes and supported extent.
+- relationships: owned_by -> `knowledge/sqv/sqdv/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQDV Delivery Workflow
+- path: `modules/sqdv-delivery-cpp/SKILL.md`
+- title: SQDV Delivery Workflow
+- surface_type: owner workflow contract
+- truth_role: module review and execution boundary
+- owner: SQDV Delivery module maintainers
+- scope: Routes module-specific work to exact contracts and focused acceptance evidence.
+- relationships: implements -> `modules/sqdv-delivery-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQDV Delivery Installation
+- path: `modules/sqdv-delivery-cpp/INSTALL.md`
+- title: SQDV Delivery Installation
+- surface_type: package contract
+- truth_role: exact receipt-owned package lifecycle
+- owner: SQDV Delivery module maintainers
+- scope: Documents C++26 dependencies, versioned installation, independent consumers and guarded removal.
+- relationships: implements -> `modules/sqdv-delivery-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQDV Delivery Semantic Feature
+- path: `modules/sqdv-delivery-cpp/FEATURES.md`
+- title: SQDV Delivery Semantic Feature
+- surface_type: feature declaration
+- truth_role: bounded implemented capability
+- owner: SQDV Delivery module maintainers
+- scope: Records the experimental native library extent and explicit non-claims.
+- relationships: implements -> `modules/sqdv-delivery-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQDV Delivery Build
+- path: `modules/sqdv-delivery-cpp/CMakeLists.txt`
+- title: SQDV Delivery Build
+- surface_type: CMake implementation
+- truth_role: native build and exact package export
+- owner: SQDV Delivery module maintainers
+- scope: Builds and exports the exact C++26 static library and focused tests.
+- relationships: implements -> `modules/sqdv-delivery-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQDV Delivery Public API
+- path: `modules/sqdv-delivery-cpp/include/symphony/sqdv/delivery.hpp`
+- title: SQDV Delivery Public API
+- surface_type: C++26 public interface
+- truth_role: trusted caller interface
+- owner: SQDV Delivery module maintainers
+- scope: Declares the move-only native API with explicit bounded inputs and typed failures.
+- relationships: implements -> `modules/sqdv-delivery-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQDV Delivery Implementation
+- path: `modules/sqdv-delivery-cpp/src/delivery.cpp`
+- title: SQDV Delivery Implementation
+- surface_type: C++26 implementation
+- truth_role: owner implementation
+- owner: SQDV Delivery module maintainers
+- scope: Implements the exact module contract through explicitly selected native dependencies.
+- relationships: implements -> `modules/sqdv-delivery-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQDV Delivery Native Tests
+- path: `modules/sqdv-delivery-cpp/tests/delivery_test.cpp`
+- title: SQDV Delivery Native Tests
+- surface_type: C++26 focused test
+- truth_role: owner regression evidence
+- owner: SQDV Delivery module maintainers
+- scope: Exercises exact identity, bounded failures and module-specific lifetime or recovery behavior.
+- relationships: implements -> `modules/sqdv-delivery-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQDV Delivery Package Tests
+- path: `modules/sqdv-delivery-cpp/tests/package_lifecycle_test.cmake`
+- title: SQDV Delivery Package Tests
+- surface_type: CMake focused test
+- truth_role: package lifecycle evidence
+- owner: SQDV Delivery module maintainers
+- scope: Exercises isolated installation, overwrite refusal, integrity guards and source-independent removal.
+- relationships: implements -> `modules/sqdv-delivery-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQDV Delivery Independent Consumer Build
+- path: `modules/sqdv-delivery-cpp/tests/sdk-consumer/CMakeLists.txt`
+- title: SQDV Delivery Independent Consumer Build
+- surface_type: CMake acceptance build
+- truth_role: checkout-free consumer evidence
+- owner: SQDV Delivery module maintainers
+- scope: Requires exact installed dependency packages and inherits exported C++26 requirements.
+- relationships: implements -> `modules/sqdv-delivery-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQDV Delivery Independent Consumer
+- path: `modules/sqdv-delivery-cpp/tests/sdk-consumer/main.cpp`
+- title: SQDV Delivery Independent Consumer
+- surface_type: C++26 acceptance source
+- truth_role: public consumer rejection evidence
+- owner: SQDV Delivery module maintainers
+- scope: Exercises the installed public interface and rejects incompatible or corrupt inputs.
+- relationships: implements -> `modules/sqdv-delivery-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQDV Delivery Package Configuration
+- path: `modules/sqdv-delivery-cpp/cmake/SymphonySqdvDeliveryConfig.cmake.in`
+- title: SQDV Delivery Package Configuration
+- surface_type: CMake package template
+- truth_role: exact dependency resolution
+- owner: SQDV Delivery module maintainers
+- scope: Resolves exact installed dependency packages and imports the module target.
+- relationships: implements -> `modules/sqdv-delivery-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQDV Delivery Uninstall
+- path: `modules/sqdv-delivery-cpp/cmake/uninstall.cmake.in`
+- title: SQDV Delivery Uninstall
+- surface_type: CMake uninstall template
+- truth_role: receipt-scoped removal
+- owner: SQDV Delivery module maintainers
+- scope: Invokes the build-local hardened receipt guard with the exact configured ownership set.
+- relationships: implements -> `modules/sqdv-delivery-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical

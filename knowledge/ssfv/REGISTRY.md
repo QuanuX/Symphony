@@ -2,7 +2,7 @@
 
 ## Status
 
-Canonical SSFV feature-routing registry. The partial catalog routes 113 experimental records across the platform governance scope and 37 implemented owner scopes enumerated by `COVERAGE.md`.
+Canonical SSFV feature-routing registry. The partial catalog routes 114 experimental records across the platform governance scope and 38 implemented owner scopes enumerated by `COVERAGE.md`.
 
 ## Purpose
 
@@ -742,6 +742,15 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - record_digest: `sha256:4b4f58ad687266e33feb00ca7c0a97a9488dd4ac8c0ee5e88dc597e1c2552ea7`
 - notes: Architect-ratified F3 nested record for a rebuildable release-transaction projection; coverage remains partial and no broader runtime or canonical authority is implied.
 
+- feature_id: `ssfv:symphony:sqdv-delivery-cpp`
+- feature_file: `modules/sqdv-delivery-cpp/FEATURES.md`
+- owner_contract: `modules/sqdv-delivery-cpp/SPEC.md`
+- source_scope: `modules/sqdv-delivery-cpp`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:platform`
+- record_digest: `sha256:a07fd8527160b5fddfe6b7f6dc29462bc25a26f579181de17287d5e01c07392f`
+- notes: Bounded C++26 same-process delivery and exact resume; retained evidence inherits the selected SQPV guarantee and grants no recipient authority.
+
 - feature_id: `ssfv:symphony:sqfv-batch-cpp`
 - feature_file: `modules/sqfv-batch-cpp/FEATURES.md`
 - owner_contract: `modules/sqfv-batch-cpp/SPEC.md`
@@ -1062,4 +1071,4 @@ Do not register:
 
 ## Non-Authorization Statement
 
-This 113-record registry is an explicitly partial catalog governed by `COVERAGE.md`. It does not authorize an unratified feature record, an unregistered distributed file, repository-wide or installed-host completeness, complete legacy-invariant coverage, engine-decided feature-worthiness, or canonical mutation.
+This 114-record registry is an explicitly partial catalog governed by `COVERAGE.md`. It does not authorize an unratified feature record, an unregistered distributed file, repository-wide or installed-host completeness, complete legacy-invariant coverage, engine-decided feature-worthiness, or canonical mutation.

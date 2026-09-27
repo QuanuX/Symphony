@@ -16,9 +16,11 @@ SQDV interprets acknowledgements only to the level proven by the receiving inter
 
 An SQMV rights classification describes source evidence; it is not a delivery grant. Before a recipient receives data, the selected access owner and source terms must permit that scope and purpose. Revocation stops new delivery under its admitted rules while prior bytes and live borrow obligations remain accounted for. A slow or disconnected recipient reaches a finite allowance and follows its declared stop, suspend, catch-up, or explicit-loss policy without silently consuming another recipient's budget.
 
-## Deferred Technical Contract
+## First Native Delivery Contract
 
-The first recipient interface, destination adapter, view schema, acknowledgement grammar, resume token, rights enforcement path, and external handoff remain to be admitted. First-party research-data delivery and adapter code on the data plane is native C++. This Quad creates no installed capability or namespace family; routine payloads are not relayed through qxctl or SKV.
+`modules/sqdv-delivery-cpp/SPEC.md` owns the first `0.1.0-dev` C++26 full-batch interface for trusted local callers. Disposable live and retained-before-delivery profiles select exact immutable metadata and one recipient/interface/view/partition/generation. Separate dispatch and processing positions, opaque session-specific acknowledgement tickets, finite processing windows and SQFV lease credits preserve distinct obligations. Retained catch-up selects exactly the next sequence and uses a matching live retained batch when available. Its SQPV wrapper derives opaque retention evidence only from actual owned-store operations.
+
+The caller persists and selects its processing checkpoint. The checkpoint binds the exact view and selected local store identity; it grants no access and proves no external processing or remote commit. The store guarantee remains the exact SQPV profile. Asynchronous retention workers, projections, transformations, recipient adapters, authorization and remote delivery remain later contracts. This library allocates no `sqdv:` identity family and sends no routine payload through qxctl or SKV.
 
 ## Non-Authorization Statement
 

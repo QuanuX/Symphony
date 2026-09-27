@@ -6886,6 +6886,24 @@
           "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/sqdv-delivery-cpp/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "invoke",
+          "rationale": "The exact C++26 library executes only when invoked by its explicit native caller; installation adds no independent process or SQV qxctl surface.",
+          "requirement": "required"
+        }
+      ],
+      "feature_id": "ssfv:symphony:sqdv-delivery-cpp"
+    },
+    {
+      "expectations": [
+        {
+          "command_ids": [],
+          "delivery": "runtime_only",
+          "engine_operation_ids": [],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
             "modules/sqfv-batch-cpp/FEATURES.md"
           ],
           "inherited_from_feature_id": null,
@@ -7927,9 +7945,9 @@
   ],
   "format_version": 1,
   "forward_gate": "enforce_new_records",
-  "profile_digest": "sha256:882e888b91e457327db8c41c7a0d147c896d07362ea279518360e17aff3f5f65",
+  "profile_digest": "sha256:c0e8269d4daf38dcfe2449593ec379a1e23b8d1bd084155db3d42432a14bbf26",
   "profile_id": "symphony.registered-features.administration.v1",
   "protocol": "symphony.knowledge.feature-administration-profile.v1",
-  "registered_feature_count": 113,
-  "ssfv_registry_digest": "sha256:ec16660e2c437e18e5a444ff626111bf4d1f01ad8ebbb5918499027461330aa4"
+  "registered_feature_count": 114,
+  "ssfv_registry_digest": "sha256:7dc87a73bed70b463dd0ce39578e89a26f127c2e47b5c0ae629e6ec7f16b61ca"
 }

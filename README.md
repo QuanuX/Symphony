@@ -125,8 +125,8 @@ The emerging SOV remote-operation and deployment contracts do not make provider 
 
 This bounded summary is derived from canonical SSFV coverage and routing, the feature-administration profile, the qxctl command registry, and completed SODV publication records. Edit its source contracts, then regenerate; do not hand-edit the values below.
 
-- SSFV catalog state: `partial`; registered features: **113**; registered owner scopes: **38**; ratified nested features: **76**.
-- Feature-administration expectations: **298** reviewed surfaces; **288** required, **16** evidence-backed exemptions, **9** prohibitions, **0** unreviewed.
+- SSFV catalog state: `partial`; registered features: **114**; registered owner scopes: **39**; ratified nested features: **76**.
+- Feature-administration expectations: **299** reviewed surfaces; **289** required, **17** evidence-backed exemptions, **9** prohibitions, **0** unreviewed.
 - qxctl stable command identities: **373**.
 - Registered owner capabilities:
   - `ssfv:symphony:accordare-stav-producer`
@@ -158,6 +158,7 @@ This bounded summary is derived from canonical SSFV coverage and routing, the fe
   - `ssfv:symphony:shv-source-engine`
   - `ssfv:symphony:skvi-engine`
   - `ssfv:symphony:sodv-engine`
+  - `ssfv:symphony:sqdv-delivery-cpp`
   - `ssfv:symphony:sqfv-batch-cpp`
   - `ssfv:symphony:sqmv-metadata-cpp`
   - `ssfv:symphony:sqpv-local-store-cpp`
@@ -171,7 +172,7 @@ This bounded summary is derived from canonical SSFV coverage and routing, the fe
   - `github.com/QuanuX/Symphony/libraries/stav-protocol-go` `v0.2.0` (tag `libraries/stav-protocol-go/v0.2.0`, source `55f8faf26f4f85213ac23cc1de7ba897b2129a4c`)
   - `github.com/QuanuX/Symphony/modules/stav-append-authority` `v0.1.0` (tag `modules/stav-append-authority/v0.1.0`, source `55f8faf26f4f85213ac23cc1de7ba897b2129a4c`)
   - `github.com/QuanuX/Symphony/modules/stav-append-authority` `v0.2.0` (tag `modules/stav-append-authority/v0.2.0`, source `ed7484d70607aa96e64916dd4e59d3972a61980b`)
-- Snapshot digest: `sha256:f3d889f927d41b1d89560e0b677d851f21be04e083d3e29178b2c3b46cd6c847`
+- Snapshot digest: `sha256:b292c34d3d2c0895561d78cc3241f17a829f5f3def7195b5c25be022a31bf307`
 <!-- symphony:root-summary:v1:end -->
 
 ## Releases and Documentation

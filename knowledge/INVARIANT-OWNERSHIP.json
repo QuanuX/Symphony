@@ -2232,6 +2232,134 @@
       "consumer_boundary_rejections": [
         {
           "cases": [
+            "installed_delivery_ack_credit_and_terminal"
+          ],
+          "path": "modules/sqdv-delivery-cpp/tests/sdk-consumer/main.cpp"
+        }
+      ],
+      "invariant_id": "invariant:symphony:sqdv.acknowledgement-and-lifetime",
+      "ipc_boundary": false,
+      "owner_component": "sqdv-delivery-cpp",
+      "owner_contract": "modules/sqdv-delivery-cpp/SPEC.md",
+      "producer_implementations": [
+        "modules/sqdv-delivery-cpp/src/delivery.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "acknowledgement_and_lease_are_independent",
+            "exact_identity_and_foreign_tickets"
+          ],
+          "path": "modules/sqdv-delivery-cpp/tests/delivery_test.cpp"
+        }
+      ],
+      "real_process_regressions": [],
+      "statement": "Only a delivered ticket from this session can acknowledge its next contiguous processing position. Releasing or discarding payload does not acknowledge processing; processing acknowledgement does not free held SQFV byte credit or invalidate an existing lease. Late-session acknowledgements cannot advance a new session.",
+      "status": "active",
+      "title": "SQDV processing acknowledgement is separate from physical release"
+    },
+    {
+      "allowed_adapter_ids": [],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "installed_delivery_cutover_and_resume",
+            "installed_delivery_identity_rejection"
+          ],
+          "path": "modules/sqdv-delivery-cpp/tests/sdk-consumer/main.cpp"
+        }
+      ],
+      "invariant_id": "invariant:symphony:sqdv.exact-resume-continuity",
+      "ipc_boundary": false,
+      "owner_component": "sqdv-delivery-cpp",
+      "owner_contract": "modules/sqdv-delivery-cpp/SPEC.md",
+      "producer_implementations": [
+        "modules/sqdv-delivery-cpp/src/delivery.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "exact_identity_and_foreign_tickets",
+            "output_preservation_and_sequence_exhaustion",
+            "retained_live_cutover_and_exact_resume"
+          ],
+          "path": "modules/sqdv-delivery-cpp/tests/delivery_test.cpp"
+        }
+      ],
+      "real_process_regressions": [],
+      "statement": "Stable checkpoints bind the exact manifest, recipient, interface, view, partition, producer generation, profile and selected store. Dispatch advances only after exact sequential admission; retained catch-up and live reuse cannot silently skip or repeat a delivered position. Processing checkpoints remain distinct from dispatch.",
+      "status": "active",
+      "title": "SQDV resumes only the exact selected view and position"
+    },
+    {
+      "allowed_adapter_ids": [],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "installed_delivery_ack_credit_and_terminal"
+          ],
+          "path": "modules/sqdv-delivery-cpp/tests/sdk-consumer/main.cpp"
+        }
+      ],
+      "invariant_id": "invariant:symphony:sqdv.finite-recipient-allowances",
+      "ipc_boundary": false,
+      "owner_component": "sqdv-delivery-cpp",
+      "owner_contract": "modules/sqdv-delivery-cpp/SPEC.md",
+      "producer_implementations": [
+        "modules/sqdv-delivery-cpp/src/delivery.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "allocation_failure_preserves_delivery",
+            "independent_recipient_allowances",
+            "output_preservation_and_sequence_exhaustion"
+          ],
+          "path": "modules/sqdv-delivery-cpp/tests/delivery_test.cpp"
+        }
+      ],
+      "real_process_regressions": [],
+      "statement": "Each recipient has finite SQFV byte credit and a bounded acknowledgement ledger. Released unacknowledged deliveries continue to consume ledger capacity; blocked or failed admission preserves positions and outputs and does not consume another recipient allowance.",
+      "status": "active",
+      "title": "SQDV recipient processing and payload allowances remain independent"
+    },
+    {
+      "allowed_adapter_ids": [],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "installed_delivery_cutover_and_resume",
+            "installed_delivery_identity_rejection"
+          ],
+          "path": "modules/sqdv-delivery-cpp/tests/sdk-consumer/main.cpp"
+        }
+      ],
+      "invariant_id": "invariant:symphony:sqdv.retention-provenance",
+      "ipc_boundary": false,
+      "owner_component": "sqdv-delivery-cpp",
+      "owner_contract": "modules/sqdv-delivery-cpp/SPEC.md",
+      "producer_implementations": [
+        "modules/sqdv-delivery-cpp/src/delivery.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "retained_live_cutover_and_exact_resume",
+            "retention_failure_never_claims_delivery"
+          ],
+          "path": "modules/sqdv-delivery-cpp/tests/delivery_test.cpp"
+        }
+      ],
+      "real_process_regressions": [],
+      "statement": "Retained proofs are produced only by actual owned SQPV append/read results. They bind the exact source instance and batch; caller-constructed receipt values cannot establish retained delivery. Uncertain retention suspends new retained delivery while known processing checkpoints remain available.",
+      "status": "active",
+      "title": "SQDV retained delivery depends on actual selected SQPV evidence"
+    },
+    {
+      "allowed_adapter_ids": [],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
             "consumer_rejects_corrupt_frame"
           ],
           "path": "modules/sqfv-batch-cpp/tests/sdk-consumer/main.cpp"
@@ -2763,7 +2891,7 @@
     }
   ],
   "protocol": "symphony.knowledge.invariant-ownership-registry.v3",
-  "registry_digest": "sha256:912467b0a0ec85762ea0c41d355e63bb034886ba6c0717a0231f8f98aa400144",
+  "registry_digest": "sha256:84418351f17fac45e3ea409d7d9abe771a90583cfba7259cc08cdc0c3639e0c8",
   "scope": "common_lowest_authoritative_layer",
   "test_policy": {
     "consumer_boundary_rejection_required": true,

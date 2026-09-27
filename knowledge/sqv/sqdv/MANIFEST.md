@@ -17,11 +17,11 @@ SQDV owns selected research-data consumer views, recipient scope, delivery-state
 
 ## Implementation Status
 
-Canonical architecture contract only. No SQDV recipient adapter, schema, destination integration, qxctl operation, feature record, installed package, remote receipt, performance guarantee, or publication is claimed. No `sqdv:` identity family is allocated by this Quad.
+`modules/sqdv-delivery-cpp/` implements the first bounded C++26 full-batch delivery library at `0.1.0-dev`: independent recipient allowances, exact metadata/view identity, explicit processing checkpoints and retained-to-live resume through SQFV and the selected SQPV backend. Provider-specific recipient adapters, access enforcement, external destinations, SQV qxctl surfaces and performance thresholds remain future work. No `sqdv:` identity family is allocated by this Quad.
 
 ## Language Boundary
 
-First-party research-data delivery adapters on the data plane are native C++. Exact receiving interface, ABI, access enforcement, and destination evidence remain to be selected and tested.
+First-party research-data delivery adapters on the data plane use C++26 in this effort. The first trusted same-process source interface has an exact package contract; external receiving interfaces, access enforcement and remote destination evidence require independent selection and verification.
 
 ## Non-Authorization Statement
 
