@@ -182,4 +182,4 @@ The SQAV capture owner binds bounded original bytes and attributed source eviden
 
 ## SQAV Databento file invariants
 
-`modules/sqav-databento-dbn-cpp/SPEC.md` owns bounded DBNv3 MBO inspection and provider-native file fidelity. Two `invariant:symphony:sqav.databento-*` records bind native fixture/bounds/rollback/retention evidence to installed-consumer rejection. These records confer no network, entitlement or full-book completeness claim.
+`modules/sqav-databento-dbn-cpp/SPEC.md` owns bounded DBNv1/v3 MBO inspection and provider-native file fidelity. Two `invariant:symphony:sqav.databento-*` records bind native fixture/bounds/rollback/retention evidence to installed-consumer rejection. These records confer no network, entitlement or full-book completeness claim.

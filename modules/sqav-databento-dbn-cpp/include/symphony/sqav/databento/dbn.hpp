@@ -6,10 +6,15 @@
 #include <symphony/sqav/capture.hpp>
 namespace symphony::sqav::databento {
 inline constexpr std::string_view adapter_id = "sqav-databento-dbn-cpp";
-inline constexpr std::string_view adapter_version = "0.1.0-dev";
+inline constexpr std::string_view adapter_version = "0.2.0-dev";
 inline constexpr std::string_view native_schema = "databento:mbo";
 inline constexpr std::string_view native_encoding =
     "databento:dbn-v3-uncompressed";
+inline constexpr std::string_view native_encoding_v1 =
+    "databento:dbn-v1-uncompressed";
+[[nodiscard]] constexpr std::string_view encoding_for_version(std::uint8_t version) noexcept {
+  return version == 1 ? native_encoding_v1 : version == 3 ? native_encoding : std::string_view{};
+}
 enum class Status : std::uint8_t {
   ok,
   invalid_argument,
@@ -47,6 +52,7 @@ struct Metadata {
   bool ts_out = false;
   std::uint16_t symbol_cstr_len = 0;
   std::uint32_t symbols = 0, partial = 0, not_found = 0, mappings = 0;
+  std::uint8_t version = 0; // Original DBN wire version; never upgraded.
 };
 // Borrowed immutable bytes: caller keeps storage alive and unchanged throughout
 // use. Parsing and record access allocate nothing; failure preserves out.
@@ -69,7 +75,7 @@ private:
   Metadata metadata_{};
   std::size_t records_offset_ = 0;
 };
-// Validates one exact DBNv3 MBO record (56 bytes, or 64 with ts_out).
+// Validates one exact DBNv1/v3 MBO record (56 bytes, or 64 with ts_out).
 [[nodiscard]] Status decode_mbo(ByteView, bool ts_out, Mbo &out) noexcept;
 // Verifies provider/dataset/schema/encoding against the inspected file, derives
 // its actual count and fixes adapter identity. Original file bytes stay intact.

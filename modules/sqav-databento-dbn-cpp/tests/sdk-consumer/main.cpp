@@ -36,6 +36,28 @@ std::vector<std::uint8_t> fixture() {
   return b;
 }
 
+std::vector<std::uint8_t> fixture_v1() {
+  // Unchanged Databento C++ v0.68.0 public test_data.mbo.v1.dbn.
+  constexpr std::string_view hex =
+      "44424e01c6000000474c42582e4d4450330000000000000000000020a0acdbe2541600"
+      "008fc4df06551602000000000000000200000000000000010000000000000000000000"
+      "0000000000000000000000000000000000000000000000000000000000000000000000"
+      "0000000000000001000000455348310000000000000000000000000000000000000000"
+      "0000000000000100000045534831000000000000000000000000000000000000010000"
+      "000c3f34010d3f3401353438320000000000000000000000000000000000000ea00100"
+      "6a15000007afa6acdbe254168945fed29600000080fb30c56203000001000000800043"
+      "413cdeaaacdbe25416d1590000b0db11000ea001006a15000031b6a6acdbe254163f45"
+      "fed29600000000ae17d4620300000100000080004341b0faaaacdbe25416a54c0000b1"
+      "db1100";
+  std::vector<std::uint8_t> b;
+  b.reserve(hex.size()/2);
+  auto n=[](char c){return c<='9'?c-'0':c-'a'+10;};
+  for(std::size_t i=0;i<hex.size();i+=2)
+    b.push_back(static_cast<std::uint8_t>((n(hex[i])<<4)|n(hex[i+1])));
+  return b;
+}
+
+
 void installed_capture_binding() {
   auto b = fixture();
   sqav::Description d{{"databento", "public-sdk-fixture", "0.68.0",
@@ -59,6 +81,16 @@ void installed_capture_binding() {
         c.description().source_record_count == 2);
   db::FileView view;
   check(db::inspect_capture(c, limits, view) == db::Status::ok);
+  const auto v1=fixture_v1();
+  auto d1=d;d1.source.native_encoding_ref=db::native_encoding_v1;
+  sqav::Capture c1;
+  check(db::capture_file(d1,v1,limits,{65536,16384,4096},c1)==db::Status::ok &&
+        std::ranges::equal(c1.original(),v1));
+  check(db::inspect_capture(c1,limits,view)==db::Status::ok && view.metadata().version==1);
+  db::Mbo a,z;
+  check(view.record(0,a)==db::Status::ok && db::inspect_capture(c,limits,view)==db::Status::ok &&
+        view.record(0,z)==db::Status::ok && a==z);
+  check(db::capture_file(d1,b,limits,{65536,16384,4096},c1)==db::Status::binding_mismatch);
   const auto ref = std::string(c.reference());
   d.source.dataset_id = "WRONG";
   check(db::capture_file(d, b, limits, {65536, 16384, 4096}, c) ==
@@ -78,7 +110,7 @@ void installed_fidelity_and_rejection() {
   check(db::FileView::inspect(malformed, limits, v) == db::Status::malformed &&
         v.original().data() == b.data());
   malformed = b;
-  malformed[3] = 1;
+  malformed[3] = 2;
   check(db::FileView::inspect(malformed, limits, v) == db::Status::unsupported);
 }
 int main() {

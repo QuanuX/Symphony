@@ -8446,7 +8446,7 @@ Note on terminology: The term `c-o-r-e` is forbidden as an active project term.
 - truth_role: SQAV ownership and architecture-only implementation boundary
 - owner: Symphony Quantitative Acquisition Vector maintainers
 - scope: Declares the four SQAV Contract Quad surfaces without claiming a provider connector, session, operation, command, or package.
-- relationships: depends_on -> `knowledge/sqv/sqav/INTENT.md`; declares -> `knowledge/sqv/sqav/SPEC.md`; declares -> `knowledge/sqv/sqav/SKILL.md`
+- relationships: depends_on -> `knowledge/sqv/sqav/INTENT.md`; declares -> `knowledge/sqv/sqav/SPEC.md`; declares -> `knowledge/sqv/sqav/SKILL.md`; declares -> `knowledge/sqv/sqav/DATABENTO-SSIAG-BINDING.md`
 - consumers: SKVI, agents, reviewers, future SQAV implementers
 - deferred_projections: manifest-derived canonical-surface closure
 - notes: Native C++ data-plane direction does not allocate a `sqav:` identity family or source access.
@@ -15427,4 +15427,17 @@ These entries locate existing implementation and regression surfaces referenced 
 - consumers: native library consumers, maintainers, reviewers
 - deferred_projections: later owner-admitted adapters and platform profiles
 - notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### Databento SSIAG Credential Binding Map
+- path: `knowledge/sqv/sqav/DATABENTO-SSIAG-BINDING.md`
+- title: Databento SSIAG Credential Binding Map
+- surface_type: source integration dependency map
+- truth_role: explicit user-selected credential authority and unresolved operational prerequisites
+- owner: Symphony Quantitative Acquisition Vector maintainers
+- scope: Maps Databento historical, live and reference sources to SSIAG credential-reference, provider, identity and lease ownership without claiming enabled Keychain access.
+- relationships: depends_on -> `knowledge/sqv/sqav/SPEC.md`; depends_on -> `knowledge/ssiag/SPEC.md`; depends_on -> `modules/ssiag-provider-macos-keychain/SPEC.md`
+- consumers: SQAV collector implementers, SSIAG maintainers, agents, reviewers
+- deferred_projections: operational SSIAG credential channel and exact enrolled deployment
+- notes: No secret material, guessed TOPS binding, provider fallback or new protocol is defined.
 - status: canonical

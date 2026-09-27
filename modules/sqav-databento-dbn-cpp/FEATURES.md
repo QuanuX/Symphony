@@ -23,7 +23,7 @@
       ],
       "distinctions": [],
       "evidence": [
-        "modules/sqav-databento-dbn-cpp/tests/dbn_test.cpp checks public provider fixture fields, malformed/bounded inputs, raw sentinels, allocation rollback and retained replay.",
+        "modules/sqav-databento-dbn-cpp/tests/dbn_test.cpp checks public v1/v3 provider fixture fields, exact encoding/version binding, private opt-in sample replay, malformed/bounded inputs, raw sentinels, allocation rollback and retained replay.",
         "modules/sqav-databento-dbn-cpp/tests/sdk-consumer/main.cpp checks installed fixture fidelity and atomic rejection.",
         "modules/sqav-databento-dbn-cpp/tests/package_lifecycle_test.cmake checks immutable installation and guarded removal."
       ],
@@ -47,7 +47,7 @@
       "kind": "feature",
       "non_claims": [
         "No provider network session, credential storage, dataset entitlement, billable request, live mixed-record stream, reference client or reconstructed order book.",
-        "No DBNv1/v2 upgrade, compression, source completeness/authenticity, stateful transformation or SQV qxctl surface."
+        "No DBNv2 support or implicit version upgrade, compression, source completeness/authenticity, stateful transformation or SQV qxctl surface."
       ],
       "owner_contract": "modules/sqav-databento-dbn-cpp/SPEC.md",
       "parent_feature_id": "ssfv:symphony:platform",
@@ -61,11 +61,11 @@
       ],
       "source_scope": "modules/sqav-databento-dbn-cpp",
       "status": "experimental",
-      "title": "SQAV Databento DBNv3 MBO fidelity library",
-      "what": "Inspects bounded uncompressed DBNv3 single-schema MBO files and preserves complete original bytes in an attributed SQAV capture.",
+      "title": "SQAV Databento DBNv1/v3 MBO fidelity library",
+      "what": "Inspects bounded uncompressed DBNv1/v3 single-schema MBO files and preserves complete original bytes in an attributed SQAV capture.",
       "when": "Only when a compatible trusted caller explicitly invokes the installed library; installation starts no service.",
       "where": "Inside a caller using the independently installed exact native library.",
-      "who": "Trusted C++26 callers explicitly selecting the supported DBNv3 MBO profile.",
+      "who": "Trusted C++26 callers explicitly selecting the supported DBNv1/v3 MBO profile.",
       "why": "Preserve provider-native meaning and original file evidence through existing research-data owners."
     }
   ],

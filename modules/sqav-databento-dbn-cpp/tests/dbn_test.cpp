@@ -3,6 +3,8 @@
 #include <cstdio>
 #include <cstdlib>
 #include <filesystem>
+#include <fstream>
+#include <symphony/knowledge/engine/digest.hpp>
 #include <new>
 #include <source_location>
 #include <symphony/sqav/databento/dbn.hpp>
@@ -55,6 +57,27 @@ std::vector<std::uint8_t> fixture() {
   auto n = [](char c) { return c <= '9' ? c - '0' : c - 'a' + 10; };
   for (std::size_t i = 0; i < hex.size(); i += 2)
     b.push_back(static_cast<std::uint8_t>((n(hex[i]) << 4) | n(hex[i + 1])));
+  return b;
+}
+
+std::vector<std::uint8_t> fixture_v1() {
+  // Unchanged Databento C++ v0.68.0 public test_data.mbo.v1.dbn.
+  constexpr std::string_view hex =
+      "44424e01c6000000474c42582e4d4450330000000000000000000020a0acdbe2541600"
+      "008fc4df06551602000000000000000200000000000000010000000000000000000000"
+      "0000000000000000000000000000000000000000000000000000000000000000000000"
+      "0000000000000001000000455348310000000000000000000000000000000000000000"
+      "0000000000000100000045534831000000000000000000000000000000000000010000"
+      "000c3f34010d3f3401353438320000000000000000000000000000000000000ea00100"
+      "6a15000007afa6acdbe254168945fed29600000080fb30c56203000001000000800043"
+      "413cdeaaacdbe25416d1590000b0db11000ea001006a15000031b6a6acdbe254163f45"
+      "fed29600000000ae17d4620300000100000080004341b0faaaacdbe25416a54c0000b1"
+      "db1100";
+  std::vector<std::uint8_t> b;
+  b.reserve(hex.size()/2);
+  auto n=[](char c){return c<='9'?c-'0':c-'a'+10;};
+  for(std::size_t i=0;i<hex.size();i+=2)
+    b.push_back(static_cast<std::uint8_t>((n(hex[i])<<4)|n(hex[i+1])));
   return b;
 }
 
@@ -155,7 +178,7 @@ void malformed_and_limits() {
               "prefixes accepted\n",
               rejected);
   auto bad = b;
-  bad[3] = 1;
+  bad[3] = 2;
   check(db::FileView::inspect(bad, limits, original) ==
         db::Status::unsupported);
   bad = b;
@@ -307,6 +330,64 @@ void capture_and_retained_delivery() {
   }
   std::filesystem::remove_all(path);
 }
+void version_one_fidelity_and_binding() {
+  const auto b=fixture_v1();
+  db::FileView v1,v3;
+  check(db::FileView::inspect(b,limits,v1)==db::Status::ok);
+  auto b3=fixture();
+  check(db::FileView::inspect(b3,limits,v3)==db::Status::ok);
+  const auto& m=v1.metadata();
+  check(m.version==1 && v3.metadata().version==3 && m.dataset=="GLBX.MDP3" &&
+        m.symbol_cstr_len==22 && m.stype_in==1 && m.stype_out==0 &&
+        m.start==v3.metadata().start && m.end==v3.metadata().end &&
+        m.limit==2 && m.record_count==2 && m.symbols==1 && m.mappings==1 &&
+        !m.partial && !m.not_found && !m.ts_out && v1.encoded_metadata().size()==206);
+  for(std::uint64_t i=0;i<2;++i) {
+    db::Mbo a,z;check(v1.record(i,a)==db::Status::ok &&
+        v3.record(i,z)==db::Status::ok && a==z);
+  }
+  std::size_t rejected=0;
+  for(std::size_t n=0;n<b.size();++n) {
+    auto out=v1;auto status=db::FileView::inspect(sqav::ByteView(b).first(n),limits,out);
+    if(n==206 || n==262) check(status==db::Status::ok);
+    else {check(status!=db::Status::ok && out.original().size()==b.size());++rejected;}
+  }
+  auto bad=b;bad[60]=2;
+  check(db::FileView::inspect(bad,limits,v1)==db::Status::malformed);
+  bad=b;std::fill(bad.begin()+112,bad.begin()+116,255);
+  check(db::FileView::inspect(bad,limits,v1)==db::Status::malformed);
+  bad=b;std::fill(bad.begin()+116,bad.begin()+138,65);
+  check(db::FileView::inspect(bad,limits,v1)==db::Status::malformed);
+  bad=b;bad.insert(bad.begin()+206,0);++bad[4];
+  check(db::FileView::inspect(bad,limits,v1)==db::Status::malformed);
+  // Reserved legacy bytes are preserved, not mistaken for symbol width/count.
+  bad=b;std::fill(bad.begin()+50,bad.begin()+58,255);
+  check(db::FileView::inspect(bad,limits,v1)==db::Status::ok);
+  auto d=description();sqav::Capture c;
+  check(db::capture_file(d,b,limits,{65536,16384,4096},c)==db::Status::binding_mismatch);
+  d.source.native_encoding_ref=db::native_encoding_v1;
+  check(db::capture_file(d,b,limits,{65536,16384,4096},c)==db::Status::ok &&
+        std::ranges::equal(c.original(),b) && c.description().source.adapter_version=="0.2.0-dev");
+  check(db::inspect_capture(c,limits,v1)==db::Status::ok && v1.metadata().version==1);
+  const auto ref=std::string(c.reference());
+  check(db::capture_file(d,b3,limits,{65536,16384,4096},c)==db::Status::binding_mismatch && c.reference()==ref);
+  d.source.adapter_ref=db::adapter_id;d.source.adapter_version="0.1.0-dev";
+  sqav::Capture old;
+  check(sqav::Capture::create(d,b,{65536,16384,4096},old)==sqav::Status::ok);
+  check(db::inspect_capture(old,limits,v1)==db::Status::binding_mismatch);
+  // v1 ts_out starts at offset 60 and the same 64-byte MBO grammar applies.
+  auto with_ts=b;with_ts.resize(206);with_ts[60]=1;
+  for(std::size_t i=0;i<2;++i) {
+    with_ts.insert(with_ts.end(),b.begin()+206+i*56,b.begin()+262+i*56);
+    with_ts[206+i*64]=16;with_ts.insert(with_ts.end(),8,255);
+  }
+  allocations=0;fail_at=0;
+  auto status=db::FileView::inspect(with_ts,limits,v1);db::Mbo record;
+  auto rs=v1.record(1,record);fail_at=-1;
+  check(status==db::Status::ok && rs==db::Status::ok && record.ts_out==UINT64_MAX && allocations==0);
+  std::printf("DBNv1 truncations rejected: %zu; two valid prefixes accepted\n",rejected);
+}
+
 void allocation_rollback() {
   auto b = fixture();
   auto d = description();
@@ -329,12 +410,91 @@ void allocation_rollback() {
   check(failures > 0);
   std::printf("DBN capture allocation failures: %ld\n", failures);
 }
+void verify_private_sample(const char* path, const char* dataset) {
+  constexpr std::uint64_t maximum=8U<<20;
+  const auto size=std::filesystem::file_size(path);
+  check(size<=maximum);
+  std::ifstream input(path,std::ios::binary);
+  std::vector<std::uint8_t> b(static_cast<std::size_t>(size));
+  check(static_cast<bool>(input.read(reinterpret_cast<char*>(b.data()),static_cast<std::streamsize>(b.size()))));
+  check(input.peek()==std::char_traits<char>::eof());
+  db::Limits dl{maximum,1U<<20,100000};
+  db::FileView v;
+  check(db::FileView::inspect(b,dl,v)==db::Status::ok);
+  const auto& m=v.metadata();
+  check(m.dataset==dataset && m.record_count==100000 && m.limit==100000 &&
+        !m.partial && !m.not_found && m.start==1790344800000000000ULL &&
+        m.end==1790345400000000000ULL);
+  std::uint64_t first_recv=UINT64_MAX,last_recv=0,first_event=UINT64_MAX,last_event=0;
+  std::string fields;fields.reserve(24U<<20);
+  std::uint32_t instrument=0;
+  for(std::uint64_t i=0;i<m.record_count;++i) {
+    db::Mbo record;check(v.record(i,record)==db::Status::ok);
+    check(record.ts_recv>=m.start && record.ts_recv<m.end &&
+          record.ts_event>=m.start && record.ts_event<m.end);
+    if(i==0) instrument=record.instrument_id;
+    check(record.instrument_id==instrument);
+    first_recv=std::min(first_recv,record.ts_recv);last_recv=std::max(last_recv,record.ts_recv);
+    first_event=std::min(first_event,record.ts_event);last_event=std::max(last_event,record.ts_event);
+    auto field=[&](auto value){fields+=std::to_string(value);fields+='|';};
+    field(record.publisher_id);field(record.instrument_id);field(record.ts_event);
+    field(record.order_id);field(record.price);field(record.size);field(record.flags);
+    field(record.channel_id);field(record.action);field(record.side);field(record.ts_recv);
+    field(record.ts_in_delta);field(record.sequence);fields+='\n';
+  }
+  sqav::Description d{{"databento","https://hist.databento.com/v0/","0; observed 2026-09-27",
+       "timeseries.get_range","caller","caller",dataset,"provider-revision-unspecified",
+       "2026-09-25T14:00:00Z/14:10:00Z;raw_symbol;limit=100000",std::string(db::native_schema),
+       std::string(db::encoding_for_version(m.version)),"private:databento-user-research"},
+       "sqv13-native-historical-test","user-authorized-bounded-probe","",sqav::Coverage::partial,
+       "requested ten-minute regular-session interval","request-record-limit-reached",m.record_count,
+       {{sqav::TimeRole::acquisition,"2026-09-27T23:06:50.517513Z","iso8601","local-UTC","microsecond",
+          "sqv13-history-result;credential-origin=user-provided-private-pipe;ssiag-unbound"}}};
+  sqav::Limits cl{maximum,16384,4096};sqav::Capture capture;
+  check(db::capture_file(d,b,dl,cl,capture)==db::Status::ok);
+  sqmv::Description md{dataset,"provider-revision-unspecified",std::string(sqav::capture_schema),
+       std::string(sqav::capture_layout),d.source.access_scope,d.attribution_ref,
+       {{sqmv::EvidenceRole::schema,"sqv13","capture-schema"},
+        {sqmv::EvidenceRole::layout,"sqv13","capture-layout"},
+        {sqmv::EvidenceRole::access,"user-request","private"},
+        {sqmv::EvidenceRole::source,d.attribution_ref,std::string(capture.source_reference())}}};
+  sqmv::Manifest manifest;check(sqmv::Manifest::create(md,{65536,4096,128},manifest)==sqmv::Status::ok);
+  sqfv::Context flow;check(sqfv::Context::create({maximum,maximum+8192,4096,32U<<20,4},flow)==sqfv::Status::ok);
+  sqav::Position pos{"sample",{},1};pos.producer_generation[0]=1;
+  sqfv::Batch batch;check(capture.prepare(flow,manifest,pos,batch)==sqav::Status::ok);
+  char temp[]="/private/tmp/sqv13-retained-XXXXXX";auto root=::mkdtemp(temp);check(root);
+  {
+    sqpv::Options options{pos.partition,pos.producer_generation,{},1,{maximum+8192,32U<<20,4}};
+    options.store_generation[0]=1;sqdv::RetainedSource source;
+    check(sqdv::RetainedSource::create(root,manifest,options,source)==sqdv::Status::ok);
+    sqdv::RetainedBatch proof;check(source.commit(flow,batch,proof)==sqdv::Status::ok);
+    sqdv::Config config{"view","recipient","capture",pos.partition,pos.producer_generation,1,sqdv::Profile::retained_before_delivery};
+    sqdv::Session session;check(sqdv::Session::create(flow,manifest,config,{maximum,2},&source,nullptr,session)==sqdv::Status::ok);
+    check(session.offer_next(flow)==sqdv::Status::ok);sqdv::Delivery delivery;
+    check(session.take(delivery)==sqdv::Status::ok);sqav::Capture replay;
+    check(sqav::Capture::from_delivery(delivery.payload(),delivery.descriptor(),manifest,cl,replay)==sqav::Status::ok);
+    check(std::ranges::equal(replay.original(),b) && replay.reference()==capture.reference() &&
+          db::inspect_capture(replay,dl,v)==db::Status::ok && v.metadata().version==m.version);
+    check(session.acknowledge_processed(delivery)==sqdv::Status::ok);
+  }
+  std::filesystem::remove_all(root);
+  std::printf("{\"dataset\":\"%s\",\"version\":%u,\"records\":%llu,\"instrument_id\":%u,\"first_recv\":%llu,\"last_recv\":%llu,\"first_event\":%llu,\"last_event\":%llu,\"field_sha256\":\"%s\",\"original_sha256\":\"%s\",\"retained_replay_exact\":true,\"coverage\":\"partial-record-limit\"}\n",dataset,m.version,
+       static_cast<unsigned long long>(m.record_count),instrument,static_cast<unsigned long long>(first_recv),static_cast<unsigned long long>(last_recv),
+       static_cast<unsigned long long>(first_event),static_cast<unsigned long long>(last_event),
+       knowledge::engine::sha256_hex(fields).c_str(),knowledge::engine::sha256_hex(b).c_str());
+}
+
 } // namespace
-int main() {
+int main(int argc,char** argv) {
+  if(argc==4 && std::string_view(argv[1])=="--sample") {
+    verify_private_sample(argv[2],argv[3]);return 0;
+  }
+  check(argc==1);
   public_fixture_fidelity();
+  version_one_fidelity_and_binding();
   raw_fields_and_gateway_timestamp();
   malformed_and_limits();
   capture_and_retained_delivery();
   allocation_rollback();
-  std::puts("DBN native acceptance: 5 groups passed");
+  std::puts("DBN native acceptance: 6 groups passed");
 }

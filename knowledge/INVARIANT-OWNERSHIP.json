@@ -2280,7 +2280,8 @@
         {
           "cases": [
             "allocation_rollback",
-            "malformed_and_limits"
+            "malformed_and_limits",
+            "version_one_fidelity_and_binding"
           ],
           "path": "modules/sqav-databento-dbn-cpp/tests/dbn_test.cpp"
         }
@@ -2313,15 +2314,16 @@
           "cases": [
             "capture_and_retained_delivery",
             "public_fixture_fidelity",
-            "raw_fields_and_gateway_timestamp"
+            "raw_fields_and_gateway_timestamp",
+            "version_one_fidelity_and_binding"
           ],
           "path": "modules/sqav-databento-dbn-cpp/tests/dbn_test.cpp"
         }
       ],
       "real_process_regressions": [],
-      "statement": "The supported exact DBNv3 MBO layout preserves integer fields, raw flags/sentinels, distinct timestamps and every original metadata/record byte. Capture admission verifies provider, dataset, representation and actual count without inferring completeness.",
+      "statement": "The supported exact DBNv1/v3 MBO layout preserves integer fields, raw flags/sentinels, distinct timestamps and every original metadata/record byte. Capture admission verifies provider, dataset, representation and actual count without inferring completeness.",
       "status": "active",
-      "title": "SQAV retains DBNv3 MBO fields and original file evidence"
+      "title": "SQAV retains DBNv1/v3 MBO fields and original file evidence"
     },
     {
       "allowed_adapter_ids": [],
@@ -3083,7 +3085,7 @@
     }
   ],
   "protocol": "symphony.knowledge.invariant-ownership-registry.v3",
-  "registry_digest": "sha256:822cc1ba7b250c96a79eaa7a648f32032ed346254527d3f65d7c908f6859a027",
+  "registry_digest": "sha256:596d62360096ed2e1810d51ff47fca17db51b620f14e8ed70dc811f3acfdda1e",
   "scope": "common_lowest_authoritative_layer",
   "test_policy": {
     "consumer_boundary_rejection_required": true,

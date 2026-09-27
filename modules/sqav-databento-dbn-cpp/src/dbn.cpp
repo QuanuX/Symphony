@@ -52,7 +52,7 @@ bool binding(const Description &d, const FileView &f) noexcept {
   return d.source.provider_ref == "databento" &&
          d.source.dataset_id == f.metadata().dataset &&
          d.source.native_schema_ref == native_schema &&
-         d.source.native_encoding_ref == native_encoding &&
+         d.source.native_encoding_ref == encoding_for_version(f.metadata().version) &&
          (!d.source_record_count ||
           *d.source_record_count == f.metadata().record_count);
 }
@@ -105,12 +105,12 @@ Status FileView::inspect(ByteView b, const Limits &l, FileView &out) noexcept {
     return Status::limit;
   if (b.size() < 8)
     return Status::malformed;
-  if (b[0] != 'D' || b[1] != 'B' || b[2] != 'N' || b[3] != 3)
+  if (b[0] != 'D' || b[1] != 'B' || b[2] != 'N' || (b[3] != 1 && b[3] != 3))
     return Status::unsupported;
   const std::uint64_t meta_size = 8ULL + le<std::uint32_t>(b.data() + 4);
   if (meta_size > l.max_metadata_bytes)
     return Status::limit;
-  if (meta_size < 128 || meta_size > b.size() || meta_size % 8 != 0)
+  if (meta_size < 128 || meta_size > b.size() || (b[3] == 3 && meta_size % 8 != 0))
     return Status::malformed;
   if (le<std::uint16_t>(b.data() + 24) != 0)
     return Status::unsupported; // single MBO schema
@@ -120,15 +120,17 @@ Status FileView::inspect(ByteView b, const Limits &l, FileView &out) noexcept {
   auto &m = ready.metadata_;
   if (!cstr(b.subspan(8, 16), &m.dataset) || m.dataset.empty())
     return Status::malformed;
+  m.version = b[3];
   m.start = le<std::uint64_t>(b.data() + 26);
   m.end = le<std::uint64_t>(b.data() + 34);
   m.limit = le<std::uint64_t>(b.data() + 42);
-  m.stype_in = b[50];
-  m.stype_out = b[51];
-  if (b[52] > 1)
+  const std::size_t stype_offset = m.version == 1 ? 58 : 50;
+  m.stype_in = b[stype_offset];
+  m.stype_out = b[stype_offset + 1];
+  if (b[stype_offset + 2] > 1)
     return Status::malformed;
-  m.ts_out = b[52] != 0;
-  m.symbol_cstr_len = le<std::uint16_t>(b.data() + 53);
+  m.ts_out = b[stype_offset + 2] != 0;
+  m.symbol_cstr_len = m.version == 1 ? 22 : le<std::uint16_t>(b.data() + 53);
   if (m.symbol_cstr_len == 0 || m.symbol_cstr_len > 4096)
     return Status::unsupported;
   Cursor cursor{b.first(ready.records_offset_)};
@@ -159,7 +161,8 @@ Status FileView::inspect(ByteView b, const Limits &l, FileView &out) noexcept {
         return Status::malformed;
     }
   }
-  if (cursor.bytes.size() - cursor.at > 7)
+  if ((m.version == 1 && cursor.bytes.size() != cursor.at) ||
+      (m.version == 3 && cursor.bytes.size() - cursor.at > 7))
     return Status::malformed;
   const std::size_t stride = m.ts_out ? 64 : 56;
   const auto body_size = b.size() - ready.records_offset_;

@@ -3,7 +3,7 @@
 ## Identity
 
 - Module/package: `sqav-databento-dbn-cpp`; owner: SQAV
-- Exact development release: `0.1.0-dev`; C++26 static library
+- Exact development release: `0.2.0-dev`; C++26 static library
 - Public target: `Symphony::SqavDatabentoDbn`
 
 ## Canonical Surfaces

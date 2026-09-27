@@ -1,6 +1,6 @@
 # SQAV Databento DBN C++26 Library Installation
 
-`sqav-databento-dbn-cpp` is an independently selectable, library-only `0.1.0-dev` package. Its CMake package version is `0.1.0`; the public target is `Symphony::SqavDatabentoDbn`. It requires CMake 3.30 or newer, C++26, and one single-configuration generator. The initial verified development target is macOS `amd64` with AppleClang 21; consumer compiler/runtime compatibility remains explicit.
+`sqav-databento-dbn-cpp` is an independently selectable, library-only `0.2.0-dev` package. Its CMake package version is `0.2.0`; the public target is `Symphony::SqavDatabentoDbn`. It requires CMake 3.30 or newer, C++26, and one single-configuration generator. The initial verified development target is macOS `amd64` with AppleClang 21; consumer compiler/runtime compatibility remains explicit.
 
 Exact runtime dependencies are SQAV capture `0.1.0-dev`, foundation `0.2.0-dev`, SQFV batch `0.2.0-dev`, and SQMV metadata `0.1.0-dev`. The default source build compiles those repository dependencies with their tests disabled and excludes their installation rules. Native composition tests additionally build SQPV and SQDV `0.1.0-dev`; those are not exported runtime dependencies. Install dependency packages separately before configuring an installed SDK consumer. A source dependency build does not make its package present in an installation prefix.
 
@@ -25,7 +25,7 @@ cmake --build /tmp/sqav-consumer-build
 /tmp/sqav-consumer-build/consumer
 ```
 
-The consumer requests `find_package(SymphonySqavDatabentoDbn 0.1.0 EXACT CONFIG)` and verifies `SymphonySqavDatabentoDbn_RELEASE_VERSION` is `0.1.0-dev`. It uses the exported C++26 requirement without setting its own language standard.
+The consumer requests `find_package(SymphonySqavDatabentoDbn 0.2.0 EXACT CONFIG)` and verifies `SymphonySqavDatabentoDbn_RELEASE_VERSION` is `0.2.0-dev`. It uses the exported C++26 requirement without setting its own language standard.
 
 Guarded removal uses the same prefix that received installation:
 
@@ -37,4 +37,4 @@ Retain the generated uninstaller, shared helper scripts, and configured identity
 
 Build-local lifecycle operations require an administrator-controlled prefix without concurrent filesystem mutation. They canonicalize the selected root (including `/tmp` aliases), reject symlinks and special files on relevant paths, strictly parse and verify the receipt digest/identity, and verify every present owned file before deleting content. CMake checks provide no descriptor-relative defense against hostile concurrent directory replacement. A qxctl-administered shared root is refused in favor of its authenticated lifecycle. Same-version receipt overwrite is refused; other exact package versions and dependency packages are preserved by removal.
 
-Input is uncompressed DBNv3 single-schema MBO. The owned bridge preserves the full file in an optional SQAV capture. No provider connection is opened.
+Input is uncompressed DBNv1/v3 single-schema MBO. The owned bridge preserves the full file in an optional SQAV capture. No provider connection is opened.

@@ -24,8 +24,16 @@ This library resolves no credentials, reads no source file, opens no provider co
 
 ## First provider-file contract
 
-`modules/sqav-databento-dbn-cpp/SPEC.md` admits bounded uncompressed DBNv3 single-schema MBO inspection and exact capture binding. All original file bytes and raw integer/time fields remain preserved. Public official fixtures anchor this narrow conformance claim. Network acquisition, compression, mixed live records, reference data, book reconstruction and source authenticity/entitlements remain outside this release.
+`modules/sqav-databento-dbn-cpp/SPEC.md` admits bounded uncompressed DBNv1/v3 single-schema MBO inspection and exact capture binding. All original file bytes and raw integer/time fields remain preserved. Public official fixtures anchor this narrow conformance claim. Network acquisition, compression, mixed live records, reference data, book reconstruction and source authenticity/entitlements remain outside this release.
 
 ## Non-Authorization Statement
 
 SQAV does not authorize a provider session, credential use, subscription, data purchase, account access, order entry, or redistribution.
+
+## Selected Databento credential authority
+
+Duncan selected SSIAG with its local Keychain provider for the Databento source.
+`knowledge/sqv/sqav/DATABENTO-SSIAG-BINDING.md` maps the historical, live and
+reference surfaces to exact SSIAG identity, credential-reference, provider and
+lease ownership. The current provider is metadata-only; the map preserves its
+operational blockers and does not create a secret-access protocol or fallback.
