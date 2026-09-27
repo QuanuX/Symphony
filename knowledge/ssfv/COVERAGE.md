@@ -50,6 +50,7 @@ The inventory is intentionally explicit. Directory discovery, file count, langua
 | `modules/skvi-engine` | registered | `ssfv:symphony:skvi-engine` | `modules/skvi-engine/FEATURES.md` |
 | `modules/sodv-engine` | registered | `ssfv:symphony:sodv-engine` | `modules/sodv-engine/FEATURES.md` |
 | `modules/sqav-capture-cpp` | registered | `ssfv:symphony:sqav-capture-cpp` | `modules/sqav-capture-cpp/FEATURES.md` |
+| `modules/sqtv-integer-conversion-cpp` | registered | `ssfv:symphony:sqtv-integer-conversion-cpp` | `modules/sqtv-integer-conversion-cpp/FEATURES.md` |
 | `modules/sqdv-delivery-cpp` | registered | `ssfv:symphony:sqdv-delivery-cpp` | `modules/sqdv-delivery-cpp/FEATURES.md` |
 | `modules/sqfv-batch-cpp` | registered | `ssfv:symphony:sqfv-batch-cpp` | `modules/sqfv-batch-cpp/FEATURES.md` |
 | `modules/sqmv-metadata-cpp` | registered | `ssfv:symphony:sqmv-metadata-cpp` | `modules/sqmv-metadata-cpp/FEATURES.md` |

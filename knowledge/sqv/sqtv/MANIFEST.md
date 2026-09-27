@@ -17,11 +17,11 @@ SQTV owns conversion and research-transformation semantics beneath SQV, includin
 
 ## Implementation Status
 
-Canonical architecture contract only. No SQTV module, converter, transformation, schema, operation, qxctl command, feature record, installed package, or publication is claimed. No `sqtv:` identity family is allocated by this Quad.
+The first implemented scope is `modules/sqtv-integer-conversion-cpp/` `0.1.0-dev`: an independently installed C++26 static library for exact dense integer width, signedness and byte-order conversion. Its SPEC admits exact schemas, operation identity, finite limits and lineage; richer transformations remain open. No `sqtv:` colon identity family or SQV qxctl surface is allocated.
 
 ## Language Boundary
 
-First-party research-data conversion and transformation on the data plane are native C++. Exact ABI, operation releases, dependencies, and supported targets require separate admission and tests.
+First-party research-data conversion and transformation on the data plane are native C++. The first module declares its exact C++26 API, operation and dependencies. Additional operations and platforms require independent admission and evidence.
 
 ## Non-Authorization Statement
 

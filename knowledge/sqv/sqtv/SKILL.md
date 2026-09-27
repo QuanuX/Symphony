@@ -22,3 +22,5 @@ Make selected conversions and derived research operations exact about input mean
 ## Stop Conditions
 
 Stop before assuming universal type conversion, silent coercion, a compulsory output format, source acquisition, persistence, consumer authorization, or SBV result authority.
+
+For the first dense integer conversion use `modules/sqtv-integer-conversion-cpp/SPEC.md`, its finite limits, exact failure results and focused native/installed-consumer evidence. Provider-specific interpretation requires a separate adapter contract.

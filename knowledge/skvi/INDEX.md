@@ -15038,3 +15038,198 @@ These entries locate existing implementation and regression surfaces referenced 
 - deferred_projections: later owner-admitted adapters and platform profiles
 - notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
 - status: canonical
+
+##### SQTV Integer Conversion Intent
+- path: `modules/sqtv-integer-conversion-cpp/INTENT.md`
+- title: SQTV Integer Conversion Intent
+- surface_type: owner intent
+- truth_role: bounded native library purpose
+- owner: SQTV Integer Conversion module maintainers
+- scope: Describes the selected library purpose and open composition boundary.
+- relationships: implements -> `modules/sqtv-integer-conversion-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQTV Integer Conversion Manifest
+- path: `modules/sqtv-integer-conversion-cpp/MANIFEST.md`
+- title: SQTV Integer Conversion Manifest
+- surface_type: owner manifest
+- truth_role: exact module source membership
+- owner: SQTV Integer Conversion module maintainers
+- scope: Lists the exact versioned package and its canonical implementation/test surfaces.
+- relationships: declares -> `modules/sqtv-integer-conversion-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQTV Integer Conversion Specification
+- path: `modules/sqtv-integer-conversion-cpp/SPEC.md`
+- title: SQTV Integer Conversion Specification
+- surface_type: owner contract
+- truth_role: exact native behavior and compatibility
+- owner: SQTV Integer Conversion module maintainers
+- scope: Defines the bounded native API, identities, failure outcomes and supported extent.
+- relationships: owned_by -> `knowledge/sqv/sqtv/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQTV Integer Conversion Workflow
+- path: `modules/sqtv-integer-conversion-cpp/SKILL.md`
+- title: SQTV Integer Conversion Workflow
+- surface_type: owner workflow contract
+- truth_role: module review and execution boundary
+- owner: SQTV Integer Conversion module maintainers
+- scope: Routes module-specific work to exact contracts and focused acceptance evidence.
+- relationships: implements -> `modules/sqtv-integer-conversion-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQTV Integer Conversion Installation
+- path: `modules/sqtv-integer-conversion-cpp/INSTALL.md`
+- title: SQTV Integer Conversion Installation
+- surface_type: package contract
+- truth_role: exact receipt-owned package lifecycle
+- owner: SQTV Integer Conversion module maintainers
+- scope: Documents C++26 dependencies, versioned installation, independent consumers and guarded removal.
+- relationships: implements -> `modules/sqtv-integer-conversion-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQTV Integer Conversion Semantic Feature
+- path: `modules/sqtv-integer-conversion-cpp/FEATURES.md`
+- title: SQTV Integer Conversion Semantic Feature
+- surface_type: feature declaration
+- truth_role: bounded implemented capability
+- owner: SQTV Integer Conversion module maintainers
+- scope: Records the experimental native library extent and explicit non-claims.
+- relationships: implements -> `modules/sqtv-integer-conversion-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQTV Integer Conversion Build
+- path: `modules/sqtv-integer-conversion-cpp/CMakeLists.txt`
+- title: SQTV Integer Conversion Build
+- surface_type: CMake implementation
+- truth_role: native build and exact package export
+- owner: SQTV Integer Conversion module maintainers
+- scope: Builds and exports the exact C++26 static library and focused tests.
+- relationships: implements -> `modules/sqtv-integer-conversion-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQTV Integer Conversion Public API
+- path: `modules/sqtv-integer-conversion-cpp/include/symphony/sqtv/integer_conversion.hpp`
+- title: SQTV Integer Conversion Public API
+- surface_type: C++26 public interface
+- truth_role: trusted caller interface
+- owner: SQTV Integer Conversion module maintainers
+- scope: Declares the move-only native API with explicit bounded inputs and typed failures.
+- relationships: implements -> `modules/sqtv-integer-conversion-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQTV Integer Conversion Implementation
+- path: `modules/sqtv-integer-conversion-cpp/src/integer_conversion.cpp`
+- title: SQTV Integer Conversion Implementation
+- surface_type: C++26 implementation
+- truth_role: owner implementation
+- owner: SQTV Integer Conversion module maintainers
+- scope: Implements the exact module contract through explicitly selected native dependencies.
+- relationships: implements -> `modules/sqtv-integer-conversion-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQTV Integer Conversion Native Tests
+- path: `modules/sqtv-integer-conversion-cpp/tests/integer_conversion_test.cpp`
+- title: SQTV Integer Conversion Native Tests
+- surface_type: C++26 focused test
+- truth_role: owner regression evidence
+- owner: SQTV Integer Conversion module maintainers
+- scope: Exercises exact identity, bounded failures and module-specific lifetime or recovery behavior.
+- relationships: implements -> `modules/sqtv-integer-conversion-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQTV Integer Conversion Package Tests
+- path: `modules/sqtv-integer-conversion-cpp/tests/package_lifecycle_test.cmake`
+- title: SQTV Integer Conversion Package Tests
+- surface_type: CMake focused test
+- truth_role: package lifecycle evidence
+- owner: SQTV Integer Conversion module maintainers
+- scope: Exercises isolated installation, overwrite refusal, integrity guards and source-independent removal.
+- relationships: implements -> `modules/sqtv-integer-conversion-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQTV Integer Conversion Independent Consumer Build
+- path: `modules/sqtv-integer-conversion-cpp/tests/sdk-consumer/CMakeLists.txt`
+- title: SQTV Integer Conversion Independent Consumer Build
+- surface_type: CMake acceptance build
+- truth_role: checkout-free consumer evidence
+- owner: SQTV Integer Conversion module maintainers
+- scope: Requires exact installed dependency packages and inherits exported C++26 requirements.
+- relationships: implements -> `modules/sqtv-integer-conversion-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQTV Integer Conversion Independent Consumer
+- path: `modules/sqtv-integer-conversion-cpp/tests/sdk-consumer/main.cpp`
+- title: SQTV Integer Conversion Independent Consumer
+- surface_type: C++26 acceptance source
+- truth_role: public consumer rejection evidence
+- owner: SQTV Integer Conversion module maintainers
+- scope: Exercises the installed public interface and rejects incompatible or corrupt inputs.
+- relationships: implements -> `modules/sqtv-integer-conversion-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQTV Integer Conversion Package Configuration
+- path: `modules/sqtv-integer-conversion-cpp/cmake/SymphonySqtvIntegerConversionConfig.cmake.in`
+- title: SQTV Integer Conversion Package Configuration
+- surface_type: CMake package template
+- truth_role: exact dependency resolution
+- owner: SQTV Integer Conversion module maintainers
+- scope: Resolves exact installed dependency packages and imports the module target.
+- relationships: implements -> `modules/sqtv-integer-conversion-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQTV Integer Conversion Uninstall
+- path: `modules/sqtv-integer-conversion-cpp/cmake/uninstall.cmake.in`
+- title: SQTV Integer Conversion Uninstall
+- surface_type: CMake uninstall template
+- truth_role: receipt-scoped removal
+- owner: SQTV Integer Conversion module maintainers
+- scope: Invokes the build-local hardened receipt guard with the exact configured ownership set.
+- relationships: implements -> `modules/sqtv-integer-conversion-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical

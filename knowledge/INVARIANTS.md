@@ -175,3 +175,7 @@ C++ invariant traceability follows quoted headers in the referencing test direct
 ## SQAV original-byte capture
 
 The SQAV capture owner binds bounded original bytes and attributed source evidence, preserves independent time/position/count meaning, and rejects malformed, incompatible or allocation-failed input without publishing partial state. Two registered invariants join native producer tests to independently installed consumer rejection cases.
+
+## SQTV native conversion invariants
+
+`modules/sqtv-integer-conversion-cpp/SPEC.md` owns exact dense integer conversion and derived lineage. Two `invariant:symphony:sqtv.*` records bind native range, rollback and retained-composition checks to installed-consumer boundary rejection. These invariants admit the selected stateless integer domain only.

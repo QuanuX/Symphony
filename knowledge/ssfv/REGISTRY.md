@@ -787,6 +787,15 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - record_digest: `sha256:02b897c7c6180727d2047de7c541b1354bd768e76bde977d6b173647cbfd3e34`
 - notes: Bounded native C++26 library; exact module contract and focused evidence define its implemented extent.
 
+- feature_id: `ssfv:symphony:sqtv-integer-conversion-cpp`
+- feature_file: `modules/sqtv-integer-conversion-cpp/FEATURES.md`
+- owner_contract: `modules/sqtv-integer-conversion-cpp/SPEC.md`
+- source_scope: `modules/sqtv-integer-conversion-cpp`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:platform`
+- record_digest: `sha256:ada46a2d51e6a165e232077b7034d49f380f335074ec31ffc52f8c2da931a220`
+- notes: Exact bounded integer representation conversion with preserved evidence and explicit input/operation lineage.
+
 - feature_id: `ssfv:symphony:ssfv-engine`
 - feature_file: `modules/ssfv-engine/FEATURES.md`
 - owner_contract: `modules/ssfv-engine/SPEC.md`

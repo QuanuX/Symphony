@@ -16,9 +16,9 @@ Compatible consumers may share an immutable prepared result only for the same ex
 
 Stateful windows and joins require separate partition, lateness, checkpoint, input-position, and restart contracts before support is claimed. No stateful operation or performance guarantee is admitted by this architecture Quad alone.
 
-## Deferred Technical Contract
+## First admitted module and remaining work
 
-The first converter pair, analytic format, numeric rules, stateful-operation extent, target platform, public ABI, and resource thresholds require separate admission. The offline SQV prototype does not settle any conversion semantics. This Quad creates no installed capability or namespace family.
+`modules/sqtv-integer-conversion-cpp/SPEC.md` admits `0.1.0-dev`: exact conversion among 16 dense 8/16/32/64-bit signed/unsigned little/big-endian integer layouts. It rejects value loss, preserves semantic evidence and access scope, and records exact input/operation lineage in a derived immutable batch and manifest. Its C++26 API and bounded per-call workspace are explicitly tested. Nullable, decimal/float, provider-specific, analytic and stateful operations and shared preparation caches remain unadmitted. No universal converter or colon namespace family is claimed.
 
 ## Non-Authorization Statement
 

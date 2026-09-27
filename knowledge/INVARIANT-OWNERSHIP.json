@@ -2688,6 +2688,69 @@
       "consumer_boundary_rejections": [
         {
           "cases": [
+            "installed_conversion_and_rejection"
+          ],
+          "path": "modules/sqtv-integer-conversion-cpp/tests/sdk-consumer/main.cpp"
+        }
+      ],
+      "invariant_id": "invariant:symphony:sqtv.derived-lineage",
+      "ipc_boundary": false,
+      "owner_component": "sqtv-integer-conversion-cpp",
+      "owner_contract": "modules/sqtv-integer-conversion-cpp/SPEC.md",
+      "producer_implementations": [
+        "modules/sqtv-integer-conversion-cpp/src/integer_conversion.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "converted_retention_delivery",
+            "lineage_and_metadata"
+          ],
+          "path": "modules/sqtv-integer-conversion-cpp/tests/integer_conversion_test.cpp"
+        }
+      ],
+      "real_process_regressions": [],
+      "statement": "Derived metadata preserves semantic source, units, time and access evidence and binds the actual input manifest, input content identity and exact operation. Output transfer positions are explicit and retained delivery preserves those identities.",
+      "status": "active",
+      "title": "SQTV retains semantic evidence and exact conversion lineage"
+    },
+    {
+      "allowed_adapter_ids": [],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "installed_conversion_and_rejection"
+          ],
+          "path": "modules/sqtv-integer-conversion-cpp/tests/sdk-consumer/main.cpp"
+        }
+      ],
+      "invariant_id": "invariant:symphony:sqtv.exact-integer-values",
+      "ipc_boundary": false,
+      "owner_component": "sqtv-integer-conversion-cpp",
+      "owner_contract": "modules/sqtv-integer-conversion-cpp/SPEC.md",
+      "producer_implementations": [
+        "modules/sqtv-integer-conversion-cpp/src/integer_conversion.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "allocation_rollback",
+            "numeric_matrix_and_roundtrip",
+            "rejection_and_bounds"
+          ],
+          "path": "modules/sqtv-integer-conversion-cpp/tests/integer_conversion_test.cpp"
+        }
+      ],
+      "real_process_regressions": [],
+      "statement": "Only declared dense integer layouts are converted. Every value must fit exactly; overflow, malformed input, exhausted bounds or allocation failure preserve the prior result and release temporary reservations.",
+      "status": "active",
+      "title": "SQTV preserves every admitted integer value"
+    },
+    {
+      "allowed_adapter_ids": [],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
             "TestProviderBindingAuditProjectionExcludesAdministrativeReason",
             "TestProviderBindingRoutesAreHeadlessStrictAndIdempotent"
           ],
@@ -2956,7 +3019,7 @@
     }
   ],
   "protocol": "symphony.knowledge.invariant-ownership-registry.v3",
-  "registry_digest": "sha256:0fd9a5b18eaf1ad0d6c7a95d74f5e81331aec1bab9a05242d4be53a997d97eaa",
+  "registry_digest": "sha256:c35af14f33664629cea9a749c4c2254f046338eb3d87905cdd84c97b709f32f9",
   "scope": "common_lowest_authoritative_layer",
   "test_policy": {
     "consumer_boundary_rejection_required": true,

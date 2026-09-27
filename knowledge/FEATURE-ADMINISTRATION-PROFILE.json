@@ -6971,6 +6971,24 @@
     {
       "expectations": [
         {
+          "command_ids": [],
+          "delivery": "runtime_only",
+          "engine_operation_ids": [],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/sqtv-integer-conversion-cpp/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "invoke",
+          "rationale": "The exact C++26 library executes only when invoked by its explicit native caller; installation adds no independent process or SQV qxctl surface.",
+          "requirement": "required"
+        }
+      ],
+      "feature_id": "ssfv:symphony:sqtv-integer-conversion-cpp"
+    },
+    {
+      "expectations": [
+        {
           "command_ids": [
             "qxcmd:symphony:ssfv.inspect"
           ],
@@ -7963,9 +7981,9 @@
   ],
   "format_version": 1,
   "forward_gate": "enforce_new_records",
-  "profile_digest": "sha256:914d59f0207e7d038d4d2bd35f1f0c035589dc060b1f81c70e36157f89685537",
+  "profile_digest": "sha256:ad69576e1dd8e81a068a4a0d6fee8dd9f15feed7803654ad8eb7fd0ec26cd522",
   "profile_id": "symphony.registered-features.administration.v1",
   "protocol": "symphony.knowledge.feature-administration-profile.v1",
-  "registered_feature_count": 115,
-  "ssfv_registry_digest": "sha256:ce5e0d944d7bbba0a2538dd87ac6505a280e9bcc288f6e0eddb4f209f2ba4ed2"
+  "registered_feature_count": 116,
+  "ssfv_registry_digest": "sha256:86697cc27d2ff0d0e8d635d9ecbf464271a0fccb3c7d47212332310860924123"
 }
