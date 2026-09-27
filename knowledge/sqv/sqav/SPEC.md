@@ -22,6 +22,10 @@ First-party collection, parsing, and provider-facing movement are native C++. Su
 
 This library resolves no credentials, reads no source file, opens no provider connection and interprets no provider schema. Exact source operations, provider parsers, access enforcement, reconnect/backfill and workload thresholds need separate admission. A caller's coverage assertion or digest does not establish source authority. Other native representations remain valid choices; no new colon namespace or SQV qxctl surface is allocated.
 
+## First provider-file contract
+
+`modules/sqav-databento-dbn-cpp/SPEC.md` admits bounded uncompressed DBNv3 single-schema MBO inspection and exact capture binding. All original file bytes and raw integer/time fields remain preserved. Public official fixtures anchor this narrow conformance claim. Network acquisition, compression, mixed live records, reference data, book reconstruction and source authenticity/entitlements remain outside this release.
+
 ## Non-Authorization Statement
 
 SQAV does not authorize a provider session, credential use, subscription, data purchase, account access, order entry, or redistribution.

@@ -15233,3 +15233,198 @@ These entries locate existing implementation and regression surfaces referenced 
 - deferred_projections: later owner-admitted adapters and platform profiles
 - notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
 - status: canonical
+
+##### SQAV Databento DBN Intent
+- path: `modules/sqav-databento-dbn-cpp/INTENT.md`
+- title: SQAV Databento DBN Intent
+- surface_type: owner intent
+- truth_role: bounded native library purpose
+- owner: SQAV Databento DBN module maintainers
+- scope: Describes the selected library purpose and open composition boundary.
+- relationships: implements -> `modules/sqav-databento-dbn-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQAV Databento DBN Manifest
+- path: `modules/sqav-databento-dbn-cpp/MANIFEST.md`
+- title: SQAV Databento DBN Manifest
+- surface_type: owner manifest
+- truth_role: exact module source membership
+- owner: SQAV Databento DBN module maintainers
+- scope: Lists the exact versioned package and its canonical implementation/test surfaces.
+- relationships: declares -> `modules/sqav-databento-dbn-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQAV Databento DBN Specification
+- path: `modules/sqav-databento-dbn-cpp/SPEC.md`
+- title: SQAV Databento DBN Specification
+- surface_type: owner contract
+- truth_role: exact native behavior and compatibility
+- owner: SQAV Databento DBN module maintainers
+- scope: Defines the bounded native API, identities, failure outcomes and supported extent.
+- relationships: owned_by -> `knowledge/sqv/sqav/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQAV Databento DBN Workflow
+- path: `modules/sqav-databento-dbn-cpp/SKILL.md`
+- title: SQAV Databento DBN Workflow
+- surface_type: owner workflow contract
+- truth_role: module review and execution boundary
+- owner: SQAV Databento DBN module maintainers
+- scope: Routes module-specific work to exact contracts and focused acceptance evidence.
+- relationships: implements -> `modules/sqav-databento-dbn-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQAV Databento DBN Installation
+- path: `modules/sqav-databento-dbn-cpp/INSTALL.md`
+- title: SQAV Databento DBN Installation
+- surface_type: package contract
+- truth_role: exact receipt-owned package lifecycle
+- owner: SQAV Databento DBN module maintainers
+- scope: Documents C++26 dependencies, versioned installation, independent consumers and guarded removal.
+- relationships: implements -> `modules/sqav-databento-dbn-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQAV Databento DBN Semantic Feature
+- path: `modules/sqav-databento-dbn-cpp/FEATURES.md`
+- title: SQAV Databento DBN Semantic Feature
+- surface_type: feature declaration
+- truth_role: bounded implemented capability
+- owner: SQAV Databento DBN module maintainers
+- scope: Records the experimental native library extent and explicit non-claims.
+- relationships: implements -> `modules/sqav-databento-dbn-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQAV Databento DBN Build
+- path: `modules/sqav-databento-dbn-cpp/CMakeLists.txt`
+- title: SQAV Databento DBN Build
+- surface_type: CMake implementation
+- truth_role: native build and exact package export
+- owner: SQAV Databento DBN module maintainers
+- scope: Builds and exports the exact C++26 static library and focused tests.
+- relationships: implements -> `modules/sqav-databento-dbn-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQAV Databento DBN Public API
+- path: `modules/sqav-databento-dbn-cpp/include/symphony/sqav/databento/dbn.hpp`
+- title: SQAV Databento DBN Public API
+- surface_type: C++26 public interface
+- truth_role: trusted caller interface
+- owner: SQAV Databento DBN module maintainers
+- scope: Declares the move-only native API with explicit bounded inputs and typed failures.
+- relationships: implements -> `modules/sqav-databento-dbn-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQAV Databento DBN Implementation
+- path: `modules/sqav-databento-dbn-cpp/src/dbn.cpp`
+- title: SQAV Databento DBN Implementation
+- surface_type: C++26 implementation
+- truth_role: owner implementation
+- owner: SQAV Databento DBN module maintainers
+- scope: Implements the exact module contract through explicitly selected native dependencies.
+- relationships: implements -> `modules/sqav-databento-dbn-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQAV Databento DBN Native Tests
+- path: `modules/sqav-databento-dbn-cpp/tests/dbn_test.cpp`
+- title: SQAV Databento DBN Native Tests
+- surface_type: C++26 focused test
+- truth_role: owner regression evidence
+- owner: SQAV Databento DBN module maintainers
+- scope: Exercises exact identity, bounded failures and module-specific lifetime or recovery behavior.
+- relationships: implements -> `modules/sqav-databento-dbn-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQAV Databento DBN Package Tests
+- path: `modules/sqav-databento-dbn-cpp/tests/package_lifecycle_test.cmake`
+- title: SQAV Databento DBN Package Tests
+- surface_type: CMake focused test
+- truth_role: package lifecycle evidence
+- owner: SQAV Databento DBN module maintainers
+- scope: Exercises isolated installation, overwrite refusal, integrity guards and source-independent removal.
+- relationships: implements -> `modules/sqav-databento-dbn-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQAV Databento DBN Independent Consumer Build
+- path: `modules/sqav-databento-dbn-cpp/tests/sdk-consumer/CMakeLists.txt`
+- title: SQAV Databento DBN Independent Consumer Build
+- surface_type: CMake acceptance build
+- truth_role: checkout-free consumer evidence
+- owner: SQAV Databento DBN module maintainers
+- scope: Requires exact installed dependency packages and inherits exported C++26 requirements.
+- relationships: implements -> `modules/sqav-databento-dbn-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQAV Databento DBN Independent Consumer
+- path: `modules/sqav-databento-dbn-cpp/tests/sdk-consumer/main.cpp`
+- title: SQAV Databento DBN Independent Consumer
+- surface_type: C++26 acceptance source
+- truth_role: public consumer rejection evidence
+- owner: SQAV Databento DBN module maintainers
+- scope: Exercises the installed public interface and rejects incompatible or corrupt inputs.
+- relationships: implements -> `modules/sqav-databento-dbn-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQAV Databento DBN Package Configuration
+- path: `modules/sqav-databento-dbn-cpp/cmake/SymphonySqavDatabentoDbnConfig.cmake.in`
+- title: SQAV Databento DBN Package Configuration
+- surface_type: CMake package template
+- truth_role: exact dependency resolution
+- owner: SQAV Databento DBN module maintainers
+- scope: Resolves exact installed dependency packages and imports the module target.
+- relationships: implements -> `modules/sqav-databento-dbn-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQAV Databento DBN Uninstall
+- path: `modules/sqav-databento-dbn-cpp/cmake/uninstall.cmake.in`
+- title: SQAV Databento DBN Uninstall
+- surface_type: CMake uninstall template
+- truth_role: receipt-scoped removal
+- owner: SQAV Databento DBN module maintainers
+- scope: Invokes the build-local hardened receipt guard with the exact configured ownership set.
+- relationships: implements -> `modules/sqav-databento-dbn-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical

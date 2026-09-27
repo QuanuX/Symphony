@@ -179,3 +179,7 @@ The SQAV capture owner binds bounded original bytes and attributed source eviden
 ## SQTV native conversion invariants
 
 `modules/sqtv-integer-conversion-cpp/SPEC.md` owns exact dense integer conversion and derived lineage. Two `invariant:symphony:sqtv.*` records bind native range, rollback and retained-composition checks to installed-consumer boundary rejection. These invariants admit the selected stateless integer domain only.
+
+## SQAV Databento file invariants
+
+`modules/sqav-databento-dbn-cpp/SPEC.md` owns bounded DBNv3 MBO inspection and provider-native file fidelity. Two `invariant:symphony:sqav.databento-*` records bind native fixture/bounds/rollback/retention evidence to installed-consumer rejection. These records confer no network, entitlement or full-book completeness claim.

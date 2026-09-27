@@ -2264,6 +2264,70 @@
       "consumer_boundary_rejections": [
         {
           "cases": [
+            "installed_fidelity_and_rejection"
+          ],
+          "path": "modules/sqav-databento-dbn-cpp/tests/sdk-consumer/main.cpp"
+        }
+      ],
+      "invariant_id": "invariant:symphony:sqav.databento-bounded-inspection",
+      "ipc_boundary": false,
+      "owner_component": "sqav-databento-dbn-cpp",
+      "owner_contract": "modules/sqav-databento-dbn-cpp/SPEC.md",
+      "producer_implementations": [
+        "modules/sqav-databento-dbn-cpp/src/dbn.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "allocation_rollback",
+            "malformed_and_limits"
+          ],
+          "path": "modules/sqav-databento-dbn-cpp/tests/dbn_test.cpp"
+        }
+      ],
+      "real_process_regressions": [],
+      "statement": "File, metadata and record limits precede traversal; counted metadata arrays are bounded by remaining bytes. Unsupported versions and mixed schemas fail explicitly. Inspection allocates nothing and capture allocation failure preserves previous output.",
+      "status": "active",
+      "title": "SQAV rejects malformed DBN and preserves outputs"
+    },
+    {
+      "allowed_adapter_ids": [],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "installed_capture_binding",
+            "installed_fidelity_and_rejection"
+          ],
+          "path": "modules/sqav-databento-dbn-cpp/tests/sdk-consumer/main.cpp"
+        }
+      ],
+      "invariant_id": "invariant:symphony:sqav.databento-dbn-fidelity",
+      "ipc_boundary": false,
+      "owner_component": "sqav-databento-dbn-cpp",
+      "owner_contract": "modules/sqav-databento-dbn-cpp/SPEC.md",
+      "producer_implementations": [
+        "modules/sqav-databento-dbn-cpp/src/dbn.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "capture_and_retained_delivery",
+            "public_fixture_fidelity",
+            "raw_fields_and_gateway_timestamp"
+          ],
+          "path": "modules/sqav-databento-dbn-cpp/tests/dbn_test.cpp"
+        }
+      ],
+      "real_process_regressions": [],
+      "statement": "The supported exact DBNv3 MBO layout preserves integer fields, raw flags/sentinels, distinct timestamps and every original metadata/record byte. Capture admission verifies provider, dataset, representation and actual count without inferring completeness.",
+      "status": "active",
+      "title": "SQAV retains DBNv3 MBO fields and original file evidence"
+    },
+    {
+      "allowed_adapter_ids": [],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
             "installed_capture_rejection",
             "installed_capture_roundtrip"
           ],
@@ -3019,7 +3083,7 @@
     }
   ],
   "protocol": "symphony.knowledge.invariant-ownership-registry.v3",
-  "registry_digest": "sha256:c35af14f33664629cea9a749c4c2254f046338eb3d87905cdd84c97b709f32f9",
+  "registry_digest": "sha256:822cc1ba7b250c96a79eaa7a648f32032ed346254527d3f65d7c908f6859a027",
   "scope": "common_lowest_authoritative_layer",
   "test_policy": {
     "consumer_boundary_rejection_required": true,
