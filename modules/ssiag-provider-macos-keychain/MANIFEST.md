@@ -6,6 +6,7 @@
 - `modules/ssiag-provider-macos-keychain/INSTALL.md`
 - `modules/ssiag-provider-macos-keychain/INTENT.md`
 - `modules/ssiag-provider-macos-keychain/MANIFEST.md`
+- `modules/ssiag-provider-macos-keychain/NATIVE-PEER-TRUST.md`
 - `modules/ssiag-provider-macos-keychain/README.md`
 - `modules/ssiag-provider-macos-keychain/SKILL.md`
 - `modules/ssiag-provider-macos-keychain/SPEC.md`
@@ -40,7 +41,8 @@ Future operational behavior MUST target the per-user data-protection Keychain, r
 
 ## Dependency Boundary
 
-The module uses Swift and Apple system frameworks only. It is optional and excluded from non-macOS builds. It does not introduce Swift, Objective-C, cgo, or Apple linking into `modules/secure-identity-access-governance/`.
+The module uses Swift, Apple system frameworks and system `libbsm` audit-token
+accessors. The isolated native test peer is C++26 and has no production target. It is optional and excluded from non-macOS builds. It does not introduce Swift, Objective-C, cgo, or Apple linking into `modules/secure-identity-access-governance/`.
 
 ## Contract Files
 
@@ -53,3 +55,9 @@ The module uses Swift and Apple system frameworks only. It is optional and exclu
 ## Independent Lifecycle
 
 Each exact legacy binary or complete app-like bundle and its immutable receipt-v2 record are owned by this module. Uninstall validates every present receipt-owned byte, rejects unknown entries, uses the retained receipt to finish interrupted removal, and does not remove other adapter versions, legacy v1 evidence, SSIAG foundation binaries, TOPS configuration, STAV data, or Keychain items.
+
+## Internal Native Trust Prerequisite
+
+`Sources/SSIAGMacOSKeychainSupport/NativePeerTrust.swift` observes the native
+identity of an existing connected Unix peer. Its contract and tests retain the
+distinction between time-specific validation and actual protected delivery.

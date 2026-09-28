@@ -964,7 +964,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `modules/ssiag-provider-macos-keychain`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:ssiag-foundation`
-- record_digest: `sha256:2da7bcf4f6ae53f25211633528f720846c73dd7d6b76103568d6a9f7e761c9d9`
+- record_digest: `sha256:55782ed6cfef2f2267cd48a811b83d5528131fdc7c34ded99a641bccca3b2e70`
 - notes: Partial-catalog subfeature for the independently installed Swift adapter and its verified metadata-only SSIAG handshake; qxctl does not invoke it and operational secret access remains disabled.
 
 - feature_id: `ssfv:symphony:ssiag.macos-signed-bundle-readiness`

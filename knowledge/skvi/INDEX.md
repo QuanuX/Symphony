@@ -15636,3 +15636,55 @@ These entries locate existing implementation and regression surfaces referenced 
 - deferred_projections: admission and lifecycle traceability
 - notes: Internal composition only; native authentication, protected delivery and operational Keychain access remain unimplemented.
 - status: canonical
+
+### SSIAG Native Peer Trust Contract
+- path: `modules/ssiag-provider-macos-keychain/NATIVE-PEER-TRUST.md`
+- title: SSIAG Native Peer Trust Contract
+- surface_type: internal native trust contract
+- truth_role: time-specific socket/code identity and delivery limitation
+- owner: SSIAG native provider maintainers
+- scope: Defines owner-selected requirements, kernel audit-token validation, descriptor lifetime and the remaining message-delivery gate.
+- relationships: governed_by -> `modules/ssiag-provider-macos-keychain/SPEC.md`; implemented_by -> `modules/ssiag-provider-macos-keychain/Sources/SSIAGMacOSKeychainSupport/NativePeerTrust.swift`
+- consumers: SSIAG implementers, reviewers, tests
+- deferred_projections: native trust and delivery traceability
+- notes: Unwired prerequisite only; no operational provider pin, protected delivery or Keychain access is enabled.
+- status: canonical
+
+### SSIAG Native Peer Trust
+- path: `modules/ssiag-provider-macos-keychain/Sources/SSIAGMacOSKeychainSupport/NativePeerTrust.swift`
+- title: SSIAG Native Peer Trust
+- surface_type: Swift native code observation
+- truth_role: kernel audit-token and Security validation implementation
+- owner: SSIAG native provider maintainers
+- scope: Owns a private socket duplicate, validates original audit-token code identity and closes permanently on revalidation failure.
+- relationships: implements -> `modules/ssiag-provider-macos-keychain/NATIVE-PEER-TRUST.md`; verified_by -> `modules/ssiag-provider-macos-keychain/Tests/SSIAGMacOSKeychainSupportTests/NativePeerTrustTests.swift`
+- consumers: SSIAG implementers, reviewers, tests
+- deferred_projections: native trust and delivery traceability
+- notes: Unwired prerequisite only; no operational provider pin, protected delivery or Keychain access is enabled.
+- status: canonical
+
+### SSIAG Native Peer Trust Tests
+- path: `modules/ssiag-provider-macos-keychain/Tests/SSIAGMacOSKeychainSupportTests/NativePeerTrustTests.swift`
+- title: SSIAG Native Peer Trust Tests
+- surface_type: Swift native process tests
+- truth_role: real audit-token, code requirement and descriptor-lifetime evidence
+- owner: SSIAG native provider maintainers
+- scope: Exercises same-binary same-PID exec, real signed fixture identity, refusal paths, cleanup and concurrent close.
+- relationships: verifies -> `modules/ssiag-provider-macos-keychain/Sources/SSIAGMacOSKeychainSupport/NativePeerTrust.swift`; uses -> `modules/ssiag-provider-macos-keychain/Tests/Fixtures/NativePeerClient.cpp`
+- consumers: SSIAG implementers, reviewers, tests
+- deferred_projections: native trust and delivery traceability
+- notes: Unwired prerequisite only; no operational provider pin, protected delivery or Keychain access is enabled.
+- status: canonical
+
+### SSIAG Native Peer Test Client
+- path: `modules/ssiag-provider-macos-keychain/Tests/Fixtures/NativePeerClient.cpp`
+- title: SSIAG Native Peer Test Client
+- surface_type: C++26 isolated test process
+- truth_role: controlled connection and exec test stimulus
+- owner: SSIAG native provider maintainers
+- scope: Connects to a private test socket, exchanges fixed markers and re-execs for audit-token generation tests; no production target.
+- relationships: supports -> `modules/ssiag-provider-macos-keychain/Tests/SSIAGMacOSKeychainSupportTests/NativePeerTrustTests.swift`; governed_by -> `modules/ssiag-provider-macos-keychain/NATIVE-PEER-TRUST.md`
+- consumers: SSIAG implementers, reviewers, tests
+- deferred_projections: native trust and delivery traceability
+- notes: Unwired prerequisite only; no operational provider pin, protected delivery or Keychain access is enabled.
+- status: canonical

@@ -7999,9 +7999,9 @@
   ],
   "format_version": 1,
   "forward_gate": "enforce_new_records",
-  "profile_digest": "sha256:bb175aecde4fdf1ba03b5bb04b92bd243f6472398437954f133b83e0819693cd",
+  "profile_digest": "sha256:9b90cf0812a774d637072c7d004ecd9870a5346548088fc639fc4f2ffeb83fc5",
   "profile_id": "symphony.registered-features.administration.v1",
   "protocol": "symphony.knowledge.feature-administration-profile.v1",
   "registered_feature_count": 117,
-  "ssfv_registry_digest": "sha256:37c5fc62e25b9c3adda168d63b9afd37d3b89737d641810f903e1841dbceae4a"
+  "ssfv_registry_digest": "sha256:50a7d87ea81400d881e1f19a032809f98717b2b2b4be59030f4bc28fb462ac3b"
 }

@@ -13,7 +13,7 @@ let package = Package(
     targets: [
         .target(
             name: "SSIAGMacOSKeychainSupport",
-            linkerSettings: [.linkedFramework("Security")]
+            linkerSettings: [.linkedFramework("Security"), .linkedLibrary("bsm")]
         ),
         .executableTarget(
             name: "SymphonySSIAGMacOSKeychain",

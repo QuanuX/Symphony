@@ -54,3 +54,10 @@ It MUST add no secret-valued CLI arguments or environment variables. It MUST aut
 The JSON control channel MUST NOT carry secret bytes. Non-exportable sign/assert/decrypt operations remain inside the adapter. The Phase 9 inherited-file-descriptor object is synthetic (descriptor `-1`, zero-byte limit, `synthetic: true`, `operational: false`) and MUST NOT be opened or used for delivery. Any future explicitly policy-authorized export requires a separately ratified operational request-bound, bounded, one-shot protected channel that closes after delivery and never reaches qxctl, OpenAPI, STAV, arguments, environment variables, logs, or examples.
 
 The first item namespace will use the exact private application-identifier access group of the selected production bundle. Exact item classes, operation names, accessibility and access-control matrix, operational secret-channel framing, and memory/crash policy remain Phase 10C or later gates.
+
+## Internal Native Peer Observation
+
+`NATIVE-PEER-TRUST.md` defines the unwired audit-token and native-code observation
+prerequisite. It owns a connected socket duplicate and revalidates its original
+kernel identity with Apple Security. It does not bind later message delivery,
+implement an operational provider pin, or enable provider-v1 behavior.
