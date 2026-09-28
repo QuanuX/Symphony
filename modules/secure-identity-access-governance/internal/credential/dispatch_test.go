@@ -136,7 +136,15 @@ func dispatchFixture(t *testing.T) (*Dispatcher, DispatchIntent, *dispatchProvid
 		t.Fatal(err)
 	}
 	provider := &dispatchProvider{}
-	d, err := NewDispatcher(engine, producer, provider)
+	stateRoot := t.TempDir()
+	if err := os.Chmod(stateRoot, 0700); err != nil {
+		t.Fatal(err)
+	}
+	journal, err := NewJournal(stateRoot, dispatchTOPS)
+	if err != nil {
+		t.Fatal(err)
+	}
+	d, err := NewDispatcher(engine, producer, provider, journal)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -334,7 +342,7 @@ func TestDispatchPreparationAndSpentFailures(t *testing.T) {
 }
 func TestDispatchDeadlineCancelsInFlightAndReleases(t *testing.T) {
 	d, in, p, _, _ := dispatchFixture(t)
-	ctx, cancel := context.WithTimeout(dispatchPeer(t, true), 50*time.Millisecond)
+	ctx, cancel := context.WithTimeout(dispatchPeer(t, true), 2*time.Second)
 	defer cancel()
 	p.execute = func(ctx context.Context, b UseBinding) DispatchStatus {
 		deadline, ok := ctx.Deadline()

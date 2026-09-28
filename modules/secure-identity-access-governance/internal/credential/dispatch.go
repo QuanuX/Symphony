@@ -26,16 +26,20 @@ type DispatchIntent struct {
 type DispatchStatus string
 
 const (
-	DispatchInvalid         DispatchStatus = "invalid"
-	DispatchSpent           DispatchStatus = "already_attempted"
-	DispatchUnauthenticated DispatchStatus = "unauthenticated"
-	DispatchDenied          DispatchStatus = "denied"
-	DispatchAuditFailed     DispatchStatus = "audit_failed"
-	DispatchUnavailable     DispatchStatus = "unavailable"
-	DispatchCancelled       DispatchStatus = "cancelled"
-	DispatchDelivered       DispatchStatus = "delivered"
-	DispatchRefused         DispatchStatus = "refused"
-	DispatchIndeterminate   DispatchStatus = "indeterminate"
+	DispatchInvalid          DispatchStatus = "invalid"
+	DispatchSpent            DispatchStatus = "already_attempted"
+	DispatchUnauthenticated  DispatchStatus = "unauthenticated"
+	DispatchDenied           DispatchStatus = "denied"
+	DispatchAuditFailed      DispatchStatus = "audit_failed"
+	DispatchUnavailable      DispatchStatus = "unavailable"
+	DispatchCancelled        DispatchStatus = "cancelled"
+	DispatchDelivered        DispatchStatus = "delivered"
+	DispatchRefused          DispatchStatus = "refused"
+	DispatchIndeterminate    DispatchStatus = "indeterminate"
+	DispatchConflict         DispatchStatus = "request_conflict"
+	DispatchRecorded         DispatchStatus = "already_recorded"
+	DispatchRecoveryRequired DispatchStatus = "recovery_required"
+	DispatchNotDispatched    DispatchStatus = "not_dispatched"
 )
 
 // ProviderAdmission is trusted owner code, not an adapter response or a caller
@@ -75,21 +79,22 @@ type Dispatcher struct {
 	policy   *policy.Engine
 	audit    *stavproducer.Producer
 	provider ProviderAdmission
+	journal  *Journal
 	now      func() time.Time
 }
 
 var errDispatchUnavailable = errors.New("credential dispatch unavailable")
 
-func NewDispatcher(p *policy.Engine, audit *stavproducer.Producer, provider ProviderAdmission) (*Dispatcher, error) {
-	if p == nil || audit == nil || provider == nil {
+func NewDispatcher(p *policy.Engine, audit *stavproducer.Producer, provider ProviderAdmission, journal *Journal) (*Dispatcher, error) {
+	if p == nil || audit == nil || provider == nil || journal == nil {
 		return nil, errDispatchUnavailable
 	}
-	return &Dispatcher{policy: p, audit: audit, provider: provider, now: time.Now}, nil
+	return &Dispatcher{policy: p, audit: audit, provider: provider, journal: journal, now: time.Now}, nil
 }
 
-// DispatchAttempt is private process-local state. Do not copy it. A future
-// durable request journal must control creation/recreation across requests and
-// restarts; this type supplies no global request-ID deduplication or lease issuer.
+// DispatchAttempt is private process-local state. Do not copy it. The required
+// journal also suppresses duplicates across new objects and process restarts
+// within its TOPS namespace. It never issues a lease or enables a public route.
 type DispatchAttempt struct {
 	owner     *Dispatcher
 	intent    DispatchIntent
@@ -97,11 +102,11 @@ type DispatchAttempt struct {
 }
 
 func (d *Dispatcher) Prepare(intent DispatchIntent) (*DispatchAttempt, error) {
-	if d == nil || d.now == nil || d.policy == nil || d.audit == nil || d.provider == nil {
+	if d == nil || d.now == nil || d.policy == nil || d.audit == nil || d.provider == nil || d.journal == nil {
 		return nil, errDispatchUnavailable
 	}
 	now := d.now().UTC()
-	if policy.ValidateRequest(intent.Authorization, now) != nil ||
+	if !intentValid(intent) || policy.ValidateRequest(intent.Authorization, now) != nil ||
 		intent.Authorization.RequestedExpiresAt.Sub(now) > MaxUseLifetime ||
 		intent.MaximumBytes == 0 || intent.MaximumBytes > MaxUseBytes {
 		return nil, errDispatchUnavailable
@@ -143,7 +148,29 @@ func (a *DispatchAttempt) Run(ctx context.Context) DispatchStatus {
 	defer cancel()
 	result := DispatchUnavailable
 	err = d.policy.WithDecision(bounded, peer.Subject, a.intent.Authorization, func(decision model.AuthorizationDecision) error {
-		result = d.authorized(bounded, peer, a.intent, decision)
+		if decision.TOPSID != d.journal.topsID {
+			result = DispatchUnavailable
+			return nil
+		}
+		transaction, status := d.journal.begin(bounded, journalKey(decision.TOPSID, peer, a.intent))
+		if transaction == nil {
+			result = status
+			if decision.Effect != "allow" {
+				result = DispatchDenied
+				if _, err := d.auditDecision(bounded, decision); err != nil {
+					result = DispatchAuditFailed
+				}
+			}
+			return nil
+		}
+		defer transaction.file.close()
+		result = d.authorized(bounded, peer, a.intent, decision, transaction)
+		if transaction.finish(result) != nil {
+			result = DispatchUnavailable
+			if transaction.started {
+				result = DispatchIndeterminate
+			}
+		}
 		return nil
 	})
 	if err != nil {
@@ -155,7 +182,7 @@ func (a *DispatchAttempt) Run(ctx context.Context) DispatchStatus {
 	return result
 }
 
-func (d *Dispatcher) authorized(ctx context.Context, peer peerauth.Peer, intent DispatchIntent, decision model.AuthorizationDecision) DispatchStatus {
+func (d *Dispatcher) auditDecision(ctx context.Context, decision model.AuthorizationDecision) (stav.Receipt, error) {
 	outcome := "denied"
 	if decision.Effect == "allow" {
 		outcome = "allowed"
@@ -169,6 +196,14 @@ func (d *Dispatcher) authorized(ctx context.Context, peer peerauth.Peer, intent 
 		TROG:          stav.TROG{ReasonCode: "symphony.stav.trog.not-applicable", State: "not_applicable"}, Classification: "administrative_metadata",
 	})
 	if err != nil || receipt.TOPSID != decision.TOPSID || receipt.RequestID != decision.RequestID {
+		return stav.Receipt{}, errDispatchUnavailable
+	}
+	return receipt, nil
+}
+
+func (d *Dispatcher) authorized(ctx context.Context, peer peerauth.Peer, intent DispatchIntent, decision model.AuthorizationDecision, transaction *journalAttempt) DispatchStatus {
+	receipt, err := d.auditDecision(ctx, decision)
+	if err != nil {
 		return DispatchAuditFailed
 	}
 	if decision.Effect != "allow" || decision.Capability == nil {
@@ -223,6 +258,13 @@ func (d *Dispatcher) authorized(ctx context.Context, peer peerauth.Peer, intent 
 	deliveryCtx, cancel := context.WithDeadline(ctx, deadline)
 	defer cancel()
 	if use.Consume(deliveryCtx, binding, d.now().UTC()) != UseOK {
+		return DispatchRefused
+	}
+	// Once this barrier commits, a restart must assume delivery may have begun.
+	if transaction.arm(binding) != nil {
+		return DispatchUnavailable
+	}
+	if deliveryCtx.Err() != nil {
 		return DispatchRefused
 	}
 	result := pin.Execute(deliveryCtx, binding)

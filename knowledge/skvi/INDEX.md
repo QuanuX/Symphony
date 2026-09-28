@@ -15491,7 +15491,7 @@ These entries locate existing implementation and regression surfaces referenced 
 - relationships: governed_by -> `modules/secure-identity-access-governance/SPEC.md`; implemented_by -> `modules/secure-identity-access-governance/internal/credential/dispatch.go`
 - consumers: SSIAG implementers, reviewers, tests
 - deferred_projections: implementation traceability
-- notes: No operational endpoint, provider pin backend, durable request journal or protected byte channel is enabled.
+- notes: No operational endpoint, provider pin backend or protected byte channel is enabled; the internal request journal is implemented.
 - status: canonical
 
 ### SSIAG Internal Credential Dispatcher
@@ -15504,7 +15504,7 @@ These entries locate existing implementation and regression surfaces referenced 
 - relationships: implements -> `modules/secure-identity-access-governance/CREDENTIAL-DISPATCH.md`; verified_by -> `modules/secure-identity-access-governance/internal/credential/dispatch_test.go`
 - consumers: SSIAG implementers, reviewers, tests
 - deferred_projections: implementation traceability
-- notes: No operational endpoint, provider pin backend, durable request journal or protected byte channel is enabled.
+- notes: No operational endpoint, provider pin backend or protected byte channel is enabled; the internal request journal is implemented.
 - status: canonical
 
 ### SSIAG Credential Dispatch Tests
@@ -15517,7 +15517,7 @@ These entries locate existing implementation and regression surfaces referenced 
 - relationships: verifies -> `modules/secure-identity-access-governance/internal/credential/dispatch.go`; depends_on -> `modules/secure-identity-access-governance/CREDENTIAL-DISPATCH.md`
 - consumers: SSIAG implementers, reviewers, tests
 - deferred_projections: implementation traceability
-- notes: No operational endpoint, provider pin backend, durable request journal or protected byte channel is enabled.
+- notes: No operational endpoint, provider pin backend or protected byte channel is enabled; the internal request journal is implemented.
 - status: canonical
 
 ### SSIAG Policy Admission Tests
@@ -15530,5 +15530,70 @@ These entries locate existing implementation and regression surfaces referenced 
 - relationships: verifies -> `modules/secure-identity-access-governance/internal/policy/policy.go`; depends_on -> `modules/secure-identity-access-governance/CREDENTIAL-DISPATCH.md`
 - consumers: SSIAG implementers, reviewers, tests
 - deferred_projections: implementation traceability
-- notes: No operational endpoint, provider pin backend, durable request journal or protected byte channel is enabled.
+- notes: No operational endpoint, provider pin backend or protected byte channel is enabled; the internal request journal is implemented.
+- status: canonical
+
+### SSIAG Credential Request Journal Contract
+- path: `modules/secure-identity-access-governance/CREDENTIAL-JOURNAL.md`
+- title: SSIAG Credential Request Journal Contract
+- surface_type: internal storage and recovery contract
+- truth_role: exact request reservation, durable preparation and no-redelivery recovery semantics
+- owner: SSIAG foundation maintainers
+- scope: Documents authenticated identity, retained request reservations, canonical bounded records, filesystem ownership and recovery without provider execution.
+- relationships: governed_by -> `modules/secure-identity-access-governance/SPEC.md`; implemented_by -> `modules/secure-identity-access-governance/internal/credential/journal.go`
+- consumers: SSIAG implementers, reviewers, tests
+- deferred_projections: recovery and storage traceability
+- notes: Local execution state only; no operational provider, protected channel or Keychain operation is enabled.
+- status: canonical
+
+### SSIAG Credential Request Journal
+- path: `modules/secure-identity-access-governance/internal/credential/journal.go`
+- title: SSIAG Credential Request Journal
+- surface_type: Go request state and recovery implementation
+- truth_role: durable metadata transitions and authenticated recovery truth
+- owner: SSIAG foundation maintainers
+- scope: Binds intent to exact identity and reserves request UUIDs across instances and restarts; closes abandoned intent or armed state without redelivery.
+- relationships: implements -> `modules/secure-identity-access-governance/CREDENTIAL-JOURNAL.md`; verified_by -> `modules/secure-identity-access-governance/internal/credential/journal_test.go`
+- consumers: SSIAG implementers, reviewers, tests
+- deferred_projections: recovery and storage traceability
+- notes: Local execution state only; no operational provider, protected channel or Keychain operation is enabled.
+- status: canonical
+
+### SSIAG Credential Journal Unix Storage
+- path: `modules/secure-identity-access-governance/internal/credential/journal_unix.go`
+- title: SSIAG Credential Journal Unix Storage
+- surface_type: Go Darwin and Linux protected storage
+- truth_role: no-follow filesystem, held-lock publication and durable record replacement truth
+- owner: SSIAG foundation maintainers
+- scope: Uses private ownership, nonblocking locks, file and directory sync, atomic replacement and fail-closed missing or unsafe state.
+- relationships: implements -> `modules/secure-identity-access-governance/CREDENTIAL-JOURNAL.md`; verified_by -> `modules/secure-identity-access-governance/internal/credential/journal_test.go`
+- consumers: SSIAG implementers, reviewers, tests
+- deferred_projections: recovery and storage traceability
+- notes: Local execution state only; no operational provider, protected channel or Keychain operation is enabled.
+- status: canonical
+
+### SSIAG Credential Journal Unsupported Platforms
+- path: `modules/secure-identity-access-governance/internal/credential/journal_unsupported.go`
+- title: SSIAG Credential Journal Unsupported Platforms
+- surface_type: Go unsupported-platform refusal
+- truth_role: explicit unavailable storage behavior on unsupported targets
+- owner: SSIAG foundation maintainers
+- scope: Refuses journal access outside Darwin and Linux without a fallback filesystem implementation.
+- relationships: implements -> `modules/secure-identity-access-governance/CREDENTIAL-JOURNAL.md`; complements -> `modules/secure-identity-access-governance/internal/credential/journal_unix.go`
+- consumers: SSIAG implementers, reviewers, tests
+- deferred_projections: recovery and storage traceability
+- notes: Local execution state only; no operational provider, protected channel or Keychain operation is enabled.
+- status: canonical
+
+### SSIAG Credential Journal Tests
+- path: `modules/secure-identity-access-governance/internal/credential/journal_test.go`
+- title: SSIAG Credential Journal Tests
+- surface_type: Go filesystem and process-crash tests
+- truth_role: focused request reservation, durability failure and recovery verification
+- owner: SSIAG foundation maintainers
+- scope: Exercises concurrency, corruption, missing state, ownership boundaries, idempotent recovery and four SIGKILL checkpoints.
+- relationships: verifies -> `modules/secure-identity-access-governance/internal/credential/journal.go`; verifies -> `modules/secure-identity-access-governance/internal/credential/journal_unix.go`
+- consumers: SSIAG implementers, reviewers, tests
+- deferred_projections: recovery and storage traceability
+- notes: Local execution state only; no operational provider, protected channel or Keychain operation is enabled.
 - status: canonical

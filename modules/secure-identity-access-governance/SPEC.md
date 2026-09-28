@@ -98,7 +98,9 @@ attempt on success or refusal. It is not connected to an endpoint or provider,
 does not verify authority itself, and admits no operational credential capability.
 `CREDENTIAL-DISPATCH.md` describes its internal coordinator: kernel-derived
 subject, pinned current policy, verified committed STAV policy receipt and a
-trusted provider admission interface. Production provider pins, the durable
-request journal and protected delivery remain unimplemented; no route is enabled.
+trusted provider admission interface. `CREDENTIAL-JOURNAL.md` defines the required
+internal durable request reservation, preparation, outcome and recovery boundary.
+Production provider pins and protected delivery remain unimplemented; no route
+is enabled. Local execution records do not replace committed STAV evidence.
 
 Local peer authentication, exact UID/GID subject resolution, target-host-owner derivation, endpoint verification, native supervision, receipt-v2 identity, transactional recovery, exact-grant authorization, protected policy administration, typed SSIAG STAV submission, metadata-only provider mutual trust, and exact provider-binding lifecycle are implemented. General safeguards, lease issuance, credential delivery, operational provider operations, secret delivery, and canonical knowledge apply remain disabled.

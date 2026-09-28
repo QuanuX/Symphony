@@ -9,6 +9,11 @@ no credential HTTP route, qxctl surface, production provider admission backend o
 enabled Keychain operation. The provider boundary is exercised by test doubles;
 kernel identity is exercised using real accepted Unix connections.
 
+SQV-16 requires the [durable request journal](CREDENTIAL-JOURNAL.md) for every
+dispatcher. It reserves request identity before audit and commits the exact
+binding before execution. New objects and process restarts cannot automatically
+reissue a recorded request; recovery preserves uncertain outcomes without delivery.
+
 The coordinator is Go 1.26.5, cgo-free. The separate native provider and C++26 SQV
 consumer retain their existing language and ownership boundaries.
 
@@ -72,9 +77,8 @@ credential bytes and credential-derived hashes remain excluded.
 
 ## Gates still required for operational access
 
-- Durable intent/outcome journal with authenticated request identity, duplicate
-  suppression across newly created objects and restarts, and explicit recovery
-  for indeterminate delivery. The atomic attempt only prevents reuse of itself.
+- Integration of the implemented local journal with deployment state ownership
+  and durable provider-outcome STAV evidence before operational release.
 - Provider/lease/recipient pin implementation coordinated with revocation,
   rotation and exact namespace selection; no implicit generation fallback.
 - Authenticated protected channel, bounded native child termination and consumer
@@ -96,3 +100,5 @@ attempts with exactly one execution. Policy tests cover snapshot pinning,
 non-queuing busy refusal, replacement after release and caller-config ownership.
 Existing server authorization and policy-administration tests cover the affected
 shared engine boundaries. These tests do not prove operational Keychain access.
+Journal verification adds real filesystem/lock checks, independent dispatcher
+instances, persistence failures and four SIGKILL recovery checkpoints.
