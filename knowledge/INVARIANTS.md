@@ -198,3 +198,10 @@ committed history.
 exact request metadata and record ranges before capture. Caps/unresolved symbols
 remain partial, interrupted responses remain gaps, and recovery never skips
 same-timestamp records by manufacturing a resume cursor.
+
+## Non-live acquisition and restart
+
+Durable-checkpoint, historical-attempt-admission and historical-http-boundary
+owner invariants bind processing persistence, conservative cost admission and
+actual transport observations. Operational SSIAG and external destination
+commit evidence remain distinct prerequisites.

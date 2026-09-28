@@ -189,6 +189,9 @@ class Session final {
   [[nodiscard]] Status take(Delivery& out) noexcept;
   [[nodiscard]] Status acknowledge_processed(const Delivery&) noexcept;
   [[nodiscard]] Status checkpoint(Checkpoint& out) const noexcept;
+  // Requires a retained profile and an actual confirmed prefix covering the
+  // processed cursor. Does not persist the returned checkpoint itself.
+  [[nodiscard]] Status checkpoint_for_replay(Checkpoint& out) const noexcept;
   [[nodiscard]] Status stats(SessionStats& out) const noexcept;
   [[nodiscard]] std::string_view view_reference() const noexcept;
   void reset() noexcept;

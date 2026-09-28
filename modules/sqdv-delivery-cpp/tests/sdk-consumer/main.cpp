@@ -1,4 +1,4 @@
-#include <symphony/sqdv/delivery.hpp>
+#include <symphony/sqdv/checkpoint.hpp>
 
 #include <algorithm>
 #include <array>
@@ -311,13 +311,29 @@ bool installed_delivery_ack_credit_and_terminal() {
          stats.offer_exhausted && stats.processed_exhausted &&
          resumed.offer_live(last) != sqdv::Status::ok;
 }
+bool installed_checkpoint_recovery() {
+  TemporaryRoot root;auto manifest=metadata();auto flow=context();
+  sqdv::Config cfg{"durable-view","reader","interface","part",{},1,sqdv::Profile::disposable};cfg.producer_generation[0]=1;
+  sqdv::Session session;if(!expect(sqdv::Session::create(flow,manifest,cfg,{1024,2},nullptr,nullptr,session),sqdv::Status::ok,"checkpoint session"))return false;
+  sqdv::Checkpoint initial;if(!expect(session.checkpoint(initial),sqdv::Status::ok,"baseline"))return false;
+  sqdv::CheckpointOptions options{{},4,1U<<20};options.generation[0]=5;sqdv::CheckpointJournal journal;
+  if(!expect(sqdv::CheckpointJournal::create(root.path.string(),session,options,journal),sqdv::Status::ok,"create journal"))return false;
+  sqdv::Checkpoint result;
+  if(!expect(journal.save_retained(session,result),sqdv::Status::unsupported,"disposable has no replay proof"))return false;
+  journal.reset();if(!expect(sqdv::CheckpointJournal::open(root.path.string(),initial,options,journal),sqdv::Status::ok,"reopen journal"))return false;
+  if(!expect(journal.load(result),sqdv::Status::ok,"load checkpoint")||result.next_sequence!=1)return false;
+  cfg.recipient_id="other";sqdv::Session foreign;
+  if(!expect(sqdv::Session::create(flow,manifest,cfg,{1024,2},nullptr,nullptr,foreign),sqdv::Status::ok,"other session"))return false;
+  return expect(journal.save(foreign,result),sqdv::Status::binding_mismatch,"foreign checkpoint refused")&&result.next_sequence==1;
+}
 } // namespace
 
 int main() {
   try {
     if (!installed_delivery_identity_rejection() ||
         !installed_delivery_cutover_and_resume() ||
-        !installed_delivery_ack_credit_and_terminal()) return 1;
+        !installed_delivery_ack_credit_and_terminal() ||
+        !installed_checkpoint_recovery()) return 1;
     std::cout << "installed SQDV C++26 consumer: identity-bound resume, retained/live cutover, distinct acknowledgement and credit, terminal sequence\n";
   } catch (const std::exception& error) {
     std::cerr << error.what() << '\n';

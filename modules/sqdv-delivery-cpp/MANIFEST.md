@@ -4,7 +4,7 @@
 
 - Module, component, and package ID: `sqdv-delivery-cpp`
 - Owner: `sqdv`
-- Exact development release: `0.2.0-dev`
+- Exact development release: `0.3.0-dev`
 - Package kind: `module`; C++26 static library with receipt-v2 installation
 - Public target: `Symphony::SqdvDelivery`
 
@@ -25,6 +25,10 @@
 - `modules/sqdv-delivery-cpp/tests/package_lifecycle_test.cmake`
 - `modules/sqdv-delivery-cpp/tests/sdk-consumer/CMakeLists.txt`
 - `modules/sqdv-delivery-cpp/tests/sdk-consumer/main.cpp`
+
+- `modules/sqdv-delivery-cpp/include/symphony/sqdv/checkpoint.hpp`
+- `modules/sqdv-delivery-cpp/src/checkpoint.cpp`
+- `modules/sqdv-delivery-cpp/tests/checkpoint_test.cpp`
 
 ## Exact dependencies and extent
 

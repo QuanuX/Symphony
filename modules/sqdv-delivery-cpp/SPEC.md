@@ -2,7 +2,7 @@
 
 ## Exact identity and selected scope
 
-`sqdv-delivery-cpp` `0.2.0-dev` is an SQDV-owned C++26 static library in namespace
+`sqdv-delivery-cpp` `0.3.0-dev` is an SQDV-owned C++26 static library in namespace
 `symphony::sqdv`, exposing [delivery.hpp](include/symphony/sqdv/delivery.hpp).
 Its exact package and compatible compiler/runtime select a trusted same-process
 source API. This release delivers complete SQFV batches under one immutable
@@ -102,8 +102,8 @@ A `Checkpoint` contains this exact `view_reference`, `next_sequence`, and
 position, never the dispatch cursor. Resume rejects another view reference,
 a sequence below the configured first sequence, or exhaustion with a value
 other than UINT64_MAX. A checkpoint is a trusted caller-selected value, not a
-signature or proof that its claimed earlier processing happened. The caller
-owns checkpoint persistence. Loss of a newer checkpoint may cause replay;
+signature or proof that its claimed earlier processing happened. The caller may persist the value externally or select the optional
+CheckpointJournal below. Loss of a newer checkpoint may cause replay;
 no receiver-side durable deduplication is implemented here.
 
 ## Transfer, cutover, and bounded processing ledger
@@ -255,6 +255,60 @@ applications must inspect retention status before making retention claims.
 The proof, like any retained batch, pins the allocation until its holder releases
 it. Releasing all source/session handles stops the worker; an active filesystem
 write must finish before cleanup. Explicit drain is required to promise that all
-accepted work was attempted. No destination commit or durable checkpoint store
-has been added. Stable view identity includes the new profile byte; earlier
+accepted work was attempted. No destination commit is implied. The optional checkpoint journal below
+adds processing-progress persistence. Stable view identity includes the new profile byte; earlier
 profile encodings and checkpoint meaning are unchanged.
+
+## Durable checkpoint journal (0.3.0-dev)
+
+`checkpoint.hpp` adds `CheckpointJournal`, composed over the existing SQPV Store.
+It uses the same private directory, exclusive lock, exact manifest/generation,
+finite file/count budget, integrity checks and macOS/APFS process-crash profile.
+No second filesystem engine or alternate commit protocol is introduced.
+
+Creation obtains an actual Session checkpoint as immutable baseline. Its view
+reference and initial sequence/exhaustion are bound into the journal manifest;
+options bind a nonzero generation, 1–65,536 checkpoints including the baseline,
+and positive SQPV disk budget. Each SQC1 record contains an exact 64-bit sequence
+and exhaustion flag. The SQFV descriptor binds the view, journal generation,
+partition and one record; the SQPV sequence counts journal entries separately
+from the processing cursor. A journal root belongs to exactly one baseline and
+option set. Open never chooses a latest generation or resets a missing history.
+
+`save` obtains current Session progress and permits only monotone advancement of
+the exact view, including the UINT64_MAX-to-exhausted transition without wrap.
+Duplicate returns the existing durable position without writing, stale progress
+and foreign views are refused, and full journals return limit. There is no
+implicit deletion, compaction or budget growth. All fallible output/state
+preparations precede append; success changes state only after SQPV confirms the
+write. An uncertain append closes the journal to load/save until reopen.
+
+`open` takes the original baseline, obtainable from a fresh exact-view Session,
+reconstructs every committed entry and rejects nonmonotone or malformed history.
+A correctly initialized SQPV root with no committed checkpoint recovers by
+appending that exact baseline; failed initial appends therefore have an explicit
+recovery path. Missing/corrupt/mismatched stores are not silently initialized.
+A crash after processing acknowledgment but before persistence resumes from the
+older durable cursor, permitting replay. A crash after confirmed persistence
+recovers the newer cursor. The journal does not authenticate caller-selected
+resume values or certify receiving-owner commits.
+
+`checkpoint_for_replay` requires an actual retained source whose confirmed prefix
+covers current processed progress. Disposable sessions return unsupported;
+unconfirmed preview progress returns blocked and preserves output. Source
+failure remains closed. `save_retained` composes this check with journal
+persistence. Since retained streams are append-only and exact identity includes
+source generation and options, observed committed prefix coverage cannot be
+replaced with queue admission. The ordinary `checkpoint`/`save` path remains
+available for callers whose processing durability is independent of retention.
+Neither operation supplies a remote destination transaction or exactly-once
+side effects. Even replay-safe processing progress is distinct from destination
+commit evidence.
+
+Handles serialize calls, reject inherited use after fork before locking, and
+must not be moved/reset/destroyed concurrently with calls. Child fixtures use
+fresh handles and `_exit`; inherited handles must not be destroyed after a
+multithreaded fork. Receipt-v2 now owns 14 files including the second public header.
+Tests cover exact-view rejection, durable restart, capacity, exhaustion,
+allocation rollback, one crash before checkpoint persistence and one after it,
+and refusal of preview progress while the actual writer is paused.

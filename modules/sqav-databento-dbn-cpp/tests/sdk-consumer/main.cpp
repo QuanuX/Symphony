@@ -1,7 +1,9 @@
 #include <algorithm>
 #include <cstdio>
 #include <cstdlib>
-#include <symphony/sqav/databento/historical.hpp>
+#include <symphony/sqav/databento/http.hpp>
+#include <filesystem>
+#include <unistd.h>
 #include <vector>
 using namespace symphony;
 namespace db = symphony::sqav::databento;
@@ -140,10 +142,28 @@ void installed_historical_admission() {
   check(response.finish(db::TransportEnd::complete,report)==db::Status::ok && report.outcome==db::HistoricalOutcome::binding_mismatch);
   check(response.capture(observer,{65536,16384,4096},capture)==db::Status::binding_mismatch && capture.reference()==saved);
 }
+void installed_attempt_and_http_refusal() {
+  char path[]="/private/tmp/sqav-installed-attempt-XXXXXX";check(::mkdtemp(path));
+  {
+    auto bytes=fixture();db::FileView file;check(db::FileView::inspect(bytes,limits,file)==db::Status::ok);const auto& m=file.metadata();
+    db::HistoricalPlan plan;check(db::HistoricalPlan::create({std::string(m.dataset),{"ESH1"},m.start,m.end,m.limit},{limits,86'400'000'000'000ULL,8,3,60},plan)==db::Status::ok);
+    db::AttemptBudget budget{{},1000,0,4,1U<<20};budget.generation[0]=1;db::AttemptLedger ledger;
+    check(db::AttemptLedger::create(path,budget,ledger)==db::AttemptStatus::ok);db::AttemptTicket ticket;
+    check(ledger.reserve(plan,"installed",{"fixture:quote",100,100,1000},200,ticket)==db::AttemptStatus::ok);
+    struct Refuse:db::SsiagHistoricalUse {db::HttpStatus with_key(std::string_view,std::uint32_t,std::stop_token,db::HistoricalKeySink&) noexcept override{return db::HttpStatus::not_authorized;}} provider;
+    db::HistoricalResponse response;const auto result=db::execute_historical(plan,ledger,ticket,provider,{100,50,1024},200,{},response);
+    check(result.status==db::HttpStatus::not_authorized&&result.persistence==db::AttemptStatus::ok&&response.body().empty());
+    ledger.reset();check(db::AttemptLedger::open(path,budget,ledger)==db::AttemptStatus::ok);db::AttemptSnapshot cost;
+    check(ledger.snapshot(cost)==db::AttemptStatus::ok&&cost.charged_ceiling_nano_usd==100);
+    check(ledger.reserve(plan,"installed",{"fixture:quote",100,100,1000},200,ticket)==db::AttemptStatus::conflict);
+  }
+  std::filesystem::remove_all(path);
+}
 int main() {
   installed_fidelity_and_rejection();
   installed_capture_binding();
   installed_historical_admission();
+  installed_attempt_and_http_refusal();
   std::puts("DBN installed consumer: public fixture fidelity and atomic "
             "rejection passed");
 }

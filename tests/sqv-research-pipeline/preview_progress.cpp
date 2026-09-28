@@ -41,13 +41,20 @@ void preview_progress() {
     auto live=std::async(std::launch::async,[&]{
       sqdv::Delivery delivery;
       if(preview.offer_preview(proof)!=sqdv::Status::ok || preview.take(delivery)!=sqdv::Status::ok) return false;
-      return delivery.retention_receipt()==nullptr && delivery.payload()[0]==42;
+      sqdv::Checkpoint checkpoint{"unchanged",77,false};
+      return delivery.retention_receipt()==nullptr && delivery.payload()[0]==42 &&
+          preview.acknowledge_processed(delivery)==sqdv::Status::ok &&
+          preview.checkpoint_for_replay(checkpoint)==sqdv::Status::blocked &&
+          checkpoint.view_reference=="unchanged" && checkpoint.next_sequence==77;
     });
     const bool progressed=live.wait_for(std::chrono::seconds(2))==std::future_status::ready;
     // Always release the writer before inspecting an assertion, even for a regression.
     byte(resume[1],true);
     check(live.get()&&progressed,"preview progresses while read and drain wait");
     check(retained.get()==sqdv::Status::ok && drained.get()==sqdv::Status::ok,"disk work subsequently completes");
+    sqdv::Checkpoint durable;
+    check(preview.checkpoint_for_replay(durable)==sqdv::Status::ok && durable.next_sequence==1,
+          "processed checkpoint becomes replayable only after actual retention");
   }
   sqpv::testing::pause_at(0,-1,-1);
   for(int fd:{notice[0],notice[1],resume[0],resume[1]})::close(fd);

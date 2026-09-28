@@ -2,9 +2,9 @@
 
 ## Exact implemented scope
 
-`sqav-databento-dbn-cpp` `0.4.0-dev` exports the C++26 static-library target
+`sqav-databento-dbn-cpp` `0.5.0-dev` exports the C++26 static-library target
 `Symphony::SqavDatabentoDbn`, namespace `symphony::sqav::databento`. Runtime
-requires SQAV capture 0.2.0-dev, SQMV 0.2.0-dev, SQFV 0.3.0-dev and the shared
+requires SQAV capture 0.2.0-dev, SQMV 0.2.0-dev, SQFV 0.3.0-dev, SQPV 0.2.0-dev, libcurl 8.7.1 SDK and the shared
 foundation 0.2.0-dev. Initial verified platform: macOS amd64 / AppleClang 21.
 
 This release admits **uncompressed DBN versions 1 and 3, single-schema MBO files**.
@@ -20,8 +20,8 @@ Provider documentation reviewed 27 September 2026:
 - https://github.com/databento/databento-cpp/blob/v0.68.0/tests/src/dbn_decoder_tests.cpp
 
 No older/newer version is silently upgraded. DBZ/Zstandard, mixed live schema,
-other record types, self-describing schema definitions and network I/O are outside
-this release. Full-book data means MBO events, not a reconstructed or complete book.
+other record types and self-describing schema definitions remain outside this
+release. The optional historical HTTP executor is specified below. Full-book data means MBO events, not a reconstructed or complete book.
 
 ## Bounded structural inspection
 
@@ -89,7 +89,7 @@ not-found symbol counts and is rejected. Other coverage statements remain caller
 assertions; absence of those lists does not prove completeness.
 
 The adapter sets source.adapter_ref=`sqav-databento-dbn-cpp`, adapter_version=
-`0.4.0-dev` and source_record_count to the actual count. Other source fields,
+`0.5.0-dev` and source_record_count to the actual count. Other source fields,
 acquisition evidence, coverage and access scope retain their caller attribution.
 Caller evidence string sizes and time-vector count are bounded before copying;
 SQAV's own exact validity and encoded-size rules then apply. Its original payload
@@ -101,22 +101,22 @@ envelope per transfer record; provider record count is a separate inner fact.
 
 ## Package and evidence
 
-Receipt-v2 owns 14 files: archive, two headers, four CMake exports/configuration files,
-six documents and license. No executable, credential resolution, service or SQV
+Receipt-v2 owns 16 files: archive, four headers, four CMake exports/configuration files,
+six documents and license. No executable, operational SSIAG credential resolver, service or SQV
 qxctl command is installed. Native tests additionally compose SQPV/SQDV. Public
 fixture fields are checked against upstream expected values; truncation, bounds,
 raw extrema, unaligned inputs, optional ts_out, zero-allocation inspection,
 allocation rollback and retained replay have focused evidence. The independently
 installed consumer exercises the same public fixture through exported C++26.
 
-No authentication, entitlement, transport completeness, source authenticity,
+No operational SSIAG authentication, entitlement, source authenticity,
 redistribution, live reconnect, symbol resolution, book state, reference-data
 client, broad provider conformance or performance guarantee follows from parsing.
 
 ## Version separation and private sample acceptance
 
 The 0.2.0-dev metadata API introduced DBNv1/v3 support. The 0.3.0-dev
-package selected the SQV-20 dependency chain. The current 0.4.0-dev adds the
+package selected the SQV-20 dependency chain. The 0.4.0-dev added the
 explicit historical planning and response contract below.
 The 0.1.0-dev v3-only package can coexist in its immutable prefix. Its captures
 are not silently relabeled as 0.2 captures. DBNv2 and future versions remain
@@ -229,12 +229,110 @@ responses, byte-sized transport chunks, cap and same-timestamp behavior,
 interruption at valid EOF, binding failures, error-body discard, budgets,
 allocation rollback, and capture through asynchronous preview, drain, close,
 reopen and exact retained replay. Installed consumers independently check the
-public boundary. Transport execution and SSIAG-mediated local-key-ring retrieval
-remain required before operational authentication; this interface supplies no
-alternative credential path.
+public boundary. Version 0.5.0-dev supplies the HTTP executor specified below.
+An operational SSIAG bridge and deployment remain required for local-key-ring
+retrieval; the response interface supplies no alternative credential path.
 
 Protocol sources reviewed 28 September 2026: Databento historical API documentation
 at https://databento.com/docs/api-reference-historical/metadata/metadata-get-cost
 (the combined page includes `timeseries.get_range`), and the unchanged v0.68.0
 DBN declarations/fixtures linked above. HTTP parameters also match the bounded
 SQV-13 experimental request evidence. No provider SDK version was upgraded.
+
+## Persistent attempt and spending admission (0.5.0-dev)
+
+`attempts.hpp` adds an SQPV-backed AttemptLedger for one immutable budget root.
+Ceiling and prior charges use unsigned integer nanodollars (10^-9 USD), with no
+floating-point rounding. Budget, prior charge, generation, entry limit and disk
+budget are immutable. At most 4,096 attempts and two records per attempt are
+admitted; each canonical request parameter string is bounded by the planner.
+The ledger's retained metadata/state is finite under those ceilings. These are
+local profile limits, not account-wide authority across arbitrary other roots.
+
+A caller-verified quote supplies a nonsecret evidence reference, conservative
+charge ceiling and explicit quote/expiry times. Quote age spans at most one day;
+the trusted runtime supplies current time. The ledger neither obtains quotes
+nor proves the provider's eventual invoice amount. It enforces the sum of the
+**supplied charge ceilings**, including prior charges. A provider estimate must
+not be represented as an authoritative upper bound without supporting evidence.
+Operational collection still needs that quote/account-budget integration.
+
+Reserve writes the exact request reference/parameters, unique attempt ID,
+quote/times, cost ceiling and per-request attempt ordinal before returning a
+move-only execution ticket. Checked subtraction rejects overflow/overspend.
+Duplicate IDs never mint a new ticket. Per-plan and ledger attempt bounds both
+apply. Ticket claim is one-shot, exact-request-bound, expires with the quote,
+and requires its original live ledger/process. Reset or restart invalidates old
+tickets. Claims serialize under the ledger mutex, including concurrent callers.
+
+Terminal outcomes are completed, rejected, cancelled or indeterminate. Repeating
+an identical terminal outcome is idempotent; conflicting outcomes are refused.
+Completion requires a prior claim. No outcome automatically refunds its reserved
+ceiling. Reopen revalidates the complete record history, request digests, ordinals,
+unique IDs, terminal transitions and total accounting. A reservation without a
+terminal record recovers as indeterminate and retains its charge; restart never
+reissues execution capability. Uncertain writes close the handle until reopen.
+These rules prevent this ledger from blindly repeating an uncertain paid attempt;
+they do not deduplicate provider records or automatically orchestrate backfill.
+
+## Native bounded HTTP execution (0.5.0-dev)
+
+`http.hpp` adds one historical HTTP attempt using the selected libcurl 8.7.1 SDK
+and system runtime. This is a C++26 static-library surface. The production endpoint
+is fixed to the v0 historical timeseries URL. HTTPS protocol restriction, peer and
+hostname verification, TLS 1.2 minimum, redirects disabled, proxy disabled, netrc
+ignored, verbose diagnostics disabled and exact POST parameters are configured
+explicitly. No ambient API key, cookie file, command argument or environment
+credential is consumed. Test-only HTTP loopback endpoint substitution is absent
+from the installed archive.
+
+Execution claims an existing durable AttemptTicket before invoking a supplied
+`SsiagHistoricalUse` native bridge. That bridge must authenticate and pin the
+actual SSIAG request/recipient/lease, enforce its deadline/cancellation, and
+release/clean up after the borrowed key use. This package ships **no operational
+implementation of that bridge**. A fixture callback is not SSIAG authentication
+and cannot establish deployment readiness. Installation starts no collector.
+The selected Databento credential format is exactly 32 ASCII bytes, db- followed
+by alphanumerics. The borrowed key is used only in the native HTTPS sink. Its
+local copy is overwritten; libcurl/framework/kernel copies are not claimed
+perfectly erased. No secret or native diagnostic is included in results.
+
+The sink admits one key use and one HTTP operation. A provider return value
+cannot turn a sink timeout, truncation or callback failure into success. Total
+HTTP/credential-use allowance is positive and at most 300,000 ms, with a positive
+connect allowance no larger than total. The provider bridge must honor the same
+bounded-use contract; the library cannot preempt an arbitrary blocking callback.
+Stop tokens cancel before execution or through the transfer progress callback.
+Cancellation is cooperative and inherits libcurl callback scheduling/DNS limits;
+no submillisecond cancellation latency is promised.
+
+All received header blocks count against a mandatory ceiling of at most 65,536
+bytes. Strict status lines, header framing and encoding admission precede body
+assembly. Numeric Retry-After seconds are preserved; HTTP-date or invalid delta
+values are explicitly uninterpreted, with recovery requiring review rather than
+an invented/shortened delay. Repeated Retry-After, unsupported content encoding
+and trailers are refused in this profile. Informational responses do not create
+a body accumulator. Original body bytes pass directly to HistoricalResponse;
+non-200 bodies are discarded under its finite budget.
+
+HttpResult.status reports transport/bridge execution; callers must also inspect
+HistoricalReport.outcome. A fully received HTTP 429, for example, has successful
+transport and a source HTTP-error outcome. HTTP completion does not establish
+complete market coverage. Incomplete framing/timeout/cancellation cannot produce
+a completed capture, even when the body ends at a valid DBN record boundary.
+The attempt ledger records the terminal operational outcome; completed means the
+HTTP operation returned a complete response, not successful data acquisition.
+Persistence failure is explicit. No automatic retry, delay, new quote, budget
+increase or paid request follows from a recovery recommendation.
+
+Focused evidence uses loopback servers and fabricated credentials for framing,
+status, truncation, header bounds, encoding rejection, redirects, timeout,
+cancellation, refused bridges, swallowed sink errors and one-shot execution.
+No real provider call, operational SSIAG retrieval, production TLS deployment,
+live subscription or reference operation is implied. Live data remains a future
+objective under Duncan's 28 September 2026 direction.
+
+Primary libcurl references reviewed 28 September 2026:
+https://curl.se/libcurl/c/CURLOPT_PROTOCOLS_STR.html,
+https://curl.se/libcurl/c/CURLOPT_TIMEOUT_MS.html,
+https://curl.se/libcurl/c/CURLOPT_XFERINFOFUNCTION.html.

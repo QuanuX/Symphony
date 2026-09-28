@@ -15883,3 +15883,133 @@ These entries locate existing implementation and regression surfaces referenced 
 - deferred_projections: source coverage and recovery evidence
 - notes: No credential access, network execution or spending authority is implied.
 - status: canonical
+
+### SQDV Checkpoint Surface
+- path: `modules/sqdv-delivery-cpp/include/symphony/sqdv/checkpoint.hpp`
+- title: SQDV Checkpoint Surface
+- surface_type: native C++26 implementation or verification
+- truth_role: bounded non-live runtime and restart evidence
+- owner: SQDV maintainers
+- scope: Explicit local persistence and selected historical acquisition boundaries.
+- relationships: governed_by -> `modules/sqdv-delivery-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: non-live runtime closure
+- notes: Fixture credential callbacks do not establish SSIAG deployment authority.
+- status: canonical
+
+### SQDV Checkpoint Surface
+- path: `modules/sqdv-delivery-cpp/src/checkpoint.cpp`
+- title: SQDV Checkpoint Surface
+- surface_type: native C++26 implementation or verification
+- truth_role: bounded non-live runtime and restart evidence
+- owner: SQDV maintainers
+- scope: Explicit local persistence and selected historical acquisition boundaries.
+- relationships: governed_by -> `modules/sqdv-delivery-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: non-live runtime closure
+- notes: Fixture credential callbacks do not establish SSIAG deployment authority.
+- status: canonical
+
+### SQDV Checkpoint Test Surface
+- path: `modules/sqdv-delivery-cpp/tests/checkpoint_test.cpp`
+- title: SQDV Checkpoint Test Surface
+- surface_type: native C++26 implementation or verification
+- truth_role: bounded non-live runtime and restart evidence
+- owner: SQDV maintainers
+- scope: Explicit local persistence and selected historical acquisition boundaries.
+- relationships: governed_by -> `modules/sqdv-delivery-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: non-live runtime closure
+- notes: Fixture credential callbacks do not establish SSIAG deployment authority.
+- status: canonical
+
+### SQAV Attempts Surface
+- path: `modules/sqav-databento-dbn-cpp/include/symphony/sqav/databento/attempts.hpp`
+- title: SQAV Attempts Surface
+- surface_type: native C++26 implementation or verification
+- truth_role: bounded non-live runtime and restart evidence
+- owner: SQAV maintainers
+- scope: Explicit local persistence and selected historical acquisition boundaries.
+- relationships: governed_by -> `modules/sqav-databento-dbn-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: non-live runtime closure
+- notes: Fixture credential callbacks do not establish SSIAG deployment authority.
+- status: canonical
+
+### SQAV Http Surface
+- path: `modules/sqav-databento-dbn-cpp/include/symphony/sqav/databento/http.hpp`
+- title: SQAV Http Surface
+- surface_type: native C++26 implementation or verification
+- truth_role: bounded non-live runtime and restart evidence
+- owner: SQAV maintainers
+- scope: Explicit local persistence and selected historical acquisition boundaries.
+- relationships: governed_by -> `modules/sqav-databento-dbn-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: non-live runtime closure
+- notes: Fixture credential callbacks do not establish SSIAG deployment authority.
+- status: canonical
+
+### SQAV Attempts Surface
+- path: `modules/sqav-databento-dbn-cpp/src/attempts.cpp`
+- title: SQAV Attempts Surface
+- surface_type: native C++26 implementation or verification
+- truth_role: bounded non-live runtime and restart evidence
+- owner: SQAV maintainers
+- scope: Explicit local persistence and selected historical acquisition boundaries.
+- relationships: governed_by -> `modules/sqav-databento-dbn-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: non-live runtime closure
+- notes: Fixture credential callbacks do not establish SSIAG deployment authority.
+- status: canonical
+
+### SQAV Http Surface
+- path: `modules/sqav-databento-dbn-cpp/src/http.cpp`
+- title: SQAV Http Surface
+- surface_type: native C++26 implementation or verification
+- truth_role: bounded non-live runtime and restart evidence
+- owner: SQAV maintainers
+- scope: Explicit local persistence and selected historical acquisition boundaries.
+- relationships: governed_by -> `modules/sqav-databento-dbn-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: non-live runtime closure
+- notes: Fixture credential callbacks do not establish SSIAG deployment authority.
+- status: canonical
+
+### SQAV Attempts Test Surface
+- path: `modules/sqav-databento-dbn-cpp/tests/attempts_test.cpp`
+- title: SQAV Attempts Test Surface
+- surface_type: native C++26 implementation or verification
+- truth_role: bounded non-live runtime and restart evidence
+- owner: SQAV maintainers
+- scope: Explicit local persistence and selected historical acquisition boundaries.
+- relationships: governed_by -> `modules/sqav-databento-dbn-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: non-live runtime closure
+- notes: Fixture credential callbacks do not establish SSIAG deployment authority.
+- status: canonical
+
+### SQAV Http Test Surface
+- path: `modules/sqav-databento-dbn-cpp/tests/http_test.cpp`
+- title: SQAV Http Test Surface
+- surface_type: native C++26 implementation or verification
+- truth_role: bounded non-live runtime and restart evidence
+- owner: SQAV maintainers
+- scope: Explicit local persistence and selected historical acquisition boundaries.
+- relationships: governed_by -> `modules/sqav-databento-dbn-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: non-live runtime closure
+- notes: Fixture credential callbacks do not establish SSIAG deployment authority.
+- status: canonical
+
+### SQV Nonlive Surface
+- path: `tests/sqv-research-pipeline/nonlive.cpp`
+- title: SQV Nonlive Surface
+- surface_type: native C++26 implementation or verification
+- truth_role: bounded non-live runtime and restart evidence
+- owner: SQV maintainers
+- scope: Explicit local persistence and selected historical acquisition boundaries.
+- relationships: governed_by -> `knowledge/sqv/RESEARCH-DATA.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: non-live runtime closure
+- notes: Fixture credential callbacks do not establish SSIAG deployment authority.
+- status: canonical

@@ -11,3 +11,7 @@ reads. SQDV owns recipient identity, contiguous processing acknowledgement,
 bounded outstanding processing obligations, and caller-persisted resume values.
 The composition requires no service, universal queue, provider, converter,
 background retention worker, external destination, or qxctl payload path.
+
+Optional checkpoint persistence composes SQPV and preserves actual processing
+progress across restart; retained replay checkpoints additionally require a
+confirmed source prefix. External destination commits remain receiving-owner facts.

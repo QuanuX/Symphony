@@ -1,7 +1,8 @@
 cmake_minimum_required(VERSION 3.30)
-project(SymphonySqavDatabentoDbn VERSION 0.4.0 LANGUAGES CXX)
+project(SymphonySqavDatabentoDbn VERSION 0.5.0 LANGUAGES CXX)
 
 include(CTest)
+find_package(CURL 8.7.1 EXACT REQUIRED)
 include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
 
@@ -22,6 +23,7 @@ if(SYMPHONY_SQAV_DBN_USE_INSTALLED_DEPENDENCIES)
     find_package(SymphonySqfvBatch 0.3.0 EXACT REQUIRED CONFIG)
     find_package(SymphonySqmvMetadata 0.2.0 EXACT REQUIRED CONFIG)
     find_package(SymphonySqavCapture 0.2.0 EXACT REQUIRED CONFIG)
+    find_package(SymphonySqpvLocalStore 0.2.0 EXACT REQUIRED CONFIG)
 else()
     function(sqav_dbn_source_dependencies)
         set(BUILD_TESTING OFF)
@@ -32,6 +34,13 @@ else()
         endif()
     endfunction()
     sqav_dbn_source_dependencies()
+    if(NOT TARGET Symphony::SqpvLocalStore)
+      function(sqav_attempt_storage)
+        set(BUILD_TESTING OFF)
+        add_subdirectory("${SYMPHONY_REPOSITORY_ROOT}/modules/sqpv-local-store-cpp" "${CMAKE_CURRENT_BINARY_DIR}/sqpv-local-store-cpp" EXCLUDE_FROM_ALL)
+      endfunction()
+      sqav_attempt_storage()
+    endif()
 endif()
 
 
@@ -52,11 +61,11 @@ if(APPLE)
     set(CMAKE_CXX_ARCHIVE_FINISH "\"${CMAKE_COMMAND}\" -E env ZERO_AR_DATE=1 <CMAKE_RANLIB> <TARGET>")
 endif()
 
-add_library(sqav-databento-dbn STATIC src/dbn.cpp src/historical.cpp)
+add_library(sqav-databento-dbn STATIC src/dbn.cpp src/historical.cpp src/attempts.cpp src/http.cpp)
 add_library(Symphony::SqavDatabentoDbn ALIAS sqav-databento-dbn)
 target_link_libraries(sqav-databento-dbn
-    PUBLIC Symphony::SqavCapture Symphony::SqmvMetadata Symphony::SqfvBatch
-    PRIVATE Symphony::KnowledgeVectorEngine)
+    PUBLIC Symphony::SqavCapture Symphony::SqmvMetadata Symphony::SqfvBatch Symphony::SqpvLocalStore
+    PRIVATE Symphony::KnowledgeVectorEngine CURL::libcurl)
 set_target_properties(sqav-databento-dbn PROPERTIES
     EXPORT_NAME SqavDatabentoDbn
     CXX_STANDARD 26 CXX_STANDARD_REQUIRED ON CXX_EXTENSIONS OFF
@@ -89,6 +98,10 @@ install(FILES include/symphony/sqav/databento/dbn.hpp DESTINATION "${SQAV_DBN_HE
 sqav_dbn_own("${SQAV_DBN_HEADER_DIR}/dbn.hpp")
 install(FILES include/symphony/sqav/databento/historical.hpp DESTINATION "${SQAV_DBN_HEADER_DIR}")
 sqav_dbn_own("${SQAV_DBN_HEADER_DIR}/historical.hpp")
+install(FILES include/symphony/sqav/databento/attempts.hpp DESTINATION "${SQAV_DBN_HEADER_DIR}")
+sqav_dbn_own("${SQAV_DBN_HEADER_DIR}/attempts.hpp")
+install(FILES include/symphony/sqav/databento/http.hpp DESTINATION "${SQAV_DBN_HEADER_DIR}")
+sqav_dbn_own("${SQAV_DBN_HEADER_DIR}/http.hpp")
 
 configure_package_config_file(cmake/SymphonySqavDatabentoDbnConfig.cmake.in
     "${CMAKE_CURRENT_BINARY_DIR}/SymphonySqavDatabentoDbnConfig.cmake"
@@ -132,7 +145,7 @@ add_custom_target(uninstall-${SQAV_DBN_MODULE}
 
 if(BUILD_TESTING)
     if(SYMPHONY_SQAV_DBN_USE_INSTALLED_DEPENDENCIES)
-        find_package(SymphonySqdvDelivery 0.2.0 EXACT REQUIRED CONFIG)
+        find_package(SymphonySqdvDelivery 0.3.0 EXACT REQUIRED CONFIG)
     else()
         function(sqav_dbn_test_composition)
             set(BUILD_TESTING OFF)
@@ -156,6 +169,17 @@ if(BUILD_TESTING)
     set_target_properties(sqav-databento-historical-test PROPERTIES CXX_STANDARD 26 CXX_STANDARD_REQUIRED ON CXX_EXTENSIONS OFF)
     target_compile_options(sqav-databento-historical-test PRIVATE -Wall -Wextra -Wpedantic -Werror)
     add_test(NAME sqav-databento-historical COMMAND sqav-databento-historical-test)
+    add_executable(sqav-databento-attempts-test tests/attempts_test.cpp)
+    target_link_libraries(sqav-databento-attempts-test PRIVATE Symphony::SqavDatabentoDbn)
+    set_target_properties(sqav-databento-attempts-test PROPERTIES CXX_STANDARD 26 CXX_STANDARD_REQUIRED ON CXX_EXTENSIONS OFF)
+    target_compile_options(sqav-databento-attempts-test PRIVATE -Wall -Wextra -Wpedantic -Werror)
+    add_test(NAME sqav-databento-attempts COMMAND sqav-databento-attempts-test)
+    add_executable(sqav-databento-http-test tests/http_test.cpp src/http.cpp)
+    target_compile_definitions(sqav-databento-http-test PRIVATE SQAV_HTTP_TESTING=1)
+    target_link_libraries(sqav-databento-http-test PRIVATE Symphony::SqavDatabentoDbn CURL::libcurl)
+    set_target_properties(sqav-databento-http-test PROPERTIES CXX_STANDARD 26 CXX_STANDARD_REQUIRED ON CXX_EXTENSIONS OFF)
+    target_compile_options(sqav-databento-http-test PRIVATE -Wall -Wextra -Wpedantic -Werror)
+    add_test(NAME sqav-databento-http COMMAND sqav-databento-http-test)
     add_test(NAME sqav-dbn-package-lifecycle
         COMMAND "${CMAKE_COMMAND}"
             "-DPACKAGE_BINARY_DIR=${CMAKE_CURRENT_BINARY_DIR}"

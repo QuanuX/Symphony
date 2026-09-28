@@ -1,6 +1,6 @@
 # SQDV C++26 Library Installation
 
-`sqdv-delivery-cpp` is an independently selectable, library-only `0.2.0-dev` package. Its CMake package version is `0.2.0`; the public target is `Symphony::SqdvDelivery`. It requires CMake 3.30 or newer, C++26, and one single-configuration generator. The initial verified development target is macOS `amd64` with AppleClang 21; consumer compiler/runtime compatibility remains explicit. Retained delivery uses the SQPV backend selected for macOS local APFS. Direct delivery is a trusted same-process interface; the package supplies no network transport or remote destination acknowledgement.
+`sqdv-delivery-cpp` is an independently selectable, library-only `0.3.0-dev` package. Its CMake package version is `0.3.0`; the public target is `Symphony::SqdvDelivery`. It requires CMake 3.30 or newer, C++26, and one single-configuration generator. The initial verified development target is macOS `amd64` with AppleClang 21; consumer compiler/runtime compatibility remains explicit. Retained delivery uses the SQPV backend selected for macOS local APFS. Direct delivery is a trusted same-process interface; the package supplies no network transport or remote destination acknowledgement.
 
 Exact dependencies are SQPV local store `0.2.0-dev`, SQMV metadata `0.2.0-dev`, SQFV batch `0.3.0-dev`, and foundation `0.2.0-dev`. The default source build compiles those repository dependencies with their tests disabled and excludes their installation rules. Install dependency packages separately before configuring an installed SDK consumer. A source dependency build does not make its package present in an installation prefix.
 
@@ -13,7 +13,7 @@ cmake --install /tmp/sqdv-build --prefix /tmp/sqv-prefix
 
 To build this module against already installed exact dependencies, add `-DSYMPHONY_SQDV_USE_INSTALLED_DEPENDENCIES=ON -DCMAKE_PREFIX_PATH=/tmp/sqv-prefix` at configuration. The exported package uses exact `find_dependency` versions and propagates the C++26 compiler requirement.
 
-The installation contains a versioned static archive, public header, four CMake package/export files, six contract documents, AGPL license, and immutable receipt-v2. The receipt owns exactly 13 files, identifies vector `sqdv`, has `component_kind=module`, `engine_id=null`, and no process entry points. Installation starts no service. `GNUInstallDirs` may select normalized relative library/include paths inside the prefix; absolute paths, traversal, and existing symlink components are rejected.
+The installation contains a versioned static archive, two public headers, four CMake package/export files, six contract documents, AGPL license, and immutable receipt-v2. The receipt owns exactly 14 files, identifies vector `sqdv`, has `component_kind=module`, `engine_id=null`, and no process entry points. Installation starts no service. `GNUInstallDirs` may select normalized relative library/include paths inside the prefix; absolute paths, traversal, and existing symlink components are rejected.
 
 The current Apple archiver may vary unused symbol-table padding across builds even when timestamps are cleared. Archive byte-for-byte reproducibility is therefore not a package guarantee; each receipt binds the exact installed archive.
 
@@ -25,7 +25,7 @@ cmake --build /tmp/sqdv-consumer-build
 /tmp/sqdv-consumer-build/consumer
 ```
 
-The consumer requests `find_package(SymphonySqdvDelivery 0.2.0 EXACT CONFIG)` and verifies `SymphonySqdvDelivery_RELEASE_VERSION` is `0.2.0-dev`. It uses the exported C++26 requirement without setting its own language standard.
+The consumer requests `find_package(SymphonySqdvDelivery 0.3.0 EXACT CONFIG)` and verifies `SymphonySqdvDelivery_RELEASE_VERSION` is `0.3.0-dev`. It uses the exported C++26 requirement without setting its own language standard.
 
 Its public API checks cover identity-bound resume refusal with an existing output session preserved, exact retained/live cutover and reopened-source replay, independent processing acknowledgements and payload byte credit, bounded unacknowledged deliveries, and terminal sequence exhaustion. Retained fixtures use fresh private temporary APFS directories.
 

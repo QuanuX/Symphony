@@ -22,3 +22,8 @@ budgets. Supply actual transport observations, inspect the report outcome, and
 use internally derived capture coverage. Reacquire complete windows or both
 split halves; never advance by last receive time plus one. Attempt ordinals
 and retry recommendations do not authorize spending or bypass SSIAG.
+
+For HTTP execution, reserve a unique attempt with verified quote/budget evidence,
+provide the actual request-bound SSIAG native bridge, and inspect both transport
+and source outcomes. Preserve uncertain charges. Never treat the test bridge as
+operational authentication or let recovery recommendations issue paid requests.

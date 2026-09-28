@@ -605,6 +605,37 @@ Status Session::checkpoint(Checkpoint& out) const noexcept {
   } catch (const std::bad_alloc&) { return Status::no_memory; }
     catch (...) { return Status::internal_error; }
 }
+Status Session::checkpoint_for_replay(Checkpoint& out) const noexcept {
+  if (!impl_) return Status::closed;
+  if (impl_->identity->pid != ::getpid()) return Status::stale;
+  try {
+    Checkpoint ready;
+    std::lock_guard lock(impl_->mutex);
+    if (!impl_->source) return Status::unsupported;
+    sqpv::Snapshot confirmed;
+    auto& source = *impl_->source;
+    if (source.async_store) {
+      sqpv::AsyncSnapshot snapshot;
+      const auto status = source.async_store.snapshot(snapshot);
+      if (status != sqpv::Status::ok) return store_status(status);
+      if (snapshot.failure != sqpv::Status::ok) return Status::closed;
+      confirmed = snapshot.confirmed;
+    } else {
+      std::lock_guard source_lock(source.mutex);
+      if (source.uncertain) return Status::closed;
+      const auto status = source.store.snapshot(confirmed);
+      if (status != sqpv::Status::ok) return store_status(status);
+    }
+    if (impl_->next_processed > confirmed.next_sequence ||
+        (impl_->processed_exhausted && !confirmed.sequence_exhausted)) return Status::blocked;
+    ready.view_reference = impl_->reference;
+    ready.next_sequence = impl_->next_processed;
+    ready.sequence_exhausted = impl_->processed_exhausted;
+    out = std::move(ready);
+    return Status::ok;
+  } catch (const std::bad_alloc&) { return Status::no_memory; }
+    catch (...) { return Status::internal_error; }
+}
 Status Session::stats(SessionStats& out) const noexcept {
   if (!impl_) return Status::closed;
   if (impl_->identity->pid != ::getpid()) return Status::stale;

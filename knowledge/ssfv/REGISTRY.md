@@ -757,7 +757,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `modules/sqav-databento-dbn-cpp`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:platform`
-- record_digest: `sha256:b1b1e22025aea886bd4b0308299e8012b52ba5197f63b593e693b9b1b3ffcd6c`
+- record_digest: `sha256:e26c23c2c6c50f8a8652c06f5eb07843d106da98b4e2a943ae81985f84f2f403`
 - notes: Bounded DBNv1/v3 single-schema MBO file fidelity and attributed capture; network sessions and entitlements remain separate.
 
 - feature_id: `ssfv:symphony:sqdv-delivery-cpp`
@@ -766,7 +766,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `modules/sqdv-delivery-cpp`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:platform`
-- record_digest: `sha256:5552933af98f314eef984f838cd39b4d40d8bbf7c53ef07b799843b02b426816`
+- record_digest: `sha256:9fc437a5b7db78d4bb27b94edb3ab4a430a97f5841b165cc500aee72ca0e1953`
 - notes: Bounded C++26 same-process delivery and exact resume; retained evidence inherits the selected SQPV guarantee and grants no recipient authority.
 
 - feature_id: `ssfv:symphony:sqfv-batch-cpp`

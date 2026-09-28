@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.30)
-project(SymphonySqdvDelivery VERSION 0.2.0 LANGUAGES CXX)
+project(SymphonySqdvDelivery VERSION 0.3.0 LANGUAGES CXX)
 
 include(CTest)
 include(GNUInstallDirs)
@@ -51,7 +51,7 @@ if(APPLE)
     set(CMAKE_CXX_ARCHIVE_FINISH "\"${CMAKE_COMMAND}\" -E env ZERO_AR_DATE=1 <CMAKE_RANLIB> <TARGET>")
 endif()
 
-add_library(sqdv-delivery STATIC src/delivery.cpp)
+add_library(sqdv-delivery STATIC src/delivery.cpp src/checkpoint.cpp)
 add_library(Symphony::SqdvDelivery ALIAS sqdv-delivery)
 target_link_libraries(sqdv-delivery
     PUBLIC Symphony::SqpvLocalStore Symphony::SqmvMetadata Symphony::SqfvBatch
@@ -86,6 +86,8 @@ endif()
 
 install(FILES include/symphony/sqdv/delivery.hpp DESTINATION "${SQDV_HEADER_DIR}")
 sqdv_own("${SQDV_HEADER_DIR}/delivery.hpp")
+install(FILES include/symphony/sqdv/checkpoint.hpp DESTINATION "${SQDV_HEADER_DIR}")
+sqdv_own("${SQDV_HEADER_DIR}/checkpoint.hpp")
 
 configure_package_config_file(cmake/SymphonySqdvDeliveryConfig.cmake.in
     "${CMAKE_CURRENT_BINARY_DIR}/SymphonySqdvDeliveryConfig.cmake"
@@ -136,6 +138,11 @@ if(BUILD_TESTING)
     target_compile_options(sqdv-delivery-test PRIVATE
         $<$<CXX_COMPILER_ID:AppleClang,Clang,GNU>:-Wall;-Wextra;-Wpedantic;-Werror>)
     add_test(NAME sqdv-delivery COMMAND sqdv-delivery-test)
+    add_executable(sqdv-checkpoint-test tests/checkpoint_test.cpp)
+    target_link_libraries(sqdv-checkpoint-test PRIVATE Symphony::SqdvDelivery)
+    set_target_properties(sqdv-checkpoint-test PROPERTIES CXX_STANDARD 26 CXX_STANDARD_REQUIRED ON CXX_EXTENSIONS OFF)
+    target_compile_options(sqdv-checkpoint-test PRIVATE -Wall -Wextra -Wpedantic -Werror)
+    add_test(NAME sqdv-checkpoint COMMAND sqdv-checkpoint-test)
     add_test(NAME sqdv-package-lifecycle
         COMMAND "${CMAKE_COMMAND}"
             "-DPACKAGE_BINARY_DIR=${CMAKE_CURRENT_BINARY_DIR}"

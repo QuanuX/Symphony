@@ -2365,6 +2365,70 @@
       "consumer_boundary_rejections": [
         {
           "cases": [
+            "installed_attempt_and_http_refusal"
+          ],
+          "path": "modules/sqav-databento-dbn-cpp/tests/sdk-consumer/main.cpp"
+        }
+      ],
+      "invariant_id": "invariant:symphony:sqav.historical-attempt-admission",
+      "ipc_boundary": false,
+      "owner_component": "sqav-databento-dbn-cpp",
+      "owner_contract": "modules/sqav-databento-dbn-cpp/SPEC.md",
+      "producer_implementations": [
+        "modules/sqav-databento-dbn-cpp/src/attempts.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "accounting_and_restart",
+            "budgets_and_binding",
+            "crash_reservation",
+            "one_shot_race_and_allocation"
+          ],
+          "path": "modules/sqav-databento-dbn-cpp/tests/attempts_test.cpp"
+        }
+      ],
+      "real_process_regressions": [],
+      "statement": "A unique durable reservation and checked charge ceiling precede one-shot execution. Restart retains uncertainty and never reissues tickets or speculative refunds.",
+      "status": "active",
+      "title": "Historical attempt admission"
+    },
+    {
+      "allowed_adapter_ids": [],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "installed_attempt_and_http_refusal"
+          ],
+          "path": "modules/sqav-databento-dbn-cpp/tests/sdk-consumer/main.cpp"
+        }
+      ],
+      "invariant_id": "invariant:symphony:sqav.historical-http-boundary",
+      "ipc_boundary": false,
+      "owner_component": "sqav-databento-dbn-cpp",
+      "owner_contract": "modules/sqav-databento-dbn-cpp/SPEC.md",
+      "producer_implementations": [
+        "modules/sqav-databento-dbn-cpp/src/http.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "denied_and_pre_cancelled",
+            "run_case"
+          ],
+          "path": "modules/sqav-databento-dbn-cpp/tests/http_test.cpp"
+        }
+      ],
+      "real_process_regressions": [],
+      "statement": "Native HTTP requires one claimed attempt and explicit SSIAG bridge use; fixed production HTTPS scope, finite headers/body/deadlines and actual sink results govern response completion. Fixture callbacks do not establish operational authentication.",
+      "status": "active",
+      "title": "Historical http boundary"
+    },
+    {
+      "allowed_adapter_ids": [],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
             "installed_capture_rejection",
             "installed_capture_roundtrip"
           ],
@@ -2435,6 +2499,40 @@
       "statement": "Only a delivered ticket from this session can acknowledge its next contiguous processing position. Releasing or discarding payload does not acknowledge processing; processing acknowledgement does not free held SQFV byte credit or invalidate an existing lease. Late-session acknowledgements cannot advance a new session.",
       "status": "active",
       "title": "SQDV processing acknowledgement is separate from physical release"
+    },
+    {
+      "allowed_adapter_ids": [],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "installed_checkpoint_recovery"
+          ],
+          "path": "modules/sqdv-delivery-cpp/tests/sdk-consumer/main.cpp"
+        }
+      ],
+      "invariant_id": "invariant:symphony:sqdv.durable-checkpoint",
+      "ipc_boundary": false,
+      "owner_component": "sqdv-delivery-cpp",
+      "owner_contract": "modules/sqdv-delivery-cpp/SPEC.md",
+      "producer_implementations": [
+        "modules/sqdv-delivery-cpp/src/checkpoint.cpp",
+        "modules/sqdv-delivery-cpp/src/delivery.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "checkpoint_allocation",
+            "durable_restart_and_bounds",
+            "process_crash_recovery",
+            "sequence_exhaustion"
+          ],
+          "path": "modules/sqdv-delivery-cpp/tests/checkpoint_test.cpp"
+        }
+      ],
+      "real_process_regressions": [],
+      "statement": "Durable checkpoint state advances only after actual SQPV confirmation, preserves exact view/baseline and monotonic exhaustion, and retained replay admission requires a confirmed source prefix.",
+      "status": "active",
+      "title": "Durable checkpoint"
     },
     {
       "allowed_adapter_ids": [],
@@ -3245,7 +3343,7 @@
     }
   ],
   "protocol": "symphony.knowledge.invariant-ownership-registry.v3",
-  "registry_digest": "sha256:00e2e4c58cc17cedbacae9c2d829698a267c68db7d37bd07fe3a71091780ba76",
+  "registry_digest": "sha256:4e321f864329ff95927578ea1c40bd2c80213958742918bd11fce9433d2cd921",
   "scope": "common_lowest_authoritative_layer",
   "test_policy": {
     "consumer_boundary_rejection_required": true,

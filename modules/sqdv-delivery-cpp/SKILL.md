@@ -35,3 +35,8 @@ classification, actual access authority, consumer processing assertions, local
 retention, external destination acceptance, and payload release remain separate.
 Discarding an unacknowledged ticket does not advance its session. Caller-owned
 resume persistence and replay policy determine handling of a lost checkpoint.
+
+For durable resume, choose a private bounded CheckpointJournal and preserve its
+original baseline/generation. Use save_retained when source replay must cover
+processed progress. Handle limit/uncertainty explicitly; never promote processing
+acknowledgment into an external destination commit.
