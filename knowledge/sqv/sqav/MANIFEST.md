@@ -18,7 +18,7 @@ SQAV owns research-data source collection semantics beneath SQV. It preserves so
 
 ## Implementation Status
 
-`modules/sqav-capture-cpp/` owns the first `0.1.0-dev` C++26 optional offline original-byte capture library, its exact binary format, metadata/flow bridge and package. Provider connectors, provider-specific parsing, live operations and SQV qxctl remain later work. No `sqav:` identity family is allocated by this Quad.
+`modules/sqav-capture-cpp/` owns the `0.2.0-dev` C++26 optional offline original-byte capture library, its exact binary format, metadata/flow bridge and package. The current provider and request-administration extents are recorded below; live remains deferred. No `sqav:` identity family is allocated by this Quad.
 
 ## Language Boundary
 
@@ -30,7 +30,7 @@ This manifest authorizes no provider session, credential use, account access, su
 
 ## Databento provider-file extent
 
-`modules/sqav-databento-dbn-cpp/MANIFEST.md` declares the separately installable `0.2.0-dev` C++26 DBNv1/v3 single-schema MBO file inspector and original-byte capture bridge. This is offline provider-format support; live/historical/reference clients remain separate work.
+`modules/sqav-databento-dbn-cpp/MANIFEST.md` declares the separately installable `0.5.0-dev` C++26 DBNv1/v3 single-schema MBO file inspector and original-byte capture bridge. It includes bounded historical request/response handling. Separate reference support is admitted below; live remains deferred.
 
 
 ## Broader non-live source extent
@@ -40,3 +40,7 @@ The independently selectable C++26 0.1.0-dev modules `native-source-support-cpp`
 `knowledge/sqv/scabv/SPEC.md` admits separate IBKR Client Portal and TWS read bindings; their captures consume the existing research-data path. TWS targets external Stable SDK 10.45 without bundled vendor code or actual SDK conformance. Live remains future work. The shared HTTP CredentialUse interface is a required composition boundary, not an operational SSIAG bridge. Databento remains mapped to SSIAG/local Keychain in `knowledge/sqv/sqav/DATABENTO-SSIAG-BINDING.md`.
 
 Focused source tests preserve all five adapter capture families through reopened local retention/replay. Provider schemas and source scope remain in original JSON/JSONL or explicitly declared TWS callback projections; exact financial bytes and price bits are not silently reserialized from binary floating-point values. API availability does not imply completion of all SQV programme objectives.
+
+## Local request administration
+
+`modules/sqav-request-engine/MANIFEST.md` admits one C++26 0.1.0-dev process operation calling the FRED/ALFRED, Databento historical and reference request validators. qxctl adds exactly `sqv acquisition validate`, `sqv schema`, and `sqv template`; schema/template select `--operation request_validate`, adapter and exact installed release. Validation establishes no provider, credential, entitlement, acquisition or store state. Shared module/inventory discovery exposes source contracts separately from lifecycle receipt observations.

@@ -525,6 +525,19 @@
       ],
       "owner_contract": "modules/shv-engine/SPEC.md",
       "version_policy": "exact_receipt_v2_entry_point_and_capability_compatible"
+    },
+    {
+      "adapter_id": "adapter:symphony:symphony-sqav-request.v1",
+      "command_protocol": "symphony.knowledge.engine-process.v1",
+      "component": "sqav-request-engine",
+      "entry_point_id": "symphony-sqav-request",
+      "format_version": 3,
+      "implementation_path": "modules/sqav-request-engine",
+      "operation_ids": [
+        "engop:symphony:sqav-request.validate"
+      ],
+      "owner_contract": "modules/sqav-request-engine/SPEC.md",
+      "version_policy": "exact_receipt_v2_entry_point_and_capability_compatible"
     }
   ],
   "catalog_complete": false,
@@ -2555,6 +2568,46 @@
       "title": "SQAV preserves original bytes and attributable source meaning"
     },
     {
+      "allowed_adapter_ids": [
+        "adapter:symphony:symphony-sqav-request.v1"
+      ],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "TestSQAVResultBinding"
+          ],
+          "path": "tools/qxctl/internal/knowledgeengine/sqav_request_test.go"
+        }
+      ],
+      "invariant_id": "invariant:symphony:sqav.request-validation-binding",
+      "ipc_boundary": true,
+      "owner_component": "sqav-request-engine",
+      "owner_contract": "modules/sqav-request-engine/SPEC.md",
+      "producer_implementations": [
+        "modules/sqav-request-engine/src/main.cpp",
+        "modules/sqav-request-engine/src/request.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "main"
+          ],
+          "path": "modules/sqav-request-engine/tests/test.cpp"
+        }
+      ],
+      "real_process_regressions": [
+        {
+          "cases": [
+            "test_installed_requests"
+          ],
+          "path": "modules/sqav-request-engine/tests/process.cpp"
+        }
+      ],
+      "statement": "Native Plan::create owns all SQAV request semantics. The bounded administrative process retains exact integer identity and returns only request-bound local validation evidence. The consumer verifies receipt, interface, schema, process identity and result correspondence; local validation never establishes provider access or acquisition.",
+      "status": "active",
+      "title": "SQAV request evidence remains native, bounded and request-bound"
+    },
+    {
       "allowed_adapter_ids": [],
       "consumer_boundary_rejections": [
         {
@@ -3530,7 +3583,7 @@
     }
   ],
   "protocol": "symphony.knowledge.invariant-ownership-registry.v3",
-  "registry_digest": "sha256:6414e10ef299a28ead8f3cc8fb17851d7edb40c8e432c49c8b5607b53a4facae",
+  "registry_digest": "sha256:6379906ebb0bc3c00f38555f261909184436bd9e5445645277173e290ebdcdf3",
   "scope": "common_lowest_authoritative_layer",
   "test_policy": {
     "consumer_boundary_rejection_required": true,

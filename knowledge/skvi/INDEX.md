@@ -17274,3 +17274,367 @@ These entries locate existing implementation and regression surfaces referenced 
 - deferred_projections: adapter verification
 - notes: Authorized vendor SDK conformance remains pending.
 - status: canonical
+
+### SQAV request administration cmake SqavRequestInterface.generated.cmake
+- path: `cmake/SqavRequestInterface.generated.cmake`
+- title: SQAV request administration cmake SqavRequestInterface.generated.cmake
+- surface_type: native request administration contract or implementation
+- truth_role: bounded native interface and verification
+- owner: SQAV and qxctl maintainers
+- scope: Three exact local request variants through one operation and shared metadata helpers.
+- relationships: governed_by -> `modules/sqav-request-engine/SPEC.md`
+- consumers: operators, implementers, tests
+- deferred_projections: command and request discovery
+- notes: Local validation establishes no provider access, acquisition, store or live state.
+- status: canonical
+
+### SQAV request administration modules sqav-request-engine CMakeLists.txt
+- path: `modules/sqav-request-engine/CMakeLists.txt`
+- title: SQAV request administration modules sqav-request-engine CMakeLists.txt
+- surface_type: native request administration contract or implementation
+- truth_role: bounded native interface and verification
+- owner: SQAV and qxctl maintainers
+- scope: Three exact local request variants through one operation and shared metadata helpers.
+- relationships: governed_by -> `modules/sqav-request-engine/SPEC.md`
+- consumers: operators, implementers, tests
+- deferred_projections: command and request discovery
+- notes: Local validation establishes no provider access, acquisition, store or live state.
+- status: canonical
+
+### SQAV request administration modules sqav-request-engine FEATURES.md
+- path: `modules/sqav-request-engine/FEATURES.md`
+- title: SQAV request administration modules sqav-request-engine FEATURES.md
+- surface_type: native request administration contract or implementation
+- truth_role: bounded native interface and verification
+- owner: SQAV and qxctl maintainers
+- scope: Three exact local request variants through one operation and shared metadata helpers.
+- relationships: governed_by -> `modules/sqav-request-engine/SPEC.md`
+- consumers: operators, implementers, tests
+- deferred_projections: command and request discovery
+- notes: Local validation establishes no provider access, acquisition, store or live state.
+- status: canonical
+
+### SQAV request administration modules sqav-request-engine INSTALL.md
+- path: `modules/sqav-request-engine/INSTALL.md`
+- title: SQAV request administration modules sqav-request-engine INSTALL.md
+- surface_type: native request administration contract or implementation
+- truth_role: bounded native interface and verification
+- owner: SQAV and qxctl maintainers
+- scope: Three exact local request variants through one operation and shared metadata helpers.
+- relationships: governed_by -> `modules/sqav-request-engine/SPEC.md`
+- consumers: operators, implementers, tests
+- deferred_projections: command and request discovery
+- notes: Local validation establishes no provider access, acquisition, store or live state.
+- status: canonical
+
+### SQAV request administration modules sqav-request-engine INTENT.md
+- path: `modules/sqav-request-engine/INTENT.md`
+- title: SQAV request administration modules sqav-request-engine INTENT.md
+- surface_type: native request administration contract or implementation
+- truth_role: bounded native interface and verification
+- owner: SQAV and qxctl maintainers
+- scope: Three exact local request variants through one operation and shared metadata helpers.
+- relationships: governed_by -> `modules/sqav-request-engine/SPEC.md`
+- consumers: operators, implementers, tests
+- deferred_projections: command and request discovery
+- notes: Local validation establishes no provider access, acquisition, store or live state.
+- status: canonical
+
+### SQAV request administration modules sqav-request-engine INTERFACE-GENERATOR.json
+- path: `modules/sqav-request-engine/INTERFACE-GENERATOR.json`
+- title: SQAV request administration modules sqav-request-engine INTERFACE-GENERATOR.json
+- surface_type: native request administration contract or implementation
+- truth_role: bounded native interface and verification
+- owner: SQAV and qxctl maintainers
+- scope: Three exact local request variants through one operation and shared metadata helpers.
+- relationships: governed_by -> `modules/sqav-request-engine/SPEC.md`
+- consumers: operators, implementers, tests
+- deferred_projections: command and request discovery
+- notes: Local validation establishes no provider access, acquisition, store or live state.
+- status: canonical
+
+### SQAV request administration modules sqav-request-engine MANIFEST.md
+- path: `modules/sqav-request-engine/MANIFEST.md`
+- title: SQAV request administration modules sqav-request-engine MANIFEST.md
+- surface_type: native request administration contract or implementation
+- truth_role: bounded native interface and verification
+- owner: SQAV and qxctl maintainers
+- scope: Three exact local request variants through one operation and shared metadata helpers.
+- relationships: governed_by -> `modules/sqav-request-engine/SPEC.md`
+- consumers: operators, implementers, tests
+- deferred_projections: command and request discovery
+- notes: Local validation establishes no provider access, acquisition, store or live state.
+- status: canonical
+
+### SQAV request administration modules sqav-request-engine OWNER-INTERFACE.json
+- path: `modules/sqav-request-engine/OWNER-INTERFACE.json`
+- title: SQAV request administration modules sqav-request-engine OWNER-INTERFACE.json
+- surface_type: native request administration contract or implementation
+- truth_role: bounded native interface and verification
+- owner: SQAV and qxctl maintainers
+- scope: Three exact local request variants through one operation and shared metadata helpers.
+- relationships: governed_by -> `modules/sqav-request-engine/SPEC.md`
+- consumers: operators, implementers, tests
+- deferred_projections: command and request discovery
+- notes: Local validation establishes no provider access, acquisition, store or live state.
+- status: canonical
+
+### SQAV request administration modules sqav-request-engine SKILL.md
+- path: `modules/sqav-request-engine/SKILL.md`
+- title: SQAV request administration modules sqav-request-engine SKILL.md
+- surface_type: native request administration contract or implementation
+- truth_role: bounded native interface and verification
+- owner: SQAV and qxctl maintainers
+- scope: Three exact local request variants through one operation and shared metadata helpers.
+- relationships: governed_by -> `modules/sqav-request-engine/SPEC.md`
+- consumers: operators, implementers, tests
+- deferred_projections: command and request discovery
+- notes: Local validation establishes no provider access, acquisition, store or live state.
+- status: canonical
+
+### SQAV request administration modules sqav-request-engine SPEC.md
+- path: `modules/sqav-request-engine/SPEC.md`
+- title: SQAV request administration modules sqav-request-engine SPEC.md
+- surface_type: native request administration contract or implementation
+- truth_role: bounded native interface and verification
+- owner: SQAV and qxctl maintainers
+- scope: Three exact local request variants through one operation and shared metadata helpers.
+- relationships: governed_by -> `modules/sqav-request-engine/SPEC.md`
+- consumers: operators, implementers, tests
+- deferred_projections: command and request discovery
+- notes: Local validation establishes no provider access, acquisition, store or live state.
+- status: canonical
+
+### SQAV request administration modules sqav-request-engine cmake uninstall.cmake.in
+- path: `modules/sqav-request-engine/cmake/uninstall.cmake.in`
+- title: SQAV request administration modules sqav-request-engine cmake uninstall.cmake.in
+- surface_type: native request administration contract or implementation
+- truth_role: bounded native interface and verification
+- owner: SQAV and qxctl maintainers
+- scope: Three exact local request variants through one operation and shared metadata helpers.
+- relationships: governed_by -> `modules/sqav-request-engine/SPEC.md`
+- consumers: operators, implementers, tests
+- deferred_projections: command and request discovery
+- notes: Local validation establishes no provider access, acquisition, store or live state.
+- status: canonical
+
+### SQAV request administration modules sqav-request-engine schemas v1 request.schema.json
+- path: `modules/sqav-request-engine/schemas/v1/request.schema.json`
+- title: SQAV request administration modules sqav-request-engine schemas v1 request.schema.json
+- surface_type: native request administration contract or implementation
+- truth_role: bounded native interface and verification
+- owner: SQAV and qxctl maintainers
+- scope: Three exact local request variants through one operation and shared metadata helpers.
+- relationships: governed_by -> `modules/sqav-request-engine/SPEC.md`
+- consumers: operators, implementers, tests
+- deferred_projections: command and request discovery
+- notes: Local validation establishes no provider access, acquisition, store or live state.
+- status: canonical
+
+### SQAV request administration modules sqav-request-engine schemas v1 request.templates.json
+- path: `modules/sqav-request-engine/schemas/v1/request.templates.json`
+- title: SQAV request administration modules sqav-request-engine schemas v1 request.templates.json
+- surface_type: native request administration contract or implementation
+- truth_role: bounded native interface and verification
+- owner: SQAV and qxctl maintainers
+- scope: Three exact local request variants through one operation and shared metadata helpers.
+- relationships: governed_by -> `modules/sqav-request-engine/SPEC.md`
+- consumers: operators, implementers, tests
+- deferred_projections: command and request discovery
+- notes: Local validation establishes no provider access, acquisition, store or live state.
+- status: canonical
+
+### SQAV request administration modules sqav-request-engine src interface.generated.hpp
+- path: `modules/sqav-request-engine/src/interface.generated.hpp`
+- title: SQAV request administration modules sqav-request-engine src interface.generated.hpp
+- surface_type: native request administration contract or implementation
+- truth_role: bounded native interface and verification
+- owner: SQAV and qxctl maintainers
+- scope: Three exact local request variants through one operation and shared metadata helpers.
+- relationships: governed_by -> `modules/sqav-request-engine/SPEC.md`
+- consumers: operators, implementers, tests
+- deferred_projections: command and request discovery
+- notes: Local validation establishes no provider access, acquisition, store or live state.
+- status: canonical
+
+### SQAV request administration modules sqav-request-engine src main.cpp
+- path: `modules/sqav-request-engine/src/main.cpp`
+- title: SQAV request administration modules sqav-request-engine src main.cpp
+- surface_type: native request administration contract or implementation
+- truth_role: bounded native interface and verification
+- owner: SQAV and qxctl maintainers
+- scope: Three exact local request variants through one operation and shared metadata helpers.
+- relationships: governed_by -> `modules/sqav-request-engine/SPEC.md`
+- consumers: operators, implementers, tests
+- deferred_projections: command and request discovery
+- notes: Local validation establishes no provider access, acquisition, store or live state.
+- status: canonical
+
+### SQAV request administration modules sqav-request-engine src request.cpp
+- path: `modules/sqav-request-engine/src/request.cpp`
+- title: SQAV request administration modules sqav-request-engine src request.cpp
+- surface_type: native request administration contract or implementation
+- truth_role: bounded native interface and verification
+- owner: SQAV and qxctl maintainers
+- scope: Three exact local request variants through one operation and shared metadata helpers.
+- relationships: governed_by -> `modules/sqav-request-engine/SPEC.md`
+- consumers: operators, implementers, tests
+- deferred_projections: command and request discovery
+- notes: Local validation establishes no provider access, acquisition, store or live state.
+- status: canonical
+
+### SQAV request administration modules sqav-request-engine src request.hpp
+- path: `modules/sqav-request-engine/src/request.hpp`
+- title: SQAV request administration modules sqav-request-engine src request.hpp
+- surface_type: native request administration contract or implementation
+- truth_role: bounded native interface and verification
+- owner: SQAV and qxctl maintainers
+- scope: Three exact local request variants through one operation and shared metadata helpers.
+- relationships: governed_by -> `modules/sqav-request-engine/SPEC.md`
+- consumers: operators, implementers, tests
+- deferred_projections: command and request discovery
+- notes: Local validation establishes no provider access, acquisition, store or live state.
+- status: canonical
+
+### SQAV request administration modules sqav-request-engine tests fixtures databento_historical.json
+- path: `modules/sqav-request-engine/tests/fixtures/databento_historical.json`
+- title: SQAV request administration modules sqav-request-engine tests fixtures databento_historical.json
+- surface_type: native request administration contract or implementation
+- truth_role: bounded native interface and verification
+- owner: SQAV and qxctl maintainers
+- scope: Three exact local request variants through one operation and shared metadata helpers.
+- relationships: governed_by -> `modules/sqav-request-engine/SPEC.md`
+- consumers: operators, implementers, tests
+- deferred_projections: command and request discovery
+- notes: Local validation establishes no provider access, acquisition, store or live state.
+- status: canonical
+
+### SQAV request administration modules sqav-request-engine tests fixtures databento_reference.json
+- path: `modules/sqav-request-engine/tests/fixtures/databento_reference.json`
+- title: SQAV request administration modules sqav-request-engine tests fixtures databento_reference.json
+- surface_type: native request administration contract or implementation
+- truth_role: bounded native interface and verification
+- owner: SQAV and qxctl maintainers
+- scope: Three exact local request variants through one operation and shared metadata helpers.
+- relationships: governed_by -> `modules/sqav-request-engine/SPEC.md`
+- consumers: operators, implementers, tests
+- deferred_projections: command and request discovery
+- notes: Local validation establishes no provider access, acquisition, store or live state.
+- status: canonical
+
+### SQAV request administration modules sqav-request-engine tests fixtures fred.json
+- path: `modules/sqav-request-engine/tests/fixtures/fred.json`
+- title: SQAV request administration modules sqav-request-engine tests fixtures fred.json
+- surface_type: native request administration contract or implementation
+- truth_role: bounded native interface and verification
+- owner: SQAV and qxctl maintainers
+- scope: Three exact local request variants through one operation and shared metadata helpers.
+- relationships: governed_by -> `modules/sqav-request-engine/SPEC.md`
+- consumers: operators, implementers, tests
+- deferred_projections: command and request discovery
+- notes: Local validation establishes no provider access, acquisition, store or live state.
+- status: canonical
+
+### SQAV request administration modules sqav-request-engine tests fixtures interface-history.v1.json
+- path: `modules/sqav-request-engine/tests/fixtures/interface-history.v1.json`
+- title: SQAV request administration modules sqav-request-engine tests fixtures interface-history.v1.json
+- surface_type: native request administration contract or implementation
+- truth_role: bounded native interface and verification
+- owner: SQAV and qxctl maintainers
+- scope: Three exact local request variants through one operation and shared metadata helpers.
+- relationships: governed_by -> `modules/sqav-request-engine/SPEC.md`
+- consumers: operators, implementers, tests
+- deferred_projections: command and request discovery
+- notes: Local validation establishes no provider access, acquisition, store or live state.
+- status: canonical
+
+### SQAV request administration modules sqav-request-engine tests test.cpp
+- path: `modules/sqav-request-engine/tests/test.cpp`
+- title: SQAV request administration modules sqav-request-engine tests test.cpp
+- surface_type: native request administration contract or implementation
+- truth_role: bounded native interface and verification
+- owner: SQAV and qxctl maintainers
+- scope: Three exact local request variants through one operation and shared metadata helpers.
+- relationships: governed_by -> `modules/sqav-request-engine/SPEC.md`
+- consumers: operators, implementers, tests
+- deferred_projections: command and request discovery
+- notes: Local validation establishes no provider access, acquisition, store or live state.
+- status: canonical
+
+### SQAV request administration tools qxctl cmd qxctl sqv.go
+- path: `tools/qxctl/cmd/qxctl/sqv.go`
+- title: SQAV request administration tools qxctl cmd qxctl sqv.go
+- surface_type: native request administration contract or implementation
+- truth_role: bounded native interface and verification
+- owner: SQAV and qxctl maintainers
+- scope: Three exact local request variants through one operation and shared metadata helpers.
+- relationships: governed_by -> `modules/sqav-request-engine/SPEC.md`
+- consumers: operators, implementers, tests
+- deferred_projections: command and request discovery
+- notes: Local validation establishes no provider access, acquisition, store or live state.
+- status: canonical
+
+### SQAV request administration tools qxctl cmd qxctl sqv_test.go
+- path: `tools/qxctl/cmd/qxctl/sqv_test.go`
+- title: SQAV request administration tools qxctl cmd qxctl sqv_test.go
+- surface_type: native request administration contract or implementation
+- truth_role: bounded native interface and verification
+- owner: SQAV and qxctl maintainers
+- scope: Three exact local request variants through one operation and shared metadata helpers.
+- relationships: governed_by -> `modules/sqav-request-engine/SPEC.md`
+- consumers: operators, implementers, tests
+- deferred_projections: command and request discovery
+- notes: Local validation establishes no provider access, acquisition, store or live state.
+- status: canonical
+
+### SQAV request administration tools qxctl internal knowledgeengine sqav_request.go
+- path: `tools/qxctl/internal/knowledgeengine/sqav_request.go`
+- title: SQAV request administration tools qxctl internal knowledgeengine sqav_request.go
+- surface_type: native request administration contract or implementation
+- truth_role: bounded native interface and verification
+- owner: SQAV and qxctl maintainers
+- scope: Three exact local request variants through one operation and shared metadata helpers.
+- relationships: governed_by -> `modules/sqav-request-engine/SPEC.md`
+- consumers: operators, implementers, tests
+- deferred_projections: command and request discovery
+- notes: Local validation establishes no provider access, acquisition, store or live state.
+- status: canonical
+
+### SQAV request administration tools qxctl internal knowledgeengine sqav_request_interface_generated.go
+- path: `tools/qxctl/internal/knowledgeengine/sqav_request_interface_generated.go`
+- title: SQAV request administration tools qxctl internal knowledgeengine sqav_request_interface_generated.go
+- surface_type: native request administration contract or implementation
+- truth_role: bounded native interface and verification
+- owner: SQAV and qxctl maintainers
+- scope: Three exact local request variants through one operation and shared metadata helpers.
+- relationships: governed_by -> `modules/sqav-request-engine/SPEC.md`
+- consumers: operators, implementers, tests
+- deferred_projections: command and request discovery
+- notes: Local validation establishes no provider access, acquisition, store or live state.
+- status: canonical
+
+### SQAV request administration tools qxctl internal knowledgeengine sqav_request_test.go
+- path: `tools/qxctl/internal/knowledgeengine/sqav_request_test.go`
+- title: SQAV request administration tools qxctl internal knowledgeengine sqav_request_test.go
+- surface_type: native request administration contract or implementation
+- truth_role: bounded native interface and verification
+- owner: SQAV and qxctl maintainers
+- scope: Three exact local request variants through one operation and shared metadata helpers.
+- relationships: governed_by -> `modules/sqav-request-engine/SPEC.md`
+- consumers: operators, implementers, tests
+- deferred_projections: command and request discovery
+- notes: Local validation establishes no provider access, acquisition, store or live state.
+- status: canonical
+
+### SQAV installed process verification
+- path: `modules/sqav-request-engine/tests/process.cpp`
+- title: SQAV installed process verification
+- surface_type: native installed process test
+- truth_role: executable boundary verification
+- owner: SQAV maintainers
+- scope: Three native request variants, process correspondence, refusals and pure effects.
+- relationships: governed_by -> `modules/sqav-request-engine/SPEC.md`
+- consumers: implementers, reviewers, tests
+- deferred_projections: verification evidence
+- notes: Explicit installed prefix; no provider or credential traffic.
+- status: canonical

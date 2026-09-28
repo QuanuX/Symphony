@@ -27,7 +27,7 @@
         "modules/scabv-ibkr-client-portal-cpp/tests/sdk-consumer/main.cpp verifies public installed admission and refusal independently of source include paths."
       ],
       "feature_id": "ssfv:symphony:scabv-ibkr-client-portal-cpp",
-      "how": "Distinct Client Portal v1 HTTP surface observed 2026-09-28. Requires an already authenticated local Gateway with a trusted TLS certificate at an explicitly selected https://localhost:port or https://127.0.0.1:port. Account discovery GET /v1/api/portfolio/accounts precedes a binding; the selected account must appear once in the bounded response and scope must use this profile\u2019s private: reference grammar. Admission of caller-supplied bytes does not authenticate them. Read plans expose only GET portfolio/{account}/positions/{page} and iserver/marketdata/history. Position pages are 0\u20139,999, with at most 100 records, exact acctId and nonduplicated conid. An empty page indicates exhaustion; nonempty pages expose the next page. Each request remains partial evidence, not an atomic multi-page account snapshot. Historical plans require conid, explicit UTC startTime, period/bar, direction=-1, source=Last and explicit regular-hours choice. Local bar cap is 1\u20131,000; provider interval/entitlement rules still apply. Selected numeric fields and increasing bar timestamps are shape-checked, while every original JSON byte\u2014including financial decimals and additional provider fields\u2014is retained. No binary-float reserialization occurs.",
+      "how": "Distinct Client Portal v1 HTTP surface observed 2026-09-28. Requires an already authenticated local Gateway with a trusted TLS certificate at an explicitly selected https://localhost:port or https://127.0.0.1:port. Account discovery GET /v1/api/portfolio/accounts precedes a binding; the selected account must appear once in the bounded response and scope must use this profile’s private: reference grammar. Admission of caller-supplied bytes does not authenticate them. Read plans expose only GET portfolio/{account}/positions/{page} and iserver/marketdata/history. Position pages are 0–9,999, with at most 100 records, exact acctId and nonduplicated conid. An empty page indicates exhaustion; nonempty pages expose the next page. Each request remains partial evidence, not an atomic multi-page account snapshot. Historical plans require conid, explicit UTC startTime, period/bar, direction=-1, source=Last and explicit regular-hours choice. Local bar cap is 1–1,000; provider interval/entitlement rules still apply. Selected numeric fields and increasing bar timestamps are shape-checked, while every original JSON byte—including financial decimals and additional provider fields—is retained. No binary-float reserialization occurs.",
       "implementation_languages": [
         {
           "language": "C++26",
@@ -40,8 +40,8 @@
       ],
       "implementation_paths": [
         "modules/scabv-ibkr-client-portal-cpp/CMakeLists.txt",
-        "modules/scabv-ibkr-client-portal-cpp/src/client_portal.cpp",
-        "modules/scabv-ibkr-client-portal-cpp/include/symphony/scabv/client_portal.hpp"
+        "modules/scabv-ibkr-client-portal-cpp/include/symphony/scabv/client_portal.hpp",
+        "modules/scabv-ibkr-client-portal-cpp/src/client_portal.cpp"
       ],
       "kind": "feature",
       "non_claims": [

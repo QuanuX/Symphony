@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/QuanuX/Symphony/tools/qxctl/internal/commandregistry"
+	"github.com/QuanuX/Symphony/tools/qxctl/internal/modules"
 	"github.com/spf13/cobra"
 )
 
@@ -349,6 +350,12 @@ func registeredFoundationLifecycle(
 func commandSpec(key, featureID, interaction string) commandregistry.CommandSpec {
 	featureBindings := []commandregistry.FeatureBinding{{FeatureID: featureID, Interaction: interaction}}
 	featureBindings = append(featureBindings, reviewedBackendFeatureBindings[key]...)
+	switch key {
+	case "modules", "modules.check", "modules.metadata", "module.inspect", "module.check", "module.metadata", "inventory", "inventory.digest":
+		for _, mod := range modules.SQVModules {
+			featureBindings = append(featureBindings, commandregistry.FeatureBinding{FeatureID: "ssfv:symphony:" + mod, Interaction: "discover"})
+		}
+	}
 	return commandregistry.CommandSpec{
 		CommandID:                 "qxcmd:symphony:" + key,
 		Status:                    "experimental",

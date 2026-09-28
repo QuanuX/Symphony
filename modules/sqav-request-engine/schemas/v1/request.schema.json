@@ -1,0 +1,302 @@
+{
+  "protocol": "symphony.sqav.request-schema-catalog.v1",
+  "input_protocol": "symphony.sqav.request-validation-input.v1",
+  "result_protocol": "symphony.sqav.request-validation.v1",
+  "requests": {
+    "fred": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "adapter",
+        "selection",
+        "limits"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "symphony.sqav.request-validation-input.v1"
+        },
+        "adapter": {
+          "const": "fred"
+        },
+        "selection": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "operation",
+            "series",
+            "observation_start",
+            "observation_end",
+            "realtime_start",
+            "realtime_end",
+            "limit",
+            "offset"
+          ],
+          "properties": {
+            "operation": {
+              "enum": [
+                "observations",
+                "vintage_dates"
+              ]
+            },
+            "series": {
+              "type": "string",
+              "maxLength": 128
+            },
+            "observation_start": {
+              "type": "string",
+              "maxLength": 10
+            },
+            "observation_end": {
+              "type": "string",
+              "maxLength": 10
+            },
+            "realtime_start": {
+              "type": "string",
+              "maxLength": 10
+            },
+            "realtime_end": {
+              "type": "string",
+              "maxLength": 10
+            },
+            "limit": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 4294967295
+            },
+            "offset": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 4294967295
+            }
+          }
+        },
+        "limits": {
+          "type": "null"
+        }
+      }
+    },
+    "databento_historical": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "adapter",
+        "selection",
+        "limits"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "symphony.sqav.request-validation-input.v1"
+        },
+        "adapter": {
+          "const": "databento_historical"
+        },
+        "selection": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "dataset",
+            "symbols",
+            "start_ns",
+            "end_ns",
+            "record_limit"
+          ],
+          "properties": {
+            "dataset": {
+              "type": "string",
+              "maxLength": 15
+            },
+            "symbols": {
+              "type": "array",
+              "maxItems": 128,
+              "items": {
+                "type": "string",
+                "maxLength": 128
+              }
+            },
+            "start_ns": {
+              "type": "string",
+              "maxLength": 20,
+              "pattern": "^(0|[1-9][0-9]*)$"
+            },
+            "end_ns": {
+              "type": "string",
+              "maxLength": 20,
+              "pattern": "^(0|[1-9][0-9]*)$"
+            },
+            "record_limit": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            }
+          }
+        },
+        "limits": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "max_file_bytes",
+            "max_metadata_bytes",
+            "max_records",
+            "max_window_ns",
+            "max_symbols",
+            "max_attempts",
+            "max_retry_after_seconds"
+          ],
+          "properties": {
+            "max_file_bytes": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "max_metadata_bytes": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 4294967295
+            },
+            "max_records": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "max_window_ns": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "max_symbols": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 65535
+            },
+            "max_attempts": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 255
+            },
+            "max_retry_after_seconds": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 4294967295
+            }
+          }
+        }
+      }
+    },
+    "databento_reference": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "adapter",
+        "selection",
+        "limits"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "symphony.sqav.request-validation-input.v1"
+        },
+        "adapter": {
+          "const": "databento_reference"
+        },
+        "selection": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "operation",
+            "symbols",
+            "start",
+            "end"
+          ],
+          "properties": {
+            "operation": {
+              "enum": [
+                "corporate_actions",
+                "adjustment_factors",
+                "security_master_range",
+                "security_master_last"
+              ]
+            },
+            "symbols": {
+              "type": "array",
+              "maxItems": 128,
+              "items": {
+                "type": "string",
+                "maxLength": 128
+              }
+            },
+            "start": {
+              "type": "string",
+              "maxLength": 10
+            },
+            "end": {
+              "type": "string",
+              "maxLength": 10
+            }
+          }
+        },
+        "limits": {
+          "type": "null"
+        }
+      }
+    }
+  },
+  "result": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "protocol",
+      "adapter",
+      "adapter_id",
+      "adapter_version",
+      "request_digest",
+      "plan_reference",
+      "validation_scope",
+      "provider_observation",
+      "result_digest"
+    ],
+    "properties": {
+      "protocol": {
+        "const": "symphony.sqav.request-validation.v1"
+      },
+      "adapter": {
+        "enum": [
+          "fred",
+          "databento_historical",
+          "databento_reference"
+        ]
+      },
+      "adapter_id": {
+        "type": "string",
+        "maxLength": 128
+      },
+      "adapter_version": {
+        "type": "string",
+        "maxLength": 32
+      },
+      "request_digest": {
+        "type": "string",
+        "pattern": "^sha256:[0-9a-f]{64}$"
+      },
+      "plan_reference": {
+        "type": "string",
+        "pattern": "^(source-request-v1-|sqdh1-sha256-)[0-9a-f]{64}$"
+      },
+      "validation_scope": {
+        "const": "native_request_only"
+      },
+      "provider_observation": {
+        "const": "not_performed"
+      },
+      "result_digest": {
+        "type": "string",
+        "pattern": "^sha256:[0-9a-f]{64}$"
+      }
+    }
+  }
+}

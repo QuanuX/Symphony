@@ -1,0 +1,13 @@
+{
+  "protocol": "symphony.sqav.request-validation-input.v1",
+  "adapter": "databento_reference",
+  "selection": {
+    "operation": "security_master_range",
+    "symbols": [
+      "AAPL"
+    ],
+    "start": "2020-01-01",
+    "end": "2020-01-02"
+  },
+  "limits": null
+}

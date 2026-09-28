@@ -27,7 +27,7 @@
         "modules/sqav-news-api-cpp/tests/sdk-consumer/main.cpp verifies public installed admission and refusal independently of source include paths."
       ],
       "feature_id": "ssfv:symphony:sqav-news-api-cpp",
-      "how": "The user selected an API surface without a news vendor. The exact UTF-8 JSON envelope has thirteen fields: schema=sqav-news-ingress-v1, provider, publisher, article, revision, supersedes, published_at, updated_at, language, rights_ref, source_uri, headline and text. Unknown envelope fields are refused in version 1. Metadata tokens are bounded; headline is nonempty up to 1,024 bytes, source URI begins https:// and is at most 2,048 bytes, body is nonempty and bounded by the selected JSON string/input limits. Publication/update times require UTC RFC3339 seconds with optional 1\u20139 fractional digits; leap-second values are not admitted in this profile. A first revision has empty supersedes and no predecessor. A correction supplies the actual immutable predecessor, exact reference, same provider/publisher/article/publication value, a changed revision ID and nondecreasing update time. All article bytes remain original. Capture reports completion only for one declared article revision, never an entire feed. Rights metadata is retained in the original envelope and grants no permissions. Source URI and article text are data and are never fetched or executed by this API.",
+      "how": "The user selected an API surface without a news vendor. The exact UTF-8 JSON envelope has thirteen fields: schema=sqav-news-ingress-v1, provider, publisher, article, revision, supersedes, published_at, updated_at, language, rights_ref, source_uri, headline and text. Unknown envelope fields are refused in version 1. Metadata tokens are bounded; headline is nonempty up to 1,024 bytes, source URI begins https:// and is at most 2,048 bytes, body is nonempty and bounded by the selected JSON string/input limits. Publication/update times require UTC RFC3339 seconds with optional 1–9 fractional digits; leap-second values are not admitted in this profile. A first revision has empty supersedes and no predecessor. A correction supplies the actual immutable predecessor, exact reference, same provider/publisher/article/publication value, a changed revision ID and nondecreasing update time. All article bytes remain original. Capture reports completion only for one declared article revision, never an entire feed. Rights metadata is retained in the original envelope and grants no permissions. Source URI and article text are data and are never fetched or executed by this API.",
       "implementation_languages": [
         {
           "language": "C++26",
@@ -40,8 +40,8 @@
       ],
       "implementation_paths": [
         "modules/sqav-news-api-cpp/CMakeLists.txt",
-        "modules/sqav-news-api-cpp/src/news.cpp",
-        "modules/sqav-news-api-cpp/include/symphony/sqav/news.hpp"
+        "modules/sqav-news-api-cpp/include/symphony/sqav/news.hpp",
+        "modules/sqav-news-api-cpp/src/news.cpp"
       ],
       "kind": "feature",
       "non_claims": [

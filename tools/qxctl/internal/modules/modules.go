@@ -14,18 +14,47 @@ import (
 	"github.com/QuanuX/Symphony/tools/qxctl/internal/repository"
 )
 
-var CanonicalModules = []string{
+// SQVModules extends source-contract discovery; it makes no installed runtime claim.
+var SQVModules = []string{
+	"native-source-support-cpp",
+	"scabv-ibkr-client-portal-cpp",
+	"scabv-ibkr-tws-cpp",
+	"sqav-capture-cpp",
+	"sqav-databento-dbn-cpp",
+	"sqav-databento-reference-cpp",
+	"sqav-fred-cpp",
+	"sqav-news-api-cpp",
+	"sqav-request-engine",
+	"sqdv-delivery-cpp",
+	"sqfv-batch-cpp",
+	"sqmv-metadata-cpp",
+	"sqpv-local-store-cpp",
+	"sqtv-integer-conversion-cpp",
+}
+
+var CanonicalModules = append([]string{
 	"hotpath-runtime",
 	"secure-identity-access-governance",
 	"ssiag-provider-macos-keychain",
 	"stav-append-authority",
-}
+}, SQVModules...)
 
 var ExpectedFiles = []string{
 	"INTENT.md",
 	"MANIFEST.md",
 	"INSTALL.md",
 	"SKILL.md",
+}
+
+// ContractsFor preserves the four legacy contracts and admits the explicit SQV
+// specification and semantic feature record without adding a CLI namespace.
+func ContractsFor(module string) []string {
+	for _, name := range SQVModules {
+		if module == name {
+			return append(append([]string{}, ExpectedFiles...), "SPEC.md", "FEATURES.md")
+		}
+	}
+	return append([]string{}, ExpectedFiles...)
 }
 
 type ContractMetadata struct {
@@ -92,7 +121,7 @@ func Inspect(repoRoot, moduleName string) ([]string, error) {
 		return output, fmt.Errorf("missing module directory: %s", modRelPath)
 	}
 
-	for _, file := range ExpectedFiles {
+	for _, file := range ContractsFor(moduleName) {
 		filePath := filepath.Join(modPath, file)
 		if !repository.IsFile(filePath) {
 			output = append(output, fmt.Sprintf("contract: %s missing", file))
@@ -135,7 +164,7 @@ func Check(repoRoot, moduleName string) ([]string, error) {
 		return output, fmt.Errorf("missing module directory: %s", modRelPath)
 	}
 
-	for _, file := range ExpectedFiles {
+	for _, file := range ContractsFor(moduleName) {
 		filePath := filepath.Join(modPath, file)
 		if !repository.IsFile(filePath) {
 			output = append(output, fmt.Sprintf("module check: missing contract %s", file))
@@ -207,7 +236,7 @@ func Metadata(repoRoot, moduleName string) ([]string, error) {
 		return output, fmt.Errorf("missing module directory: %s", modRelPath)
 	}
 
-	for _, file := range ExpectedFiles {
+	for _, file := range ContractsFor(moduleName) {
 		filePath := filepath.Join(modPath, file)
 		relPath := filepath.Join(modRelPath, file)
 
@@ -270,7 +299,7 @@ func MetadataJSON(repoRoot, moduleName string) ([]byte, error) {
 		Module: moduleName,
 	}
 
-	for _, file := range ExpectedFiles {
+	for _, file := range ContractsFor(moduleName) {
 		filePath := filepath.Join(modPath, file)
 		relPath := filepath.Join(modRelPath, file)
 
@@ -305,7 +334,7 @@ func MetadataAllJSON(repoRoot string) ([]byte, error) {
 			Module: mod,
 		}
 
-		for _, file := range ExpectedFiles {
+		for _, file := range ContractsFor(mod) {
 			filePath := filepath.Join(modPath, file)
 			relPath := filepath.Join(modRelPath, file)
 

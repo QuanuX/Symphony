@@ -1,0 +1,46 @@
+{
+  "protocol": "symphony.shv.owner-interface.v2",
+  "module_id": "sqav-request-engine",
+  "engine_id": "symphony-sqav-request",
+  "namespace": "symphony::sqav::request",
+  "current_version": "0.1.0-dev",
+  "releases": {
+    "0.1.0-dev": [
+      "request_validate"
+    ]
+  },
+  "contract_versions": [
+    "modules/sqav-request-engine/SPEC.md@v1",
+    "symphony.sqav.request-validation-input.v1",
+    "symphony.sqav.request-validation.v1"
+  ],
+  "operations": [
+    {
+      "administration_disposition": "qxctl_required",
+      "administrative_interactions": [
+        "validate"
+      ],
+      "authorization_requirement": "none",
+      "availability": "implemented",
+      "direct_invocation": "supported",
+      "engine_operation_id": "engop:symphony:sqav-request.validate",
+      "expected_state_required": false,
+      "feature_ids": [
+        "ssfv:symphony:sqav-request-engine"
+      ],
+      "idempotency": "idempotent",
+      "input_protocol": "symphony.sqav.request-validation-input.v1",
+      "mutability": "read_only",
+      "operation_name": "request_validate",
+      "output_protocol": "symphony.sqav.request-validation.v1",
+      "recovery_operation_id": null,
+      "thermal_path": "freezing"
+    }
+  ],
+  "schemas": [
+    "modules/sqav-request-engine/schemas/v1/request.schema.json",
+    "modules/sqav-request-engine/schemas/v1/request.templates.json"
+  ],
+  "companions": [],
+  "embedded_dependencies": []
+}

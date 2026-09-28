@@ -1037,6 +1037,61 @@
       "cross_vector_references": [
         {
           "applicability": "applicable",
+          "reason": "Material source change closes append-only after verification.",
+          "reference": "knowledge/sclv/SPEC.md",
+          "vector": "sclv"
+        },
+        {
+          "applicability": "applicable",
+          "reason": "Source contract discovery and exact closure traceability.",
+          "reference": "knowledge/skvi/INDEX.md",
+          "vector": "skvi"
+        }
+      ],
+      "distinctions": [],
+      "evidence": [
+        "tools/qxctl/cmd/qxctl/sqv_test.go",
+        "tools/qxctl/internal/knowledgeengine/sqav_request_test.go"
+      ],
+      "feature_id": "ssfv:symphony:qxctl.sqv-administration",
+      "how": "A receipt-bound C++26 process calls three existing SQAV plan validators. Go checks bounded JSON, installation/interface/schema identity and result correspondence. Shared module discovery reads admitted source contracts.",
+      "implementation_languages": [
+        {
+          "language": "Go",
+          "role": "Exact installation discovery, process consumption, independent evidence checks and command grammar."
+        }
+      ],
+      "implementation_paths": [
+        "tools/qxctl/cmd/qxctl/sqv.go",
+        "tools/qxctl/internal/knowledgeengine/sqav_request.go"
+      ],
+      "kind": "subfeature",
+      "non_claims": [
+        "No provider calls, credentials, paid requests, live feed, job control, store mutation or broker validation."
+      ],
+      "owner_contract": "tools/qxctl/MANIFEST.md",
+      "parent_feature_id": "ssfv:symphony:qxctl",
+      "record_version": 2,
+      "relationships": [
+        {
+          "rationale": "Native SQAV owns request semantics.",
+          "target_feature_id": "ssfv:symphony:sqav-request-engine",
+          "type": "depends_on"
+        }
+      ],
+      "source_scope": "tools/qxctl",
+      "status": "experimental",
+      "title": "SQV request administration",
+      "what": "Three canonical commands expose native SQAV validation and exact installed schema/templates.",
+      "when": "On explicit local invocation with exact prefix and release.",
+      "where": "qxctl sqv acquisition validate, sqv schema and sqv template; existing module and inventory commands.",
+      "who": "Operators and noninteractive tools selecting native SQAV request contracts.",
+      "why": "Keep source request validation native and share discovery without provider command duplication."
+    },
+    {
+      "cross_vector_references": [
+        {
+          "applicability": "applicable",
           "reason": "SCLV records reviewed SSIAG client and grammar changes.",
           "reference": "knowledge/sclv/CHANGELOG.md",
           "vector": "sclv"

@@ -27,7 +27,7 @@
         "modules/sqav-fred-cpp/tests/sdk-consumer/main.cpp verifies public installed admission and refusal independently of source include paths."
       ],
       "feature_id": "ssfv:symphony:sqav-fred-cpp",
-      "how": "Provider surface: FRED unversioned HTTP API observed 2026-09-28; endpoints series/observations and series/vintagedates, JSON, ascending order. Explicit series, real-time start/end and observation dates prevent current-date defaults from changing identity. Observations use units=lin and output_type=1; actual physical units and seasonal metadata are not invented from that parameter. Exact date-level real-time bounds permit ALFRED snapshots without inventing publication instants. Page size 1\u2013100,000 for observations or 1\u201310,000 for vintage dates; uint32 offsets/counts checked before arithmetic. The response must echo the requested ranges, limit, offset and selected output settings. Records must fill the exact remaining page count. Missing value dot is distinct from zero; values remain decimal text. Capture preserves original JSON, request/vintage identity and page scope; a single page is complete only when offset zero covers the declared result count. No multi-request atomicity is implied. Partial pages expose the next offset for an explicitly bounded caller workflow. Collection uses the shared native HTTP boundary and an actual supplied credential-use bridge.",
+      "how": "Provider surface: FRED unversioned HTTP API observed 2026-09-28; endpoints series/observations and series/vintagedates, JSON, ascending order. Explicit series, real-time start/end and observation dates prevent current-date defaults from changing identity. Observations use units=lin and output_type=1; actual physical units and seasonal metadata are not invented from that parameter. Exact date-level real-time bounds permit ALFRED snapshots without inventing publication instants. Page size 1–100,000 for observations or 1–10,000 for vintage dates; uint32 offsets/counts checked before arithmetic. The response must echo the requested ranges, limit, offset and selected output settings. Records must fill the exact remaining page count. Missing value dot is distinct from zero; values remain decimal text. Capture preserves original JSON, request/vintage identity and page scope; a single page is complete only when offset zero covers the declared result count. No multi-request atomicity is implied. Partial pages expose the next offset for an explicitly bounded caller workflow. Collection uses the shared native HTTP boundary and an actual supplied credential-use bridge.",
       "implementation_languages": [
         {
           "language": "C++26",
@@ -40,8 +40,8 @@
       ],
       "implementation_paths": [
         "modules/sqav-fred-cpp/CMakeLists.txt",
-        "modules/sqav-fred-cpp/src/fred.cpp",
-        "modules/sqav-fred-cpp/include/symphony/sqav/fred.hpp"
+        "modules/sqav-fred-cpp/include/symphony/sqav/fred.hpp",
+        "modules/sqav-fred-cpp/src/fred.cpp"
       ],
       "kind": "feature",
       "non_claims": [

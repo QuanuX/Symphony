@@ -20,7 +20,7 @@ SQV contracts must distinguish hot, warm, cool, cold, and freezing consequences 
 
 Not every execution Nest needs a broker API or data API. Broker interfaces are primarily relevant to non-FIX systems and must preserve exact version compatibility when present. A Nest built against version 3 remains version-3-bound until the user explicitly migrates it; a current version 13 does not reinterpret the old contract. Independent research sources such as economic data and news do not inherit broker semantics.
 
-FIX systems approach data, symbol matching, and messaging through their own regulated protocol family and SOOV architecture. Non-FIX broker API governance and version lineage remain distinct deferred work. A draft SCABV proposal is not proof that a broker adapter or operational credential path exists.
+FIX systems approach data, symbol matching, and messaging through their own regulated protocol family and SOOV architecture. SCABV now owns the bounded separate Client Portal and external Stable 10.45 TWS read adapters admitted at `knowledge/sqv/scabv/SPEC.md`. Their broader broker governance programme, authorized vendor SDK conformance and operational credential paths remain explicit prerequisites.
 
 ## Reusable Engines
 

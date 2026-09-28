@@ -15,3 +15,7 @@ The regression suite generates an additional `user-sensor-engine` in an isolated
 ## Following a metadata release with a semantic release
 
 Freeze the previous installed descriptor and retain verification of its receipt-owned declaration against its original canonical digest. Changing only the current interface constant must not disable verification of a previously shipped metadata release. Review native dependency admission, independent Go replay, installed schemas and qxctl orchestration together. A semantic release requires an exact new version and explicit consumer review; adding its name to mechanical metadata alone does not establish compatibility. SHV partition/publication 0.4 demonstrate this boundary while retaining 0.3 declaration checks.
+
+## Optional owner symbol prefixes
+
+Registration v1 optionally admits `symbol_prefixes` with exactly `go_export`, `go_private`, and `cmake` identifiers. Existing registrations retain SHV/shv/SHV_OWNER bytes. A selected prefix emits the same owner interface with caller-selected language symbols and receipt-resource SHA-256 admission constants read from that registration root. This is reusable generation machinery; it does not assign SHV semantics to another vector. SQAV uses SQAV/sqav/SQAV_REQUEST for its distinct native owner.

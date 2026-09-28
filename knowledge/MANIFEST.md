@@ -218,3 +218,7 @@ The common v3 invariant registry schema additionally admits explicitly named pro
 - `modules/scabv-ibkr-client-portal-cpp/MANIFEST.md`
 - `modules/scabv-ibkr-tws-cpp/MANIFEST.md`
 - `modules/sqav-databento-reference-cpp/MANIFEST.md`
+
+## SQAV request administration
+
+- `modules/sqav-request-engine/MANIFEST.md`

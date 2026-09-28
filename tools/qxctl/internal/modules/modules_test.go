@@ -59,7 +59,7 @@ func TestInspect_Success(t *testing.T) {
 		t.Fatalf("failed to create module dir: %v", err)
 	}
 
-	for _, file := range ExpectedFiles {
+	for _, file := range ContractsFor(mod) {
 		filePath := filepath.Join(modPath, file)
 		if err := os.WriteFile(filePath, []byte("# Title\nContent"), 0644); err != nil {
 			t.Fatalf("failed to write contract file: %v", err)
@@ -126,7 +126,7 @@ func TestCheck_Success(t *testing.T) {
 		t.Fatalf("failed to create module dir: %v", err)
 	}
 
-	for _, file := range ExpectedFiles {
+	for _, file := range ContractsFor(mod) {
 		filePath := filepath.Join(modPath, file)
 		if err := os.WriteFile(filePath, []byte("# Title\nContent"), 0644); err != nil {
 			t.Fatalf("failed to write contract file: %v", err)
@@ -188,7 +188,7 @@ func TestCheck_EmptyContractFile(t *testing.T) {
 		t.Fatalf("failed to create module dir: %v", err)
 	}
 
-	for _, file := range ExpectedFiles {
+	for _, file := range ContractsFor(mod) {
 		filePath := filepath.Join(modPath, file)
 		if err := os.WriteFile(filePath, []byte(""), 0644); err != nil {
 			t.Fatalf("failed to write contract file: %v", err)
@@ -210,7 +210,7 @@ func TestCheck_MissingH1(t *testing.T) {
 		t.Fatalf("failed to create module dir: %v", err)
 	}
 
-	for _, file := range ExpectedFiles {
+	for _, file := range ContractsFor(mod) {
 		filePath := filepath.Join(modPath, file)
 		if err := os.WriteFile(filePath, []byte("No title here\nContent"), 0644); err != nil {
 			t.Fatalf("failed to write contract file: %v", err)
@@ -232,7 +232,7 @@ func TestCheckAll_Success(t *testing.T) {
 			t.Fatalf("failed to create module dir: %v", err)
 		}
 
-		for _, file := range ExpectedFiles {
+		for _, file := range ContractsFor(mod) {
 			filePath := filepath.Join(modPath, file)
 			if err := os.WriteFile(filePath, []byte("# Title\nContent"), 0644); err != nil {
 				t.Fatalf("failed to write contract file: %v", err)
@@ -265,7 +265,7 @@ func TestCheckAll_Failure(t *testing.T) {
 		t.Fatalf("failed to create module dir: %v", err)
 	}
 
-	for _, file := range ExpectedFiles {
+	for _, file := range ContractsFor(mod) {
 		filePath := filepath.Join(modPath, file)
 		if err := os.WriteFile(filePath, []byte("# Title\nContent"), 0644); err != nil {
 			t.Fatalf("failed to write contract file: %v", err)
@@ -287,7 +287,7 @@ func TestMetadata_Success(t *testing.T) {
 		t.Fatalf("failed to create module dir: %v", err)
 	}
 
-	for _, file := range ExpectedFiles {
+	for _, file := range ContractsFor(mod) {
 		filePath := filepath.Join(modPath, file)
 		if err := os.WriteFile(filePath, []byte("# Title\nContent"), 0644); err != nil {
 			t.Fatalf("failed to write contract file: %v", err)
@@ -314,7 +314,7 @@ func TestMetadataAll_Success(t *testing.T) {
 			t.Fatalf("failed to create module dir: %v", err)
 		}
 
-		for _, file := range ExpectedFiles {
+		for _, file := range ContractsFor(mod) {
 			filePath := filepath.Join(modPath, file)
 			if err := os.WriteFile(filePath, []byte("# Title\nContent"), 0644); err != nil {
 				t.Fatalf("failed to write contract file: %v", err)
@@ -342,7 +342,7 @@ func TestMetadataJSON_Success(t *testing.T) {
 		t.Fatalf("failed to create module dir: %v", err)
 	}
 
-	for _, file := range ExpectedFiles {
+	for _, file := range ContractsFor(mod) {
 		filePath := filepath.Join(modPath, file)
 		if err := os.WriteFile(filePath, []byte("# Title\nContent"), 0644); err != nil {
 			t.Fatalf("failed to write contract file: %v", err)
@@ -375,7 +375,7 @@ func TestMetadataAllJSON_Success(t *testing.T) {
 			t.Fatalf("failed to create module dir: %v", err)
 		}
 
-		for _, file := range ExpectedFiles {
+		for _, file := range ContractsFor(mod) {
 			filePath := filepath.Join(modPath, file)
 			if err := os.WriteFile(filePath, []byte("# Title\nContent"), 0644); err != nil {
 				t.Fatalf("failed to write contract file: %v", err)

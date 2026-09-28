@@ -738,6 +738,29 @@
     {
       "expectations": [
         {
+          "command_ids": [
+            "qxcmd:symphony:inventory",
+            "qxcmd:symphony:inventory.digest",
+            "qxcmd:symphony:module.check",
+            "qxcmd:symphony:module.inspect",
+            "qxcmd:symphony:module.metadata",
+            "qxcmd:symphony:modules",
+            "qxcmd:symphony:modules.check",
+            "qxcmd:symphony:modules.metadata"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [],
+          "evidence": [
+            "modules/sqav-request-engine/SPEC.md",
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "discover",
+          "rationale": "Exact native local request validation and receipt-owned resources; source module contracts remain distinct from runtime state.",
+          "requirement": "required"
+        },
+        {
           "command_ids": [],
           "delivery": "runtime_only",
           "engine_operation_ids": [],
@@ -747,7 +770,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "invoke",
-          "rationale": "The exact C++26 library executes only when invoked by its explicit native caller; installation adds no independent process or SQV qxctl surface.",
+          "rationale": "Payload operations remain explicit native library calls. Shared source-contract discovery and the separate SQAV request engine establish only their own bounded administrative evidence.",
           "requirement": "required"
         }
       ],
@@ -2003,6 +2026,44 @@
       "expectations": [
         {
           "command_ids": [
+            "qxcmd:symphony:sqv.schema",
+            "qxcmd:symphony:sqv.template"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [],
+          "evidence": [
+            "modules/sqav-request-engine/SPEC.md",
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "discover",
+          "rationale": "Exact native local request validation and receipt-owned resources; source module contracts remain distinct from runtime state.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:sqv.acquisition.validate"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [],
+          "evidence": [
+            "modules/sqav-request-engine/SPEC.md",
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "validate",
+          "rationale": "Exact native local request validation and receipt-owned resources; source module contracts remain distinct from runtime state.",
+          "requirement": "required"
+        }
+      ],
+      "feature_id": "ssfv:symphony:qxctl.sqv-administration"
+    },
+    {
+      "expectations": [
+        {
+          "command_ids": [
             "qxcmd:symphony:ssiag.policy.apply"
           ],
           "delivery": "direct",
@@ -2482,6 +2543,29 @@
     {
       "expectations": [
         {
+          "command_ids": [
+            "qxcmd:symphony:inventory",
+            "qxcmd:symphony:inventory.digest",
+            "qxcmd:symphony:module.check",
+            "qxcmd:symphony:module.inspect",
+            "qxcmd:symphony:module.metadata",
+            "qxcmd:symphony:modules",
+            "qxcmd:symphony:modules.check",
+            "qxcmd:symphony:modules.metadata"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [],
+          "evidence": [
+            "modules/sqav-request-engine/SPEC.md",
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "discover",
+          "rationale": "Exact native local request validation and receipt-owned resources; source module contracts remain distinct from runtime state.",
+          "requirement": "required"
+        },
+        {
           "command_ids": [],
           "delivery": "runtime_only",
           "engine_operation_ids": [],
@@ -2491,7 +2575,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "invoke",
-          "rationale": "The exact C++26 library executes only when invoked by its explicit native caller; installation adds no independent process or SQV qxctl surface.",
+          "rationale": "Payload operations remain explicit native library calls. Shared source-contract discovery and the separate SQAV request engine establish only their own bounded administrative evidence.",
           "requirement": "required"
         }
       ],
@@ -2499,6 +2583,29 @@
     },
     {
       "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:inventory",
+            "qxcmd:symphony:inventory.digest",
+            "qxcmd:symphony:module.check",
+            "qxcmd:symphony:module.inspect",
+            "qxcmd:symphony:module.metadata",
+            "qxcmd:symphony:modules",
+            "qxcmd:symphony:modules.check",
+            "qxcmd:symphony:modules.metadata"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [],
+          "evidence": [
+            "modules/sqav-request-engine/SPEC.md",
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "discover",
+          "rationale": "Exact native local request validation and receipt-owned resources; source module contracts remain distinct from runtime state.",
+          "requirement": "required"
+        },
         {
           "command_ids": [],
           "delivery": "runtime_only",
@@ -2509,7 +2616,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "invoke",
-          "rationale": "The exact C++26 library executes only when invoked by its explicit native caller; installation adds no independent process or SQV qxctl surface.",
+          "rationale": "Payload operations remain explicit native library calls. Shared source-contract discovery and the separate SQAV request engine establish only their own bounded administrative evidence.",
           "requirement": "required"
         }
       ],
@@ -6935,6 +7042,29 @@
     {
       "expectations": [
         {
+          "command_ids": [
+            "qxcmd:symphony:inventory",
+            "qxcmd:symphony:inventory.digest",
+            "qxcmd:symphony:module.check",
+            "qxcmd:symphony:module.inspect",
+            "qxcmd:symphony:module.metadata",
+            "qxcmd:symphony:modules",
+            "qxcmd:symphony:modules.check",
+            "qxcmd:symphony:modules.metadata"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [],
+          "evidence": [
+            "modules/sqav-request-engine/SPEC.md",
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "discover",
+          "rationale": "Exact native local request validation and receipt-owned resources; source module contracts remain distinct from runtime state.",
+          "requirement": "required"
+        },
+        {
           "command_ids": [],
           "delivery": "runtime_only",
           "engine_operation_ids": [],
@@ -6944,7 +7074,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "invoke",
-          "rationale": "The exact C++26 library executes only when invoked by its explicit native caller; installation adds no independent process or SQV qxctl surface.",
+          "rationale": "Payload operations remain explicit native library calls. Shared source-contract discovery and the separate SQAV request engine establish only their own bounded administrative evidence.",
           "requirement": "required"
         }
       ],
@@ -6952,6 +7082,29 @@
     },
     {
       "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:inventory",
+            "qxcmd:symphony:inventory.digest",
+            "qxcmd:symphony:module.check",
+            "qxcmd:symphony:module.inspect",
+            "qxcmd:symphony:module.metadata",
+            "qxcmd:symphony:modules",
+            "qxcmd:symphony:modules.check",
+            "qxcmd:symphony:modules.metadata"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [],
+          "evidence": [
+            "modules/sqav-request-engine/SPEC.md",
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "discover",
+          "rationale": "Exact native local request validation and receipt-owned resources; source module contracts remain distinct from runtime state.",
+          "requirement": "required"
+        },
         {
           "command_ids": [],
           "delivery": "runtime_only",
@@ -6962,7 +7115,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "invoke",
-          "rationale": "The exact C++26 library executes only when invoked by its explicit native caller; installation adds no independent process or SQV qxctl surface.",
+          "rationale": "Payload operations remain explicit native library calls. Shared source-contract discovery and the separate SQAV request engine establish only their own bounded administrative evidence.",
           "requirement": "required"
         }
       ],
@@ -6970,6 +7123,29 @@
     },
     {
       "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:inventory",
+            "qxcmd:symphony:inventory.digest",
+            "qxcmd:symphony:module.check",
+            "qxcmd:symphony:module.inspect",
+            "qxcmd:symphony:module.metadata",
+            "qxcmd:symphony:modules",
+            "qxcmd:symphony:modules.check",
+            "qxcmd:symphony:modules.metadata"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [],
+          "evidence": [
+            "modules/sqav-request-engine/SPEC.md",
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "discover",
+          "rationale": "Exact native local request validation and receipt-owned resources; source module contracts remain distinct from runtime state.",
+          "requirement": "required"
+        },
         {
           "command_ids": [],
           "delivery": "runtime_only",
@@ -6980,7 +7156,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "invoke",
-          "rationale": "The exact C++26 library executes only when invoked by its explicit native caller; installation adds no independent process or SQV qxctl surface.",
+          "rationale": "Payload operations remain explicit native library calls. Shared source-contract discovery and the separate SQAV request engine establish only their own bounded administrative evidence.",
           "requirement": "required"
         }
       ],
@@ -6988,6 +7164,29 @@
     },
     {
       "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:inventory",
+            "qxcmd:symphony:inventory.digest",
+            "qxcmd:symphony:module.check",
+            "qxcmd:symphony:module.inspect",
+            "qxcmd:symphony:module.metadata",
+            "qxcmd:symphony:modules",
+            "qxcmd:symphony:modules.check",
+            "qxcmd:symphony:modules.metadata"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [],
+          "evidence": [
+            "modules/sqav-request-engine/SPEC.md",
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "discover",
+          "rationale": "Exact native local request validation and receipt-owned resources; source module contracts remain distinct from runtime state.",
+          "requirement": "required"
+        },
         {
           "command_ids": [],
           "delivery": "runtime_only",
@@ -6998,7 +7197,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "invoke",
-          "rationale": "The exact C++26 library executes only when invoked by its explicit native caller; installation adds no independent process or SQV qxctl surface.",
+          "rationale": "Payload operations remain explicit native library calls. Shared source-contract discovery and the separate SQAV request engine establish only their own bounded administrative evidence.",
           "requirement": "required"
         }
       ],
@@ -7006,6 +7205,29 @@
     },
     {
       "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:inventory",
+            "qxcmd:symphony:inventory.digest",
+            "qxcmd:symphony:module.check",
+            "qxcmd:symphony:module.inspect",
+            "qxcmd:symphony:module.metadata",
+            "qxcmd:symphony:modules",
+            "qxcmd:symphony:modules.check",
+            "qxcmd:symphony:modules.metadata"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [],
+          "evidence": [
+            "modules/sqav-request-engine/SPEC.md",
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "discover",
+          "rationale": "Exact native local request validation and receipt-owned resources; source module contracts remain distinct from runtime state.",
+          "requirement": "required"
+        },
         {
           "command_ids": [],
           "delivery": "runtime_only",
@@ -7016,7 +7238,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "invoke",
-          "rationale": "The exact C++26 library executes only when invoked by its explicit native caller; installation adds no independent process or SQV qxctl surface.",
+          "rationale": "Payload operations remain explicit native library calls. Shared source-contract discovery and the separate SQAV request engine establish only their own bounded administrative evidence.",
           "requirement": "required"
         }
       ],
@@ -7024,6 +7246,69 @@
     },
     {
       "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:sqv.schema",
+            "qxcmd:symphony:sqv.template"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [],
+          "evidence": [
+            "modules/sqav-request-engine/SPEC.md",
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "discover",
+          "rationale": "Exact native local request validation and receipt-owned resources; source module contracts remain distinct from runtime state.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:sqv.acquisition.validate"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:sqav-request.validate"
+          ],
+          "evidence": [
+            "modules/sqav-request-engine/SPEC.md",
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "validate",
+          "rationale": "Exact native local request validation and receipt-owned resources; source module contracts remain distinct from runtime state.",
+          "requirement": "required"
+        }
+      ],
+      "feature_id": "ssfv:symphony:sqav-request-engine"
+    },
+    {
+      "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:inventory",
+            "qxcmd:symphony:inventory.digest",
+            "qxcmd:symphony:module.check",
+            "qxcmd:symphony:module.inspect",
+            "qxcmd:symphony:module.metadata",
+            "qxcmd:symphony:modules",
+            "qxcmd:symphony:modules.check",
+            "qxcmd:symphony:modules.metadata"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [],
+          "evidence": [
+            "modules/sqav-request-engine/SPEC.md",
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "discover",
+          "rationale": "Exact native local request validation and receipt-owned resources; source module contracts remain distinct from runtime state.",
+          "requirement": "required"
+        },
         {
           "command_ids": [],
           "delivery": "runtime_only",
@@ -7034,7 +7319,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "invoke",
-          "rationale": "The exact C++26 library executes only when invoked by its explicit native caller; installation adds no independent process or SQV qxctl surface.",
+          "rationale": "Payload operations remain explicit native library calls. Shared source-contract discovery and the separate SQAV request engine establish only their own bounded administrative evidence.",
           "requirement": "required"
         }
       ],
@@ -7042,6 +7327,29 @@
     },
     {
       "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:inventory",
+            "qxcmd:symphony:inventory.digest",
+            "qxcmd:symphony:module.check",
+            "qxcmd:symphony:module.inspect",
+            "qxcmd:symphony:module.metadata",
+            "qxcmd:symphony:modules",
+            "qxcmd:symphony:modules.check",
+            "qxcmd:symphony:modules.metadata"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [],
+          "evidence": [
+            "modules/sqav-request-engine/SPEC.md",
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "discover",
+          "rationale": "Exact native local request validation and receipt-owned resources; source module contracts remain distinct from runtime state.",
+          "requirement": "required"
+        },
         {
           "command_ids": [],
           "delivery": "runtime_only",
@@ -7052,7 +7360,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "invoke",
-          "rationale": "The trusted same-process C++26 static library runs only inside its explicit native caller; it has no independently executable administration or data-plane command surface.",
+          "rationale": "Payload operations remain explicit native library calls. Shared source-contract discovery and the separate SQAV request engine establish only their own bounded administrative evidence.",
           "requirement": "required"
         }
       ],
@@ -7060,6 +7368,29 @@
     },
     {
       "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:inventory",
+            "qxcmd:symphony:inventory.digest",
+            "qxcmd:symphony:module.check",
+            "qxcmd:symphony:module.inspect",
+            "qxcmd:symphony:module.metadata",
+            "qxcmd:symphony:modules",
+            "qxcmd:symphony:modules.check",
+            "qxcmd:symphony:modules.metadata"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [],
+          "evidence": [
+            "modules/sqav-request-engine/SPEC.md",
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "discover",
+          "rationale": "Exact native local request validation and receipt-owned resources; source module contracts remain distinct from runtime state.",
+          "requirement": "required"
+        },
         {
           "command_ids": [],
           "delivery": "runtime_only",
@@ -7070,7 +7401,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "invoke",
-          "rationale": "The exact C++26 library executes only when invoked by its explicit native caller; installation adds no independent process or SQV qxctl surface.",
+          "rationale": "Payload operations remain explicit native library calls. Shared source-contract discovery and the separate SQAV request engine establish only their own bounded administrative evidence.",
           "requirement": "required"
         }
       ],
@@ -7078,6 +7409,29 @@
     },
     {
       "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:inventory",
+            "qxcmd:symphony:inventory.digest",
+            "qxcmd:symphony:module.check",
+            "qxcmd:symphony:module.inspect",
+            "qxcmd:symphony:module.metadata",
+            "qxcmd:symphony:modules",
+            "qxcmd:symphony:modules.check",
+            "qxcmd:symphony:modules.metadata"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [],
+          "evidence": [
+            "modules/sqav-request-engine/SPEC.md",
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "discover",
+          "rationale": "Exact native local request validation and receipt-owned resources; source module contracts remain distinct from runtime state.",
+          "requirement": "required"
+        },
         {
           "command_ids": [],
           "delivery": "runtime_only",
@@ -7088,7 +7442,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "invoke",
-          "rationale": "The exact C++26 library executes only when invoked by its explicit native caller; installation adds no independent process or SQV qxctl surface.",
+          "rationale": "Payload operations remain explicit native library calls. Shared source-contract discovery and the separate SQAV request engine establish only their own bounded administrative evidence.",
           "requirement": "required"
         }
       ],
@@ -7096,6 +7450,29 @@
     },
     {
       "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:inventory",
+            "qxcmd:symphony:inventory.digest",
+            "qxcmd:symphony:module.check",
+            "qxcmd:symphony:module.inspect",
+            "qxcmd:symphony:module.metadata",
+            "qxcmd:symphony:modules",
+            "qxcmd:symphony:modules.check",
+            "qxcmd:symphony:modules.metadata"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [],
+          "evidence": [
+            "modules/sqav-request-engine/SPEC.md",
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "discover",
+          "rationale": "Exact native local request validation and receipt-owned resources; source module contracts remain distinct from runtime state.",
+          "requirement": "required"
+        },
         {
           "command_ids": [],
           "delivery": "runtime_only",
@@ -7106,7 +7483,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "invoke",
-          "rationale": "The exact C++26 library executes only when invoked by its explicit native caller; installation adds no independent process or SQV qxctl surface.",
+          "rationale": "Payload operations remain explicit native library calls. Shared source-contract discovery and the separate SQAV request engine establish only their own bounded administrative evidence.",
           "requirement": "required"
         }
       ],
@@ -8107,9 +8484,9 @@
   ],
   "format_version": 1,
   "forward_gate": "enforce_new_records",
-  "profile_digest": "sha256:8a2e1bec300c55eee06cb66fdbfdc5424ace5b135b9c59d2e6bd3a8d25d2be09",
+  "profile_digest": "sha256:92723a09f262b68cbb6e52d464d05621b3a9008f6c3d3ffe672987b251be16c3",
   "profile_id": "symphony.registered-features.administration.v1",
   "protocol": "symphony.knowledge.feature-administration-profile.v1",
-  "registered_feature_count": 123,
-  "ssfv_registry_digest": "sha256:987b91f9693f0c400eddc4b69a2375ef0b4d56fca3aba7f6056fb0d4a5e0c2df"
+  "registered_feature_count": 125,
+  "ssfv_registry_digest": "sha256:f8e5de0b40d95b4bbb47837293d5be8ec1a7b0e6569052dbce4ae187edc9e295"
 }

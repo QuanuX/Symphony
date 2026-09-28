@@ -2,7 +2,7 @@
 
 ## Status
 
-Canonical SSFV feature-routing registry. The partial catalog routes 123 experimental records across the platform governance scope and 48 owner scopes enumerated by `COVERAGE.md`.
+Canonical SSFV feature-routing registry. The partial catalog routes 125 experimental records across the platform governance scope and 49 owner scopes enumerated by `COVERAGE.md`.
 
 ## Purpose
 
@@ -1084,6 +1084,78 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - record_digest: `sha256:99ae4416c59203eeeebff4497de8020de6e23c32b7625e5dd4113f27ff041556`
 - notes: Architect-ratified W4 subfeature for deterministic root-summary projection and managed-region freshness assurance; coverage remains partial.
 
+- feature_id: `ssfv:symphony:native-source-support-cpp`
+- feature_file: `modules/native-source-support-cpp/FEATURES.md`
+- owner_contract: `modules/native-source-support-cpp/SPEC.md`
+- source_scope: `modules/native-source-support-cpp`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:platform`
+- record_digest: `sha256:5e1c77680b65891177d448b5eac77d2e54c4738db26d841d5b098d082ae53292`
+- notes: Bounded non-live source implementation; exact external activation and deployment requirements remain explicit.
+
+- feature_id: `ssfv:symphony:sqav-fred-cpp`
+- feature_file: `modules/sqav-fred-cpp/FEATURES.md`
+- owner_contract: `modules/sqav-fred-cpp/SPEC.md`
+- source_scope: `modules/sqav-fred-cpp`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:platform`
+- record_digest: `sha256:74a2ee101d645bc92f95fd61a8152bc2efd31ab72d1afff6bea0d2338b4f55f5`
+- notes: Bounded non-live source implementation; exact external activation and deployment requirements remain explicit.
+
+- feature_id: `ssfv:symphony:sqav-news-api-cpp`
+- feature_file: `modules/sqav-news-api-cpp/FEATURES.md`
+- owner_contract: `modules/sqav-news-api-cpp/SPEC.md`
+- source_scope: `modules/sqav-news-api-cpp`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:platform`
+- record_digest: `sha256:5f550bea9fe08b075000bbe6b652685cfd3ba3b7dee667c8461ff25510e340e8`
+- notes: Bounded non-live source implementation; exact external activation and deployment requirements remain explicit.
+
+- feature_id: `ssfv:symphony:scabv-ibkr-client-portal-cpp`
+- feature_file: `modules/scabv-ibkr-client-portal-cpp/FEATURES.md`
+- owner_contract: `modules/scabv-ibkr-client-portal-cpp/SPEC.md`
+- source_scope: `modules/scabv-ibkr-client-portal-cpp`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:platform`
+- record_digest: `sha256:0333ddef2815ae20e47c90a6a11e5bfae85bd4753f8b206877b4363b8659749b`
+- notes: Bounded non-live source implementation; exact external activation and deployment requirements remain explicit.
+
+- feature_id: `ssfv:symphony:scabv-ibkr-tws-cpp`
+- feature_file: `modules/scabv-ibkr-tws-cpp/FEATURES.md`
+- owner_contract: `modules/scabv-ibkr-tws-cpp/SPEC.md`
+- source_scope: `modules/scabv-ibkr-tws-cpp`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:platform`
+- record_digest: `sha256:5ef6be58e386e0e0e79362d54c7aed3996379c919d643fec35e8d40348160bd1`
+- notes: Bounded non-live source implementation; exact external activation and deployment requirements remain explicit.
+
+- feature_id: `ssfv:symphony:sqav-databento-reference-cpp`
+- feature_file: `modules/sqav-databento-reference-cpp/FEATURES.md`
+- owner_contract: `modules/sqav-databento-reference-cpp/SPEC.md`
+- source_scope: `modules/sqav-databento-reference-cpp`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:platform`
+- record_digest: `sha256:8dc2e1c5a80fbb4371d9fd72a5dbcf6fa5dc4888425c108f550482c916779ed5`
+- notes: Bounded non-live source implementation; exact external activation and deployment requirements remain explicit.
+
+- feature_id: `ssfv:symphony:qxctl.sqv-administration`
+- feature_file: `tools/qxctl/FEATURES.md`
+- owner_contract: `tools/qxctl/MANIFEST.md`
+- source_scope: `tools/qxctl`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:qxctl`
+- record_digest: `sha256:1d9e9e73437f0a1695f636adb4a24d2d6b2aa9b836c3f811bb53fec89a472a27`
+- notes: Bounded SQAV local request validation and shared administration, without provider activation.
+
+- feature_id: `ssfv:symphony:sqav-request-engine`
+- feature_file: `modules/sqav-request-engine/FEATURES.md`
+- owner_contract: `modules/sqav-request-engine/SPEC.md`
+- source_scope: `modules/sqav-request-engine`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:platform`
+- record_digest: `sha256:ca5a45c14f6faef90f5b18f892e8e8b7168b91bbbb0de1640e4cb272ce61b800`
+- notes: Bounded SQAV local request validation and shared administration, without provider activation.
+
 ## Prohibited Entries
 
 Do not register:
@@ -1098,58 +1170,4 @@ Do not register:
 
 ## Non-Authorization Statement
 
-This 114-record registry is an explicitly partial catalog governed by `COVERAGE.md`. It does not authorize an unratified feature record, an unregistered distributed file, repository-wide or installed-host completeness, complete legacy-invariant coverage, engine-decided feature-worthiness, or canonical mutation.
-
-- feature_id: `ssfv:symphony:native-source-support-cpp`
-- feature_file: `modules/native-source-support-cpp/FEATURES.md`
-- owner_contract: `modules/native-source-support-cpp/SPEC.md`
-- source_scope: `modules/native-source-support-cpp`
-- status: `experimental`
-- parent_feature_id: `ssfv:symphony:platform`
-- record_digest: `sha256:13408ed3b10d5155bc916858786b3d5a2ac68cd971901694caec775be139c1f7`
-- notes: Bounded non-live source implementation; exact external activation and deployment requirements remain explicit.
-
-- feature_id: `ssfv:symphony:sqav-fred-cpp`
-- feature_file: `modules/sqav-fred-cpp/FEATURES.md`
-- owner_contract: `modules/sqav-fred-cpp/SPEC.md`
-- source_scope: `modules/sqav-fred-cpp`
-- status: `experimental`
-- parent_feature_id: `ssfv:symphony:platform`
-- record_digest: `sha256:2ad6885cde8f1e1f33654fd425812120de7117374548fe99b7b89a08ef443e10`
-- notes: Bounded non-live source implementation; exact external activation and deployment requirements remain explicit.
-
-- feature_id: `ssfv:symphony:sqav-news-api-cpp`
-- feature_file: `modules/sqav-news-api-cpp/FEATURES.md`
-- owner_contract: `modules/sqav-news-api-cpp/SPEC.md`
-- source_scope: `modules/sqav-news-api-cpp`
-- status: `experimental`
-- parent_feature_id: `ssfv:symphony:platform`
-- record_digest: `sha256:7079ebe5ac2494ce94ef5b78a9820ecfd4baa5c2f92f9cc6fd6e65a73abccf18`
-- notes: Bounded non-live source implementation; exact external activation and deployment requirements remain explicit.
-
-- feature_id: `ssfv:symphony:scabv-ibkr-client-portal-cpp`
-- feature_file: `modules/scabv-ibkr-client-portal-cpp/FEATURES.md`
-- owner_contract: `modules/scabv-ibkr-client-portal-cpp/SPEC.md`
-- source_scope: `modules/scabv-ibkr-client-portal-cpp`
-- status: `experimental`
-- parent_feature_id: `ssfv:symphony:platform`
-- record_digest: `sha256:3397cf339b89d0856e6fd65fce8360bd616ca1320f752baa1ffa71306df7c066`
-- notes: Bounded non-live source implementation; exact external activation and deployment requirements remain explicit.
-
-- feature_id: `ssfv:symphony:scabv-ibkr-tws-cpp`
-- feature_file: `modules/scabv-ibkr-tws-cpp/FEATURES.md`
-- owner_contract: `modules/scabv-ibkr-tws-cpp/SPEC.md`
-- source_scope: `modules/scabv-ibkr-tws-cpp`
-- status: `experimental`
-- parent_feature_id: `ssfv:symphony:platform`
-- record_digest: `sha256:2c57472a741dc486aabccef60efc8177d3721380c5f4c3a7273099707193dae1`
-- notes: Bounded non-live source implementation; exact external activation and deployment requirements remain explicit.
-
-- feature_id: `ssfv:symphony:sqav-databento-reference-cpp`
-- feature_file: `modules/sqav-databento-reference-cpp/FEATURES.md`
-- owner_contract: `modules/sqav-databento-reference-cpp/SPEC.md`
-- source_scope: `modules/sqav-databento-reference-cpp`
-- status: `experimental`
-- parent_feature_id: `ssfv:symphony:platform`
-- record_digest: `sha256:70b86983c6e7475a8ebfe89e479a3122ef6be05c96eddb872c99bca2787f718f`
-- notes: Bounded non-live source implementation; exact external activation and deployment requirements remain explicit.
+This 125-record registry is an explicitly partial catalog governed by `COVERAGE.md`. It does not authorize an unratified feature record, an unregistered distributed file, repository-wide or installed-host completeness, complete legacy-invariant coverage, engine-decided feature-worthiness, or canonical mutation.
