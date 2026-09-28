@@ -1,8 +1,8 @@
 # SQAV Databento DBN C++26 Library Installation
 
-`sqav-databento-dbn-cpp` is an independently selectable, library-only `0.3.0-dev` package. Its CMake package version is `0.3.0`; the public target is `Symphony::SqavDatabentoDbn`. It requires CMake 3.30 or newer, C++26, and one single-configuration generator. The initial verified development target is macOS `amd64` with AppleClang 21; consumer compiler/runtime compatibility remains explicit.
+`sqav-databento-dbn-cpp` is an independently selectable, library-only `0.4.0-dev` package. Its CMake package version is `0.4.0`; the public target is `Symphony::SqavDatabentoDbn`. It requires CMake 3.30 or newer, C++26, and one single-configuration generator. The initial verified development target is macOS `amd64` with AppleClang 21; consumer compiler/runtime compatibility remains explicit.
 
-Exact runtime dependencies are SQAV capture `0.2.0-dev`, foundation `0.3.0-dev`, SQFV batch `0.3.0-dev`, and SQMV metadata `0.2.0-dev`. The default source build compiles those repository dependencies with their tests disabled and excludes their installation rules. Native composition tests additionally build SQPV and SQDV `0.2.0-dev`; those are not exported runtime dependencies. Install dependency packages separately before configuring an installed SDK consumer. A source dependency build does not make its package present in an installation prefix.
+Exact runtime dependencies are SQAV capture `0.2.0-dev`, foundation `0.2.0-dev`, SQFV batch `0.3.0-dev`, and SQMV metadata `0.2.0-dev`. The default source build compiles those repository dependencies with their tests disabled and excludes their installation rules. Native composition tests additionally build SQPV and SQDV `0.2.0-dev`; those are not exported runtime dependencies. Install dependency packages separately before configuring an installed SDK consumer. A source dependency build does not make its package present in an installation prefix.
 
 ```sh
 cmake -S modules/sqav-databento-dbn-cpp -B /tmp/sqav-build -DCMAKE_BUILD_TYPE=Release
@@ -13,7 +13,7 @@ cmake --install /tmp/sqav-build --prefix /tmp/sqv-prefix
 
 To build this module against already installed exact dependencies, add `-DSYMPHONY_SQAV_DBN_USE_INSTALLED_DEPENDENCIES=ON -DCMAKE_PREFIX_PATH=/tmp/sqv-prefix` at configuration. Use `-DBUILD_TESTING=OFF` for a library build requiring only the four runtime dependencies; enabled native tests additionally require installed SQPV/SQDV. The exported package uses exact `find_dependency` versions and propagates the C++26 compiler requirement.
 
-The installation contains a versioned static archive, public header, four CMake package/export files, six contract documents, AGPL license, and immutable receipt-v2. The receipt owns exactly 13 files, identifies vector `sqav`, has `component_kind=module`, `engine_id=null`, and no process entry points. Installation starts no service. `GNUInstallDirs` may select normalized relative library/include paths inside the prefix; absolute paths, traversal, and existing symlink components are rejected.
+The installation contains a versioned static archive, two public headers, four CMake package/export files, six contract documents, AGPL license, and immutable receipt-v2. The receipt owns exactly 14 files, identifies vector `sqav`, has `component_kind=module`, `engine_id=null`, and no process entry points. Installation starts no service. `GNUInstallDirs` may select normalized relative library/include paths inside the prefix; absolute paths, traversal, and existing symlink components are rejected.
 
 The current Apple archiver may vary unused symbol-table padding across builds even when timestamps are cleared. Archive byte-for-byte reproducibility is therefore not a package guarantee; each receipt binds the exact installed archive.
 
@@ -25,7 +25,7 @@ cmake --build /tmp/sqav-consumer-build
 /tmp/sqav-consumer-build/consumer
 ```
 
-The consumer requests `find_package(SymphonySqavDatabentoDbn 0.3.0 EXACT CONFIG)` and verifies `SymphonySqavDatabentoDbn_RELEASE_VERSION` is `0.3.0-dev`. It uses the exported C++26 requirement without setting its own language standard.
+The consumer requests `find_package(SymphonySqavDatabentoDbn 0.4.0 EXACT CONFIG)` and verifies `SymphonySqavDatabentoDbn_RELEASE_VERSION` is `0.4.0-dev`. It uses the exported C++26 requirement without setting its own language standard.
 
 Guarded removal uses the same prefix that received installation:
 

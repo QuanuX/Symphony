@@ -191,3 +191,10 @@ active-write budgets and confirmed progress to SQPV owner regressions and the
 installed six-owner pipeline. SQDV preview has no retention receipt; actual
 retained replay supplies one. Unconfirmed RAM progress is never recovered as
 committed history.
+
+## Historical source coverage
+
+`invariant:symphony:sqav.databento-historical-coverage` binds transport evidence,
+exact request metadata and record ranges before capture. Caps/unresolved symbols
+remain partial, interrupted responses remain gaps, and recovery never skips
+same-timestamp records by manufacturing a resume cursor.

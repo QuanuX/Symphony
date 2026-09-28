@@ -6,7 +6,7 @@
 #include <symphony/sqav/capture.hpp>
 namespace symphony::sqav::databento {
 inline constexpr std::string_view adapter_id = "sqav-databento-dbn-cpp";
-inline constexpr std::string_view adapter_version = "0.3.0-dev";
+inline constexpr std::string_view adapter_version = "0.4.0-dev";
 inline constexpr std::string_view native_schema = "databento:mbo";
 inline constexpr std::string_view native_encoding =
     "databento:dbn-v3-uncompressed";
@@ -68,6 +68,8 @@ public:
   [[nodiscard]] ByteView encoded_metadata() const noexcept {
     return original_.first(records_offset_);
   }
+  // Requested raw symbol list, borrowed from validated metadata.
+  [[nodiscard]] Status symbol(std::uint32_t index, std::string_view &out) const noexcept;
   [[nodiscard]] Status record(std::uint64_t index, Mbo &out) const noexcept;
 
 private:

@@ -2330,6 +2330,41 @@
       "consumer_boundary_rejections": [
         {
           "cases": [
+            "installed_historical_admission"
+          ],
+          "path": "modules/sqav-databento-dbn-cpp/tests/sdk-consumer/main.cpp"
+        }
+      ],
+      "invariant_id": "invariant:symphony:sqav.databento-historical-coverage",
+      "ipc_boundary": false,
+      "owner_component": "sqav-databento-dbn-cpp",
+      "owner_contract": "modules/sqav-databento-dbn-cpp/SPEC.md",
+      "producer_implementations": [
+        "modules/sqav-databento-dbn-cpp/src/historical.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "allocation_rollback",
+            "historical_retained_replay",
+            "multi_symbol_binding",
+            "request_planning",
+            "response_binding",
+            "transport_and_budgets"
+          ],
+          "path": "modules/sqav-databento-dbn-cpp/tests/historical_test.cpp"
+        }
+      ],
+      "real_process_regressions": [],
+      "statement": "Only transport-complete HTTP 200 responses with exact request metadata and bounded receive-time conformance yield captures. Record caps or unresolved symbols preserve partial coverage; interruptions retain gap evidence and never establish a timestamp-plus-one resume cursor. Recommendations do not execute or authorize requests.",
+      "status": "active",
+      "title": "SQAV historical coverage remains bound to request and transport evidence"
+    },
+    {
+      "allowed_adapter_ids": [],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
             "installed_capture_rejection",
             "installed_capture_roundtrip"
           ],
@@ -3210,7 +3245,7 @@
     }
   ],
   "protocol": "symphony.knowledge.invariant-ownership-registry.v3",
-  "registry_digest": "sha256:6f6d9fb29d1f1d238dd15eca7a8cd9a0cf0cf7036c8277801d0d9959a328aae6",
+  "registry_digest": "sha256:00e2e4c58cc17cedbacae9c2d829698a267c68db7d37bd07fe3a71091780ba76",
   "scope": "common_lowest_authoritative_layer",
   "test_policy": {
     "consumer_boundary_rejection_required": true,

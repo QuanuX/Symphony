@@ -3,7 +3,7 @@
 ## Identity
 
 - Module/package: `sqav-databento-dbn-cpp`; owner: SQAV
-- Exact development release: `0.3.0-dev`; C++26 static library
+- Exact development release: `0.4.0-dev`; C++26 static library
 - Public target: `Symphony::SqavDatabentoDbn`
 
 ## Canonical Surfaces
@@ -24,6 +24,14 @@
 - `modules/sqav-databento-dbn-cpp/tests/sdk-consumer/CMakeLists.txt`
 - `modules/sqav-databento-dbn-cpp/tests/sdk-consumer/main.cpp`
 
+- `modules/sqav-databento-dbn-cpp/include/symphony/sqav/databento/historical.hpp`
+
+- `modules/sqav-databento-dbn-cpp/src/historical.cpp`
+
+- `modules/sqav-databento-dbn-cpp/tests/historical_test.cpp`
+
+- `modules/sqav-databento-dbn-cpp/tests/public_fixture.hpp`
+
 ## Dependencies and scope
 
-Runtime dependencies are SQAV capture 0.2.0-dev, SQMV 0.2.0-dev, SQFV 0.3.0-dev and the knowledge-engine foundation 0.2.0-dev. SQPV 0.2.0-dev and SQDV 0.2.0-dev are used only in native composition tests. Receipt-v2 installation owns the library, header, exact exports, six documents and license. There is no process entry point, provider session, credential access, background collector, namespace allocation or SQV qxctl surface.
+Runtime dependencies are SQAV capture 0.2.0-dev, SQMV 0.2.0-dev, SQFV 0.3.0-dev and the knowledge-engine foundation 0.2.0-dev. SQPV 0.2.0-dev and SQDV 0.2.0-dev are used only in native composition tests. Receipt-v2 installation owns the library, two headers, exact exports, six documents and license. There is no process entry point, provider session, credential access, background collector, namespace allocation or SQV qxctl surface.

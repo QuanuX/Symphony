@@ -1,7 +1,7 @@
 #include <algorithm>
 #include <cstdio>
 #include <cstdlib>
-#include <symphony/sqav/databento/dbn.hpp>
+#include <symphony/sqav/databento/historical.hpp>
 #include <vector>
 using namespace symphony;
 namespace db = symphony::sqav::databento;
@@ -113,9 +113,37 @@ void installed_fidelity_and_rejection() {
   malformed[3] = 2;
   check(db::FileView::inspect(malformed, limits, v) == db::Status::unsupported);
 }
+void installed_historical_admission() {
+  auto bytes=fixture();db::FileView file;
+  check(db::FileView::inspect(bytes,limits,file)==db::Status::ok);
+  const auto &meta=file.metadata();
+  db::HistoricalSelection selection{std::string(meta.dataset),{"ESH1"},meta.start,meta.end,meta.limit};
+  db::HistoricalLimits policy{limits,86'400'000'000'000ULL,8,2,60};
+  db::HistoricalPlan plan;check(db::HistoricalPlan::create(selection,policy,plan)==db::Status::ok);
+  db::HistoricalResponse response;
+  check(db::HistoricalResponse::begin(plan,1,200,{},response)==db::Status::ok);
+  check(response.append(bytes)==db::Status::ok);
+  db::HistoricalReport report;
+  check(response.finish(db::TransportEnd::complete,report)==db::Status::ok &&
+      report.coverage==sqav::Coverage::partial && report.record_limit_reached &&
+      report.recovery==db::Recovery::split_window);
+  db::HistoricalAttribution observer{"installed-attempt","fixture-observer","public-v0.68.0","private:fixture",
+      {sqav::TimeRole::acquisition,"2026-09-28","iso-date","UTC-calendar","day","fixture"}};
+  sqav::Capture capture;check(response.capture(observer,{65536,16384,4096},capture)==db::Status::ok &&
+      std::ranges::equal(capture.original(),bytes));
+  const auto saved=std::string(capture.reference());
+  check(db::HistoricalResponse::begin(plan,1,200,{},response)==db::Status::ok && response.append(bytes)==db::Status::ok);
+  check(response.finish(db::TransportEnd::interrupted,report)==db::Status::ok && report.coverage==sqav::Coverage::gap);
+  check(response.capture(observer,{65536,16384,4096},capture)==db::Status::binding_mismatch && capture.reference()==saved);
+  selection.symbols={"AAPL"};check(db::HistoricalPlan::create(selection,policy,plan)==db::Status::ok);
+  check(db::HistoricalResponse::begin(plan,1,200,{},response)==db::Status::ok && response.append(bytes)==db::Status::ok);
+  check(response.finish(db::TransportEnd::complete,report)==db::Status::ok && report.outcome==db::HistoricalOutcome::binding_mismatch);
+  check(response.capture(observer,{65536,16384,4096},capture)==db::Status::binding_mismatch && capture.reference()==saved);
+}
 int main() {
   installed_fidelity_and_rejection();
   installed_capture_binding();
+  installed_historical_admission();
   std::puts("DBN installed consumer: public fixture fidelity and atomic "
             "rejection passed");
 }

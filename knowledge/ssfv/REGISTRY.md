@@ -757,7 +757,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `modules/sqav-databento-dbn-cpp`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:platform`
-- record_digest: `sha256:f380bba0474e4b171237c2695dce9e996733233e266aa61bc0c8613e50a45433`
+- record_digest: `sha256:b1b1e22025aea886bd4b0308299e8012b52ba5197f63b593e693b9b1b3ffcd6c`
 - notes: Bounded DBNv1/v3 single-schema MBO file fidelity and attributed capture; network sessions and entitlements remain separate.
 
 - feature_id: `ssfv:symphony:sqdv-delivery-cpp`

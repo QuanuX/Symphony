@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.30)
-project(SymphonySqavDatabentoDbn VERSION 0.3.0 LANGUAGES CXX)
+project(SymphonySqavDatabentoDbn VERSION 0.4.0 LANGUAGES CXX)
 
 include(CTest)
 include(GNUInstallDirs)
@@ -52,7 +52,7 @@ if(APPLE)
     set(CMAKE_CXX_ARCHIVE_FINISH "\"${CMAKE_COMMAND}\" -E env ZERO_AR_DATE=1 <CMAKE_RANLIB> <TARGET>")
 endif()
 
-add_library(sqav-databento-dbn STATIC src/dbn.cpp)
+add_library(sqav-databento-dbn STATIC src/dbn.cpp src/historical.cpp)
 add_library(Symphony::SqavDatabentoDbn ALIAS sqav-databento-dbn)
 target_link_libraries(sqav-databento-dbn
     PUBLIC Symphony::SqavCapture Symphony::SqmvMetadata Symphony::SqfvBatch
@@ -87,6 +87,8 @@ endif()
 
 install(FILES include/symphony/sqav/databento/dbn.hpp DESTINATION "${SQAV_DBN_HEADER_DIR}")
 sqav_dbn_own("${SQAV_DBN_HEADER_DIR}/dbn.hpp")
+install(FILES include/symphony/sqav/databento/historical.hpp DESTINATION "${SQAV_DBN_HEADER_DIR}")
+sqav_dbn_own("${SQAV_DBN_HEADER_DIR}/historical.hpp")
 
 configure_package_config_file(cmake/SymphonySqavDatabentoDbnConfig.cmake.in
     "${CMAKE_CURRENT_BINARY_DIR}/SymphonySqavDatabentoDbnConfig.cmake"
@@ -149,6 +151,11 @@ if(BUILD_TESTING)
     target_compile_options(sqav-databento-dbn-test PRIVATE
         $<$<CXX_COMPILER_ID:AppleClang,Clang,GNU>:-Wall;-Wextra;-Wpedantic;-Werror>)
     add_test(NAME sqav-databento-dbn COMMAND sqav-databento-dbn-test)
+    add_executable(sqav-databento-historical-test tests/historical_test.cpp)
+    target_link_libraries(sqav-databento-historical-test PRIVATE Symphony::SqavDatabentoDbn Symphony::SqdvDelivery)
+    set_target_properties(sqav-databento-historical-test PROPERTIES CXX_STANDARD 26 CXX_STANDARD_REQUIRED ON CXX_EXTENSIONS OFF)
+    target_compile_options(sqav-databento-historical-test PRIVATE -Wall -Wextra -Wpedantic -Werror)
+    add_test(NAME sqav-databento-historical COMMAND sqav-databento-historical-test)
     add_test(NAME sqav-dbn-package-lifecycle
         COMMAND "${CMAKE_COMMAND}"
             "-DPACKAGE_BINARY_DIR=${CMAKE_CURRENT_BINARY_DIR}"

@@ -15831,3 +15831,55 @@ These entries locate existing implementation and regression surfaces referenced 
 - deferred_projections: asynchronous retention and preview independence
 - notes: Test hooks are absent from installed libraries; no performance SLA or remote transport is implied.
 - status: canonical
+
+### SQAV Historical Planning Interface
+- path: `modules/sqav-databento-dbn-cpp/include/symphony/sqav/databento/historical.hpp`
+- title: SQAV Historical Planning Interface
+- surface_type: public C++26 interface
+- truth_role: bounded request and response contract
+- owner: SQAV maintainers
+- scope: Selected historical MBO preparation with explicit transport and coverage boundaries.
+- relationships: governed_by -> `modules/sqav-databento-dbn-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source coverage and recovery evidence
+- notes: No credential access, network execution or spending authority is implied.
+- status: canonical
+
+### SQAV Historical Response Implementation
+- path: `modules/sqav-databento-dbn-cpp/src/historical.cpp`
+- title: SQAV Historical Response Implementation
+- surface_type: native C++26 implementation
+- truth_role: exact request binding and coverage classification
+- owner: SQAV maintainers
+- scope: Selected historical MBO preparation with explicit transport and coverage boundaries.
+- relationships: governed_by -> `modules/sqav-databento-dbn-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source coverage and recovery evidence
+- notes: No credential access, network execution or spending authority is implied.
+- status: canonical
+
+### SQAV Historical Regressions
+- path: `modules/sqav-databento-dbn-cpp/tests/historical_test.cpp`
+- title: SQAV Historical Regressions
+- surface_type: native C++26 tests
+- truth_role: transport coverage and retained replay evidence
+- owner: SQAV maintainers
+- scope: Selected historical MBO preparation with explicit transport and coverage boundaries.
+- relationships: governed_by -> `modules/sqav-databento-dbn-cpp/src/historical.cpp`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source coverage and recovery evidence
+- notes: No credential access, network execution or spending authority is implied.
+- status: canonical
+
+### SQAV Public DBN Fixtures
+- path: `modules/sqav-databento-dbn-cpp/tests/public_fixture.hpp`
+- title: SQAV Public DBN Fixtures
+- surface_type: public provider test fixtures
+- truth_role: unchanged Databento v0.68.0 v1 and v3 fixture evidence
+- owner: SQAV maintainers
+- scope: Selected historical MBO preparation with explicit transport and coverage boundaries.
+- relationships: governed_by -> `modules/sqav-databento-dbn-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source coverage and recovery evidence
+- notes: No credential access, network execution or spending authority is implied.
+- status: canonical

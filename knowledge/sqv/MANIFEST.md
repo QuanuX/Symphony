@@ -25,7 +25,7 @@ The six research-data children have Contract Quads under `knowledge/sqv/sqav/`, 
 
 ## Implementation Status
 
-SQFV's `modules/sqfv-batch-cpp/` owns the independently installable `0.3.0-dev` C++26 trusted-process batch library, with immutable payloads, explicit leases, independent port credits/cursors, and a local frame codec. SQMV's `modules/sqmv-metadata-cpp/` `0.2.0-dev` resolves bounded immutable manifests into exact metadata bindings. SQPV's `modules/sqpv-local-store-cpp/` `0.2.0-dev` retains one exact bound stream in a finite local filesystem store with explicit commit/recovery behavior. SQDV's `modules/sqdv-delivery-cpp/` `0.2.0-dev` supplies trusted same-process full-batch delivery, exact retained/live resume and independent processing acknowledgements. Each module's own contract and focused evidence define its limited capability. SQAV's `modules/sqav-capture-cpp/` `0.2.0-dev` preserves bounded original bytes and attributable acquisition evidence with an exact metadata/flow bridge. SQTV's `modules/sqtv-integer-conversion-cpp/` `0.2.0-dev` performs exact dense integer representation conversion with derived lineage. SOOV remains a separate architecture owner without an implemented module. SQAV additionally owns `sqav-databento-dbn-cpp` `0.3.0-dev` for bounded DBNv1/v3 MBO provider-file inspection and exact capture. Provider acquisition, further domain interpretation, transport adapters, richer retention policies and consumer integrations remain later increments. The older `prototypes/sqv-research-data/` fixture is historical development evidence. None of these Quads allocates a colon identity family or SQV qxctl command.
+SQFV's `modules/sqfv-batch-cpp/` owns the independently installable `0.3.0-dev` C++26 trusted-process batch library, with immutable payloads, explicit leases, independent port credits/cursors, and a local frame codec. SQMV's `modules/sqmv-metadata-cpp/` `0.2.0-dev` resolves bounded immutable manifests into exact metadata bindings. SQPV's `modules/sqpv-local-store-cpp/` `0.2.0-dev` retains one exact bound stream in a finite local filesystem store with explicit commit/recovery behavior. SQDV's `modules/sqdv-delivery-cpp/` `0.2.0-dev` supplies trusted same-process full-batch delivery, exact retained/live resume and independent processing acknowledgements. Each module's own contract and focused evidence define its limited capability. SQAV's `modules/sqav-capture-cpp/` `0.2.0-dev` preserves bounded original bytes and attributable acquisition evidence with an exact metadata/flow bridge. SQTV's `modules/sqtv-integer-conversion-cpp/` `0.2.0-dev` performs exact dense integer representation conversion with derived lineage. SOOV remains a separate architecture owner without an implemented module. SQAV additionally owns `sqav-databento-dbn-cpp` `0.4.0-dev` for bounded DBNv1/v3 MBO provider-file inspection and exact capture. Provider acquisition, further domain interpretation, transport adapters, richer retention policies and consumer integrations remain later increments. The older `prototypes/sqv-research-data/` fixture is historical development evidence. None of these Quads allocates a colon identity family or SQV qxctl command.
 
 ## Non-Authorization Statement
 
@@ -41,3 +41,13 @@ source or installed packages. The worker and proof interfaces are optional;
 existing disposable and retention-before-delivery profiles remain independent.
 This profile does not complete production source connectors, credential delivery,
 new representations, payload IPC/network transport or external destination adapters.
+
+## Bounded historical source planning
+
+The Databento adapter 0.4.0-dev adds canonical finite historical MBO plans,
+chunked bounded response assembly, exact selection/time checks, attributable
+complete/partial/gap outcomes and conservative retry/split recommendations.
+Original request and outcome evidence survives asynchronous capture retention
+and replay. This advances source-facing preparation while actual network
+execution, persistent spend/attempt admission, SSIAG credential retrieval,
+entitlements and other source families remain open. No qxctl surface is added.

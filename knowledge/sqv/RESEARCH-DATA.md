@@ -4,7 +4,7 @@
 
 This companion records the research-data purpose and owner boundaries under the thin SQV parent. It aligns Duncan's 26 September 2026 direction with the supplied *Symphony SQV Research Data Whitepaper v0.1* and its decision and acceptance register. The paper's `R`, `D`, `G`, and `T` identifiers are document-local trace labels, not Symphony protocol or command identities. Its mechanism proposals require admission under the appropriate owner before they become runtime contracts.
 
-Duncan favored the six purpose labels. SQAV, SQMV, SQFV, SQTV, SQPV, and SQDV have Contract Quads and SKVI routes. SQFV owns the narrow `sqfv-batch-cpp` `0.3.0-dev` C++26 library for trusted same-process movement. SQMV and SQPV now own the `sqmv-metadata-cpp` and `sqpv-local-store-cpp` `0.2.0-dev` libraries for immutable bindings and local retention. SQDV owns the `sqdv-delivery-cpp` `0.2.0-dev` exact local delivery/resume library. SQAV owns the `sqav-capture-cpp` `0.2.0-dev` optional offline original-byte capture library and `sqav-databento-dbn-cpp` `0.3.0-dev` bounded DBNv1/v3 MBO file adapter. SQTV owns the `sqtv-integer-conversion-cpp` `0.2.0-dev` exact dense integer representation converter. SOOV remains the separate SQV FIX child. This document establishes no bulk service, provider connection, provider-specific semantic schema, colon namespace, or qxctl operation.
+Duncan favored the six purpose labels. SQAV, SQMV, SQFV, SQTV, SQPV, and SQDV have Contract Quads and SKVI routes. SQFV owns the narrow `sqfv-batch-cpp` `0.3.0-dev` C++26 library for trusted same-process movement. SQMV and SQPV now own the `sqmv-metadata-cpp` and `sqpv-local-store-cpp` `0.2.0-dev` libraries for immutable bindings and local retention. SQDV owns the `sqdv-delivery-cpp` `0.2.0-dev` exact local delivery/resume library. SQAV owns the `sqav-capture-cpp` `0.2.0-dev` optional offline original-byte capture library and `sqav-databento-dbn-cpp` `0.4.0-dev` bounded DBNv1/v3 MBO file adapter. SQTV owns the `sqtv-integer-conversion-cpp` `0.2.0-dev` exact dense integer representation converter. SOOV remains the separate SQV FIX child. This document establishes no bulk service, provider connection, provider-specific semantic schema, colon namespace, or qxctl operation.
 
 The first-party research-data data plane is to be native C++. Duncan's subsequent explicit direction selects C++26 for proprietary SQV modules authored in this effort; each package must declare and verify its actual toolchain contract. This does not constrain user-authored modules or compatible integrations. Native connectors, movement, conversion, storage bridges, and delivery may be independently selected as their contracts become implemented. A composition may use direct compatible paths; it need not traverse six services, a central broker, or one normalized representation. qxctl administration follows Duncan's later instructions and is not a routine payload path. Research flows, even when live and high throughput, impose no compulsory data path on a live trading Nest.
 
@@ -102,3 +102,13 @@ source or installed packages. The worker and proof interfaces are optional;
 existing disposable and retention-before-delivery profiles remain independent.
 This profile does not complete production source connectors, credential delivery,
 new representations, payload IPC/network transport or external destination adapters.
+
+## Bounded historical source planning
+
+The Databento adapter 0.4.0-dev adds canonical finite historical MBO plans,
+chunked bounded response assembly, exact selection/time checks, attributable
+complete/partial/gap outcomes and conservative retry/split recommendations.
+Original request and outcome evidence survives asynchronous capture retention
+and replay. This advances source-facing preparation while actual network
+execution, persistent spend/attempt admission, SSIAG credential retrieval,
+entitlements and other source families remain open. No qxctl surface is added.

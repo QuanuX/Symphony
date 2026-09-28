@@ -2,7 +2,7 @@
 
 ## Exact implemented scope
 
-`sqav-databento-dbn-cpp` `0.3.0-dev` exports the C++26 static-library target
+`sqav-databento-dbn-cpp` `0.4.0-dev` exports the C++26 static-library target
 `Symphony::SqavDatabentoDbn`, namespace `symphony::sqav::databento`. Runtime
 requires SQAV capture 0.2.0-dev, SQMV 0.2.0-dev, SQFV 0.3.0-dev and the shared
 foundation 0.2.0-dev. Initial verified platform: macOS amd64 / AppleClang 21.
@@ -89,7 +89,7 @@ not-found symbol counts and is rejected. Other coverage statements remain caller
 assertions; absence of those lists does not prove completeness.
 
 The adapter sets source.adapter_ref=`sqav-databento-dbn-cpp`, adapter_version=
-`0.3.0-dev` and source_record_count to the actual count. Other source fields,
+`0.4.0-dev` and source_record_count to the actual count. Other source fields,
 acquisition evidence, coverage and access scope retain their caller attribution.
 Caller evidence string sizes and time-vector count are bounded before copying;
 SQAV's own exact validity and encoded-size rules then apply. Its original payload
@@ -101,7 +101,7 @@ envelope per transfer record; provider record count is a separate inner fact.
 
 ## Package and evidence
 
-Receipt-v2 owns 13 files: archive, header, four CMake exports/configuration files,
+Receipt-v2 owns 14 files: archive, two headers, four CMake exports/configuration files,
 six documents and license. No executable, credential resolution, service or SQV
 qxctl command is installed. Native tests additionally compose SQPV/SQDV. Public
 fixture fields are checked against upstream expected values; truncation, bounds,
@@ -115,8 +115,9 @@ client, broad provider conformance or performance guarantee follows from parsing
 
 ## Version separation and private sample acceptance
 
-The 0.2.0-dev metadata API introduced DBNv1/v3 support. The current 0.3.0-dev
-package selects the new dependency chain and adapter identity.
+The 0.2.0-dev metadata API introduced DBNv1/v3 support. The 0.3.0-dev
+package selected the SQV-20 dependency chain. The current 0.4.0-dev adds the
+explicit historical planning and response contract below.
 The 0.1.0-dev v3-only package can coexist in its immutable prefix. Its captures
 are not silently relabeled as 0.2 captures. DBNv2 and future versions remain
 unsupported. Public v1/v3 fixtures describe identical MBO events; focused tests
@@ -135,3 +136,105 @@ This development package admits the exact SQV-20 dependency chain. The native
 representation/codec rules remain as specified above. The six-owner offline
 pipeline verifies attributable capture, conversion, preview, asynchronous local
 retention and confirmed replay; this is not a new provider or transport claim.
+
+## Historical request and response profile (0.4.0-dev)
+
+`historical.hpp` adds transport-independent planning, response assembly and
+coverage/recovery classification to the same provider adapter. The historical
+endpoint is fixed at `https://hist.databento.com/v0/timeseries.get_range`.
+`HistoricalPlan::parameters()` is a deterministic percent-encoded parameter
+string for explicit raw symbols, MBO, instrument-id output, uncompressed DBN,
+and a finite record limit. Symbols are sorted and duplicates rejected; commas,
+controls, non-ASCII bytes, empty symbols and `ALL_SYMBOLS` are outside this local
+profile. Other printable characters are percent-escaped. Dataset codes are
+1–15 uppercase ASCII letters, digits or dots. Symbols are at most 70 bytes.
+This does not establish exchange symbology validity, trading-session membership,
+entitlement, cost or scheduling authority.
+
+All limits are mandatory: DBN file/metadata/record bounds above; at most 128
+symbols, an explicit maximum window no longer than 24 hours, 1–8 attempts and a
+maximum retry delay of 1–86,400 seconds. Positive record limits cannot exceed the
+DBN record bound. Start and end are nonnegative signed-64-bit-range Unix
+nanoseconds with `start < end`; the window filters MBO receive time as
+`[start,end)`. `sqdh1-sha256-…` identifies the exact endpoint and canonical
+parameters. Execution limits are local policy and do not change that selection
+identity. No auth field, header or credential is part of this plan. No request,
+retry, timer or billable operation is executed by this library.
+
+`HistoricalResponse::begin` retains immutable plan ownership and a caller-supplied
+attempt ordinal, final HTTP status (or zero when unavailable) and optional parsed
+Retry-After seconds. Status zero is never success; redirects are not followed.
+The transport caller is responsible for matching the response to its actual
+request, parsing HTTP framing/compression, honoring deadlines and preserving
+these observations. Raw headers are not accepted. Non-200 bodies are counted
+against the same byte limit and discarded. For 200, append copies unchanged
+bytes, checks remaining capacity before addition, rejects self-aliasing input,
+and bounds requested vector capacity to the selected file ceiling. Allocation
+failure preserves accepted bytes, so the caller may retry the same chunk.
+Allocator overhead is not part of the byte-capacity accounting. Oversize input
+sets a terminal overflow flag; no further chunk is admitted. Per-response state
+is single-thread owned; independent plans can share immutable state.
+
+`finish` is one-shot and allocation-free. Its return status says whether the
+classification succeeded; `HistoricalReport` carries the outcome and retains the
+exact immutable request/policy even after the response is destroyed. Transport
+interruption, cancellation, byte exhaustion, HTTP failure, malformed DBN or a
+binding mismatch cannot produce complete coverage or a capture through this
+API. A structurally valid prefix at an exact record boundary is insufficient.
+Only transport-complete HTTP 200 is checked as DBN. Binding checks require exact
+dataset, start, end, record limit, raw-symbol input, instrument-id output, no
+appended gateway timestamp, and the exact unique requested symbol set (any
+metadata ordering). Every record's receive time must fall within the requested
+window and be nondecreasing; equal times are admitted. This is metadata/record
+conformance, not source authentication or proof of exchange completeness.
+
+For a bound response, reaching the record cap or any partial/not-found symbol
+list yields partial coverage. Below-cap, transport-complete responses with no
+unresolved lists are complete **for this observed request window**. A valid
+empty response can establish that same scoped result; it does not imply a valid
+book. Reported first/last receive times are observations, never resume cursors.
+The transport's completion assertion remains attributed to the caller.
+
+Interruption (status zero, 200 or a retryable HTTP status), HTTP 429, 502, 503 or
+504 can recommend repeating the **entire original window**, subject to the
+caller-supplied attempt ordinal and retry-delay policy. Other HTTP errors require
+review. Cancellation recommends no automatic recovery. Retry-After is preserved,
+never shortened; a value above policy requires review. These are recommendations,
+not a persistent attempt/spending ledger; callers must count attempts and admit
+each actual billable operation separately. Generic HTTP 500 is left for review.
+
+A cap-reached response without unresolved symbols recommends splitting the
+window. `HistoricalPlan::split` produces adjacent `[start,mid)` / `[mid,end)`
+plans, preserving symbols and limits. Both halves must be reacquired, and neither
+is presumed complete. It fails atomically for a one-nanosecond window or aliased
+outputs; one output may replace the original plan. Same-timestamp density can
+require a different cap/selection and explicit review. Advancing to last-time+1,
+concatenating retries as new data, byte-range resume and automatic deduplication
+are not implemented.
+
+`capture` accepts only a finished, bound complete/partial response and explicit
+observer, attempt, access, revision and acquisition attribution. It constructs
+source identity, exact version-specific encoding, actual record count and
+coverage internally. The capture retains the canonical request in coverage_scope
+and bounded HTTP/transport/attempt/byte/count/cap/unresolved facts in
+source_position, with a digest reference in coverage_evidence_ref. All original
+DBN bytes, including mappings, remain unchanged. Existing SQAV field/total limits
+still apply: a valid many-symbol plan may exceed a selected capture field limit
+and be refused without altering the previous capture. This is explicit evidence,
+not a durable retry journal. The new package's adapter version changes capture
+identity; older captures are not relabeled.
+
+Focused evidence covers v1/v3 fixtures, synthetic complete/empty/unresolved
+responses, byte-sized transport chunks, cap and same-timestamp behavior,
+interruption at valid EOF, binding failures, error-body discard, budgets,
+allocation rollback, and capture through asynchronous preview, drain, close,
+reopen and exact retained replay. Installed consumers independently check the
+public boundary. Transport execution and SSIAG-mediated local-key-ring retrieval
+remain required before operational authentication; this interface supplies no
+alternative credential path.
+
+Protocol sources reviewed 28 September 2026: Databento historical API documentation
+at https://databento.com/docs/api-reference-historical/metadata/metadata-get-cost
+(the combined page includes `timeseries.get_range`), and the unchanged v0.68.0
+DBN declarations/fixtures linked above. HTTP parameters also match the bounded
+SQV-13 experimental request evidence. No provider SDK version was upgraded.

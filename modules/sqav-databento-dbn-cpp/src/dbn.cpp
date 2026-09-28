@@ -183,6 +183,15 @@ Status FileView::inspect(ByteView b, const Limits &l, FileView &out) noexcept {
   out = ready;
   return Status::ok;
 }
+Status FileView::symbol(std::uint32_t index, std::string_view &out) const noexcept {
+  if (!*this || index >= metadata_.symbols) return Status::invalid_argument;
+  // inspect() already checked the whole fixed-width list beginning at 116.
+  std::string_view value;
+  if (!cstr(original_.subspan(116 + static_cast<std::size_t>(index) *
+      metadata_.symbol_cstr_len, metadata_.symbol_cstr_len), &value))
+    return Status::internal_error;
+  out = value; return Status::ok;
+}
 Status FileView::record(std::uint64_t index, Mbo &out) const noexcept {
   if (!*this || index >= metadata_.record_count)
     return Status::invalid_argument;
