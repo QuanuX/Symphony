@@ -3,8 +3,9 @@
 ## Implementation status
 
 SQV-14 adds an internal, process-local lifecycle primitive in
-`internal/credential/use.go`. It is not connected to a service route, provider
-operation, lease issuer or secret channel. Existing provider v1 control and
+`internal/credential/use.go`. SQV-15 composes it in the internal
+[dispatch admission coordinator](CREDENTIAL-DISPATCH.md). It is not connected to
+a service route, operational provider, lease issuer or secret channel. Existing provider v1 control and
 synthetic channel schemas retain their disabled operational flags. This document
 describes the implemented primitive and the outstanding integration work; it does
 not admit a new public protocol or a production Keychain provider.

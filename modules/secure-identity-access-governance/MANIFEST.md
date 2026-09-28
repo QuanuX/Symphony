@@ -4,6 +4,7 @@
 
 - `modules/secure-identity-access-governance/ARCHITECTURE.md`
 - `modules/secure-identity-access-governance/CREDENTIAL-USE.md`
+- `modules/secure-identity-access-governance/CREDENTIAL-DISPATCH.md`
 - `modules/secure-identity-access-governance/FEATURES.md`
 - `modules/secure-identity-access-governance/IMPLEMENTATION.md`
 - `modules/secure-identity-access-governance/INSTALL.md`

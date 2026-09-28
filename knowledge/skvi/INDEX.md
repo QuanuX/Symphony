@@ -6145,7 +6145,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: Go authorization implementation
 - truth_role: exact caller-neutral local allow/deny decision implementation truth
 - owner: SSIAG foundation maintainers
-- scope: Derives the authenticated subject from local peer evidence, evaluates exact operation/resource grants, and releases decisions only after safe STAV evidence commits.
+- scope: Evaluates caller-neutral exact grants for supplied authenticated subjects and provides a non-queuing policy snapshot pin for bounded internal dispatch. The caller owns peer authentication and committed STAV audit.
 - relationships: implements -> `knowledge/ssiag/SPEC.md`; conforms_to -> `knowledge/ssiag/schemas/v1/authorization-decision.schema.json`
 - consumers: SSIAG server, qxctl, coordinator, tests, reviewers
 - deferred_projections: policy explanation projection
@@ -15479,4 +15479,56 @@ These entries locate existing implementation and regression surfaces referenced 
 - consumers: SSIAG implementers, reviewers, tests
 - deferred_projections: implementation traceability
 - notes: Internal primitive only; no provider operation, Keychain access, lease issuance or protected channel is enabled.
+- status: canonical
+
+### SSIAG Internal Credential Dispatch Contract
+- path: `modules/secure-identity-access-governance/CREDENTIAL-DISPATCH.md`
+- title: SSIAG Internal Credential Dispatch Contract
+- surface_type: internal implementation contract
+- truth_role: internal authenticated admission sequencing and outstanding operational gates
+- owner: SSIAG foundation maintainers
+- scope: Documents kernel-derived subject, pinned policy, committed audit, provider evidence checks and remaining journal/channel work.
+- relationships: governed_by -> `modules/secure-identity-access-governance/SPEC.md`; implemented_by -> `modules/secure-identity-access-governance/internal/credential/dispatch.go`
+- consumers: SSIAG implementers, reviewers, tests
+- deferred_projections: implementation traceability
+- notes: No operational endpoint, provider pin backend, durable request journal or protected byte channel is enabled.
+- status: canonical
+
+### SSIAG Internal Credential Dispatcher
+- path: `modules/secure-identity-access-governance/internal/credential/dispatch.go`
+- title: SSIAG Internal Credential Dispatcher
+- surface_type: Go dispatch admission implementation
+- truth_role: kernel-authenticated and policy-pinned internal admission truth
+- owner: SSIAG foundation maintainers
+- scope: Composes peer context, real policy and STAV producer, exact provider evidence and one-attempt execution with bounded context and cleanup.
+- relationships: implements -> `modules/secure-identity-access-governance/CREDENTIAL-DISPATCH.md`; verified_by -> `modules/secure-identity-access-governance/internal/credential/dispatch_test.go`
+- consumers: SSIAG implementers, reviewers, tests
+- deferred_projections: implementation traceability
+- notes: No operational endpoint, provider pin backend, durable request journal or protected byte channel is enabled.
+- status: canonical
+
+### SSIAG Credential Dispatch Tests
+- path: `modules/secure-identity-access-governance/internal/credential/dispatch_test.go`
+- title: SSIAG Credential Dispatch Tests
+- surface_type: Go integration and regression tests
+- truth_role: real local peer and fixture-provider admission verification
+- owner: SSIAG foundation maintainers
+- scope: Exercises audit-before-provider, exact binding refusal, cleanup, cancellation, uncertain delivery and concurrent replay refusal.
+- relationships: verifies -> `modules/secure-identity-access-governance/internal/credential/dispatch.go`; depends_on -> `modules/secure-identity-access-governance/CREDENTIAL-DISPATCH.md`
+- consumers: SSIAG implementers, reviewers, tests
+- deferred_projections: implementation traceability
+- notes: No operational endpoint, provider pin backend, durable request journal or protected byte channel is enabled.
+- status: canonical
+
+### SSIAG Policy Admission Tests
+- path: `modules/secure-identity-access-governance/internal/policy/admission_test.go`
+- title: SSIAG Policy Admission Tests
+- surface_type: Go regression tests
+- truth_role: policy pinning and snapshot ownership verification
+- owner: SSIAG foundation maintainers
+- scope: Exercises non-queuing admission, mutation serialization and independent caller-owned configuration.
+- relationships: verifies -> `modules/secure-identity-access-governance/internal/policy/policy.go`; depends_on -> `modules/secure-identity-access-governance/CREDENTIAL-DISPATCH.md`
+- consumers: SSIAG implementers, reviewers, tests
+- deferred_projections: implementation traceability
+- notes: No operational endpoint, provider pin backend, durable request journal or protected byte channel is enabled.
 - status: canonical
