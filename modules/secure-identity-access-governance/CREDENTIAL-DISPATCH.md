@@ -70,8 +70,9 @@ reverse order. Contexts provide cooperative cancellation; this coordinator canno
 forcibly terminate arbitrary in-process code. The native launcher/channel must
 enforce termination, reaping, descriptor closure and byte bounds independently.
 
-No production implementation of these provider interfaces ships in this
-increment. The Go interfaces contain no secret buffer and cannot alone establish
+SQV-17 supplies the owner snapshot and native-composition wrapper described in
+[CREDENTIAL-ADMISSION.md](CREDENTIAL-ADMISSION.md). Its required native backend
+is still unimplemented for operational delivery. The Go interfaces contain no secret buffer and cannot alone establish
 protected delivery. Capability or receipt digests are always nonsecret evidence;
 credential bytes and credential-derived hashes remain excluded.
 
@@ -79,8 +80,9 @@ credential bytes and credential-derived hashes remain excluded.
 
 - Integration of the implemented local journal with deployment state ownership
   and durable provider-outcome STAV evidence before operational release.
-- Provider/lease/recipient pin implementation coordinated with revocation,
-  rotation and exact namespace selection; no implicit generation fallback.
+- Durable authority loading and native provider/recipient pins. The internal
+  snapshot wrapper coordinates exact resource/lease state with replacement;
+  busy replacement is not completed revocation or rotation.
 - Authenticated protected channel, bounded native child termination and consumer
   handling; byte capacity is currently passed as a contract, not enforced by an
   implemented channel.

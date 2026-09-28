@@ -15597,3 +15597,42 @@ These entries locate existing implementation and regression surfaces referenced 
 - deferred_projections: recovery and storage traceability
 - notes: Local execution state only; no operational provider, protected channel or Keychain operation is enabled.
 - status: canonical
+
+### SSIAG Credential Admission Contract
+- path: `modules/secure-identity-access-governance/CREDENTIAL-ADMISSION.md`
+- title: SSIAG Credential Admission Contract
+- surface_type: internal admission contract
+- truth_role: exact resource/lease snapshot and native composition semantics
+- owner: SSIAG foundation maintainers
+- scope: Defines value-owned active state, revision CAS, held snapshot lifetime and native evidence requirements.
+- relationships: governed_by -> `modules/secure-identity-access-governance/SPEC.md`; implemented_by -> `modules/secure-identity-access-governance/internal/credential/admission.go`
+- consumers: SSIAG implementers, reviewers, tests
+- deferred_projections: admission and lifecycle traceability
+- notes: Internal composition only; native authentication, protected delivery and operational Keychain access remain unimplemented.
+- status: canonical
+
+### SSIAG Credential Admission Registry
+- path: `modules/secure-identity-access-governance/internal/credential/admission.go`
+- title: SSIAG Credential Admission Registry
+- surface_type: Go admission implementation
+- truth_role: process-local exact mapping and lease pin truth
+- owner: SSIAG foundation maintainers
+- scope: Composes immutable owner state with required native admission; holds state through execution and cleanup and refuses stale or busy replacement.
+- relationships: implements -> `modules/secure-identity-access-governance/CREDENTIAL-ADMISSION.md`; verified_by -> `modules/secure-identity-access-governance/internal/credential/admission_test.go`
+- consumers: SSIAG implementers, reviewers, tests
+- deferred_projections: admission and lifecycle traceability
+- notes: Internal composition only; native authentication, protected delivery and operational Keychain access remain unimplemented.
+- status: canonical
+
+### SSIAG Credential Admission Tests
+- path: `modules/secure-identity-access-governance/internal/credential/admission_test.go`
+- title: SSIAG Credential Admission Tests
+- surface_type: Go admission tests
+- truth_role: focused snapshot and native composition evidence
+- owner: SSIAG foundation maintainers
+- scope: Exercises real kernel identity, mapping and evidence drift, rotation, revocation, CAS, concurrent execution, cancellation and cleanup ordering.
+- relationships: verifies -> `modules/secure-identity-access-governance/internal/credential/admission.go`; complements -> `modules/secure-identity-access-governance/internal/credential/dispatch_test.go`
+- consumers: SSIAG implementers, reviewers, tests
+- deferred_projections: admission and lifecycle traceability
+- notes: Internal composition only; native authentication, protected delivery and operational Keychain access remain unimplemented.
+- status: canonical

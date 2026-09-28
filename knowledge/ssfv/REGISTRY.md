@@ -865,7 +865,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `modules/secure-identity-access-governance`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:platform`
-- record_digest: `sha256:167dc0c720480d1bc520e9f6b99bf9552061a573e28f484ebddcece47c41b9d7`
+- record_digest: `sha256:0397e16fb5a15b147ff8cb1da9ce76f66552d6a75bc2149f5aaa949c3b94197f`
 - notes: Partial-catalog record for caller-neutral local identity, endpoint trust, authorization decisions, supervision, and safe STAV production.
 
 - feature_id: `ssfv:symphony:ssiag-foundation.authorization-capabilities`

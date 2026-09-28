@@ -46,7 +46,8 @@ const (
 // assertion. Pin must verify executable/connection identity and the current
 // exact resource-to-reference mapping, provider binding and lease generation.
 // It must hold that state stable until Release and must not access key material.
-// No operational implementation is installed by this package.
+// AdmissionRegistry implements snapshot pinning and composes a required native
+// backend. No operational native implementation is installed by this package.
 type ProviderAdmission interface {
 	Pin(context.Context, peerauth.Peer, DispatchIntent) (PinnedUse, error)
 }
