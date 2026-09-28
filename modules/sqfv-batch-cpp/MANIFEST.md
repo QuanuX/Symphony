@@ -4,7 +4,7 @@
 
 - Module, component, and package ID: `sqfv-batch-cpp`
 - Owner: `sqfv`
-- Current exact development release: `0.2.0-dev`
+- Current exact development release: `0.3.0-dev`
 - Package kind: `module`; library-only receipt-v2 installation
 - Public API: native C++26, exported from a C++26 static archive
 

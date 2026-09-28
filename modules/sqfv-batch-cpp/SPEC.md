@@ -2,7 +2,7 @@
 
 ## Exact identity and trust scope
 
-`sqfv-batch-cpp` release `0.2.0-dev` is an SQFV-owned C++26 static library exposing its native API through [batch.hpp](include/symphony/sqfv/batch.hpp) in namespace `symphony::sqfv`. It replaces the `0.1.0-dev` C ABI with owning C++ strings, `std::span` byte views, an enum-class `Status`, and move-only RAII `Context`, `Batch`, `Lease`, and `Port` handles. The exact CMake package and platform/compiler runtime select this development API; no standalone C symbols or C header are exported. The package is for trusted callers in one address space. It supplies no process entry point, network channel, hardware mapping, authorization system, or durable replay.
+`sqfv-batch-cpp` release `0.3.0-dev` is an SQFV-owned C++26 static library exposing its native API through [batch.hpp](include/symphony/sqfv/batch.hpp) in namespace `symphony::sqfv`. It replaces the `0.1.0-dev` C ABI with owning C++ strings, `std::span` byte views, an enum-class `Status`, and move-only RAII `Context`, `Batch`, `Lease`, and `Port` handles. The exact CMake package and platform/compiler runtime select this development API; no standalone C symbols or C header are exported. The package is for trusted callers in one address space. It supplies no process entry point, network channel, hardware mapping, authorization system, or durable replay.
 
 All configuration limits are explicit and finite. A `ByteView` input is borrowed only for the call; `prepare_copy` owns its result before returning. `Batch::descriptor()` and `Batch::content_id()` return references valid while that batch handle remains live. `Lease::payload()`, `Lease::descriptor()`, and `Lease::content_id()` return views or references valid while that lease remains live. The direct-reference `descriptor()` and `content_id()` accessors require a nonempty handle: its explicit boolean conversion must be true. Default-constructed, moved-from, and reset handles are empty; calling a direct-reference accessor on an empty handle violates that precondition. `Lease::payload()` returns an empty span for an empty handle, and operations returning `Status` reject an empty input handle with `Status::invalid_argument`. Handle destruction, move assignment, or `reset()` discharges its exact ownership obligation. A caller must not destroy or move a handle concurrently with a call using that same handle. Fallible operations return `Status` and publish output parameters only on success; exception failures are contained inside the library's `noexcept` API. Caller-owned input and frame-output buffers remain outside module reservation accounting.
 
@@ -53,3 +53,12 @@ The common [invariant registry](../../knowledge/INVARIANT-OWNERSHIP.json) routes
 ## Numerical acceptance fixture
 
 The focused stream fixture uses one producer, two ports (`fast` and `slow`), 65,536-byte deterministic payloads, 10,000 ordered batches per partition/generation, 4,096-byte maximum descriptor, 73,728-byte maximum frame, 8 MiB charged reservation budget, and each port's 4 MiB outstanding-byte credit and 64 pending entries. `slow` holds 64 leases while `fast` continues to receive and release; the next `slow` offer must block explicitly and later succeed after credit returns. This fixture profile is a reproducible test configuration. It is not a product throughput or latency threshold and does not establish persistence or provider delivery.
+
+## Independently retained contexts (0.3)
+
+`Context::retain` creates an independently owned handle to the same allocation
+ledger, limits and batch identity domain. Its handle reservation is charged and
+returned through the existing ledger. Failure preserves the destination, including
+self-retain. Original-context destruction does not invalidate the retained owner.
+This enables explicit worker lifetime ownership without copying payloads or
+inventing an unbounded global context. Existing SQF1 bytes are unchanged.

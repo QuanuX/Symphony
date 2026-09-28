@@ -117,6 +117,8 @@ class Context final {
 
   [[nodiscard]] explicit operator bool() const noexcept;
   [[nodiscard]] static Status create(const Limits&, Context& out) noexcept;
+  // Shares the same allocation ledger and batch identity domain.
+  [[nodiscard]] Status retain(Context& out) const noexcept;
   [[nodiscard]] Status prepare_copy(const Descriptor&, ByteView payload,
                                     Batch& out) const noexcept;
   [[nodiscard]] Status add_port(const PortConfig&, Port& out) const noexcept;

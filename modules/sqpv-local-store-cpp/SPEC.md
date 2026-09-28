@@ -1,9 +1,9 @@
-# SQPV Local Store C++ 0.1.0-dev
+# SQPV Local Store C++ 0.2.0-dev
 
 ## Selected contract
 
 `sqpv-local-store-cpp` is a native C++26 library. Its exact dependencies are
-SQMV metadata 0.1.0-dev, SQFV batch 0.2.0-dev and the knowledge-vector C++ foundation
+SQMV metadata 0.2.0-dev, SQFV batch 0.3.0-dev and the knowledge-vector C++ foundation
 0.2.0-dev. One store root binds exact canonical SQMV manifest bytes, all five SQFV
 binding fields, one partition, one nonzero producer generation, one nonzero store
 generation, one initial batch sequence and all resource limits. Reopen requires
@@ -79,7 +79,7 @@ the domain; no C++ object representation or padding is serialized.
 - `metadata`: magic `SQPS0001`; length-prefixed exact SQMV encoded bytes and
   partition; producer generation; store generation; first sequence; maximum frame
   bytes; maximum store bytes; maximum batches; digest. Each length is a u64.
-- `frame-N`: the exact SQF1 byte frame emitted by SQFV 0.2.0-dev. `N` is the
+- `frame-N`: the exact SQF1 byte frame emitted by SQFV 0.3.0-dev. `N` is the
   zero-padded 20-digit decimal batch sequence.
 - `commit-N`: magic `SQPC0001`; SHA-256 of the complete metadata file; store and
   producer generations; batch sequence; frame byte count; SQFV content identity;
@@ -157,8 +157,8 @@ This module does not substitute a power-loss claim for process-kill evidence.
 See [Apple fsync](https://developer.apple.com/library/archive/documentation/System/Conceptual/ManPages_iPhoneOS/man2/fsync.2.html)
 and [Apple fcntl](https://developer.apple.com/library/archive/documentation/System/Conceptual/ManPages_iPhoneOS/man2/fcntl.2.html).
 A future stronger guarantee requires its own selected platform/device semantics
-and verification. No generic durable-before-delivery composition or asynchronous
-retention worker is admitted merely by this library.
+and verification. The base Store makes no generic composition claim. The separately selected
+AsyncStore below implements bounded asynchronous retention.
 
 ## Verification and invariant ownership
 
@@ -172,3 +172,43 @@ Cross-owner invariants are registered in `knowledge/INVARIANT-OWNERSHIP.json`:
 `sqpv.retained-commit-chain`, `sqpv.exact-stream-admission` and
 `sqpv.exclusive-store-ownership` under the existing Symphony invariant family.
 No `sqpv:` identity family, process-engine IPC surface or qxctl command is allocated.
+
+## Optional asynchronous writer (0.2)
+
+`async_store.hpp` adds one owned worker per explicitly created/opened AsyncStore.
+It uses the unchanged local store format and recovery protocol. Positive limits
+bound pending entries (at most 65,536) and the sum of measured SQF1 frame bytes
+(at most 64 MiB), **including the active write**. The slot array is allocated at
+creation; slots and one writer's storage workspace are additional finite overhead,
+not part of the SQFV payload-allocation ledger. Each queued immutable batch and
+its independently retained Context share the original SQFV ledger/identity;
+caller handle destruction cannot invalidate in-flight work.
+
+Submission verifies exact metadata, partition, producer generation, originating
+context, frame size and contiguous sequence before queue mutation. A full queue
+returns busy; an individually oversized frame returns limit. Pending exact
+retries return duplicate; changed bytes at that position return conflict.
+Completed positions return stale. No retry result implies consumer processing.
+A successful submission advances RAM admission only. Snapshot reports confirmed
+Store progress separately, and the highest contiguous confirmed position never
+advances from submission. Sequence exhaustion is explicit, without wraparound.
+
+The first append/snapshot failure closes admission and stops further writes.
+The failed batch and later queued batches remain pinned and counted until reset;
+the failure and lag remain observable. An uncertain append keeps the underlying
+Store closed. Reads use the actual Store and serialize with its writer. A read
+can observe a newly committed record before the worker publishes its conservative
+snapshot, but cannot mint a receipt for an uncommitted record.
+
+`finish` closes admission and waits for drain or the first failure; it is
+idempotent. Destruction/reset discards pending work and joins an active append.
+No forced cancellation or bounded filesystem wait is promised. Move/reset/
+destruction must not race calls on that handle. Thread creation precedes Store
+creation/recovery so failure to start a worker cannot leave a newly created store.
+Status-returning inherited calls refuse before locking; a fork child must exec
+or _exit and must not destroy an inherited asynchronous handle.
+
+RAM admission is not journaled. After a process crash, open reconstructs only
+the Store's actual committed prefix/staging evidence. The caller must reacquire
+any unconfirmed tail or record its loss. There is no automatic provider backfill,
+universal exactly-once guarantee, power-loss certification or silent eviction.

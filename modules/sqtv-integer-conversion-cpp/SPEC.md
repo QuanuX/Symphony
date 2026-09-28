@@ -2,9 +2,9 @@
 
 ## Identity and admitted domain
 
-`sqtv-integer-conversion-cpp` `0.1.0-dev` is a C++26 static library exported as
+`sqtv-integer-conversion-cpp` `0.2.0-dev` is a C++26 static library exported as
 `Symphony::SqtvIntegerConversion`, namespace `symphony::sqtv`. It depends on
-SQFV `0.2.0-dev`, SQMV `0.1.0-dev` and the knowledge-engine foundation `0.2.0-dev`.
+SQFV `0.3.0-dev`, SQMV `0.2.0-dev` and the knowledge-engine foundation `0.2.0-dev`.
 Its initial verified development platform is macOS amd64, AppleClang 21.
 
 The input semantic schema is exactly `sqtv-integer-values-v1`: a nonempty dense
@@ -47,7 +47,7 @@ The derived manifest preserves dataset ID/revision, semantic schema, access scop
 and all evidence except layout-role entries. This is a representation change
 within the same dataset revision, not an analytic derived dataset. It replaces
 layout_version with the selected exact target layout, producer_ref with
-`sqtv-integer-conversion-cpp/0.1.0-dev`, and layout evidence with one entry whose
+`sqtv-integer-conversion-cpp/0.2.0-dev`, and layout evidence with one entry whose
 producer is that converter identity and reference is the target layout ID.
 
 Three lineage entries under the same converter producer identify the input
@@ -104,3 +104,10 @@ Receipt-v2 owns 13 package files; lifecycle tests cover exact installation and
 guarded removal. No network, provider parser, Databento fidelity, decimal/float,
 nullable, lossy conversion, stateful operation, sharing cache, foreign ABI,
 performance guarantee or SQV qxctl surface is admitted by this release.
+
+## Coordinated local pipeline admission
+
+This development package admits the exact SQV-20 dependency chain. The native
+representation/codec rules remain as specified above. The six-owner offline
+pipeline verifies attributable capture, conversion, preview, asynchronous local
+retention and confirmed replay; this is not a new provider or transport claim.

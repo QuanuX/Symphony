@@ -25,7 +25,8 @@
       "evidence": [
         "modules/sqmv-metadata-cpp/tests/metadata_test.cpp verifies bounded admission, exact identity, failure behavior and the stated native contract.",
         "modules/sqmv-metadata-cpp/tests/sdk-consumer/main.cpp verifies the installed public C++26 interface independently of private implementation headers.",
-        "modules/sqmv-metadata-cpp/tests/package_lifecycle_test.cmake verifies isolated install and guarded removal of the exact library package."
+        "modules/sqmv-metadata-cpp/tests/package_lifecycle_test.cmake verifies isolated install and guarded removal of the exact library package.",
+        "The exact dependency update preserves SQM1 metadata while the six-owner pipeline verifies source, capture lineage, time and coverage evidence through conversion and retained replay."
       ],
       "feature_id": "ssfv:symphony:sqmv-metadata-cpp",
       "how": "Canonical SQM1 bytes bind exact dataset, revision, schema, layout and access assertions to producer-attributed evidence references; resolution verifies the expected content reference before publishing an immutable handle.",

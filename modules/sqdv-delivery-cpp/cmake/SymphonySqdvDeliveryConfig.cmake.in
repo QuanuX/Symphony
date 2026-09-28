@@ -1,9 +1,9 @@
 @PACKAGE_INIT@
 include(CMakeFindDependencyMacro)
 find_dependency(SymphonyKnowledgeVectorEngine 0.2.0 EXACT CONFIG)
-find_dependency(SymphonySqfvBatch 0.2.0 EXACT CONFIG)
-find_dependency(SymphonySqmvMetadata 0.1.0 EXACT CONFIG)
-find_dependency(SymphonySqpvLocalStore 0.1.0 EXACT CONFIG)
+find_dependency(SymphonySqfvBatch 0.3.0 EXACT CONFIG)
+find_dependency(SymphonySqmvMetadata 0.2.0 EXACT CONFIG)
+find_dependency(SymphonySqpvLocalStore 0.2.0 EXACT CONFIG)
 set(SymphonySqdvDelivery_RELEASE_VERSION "@SQDV_VERSION@")
 include("${CMAKE_CURRENT_LIST_DIR}/SymphonySqdvDeliveryTargets.cmake")
 check_required_components(SymphonySqdvDelivery)

@@ -1,8 +1,8 @@
 # SQPV C++26 Library Installation
 
-`sqpv-local-store-cpp` is an independently selectable, library-only `0.1.0-dev` package. Its CMake package version is `0.1.0`; the public target is `Symphony::SqpvLocalStore`. It requires CMake 3.30 or newer, C++26, and one single-configuration generator. The initial verified development target is macOS `amd64` with AppleClang 21. The local store runtime accepts only a local APFS filesystem on macOS; other backends return `unsupported`. Consumer compiler/runtime compatibility remains explicit.
+`sqpv-local-store-cpp` is an independently selectable, library-only `0.2.0-dev` package. Its CMake package version is `0.2.0`; the public target is `Symphony::SqpvLocalStore`. It requires CMake 3.30 or newer, C++26, and one single-configuration generator. The initial verified development target is macOS `amd64` with AppleClang 21. The local store runtime accepts only a local APFS filesystem on macOS; other backends return `unsupported`. Consumer compiler/runtime compatibility remains explicit.
 
-Exact dependencies are SQMV metadata `0.1.0-dev` and SQFV batch `0.2.0-dev`; SQMV also requires foundation `0.2.0-dev`. The default source build compiles those repository dependencies with their tests disabled and excludes their installation rules. Install dependency packages separately before configuring an installed SDK consumer. A source dependency build does not make its package present in an installation prefix.
+Exact dependencies are SQMV metadata `0.2.0-dev` and SQFV batch `0.3.0-dev`; SQMV also requires foundation `0.2.0-dev`. The default source build compiles those repository dependencies with their tests disabled and excludes their installation rules. Install dependency packages separately before configuring an installed SDK consumer. A source dependency build does not make its package present in an installation prefix.
 
 ```sh
 cmake -S modules/sqpv-local-store-cpp -B /tmp/sqpv-build -DCMAKE_BUILD_TYPE=Release
@@ -25,7 +25,7 @@ cmake --build /tmp/sqpv-consumer-build
 /tmp/sqpv-consumer-build/consumer
 ```
 
-The consumer requests `find_package(SymphonySqpvLocalStore 0.1.0 EXACT CONFIG)` and verifies `SymphonySqpvLocalStore_RELEASE_VERSION` is `0.1.0-dev`. It uses the exported C++26 requirement without setting its own language standard.
+The consumer requests `find_package(SymphonySqpvLocalStore 0.2.0 EXACT CONFIG)` and verifies `SymphonySqpvLocalStore_RELEASE_VERSION` is `0.2.0-dev`. It uses the exported C++26 requirement without setting its own language standard.
 
 Guarded removal uses the same prefix that received installation:
 

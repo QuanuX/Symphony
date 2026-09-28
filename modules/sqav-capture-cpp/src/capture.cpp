@@ -389,6 +389,68 @@ Status Capture::resolve(ByteView bytes, std::string_view expected,
     return Status::internal_error;
   }
 }
+Status Capture::metadata(bool raw, const sqmv::EvidenceReference& access,
+                         const sqmv::Limits& limits, sqmv::Manifest& out) const noexcept {
+  if (!state_ || access.role != sqmv::EvidenceRole::access) return Status::invalid_argument;
+  const auto& d = description();
+  if (raw && (!d.source_record_count || *d.source_record_count == 0)) return Status::invalid_argument;
+  try {
+    sqmv::Description md{d.source.dataset_id, d.source.dataset_revision,
+      raw ? d.source.native_schema_ref : std::string(capture_schema),
+      raw ? d.source.native_encoding_ref : std::string(capture_layout),
+      d.source.access_scope, d.attribution_ref, {}};
+    md.evidence = {{sqmv::EvidenceRole::schema, d.attribution_ref, md.schema_version},
+      {sqmv::EvidenceRole::layout, d.attribution_ref, md.layout_version}, access,
+      {sqmv::EvidenceRole::source, d.attribution_ref, std::string(source_reference())},
+      {sqmv::EvidenceRole::lineage, d.attribution_ref, std::string(reference())}};
+    for (const auto& time : d.times) {
+      const auto duplicate = std::any_of(md.evidence.begin(), md.evidence.end(), [&](const auto& e) {
+        return e.role == sqmv::EvidenceRole::time && e.evidence_ref == time.evidence_ref;
+      });
+      if (!duplicate) md.evidence.push_back({sqmv::EvidenceRole::time, d.attribution_ref, time.evidence_ref});
+    }
+    if (d.coverage != Coverage::unknown)
+      md.evidence.push_back({sqmv::EvidenceRole::coverage, d.attribution_ref, d.coverage_evidence_ref});
+    const auto status = sqmv::Manifest::create(md, limits, out);
+    switch (status) {
+      case sqmv::Status::ok: return Status::ok;
+      case sqmv::Status::limit: return Status::limit;
+      case sqmv::Status::no_memory: return Status::no_memory;
+      case sqmv::Status::invalid_argument: return Status::invalid_argument;
+      default: return Status::internal_error;
+    }
+  } catch (const std::bad_alloc&) { return Status::no_memory; }
+    catch (...) { return Status::internal_error; }
+}
+Status Capture::prepare_original(sqfv::Context& context, const sqmv::Manifest& manifest,
+                                 const Position& position, sqfv::Batch& out) const noexcept {
+  if (!state_ || !manifest || !description().source_record_count ||
+      *description().source_record_count == 0) return Status::invalid_argument;
+  const auto& source = description().source;
+  const auto& md = manifest.description();
+  if (md.dataset_id != source.dataset_id || md.dataset_revision != source.dataset_revision ||
+      md.access_scope != source.access_scope || md.schema_version != source.native_schema_ref ||
+      md.layout_version != source.native_encoding_ref) return Status::binding_mismatch;
+  bool has_source = false, has_capture = false;
+  for (const auto& e : md.evidence) {
+    if (e.producer_ref != description().attribution_ref) continue;
+    has_source |= e.role == sqmv::EvidenceRole::source && e.evidence_ref == source_reference();
+    has_capture |= e.role == sqmv::EvidenceRole::lineage && e.evidence_ref == reference();
+  }
+  if (!has_source || !has_capture) return Status::binding_mismatch;
+  try {
+    sqfv::Descriptor d;
+    const auto bound = manifest.binding(d.binding);
+    if (bound == sqmv::Status::no_memory) return Status::no_memory;
+    if (bound != sqmv::Status::ok) return Status::internal_error;
+    d.partition = position.partition; d.producer_generation = position.producer_generation;
+    d.batch_sequence = position.batch_sequence; d.record_count = *description().source_record_count;
+    d.source_binding = source_reference(); d.source_position = reference();
+    return flow_status(context.prepare_copy(d, original(), out));
+  } catch (const std::bad_alloc&) { return Status::no_memory; }
+    catch (...) { return Status::internal_error; }
+}
+
 Status Capture::prepare(sqfv::Context &context, const sqmv::Manifest &manifest,
                         const Position &pos, sqfv::Batch &out) const noexcept {
   if (auto s = manifest_matches(*this, manifest); s != Status::ok)

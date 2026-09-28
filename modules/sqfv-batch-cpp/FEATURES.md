@@ -26,7 +26,8 @@
         "modules/sqfv-batch-cpp/tests/batch_test.cpp verifies immutable copied payloads, exact binding and scope checks, independent bounded port cursors and credits, leases after owner release, stalls, and resource boundaries in focused native CTest.",
         "modules/sqfv-batch-cpp/tests/frame_test.cpp verifies the exact independent frame and content-ID golden bytes, round trips, corruption and length rejection, and configured bounds in focused native CTest.",
         "modules/sqfv-batch-cpp/tests/sdk-consumer/main.cpp compiles as C++26 outside the checkout against the installed exact CMake package and exercises frozen copy, offer/take, lease lifetime, and reservation accounting.",
-        "modules/sqfv-batch-cpp/CMakeLists.txt installs a library-only receipt-v2 package with no process entry points and guarded exact-version uninstall."
+        "modules/sqfv-batch-cpp/CMakeLists.txt installs a library-only receipt-v2 package with no process entry points and guarded exact-version uninstall.",
+        "Independently retained contexts share the same charged allocation ledger and frame identity domain; the integrated pipeline releases producer handles while asynchronous work retains ownership."
       ],
       "feature_id": "ssfv:symphony:sqfv-batch-cpp",
       "how": "A C++26 static library exposes move-only RAII handles, makes one immutable payload copy, tracks finite charged reservation units and independent per-port byte credits, and uses a bounded SHA-256 frame codec.",

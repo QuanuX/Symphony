@@ -25,7 +25,8 @@
       "evidence": [
         "modules/sqpv-local-store-cpp/tests/local_store_test.cpp verifies bounded admission, exact identity, failure behavior and the stated native contract.",
         "modules/sqpv-local-store-cpp/tests/sdk-consumer/main.cpp verifies the installed public C++26 interface independently of private implementation headers.",
-        "modules/sqpv-local-store-cpp/tests/package_lifecycle_test.cmake verifies isolated install and guarded removal of the exact library package."
+        "modules/sqpv-local-store-cpp/tests/package_lifecycle_test.cmake verifies isolated install and guarded removal of the exact library package.",
+        "The optional AsyncStore uses one owned worker with bounded frame bytes and slots including active writes, explicit lag/failure, drain and committed-prefix recovery. Native tests cover paused writes, conflicts, queue exhaustion, uncertain failure and two actual SIGKILL boundaries."
       ],
       "feature_id": "ssfv:symphony:sqpv-local-store-cpp",
       "how": "Exclusive writer ownership, immutable frames and hash-linked commit records, an atomic checked head and explicit file/directory synchronization keep retained evidence distinct from staged work.",
@@ -41,8 +42,11 @@
       ],
       "implementation_paths": [
         "modules/sqpv-local-store-cpp/CMakeLists.txt",
+        "modules/sqpv-local-store-cpp/include/symphony/sqpv/async_store.hpp",
         "modules/sqpv-local-store-cpp/include/symphony/sqpv/local_store.hpp",
-        "modules/sqpv-local-store-cpp/src/local_store.cpp"
+        "modules/sqpv-local-store-cpp/src/async_store.cpp",
+        "modules/sqpv-local-store-cpp/src/local_store.cpp",
+        "modules/sqpv-local-store-cpp/tests/async_store_test.cpp"
       ],
       "kind": "feature",
       "non_claims": [
@@ -67,7 +71,7 @@
       "source_scope": "modules/sqpv-local-store-cpp",
       "status": "experimental",
       "title": "SQPV bounded local retention library",
-      "what": "Retains an exact SQMV-bound SQFV stream with finite storage capacity, verified contiguous commits, exact retry and process-crash recovery.",
+      "what": "Provides exact local retained streams and an optional bounded asynchronous writer with separate admission, confirmed progress and failure evidence.",
       "when": "Only when a compatible trusted caller explicitly invokes the installed library; installation starts no service.",
       "where": "Inside the explicit native caller through the exact installed sqpv-local-store-cpp static library.",
       "who": "Trusted C++26 callers selecting a private local store for one exact manifest, partition and producer generation.",

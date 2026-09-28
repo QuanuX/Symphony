@@ -436,6 +436,22 @@ Status Context::create(const Limits& limits, Context& out) noexcept {
   }
 }
 
+Status Context::retain(Context& out) const noexcept {
+  if (!impl_) return Status::invalid_argument;
+  try {
+    auto state = impl_->state;
+    const auto amount = handle_reservation_bytes<detail::ContextHandle>();
+    if (!state->reserve(amount)) return Status::limit;
+    detail::Reservation charge(state, amount);
+    auto handle = std::make_unique<detail::ContextHandle>();
+    handle->state = std::move(state);
+    handle->reservation = std::move(charge);
+    out.impl_ = std::move(handle);
+    return Status::ok;
+  } catch (const std::bad_alloc&) { return Status::no_memory; }
+    catch (...) { return Status::internal_error; }
+}
+
 Status Context::prepare_copy(const Descriptor& descriptor, ByteView payload,
                              Batch& out) const noexcept {
   if (!impl_) return Status::invalid_argument;

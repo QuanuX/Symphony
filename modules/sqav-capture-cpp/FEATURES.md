@@ -25,7 +25,8 @@
       "evidence": [
         "modules/sqav-capture-cpp/tests/capture_test.cpp verifies original-byte fidelity, exact identities, finite decoding and allocation rollback, and five-owner retained replay.",
         "modules/sqav-capture-cpp/tests/sdk-consumer/main.cpp verifies installed capture round-trip and corruption/binding rejection.",
-        "modules/sqav-capture-cpp/tests/package_lifecycle_test.cmake verifies exact isolated installation and guarded removal."
+        "modules/sqav-capture-cpp/tests/package_lifecycle_test.cmake verifies exact isolated installation and guarded removal.",
+        "Capture metadata construction preserves attributed time, coverage and exact capture lineage; the original-representation bridge validates exact metadata before preparing unchanged original bytes."
       ],
       "feature_id": "ssfv:symphony:sqav-capture-cpp",
       "how": "Canonical SQA1 encoding and SHA-256 bind original bytes and bounded evidence; exact SQMV source evidence admits the optional SQFV envelope bridge.",

@@ -8,6 +8,7 @@
 #include <symphony/sqfv/batch.hpp>
 #include <symphony/sqmv/metadata.hpp>
 #include <symphony/sqpv/local_store.hpp>
+#include <symphony/sqpv/async_store.hpp>
 
 namespace symphony::sqdv {
 
@@ -16,7 +17,7 @@ enum class Status : std::uint8_t {
   stale, missing, corrupt, unsafe_path, io_error, outcome_uncertain, closed,
   empty, unsupported, binding_mismatch, busy, internal_error,
 };
-enum class Profile : std::uint8_t { disposable = 1, retained_before_delivery = 2 };
+enum class Profile : std::uint8_t { disposable = 1, retained_before_delivery = 2, asynchronous_retention = 3 };
 enum class Origin : std::uint8_t { live = 1, retained = 2 };
 
 struct Config {
@@ -55,6 +56,7 @@ struct SessionState;
 }
 
 class RetainedBatch;
+class QueuedBatch;
 class Session;
 
 // Owns an actual SQPV Store. Retained source handles and sessions share its
@@ -75,6 +77,14 @@ class RetainedSource final {
   [[nodiscard]] static Status open(const std::string& absolute_root,
                                    const sqmv::Manifest&, const sqpv::Options&,
                                    RetainedSource& out) noexcept;
+  [[nodiscard]] static Status create_async(const std::string&, const sqmv::Manifest&,
+      const sqpv::Options&, sqfv::Context&, const sqpv::AsyncLimits&, RetainedSource& out) noexcept;
+  [[nodiscard]] static Status open_async(const std::string&, const sqmv::Manifest&,
+      const sqpv::Options&, sqfv::Context&, const sqpv::AsyncLimits&, RetainedSource& out) noexcept;
+  // Produces a queue-admission proof only; preview carries no retention receipt.
+  [[nodiscard]] Status enqueue(const sqfv::Batch&, QueuedBatch& out) noexcept;
+  [[nodiscard]] Status retention_status(sqpv::AsyncSnapshot& out) const noexcept;
+  [[nodiscard]] Status finish_retention() noexcept;
   [[nodiscard]] Status retain(RetainedSource& out) const noexcept;
   // ok and duplicate publish an actual verified retention proof. An uncertain
   // persistent outcome closes this source and its sessions to new retained work;
@@ -84,6 +94,22 @@ class RetainedSource final {
   void reset() noexcept;
  private:
   std::shared_ptr<detail::SourceState> state_;
+  friend class Session;
+};
+
+class QueuedBatch final {
+ public:
+  QueuedBatch() noexcept;
+  ~QueuedBatch() noexcept;
+  QueuedBatch(QueuedBatch&&) noexcept;
+  QueuedBatch& operator=(QueuedBatch&&) noexcept;
+  QueuedBatch(const QueuedBatch&) = delete;
+  QueuedBatch& operator=(const QueuedBatch&) = delete;
+  [[nodiscard]] explicit operator bool() const noexcept;
+  void reset() noexcept;
+ private:
+  std::shared_ptr<const detail::RetainedBatchState> state_;
+  friend class RetainedSource;
   friend class Session;
 };
 
@@ -156,6 +182,7 @@ class Session final {
                                      const RetainedSource* source,
                                      const Checkpoint* resume,
                                      Session& out) noexcept;
+  [[nodiscard]] Status offer_preview(const QueuedBatch&) noexcept;
   [[nodiscard]] Status offer_live(const sqfv::Batch&) noexcept;
   [[nodiscard]] Status offer_next(sqfv::Context&,
                                   const RetainedBatch* live_candidate = nullptr) noexcept;

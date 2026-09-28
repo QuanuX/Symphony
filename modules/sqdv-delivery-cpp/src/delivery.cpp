@@ -114,6 +114,7 @@ struct SourceState {
   std::shared_ptr<const SourceIdentity> identity;
   std::mutex mutex;
   sqpv::Store store;
+  sqpv::AsyncStore async_store;
   bool uncertain = false;
 };
 struct RetainedBatchState {
@@ -208,7 +209,8 @@ struct SessionState {
 
 namespace {
 Status make_source(bool create, const std::string& root, const sqmv::Manifest& manifest,
-                   const sqpv::Options& options, std::shared_ptr<detail::SourceState>& out) {
+                   const sqpv::Options& options, std::shared_ptr<detail::SourceState>& out,
+                   sqfv::Context* context = nullptr, const sqpv::AsyncLimits* limits = nullptr) {
   if (!manifest || !valid_string(root) || !valid_string(options.partition)) return Status::invalid_argument;
   auto identity = std::make_shared<detail::SourceIdentity>();
   identity->absolute_root = root;
@@ -230,8 +232,11 @@ Status make_source(bool create, const std::string& root, const sqmv::Manifest& m
   auto state = std::make_shared<detail::SourceState>();
   state->identity = std::move(identity);
   // All wrapper-owned allocations are complete before create/open can mutate.
-  const auto status = create ? sqpv::Store::create(root, manifest, options, state->store)
-                             : sqpv::Store::open(root, manifest, options, state->store);
+  const auto status = context
+      ? (create ? sqpv::AsyncStore::create(root, manifest, options, *context, *limits, state->async_store)
+                : sqpv::AsyncStore::open(root, manifest, options, *context, *limits, state->async_store))
+      : (create ? sqpv::Store::create(root, manifest, options, state->store)
+                : sqpv::Store::open(root, manifest, options, state->store));
   if (status != sqpv::Status::ok) return store_status(status);
   out = std::move(state);
   return Status::ok;
@@ -240,7 +245,7 @@ bool valid_config(const Config& config, const Limits& limits) noexcept {
   return valid_string(config.view_id) && valid_string(config.recipient_id) &&
       valid_string(config.recipient_interface) && valid_string(config.partition) &&
       nonzero(config.producer_generation) &&
-      (config.profile == Profile::disposable || config.profile == Profile::retained_before_delivery) &&
+      (config.profile == Profile::disposable || config.profile == Profile::retained_before_delivery || config.profile == Profile::asynchronous_retention) &&
       limits.outstanding_byte_credit > 0 && limits.outstanding_byte_credit <= maximum_credit &&
       limits.max_unacknowledged_batches > 0 && limits.max_unacknowledged_batches <= maximum_entries;
 }
@@ -290,6 +295,65 @@ Status RetainedSource::open(const std::string& root, const sqmv::Manifest& manif
   } catch (const std::bad_alloc&) { return Status::no_memory; }
     catch (...) { return Status::internal_error; }
 }
+Status RetainedSource::create_async(const std::string& r, const sqmv::Manifest& m,
+    const sqpv::Options& o, sqfv::Context& c, const sqpv::AsyncLimits& l, RetainedSource& out) noexcept {
+  try { RetainedSource ready; auto s = make_source(true, r, m, o, ready.state_, &c, &l);
+    if (s == Status::ok) out = std::move(ready); return s;
+  } catch (const std::bad_alloc&) { return Status::no_memory; }
+    catch (...) { return Status::internal_error; }
+}
+Status RetainedSource::open_async(const std::string& r, const sqmv::Manifest& m,
+    const sqpv::Options& o, sqfv::Context& c, const sqpv::AsyncLimits& l, RetainedSource& out) noexcept {
+  try { RetainedSource ready; auto s = make_source(false, r, m, o, ready.state_, &c, &l);
+    if (s == Status::ok) out = std::move(ready); return s;
+  } catch (const std::bad_alloc&) { return Status::no_memory; }
+    catch (...) { return Status::internal_error; }
+}
+Status RetainedSource::enqueue(const sqfv::Batch& batch, QueuedBatch& out) noexcept {
+  if (!state_) return Status::closed;
+  if (state_->identity->pid != ::getpid()) return Status::stale;
+  try {
+    auto proof = std::make_shared<detail::RetainedBatchState>();
+    proof->identity = state_->identity;
+    if (auto s = flow_status(batch.retain(proof->batch)); s != Status::ok) return s;
+    if (!state_->async_store) return Status::invalid_argument;
+    // AsyncStore owns queue synchronization; never wait for a disk read/drain
+    // while admitting preview work through this source.
+    const auto result = store_status(state_->async_store.submit(batch));
+    if (result != Status::ok && result != Status::duplicate) return result;
+    QueuedBatch ready; ready.state_ = std::move(proof); out = std::move(ready);
+    return result;
+  } catch (const std::bad_alloc&) { return Status::no_memory; }
+    catch (...) { return Status::internal_error; }
+}
+Status RetainedSource::retention_status(sqpv::AsyncSnapshot& out) const noexcept {
+  if (!state_) return Status::closed;
+  if (state_->identity->pid != ::getpid()) return Status::stale;
+  try {
+    if (state_->async_store) return store_status(state_->async_store.snapshot(out));
+    std::lock_guard lock(state_->mutex);
+    sqpv::AsyncSnapshot ready;
+    auto result = state_->store.snapshot(ready.confirmed);
+    if (result != sqpv::Status::ok) return store_status(result);
+    ready.next_admission_sequence = ready.confirmed.next_sequence;
+    ready.admission_exhausted = ready.confirmed.sequence_exhausted;
+    out = ready; return Status::ok;
+  } catch (...) { return Status::internal_error; }
+}
+Status RetainedSource::finish_retention() noexcept {
+  if (!state_) return Status::closed;
+  if (state_->identity->pid != ::getpid()) return Status::stale;
+  try {
+    return state_->async_store ? store_status(state_->async_store.finish()) : Status::invalid_argument;
+  } catch (...) { return Status::internal_error; }
+}
+QueuedBatch::QueuedBatch() noexcept = default;
+QueuedBatch::~QueuedBatch() noexcept = default;
+QueuedBatch::QueuedBatch(QueuedBatch&&) noexcept = default;
+QueuedBatch& QueuedBatch::operator=(QueuedBatch&&) noexcept = default;
+QueuedBatch::operator bool() const noexcept { return bool(state_); }
+void QueuedBatch::reset() noexcept { state_.reset(); }
+
 Status RetainedSource::retain(RetainedSource& out) const noexcept {
   if (!state_) return Status::invalid_argument;
   if (state_->identity->pid != ::getpid()) return Status::stale;
@@ -319,6 +383,7 @@ Status RetainedSource::commit(sqfv::Context& context, const sqfv::Batch& batch,
     {
       std::lock_guard lock(state_->mutex);
       if (state_->uncertain) return Status::closed;
+      if (state_->async_store) return Status::invalid_argument;
       status = store_status(state_->store.append(context, batch, proof->receipt));
       if (status == Status::outcome_uncertain) state_->uncertain = true;
       if (status != Status::ok && status != Status::duplicate) return status;
@@ -376,7 +441,7 @@ Status Session::create(sqfv::Context& context, const sqmv::Manifest& manifest,
                        const RetainedSource* source, const Checkpoint* resume,
                        Session& out) noexcept {
   if (!context || !manifest || !valid_config(config, limits)) return Status::invalid_argument;
-  if ((config.profile == Profile::retained_before_delivery) != (source != nullptr)) return Status::invalid_argument;
+  if ((config.profile != Profile::disposable) != (source != nullptr)) return Status::invalid_argument;
   if (source && !source->state_) return Status::invalid_argument;
   if (source && source->state_->identity->pid != ::getpid()) return Status::stale;
   try {
@@ -387,6 +452,7 @@ Status Session::create(sqfv::Context& context, const sqmv::Manifest& manifest,
     const auto bound = manifest.binding(state->binding);
     if (bound != sqmv::Status::ok) return metadata_status(bound);
     if (source) {
+      if (config.profile == Profile::asynchronous_retention && !source->state_->async_store) return Status::invalid_argument;
       state->source = source->state_;
       const auto& actual = *state->source->identity;
       if (!same_binding(actual.binding, state->binding) || actual.options.partition != config.partition ||
@@ -421,6 +487,17 @@ Status Session::create(sqfv::Context& context, const sqmv::Manifest& manifest,
     catch (const std::length_error&) { return Status::limit; }
     catch (...) { return Status::internal_error; }
 }
+Status Session::offer_preview(const QueuedBatch& queued) noexcept {
+  if (!impl_) return Status::closed;
+  if (impl_->identity->pid != ::getpid()) return Status::stale;
+  try {
+    std::lock_guard lock(impl_->mutex);
+    if (impl_->config.profile != Profile::asynchronous_retention || !queued.state_) return Status::invalid_argument;
+    if (queued.state_->identity.get() != impl_->source->identity.get()) return Status::binding_mismatch;
+    return impl_->enqueue(queued.state_->batch, Origin::live, nullptr);
+  } catch (const std::bad_alloc&) { return Status::no_memory; }
+    catch (...) { return Status::internal_error; }
+}
 Status Session::offer_live(const sqfv::Batch& batch) noexcept {
   if (!impl_) return Status::closed;
   if (impl_->identity->pid != ::getpid()) return Status::stale;
@@ -436,8 +513,9 @@ Status Session::offer_next(sqfv::Context& context, const RetainedBatch* candidat
   if (impl_->identity->pid != ::getpid()) return Status::stale;
   try {
     std::lock_guard lock(impl_->mutex);
-    if (impl_->config.profile != Profile::retained_before_delivery) return Status::invalid_argument;
-    std::lock_guard source_lock(impl_->source->mutex);
+    if (impl_->config.profile == Profile::disposable) return Status::invalid_argument;
+    std::unique_lock source_lock(impl_->source->mutex, std::defer_lock);
+    if (!impl_->source->async_store) source_lock.lock();
     if (impl_->source->uncertain) return Status::closed;
     if (candidate) {
       if (!candidate->state_) return Status::invalid_argument;
@@ -454,7 +532,9 @@ Status Session::offer_next(sqfv::Context& context, const RetainedBatch* candidat
       return impl_->enqueue(candidate->state_->batch, Origin::live, &candidate->state_->receipt);
     sqfv::Batch batch;
     sqpv::Receipt receipt;
-    const auto read = impl_->source->store.read(impl_->next_offer, context, batch, receipt);
+    const auto read = impl_->source->async_store
+        ? impl_->source->async_store.read(impl_->next_offer, context, batch, receipt)
+        : impl_->source->store.read(impl_->next_offer, context, batch, receipt);
     if (read != sqpv::Status::ok) return store_status(read);
     return impl_->enqueue(batch, Origin::retained, &receipt);
   } catch (const std::bad_alloc&) { return Status::no_memory; }
@@ -467,7 +547,7 @@ Status Session::take(Delivery& out) noexcept {
     Delivery ready;
     {
       std::lock_guard lock(impl_->mutex);
-      if (impl_->source) {
+      if (impl_->source && !impl_->source->async_store) {
         std::lock_guard source_lock(impl_->source->mutex);
         if (impl_->source->uncertain) return Status::closed;
       }

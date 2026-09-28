@@ -8,7 +8,7 @@
 namespace symphony::sqtv {
 inline constexpr std::string_view integer_schema = "sqtv-integer-values-v1";
 inline constexpr std::string_view converter_identity =
-    "sqtv-integer-conversion-cpp/0.1.0-dev";
+    "sqtv-integer-conversion-cpp/0.2.0-dev";
 enum class Signedness : std::uint8_t {
   signed_integer = 1,
   unsigned_integer = 2

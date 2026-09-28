@@ -367,7 +367,7 @@ void version_one_fidelity_and_binding() {
   check(db::capture_file(d,b,limits,{65536,16384,4096},c)==db::Status::binding_mismatch);
   d.source.native_encoding_ref=db::native_encoding_v1;
   check(db::capture_file(d,b,limits,{65536,16384,4096},c)==db::Status::ok &&
-        std::ranges::equal(c.original(),b) && c.description().source.adapter_version=="0.2.0-dev");
+        std::ranges::equal(c.original(),b) && c.description().source.adapter_version=="0.3.0-dev");
   check(db::inspect_capture(c,limits,v1)==db::Status::ok && v1.metadata().version==1);
   const auto ref=std::string(c.reference());
   check(db::capture_file(d,b3,limits,{65536,16384,4096},c)==db::Status::binding_mismatch && c.reference()==ref);

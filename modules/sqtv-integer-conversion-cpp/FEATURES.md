@@ -25,7 +25,8 @@
       "evidence": [
         "modules/sqtv-integer-conversion-cpp/tests/integer_conversion_test.cpp verifies all 256 format pairs, lineage, rejection, retained delivery and allocation rollback.",
         "modules/sqtv-integer-conversion-cpp/tests/sdk-consumer/main.cpp verifies installed conversion, an independent operation digest and atomic rejection.",
-        "modules/sqtv-integer-conversion-cpp/tests/package_lifecycle_test.cmake verifies exact installation and guarded removal."
+        "modules/sqtv-integer-conversion-cpp/tests/package_lifecycle_test.cmake verifies exact installation and guarded removal.",
+        "The six-owner fixture converts captured dense integer bytes, preserves capture/time/coverage lineage and verifies exact output through preview and retained replay under the new dependency chain."
       ],
       "feature_id": "ssfv:symphony:sqtv-integer-conversion-cpp",
       "how": "Two bounded passes validate exact representability and encode a new SQFV batch with derived SQMV metadata.",

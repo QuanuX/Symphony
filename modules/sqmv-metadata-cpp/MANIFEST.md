@@ -4,7 +4,7 @@
 
 - Module, component, and package ID: `sqmv-metadata-cpp`
 - Owner: `sqmv`
-- Exact development release: `0.1.0-dev`
+- Exact development release: `0.2.0-dev`
 - Package kind: `module`; library-only receipt-v2 installation
 - Public interface: C++26 static library, `Symphony::SqmvMetadata`
 
@@ -29,7 +29,7 @@
 ## Boundary
 
 The public header and SPEC define the source API and SQM1 local encoding.
-The exact package selects `sqfv-batch-cpp` `0.2.0-dev` for its public binding
+The exact package selects `sqfv-batch-cpp` `0.3.0-dev` for its public binding
 type and `knowledge-vector-engine-cpp` `0.2.0-dev` for SHA-256 mechanics.
 No knowledge-engine request or response envelope carries metadata or payloads.
 

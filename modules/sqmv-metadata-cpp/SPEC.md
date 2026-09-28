@@ -2,7 +2,7 @@
 
 ## Exact identity and extent
 
-`sqmv-metadata-cpp` `0.1.0-dev` is an SQMV-owned C++26 static library in namespace
+`sqmv-metadata-cpp` `0.2.0-dev` is an SQMV-owned C++26 static library in namespace
 `symphony::sqmv`. Its source interface is [metadata.hpp](include/symphony/sqmv/metadata.hpp).
 The exact package and compatible compiler/runtime select the interface for
 trusted callers in one address space. There is no unspecified cross-toolchain
@@ -155,3 +155,10 @@ create, resolve, and binding. Installed consumer tests exercise the public
 interface through exact receipt-owned packages. These are bounded development
 checks, not proof of provider fidelity, full SQMV semantics, or a supported
 platform/performance release matrix.
+
+## Coordinated local pipeline admission
+
+This development package admits the exact SQV-20 dependency chain. The native
+representation/codec rules remain as specified above. The six-owner offline
+pipeline verifies attributable capture, conversion, preview, asynchronous local
+retention and confirmed replay; this is not a new provider or transport claim.

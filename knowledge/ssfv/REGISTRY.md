@@ -748,7 +748,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `modules/sqav-capture-cpp`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:platform`
-- record_digest: `sha256:7d4fadc5a58b4e9e0b07f105b374963c426f39ad85a070eb9590bad85d8110f5`
+- record_digest: `sha256:2719047344c83c6273cf54e0076eadb24064a1c4aa2a6aa21fd79fc327224ea5`
 - notes: Optional bounded C++26 original-byte capture and attributed source evidence; no provider connection or source authority is implied.
 
 - feature_id: `ssfv:symphony:sqav-databento-dbn-cpp`
@@ -757,7 +757,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `modules/sqav-databento-dbn-cpp`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:platform`
-- record_digest: `sha256:a748fa71af110533587ceb7b67e93d3b51f2f485d5c0a342c2f09b8f8f7a7dbf`
+- record_digest: `sha256:f380bba0474e4b171237c2695dce9e996733233e266aa61bc0c8613e50a45433`
 - notes: Bounded DBNv1/v3 single-schema MBO file fidelity and attributed capture; network sessions and entitlements remain separate.
 
 - feature_id: `ssfv:symphony:sqdv-delivery-cpp`
@@ -766,7 +766,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `modules/sqdv-delivery-cpp`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:platform`
-- record_digest: `sha256:a07fd8527160b5fddfe6b7f6dc29462bc25a26f579181de17287d5e01c07392f`
+- record_digest: `sha256:5552933af98f314eef984f838cd39b4d40d8bbf7c53ef07b799843b02b426816`
 - notes: Bounded C++26 same-process delivery and exact resume; retained evidence inherits the selected SQPV guarantee and grants no recipient authority.
 
 - feature_id: `ssfv:symphony:sqfv-batch-cpp`
@@ -775,7 +775,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `modules/sqfv-batch-cpp`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:platform`
-- record_digest: `sha256:ce9311aa77ce4bc538eaac4d524d365fccc95d2c5bd62c5fc7c46f3414563a74`
+- record_digest: `sha256:9ad4d55a906ce406334e2101ca4b13a11dd55a73aca353e81afc04d7008077e3`
 - notes: Trusted same-process SQFV batch, lease, bounded port, and local frame library; no SQV qxctl or process entry point, durable delivery, private access enforcement, provider, or network transport.
 
 - feature_id: `ssfv:symphony:sqmv-metadata-cpp`
@@ -784,7 +784,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `modules/sqmv-metadata-cpp`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:platform`
-- record_digest: `sha256:cec33ede9fb58ac607ab4987d8df18a107777532697c72259764ab754603b102`
+- record_digest: `sha256:c4b78c7e3abfae65c59e19f7f9ddf1cada29f3a6a69227e9bd3177bc2c1f6024`
 - notes: Bounded native C++26 library; exact module contract and focused evidence define its implemented extent.
 
 - feature_id: `ssfv:symphony:sqpv-local-store-cpp`
@@ -793,7 +793,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `modules/sqpv-local-store-cpp`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:platform`
-- record_digest: `sha256:02b897c7c6180727d2047de7c541b1354bd768e76bde977d6b173647cbfd3e34`
+- record_digest: `sha256:db1caaf6be746bd467098b8c208a5ef32e98cb58f8ea6fff1956a1668746b53b`
 - notes: Bounded native C++26 library; exact module contract and focused evidence define its implemented extent.
 
 - feature_id: `ssfv:symphony:sqtv-integer-conversion-cpp`
@@ -802,7 +802,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `modules/sqtv-integer-conversion-cpp`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:platform`
-- record_digest: `sha256:ada46a2d51e6a165e232077b7034d49f380f335074ec31ffc52f8c2da931a220`
+- record_digest: `sha256:92665e589f40abbe230980fa334bdfc3dabac3d9cba3c218537792eb72f8feac`
 - notes: Exact bounded integer representation conversion with preserved evidence and explicit input/operation lineage.
 
 - feature_id: `ssfv:symphony:ssfv-engine`

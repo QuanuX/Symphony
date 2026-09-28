@@ -5,7 +5,7 @@ endif()
 set(test_root "${SQFV_BINARY_DIR}/package-lifecycle-test")
 file(REMOVE_RECURSE "${test_root}")
 file(MAKE_DIRECTORY "${test_root}")
-set(receipt_relative "share/symphony/receipts/sqfv-batch-cpp/0.2.0-dev/install-receipt.json")
+set(receipt_relative "share/symphony/receipts/sqfv-batch-cpp/0.3.0-dev/install-receipt.json")
 
 function(run_expect label should_succeed)
     execute_process(COMMAND ${ARGN} RESULT_VARIABLE result

@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.30)
 project(IndependentInstalledSqfvCppConsumer LANGUAGES CXX)
 
-find_package(SymphonySqfvBatch 0.2.0 EXACT REQUIRED CONFIG)
-if(NOT SymphonySqfvBatch_RELEASE_VERSION STREQUAL "0.2.0-dev")
+find_package(SymphonySqfvBatch 0.3.0 EXACT REQUIRED CONFIG)
+if(NOT SymphonySqfvBatch_RELEASE_VERSION STREQUAL "0.3.0-dev")
     message(FATAL_ERROR "unexpected exact SQFV batch release")
 endif()
 

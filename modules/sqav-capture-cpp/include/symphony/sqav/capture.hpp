@@ -116,6 +116,14 @@ public:
   [[nodiscard]] std::string_view source_reference() const noexcept;
   // One SQFV record denotes one capture envelope, not the provider record
   // count.
+  // Creates metadata for preserved envelope or original bytes. Access evidence
+  // remains an explicit caller assertion. Original mode requires a known,
+  // positive source_record_count; it does not parse or normalize those bytes.
+  [[nodiscard]] Status metadata(bool original_bytes,
+                                const sqmv::EvidenceReference& access,
+                                const sqmv::Limits&, sqmv::Manifest& out) const noexcept;
+  [[nodiscard]] Status prepare_original(sqfv::Context&, const sqmv::Manifest&,
+                                        const Position&, sqfv::Batch& out) const noexcept;
   [[nodiscard]] Status prepare(sqfv::Context &, const sqmv::Manifest &,
                                const Position &,
                                sqfv::Batch &out) const noexcept;

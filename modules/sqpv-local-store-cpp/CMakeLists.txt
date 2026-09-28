@@ -1,7 +1,8 @@
 cmake_minimum_required(VERSION 3.30)
-project(SymphonySqpvLocalStore VERSION 0.1.0 LANGUAGES CXX)
+project(SymphonySqpvLocalStore VERSION 0.2.0 LANGUAGES CXX)
 
 include(CTest)
+find_package(Threads REQUIRED)
 include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
 
@@ -19,8 +20,8 @@ include("${SYMPHONY_REPOSITORY_ROOT}/cmake/SymphonyInstallReceiptV2.cmake")
 option(SYMPHONY_SQPV_USE_INSTALLED_DEPENDENCIES "Use exact installed SQPV dependencies" OFF)
 if(SYMPHONY_SQPV_USE_INSTALLED_DEPENDENCIES)
     find_package(SymphonyKnowledgeVectorEngine 0.2.0 EXACT REQUIRED CONFIG)
-    find_package(SymphonySqmvMetadata 0.1.0 EXACT REQUIRED CONFIG)
-    find_package(SymphonySqfvBatch 0.2.0 EXACT REQUIRED CONFIG)
+    find_package(SymphonySqmvMetadata 0.2.0 EXACT REQUIRED CONFIG)
+    find_package(SymphonySqfvBatch 0.3.0 EXACT REQUIRED CONFIG)
 else()
     function(sqpv_source_dependencies)
         set(BUILD_TESTING OFF)
@@ -55,10 +56,10 @@ if(APPLE)
     set(CMAKE_CXX_ARCHIVE_FINISH "\"${CMAKE_COMMAND}\" -E env ZERO_AR_DATE=1 <CMAKE_RANLIB> <TARGET>")
 endif()
 
-add_library(sqpv-local-store STATIC src/local_store.cpp)
+add_library(sqpv-local-store STATIC src/local_store.cpp src/async_store.cpp)
 add_library(Symphony::SqpvLocalStore ALIAS sqpv-local-store)
 target_link_libraries(sqpv-local-store
-    PUBLIC Symphony::SqmvMetadata Symphony::SqfvBatch
+    PUBLIC Symphony::SqmvMetadata Symphony::SqfvBatch Threads::Threads
     PRIVATE Symphony::KnowledgeVectorEngine)
 set_target_properties(sqpv-local-store PROPERTIES
     EXPORT_NAME SqpvLocalStore
@@ -88,8 +89,9 @@ if(APPLE)
     install(CODE "execute_process(COMMAND \"${CMAKE_COMMAND}\" -E env ZERO_AR_DATE=1 \"${CMAKE_RANLIB}\" \"\$ENV{DESTDIR}\${CMAKE_INSTALL_PREFIX}/${SQPV_ARCHIVE_DIR}/${CMAKE_STATIC_LIBRARY_PREFIX}sqpv-local-store${CMAKE_STATIC_LIBRARY_SUFFIX}\" COMMAND_ERROR_IS_FATAL ANY)")
 endif()
 
-install(FILES include/symphony/sqpv/local_store.hpp DESTINATION "${SQPV_HEADER_DIR}")
+install(FILES include/symphony/sqpv/local_store.hpp include/symphony/sqpv/async_store.hpp DESTINATION "${SQPV_HEADER_DIR}")
 sqpv_own("${SQPV_HEADER_DIR}/local_store.hpp")
+sqpv_own("${SQPV_HEADER_DIR}/async_store.hpp")
 
 configure_package_config_file(cmake/SymphonySqpvLocalStoreConfig.cmake.in
     "${CMAKE_CURRENT_BINARY_DIR}/SymphonySqpvLocalStoreConfig.cmake"
@@ -133,9 +135,9 @@ add_custom_target(uninstall-${SQPV_MODULE}
 
 if(BUILD_TESTING)
     # Fault/crash hooks are compiled only into this private test archive.
-    add_library(sqpv-local-store-testing STATIC src/local_store.cpp)
+    add_library(sqpv-local-store-testing STATIC src/local_store.cpp src/async_store.cpp)
     target_link_libraries(sqpv-local-store-testing
-        PUBLIC Symphony::SqmvMetadata Symphony::SqfvBatch
+        PUBLIC Symphony::SqmvMetadata Symphony::SqfvBatch Threads::Threads
         PRIVATE Symphony::KnowledgeVectorEngine)
     target_include_directories(sqpv-local-store-testing PUBLIC
         "${CMAKE_CURRENT_SOURCE_DIR}/include"
@@ -155,6 +157,12 @@ if(BUILD_TESTING)
     target_compile_options(sqpv-local-store-test PRIVATE
         $<$<CXX_COMPILER_ID:AppleClang,Clang,GNU>:-Wall;-Wextra;-Wpedantic;-Werror>)
     add_test(NAME sqpv-local-store COMMAND sqpv-local-store-test)
+    add_executable(sqpv-async-store-test tests/async_store_test.cpp)
+    target_link_libraries(sqpv-async-store-test PRIVATE sqpv-local-store-testing)
+    target_include_directories(sqpv-async-store-test PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/tests")
+    set_target_properties(sqpv-async-store-test PROPERTIES CXX_STANDARD 26 CXX_STANDARD_REQUIRED ON CXX_EXTENSIONS OFF)
+    target_compile_options(sqpv-async-store-test PRIVATE -Wall -Wextra -Wpedantic -Werror)
+    add_test(NAME sqpv-async-store COMMAND sqpv-async-store-test)
     add_test(NAME sqpv-package-lifecycle
         COMMAND "${CMAKE_COMMAND}"
             "-DPACKAGE_BINARY_DIR=${CMAKE_CURRENT_BINARY_DIR}"

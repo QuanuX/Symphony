@@ -8,7 +8,7 @@ set(test_root "${PACKAGE_BINARY_DIR}/package-lifecycle-test")
 file(REMOVE_RECURSE "${test_root}")
 file(MAKE_DIRECTORY "${test_root}")
 set(prefix "${test_root}/prefix")
-set(receipt_relative "share/symphony/receipts/${PACKAGE_MODULE}/0.2.0-dev/install-receipt.json")
+set(receipt_relative "share/symphony/receipts/${PACKAGE_MODULE}/0.3.0-dev/install-receipt.json")
 function(run_expect label expected)
     execute_process(COMMAND ${ARGN} RESULT_VARIABLE result OUTPUT_VARIABLE output ERROR_VARIABLE error TIMEOUT 30)
     if(NOT result MATCHES "^[0-9]+$" OR (expected AND NOT result EQUAL 0) OR (NOT expected AND result EQUAL 0))
@@ -24,7 +24,7 @@ string(JSON kind GET "${receipt}" component_kind)
 string(JSON engine_type TYPE "${receipt}" engine_id)
 string(JSON entry_count LENGTH "${receipt}" entry_points)
 if(NOT count EQUAL 13 OR NOT module STREQUAL PACKAGE_MODULE OR
-   NOT version STREQUAL "0.2.0-dev" OR NOT kind STREQUAL "module" OR
+   NOT version STREQUAL "0.3.0-dev" OR NOT kind STREQUAL "module" OR
    NOT engine_type STREQUAL "NULL" OR NOT entry_count EQUAL 0)
     message(FATAL_ERROR "unexpected library-only package receipt")
 endif()
@@ -60,7 +60,7 @@ foreach(script uninstall.cmake SymphonyUninstallReceiptV2.cmake SymphonyReceiptV
     "symphony-receipt-v2-identity-${identity_id}.cmake")
     file(COPY "${PACKAGE_BINARY_DIR}/${script}" DESTINATION "${detached}")
 endforeach()
-set(spec "${prefix}/share/doc/symphony/${PACKAGE_MODULE}/0.2.0-dev/SPEC.md")
+set(spec "${prefix}/share/doc/symphony/${PACKAGE_MODULE}/0.3.0-dev/SPEC.md")
 file(COPY_FILE "${spec}" "${test_root}/original-spec")
 file(APPEND "${spec}" "\ntamper")
 run_expect("altered owned content refusal" FALSE

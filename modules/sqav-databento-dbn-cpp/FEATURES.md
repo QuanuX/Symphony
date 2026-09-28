@@ -25,7 +25,8 @@
       "evidence": [
         "modules/sqav-databento-dbn-cpp/tests/dbn_test.cpp checks public v1/v3 provider fixture fields, exact encoding/version binding, private opt-in sample replay, malformed/bounded inputs, raw sentinels, allocation rollback and retained replay.",
         "modules/sqav-databento-dbn-cpp/tests/sdk-consumer/main.cpp checks installed fixture fidelity and atomic rejection.",
-        "modules/sqav-databento-dbn-cpp/tests/package_lifecycle_test.cmake checks immutable installation and guarded removal."
+        "modules/sqav-databento-dbn-cpp/tests/package_lifecycle_test.cmake checks immutable installation and guarded removal.",
+        "The new exact package admits the updated capture/metadata/flow dependency chain while retaining the specified DBNv1/v3 MBO file scope."
       ],
       "feature_id": "ssfv:symphony:sqav-databento-dbn-cpp",
       "how": "Allocation-free explicit little-endian parsing checks metadata grammar and record framing; an exact provider/adapter binding admits the original-byte capture.",

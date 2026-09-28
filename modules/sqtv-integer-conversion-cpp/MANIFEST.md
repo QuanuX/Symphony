@@ -3,7 +3,7 @@
 ## Identity
 
 - Module/package: `sqtv-integer-conversion-cpp`; owner: SQTV
-- Exact development release: `0.1.0-dev`; C++26 static library
+- Exact development release: `0.2.0-dev`; C++26 static library
 - Public target: `Symphony::SqtvIntegerConversion`
 
 ## Canonical Surfaces
@@ -26,4 +26,4 @@
 
 ## Dependencies and scope
 
-Runtime dependencies are SQMV 0.1.0-dev, SQFV 0.2.0-dev and the knowledge-engine foundation 0.2.0-dev. SQPV 0.1.0-dev and SQDV 0.1.0-dev are used only in native composition tests. Receipt-v2 installation owns the library, header, exact exports, six documents and license. There is no process entry point, provider session, credential access, background collector, namespace allocation or SQV qxctl surface.
+Runtime dependencies are SQMV 0.2.0-dev, SQFV 0.3.0-dev and the knowledge-engine foundation 0.2.0-dev. SQPV 0.2.0-dev and SQDV 0.2.0-dev are used only in native composition tests. Receipt-v2 installation owns the library, header, exact exports, six documents and license. There is no process entry point, provider session, credential access, background collector, namespace allocation or SQV qxctl surface.

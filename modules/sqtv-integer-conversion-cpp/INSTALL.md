@@ -1,8 +1,8 @@
 # SQTV C++26 Library Installation
 
-`sqtv-integer-conversion-cpp` is an independently selectable, library-only `0.1.0-dev` package. Its CMake package version is `0.1.0`; the public target is `Symphony::SqtvIntegerConversion`. It requires CMake 3.30 or newer, C++26, and one single-configuration generator. The initial verified development target is macOS `amd64` with AppleClang 21; consumer compiler/runtime compatibility remains explicit.
+`sqtv-integer-conversion-cpp` is an independently selectable, library-only `0.2.0-dev` package. Its CMake package version is `0.2.0`; the public target is `Symphony::SqtvIntegerConversion`. It requires CMake 3.30 or newer, C++26, and one single-configuration generator. The initial verified development target is macOS `amd64` with AppleClang 21; consumer compiler/runtime compatibility remains explicit.
 
-Exact runtime dependencies are foundation `0.2.0-dev`, SQFV batch `0.2.0-dev`, and SQMV metadata `0.1.0-dev`. The default source build compiles those repository dependencies with their tests disabled and excludes their installation rules. Native composition tests additionally build SQPV and SQDV `0.1.0-dev`; those are not exported runtime dependencies. Install dependency packages separately before configuring an installed SDK consumer. A source dependency build does not make its package present in an installation prefix.
+Exact runtime dependencies are foundation `0.2.0-dev`, SQFV batch `0.3.0-dev`, and SQMV metadata `0.2.0-dev`. The default source build compiles those repository dependencies with their tests disabled and excludes their installation rules. Native composition tests additionally build SQPV and SQDV `0.2.0-dev`; those are not exported runtime dependencies. Install dependency packages separately before configuring an installed SDK consumer. A source dependency build does not make its package present in an installation prefix.
 
 ```sh
 cmake -S modules/sqtv-integer-conversion-cpp -B /tmp/sqtv-build -DCMAKE_BUILD_TYPE=Release
@@ -25,7 +25,7 @@ cmake --build /tmp/sqtv-consumer-build
 /tmp/sqtv-consumer-build/consumer
 ```
 
-The consumer requests `find_package(SymphonySqtvIntegerConversion 0.1.0 EXACT CONFIG)` and verifies `SymphonySqtvIntegerConversion_RELEASE_VERSION` is `0.1.0-dev`. It uses the exported C++26 requirement without setting its own language standard.
+The consumer requests `find_package(SymphonySqtvIntegerConversion 0.2.0 EXACT CONFIG)` and verifies `SymphonySqtvIntegerConversion_RELEASE_VERSION` is `0.2.0-dev`. It uses the exported C++26 requirement without setting its own language standard.
 
 Guarded removal uses the same prefix that received installation:
 

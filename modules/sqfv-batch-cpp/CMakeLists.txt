@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.30)
-project(SymphonySqfvBatch VERSION 0.2.0 LANGUAGES CXX)
+project(SymphonySqfvBatch VERSION 0.3.0 LANGUAGES CXX)
 
 include(CTest)
 include(GNUInstallDirs)

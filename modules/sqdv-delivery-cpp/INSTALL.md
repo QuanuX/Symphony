@@ -1,8 +1,8 @@
 # SQDV C++26 Library Installation
 
-`sqdv-delivery-cpp` is an independently selectable, library-only `0.1.0-dev` package. Its CMake package version is `0.1.0`; the public target is `Symphony::SqdvDelivery`. It requires CMake 3.30 or newer, C++26, and one single-configuration generator. The initial verified development target is macOS `amd64` with AppleClang 21; consumer compiler/runtime compatibility remains explicit. Retained delivery uses the SQPV backend selected for macOS local APFS. Direct delivery is a trusted same-process interface; the package supplies no network transport or remote destination acknowledgement.
+`sqdv-delivery-cpp` is an independently selectable, library-only `0.2.0-dev` package. Its CMake package version is `0.2.0`; the public target is `Symphony::SqdvDelivery`. It requires CMake 3.30 or newer, C++26, and one single-configuration generator. The initial verified development target is macOS `amd64` with AppleClang 21; consumer compiler/runtime compatibility remains explicit. Retained delivery uses the SQPV backend selected for macOS local APFS. Direct delivery is a trusted same-process interface; the package supplies no network transport or remote destination acknowledgement.
 
-Exact dependencies are SQPV local store `0.1.0-dev`, SQMV metadata `0.1.0-dev`, SQFV batch `0.2.0-dev`, and foundation `0.2.0-dev`. The default source build compiles those repository dependencies with their tests disabled and excludes their installation rules. Install dependency packages separately before configuring an installed SDK consumer. A source dependency build does not make its package present in an installation prefix.
+Exact dependencies are SQPV local store `0.2.0-dev`, SQMV metadata `0.2.0-dev`, SQFV batch `0.3.0-dev`, and foundation `0.2.0-dev`. The default source build compiles those repository dependencies with their tests disabled and excludes their installation rules. Install dependency packages separately before configuring an installed SDK consumer. A source dependency build does not make its package present in an installation prefix.
 
 ```sh
 cmake -S modules/sqdv-delivery-cpp -B /tmp/sqdv-build -DCMAKE_BUILD_TYPE=Release
@@ -25,7 +25,7 @@ cmake --build /tmp/sqdv-consumer-build
 /tmp/sqdv-consumer-build/consumer
 ```
 
-The consumer requests `find_package(SymphonySqdvDelivery 0.1.0 EXACT CONFIG)` and verifies `SymphonySqdvDelivery_RELEASE_VERSION` is `0.1.0-dev`. It uses the exported C++26 requirement without setting its own language standard.
+The consumer requests `find_package(SymphonySqdvDelivery 0.2.0 EXACT CONFIG)` and verifies `SymphonySqdvDelivery_RELEASE_VERSION` is `0.2.0-dev`. It uses the exported C++26 requirement without setting its own language standard.
 
 Its public API checks cover identity-bound resume refusal with an existing output session preserved, exact retained/live cutover and reopened-source replay, independent processing acknowledgements and payload byte credit, bounded unacknowledged deliveries, and terminal sequence exhaustion. Retained fixtures use fresh private temporary APFS directories.
 

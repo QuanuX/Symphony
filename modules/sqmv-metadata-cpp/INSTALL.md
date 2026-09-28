@@ -1,8 +1,8 @@
 # SQMV C++26 Library Installation
 
-`sqmv-metadata-cpp` is an independently selectable, library-only `0.1.0-dev` package. Its CMake package version is `0.1.0`; the public target is `Symphony::SqmvMetadata`. It requires CMake 3.30 or newer, C++26, and one single-configuration generator. The initial verified development target is macOS `amd64` with AppleClang 21; consumer compiler/runtime compatibility remains explicit.
+`sqmv-metadata-cpp` is an independently selectable, library-only `0.2.0-dev` package. Its CMake package version is `0.2.0`; the public target is `Symphony::SqmvMetadata`. It requires CMake 3.30 or newer, C++26, and one single-configuration generator. The initial verified development target is macOS `amd64` with AppleClang 21; consumer compiler/runtime compatibility remains explicit.
 
-Exact dependencies are foundation `0.2.0-dev` and SQFV batch `0.2.0-dev`. The default source build compiles those repository dependencies with their tests disabled and excludes their installation rules. Install dependency packages separately before configuring an installed SDK consumer. A source dependency build does not make its package present in an installation prefix.
+Exact dependencies are foundation `0.2.0-dev` and SQFV batch `0.3.0-dev`. The default source build compiles those repository dependencies with their tests disabled and excludes their installation rules. Install dependency packages separately before configuring an installed SDK consumer. A source dependency build does not make its package present in an installation prefix.
 
 ```sh
 cmake -S modules/sqmv-metadata-cpp -B /tmp/sqmv-build -DCMAKE_BUILD_TYPE=Release
@@ -25,7 +25,7 @@ cmake --build /tmp/sqmv-consumer-build
 /tmp/sqmv-consumer-build/consumer
 ```
 
-The consumer requests `find_package(SymphonySqmvMetadata 0.1.0 EXACT CONFIG)` and verifies `SymphonySqmvMetadata_RELEASE_VERSION` is `0.1.0-dev`. It uses the exported C++26 requirement without setting its own language standard.
+The consumer requests `find_package(SymphonySqmvMetadata 0.2.0 EXACT CONFIG)` and verifies `SymphonySqmvMetadata_RELEASE_VERSION` is `0.2.0-dev`. It uses the exported C++26 requirement without setting its own language standard.
 
 Guarded removal uses the same prefix that received installation:
 

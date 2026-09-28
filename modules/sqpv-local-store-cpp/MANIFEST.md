@@ -3,9 +3,9 @@
 ## Identity
 
 - Module, component and package: `sqpv-local-store-cpp`
-- Owner: `sqpv`; current development release: `0.1.0-dev`
+- Owner: `sqpv`; current development release: `0.2.0-dev`
 - Native C++26 static library; library-only receipt-v2 installation
-- Exact dependencies: SQMV metadata 0.1.0-dev, SQFV batch 0.2.0-dev,
+- Exact dependencies: SQMV metadata 0.2.0-dev, SQFV batch 0.3.0-dev,
   knowledge-vector C++ foundation 0.2.0-dev
 
 ## Canonical Surfaces
@@ -19,6 +19,9 @@
 - `modules/sqpv-local-store-cpp/CMakeLists.txt`
 - `modules/sqpv-local-store-cpp/include/symphony/sqpv/local_store.hpp`
 - `modules/sqpv-local-store-cpp/src/local_store.cpp`
+- `modules/sqpv-local-store-cpp/src/async_store.cpp`
+- `modules/sqpv-local-store-cpp/include/symphony/sqpv/async_store.hpp`
+- `modules/sqpv-local-store-cpp/tests/async_store_test.cpp`
 - `modules/sqpv-local-store-cpp/cmake/SymphonySqpvLocalStoreConfig.cmake.in`
 - `modules/sqpv-local-store-cpp/cmake/uninstall.cmake.in`
 - `modules/sqpv-local-store-cpp/tests/hook.hpp`

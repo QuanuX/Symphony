@@ -2,7 +2,7 @@
 
 ## Exact scope
 
-`sqav-capture-cpp` `0.1.0-dev` is a C++26 static library exposing
+`sqav-capture-cpp` `0.2.0-dev` is a C++26 static library exposing
 `Symphony::SqavCapture` and `symphony::sqav`. It captures caller-supplied original
 bytes and attributable acquisition evidence in an immutable optional object.
 It implements no provider connection, file reader, clock sampling, schema parser,
@@ -10,7 +10,7 @@ credential lookup, retry scheduler or source authority verification. Source
 content is data; the library performs no command evaluation or instruction dispatch.
 
 The exact development target is trusted same-process C++26 on the tested macOS
-host. SQMV 0.1.0-dev and SQFV 0.2.0-dev provide the metadata/flow bridge; the
+host. SQMV 0.2.0-dev and SQFV 0.3.0-dev provide the metadata/flow bridge; the
 knowledge-engine foundation 0.2.0-dev supplies SHA-256. SQPV and SQDV are test
 composition dependencies only; using capture does not require retention or delivery.
 Other representations and user-written source adapters remain selectable.
@@ -146,3 +146,23 @@ credentials, source access enforcement and provider conformance remain future
 contracts. No sample is assumed to be a particular format before inspection.
 SQTV conversion and SQV qxctl surfaces remain subsequent work. No throughput or
 broader platform-support claim follows from these focused fixtures.
+
+## Capture-to-metadata and original representation bridge (0.2)
+
+`Capture::metadata` constructs a bounded SQMV manifest for either the preserved
+capture envelope or the provider's declared original representation. Schema,
+layout and access evidence remain attributed assertions; access evidence must be
+explicitly supplied by the caller. The manifest includes source identity, exact
+capture lineage, unique time-evidence references and known coverage evidence.
+It fetches no evidence and grants no authority. Unknown coverage remains unknown.
+
+Original-byte metadata requires a known positive provider record count. It uses
+the exact `native_schema_ref` and `native_encoding_ref`; it does not recognize or
+normalize an arbitrary provider's format. `prepare_original` requires matching
+dataset/revision/access/schema/layout plus source and exact capture lineage.
+It copies only original bytes into a bounded immutable SQFV batch, preserving
+the source count and capture reference. A selected representation converter
+(such as SQTV's dense integers) independently validates its schema/layout, count
+and byte extent. The original Capture stays independently retainable for replay.
+All failures preserve caller outputs. No typed provider parser or network
+collector is implied by a caller assertion about its original representation.

@@ -2,23 +2,24 @@
 
 ## Exact identity and selected scope
 
-`sqdv-delivery-cpp` `0.1.0-dev` is an SQDV-owned C++26 static library in namespace
+`sqdv-delivery-cpp` `0.2.0-dev` is an SQDV-owned C++26 static library in namespace
 `symphony::sqdv`, exposing [delivery.hpp](include/symphony/sqdv/delivery.hpp).
 Its exact package and compatible compiler/runtime select a trusted same-process
 source API. This release delivers complete SQFV batches under one immutable
 SQMV binding. No projection, conversion, remote recipient, transport, destination
-commit, access authorization, asynchronous retention worker, or background
-catalogue is implied.
+commit, access authorization or background catalogue is implied. The optional
+asynchronous writer is owned by SQPV and explicitly selected below.
 
-Two profiles are admitted: `Profile::disposable` (numeric 1), and
-`Profile::retained_before_delivery` (numeric 2). Disposable delivery admits an
+Three profiles are admitted: `Profile::disposable` (numeric 1), and
+`Profile::retained_before_delivery` (numeric 2), and
+`Profile::asynchronous_retention` (numeric 3). Disposable delivery admits an
 exact caller-supplied live batch without asserting retention. The retained
 profile admits only actual committed SQPV evidence through its owned source.
 It selects either the already-retained batch's live SQFV allocation or a decoded
 retained read. `Origin::live` and `Origin::retained` distinguish these paths.
 Both paths in the retained profile include actual local-retention evidence.
 
-The retained profile inherits `sqpv-local-store-cpp` `0.1.0-dev`: macOS with local
+The retained profile inherits `sqpv-local-store-cpp` `0.2.0-dev`: macOS with local
 APFS, explicit private roots, no concurrent external file edits, exact options,
 cooperative exclusive store lock, bounded immutable history, and its stated
 synchronization/recovery extent. It supplies no additional power-loss, remote
@@ -228,3 +229,32 @@ uncertain retention outcomes, output preservation, and bounded allocation
 failure. These development checks do not establish a supported-platform matrix,
 provider fidelity, recipient rights, production throughput, remote delivery, or
 completion of every SQDV mode in its architectural Quad.
+
+## Asynchronous preview and confirmed catch-up (0.2)
+
+`RetainedSource::create_async/open_async` own a bounded SQPV AsyncStore and an
+independently retained SQFV context. `enqueue` validates and retains a batch,
+then publishes an opaque `QueuedBatch` only after actual queue admission (or an
+exact duplicate still pending in that queue). Failure preserves the output.
+Once a position leaves the queue, re-enqueue returns stale; retained replay is
+selected through the session, not a fabricated queue proof.
+
+An asynchronous session requires an actual asynchronous source. `offer_preview`
+accepts only its own source's opaque queue proof and enforces the existing exact
+binding, sequence and per-consumer credit/acknowledgment window. Preview remains
+non-durable even if the worker happens to finish first: it has no retention
+receipt. Its processing checkpoint is explicitly independent of retention.
+`offer_next` reads actual storage for confirmed catch-up in either retained
+profile. A missing next record stays missing; later preview candidates cannot
+skip the cursor. Every retained read carries the actual SQPV receipt.
+
+`retention_status` exposes queued versus confirmed progress and the first writer
+failure. `finish_retention` stops admission and drains, or reports failure.
+Preview proofs can outlive writer failure and represent only past RAM admission;
+applications must inspect retention status before making retention claims.
+The proof, like any retained batch, pins the allocation until its holder releases
+it. Releasing all source/session handles stops the worker; an active filesystem
+write must finish before cleanup. Explicit drain is required to promise that all
+accepted work was attempted. No destination commit or durable checkpoint store
+has been added. Stable view identity includes the new profile byte; earlier
+profile encodings and checkpoint meaning are unchanged.

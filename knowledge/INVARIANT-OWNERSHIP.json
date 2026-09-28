@@ -2366,6 +2366,12 @@
             "installed_delivery_ack_credit_and_terminal"
           ],
           "path": "modules/sqdv-delivery-cpp/tests/sdk-consumer/main.cpp"
+        },
+        {
+          "cases": [
+            "pipeline"
+          ],
+          "path": "tests/sqv-research-pipeline/pipeline.cpp"
         }
       ],
       "invariant_id": "invariant:symphony:sqdv.acknowledgement-and-lifetime",
@@ -2382,6 +2388,12 @@
             "exact_identity_and_foreign_tickets"
           ],
           "path": "modules/sqdv-delivery-cpp/tests/delivery_test.cpp"
+        },
+        {
+          "cases": [
+            "preview_progress"
+          ],
+          "path": "tests/sqv-research-pipeline/preview_progress.cpp"
         }
       ],
       "real_process_regressions": [],
@@ -2398,6 +2410,12 @@
             "installed_delivery_identity_rejection"
           ],
           "path": "modules/sqdv-delivery-cpp/tests/sdk-consumer/main.cpp"
+        },
+        {
+          "cases": [
+            "pipeline"
+          ],
+          "path": "tests/sqv-research-pipeline/pipeline.cpp"
         }
       ],
       "invariant_id": "invariant:symphony:sqdv.exact-resume-continuity",
@@ -2415,6 +2433,12 @@
             "retained_live_cutover_and_exact_resume"
           ],
           "path": "modules/sqdv-delivery-cpp/tests/delivery_test.cpp"
+        },
+        {
+          "cases": [
+            "preview_progress"
+          ],
+          "path": "tests/sqv-research-pipeline/preview_progress.cpp"
         }
       ],
       "real_process_regressions": [],
@@ -2430,6 +2454,12 @@
             "installed_delivery_ack_credit_and_terminal"
           ],
           "path": "modules/sqdv-delivery-cpp/tests/sdk-consumer/main.cpp"
+        },
+        {
+          "cases": [
+            "pipeline"
+          ],
+          "path": "tests/sqv-research-pipeline/pipeline.cpp"
         }
       ],
       "invariant_id": "invariant:symphony:sqdv.finite-recipient-allowances",
@@ -2447,6 +2477,12 @@
             "output_preservation_and_sequence_exhaustion"
           ],
           "path": "modules/sqdv-delivery-cpp/tests/delivery_test.cpp"
+        },
+        {
+          "cases": [
+            "preview_progress"
+          ],
+          "path": "tests/sqv-research-pipeline/preview_progress.cpp"
         }
       ],
       "real_process_regressions": [],
@@ -2463,6 +2499,12 @@
             "installed_delivery_identity_rejection"
           ],
           "path": "modules/sqdv-delivery-cpp/tests/sdk-consumer/main.cpp"
+        },
+        {
+          "cases": [
+            "pipeline"
+          ],
+          "path": "tests/sqv-research-pipeline/pipeline.cpp"
         }
       ],
       "invariant_id": "invariant:symphony:sqdv.retention-provenance",
@@ -2479,6 +2521,12 @@
             "retention_failure_never_claims_delivery"
           ],
           "path": "modules/sqdv-delivery-cpp/tests/delivery_test.cpp"
+        },
+        {
+          "cases": [
+            "preview_progress"
+          ],
+          "path": "tests/sqv-research-pipeline/preview_progress.cpp"
         }
       ],
       "real_process_regressions": [],
@@ -2656,9 +2704,47 @@
       "consumer_boundary_rejections": [
         {
           "cases": [
+            "queue_failures"
+          ],
+          "path": "tests/sqv-research-pipeline/pipeline.cpp"
+        }
+      ],
+      "invariant_id": "invariant:symphony:sqpv.asynchronous-retention-accounting",
+      "ipc_boundary": false,
+      "owner_component": "sqpv-local-store-cpp",
+      "owner_contract": "modules/sqpv-local-store-cpp/SPEC.md",
+      "producer_implementations": [
+        "modules/sqpv-local-store-cpp/src/async_store.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "bounded_queue",
+            "crash_recovery",
+            "uncertain_failure"
+          ],
+          "path": "modules/sqpv-local-store-cpp/tests/async_store_test.cpp"
+        }
+      ],
+      "real_process_regressions": [],
+      "statement": "RAM queue admission never advances confirmed retention. Active writes count against finite slot and frame budgets; a first failure stops further admission and writes, and restart reconstructs only actual Store evidence rather than volatile queue progress.",
+      "status": "active",
+      "title": "SQPV asynchronous admission and confirmed retention remain distinct"
+    },
+    {
+      "allowed_adapter_ids": [],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
             "installed_store_reopen_and_replay"
           ],
           "path": "modules/sqpv-local-store-cpp/tests/sdk-consumer/main.cpp"
+        },
+        {
+          "cases": [
+            "queue_failures"
+          ],
+          "path": "tests/sqv-research-pipeline/pipeline.cpp"
         }
       ],
       "invariant_id": "invariant:symphony:sqpv.exact-stream-admission",
@@ -2666,9 +2752,18 @@
       "owner_component": "sqpv-local-store-cpp",
       "owner_contract": "modules/sqpv-local-store-cpp/SPEC.md",
       "producer_implementations": [
+        "modules/sqpv-local-store-cpp/src/async_store.cpp",
         "modules/sqpv-local-store-cpp/src/local_store.cpp"
       ],
       "producer_regressions": [
+        {
+          "cases": [
+            "bounded_queue",
+            "crash_recovery",
+            "uncertain_failure"
+          ],
+          "path": "modules/sqpv-local-store-cpp/tests/async_store_test.cpp"
+        },
         {
           "cases": [
             "capacity_and_output_preservation",
@@ -2690,6 +2785,12 @@
             "installed_store_rejects_busy_and_wrong_options"
           ],
           "path": "modules/sqpv-local-store-cpp/tests/sdk-consumer/main.cpp"
+        },
+        {
+          "cases": [
+            "queue_failures"
+          ],
+          "path": "tests/sqv-research-pipeline/pipeline.cpp"
         }
       ],
       "invariant_id": "invariant:symphony:sqpv.exclusive-store-ownership",
@@ -2697,9 +2798,18 @@
       "owner_component": "sqpv-local-store-cpp",
       "owner_contract": "modules/sqpv-local-store-cpp/SPEC.md",
       "producer_implementations": [
+        "modules/sqpv-local-store-cpp/src/async_store.cpp",
         "modules/sqpv-local-store-cpp/src/local_store.cpp"
       ],
       "producer_regressions": [
+        {
+          "cases": [
+            "bounded_queue",
+            "crash_recovery",
+            "uncertain_failure"
+          ],
+          "path": "modules/sqpv-local-store-cpp/tests/async_store_test.cpp"
+        },
         {
           "cases": [
             "exclusive_ownership_and_paths",
@@ -2721,6 +2831,12 @@
             "installed_store_rejects_corrupt_retention"
           ],
           "path": "modules/sqpv-local-store-cpp/tests/sdk-consumer/main.cpp"
+        },
+        {
+          "cases": [
+            "queue_failures"
+          ],
+          "path": "tests/sqv-research-pipeline/pipeline.cpp"
         }
       ],
       "invariant_id": "invariant:symphony:sqpv.retained-commit-chain",
@@ -2728,9 +2844,18 @@
       "owner_component": "sqpv-local-store-cpp",
       "owner_contract": "modules/sqpv-local-store-cpp/SPEC.md",
       "producer_implementations": [
+        "modules/sqpv-local-store-cpp/src/async_store.cpp",
         "modules/sqpv-local-store-cpp/src/local_store.cpp"
       ],
       "producer_regressions": [
+        {
+          "cases": [
+            "bounded_queue",
+            "crash_recovery",
+            "uncertain_failure"
+          ],
+          "path": "modules/sqpv-local-store-cpp/tests/async_store_test.cpp"
+        },
         {
           "cases": [
             "allocation_failure_boundaries",
@@ -3085,7 +3210,7 @@
     }
   ],
   "protocol": "symphony.knowledge.invariant-ownership-registry.v3",
-  "registry_digest": "sha256:596d62360096ed2e1810d51ff47fca17db51b620f14e8ed70dc811f3acfdda1e",
+  "registry_digest": "sha256:6f6d9fb29d1f1d238dd15eca7a8cd9a0cf0cf7036c8277801d0d9959a328aae6",
   "scope": "common_lowest_authoritative_layer",
   "test_policy": {
     "consumer_boundary_rejection_required": true,

@@ -15753,3 +15753,81 @@ These entries locate existing implementation and regression surfaces referenced 
 - deferred_projections: message admission and delivery traceability
 - notes: Nonsecret internal metadata only; no operational provider pin or credential delivery is enabled.
 - status: canonical
+
+### SQPV Asynchronous Store Interface
+- path: `modules/sqpv-local-store-cpp/include/symphony/sqpv/async_store.hpp`
+- title: SQPV Asynchronous Store Interface
+- surface_type: public C++26 interface
+- truth_role: bounded writer ownership and progress
+- owner: SQPV maintainers
+- scope: Optional offline research-data composition with explicit finite resources and actual retention evidence.
+- relationships: implements -> `modules/sqpv-local-store-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: scoped pipeline acceptance and retention traceability
+- notes: No provider access, credential delivery, payload transport or qxctl capability is implied.
+- status: canonical
+
+### SQPV Asynchronous Store Implementation
+- path: `modules/sqpv-local-store-cpp/src/async_store.cpp`
+- title: SQPV Asynchronous Store Implementation
+- surface_type: native C++26 implementation
+- truth_role: separate admission and confirmed retention
+- owner: SQPV maintainers
+- scope: Optional offline research-data composition with explicit finite resources and actual retention evidence.
+- relationships: implements -> `modules/sqpv-local-store-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: scoped pipeline acceptance and retention traceability
+- notes: No provider access, credential delivery, payload transport or qxctl capability is implied.
+- status: canonical
+
+### SQPV Asynchronous Store Regressions
+- path: `modules/sqpv-local-store-cpp/tests/async_store_test.cpp`
+- title: SQPV Asynchronous Store Regressions
+- surface_type: native C++26 test
+- truth_role: queue lifetime failure and process-crash evidence
+- owner: SQPV maintainers
+- scope: Optional offline research-data composition with explicit finite resources and actual retention evidence.
+- relationships: verifies -> `modules/sqpv-local-store-cpp/src/async_store.cpp`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: scoped pipeline acceptance and retention traceability
+- notes: No provider access, credential delivery, payload transport or qxctl capability is implied.
+- status: canonical
+
+### SQV Integrated Pipeline Build
+- path: `tests/sqv-research-pipeline/CMakeLists.txt`
+- title: SQV Integrated Pipeline Build
+- surface_type: CMake acceptance build
+- truth_role: source and installed dependency composition
+- owner: SQV maintainers
+- scope: Optional offline research-data composition with explicit finite resources and actual retention evidence.
+- relationships: governed_by -> `knowledge/sqv/RESEARCH-DATA.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: scoped pipeline acceptance and retention traceability
+- notes: No provider access, credential delivery, payload transport or qxctl capability is implied.
+- status: canonical
+
+### SQV Integrated Research Pipeline
+- path: `tests/sqv-research-pipeline/pipeline.cpp`
+- title: SQV Integrated Research Pipeline
+- surface_type: native C++26 integration test
+- truth_role: six-owner offline pipeline and refusal evidence
+- owner: SQV maintainers
+- scope: Optional offline research-data composition with explicit finite resources and actual retention evidence.
+- relationships: governed_by -> `knowledge/sqv/RESEARCH-DATA.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: scoped pipeline acceptance and retention traceability
+- notes: No provider access, credential delivery, payload transport or qxctl capability is implied.
+- status: canonical
+
+### SQV Preview Progress Regression
+- path: `tests/sqv-research-pipeline/preview_progress.cpp`
+- title: SQV Preview Progress Regression
+- surface_type: native C++26 concurrent boundary test
+- truth_role: preview independence from paused disk write, retained read and drain
+- owner: SQV maintainers
+- scope: Uses only the private SQPV instrumented archive to pause a real append and verify independent preview progress.
+- relationships: verifies -> `modules/sqdv-delivery-cpp/src/delivery.cpp`; uses -> `modules/sqpv-local-store-cpp/tests/hook.hpp`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: asynchronous retention and preview independence
+- notes: Test hooks are absent from installed libraries; no performance SLA or remote transport is implied.
+- status: canonical

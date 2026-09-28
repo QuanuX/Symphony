@@ -25,7 +25,8 @@
       "evidence": [
         "modules/sqdv-delivery-cpp/tests/delivery_test.cpp verifies exact resume, acknowledgement/lifetime separation, finite allowances, retention provenance and failure preservation.",
         "modules/sqdv-delivery-cpp/tests/sdk-consumer/main.cpp verifies installed consumer rejection and continuity through the public C++26 interface.",
-        "modules/sqdv-delivery-cpp/tests/package_lifecycle_test.cmake verifies isolated install and guarded removal of the exact library package."
+        "modules/sqdv-delivery-cpp/tests/package_lifecycle_test.cmake verifies isolated install and guarded removal of the exact library package.",
+        "The asynchronous profile accepts opaque queue-admission proofs for non-durable preview and uses actual SQPV reads for confirmed replay; processing checkpoints remain distinct from retention."
       ],
       "feature_id": "ssfv:symphony:sqdv-delivery-cpp",
       "how": "SQFV owns queued payload leases; a finite acknowledgement ledger tracks processing separately. Opaque retained proofs come from actual SQPV commits and exact reads, with SQMV-bound view identity.",
@@ -47,7 +48,7 @@
       "kind": "feature",
       "non_claims": [
         "No provider acquisition, projection or transformation, access authorization, recipient authentication, durable consumer checkpoint, remote destination commit or exactly-once delivery.",
-        "No asynchronous retention worker, universal storage backend, network or IPC transport, resident service, standalone C ABI or SQV qxctl command."
+        "No universal storage backend, network or IPC transport, resident service, standalone C ABI or SQV qxctl command."
       ],
       "owner_contract": "modules/sqdv-delivery-cpp/SPEC.md",
       "parent_feature_id": "ssfv:symphony:platform",
@@ -72,7 +73,7 @@
       "source_scope": "modules/sqdv-delivery-cpp",
       "status": "experimental",
       "title": "SQDV bounded native delivery and resume library",
-      "what": "Delivers exact full-batch views with independent consumer allowances, session-bound processing acknowledgements and exact retained-to-live resume.",
+      "what": "Provides exact same-process disposable, retention-before-delivery and asynchronous-preview profiles with independent processing acknowledgements and confirmed replay.",
       "when": "Only when a compatible trusted caller explicitly invokes the installed library; installation starts no service.",
       "where": "Inside the explicit native caller through the exact installed sqdv-delivery-cpp static library.",
       "who": "Trusted C++26 callers selecting disposable or retained-before-delivery full-batch views for exact local recipients.",

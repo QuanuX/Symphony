@@ -2,9 +2,9 @@
 
 ## Exact implemented scope
 
-`sqav-databento-dbn-cpp` `0.2.0-dev` exports the C++26 static-library target
+`sqav-databento-dbn-cpp` `0.3.0-dev` exports the C++26 static-library target
 `Symphony::SqavDatabentoDbn`, namespace `symphony::sqav::databento`. Runtime
-requires SQAV capture 0.1.0-dev, SQMV 0.1.0-dev, SQFV 0.2.0-dev and the shared
+requires SQAV capture 0.2.0-dev, SQMV 0.2.0-dev, SQFV 0.3.0-dev and the shared
 foundation 0.2.0-dev. Initial verified platform: macOS amd64 / AppleClang 21.
 
 This release admits **uncompressed DBN versions 1 and 3, single-schema MBO files**.
@@ -89,7 +89,7 @@ not-found symbol counts and is rejected. Other coverage statements remain caller
 assertions; absence of those lists does not prove completeness.
 
 The adapter sets source.adapter_ref=`sqav-databento-dbn-cpp`, adapter_version=
-`0.2.0-dev` and source_record_count to the actual count. Other source fields,
+`0.3.0-dev` and source_record_count to the actual count. Other source fields,
 acquisition evidence, coverage and access scope retain their caller attribution.
 Caller evidence string sizes and time-vector count are bounded before copying;
 SQAV's own exact validity and encoded-size rules then apply. Its original payload
@@ -115,7 +115,8 @@ client, broad provider conformance or performance guarantee follows from parsing
 
 ## Version separation and private sample acceptance
 
-The 0.2.0-dev metadata API and adapter identity require an exact new package.
+The 0.2.0-dev metadata API introduced DBNv1/v3 support. The current 0.3.0-dev
+package selects the new dependency chain and adapter identity.
 The 0.1.0-dev v3-only package can coexist in its immutable prefix. Its captures
 are not silently relabeled as 0.2 captures. DBNv2 and future versions remain
 unsupported. Public v1/v3 fixtures describe identical MBO events; focused tests
@@ -127,3 +128,10 @@ private 100,000-record regular-session samples, every exposed field digest, and
 exact original-byte SQAV/SQMV/SQFV/SQPV/SQDV retained replay. It performs no
 network activity and embeds no private records or credentials. Reaching the
 request record cap is reported as partial coverage of the requested time window.
+
+## Coordinated local pipeline admission
+
+This development package admits the exact SQV-20 dependency chain. The native
+representation/codec rules remain as specified above. The six-owner offline
+pipeline verifies attributable capture, conversion, preview, asynchronous local
+retention and confirmed replay; this is not a new provider or transport claim.
