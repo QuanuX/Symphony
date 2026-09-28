@@ -341,7 +341,14 @@ func TestJournalCrashWorker(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	pause := func() { os.Stdout.Write([]byte("READY\n")); select {} }
+	pause := func() {
+		os.Stdout.Write([]byte("READY\n"))
+		// Keep a timer alive until the parent kills this worker; a bare select
+		// could let the Go runtime report a deadlock before SIGKILL arrives.
+		for {
+			time.Sleep(time.Second)
+		}
+	}
 	if stage == "intent" {
 		a.after = pause
 	}
