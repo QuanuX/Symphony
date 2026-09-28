@@ -1,4 +1,5 @@
 #pragma once
+// Upstream fixture attribution and license: third_party/README.md.
 #include <cstdint>
 #include <string_view>
 #include <vector>

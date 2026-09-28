@@ -15878,10 +15878,36 @@ These entries locate existing implementation and regression surfaces referenced 
 - truth_role: unchanged Databento v0.68.0 v1 and v3 fixture evidence
 - owner: SQAV maintainers
 - scope: Selected historical MBO preparation with explicit transport and coverage boundaries.
-- relationships: governed_by -> `modules/sqav-databento-dbn-cpp/SPEC.md`
+- relationships: governed_by -> `modules/sqav-databento-dbn-cpp/SPEC.md`; attributed_by -> `modules/sqav-databento-dbn-cpp/tests/third_party/README.md`
 - consumers: SQV implementers, reviewers, tests
 - deferred_projections: source coverage and recovery evidence
 - notes: No credential access, network execution or spending authority is implied.
+- status: canonical
+
+### SQAV Public Fixture Provenance
+- path: `modules/sqav-databento-dbn-cpp/tests/third_party/README.md`
+- title: SQAV Public Fixture Provenance
+- surface_type: third-party attribution
+- truth_role: pinned upstream fixture and license provenance
+- owner: SQAV maintainers
+- scope: Documents the unchanged Databento v0.68.0 fixture bytes represented in the source test helper.
+- relationships: attributes -> `modules/sqav-databento-dbn-cpp/tests/public_fixture.hpp`; references -> `modules/sqav-databento-dbn-cpp/tests/third_party/LICENSE.Apache-2.0`
+- consumers: source recipients, reviewers, tests
+- deferred_projections: source distribution attribution
+- notes: Test-only upstream fixtures; paid local samples are not distributed.
+- status: canonical
+
+### SQAV Public Fixture License
+- path: `modules/sqav-databento-dbn-cpp/tests/third_party/LICENSE.Apache-2.0`
+- title: SQAV Public Fixture License
+- surface_type: third-party license text
+- truth_role: unchanged upstream license copy
+- owner: Databento project and contributors; copy maintained by SQAV maintainers
+- scope: Apache License 2.0 accompanying the two public upstream DBN fixtures.
+- relationships: documented_by -> `modules/sqav-databento-dbn-cpp/tests/third_party/README.md`
+- consumers: source recipients, reviewers
+- deferred_projections: source distribution attribution
+- notes: Does not replace the root Symphony license or install a provider SDK.
 - status: canonical
 
 ### SQDV Checkpoint Surface

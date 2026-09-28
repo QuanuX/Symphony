@@ -32,6 +32,10 @@
 
 - `modules/sqav-databento-dbn-cpp/tests/public_fixture.hpp`
 
+- `modules/sqav-databento-dbn-cpp/tests/third_party/README.md`
+
+- `modules/sqav-databento-dbn-cpp/tests/third_party/LICENSE.Apache-2.0`
+
 - `modules/sqav-databento-dbn-cpp/include/symphony/sqav/databento/attempts.hpp`
 
 - `modules/sqav-databento-dbn-cpp/include/symphony/sqav/databento/http.hpp`
