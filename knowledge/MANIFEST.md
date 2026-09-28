@@ -208,3 +208,13 @@ This manifest does not authorize an engine to rewrite canonical files, manufactu
 The SCV `.6` increment additionally admits the interface declaration and portable provider/composition companions recorded in `knowledge/scv/MANIFEST.md` and its schema manifest. Each of eight exact C++ packages exposes 26 operations; qxctl has 244 registered leaves, including 46 SCV leaves. This bounded increment extends the existing 21 invariant records and 11 adapter identities and retains caller authority over requirements, evidence policy, providers and permitted recipes.
 
 The common v3 invariant registry schema additionally admits explicitly named process adapters with exact module/entrypoint ownership and unique operation declarations. Existing v1/v2 adapter definitions remain unchanged. The optional SCV DuckDB graph index uses this admission without making its naming or database choice a universal module requirement.
+
+## Non-live source and broker modules
+
+- `knowledge/sqv/scabv/MANIFEST.md`
+- `modules/native-source-support-cpp/MANIFEST.md`
+- `modules/sqav-fred-cpp/MANIFEST.md`
+- `modules/sqav-news-api-cpp/MANIFEST.md`
+- `modules/scabv-ibkr-client-portal-cpp/MANIFEST.md`
+- `modules/scabv-ibkr-tws-cpp/MANIFEST.md`
+- `modules/sqav-databento-reference-cpp/MANIFEST.md`

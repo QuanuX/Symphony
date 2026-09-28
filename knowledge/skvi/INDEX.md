@@ -16013,3 +16013,1264 @@ These entries locate existing implementation and regression surfaces referenced 
 - deferred_projections: non-live runtime closure
 - notes: Fixture credential callbacks do not establish SSIAG deployment authority.
 - status: canonical
+
+### SQAV native-source-support-cpp CMakeLists surface
+- path: `modules/native-source-support-cpp/CMakeLists.txt`
+- title: SQAV native-source-support-cpp CMakeLists surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/native-source-support-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV native-source-support-cpp FEATURES surface
+- path: `modules/native-source-support-cpp/FEATURES.md`
+- title: SQAV native-source-support-cpp FEATURES surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/native-source-support-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV native-source-support-cpp INSTALL surface
+- path: `modules/native-source-support-cpp/INSTALL.md`
+- title: SQAV native-source-support-cpp INSTALL surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/native-source-support-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV native-source-support-cpp INTENT surface
+- path: `modules/native-source-support-cpp/INTENT.md`
+- title: SQAV native-source-support-cpp INTENT surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/native-source-support-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV native-source-support-cpp MANIFEST surface
+- path: `modules/native-source-support-cpp/MANIFEST.md`
+- title: SQAV native-source-support-cpp MANIFEST surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/native-source-support-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV native-source-support-cpp SKILL surface
+- path: `modules/native-source-support-cpp/SKILL.md`
+- title: SQAV native-source-support-cpp SKILL surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/native-source-support-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV native-source-support-cpp SPEC surface
+- path: `modules/native-source-support-cpp/SPEC.md`
+- title: SQAV native-source-support-cpp SPEC surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/native-source-support-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV cmake SymphonyNativeSourceSupportConfig.cmake surface
+- path: `modules/native-source-support-cpp/cmake/SymphonyNativeSourceSupportConfig.cmake.in`
+- title: SQAV cmake SymphonyNativeSourceSupportConfig.cmake surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/native-source-support-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV cmake uninstall.cmake surface
+- path: `modules/native-source-support-cpp/cmake/uninstall.cmake.in`
+- title: SQAV cmake uninstall.cmake surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/native-source-support-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV source json surface
+- path: `modules/native-source-support-cpp/include/symphony/source/json.hpp`
+- title: SQAV source json surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/native-source-support-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV source support surface
+- path: `modules/native-source-support-cpp/include/symphony/source/support.hpp`
+- title: SQAV source support surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/native-source-support-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV src http surface
+- path: `modules/native-source-support-cpp/src/http.cpp`
+- title: SQAV src http surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/native-source-support-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV src support surface
+- path: `modules/native-source-support-cpp/src/support.cpp`
+- title: SQAV src support surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/native-source-support-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV tests http_test surface
+- path: `modules/native-source-support-cpp/tests/http_test.cpp`
+- title: SQAV tests http_test surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/native-source-support-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV sdk-consumer CMakeLists surface
+- path: `modules/native-source-support-cpp/tests/sdk-consumer/CMakeLists.txt`
+- title: SQAV sdk-consumer CMakeLists surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/native-source-support-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV sdk-consumer main surface
+- path: `modules/native-source-support-cpp/tests/sdk-consumer/main.cpp`
+- title: SQAV sdk-consumer main surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/native-source-support-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV tests test surface
+- path: `modules/native-source-support-cpp/tests/test.cpp`
+- title: SQAV tests test surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/native-source-support-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV sqav-fred-cpp CMakeLists surface
+- path: `modules/sqav-fred-cpp/CMakeLists.txt`
+- title: SQAV sqav-fred-cpp CMakeLists surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-fred-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV sqav-fred-cpp FEATURES surface
+- path: `modules/sqav-fred-cpp/FEATURES.md`
+- title: SQAV sqav-fred-cpp FEATURES surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-fred-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV sqav-fred-cpp INSTALL surface
+- path: `modules/sqav-fred-cpp/INSTALL.md`
+- title: SQAV sqav-fred-cpp INSTALL surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-fred-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV sqav-fred-cpp INTENT surface
+- path: `modules/sqav-fred-cpp/INTENT.md`
+- title: SQAV sqav-fred-cpp INTENT surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-fred-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV sqav-fred-cpp MANIFEST surface
+- path: `modules/sqav-fred-cpp/MANIFEST.md`
+- title: SQAV sqav-fred-cpp MANIFEST surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-fred-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV sqav-fred-cpp SKILL surface
+- path: `modules/sqav-fred-cpp/SKILL.md`
+- title: SQAV sqav-fred-cpp SKILL surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-fred-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV sqav-fred-cpp SPEC surface
+- path: `modules/sqav-fred-cpp/SPEC.md`
+- title: SQAV sqav-fred-cpp SPEC surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-fred-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV cmake SymphonySqavFredConfig.cmake surface
+- path: `modules/sqav-fred-cpp/cmake/SymphonySqavFredConfig.cmake.in`
+- title: SQAV cmake SymphonySqavFredConfig.cmake surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-fred-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV cmake uninstall.cmake surface
+- path: `modules/sqav-fred-cpp/cmake/uninstall.cmake.in`
+- title: SQAV cmake uninstall.cmake surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-fred-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV sqav fred surface
+- path: `modules/sqav-fred-cpp/include/symphony/sqav/fred.hpp`
+- title: SQAV sqav fred surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-fred-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV src fred surface
+- path: `modules/sqav-fred-cpp/src/fred.cpp`
+- title: SQAV src fred surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-fred-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV sdk-consumer CMakeLists surface
+- path: `modules/sqav-fred-cpp/tests/sdk-consumer/CMakeLists.txt`
+- title: SQAV sdk-consumer CMakeLists surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-fred-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV sdk-consumer main surface
+- path: `modules/sqav-fred-cpp/tests/sdk-consumer/main.cpp`
+- title: SQAV sdk-consumer main surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-fred-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV tests test surface
+- path: `modules/sqav-fred-cpp/tests/test.cpp`
+- title: SQAV tests test surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-fred-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV sqav-news-api-cpp CMakeLists surface
+- path: `modules/sqav-news-api-cpp/CMakeLists.txt`
+- title: SQAV sqav-news-api-cpp CMakeLists surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-news-api-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV sqav-news-api-cpp FEATURES surface
+- path: `modules/sqav-news-api-cpp/FEATURES.md`
+- title: SQAV sqav-news-api-cpp FEATURES surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-news-api-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV sqav-news-api-cpp INSTALL surface
+- path: `modules/sqav-news-api-cpp/INSTALL.md`
+- title: SQAV sqav-news-api-cpp INSTALL surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-news-api-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV sqav-news-api-cpp INTENT surface
+- path: `modules/sqav-news-api-cpp/INTENT.md`
+- title: SQAV sqav-news-api-cpp INTENT surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-news-api-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV sqav-news-api-cpp MANIFEST surface
+- path: `modules/sqav-news-api-cpp/MANIFEST.md`
+- title: SQAV sqav-news-api-cpp MANIFEST surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-news-api-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV sqav-news-api-cpp SKILL surface
+- path: `modules/sqav-news-api-cpp/SKILL.md`
+- title: SQAV sqav-news-api-cpp SKILL surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-news-api-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV sqav-news-api-cpp SPEC surface
+- path: `modules/sqav-news-api-cpp/SPEC.md`
+- title: SQAV sqav-news-api-cpp SPEC surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-news-api-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV cmake SymphonySqavNewsApiConfig.cmake surface
+- path: `modules/sqav-news-api-cpp/cmake/SymphonySqavNewsApiConfig.cmake.in`
+- title: SQAV cmake SymphonySqavNewsApiConfig.cmake surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-news-api-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV cmake uninstall.cmake surface
+- path: `modules/sqav-news-api-cpp/cmake/uninstall.cmake.in`
+- title: SQAV cmake uninstall.cmake surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-news-api-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV sqav news surface
+- path: `modules/sqav-news-api-cpp/include/symphony/sqav/news.hpp`
+- title: SQAV sqav news surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-news-api-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV src news surface
+- path: `modules/sqav-news-api-cpp/src/news.cpp`
+- title: SQAV src news surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-news-api-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV sdk-consumer CMakeLists surface
+- path: `modules/sqav-news-api-cpp/tests/sdk-consumer/CMakeLists.txt`
+- title: SQAV sdk-consumer CMakeLists surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-news-api-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV sdk-consumer main surface
+- path: `modules/sqav-news-api-cpp/tests/sdk-consumer/main.cpp`
+- title: SQAV sdk-consumer main surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-news-api-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV tests test surface
+- path: `modules/sqav-news-api-cpp/tests/test.cpp`
+- title: SQAV tests test surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-news-api-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SCABV scabv-ibkr-client-portal-cpp CMakeLists surface
+- path: `modules/scabv-ibkr-client-portal-cpp/CMakeLists.txt`
+- title: SCABV scabv-ibkr-client-portal-cpp CMakeLists surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SCABV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/scabv-ibkr-client-portal-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SCABV scabv-ibkr-client-portal-cpp FEATURES surface
+- path: `modules/scabv-ibkr-client-portal-cpp/FEATURES.md`
+- title: SCABV scabv-ibkr-client-portal-cpp FEATURES surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SCABV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/scabv-ibkr-client-portal-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SCABV scabv-ibkr-client-portal-cpp INSTALL surface
+- path: `modules/scabv-ibkr-client-portal-cpp/INSTALL.md`
+- title: SCABV scabv-ibkr-client-portal-cpp INSTALL surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SCABV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/scabv-ibkr-client-portal-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SCABV scabv-ibkr-client-portal-cpp INTENT surface
+- path: `modules/scabv-ibkr-client-portal-cpp/INTENT.md`
+- title: SCABV scabv-ibkr-client-portal-cpp INTENT surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SCABV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/scabv-ibkr-client-portal-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SCABV scabv-ibkr-client-portal-cpp MANIFEST surface
+- path: `modules/scabv-ibkr-client-portal-cpp/MANIFEST.md`
+- title: SCABV scabv-ibkr-client-portal-cpp MANIFEST surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SCABV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/scabv-ibkr-client-portal-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SCABV scabv-ibkr-client-portal-cpp SKILL surface
+- path: `modules/scabv-ibkr-client-portal-cpp/SKILL.md`
+- title: SCABV scabv-ibkr-client-portal-cpp SKILL surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SCABV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/scabv-ibkr-client-portal-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SCABV scabv-ibkr-client-portal-cpp SPEC surface
+- path: `modules/scabv-ibkr-client-portal-cpp/SPEC.md`
+- title: SCABV scabv-ibkr-client-portal-cpp SPEC surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SCABV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/scabv-ibkr-client-portal-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SCABV cmake SymphonyScabvIbkrClientPortalConfig.cmake surface
+- path: `modules/scabv-ibkr-client-portal-cpp/cmake/SymphonyScabvIbkrClientPortalConfig.cmake.in`
+- title: SCABV cmake SymphonyScabvIbkrClientPortalConfig.cmake surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SCABV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/scabv-ibkr-client-portal-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SCABV cmake uninstall.cmake surface
+- path: `modules/scabv-ibkr-client-portal-cpp/cmake/uninstall.cmake.in`
+- title: SCABV cmake uninstall.cmake surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SCABV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/scabv-ibkr-client-portal-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SCABV scabv client_portal surface
+- path: `modules/scabv-ibkr-client-portal-cpp/include/symphony/scabv/client_portal.hpp`
+- title: SCABV scabv client_portal surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SCABV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/scabv-ibkr-client-portal-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SCABV src client_portal surface
+- path: `modules/scabv-ibkr-client-portal-cpp/src/client_portal.cpp`
+- title: SCABV src client_portal surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SCABV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/scabv-ibkr-client-portal-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SCABV sdk-consumer CMakeLists surface
+- path: `modules/scabv-ibkr-client-portal-cpp/tests/sdk-consumer/CMakeLists.txt`
+- title: SCABV sdk-consumer CMakeLists surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SCABV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/scabv-ibkr-client-portal-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SCABV sdk-consumer main surface
+- path: `modules/scabv-ibkr-client-portal-cpp/tests/sdk-consumer/main.cpp`
+- title: SCABV sdk-consumer main surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SCABV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/scabv-ibkr-client-portal-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SCABV tests test surface
+- path: `modules/scabv-ibkr-client-portal-cpp/tests/test.cpp`
+- title: SCABV tests test surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SCABV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/scabv-ibkr-client-portal-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SCABV scabv-ibkr-tws-cpp CMakeLists surface
+- path: `modules/scabv-ibkr-tws-cpp/CMakeLists.txt`
+- title: SCABV scabv-ibkr-tws-cpp CMakeLists surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SCABV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/scabv-ibkr-tws-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SCABV scabv-ibkr-tws-cpp FEATURES surface
+- path: `modules/scabv-ibkr-tws-cpp/FEATURES.md`
+- title: SCABV scabv-ibkr-tws-cpp FEATURES surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SCABV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/scabv-ibkr-tws-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SCABV scabv-ibkr-tws-cpp INSTALL surface
+- path: `modules/scabv-ibkr-tws-cpp/INSTALL.md`
+- title: SCABV scabv-ibkr-tws-cpp INSTALL surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SCABV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/scabv-ibkr-tws-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SCABV scabv-ibkr-tws-cpp INTENT surface
+- path: `modules/scabv-ibkr-tws-cpp/INTENT.md`
+- title: SCABV scabv-ibkr-tws-cpp INTENT surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SCABV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/scabv-ibkr-tws-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SCABV scabv-ibkr-tws-cpp MANIFEST surface
+- path: `modules/scabv-ibkr-tws-cpp/MANIFEST.md`
+- title: SCABV scabv-ibkr-tws-cpp MANIFEST surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SCABV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/scabv-ibkr-tws-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SCABV scabv-ibkr-tws-cpp SKILL surface
+- path: `modules/scabv-ibkr-tws-cpp/SKILL.md`
+- title: SCABV scabv-ibkr-tws-cpp SKILL surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SCABV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/scabv-ibkr-tws-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SCABV scabv-ibkr-tws-cpp SPEC surface
+- path: `modules/scabv-ibkr-tws-cpp/SPEC.md`
+- title: SCABV scabv-ibkr-tws-cpp SPEC surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SCABV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/scabv-ibkr-tws-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SCABV cmake SymphonyScabvIbkrTwsConfig.cmake surface
+- path: `modules/scabv-ibkr-tws-cpp/cmake/SymphonyScabvIbkrTwsConfig.cmake.in`
+- title: SCABV cmake SymphonyScabvIbkrTwsConfig.cmake surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SCABV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/scabv-ibkr-tws-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SCABV cmake uninstall.cmake surface
+- path: `modules/scabv-ibkr-tws-cpp/cmake/uninstall.cmake.in`
+- title: SCABV cmake uninstall.cmake surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SCABV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/scabv-ibkr-tws-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SCABV scabv tws surface
+- path: `modules/scabv-ibkr-tws-cpp/include/symphony/scabv/tws.hpp`
+- title: SCABV scabv tws surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SCABV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/scabv-ibkr-tws-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SCABV src tws surface
+- path: `modules/scabv-ibkr-tws-cpp/src/tws.cpp`
+- title: SCABV src tws surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SCABV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/scabv-ibkr-tws-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SCABV sdk-consumer CMakeLists surface
+- path: `modules/scabv-ibkr-tws-cpp/tests/sdk-consumer/CMakeLists.txt`
+- title: SCABV sdk-consumer CMakeLists surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SCABV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/scabv-ibkr-tws-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SCABV sdk-consumer main surface
+- path: `modules/scabv-ibkr-tws-cpp/tests/sdk-consumer/main.cpp`
+- title: SCABV sdk-consumer main surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SCABV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/scabv-ibkr-tws-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SCABV tests test surface
+- path: `modules/scabv-ibkr-tws-cpp/tests/test.cpp`
+- title: SCABV tests test surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SCABV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/scabv-ibkr-tws-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV sqav-databento-reference-cpp CMakeLists surface
+- path: `modules/sqav-databento-reference-cpp/CMakeLists.txt`
+- title: SQAV sqav-databento-reference-cpp CMakeLists surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-databento-reference-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV sqav-databento-reference-cpp FEATURES surface
+- path: `modules/sqav-databento-reference-cpp/FEATURES.md`
+- title: SQAV sqav-databento-reference-cpp FEATURES surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-databento-reference-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV sqav-databento-reference-cpp INSTALL surface
+- path: `modules/sqav-databento-reference-cpp/INSTALL.md`
+- title: SQAV sqav-databento-reference-cpp INSTALL surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-databento-reference-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV sqav-databento-reference-cpp INTENT surface
+- path: `modules/sqav-databento-reference-cpp/INTENT.md`
+- title: SQAV sqav-databento-reference-cpp INTENT surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-databento-reference-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV sqav-databento-reference-cpp MANIFEST surface
+- path: `modules/sqav-databento-reference-cpp/MANIFEST.md`
+- title: SQAV sqav-databento-reference-cpp MANIFEST surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-databento-reference-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV sqav-databento-reference-cpp SKILL surface
+- path: `modules/sqav-databento-reference-cpp/SKILL.md`
+- title: SQAV sqav-databento-reference-cpp SKILL surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-databento-reference-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV sqav-databento-reference-cpp SPEC surface
+- path: `modules/sqav-databento-reference-cpp/SPEC.md`
+- title: SQAV sqav-databento-reference-cpp SPEC surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-databento-reference-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV cmake SymphonySqavDatabentoReferenceConfig.cmake surface
+- path: `modules/sqav-databento-reference-cpp/cmake/SymphonySqavDatabentoReferenceConfig.cmake.in`
+- title: SQAV cmake SymphonySqavDatabentoReferenceConfig.cmake surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-databento-reference-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV cmake uninstall.cmake surface
+- path: `modules/sqav-databento-reference-cpp/cmake/uninstall.cmake.in`
+- title: SQAV cmake uninstall.cmake surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-databento-reference-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV databento reference surface
+- path: `modules/sqav-databento-reference-cpp/include/symphony/sqav/databento/reference.hpp`
+- title: SQAV databento reference surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-databento-reference-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV src reference surface
+- path: `modules/sqav-databento-reference-cpp/src/reference.cpp`
+- title: SQAV src reference surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-databento-reference-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV sdk-consumer CMakeLists surface
+- path: `modules/sqav-databento-reference-cpp/tests/sdk-consumer/CMakeLists.txt`
+- title: SQAV sdk-consumer CMakeLists surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-databento-reference-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV sdk-consumer main surface
+- path: `modules/sqav-databento-reference-cpp/tests/sdk-consumer/main.cpp`
+- title: SQAV sdk-consumer main surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-databento-reference-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV tests test surface
+- path: `modules/sqav-databento-reference-cpp/tests/test.cpp`
+- title: SQAV tests test surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-databento-reference-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SCABV scabv MANIFEST surface
+- path: `knowledge/sqv/scabv/MANIFEST.md`
+- title: SCABV scabv MANIFEST surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SCABV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `knowledge/sqv/scabv/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SCABV scabv INTENT surface
+- path: `knowledge/sqv/scabv/INTENT.md`
+- title: SCABV scabv INTENT surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SCABV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `knowledge/sqv/scabv/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SCABV scabv SKILL surface
+- path: `knowledge/sqv/scabv/SKILL.md`
+- title: SCABV scabv SKILL surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SCABV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `knowledge/sqv/scabv/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SCABV scabv SPEC surface
+- path: `knowledge/sqv/scabv/SPEC.md`
+- title: SCABV scabv SPEC surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SCABV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `knowledge/sqv/scabv/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQV sqv-nonlive-sources CMakeLists surface
+- path: `tests/sqv-nonlive-sources/CMakeLists.txt`
+- title: SQV sqv-nonlive-sources CMakeLists surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `knowledge/sqv/RESEARCH-DATA.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQV sqv-nonlive-sources retention surface
+- path: `tests/sqv-nonlive-sources/retention.hpp`
+- title: SQV sqv-nonlive-sources retention surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `knowledge/sqv/RESEARCH-DATA.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SCABV scabv-ibkr-tws-cpp SDK-HANDOFF.md
+- path: `modules/scabv-ibkr-tws-cpp/SDK-HANDOFF.md`
+- title: SCABV scabv-ibkr-tws-cpp SDK-HANDOFF.md
+- surface_type: native verification or dependency handoff
+- truth_role: bounded source conformance evidence
+- owner: SCABV maintainers
+- scope: Exact optional external SDK and failure boundaries.
+- relationships: governed_by -> `modules/scabv-ibkr-tws-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: adapter verification
+- notes: Authorized vendor SDK conformance remains pending.
+- status: canonical
+
+### SCABV scabv-ibkr-tws-cpp allocation.cpp
+- path: `modules/scabv-ibkr-tws-cpp/tests/allocation.cpp`
+- title: SCABV scabv-ibkr-tws-cpp allocation.cpp
+- surface_type: native verification or dependency handoff
+- truth_role: bounded source conformance evidence
+- owner: SCABV maintainers
+- scope: Exact optional external SDK and failure boundaries.
+- relationships: governed_by -> `modules/scabv-ibkr-tws-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: adapter verification
+- notes: Authorized vendor SDK conformance remains pending.
+- status: canonical
+
+### SCABV scabv-ibkr-tws-cpp CMakeLists.txt
+- path: `modules/scabv-ibkr-tws-cpp/tests/sdk1045-conformance/CMakeLists.txt`
+- title: SCABV scabv-ibkr-tws-cpp CMakeLists.txt
+- surface_type: native verification or dependency handoff
+- truth_role: bounded source conformance evidence
+- owner: SCABV maintainers
+- scope: Exact optional external SDK and failure boundaries.
+- relationships: governed_by -> `modules/scabv-ibkr-tws-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: adapter verification
+- notes: Authorized vendor SDK conformance remains pending.
+- status: canonical
+
+### SCABV scabv-ibkr-tws-cpp conformance.cpp
+- path: `modules/scabv-ibkr-tws-cpp/tests/sdk1045-conformance/conformance.cpp`
+- title: SCABV scabv-ibkr-tws-cpp conformance.cpp
+- surface_type: native verification or dependency handoff
+- truth_role: bounded source conformance evidence
+- owner: SCABV maintainers
+- scope: Exact optional external SDK and failure boundaries.
+- relationships: governed_by -> `modules/scabv-ibkr-tws-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: adapter verification
+- notes: Authorized vendor SDK conformance remains pending.
+- status: canonical

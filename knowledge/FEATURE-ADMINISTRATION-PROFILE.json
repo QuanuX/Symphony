@@ -738,6 +738,24 @@
     {
       "expectations": [
         {
+          "command_ids": [],
+          "delivery": "runtime_only",
+          "engine_operation_ids": [],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/native-source-support-cpp/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "invoke",
+          "rationale": "The exact C++26 library executes only when invoked by its explicit native caller; installation adds no independent process or SQV qxctl surface.",
+          "requirement": "required"
+        }
+      ],
+      "feature_id": "ssfv:symphony:native-source-support-cpp"
+    },
+    {
+      "expectations": [
+        {
           "command_ids": [
             "qxcmd:symphony:inventory",
             "qxcmd:symphony:modules"
@@ -2460,6 +2478,42 @@
         }
       ],
       "feature_id": "ssfv:symphony:sav-engine.named-version"
+    },
+    {
+      "expectations": [
+        {
+          "command_ids": [],
+          "delivery": "runtime_only",
+          "engine_operation_ids": [],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/scabv-ibkr-client-portal-cpp/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "invoke",
+          "rationale": "The exact C++26 library executes only when invoked by its explicit native caller; installation adds no independent process or SQV qxctl surface.",
+          "requirement": "required"
+        }
+      ],
+      "feature_id": "ssfv:symphony:scabv-ibkr-client-portal-cpp"
+    },
+    {
+      "expectations": [
+        {
+          "command_ids": [],
+          "delivery": "runtime_only",
+          "engine_operation_ids": [],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/scabv-ibkr-tws-cpp/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "invoke",
+          "rationale": "The exact C++26 library executes only when invoked by its explicit native caller; installation adds no independent process or SQV qxctl surface.",
+          "requirement": "required"
+        }
+      ],
+      "feature_id": "ssfv:symphony:scabv-ibkr-tws-cpp"
     },
     {
       "expectations": [
@@ -6922,6 +6976,60 @@
           "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/sqav-databento-reference-cpp/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "invoke",
+          "rationale": "The exact C++26 library executes only when invoked by its explicit native caller; installation adds no independent process or SQV qxctl surface.",
+          "requirement": "required"
+        }
+      ],
+      "feature_id": "ssfv:symphony:sqav-databento-reference-cpp"
+    },
+    {
+      "expectations": [
+        {
+          "command_ids": [],
+          "delivery": "runtime_only",
+          "engine_operation_ids": [],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/sqav-fred-cpp/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "invoke",
+          "rationale": "The exact C++26 library executes only when invoked by its explicit native caller; installation adds no independent process or SQV qxctl surface.",
+          "requirement": "required"
+        }
+      ],
+      "feature_id": "ssfv:symphony:sqav-fred-cpp"
+    },
+    {
+      "expectations": [
+        {
+          "command_ids": [],
+          "delivery": "runtime_only",
+          "engine_operation_ids": [],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/sqav-news-api-cpp/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "invoke",
+          "rationale": "The exact C++26 library executes only when invoked by its explicit native caller; installation adds no independent process or SQV qxctl surface.",
+          "requirement": "required"
+        }
+      ],
+      "feature_id": "ssfv:symphony:sqav-news-api-cpp"
+    },
+    {
+      "expectations": [
+        {
+          "command_ids": [],
+          "delivery": "runtime_only",
+          "engine_operation_ids": [],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
             "modules/sqdv-delivery-cpp/FEATURES.md"
           ],
           "inherited_from_feature_id": null,
@@ -7999,9 +8107,9 @@
   ],
   "format_version": 1,
   "forward_gate": "enforce_new_records",
-  "profile_digest": "sha256:3a4f684a427987c01e22eab8c73818dab61996b3f3aad7747c5a6abfaddff977",
+  "profile_digest": "sha256:8a2e1bec300c55eee06cb66fdbfdc5424ace5b135b9c59d2e6bd3a8d25d2be09",
   "profile_id": "symphony.registered-features.administration.v1",
   "protocol": "symphony.knowledge.feature-administration-profile.v1",
-  "registered_feature_count": 117,
-  "ssfv_registry_digest": "sha256:dc67fbac514b23048fbf8fdf0cca6277930a44064029dc26b08f962ee48a5c95"
+  "registered_feature_count": 123,
+  "ssfv_registry_digest": "sha256:987b91f9693f0c400eddc4b69a2375ef0b4d56fca3aba7f6056fb0d4a5e0c2df"
 }

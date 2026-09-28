@@ -558,3 +558,12 @@ A validator may check entry shape, uniqueness, owner-path existence, SKVI routin
 ## Non-Authorization Statement
 
 SLANG does not allocate identity namespaces, define domain protocols, prescribe user behavior, create aliases, rewrite owner contracts or history, implement parsers, authorize canonical mutation, or create a runtime dependency. It is a cold knowledge-routing surface for people and agents.
+
+### SCABV
+
+- term: `SCABV`
+- meaning: Symphony C++ API Broker Vector; owner of selected native non-FIX broker API bindings under SQV.
+- owner_contract: `knowledge/sqv/scabv/SPEC.md`
+- example: `SCABV preserves the exact private account and session binding for an IBKR read capture.`
+- counterexample: `An SQAV research collection implicitly authorizes order entry or substitutes a new broker SDK.`
+- notes: Separate experimental Client Portal and external Stable 10.45 TWS read boundaries are implemented; actual vendor deployment and SDK conformance remain explicit prerequisites. FIX remains SOOV-owned.

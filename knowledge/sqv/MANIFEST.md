@@ -61,3 +61,17 @@ state and bounded native historical HTTP. The non-live pipeline verifies capture
 coverage, retention, budget recovery and checkpoint resume together. The actual
 SSIAG deployment/bridge, verified quote source and selected receiving contracts
 remain operational prerequisites. Live data remains explicitly deferred.
+
+
+## Broader non-live source extent
+
+The independently selectable C++26 0.1.0-dev modules `native-source-support-cpp`, `sqav-fred-cpp`, `sqav-news-api-cpp` and `sqav-databento-reference-cpp` add bounded HTTPS/JSON support, FRED/ALFRED observation/vintage pages, vendor-neutral original/corrected news article ingress, and Databento reference/cost response handling. Each module SPEC owns exact operations, bounds, response fidelity and non-claims. Provider authentication, credentials and entitlements are external prerequisites. No source activation is established by fixture evidence.
+
+`knowledge/sqv/scabv/SPEC.md` admits separate IBKR Client Portal and TWS read bindings; their captures consume the existing research-data path. TWS targets external Stable SDK 10.45 without bundled vendor code or actual SDK conformance. Live remains future work. The shared HTTP CredentialUse interface is a required composition boundary, not an operational SSIAG bridge. Databento remains mapped to SSIAG/local Keychain in `knowledge/sqv/sqav/DATABENTO-SSIAG-BINDING.md`.
+
+Focused source tests preserve all five adapter capture families through reopened local retention/replay. Provider schemas and source scope remain in original JSON/JSONL or explicitly declared TWS callback projections; exact financial bytes and price bits are not silently reserialized from binary floating-point values. API availability does not imply completion of all SQV programme objectives.
+
+## Source composition verification
+
+- `tests/sqv-nonlive-sources/CMakeLists.txt`
+- `tests/sqv-nonlive-sources/retention.hpp`

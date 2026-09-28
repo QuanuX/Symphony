@@ -933,6 +933,72 @@
       "consumer_boundary_rejections": [
         {
           "cases": [
+            "installed_boundary"
+          ],
+          "path": "modules/scabv-ibkr-client-portal-cpp/tests/sdk-consumer/main.cpp"
+        }
+      ],
+      "invariant_id": "invariant:symphony:scabv.scabv-ibkr-client-portal",
+      "ipc_boundary": false,
+      "owner_component": "scabv-ibkr-client-portal-cpp",
+      "owner_contract": "modules/scabv-ibkr-client-portal-cpp/SPEC.md",
+      "producer_implementations": [
+        "modules/scabv-ibkr-client-portal-cpp/src/client_portal.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "main"
+          ],
+          "path": "modules/scabv-ibkr-client-portal-cpp/tests/test.cpp"
+        }
+      ],
+      "real_process_regressions": [],
+      "statement": "Exact private-account binding and bounded Client Portal account, position and historical-bar reads. Invalid or mismatched input never establishes complete provider evidence.",
+      "status": "active",
+      "title": "IBKR Client Portal read adapter"
+    },
+    {
+      "allowed_adapter_ids": [],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "installed_boundary"
+          ],
+          "path": "modules/scabv-ibkr-tws-cpp/tests/sdk-consumer/main.cpp"
+        }
+      ],
+      "invariant_id": "invariant:symphony:scabv.scabv-ibkr-tws",
+      "ipc_boundary": false,
+      "owner_component": "scabv-ibkr-tws-cpp",
+      "owner_contract": "modules/scabv-ibkr-tws-cpp/SPEC.md",
+      "producer_implementations": [
+        "modules/scabv-ibkr-tws-cpp/src/tws.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "main"
+          ],
+          "path": "modules/scabv-ibkr-tws-cpp/tests/allocation.cpp"
+        },
+        {
+          "cases": [
+            "main"
+          ],
+          "path": "modules/scabv-ibkr-tws-cpp/tests/test.cpp"
+        }
+      ],
+      "real_process_regressions": [],
+      "statement": "Finite read-only native request/callback state around the external Stable 10.45 SDK dependency. Invalid or mismatched input never establishes complete provider evidence.",
+      "status": "active",
+      "title": "IBKR TWS Stable read adapter boundary"
+    },
+    {
+      "allowed_adapter_ids": [],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
             "TestInstalledSCVCompositionArtifactsRetainExactOwnerAndRejectEarlierAdmission"
           ],
           "path": "tools/qxctl/cmd/qxctl/scv_composition_test.go"
@@ -2429,6 +2495,37 @@
       "consumer_boundary_rejections": [
         {
           "cases": [
+            "installed_boundary"
+          ],
+          "path": "modules/native-source-support-cpp/tests/sdk-consumer/main.cpp"
+        }
+      ],
+      "invariant_id": "invariant:symphony:sqav.native-source-support",
+      "ipc_boundary": false,
+      "owner_component": "native-source-support-cpp",
+      "owner_contract": "modules/native-source-support-cpp/SPEC.md",
+      "producer_implementations": [
+        "modules/native-source-support-cpp/src/http.cpp",
+        "modules/native-source-support-cpp/src/support.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "main"
+          ],
+          "path": "modules/native-source-support-cpp/tests/test.cpp"
+        }
+      ],
+      "real_process_regressions": [],
+      "statement": "Strict bounded provider JSON syntax and explicit one-shot HTTPS acquisition. Invalid or mismatched input never establishes complete provider evidence.",
+      "status": "active",
+      "title": "Bounded native source support"
+    },
+    {
+      "allowed_adapter_ids": [],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
             "installed_capture_rejection",
             "installed_capture_roundtrip"
           ],
@@ -2456,6 +2553,96 @@
       "statement": "Capture identity binds original bytes, exact source/interface/adapter, attempt, native position, time roles/precision and coverage assertions. Source position and optional provider count remain distinct from transfer sequence and envelope count. Digests and asserted coverage grant no source authority.",
       "status": "active",
       "title": "SQAV preserves original bytes and attributable source meaning"
+    },
+    {
+      "allowed_adapter_ids": [],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "installed_boundary"
+          ],
+          "path": "modules/sqav-databento-reference-cpp/tests/sdk-consumer/main.cpp"
+        }
+      ],
+      "invariant_id": "invariant:symphony:sqav.sqav-databento-reference",
+      "ipc_boundary": false,
+      "owner_component": "sqav-databento-reference-cpp",
+      "owner_contract": "modules/sqav-databento-reference-cpp/SPEC.md",
+      "producer_implementations": [
+        "modules/sqav-databento-reference-cpp/src/reference.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "main"
+          ],
+          "path": "modules/sqav-databento-reference-cpp/tests/test.cpp"
+        }
+      ],
+      "real_process_regressions": [],
+      "statement": "Bounded Zstandard/JSONL reference responses and exact request-bound historical cost quotes. Invalid or mismatched input never establishes complete provider evidence.",
+      "status": "active",
+      "title": "Databento native reference and cost adapter"
+    },
+    {
+      "allowed_adapter_ids": [],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "installed_boundary"
+          ],
+          "path": "modules/sqav-fred-cpp/tests/sdk-consumer/main.cpp"
+        }
+      ],
+      "invariant_id": "invariant:symphony:sqav.sqav-fred",
+      "ipc_boundary": false,
+      "owner_component": "sqav-fred-cpp",
+      "owner_contract": "modules/sqav-fred-cpp/SPEC.md",
+      "producer_implementations": [
+        "modules/sqav-fred-cpp/src/fred.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "main"
+          ],
+          "path": "modules/sqav-fred-cpp/tests/test.cpp"
+        }
+      ],
+      "real_process_regressions": [],
+      "statement": "Exact observation and vintage-date requests, original decimal/missing values, pagination and capture. Invalid or mismatched input never establishes complete provider evidence.",
+      "status": "active",
+      "title": "FRED and ALFRED native adapter"
+    },
+    {
+      "allowed_adapter_ids": [],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "installed_boundary"
+          ],
+          "path": "modules/sqav-news-api-cpp/tests/sdk-consumer/main.cpp"
+        }
+      ],
+      "invariant_id": "invariant:symphony:sqav.sqav-news-api",
+      "ipc_boundary": false,
+      "owner_component": "sqav-news-api-cpp",
+      "owner_contract": "modules/sqav-news-api-cpp/SPEC.md",
+      "producer_implementations": [
+        "modules/sqav-news-api-cpp/src/news.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "main"
+          ],
+          "path": "modules/sqav-news-api-cpp/tests/test.cpp"
+        }
+      ],
+      "real_process_regressions": [],
+      "statement": "Immutable original/corrected article revisions with exact predecessor evidence and separate time roles. Invalid or mismatched input never establishes complete provider evidence.",
+      "status": "active",
+      "title": "Vendor-neutral news ingress API"
     },
     {
       "allowed_adapter_ids": [],
@@ -3343,7 +3530,7 @@
     }
   ],
   "protocol": "symphony.knowledge.invariant-ownership-registry.v3",
-  "registry_digest": "sha256:4e321f864329ff95927578ea1c40bd2c80213958742918bd11fce9433d2cd921",
+  "registry_digest": "sha256:6414e10ef299a28ead8f3cc8fb17851d7edb40c8e432c49c8b5607b53a4facae",
   "scope": "common_lowest_authoritative_layer",
   "test_policy": {
     "consumer_boundary_rejection_required": true,

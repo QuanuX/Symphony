@@ -50,6 +50,12 @@ The inventory is intentionally explicit. Directory discovery, file count, langua
 | `modules/skvi-engine` | registered | `ssfv:symphony:skvi-engine` | `modules/skvi-engine/FEATURES.md` |
 | `modules/sodv-engine` | registered | `ssfv:symphony:sodv-engine` | `modules/sodv-engine/FEATURES.md` |
 | `modules/sqav-capture-cpp` | registered | `ssfv:symphony:sqav-capture-cpp` | `modules/sqav-capture-cpp/FEATURES.md` |
+| `modules/native-source-support-cpp` | registered | `ssfv:symphony:native-source-support-cpp` | `modules/native-source-support-cpp/FEATURES.md` |
+| `modules/sqav-fred-cpp` | registered | `ssfv:symphony:sqav-fred-cpp` | `modules/sqav-fred-cpp/FEATURES.md` |
+| `modules/sqav-news-api-cpp` | registered | `ssfv:symphony:sqav-news-api-cpp` | `modules/sqav-news-api-cpp/FEATURES.md` |
+| `modules/scabv-ibkr-client-portal-cpp` | registered | `ssfv:symphony:scabv-ibkr-client-portal-cpp` | `modules/scabv-ibkr-client-portal-cpp/FEATURES.md` |
+| `modules/scabv-ibkr-tws-cpp` | registered | `ssfv:symphony:scabv-ibkr-tws-cpp` | `modules/scabv-ibkr-tws-cpp/FEATURES.md` |
+| `modules/sqav-databento-reference-cpp` | registered | `ssfv:symphony:sqav-databento-reference-cpp` | `modules/sqav-databento-reference-cpp/FEATURES.md` |
 | `modules/sqav-databento-dbn-cpp` | registered | `ssfv:symphony:sqav-databento-dbn-cpp` | `modules/sqav-databento-dbn-cpp/FEATURES.md` |
 | `modules/sqtv-integer-conversion-cpp` | registered | `ssfv:symphony:sqtv-integer-conversion-cpp` | `modules/sqtv-integer-conversion-cpp/FEATURES.md` |
 | `modules/sqdv-delivery-cpp` | registered | `ssfv:symphony:sqdv-delivery-cpp` | `modules/sqdv-delivery-cpp/FEATURES.md` |
@@ -103,6 +109,10 @@ The F2 security and audit review keeps these boundaries as implementation eviden
 - protocol constants and model structs as evidence for canonical-wire and semantic-validation behavior;
 - tests, fixtures, and Swift lifecycle or protocol helpers as evidence or internals rather than separate application capabilities;
 - operational Keychain access, secret delivery, credential or lease operations, safeguards, audit-deferred recovery, STAV signed checkpoints or non-repudiation, remote export, automatic rotation or retention, and general repair because those behaviors remain disabled, deferred, or unimplemented.
+
+## Non-live Source Review
+
+Six experimental owner scopes add bounded provider-independent acquisition support and five source/broker adapters. Native parsing, operation variants, request/callback bookkeeping and packaging remain facets of those records. Provider activation, operational SSIAG, TWS SDK conformance, live collection and the broader SCABV graph programme receive no completion claim.
 
 ## F3 Explicit Non-Feature Dispositions
 
