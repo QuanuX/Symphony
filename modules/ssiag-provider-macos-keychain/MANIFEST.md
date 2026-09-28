@@ -7,6 +7,7 @@
 - `modules/ssiag-provider-macos-keychain/INTENT.md`
 - `modules/ssiag-provider-macos-keychain/MANIFEST.md`
 - `modules/ssiag-provider-macos-keychain/NATIVE-PEER-TRUST.md`
+- `modules/ssiag-provider-macos-keychain/NATIVE-MESSAGE-GATE.md`
 - `modules/ssiag-provider-macos-keychain/README.md`
 - `modules/ssiag-provider-macos-keychain/SKILL.md`
 - `modules/ssiag-provider-macos-keychain/SPEC.md`
@@ -61,3 +62,8 @@ Each exact legacy binary or complete app-like bundle and its immutable receipt-v
 `Sources/SSIAGMacOSKeychainSupport/NativePeerTrust.swift` observes the native
 identity of an existing connected Unix peer. Its contract and tests retain the
 distinction between time-specific validation and actual protected delivery.
+
+`NATIVE-MESSAGE-GATE.md` owns the unwired one-way XPC metadata increment.
+`NativeMessageGate.swift` validates received-message code identity and exact
+request metadata, with bounded lifetime and single completion. Its Swift XPC
+service and C++26 client fixtures have no production targets.

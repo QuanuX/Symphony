@@ -61,3 +61,10 @@ The first item namespace will use the exact private application-identifier acces
 prerequisite. It owns a connected socket duplicate and revalidates its original
 kernel identity with Apple Security. It does not bind later message delivery,
 implement an operational provider pin, or enable provider-v1 behavior.
+
+## Internal Native Message Admission
+
+`NATIVE-MESSAGE-GATE.md` selects a bounded internal XPC metadata gate with native
+per-message code validation, exact owner-bound fields and one terminal outcome.
+It is unwired from public operations and does not provide current per-message
+UID/GID continuity, credential bytes, an operational provider pin or delivery.

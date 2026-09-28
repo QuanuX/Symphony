@@ -15688,3 +15688,68 @@ These entries locate existing implementation and regression surfaces referenced 
 - deferred_projections: native trust and delivery traceability
 - notes: Unwired prerequisite only; no operational provider pin, protected delivery or Keychain access is enabled.
 - status: canonical
+
+### SSIAG Native Message Gate Contract
+- path: `modules/ssiag-provider-macos-keychain/NATIVE-MESSAGE-GATE.md`
+- title: SSIAG Native Message Gate Contract
+- surface_type: internal native metadata contract
+- truth_role: one-way XPC message code and exact request admission
+- owner: SSIAG native provider maintainers
+- scope: Defines trusted binding/policy inputs, per-message code checks, single completion and remaining principal/delivery boundaries.
+- relationships: governed_by -> `modules/ssiag-provider-macos-keychain/SPEC.md`; implemented_by -> `modules/ssiag-provider-macos-keychain/Sources/SSIAGMacOSKeychainSupport/NativeMessageGate.swift`
+- consumers: SSIAG implementers, reviewers, tests
+- deferred_projections: message admission and delivery traceability
+- notes: Nonsecret internal metadata only; no operational provider pin or credential delivery is enabled.
+- status: canonical
+
+### SSIAG Native Message Gate
+- path: `modules/ssiag-provider-macos-keychain/Sources/SSIAGMacOSKeychainSupport/NativeMessageGate.swift`
+- title: SSIAG Native Message Gate
+- surface_type: Swift XPC metadata implementation
+- truth_role: received-message code identity and bounded single-use matching
+- owner: SSIAG native provider maintainers
+- scope: Installs native requirements and validates actual message code with exact typed fields, monotonic expiry and cancellation.
+- relationships: implements -> `modules/ssiag-provider-macos-keychain/NATIVE-MESSAGE-GATE.md`; verified_by -> `modules/ssiag-provider-macos-keychain/Tests/SSIAGMacOSKeychainSupportTests/NativeMessageGateTests.swift`
+- consumers: SSIAG implementers, reviewers, tests
+- deferred_projections: message admission and delivery traceability
+- notes: Nonsecret internal metadata only; no operational provider pin or credential delivery is enabled.
+- status: canonical
+
+### SSIAG Native Message Gate Tests
+- path: `modules/ssiag-provider-macos-keychain/Tests/SSIAGMacOSKeychainSupportTests/NativeMessageGateTests.swift`
+- title: SSIAG Native Message Gate Tests
+- surface_type: Swift native message tests
+- truth_role: separate-process XPC and lifecycle verification
+- owner: SSIAG native provider maintainers
+- scope: Builds disposable app-bundled service/client fixtures; exercises exact metadata, code mismatch, duplicates, expiry and cancellation.
+- relationships: verifies -> `modules/ssiag-provider-macos-keychain/Sources/SSIAGMacOSKeychainSupport/NativeMessageGate.swift`; uses -> `modules/ssiag-provider-macos-keychain/Tests/Fixtures/NativeMessageClient.cpp`; uses -> `modules/ssiag-provider-macos-keychain/Tests/Fixtures/NativeMessageService.swift`
+- consumers: SSIAG implementers, reviewers, tests
+- deferred_projections: message admission and delivery traceability
+- notes: Nonsecret internal metadata only; no operational provider pin or credential delivery is enabled.
+- status: canonical
+
+### SSIAG Native Message Test Client
+- path: `modules/ssiag-provider-macos-keychain/Tests/Fixtures/NativeMessageClient.cpp`
+- title: SSIAG Native Message Test Client
+- surface_type: C++26 isolated XPC test client
+- truth_role: fixed-message test stimulus
+- owner: SSIAG native provider maintainers
+- scope: Sends safe fixture dictionaries into the real message gate; no production target or credentials.
+- relationships: supports -> `modules/ssiag-provider-macos-keychain/Tests/SSIAGMacOSKeychainSupportTests/NativeMessageGateTests.swift`; governed_by -> `modules/ssiag-provider-macos-keychain/NATIVE-MESSAGE-GATE.md`
+- consumers: SSIAG implementers, reviewers, tests
+- deferred_projections: message admission and delivery traceability
+- notes: Nonsecret internal metadata only; no operational provider pin or credential delivery is enabled.
+- status: canonical
+
+### SSIAG Native Message Test Service
+- path: `modules/ssiag-provider-macos-keychain/Tests/Fixtures/NativeMessageService.swift`
+- title: SSIAG Native Message Test Service
+- surface_type: Swift isolated XPC test service
+- truth_role: real separate-process gate execution
+- owner: SSIAG native provider maintainers
+- scope: Runs the production gate source in a disposable app-bundled service and reports closed test outcomes; detects repeated completion.
+- relationships: supports -> `modules/ssiag-provider-macos-keychain/Tests/SSIAGMacOSKeychainSupportTests/NativeMessageGateTests.swift`; governed_by -> `modules/ssiag-provider-macos-keychain/NATIVE-MESSAGE-GATE.md`
+- consumers: SSIAG implementers, reviewers, tests
+- deferred_projections: message admission and delivery traceability
+- notes: Nonsecret internal metadata only; no operational provider pin or credential delivery is enabled.
+- status: canonical

@@ -42,7 +42,8 @@
       "evidence": [
         "Swift tests verify receipt-backed installation, invoker trust, handshake, status, capabilities, unknown-field rejection, bounded input, secret-shaped control rejection, credential-operation refusal, and receipt-last uninstall recovery.",
         "The manifest and install contract declare operational_access_enabled false and an independent lifecycle.",
-        "Native peer tests use real Unix socket audit tokens and Security requirement checks, including the same signed binary execing under the same PID, descriptor ownership and cleanup, queued-data preservation, identity mismatch, exit and concurrent closure."
+        "Native peer tests use real Unix socket audit tokens and Security requirement checks, including the same signed binary execing under the same PID, descriptor ownership and cleanup, queued-data preservation, identity mismatch, exit and concurrent closure.",
+        "Native message tests use separate ad-hoc-signed Swift XPC service and C++26 client processes to verify per-message code requirements, exact nonsecret metadata, duplicates, malformed fields and expiry; additional tests cover concurrent cancellation and invalid owner inputs. The service itself is instrumented for the Thread Sanitizer run."
       ],
       "feature_id": "ssfv:symphony:ssiag.macos-keychain-metadata",
       "how": "The separately installed Swift executable validates immutable receipt-v2 package evidence, independently verifies the invoking SSIAG identity, then a one-request/one-response bounded JSON standard-input/output protocol accepts only metadata operations and rejects unknown fields, credential operations, and secret-shaped control data.",
@@ -60,14 +61,18 @@
         "modules/ssiag-provider-macos-keychain/Package.swift",
         "modules/ssiag-provider-macos-keychain/Sources/SSIAGMacOSKeychainSupport/FoundationTrust.swift",
         "modules/ssiag-provider-macos-keychain/Sources/SSIAGMacOSKeychainSupport/Lifecycle.swift",
+        "modules/ssiag-provider-macos-keychain/Sources/SSIAGMacOSKeychainSupport/NativeMessageGate.swift",
         "modules/ssiag-provider-macos-keychain/Sources/SSIAGMacOSKeychainSupport/NativePeerTrust.swift",
         "modules/ssiag-provider-macos-keychain/Sources/SSIAGMacOSKeychainSupport/Protocol.swift",
         "modules/ssiag-provider-macos-keychain/Sources/SSIAGMacOSKeychainSupport/ReceiptV2.swift",
         "modules/ssiag-provider-macos-keychain/Sources/SSIAGMacOSKeychainSupport/StrictJSON.swift",
         "modules/ssiag-provider-macos-keychain/Sources/SymphonySSIAGMacOSKeychain/main.swift",
+        "modules/ssiag-provider-macos-keychain/Tests/Fixtures/NativeMessageClient.cpp",
+        "modules/ssiag-provider-macos-keychain/Tests/Fixtures/NativeMessageService.swift",
         "modules/ssiag-provider-macos-keychain/Tests/Fixtures/NativePeerClient.cpp",
         "modules/ssiag-provider-macos-keychain/Tests/Integration/prepare-real-adapter.sh",
         "modules/ssiag-provider-macos-keychain/Tests/SSIAGMacOSKeychainSupportTests/LifecycleTests.swift",
+        "modules/ssiag-provider-macos-keychain/Tests/SSIAGMacOSKeychainSupportTests/NativeMessageGateTests.swift",
         "modules/ssiag-provider-macos-keychain/Tests/SSIAGMacOSKeychainSupportTests/NativePeerTrustTests.swift",
         "modules/ssiag-provider-macos-keychain/Tests/SSIAGMacOSKeychainSupportTests/ProtocolTests.swift"
       ],
@@ -76,7 +81,8 @@
         "Does not read, write, sign with, decrypt with, rotate, export, or deliver any Keychain credential.",
         "Does not create an implicit fallback, accept secrets through JSON, or claim operational readiness.",
         "The Go SSIAG foundation invokes only the verified metadata handshake; qxctl does not invoke the adapter, and operational Keychain access, credential operations, and secret delivery remain disabled.",
-        "The internal audit-token code observer is not a protected delivery pin: it cannot prevent exec or descriptor transfer after validation, establish signing-policy provenance, or enable a provider operation."
+        "The internal audit-token code observer is not a protected delivery pin: it cannot prevent exec or descriptor transfer after validation, establish signing-policy provenance, or enable a provider operation.",
+        "The internal one-way XPC metadata gate does not prove current per-message UID/GID continuity, authorize credentials, export descriptors, acknowledge delivery or replace SSIAG durable request admission."
       ],
       "owner_contract": "modules/ssiag-provider-macos-keychain/SPEC.md",
       "parent_feature_id": "ssfv:symphony:ssiag-foundation",

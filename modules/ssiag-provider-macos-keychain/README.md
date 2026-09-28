@@ -11,3 +11,7 @@ Start with `INTENT.md`, follow `INSTALL.md`, and administer live verification th
 [NATIVE-PEER-TRUST.md](NATIVE-PEER-TRUST.md) documents the internal kernel-audit-token
 and native-code observer. Actual code validation and descriptor ownership are
 implemented; operational dispatch and protected delivery remain disabled.
+
+[Native message gate](NATIVE-MESSAGE-GATE.md) adds actual XPC message-code
+validation for one-way nonsecret metadata. Principal continuity and operational
+credential delivery remain explicit integration requirements.
