@@ -15441,3 +15441,42 @@ These entries locate existing implementation and regression surfaces referenced 
 - deferred_projections: operational SSIAG credential channel and exact enrolled deployment
 - notes: No secret material, guessed TOPS binding, provider fallback or new protocol is defined.
 - status: canonical
+
+### SSIAG Internal Credential-Use Contract
+- path: `modules/secure-identity-access-governance/CREDENTIAL-USE.md`
+- title: SSIAG Internal Credential-Use Contract
+- surface_type: internal implementation contract
+- truth_role: bounded process-local credential-use semantics and outstanding integration boundaries
+- owner: SSIAG foundation maintainers
+- scope: Documents exact binding, one-attempt consumption, local profile limits, and required dispatcher, audit, channel and Keychain integration.
+- relationships: governed_by -> `modules/secure-identity-access-governance/SPEC.md`; implemented_by -> `modules/secure-identity-access-governance/internal/credential/use.go`
+- consumers: SSIAG implementers, reviewers, tests
+- deferred_projections: implementation traceability
+- notes: Internal primitive only; no provider operation, Keychain access, lease issuance or protected channel is enabled.
+- status: canonical
+
+### SSIAG Credential-Use Guard
+- path: `modules/secure-identity-access-governance/internal/credential/use.go`
+- title: SSIAG Credential-Use Guard
+- surface_type: Go lifecycle implementation
+- truth_role: local exact-binding and atomic single-consumption implementation
+- owner: SSIAG foundation maintainers
+- scope: Validates bounded nonsecret metadata and rejects drift, expiry, cancellation and repeated consumption.
+- relationships: implements -> `modules/secure-identity-access-governance/CREDENTIAL-USE.md`; verified_by -> `modules/secure-identity-access-governance/internal/credential/use_test.go`
+- consumers: SSIAG implementers, reviewers, tests
+- deferred_projections: implementation traceability
+- notes: Internal primitive only; no provider operation, Keychain access, lease issuance or protected channel is enabled.
+- status: canonical
+
+### SSIAG Credential-Use Guard Tests
+- path: `modules/secure-identity-access-governance/internal/credential/use_test.go`
+- title: SSIAG Credential-Use Guard Tests
+- surface_type: Go regression tests
+- truth_role: focused local guard verification evidence
+- owner: SSIAG foundation maintainers
+- scope: Exercises valid drift of every binding field, malformed input, deadlines, cancellation, replay and concurrent single consumption.
+- relationships: verifies -> `modules/secure-identity-access-governance/internal/credential/use.go`; depends_on -> `modules/secure-identity-access-governance/CREDENTIAL-USE.md`
+- consumers: SSIAG implementers, reviewers, tests
+- deferred_projections: implementation traceability
+- notes: Internal primitive only; no provider operation, Keychain access, lease issuance or protected channel is enabled.
+- status: canonical

@@ -48,7 +48,8 @@
       "evidence": [
         "Peer-authentication tests cover Darwin/Linux credential extraction, exact mapping, ambiguity refusal, and endpoint mismatch.",
         "Policy, server, STAV producer, lifecycle, and supervision tests cover exact grants, non-transferable bindings, audit-before-release, and per-TOPS isolation.",
-        "Policy-administration tests cover config/overlay selection, CAS, durable prepare/audit/commit stages, exact recovery evidence, reset, tamper and symlink refusal, and live evaluator activation."
+        "Policy-administration tests cover config/overlay selection, CAS, durable prepare/audit/commit stages, exact recovery evidence, reset, tamper and symlink refusal, and live evaluator activation.",
+        "Credential-use guard tests cover exact generation and authority-metadata binding, valid field drift, exclusive deadline, cancellation, replay refusal, and 128 concurrent attempts; the guard remains unwired to provider operations."
       ],
       "feature_id": "ssfv:symphony:ssiag-foundation",
       "how": "Darwin and Linux kernel peer credentials map exact UID/GID identities to canonical subjects; target-host ownership or exact current grants authorize protected local policy proposals; CAS, a durable attempt journal, idempotent STAV audit, atomic state replacement, and live snapshot exchange complete apply or recovery.",
@@ -60,6 +61,8 @@
       ],
       "implementation_paths": [
         "modules/secure-identity-access-governance/cmd/symphony-ssiag/main.go",
+        "modules/secure-identity-access-governance/internal/credential/use.go",
+        "modules/secure-identity-access-governance/internal/credential/use_test.go",
         "modules/secure-identity-access-governance/internal/peerauth/peerauth.go",
         "modules/secure-identity-access-governance/internal/policy/policy.go",
         "modules/secure-identity-access-governance/internal/policyadmin/manager.go",
@@ -71,7 +74,8 @@
       "kind": "feature",
       "non_claims": [
         "Does not infer authority from whether a caller is human, AI, agentic, automated, a service, or an organization.",
-        "The current record does not claim canonical knowledge apply, operational credential delivery, remote access, or operational Keychain use."
+        "The current record does not claim canonical knowledge apply, operational credential delivery, remote access, or operational Keychain use.",
+        "The process-local credential-use guard does not authenticate or authorize callers, validate audit receipts, issue leases, persist attempts, or provide a secret channel."
       ],
       "owner_contract": "modules/secure-identity-access-governance/SPEC.md",
       "parent_feature_id": "ssfv:symphony:platform",
