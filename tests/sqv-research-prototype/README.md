@@ -32,7 +32,7 @@ upgrade from an old provider or schema binding to a newer one.
 ## Focused verification
 
 ```sh
-cmake -S prototypes/sqv-research-data -B /private/tmp/sqv-g02-build -DCMAKE_BUILD_TYPE=Debug
+cmake -S tests/sqv-research-prototype -B /private/tmp/sqv-g02-build -DCMAKE_BUILD_TYPE=Debug
 cmake --build /private/tmp/sqv-g02-build --parallel 2
 ctest --test-dir /private/tmp/sqv-g02-build --output-on-failure
 ```
