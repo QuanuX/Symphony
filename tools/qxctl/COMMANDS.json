@@ -160,12 +160,68 @@
       "deprecated_in": null,
       "feature_bindings": [
         {
+          "feature_id": "ssfv:symphony:native-source-support-cpp",
+          "interaction": "discover"
+        },
+        {
           "feature_id": "ssfv:symphony:platform",
           "interaction": "discover"
         },
         {
           "feature_id": "ssfv:symphony:qxctl",
           "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:scabv-ibkr-client-portal-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:scabv-ibkr-tws-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqav-capture-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqav-databento-dbn-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqav-databento-reference-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqav-fred-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqav-news-api-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqav-request-engine",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqdv-delivery-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqfv-batch-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqmv-metadata-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqpv-local-store-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqtv-integer-conversion-cpp",
+          "interaction": "discover"
         }
       ],
       "grammar": "qxctl inventory [--json]",
@@ -191,8 +247,64 @@
       "deprecated_in": null,
       "feature_bindings": [
         {
+          "feature_id": "ssfv:symphony:native-source-support-cpp",
+          "interaction": "discover"
+        },
+        {
           "feature_id": "ssfv:symphony:qxctl",
           "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:scabv-ibkr-client-portal-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:scabv-ibkr-tws-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqav-capture-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqav-databento-dbn-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqav-databento-reference-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqav-fred-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqav-news-api-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqav-request-engine",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqdv-delivery-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqfv-batch-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqmv-metadata-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqpv-local-store-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqtv-integer-conversion-cpp",
+          "interaction": "discover"
         }
       ],
       "grammar": "qxctl inventory digest [--json]",
@@ -1843,8 +1955,64 @@
           "interaction": "validate"
         },
         {
+          "feature_id": "ssfv:symphony:native-source-support-cpp",
+          "interaction": "discover"
+        },
+        {
           "feature_id": "ssfv:symphony:qxctl",
           "interaction": "validate"
+        },
+        {
+          "feature_id": "ssfv:symphony:scabv-ibkr-client-portal-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:scabv-ibkr-tws-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqav-capture-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqav-databento-dbn-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqav-databento-reference-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqav-fred-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqav-news-api-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqav-request-engine",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqdv-delivery-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqfv-batch-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqmv-metadata-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqpv-local-store-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqtv-integer-conversion-cpp",
+          "interaction": "discover"
         }
       ],
       "grammar": "qxctl module check <module-name>",
@@ -1874,8 +2042,64 @@
           "interaction": "inspect"
         },
         {
+          "feature_id": "ssfv:symphony:native-source-support-cpp",
+          "interaction": "discover"
+        },
+        {
           "feature_id": "ssfv:symphony:qxctl",
           "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:scabv-ibkr-client-portal-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:scabv-ibkr-tws-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqav-capture-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqav-databento-dbn-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqav-databento-reference-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqav-fred-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqav-news-api-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqav-request-engine",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqdv-delivery-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqfv-batch-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqmv-metadata-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqpv-local-store-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqtv-integer-conversion-cpp",
+          "interaction": "discover"
         }
       ],
       "grammar": "qxctl module inspect <module-name>",
@@ -1901,8 +2125,64 @@
       "deprecated_in": null,
       "feature_bindings": [
         {
+          "feature_id": "ssfv:symphony:native-source-support-cpp",
+          "interaction": "discover"
+        },
+        {
           "feature_id": "ssfv:symphony:qxctl",
           "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:scabv-ibkr-client-portal-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:scabv-ibkr-tws-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqav-capture-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqav-databento-dbn-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqav-databento-reference-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqav-fred-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqav-news-api-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqav-request-engine",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqdv-delivery-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqfv-batch-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqmv-metadata-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqpv-local-store-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqtv-integer-conversion-cpp",
+          "interaction": "discover"
         }
       ],
       "grammar": "qxctl module metadata <module-name> [--json]",
@@ -1928,11 +2208,67 @@
       "deprecated_in": null,
       "feature_bindings": [
         {
+          "feature_id": "ssfv:symphony:native-source-support-cpp",
+          "interaction": "discover"
+        },
+        {
           "feature_id": "ssfv:symphony:platform",
           "interaction": "discover"
         },
         {
           "feature_id": "ssfv:symphony:qxctl",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:scabv-ibkr-client-portal-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:scabv-ibkr-tws-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqav-capture-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqav-databento-dbn-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqav-databento-reference-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqav-fred-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqav-news-api-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqav-request-engine",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqdv-delivery-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqfv-batch-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqmv-metadata-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqpv-local-store-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqtv-integer-conversion-cpp",
           "interaction": "discover"
         }
       ],
@@ -1959,8 +2295,64 @@
       "deprecated_in": null,
       "feature_bindings": [
         {
+          "feature_id": "ssfv:symphony:native-source-support-cpp",
+          "interaction": "discover"
+        },
+        {
           "feature_id": "ssfv:symphony:qxctl",
           "interaction": "validate"
+        },
+        {
+          "feature_id": "ssfv:symphony:scabv-ibkr-client-portal-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:scabv-ibkr-tws-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqav-capture-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqav-databento-dbn-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqav-databento-reference-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqav-fred-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqav-news-api-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqav-request-engine",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqdv-delivery-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqfv-batch-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqmv-metadata-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqpv-local-store-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqtv-integer-conversion-cpp",
+          "interaction": "discover"
         }
       ],
       "grammar": "qxctl modules check",
@@ -1986,8 +2378,64 @@
       "deprecated_in": null,
       "feature_bindings": [
         {
+          "feature_id": "ssfv:symphony:native-source-support-cpp",
+          "interaction": "discover"
+        },
+        {
           "feature_id": "ssfv:symphony:qxctl",
           "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:scabv-ibkr-client-portal-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:scabv-ibkr-tws-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqav-capture-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqav-databento-dbn-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqav-databento-reference-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqav-fred-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqav-news-api-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqav-request-engine",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqdv-delivery-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqfv-batch-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqmv-metadata-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqpv-local-store-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqtv-integer-conversion-cpp",
+          "interaction": "discover"
         }
       ],
       "grammar": "qxctl modules metadata [--json]",
@@ -14641,6 +15089,115 @@
       "aliases": [],
       "authority_mode": "none",
       "backend_operation_ids": [
+        "engop:symphony:sqav-request.validate"
+      ],
+      "command_id": "qxcmd:symphony:sqv.acquisition.validate",
+      "deprecated_in": null,
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.sqv-administration",
+          "interaction": "validate"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqav-request-engine",
+          "interaction": "validate"
+        }
+      ],
+      "grammar": "qxctl sqv acquisition validate [--input VALUE] [--json] [--prefix VALUE] [--version VALUE]",
+      "infrastructure_purpose": null,
+      "input_protocols": [
+        "symphony.sqav.request-validation-input.v1"
+      ],
+      "introduced_in": "0.1.0-dev",
+      "json_output": true,
+      "mutability": "read_only",
+      "noninteractive": true,
+      "output_protocols": [
+        "symphony.sqav.request-validation.v1"
+      ],
+      "recovery_command_id": null,
+      "replacement_ids": [],
+      "result_validation_protocols": [
+        "symphony.sqav.request-validation.v1"
+      ],
+      "status": "experimental",
+      "target_scope": "local",
+      "visibility": "public"
+    },
+    {
+      "aliases": [],
+      "authority_mode": "none",
+      "backend_operation_ids": [],
+      "command_id": "qxcmd:symphony:sqv.schema",
+      "deprecated_in": null,
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.sqv-administration",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqav-request-engine",
+          "interaction": "discover"
+        }
+      ],
+      "grammar": "qxctl sqv schema [--adapter VALUE] [--json] [--operation VALUE] [--prefix VALUE] [--version VALUE]",
+      "infrastructure_purpose": null,
+      "input_protocols": [],
+      "introduced_in": "0.1.0-dev",
+      "json_output": true,
+      "mutability": "read_only",
+      "noninteractive": true,
+      "output_protocols": [
+        "symphony.qxctl.sqv-schema.v1"
+      ],
+      "recovery_command_id": null,
+      "replacement_ids": [],
+      "result_validation_protocols": [
+        "symphony.qxctl.sqv-schema.v1"
+      ],
+      "status": "experimental",
+      "target_scope": "local",
+      "visibility": "public"
+    },
+    {
+      "aliases": [],
+      "authority_mode": "none",
+      "backend_operation_ids": [],
+      "command_id": "qxcmd:symphony:sqv.template",
+      "deprecated_in": null,
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.sqv-administration",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqav-request-engine",
+          "interaction": "discover"
+        }
+      ],
+      "grammar": "qxctl sqv template [--adapter VALUE] [--json] [--operation VALUE] [--prefix VALUE] [--version VALUE]",
+      "infrastructure_purpose": null,
+      "input_protocols": [],
+      "introduced_in": "0.1.0-dev",
+      "json_output": true,
+      "mutability": "read_only",
+      "noninteractive": true,
+      "output_protocols": [
+        "symphony.qxctl.sqv-template.v1"
+      ],
+      "recovery_command_id": null,
+      "replacement_ids": [],
+      "result_validation_protocols": [
+        "symphony.qxctl.sqv-template.v1"
+      ],
+      "status": "experimental",
+      "target_scope": "local",
+      "visibility": "public"
+    },
+    {
+      "aliases": [],
+      "authority_mode": "none",
+      "backend_operation_ids": [
         "engop:symphony:ssfv.administration-check"
       ],
       "command_id": "qxcmd:symphony:ssfv.administration-check",
@@ -17164,6 +17721,6 @@
   "format_version": 1,
   "protocol": "symphony.qxctl.command-registry.v1",
   "receipt_digest": null,
-  "registry_digest": "sha256:67f3601102b36e9835b9ec2cde9f4d13430bd508aefff34da3638b5b8f81be83",
+  "registry_digest": "sha256:fa93b3bb562bd1ead835bbef51a3281d4997806888c9781a851ada891c7f52b2",
   "registry_kind": "expected"
 }

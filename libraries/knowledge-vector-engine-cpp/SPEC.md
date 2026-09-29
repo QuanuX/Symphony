@@ -2,7 +2,7 @@
 
 ## Status
 
-Implemented development foundation, version `0.1.0-dev`. It is not a published module release.
+Implemented development foundation, version `0.2.0-dev`. It is not a published module release.
 
 ## Process Limits
 
@@ -18,13 +18,13 @@ Implemented development foundation, version `0.1.0-dev`. It is not a published m
 | relative path | 4,096 bytes |
 | snapshot paths | 1,024 |
 | one snapshot file | 4 MiB |
-| owner manifests | 256 |
+| owner manifests | 512 |
 | declarations per manifest | 1,024 |
 | manifest issues | 1,024 |
 | physical manifest line | 8,192 bytes |
 | deadline window | 300,000 ms |
 
-JSON objects reject duplicate names. Process JSON rejects floating-point values, integers outside the interoperable range `[-9007199254740991, 9007199254740991]`, invalid UTF-8, unknown envelope fields, trailing bytes, excess nesting/count/size, unsupported protocol versions, expired or excessively distant deadlines, and target-engine mismatches. The value ceiling counts aggregate parser events; it does not widen narrower collection-shape limits in the common envelope or operation-specific schemas. The parsing API accepts an explicit finite value-count bound so an engine whose closed protocol legitimately carries a larger aggregate document can advertise and enforce its own limit without widening the shared default or another engine. The 1 MiB request, 4 MiB response, depth, string, integer, duplicate-key, and deadline bounds remain unchanged.
+JSON objects reject duplicate names. Process JSON rejects floating-point values, integers outside the interoperable range `[-9007199254740991, 9007199254740991]`, invalid UTF-8, unknown envelope fields, trailing bytes, excess nesting/count/size, unsupported protocol versions, expired or excessively distant deadlines, and target-engine mismatches. The value ceiling counts aggregate parser events; it does not widen narrower collection-shape limits in the common envelope or operation-specific schemas. The parsing and response-serialization APIs accept an explicit finite value-count bound so an engine whose closed protocol legitimately carries a larger aggregate document can advertise and enforce its own limit without widening the shared default or another engine. The one-argument response serializer retains the 32,768-event default. The 1 MiB request, 4 MiB response, depth, string, integer, duplicate-key, and deadline bounds remain unchanged.
 
 Snapshot reads check the request deadline before and between file-read chunks. The future qxctl process client must also enforce that deadline on the child lifetime; the shared library does not claim that a cooperative check can cancel a blocked kernel/filesystem call.
 
@@ -58,7 +58,9 @@ nlohmann/json `v3.12.0` is pinned and vendored. Its header SHA-256 MUST remain `
 
 ## Build Receipt Boundary
 
-Version `0.1.0-dev` accepts single-configuration CMake generators only. This keeps the generated export filename deterministic and lets the installation receipt enumerate the exact owned file set. Multi-configuration packaging remains unsupported rather than producing an ambiguous or inaccurate uninstall boundary.
+Version `0.2.0-dev` accepts single-configuration CMake generators only. This keeps the generated export filename deterministic and lets the installation receipt enumerate the exact owned file set. Multi-configuration packaging remains unsupported rather than producing an ambiguous or inaccurate uninstall boundary.
+
+The installed CMake package accepts only its exact `0.2.0` project version. A consumer requesting foundation `0.1` must resolve the separately installed `0.1.0-dev` package; it cannot silently compile against the `0.2.0-dev` archive. This package-selection rule does not change the process protocol or an already installed engine binary.
 
 ## Non-Authorization
 

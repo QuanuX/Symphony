@@ -42,6 +42,18 @@ Repository validation closes the source-level independent-developer omission cas
 
 Installed-host completeness is a separate future gate. A caller-supplied engine descriptor is not proof that every installed package was supplied or that it matches an immutable receipt. A future versioned inventory contract must bind a declared-complete package/receipt inventory to every executable descriptor and non-engine administration declaration before installed admission can claim completeness. Until then, installed-host assessment remains explicit and partial rather than silently complete.
 
+## SQFV trusted-process library invariants
+
+`modules/sqfv-batch-cpp/SPEC.md` owns immutable batch lifetime and charged reservations, exact port binding/cursor/credit behavior, and bounded canonical frame integrity. Their three `invariant:symphony:sqfv.*` records bind native producer regressions to independent installed C++26 consumer rejection tests. They describe the admitted same-process library; no IPC adapter or SQV qxctl surface is introduced.
+
+## SQMV and SQPV native library invariants
+
+`modules/sqmv-metadata-cpp/SPEC.md` owns canonical immutable metadata integrity and exact flow-binding resolution. `modules/sqpv-local-store-cpp/SPEC.md` owns verified retained commit chains, bounded exact-stream admission and exclusive local store ownership. Their five `invariant:symphony:sqmv.*` and `invariant:symphony:sqpv.*` records bind owner regressions to independently built installed-consumer rejection. SQPV's deterministic process-interruption tests exercise its stated local guarantee; they are not an IPC adapter, power-loss certification or destination acknowledgement.
+
+## SQDV native delivery invariants
+
+`modules/sqdv-delivery-cpp/SPEC.md` owns exact resume continuity, processing-acknowledgement and lease separation, finite independent recipient allowances, and provenance of retained delivery evidence. Four `invariant:symphony:sqdv.*` records bind native owner cases to independent installed C++26 consumer rejection tests. Opaque retained proofs originate in actual SQPV operations; checkpoints remain caller-persisted processing assertions. The selected same-process profiles confer no recipient authority, destination commit or cross-process adapter admission.
+
 ## Foundational Lifecycle Invariants
 
 The foundational SSIAG/STAV lane applies the registry to the following rule families:
@@ -159,3 +171,37 @@ The four added format-3 adapters bind existing owner declarations and their fini
 Each native record names distinct owner regressions, independent Go consumer rejections and a receipt-backed process entry under its own module. The installed entries use `tools/qxctl/tests/shv-invariants/installed_support.hpp` for exact receipt/resource/executable verification and complete request/response checks; they accept explicit installation inputs and exercise temporary evidence/storage only. Existing build-tree tests with synthetic installation fields remain producer tests. The catalogue journal's decision fixtures test rejection of consumed evidence, not live SSIAG authentication. Registration and named-test discovery establish traceability; fresh focused execution results and any deferred integration checks must be recorded separately.
 
 C++ invariant traceability follows quoted headers in the referencing test directory and the explicitly declared common native-test and authoring support directories. No-follow reads are capped at 16 source/header files and 8 MiB combined per reference; traversal includes and symlinked evidence are rejected. This source inspection does not execute a test or claim acceptance results.
+
+## SQAV original-byte capture
+
+The SQAV capture owner binds bounded original bytes and attributed source evidence, preserves independent time/position/count meaning, and rejects malformed, incompatible or allocation-failed input without publishing partial state. Two registered invariants join native producer tests to independently installed consumer rejection cases.
+
+## SQTV native conversion invariants
+
+`modules/sqtv-integer-conversion-cpp/SPEC.md` owns exact dense integer conversion and derived lineage. Two `invariant:symphony:sqtv.*` records bind native range, rollback and retained-composition checks to installed-consumer boundary rejection. These invariants admit the selected stateless integer domain only.
+
+## SQAV Databento file invariants
+
+`modules/sqav-databento-dbn-cpp/SPEC.md` owns bounded DBNv1/v3 MBO inspection and provider-native file fidelity. Two `invariant:symphony:sqav.databento-*` records bind native fixture/bounds/rollback/retention evidence to installed-consumer rejection. These records confer no network, entitlement or full-book completeness claim.
+
+## Asynchronous research retention
+
+`invariant:symphony:sqpv.asynchronous-retention-accounting` binds queue admission,
+active-write budgets and confirmed progress to SQPV owner regressions and the
+installed six-owner pipeline. SQDV preview has no retention receipt; actual
+retained replay supplies one. Unconfirmed RAM progress is never recovered as
+committed history.
+
+## Historical source coverage
+
+`invariant:symphony:sqav.databento-historical-coverage` binds transport evidence,
+exact request metadata and record ranges before capture. Caps/unresolved symbols
+remain partial, interrupted responses remain gaps, and recovery never skips
+same-timestamp records by manufacturing a resume cursor.
+
+## Non-live acquisition and restart
+
+Durable-checkpoint, historical-attempt-admission and historical-http-boundary
+owner invariants bind processing persistence, conservative cost admission and
+actual transport observations. Operational SSIAG and external destination
+commit evidence remain distinct prerequisites.

@@ -5,6 +5,7 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"sort"
 	"strings"
@@ -25,6 +26,27 @@ const (
 
 type Evaluator interface {
 	Evaluate(context.Context, identity.Subject, model.AuthorizationRequest) model.AuthorizationDecision
+}
+
+var ErrAdmissionUnavailable = errors.New("policy admission unavailable")
+
+// WithDecision evaluates current policy and pins that snapshot through fn.
+// Admission never queues behind a pending replacement. The trusted callback
+// must honor ctx, be bounded, and must not call back into this Engine. Policy
+// replacement commits after any already-admitted callback releases its pin.
+// This is internal coordination, not a provider permission or public endpoint.
+func (e *Engine) WithDecision(ctx context.Context, subject identity.Subject, request model.AuthorizationRequest, fn func(model.AuthorizationDecision) error) error {
+	if e == nil || ctx == nil || fn == nil || !e.mu.TryRLock() {
+		return ErrAdmissionUnavailable
+	}
+	defer e.mu.RUnlock()
+	if ctx.Err() != nil || e.now == nil || e.policy == nil {
+		return ErrAdmissionUnavailable
+	}
+	if err := ValidateRequest(request, e.now().UTC()); err != nil {
+		return ErrAdmissionUnavailable
+	}
+	return fn(e.evaluateLocked(subject, request))
 }
 
 type Engine struct {
@@ -87,8 +109,14 @@ func New(cfg config.Config, now func() time.Time) (*Engine, error) {
 	if err != nil {
 		return nil, fmt.Errorf("encode policy digest: %w", err)
 	}
+	// The active snapshot must not alias caller-owned configuration or grants.
+	policyCopy := *policyValue
+	if policyValue.Grants != nil {
+		policyCopy.Grants = make([]config.AuthorizationGrant, len(policyValue.Grants))
+		copy(policyCopy.Grants, policyValue.Grants)
+	}
 	return &Engine{
-		topsID: cfg.TOPS.ID, policy: policyValue,
+		topsID: cfg.TOPS.ID, policy: &policyCopy,
 		policyDigest: taggedDigest(policyBytes),
 		configDigest: taggedDigest(configBytes), now: now,
 	}, nil
@@ -126,11 +154,16 @@ func ValidateRequest(request model.AuthorizationRequest, now time.Time) error {
 
 func (e *Engine) Evaluate(_ context.Context, subject identity.Subject, request model.AuthorizationRequest) model.AuthorizationDecision {
 	e.mu.RLock()
+	defer e.mu.RUnlock()
+	return e.evaluateLocked(subject, request)
+}
+
+// Caller holds e.mu for reading throughout evaluation.
+func (e *Engine) evaluateLocked(subject identity.Subject, request model.AuthorizationRequest) model.AuthorizationDecision {
 	policyValue := *e.policy
 	policyValue.Grants = make([]config.AuthorizationGrant, len(e.policy.Grants))
 	copy(policyValue.Grants, e.policy.Grants)
 	policyDigest := e.policyDigest
-	e.mu.RUnlock()
 	now := e.now().UTC().Truncate(time.Second)
 	target := model.DecisionTarget{
 		Operation: request.Operation, Resource: request.Resource,

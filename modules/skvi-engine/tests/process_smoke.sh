@@ -5,10 +5,10 @@ BINARY=${1:?SKVI binary is required}
 REPO=${2:?repository root is required}
 
 "$BINARY" --help | grep '^Usage: symphony-skvi ' >/dev/null
-"$BINARY" --version | grep '^symphony-skvi 0.1.0-dev$' >/dev/null
+"$BINARY" --version | grep '^symphony-skvi 0.2.0-dev$' >/dev/null
 "$BINARY" --descriptor | grep '"canonical_apply_enabled":false' >/dev/null
 "$BINARY" --descriptor | grep '"network_listener":false' >/dev/null
-"$BINARY" --descriptor | grep '"json_values":32768' >/dev/null
+"$BINARY" --descriptor | grep '"json_values":65536' >/dev/null
 "$BINARY" --descriptor | grep '"snapshot_files":1024' >/dev/null
 
 DEADLINE=$(( $(date +%s) * 1000 + 60000 ))
@@ -24,6 +24,7 @@ CHECK_RESPONSE=$(cd "$REPO" && printf '%s' "$CHECK" | "$BINARY")
 printf '%s\n' "$CHECK_RESPONSE" | grep '"state":"valid"' >/dev/null
 printf '%s\n' "$CHECK_RESPONSE" | grep '"violation":0' >/dev/null
 printf '%s\n' "$CHECK_RESPONSE" | grep '"read_only":true' >/dev/null
+printf '%s\n' "$CHECK_RESPONSE" | grep '"protocol":"symphony.skvi.check-result.v2"' >/dev/null
 
 DEADLINE=$(( $(date +%s) * 1000 + 60000 ))
 PROJECT=$(printf '{"protocol":"symphony.knowledge.engine-process.v1","request_id":"smoke-project","correlation_id":"smoke-project","operation":"project","target_engine":"symphony-skvi","deadline_unix_ms":%s,"payload":{"format":"json"}}' "$DEADLINE")
@@ -32,6 +33,7 @@ PROJECT_AGAIN=$(cd "$REPO" && printf '%s' "$PROJECT" | "$BINARY")
 test "$PROJECT_RESPONSE" = "$PROJECT_AGAIN"
 printf '%s\n' "$PROJECT_RESPONSE" | grep '"noncanonical":true' >/dev/null
 printf '%s\n' "$PROJECT_RESPONSE" | grep '"rebuildable":true' >/dev/null
+printf '%s\n' "$PROJECT_RESPONSE" | grep '"protocol":"symphony.skvi.projection.v2"' >/dev/null
 
 set +e
 INVALID_RESPONSE=$(printf '%s' '{"protocol":"symphony.knowledge.engine-process.v1","request_id":"bad","request_id":"duplicate"}' | "$BINARY")

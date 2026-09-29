@@ -1,4 +1,5 @@
 include_guard(GLOBAL)
+include("${CMAKE_CURRENT_LIST_DIR}/SymphonyReceiptV2Support.cmake")
 
 function(symphony_install_receipt_v2_preflight)
     set(one_value_args RECEIPT_PATH)
@@ -7,9 +8,7 @@ function(symphony_install_receipt_v2_preflight)
     if(NOT DEFINED PREFLIGHT_RECEIPT_PATH OR PREFLIGHT_RECEIPT_PATH STREQUAL "")
         message(FATAL_ERROR "receipt-v2 preflight RECEIPT_PATH is required")
     endif()
-    if(PREFLIGHT_RECEIPT_PATH MATCHES "(^/|(^|/)\\.\\.?(/|$)|//|\\\\)")
-        message(FATAL_ERROR "receipt-v2 preflight path is unsafe: ${PREFLIGHT_RECEIPT_PATH}")
-    endif()
+    symphony_receipt_v2_relative_path("${PREFLIGHT_RECEIPT_PATH}")
 
     set(SYMPHONY_RECEIPT_PREFLIGHT_PATH "${PREFLIGHT_RECEIPT_PATH}")
     string(MAKE_C_IDENTIFIER "${PREFLIGHT_RECEIPT_PATH}" receipt_preflight_id)
@@ -22,6 +21,10 @@ function(symphony_install_receipt_v2_preflight)
     configure_file(
         "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/SymphonyUninstallReceiptV2.cmake"
         "${CMAKE_CURRENT_BINARY_DIR}/SymphonyUninstallReceiptV2.cmake"
+        COPYONLY)
+    configure_file(
+        "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/SymphonyReceiptV2Support.cmake"
+        "${CMAKE_CURRENT_BINARY_DIR}/SymphonyReceiptV2Support.cmake"
         COPYONLY)
     install(SCRIPT "${preflight_script}")
 endfunction()
@@ -43,9 +46,8 @@ function(symphony_install_receipt_v2)
     if(NOT RECEIPT_OWNED_FILES)
         message(FATAL_ERROR "receipt-v2 requires at least one owned file")
     endif()
-    if(RECEIPT_RECEIPT_PATH MATCHES "(^/|(^|/)\\.\\.?(/|$)|//|\\\\)")
-        message(FATAL_ERROR "receipt-v2 path is unsafe: ${RECEIPT_RECEIPT_PATH}")
-    endif()
+    symphony_receipt_v2_relative_path("${RECEIPT_RECEIPT_PATH}")
+    set(SYMPHONY_RECEIPT_PREFLIGHT_OWNED_PATHS "")
     foreach(owned_spec IN LISTS RECEIPT_OWNED_FILES)
         string(REPLACE "|" ";" owned_fields "${owned_spec}")
         list(LENGTH owned_fields owned_field_count)
@@ -53,11 +55,33 @@ function(symphony_install_receipt_v2)
             message(FATAL_ERROR "invalid receipt-v2 owned-file declaration: ${owned_spec}")
         endif()
         list(GET owned_fields 0 owned_path)
+        symphony_receipt_v2_relative_path("${owned_path}")
+        list(APPEND SYMPHONY_RECEIPT_PREFLIGHT_OWNED_PATHS "${owned_path}")
         if(owned_path MATCHES "^\\.symphony-" OR
            owned_path MATCHES "^share/symphony/receipts(/|$)")
             message(FATAL_ERROR "receipt-v2 package cannot own a reserved lifecycle path: ${owned_path}")
         endif()
     endforeach()
+
+    # The early install rule was registered before any file mutations. Complete
+    # its preflight now that the exact inventory is known.
+    set(SYMPHONY_RECEIPT_PREFLIGHT_PATH "${RECEIPT_RECEIPT_PATH}")
+    string(MAKE_C_IDENTIFIER "${RECEIPT_RECEIPT_PATH}" receipt_preflight_id)
+    configure_file(
+        "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/SymphonyInstallReceiptV2Preflight.cmake.in"
+        "${CMAKE_CURRENT_BINARY_DIR}/symphony-install-receipt-v2-preflight-${receipt_preflight_id}.cmake"
+        @ONLY)
+
+    # Build-local expected identity complements the installed self-digest. It
+    # contains no mutable host path and is retained beside detached uninstallers.
+    set(identity_script "")
+    foreach(name COMPONENT_ID COMPONENT_KIND MODULE_ID VECTOR_ID ENGINE_ID PACKAGE_ID VERSION)
+        string(APPEND identity_script
+            "set(_receipt_expected_${name} [==[${RECEIPT_${name}}]==])\n")
+    endforeach()
+    file(WRITE
+        "${CMAKE_CURRENT_BINARY_DIR}/symphony-receipt-v2-identity-${receipt_preflight_id}.cmake"
+        "${identity_script}")
 
     if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
         set(SYMPHONY_RECEIPT_OS "macos")

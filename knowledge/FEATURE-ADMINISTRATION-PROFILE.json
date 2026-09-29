@@ -740,6 +740,47 @@
         {
           "command_ids": [
             "qxcmd:symphony:inventory",
+            "qxcmd:symphony:inventory.digest",
+            "qxcmd:symphony:module.check",
+            "qxcmd:symphony:module.inspect",
+            "qxcmd:symphony:module.metadata",
+            "qxcmd:symphony:modules",
+            "qxcmd:symphony:modules.check",
+            "qxcmd:symphony:modules.metadata"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [],
+          "evidence": [
+            "modules/sqav-request-engine/SPEC.md",
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "discover",
+          "rationale": "Exact native local request validation and receipt-owned resources; source module contracts remain distinct from runtime state.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [],
+          "delivery": "runtime_only",
+          "engine_operation_ids": [],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/native-source-support-cpp/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "invoke",
+          "rationale": "Payload operations remain explicit native library calls. Shared source-contract discovery and the separate SQAV request engine establish only their own bounded administrative evidence.",
+          "requirement": "required"
+        }
+      ],
+      "feature_id": "ssfv:symphony:native-source-support-cpp"
+    },
+    {
+      "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:inventory",
             "qxcmd:symphony:modules"
           ],
           "delivery": "composed",
@@ -1985,6 +2026,44 @@
       "expectations": [
         {
           "command_ids": [
+            "qxcmd:symphony:sqv.schema",
+            "qxcmd:symphony:sqv.template"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [],
+          "evidence": [
+            "modules/sqav-request-engine/SPEC.md",
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "discover",
+          "rationale": "Exact native local request validation and receipt-owned resources; source module contracts remain distinct from runtime state.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:sqv.acquisition.validate"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [],
+          "evidence": [
+            "modules/sqav-request-engine/SPEC.md",
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "validate",
+          "rationale": "Exact native local request validation and receipt-owned resources; source module contracts remain distinct from runtime state.",
+          "requirement": "required"
+        }
+      ],
+      "feature_id": "ssfv:symphony:qxctl.sqv-administration"
+    },
+    {
+      "expectations": [
+        {
+          "command_ids": [
             "qxcmd:symphony:ssiag.policy.apply"
           ],
           "delivery": "direct",
@@ -2460,6 +2539,88 @@
         }
       ],
       "feature_id": "ssfv:symphony:sav-engine.named-version"
+    },
+    {
+      "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:inventory",
+            "qxcmd:symphony:inventory.digest",
+            "qxcmd:symphony:module.check",
+            "qxcmd:symphony:module.inspect",
+            "qxcmd:symphony:module.metadata",
+            "qxcmd:symphony:modules",
+            "qxcmd:symphony:modules.check",
+            "qxcmd:symphony:modules.metadata"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [],
+          "evidence": [
+            "modules/sqav-request-engine/SPEC.md",
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "discover",
+          "rationale": "Exact native local request validation and receipt-owned resources; source module contracts remain distinct from runtime state.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [],
+          "delivery": "runtime_only",
+          "engine_operation_ids": [],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/scabv-ibkr-client-portal-cpp/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "invoke",
+          "rationale": "Payload operations remain explicit native library calls. Shared source-contract discovery and the separate SQAV request engine establish only their own bounded administrative evidence.",
+          "requirement": "required"
+        }
+      ],
+      "feature_id": "ssfv:symphony:scabv-ibkr-client-portal-cpp"
+    },
+    {
+      "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:inventory",
+            "qxcmd:symphony:inventory.digest",
+            "qxcmd:symphony:module.check",
+            "qxcmd:symphony:module.inspect",
+            "qxcmd:symphony:module.metadata",
+            "qxcmd:symphony:modules",
+            "qxcmd:symphony:modules.check",
+            "qxcmd:symphony:modules.metadata"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [],
+          "evidence": [
+            "modules/sqav-request-engine/SPEC.md",
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "discover",
+          "rationale": "Exact native local request validation and receipt-owned resources; source module contracts remain distinct from runtime state.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [],
+          "delivery": "runtime_only",
+          "engine_operation_ids": [],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/scabv-ibkr-tws-cpp/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "invoke",
+          "rationale": "Payload operations remain explicit native library calls. Shared source-contract discovery and the separate SQAV request engine establish only their own bounded administrative evidence.",
+          "requirement": "required"
+        }
+      ],
+      "feature_id": "ssfv:symphony:scabv-ibkr-tws-cpp"
     },
     {
       "expectations": [
@@ -6882,6 +7043,456 @@
       "expectations": [
         {
           "command_ids": [
+            "qxcmd:symphony:inventory",
+            "qxcmd:symphony:inventory.digest",
+            "qxcmd:symphony:module.check",
+            "qxcmd:symphony:module.inspect",
+            "qxcmd:symphony:module.metadata",
+            "qxcmd:symphony:modules",
+            "qxcmd:symphony:modules.check",
+            "qxcmd:symphony:modules.metadata"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [],
+          "evidence": [
+            "modules/sqav-request-engine/SPEC.md",
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "discover",
+          "rationale": "Exact native local request validation and receipt-owned resources; source module contracts remain distinct from runtime state.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [],
+          "delivery": "runtime_only",
+          "engine_operation_ids": [],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/sqav-capture-cpp/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "invoke",
+          "rationale": "Payload operations remain explicit native library calls. Shared source-contract discovery and the separate SQAV request engine establish only their own bounded administrative evidence.",
+          "requirement": "required"
+        }
+      ],
+      "feature_id": "ssfv:symphony:sqav-capture-cpp"
+    },
+    {
+      "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:inventory",
+            "qxcmd:symphony:inventory.digest",
+            "qxcmd:symphony:module.check",
+            "qxcmd:symphony:module.inspect",
+            "qxcmd:symphony:module.metadata",
+            "qxcmd:symphony:modules",
+            "qxcmd:symphony:modules.check",
+            "qxcmd:symphony:modules.metadata"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [],
+          "evidence": [
+            "modules/sqav-request-engine/SPEC.md",
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "discover",
+          "rationale": "Exact native local request validation and receipt-owned resources; source module contracts remain distinct from runtime state.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [],
+          "delivery": "runtime_only",
+          "engine_operation_ids": [],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/sqav-databento-dbn-cpp/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "invoke",
+          "rationale": "Payload operations remain explicit native library calls. Shared source-contract discovery and the separate SQAV request engine establish only their own bounded administrative evidence.",
+          "requirement": "required"
+        }
+      ],
+      "feature_id": "ssfv:symphony:sqav-databento-dbn-cpp"
+    },
+    {
+      "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:inventory",
+            "qxcmd:symphony:inventory.digest",
+            "qxcmd:symphony:module.check",
+            "qxcmd:symphony:module.inspect",
+            "qxcmd:symphony:module.metadata",
+            "qxcmd:symphony:modules",
+            "qxcmd:symphony:modules.check",
+            "qxcmd:symphony:modules.metadata"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [],
+          "evidence": [
+            "modules/sqav-request-engine/SPEC.md",
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "discover",
+          "rationale": "Exact native local request validation and receipt-owned resources; source module contracts remain distinct from runtime state.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [],
+          "delivery": "runtime_only",
+          "engine_operation_ids": [],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/sqav-databento-reference-cpp/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "invoke",
+          "rationale": "Payload operations remain explicit native library calls. Shared source-contract discovery and the separate SQAV request engine establish only their own bounded administrative evidence.",
+          "requirement": "required"
+        }
+      ],
+      "feature_id": "ssfv:symphony:sqav-databento-reference-cpp"
+    },
+    {
+      "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:inventory",
+            "qxcmd:symphony:inventory.digest",
+            "qxcmd:symphony:module.check",
+            "qxcmd:symphony:module.inspect",
+            "qxcmd:symphony:module.metadata",
+            "qxcmd:symphony:modules",
+            "qxcmd:symphony:modules.check",
+            "qxcmd:symphony:modules.metadata"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [],
+          "evidence": [
+            "modules/sqav-request-engine/SPEC.md",
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "discover",
+          "rationale": "Exact native local request validation and receipt-owned resources; source module contracts remain distinct from runtime state.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [],
+          "delivery": "runtime_only",
+          "engine_operation_ids": [],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/sqav-fred-cpp/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "invoke",
+          "rationale": "Payload operations remain explicit native library calls. Shared source-contract discovery and the separate SQAV request engine establish only their own bounded administrative evidence.",
+          "requirement": "required"
+        }
+      ],
+      "feature_id": "ssfv:symphony:sqav-fred-cpp"
+    },
+    {
+      "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:inventory",
+            "qxcmd:symphony:inventory.digest",
+            "qxcmd:symphony:module.check",
+            "qxcmd:symphony:module.inspect",
+            "qxcmd:symphony:module.metadata",
+            "qxcmd:symphony:modules",
+            "qxcmd:symphony:modules.check",
+            "qxcmd:symphony:modules.metadata"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [],
+          "evidence": [
+            "modules/sqav-request-engine/SPEC.md",
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "discover",
+          "rationale": "Exact native local request validation and receipt-owned resources; source module contracts remain distinct from runtime state.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [],
+          "delivery": "runtime_only",
+          "engine_operation_ids": [],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/sqav-news-api-cpp/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "invoke",
+          "rationale": "Payload operations remain explicit native library calls. Shared source-contract discovery and the separate SQAV request engine establish only their own bounded administrative evidence.",
+          "requirement": "required"
+        }
+      ],
+      "feature_id": "ssfv:symphony:sqav-news-api-cpp"
+    },
+    {
+      "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:sqv.schema",
+            "qxcmd:symphony:sqv.template"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [],
+          "evidence": [
+            "modules/sqav-request-engine/SPEC.md",
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "discover",
+          "rationale": "Exact native local request validation and receipt-owned resources; source module contracts remain distinct from runtime state.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:sqv.acquisition.validate"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:sqav-request.validate"
+          ],
+          "evidence": [
+            "modules/sqav-request-engine/SPEC.md",
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "validate",
+          "rationale": "Exact native local request validation and receipt-owned resources; source module contracts remain distinct from runtime state.",
+          "requirement": "required"
+        }
+      ],
+      "feature_id": "ssfv:symphony:sqav-request-engine"
+    },
+    {
+      "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:inventory",
+            "qxcmd:symphony:inventory.digest",
+            "qxcmd:symphony:module.check",
+            "qxcmd:symphony:module.inspect",
+            "qxcmd:symphony:module.metadata",
+            "qxcmd:symphony:modules",
+            "qxcmd:symphony:modules.check",
+            "qxcmd:symphony:modules.metadata"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [],
+          "evidence": [
+            "modules/sqav-request-engine/SPEC.md",
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "discover",
+          "rationale": "Exact native local request validation and receipt-owned resources; source module contracts remain distinct from runtime state.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [],
+          "delivery": "runtime_only",
+          "engine_operation_ids": [],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/sqdv-delivery-cpp/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "invoke",
+          "rationale": "Payload operations remain explicit native library calls. Shared source-contract discovery and the separate SQAV request engine establish only their own bounded administrative evidence.",
+          "requirement": "required"
+        }
+      ],
+      "feature_id": "ssfv:symphony:sqdv-delivery-cpp"
+    },
+    {
+      "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:inventory",
+            "qxcmd:symphony:inventory.digest",
+            "qxcmd:symphony:module.check",
+            "qxcmd:symphony:module.inspect",
+            "qxcmd:symphony:module.metadata",
+            "qxcmd:symphony:modules",
+            "qxcmd:symphony:modules.check",
+            "qxcmd:symphony:modules.metadata"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [],
+          "evidence": [
+            "modules/sqav-request-engine/SPEC.md",
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "discover",
+          "rationale": "Exact native local request validation and receipt-owned resources; source module contracts remain distinct from runtime state.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [],
+          "delivery": "runtime_only",
+          "engine_operation_ids": [],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/sqfv-batch-cpp/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "invoke",
+          "rationale": "Payload operations remain explicit native library calls. Shared source-contract discovery and the separate SQAV request engine establish only their own bounded administrative evidence.",
+          "requirement": "required"
+        }
+      ],
+      "feature_id": "ssfv:symphony:sqfv-batch-cpp"
+    },
+    {
+      "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:inventory",
+            "qxcmd:symphony:inventory.digest",
+            "qxcmd:symphony:module.check",
+            "qxcmd:symphony:module.inspect",
+            "qxcmd:symphony:module.metadata",
+            "qxcmd:symphony:modules",
+            "qxcmd:symphony:modules.check",
+            "qxcmd:symphony:modules.metadata"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [],
+          "evidence": [
+            "modules/sqav-request-engine/SPEC.md",
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "discover",
+          "rationale": "Exact native local request validation and receipt-owned resources; source module contracts remain distinct from runtime state.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [],
+          "delivery": "runtime_only",
+          "engine_operation_ids": [],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/sqmv-metadata-cpp/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "invoke",
+          "rationale": "Payload operations remain explicit native library calls. Shared source-contract discovery and the separate SQAV request engine establish only their own bounded administrative evidence.",
+          "requirement": "required"
+        }
+      ],
+      "feature_id": "ssfv:symphony:sqmv-metadata-cpp"
+    },
+    {
+      "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:inventory",
+            "qxcmd:symphony:inventory.digest",
+            "qxcmd:symphony:module.check",
+            "qxcmd:symphony:module.inspect",
+            "qxcmd:symphony:module.metadata",
+            "qxcmd:symphony:modules",
+            "qxcmd:symphony:modules.check",
+            "qxcmd:symphony:modules.metadata"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [],
+          "evidence": [
+            "modules/sqav-request-engine/SPEC.md",
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "discover",
+          "rationale": "Exact native local request validation and receipt-owned resources; source module contracts remain distinct from runtime state.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [],
+          "delivery": "runtime_only",
+          "engine_operation_ids": [],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/sqpv-local-store-cpp/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "invoke",
+          "rationale": "Payload operations remain explicit native library calls. Shared source-contract discovery and the separate SQAV request engine establish only their own bounded administrative evidence.",
+          "requirement": "required"
+        }
+      ],
+      "feature_id": "ssfv:symphony:sqpv-local-store-cpp"
+    },
+    {
+      "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:inventory",
+            "qxcmd:symphony:inventory.digest",
+            "qxcmd:symphony:module.check",
+            "qxcmd:symphony:module.inspect",
+            "qxcmd:symphony:module.metadata",
+            "qxcmd:symphony:modules",
+            "qxcmd:symphony:modules.check",
+            "qxcmd:symphony:modules.metadata"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [],
+          "evidence": [
+            "modules/sqav-request-engine/SPEC.md",
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "discover",
+          "rationale": "Exact native local request validation and receipt-owned resources; source module contracts remain distinct from runtime state.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [],
+          "delivery": "runtime_only",
+          "engine_operation_ids": [],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/sqtv-integer-conversion-cpp/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "invoke",
+          "rationale": "Payload operations remain explicit native library calls. Shared source-contract discovery and the separate SQAV request engine establish only their own bounded administrative evidence.",
+          "requirement": "required"
+        }
+      ],
+      "feature_id": "ssfv:symphony:sqtv-integer-conversion-cpp"
+    },
+    {
+      "expectations": [
+        {
+          "command_ids": [
             "qxcmd:symphony:ssfv.inspect"
           ],
           "delivery": "direct",
@@ -7873,9 +8484,9 @@
   ],
   "format_version": 1,
   "forward_gate": "enforce_new_records",
-  "profile_digest": "sha256:d0faeae1c7744dd3f4e48be4cfa92aaacfb067a4e2c07bf427f125d838d93a0f",
+  "profile_digest": "sha256:92723a09f262b68cbb6e52d464d05621b3a9008f6c3d3ffe672987b251be16c3",
   "profile_id": "symphony.registered-features.administration.v1",
   "protocol": "symphony.knowledge.feature-administration-profile.v1",
-  "registered_feature_count": 110,
-  "ssfv_registry_digest": "sha256:f9ba04d83e0443cfa66bcf139740fca01d0626832450540e00de54af224213cb"
+  "registered_feature_count": 125,
+  "ssfv_registry_digest": "sha256:f8e5de0b40d95b4bbb47837293d5be8ec1a7b0e6569052dbce4ae187edc9e295"
 }

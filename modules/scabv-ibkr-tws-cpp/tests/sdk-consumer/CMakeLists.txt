@@ -1,0 +1,6 @@
+cmake_minimum_required(VERSION 3.30)
+project(InstalledScabvIbkrTws LANGUAGES CXX)
+find_package(SymphonyScabvIbkrTws 0.1.0 EXACT REQUIRED CONFIG)
+add_executable(consumer main.cpp)
+target_link_libraries(consumer PRIVATE Symphony::ScabvIbkrTws)
+set_target_properties(consumer PROPERTIES CXX_STANDARD 26 CXX_STANDARD_REQUIRED ON CXX_EXTENSIONS OFF)

@@ -604,7 +604,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: first-party native library manifest
 - truth_role: implemented component, dependency, installability, and authority boundary
 - owner: SKV foundation maintainers
-- scope: Declares the C++26 static target, `0.1.0-dev` components including canonical temporal validation, pinned JSON dependency, and versioned install paths.
+- scope: Declares the C++26 static target, `0.2.0-dev` components including canonical temporal validation, pinned JSON dependency, and versioned install paths.
 - relationships: depends_on -> `libraries/knowledge-vector-engine-cpp/INTENT.md`; implements -> `knowledge/SPEC.md`
 - consumers: coordinator and future vector engines, packagers, reviewers, agentic tools
 - deferred_projections: package inventory and SBOM evidence
@@ -643,7 +643,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: native foundation specification
 - truth_role: exact implemented limits, digest, path, snapshot, and dependency contract
 - owner: SKV foundation maintainers
-- scope: Defines `0.1.0-dev` mechanics, the strict shared parser defaults and explicit per-engine finite value-count override, canonical Gregorian/UTC profiles, and adversarial rejection requirements.
+- scope: Defines `0.2.0-dev` mechanics, the strict shared parser and serializer defaults and explicit per-engine finite value-count override, canonical Gregorian/UTC profiles, and adversarial rejection requirements.
 - relationships: depends_on -> `knowledge/SPEC.md`; governs -> `libraries/knowledge-vector-engine-cpp/CMakeLists.txt`
 - consumers: coordinator and future vector engines, testers, reviewers
 - deferred_projections: protocol conformance report
@@ -2546,7 +2546,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - truth_role: exact operation, bound, exit, install, and non-authorization contract
 - owner: SKVI engine maintainers
 - scope: Defines inspect, structural check, caller-declared add/replace/remove proposals, disposable JSON projection, and disabled apply.
-- relationships: depends_on -> `knowledge/SPEC.md`; implements -> `knowledge/skvi/SPEC.md`; implements -> `knowledge/schemas/v1/proposal.schema.json`; implements -> `knowledge/skvi/schemas/v1/MANIFEST.md`
+- relationships: depends_on -> `knowledge/SPEC.md`; implements -> `knowledge/skvi/SPEC.md`; implements -> `knowledge/schemas/v1/proposal.schema.json`; implements -> `knowledge/skvi/schemas/v1/MANIFEST.md`; implements -> `knowledge/skvi/schemas/v2/MANIFEST.md`
 - consumers: C++ implementers, qxctl, testers, reviewers
 - deferred_projections: expanded SKVI-authorized projection formats
 - notes: It has no session, authentication, network, SSIAG/STAV, lifecycle, or Maestro authority.
@@ -3404,6 +3404,19 @@ Future validator increments may add separately ratified deterministic checks wit
 - notes: An absent receipt is accepted only when every configured owned path is also absent; content drift, links, directories, incomplete configured/receipt ownership sets, and direct bypass of shared-root claims fail closed before removal.
 - status: canonical
 
+##### Shared Install Receipt v2 Validation Support
+- path: `cmake/SymphonyReceiptV2Support.cmake`
+- title: Symphony Shared Install Receipt v2 Validation Support
+- surface_type: common CMake packaging implementation
+- truth_role: bounded receipt parsing, canonical digest and path containment implementation truth
+- owner: Symphony Knowledge Vector maintainers
+- scope: Validates relative owned paths and their intermediate components and supports receipt-v2 digest verification in build-local install and uninstall scripts.
+- relationships: implements -> `knowledge/schemas/v2/install-receipt.schema.json`; used_by -> `cmake/SymphonyInstallReceiptV2.cmake`, `cmake/SymphonyUninstallReceiptV2.cmake`; governed_by -> `knowledge/LIFECYCLE.md`
+- consumers: independently installable C++ packages and build-local lifecycle scripts
+- deferred_projections: package-manager-native transactional filesystem operations
+- notes: Direct build-local lifecycle administration requires a quiescent administrator-controlled prefix.
+- status: canonical
+
 ##### Foundation Receipt-v1 Template Retirement Tombstone
 - path: `libraries/knowledge-vector-engine-cpp/cmake/install-receipt.json.in`
 - title: Foundation Receipt-v1 Template Retirement Tombstone
@@ -3826,6 +3839,45 @@ Future validator increments may add separately ratified deterministic checks wit
 - consumers: qxctl project presentation, conformance tests, graph/search planners, validator
 - deferred_projections: JSONL, search, analytical, and graph projections after separate authorization
 - notes: This v1 implementation returns JSON in the process response and writes no projection file.
+- status: canonical
+
+##### SKVI v2 Schema Manifest
+- path: `knowledge/skvi/schemas/v2/MANIFEST.md`
+- title: SKVI Schemas v2
+- surface_type: vector-specific protocol schema manifest
+- truth_role: canonical inventory and boundary for SKVI 2,048-entry result schemas
+- owner: SKVI maintainers
+- scope: Declares versioned check and projection results; v1 entry and operation payloads remain in force.
+- relationships: depends_on -> `knowledge/skvi/SPEC.md`; reuses -> `knowledge/skvi/schemas/v1/entry.schema.json`; implemented_by -> `modules/skvi-engine/SPEC.md`
+- consumers: SKVI engine, qxctl, conformance tests, validator, reviewers
+- deferred_projections: rendered SKVI protocol documentation
+- notes: Preserves v1 result schemas for exact older engine compatibility.
+- status: canonical
+
+##### SKVI Check Result Schema v2
+- path: `knowledge/skvi/schemas/v2/check-result.schema.json`
+- title: SKVI Check Result v2
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical deterministic structural evidence shape
+- owner: SKVI maintainers
+- scope: Raises checked-entry count to 2,048 while preserving independent snapshot and evidence bounds.
+- relationships: depends_on -> `knowledge/skvi/schemas/v2/MANIFEST.md`; implemented_by -> `modules/skvi-engine/SPEC.md`
+- consumers: qxctl check presentation, conformance tests, validator, reviewers
+- deferred_projections: check reports and analytical evidence
+- notes: Invalid state is evidence and does not authorize repair.
+- status: canonical
+
+##### SKVI Projection Schema v2
+- path: `knowledge/skvi/schemas/v2/projection.schema.json`
+- title: SKVI Structural Projection v2
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical disposable projection-result shape
+- owner: SKVI maintainers
+- scope: Raises the full result to 2,048 normalized entries under an engine-specific 65,536 JSON event budget.
+- relationships: depends_on -> `knowledge/skvi/schemas/v2/MANIFEST.md`; implements_entries -> `knowledge/skvi/schemas/v1/entry.schema.json`; implemented_by -> `modules/skvi-engine/SPEC.md`
+- consumers: qxctl project presentation, conformance tests, graph/search planners, validator
+- deferred_projections: JSONL, search, analytical, and graph projections after separate authorization
+- notes: This v2 implementation returns JSON in one bounded process response and writes no projection file.
 - status: canonical
 
 #### SCLV
@@ -6093,7 +6145,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: Go authorization implementation
 - truth_role: exact caller-neutral local allow/deny decision implementation truth
 - owner: SSIAG foundation maintainers
-- scope: Derives the authenticated subject from local peer evidence, evaluates exact operation/resource grants, and releases decisions only after safe STAV evidence commits.
+- scope: Evaluates caller-neutral exact grants for supplied authenticated subjects and provides a non-queuing policy snapshot pin for bounded internal dispatch. The caller owns peer authentication and committed STAV audit.
 - relationships: implements -> `knowledge/ssiag/SPEC.md`; conforms_to -> `knowledge/ssiag/schemas/v1/authorization-decision.schema.json`
 - consumers: SSIAG server, qxctl, coordinator, tests, reviewers
 - deferred_projections: policy explanation projection
@@ -8317,7 +8369,7 @@ Note on terminology: The term `c-o-r-e` is forbidden as an active project term.
 - relationships: declares -> `knowledge/sqv/MANIFEST.md`; depends_on -> `knowledge/ARCHITECTURE.md`
 - consumers: quantitative developers, researchers, traders, agents, future SQV implementers
 - deferred_projections: quantitative component map
-- notes: SOOV is the first named SQV subvector.
+- notes: SOOV remains the separate FIX child; all six research-data children have architecture-only ownership.
 - status: canonical
 
 #### SQV Manifest
@@ -8326,24 +8378,24 @@ Note on terminology: The term `c-o-r-e` is forbidden as an active project term.
 - surface_type: vector manifest
 - truth_role: declared SQV truth and implementation posture
 - owner: Symphony Quantitative Vector maintainers
-- scope: Declares the SQV and SOOV Contract Quads without claiming runtime implementation.
-- relationships: depends_on -> `knowledge/sqv/INTENT.md`; declares -> `knowledge/sqv/SPEC.md`; declares -> `knowledge/sqv/SKILL.md`; declares -> `knowledge/sqv/soov/MANIFEST.md`
+- scope: Declares the SQV parent, six research-data child Quads, and separate SOOV FIX Quad without claiming runtime implementation.
+- relationships: depends_on -> `knowledge/sqv/INTENT.md`; declares -> `knowledge/sqv/SPEC.md`; declares -> `knowledge/sqv/SKILL.md`; declares -> `knowledge/sqv/RESEARCH-DATA.md`; declares -> `knowledge/sqv/sqav/MANIFEST.md`; declares -> `knowledge/sqv/sqmv/MANIFEST.md`; declares -> `knowledge/sqv/sqfv/MANIFEST.md`; declares -> `knowledge/sqv/sqtv/MANIFEST.md`; declares -> `knowledge/sqv/sqpv/MANIFEST.md`; declares -> `knowledge/sqv/sqdv/MANIFEST.md`; declares -> `knowledge/sqv/soov/MANIFEST.md`
 - consumers: SKVI, agents, reviewers, future SQV implementations
 - deferred_projections: manifest-derived canonical-surface closure
-- notes: Claims no strategy, FIX, broker, data, backtesting, indicator, or stream engine.
+- notes: All research-data children are architecture-only; no research-data runtime is installed.
 - status: canonical
 
 #### SQV Specification
 - path: `knowledge/sqv/SPEC.md`
 - title: Symphony Quantitative Vector Specification
 - surface_type: vector specification
-- truth_role: framework, thermal, API-version, FIX separation, and reusable-engine boundaries
+- truth_role: framework, research-data ownership, thermal, API-version, FIX separation, and reusable-engine boundaries
 - owner: Symphony Quantitative Vector maintainers
-- scope: Preserves user strategy sovereignty and exact compatibility across optional quantitative framework components.
-- relationships: depends_on -> `knowledge/sqv/MANIFEST.md`; governs -> `knowledge/sqv/soov/SPEC.md`; composes_with -> `knowledge/sov/SPEC.md`
+- scope: Preserves user strategy sovereignty and exact compatibility across optional quantitative framework components, including six research-data owner boundaries.
+- relationships: depends_on -> `knowledge/sqv/MANIFEST.md`; governs -> `knowledge/sqv/sqav/SPEC.md`; governs -> `knowledge/sqv/sqmv/SPEC.md`; governs -> `knowledge/sqv/sqfv/SPEC.md`; governs -> `knowledge/sqv/sqtv/SPEC.md`; governs -> `knowledge/sqv/sqpv/SPEC.md`; governs -> `knowledge/sqv/sqdv/SPEC.md`; governs -> `knowledge/sqv/soov/SPEC.md`; composes_with -> `knowledge/sov/SPEC.md`
 - consumers: architects, quantitative developers, agents, implementers
 - deferred_projections: future SQV component contracts
-- notes: Defines no universal feed, strategy, broker, persistence, or exhaust behavior.
+- notes: Defines no universal feed, strategy, broker, persistence, or exhaust behavior; admission does not imply implementation.
 - status: canonical
 
 #### SQV Skill
@@ -8352,11 +8404,348 @@ Note on terminology: The term `c-o-r-e` is forbidden as an active project term.
 - surface_type: vector skill guidance
 - truth_role: user-sovereign quantitative design procedure
 - owner: Symphony Quantitative Vector maintainers
-- scope: Separates reusable Symphony framework concerns from third-party strategy decisions.
+- scope: Separates reusable Symphony framework concerns from third-party strategy decisions and routes all six research-data purposes to their admitted owners.
 - relationships: depends_on -> `knowledge/sqv/SPEC.md`; depends_on -> `knowledge/SLANG.md`
 - consumers: agents, quantitative developers, implementers, reviewers
 - deferred_projections: task-scoped SQV context
-- notes: Stops before strategy, FIX, broker, feed, backtest, or engine-name invention.
+- notes: Stops before strategy, provider, backtest, implementation-identity, or unadmitted-owner invention; SOOV retains FIX.
+- status: canonical
+
+#### SQV Research-Data Owner Map
+- path: `knowledge/sqv/RESEARCH-DATA.md`
+- title: Symphony Quantitative Vector Research-Data Owner Map
+- surface_type: vector companion
+- truth_role: research-data owner routing, cross-owner requirements, and admission status
+- owner: Symphony Quantitative Vector maintainers
+- scope: Aligns six admitted research-data owners, the first narrow SQFV library, cross-owner meanings, and pending requirements.
+- relationships: depends_on -> `knowledge/sqv/MANIFEST.md`; refines -> `knowledge/sqv/SPEC.md`; routes_to -> `knowledge/sqv/sqav/INTENT.md`; routes_to -> `knowledge/sqv/sqmv/INTENT.md`; routes_to -> `knowledge/sqv/sqfv/INTENT.md`; routes_to -> `knowledge/sqv/sqtv/INTENT.md`; routes_to -> `knowledge/sqv/sqpv/INTENT.md`; routes_to -> `knowledge/sqv/sqdv/INTENT.md`
+- consumers: SQV architects, implementers, SKVI, agents, reviewers
+- deferred_projections: implementation identity and selected composition contracts
+- notes: A requirements map and architecture companion; the exact first library contract belongs to `modules/sqfv-batch-cpp/SPEC.md`.
+- status: canonical
+
+### Symphony Quantitative Acquisition Vector
+
+#### SQAV Intent
+- path: `knowledge/sqv/sqav/INTENT.md`
+- title: Symphony Quantitative Acquisition Vector Intent
+- surface_type: subvector intent
+- truth_role: selected research-data source-collection purpose and authority boundary
+- owner: Symphony Quantitative Acquisition Vector maintainers
+- scope: Owns exact selected source bindings, acquisition positions, reconnect, and attributable gap evidence without gaining order-entry authority.
+- relationships: declares -> `knowledge/sqv/sqav/MANIFEST.md`; depends_on -> `knowledge/sqv/INTENT.md`
+- consumers: research-data collectors, SQV architects, agents
+- deferred_projections: source-connector contract map
+- notes: FRED/ALFRED, news, Databento, and IBKR remain intended families, not operational provider claims.
+- status: canonical
+
+#### SQAV Manifest
+- path: `knowledge/sqv/sqav/MANIFEST.md`
+- title: Symphony Quantitative Acquisition Vector Manifest
+- surface_type: subvector manifest
+- truth_role: SQAV ownership and architecture-only implementation boundary
+- owner: Symphony Quantitative Acquisition Vector maintainers
+- scope: Declares the four SQAV Contract Quad surfaces without claiming a provider connector, session, operation, command, or package.
+- relationships: depends_on -> `knowledge/sqv/sqav/INTENT.md`; declares -> `knowledge/sqv/sqav/SPEC.md`; declares -> `knowledge/sqv/sqav/SKILL.md`; declares -> `knowledge/sqv/sqav/DATABENTO-SSIAG-BINDING.md`
+- consumers: SKVI, agents, reviewers, future SQAV implementers
+- deferred_projections: manifest-derived canonical-surface closure
+- notes: Native C++ data-plane direction does not allocate a `sqav:` identity family or source access.
+- status: canonical
+
+#### SQAV Specification
+- path: `knowledge/sqv/sqav/SPEC.md`
+- title: Symphony Quantitative Acquisition Vector Specification
+- surface_type: subvector specification
+- truth_role: source binding, position, version, coverage, and gap semantics
+- owner: Symphony Quantitative Acquisition Vector maintainers
+- scope: Preserves provider-native meaning and bounded collection under exact selected source, access, and adapter contracts.
+- relationships: depends_on -> `knowledge/sqv/sqav/MANIFEST.md`; refines -> `knowledge/sqv/SPEC.md`; composes_with -> `knowledge/sqv/sqmv/SPEC.md`
+- consumers: source-connector designers, research-data producers, agents, reviewers
+- deferred_projections: versioned provider operation and connector contracts
+- notes: No source family is operational until its exact connector and conformance evidence exist.
+- status: canonical
+
+#### SQAV Skill
+- path: `knowledge/sqv/sqav/SKILL.md`
+- title: Symphony Quantitative Acquisition Vector Skill
+- surface_type: subvector skill guidance
+- truth_role: evidence-safe research-data source-collection procedure
+- owner: Symphony Quantitative Acquisition Vector maintainers
+- scope: Checks source operation, provider release, access scope, source positions, gaps, bounds, and unmet prerequisites.
+- relationships: depends_on -> `knowledge/sqv/sqav/SPEC.md`
+- consumers: agents, collector designers, implementers, reviewers
+- deferred_projections: task-scoped SQAV context
+- notes: Stops before inventing credentials, provider rights, complete histories, broker rules, or runtime support.
+- status: canonical
+
+### Symphony Quantitative Metadata Vector
+
+#### SQMV Intent
+- path: `knowledge/sqv/sqmv/INTENT.md`
+- title: Symphony Quantitative Metadata Vector Intent
+- surface_type: subvector intent
+- truth_role: attributable research-data description purpose and boundary
+- owner: Symphony Quantitative Metadata Vector maintainers
+- scope: Owns dataset, schema, representation, time, provenance, coverage, lineage, and rights-description meaning without creating source facts or access grants.
+- relationships: declares -> `knowledge/sqv/sqmv/MANIFEST.md`; depends_on -> `knowledge/sqv/INTENT.md`
+- consumers: research-data producers and consumers, SQV architects, agents
+- deferred_projections: dataset descriptor and discovery projections
+- notes: Metadata lookup is not a required inline data-path dependency.
+- status: canonical
+
+#### SQMV Manifest
+- path: `knowledge/sqv/sqmv/MANIFEST.md`
+- title: Symphony Quantitative Metadata Vector Manifest
+- surface_type: subvector manifest
+- truth_role: SQMV ownership and architecture-only implementation boundary
+- owner: Symphony Quantitative Metadata Vector maintainers
+- scope: Declares the four SQMV Contract Quad surfaces without claiming a module, dataset registry, schema, qxctl operation, or installed service.
+- relationships: depends_on -> `knowledge/sqv/sqmv/INTENT.md`; declares -> `knowledge/sqv/sqmv/SPEC.md`; declares -> `knowledge/sqv/sqmv/SKILL.md`
+- consumers: SKVI, agents, reviewers, future SQMV implementers
+- deferred_projections: manifest-derived canonical-surface closure
+- notes: Native C++ data-plane direction does not yet establish a public ABI or `sqmv:` family.
+- status: canonical
+
+#### SQMV Specification
+- path: `knowledge/sqv/sqmv/SPEC.md`
+- title: Symphony Quantitative Metadata Vector Specification
+- surface_type: subvector specification
+- truth_role: descriptor attribution, time-role, revision, coverage, and compatibility semantics
+- owner: Symphony Quantitative Metadata Vector maintainers
+- scope: Keeps source assertions attributable and representation changes explicit without selecting a provider schema or storage format.
+- relationships: depends_on -> `knowledge/sqv/sqmv/MANIFEST.md`; refines -> `knowledge/sqv/SPEC.md`; composes_with -> `knowledge/sqv/sqfv/SPEC.md`
+- consumers: metadata designers, research-data producers and consumers, agents
+- deferred_projections: versioned dataset descriptor schema and index
+- notes: Indexing a description does not grant redistribution rights or prove dataset completeness.
+- status: canonical
+
+#### SQMV Skill
+- path: `knowledge/sqv/sqmv/SKILL.md`
+- title: Symphony Quantitative Metadata Vector Skill
+- surface_type: subvector skill guidance
+- truth_role: evidence-safe research-data metadata procedure
+- owner: Symphony Quantitative Metadata Vector maintainers
+- scope: Routes source-attributed descriptions, explicit unknowns, version compatibility, and immutable batch interpretation.
+- relationships: depends_on -> `knowledge/sqv/sqmv/SPEC.md`
+- consumers: agents, metadata designers, implementers, reviewers
+- deferred_projections: task-scoped SQMV context
+- notes: Stops before inventing provider observations, access grants, namespace grammar, or runtime capabilities.
+- status: canonical
+
+### Symphony Quantitative Flow Vector
+
+#### SQFV Intent
+- path: `knowledge/sqv/sqfv/INTENT.md`
+- title: Symphony Quantitative Flow Vector Intent
+- surface_type: subvector intent
+- truth_role: bounded research-data movement purpose and composition boundary
+- owner: Symphony Quantitative Flow Vector maintainers
+- scope: Owns explicit resource budgets, ordering context, consumer credits, and safe release across selected data edges.
+- relationships: declares -> `knowledge/sqv/sqfv/MANIFEST.md`; depends_on -> `knowledge/sqv/INTENT.md`
+- consumers: research-data transport designers, SQV architects, agents
+- deferred_projections: flow and transport contract map
+- notes: A direct edge may satisfy SQFV without a central broker or compulsory resident dispatcher.
+- status: canonical
+
+#### SQFV Manifest
+- path: `knowledge/sqv/sqfv/MANIFEST.md`
+- title: Symphony Quantitative Flow Vector Manifest
+- surface_type: subvector manifest
+- truth_role: SQFV ownership and first trusted same-process library boundary
+- owner: Symphony Quantitative Flow Vector maintainers
+- scope: Declares the four SQFV Contract Quad surfaces and the narrow `sqfv-batch-cpp` source module without claiming a service or cross-process transport.
+- relationships: depends_on -> `knowledge/sqv/sqfv/INTENT.md`; declares -> `knowledge/sqv/sqfv/SPEC.md`; declares -> `knowledge/sqv/sqfv/SKILL.md`; implemented_by -> `modules/sqfv-batch-cpp/MANIFEST.md`
+- consumers: SKVI, agents, reviewers, future SQFV implementers
+- deferred_projections: manifest-derived canonical-surface closure
+- notes: The offline in-process prototype remains development evidence; no `sqfv:` family is allocated.
+- status: canonical
+
+#### SQFV Specification
+- path: `knowledge/sqv/sqfv/SPEC.md`
+- title: Symphony Quantitative Flow Vector Specification
+- surface_type: subvector specification
+- truth_role: bounded transfer, immutable lease, credit, cursor, and release semantics
+- owner: Symphony Quantitative Flow Vector maintainers
+- scope: Defines finite edge budgets and independent consumer progress while distinguishing transfer from processing and durability.
+- relationships: depends_on -> `knowledge/sqv/sqfv/MANIFEST.md`; refines -> `knowledge/sqv/SPEC.md`; composes_with -> `knowledge/sqv/sqmv/SPEC.md`; implemented_by -> `modules/sqfv-batch-cpp/SPEC.md`
+- consumers: C++ data-plane designers, transport implementers, reviewers
+- deferred_projections: cross-process transport, production SQMV grammar, restart/replay, and supported-platform contracts
+- notes: The current module has an exact C++26 API and local frame; its scope does not include IPC, provider data, or durability.
+- status: canonical
+
+#### SQFV Skill
+- path: `knowledge/sqv/sqfv/SKILL.md`
+- title: Symphony Quantitative Flow Vector Skill
+- surface_type: subvector skill guidance
+- truth_role: bounded movement and release-verification procedure
+- owner: Symphony Quantitative Flow Vector maintainers
+- scope: Checks resource budgets, edge independence, generations, lease lifetime, cancellation, and failure outcomes.
+- relationships: depends_on -> `knowledge/sqv/sqfv/SPEC.md`
+- consumers: agents, C++ implementers, transport designers, reviewers
+- deferred_projections: task-scoped SQFV context
+- notes: Stops before claiming durable recovery, provider semantics, recipient rights, or an installed runtime from the offline prototype.
+- status: canonical
+
+### Symphony Quantitative Transformation Vector
+
+#### SQTV Intent
+- path: `knowledge/sqv/sqtv/INTENT.md`
+- title: Symphony Quantitative Transformation Vector Intent
+- surface_type: subvector intent
+- truth_role: selected research-data conversion and derived-transformation purpose
+- owner: Symphony Quantitative Transformation Vector maintainers
+- scope: Owns explicit input and output meaning, numerical and time rules, information loss, workspace, and derived lineage.
+- relationships: declares -> `knowledge/sqv/sqtv/MANIFEST.md`; depends_on -> `knowledge/sqv/INTENT.md`
+- consumers: research-data preparation designers, SQV architects, agents
+- deferred_projections: conversion and transformation operation map
+- notes: No canonical output format or compulsory conversion funnel is selected.
+- status: canonical
+
+#### SQTV Manifest
+- path: `knowledge/sqv/sqtv/MANIFEST.md`
+- title: Symphony Quantitative Transformation Vector Manifest
+- surface_type: subvector manifest
+- truth_role: SQTV ownership and architecture-only implementation boundary
+- owner: Symphony Quantitative Transformation Vector maintainers
+- scope: Declares the four SQTV Contract Quad surfaces without claiming a converter, transformation, operation, command, or package.
+- relationships: depends_on -> `knowledge/sqv/sqtv/INTENT.md`; declares -> `knowledge/sqv/sqtv/SPEC.md`; declares -> `knowledge/sqv/sqtv/SKILL.md`
+- consumers: SKVI, agents, reviewers, future SQTV implementers
+- deferred_projections: manifest-derived canonical-surface closure
+- notes: Native C++ data-plane direction does not allocate a `sqtv:` identity family or permit information loss.
+- status: canonical
+
+#### SQTV Specification
+- path: `knowledge/sqv/sqtv/SPEC.md`
+- title: Symphony Quantitative Transformation Vector Specification
+- surface_type: subvector specification
+- truth_role: operation, information-loss, numeric, lineage, and stateful-recovery semantics
+- owner: Symphony Quantitative Transformation Vector maintainers
+- scope: Separates lossless re-encoding, declared narrowing, and derived research results with exact input and output evidence.
+- relationships: depends_on -> `knowledge/sqv/sqtv/MANIFEST.md`; refines -> `knowledge/sqv/SPEC.md`; composes_with -> `knowledge/sqv/sqmv/SPEC.md`
+- consumers: C++ converter designers, research-data consumers, agents, reviewers
+- deferred_projections: admitted converter pairs, stateful transformation contracts, and public ABI
+- notes: Stateful windows and joins need separately admitted checkpoint, lateness, and replay rules.
+- status: canonical
+
+#### SQTV Skill
+- path: `knowledge/sqv/sqtv/SKILL.md`
+- title: Symphony Quantitative Transformation Vector Skill
+- surface_type: subvector skill guidance
+- truth_role: meaning-preserving research-data preparation procedure
+- owner: Symphony Quantitative Transformation Vector maintainers
+- scope: Checks exact input, operation release, output meaning, numerical rules, loss allowance, lineage, and stateful replay.
+- relationships: depends_on -> `knowledge/sqv/sqtv/SPEC.md`
+- consumers: agents, C++ implementers, converter designers, reviewers
+- deferred_projections: task-scoped SQTV context
+- notes: Stops before universal coercion, compulsory output formats, source access, or SBV result authority.
+- status: canonical
+
+### Symphony Quantitative Persistence Vector
+
+#### SQPV Intent
+- path: `knowledge/sqv/sqpv/INTENT.md`
+- title: Symphony Quantitative Persistence Vector Intent
+- surface_type: subvector intent
+- truth_role: selected research-data retention, retrieval, and recovery purpose
+- owner: Symphony Quantitative Persistence Vector maintainers
+- scope: Owns retained artifact identity, commit and read guarantees, integrity, retention obligations, and recovery for selected data.
+- relationships: declares -> `knowledge/sqv/sqpv/MANIFEST.md`; depends_on -> `knowledge/sqv/INTENT.md`
+- consumers: research-data storage designers, SQV architects, agents
+- deferred_projections: storage and retention contract map
+- notes: A live research flow can omit persistence when its selected contract permits disposable delivery.
+- status: canonical
+
+#### SQPV Manifest
+- path: `knowledge/sqv/sqpv/MANIFEST.md`
+- title: Symphony Quantitative Persistence Vector Manifest
+- surface_type: subvector manifest
+- truth_role: SQPV ownership and architecture-only implementation boundary
+- owner: Symphony Quantitative Persistence Vector maintainers
+- scope: Declares the four SQPV Contract Quad surfaces without claiming a writer, reader, backend, durability profile, or package.
+- relationships: depends_on -> `knowledge/sqv/sqpv/INTENT.md`; declares -> `knowledge/sqv/sqpv/SPEC.md`; declares -> `knowledge/sqv/sqpv/SKILL.md`
+- consumers: SKVI, agents, reviewers, future SQPV implementers
+- deferred_projections: manifest-derived canonical-surface closure
+- notes: No `sqpv:` identity family, storage write, deletion, or durability guarantee is allocated.
+- status: canonical
+
+#### SQPV Specification
+- path: `knowledge/sqv/sqpv/SPEC.md`
+- title: Symphony Quantitative Persistence Vector Specification
+- surface_type: subvector specification
+- truth_role: retained-range, commit, integrity, read, recovery, and fencing semantics
+- owner: Symphony Quantitative Persistence Vector maintainers
+- scope: Distinguishes staged bytes from proven durability, records exact retained ranges, and protects readers from premature reclamation.
+- relationships: depends_on -> `knowledge/sqv/sqpv/MANIFEST.md`; refines -> `knowledge/sqv/SPEC.md`; composes_with -> `knowledge/sqv/sqfv/SPEC.md`
+- consumers: C++ storage designers, retained-data readers, agents, reviewers
+- deferred_projections: admitted storage backend, segment format, durability and recovery protocol
+- notes: Integrity does not prove authority or durability; a high retained position does not close gaps.
+- status: canonical
+
+#### SQPV Skill
+- path: `knowledge/sqv/sqpv/SKILL.md`
+- title: Symphony Quantitative Persistence Vector Skill
+- surface_type: subvector skill guidance
+- truth_role: evidence-safe research retention and recovery procedure
+- owner: Symphony Quantitative Persistence Vector maintainers
+- scope: Checks storage guarantee, exact covered ranges, writer generations, interruption recovery, retention bounds, and read protection.
+- relationships: depends_on -> `knowledge/sqv/sqpv/SPEC.md`
+- consumers: agents, C++ storage implementers, reviewers
+- deferred_projections: task-scoped SQPV context
+- notes: Stops before treating buffered writes, digests, or old-writer outcomes as committed truth.
+- status: canonical
+
+### Symphony Quantitative Delivery Vector
+
+#### SQDV Intent
+- path: `knowledge/sqv/sqdv/INTENT.md`
+- title: Symphony Quantitative Delivery Vector Intent
+- surface_type: subvector intent
+- truth_role: selected consumer-view and authorized research-data handoff purpose
+- owner: Symphony Quantitative Delivery Vector maintainers
+- scope: Owns recipient view selection, completeness, scope, mode, and view-bound delivery and resume meaning.
+- relationships: declares -> `knowledge/sqv/sqdv/MANIFEST.md`; depends_on -> `knowledge/sqv/INTENT.md`
+- consumers: research-data recipients, SQV architects, agents
+- deferred_projections: consumer-view and recipient-adapter map
+- notes: Receiving vectors and future destination integrations retain their own result and remote-commit authority.
+- status: canonical
+
+#### SQDV Manifest
+- path: `knowledge/sqv/sqdv/MANIFEST.md`
+- title: Symphony Quantitative Delivery Vector Manifest
+- surface_type: subvector manifest
+- truth_role: SQDV ownership and architecture-only implementation boundary
+- owner: Symphony Quantitative Delivery Vector maintainers
+- scope: Declares the four SQDV Contract Quad surfaces without claiming a recipient adapter, export, destination receipt, or package.
+- relationships: depends_on -> `knowledge/sqv/sqdv/INTENT.md`; declares -> `knowledge/sqv/sqdv/SPEC.md`; declares -> `knowledge/sqv/sqdv/SKILL.md`
+- consumers: SKVI, agents, reviewers, future SQDV implementers
+- deferred_projections: manifest-derived canonical-surface closure
+- notes: No `sqdv:` identity family, recipient permission, or external delivery is allocated.
+- status: canonical
+
+#### SQDV Specification
+- path: `knowledge/sqv/sqdv/SPEC.md`
+- title: Symphony Quantitative Delivery Vector Specification
+- surface_type: subvector specification
+- truth_role: view, acknowledgement, recipient-scope, cutover, and resume semantics
+- owner: Symphony Quantitative Delivery Vector maintainers
+- scope: Separates preview from committed evidence and binds recipient continuity to exact view, revision, partition, and generation.
+- relationships: depends_on -> `knowledge/sqv/sqdv/MANIFEST.md`; refines -> `knowledge/sqv/SPEC.md`; composes_with -> `knowledge/sqv/sqfv/SPEC.md`; composes_with -> `knowledge/sqv/sqpv/SPEC.md`
+- consumers: C++ delivery designers, receiving owners, agents, reviewers
+- deferred_projections: admitted recipient interface, acknowledgement grammar, and resume protocol
+- notes: Transport receipt does not prove processing, remote commit, queryability, or physical buffer release.
+- status: canonical
+
+#### SQDV Skill
+- path: `knowledge/sqv/sqdv/SKILL.md`
+- title: Symphony Quantitative Delivery Vector Skill
+- surface_type: subvector skill guidance
+- truth_role: recipient-scope and delivery-evidence procedure
+- owner: Symphony Quantitative Delivery Vector maintainers
+- scope: Checks view identity, rights, evidence stage, finite allowance, live-to-retained cutover, ambiguous receipt, and recipient authority.
+- relationships: depends_on -> `knowledge/sqv/sqdv/SPEC.md`
+- consumers: agents, C++ implementers, recipient designers, reviewers
+- deferred_projections: task-scoped SQDV context
+- notes: Stops before treating rights metadata as a grant, preview as durable, or a future destination as installed.
 - status: canonical
 
 ### Symphony Orchestra Omega Vector
@@ -13593,4 +13982,3685 @@ These entries locate existing implementation and regression surfaces referenced 
 - consumers: qxctl, administrators, reviewers
 - deferred_projections: none
 - notes: Reuses governed validation without canonical mutation or delivery-state inheritance.
+- status: canonical
+
+### SQFV Batch Native Library
+
+##### SQFV Batch Feature Evidence
+- path: `modules/sqfv-batch-cpp/FEATURES.md`
+- title: SQFV Batch Feature Evidence
+- surface_type: module feature record
+- truth_role: bounded first-slice capability and evidence declaration
+- owner: SQFV batch module maintainers
+- scope: Declares only the tested trusted same-process batch and fan-out extent, with later local evidence required before support claims.
+- relationships: depends_on -> `modules/sqfv-batch-cpp/SPEC.md`
+- consumers: feature reviewers, SQFV maintainers
+- deferred_projections: none authorized by this entry
+- notes: This source entry does not grant provider, private-access, durability, network, or qxctl SQV authority.
+- status: canonical
+
+##### SQFV Batch Installation
+- path: `modules/sqfv-batch-cpp/INSTALL.md`
+- title: SQFV Batch Installation
+- surface_type: module installation contract
+- truth_role: exact package lifecycle and consumer instructions
+- owner: SQFV batch module maintainers
+- scope: Describes versioned archive, public C++26 header, exact CMake target, receipt-v2 ownership, checkout-free consumption, and guarded uninstall.
+- relationships: depends_on -> `modules/sqfv-batch-cpp/MANIFEST.md`
+- consumers: packagers, independent consumers
+- deferred_projections: none authorized by this entry
+- notes: This source entry does not grant provider, private-access, durability, network, or qxctl SQV authority.
+- status: canonical
+
+##### SQFV Batch Intent
+- path: `modules/sqfv-batch-cpp/INTENT.md`
+- title: SQFV Batch Intent
+- surface_type: module intent
+- truth_role: narrow trusted-process purpose
+- owner: SQFV batch module maintainers
+- scope: Defines an optional native in-process immutable batch and per-port fan-out library within SQFV ownership.
+- relationships: depends_on -> `knowledge/sqv/sqfv/INTENT.md`
+- consumers: SQFV maintainers, consumers
+- deferred_projections: none authorized by this entry
+- notes: This source entry does not grant provider, private-access, durability, network, or qxctl SQV authority.
+- status: canonical
+
+##### SQFV Batch Manifest
+- path: `modules/sqfv-batch-cpp/MANIFEST.md`
+- title: SQFV Batch Manifest
+- surface_type: module manifest
+- truth_role: canonical module surface declaration
+- owner: SQFV batch module maintainers
+- scope: Declares the exact C++26 library contract, source, test, and package surfaces without provider or qxctl authority.
+- relationships: depends_on -> `modules/sqfv-batch-cpp/INTENT.md`; implements -> `knowledge/sqv/sqfv/MANIFEST.md`
+- consumers: SKVI, validator, packagers
+- deferred_projections: none authorized by this entry
+- notes: This source entry does not grant provider, private-access, durability, network, or qxctl SQV authority.
+- status: canonical
+
+##### SQFV Batch Skill
+- path: `modules/sqfv-batch-cpp/SKILL.md`
+- title: SQFV Batch Skill
+- surface_type: module procedure
+- truth_role: implementation and review guidance
+- owner: SQFV batch module maintainers
+- scope: Routes implementers through exact C++26 compatibility, lifetime, credit, frame, receipt, and negative acceptance boundaries.
+- relationships: depends_on -> `modules/sqfv-batch-cpp/SPEC.md`
+- consumers: implementers, reviewers
+- deferred_projections: none authorized by this entry
+- notes: This source entry does not grant provider, private-access, durability, network, or qxctl SQV authority.
+- status: canonical
+
+##### SQFV Batch Specification
+- path: `modules/sqfv-batch-cpp/SPEC.md`
+- title: SQFV Batch Specification
+- surface_type: module specification
+- truth_role: exact first-slice runtime contract
+- owner: SQFV batch module maintainers
+- scope: Specifies the native C++26 API, descriptor/cursor, immutable lease, independent port credit, frame integrity, trust scope, and exclusions.
+- relationships: implements -> `knowledge/sqv/sqfv/SPEC.md`; carries -> `knowledge/sqv/sqmv/SPEC.md`
+- consumers: C++26 consumers, reviewers
+- deferred_projections: none authorized by this entry
+- notes: This source entry does not grant provider, private-access, durability, network, or qxctl SQV authority.
+- status: canonical
+
+##### SQFV Batch Build
+- path: `modules/sqfv-batch-cpp/CMakeLists.txt`
+- title: SQFV Batch Build
+- surface_type: native build contract
+- truth_role: exact package build and receipt implementation
+- owner: SQFV batch module maintainers
+- scope: Builds the independently installed static C++ library, focused fixtures, exact CMake export, and receipt-owned files.
+- relationships: implements -> `modules/sqfv-batch-cpp/INSTALL.md`
+- consumers: packagers, build reviewers
+- deferred_projections: none authorized by this entry
+- notes: This source entry does not grant provider, private-access, durability, network, or qxctl SQV authority.
+- status: canonical
+
+##### SQFV Batch Public C++26 Interface
+- path: `modules/sqfv-batch-cpp/include/symphony/sqfv/batch.hpp`
+- title: SQFV Batch Public C++26 Interface
+- surface_type: C++26 API header
+- truth_role: versioned caller-facing C++ interface
+- owner: SQFV batch module maintainers
+- scope: Declares owning descriptors, finite limits, byte spans, status outcomes, and move-only lifetime handles for trusted same-process use.
+- relationships: implements -> `modules/sqfv-batch-cpp/SPEC.md`
+- consumers: native producers and consumers
+- deferred_projections: none authorized by this entry
+- notes: This source entry does not grant provider, private-access, durability, network, or qxctl SQV authority.
+- status: canonical
+
+##### SQFV Batch Lifetime Implementation
+- path: `modules/sqfv-batch-cpp/src/batch.cpp`
+- title: SQFV Batch Lifetime Implementation
+- surface_type: C++ implementation source
+- truth_role: batch, lease, cursor, and credit mechanics
+- owner: SQFV batch module maintainers
+- scope: Implements budgeted immutable copies, retained leases, independent ports and exact order outcomes behind the C++26 API.
+- relationships: implements -> `modules/sqfv-batch-cpp/include/symphony/sqfv/batch.hpp`
+- consumers: native build, reviewers
+- deferred_projections: none authorized by this entry
+- notes: This source entry does not grant provider, private-access, durability, network, or qxctl SQV authority.
+- status: canonical
+
+##### SQFV Batch Internal Contract
+- path: `modules/sqfv-batch-cpp/src/batch_internal.hpp`
+- title: SQFV Batch Internal Contract
+- surface_type: C++ private header
+- truth_role: shared batch and frame implementation definition
+- owner: SQFV batch module maintainers
+- scope: Defines the exact canonical descriptor-byte sequence and the private content-identity and limit-access helpers used by this version.
+- relationships: implements -> `modules/sqfv-batch-cpp/SPEC.md`; used_by -> `modules/sqfv-batch-cpp/src/frame.cpp`
+- consumers: SQFV native build, reviewers
+- deferred_projections: none authorized by this entry
+- notes: This private header is not a second public interface and grants no provider, private-access, durability, network, or qxctl SQV authority.
+- status: canonical
+
+##### SQFV Batch Frame Codec
+- path: `modules/sqfv-batch-cpp/src/frame.cpp`
+- title: SQFV Batch Frame Codec
+- surface_type: C++ implementation source
+- truth_role: bounded frame integrity mechanics
+- owner: SQFV batch module maintainers
+- scope: Implements versioned byte-defined encode/decode with explicit lengths, digest validation and fail-closed malformed input handling.
+- relationships: implements -> `modules/sqfv-batch-cpp/include/symphony/sqfv/batch.hpp`
+- consumers: native build, reviewers
+- deferred_projections: none authorized by this entry
+- notes: This source entry does not grant provider, private-access, durability, network, or qxctl SQV authority.
+- status: canonical
+
+##### SQFV Batch CMake Package Config
+- path: `modules/sqfv-batch-cpp/cmake/SymphonySqfvBatchConfig.cmake.in`
+- title: SQFV Batch CMake Package Config
+- surface_type: CMake package configuration
+- truth_role: exact installed consumer selection
+- owner: SQFV batch module maintainers
+- scope: Resolves only the installed versioned target and its public header/archive without a source-checkout dependency.
+- relationships: implements -> `modules/sqfv-batch-cpp/INSTALL.md`
+- consumers: independent CMake consumers
+- deferred_projections: none authorized by this entry
+- notes: This source entry does not grant provider, private-access, durability, network, or qxctl SQV authority.
+- status: canonical
+
+##### SQFV Batch Guarded Uninstall
+- path: `modules/sqfv-batch-cpp/cmake/uninstall.cmake.in`
+- title: SQFV Batch Guarded Uninstall
+- surface_type: CMake uninstall implementation
+- truth_role: receipt-scoped removal boundary
+- owner: SQFV batch module maintainers
+- scope: Removes only unchanged receipt-owned files from the selected exact package version.
+- relationships: implements -> `modules/sqfv-batch-cpp/INSTALL.md`
+- consumers: packagers, lifecycle reviewers
+- deferred_projections: none authorized by this entry
+- notes: This source entry does not grant provider, private-access, durability, network, or qxctl SQV authority.
+- status: canonical
+
+##### SQFV Batch Lifetime Tests
+- path: `modules/sqfv-batch-cpp/tests/batch_test.cpp`
+- title: SQFV Batch Lifetime Tests
+- surface_type: C++ focused test
+- truth_role: lifetime, resource and ordering evidence source
+- owner: SQFV batch module maintainers
+- scope: Exercises immutable reader lifetime, independent credit and cursor outcomes, budget exhaustion, and bounded flow.
+- relationships: tests -> `modules/sqfv-batch-cpp/src/batch.cpp`
+- consumers: test maintainers, reviewers
+- deferred_projections: none authorized by this entry
+- notes: This source entry does not grant provider, private-access, durability, network, or qxctl SQV authority.
+- status: canonical
+
+##### SQFV Batch Frame Tests
+- path: `modules/sqfv-batch-cpp/tests/frame_test.cpp`
+- title: SQFV Batch Frame Tests
+- surface_type: C++ focused test
+- truth_role: frame and integrity evidence source
+- owner: SQFV batch module maintainers
+- scope: Exercises exact frame round trips, malformed lengths, version/flag rejection, digest failures, and resource bounds.
+- relationships: tests -> `modules/sqfv-batch-cpp/src/frame.cpp`
+- consumers: test maintainers, reviewers
+- deferred_projections: none authorized by this entry
+- notes: This source entry does not grant provider, private-access, durability, network, or qxctl SQV authority.
+- status: canonical
+
+##### SQFV Batch Allocation Failure Tests
+- path: `modules/sqfv-batch-cpp/tests/allocation_failure_test.cpp`
+- title: SQFV Batch Allocation Failure Tests
+- surface_type: C++26 focused test
+- truth_role: exception rollback and allocation-free release evidence source
+- owner: SQFV batch module maintainers
+- scope: Injects allocation failures across preparation, retention, queue admission and decode and checks unchanged outputs, reservations, cursor state and credits.
+- relationships: tests -> `modules/sqfv-batch-cpp/src/batch.cpp`, `modules/sqfv-batch-cpp/src/frame.cpp`
+- consumers: test maintainers, reviewers
+- deferred_projections: none authorized by this entry
+- notes: Allocation injection is confined to the test executable.
+- status: canonical
+
+##### SQFV Batch Package Lifecycle Tests
+- path: `modules/sqfv-batch-cpp/tests/package_lifecycle_test.cmake`
+- title: SQFV Batch Package Lifecycle Tests
+- surface_type: CMake focused test
+- truth_role: immutable installation and guarded removal evidence source
+- owner: SQFV batch module maintainers
+- scope: Exercises isolated installation, overwrite refusal, receipt integrity, identity and path containment guards, detached build-local removal and idempotent retry.
+- relationships: tests -> `modules/sqfv-batch-cpp/INSTALL.md`, `cmake/SymphonyInstallReceiptV2.cmake`, `cmake/SymphonyUninstallReceiptV2.cmake`
+- consumers: test maintainers, packagers, reviewers
+- deferred_projections: none authorized by this entry
+- notes: Disposable prefixes keep installed user packages outside the test mutation boundary.
+- status: canonical
+
+##### SQFV Batch Independent Consumer Build
+- path: `modules/sqfv-batch-cpp/tests/sdk-consumer/CMakeLists.txt`
+- title: SQFV Batch Independent Consumer Build
+- surface_type: CMake acceptance build
+- truth_role: checkout-free consumer test source
+- owner: SQFV batch module maintainers
+- scope: Builds a C++26 consumer against the exact installed package target and public header.
+- relationships: tests -> `modules/sqfv-batch-cpp/INSTALL.md`
+- consumers: SDK consumers, reviewers
+- deferred_projections: none authorized by this entry
+- notes: This source entry does not grant provider, private-access, durability, network, or qxctl SQV authority.
+- status: canonical
+
+##### SQFV Batch Independent C++26 Consumer
+- path: `modules/sqfv-batch-cpp/tests/sdk-consumer/main.cpp`
+- title: SQFV Batch Independent C++26 Consumer
+- surface_type: C++26 acceptance source
+- truth_role: public API link and lifetime evidence source
+- owner: SQFV batch module maintainers
+- scope: Exercises the installed C++26 header and archive without including implementation-private types.
+- relationships: tests -> `modules/sqfv-batch-cpp/include/symphony/sqfv/batch.hpp`
+- consumers: SDK consumers, reviewers
+- deferred_projections: none authorized by this entry
+- notes: This source entry does not grant provider, private-access, durability, network, or qxctl SQV authority.
+- status: canonical
+
+##### Foundation Digest Allocation Failure Tests
+- path: `libraries/knowledge-vector-engine-cpp/tests/digest_failure_test.cpp`
+- title: Foundation Digest Allocation Failure Tests
+- surface_type: C++26 focused test
+- truth_role: complete digest or exception evidence source
+- owner: Knowledge Vector Engine foundation maintainers
+- scope: Injects allocation failures into SHA-256 generation and rejects truncated or incorrect successful digest results.
+- relationships: tests -> `libraries/knowledge-vector-engine-cpp/SPEC.md`
+- consumers: native library maintainers, reviewers
+- deferred_projections: none
+- notes: Allocation injection is confined to the test executable.
+- status: canonical
+
+##### SQMV Metadata Intent
+- path: `modules/sqmv-metadata-cpp/INTENT.md`
+- title: SQMV Metadata Intent
+- surface_type: owner intent
+- truth_role: bounded native library purpose
+- owner: SQMV Metadata module maintainers
+- scope: Describes the selected library purpose and open composition boundary.
+- relationships: implements -> `modules/sqmv-metadata-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQMV Metadata Manifest
+- path: `modules/sqmv-metadata-cpp/MANIFEST.md`
+- title: SQMV Metadata Manifest
+- surface_type: owner manifest
+- truth_role: exact module source membership
+- owner: SQMV Metadata module maintainers
+- scope: Lists the exact versioned package and its canonical implementation/test surfaces.
+- relationships: declares -> `modules/sqmv-metadata-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQMV Metadata Specification
+- path: `modules/sqmv-metadata-cpp/SPEC.md`
+- title: SQMV Metadata Specification
+- surface_type: owner contract
+- truth_role: exact native behavior and compatibility
+- owner: SQMV Metadata module maintainers
+- scope: Defines the bounded native API, identities, failure outcomes and supported extent.
+- relationships: owned_by -> `knowledge/sqv/sqmv/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQMV Metadata Workflow
+- path: `modules/sqmv-metadata-cpp/SKILL.md`
+- title: SQMV Metadata Workflow
+- surface_type: owner workflow contract
+- truth_role: module review and execution boundary
+- owner: SQMV Metadata module maintainers
+- scope: Routes module-specific work to exact contracts and focused acceptance evidence.
+- relationships: implements -> `modules/sqmv-metadata-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQMV Metadata Installation
+- path: `modules/sqmv-metadata-cpp/INSTALL.md`
+- title: SQMV Metadata Installation
+- surface_type: package contract
+- truth_role: exact receipt-owned package lifecycle
+- owner: SQMV Metadata module maintainers
+- scope: Documents C++26 dependencies, versioned installation, independent consumers and guarded removal.
+- relationships: implements -> `modules/sqmv-metadata-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQMV Metadata Semantic Feature
+- path: `modules/sqmv-metadata-cpp/FEATURES.md`
+- title: SQMV Metadata Semantic Feature
+- surface_type: feature declaration
+- truth_role: bounded implemented capability
+- owner: SQMV Metadata module maintainers
+- scope: Records the experimental native library extent and explicit non-claims.
+- relationships: implements -> `modules/sqmv-metadata-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQMV Metadata Build
+- path: `modules/sqmv-metadata-cpp/CMakeLists.txt`
+- title: SQMV Metadata Build
+- surface_type: CMake implementation
+- truth_role: native build and exact package export
+- owner: SQMV Metadata module maintainers
+- scope: Builds and exports the exact C++26 static library and focused tests.
+- relationships: implements -> `modules/sqmv-metadata-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQMV Metadata Public API
+- path: `modules/sqmv-metadata-cpp/include/symphony/sqmv/metadata.hpp`
+- title: SQMV Metadata Public API
+- surface_type: C++26 public interface
+- truth_role: trusted caller interface
+- owner: SQMV Metadata module maintainers
+- scope: Declares the move-only native API with explicit bounded inputs and typed failures.
+- relationships: implements -> `modules/sqmv-metadata-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQMV Metadata Implementation
+- path: `modules/sqmv-metadata-cpp/src/metadata.cpp`
+- title: SQMV Metadata Implementation
+- surface_type: C++26 implementation
+- truth_role: owner implementation
+- owner: SQMV Metadata module maintainers
+- scope: Implements the exact module contract through explicitly selected native dependencies.
+- relationships: implements -> `modules/sqmv-metadata-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQMV Metadata Native Tests
+- path: `modules/sqmv-metadata-cpp/tests/metadata_test.cpp`
+- title: SQMV Metadata Native Tests
+- surface_type: C++26 focused test
+- truth_role: owner regression evidence
+- owner: SQMV Metadata module maintainers
+- scope: Exercises exact identity, bounded failures and module-specific lifetime or recovery behavior.
+- relationships: implements -> `modules/sqmv-metadata-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQMV Metadata Package Tests
+- path: `modules/sqmv-metadata-cpp/tests/package_lifecycle_test.cmake`
+- title: SQMV Metadata Package Tests
+- surface_type: CMake focused test
+- truth_role: package lifecycle evidence
+- owner: SQMV Metadata module maintainers
+- scope: Exercises isolated installation, overwrite refusal, integrity guards and source-independent removal.
+- relationships: implements -> `modules/sqmv-metadata-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQMV Metadata Independent Consumer Build
+- path: `modules/sqmv-metadata-cpp/tests/sdk-consumer/CMakeLists.txt`
+- title: SQMV Metadata Independent Consumer Build
+- surface_type: CMake acceptance build
+- truth_role: checkout-free consumer evidence
+- owner: SQMV Metadata module maintainers
+- scope: Requires exact installed dependency packages and inherits exported C++26 requirements.
+- relationships: implements -> `modules/sqmv-metadata-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQMV Metadata Independent Consumer
+- path: `modules/sqmv-metadata-cpp/tests/sdk-consumer/main.cpp`
+- title: SQMV Metadata Independent Consumer
+- surface_type: C++26 acceptance source
+- truth_role: public consumer rejection evidence
+- owner: SQMV Metadata module maintainers
+- scope: Exercises the installed public interface and rejects incompatible or corrupt inputs.
+- relationships: implements -> `modules/sqmv-metadata-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQMV Metadata Package Configuration
+- path: `modules/sqmv-metadata-cpp/cmake/SymphonySqmvMetadataConfig.cmake.in`
+- title: SQMV Metadata Package Configuration
+- surface_type: CMake package template
+- truth_role: exact dependency resolution
+- owner: SQMV Metadata module maintainers
+- scope: Resolves exact installed dependency packages and imports the module target.
+- relationships: implements -> `modules/sqmv-metadata-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQMV Metadata Uninstall
+- path: `modules/sqmv-metadata-cpp/cmake/uninstall.cmake.in`
+- title: SQMV Metadata Uninstall
+- surface_type: CMake uninstall template
+- truth_role: receipt-scoped removal
+- owner: SQMV Metadata module maintainers
+- scope: Invokes the build-local hardened receipt guard with the exact configured ownership set.
+- relationships: implements -> `modules/sqmv-metadata-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQPV Local Store Intent
+- path: `modules/sqpv-local-store-cpp/INTENT.md`
+- title: SQPV Local Store Intent
+- surface_type: owner intent
+- truth_role: bounded native library purpose
+- owner: SQPV Local Store module maintainers
+- scope: Describes the selected library purpose and open composition boundary.
+- relationships: implements -> `modules/sqpv-local-store-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQPV Local Store Manifest
+- path: `modules/sqpv-local-store-cpp/MANIFEST.md`
+- title: SQPV Local Store Manifest
+- surface_type: owner manifest
+- truth_role: exact module source membership
+- owner: SQPV Local Store module maintainers
+- scope: Lists the exact versioned package and its canonical implementation/test surfaces.
+- relationships: declares -> `modules/sqpv-local-store-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQPV Local Store Specification
+- path: `modules/sqpv-local-store-cpp/SPEC.md`
+- title: SQPV Local Store Specification
+- surface_type: owner contract
+- truth_role: exact native behavior and compatibility
+- owner: SQPV Local Store module maintainers
+- scope: Defines the bounded native API, identities, failure outcomes and supported extent.
+- relationships: owned_by -> `knowledge/sqv/sqpv/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQPV Local Store Workflow
+- path: `modules/sqpv-local-store-cpp/SKILL.md`
+- title: SQPV Local Store Workflow
+- surface_type: owner workflow contract
+- truth_role: module review and execution boundary
+- owner: SQPV Local Store module maintainers
+- scope: Routes module-specific work to exact contracts and focused acceptance evidence.
+- relationships: implements -> `modules/sqpv-local-store-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQPV Local Store Installation
+- path: `modules/sqpv-local-store-cpp/INSTALL.md`
+- title: SQPV Local Store Installation
+- surface_type: package contract
+- truth_role: exact receipt-owned package lifecycle
+- owner: SQPV Local Store module maintainers
+- scope: Documents C++26 dependencies, versioned installation, independent consumers and guarded removal.
+- relationships: implements -> `modules/sqpv-local-store-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQPV Local Store Semantic Feature
+- path: `modules/sqpv-local-store-cpp/FEATURES.md`
+- title: SQPV Local Store Semantic Feature
+- surface_type: feature declaration
+- truth_role: bounded implemented capability
+- owner: SQPV Local Store module maintainers
+- scope: Records the experimental native library extent and explicit non-claims.
+- relationships: implements -> `modules/sqpv-local-store-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQPV Local Store Build
+- path: `modules/sqpv-local-store-cpp/CMakeLists.txt`
+- title: SQPV Local Store Build
+- surface_type: CMake implementation
+- truth_role: native build and exact package export
+- owner: SQPV Local Store module maintainers
+- scope: Builds and exports the exact C++26 static library and focused tests.
+- relationships: implements -> `modules/sqpv-local-store-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQPV Local Store Public API
+- path: `modules/sqpv-local-store-cpp/include/symphony/sqpv/local_store.hpp`
+- title: SQPV Local Store Public API
+- surface_type: C++26 public interface
+- truth_role: trusted caller interface
+- owner: SQPV Local Store module maintainers
+- scope: Declares the move-only native API with explicit bounded inputs and typed failures.
+- relationships: implements -> `modules/sqpv-local-store-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQPV Local Store Implementation
+- path: `modules/sqpv-local-store-cpp/src/local_store.cpp`
+- title: SQPV Local Store Implementation
+- surface_type: C++26 implementation
+- truth_role: owner implementation
+- owner: SQPV Local Store module maintainers
+- scope: Implements the exact module contract through explicitly selected native dependencies.
+- relationships: implements -> `modules/sqpv-local-store-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQPV Local Store Native Tests
+- path: `modules/sqpv-local-store-cpp/tests/local_store_test.cpp`
+- title: SQPV Local Store Native Tests
+- surface_type: C++26 focused test
+- truth_role: owner regression evidence
+- owner: SQPV Local Store module maintainers
+- scope: Exercises exact identity, bounded failures and module-specific lifetime or recovery behavior.
+- relationships: implements -> `modules/sqpv-local-store-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQPV Local Store Package Tests
+- path: `modules/sqpv-local-store-cpp/tests/package_lifecycle_test.cmake`
+- title: SQPV Local Store Package Tests
+- surface_type: CMake focused test
+- truth_role: package lifecycle evidence
+- owner: SQPV Local Store module maintainers
+- scope: Exercises isolated installation, overwrite refusal, integrity guards and source-independent removal.
+- relationships: implements -> `modules/sqpv-local-store-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQPV Local Store Independent Consumer Build
+- path: `modules/sqpv-local-store-cpp/tests/sdk-consumer/CMakeLists.txt`
+- title: SQPV Local Store Independent Consumer Build
+- surface_type: CMake acceptance build
+- truth_role: checkout-free consumer evidence
+- owner: SQPV Local Store module maintainers
+- scope: Requires exact installed dependency packages and inherits exported C++26 requirements.
+- relationships: implements -> `modules/sqpv-local-store-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQPV Local Store Independent Consumer
+- path: `modules/sqpv-local-store-cpp/tests/sdk-consumer/main.cpp`
+- title: SQPV Local Store Independent Consumer
+- surface_type: C++26 acceptance source
+- truth_role: public consumer rejection evidence
+- owner: SQPV Local Store module maintainers
+- scope: Exercises the installed public interface and rejects incompatible or corrupt inputs.
+- relationships: implements -> `modules/sqpv-local-store-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQPV Local Store Package Configuration
+- path: `modules/sqpv-local-store-cpp/cmake/SymphonySqpvLocalStoreConfig.cmake.in`
+- title: SQPV Local Store Package Configuration
+- surface_type: CMake package template
+- truth_role: exact dependency resolution
+- owner: SQPV Local Store module maintainers
+- scope: Resolves exact installed dependency packages and imports the module target.
+- relationships: implements -> `modules/sqpv-local-store-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQPV Local Store Uninstall
+- path: `modules/sqpv-local-store-cpp/cmake/uninstall.cmake.in`
+- title: SQPV Local Store Uninstall
+- surface_type: CMake uninstall template
+- truth_role: receipt-scoped removal
+- owner: SQPV Local Store module maintainers
+- scope: Invokes the build-local hardened receipt guard with the exact configured ownership set.
+- relationships: implements -> `modules/sqpv-local-store-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQPV Local Store Interruption Test Hooks
+- path: `modules/sqpv-local-store-cpp/tests/hook.hpp`
+- title: SQPV Local Store Interruption Test Hooks
+- surface_type: C++26 test-only header
+- truth_role: deterministic interruption evidence
+- owner: SQPV Local Store module maintainers
+- scope: Declares private test hooks compiled only into the non-installed test library.
+- relationships: implements -> `modules/sqpv-local-store-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQDV Delivery Intent
+- path: `modules/sqdv-delivery-cpp/INTENT.md`
+- title: SQDV Delivery Intent
+- surface_type: owner intent
+- truth_role: bounded native library purpose
+- owner: SQDV Delivery module maintainers
+- scope: Describes the selected library purpose and open composition boundary.
+- relationships: implements -> `modules/sqdv-delivery-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQDV Delivery Manifest
+- path: `modules/sqdv-delivery-cpp/MANIFEST.md`
+- title: SQDV Delivery Manifest
+- surface_type: owner manifest
+- truth_role: exact module source membership
+- owner: SQDV Delivery module maintainers
+- scope: Lists the exact versioned package and its canonical implementation/test surfaces.
+- relationships: declares -> `modules/sqdv-delivery-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQDV Delivery Specification
+- path: `modules/sqdv-delivery-cpp/SPEC.md`
+- title: SQDV Delivery Specification
+- surface_type: owner contract
+- truth_role: exact native behavior and compatibility
+- owner: SQDV Delivery module maintainers
+- scope: Defines the bounded native API, identities, failure outcomes and supported extent.
+- relationships: owned_by -> `knowledge/sqv/sqdv/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQDV Delivery Workflow
+- path: `modules/sqdv-delivery-cpp/SKILL.md`
+- title: SQDV Delivery Workflow
+- surface_type: owner workflow contract
+- truth_role: module review and execution boundary
+- owner: SQDV Delivery module maintainers
+- scope: Routes module-specific work to exact contracts and focused acceptance evidence.
+- relationships: implements -> `modules/sqdv-delivery-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQDV Delivery Installation
+- path: `modules/sqdv-delivery-cpp/INSTALL.md`
+- title: SQDV Delivery Installation
+- surface_type: package contract
+- truth_role: exact receipt-owned package lifecycle
+- owner: SQDV Delivery module maintainers
+- scope: Documents C++26 dependencies, versioned installation, independent consumers and guarded removal.
+- relationships: implements -> `modules/sqdv-delivery-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQDV Delivery Semantic Feature
+- path: `modules/sqdv-delivery-cpp/FEATURES.md`
+- title: SQDV Delivery Semantic Feature
+- surface_type: feature declaration
+- truth_role: bounded implemented capability
+- owner: SQDV Delivery module maintainers
+- scope: Records the experimental native library extent and explicit non-claims.
+- relationships: implements -> `modules/sqdv-delivery-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQDV Delivery Build
+- path: `modules/sqdv-delivery-cpp/CMakeLists.txt`
+- title: SQDV Delivery Build
+- surface_type: CMake implementation
+- truth_role: native build and exact package export
+- owner: SQDV Delivery module maintainers
+- scope: Builds and exports the exact C++26 static library and focused tests.
+- relationships: implements -> `modules/sqdv-delivery-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQDV Delivery Public API
+- path: `modules/sqdv-delivery-cpp/include/symphony/sqdv/delivery.hpp`
+- title: SQDV Delivery Public API
+- surface_type: C++26 public interface
+- truth_role: trusted caller interface
+- owner: SQDV Delivery module maintainers
+- scope: Declares the move-only native API with explicit bounded inputs and typed failures.
+- relationships: implements -> `modules/sqdv-delivery-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQDV Delivery Implementation
+- path: `modules/sqdv-delivery-cpp/src/delivery.cpp`
+- title: SQDV Delivery Implementation
+- surface_type: C++26 implementation
+- truth_role: owner implementation
+- owner: SQDV Delivery module maintainers
+- scope: Implements the exact module contract through explicitly selected native dependencies.
+- relationships: implements -> `modules/sqdv-delivery-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQDV Delivery Native Tests
+- path: `modules/sqdv-delivery-cpp/tests/delivery_test.cpp`
+- title: SQDV Delivery Native Tests
+- surface_type: C++26 focused test
+- truth_role: owner regression evidence
+- owner: SQDV Delivery module maintainers
+- scope: Exercises exact identity, bounded failures and module-specific lifetime or recovery behavior.
+- relationships: implements -> `modules/sqdv-delivery-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQDV Delivery Package Tests
+- path: `modules/sqdv-delivery-cpp/tests/package_lifecycle_test.cmake`
+- title: SQDV Delivery Package Tests
+- surface_type: CMake focused test
+- truth_role: package lifecycle evidence
+- owner: SQDV Delivery module maintainers
+- scope: Exercises isolated installation, overwrite refusal, integrity guards and source-independent removal.
+- relationships: implements -> `modules/sqdv-delivery-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQDV Delivery Independent Consumer Build
+- path: `modules/sqdv-delivery-cpp/tests/sdk-consumer/CMakeLists.txt`
+- title: SQDV Delivery Independent Consumer Build
+- surface_type: CMake acceptance build
+- truth_role: checkout-free consumer evidence
+- owner: SQDV Delivery module maintainers
+- scope: Requires exact installed dependency packages and inherits exported C++26 requirements.
+- relationships: implements -> `modules/sqdv-delivery-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQDV Delivery Independent Consumer
+- path: `modules/sqdv-delivery-cpp/tests/sdk-consumer/main.cpp`
+- title: SQDV Delivery Independent Consumer
+- surface_type: C++26 acceptance source
+- truth_role: public consumer rejection evidence
+- owner: SQDV Delivery module maintainers
+- scope: Exercises the installed public interface and rejects incompatible or corrupt inputs.
+- relationships: implements -> `modules/sqdv-delivery-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQDV Delivery Package Configuration
+- path: `modules/sqdv-delivery-cpp/cmake/SymphonySqdvDeliveryConfig.cmake.in`
+- title: SQDV Delivery Package Configuration
+- surface_type: CMake package template
+- truth_role: exact dependency resolution
+- owner: SQDV Delivery module maintainers
+- scope: Resolves exact installed dependency packages and imports the module target.
+- relationships: implements -> `modules/sqdv-delivery-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQDV Delivery Uninstall
+- path: `modules/sqdv-delivery-cpp/cmake/uninstall.cmake.in`
+- title: SQDV Delivery Uninstall
+- surface_type: CMake uninstall template
+- truth_role: receipt-scoped removal
+- owner: SQDV Delivery module maintainers
+- scope: Invokes the build-local hardened receipt guard with the exact configured ownership set.
+- relationships: implements -> `modules/sqdv-delivery-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQAV Capture Intent
+- path: `modules/sqav-capture-cpp/INTENT.md`
+- title: SQAV Capture Intent
+- surface_type: owner intent
+- truth_role: bounded native library purpose
+- owner: SQAV Capture module maintainers
+- scope: Describes the selected library purpose and open composition boundary.
+- relationships: implements -> `modules/sqav-capture-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQAV Capture Manifest
+- path: `modules/sqav-capture-cpp/MANIFEST.md`
+- title: SQAV Capture Manifest
+- surface_type: owner manifest
+- truth_role: exact module source membership
+- owner: SQAV Capture module maintainers
+- scope: Lists the exact versioned package and its canonical implementation/test surfaces.
+- relationships: declares -> `modules/sqav-capture-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQAV Capture Specification
+- path: `modules/sqav-capture-cpp/SPEC.md`
+- title: SQAV Capture Specification
+- surface_type: owner contract
+- truth_role: exact native behavior and compatibility
+- owner: SQAV Capture module maintainers
+- scope: Defines the bounded native API, identities, failure outcomes and supported extent.
+- relationships: owned_by -> `knowledge/sqv/sqav/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQAV Capture Workflow
+- path: `modules/sqav-capture-cpp/SKILL.md`
+- title: SQAV Capture Workflow
+- surface_type: owner workflow contract
+- truth_role: module review and execution boundary
+- owner: SQAV Capture module maintainers
+- scope: Routes module-specific work to exact contracts and focused acceptance evidence.
+- relationships: implements -> `modules/sqav-capture-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQAV Capture Installation
+- path: `modules/sqav-capture-cpp/INSTALL.md`
+- title: SQAV Capture Installation
+- surface_type: package contract
+- truth_role: exact receipt-owned package lifecycle
+- owner: SQAV Capture module maintainers
+- scope: Documents C++26 dependencies, versioned installation, independent consumers and guarded removal.
+- relationships: implements -> `modules/sqav-capture-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQAV Capture Semantic Feature
+- path: `modules/sqav-capture-cpp/FEATURES.md`
+- title: SQAV Capture Semantic Feature
+- surface_type: feature declaration
+- truth_role: bounded implemented capability
+- owner: SQAV Capture module maintainers
+- scope: Records the experimental native library extent and explicit non-claims.
+- relationships: implements -> `modules/sqav-capture-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQAV Capture Build
+- path: `modules/sqav-capture-cpp/CMakeLists.txt`
+- title: SQAV Capture Build
+- surface_type: CMake implementation
+- truth_role: native build and exact package export
+- owner: SQAV Capture module maintainers
+- scope: Builds and exports the exact C++26 static library and focused tests.
+- relationships: implements -> `modules/sqav-capture-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQAV Capture Public API
+- path: `modules/sqav-capture-cpp/include/symphony/sqav/capture.hpp`
+- title: SQAV Capture Public API
+- surface_type: C++26 public interface
+- truth_role: trusted caller interface
+- owner: SQAV Capture module maintainers
+- scope: Declares the move-only native API with explicit bounded inputs and typed failures.
+- relationships: implements -> `modules/sqav-capture-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQAV Capture Implementation
+- path: `modules/sqav-capture-cpp/src/capture.cpp`
+- title: SQAV Capture Implementation
+- surface_type: C++26 implementation
+- truth_role: owner implementation
+- owner: SQAV Capture module maintainers
+- scope: Implements the exact module contract through explicitly selected native dependencies.
+- relationships: implements -> `modules/sqav-capture-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQAV Capture Native Tests
+- path: `modules/sqav-capture-cpp/tests/capture_test.cpp`
+- title: SQAV Capture Native Tests
+- surface_type: C++26 focused test
+- truth_role: owner regression evidence
+- owner: SQAV Capture module maintainers
+- scope: Exercises exact identity, bounded failures and module-specific lifetime or recovery behavior.
+- relationships: implements -> `modules/sqav-capture-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQAV Capture Package Tests
+- path: `modules/sqav-capture-cpp/tests/package_lifecycle_test.cmake`
+- title: SQAV Capture Package Tests
+- surface_type: CMake focused test
+- truth_role: package lifecycle evidence
+- owner: SQAV Capture module maintainers
+- scope: Exercises isolated installation, overwrite refusal, integrity guards and source-independent removal.
+- relationships: implements -> `modules/sqav-capture-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQAV Capture Independent Consumer Build
+- path: `modules/sqav-capture-cpp/tests/sdk-consumer/CMakeLists.txt`
+- title: SQAV Capture Independent Consumer Build
+- surface_type: CMake acceptance build
+- truth_role: checkout-free consumer evidence
+- owner: SQAV Capture module maintainers
+- scope: Requires exact installed dependency packages and inherits exported C++26 requirements.
+- relationships: implements -> `modules/sqav-capture-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQAV Capture Independent Consumer
+- path: `modules/sqav-capture-cpp/tests/sdk-consumer/main.cpp`
+- title: SQAV Capture Independent Consumer
+- surface_type: C++26 acceptance source
+- truth_role: public consumer rejection evidence
+- owner: SQAV Capture module maintainers
+- scope: Exercises the installed public interface and rejects incompatible or corrupt inputs.
+- relationships: implements -> `modules/sqav-capture-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQAV Capture Package Configuration
+- path: `modules/sqav-capture-cpp/cmake/SymphonySqavCaptureConfig.cmake.in`
+- title: SQAV Capture Package Configuration
+- surface_type: CMake package template
+- truth_role: exact dependency resolution
+- owner: SQAV Capture module maintainers
+- scope: Resolves exact installed dependency packages and imports the module target.
+- relationships: implements -> `modules/sqav-capture-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQAV Capture Uninstall
+- path: `modules/sqav-capture-cpp/cmake/uninstall.cmake.in`
+- title: SQAV Capture Uninstall
+- surface_type: CMake uninstall template
+- truth_role: receipt-scoped removal
+- owner: SQAV Capture module maintainers
+- scope: Invokes the build-local hardened receipt guard with the exact configured ownership set.
+- relationships: implements -> `modules/sqav-capture-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQTV Integer Conversion Intent
+- path: `modules/sqtv-integer-conversion-cpp/INTENT.md`
+- title: SQTV Integer Conversion Intent
+- surface_type: owner intent
+- truth_role: bounded native library purpose
+- owner: SQTV Integer Conversion module maintainers
+- scope: Describes the selected library purpose and open composition boundary.
+- relationships: implements -> `modules/sqtv-integer-conversion-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQTV Integer Conversion Manifest
+- path: `modules/sqtv-integer-conversion-cpp/MANIFEST.md`
+- title: SQTV Integer Conversion Manifest
+- surface_type: owner manifest
+- truth_role: exact module source membership
+- owner: SQTV Integer Conversion module maintainers
+- scope: Lists the exact versioned package and its canonical implementation/test surfaces.
+- relationships: declares -> `modules/sqtv-integer-conversion-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQTV Integer Conversion Specification
+- path: `modules/sqtv-integer-conversion-cpp/SPEC.md`
+- title: SQTV Integer Conversion Specification
+- surface_type: owner contract
+- truth_role: exact native behavior and compatibility
+- owner: SQTV Integer Conversion module maintainers
+- scope: Defines the bounded native API, identities, failure outcomes and supported extent.
+- relationships: owned_by -> `knowledge/sqv/sqtv/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQTV Integer Conversion Workflow
+- path: `modules/sqtv-integer-conversion-cpp/SKILL.md`
+- title: SQTV Integer Conversion Workflow
+- surface_type: owner workflow contract
+- truth_role: module review and execution boundary
+- owner: SQTV Integer Conversion module maintainers
+- scope: Routes module-specific work to exact contracts and focused acceptance evidence.
+- relationships: implements -> `modules/sqtv-integer-conversion-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQTV Integer Conversion Installation
+- path: `modules/sqtv-integer-conversion-cpp/INSTALL.md`
+- title: SQTV Integer Conversion Installation
+- surface_type: package contract
+- truth_role: exact receipt-owned package lifecycle
+- owner: SQTV Integer Conversion module maintainers
+- scope: Documents C++26 dependencies, versioned installation, independent consumers and guarded removal.
+- relationships: implements -> `modules/sqtv-integer-conversion-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQTV Integer Conversion Semantic Feature
+- path: `modules/sqtv-integer-conversion-cpp/FEATURES.md`
+- title: SQTV Integer Conversion Semantic Feature
+- surface_type: feature declaration
+- truth_role: bounded implemented capability
+- owner: SQTV Integer Conversion module maintainers
+- scope: Records the experimental native library extent and explicit non-claims.
+- relationships: implements -> `modules/sqtv-integer-conversion-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQTV Integer Conversion Build
+- path: `modules/sqtv-integer-conversion-cpp/CMakeLists.txt`
+- title: SQTV Integer Conversion Build
+- surface_type: CMake implementation
+- truth_role: native build and exact package export
+- owner: SQTV Integer Conversion module maintainers
+- scope: Builds and exports the exact C++26 static library and focused tests.
+- relationships: implements -> `modules/sqtv-integer-conversion-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQTV Integer Conversion Public API
+- path: `modules/sqtv-integer-conversion-cpp/include/symphony/sqtv/integer_conversion.hpp`
+- title: SQTV Integer Conversion Public API
+- surface_type: C++26 public interface
+- truth_role: trusted caller interface
+- owner: SQTV Integer Conversion module maintainers
+- scope: Declares the move-only native API with explicit bounded inputs and typed failures.
+- relationships: implements -> `modules/sqtv-integer-conversion-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQTV Integer Conversion Implementation
+- path: `modules/sqtv-integer-conversion-cpp/src/integer_conversion.cpp`
+- title: SQTV Integer Conversion Implementation
+- surface_type: C++26 implementation
+- truth_role: owner implementation
+- owner: SQTV Integer Conversion module maintainers
+- scope: Implements the exact module contract through explicitly selected native dependencies.
+- relationships: implements -> `modules/sqtv-integer-conversion-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQTV Integer Conversion Native Tests
+- path: `modules/sqtv-integer-conversion-cpp/tests/integer_conversion_test.cpp`
+- title: SQTV Integer Conversion Native Tests
+- surface_type: C++26 focused test
+- truth_role: owner regression evidence
+- owner: SQTV Integer Conversion module maintainers
+- scope: Exercises exact identity, bounded failures and module-specific lifetime or recovery behavior.
+- relationships: implements -> `modules/sqtv-integer-conversion-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQTV Integer Conversion Package Tests
+- path: `modules/sqtv-integer-conversion-cpp/tests/package_lifecycle_test.cmake`
+- title: SQTV Integer Conversion Package Tests
+- surface_type: CMake focused test
+- truth_role: package lifecycle evidence
+- owner: SQTV Integer Conversion module maintainers
+- scope: Exercises isolated installation, overwrite refusal, integrity guards and source-independent removal.
+- relationships: implements -> `modules/sqtv-integer-conversion-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQTV Integer Conversion Independent Consumer Build
+- path: `modules/sqtv-integer-conversion-cpp/tests/sdk-consumer/CMakeLists.txt`
+- title: SQTV Integer Conversion Independent Consumer Build
+- surface_type: CMake acceptance build
+- truth_role: checkout-free consumer evidence
+- owner: SQTV Integer Conversion module maintainers
+- scope: Requires exact installed dependency packages and inherits exported C++26 requirements.
+- relationships: implements -> `modules/sqtv-integer-conversion-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQTV Integer Conversion Independent Consumer
+- path: `modules/sqtv-integer-conversion-cpp/tests/sdk-consumer/main.cpp`
+- title: SQTV Integer Conversion Independent Consumer
+- surface_type: C++26 acceptance source
+- truth_role: public consumer rejection evidence
+- owner: SQTV Integer Conversion module maintainers
+- scope: Exercises the installed public interface and rejects incompatible or corrupt inputs.
+- relationships: implements -> `modules/sqtv-integer-conversion-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQTV Integer Conversion Package Configuration
+- path: `modules/sqtv-integer-conversion-cpp/cmake/SymphonySqtvIntegerConversionConfig.cmake.in`
+- title: SQTV Integer Conversion Package Configuration
+- surface_type: CMake package template
+- truth_role: exact dependency resolution
+- owner: SQTV Integer Conversion module maintainers
+- scope: Resolves exact installed dependency packages and imports the module target.
+- relationships: implements -> `modules/sqtv-integer-conversion-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQTV Integer Conversion Uninstall
+- path: `modules/sqtv-integer-conversion-cpp/cmake/uninstall.cmake.in`
+- title: SQTV Integer Conversion Uninstall
+- surface_type: CMake uninstall template
+- truth_role: receipt-scoped removal
+- owner: SQTV Integer Conversion module maintainers
+- scope: Invokes the build-local hardened receipt guard with the exact configured ownership set.
+- relationships: implements -> `modules/sqtv-integer-conversion-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQAV Databento DBN Intent
+- path: `modules/sqav-databento-dbn-cpp/INTENT.md`
+- title: SQAV Databento DBN Intent
+- surface_type: owner intent
+- truth_role: bounded native library purpose
+- owner: SQAV Databento DBN module maintainers
+- scope: Describes the selected library purpose and open composition boundary.
+- relationships: implements -> `modules/sqav-databento-dbn-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQAV Databento DBN Manifest
+- path: `modules/sqav-databento-dbn-cpp/MANIFEST.md`
+- title: SQAV Databento DBN Manifest
+- surface_type: owner manifest
+- truth_role: exact module source membership
+- owner: SQAV Databento DBN module maintainers
+- scope: Lists the exact versioned package and its canonical implementation/test surfaces.
+- relationships: declares -> `modules/sqav-databento-dbn-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQAV Databento DBN Specification
+- path: `modules/sqav-databento-dbn-cpp/SPEC.md`
+- title: SQAV Databento DBN Specification
+- surface_type: owner contract
+- truth_role: exact native behavior and compatibility
+- owner: SQAV Databento DBN module maintainers
+- scope: Defines the bounded native API, identities, failure outcomes and supported extent.
+- relationships: owned_by -> `knowledge/sqv/sqav/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQAV Databento DBN Workflow
+- path: `modules/sqav-databento-dbn-cpp/SKILL.md`
+- title: SQAV Databento DBN Workflow
+- surface_type: owner workflow contract
+- truth_role: module review and execution boundary
+- owner: SQAV Databento DBN module maintainers
+- scope: Routes module-specific work to exact contracts and focused acceptance evidence.
+- relationships: implements -> `modules/sqav-databento-dbn-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQAV Databento DBN Installation
+- path: `modules/sqav-databento-dbn-cpp/INSTALL.md`
+- title: SQAV Databento DBN Installation
+- surface_type: package contract
+- truth_role: exact receipt-owned package lifecycle
+- owner: SQAV Databento DBN module maintainers
+- scope: Documents C++26 dependencies, versioned installation, independent consumers and guarded removal.
+- relationships: implements -> `modules/sqav-databento-dbn-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQAV Databento DBN Semantic Feature
+- path: `modules/sqav-databento-dbn-cpp/FEATURES.md`
+- title: SQAV Databento DBN Semantic Feature
+- surface_type: feature declaration
+- truth_role: bounded implemented capability
+- owner: SQAV Databento DBN module maintainers
+- scope: Records the experimental native library extent and explicit non-claims.
+- relationships: implements -> `modules/sqav-databento-dbn-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQAV Databento DBN Build
+- path: `modules/sqav-databento-dbn-cpp/CMakeLists.txt`
+- title: SQAV Databento DBN Build
+- surface_type: CMake implementation
+- truth_role: native build and exact package export
+- owner: SQAV Databento DBN module maintainers
+- scope: Builds and exports the exact C++26 static library and focused tests.
+- relationships: implements -> `modules/sqav-databento-dbn-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQAV Databento DBN Public API
+- path: `modules/sqav-databento-dbn-cpp/include/symphony/sqav/databento/dbn.hpp`
+- title: SQAV Databento DBN Public API
+- surface_type: C++26 public interface
+- truth_role: trusted caller interface
+- owner: SQAV Databento DBN module maintainers
+- scope: Declares the move-only native API with explicit bounded inputs and typed failures.
+- relationships: implements -> `modules/sqav-databento-dbn-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQAV Databento DBN Implementation
+- path: `modules/sqav-databento-dbn-cpp/src/dbn.cpp`
+- title: SQAV Databento DBN Implementation
+- surface_type: C++26 implementation
+- truth_role: owner implementation
+- owner: SQAV Databento DBN module maintainers
+- scope: Implements the exact module contract through explicitly selected native dependencies.
+- relationships: implements -> `modules/sqav-databento-dbn-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQAV Databento DBN Native Tests
+- path: `modules/sqav-databento-dbn-cpp/tests/dbn_test.cpp`
+- title: SQAV Databento DBN Native Tests
+- surface_type: C++26 focused test
+- truth_role: owner regression evidence
+- owner: SQAV Databento DBN module maintainers
+- scope: Exercises exact identity, bounded failures and module-specific lifetime or recovery behavior.
+- relationships: implements -> `modules/sqav-databento-dbn-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQAV Databento DBN Package Tests
+- path: `modules/sqav-databento-dbn-cpp/tests/package_lifecycle_test.cmake`
+- title: SQAV Databento DBN Package Tests
+- surface_type: CMake focused test
+- truth_role: package lifecycle evidence
+- owner: SQAV Databento DBN module maintainers
+- scope: Exercises isolated installation, overwrite refusal, integrity guards and source-independent removal.
+- relationships: implements -> `modules/sqav-databento-dbn-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQAV Databento DBN Independent Consumer Build
+- path: `modules/sqav-databento-dbn-cpp/tests/sdk-consumer/CMakeLists.txt`
+- title: SQAV Databento DBN Independent Consumer Build
+- surface_type: CMake acceptance build
+- truth_role: checkout-free consumer evidence
+- owner: SQAV Databento DBN module maintainers
+- scope: Requires exact installed dependency packages and inherits exported C++26 requirements.
+- relationships: implements -> `modules/sqav-databento-dbn-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQAV Databento DBN Independent Consumer
+- path: `modules/sqav-databento-dbn-cpp/tests/sdk-consumer/main.cpp`
+- title: SQAV Databento DBN Independent Consumer
+- surface_type: C++26 acceptance source
+- truth_role: public consumer rejection evidence
+- owner: SQAV Databento DBN module maintainers
+- scope: Exercises the installed public interface and rejects incompatible or corrupt inputs.
+- relationships: implements -> `modules/sqav-databento-dbn-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQAV Databento DBN Package Configuration
+- path: `modules/sqav-databento-dbn-cpp/cmake/SymphonySqavDatabentoDbnConfig.cmake.in`
+- title: SQAV Databento DBN Package Configuration
+- surface_type: CMake package template
+- truth_role: exact dependency resolution
+- owner: SQAV Databento DBN module maintainers
+- scope: Resolves exact installed dependency packages and imports the module target.
+- relationships: implements -> `modules/sqav-databento-dbn-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQAV Databento DBN Uninstall
+- path: `modules/sqav-databento-dbn-cpp/cmake/uninstall.cmake.in`
+- title: SQAV Databento DBN Uninstall
+- surface_type: CMake uninstall template
+- truth_role: receipt-scoped removal
+- owner: SQAV Databento DBN module maintainers
+- scope: Invokes the build-local hardened receipt guard with the exact configured ownership set.
+- relationships: implements -> `modules/sqav-databento-dbn-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### Databento SSIAG Credential Binding Map
+- path: `knowledge/sqv/sqav/DATABENTO-SSIAG-BINDING.md`
+- title: Databento SSIAG Credential Binding Map
+- surface_type: source integration dependency map
+- truth_role: explicit user-selected credential authority and unresolved operational prerequisites
+- owner: Symphony Quantitative Acquisition Vector maintainers
+- scope: Maps Databento historical, live and reference sources to SSIAG credential-reference, provider, identity and lease ownership without claiming enabled Keychain access.
+- relationships: depends_on -> `knowledge/sqv/sqav/SPEC.md`; depends_on -> `knowledge/ssiag/SPEC.md`; depends_on -> `modules/ssiag-provider-macos-keychain/SPEC.md`
+- consumers: SQAV collector implementers, SSIAG maintainers, agents, reviewers
+- deferred_projections: operational SSIAG credential channel and exact enrolled deployment
+- notes: No secret material, guessed TOPS binding, provider fallback or new protocol is defined.
+- status: canonical
+
+### SSIAG Internal Credential-Use Contract
+- path: `modules/secure-identity-access-governance/CREDENTIAL-USE.md`
+- title: SSIAG Internal Credential-Use Contract
+- surface_type: internal implementation contract
+- truth_role: bounded process-local credential-use semantics and outstanding integration boundaries
+- owner: SSIAG foundation maintainers
+- scope: Documents exact binding, one-attempt consumption, local profile limits, and required dispatcher, audit, channel and Keychain integration.
+- relationships: governed_by -> `modules/secure-identity-access-governance/SPEC.md`; implemented_by -> `modules/secure-identity-access-governance/internal/credential/use.go`
+- consumers: SSIAG implementers, reviewers, tests
+- deferred_projections: implementation traceability
+- notes: Internal primitive only; no provider operation, Keychain access, lease issuance or protected channel is enabled.
+- status: canonical
+
+### SSIAG Credential-Use Guard
+- path: `modules/secure-identity-access-governance/internal/credential/use.go`
+- title: SSIAG Credential-Use Guard
+- surface_type: Go lifecycle implementation
+- truth_role: local exact-binding and atomic single-consumption implementation
+- owner: SSIAG foundation maintainers
+- scope: Validates bounded nonsecret metadata and rejects drift, expiry, cancellation and repeated consumption.
+- relationships: implements -> `modules/secure-identity-access-governance/CREDENTIAL-USE.md`; verified_by -> `modules/secure-identity-access-governance/internal/credential/use_test.go`
+- consumers: SSIAG implementers, reviewers, tests
+- deferred_projections: implementation traceability
+- notes: Internal primitive only; no provider operation, Keychain access, lease issuance or protected channel is enabled.
+- status: canonical
+
+### SSIAG Credential-Use Guard Tests
+- path: `modules/secure-identity-access-governance/internal/credential/use_test.go`
+- title: SSIAG Credential-Use Guard Tests
+- surface_type: Go regression tests
+- truth_role: focused local guard verification evidence
+- owner: SSIAG foundation maintainers
+- scope: Exercises valid drift of every binding field, malformed input, deadlines, cancellation, replay and concurrent single consumption.
+- relationships: verifies -> `modules/secure-identity-access-governance/internal/credential/use.go`; depends_on -> `modules/secure-identity-access-governance/CREDENTIAL-USE.md`
+- consumers: SSIAG implementers, reviewers, tests
+- deferred_projections: implementation traceability
+- notes: Internal primitive only; no provider operation, Keychain access, lease issuance or protected channel is enabled.
+- status: canonical
+
+### SSIAG Internal Credential Dispatch Contract
+- path: `modules/secure-identity-access-governance/CREDENTIAL-DISPATCH.md`
+- title: SSIAG Internal Credential Dispatch Contract
+- surface_type: internal implementation contract
+- truth_role: internal authenticated admission sequencing and outstanding operational gates
+- owner: SSIAG foundation maintainers
+- scope: Documents kernel-derived subject, pinned policy, committed audit, provider evidence checks and remaining journal/channel work.
+- relationships: governed_by -> `modules/secure-identity-access-governance/SPEC.md`; implemented_by -> `modules/secure-identity-access-governance/internal/credential/dispatch.go`
+- consumers: SSIAG implementers, reviewers, tests
+- deferred_projections: implementation traceability
+- notes: No operational endpoint, provider pin backend or protected byte channel is enabled; the internal request journal is implemented.
+- status: canonical
+
+### SSIAG Internal Credential Dispatcher
+- path: `modules/secure-identity-access-governance/internal/credential/dispatch.go`
+- title: SSIAG Internal Credential Dispatcher
+- surface_type: Go dispatch admission implementation
+- truth_role: kernel-authenticated and policy-pinned internal admission truth
+- owner: SSIAG foundation maintainers
+- scope: Composes peer context, real policy and STAV producer, exact provider evidence and one-attempt execution with bounded context and cleanup.
+- relationships: implements -> `modules/secure-identity-access-governance/CREDENTIAL-DISPATCH.md`; verified_by -> `modules/secure-identity-access-governance/internal/credential/dispatch_test.go`
+- consumers: SSIAG implementers, reviewers, tests
+- deferred_projections: implementation traceability
+- notes: No operational endpoint, provider pin backend or protected byte channel is enabled; the internal request journal is implemented.
+- status: canonical
+
+### SSIAG Credential Dispatch Tests
+- path: `modules/secure-identity-access-governance/internal/credential/dispatch_test.go`
+- title: SSIAG Credential Dispatch Tests
+- surface_type: Go integration and regression tests
+- truth_role: real local peer and fixture-provider admission verification
+- owner: SSIAG foundation maintainers
+- scope: Exercises audit-before-provider, exact binding refusal, cleanup, cancellation, uncertain delivery and concurrent replay refusal.
+- relationships: verifies -> `modules/secure-identity-access-governance/internal/credential/dispatch.go`; depends_on -> `modules/secure-identity-access-governance/CREDENTIAL-DISPATCH.md`
+- consumers: SSIAG implementers, reviewers, tests
+- deferred_projections: implementation traceability
+- notes: No operational endpoint, provider pin backend or protected byte channel is enabled; the internal request journal is implemented.
+- status: canonical
+
+### SSIAG Policy Admission Tests
+- path: `modules/secure-identity-access-governance/internal/policy/admission_test.go`
+- title: SSIAG Policy Admission Tests
+- surface_type: Go regression tests
+- truth_role: policy pinning and snapshot ownership verification
+- owner: SSIAG foundation maintainers
+- scope: Exercises non-queuing admission, mutation serialization and independent caller-owned configuration.
+- relationships: verifies -> `modules/secure-identity-access-governance/internal/policy/policy.go`; depends_on -> `modules/secure-identity-access-governance/CREDENTIAL-DISPATCH.md`
+- consumers: SSIAG implementers, reviewers, tests
+- deferred_projections: implementation traceability
+- notes: No operational endpoint, provider pin backend or protected byte channel is enabled; the internal request journal is implemented.
+- status: canonical
+
+### SSIAG Credential Request Journal Contract
+- path: `modules/secure-identity-access-governance/CREDENTIAL-JOURNAL.md`
+- title: SSIAG Credential Request Journal Contract
+- surface_type: internal storage and recovery contract
+- truth_role: exact request reservation, durable preparation and no-redelivery recovery semantics
+- owner: SSIAG foundation maintainers
+- scope: Documents authenticated identity, retained request reservations, canonical bounded records, filesystem ownership and recovery without provider execution.
+- relationships: governed_by -> `modules/secure-identity-access-governance/SPEC.md`; implemented_by -> `modules/secure-identity-access-governance/internal/credential/journal.go`
+- consumers: SSIAG implementers, reviewers, tests
+- deferred_projections: recovery and storage traceability
+- notes: Local execution state only; no operational provider, protected channel or Keychain operation is enabled.
+- status: canonical
+
+### SSIAG Credential Request Journal
+- path: `modules/secure-identity-access-governance/internal/credential/journal.go`
+- title: SSIAG Credential Request Journal
+- surface_type: Go request state and recovery implementation
+- truth_role: durable metadata transitions and authenticated recovery truth
+- owner: SSIAG foundation maintainers
+- scope: Binds intent to exact identity and reserves request UUIDs across instances and restarts; closes abandoned intent or armed state without redelivery.
+- relationships: implements -> `modules/secure-identity-access-governance/CREDENTIAL-JOURNAL.md`; verified_by -> `modules/secure-identity-access-governance/internal/credential/journal_test.go`
+- consumers: SSIAG implementers, reviewers, tests
+- deferred_projections: recovery and storage traceability
+- notes: Local execution state only; no operational provider, protected channel or Keychain operation is enabled.
+- status: canonical
+
+### SSIAG Credential Journal Unix Storage
+- path: `modules/secure-identity-access-governance/internal/credential/journal_unix.go`
+- title: SSIAG Credential Journal Unix Storage
+- surface_type: Go Darwin and Linux protected storage
+- truth_role: no-follow filesystem, held-lock publication and durable record replacement truth
+- owner: SSIAG foundation maintainers
+- scope: Uses private ownership, nonblocking locks, file and directory sync, atomic replacement and fail-closed missing or unsafe state.
+- relationships: implements -> `modules/secure-identity-access-governance/CREDENTIAL-JOURNAL.md`; verified_by -> `modules/secure-identity-access-governance/internal/credential/journal_test.go`
+- consumers: SSIAG implementers, reviewers, tests
+- deferred_projections: recovery and storage traceability
+- notes: Local execution state only; no operational provider, protected channel or Keychain operation is enabled.
+- status: canonical
+
+### SSIAG Credential Journal Unsupported Platforms
+- path: `modules/secure-identity-access-governance/internal/credential/journal_unsupported.go`
+- title: SSIAG Credential Journal Unsupported Platforms
+- surface_type: Go unsupported-platform refusal
+- truth_role: explicit unavailable storage behavior on unsupported targets
+- owner: SSIAG foundation maintainers
+- scope: Refuses journal access outside Darwin and Linux without a fallback filesystem implementation.
+- relationships: implements -> `modules/secure-identity-access-governance/CREDENTIAL-JOURNAL.md`; complements -> `modules/secure-identity-access-governance/internal/credential/journal_unix.go`
+- consumers: SSIAG implementers, reviewers, tests
+- deferred_projections: recovery and storage traceability
+- notes: Local execution state only; no operational provider, protected channel or Keychain operation is enabled.
+- status: canonical
+
+### SSIAG Credential Journal Tests
+- path: `modules/secure-identity-access-governance/internal/credential/journal_test.go`
+- title: SSIAG Credential Journal Tests
+- surface_type: Go filesystem and process-crash tests
+- truth_role: focused request reservation, durability failure and recovery verification
+- owner: SSIAG foundation maintainers
+- scope: Exercises concurrency, corruption, missing state, ownership boundaries, idempotent recovery and four SIGKILL checkpoints.
+- relationships: verifies -> `modules/secure-identity-access-governance/internal/credential/journal.go`; verifies -> `modules/secure-identity-access-governance/internal/credential/journal_unix.go`
+- consumers: SSIAG implementers, reviewers, tests
+- deferred_projections: recovery and storage traceability
+- notes: Local execution state only; no operational provider, protected channel or Keychain operation is enabled.
+- status: canonical
+
+### SSIAG Credential Admission Contract
+- path: `modules/secure-identity-access-governance/CREDENTIAL-ADMISSION.md`
+- title: SSIAG Credential Admission Contract
+- surface_type: internal admission contract
+- truth_role: exact resource/lease snapshot and native composition semantics
+- owner: SSIAG foundation maintainers
+- scope: Defines value-owned active state, revision CAS, held snapshot lifetime and native evidence requirements.
+- relationships: governed_by -> `modules/secure-identity-access-governance/SPEC.md`; implemented_by -> `modules/secure-identity-access-governance/internal/credential/admission.go`
+- consumers: SSIAG implementers, reviewers, tests
+- deferred_projections: admission and lifecycle traceability
+- notes: Internal composition only; native authentication, protected delivery and operational Keychain access remain unimplemented.
+- status: canonical
+
+### SSIAG Credential Admission Registry
+- path: `modules/secure-identity-access-governance/internal/credential/admission.go`
+- title: SSIAG Credential Admission Registry
+- surface_type: Go admission implementation
+- truth_role: process-local exact mapping and lease pin truth
+- owner: SSIAG foundation maintainers
+- scope: Composes immutable owner state with required native admission; holds state through execution and cleanup and refuses stale or busy replacement.
+- relationships: implements -> `modules/secure-identity-access-governance/CREDENTIAL-ADMISSION.md`; verified_by -> `modules/secure-identity-access-governance/internal/credential/admission_test.go`
+- consumers: SSIAG implementers, reviewers, tests
+- deferred_projections: admission and lifecycle traceability
+- notes: Internal composition only; native authentication, protected delivery and operational Keychain access remain unimplemented.
+- status: canonical
+
+### SSIAG Credential Admission Tests
+- path: `modules/secure-identity-access-governance/internal/credential/admission_test.go`
+- title: SSIAG Credential Admission Tests
+- surface_type: Go admission tests
+- truth_role: focused snapshot and native composition evidence
+- owner: SSIAG foundation maintainers
+- scope: Exercises real kernel identity, mapping and evidence drift, rotation, revocation, CAS, concurrent execution, cancellation and cleanup ordering.
+- relationships: verifies -> `modules/secure-identity-access-governance/internal/credential/admission.go`; complements -> `modules/secure-identity-access-governance/internal/credential/dispatch_test.go`
+- consumers: SSIAG implementers, reviewers, tests
+- deferred_projections: admission and lifecycle traceability
+- notes: Internal composition only; native authentication, protected delivery and operational Keychain access remain unimplemented.
+- status: canonical
+
+### SSIAG Native Peer Trust Contract
+- path: `modules/ssiag-provider-macos-keychain/NATIVE-PEER-TRUST.md`
+- title: SSIAG Native Peer Trust Contract
+- surface_type: internal native trust contract
+- truth_role: time-specific socket/code identity and delivery limitation
+- owner: SSIAG native provider maintainers
+- scope: Defines owner-selected requirements, kernel audit-token validation, descriptor lifetime and the remaining message-delivery gate.
+- relationships: governed_by -> `modules/ssiag-provider-macos-keychain/SPEC.md`; implemented_by -> `modules/ssiag-provider-macos-keychain/Sources/SSIAGMacOSKeychainSupport/NativePeerTrust.swift`
+- consumers: SSIAG implementers, reviewers, tests
+- deferred_projections: native trust and delivery traceability
+- notes: Unwired prerequisite only; no operational provider pin, protected delivery or Keychain access is enabled.
+- status: canonical
+
+### SSIAG Native Peer Trust
+- path: `modules/ssiag-provider-macos-keychain/Sources/SSIAGMacOSKeychainSupport/NativePeerTrust.swift`
+- title: SSIAG Native Peer Trust
+- surface_type: Swift native code observation
+- truth_role: kernel audit-token and Security validation implementation
+- owner: SSIAG native provider maintainers
+- scope: Owns a private socket duplicate, validates original audit-token code identity and closes permanently on revalidation failure.
+- relationships: implements -> `modules/ssiag-provider-macos-keychain/NATIVE-PEER-TRUST.md`; verified_by -> `modules/ssiag-provider-macos-keychain/Tests/SSIAGMacOSKeychainSupportTests/NativePeerTrustTests.swift`
+- consumers: SSIAG implementers, reviewers, tests
+- deferred_projections: native trust and delivery traceability
+- notes: Unwired prerequisite only; no operational provider pin, protected delivery or Keychain access is enabled.
+- status: canonical
+
+### SSIAG Native Peer Trust Tests
+- path: `modules/ssiag-provider-macos-keychain/Tests/SSIAGMacOSKeychainSupportTests/NativePeerTrustTests.swift`
+- title: SSIAG Native Peer Trust Tests
+- surface_type: Swift native process tests
+- truth_role: real audit-token, code requirement and descriptor-lifetime evidence
+- owner: SSIAG native provider maintainers
+- scope: Exercises same-binary same-PID exec, real signed fixture identity, refusal paths, cleanup and concurrent close.
+- relationships: verifies -> `modules/ssiag-provider-macos-keychain/Sources/SSIAGMacOSKeychainSupport/NativePeerTrust.swift`; uses -> `modules/ssiag-provider-macos-keychain/Tests/Fixtures/NativePeerClient.cpp`
+- consumers: SSIAG implementers, reviewers, tests
+- deferred_projections: native trust and delivery traceability
+- notes: Unwired prerequisite only; no operational provider pin, protected delivery or Keychain access is enabled.
+- status: canonical
+
+### SSIAG Native Peer Test Client
+- path: `modules/ssiag-provider-macos-keychain/Tests/Fixtures/NativePeerClient.cpp`
+- title: SSIAG Native Peer Test Client
+- surface_type: C++26 isolated test process
+- truth_role: controlled connection and exec test stimulus
+- owner: SSIAG native provider maintainers
+- scope: Connects to a private test socket, exchanges fixed markers and re-execs for audit-token generation tests; no production target.
+- relationships: supports -> `modules/ssiag-provider-macos-keychain/Tests/SSIAGMacOSKeychainSupportTests/NativePeerTrustTests.swift`; governed_by -> `modules/ssiag-provider-macos-keychain/NATIVE-PEER-TRUST.md`
+- consumers: SSIAG implementers, reviewers, tests
+- deferred_projections: native trust and delivery traceability
+- notes: Unwired prerequisite only; no operational provider pin, protected delivery or Keychain access is enabled.
+- status: canonical
+
+### SSIAG Native Message Gate Contract
+- path: `modules/ssiag-provider-macos-keychain/NATIVE-MESSAGE-GATE.md`
+- title: SSIAG Native Message Gate Contract
+- surface_type: internal native metadata contract
+- truth_role: one-way XPC message code and exact request admission
+- owner: SSIAG native provider maintainers
+- scope: Defines trusted binding/policy inputs, per-message code checks, single completion and remaining principal/delivery boundaries.
+- relationships: governed_by -> `modules/ssiag-provider-macos-keychain/SPEC.md`; implemented_by -> `modules/ssiag-provider-macos-keychain/Sources/SSIAGMacOSKeychainSupport/NativeMessageGate.swift`
+- consumers: SSIAG implementers, reviewers, tests
+- deferred_projections: message admission and delivery traceability
+- notes: Nonsecret internal metadata only; no operational provider pin or credential delivery is enabled.
+- status: canonical
+
+### SSIAG Native Message Gate
+- path: `modules/ssiag-provider-macos-keychain/Sources/SSIAGMacOSKeychainSupport/NativeMessageGate.swift`
+- title: SSIAG Native Message Gate
+- surface_type: Swift XPC metadata implementation
+- truth_role: received-message code identity and bounded single-use matching
+- owner: SSIAG native provider maintainers
+- scope: Installs native requirements and validates actual message code with exact typed fields, monotonic expiry and cancellation.
+- relationships: implements -> `modules/ssiag-provider-macos-keychain/NATIVE-MESSAGE-GATE.md`; verified_by -> `modules/ssiag-provider-macos-keychain/Tests/SSIAGMacOSKeychainSupportTests/NativeMessageGateTests.swift`
+- consumers: SSIAG implementers, reviewers, tests
+- deferred_projections: message admission and delivery traceability
+- notes: Nonsecret internal metadata only; no operational provider pin or credential delivery is enabled.
+- status: canonical
+
+### SSIAG Native Message Gate Tests
+- path: `modules/ssiag-provider-macos-keychain/Tests/SSIAGMacOSKeychainSupportTests/NativeMessageGateTests.swift`
+- title: SSIAG Native Message Gate Tests
+- surface_type: Swift native message tests
+- truth_role: separate-process XPC and lifecycle verification
+- owner: SSIAG native provider maintainers
+- scope: Builds disposable app-bundled service/client fixtures; exercises exact metadata, code mismatch, duplicates, expiry and cancellation.
+- relationships: verifies -> `modules/ssiag-provider-macos-keychain/Sources/SSIAGMacOSKeychainSupport/NativeMessageGate.swift`; uses -> `modules/ssiag-provider-macos-keychain/Tests/Fixtures/NativeMessageClient.cpp`; uses -> `modules/ssiag-provider-macos-keychain/Tests/Fixtures/NativeMessageService.swift`
+- consumers: SSIAG implementers, reviewers, tests
+- deferred_projections: message admission and delivery traceability
+- notes: Nonsecret internal metadata only; no operational provider pin or credential delivery is enabled.
+- status: canonical
+
+### SSIAG Native Message Test Client
+- path: `modules/ssiag-provider-macos-keychain/Tests/Fixtures/NativeMessageClient.cpp`
+- title: SSIAG Native Message Test Client
+- surface_type: C++26 isolated XPC test client
+- truth_role: fixed-message test stimulus
+- owner: SSIAG native provider maintainers
+- scope: Sends safe fixture dictionaries into the real message gate; no production target or credentials.
+- relationships: supports -> `modules/ssiag-provider-macos-keychain/Tests/SSIAGMacOSKeychainSupportTests/NativeMessageGateTests.swift`; governed_by -> `modules/ssiag-provider-macos-keychain/NATIVE-MESSAGE-GATE.md`
+- consumers: SSIAG implementers, reviewers, tests
+- deferred_projections: message admission and delivery traceability
+- notes: Nonsecret internal metadata only; no operational provider pin or credential delivery is enabled.
+- status: canonical
+
+### SSIAG Native Message Test Service
+- path: `modules/ssiag-provider-macos-keychain/Tests/Fixtures/NativeMessageService.swift`
+- title: SSIAG Native Message Test Service
+- surface_type: Swift isolated XPC test service
+- truth_role: real separate-process gate execution
+- owner: SSIAG native provider maintainers
+- scope: Runs the production gate source in a disposable app-bundled service and reports closed test outcomes; detects repeated completion.
+- relationships: supports -> `modules/ssiag-provider-macos-keychain/Tests/SSIAGMacOSKeychainSupportTests/NativeMessageGateTests.swift`; governed_by -> `modules/ssiag-provider-macos-keychain/NATIVE-MESSAGE-GATE.md`
+- consumers: SSIAG implementers, reviewers, tests
+- deferred_projections: message admission and delivery traceability
+- notes: Nonsecret internal metadata only; no operational provider pin or credential delivery is enabled.
+- status: canonical
+
+### SQPV Asynchronous Store Interface
+- path: `modules/sqpv-local-store-cpp/include/symphony/sqpv/async_store.hpp`
+- title: SQPV Asynchronous Store Interface
+- surface_type: public C++26 interface
+- truth_role: bounded writer ownership and progress
+- owner: SQPV maintainers
+- scope: Optional offline research-data composition with explicit finite resources and actual retention evidence.
+- relationships: implements -> `modules/sqpv-local-store-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: scoped pipeline acceptance and retention traceability
+- notes: No provider access, credential delivery, payload transport or qxctl capability is implied.
+- status: canonical
+
+### SQPV Asynchronous Store Implementation
+- path: `modules/sqpv-local-store-cpp/src/async_store.cpp`
+- title: SQPV Asynchronous Store Implementation
+- surface_type: native C++26 implementation
+- truth_role: separate admission and confirmed retention
+- owner: SQPV maintainers
+- scope: Optional offline research-data composition with explicit finite resources and actual retention evidence.
+- relationships: implements -> `modules/sqpv-local-store-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: scoped pipeline acceptance and retention traceability
+- notes: No provider access, credential delivery, payload transport or qxctl capability is implied.
+- status: canonical
+
+### SQPV Asynchronous Store Regressions
+- path: `modules/sqpv-local-store-cpp/tests/async_store_test.cpp`
+- title: SQPV Asynchronous Store Regressions
+- surface_type: native C++26 test
+- truth_role: queue lifetime failure and process-crash evidence
+- owner: SQPV maintainers
+- scope: Optional offline research-data composition with explicit finite resources and actual retention evidence.
+- relationships: verifies -> `modules/sqpv-local-store-cpp/src/async_store.cpp`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: scoped pipeline acceptance and retention traceability
+- notes: No provider access, credential delivery, payload transport or qxctl capability is implied.
+- status: canonical
+
+### SQV Integrated Pipeline Build
+- path: `tests/sqv-research-pipeline/CMakeLists.txt`
+- title: SQV Integrated Pipeline Build
+- surface_type: CMake acceptance build
+- truth_role: source and installed dependency composition
+- owner: SQV maintainers
+- scope: Optional offline research-data composition with explicit finite resources and actual retention evidence.
+- relationships: governed_by -> `knowledge/sqv/RESEARCH-DATA.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: scoped pipeline acceptance and retention traceability
+- notes: No provider access, credential delivery, payload transport or qxctl capability is implied.
+- status: canonical
+
+### SQV Integrated Research Pipeline
+- path: `tests/sqv-research-pipeline/pipeline.cpp`
+- title: SQV Integrated Research Pipeline
+- surface_type: native C++26 integration test
+- truth_role: six-owner offline pipeline and refusal evidence
+- owner: SQV maintainers
+- scope: Optional offline research-data composition with explicit finite resources and actual retention evidence.
+- relationships: governed_by -> `knowledge/sqv/RESEARCH-DATA.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: scoped pipeline acceptance and retention traceability
+- notes: No provider access, credential delivery, payload transport or qxctl capability is implied.
+- status: canonical
+
+### SQV Preview Progress Regression
+- path: `tests/sqv-research-pipeline/preview_progress.cpp`
+- title: SQV Preview Progress Regression
+- surface_type: native C++26 concurrent boundary test
+- truth_role: preview independence from paused disk write, retained read and drain
+- owner: SQV maintainers
+- scope: Uses only the private SQPV instrumented archive to pause a real append and verify independent preview progress.
+- relationships: verifies -> `modules/sqdv-delivery-cpp/src/delivery.cpp`; uses -> `modules/sqpv-local-store-cpp/tests/hook.hpp`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: asynchronous retention and preview independence
+- notes: Test hooks are absent from installed libraries; no performance SLA or remote transport is implied.
+- status: canonical
+
+### SQAV Historical Planning Interface
+- path: `modules/sqav-databento-dbn-cpp/include/symphony/sqav/databento/historical.hpp`
+- title: SQAV Historical Planning Interface
+- surface_type: public C++26 interface
+- truth_role: bounded request and response contract
+- owner: SQAV maintainers
+- scope: Selected historical MBO preparation with explicit transport and coverage boundaries.
+- relationships: governed_by -> `modules/sqav-databento-dbn-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source coverage and recovery evidence
+- notes: No credential access, network execution or spending authority is implied.
+- status: canonical
+
+### SQAV Historical Response Implementation
+- path: `modules/sqav-databento-dbn-cpp/src/historical.cpp`
+- title: SQAV Historical Response Implementation
+- surface_type: native C++26 implementation
+- truth_role: exact request binding and coverage classification
+- owner: SQAV maintainers
+- scope: Selected historical MBO preparation with explicit transport and coverage boundaries.
+- relationships: governed_by -> `modules/sqav-databento-dbn-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source coverage and recovery evidence
+- notes: No credential access, network execution or spending authority is implied.
+- status: canonical
+
+### SQAV Historical Regressions
+- path: `modules/sqav-databento-dbn-cpp/tests/historical_test.cpp`
+- title: SQAV Historical Regressions
+- surface_type: native C++26 tests
+- truth_role: transport coverage and retained replay evidence
+- owner: SQAV maintainers
+- scope: Selected historical MBO preparation with explicit transport and coverage boundaries.
+- relationships: governed_by -> `modules/sqav-databento-dbn-cpp/src/historical.cpp`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source coverage and recovery evidence
+- notes: No credential access, network execution or spending authority is implied.
+- status: canonical
+
+### SQAV Public DBN Fixtures
+- path: `modules/sqav-databento-dbn-cpp/tests/public_fixture.hpp`
+- title: SQAV Public DBN Fixtures
+- surface_type: public provider test fixtures
+- truth_role: unchanged Databento v0.68.0 v1 and v3 fixture evidence
+- owner: SQAV maintainers
+- scope: Selected historical MBO preparation with explicit transport and coverage boundaries.
+- relationships: governed_by -> `modules/sqav-databento-dbn-cpp/SPEC.md`; attributed_by -> `modules/sqav-databento-dbn-cpp/tests/third_party/README.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source coverage and recovery evidence
+- notes: No credential access, network execution or spending authority is implied.
+- status: canonical
+
+### SQAV Public Fixture Provenance
+- path: `modules/sqav-databento-dbn-cpp/tests/third_party/README.md`
+- title: SQAV Public Fixture Provenance
+- surface_type: third-party attribution
+- truth_role: pinned upstream fixture and license provenance
+- owner: SQAV maintainers
+- scope: Documents the unchanged Databento v0.68.0 fixture bytes represented in the source test helper.
+- relationships: attributes -> `modules/sqav-databento-dbn-cpp/tests/public_fixture.hpp`; references -> `modules/sqav-databento-dbn-cpp/tests/third_party/LICENSE.Apache-2.0`
+- consumers: source recipients, reviewers, tests
+- deferred_projections: source distribution attribution
+- notes: Test-only upstream fixtures; paid local samples are not distributed.
+- status: canonical
+
+### SQAV Public Fixture License
+- path: `modules/sqav-databento-dbn-cpp/tests/third_party/LICENSE.Apache-2.0`
+- title: SQAV Public Fixture License
+- surface_type: third-party license text
+- truth_role: unchanged upstream license copy
+- owner: Databento project and contributors; copy maintained by SQAV maintainers
+- scope: Apache License 2.0 accompanying the two public upstream DBN fixtures.
+- relationships: documented_by -> `modules/sqav-databento-dbn-cpp/tests/third_party/README.md`
+- consumers: source recipients, reviewers
+- deferred_projections: source distribution attribution
+- notes: Does not replace the root Symphony license or install a provider SDK.
+- status: canonical
+
+### SQDV Checkpoint Surface
+- path: `modules/sqdv-delivery-cpp/include/symphony/sqdv/checkpoint.hpp`
+- title: SQDV Checkpoint Surface
+- surface_type: native C++26 implementation or verification
+- truth_role: bounded non-live runtime and restart evidence
+- owner: SQDV maintainers
+- scope: Explicit local persistence and selected historical acquisition boundaries.
+- relationships: governed_by -> `modules/sqdv-delivery-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: non-live runtime closure
+- notes: Fixture credential callbacks do not establish SSIAG deployment authority.
+- status: canonical
+
+### SQDV Checkpoint Surface
+- path: `modules/sqdv-delivery-cpp/src/checkpoint.cpp`
+- title: SQDV Checkpoint Surface
+- surface_type: native C++26 implementation or verification
+- truth_role: bounded non-live runtime and restart evidence
+- owner: SQDV maintainers
+- scope: Explicit local persistence and selected historical acquisition boundaries.
+- relationships: governed_by -> `modules/sqdv-delivery-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: non-live runtime closure
+- notes: Fixture credential callbacks do not establish SSIAG deployment authority.
+- status: canonical
+
+### SQDV Checkpoint Test Surface
+- path: `modules/sqdv-delivery-cpp/tests/checkpoint_test.cpp`
+- title: SQDV Checkpoint Test Surface
+- surface_type: native C++26 implementation or verification
+- truth_role: bounded non-live runtime and restart evidence
+- owner: SQDV maintainers
+- scope: Explicit local persistence and selected historical acquisition boundaries.
+- relationships: governed_by -> `modules/sqdv-delivery-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: non-live runtime closure
+- notes: Fixture credential callbacks do not establish SSIAG deployment authority.
+- status: canonical
+
+### SQAV Attempts Surface
+- path: `modules/sqav-databento-dbn-cpp/include/symphony/sqav/databento/attempts.hpp`
+- title: SQAV Attempts Surface
+- surface_type: native C++26 implementation or verification
+- truth_role: bounded non-live runtime and restart evidence
+- owner: SQAV maintainers
+- scope: Explicit local persistence and selected historical acquisition boundaries.
+- relationships: governed_by -> `modules/sqav-databento-dbn-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: non-live runtime closure
+- notes: Fixture credential callbacks do not establish SSIAG deployment authority.
+- status: canonical
+
+### SQAV Http Surface
+- path: `modules/sqav-databento-dbn-cpp/include/symphony/sqav/databento/http.hpp`
+- title: SQAV Http Surface
+- surface_type: native C++26 implementation or verification
+- truth_role: bounded non-live runtime and restart evidence
+- owner: SQAV maintainers
+- scope: Explicit local persistence and selected historical acquisition boundaries.
+- relationships: governed_by -> `modules/sqav-databento-dbn-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: non-live runtime closure
+- notes: Fixture credential callbacks do not establish SSIAG deployment authority.
+- status: canonical
+
+### SQAV Attempts Surface
+- path: `modules/sqav-databento-dbn-cpp/src/attempts.cpp`
+- title: SQAV Attempts Surface
+- surface_type: native C++26 implementation or verification
+- truth_role: bounded non-live runtime and restart evidence
+- owner: SQAV maintainers
+- scope: Explicit local persistence and selected historical acquisition boundaries.
+- relationships: governed_by -> `modules/sqav-databento-dbn-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: non-live runtime closure
+- notes: Fixture credential callbacks do not establish SSIAG deployment authority.
+- status: canonical
+
+### SQAV Http Surface
+- path: `modules/sqav-databento-dbn-cpp/src/http.cpp`
+- title: SQAV Http Surface
+- surface_type: native C++26 implementation or verification
+- truth_role: bounded non-live runtime and restart evidence
+- owner: SQAV maintainers
+- scope: Explicit local persistence and selected historical acquisition boundaries.
+- relationships: governed_by -> `modules/sqav-databento-dbn-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: non-live runtime closure
+- notes: Fixture credential callbacks do not establish SSIAG deployment authority.
+- status: canonical
+
+### SQAV Attempts Test Surface
+- path: `modules/sqav-databento-dbn-cpp/tests/attempts_test.cpp`
+- title: SQAV Attempts Test Surface
+- surface_type: native C++26 implementation or verification
+- truth_role: bounded non-live runtime and restart evidence
+- owner: SQAV maintainers
+- scope: Explicit local persistence and selected historical acquisition boundaries.
+- relationships: governed_by -> `modules/sqav-databento-dbn-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: non-live runtime closure
+- notes: Fixture credential callbacks do not establish SSIAG deployment authority.
+- status: canonical
+
+### SQAV Http Test Surface
+- path: `modules/sqav-databento-dbn-cpp/tests/http_test.cpp`
+- title: SQAV Http Test Surface
+- surface_type: native C++26 implementation or verification
+- truth_role: bounded non-live runtime and restart evidence
+- owner: SQAV maintainers
+- scope: Explicit local persistence and selected historical acquisition boundaries.
+- relationships: governed_by -> `modules/sqav-databento-dbn-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: non-live runtime closure
+- notes: Fixture credential callbacks do not establish SSIAG deployment authority.
+- status: canonical
+
+### SQV Nonlive Surface
+- path: `tests/sqv-research-pipeline/nonlive.cpp`
+- title: SQV Nonlive Surface
+- surface_type: native C++26 implementation or verification
+- truth_role: bounded non-live runtime and restart evidence
+- owner: SQV maintainers
+- scope: Explicit local persistence and selected historical acquisition boundaries.
+- relationships: governed_by -> `knowledge/sqv/RESEARCH-DATA.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: non-live runtime closure
+- notes: Fixture credential callbacks do not establish SSIAG deployment authority.
+- status: canonical
+
+### SQAV native-source-support-cpp CMakeLists surface
+- path: `modules/native-source-support-cpp/CMakeLists.txt`
+- title: SQAV native-source-support-cpp CMakeLists surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/native-source-support-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV native-source-support-cpp FEATURES surface
+- path: `modules/native-source-support-cpp/FEATURES.md`
+- title: SQAV native-source-support-cpp FEATURES surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/native-source-support-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV native-source-support-cpp INSTALL surface
+- path: `modules/native-source-support-cpp/INSTALL.md`
+- title: SQAV native-source-support-cpp INSTALL surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/native-source-support-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV native-source-support-cpp INTENT surface
+- path: `modules/native-source-support-cpp/INTENT.md`
+- title: SQAV native-source-support-cpp INTENT surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/native-source-support-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV native-source-support-cpp MANIFEST surface
+- path: `modules/native-source-support-cpp/MANIFEST.md`
+- title: SQAV native-source-support-cpp MANIFEST surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/native-source-support-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV native-source-support-cpp SKILL surface
+- path: `modules/native-source-support-cpp/SKILL.md`
+- title: SQAV native-source-support-cpp SKILL surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/native-source-support-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV native-source-support-cpp SPEC surface
+- path: `modules/native-source-support-cpp/SPEC.md`
+- title: SQAV native-source-support-cpp SPEC surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/native-source-support-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV cmake SymphonyNativeSourceSupportConfig.cmake surface
+- path: `modules/native-source-support-cpp/cmake/SymphonyNativeSourceSupportConfig.cmake.in`
+- title: SQAV cmake SymphonyNativeSourceSupportConfig.cmake surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/native-source-support-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV cmake uninstall.cmake surface
+- path: `modules/native-source-support-cpp/cmake/uninstall.cmake.in`
+- title: SQAV cmake uninstall.cmake surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/native-source-support-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV source json surface
+- path: `modules/native-source-support-cpp/include/symphony/source/json.hpp`
+- title: SQAV source json surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/native-source-support-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV source support surface
+- path: `modules/native-source-support-cpp/include/symphony/source/support.hpp`
+- title: SQAV source support surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/native-source-support-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV src http surface
+- path: `modules/native-source-support-cpp/src/http.cpp`
+- title: SQAV src http surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/native-source-support-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV src support surface
+- path: `modules/native-source-support-cpp/src/support.cpp`
+- title: SQAV src support surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/native-source-support-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV tests http_test surface
+- path: `modules/native-source-support-cpp/tests/http_test.cpp`
+- title: SQAV tests http_test surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/native-source-support-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV sdk-consumer CMakeLists surface
+- path: `modules/native-source-support-cpp/tests/sdk-consumer/CMakeLists.txt`
+- title: SQAV sdk-consumer CMakeLists surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/native-source-support-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV sdk-consumer main surface
+- path: `modules/native-source-support-cpp/tests/sdk-consumer/main.cpp`
+- title: SQAV sdk-consumer main surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/native-source-support-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV tests test surface
+- path: `modules/native-source-support-cpp/tests/test.cpp`
+- title: SQAV tests test surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/native-source-support-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV sqav-fred-cpp CMakeLists surface
+- path: `modules/sqav-fred-cpp/CMakeLists.txt`
+- title: SQAV sqav-fred-cpp CMakeLists surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-fred-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV sqav-fred-cpp FEATURES surface
+- path: `modules/sqav-fred-cpp/FEATURES.md`
+- title: SQAV sqav-fred-cpp FEATURES surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-fred-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV sqav-fred-cpp INSTALL surface
+- path: `modules/sqav-fred-cpp/INSTALL.md`
+- title: SQAV sqav-fred-cpp INSTALL surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-fred-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV sqav-fred-cpp INTENT surface
+- path: `modules/sqav-fred-cpp/INTENT.md`
+- title: SQAV sqav-fred-cpp INTENT surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-fred-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV sqav-fred-cpp MANIFEST surface
+- path: `modules/sqav-fred-cpp/MANIFEST.md`
+- title: SQAV sqav-fred-cpp MANIFEST surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-fred-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV sqav-fred-cpp SKILL surface
+- path: `modules/sqav-fred-cpp/SKILL.md`
+- title: SQAV sqav-fred-cpp SKILL surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-fred-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV sqav-fred-cpp SPEC surface
+- path: `modules/sqav-fred-cpp/SPEC.md`
+- title: SQAV sqav-fred-cpp SPEC surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-fred-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV cmake SymphonySqavFredConfig.cmake surface
+- path: `modules/sqav-fred-cpp/cmake/SymphonySqavFredConfig.cmake.in`
+- title: SQAV cmake SymphonySqavFredConfig.cmake surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-fred-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV cmake uninstall.cmake surface
+- path: `modules/sqav-fred-cpp/cmake/uninstall.cmake.in`
+- title: SQAV cmake uninstall.cmake surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-fred-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV sqav fred surface
+- path: `modules/sqav-fred-cpp/include/symphony/sqav/fred.hpp`
+- title: SQAV sqav fred surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-fred-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV src fred surface
+- path: `modules/sqav-fred-cpp/src/fred.cpp`
+- title: SQAV src fred surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-fred-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV sdk-consumer CMakeLists surface
+- path: `modules/sqav-fred-cpp/tests/sdk-consumer/CMakeLists.txt`
+- title: SQAV sdk-consumer CMakeLists surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-fred-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV sdk-consumer main surface
+- path: `modules/sqav-fred-cpp/tests/sdk-consumer/main.cpp`
+- title: SQAV sdk-consumer main surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-fred-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV tests test surface
+- path: `modules/sqav-fred-cpp/tests/test.cpp`
+- title: SQAV tests test surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-fred-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV sqav-news-api-cpp CMakeLists surface
+- path: `modules/sqav-news-api-cpp/CMakeLists.txt`
+- title: SQAV sqav-news-api-cpp CMakeLists surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-news-api-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV sqav-news-api-cpp FEATURES surface
+- path: `modules/sqav-news-api-cpp/FEATURES.md`
+- title: SQAV sqav-news-api-cpp FEATURES surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-news-api-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV sqav-news-api-cpp INSTALL surface
+- path: `modules/sqav-news-api-cpp/INSTALL.md`
+- title: SQAV sqav-news-api-cpp INSTALL surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-news-api-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV sqav-news-api-cpp INTENT surface
+- path: `modules/sqav-news-api-cpp/INTENT.md`
+- title: SQAV sqav-news-api-cpp INTENT surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-news-api-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV sqav-news-api-cpp MANIFEST surface
+- path: `modules/sqav-news-api-cpp/MANIFEST.md`
+- title: SQAV sqav-news-api-cpp MANIFEST surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-news-api-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV sqav-news-api-cpp SKILL surface
+- path: `modules/sqav-news-api-cpp/SKILL.md`
+- title: SQAV sqav-news-api-cpp SKILL surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-news-api-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV sqav-news-api-cpp SPEC surface
+- path: `modules/sqav-news-api-cpp/SPEC.md`
+- title: SQAV sqav-news-api-cpp SPEC surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-news-api-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV cmake SymphonySqavNewsApiConfig.cmake surface
+- path: `modules/sqav-news-api-cpp/cmake/SymphonySqavNewsApiConfig.cmake.in`
+- title: SQAV cmake SymphonySqavNewsApiConfig.cmake surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-news-api-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV cmake uninstall.cmake surface
+- path: `modules/sqav-news-api-cpp/cmake/uninstall.cmake.in`
+- title: SQAV cmake uninstall.cmake surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-news-api-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV sqav news surface
+- path: `modules/sqav-news-api-cpp/include/symphony/sqav/news.hpp`
+- title: SQAV sqav news surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-news-api-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV src news surface
+- path: `modules/sqav-news-api-cpp/src/news.cpp`
+- title: SQAV src news surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-news-api-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV sdk-consumer CMakeLists surface
+- path: `modules/sqav-news-api-cpp/tests/sdk-consumer/CMakeLists.txt`
+- title: SQAV sdk-consumer CMakeLists surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-news-api-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV sdk-consumer main surface
+- path: `modules/sqav-news-api-cpp/tests/sdk-consumer/main.cpp`
+- title: SQAV sdk-consumer main surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-news-api-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV tests test surface
+- path: `modules/sqav-news-api-cpp/tests/test.cpp`
+- title: SQAV tests test surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-news-api-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SCABV scabv-ibkr-client-portal-cpp CMakeLists surface
+- path: `modules/scabv-ibkr-client-portal-cpp/CMakeLists.txt`
+- title: SCABV scabv-ibkr-client-portal-cpp CMakeLists surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SCABV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/scabv-ibkr-client-portal-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SCABV scabv-ibkr-client-portal-cpp FEATURES surface
+- path: `modules/scabv-ibkr-client-portal-cpp/FEATURES.md`
+- title: SCABV scabv-ibkr-client-portal-cpp FEATURES surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SCABV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/scabv-ibkr-client-portal-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SCABV scabv-ibkr-client-portal-cpp INSTALL surface
+- path: `modules/scabv-ibkr-client-portal-cpp/INSTALL.md`
+- title: SCABV scabv-ibkr-client-portal-cpp INSTALL surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SCABV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/scabv-ibkr-client-portal-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SCABV scabv-ibkr-client-portal-cpp INTENT surface
+- path: `modules/scabv-ibkr-client-portal-cpp/INTENT.md`
+- title: SCABV scabv-ibkr-client-portal-cpp INTENT surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SCABV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/scabv-ibkr-client-portal-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SCABV scabv-ibkr-client-portal-cpp MANIFEST surface
+- path: `modules/scabv-ibkr-client-portal-cpp/MANIFEST.md`
+- title: SCABV scabv-ibkr-client-portal-cpp MANIFEST surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SCABV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/scabv-ibkr-client-portal-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SCABV scabv-ibkr-client-portal-cpp SKILL surface
+- path: `modules/scabv-ibkr-client-portal-cpp/SKILL.md`
+- title: SCABV scabv-ibkr-client-portal-cpp SKILL surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SCABV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/scabv-ibkr-client-portal-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SCABV scabv-ibkr-client-portal-cpp SPEC surface
+- path: `modules/scabv-ibkr-client-portal-cpp/SPEC.md`
+- title: SCABV scabv-ibkr-client-portal-cpp SPEC surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SCABV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/scabv-ibkr-client-portal-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SCABV cmake SymphonyScabvIbkrClientPortalConfig.cmake surface
+- path: `modules/scabv-ibkr-client-portal-cpp/cmake/SymphonyScabvIbkrClientPortalConfig.cmake.in`
+- title: SCABV cmake SymphonyScabvIbkrClientPortalConfig.cmake surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SCABV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/scabv-ibkr-client-portal-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SCABV cmake uninstall.cmake surface
+- path: `modules/scabv-ibkr-client-portal-cpp/cmake/uninstall.cmake.in`
+- title: SCABV cmake uninstall.cmake surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SCABV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/scabv-ibkr-client-portal-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SCABV scabv client_portal surface
+- path: `modules/scabv-ibkr-client-portal-cpp/include/symphony/scabv/client_portal.hpp`
+- title: SCABV scabv client_portal surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SCABV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/scabv-ibkr-client-portal-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SCABV src client_portal surface
+- path: `modules/scabv-ibkr-client-portal-cpp/src/client_portal.cpp`
+- title: SCABV src client_portal surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SCABV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/scabv-ibkr-client-portal-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SCABV sdk-consumer CMakeLists surface
+- path: `modules/scabv-ibkr-client-portal-cpp/tests/sdk-consumer/CMakeLists.txt`
+- title: SCABV sdk-consumer CMakeLists surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SCABV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/scabv-ibkr-client-portal-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SCABV sdk-consumer main surface
+- path: `modules/scabv-ibkr-client-portal-cpp/tests/sdk-consumer/main.cpp`
+- title: SCABV sdk-consumer main surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SCABV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/scabv-ibkr-client-portal-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SCABV tests test surface
+- path: `modules/scabv-ibkr-client-portal-cpp/tests/test.cpp`
+- title: SCABV tests test surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SCABV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/scabv-ibkr-client-portal-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SCABV scabv-ibkr-tws-cpp CMakeLists surface
+- path: `modules/scabv-ibkr-tws-cpp/CMakeLists.txt`
+- title: SCABV scabv-ibkr-tws-cpp CMakeLists surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SCABV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/scabv-ibkr-tws-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SCABV scabv-ibkr-tws-cpp FEATURES surface
+- path: `modules/scabv-ibkr-tws-cpp/FEATURES.md`
+- title: SCABV scabv-ibkr-tws-cpp FEATURES surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SCABV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/scabv-ibkr-tws-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SCABV scabv-ibkr-tws-cpp INSTALL surface
+- path: `modules/scabv-ibkr-tws-cpp/INSTALL.md`
+- title: SCABV scabv-ibkr-tws-cpp INSTALL surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SCABV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/scabv-ibkr-tws-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SCABV scabv-ibkr-tws-cpp INTENT surface
+- path: `modules/scabv-ibkr-tws-cpp/INTENT.md`
+- title: SCABV scabv-ibkr-tws-cpp INTENT surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SCABV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/scabv-ibkr-tws-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SCABV scabv-ibkr-tws-cpp MANIFEST surface
+- path: `modules/scabv-ibkr-tws-cpp/MANIFEST.md`
+- title: SCABV scabv-ibkr-tws-cpp MANIFEST surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SCABV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/scabv-ibkr-tws-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SCABV scabv-ibkr-tws-cpp SKILL surface
+- path: `modules/scabv-ibkr-tws-cpp/SKILL.md`
+- title: SCABV scabv-ibkr-tws-cpp SKILL surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SCABV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/scabv-ibkr-tws-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SCABV scabv-ibkr-tws-cpp SPEC surface
+- path: `modules/scabv-ibkr-tws-cpp/SPEC.md`
+- title: SCABV scabv-ibkr-tws-cpp SPEC surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SCABV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/scabv-ibkr-tws-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SCABV cmake SymphonyScabvIbkrTwsConfig.cmake surface
+- path: `modules/scabv-ibkr-tws-cpp/cmake/SymphonyScabvIbkrTwsConfig.cmake.in`
+- title: SCABV cmake SymphonyScabvIbkrTwsConfig.cmake surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SCABV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/scabv-ibkr-tws-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SCABV cmake uninstall.cmake surface
+- path: `modules/scabv-ibkr-tws-cpp/cmake/uninstall.cmake.in`
+- title: SCABV cmake uninstall.cmake surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SCABV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/scabv-ibkr-tws-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SCABV scabv tws surface
+- path: `modules/scabv-ibkr-tws-cpp/include/symphony/scabv/tws.hpp`
+- title: SCABV scabv tws surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SCABV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/scabv-ibkr-tws-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SCABV src tws surface
+- path: `modules/scabv-ibkr-tws-cpp/src/tws.cpp`
+- title: SCABV src tws surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SCABV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/scabv-ibkr-tws-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SCABV sdk-consumer CMakeLists surface
+- path: `modules/scabv-ibkr-tws-cpp/tests/sdk-consumer/CMakeLists.txt`
+- title: SCABV sdk-consumer CMakeLists surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SCABV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/scabv-ibkr-tws-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SCABV sdk-consumer main surface
+- path: `modules/scabv-ibkr-tws-cpp/tests/sdk-consumer/main.cpp`
+- title: SCABV sdk-consumer main surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SCABV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/scabv-ibkr-tws-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SCABV tests test surface
+- path: `modules/scabv-ibkr-tws-cpp/tests/test.cpp`
+- title: SCABV tests test surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SCABV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/scabv-ibkr-tws-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV sqav-databento-reference-cpp CMakeLists surface
+- path: `modules/sqav-databento-reference-cpp/CMakeLists.txt`
+- title: SQAV sqav-databento-reference-cpp CMakeLists surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-databento-reference-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV sqav-databento-reference-cpp FEATURES surface
+- path: `modules/sqav-databento-reference-cpp/FEATURES.md`
+- title: SQAV sqav-databento-reference-cpp FEATURES surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-databento-reference-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV sqav-databento-reference-cpp INSTALL surface
+- path: `modules/sqav-databento-reference-cpp/INSTALL.md`
+- title: SQAV sqav-databento-reference-cpp INSTALL surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-databento-reference-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV sqav-databento-reference-cpp INTENT surface
+- path: `modules/sqav-databento-reference-cpp/INTENT.md`
+- title: SQAV sqav-databento-reference-cpp INTENT surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-databento-reference-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV sqav-databento-reference-cpp MANIFEST surface
+- path: `modules/sqav-databento-reference-cpp/MANIFEST.md`
+- title: SQAV sqav-databento-reference-cpp MANIFEST surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-databento-reference-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV sqav-databento-reference-cpp SKILL surface
+- path: `modules/sqav-databento-reference-cpp/SKILL.md`
+- title: SQAV sqav-databento-reference-cpp SKILL surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-databento-reference-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV sqav-databento-reference-cpp SPEC surface
+- path: `modules/sqav-databento-reference-cpp/SPEC.md`
+- title: SQAV sqav-databento-reference-cpp SPEC surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-databento-reference-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV cmake SymphonySqavDatabentoReferenceConfig.cmake surface
+- path: `modules/sqav-databento-reference-cpp/cmake/SymphonySqavDatabentoReferenceConfig.cmake.in`
+- title: SQAV cmake SymphonySqavDatabentoReferenceConfig.cmake surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-databento-reference-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV cmake uninstall.cmake surface
+- path: `modules/sqav-databento-reference-cpp/cmake/uninstall.cmake.in`
+- title: SQAV cmake uninstall.cmake surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-databento-reference-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV databento reference surface
+- path: `modules/sqav-databento-reference-cpp/include/symphony/sqav/databento/reference.hpp`
+- title: SQAV databento reference surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-databento-reference-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV src reference surface
+- path: `modules/sqav-databento-reference-cpp/src/reference.cpp`
+- title: SQAV src reference surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-databento-reference-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV sdk-consumer CMakeLists surface
+- path: `modules/sqav-databento-reference-cpp/tests/sdk-consumer/CMakeLists.txt`
+- title: SQAV sdk-consumer CMakeLists surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-databento-reference-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV sdk-consumer main surface
+- path: `modules/sqav-databento-reference-cpp/tests/sdk-consumer/main.cpp`
+- title: SQAV sdk-consumer main surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-databento-reference-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQAV tests test surface
+- path: `modules/sqav-databento-reference-cpp/tests/test.cpp`
+- title: SQAV tests test surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQAV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `modules/sqav-databento-reference-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SCABV scabv MANIFEST surface
+- path: `knowledge/sqv/scabv/MANIFEST.md`
+- title: SCABV scabv MANIFEST surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SCABV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `knowledge/sqv/scabv/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SCABV scabv INTENT surface
+- path: `knowledge/sqv/scabv/INTENT.md`
+- title: SCABV scabv INTENT surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SCABV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `knowledge/sqv/scabv/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SCABV scabv SKILL surface
+- path: `knowledge/sqv/scabv/SKILL.md`
+- title: SCABV scabv SKILL surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SCABV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `knowledge/sqv/scabv/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SCABV scabv SPEC surface
+- path: `knowledge/sqv/scabv/SPEC.md`
+- title: SCABV scabv SPEC surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SCABV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `knowledge/sqv/scabv/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQV sqv-nonlive-sources CMakeLists surface
+- path: `tests/sqv-nonlive-sources/CMakeLists.txt`
+- title: SQV sqv-nonlive-sources CMakeLists surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `knowledge/sqv/RESEARCH-DATA.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SQV sqv-nonlive-sources retention surface
+- path: `tests/sqv-nonlive-sources/retention.hpp`
+- title: SQV sqv-nonlive-sources retention surface
+- surface_type: bounded native source contract or implementation
+- truth_role: exact non-live source scope and verification
+- owner: SQV maintainers
+- scope: Selected native non-live source and broker read boundaries.
+- relationships: governed_by -> `knowledge/sqv/RESEARCH-DATA.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: source adapter discovery
+- notes: Fixture evidence does not establish authenticated provider activation or external SDK conformance.
+- status: canonical
+
+### SCABV scabv-ibkr-tws-cpp SDK-HANDOFF.md
+- path: `modules/scabv-ibkr-tws-cpp/SDK-HANDOFF.md`
+- title: SCABV scabv-ibkr-tws-cpp SDK-HANDOFF.md
+- surface_type: native verification or dependency handoff
+- truth_role: bounded source conformance evidence
+- owner: SCABV maintainers
+- scope: Exact optional external SDK and failure boundaries.
+- relationships: governed_by -> `modules/scabv-ibkr-tws-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: adapter verification
+- notes: Authorized vendor SDK conformance remains pending.
+- status: canonical
+
+### SCABV scabv-ibkr-tws-cpp allocation.cpp
+- path: `modules/scabv-ibkr-tws-cpp/tests/allocation.cpp`
+- title: SCABV scabv-ibkr-tws-cpp allocation.cpp
+- surface_type: native verification or dependency handoff
+- truth_role: bounded source conformance evidence
+- owner: SCABV maintainers
+- scope: Exact optional external SDK and failure boundaries.
+- relationships: governed_by -> `modules/scabv-ibkr-tws-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: adapter verification
+- notes: Authorized vendor SDK conformance remains pending.
+- status: canonical
+
+### SCABV scabv-ibkr-tws-cpp CMakeLists.txt
+- path: `modules/scabv-ibkr-tws-cpp/tests/sdk1045-conformance/CMakeLists.txt`
+- title: SCABV scabv-ibkr-tws-cpp CMakeLists.txt
+- surface_type: native verification or dependency handoff
+- truth_role: bounded source conformance evidence
+- owner: SCABV maintainers
+- scope: Exact optional external SDK and failure boundaries.
+- relationships: governed_by -> `modules/scabv-ibkr-tws-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: adapter verification
+- notes: Authorized vendor SDK conformance remains pending.
+- status: canonical
+
+### SCABV scabv-ibkr-tws-cpp conformance.cpp
+- path: `modules/scabv-ibkr-tws-cpp/tests/sdk1045-conformance/conformance.cpp`
+- title: SCABV scabv-ibkr-tws-cpp conformance.cpp
+- surface_type: native verification or dependency handoff
+- truth_role: bounded source conformance evidence
+- owner: SCABV maintainers
+- scope: Exact optional external SDK and failure boundaries.
+- relationships: governed_by -> `modules/scabv-ibkr-tws-cpp/SPEC.md`
+- consumers: SQV implementers, reviewers, tests
+- deferred_projections: adapter verification
+- notes: Authorized vendor SDK conformance remains pending.
+- status: canonical
+
+### SQAV request administration cmake SqavRequestInterface.generated.cmake
+- path: `cmake/SqavRequestInterface.generated.cmake`
+- title: SQAV request administration cmake SqavRequestInterface.generated.cmake
+- surface_type: native request administration contract or implementation
+- truth_role: bounded native interface and verification
+- owner: SQAV and qxctl maintainers
+- scope: Three exact local request variants through one operation and shared metadata helpers.
+- relationships: governed_by -> `modules/sqav-request-engine/SPEC.md`
+- consumers: operators, implementers, tests
+- deferred_projections: command and request discovery
+- notes: Local validation establishes no provider access, acquisition, store or live state.
+- status: canonical
+
+### SQAV request administration modules sqav-request-engine CMakeLists.txt
+- path: `modules/sqav-request-engine/CMakeLists.txt`
+- title: SQAV request administration modules sqav-request-engine CMakeLists.txt
+- surface_type: native request administration contract or implementation
+- truth_role: bounded native interface and verification
+- owner: SQAV and qxctl maintainers
+- scope: Three exact local request variants through one operation and shared metadata helpers.
+- relationships: governed_by -> `modules/sqav-request-engine/SPEC.md`
+- consumers: operators, implementers, tests
+- deferred_projections: command and request discovery
+- notes: Local validation establishes no provider access, acquisition, store or live state.
+- status: canonical
+
+### SQAV request administration modules sqav-request-engine FEATURES.md
+- path: `modules/sqav-request-engine/FEATURES.md`
+- title: SQAV request administration modules sqav-request-engine FEATURES.md
+- surface_type: native request administration contract or implementation
+- truth_role: bounded native interface and verification
+- owner: SQAV and qxctl maintainers
+- scope: Three exact local request variants through one operation and shared metadata helpers.
+- relationships: governed_by -> `modules/sqav-request-engine/SPEC.md`
+- consumers: operators, implementers, tests
+- deferred_projections: command and request discovery
+- notes: Local validation establishes no provider access, acquisition, store or live state.
+- status: canonical
+
+### SQAV request administration modules sqav-request-engine INSTALL.md
+- path: `modules/sqav-request-engine/INSTALL.md`
+- title: SQAV request administration modules sqav-request-engine INSTALL.md
+- surface_type: native request administration contract or implementation
+- truth_role: bounded native interface and verification
+- owner: SQAV and qxctl maintainers
+- scope: Three exact local request variants through one operation and shared metadata helpers.
+- relationships: governed_by -> `modules/sqav-request-engine/SPEC.md`
+- consumers: operators, implementers, tests
+- deferred_projections: command and request discovery
+- notes: Local validation establishes no provider access, acquisition, store or live state.
+- status: canonical
+
+### SQAV request administration modules sqav-request-engine INTENT.md
+- path: `modules/sqav-request-engine/INTENT.md`
+- title: SQAV request administration modules sqav-request-engine INTENT.md
+- surface_type: native request administration contract or implementation
+- truth_role: bounded native interface and verification
+- owner: SQAV and qxctl maintainers
+- scope: Three exact local request variants through one operation and shared metadata helpers.
+- relationships: governed_by -> `modules/sqav-request-engine/SPEC.md`
+- consumers: operators, implementers, tests
+- deferred_projections: command and request discovery
+- notes: Local validation establishes no provider access, acquisition, store or live state.
+- status: canonical
+
+### SQAV request administration modules sqav-request-engine INTERFACE-GENERATOR.json
+- path: `modules/sqav-request-engine/INTERFACE-GENERATOR.json`
+- title: SQAV request administration modules sqav-request-engine INTERFACE-GENERATOR.json
+- surface_type: native request administration contract or implementation
+- truth_role: bounded native interface and verification
+- owner: SQAV and qxctl maintainers
+- scope: Three exact local request variants through one operation and shared metadata helpers.
+- relationships: governed_by -> `modules/sqav-request-engine/SPEC.md`
+- consumers: operators, implementers, tests
+- deferred_projections: command and request discovery
+- notes: Local validation establishes no provider access, acquisition, store or live state.
+- status: canonical
+
+### SQAV request administration modules sqav-request-engine MANIFEST.md
+- path: `modules/sqav-request-engine/MANIFEST.md`
+- title: SQAV request administration modules sqav-request-engine MANIFEST.md
+- surface_type: native request administration contract or implementation
+- truth_role: bounded native interface and verification
+- owner: SQAV and qxctl maintainers
+- scope: Three exact local request variants through one operation and shared metadata helpers.
+- relationships: governed_by -> `modules/sqav-request-engine/SPEC.md`
+- consumers: operators, implementers, tests
+- deferred_projections: command and request discovery
+- notes: Local validation establishes no provider access, acquisition, store or live state.
+- status: canonical
+
+### SQAV request administration modules sqav-request-engine OWNER-INTERFACE.json
+- path: `modules/sqav-request-engine/OWNER-INTERFACE.json`
+- title: SQAV request administration modules sqav-request-engine OWNER-INTERFACE.json
+- surface_type: native request administration contract or implementation
+- truth_role: bounded native interface and verification
+- owner: SQAV and qxctl maintainers
+- scope: Three exact local request variants through one operation and shared metadata helpers.
+- relationships: governed_by -> `modules/sqav-request-engine/SPEC.md`
+- consumers: operators, implementers, tests
+- deferred_projections: command and request discovery
+- notes: Local validation establishes no provider access, acquisition, store or live state.
+- status: canonical
+
+### SQAV request administration modules sqav-request-engine SKILL.md
+- path: `modules/sqav-request-engine/SKILL.md`
+- title: SQAV request administration modules sqav-request-engine SKILL.md
+- surface_type: native request administration contract or implementation
+- truth_role: bounded native interface and verification
+- owner: SQAV and qxctl maintainers
+- scope: Three exact local request variants through one operation and shared metadata helpers.
+- relationships: governed_by -> `modules/sqav-request-engine/SPEC.md`
+- consumers: operators, implementers, tests
+- deferred_projections: command and request discovery
+- notes: Local validation establishes no provider access, acquisition, store or live state.
+- status: canonical
+
+### SQAV request administration modules sqav-request-engine SPEC.md
+- path: `modules/sqav-request-engine/SPEC.md`
+- title: SQAV request administration modules sqav-request-engine SPEC.md
+- surface_type: native request administration contract or implementation
+- truth_role: bounded native interface and verification
+- owner: SQAV and qxctl maintainers
+- scope: Three exact local request variants through one operation and shared metadata helpers.
+- relationships: governed_by -> `modules/sqav-request-engine/SPEC.md`
+- consumers: operators, implementers, tests
+- deferred_projections: command and request discovery
+- notes: Local validation establishes no provider access, acquisition, store or live state.
+- status: canonical
+
+### SQAV request administration modules sqav-request-engine cmake uninstall.cmake.in
+- path: `modules/sqav-request-engine/cmake/uninstall.cmake.in`
+- title: SQAV request administration modules sqav-request-engine cmake uninstall.cmake.in
+- surface_type: native request administration contract or implementation
+- truth_role: bounded native interface and verification
+- owner: SQAV and qxctl maintainers
+- scope: Three exact local request variants through one operation and shared metadata helpers.
+- relationships: governed_by -> `modules/sqav-request-engine/SPEC.md`
+- consumers: operators, implementers, tests
+- deferred_projections: command and request discovery
+- notes: Local validation establishes no provider access, acquisition, store or live state.
+- status: canonical
+
+### SQAV request administration modules sqav-request-engine schemas v1 request.schema.json
+- path: `modules/sqav-request-engine/schemas/v1/request.schema.json`
+- title: SQAV request administration modules sqav-request-engine schemas v1 request.schema.json
+- surface_type: native request administration contract or implementation
+- truth_role: bounded native interface and verification
+- owner: SQAV and qxctl maintainers
+- scope: Three exact local request variants through one operation and shared metadata helpers.
+- relationships: governed_by -> `modules/sqav-request-engine/SPEC.md`
+- consumers: operators, implementers, tests
+- deferred_projections: command and request discovery
+- notes: Local validation establishes no provider access, acquisition, store or live state.
+- status: canonical
+
+### SQAV request administration modules sqav-request-engine schemas v1 request.templates.json
+- path: `modules/sqav-request-engine/schemas/v1/request.templates.json`
+- title: SQAV request administration modules sqav-request-engine schemas v1 request.templates.json
+- surface_type: native request administration contract or implementation
+- truth_role: bounded native interface and verification
+- owner: SQAV and qxctl maintainers
+- scope: Three exact local request variants through one operation and shared metadata helpers.
+- relationships: governed_by -> `modules/sqav-request-engine/SPEC.md`
+- consumers: operators, implementers, tests
+- deferred_projections: command and request discovery
+- notes: Local validation establishes no provider access, acquisition, store or live state.
+- status: canonical
+
+### SQAV request administration modules sqav-request-engine src interface.generated.hpp
+- path: `modules/sqav-request-engine/src/interface.generated.hpp`
+- title: SQAV request administration modules sqav-request-engine src interface.generated.hpp
+- surface_type: native request administration contract or implementation
+- truth_role: bounded native interface and verification
+- owner: SQAV and qxctl maintainers
+- scope: Three exact local request variants through one operation and shared metadata helpers.
+- relationships: governed_by -> `modules/sqav-request-engine/SPEC.md`
+- consumers: operators, implementers, tests
+- deferred_projections: command and request discovery
+- notes: Local validation establishes no provider access, acquisition, store or live state.
+- status: canonical
+
+### SQAV request administration modules sqav-request-engine src main.cpp
+- path: `modules/sqav-request-engine/src/main.cpp`
+- title: SQAV request administration modules sqav-request-engine src main.cpp
+- surface_type: native request administration contract or implementation
+- truth_role: bounded native interface and verification
+- owner: SQAV and qxctl maintainers
+- scope: Three exact local request variants through one operation and shared metadata helpers.
+- relationships: governed_by -> `modules/sqav-request-engine/SPEC.md`
+- consumers: operators, implementers, tests
+- deferred_projections: command and request discovery
+- notes: Local validation establishes no provider access, acquisition, store or live state.
+- status: canonical
+
+### SQAV request administration modules sqav-request-engine src request.cpp
+- path: `modules/sqav-request-engine/src/request.cpp`
+- title: SQAV request administration modules sqav-request-engine src request.cpp
+- surface_type: native request administration contract or implementation
+- truth_role: bounded native interface and verification
+- owner: SQAV and qxctl maintainers
+- scope: Three exact local request variants through one operation and shared metadata helpers.
+- relationships: governed_by -> `modules/sqav-request-engine/SPEC.md`
+- consumers: operators, implementers, tests
+- deferred_projections: command and request discovery
+- notes: Local validation establishes no provider access, acquisition, store or live state.
+- status: canonical
+
+### SQAV request administration modules sqav-request-engine src request.hpp
+- path: `modules/sqav-request-engine/src/request.hpp`
+- title: SQAV request administration modules sqav-request-engine src request.hpp
+- surface_type: native request administration contract or implementation
+- truth_role: bounded native interface and verification
+- owner: SQAV and qxctl maintainers
+- scope: Three exact local request variants through one operation and shared metadata helpers.
+- relationships: governed_by -> `modules/sqav-request-engine/SPEC.md`
+- consumers: operators, implementers, tests
+- deferred_projections: command and request discovery
+- notes: Local validation establishes no provider access, acquisition, store or live state.
+- status: canonical
+
+### SQAV request administration modules sqav-request-engine tests fixtures databento_historical.json
+- path: `modules/sqav-request-engine/tests/fixtures/databento_historical.json`
+- title: SQAV request administration modules sqav-request-engine tests fixtures databento_historical.json
+- surface_type: native request administration contract or implementation
+- truth_role: bounded native interface and verification
+- owner: SQAV and qxctl maintainers
+- scope: Three exact local request variants through one operation and shared metadata helpers.
+- relationships: governed_by -> `modules/sqav-request-engine/SPEC.md`
+- consumers: operators, implementers, tests
+- deferred_projections: command and request discovery
+- notes: Local validation establishes no provider access, acquisition, store or live state.
+- status: canonical
+
+### SQAV request administration modules sqav-request-engine tests fixtures databento_reference.json
+- path: `modules/sqav-request-engine/tests/fixtures/databento_reference.json`
+- title: SQAV request administration modules sqav-request-engine tests fixtures databento_reference.json
+- surface_type: native request administration contract or implementation
+- truth_role: bounded native interface and verification
+- owner: SQAV and qxctl maintainers
+- scope: Three exact local request variants through one operation and shared metadata helpers.
+- relationships: governed_by -> `modules/sqav-request-engine/SPEC.md`
+- consumers: operators, implementers, tests
+- deferred_projections: command and request discovery
+- notes: Local validation establishes no provider access, acquisition, store or live state.
+- status: canonical
+
+### SQAV request administration modules sqav-request-engine tests fixtures fred.json
+- path: `modules/sqav-request-engine/tests/fixtures/fred.json`
+- title: SQAV request administration modules sqav-request-engine tests fixtures fred.json
+- surface_type: native request administration contract or implementation
+- truth_role: bounded native interface and verification
+- owner: SQAV and qxctl maintainers
+- scope: Three exact local request variants through one operation and shared metadata helpers.
+- relationships: governed_by -> `modules/sqav-request-engine/SPEC.md`
+- consumers: operators, implementers, tests
+- deferred_projections: command and request discovery
+- notes: Local validation establishes no provider access, acquisition, store or live state.
+- status: canonical
+
+### SQAV request administration modules sqav-request-engine tests fixtures interface-history.v1.json
+- path: `modules/sqav-request-engine/tests/fixtures/interface-history.v1.json`
+- title: SQAV request administration modules sqav-request-engine tests fixtures interface-history.v1.json
+- surface_type: native request administration contract or implementation
+- truth_role: bounded native interface and verification
+- owner: SQAV and qxctl maintainers
+- scope: Three exact local request variants through one operation and shared metadata helpers.
+- relationships: governed_by -> `modules/sqav-request-engine/SPEC.md`
+- consumers: operators, implementers, tests
+- deferred_projections: command and request discovery
+- notes: Local validation establishes no provider access, acquisition, store or live state.
+- status: canonical
+
+### SQAV request administration modules sqav-request-engine tests test.cpp
+- path: `modules/sqav-request-engine/tests/test.cpp`
+- title: SQAV request administration modules sqav-request-engine tests test.cpp
+- surface_type: native request administration contract or implementation
+- truth_role: bounded native interface and verification
+- owner: SQAV and qxctl maintainers
+- scope: Three exact local request variants through one operation and shared metadata helpers.
+- relationships: governed_by -> `modules/sqav-request-engine/SPEC.md`
+- consumers: operators, implementers, tests
+- deferred_projections: command and request discovery
+- notes: Local validation establishes no provider access, acquisition, store or live state.
+- status: canonical
+
+### SQAV request administration tools qxctl cmd qxctl sqv.go
+- path: `tools/qxctl/cmd/qxctl/sqv.go`
+- title: SQAV request administration tools qxctl cmd qxctl sqv.go
+- surface_type: native request administration contract or implementation
+- truth_role: bounded native interface and verification
+- owner: SQAV and qxctl maintainers
+- scope: Three exact local request variants through one operation and shared metadata helpers.
+- relationships: governed_by -> `modules/sqav-request-engine/SPEC.md`
+- consumers: operators, implementers, tests
+- deferred_projections: command and request discovery
+- notes: Local validation establishes no provider access, acquisition, store or live state.
+- status: canonical
+
+### SQAV request administration tools qxctl cmd qxctl sqv_test.go
+- path: `tools/qxctl/cmd/qxctl/sqv_test.go`
+- title: SQAV request administration tools qxctl cmd qxctl sqv_test.go
+- surface_type: native request administration contract or implementation
+- truth_role: bounded native interface and verification
+- owner: SQAV and qxctl maintainers
+- scope: Three exact local request variants through one operation and shared metadata helpers.
+- relationships: governed_by -> `modules/sqav-request-engine/SPEC.md`
+- consumers: operators, implementers, tests
+- deferred_projections: command and request discovery
+- notes: Local validation establishes no provider access, acquisition, store or live state.
+- status: canonical
+
+### SQAV request administration tools qxctl internal knowledgeengine sqav_request.go
+- path: `tools/qxctl/internal/knowledgeengine/sqav_request.go`
+- title: SQAV request administration tools qxctl internal knowledgeengine sqav_request.go
+- surface_type: native request administration contract or implementation
+- truth_role: bounded native interface and verification
+- owner: SQAV and qxctl maintainers
+- scope: Three exact local request variants through one operation and shared metadata helpers.
+- relationships: governed_by -> `modules/sqav-request-engine/SPEC.md`
+- consumers: operators, implementers, tests
+- deferred_projections: command and request discovery
+- notes: Local validation establishes no provider access, acquisition, store or live state.
+- status: canonical
+
+### SQAV request administration tools qxctl internal knowledgeengine sqav_request_interface_generated.go
+- path: `tools/qxctl/internal/knowledgeengine/sqav_request_interface_generated.go`
+- title: SQAV request administration tools qxctl internal knowledgeengine sqav_request_interface_generated.go
+- surface_type: native request administration contract or implementation
+- truth_role: bounded native interface and verification
+- owner: SQAV and qxctl maintainers
+- scope: Three exact local request variants through one operation and shared metadata helpers.
+- relationships: governed_by -> `modules/sqav-request-engine/SPEC.md`
+- consumers: operators, implementers, tests
+- deferred_projections: command and request discovery
+- notes: Local validation establishes no provider access, acquisition, store or live state.
+- status: canonical
+
+### SQAV request administration tools qxctl internal knowledgeengine sqav_request_test.go
+- path: `tools/qxctl/internal/knowledgeengine/sqav_request_test.go`
+- title: SQAV request administration tools qxctl internal knowledgeengine sqav_request_test.go
+- surface_type: native request administration contract or implementation
+- truth_role: bounded native interface and verification
+- owner: SQAV and qxctl maintainers
+- scope: Three exact local request variants through one operation and shared metadata helpers.
+- relationships: governed_by -> `modules/sqav-request-engine/SPEC.md`
+- consumers: operators, implementers, tests
+- deferred_projections: command and request discovery
+- notes: Local validation establishes no provider access, acquisition, store or live state.
+- status: canonical
+
+### SQAV installed process verification
+- path: `modules/sqav-request-engine/tests/process.cpp`
+- title: SQAV installed process verification
+- surface_type: native installed process test
+- truth_role: executable boundary verification
+- owner: SQAV maintainers
+- scope: Three native request variants, process correspondence, refusals and pure effects.
+- relationships: governed_by -> `modules/sqav-request-engine/SPEC.md`
+- consumers: implementers, reviewers, tests
+- deferred_projections: verification evidence
+- notes: Explicit installed prefix; no provider or credential traffic.
 - status: canonical

@@ -1,0 +1,51 @@
+{
+  "protocol": "symphony.sqav.request-templates.v1",
+  "templates": {
+    "fred": {
+      "protocol": "symphony.sqav.request-validation-input.v1",
+      "adapter": "fred",
+      "selection": {
+        "operation": null,
+        "series": null,
+        "observation_start": null,
+        "observation_end": null,
+        "realtime_start": null,
+        "realtime_end": null,
+        "limit": null,
+        "offset": null
+      },
+      "limits": null
+    },
+    "databento_historical": {
+      "protocol": "symphony.sqav.request-validation-input.v1",
+      "adapter": "databento_historical",
+      "selection": {
+        "dataset": null,
+        "symbols": null,
+        "start_ns": null,
+        "end_ns": null,
+        "record_limit": null
+      },
+      "limits": {
+        "max_file_bytes": null,
+        "max_metadata_bytes": null,
+        "max_records": null,
+        "max_window_ns": null,
+        "max_symbols": null,
+        "max_attempts": null,
+        "max_retry_after_seconds": null
+      }
+    },
+    "databento_reference": {
+      "protocol": "symphony.sqav.request-validation-input.v1",
+      "adapter": "databento_reference",
+      "selection": {
+        "operation": null,
+        "symbols": null,
+        "start": null,
+        "end": null
+      },
+      "limits": null
+    }
+  }
+}

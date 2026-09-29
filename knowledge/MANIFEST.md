@@ -83,6 +83,7 @@ The platform governance companions under `knowledge/platform/` retain Symphony-w
 - `knowledge/siv/smcv/MANIFEST.md`
 - `knowledge/skvi/MANIFEST.md`
 - `knowledge/skvi/schemas/v1/MANIFEST.md`
+- `knowledge/skvi/schemas/v2/MANIFEST.md`
 - `knowledge/snv/MANIFEST.md`
 - `knowledge/snv/sciv/MANIFEST.md`
 - `knowledge/snv/scnv/MANIFEST.md`
@@ -92,6 +93,12 @@ The platform governance companions under `knowledge/platform/` retain Symphony-w
 - `knowledge/sodv/schemas/v1/MANIFEST.md`
 - `knowledge/sov/MANIFEST.md`
 - `knowledge/sqv/MANIFEST.md`
+- `knowledge/sqv/sqav/MANIFEST.md`
+- `knowledge/sqv/sqdv/MANIFEST.md`
+- `knowledge/sqv/sqfv/MANIFEST.md`
+- `knowledge/sqv/sqmv/MANIFEST.md`
+- `knowledge/sqv/sqpv/MANIFEST.md`
+- `knowledge/sqv/sqtv/MANIFEST.md`
 - `knowledge/sqv/soov/MANIFEST.md`
 - `knowledge/ssfv/MANIFEST.md`
 - `knowledge/ssfv/schemas/v1/MANIFEST.md`
@@ -122,6 +129,13 @@ The platform governance companions under `knowledge/platform/` retain Symphony-w
 - `modules/secure-identity-access-governance/MANIFEST.md`
 - `modules/sev-engine/MANIFEST.md`
 - `modules/skvi-engine/MANIFEST.md`
+- `modules/sqav-capture-cpp/MANIFEST.md`
+- `modules/sqav-databento-dbn-cpp/MANIFEST.md`
+- `modules/sqtv-integer-conversion-cpp/MANIFEST.md`
+- `modules/sqdv-delivery-cpp/MANIFEST.md`
+- `modules/sqfv-batch-cpp/MANIFEST.md`
+- `modules/sqmv-metadata-cpp/MANIFEST.md`
+- `modules/sqpv-local-store-cpp/MANIFEST.md`
 - `modules/sodv-engine/MANIFEST.md`
 - `modules/ssfv-engine/MANIFEST.md`
 - `modules/ssiag-provider-macos-keychain/MANIFEST.md`
@@ -138,6 +152,7 @@ These exact declarations are the machine-discoverable canonical-surface closure.
 | authority-free shared C++ mechanics | `libraries/knowledge-vector-engine-cpp/` | none |
 | authenticated-session and worktree-reconciliation coordinator | `modules/knowledge-session-coordinator/` | `symphony-knowledge-session` |
 | SKVI engine | `modules/skvi-engine/` | `symphony-skvi` |
+| SQFV trusted in-process batch library | `modules/sqfv-batch-cpp/` | none |
 | SCLV engine | `modules/sclv-engine/` | `symphony-sclv` |
 | SACV engine | `modules/sacv-engine/` | `symphony-sacv` |
 | SODV engine | `modules/sodv-engine/` | `symphony-sodv` |
@@ -193,3 +208,17 @@ This manifest does not authorize an engine to rewrite canonical files, manufactu
 The SCV `.6` increment additionally admits the interface declaration and portable provider/composition companions recorded in `knowledge/scv/MANIFEST.md` and its schema manifest. Each of eight exact C++ packages exposes 26 operations; qxctl has 244 registered leaves, including 46 SCV leaves. This bounded increment extends the existing 21 invariant records and 11 adapter identities and retains caller authority over requirements, evidence policy, providers and permitted recipes.
 
 The common v3 invariant registry schema additionally admits explicitly named process adapters with exact module/entrypoint ownership and unique operation declarations. Existing v1/v2 adapter definitions remain unchanged. The optional SCV DuckDB graph index uses this admission without making its naming or database choice a universal module requirement.
+
+## Non-live source and broker modules
+
+- `knowledge/sqv/scabv/MANIFEST.md`
+- `modules/native-source-support-cpp/MANIFEST.md`
+- `modules/sqav-fred-cpp/MANIFEST.md`
+- `modules/sqav-news-api-cpp/MANIFEST.md`
+- `modules/scabv-ibkr-client-portal-cpp/MANIFEST.md`
+- `modules/scabv-ibkr-tws-cpp/MANIFEST.md`
+- `modules/sqav-databento-reference-cpp/MANIFEST.md`
+
+## SQAV request administration
+
+- `modules/sqav-request-engine/MANIFEST.md`

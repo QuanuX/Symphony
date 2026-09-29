@@ -1,0 +1,22 @@
+{
+  "protocol": "symphony.sqav.request-validation-input.v1",
+  "adapter": "databento_historical",
+  "selection": {
+    "dataset": "GLBX.MDP3",
+    "symbols": [
+      "ESZ0"
+    ],
+    "start_ns": "1600000000000000000",
+    "end_ns": "1600000001000000000",
+    "record_limit": 100
+  },
+  "limits": {
+    "max_file_bytes": 1048576,
+    "max_metadata_bytes": 65536,
+    "max_records": 1000,
+    "max_window_ns": 1000000000,
+    "max_symbols": 1,
+    "max_attempts": 1,
+    "max_retry_after_seconds": 1
+  }
+}

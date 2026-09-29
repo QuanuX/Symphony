@@ -25,3 +25,7 @@ Administration disposition: repository authoring/build support, with no addition
 C++26 and gofmt support native generation. Configure `tools/authoring-cpp/` with CMake and build the named generator/test targets. Python is not used for generation, tests or installed operation. Checked-in outputs remain usable without running the authoring tools. CTest covers descriptor parity, deterministic generation, invalid registrations, a previously unlisted owner with empty history and refusal to overwrite caller-owned output. Owner native tests and qxctl tests remain separate.
 
 Native authoring subprocesses and acceptance programs share the foundation-owned process helper: descriptor isolation, explicit environment handling, captured exit/output, deadlines and descendant cleanup use one implementation. The authoring frontends retain their own schema and output assertions.
+
+## Optional owner symbol prefixes
+
+Registration v1 optionally admits `symbol_prefixes` with exactly `go_export`, `go_private`, and `cmake` identifiers. Existing registrations retain SHV/shv/SHV_OWNER bytes. A selected prefix emits the same owner interface with caller-selected language symbols and receipt-resource SHA-256 admission constants read from that registration root. This is reusable generation machinery; it does not assign SHV semantics to another vector. SQAV uses SQAV/sqav/SQAV_REQUEST for its distinct native owner.

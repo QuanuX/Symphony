@@ -96,7 +96,7 @@ The initial `symphony-skvi` operation set is:
 
 `qxctl skvi ...` invokes these operations through `symphony.knowledge.engine-process.v1`. Direct invocation remains available for diagnostics. Apply is reserved and disabled under `knowledge/SPEC.md`.
 
-The exact common proposal schema is `knowledge/schemas/v1/proposal.schema.json`. SKVI v1 entry, operation-payload, check-result, and projection schemas live under `knowledge/skvi/schemas/v1/`. All five are canonical schema truth rather than generated projections.
+The exact common proposal schema is `knowledge/schemas/v1/proposal.schema.json`. SKVI v1 entry and operation-payload schemas remain under `knowledge/skvi/schemas/v1/`. Exact `0.2.0-dev` check and projection results use the v2 schemas under `knowledge/skvi/schemas/v2/`, with a 2,048-entry ceiling and SKVI-specific 65,536-event process JSON budget. The v1 check and projection schemas remain unchanged for exact `0.1.0-dev` compatibility. All schemas are canonical schema truth rather than generated projections. The canonical index remains one repository-maintained Markdown file; JSON projections are disposable.
 
 The implemented `qxctl skvi` client requires an explicit installation prefix and exact installed version, validates the inactive undocked receipt and every owned file, starts the versioned engine with no inherited environment, enforces a hard process deadline, and checks response identity and digest before presentation. This is exact-version invocation, not lifecycle activation.
 

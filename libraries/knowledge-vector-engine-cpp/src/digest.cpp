@@ -2,8 +2,6 @@
 
 #include <array>
 #include <cstdint>
-#include <iomanip>
-#include <sstream>
 #include <vector>
 
 namespace symphony::knowledge::engine {
@@ -107,12 +105,17 @@ std::string sha256_hex(std::span<const unsigned char> bytes) {
         state[7] += h;
     }
 
-    std::ostringstream output;
-    output << std::hex << std::setfill('0');
-    for (const auto word : state) {
-        output << std::setw(8) << word;
+    // A stream may suppress bad_alloc and expose a partial digest. Allocate
+    // the complete result before writing so failure propagates to the caller.
+    constexpr char hexadecimal[] = "0123456789abcdef";
+    std::string output(64, '0');
+    for (std::size_t word = 0; word < state.size(); ++word) {
+        for (std::size_t digit = 0; digit < 8; ++digit) {
+            output[word * 8 + digit] =
+                hexadecimal[(state[word] >> ((7 - digit) * 4)) & 0xfU];
+        }
     }
-    return output.str();
+    return output;
 }
 
 std::string sha256_hex(std::string_view text) {

@@ -8,6 +8,11 @@ func verifySHVProfileInterface(inst Installation) error {
 }
 
 func verifySHVOwnerInterface(inst Installation, expectedDigest string) error {
+	return verifyOwnerInterface(inst, expectedDigest)
+}
+
+// Shared receipt mechanics; each owner supplies its compiled interface digest.
+func verifyOwnerInterface(inst Installation, expectedDigest string) error {
 	receiptPath := "share/symphony/receipts/" + inst.ModuleID + "/" + inst.Version + "/install-receipt.json"
 	raw, err := readTrustedNoFollowRelative(inst.Prefix, receiptPath, maxReceiptBytes)
 	if err != nil {
@@ -15,7 +20,7 @@ func verifySHVOwnerInterface(inst Installation, expectedDigest string) error {
 	}
 	var receipt receiptV2
 	if decodeExact(raw, &receipt) != nil || receipt.ReceiptDigest != inst.ReceiptDigest {
-		return fmt.Errorf("SHV owner interface receipt changed")
+		return fmt.Errorf("owner interface receipt changed")
 	}
 	path := "share/symphony/contracts/" + inst.ModuleID + "/" + inst.Version + "/OWNER-INTERFACE.json"
 	for _, file := range receipt.Files {
@@ -27,7 +32,7 @@ func verifySHVOwnerInterface(inst Installation, expectedDigest string) error {
 			return err
 		}
 		if uint64(len(data)) != file.Size || digestBytes(data) != file.Digest {
-			return fmt.Errorf("SHV owner interface owned bytes changed")
+			return fmt.Errorf("owner interface owned bytes changed")
 		}
 		value, err := shvObject(data)
 		if err != nil {
@@ -38,13 +43,13 @@ func verifySHVOwnerInterface(inst Installation, expectedDigest string) error {
 			return err
 		}
 		if digestBytes(canonical) != expectedDigest {
-			return fmt.Errorf("SHV owner interface differs from compiled admission")
+			return fmt.Errorf("owner interface differs from compiled admission")
 		}
 		after, err := readTrustedNoFollowRelative(inst.Prefix, receiptPath, maxReceiptBytes)
 		if err != nil || string(after) != string(raw) {
-			return fmt.Errorf("SHV owner interface receipt changed during inspection")
+			return fmt.Errorf("owner interface receipt changed during inspection")
 		}
 		return nil
 	}
-	return fmt.Errorf("SHV owner interface is not receipt owned")
+	return fmt.Errorf("owner interface is not receipt owned")
 }

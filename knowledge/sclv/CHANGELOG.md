@@ -13596,3 +13596,119 @@ This PR authorizes none of the following:
   - `No new native engine operation, Python dependency, network service, package release or remote publication.`
 - notes: |
     Start and completion identify exact local source-commit finalization. The source change was integrated into local main before closure. Installed verification used an isolated synthetic test identity, not production host enrollment or a change to existing operational state. Full SCV/SHV campaigns and all-vector delivery builds were not performed for this CLI increment.
+
+- record_id: `SCLV-CHG-20260928-SQV-QXCTL-REQUEST-SLICE`
+- record_version: `3`
+- title: `Add the first native SQAV request administration slice`
+- status: `canonical`
+- date: `2026-09-28`
+- change_started_at: `2026-09-28T20:24:49Z`
+- change_completed_at: `2026-09-28T21:05:46Z`
+- recorded_at: `2026-09-28T21:07:11Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `implementation_change`
+- change_request_state: `not_applicable`
+- change_request_provider: `not_applicable`
+- change_request_id: `not_applicable`
+- change_request_reference: `not_applicable`
+- change_request_absence_reason: `User-authorized implementation finalized as a local isolated-branch commit; no forge change request or main-branch merge exists.`
+- revision_scheme: `git-sha1`
+- revision_value: `160904956e7a700d7889159e0e0aed6162e61afe`
+- tree_digest: `sha256:346c8ef93c0577a363b4c380be8e0ac3058e53d877ab24c0e9a622b2983d13ef`
+- ratification_subject: `Duncan, Architect`
+- ratification_permission: `Requested SQV implementation within the isolated local source branch`
+- ratification_method: `explicit-user-instruction`
+- ratification_evidence_reference: `/Users/Duncan/Documents/ChatGPT/Symphony p2-p8/context/decisions/2026-09-28-sqv-first-qxctl-slice.md`
+- ratification_evidence_digest: `sha256:63542999771c3b0cdec3d19a97b5b02cf92d1522d8d934b595c7c86127220972`
+- affected_surfaces:
+  - `README.md`
+  - `cmake/SqavRequestInterface.generated.cmake`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.json`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.md`
+  - `knowledge/INVARIANT-OWNERSHIP.json`
+  - `knowledge/MANIFEST.md`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/sqv/SPEC.md`
+  - `knowledge/sqv/sqav/MANIFEST.md`
+  - `knowledge/ssfv/COVERAGE.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `modules/native-source-support-cpp/FEATURES.md`
+  - `modules/scabv-ibkr-client-portal-cpp/FEATURES.md`
+  - `modules/scabv-ibkr-tws-cpp/FEATURES.md`
+  - `modules/sqav-databento-reference-cpp/FEATURES.md`
+  - `modules/sqav-fred-cpp/FEATURES.md`
+  - `modules/sqav-news-api-cpp/FEATURES.md`
+  - `modules/sqav-request-engine/CMakeLists.txt`
+  - `modules/sqav-request-engine/FEATURES.md`
+  - `modules/sqav-request-engine/INSTALL.md`
+  - `modules/sqav-request-engine/INTENT.md`
+  - `modules/sqav-request-engine/INTERFACE-GENERATOR.json`
+  - `modules/sqav-request-engine/MANIFEST.md`
+  - `modules/sqav-request-engine/OWNER-INTERFACE.json`
+  - `modules/sqav-request-engine/SKILL.md`
+  - `modules/sqav-request-engine/SPEC.md`
+  - `modules/sqav-request-engine/cmake/uninstall.cmake.in`
+  - `modules/sqav-request-engine/schemas/v1/request.schema.json`
+  - `modules/sqav-request-engine/schemas/v1/request.templates.json`
+  - `modules/sqav-request-engine/src/interface.generated.hpp`
+  - `modules/sqav-request-engine/src/main.cpp`
+  - `modules/sqav-request-engine/src/request.cpp`
+  - `modules/sqav-request-engine/src/request.hpp`
+  - `modules/sqav-request-engine/tests/fixtures/databento_historical.json`
+  - `modules/sqav-request-engine/tests/fixtures/databento_reference.json`
+  - `modules/sqav-request-engine/tests/fixtures/fred.json`
+  - `modules/sqav-request-engine/tests/fixtures/interface-history.v1.json`
+  - `modules/sqav-request-engine/tests/process.cpp`
+  - `modules/sqav-request-engine/tests/test.cpp`
+  - `tools/authoring-cpp/shv_interface.hpp`
+  - `tools/qxctl/COMMANDS.json`
+  - `tools/qxctl/COMMANDS.md`
+  - `tools/qxctl/FEATURES.md`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/qxctl/cmd/qxctl/cli_errors.go`
+  - `tools/qxctl/cmd/qxctl/command_manifest_test.go`
+  - `tools/qxctl/cmd/qxctl/command_specs.go`
+  - `tools/qxctl/cmd/qxctl/commands.go`
+  - `tools/qxctl/cmd/qxctl/sqv.go`
+  - `tools/qxctl/cmd/qxctl/sqv_test.go`
+  - `tools/qxctl/internal/inventory/inventory.go`
+  - `tools/qxctl/internal/inventory/inventory_test.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_profile_interface.go`
+  - `tools/qxctl/internal/knowledgeengine/sqav_request.go`
+  - `tools/qxctl/internal/knowledgeengine/sqav_request_interface_generated.go`
+  - `tools/qxctl/internal/knowledgeengine/sqav_request_test.go`
+  - `tools/qxctl/internal/modules/modules.go`
+  - `tools/qxctl/internal/modules/modules_test.go`
+  - `tools/shv-interface-codegen/EXTENDING.md`
+  - `tools/shv-interface-codegen/SPEC.md`
+  - `tools/shv-interface-codegen/tests/owner_test.cpp`
+- skvi_references:
+  - `knowledge/INVARIANT-OWNERSHIP.json`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.json`
+  - `knowledge/skvi/INDEX.md`
+  - `modules/sqav-request-engine/MANIFEST.md`
+  - `modules/sqav-request-engine/SPEC.md`
+  - `tools/qxctl/COMMANDS.json`
+- change_summary: |
+    Add one C++26 finite request engine calling the current FRED/ALFRED, Databento historical and Databento reference validators. Add exactly sqv acquisition validate, sqv schema and sqv template. Extend eight existing module/inventory routes for source contracts.
+- relationship_changes: |
+    SQAV owns request meaning; qxctl owns mechanical invocation and correspondence. Shared generator admission retains existing projections and admits explicit owner symbols. Six earlier source-adapter feature entries move into the registry's parsed canonical section and their records are normalized; adapter runtime implementations remain unchanged.
+- doctrine_changes: |
+    No architectural ownership changes. Source declarations, installed receipt evidence and unobserved provider/runtime state remain distinct. C++26 remains the proprietary native implementation protocol.
+- compatibility_consequences: |
+    Three additions grow the registry from 373 to 376 with no aliases or removals. Existing metadata fields and legacy contracts remain. Exact installed releases are explicit; nanosecond timestamps retain integral precision through decimal strings.
+- publication_consequences: |
+    Local source and verification only. No merge, push, release, provider activation or deployment. The new native engine is independently receipted; the acceptance CLI is an unreceipted source build.
+- projection_consequences: |
+    Shared discovery includes 18 source modules and 100 contracts. The validated partial feature catalog contains 125 records across 49 scopes. A scoped SAV source observation and fourteen supplied SCSEV consequence families describe this increment.
+- evidence:
+  - `Native source/installed-dependency builds, direct validator parity and ASan/UBSan pass; a receipt-bound native process test covers all three variants and refusals.`
+  - `42 acceptance cases, 17 focused Go test/subtest passes, 29 discovery tests and 34 native generator assertions pass. All six registered owner projections check.`
+  - `SKVI, SSFV, 15 affected feature-administration checks, invariant ownership and repository validation pass; four existing historical-reference warnings remain.`
+  - `External verification report: /Users/Duncan/Documents/ChatGPT/Symphony p2-p8/implementation/sqv-26/README.md`
+- non_authorizations:
+  - `No credential use, provider traffic, spend, live collection, SDK license acceptance or store mutation.`
+  - `No complete SQV qxctl coverage, detached runtime, operational SSIAG, broker SDK conformance or streaming-overhead completion claim.`
+- notes: |
+    Start and completion describe this local implementation interval and exact source-commit finalization. The v3 post_merge disposition records ordinary completed local-Git closure; no main-branch or remote merge occurred. Full legacy campaigns and Linux delivery were not rerun. Prior historical records are unchanged.

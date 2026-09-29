@@ -48,7 +48,7 @@ func Snapshot(repoRoot string) ([]string, error) {
 			return nil, fmt.Errorf("missing module directory: %s", modRelPath)
 		}
 
-		for _, file := range modules.ExpectedFiles {
+		for _, file := range modules.ContractsFor(mod) {
 			filePath := filepath.Join(modPath, file)
 			if !repository.IsFile(filePath) {
 				return nil, fmt.Errorf("missing contract file: %s in %s", file, modRelPath)
@@ -94,7 +94,7 @@ func SnapshotJSON(repoRoot string) ([]byte, error) {
 			Path:   modRelPath,
 		}
 
-		for _, file := range modules.ExpectedFiles {
+		for _, file := range modules.ContractsFor(mod) {
 			filePath := filepath.Join(modPath, file)
 			if !repository.IsFile(filePath) {
 				return nil, fmt.Errorf("missing contract file: %s in %s", file, modRelPath)

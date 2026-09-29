@@ -26,13 +26,14 @@ namespace {
 
 constexpr std::size_t normalized_projected_entry_fields = 12;
 constexpr std::size_t projection_values_per_entry = 1U + (2U * normalized_projected_entry_fields);
+constexpr std::size_t projection_values_per_manifest = 7;
 constexpr std::size_t projection_envelope_value_reserve = 1024;
-constexpr std::size_t max_entries = 1024;
+constexpr std::size_t max_entries = 2048;
 constexpr std::size_t max_evidence = 1024;
 constexpr std::size_t max_field_bytes = 64U * 1024U;
 constexpr const char* index_path = "knowledge/skvi/INDEX.md";
-constexpr const char* check_protocol = "symphony.skvi.check-result.v1";
-constexpr const char* projection_protocol = "symphony.skvi.projection.v1";
+constexpr const char* check_protocol = "symphony.skvi.check-result.v2";
+constexpr const char* projection_protocol = "symphony.skvi.projection.v2";
 constexpr const char* proposal_protocol = "symphony.knowledge.proposal.v1";
 
 constexpr std::array<const char*, 10> entry_fields = {
@@ -42,9 +43,10 @@ constexpr std::array<const char*, 10> entry_fields = {
 
 static_assert(entry_fields.size() + 2U == normalized_projected_entry_fields);
 static_assert(
-    (max_entries * projection_values_per_entry) + projection_envelope_value_reserve <=
-    engine::Limits::max_json_values);
-static_assert(max_entries == engine::Limits::max_snapshot_files);
+    (max_entries * projection_values_per_entry) +
+    (engine::Limits::max_manifest_files * projection_values_per_manifest) +
+    projection_envelope_value_reserve <= max_json_values);
+static_assert(engine::Limits::max_manifest_files <= engine::Limits::max_snapshot_files);
 
 struct Entry final {
     std::map<std::string, std::string> fields;
@@ -776,7 +778,7 @@ engine::Json descriptor() {
             {"request_bytes", engine::Limits::max_request_bytes},
             {"response_bytes", engine::Limits::max_response_bytes},
             {"json_depth", engine::Limits::max_json_depth},
-            {"json_values", engine::Limits::max_json_values},
+            {"json_values", max_json_values},
             {"path_bytes", engine::Limits::max_path_bytes},
             {"snapshot_files", engine::Limits::max_snapshot_files},
             {"snapshot_file_bytes", engine::Limits::max_snapshot_file_bytes},

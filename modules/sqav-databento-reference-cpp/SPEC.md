@@ -1,0 +1,15 @@
+# Databento native reference and cost adapter: exact 0.1.0-dev contract
+
+## Supported extent
+
+Reference HTTP v0 observed 2026-09-28, parameters cross-checked against official databento-python v0.84.0 source (research evidence only, no Python runtime). Corporate actions get_range, adjustment factors get_range, security master get_range/get_last support 1–128 explicit raw symbols; ranges use explicit ISO dates with start before end. All requests set allocate_isins=false and compression=zstd; corporate index is event_date, security range index ts_effective. No ALL_SYMBOLS or implicit current range is selected. Point-in-time rows and nested fields are retained without flattening or latest-record collapse. Exact zstd 1.5.7 static dependency; compressed and expanded limits each 1–64 MiB, at most 65,536 rows, bounded JSON per record and decoder window log 10–23. Full compressed-frame completion is mandatory; truncation, trailing garbage, excess output and malformed/duplicate JSON fail atomically. Captures preserve original compressed bytes; decoded JSONL is also available unchanged. Identifier shape validation is deliberately narrower than full provider schema semantics. Reference coverage remains partial because allocation filtering and provider entitlements can omit rows. CostQuote uses metadata.get_cost for the exact existing historical MBO request. Positive/zero JSON decimal USD is converted upward to nano-USD using integer decimal arithmetic, with overflow refusal and no binary-float conversion. Quotes bind exact request, caller-recorded time and 1–86,400,000 ms validity; only matching, unexpired quotes produce AttemptQuote inputs for the durable ledger. Provider estimates are not guaranteed invoices or account-wide budget authority.
+
+## Native/package boundary
+
+C++26, initially verified on macOS amd64 / AppleClang 21 with compatible native consumers. Fallible preparation/admission preserves output on failure unless the API explicitly reports an attempted operation. Immutable handles may be retained; mutation, reset, destruction and move must not race use of the same handle. Source data is untrusted. Errors contain status only, never source contents or credentials. Dependencies: native-source-support-cpp 0.1.0-dev, sqav-capture-cpp 0.2.0-dev, sqav-databento-dbn-cpp 0.5.0-dev, zstd 1.5.7 static library. No runtime discovery or implicit upgrade. The module exports no standalone process or qxctl command.
+
+## Verification and limits
+
+`tests/test.cpp` exercises supported positive and negative boundaries; `tests/sdk-consumer/main.cpp` exercises the installed public API outside the checkout. The SQV non-live source composition tests preserve selected capture evidence through exact local retention/replay. The tests and package receipts do not establish provider access, production conformance or a licence grant.
+
+No provider activation, reference entitlement guarantee, source authenticity from fixtures, new ISIN allocation, live data, full reference-schema normalization, account-wide billing reconciliation, automatic paid retry or operational SSIAG bridge.

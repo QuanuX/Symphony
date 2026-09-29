@@ -1,0 +1,9 @@
+@PACKAGE_INIT@
+include(CMakeFindDependencyMacro)
+find_dependency(Threads)
+find_dependency(SymphonyKnowledgeVectorEngine 0.2.0 EXACT CONFIG)
+find_dependency(SymphonySqmvMetadata 0.2.0 EXACT CONFIG)
+find_dependency(SymphonySqfvBatch 0.3.0 EXACT CONFIG)
+set(SymphonySqpvLocalStore_RELEASE_VERSION "@SQPV_VERSION@")
+include("${CMAKE_CURRENT_LIST_DIR}/SymphonySqpvLocalStoreTargets.cmake")
+check_required_components(SymphonySqpvLocalStore)

@@ -2,6 +2,7 @@
 
 ## Canonical Surfaces
 
+- `libraries/knowledge-vector-engine-cpp/tests/digest_failure_test.cpp`
 - `libraries/knowledge-vector-engine-cpp/tests/native_process_test.cpp`
 
 - `cmake/SymphonyNativeTests.cmake`
@@ -20,7 +21,7 @@
 - module ID: `knowledge-vector-engine-cpp`
 - source path: `libraries/knowledge-vector-engine-cpp/`
 - language: C++26
-- development version: `0.1.0-dev`
+- development version: `0.2.0-dev`
 - executable: none
 - CMake target: `Symphony::KnowledgeVectorEngine`
 

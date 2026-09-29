@@ -116,7 +116,7 @@ go run ./cmd/qxctl stav supervisor status|plan|apply|apply-status|recover --pref
 # Manage the protected user-default exact engine bindings
 go run ./cmd/qxctl knowledge engines list [--state-root /chosen/state/root] [--json]
 go run ./cmd/qxctl knowledge engines inspect skvi [--json]
-go run ./cmd/qxctl knowledge engines bind skvi --prefix /chosen/prefix [--version 0.1.0-dev] --expected-registry-digest absent [--json]
+go run ./cmd/qxctl knowledge engines bind skvi --prefix /chosen/prefix --version 0.2.0-dev --expected-registry-digest absent [--json]
 go run ./cmd/qxctl knowledge engines doctor [--json]
 go run ./cmd/qxctl knowledge engines unbind skvi --expected-registry-digest sha256:... [--json]
 go run ./cmd/qxctl knowledge engines migrate --expected-registry-digest sha256:... [--json]
@@ -127,7 +127,7 @@ go run ./cmd/qxctl knowledge invariant list [--repo /repository] [--json]
 go run ./cmd/qxctl knowledge invariant show --invariant-id invariant:symphony:foundation.audit-closure [--repo /repository] [--json]
 
 # Run complete invariant assurance through one exact independently installed validator
-go run ./cmd/qxctl knowledge invariant check --prefix /chosen/prefix [--version 0.1.0-dev] [--repo /repository] [--json]
+go run ./cmd/qxctl knowledge invariant check --prefix /chosen/prefix [--version 0.2.0-dev] [--repo /repository] [--json]
 
 # Administer durable worktree reconciliation through the exact bound coordinator
 go run ./cmd/qxctl knowledge reconcile compatibility [--repo /repository] [--json]
@@ -139,7 +139,7 @@ go run ./cmd/qxctl knowledge reconcile recover --operation-id ID --expected-jour
 go run ./cmd/qxctl knowledge reconcile recover --operation-id ID --discover [--json]
 
 # Invoke an exact independently installed SKVI engine
-go run ./cmd/qxctl skvi inspect --prefix /chosen/prefix [--version 0.1.0-dev] [--json]
+go run ./cmd/qxctl skvi inspect --prefix /chosen/prefix [--version 0.2.0-dev] [--json]
 go run ./cmd/qxctl skvi check --prefix /chosen/prefix [--expected-index-digest sha256:...] [--json]
 go run ./cmd/qxctl skvi propose --prefix /chosen/prefix --input proposal-input.json [--json]
 go run ./cmd/qxctl skvi project --prefix /chosen/prefix [--json]
@@ -221,6 +221,8 @@ Validation state is protected beneath `<state-root>/symphony/<tops-id>/qxctl/val
 The four STAV commands use mutually authenticated, TOPS-scoped Unix-socket IPC to the local append authority. `status`, `verify`, and bounded `query` return only classification-authorized read projections; `doctor` composes client-side availability and verification checks. qxctl verifies the configured authority identity before sending application bytes and never opens the ledger file. `qxctl stav append` is intentionally absent.
 
 `stav accordare status|reconcile` uses the separately authenticated producer socket to inspect or replay its private durable outbox; it never reads outbox files or accepts candidate content. `stav accordare-grant install|remove` is the only qxctl STAV-configuration mutation in this slice. It requires fresh SSIAG authority, exact expected configuration state, a stopped append authority, and the enrolled producer identity, and it can install only the four closed SAV Named Version permissions.
+
+Exact SKVI `0.2.0-dev` requests have a 15-second deadline for the larger 2,048-entry check and projection. Exact SKVI `0.1.0-dev` and other engines retain the five-second client deadline.
 
 The SKVI, SCLV, SACV, SODV, and SSFV commands are cold/freezing-path local process operations. qxctl validates the exact inactive-undocked receipt and all package-owned files, requiring the prefix and installed files to be owned by the effective user or root and not writable by group or other. It invokes only the versioned engine path with an empty environment, enforces a hard deadline, and verifies response identity, digest, and safety assertions. Secure local receipt traversal is implemented on Linux and the macOS development path; other native operating systems fail closed rather than substituting a weaker file-open routine. Proposal, diff, verification, recovery, provider-evidence, and SSFV baseline input comes from bounded no-follow JSON files. The SCLV `evidence local-git|airgap` leaves require exact receipt-v2 typed adapter entry points and revalidate the complete installed SCLV package. qxctl validates the returned adapter identity, exact fields, nested presence semantics, whole-second UTC timestamp, and evidence digest before presenting normalized provider evidence. It does not turn a successful result—including an air-gap ratification assertion—into truth, permission, ratification, or canonical apply authority. SKVI cannot decide membership. SCLV cannot grant permission, ratify, append, commit, mutate or delete journals, or treat a projection as canonical. SACV cannot decide semantic ownership, create endpoints, publish, generate bindings, or treat compatibility evidence or a projection as canonical. SODV cannot create or move tags, query external providers, declare publication complete, append records, mutate recovery journals, or treat a projection as canonical. SSFV cannot decide feature-worthiness or semantic truth, ratify or apply proposals, persist graphs, or create a feature record.
 

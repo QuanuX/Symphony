@@ -2,7 +2,7 @@
 
 ## Status
 
-Canonical SSFV feature-routing registry. The partial catalog routes 110 experimental records across the platform governance scope and 34 implemented owner scopes enumerated by `COVERAGE.md`.
+Canonical SSFV feature-routing registry. The partial catalog routes 125 experimental records across the platform governance scope and 49 owner scopes enumerated by `COVERAGE.md`.
 
 ## Purpose
 
@@ -742,6 +742,69 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - record_digest: `sha256:4b4f58ad687266e33feb00ca7c0a97a9488dd4ac8c0ee5e88dc597e1c2552ea7`
 - notes: Architect-ratified F3 nested record for a rebuildable release-transaction projection; coverage remains partial and no broader runtime or canonical authority is implied.
 
+- feature_id: `ssfv:symphony:sqav-capture-cpp`
+- feature_file: `modules/sqav-capture-cpp/FEATURES.md`
+- owner_contract: `modules/sqav-capture-cpp/SPEC.md`
+- source_scope: `modules/sqav-capture-cpp`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:platform`
+- record_digest: `sha256:2719047344c83c6273cf54e0076eadb24064a1c4aa2a6aa21fd79fc327224ea5`
+- notes: Optional bounded C++26 original-byte capture and attributed source evidence; no provider connection or source authority is implied.
+
+- feature_id: `ssfv:symphony:sqav-databento-dbn-cpp`
+- feature_file: `modules/sqav-databento-dbn-cpp/FEATURES.md`
+- owner_contract: `modules/sqav-databento-dbn-cpp/SPEC.md`
+- source_scope: `modules/sqav-databento-dbn-cpp`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:platform`
+- record_digest: `sha256:e26c23c2c6c50f8a8652c06f5eb07843d106da98b4e2a943ae81985f84f2f403`
+- notes: Bounded DBNv1/v3 single-schema MBO file fidelity and attributed capture; network sessions and entitlements remain separate.
+
+- feature_id: `ssfv:symphony:sqdv-delivery-cpp`
+- feature_file: `modules/sqdv-delivery-cpp/FEATURES.md`
+- owner_contract: `modules/sqdv-delivery-cpp/SPEC.md`
+- source_scope: `modules/sqdv-delivery-cpp`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:platform`
+- record_digest: `sha256:9fc437a5b7db78d4bb27b94edb3ab4a430a97f5841b165cc500aee72ca0e1953`
+- notes: Bounded C++26 same-process delivery and exact resume; retained evidence inherits the selected SQPV guarantee and grants no recipient authority.
+
+- feature_id: `ssfv:symphony:sqfv-batch-cpp`
+- feature_file: `modules/sqfv-batch-cpp/FEATURES.md`
+- owner_contract: `modules/sqfv-batch-cpp/SPEC.md`
+- source_scope: `modules/sqfv-batch-cpp`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:platform`
+- record_digest: `sha256:9ad4d55a906ce406334e2101ca4b13a11dd55a73aca353e81afc04d7008077e3`
+- notes: Trusted same-process SQFV batch, lease, bounded port, and local frame library; no SQV qxctl or process entry point, durable delivery, private access enforcement, provider, or network transport.
+
+- feature_id: `ssfv:symphony:sqmv-metadata-cpp`
+- feature_file: `modules/sqmv-metadata-cpp/FEATURES.md`
+- owner_contract: `modules/sqmv-metadata-cpp/SPEC.md`
+- source_scope: `modules/sqmv-metadata-cpp`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:platform`
+- record_digest: `sha256:c4b78c7e3abfae65c59e19f7f9ddf1cada29f3a6a69227e9bd3177bc2c1f6024`
+- notes: Bounded native C++26 library; exact module contract and focused evidence define its implemented extent.
+
+- feature_id: `ssfv:symphony:sqpv-local-store-cpp`
+- feature_file: `modules/sqpv-local-store-cpp/FEATURES.md`
+- owner_contract: `modules/sqpv-local-store-cpp/SPEC.md`
+- source_scope: `modules/sqpv-local-store-cpp`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:platform`
+- record_digest: `sha256:db1caaf6be746bd467098b8c208a5ef32e98cb58f8ea6fff1956a1668746b53b`
+- notes: Bounded native C++26 library; exact module contract and focused evidence define its implemented extent.
+
+- feature_id: `ssfv:symphony:sqtv-integer-conversion-cpp`
+- feature_file: `modules/sqtv-integer-conversion-cpp/FEATURES.md`
+- owner_contract: `modules/sqtv-integer-conversion-cpp/SPEC.md`
+- source_scope: `modules/sqtv-integer-conversion-cpp`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:platform`
+- record_digest: `sha256:92665e589f40abbe230980fa334bdfc3dabac3d9cba3c218537792eb72f8feac`
+- notes: Exact bounded integer representation conversion with preserved evidence and explicit input/operation lineage.
+
 - feature_id: `ssfv:symphony:ssfv-engine`
 - feature_file: `modules/ssfv-engine/FEATURES.md`
 - owner_contract: `modules/ssfv-engine/SPEC.md`
@@ -802,7 +865,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `modules/secure-identity-access-governance`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:platform`
-- record_digest: `sha256:32a1d25fef5364661bd42662d1deb1f19f2de23b38088550053bbe94c58840e6`
+- record_digest: `sha256:0397e16fb5a15b147ff8cb1da9ce76f66552d6a75bc2149f5aaa949c3b94197f`
 - notes: Partial-catalog record for caller-neutral local identity, endpoint trust, authorization decisions, supervision, and safe STAV production.
 
 - feature_id: `ssfv:symphony:ssiag-foundation.authorization-capabilities`
@@ -901,7 +964,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `modules/ssiag-provider-macos-keychain`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:ssiag-foundation`
-- record_digest: `sha256:2da7bcf4f6ae53f25211633528f720846c73dd7d6b76103568d6a9f7e761c9d9`
+- record_digest: `sha256:6e8f1cf1c061e385f27c93f2b74657f80bd0ab8303fbc6c97b30e42a9bca5d2c`
 - notes: Partial-catalog subfeature for the independently installed Swift adapter and its verified metadata-only SSIAG handshake; qxctl does not invoke it and operational secret access remains disabled.
 
 - feature_id: `ssfv:symphony:ssiag.macos-signed-bundle-readiness`
@@ -1021,6 +1084,78 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - record_digest: `sha256:99ae4416c59203eeeebff4497de8020de6e23c32b7625e5dd4113f27ff041556`
 - notes: Architect-ratified W4 subfeature for deterministic root-summary projection and managed-region freshness assurance; coverage remains partial.
 
+- feature_id: `ssfv:symphony:native-source-support-cpp`
+- feature_file: `modules/native-source-support-cpp/FEATURES.md`
+- owner_contract: `modules/native-source-support-cpp/SPEC.md`
+- source_scope: `modules/native-source-support-cpp`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:platform`
+- record_digest: `sha256:5e1c77680b65891177d448b5eac77d2e54c4738db26d841d5b098d082ae53292`
+- notes: Bounded non-live source implementation; exact external activation and deployment requirements remain explicit.
+
+- feature_id: `ssfv:symphony:sqav-fred-cpp`
+- feature_file: `modules/sqav-fred-cpp/FEATURES.md`
+- owner_contract: `modules/sqav-fred-cpp/SPEC.md`
+- source_scope: `modules/sqav-fred-cpp`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:platform`
+- record_digest: `sha256:74a2ee101d645bc92f95fd61a8152bc2efd31ab72d1afff6bea0d2338b4f55f5`
+- notes: Bounded non-live source implementation; exact external activation and deployment requirements remain explicit.
+
+- feature_id: `ssfv:symphony:sqav-news-api-cpp`
+- feature_file: `modules/sqav-news-api-cpp/FEATURES.md`
+- owner_contract: `modules/sqav-news-api-cpp/SPEC.md`
+- source_scope: `modules/sqav-news-api-cpp`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:platform`
+- record_digest: `sha256:5f550bea9fe08b075000bbe6b652685cfd3ba3b7dee667c8461ff25510e340e8`
+- notes: Bounded non-live source implementation; exact external activation and deployment requirements remain explicit.
+
+- feature_id: `ssfv:symphony:scabv-ibkr-client-portal-cpp`
+- feature_file: `modules/scabv-ibkr-client-portal-cpp/FEATURES.md`
+- owner_contract: `modules/scabv-ibkr-client-portal-cpp/SPEC.md`
+- source_scope: `modules/scabv-ibkr-client-portal-cpp`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:platform`
+- record_digest: `sha256:0333ddef2815ae20e47c90a6a11e5bfae85bd4753f8b206877b4363b8659749b`
+- notes: Bounded non-live source implementation; exact external activation and deployment requirements remain explicit.
+
+- feature_id: `ssfv:symphony:scabv-ibkr-tws-cpp`
+- feature_file: `modules/scabv-ibkr-tws-cpp/FEATURES.md`
+- owner_contract: `modules/scabv-ibkr-tws-cpp/SPEC.md`
+- source_scope: `modules/scabv-ibkr-tws-cpp`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:platform`
+- record_digest: `sha256:5ef6be58e386e0e0e79362d54c7aed3996379c919d643fec35e8d40348160bd1`
+- notes: Bounded non-live source implementation; exact external activation and deployment requirements remain explicit.
+
+- feature_id: `ssfv:symphony:sqav-databento-reference-cpp`
+- feature_file: `modules/sqav-databento-reference-cpp/FEATURES.md`
+- owner_contract: `modules/sqav-databento-reference-cpp/SPEC.md`
+- source_scope: `modules/sqav-databento-reference-cpp`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:platform`
+- record_digest: `sha256:8dc2e1c5a80fbb4371d9fd72a5dbcf6fa5dc4888425c108f550482c916779ed5`
+- notes: Bounded non-live source implementation; exact external activation and deployment requirements remain explicit.
+
+- feature_id: `ssfv:symphony:qxctl.sqv-administration`
+- feature_file: `tools/qxctl/FEATURES.md`
+- owner_contract: `tools/qxctl/MANIFEST.md`
+- source_scope: `tools/qxctl`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:qxctl`
+- record_digest: `sha256:1d9e9e73437f0a1695f636adb4a24d2d6b2aa9b836c3f811bb53fec89a472a27`
+- notes: Bounded SQAV local request validation and shared administration, without provider activation.
+
+- feature_id: `ssfv:symphony:sqav-request-engine`
+- feature_file: `modules/sqav-request-engine/FEATURES.md`
+- owner_contract: `modules/sqav-request-engine/SPEC.md`
+- source_scope: `modules/sqav-request-engine`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:platform`
+- record_digest: `sha256:ca5a45c14f6faef90f5b18f892e8e8b7168b91bbbb0de1640e4cb272ce61b800`
+- notes: Bounded SQAV local request validation and shared administration, without provider activation.
+
 ## Prohibited Entries
 
 Do not register:
@@ -1035,4 +1170,4 @@ Do not register:
 
 ## Non-Authorization Statement
 
-This 99-record registry is an explicitly partial catalog governed by `COVERAGE.md`. It does not authorize an unratified feature record, an unregistered distributed file, repository-wide or installed-host completeness, complete legacy-invariant coverage, engine-decided feature-worthiness, or canonical mutation.
+This 125-record registry is an explicitly partial catalog governed by `COVERAGE.md`. It does not authorize an unratified feature record, an unregistered distributed file, repository-wide or installed-host completeness, complete legacy-invariant coverage, engine-decided feature-worthiness, or canonical mutation.

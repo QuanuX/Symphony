@@ -100,7 +100,7 @@ func writeCLIError(command *cobra.Command, err error, status int) {
 // could contain caller data. Unknown/new codes remain null until admitted here.
 func safeSCVEngineCode(code string) *string {
 	switch code {
-	case "argument.count", "argument.unsupported", "internal.failure", "operation.unsupported",
+	case "sqav.request.invalid", "sqav.request.rejected", "sqav.request.limit", "sqav.request.unavailable", "request.invalid_deadline", "request.deadline_expired", "argument.count", "argument.unsupported", "internal.failure", "operation.unsupported",
 		"request.deadline", "request.deadline_exceeded", "corpus.invalid", "interpretation.invalid", "coverage.invalid", "pack.invalid", "composition.invalid",
 		"knowledge.invalid", "knowledge.evaluation_limit",
 		"scv.fields", "scv.type", "scv.bounds", "scv.identity", "scv.locator", "scv.digest",
@@ -117,7 +117,7 @@ func safeSCVEngineCode(code string) *string {
 // us which flags consume the next token, including a value spelled "--json".
 // This does not make misplaced/unknown flags valid or change Cobra's grammar.
 func scvJSONRequested(root *cobra.Command, args []string) bool {
-	if len(args) == 0 || (args[0] != "scv" && args[0] != "shv") {
+	if len(args) == 0 || (args[0] != "scv" && args[0] != "shv" && args[0] != "sqv") {
 		return false
 	}
 	consumesValue := map[string]bool{}

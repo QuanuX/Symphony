@@ -48,7 +48,11 @@
       "evidence": [
         "Peer-authentication tests cover Darwin/Linux credential extraction, exact mapping, ambiguity refusal, and endpoint mismatch.",
         "Policy, server, STAV producer, lifecycle, and supervision tests cover exact grants, non-transferable bindings, audit-before-release, and per-TOPS isolation.",
-        "Policy-administration tests cover config/overlay selection, CAS, durable prepare/audit/commit stages, exact recovery evidence, reset, tamper and symlink refusal, and live evaluator activation."
+        "Policy-administration tests cover config/overlay selection, CAS, durable prepare/audit/commit stages, exact recovery evidence, reset, tamper and symlink refusal, and live evaluator activation.",
+        "Credential-use guard tests cover exact generation and authority-metadata binding, valid field drift, exclusive deadline, cancellation, replay refusal, and 128 concurrent attempts; the guard remains unwired to provider operations.",
+        "Internal dispatch tests use real Unix peer identity, current pinned policy and the concrete STAV producer with a fixture transport; they cover audit/target/generation mismatch, cancellation, cleanup and concurrent single-attempt execution. The native provider/recipient backend remains unimplemented; the internal snapshot wrapper now composes that boundary.",
+        "Credential journal tests cover durable intent/armed/outcome barriers, exact authenticated request identity, independent dispatcher instances, 24 concurrent claimants, six persistence-failure cases, unsafe/corrupt/missing state and four SIGKILL recovery checkpoints with no redelivery.",
+        "Admission snapshot tests cover exact resource/lease mapping, independently owned values, rotation/revocation CAS and busy behavior, native evidence drift, real kernel peer context, deadlines, cancellation, idempotent cleanup, concurrent execution and replacement."
       ],
       "feature_id": "ssfv:symphony:ssiag-foundation",
       "how": "Darwin and Linux kernel peer credentials map exact UID/GID identities to canonical subjects; target-host ownership or exact current grants authorize protected local policy proposals; CAS, a durable attempt journal, idempotent STAV audit, atomic state replacement, and live snapshot exchange complete apply or recovery.",
@@ -60,7 +64,18 @@
       ],
       "implementation_paths": [
         "modules/secure-identity-access-governance/cmd/symphony-ssiag/main.go",
+        "modules/secure-identity-access-governance/internal/credential/admission.go",
+        "modules/secure-identity-access-governance/internal/credential/admission_test.go",
+        "modules/secure-identity-access-governance/internal/credential/dispatch.go",
+        "modules/secure-identity-access-governance/internal/credential/dispatch_test.go",
+        "modules/secure-identity-access-governance/internal/credential/journal.go",
+        "modules/secure-identity-access-governance/internal/credential/journal_test.go",
+        "modules/secure-identity-access-governance/internal/credential/journal_unix.go",
+        "modules/secure-identity-access-governance/internal/credential/journal_unsupported.go",
+        "modules/secure-identity-access-governance/internal/credential/use.go",
+        "modules/secure-identity-access-governance/internal/credential/use_test.go",
         "modules/secure-identity-access-governance/internal/peerauth/peerauth.go",
+        "modules/secure-identity-access-governance/internal/policy/admission_test.go",
         "modules/secure-identity-access-governance/internal/policy/policy.go",
         "modules/secure-identity-access-governance/internal/policyadmin/manager.go",
         "modules/secure-identity-access-governance/internal/policyadmin/storage_unix.go",
@@ -71,7 +86,11 @@
       "kind": "feature",
       "non_claims": [
         "Does not infer authority from whether a caller is human, AI, agentic, automated, a service, or an organization.",
-        "The current record does not claim canonical knowledge apply, operational credential delivery, remote access, or operational Keychain use."
+        "The current record does not claim canonical knowledge apply, operational credential delivery, remote access, or operational Keychain use.",
+        "The process-local credential-use guard does not authenticate or authorize callers, validate audit receipts, issue leases, persist attempts, or provide a secret channel.",
+        "The internal dispatcher does not implement lease issuance, a native provider/recipient pin backend, secure byte delivery or an operational endpoint.",
+        "Local request recovery does not prove recipient credential use, replace STAV provider-outcome evidence, survive privileged whole-directory rollback, or certify power-loss behavior.",
+        "The process-local admission registry does not persist or issue leases, authenticate native executables, publish durable rotation/revocation, or claim that a busy replacement has committed."
       ],
       "owner_contract": "modules/secure-identity-access-governance/SPEC.md",
       "parent_feature_id": "ssfv:symphony:platform",

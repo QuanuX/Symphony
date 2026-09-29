@@ -76,7 +76,7 @@ Direct `apply` invocation is rejected with stable invalid-usage status because t
 The implemented checker reads active Markdown from the bounded repository surfaces defined in `SPEC.md`. It emits lexical-path evidence for configured caller-class authority constructions and for fail-visible discovery, stream, symlink, and resource-limit conditions. It does not follow symlink targets or modify scanned content.
 
 ## Dependencies
-A conforming C++26 compiler, CMake 3.25 or newer, the shared static knowledge-vector foundation, and its vendored nlohmann JSON dependency. The installed executable has no dynamic Symphony-library dependency.
+A conforming C++26 compiler, CMake 3.30 or newer, the shared static knowledge-vector foundation, and its vendored nlohmann JSON dependency. The installed executable has no dynamic Symphony-library dependency.
 
 The caller-authority checker depends only on the validator evidence formatter and the C++ standard library. Its direct input is a repository path; its implemented outputs are line-oriented evidence, one summary line, and the process status.
 

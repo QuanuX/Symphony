@@ -19,7 +19,7 @@ func TestSnapshot_Success(t *testing.T) {
 			t.Fatalf("failed to create module dir: %v", err)
 		}
 
-		for _, file := range modules.ExpectedFiles {
+		for _, file := range modules.ContractsFor(mod) {
 			filePath := filepath.Join(modPath, file)
 			if err := os.WriteFile(filePath, []byte("# Title\nContent"), 0644); err != nil {
 				t.Fatalf("failed to write contract file: %v", err)
@@ -55,7 +55,7 @@ func TestSnapshotJSON_Success(t *testing.T) {
 			t.Fatalf("failed to create module dir: %v", err)
 		}
 
-		for _, file := range modules.ExpectedFiles {
+		for _, file := range modules.ContractsFor(mod) {
 			filePath := filepath.Join(modPath, file)
 			if err := os.WriteFile(filePath, []byte("# Title\nContent"), 0644); err != nil {
 				t.Fatalf("failed to write contract file: %v", err)
@@ -93,7 +93,10 @@ func TestSnapshotJSON_Success(t *testing.T) {
 	if data.ModuleCount != len(modules.CanonicalModules) {
 		t.Errorf("expected module_count %d, got %d", len(modules.CanonicalModules), data.ModuleCount)
 	}
-	expectedContracts := len(modules.CanonicalModules) * len(modules.ExpectedFiles)
+	expectedContracts := 0
+	for _, mod := range modules.CanonicalModules {
+		expectedContracts += len(modules.ContractsFor(mod))
+	}
 	if data.ContractCount != expectedContracts {
 		t.Errorf("expected contract_count %d, got %d", expectedContracts, data.ContractCount)
 	}
@@ -131,7 +134,7 @@ func TestSnapshot_EmptyContract(t *testing.T) {
 			t.Fatalf("failed to create module dir: %v", err)
 		}
 
-		for _, file := range modules.ExpectedFiles {
+		for _, file := range modules.ContractsFor(mod) {
 			filePath := filepath.Join(modPath, file)
 			if err := os.WriteFile(filePath, []byte(""), 0644); err != nil {
 				t.Fatalf("failed to write contract file: %v", err)
@@ -154,7 +157,7 @@ func TestSnapshot_MissingH1(t *testing.T) {
 			t.Fatalf("failed to create module dir: %v", err)
 		}
 
-		for _, file := range modules.ExpectedFiles {
+		for _, file := range modules.ContractsFor(mod) {
 			filePath := filepath.Join(modPath, file)
 			if err := os.WriteFile(filePath, []byte("Content without H1\n"), 0644); err != nil {
 				t.Fatalf("failed to write contract file: %v", err)
@@ -177,7 +180,7 @@ func TestDigest_Success(t *testing.T) {
 			t.Fatalf("failed to create module dir: %v", err)
 		}
 
-		for _, file := range modules.ExpectedFiles {
+		for _, file := range modules.ContractsFor(mod) {
 			filePath := filepath.Join(modPath, file)
 			if err := os.WriteFile(filePath, []byte("# Title\nContent"), 0644); err != nil {
 				t.Fatalf("failed to write contract file: %v", err)
@@ -227,7 +230,7 @@ func TestDigestJSON_Success(t *testing.T) {
 			t.Fatalf("failed to create module dir: %v", err)
 		}
 
-		for _, file := range modules.ExpectedFiles {
+		for _, file := range modules.ContractsFor(mod) {
 			filePath := filepath.Join(modPath, file)
 			if err := os.WriteFile(filePath, []byte("# Title\nContent"), 0644); err != nil {
 				t.Fatalf("failed to write contract file: %v", err)
@@ -268,7 +271,7 @@ func TestDigest_Determinism(t *testing.T) {
 			t.Fatalf("failed to create module dir: %v", err)
 		}
 
-		for _, file := range modules.ExpectedFiles {
+		for _, file := range modules.ContractsFor(mod) {
 			filePath := filepath.Join(modPath, file)
 			if err := os.WriteFile(filePath, []byte("# Title\nContent"), 0644); err != nil {
 				t.Fatalf("failed to write contract file: %v", err)

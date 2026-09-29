@@ -1,5 +1,17 @@
 set(receipt_relative "@SYMPHONY_RECEIPT_PREFLIGHT_PATH@")
-set(install_root "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}")
+include("${CMAKE_CURRENT_LIST_DIR}/SymphonyReceiptV2Support.cmake")
+symphony_receipt_v2_root("$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}" install_root)
+set(owned_paths "@SYMPHONY_RECEIPT_PREFLIGHT_OWNED_PATHS@")
+foreach(relative IN LISTS owned_paths)
+    symphony_receipt_v2_no_follow("${install_root}" "${relative}")
+    if(EXISTS "${install_root}/${relative}")
+        symphony_receipt_v2_regular_file("${install_root}/${relative}")
+    endif()
+endforeach()
+symphony_receipt_v2_no_follow("${install_root}" "${receipt_relative}")
+symphony_receipt_v2_no_follow("${install_root}" "${receipt_relative}.tmp")
+symphony_receipt_v2_no_follow("${install_root}" ".symphony-lifecycle-ownership-v1.json")
+symphony_receipt_v2_no_follow("${install_root}" "share/symphony/receipts/symphony-root-ownership/1/install-receipt.json")
 set(receipt_absolute "${install_root}/${receipt_relative}")
 set(ownership_registry "${install_root}/.symphony-lifecycle-ownership-v1.json")
 set(ownership_fence "${install_root}/share/symphony/receipts/symphony-root-ownership/1/install-receipt.json")
@@ -13,6 +25,9 @@ if(IS_SYMLINK "${ownership_registry}" OR EXISTS "${ownership_registry}" OR
     message(FATAL_ERROR
         "this installation root is administered by qxctl shared-root ownership; "
         "stage the package and use the authenticated lifecycle apply circuit")
+endif()
+if(EXISTS "${receipt_absolute}.tmp")
+    message(FATAL_ERROR "receipt-v2 temporary target already exists")
 endif()
 
 # The receipt is the immutable commit marker for one exact package version.

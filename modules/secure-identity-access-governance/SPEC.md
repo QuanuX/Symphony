@@ -92,4 +92,17 @@ SSIAG submits only the closed safe outcome vocabulary defined by `knowledge/ssia
 
 ## Implemented and Disabled Gates
 
+The internal credential-use guard described in `CREDENTIAL-USE.md` binds one
+attempt to exact metadata, generation and a bounded deadline, and burns that
+attempt on success or refusal. It is not connected to an endpoint or provider,
+does not verify authority itself, and admits no operational credential capability.
+`CREDENTIAL-DISPATCH.md` describes its internal coordinator: kernel-derived
+subject, pinned current policy, verified committed STAV policy receipt and a
+trusted provider admission interface. `CREDENTIAL-JOURNAL.md` defines the required
+internal durable request reservation, preparation, outcome and recovery boundary.
+`CREDENTIAL-ADMISSION.md` defines the implemented process-local resource/lease
+snapshot pin, complete-snapshot CAS and native evidence checks. The native
+provider/recipient backend and protected delivery remain unimplemented; no route
+is enabled. Local execution records do not replace committed STAV evidence.
+
 Local peer authentication, exact UID/GID subject resolution, target-host-owner derivation, endpoint verification, native supervision, receipt-v2 identity, transactional recovery, exact-grant authorization, protected policy administration, typed SSIAG STAV submission, metadata-only provider mutual trust, and exact provider-binding lifecycle are implemented. General safeguards, lease issuance, credential delivery, operational provider operations, secret delivery, and canonical knowledge apply remain disabled.

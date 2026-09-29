@@ -1,0 +1,15 @@
+{
+  "protocol": "symphony.sqav.request-validation-input.v1",
+  "adapter": "fred",
+  "selection": {
+    "operation": "observations",
+    "series": "GDP",
+    "observation_start": "2020-01-01",
+    "observation_end": "2020-12-31",
+    "realtime_start": "2021-01-01",
+    "realtime_end": "2021-01-01",
+    "limit": 10,
+    "offset": 0
+  },
+  "limits": null
+}

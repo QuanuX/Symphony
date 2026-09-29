@@ -260,24 +260,28 @@ Json error_response(
 }
 
 std::string serialize_response(Json response) {
+    return serialize_response(std::move(response), Limits::max_json_values);
+}
+
+std::string serialize_response(Json response, const std::size_t max_json_values) {
     if (!response.is_object() || response.contains("response_digest")) {
         throw Error("response.invalid", "response must be an object without a precomputed digest", 5);
     }
     std::string canonical;
     try {
         canonical = response.dump(-1, ' ', false, nlohmann::json::error_handler_t::strict);
-        try {
-            static_cast<void>(parse_bounded_json(canonical, Limits::max_response_bytes));
-        } catch (const Error&) {
-            throw Error("response.invalid", "response violates bounded JSON requirements", 5);
-        }
         response["response_digest"] = tagged_sha256(canonical);
         canonical = response.dump(-1, ' ', false, nlohmann::json::error_handler_t::strict);
     } catch (const nlohmann::json::exception&) {
         throw Error("response.invalid_utf8", "response contains invalid UTF-8", 5);
     }
-    if (canonical.size() + 1U > Limits::max_response_bytes) {
+    if (canonical.size() >= Limits::max_response_bytes) {
         throw Error("response.too_large", "response exceeds byte limit", 5);
+    }
+    try {
+        static_cast<void>(parse_bounded_json(canonical, Limits::max_response_bytes, max_json_values));
+    } catch (const Error&) {
+        throw Error("response.invalid", "response violates bounded JSON requirements", 5);
     }
     return canonical + '\n';
 }

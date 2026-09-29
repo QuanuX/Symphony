@@ -1,0 +1,4 @@
+@PACKAGE_INIT@
+set(SymphonySqfvBatch_RELEASE_VERSION "@SQFV_VERSION@")
+include("${CMAKE_CURRENT_LIST_DIR}/SymphonySqfvBatchTargets.cmake")
+check_required_components(SymphonySqfvBatch)

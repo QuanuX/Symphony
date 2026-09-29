@@ -1228,7 +1228,7 @@ func runSKVI(operation string, options skviOptions) error {
 	if err != nil {
 		return err
 	}
-	checkValid, err := validateSKVIResult(operation, response.Result)
+	checkValid, err := validateSKVIResult(options.version, operation, response.Result)
 	if err != nil {
 		return err
 	}
@@ -1246,7 +1246,7 @@ func runSKVI(operation string, options skviOptions) error {
 	return printSKVIResult(operation, response.Result)
 }
 
-func validateSKVIResult(operation string, result json.RawMessage) (bool, error) {
+func validateSKVIResult(version, operation string, result json.RawMessage) (bool, error) {
 	switch operation {
 	case "inspect":
 		var value struct {
@@ -1271,11 +1271,13 @@ func validateSKVIResult(operation string, result json.RawMessage) (bool, error) 
 		return true, nil
 	case "check":
 		var value struct {
-			Protocol              string `json:"protocol"`
-			ReadOnly              *bool  `json:"read_only"`
-			CanonicalApplyEnabled *bool  `json:"canonical_apply_enabled"`
+			Protocol              string  `json:"protocol"`
+			EntriesChecked        *uint64 `json:"entries_checked"`
+			ReadOnly              *bool   `json:"read_only"`
+			CanonicalApplyEnabled *bool   `json:"canonical_apply_enabled"`
 		}
-		if err := json.Unmarshal(result, &value); err != nil || value.Protocol != "symphony.skvi.check-result.v1" ||
+		if err := json.Unmarshal(result, &value); err != nil || value.EntriesChecked == nil ||
+			!validSKVIEntryCount(version, value.Protocol, "check", *value.EntriesChecked) ||
 			!explicitTrue(value.ReadOnly) || !explicitFalse(value.CanonicalApplyEnabled) {
 			return false, fmt.Errorf("SKVI check result violates the implemented safety contract")
 		}
@@ -1317,9 +1319,10 @@ func validateSKVIResult(operation string, result json.RawMessage) (bool, error) 
 			Noncanonical     *bool             `json:"noncanonical"`
 			Rebuildable      *bool             `json:"rebuildable"`
 		}
-		if err := json.Unmarshal(result, &value); err != nil || value.Protocol != "symphony.skvi.projection.v1" ||
+		if err := json.Unmarshal(result, &value); err != nil ||
+			value.EntryCount == nil || !validSKVIEntryCount(version, value.Protocol, "project", *value.EntryCount) ||
 			value.ModuleID != "skvi-engine" || value.EngineID != "symphony-skvi" || value.VectorID != "skvi" ||
-			value.EntryCount == nil || value.Entries == nil || *value.EntryCount != uint64(len(value.Entries)) ||
+			value.Entries == nil || *value.EntryCount != uint64(len(value.Entries)) ||
 			!validTaggedDigest(value.ProjectionDigest) ||
 			!explicitTrue(value.Noncanonical) || !explicitTrue(value.Rebuildable) {
 			return false, fmt.Errorf("SKVI projection result violates the implemented safety contract")
@@ -1328,6 +1331,23 @@ func validateSKVIResult(operation string, result json.RawMessage) (bool, error) 
 	default:
 		return false, fmt.Errorf("unsupported SKVI operation")
 	}
+}
+
+func validSKVIEntryCount(version, protocol, operation string, count uint64) bool {
+	var ceiling uint64
+	switch {
+	case version == "0.1.0-dev" && operation == "check" && protocol == "symphony.skvi.check-result.v1":
+		ceiling = 1024
+	case version == "0.2.0-dev" && operation == "check" && protocol == "symphony.skvi.check-result.v2":
+		ceiling = 2048
+	case version == "0.1.0-dev" && operation == "project" && protocol == "symphony.skvi.projection.v1":
+		ceiling = 1024
+	case version == "0.2.0-dev" && operation == "project" && protocol == "symphony.skvi.projection.v2":
+		ceiling = 2048
+	default:
+		return false
+	}
+	return count <= ceiling
 }
 
 func explicitFalse(value *bool) bool { return value != nil && !*value }

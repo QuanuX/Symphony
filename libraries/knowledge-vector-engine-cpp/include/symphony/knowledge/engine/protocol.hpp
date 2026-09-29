@@ -49,5 +49,6 @@ struct Request final {
     const std::string& code,
     const std::string& message);
 [[nodiscard]] std::string serialize_response(Json response);
+[[nodiscard]] std::string serialize_response(Json response, std::size_t max_json_values);
 
 }

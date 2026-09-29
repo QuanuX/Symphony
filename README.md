@@ -47,7 +47,7 @@ The detailed, ratified baseline is in [Symphony Emerging Vector Architecture](kn
 | **SOV — Symphony Ops Vector** | qxctl-administered provisioning, Habitat conditioning, Nest delivery, bus-adapter setup, and optional remote-Node operations. | Emerging operations domain; provider, Terraform, Habitat, Nest, bus, and remote-operation protocols remain to be designed and implemented. |
 | **SCV — Symphony Cloud Vector** | Private knowledge of offsite provider resources, offerings, regions, constraints, observations, and hybrid possibilities. | Eight independently installed C++ engines provide bounded source/corpus knowledge, portable provider packages and finite caller-directed composition. qxctl supports retained workflows and protected graph selection; an optional DuckDB connector adds retained relational graph indexing through qxctl. Comprehensive provider coverage, dedicated graph traversal and operational adapters remain separate work. |
 | **SNV — Symphony Node Vector** | Records and relates Node identity, resources, cluster relationships, and names without dictating them. | Emerging composition of **SNIV** (identity), **SNRV** (resources), **SCIV** (cluster identity/connectivity), and SNV-bounded **SCNV** (consolidated naming). Record schemas and engines remain deferred. |
-| **SQV — Symphony Quantitative Vector** | Reusable quantitative and trading-system framework contracts without acquiring user strategy logic. | Emerging domain. **SOOV — Symphony Orchestra Omega Vector** is its first named subvector: a future high-performance, C++-only FIX architecture informed by historic QuanuX work. Detailed FIX behavior is not yet canonical. |
+| **SQV — Symphony Quantitative Vector** | Reusable quantitative and trading-system framework contracts without acquiring user strategy logic. | Emerging domain. **SQAV**, **SQMV**, **SQFV**, **SQTV**, **SQPV**, and **SQDV** own acquisition, metadata, flow, transformation, persistence, and delivery architecture. SQFV has a first trusted same-process C++ batch library, `sqfv-batch-cpp`; the other research-data owners remain architecture-only. **SOOV — Symphony Orchestra Omega Vector** separately retains the future C++ FIX architecture. No research-data service, provider connector, or FIX session is claimed implemented. |
 | **SHV — Symphony Hardware Vector** | Hardware-capability knowledge for processors, CPU topology and execution-unit designs, caches, GPUs, NICs and fibre interfaces, motherboards, RAM and NVMe; default curation prioritizes original components and evidenced variants. | Initial C++ kernel: caller-defined coverage, retained-source catalogue replay, requirement evaluation and graph projection. Source revision/capture provenance engine and generic graph exchange are implemented; protected source activation, broad component mappings, durable vendor drivers and Composer integration remain open. |
 | **SIV — Symphony Intelligence Vector** | Future local and remote agent collaboration, extended context, structured long-term logic, communication, and governed Symphony interaction. | Emerging domain. **SMCV** is its optional Markdown conversion component; **SAIV** is reserved for a later integration subvector and currently has no behavior. |
 
@@ -125,18 +125,21 @@ The emerging SOV remote-operation and deployment contracts do not make provider 
 
 This bounded summary is derived from canonical SSFV coverage and routing, the feature-administration profile, the qxctl command registry, and completed SODV publication records. Edit its source contracts, then regenerate; do not hand-edit the values below.
 
-- SSFV catalog state: `partial`; registered features: **110**; registered owner scopes: **35**; ratified nested features: **76**.
-- Feature-administration expectations: **295** reviewed surfaces; **285** required, **13** evidence-backed exemptions, **9** prohibitions, **0** unreviewed.
-- qxctl stable command identities: **373**.
+- SSFV catalog state: `partial`; registered features: **125**; registered owner scopes: **49**; ratified nested features: **76**.
+- Feature-administration expectations: **325** reviewed surfaces; **315** required, **26** evidence-backed exemptions, **9** prohibitions, **0** unreviewed.
+- qxctl stable command identities: **376**.
 - Registered owner capabilities:
   - `ssfv:symphony:accordare-stav-producer`
   - `ssfv:symphony:knowledge-session-coordinator`
   - `ssfv:symphony:knowledge-vector-engine-foundation`
   - `ssfv:symphony:maestro-presence-authority`
+  - `ssfv:symphony:native-source-support-cpp`
   - `ssfv:symphony:platform`
   - `ssfv:symphony:qxctl`
   - `ssfv:symphony:sacv-engine`
   - `ssfv:symphony:sav-engine`
+  - `ssfv:symphony:scabv-ibkr-client-portal-cpp`
+  - `ssfv:symphony:scabv-ibkr-tws-cpp`
   - `ssfv:symphony:scev-cf-engine`
   - `ssfv:symphony:scev-engine`
   - `ssfv:symphony:schv-aws-engine`
@@ -158,6 +161,17 @@ This bounded summary is derived from canonical SSFV coverage and routing, the fe
   - `ssfv:symphony:shv-source-engine`
   - `ssfv:symphony:skvi-engine`
   - `ssfv:symphony:sodv-engine`
+  - `ssfv:symphony:sqav-capture-cpp`
+  - `ssfv:symphony:sqav-databento-dbn-cpp`
+  - `ssfv:symphony:sqav-databento-reference-cpp`
+  - `ssfv:symphony:sqav-fred-cpp`
+  - `ssfv:symphony:sqav-news-api-cpp`
+  - `ssfv:symphony:sqav-request-engine`
+  - `ssfv:symphony:sqdv-delivery-cpp`
+  - `ssfv:symphony:sqfv-batch-cpp`
+  - `ssfv:symphony:sqmv-metadata-cpp`
+  - `ssfv:symphony:sqpv-local-store-cpp`
+  - `ssfv:symphony:sqtv-integer-conversion-cpp`
   - `ssfv:symphony:ssfv-engine`
   - `ssfv:symphony:ssiag-foundation`
   - `ssfv:symphony:ssiag.macos-keychain-metadata`
@@ -168,7 +182,7 @@ This bounded summary is derived from canonical SSFV coverage and routing, the fe
   - `github.com/QuanuX/Symphony/libraries/stav-protocol-go` `v0.2.0` (tag `libraries/stav-protocol-go/v0.2.0`, source `55f8faf26f4f85213ac23cc1de7ba897b2129a4c`)
   - `github.com/QuanuX/Symphony/modules/stav-append-authority` `v0.1.0` (tag `modules/stav-append-authority/v0.1.0`, source `55f8faf26f4f85213ac23cc1de7ba897b2129a4c`)
   - `github.com/QuanuX/Symphony/modules/stav-append-authority` `v0.2.0` (tag `modules/stav-append-authority/v0.2.0`, source `ed7484d70607aa96e64916dd4e59d3972a61980b`)
-- Snapshot digest: `sha256:0a7c009af8c901223d758742104dd3ae6f29bff2ee64f2e4a8401cf74be75e78`
+- Snapshot digest: `sha256:3030e375688e99d7e3128ee7216367092f6cde169d84a0ae1e28a4343b99b510`
 <!-- symphony:root-summary:v1:end -->
 
 ## Releases and Documentation

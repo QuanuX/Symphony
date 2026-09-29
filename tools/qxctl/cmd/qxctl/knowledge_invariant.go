@@ -34,7 +34,7 @@ func (failure *exactEvidenceExitError) Error() string {
 func newKnowledgeInvariantCommand() *cobra.Command {
 	command := structural("invariant", fmt.Errorf("knowledge invariant subcommand is required: status, list, show, or check"))
 	for _, operation := range []string{"status", "list", "show", "check"} {
-		options := knowledgeInvariantOptions{version: "0.1.0-dev"}
+		options := knowledgeInvariantOptions{version: "0.2.0-dev"}
 		child := &cobra.Command{
 			Use:  operation,
 			Args: usageOnlyArgs,
@@ -56,7 +56,7 @@ func newKnowledgeInvariantCommand() *cobra.Command {
 		}
 		if operation == "check" {
 			child.Flags().StringVar(&options.prefix, "prefix", "", "exact Symphony Validator installation prefix")
-			child.Flags().StringVar(&options.version, "version", "0.1.0-dev", "exact installed validator version")
+			child.Flags().StringVar(&options.version, "version", "0.2.0-dev", "exact installed validator version")
 		}
 		child.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
 		command.AddCommand(child)

@@ -3,6 +3,9 @@
 ## Canonical Surfaces
 
 - `modules/secure-identity-access-governance/ARCHITECTURE.md`
+- `modules/secure-identity-access-governance/CREDENTIAL-USE.md`
+- `modules/secure-identity-access-governance/CREDENTIAL-DISPATCH.md`
+- `modules/secure-identity-access-governance/CREDENTIAL-JOURNAL.md`
 - `modules/secure-identity-access-governance/FEATURES.md`
 - `modules/secure-identity-access-governance/IMPLEMENTATION.md`
 - `modules/secure-identity-access-governance/INSTALL.md`
@@ -67,3 +70,11 @@ No operational credential provider or canonical knowledge apply route is enabled
 ## Contamination Boundary
 
 Secret values, proofs, assertions, raw tokens, provider payloads, and native errors must not cross into qxctl, SKV, SKVI, SCLV, SODV, STAV, manifests, inventories, logs, or status responses. A bounded local policy file and proposal may cross qxctl only for the explicit policy-administration operation; status and STAV expose digests and safe references, never the policy body.
+
+## Internal Credential Admission
+
+`CREDENTIAL-ADMISSION.md` owns the internal resource/lease snapshot and native
+admission composition contract. `internal/credential/admission.go` implements
+private value ownership, revision CAS and pins through native execution/cleanup;
+`admission_test.go` verifies its affected boundaries. Native authentication,
+protected delivery and operational Keychain access remain disabled.

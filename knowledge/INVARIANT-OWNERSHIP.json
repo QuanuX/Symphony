@@ -525,6 +525,19 @@
       ],
       "owner_contract": "modules/shv-engine/SPEC.md",
       "version_policy": "exact_receipt_v2_entry_point_and_capability_compatible"
+    },
+    {
+      "adapter_id": "adapter:symphony:symphony-sqav-request.v1",
+      "command_protocol": "symphony.knowledge.engine-process.v1",
+      "component": "sqav-request-engine",
+      "entry_point_id": "symphony-sqav-request",
+      "format_version": 3,
+      "implementation_path": "modules/sqav-request-engine",
+      "operation_ids": [
+        "engop:symphony:sqav-request.validate"
+      ],
+      "owner_contract": "modules/sqav-request-engine/SPEC.md",
+      "version_policy": "exact_receipt_v2_entry_point_and_capability_compatible"
     }
   ],
   "catalog_complete": false,
@@ -927,6 +940,72 @@
       "statement": "Every executable qxctl Cobra leaf has one stable qxcmd identity and exact reviewed grammar, feature and interaction binding, backend-operation binding, mutability, authority, target-scope, noninteractive, structured-result, and recovery metadata; the checked-in expected registry is byte-semantically equal to the executable command tree.",
       "status": "active",
       "title": "qxctl command registry parity"
+    },
+    {
+      "allowed_adapter_ids": [],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "installed_boundary"
+          ],
+          "path": "modules/scabv-ibkr-client-portal-cpp/tests/sdk-consumer/main.cpp"
+        }
+      ],
+      "invariant_id": "invariant:symphony:scabv.scabv-ibkr-client-portal",
+      "ipc_boundary": false,
+      "owner_component": "scabv-ibkr-client-portal-cpp",
+      "owner_contract": "modules/scabv-ibkr-client-portal-cpp/SPEC.md",
+      "producer_implementations": [
+        "modules/scabv-ibkr-client-portal-cpp/src/client_portal.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "main"
+          ],
+          "path": "modules/scabv-ibkr-client-portal-cpp/tests/test.cpp"
+        }
+      ],
+      "real_process_regressions": [],
+      "statement": "Exact private-account binding and bounded Client Portal account, position and historical-bar reads. Invalid or mismatched input never establishes complete provider evidence.",
+      "status": "active",
+      "title": "IBKR Client Portal read adapter"
+    },
+    {
+      "allowed_adapter_ids": [],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "installed_boundary"
+          ],
+          "path": "modules/scabv-ibkr-tws-cpp/tests/sdk-consumer/main.cpp"
+        }
+      ],
+      "invariant_id": "invariant:symphony:scabv.scabv-ibkr-tws",
+      "ipc_boundary": false,
+      "owner_component": "scabv-ibkr-tws-cpp",
+      "owner_contract": "modules/scabv-ibkr-tws-cpp/SPEC.md",
+      "producer_implementations": [
+        "modules/scabv-ibkr-tws-cpp/src/tws.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "main"
+          ],
+          "path": "modules/scabv-ibkr-tws-cpp/tests/allocation.cpp"
+        },
+        {
+          "cases": [
+            "main"
+          ],
+          "path": "modules/scabv-ibkr-tws-cpp/tests/test.cpp"
+        }
+      ],
+      "real_process_regressions": [],
+      "statement": "Finite read-only native request/callback state around the external Stable 10.45 SDK dependency. Invalid or mismatched input never establishes complete provider evidence.",
+      "status": "active",
+      "title": "IBKR TWS Stable read adapter boundary"
     },
     {
       "allowed_adapter_ids": [],
@@ -2232,6 +2311,1010 @@
       "consumer_boundary_rejections": [
         {
           "cases": [
+            "installed_capture_rejection",
+            "installed_capture_roundtrip"
+          ],
+          "path": "modules/sqav-capture-cpp/tests/sdk-consumer/main.cpp"
+        }
+      ],
+      "invariant_id": "invariant:symphony:sqav.bounded-capture-decoding",
+      "ipc_boundary": false,
+      "owner_component": "sqav-capture-cpp",
+      "owner_contract": "modules/sqav-capture-cpp/SPEC.md",
+      "producer_implementations": [
+        "modules/sqav-capture-cpp/src/capture.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "allocation_rollback",
+            "malformed_and_limits"
+          ],
+          "path": "modules/sqav-capture-cpp/tests/capture_test.cpp"
+        }
+      ],
+      "real_process_regressions": [],
+      "statement": "Finite capture/metadata/field/count bounds and canonical grammar are checked before parsed-state allocation. Digest, expected reference, exact metadata and source binding must match; failure preserves outputs and temporary SQFV reservations are released.",
+      "status": "active",
+      "title": "SQAV rejects malformed and incompatible captures atomically"
+    },
+    {
+      "allowed_adapter_ids": [],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "installed_fidelity_and_rejection"
+          ],
+          "path": "modules/sqav-databento-dbn-cpp/tests/sdk-consumer/main.cpp"
+        }
+      ],
+      "invariant_id": "invariant:symphony:sqav.databento-bounded-inspection",
+      "ipc_boundary": false,
+      "owner_component": "sqav-databento-dbn-cpp",
+      "owner_contract": "modules/sqav-databento-dbn-cpp/SPEC.md",
+      "producer_implementations": [
+        "modules/sqav-databento-dbn-cpp/src/dbn.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "allocation_rollback",
+            "malformed_and_limits",
+            "version_one_fidelity_and_binding"
+          ],
+          "path": "modules/sqav-databento-dbn-cpp/tests/dbn_test.cpp"
+        }
+      ],
+      "real_process_regressions": [],
+      "statement": "File, metadata and record limits precede traversal; counted metadata arrays are bounded by remaining bytes. Unsupported versions and mixed schemas fail explicitly. Inspection allocates nothing and capture allocation failure preserves previous output.",
+      "status": "active",
+      "title": "SQAV rejects malformed DBN and preserves outputs"
+    },
+    {
+      "allowed_adapter_ids": [],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "installed_capture_binding",
+            "installed_fidelity_and_rejection"
+          ],
+          "path": "modules/sqav-databento-dbn-cpp/tests/sdk-consumer/main.cpp"
+        }
+      ],
+      "invariant_id": "invariant:symphony:sqav.databento-dbn-fidelity",
+      "ipc_boundary": false,
+      "owner_component": "sqav-databento-dbn-cpp",
+      "owner_contract": "modules/sqav-databento-dbn-cpp/SPEC.md",
+      "producer_implementations": [
+        "modules/sqav-databento-dbn-cpp/src/dbn.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "capture_and_retained_delivery",
+            "public_fixture_fidelity",
+            "raw_fields_and_gateway_timestamp",
+            "version_one_fidelity_and_binding"
+          ],
+          "path": "modules/sqav-databento-dbn-cpp/tests/dbn_test.cpp"
+        }
+      ],
+      "real_process_regressions": [],
+      "statement": "The supported exact DBNv1/v3 MBO layout preserves integer fields, raw flags/sentinels, distinct timestamps and every original metadata/record byte. Capture admission verifies provider, dataset, representation and actual count without inferring completeness.",
+      "status": "active",
+      "title": "SQAV retains DBNv1/v3 MBO fields and original file evidence"
+    },
+    {
+      "allowed_adapter_ids": [],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "installed_historical_admission"
+          ],
+          "path": "modules/sqav-databento-dbn-cpp/tests/sdk-consumer/main.cpp"
+        }
+      ],
+      "invariant_id": "invariant:symphony:sqav.databento-historical-coverage",
+      "ipc_boundary": false,
+      "owner_component": "sqav-databento-dbn-cpp",
+      "owner_contract": "modules/sqav-databento-dbn-cpp/SPEC.md",
+      "producer_implementations": [
+        "modules/sqav-databento-dbn-cpp/src/historical.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "allocation_rollback",
+            "historical_retained_replay",
+            "multi_symbol_binding",
+            "request_planning",
+            "response_binding",
+            "transport_and_budgets"
+          ],
+          "path": "modules/sqav-databento-dbn-cpp/tests/historical_test.cpp"
+        }
+      ],
+      "real_process_regressions": [],
+      "statement": "Only transport-complete HTTP 200 responses with exact request metadata and bounded receive-time conformance yield captures. Record caps or unresolved symbols preserve partial coverage; interruptions retain gap evidence and never establish a timestamp-plus-one resume cursor. Recommendations do not execute or authorize requests.",
+      "status": "active",
+      "title": "SQAV historical coverage remains bound to request and transport evidence"
+    },
+    {
+      "allowed_adapter_ids": [],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "installed_attempt_and_http_refusal"
+          ],
+          "path": "modules/sqav-databento-dbn-cpp/tests/sdk-consumer/main.cpp"
+        }
+      ],
+      "invariant_id": "invariant:symphony:sqav.historical-attempt-admission",
+      "ipc_boundary": false,
+      "owner_component": "sqav-databento-dbn-cpp",
+      "owner_contract": "modules/sqav-databento-dbn-cpp/SPEC.md",
+      "producer_implementations": [
+        "modules/sqav-databento-dbn-cpp/src/attempts.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "accounting_and_restart",
+            "budgets_and_binding",
+            "crash_reservation",
+            "one_shot_race_and_allocation"
+          ],
+          "path": "modules/sqav-databento-dbn-cpp/tests/attempts_test.cpp"
+        }
+      ],
+      "real_process_regressions": [],
+      "statement": "A unique durable reservation and checked charge ceiling precede one-shot execution. Restart retains uncertainty and never reissues tickets or speculative refunds.",
+      "status": "active",
+      "title": "Historical attempt admission"
+    },
+    {
+      "allowed_adapter_ids": [],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "installed_attempt_and_http_refusal"
+          ],
+          "path": "modules/sqav-databento-dbn-cpp/tests/sdk-consumer/main.cpp"
+        }
+      ],
+      "invariant_id": "invariant:symphony:sqav.historical-http-boundary",
+      "ipc_boundary": false,
+      "owner_component": "sqav-databento-dbn-cpp",
+      "owner_contract": "modules/sqav-databento-dbn-cpp/SPEC.md",
+      "producer_implementations": [
+        "modules/sqav-databento-dbn-cpp/src/http.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "denied_and_pre_cancelled",
+            "run_case"
+          ],
+          "path": "modules/sqav-databento-dbn-cpp/tests/http_test.cpp"
+        }
+      ],
+      "real_process_regressions": [],
+      "statement": "Native HTTP requires one claimed attempt and explicit SSIAG bridge use; fixed production HTTPS scope, finite headers/body/deadlines and actual sink results govern response completion. Fixture callbacks do not establish operational authentication.",
+      "status": "active",
+      "title": "Historical http boundary"
+    },
+    {
+      "allowed_adapter_ids": [],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "installed_boundary"
+          ],
+          "path": "modules/native-source-support-cpp/tests/sdk-consumer/main.cpp"
+        }
+      ],
+      "invariant_id": "invariant:symphony:sqav.native-source-support",
+      "ipc_boundary": false,
+      "owner_component": "native-source-support-cpp",
+      "owner_contract": "modules/native-source-support-cpp/SPEC.md",
+      "producer_implementations": [
+        "modules/native-source-support-cpp/src/http.cpp",
+        "modules/native-source-support-cpp/src/support.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "main"
+          ],
+          "path": "modules/native-source-support-cpp/tests/test.cpp"
+        }
+      ],
+      "real_process_regressions": [],
+      "statement": "Strict bounded provider JSON syntax and explicit one-shot HTTPS acquisition. Invalid or mismatched input never establishes complete provider evidence.",
+      "status": "active",
+      "title": "Bounded native source support"
+    },
+    {
+      "allowed_adapter_ids": [],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "installed_capture_rejection",
+            "installed_capture_roundtrip"
+          ],
+          "path": "modules/sqav-capture-cpp/tests/sdk-consumer/main.cpp"
+        }
+      ],
+      "invariant_id": "invariant:symphony:sqav.original-byte-provenance",
+      "ipc_boundary": false,
+      "owner_component": "sqav-capture-cpp",
+      "owner_contract": "modules/sqav-capture-cpp/SPEC.md",
+      "producer_implementations": [
+        "modules/sqav-capture-cpp/src/capture.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "binding_and_original_identity",
+            "exact_capture_roundtrip",
+            "retained_delivery_composition"
+          ],
+          "path": "modules/sqav-capture-cpp/tests/capture_test.cpp"
+        }
+      ],
+      "real_process_regressions": [],
+      "statement": "Capture identity binds original bytes, exact source/interface/adapter, attempt, native position, time roles/precision and coverage assertions. Source position and optional provider count remain distinct from transfer sequence and envelope count. Digests and asserted coverage grant no source authority.",
+      "status": "active",
+      "title": "SQAV preserves original bytes and attributable source meaning"
+    },
+    {
+      "allowed_adapter_ids": [
+        "adapter:symphony:symphony-sqav-request.v1"
+      ],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "TestSQAVResultBinding"
+          ],
+          "path": "tools/qxctl/internal/knowledgeengine/sqav_request_test.go"
+        }
+      ],
+      "invariant_id": "invariant:symphony:sqav.request-validation-binding",
+      "ipc_boundary": true,
+      "owner_component": "sqav-request-engine",
+      "owner_contract": "modules/sqav-request-engine/SPEC.md",
+      "producer_implementations": [
+        "modules/sqav-request-engine/src/main.cpp",
+        "modules/sqav-request-engine/src/request.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "main"
+          ],
+          "path": "modules/sqav-request-engine/tests/test.cpp"
+        }
+      ],
+      "real_process_regressions": [
+        {
+          "cases": [
+            "test_installed_requests"
+          ],
+          "path": "modules/sqav-request-engine/tests/process.cpp"
+        }
+      ],
+      "statement": "Native Plan::create owns all SQAV request semantics. The bounded administrative process retains exact integer identity and returns only request-bound local validation evidence. The consumer verifies receipt, interface, schema, process identity and result correspondence; local validation never establishes provider access or acquisition.",
+      "status": "active",
+      "title": "SQAV request evidence remains native, bounded and request-bound"
+    },
+    {
+      "allowed_adapter_ids": [],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "installed_boundary"
+          ],
+          "path": "modules/sqav-databento-reference-cpp/tests/sdk-consumer/main.cpp"
+        }
+      ],
+      "invariant_id": "invariant:symphony:sqav.sqav-databento-reference",
+      "ipc_boundary": false,
+      "owner_component": "sqav-databento-reference-cpp",
+      "owner_contract": "modules/sqav-databento-reference-cpp/SPEC.md",
+      "producer_implementations": [
+        "modules/sqav-databento-reference-cpp/src/reference.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "main"
+          ],
+          "path": "modules/sqav-databento-reference-cpp/tests/test.cpp"
+        }
+      ],
+      "real_process_regressions": [],
+      "statement": "Bounded Zstandard/JSONL reference responses and exact request-bound historical cost quotes. Invalid or mismatched input never establishes complete provider evidence.",
+      "status": "active",
+      "title": "Databento native reference and cost adapter"
+    },
+    {
+      "allowed_adapter_ids": [],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "installed_boundary"
+          ],
+          "path": "modules/sqav-fred-cpp/tests/sdk-consumer/main.cpp"
+        }
+      ],
+      "invariant_id": "invariant:symphony:sqav.sqav-fred",
+      "ipc_boundary": false,
+      "owner_component": "sqav-fred-cpp",
+      "owner_contract": "modules/sqav-fred-cpp/SPEC.md",
+      "producer_implementations": [
+        "modules/sqav-fred-cpp/src/fred.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "main"
+          ],
+          "path": "modules/sqav-fred-cpp/tests/test.cpp"
+        }
+      ],
+      "real_process_regressions": [],
+      "statement": "Exact observation and vintage-date requests, original decimal/missing values, pagination and capture. Invalid or mismatched input never establishes complete provider evidence.",
+      "status": "active",
+      "title": "FRED and ALFRED native adapter"
+    },
+    {
+      "allowed_adapter_ids": [],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "installed_boundary"
+          ],
+          "path": "modules/sqav-news-api-cpp/tests/sdk-consumer/main.cpp"
+        }
+      ],
+      "invariant_id": "invariant:symphony:sqav.sqav-news-api",
+      "ipc_boundary": false,
+      "owner_component": "sqav-news-api-cpp",
+      "owner_contract": "modules/sqav-news-api-cpp/SPEC.md",
+      "producer_implementations": [
+        "modules/sqav-news-api-cpp/src/news.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "main"
+          ],
+          "path": "modules/sqav-news-api-cpp/tests/test.cpp"
+        }
+      ],
+      "real_process_regressions": [],
+      "statement": "Immutable original/corrected article revisions with exact predecessor evidence and separate time roles. Invalid or mismatched input never establishes complete provider evidence.",
+      "status": "active",
+      "title": "Vendor-neutral news ingress API"
+    },
+    {
+      "allowed_adapter_ids": [],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "installed_delivery_ack_credit_and_terminal"
+          ],
+          "path": "modules/sqdv-delivery-cpp/tests/sdk-consumer/main.cpp"
+        },
+        {
+          "cases": [
+            "pipeline"
+          ],
+          "path": "tests/sqv-research-pipeline/pipeline.cpp"
+        }
+      ],
+      "invariant_id": "invariant:symphony:sqdv.acknowledgement-and-lifetime",
+      "ipc_boundary": false,
+      "owner_component": "sqdv-delivery-cpp",
+      "owner_contract": "modules/sqdv-delivery-cpp/SPEC.md",
+      "producer_implementations": [
+        "modules/sqdv-delivery-cpp/src/delivery.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "acknowledgement_and_lease_are_independent",
+            "exact_identity_and_foreign_tickets"
+          ],
+          "path": "modules/sqdv-delivery-cpp/tests/delivery_test.cpp"
+        },
+        {
+          "cases": [
+            "preview_progress"
+          ],
+          "path": "tests/sqv-research-pipeline/preview_progress.cpp"
+        }
+      ],
+      "real_process_regressions": [],
+      "statement": "Only a delivered ticket from this session can acknowledge its next contiguous processing position. Releasing or discarding payload does not acknowledge processing; processing acknowledgement does not free held SQFV byte credit or invalidate an existing lease. Late-session acknowledgements cannot advance a new session.",
+      "status": "active",
+      "title": "SQDV processing acknowledgement is separate from physical release"
+    },
+    {
+      "allowed_adapter_ids": [],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "installed_checkpoint_recovery"
+          ],
+          "path": "modules/sqdv-delivery-cpp/tests/sdk-consumer/main.cpp"
+        }
+      ],
+      "invariant_id": "invariant:symphony:sqdv.durable-checkpoint",
+      "ipc_boundary": false,
+      "owner_component": "sqdv-delivery-cpp",
+      "owner_contract": "modules/sqdv-delivery-cpp/SPEC.md",
+      "producer_implementations": [
+        "modules/sqdv-delivery-cpp/src/checkpoint.cpp",
+        "modules/sqdv-delivery-cpp/src/delivery.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "checkpoint_allocation",
+            "durable_restart_and_bounds",
+            "process_crash_recovery",
+            "sequence_exhaustion"
+          ],
+          "path": "modules/sqdv-delivery-cpp/tests/checkpoint_test.cpp"
+        }
+      ],
+      "real_process_regressions": [],
+      "statement": "Durable checkpoint state advances only after actual SQPV confirmation, preserves exact view/baseline and monotonic exhaustion, and retained replay admission requires a confirmed source prefix.",
+      "status": "active",
+      "title": "Durable checkpoint"
+    },
+    {
+      "allowed_adapter_ids": [],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "installed_delivery_cutover_and_resume",
+            "installed_delivery_identity_rejection"
+          ],
+          "path": "modules/sqdv-delivery-cpp/tests/sdk-consumer/main.cpp"
+        },
+        {
+          "cases": [
+            "pipeline"
+          ],
+          "path": "tests/sqv-research-pipeline/pipeline.cpp"
+        }
+      ],
+      "invariant_id": "invariant:symphony:sqdv.exact-resume-continuity",
+      "ipc_boundary": false,
+      "owner_component": "sqdv-delivery-cpp",
+      "owner_contract": "modules/sqdv-delivery-cpp/SPEC.md",
+      "producer_implementations": [
+        "modules/sqdv-delivery-cpp/src/delivery.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "exact_identity_and_foreign_tickets",
+            "output_preservation_and_sequence_exhaustion",
+            "retained_live_cutover_and_exact_resume"
+          ],
+          "path": "modules/sqdv-delivery-cpp/tests/delivery_test.cpp"
+        },
+        {
+          "cases": [
+            "preview_progress"
+          ],
+          "path": "tests/sqv-research-pipeline/preview_progress.cpp"
+        }
+      ],
+      "real_process_regressions": [],
+      "statement": "Stable checkpoints bind the exact manifest, recipient, interface, view, partition, producer generation, profile and selected store. Dispatch advances only after exact sequential admission; retained catch-up and live reuse cannot silently skip or repeat a delivered position. Processing checkpoints remain distinct from dispatch.",
+      "status": "active",
+      "title": "SQDV resumes only the exact selected view and position"
+    },
+    {
+      "allowed_adapter_ids": [],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "installed_delivery_ack_credit_and_terminal"
+          ],
+          "path": "modules/sqdv-delivery-cpp/tests/sdk-consumer/main.cpp"
+        },
+        {
+          "cases": [
+            "pipeline"
+          ],
+          "path": "tests/sqv-research-pipeline/pipeline.cpp"
+        }
+      ],
+      "invariant_id": "invariant:symphony:sqdv.finite-recipient-allowances",
+      "ipc_boundary": false,
+      "owner_component": "sqdv-delivery-cpp",
+      "owner_contract": "modules/sqdv-delivery-cpp/SPEC.md",
+      "producer_implementations": [
+        "modules/sqdv-delivery-cpp/src/delivery.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "allocation_failure_preserves_delivery",
+            "independent_recipient_allowances",
+            "output_preservation_and_sequence_exhaustion"
+          ],
+          "path": "modules/sqdv-delivery-cpp/tests/delivery_test.cpp"
+        },
+        {
+          "cases": [
+            "preview_progress"
+          ],
+          "path": "tests/sqv-research-pipeline/preview_progress.cpp"
+        }
+      ],
+      "real_process_regressions": [],
+      "statement": "Each recipient has finite SQFV byte credit and a bounded acknowledgement ledger. Released unacknowledged deliveries continue to consume ledger capacity; blocked or failed admission preserves positions and outputs and does not consume another recipient allowance.",
+      "status": "active",
+      "title": "SQDV recipient processing and payload allowances remain independent"
+    },
+    {
+      "allowed_adapter_ids": [],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "installed_delivery_cutover_and_resume",
+            "installed_delivery_identity_rejection"
+          ],
+          "path": "modules/sqdv-delivery-cpp/tests/sdk-consumer/main.cpp"
+        },
+        {
+          "cases": [
+            "pipeline"
+          ],
+          "path": "tests/sqv-research-pipeline/pipeline.cpp"
+        }
+      ],
+      "invariant_id": "invariant:symphony:sqdv.retention-provenance",
+      "ipc_boundary": false,
+      "owner_component": "sqdv-delivery-cpp",
+      "owner_contract": "modules/sqdv-delivery-cpp/SPEC.md",
+      "producer_implementations": [
+        "modules/sqdv-delivery-cpp/src/delivery.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "retained_live_cutover_and_exact_resume",
+            "retention_failure_never_claims_delivery"
+          ],
+          "path": "modules/sqdv-delivery-cpp/tests/delivery_test.cpp"
+        },
+        {
+          "cases": [
+            "preview_progress"
+          ],
+          "path": "tests/sqv-research-pipeline/preview_progress.cpp"
+        }
+      ],
+      "real_process_regressions": [],
+      "statement": "Retained proofs are produced only by actual owned SQPV append/read results. They bind the exact source instance and batch; caller-constructed receipt values cannot establish retained delivery. Uncertain retention suspends new retained delivery while known processing checkpoints remain available.",
+      "status": "active",
+      "title": "SQDV retained delivery depends on actual selected SQPV evidence"
+    },
+    {
+      "allowed_adapter_ids": [],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "consumer_rejects_corrupt_frame"
+          ],
+          "path": "modules/sqfv-batch-cpp/tests/sdk-consumer/main.cpp"
+        }
+      ],
+      "invariant_id": "invariant:symphony:sqfv.frame-integrity",
+      "ipc_boundary": false,
+      "owner_component": "sqfv-batch-cpp",
+      "owner_contract": "modules/sqfv-batch-cpp/SPEC.md",
+      "producer_implementations": [
+        "modules/sqfv-batch-cpp/src/batch.cpp",
+        "modules/sqfv-batch-cpp/src/frame.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "decode_reservation_failure_preserves_output",
+            "digest_valid_semantic_rejections",
+            "golden_round_trip_and_exact_limits",
+            "sha256_padding_boundaries"
+          ],
+          "path": "modules/sqfv-batch-cpp/tests/frame_test.cpp"
+        }
+      ],
+      "real_process_regressions": [],
+      "statement": "The SQFV owner alone defines canonical SQF1 bytes and content identity. Decode validates configured lengths, version, flags, canonical descriptor semantics and the complete frame digest before publication; rejection preserves the existing output and releases provisional reservation. The installed consumer uses this exact library contract and cannot turn an integrity check into source authentication.",
+      "status": "active",
+      "title": "SQFV local frames preserve exact bounded content"
+    },
+    {
+      "allowed_adapter_ids": [],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "consumer_rejects_incompatible_binding"
+          ],
+          "path": "modules/sqfv-batch-cpp/tests/sdk-consumer/main.cpp"
+        }
+      ],
+      "invariant_id": "invariant:symphony:sqfv.port-binding-and-cursor",
+      "ipc_boundary": false,
+      "owner_component": "sqfv-batch-cpp",
+      "owner_contract": "modules/sqfv-batch-cpp/SPEC.md",
+      "producer_implementations": [
+        "modules/sqfv-batch-cpp/src/batch.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "binding_validation",
+            "concurrent_flow",
+            "cursor_and_credit_isolation",
+            "sequence_exhaustion"
+          ],
+          "path": "modules/sqfv-batch-cpp/tests/batch_test.cpp"
+        }
+      ],
+      "real_process_regressions": [],
+      "statement": "Each SQFV port compares the exact resolved binding, partition and generation before accepting its next sequence. Mismatch, duplicate, conflict, gap, stale and blocked outcomes do not advance the accepted cursor or consume new credit. A taken lease retains that port credit until release; cancelling or releasing one branch does not consume another branch allowance.",
+      "status": "active",
+      "title": "SQFV ports preserve independent binding and acceptance state"
+    },
+    {
+      "allowed_adapter_ids": [],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "consumer_rejects_exhausted_budget"
+          ],
+          "path": "modules/sqfv-batch-cpp/tests/sdk-consumer/main.cpp"
+        }
+      ],
+      "invariant_id": "invariant:symphony:sqfv.retained-reservation-lifetime",
+      "ipc_boundary": false,
+      "owner_component": "sqfv-batch-cpp",
+      "owner_contract": "modules/sqfv-batch-cpp/SPEC.md",
+      "producer_implementations": [
+        "modules/sqfv-batch-cpp/src/batch.cpp",
+        "modules/sqfv-batch-cpp/src/batch_internal.hpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "empty_move_and_replace",
+            "global_budget",
+            "immutability_and_lifetime",
+            "retained_context_budget"
+          ],
+          "path": "modules/sqfv-batch-cpp/tests/batch_test.cpp"
+        }
+      ],
+      "real_process_regressions": [],
+      "statement": "Preparation copies caller bytes into immutable owned storage only after bounded admission. Every live shared state and retaining handle keeps its declared reservation until its exact lifetime ends, including after Context destruction. Allocation failure preserves published outputs and returns provisional charges. A retained batch or lease remains valid until its own ownership ends; reference accessors require a nonempty handle.",
+      "status": "active",
+      "title": "SQFV retained objects preserve lifetime and reservation"
+    },
+    {
+      "allowed_adapter_ids": [],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "installed_manifest_round_trip_and_binding"
+          ],
+          "path": "modules/sqmv-metadata-cpp/tests/sdk-consumer/main.cpp"
+        }
+      ],
+      "invariant_id": "invariant:symphony:sqmv.flow-binding",
+      "ipc_boundary": false,
+      "owner_component": "sqmv-metadata-cpp",
+      "owner_contract": "modules/sqmv-metadata-cpp/SPEC.md",
+      "producer_implementations": [
+        "modules/sqmv-metadata-cpp/src/metadata.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "exact_reference_and_binding"
+          ],
+          "path": "modules/sqmv-metadata-cpp/tests/metadata_test.cpp"
+        }
+      ],
+      "real_process_regressions": [],
+      "statement": "The resolved immutable manifest alone supplies its content reference and exact dataset revision, schema, layout and access assertion for SQFV binding comparison. Unknown compatibility, latest selection and access authorization are not inferred.",
+      "status": "active",
+      "title": "SQMV resolution owns the exact flow metadata binding"
+    },
+    {
+      "allowed_adapter_ids": [],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "installed_manifest_failures_preserve_output"
+          ],
+          "path": "modules/sqmv-metadata-cpp/tests/sdk-consumer/main.cpp"
+        }
+      ],
+      "invariant_id": "invariant:symphony:sqmv.manifest-integrity",
+      "ipc_boundary": false,
+      "owner_component": "sqmv-metadata-cpp",
+      "owner_contract": "modules/sqmv-metadata-cpp/SPEC.md",
+      "producer_implementations": [
+        "modules/sqmv-metadata-cpp/src/metadata.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "allocation_rollback",
+            "canonical_round_trip",
+            "finite_limits",
+            "immutable_retention",
+            "noncanonical_rejection"
+          ],
+          "path": "modules/sqmv-metadata-cpp/tests/metadata_test.cpp"
+        }
+      ],
+      "real_process_regressions": [],
+      "statement": "Canonical SQM1 encoding preserves exact producer assertions under finite byte, field and evidence limits. Resolution rejects malformed, noncanonical or corrupt bytes and requires the expected content reference before publishing a retained immutable manifest. Failed calls preserve outputs.",
+      "status": "active",
+      "title": "SQMV immutable manifests preserve exact attributable content"
+    },
+    {
+      "allowed_adapter_ids": [],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "queue_failures"
+          ],
+          "path": "tests/sqv-research-pipeline/pipeline.cpp"
+        }
+      ],
+      "invariant_id": "invariant:symphony:sqpv.asynchronous-retention-accounting",
+      "ipc_boundary": false,
+      "owner_component": "sqpv-local-store-cpp",
+      "owner_contract": "modules/sqpv-local-store-cpp/SPEC.md",
+      "producer_implementations": [
+        "modules/sqpv-local-store-cpp/src/async_store.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "bounded_queue",
+            "crash_recovery",
+            "uncertain_failure"
+          ],
+          "path": "modules/sqpv-local-store-cpp/tests/async_store_test.cpp"
+        }
+      ],
+      "real_process_regressions": [],
+      "statement": "RAM queue admission never advances confirmed retention. Active writes count against finite slot and frame budgets; a first failure stops further admission and writes, and restart reconstructs only actual Store evidence rather than volatile queue progress.",
+      "status": "active",
+      "title": "SQPV asynchronous admission and confirmed retention remain distinct"
+    },
+    {
+      "allowed_adapter_ids": [],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "installed_store_reopen_and_replay"
+          ],
+          "path": "modules/sqpv-local-store-cpp/tests/sdk-consumer/main.cpp"
+        },
+        {
+          "cases": [
+            "queue_failures"
+          ],
+          "path": "tests/sqv-research-pipeline/pipeline.cpp"
+        }
+      ],
+      "invariant_id": "invariant:symphony:sqpv.exact-stream-admission",
+      "ipc_boundary": false,
+      "owner_component": "sqpv-local-store-cpp",
+      "owner_contract": "modules/sqpv-local-store-cpp/SPEC.md",
+      "producer_implementations": [
+        "modules/sqpv-local-store-cpp/src/async_store.cpp",
+        "modules/sqpv-local-store-cpp/src/local_store.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "bounded_queue",
+            "crash_recovery",
+            "uncertain_failure"
+          ],
+          "path": "modules/sqpv-local-store-cpp/tests/async_store_test.cpp"
+        },
+        {
+          "cases": [
+            "capacity_and_output_preservation",
+            "commit_retry_and_exact_stream"
+          ],
+          "path": "modules/sqpv-local-store-cpp/tests/local_store_test.cpp"
+        }
+      ],
+      "real_process_regressions": [],
+      "statement": "Append checks the resolved SQMV binding, partition and producer generation before accepting the next sequence. Conflicting retries, gaps and capacity exhaustion cannot replace committed bytes. Duplicate retry returns the verified original receipt. Reads preserve exact batch identity under the caller context limits.",
+      "status": "active",
+      "title": "SQPV bounded admission preserves exact retained stream identity"
+    },
+    {
+      "allowed_adapter_ids": [],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "installed_store_rejects_busy_and_wrong_options"
+          ],
+          "path": "modules/sqpv-local-store-cpp/tests/sdk-consumer/main.cpp"
+        },
+        {
+          "cases": [
+            "queue_failures"
+          ],
+          "path": "tests/sqv-research-pipeline/pipeline.cpp"
+        }
+      ],
+      "invariant_id": "invariant:symphony:sqpv.exclusive-store-ownership",
+      "ipc_boundary": false,
+      "owner_component": "sqpv-local-store-cpp",
+      "owner_contract": "modules/sqpv-local-store-cpp/SPEC.md",
+      "producer_implementations": [
+        "modules/sqpv-local-store-cpp/src/async_store.cpp",
+        "modules/sqpv-local-store-cpp/src/local_store.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "bounded_queue",
+            "crash_recovery",
+            "uncertain_failure"
+          ],
+          "path": "modules/sqpv-local-store-cpp/tests/async_store_test.cpp"
+        },
+        {
+          "cases": [
+            "exclusive_ownership_and_paths",
+            "fork_during_locked_operation"
+          ],
+          "path": "modules/sqpv-local-store-cpp/tests/local_store_test.cpp"
+        }
+      ],
+      "real_process_regressions": [],
+      "statement": "An exact private store is owned by one live writer lock; non-regular or redirected files, incompatible store options and inherited post-fork handles reject. The immutable store generation is distinct from producer sequence and supplies no lock takeover or access authority.",
+      "status": "active",
+      "title": "SQPV store mutation requires exact exclusive local ownership"
+    },
+    {
+      "allowed_adapter_ids": [],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "installed_store_rejects_corrupt_retention"
+          ],
+          "path": "modules/sqpv-local-store-cpp/tests/sdk-consumer/main.cpp"
+        },
+        {
+          "cases": [
+            "queue_failures"
+          ],
+          "path": "tests/sqv-research-pipeline/pipeline.cpp"
+        }
+      ],
+      "invariant_id": "invariant:symphony:sqpv.retained-commit-chain",
+      "ipc_boundary": false,
+      "owner_component": "sqpv-local-store-cpp",
+      "owner_contract": "modules/sqpv-local-store-cpp/SPEC.md",
+      "producer_implementations": [
+        "modules/sqpv-local-store-cpp/src/async_store.cpp",
+        "modules/sqpv-local-store-cpp/src/local_store.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "bounded_queue",
+            "crash_recovery",
+            "uncertain_failure"
+          ],
+          "path": "modules/sqpv-local-store-cpp/tests/async_store_test.cpp"
+        },
+        {
+          "cases": [
+            "allocation_failure_boundaries",
+            "corruption_and_missing",
+            "create_allocation_failure_boundaries",
+            "initialization_crash_boundaries",
+            "partial_staging_retries",
+            "recovery_crash_boundaries",
+            "uncertain_failures_poison_handle"
+          ],
+          "path": "modules/sqpv-local-store-cpp/tests/local_store_test.cpp"
+        }
+      ],
+      "real_process_regressions": [],
+      "statement": "Retained frames, hash-linked commit records and the checked head bind one exact stream. Recovery verifies all acknowledged history and fails on missing or corrupt committed evidence; only complete verified pending commits may advance the head under the stated synchronization guarantee. A lost acknowledgement permits only exact retry.",
+      "status": "active",
+      "title": "SQPV retained commit evidence survives explicit recovery"
+    },
+    {
+      "allowed_adapter_ids": [],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "installed_conversion_and_rejection"
+          ],
+          "path": "modules/sqtv-integer-conversion-cpp/tests/sdk-consumer/main.cpp"
+        }
+      ],
+      "invariant_id": "invariant:symphony:sqtv.derived-lineage",
+      "ipc_boundary": false,
+      "owner_component": "sqtv-integer-conversion-cpp",
+      "owner_contract": "modules/sqtv-integer-conversion-cpp/SPEC.md",
+      "producer_implementations": [
+        "modules/sqtv-integer-conversion-cpp/src/integer_conversion.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "converted_retention_delivery",
+            "lineage_and_metadata"
+          ],
+          "path": "modules/sqtv-integer-conversion-cpp/tests/integer_conversion_test.cpp"
+        }
+      ],
+      "real_process_regressions": [],
+      "statement": "Derived metadata preserves semantic source, units, time and access evidence and binds the actual input manifest, input content identity and exact operation. Output transfer positions are explicit and retained delivery preserves those identities.",
+      "status": "active",
+      "title": "SQTV retains semantic evidence and exact conversion lineage"
+    },
+    {
+      "allowed_adapter_ids": [],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "installed_conversion_and_rejection"
+          ],
+          "path": "modules/sqtv-integer-conversion-cpp/tests/sdk-consumer/main.cpp"
+        }
+      ],
+      "invariant_id": "invariant:symphony:sqtv.exact-integer-values",
+      "ipc_boundary": false,
+      "owner_component": "sqtv-integer-conversion-cpp",
+      "owner_contract": "modules/sqtv-integer-conversion-cpp/SPEC.md",
+      "producer_implementations": [
+        "modules/sqtv-integer-conversion-cpp/src/integer_conversion.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "allocation_rollback",
+            "numeric_matrix_and_roundtrip",
+            "rejection_and_bounds"
+          ],
+          "path": "modules/sqtv-integer-conversion-cpp/tests/integer_conversion_test.cpp"
+        }
+      ],
+      "real_process_regressions": [],
+      "statement": "Only declared dense integer layouts are converted. Every value must fit exactly; overflow, malformed input, exhausted bounds or allocation failure preserve the prior result and release temporary reservations.",
+      "status": "active",
+      "title": "SQTV preserves every admitted integer value"
+    },
+    {
+      "allowed_adapter_ids": [],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
             "TestProviderBindingAuditProjectionExcludesAdministrativeReason",
             "TestProviderBindingRoutesAreHeadlessStrictAndIdempotent"
           ],
@@ -2500,7 +3583,7 @@
     }
   ],
   "protocol": "symphony.knowledge.invariant-ownership-registry.v3",
-  "registry_digest": "sha256:9f0611343dedc58a2b38884e12f9cd8b784dd656a303fb5d9a23c1898ae469a4",
+  "registry_digest": "sha256:6379906ebb0bc3c00f38555f261909184436bd9e5445645277173e290ebdcdf3",
   "scope": "common_lowest_authoritative_layer",
   "test_policy": {
     "consumer_boundary_rejection_required": true,

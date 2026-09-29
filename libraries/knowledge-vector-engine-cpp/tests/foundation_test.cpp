@@ -212,6 +212,35 @@ void test_json_and_protocol() {
     auto without_digest = parsed;
     without_digest.erase("response_digest");
     require(digest == tagged_sha256(without_digest.dump()), "response digest mismatch");
+    auto larger_result = Json::array();
+    for (std::size_t index = 0; index < Limits::max_json_values; ++index) {
+        larger_result.push_back(0);
+    }
+    require_error([&] {
+        static_cast<void>(serialize_response(success_response(
+            request, "symphony-test", "0.2.0-dev", Json{{"values", larger_result}})));
+    }, "response.invalid");
+    const auto larger_response = serialize_response(success_response(
+        request, "symphony-test", "0.2.0-dev", Json{{"values", std::move(larger_result)}}),
+        65536U);
+    require(parse_bounded_json(larger_response, Limits::max_response_bytes, 65536U)
+            .at("result").at("values").size() == Limits::max_json_values,
+        "explicit response JSON value limit was not honored");
+    constexpr std::size_t sealed_response_non_array_events = 23U;
+    auto boundary_values = Json::array();
+    for (std::size_t index = 0; index < 65536U - sealed_response_non_array_events; ++index) {
+        boundary_values.push_back(0);
+    }
+    const auto boundary_response = serialize_response(success_response(
+        request, "symphony-test", "0.2.0-dev", Json{{"values", boundary_values}}), 65536U);
+    require(parse_bounded_json(boundary_response, Limits::max_response_bytes, 65536U)
+            .at("result").at("values").size() == 65536U - sealed_response_non_array_events,
+        "sealed response rejected its exact JSON event boundary");
+    boundary_values.push_back(0);
+    require_error([&] {
+        static_cast<void>(serialize_response(success_response(
+            request, "symphony-test", "0.2.0-dev", Json{{"values", boundary_values}}), 65536U));
+    }, "response.invalid");
     require_error([&] {
         static_cast<void>(serialize_response(success_response(
             request, "symphony-test", "0.1.0-dev", Json{{"float", 1.5}})));
@@ -231,7 +260,7 @@ void test_json_and_protocol() {
     require_error([&] {
         static_cast<void>(serialize_response(success_response(
             request, "symphony-test", "0.1.0-dev", std::move(byte_heavy_result))));
-    }, "response.invalid");
+    }, "response.too_large");
 
     std::istringstream oversized(std::string(Limits::max_request_bytes + 1U, 'x'));
     require_error([&] {
@@ -496,6 +525,32 @@ void test_manifest_discovery() {
         require(
             has_manifest_issue(catalog, "manifest.declaration_syntax"),
             "malformed declaration bullet was accepted");
+    }
+    {
+        TemporaryDirectory temporary;
+        std::string root_manifest =
+            "# Root\n\n## Canonical Surfaces\n\n"
+            "- `knowledge/MANIFEST.md`\n\n## Subordinate Manifests\n\n";
+        for (std::size_t index = 0; index < Limits::max_manifest_files - 1U; ++index) {
+            const auto path = "knowledge/owner-" + std::to_string(index) + "/MANIFEST.md";
+            root_manifest += "- `" + path + "`\n";
+            write_fixture_file(temporary.path(), path,
+                "# Owner\n\n## Canonical Surfaces\n\n- `" + path + "`\n");
+        }
+        write_discovery_bootstrap(temporary.path(), root_manifest);
+        const auto catalog = discover_canonical_surfaces(temporary.path());
+        require(catalog.valid(), "512 owner manifests were rejected");
+        require(catalog.manifests.size() == Limits::max_manifest_files,
+            "owner-manifest ceiling did not admit its exact boundary");
+
+        const auto overflow_path = std::string("knowledge/owner-overflow/MANIFEST.md");
+        write_fixture_file(temporary.path(), overflow_path,
+            "# Owner\n\n## Canonical Surfaces\n\n- `" + overflow_path + "`\n");
+        root_manifest += "- `" + overflow_path + "`\n";
+        write_discovery_bootstrap(temporary.path(), root_manifest);
+        require_error([&] {
+            static_cast<void>(discover_canonical_surfaces(temporary.path()));
+        }, "manifest.file_limit");
     }
 }
 

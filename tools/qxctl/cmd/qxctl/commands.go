@@ -259,7 +259,7 @@ func newRootCommand() (*cobra.Command, error) {
 	stav := newSTAVCommand()
 	root.AddCommand(
 		ssiag, stav, newKnowledgeCommand(), newSKVICommand(), newSCLVCommand(),
-		newSACVCommand(), newSODVCommand(), newSAVCommand(), newSEVCommand(), newSSFVCommand(), newMaestroCommand(), newSCVCommand(), newSHVCommand(),
+		newSACVCommand(), newSODVCommand(), newSAVCommand(), newSEVCommand(), newSSFVCommand(), newMaestroCommand(), newSCVCommand(), newSHVCommand(), newSQVCommand(),
 		newValidateCommand(),
 	)
 	if err := commandregistry.Validate(root); err != nil {
@@ -1099,7 +1099,7 @@ func newSCLVCommand() *cobra.Command {
 func newSKVICommand() *cobra.Command {
 	command := structural("skvi", fmt.Errorf("SKVI subcommand is required: inspect, check, propose, or project"))
 	for _, operation := range []string{"inspect", "check", "propose", "project"} {
-		options := skviOptions{version: "0.1.0-dev"}
+		options := skviOptions{version: "0.2.0-dev"}
 		child := &cobra.Command{
 			Use:  operation,
 			Args: usageOnlyArgs,
@@ -1116,7 +1116,7 @@ func newSKVICommand() *cobra.Command {
 			registered(child, "skvi."+operation, featureID, interaction)
 		}
 		child.Flags().StringVar(&options.prefix, "prefix", "", "exact SKVI installation prefix")
-		child.Flags().StringVar(&options.version, "version", "0.1.0-dev", "exact installed SKVI engine version")
+		child.Flags().StringVar(&options.version, "version", "0.2.0-dev", "exact installed SKVI engine version")
 		child.Flags().StringVar(&options.repository, "repo", "", "Symphony repository path; defaults to the current repository")
 		child.Flags().BoolVar(&options.jsonOutput, "json", false, "emit operation result JSON")
 		if operation == "check" {
@@ -1517,7 +1517,7 @@ func exactOneUsageArg(_ *cobra.Command, args []string) error {
 
 func knownTopLevel(value string) bool {
 	switch value {
-	case "--help", "--version", "doctor", "contracts", "commands", "inventory", "status", "modules", "module", "ssiag", "stav", "knowledge", "skvi", "sclv", "sacv", "sodv", "sav", "sev", "ssfv", "maestro", "validate", "scv", "shv":
+	case "--help", "--version", "doctor", "contracts", "commands", "inventory", "status", "modules", "module", "ssiag", "stav", "knowledge", "skvi", "sclv", "sacv", "sodv", "sav", "sev", "ssfv", "maestro", "validate", "scv", "shv", "sqv":
 		return true
 	default:
 		return false
