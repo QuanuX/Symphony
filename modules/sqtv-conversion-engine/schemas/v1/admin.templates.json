@@ -1,0 +1,16 @@
+{
+  "protocol": "symphony.sqtv.administration-templates.v1",
+  "templates": {
+    "conversion_validate": {
+      "protocol": "symphony.sqtv.conversion-validate-input.v1",
+      "input_layout": null,
+      "output_layout": null,
+      "element_count": null,
+      "limits": {
+        "max_elements": null,
+        "max_input_bytes": null,
+        "max_output_bytes": null
+      }
+    }
+  }
+}

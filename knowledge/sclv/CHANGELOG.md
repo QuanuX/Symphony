@@ -13712,3 +13712,218 @@ This PR authorizes none of the following:
   - `No complete SQV qxctl coverage, detached runtime, operational SSIAG, broker SDK conformance or streaming-overhead completion claim.`
 - notes: |
     Start and completion describe this local implementation interval and exact source-commit finalization. The v3 post_merge disposition records ordinary completed local-Git closure; no main-branch or remote merge occurred. Full legacy campaigns and Linux delivery were not rerun. Prior historical records are unchanged.
+
+- record_id: `SCLV-CHG-20260929-SQV-QXCTL-ADMINISTRATION`
+- record_version: `3`
+- title: `Complete non-live SQV qxctl validation and retained observation`
+- status: `canonical`
+- date: `2026-09-29`
+- change_started_at: `2026-09-29T16:16:46Z`
+- change_completed_at: `2026-09-29T16:16:53Z`
+- recorded_at: `2026-09-29T16:18:18Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `implementation_change`
+- change_request_state: `not_applicable`
+- change_request_provider: `not_applicable`
+- change_request_id: `not_applicable`
+- change_request_reference: `not_applicable`
+- change_request_absence_reason: `User-authorized implementation finalized as an isolated local branch commit; no forge request or main-branch merge exists.`
+- revision_scheme: `git-sha1`
+- revision_value: `4832d2a87c9e6374d8be8fbdde2aa7bb7c7a70cb`
+- tree_digest: `sha256:7c9f47006fdb7a008a1175c85c920c39eab4db9f8302bb176d32ea21847bf5a3`
+- ratification_subject: `Duncan, Architect`
+- ratification_permission: `Requested completion of non-live SQV qxctl administration in the local source branch`
+- ratification_method: `explicit-user-instruction`
+- ratification_evidence_reference: `/Users/Duncan/Documents/ChatGPT/Symphony p2-p8/context/decisions/2026-09-29-sqv-qxctl-administration-completion.md`
+- ratification_evidence_digest: `sha256:e8459b2a5850afd6b3de322868edad677f98307ef1109f1558baa566454c22e7`
+- affected_surfaces:
+  - `README.md`
+  - `cmake/SqavAttemptInterface.generated.cmake`
+  - `cmake/SqdvCheckpointInterface.generated.cmake`
+  - `cmake/SqfvFlowInterface.generated.cmake`
+  - `cmake/SqmvMetadataInterface.generated.cmake`
+  - `cmake/SqpvInspectionInterface.generated.cmake`
+  - `cmake/SqtvConversionInterface.generated.cmake`
+  - `cmake/SymphonySqvAdministration.cmake`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.json`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.md`
+  - `knowledge/INVARIANT-OWNERSHIP.json`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/sqv/sqav/MANIFEST.md`
+  - `knowledge/sqv/sqdv/MANIFEST.md`
+  - `knowledge/sqv/sqfv/MANIFEST.md`
+  - `knowledge/sqv/sqmv/MANIFEST.md`
+  - `knowledge/sqv/sqpv/MANIFEST.md`
+  - `knowledge/sqv/sqtv/MANIFEST.md`
+  - `knowledge/ssfv/COVERAGE.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `modules/sqav-attempt-engine/CMakeLists.txt`
+  - `modules/sqav-attempt-engine/FEATURES.md`
+  - `modules/sqav-attempt-engine/INSTALL.md`
+  - `modules/sqav-attempt-engine/INTENT.md`
+  - `modules/sqav-attempt-engine/INTERFACE-GENERATOR.json`
+  - `modules/sqav-attempt-engine/MANIFEST.md`
+  - `modules/sqav-attempt-engine/OWNER-INTERFACE.json`
+  - `modules/sqav-attempt-engine/SKILL.md`
+  - `modules/sqav-attempt-engine/SPEC.md`
+  - `modules/sqav-attempt-engine/cmake/uninstall.cmake.in`
+  - `modules/sqav-attempt-engine/schemas/v1/admin.schema.json`
+  - `modules/sqav-attempt-engine/schemas/v1/admin.templates.json`
+  - `modules/sqav-attempt-engine/src/admin.cpp`
+  - `modules/sqav-attempt-engine/src/interface.generated.hpp`
+  - `modules/sqav-attempt-engine/tests/fixtures/interface-history.v1.json`
+  - `modules/sqav-attempt-engine/tests/process.cpp`
+  - `modules/sqdv-checkpoint-engine/CMakeLists.txt`
+  - `modules/sqdv-checkpoint-engine/FEATURES.md`
+  - `modules/sqdv-checkpoint-engine/INSTALL.md`
+  - `modules/sqdv-checkpoint-engine/INTENT.md`
+  - `modules/sqdv-checkpoint-engine/INTERFACE-GENERATOR.json`
+  - `modules/sqdv-checkpoint-engine/MANIFEST.md`
+  - `modules/sqdv-checkpoint-engine/OWNER-INTERFACE.json`
+  - `modules/sqdv-checkpoint-engine/SKILL.md`
+  - `modules/sqdv-checkpoint-engine/SPEC.md`
+  - `modules/sqdv-checkpoint-engine/cmake/uninstall.cmake.in`
+  - `modules/sqdv-checkpoint-engine/schemas/v1/admin.schema.json`
+  - `modules/sqdv-checkpoint-engine/schemas/v1/admin.templates.json`
+  - `modules/sqdv-checkpoint-engine/src/admin.cpp`
+  - `modules/sqdv-checkpoint-engine/src/interface.generated.hpp`
+  - `modules/sqdv-checkpoint-engine/tests/fixtures/interface-history.v1.json`
+  - `modules/sqdv-checkpoint-engine/tests/process.cpp`
+  - `modules/sqfv-flow-engine/CMakeLists.txt`
+  - `modules/sqfv-flow-engine/FEATURES.md`
+  - `modules/sqfv-flow-engine/INSTALL.md`
+  - `modules/sqfv-flow-engine/INTENT.md`
+  - `modules/sqfv-flow-engine/INTERFACE-GENERATOR.json`
+  - `modules/sqfv-flow-engine/MANIFEST.md`
+  - `modules/sqfv-flow-engine/OWNER-INTERFACE.json`
+  - `modules/sqfv-flow-engine/SKILL.md`
+  - `modules/sqfv-flow-engine/SPEC.md`
+  - `modules/sqfv-flow-engine/cmake/uninstall.cmake.in`
+  - `modules/sqfv-flow-engine/schemas/v1/admin.schema.json`
+  - `modules/sqfv-flow-engine/schemas/v1/admin.templates.json`
+  - `modules/sqfv-flow-engine/src/admin.cpp`
+  - `modules/sqfv-flow-engine/src/interface.generated.hpp`
+  - `modules/sqfv-flow-engine/tests/fixtures/flow_validate.json`
+  - `modules/sqfv-flow-engine/tests/fixtures/interface-history.v1.json`
+  - `modules/sqfv-flow-engine/tests/process.cpp`
+  - `modules/sqmv-metadata-engine/CMakeLists.txt`
+  - `modules/sqmv-metadata-engine/FEATURES.md`
+  - `modules/sqmv-metadata-engine/INSTALL.md`
+  - `modules/sqmv-metadata-engine/INTENT.md`
+  - `modules/sqmv-metadata-engine/INTERFACE-GENERATOR.json`
+  - `modules/sqmv-metadata-engine/MANIFEST.md`
+  - `modules/sqmv-metadata-engine/OWNER-INTERFACE.json`
+  - `modules/sqmv-metadata-engine/SKILL.md`
+  - `modules/sqmv-metadata-engine/SPEC.md`
+  - `modules/sqmv-metadata-engine/cmake/uninstall.cmake.in`
+  - `modules/sqmv-metadata-engine/schemas/v1/admin.schema.json`
+  - `modules/sqmv-metadata-engine/schemas/v1/admin.templates.json`
+  - `modules/sqmv-metadata-engine/src/admin.cpp`
+  - `modules/sqmv-metadata-engine/src/interface.generated.hpp`
+  - `modules/sqmv-metadata-engine/src/metadata_json.hpp`
+  - `modules/sqmv-metadata-engine/tests/fixtures/interface-history.v1.json`
+  - `modules/sqmv-metadata-engine/tests/fixtures/metadata_validate.json`
+  - `modules/sqmv-metadata-engine/tests/process.cpp`
+  - `modules/sqpv-inspection-engine/CMakeLists.txt`
+  - `modules/sqpv-inspection-engine/FEATURES.md`
+  - `modules/sqpv-inspection-engine/INSTALL.md`
+  - `modules/sqpv-inspection-engine/INTENT.md`
+  - `modules/sqpv-inspection-engine/INTERFACE-GENERATOR.json`
+  - `modules/sqpv-inspection-engine/MANIFEST.md`
+  - `modules/sqpv-inspection-engine/OWNER-INTERFACE.json`
+  - `modules/sqpv-inspection-engine/SKILL.md`
+  - `modules/sqpv-inspection-engine/SPEC.md`
+  - `modules/sqpv-inspection-engine/cmake/uninstall.cmake.in`
+  - `modules/sqpv-inspection-engine/schemas/v1/admin.schema.json`
+  - `modules/sqpv-inspection-engine/schemas/v1/admin.templates.json`
+  - `modules/sqpv-inspection-engine/src/admin.cpp`
+  - `modules/sqpv-inspection-engine/src/interface.generated.hpp`
+  - `modules/sqpv-inspection-engine/src/store_reader.cpp`
+  - `modules/sqpv-inspection-engine/src/store_reader.hpp`
+  - `modules/sqpv-inspection-engine/tests/fixtures/interface-history.v1.json`
+  - `modules/sqpv-inspection-engine/tests/process.cpp`
+  - `modules/sqtv-conversion-engine/CMakeLists.txt`
+  - `modules/sqtv-conversion-engine/FEATURES.md`
+  - `modules/sqtv-conversion-engine/INSTALL.md`
+  - `modules/sqtv-conversion-engine/INTENT.md`
+  - `modules/sqtv-conversion-engine/INTERFACE-GENERATOR.json`
+  - `modules/sqtv-conversion-engine/MANIFEST.md`
+  - `modules/sqtv-conversion-engine/OWNER-INTERFACE.json`
+  - `modules/sqtv-conversion-engine/SKILL.md`
+  - `modules/sqtv-conversion-engine/SPEC.md`
+  - `modules/sqtv-conversion-engine/cmake/uninstall.cmake.in`
+  - `modules/sqtv-conversion-engine/schemas/v1/admin.schema.json`
+  - `modules/sqtv-conversion-engine/schemas/v1/admin.templates.json`
+  - `modules/sqtv-conversion-engine/src/admin.cpp`
+  - `modules/sqtv-conversion-engine/src/interface.generated.hpp`
+  - `modules/sqtv-conversion-engine/tests/fixtures/conversion_validate.json`
+  - `modules/sqtv-conversion-engine/tests/fixtures/interface-history.v1.json`
+  - `modules/sqtv-conversion-engine/tests/process.cpp`
+  - `modules/sqtv-integer-conversion-cpp/MANIFEST.md`
+  - `modules/sqtv-integer-conversion-cpp/src/integer_conversion.cpp`
+  - `modules/sqtv-integer-conversion-cpp/src/limits.hpp`
+  - `tests/sqv-administration/CMakeLists.txt`
+  - `tests/sqv-administration/README.md`
+  - `tests/sqv-administration/fixtures.cpp`
+  - `tests/sqv-administration/reader_test.cpp`
+  - `tests/sqv-administration/validation_test.cpp`
+  - `tools/qxctl/COMMANDS.json`
+  - `tools/qxctl/COMMANDS.md`
+  - `tools/qxctl/FEATURES.md`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/qxctl/README.md`
+  - `tools/qxctl/cmd/qxctl/command_manifest_test.go`
+  - `tools/qxctl/cmd/qxctl/sqv.go`
+  - `tools/qxctl/cmd/qxctl/sqv_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sqav_attempt_interface_generated.go`
+  - `tools/qxctl/internal/knowledgeengine/sqdv_checkpoint_interface_generated.go`
+  - `tools/qxctl/internal/knowledgeengine/sqfv_flow_interface_generated.go`
+  - `tools/qxctl/internal/knowledgeengine/sqmv_metadata_interface_generated.go`
+  - `tools/qxctl/internal/knowledgeengine/sqpv_inspection_interface_generated.go`
+  - `tools/qxctl/internal/knowledgeengine/sqtv_conversion_interface_generated.go`
+  - `tools/qxctl/internal/knowledgeengine/sqv_administration.go`
+  - `tools/qxctl/internal/knowledgeengine/sqv_administration_test.go`
+  - `tools/qxctl/internal/modules/modules.go`
+  - `tools/sqv-administration-cpp/INTENT.md`
+  - `tools/sqv-administration-cpp/MANIFEST.md`
+  - `tools/sqv-administration-cpp/SKILL.md`
+  - `tools/sqv-administration-cpp/SPEC.md`
+  - `tools/sqv-administration-cpp/common.hpp`
+  - `tools/sqv-administration-cpp/main.cpp`
+  - `tools/sqv-administration-cpp/request.cpp`
+  - `tools/sqv-administration-cpp/request.hpp`
+- skvi_references:
+  - `knowledge/INVARIANT-OWNERSHIP.json`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.json`
+  - `knowledge/skvi/INDEX.md`
+  - `modules/sqav-attempt-engine/SPEC.md`
+  - `modules/sqdv-checkpoint-engine/SPEC.md`
+  - `modules/sqfv-flow-engine/SPEC.md`
+  - `modules/sqmv-metadata-engine/SPEC.md`
+  - `modules/sqpv-inspection-engine/SPEC.md`
+  - `modules/sqtv-conversion-engine/SPEC.md`
+  - `tools/qxctl/COMMANDS.json`
+- change_summary: |
+    Add seven canonical commands backed by six C++26 owner engines: metadata validation and projection, coupled flow configuration trials, integer conversion selection, retained-store integrity, durable local checkpoints and conservative acquisition-attempt accounting. Extend shared schema/template and eight discovery paths.
+- relationship_changes: |
+    SQMV, SQFV, SQTV, SQPV, SQDV and SQAV retain semantic ownership. Shared C++ code supplies JSON/envelope mechanics; qxctl supplies receipt and transport admission. SQDV and SQAV use the SQPV-owned frozen-format read-only reader without linking writer or recovery paths. The SQV parent remains thin.
+- doctrine_changes: |
+    No architectural ownership change. Declared references, verified retained content, local processing acknowledgment and actual provider cost remain distinct. C++26 remains the native protocol. Unsigned counters are canonical decimal strings and opaque native bytes are hexadecimal.
+- compatibility_consequences: |
+    Seven additions grow the registry from 376 to 383, with no aliases or removals. Six independent 0.1.0-dev packages require explicit releases. Existing acquisition variants and discovery envelopes are retained. SQTV's private limits predicate is extracted with unchanged behavior; native public versions and ABI remain.
+- publication_consequences: |
+    Local source and verification only. No main merge, push, release, provider activation or deployment. Native verification packages have exact receipts; the acceptance CLI is an unreceipted source build. Previous cleanup publication authority is not reused.
+- projection_consequences: |
+    Shared inventory describes 24 modules and 136 contracts. The partial catalog has 131 features across 55 scopes and 339 reviewed expectations. Twenty-one affected administration checks and fourteen supplied command-consequence families pass. The original 100 candidate families are not declared complete.
+- evidence:
+  - `Four native Debug and ASan/UBSan groups, six installed native process gates and seven owner generator projections pass.`
+  - `62 focused Go test/subtest passes without skips; 71 CLI cases and six exact package/tamper/uninstall gates pass. All 72 package-owned files match their receipts.`
+  - `SKVI, SSFV, invariant ownership and repository validation pass with zero violations; four existing historical-reference warnings remain.`
+  - `Read-only fixtures verify locking, inode/path replacement, published-prefix observation, full-width counters, malformed typed records with valid checksums and absence of recovery writes.`
+  - `External verification report: /Users/Duncan/Documents/ChatGPT/Symphony p2-p8/implementation/sqv-27/VERIFICATION.md`
+- non_authorizations:
+  - `No credential retrieval, provider traffic, spend, live collection, SDK acceptance or runtime activation.`
+  - `No complete operational SQV coverage, detached-job, external receiver or streaming-overhead completion claim.`
+- notes: |
+    Start and completion identify exact local source-commit finalization. The v3 post_merge disposition records ordinary completed local-Git closure; no main or remote merge occurred. Verification is macOS/amd64 APFS. Full unrelated suites and Linux delivery were not rerun. Store observation cooperates with the writer lock and detects replacement; it does not isolate a hostile same-user actor. Filesystem access-time accounting is outside SQV application-state mutation.

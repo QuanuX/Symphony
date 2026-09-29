@@ -26,3 +26,7 @@ First-party research-data implementation on the data plane uses C++26. The first
 ## Non-Authorization Statement
 
 This manifest authorizes no source collection, credential use, private-data disclosure, dataset mutation, storage action, or strategy execution.
+
+## Non-live administration
+
+`modules/sqmv-metadata-engine/MANIFEST.md` and `modules/sqmv-metadata-engine/SPEC.md` declare the independently installed C++26 owner adapter. Operations: `metadata_validate`, `metadata_inspect`. Shared qxctl schema/template and source discovery supply the resource surface. Live runtime activation remains deferred.

@@ -1,0 +1,11 @@
+{
+  "protocol": "symphony.sqtv.conversion-validate-input.v1",
+  "input_layout": "sqtv-int-v1-i32-le",
+  "output_layout": "sqtv-int-v1-i64-be",
+  "element_count": "8",
+  "limits": {
+    "max_elements": "1024",
+    "max_input_bytes": "4096",
+    "max_output_bytes": "8192"
+  }
+}

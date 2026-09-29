@@ -1,0 +1,46 @@
+{
+  "protocol": "symphony.shv.owner-interface.v2",
+  "module_id": "sqdv-checkpoint-engine",
+  "engine_id": "symphony-sqdv-checkpoint",
+  "namespace": "symphony::sqdv::administration",
+  "current_version": "0.1.0-dev",
+  "releases": {
+    "0.1.0-dev": [
+      "checkpoint_inspect"
+    ]
+  },
+  "contract_versions": [
+    "modules/sqdv-checkpoint-engine/SPEC.md@v1",
+    "symphony.sqdv.checkpoint-inspect-input.v1",
+    "symphony.sqdv.checkpoint-inspect.v1"
+  ],
+  "operations": [
+    {
+      "administration_disposition": "qxctl_required",
+      "administrative_interactions": [
+        "inspect"
+      ],
+      "authorization_requirement": "none",
+      "availability": "implemented",
+      "direct_invocation": "supported",
+      "engine_operation_id": "engop:symphony:sqdv-checkpoint.inspect",
+      "expected_state_required": false,
+      "feature_ids": [
+        "ssfv:symphony:sqdv-checkpoint-engine"
+      ],
+      "idempotency": "idempotent",
+      "input_protocol": "symphony.sqdv.checkpoint-inspect-input.v1",
+      "mutability": "read_only",
+      "operation_name": "checkpoint_inspect",
+      "output_protocol": "symphony.sqdv.checkpoint-inspect.v1",
+      "recovery_operation_id": null,
+      "thermal_path": "freezing"
+    }
+  ],
+  "schemas": [
+    "modules/sqdv-checkpoint-engine/schemas/v1/admin.schema.json",
+    "modules/sqdv-checkpoint-engine/schemas/v1/admin.templates.json"
+  ],
+  "companions": [],
+  "embedded_dependencies": []
+}

@@ -66,8 +66,18 @@ The inventory is intentionally explicit. Directory discovery, file count, langua
 | `modules/ssfv-engine` | registered | `ssfv:symphony:ssfv-engine` | `modules/ssfv-engine/FEATURES.md` |
 | `modules/ssiag-provider-macos-keychain` | registered | `ssfv:symphony:ssiag.macos-keychain-metadata` | `modules/ssiag-provider-macos-keychain/FEATURES.md` |
 | `modules/stav-append-authority` | registered | `ssfv:symphony:stav-append-authority` | `modules/stav-append-authority/FEATURES.md` |
+| `modules/sqmv-metadata-engine` | registered | `ssfv:symphony:sqmv-metadata-engine` | `modules/sqmv-metadata-engine/FEATURES.md` |
+| `modules/sqfv-flow-engine` | registered | `ssfv:symphony:sqfv-flow-engine` | `modules/sqfv-flow-engine/FEATURES.md` |
+| `modules/sqtv-conversion-engine` | registered | `ssfv:symphony:sqtv-conversion-engine` | `modules/sqtv-conversion-engine/FEATURES.md` |
+| `modules/sqpv-inspection-engine` | registered | `ssfv:symphony:sqpv-inspection-engine` | `modules/sqpv-inspection-engine/FEATURES.md` |
+| `modules/sqdv-checkpoint-engine` | registered | `ssfv:symphony:sqdv-checkpoint-engine` | `modules/sqdv-checkpoint-engine/FEATURES.md` |
+| `modules/sqav-attempt-engine` | registered | `ssfv:symphony:sqav-attempt-engine` | `modules/sqav-attempt-engine/FEATURES.md` |
 | `tools/qxctl` | registered | `ssfv:symphony:qxctl` | `tools/qxctl/FEATURES.md` |
 | `tools/symphony-validator` | registered | `ssfv:symphony:symphony-validator` | `tools/symphony-validator/FEATURES.md` |
+
+
+
+
 
 ## Ratified Nested Review Progress
 
@@ -171,3 +181,7 @@ The independently installed C++ SHV kernel and generic graph adapter receive sep
 ## SCLV Warning Administration Review
 
 The SCLV historical-warning entry points are scoped administration of the existing `ssfv:symphony:qxctl.governed-validation` feature. Command routing and the exact historical-reference selector are implementation facets, not a new vector, semantic engine, schema or acknowledgement ledger. The existing host-local warning lifecycle owns persistence and transitions. Local acceptance state and workstation build evidence are not delivery inputs. Catalog completeness remains partial.
+
+## SQV Administration Review
+
+Six experimental owner scopes expose seven additional non-live actions. Metadata projections, flow resource checks, integer layouts, commit verification, checkpoint replay and attempt accounting are facets of those owner features. `tools/sqv-administration-cpp` supplies shared transport mechanics only and is excluded as an independent application feature. No live runtime, provider activation, mutating recovery or remote acknowledgment is claimed. Existing library features and ABI identities remain unchanged.

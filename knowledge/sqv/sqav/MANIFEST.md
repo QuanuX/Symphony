@@ -44,3 +44,7 @@ Focused source tests preserve all five adapter capture families through reopened
 ## Local request administration
 
 `modules/sqav-request-engine/MANIFEST.md` admits one C++26 0.1.0-dev process operation calling the FRED/ALFRED, Databento historical and reference request validators. qxctl adds exactly `sqv acquisition validate`, `sqv schema`, and `sqv template`; schema/template select `--operation request_validate`, adapter and exact installed release. Validation establishes no provider, credential, entitlement, acquisition or store state. Shared module/inventory discovery exposes source contracts separately from lifecycle receipt observations.
+
+## Non-live administration
+
+`modules/sqav-attempt-engine/MANIFEST.md` and `modules/sqav-attempt-engine/SPEC.md` declare the independently installed C++26 owner adapter. Operations: `attempts_inspect`. Shared qxctl schema/template and source discovery supply the resource surface. Live runtime activation remains deferred.

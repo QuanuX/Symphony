@@ -1051,10 +1051,11 @@
       "distinctions": [],
       "evidence": [
         "tools/qxctl/cmd/qxctl/sqv_test.go",
-        "tools/qxctl/internal/knowledgeengine/sqav_request_test.go"
+        "tools/qxctl/internal/knowledgeengine/sqav_request_test.go",
+        "tools/qxctl/internal/knowledgeengine/sqv_administration_test.go"
       ],
       "feature_id": "ssfv:symphony:qxctl.sqv-administration",
-      "how": "A receipt-bound C++26 process calls three existing SQAV plan validators. Go checks bounded JSON, installation/interface/schema identity and result correspondence. Shared module discovery reads admitted source contracts.",
+      "how": "Exact receipt-bound C++26 owner processes retain semantic validation and persisted-format interpretation. Go verifies bounded JSON transport, declared schemas, installation identity and response correspondence.",
       "implementation_languages": [
         {
           "language": "Go",
@@ -1063,7 +1064,8 @@
       ],
       "implementation_paths": [
         "tools/qxctl/cmd/qxctl/sqv.go",
-        "tools/qxctl/internal/knowledgeengine/sqav_request.go"
+        "tools/qxctl/internal/knowledgeengine/sqav_request.go",
+        "tools/qxctl/internal/knowledgeengine/sqv_administration.go"
       ],
       "kind": "subfeature",
       "non_claims": [
@@ -1074,19 +1076,49 @@
       "record_version": 2,
       "relationships": [
         {
+          "rationale": "Native semantic owner administers its declared operations.",
+          "target_feature_id": "ssfv:symphony:sqav-attempt-engine",
+          "type": "depends_on"
+        },
+        {
           "rationale": "Native SQAV owns request semantics.",
           "target_feature_id": "ssfv:symphony:sqav-request-engine",
+          "type": "depends_on"
+        },
+        {
+          "rationale": "Native semantic owner administers its declared operations.",
+          "target_feature_id": "ssfv:symphony:sqdv-checkpoint-engine",
+          "type": "depends_on"
+        },
+        {
+          "rationale": "Native semantic owner administers its declared operations.",
+          "target_feature_id": "ssfv:symphony:sqfv-flow-engine",
+          "type": "depends_on"
+        },
+        {
+          "rationale": "Native semantic owner administers its declared operations.",
+          "target_feature_id": "ssfv:symphony:sqmv-metadata-engine",
+          "type": "depends_on"
+        },
+        {
+          "rationale": "Native semantic owner administers its declared operations.",
+          "target_feature_id": "ssfv:symphony:sqpv-inspection-engine",
+          "type": "depends_on"
+        },
+        {
+          "rationale": "Native semantic owner administers its declared operations.",
+          "target_feature_id": "ssfv:symphony:sqtv-conversion-engine",
           "type": "depends_on"
         }
       ],
       "source_scope": "tools/qxctl",
       "status": "experimental",
-      "title": "SQV request administration",
-      "what": "Three canonical commands expose native SQAV validation and exact installed schema/templates.",
+      "title": "SQV non-live administration",
+      "what": "Ten canonical commands expose native request, metadata, flow and conversion validation, retained-state inspection, and shared installed schemas/templates.",
       "when": "On explicit local invocation with exact prefix and release.",
-      "where": "qxctl sqv acquisition validate, sqv schema and sqv template; existing module and inventory commands.",
-      "who": "Operators and noninteractive tools selecting native SQAV request contracts.",
-      "why": "Keep source request validation native and share discovery without provider command duplication."
+      "where": "qxctl sqv acquisition, metadata, flow, conversion, store, checkpoint, schema and template; existing module and inventory commands.",
+      "who": "Operators and noninteractive tools selecting native SQV administration contracts.",
+      "why": "Keep administration with each semantic owner and consolidate overlapping observations as projections and shared discovery."
     },
     {
       "cross_vector_references": [

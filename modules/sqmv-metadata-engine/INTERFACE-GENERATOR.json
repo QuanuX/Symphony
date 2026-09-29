@@ -1,0 +1,18 @@
+{
+  "protocol": "symphony.shv.interface-registration.v1",
+  "declaration": "modules/sqmv-metadata-engine/OWNER-INTERFACE.json",
+  "history": "modules/sqmv-metadata-engine/tests/fixtures/interface-history.v1.json",
+  "history_digest": "sha256:2768d09f67ec55e48f2cef5ad95b7ebf98918568c555eedc9acbbabf5108e224",
+  "go_title": "Metadata",
+  "go_stem": "metadata",
+  "cpp_output": "modules/sqmv-metadata-engine/src/interface.generated.hpp",
+  "go_output": "tools/qxctl/internal/knowledgeengine/sqmv_metadata_interface_generated.go",
+  "cmake_output": "cmake/SqmvMetadataInterface.generated.cmake",
+  "embedded_compatibility_version": null,
+  "embedded_macro": "SYMPHONY_SQMV_METADATA_PREVIOUS",
+  "symbol_prefixes": {
+    "go_export": "SQMV",
+    "go_private": "sqmv",
+    "cmake": "SQMV_METADATA"
+  }
+}

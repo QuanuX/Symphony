@@ -1,0 +1,6 @@
+cmake_minimum_required(VERSION 3.30)
+get_filename_component(SYMPHONY_REPOSITORY_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/../.." ABSOLUTE)
+include("${SYMPHONY_REPOSITORY_ROOT}/cmake/SqdvCheckpointInterface.generated.cmake")
+project(SymphonySqdvCheckpoint VERSION ${SQDV_CHECKPOINT_VERSION} LANGUAGES CXX)
+include("${SYMPHONY_REPOSITORY_ROOT}/cmake/SymphonySqvAdministration.cmake")
+symphony_sqv_administration(sqdv-checkpoint-engine sqdv checkpoint ${SQDV_CHECKPOINT_SCHEMA_FILES})

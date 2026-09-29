@@ -2,7 +2,7 @@
 
 ## Status
 
-Canonical SSFV feature-routing registry. The partial catalog routes 125 experimental records across the platform governance scope and 49 owner scopes enumerated by `COVERAGE.md`.
+Canonical SSFV feature-routing registry. The partial catalog routes 131 experimental records across the platform governance scope and 55 owner scopes enumerated by `COVERAGE.md`.
 
 ## Purpose
 
@@ -1144,7 +1144,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `tools/qxctl`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:qxctl`
-- record_digest: `sha256:1d9e9e73437f0a1695f636adb4a24d2d6b2aa9b836c3f811bb53fec89a472a27`
+- record_digest: `sha256:89ceb9dbd9a342fea46c2ee955abc378f27f26834afcc14e3fe19e4fbdff439b`
 - notes: Bounded SQAV local request validation and shared administration, without provider activation.
 
 - feature_id: `ssfv:symphony:sqav-request-engine`
@@ -1155,6 +1155,60 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - parent_feature_id: `ssfv:symphony:platform`
 - record_digest: `sha256:ca5a45c14f6faef90f5b18f892e8e8b7168b91bbbb0de1640e4cb272ce61b800`
 - notes: Bounded SQAV local request validation and shared administration, without provider activation.
+
+- feature_id: `ssfv:symphony:sqmv-metadata-engine`
+- feature_file: `modules/sqmv-metadata-engine/FEATURES.md`
+- owner_contract: `modules/sqmv-metadata-engine/SPEC.md`
+- source_scope: `modules/sqmv-metadata-engine`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:platform`
+- record_digest: `sha256:581edafab4218fe86817c65d1fae6decfc6d1ce56f5eb5df0e415dbd853a0c0d`
+- notes: Explicit non-live administration scoped to SQMV ownership; shared transport does not create a parent runtime.
+
+- feature_id: `ssfv:symphony:sqfv-flow-engine`
+- feature_file: `modules/sqfv-flow-engine/FEATURES.md`
+- owner_contract: `modules/sqfv-flow-engine/SPEC.md`
+- source_scope: `modules/sqfv-flow-engine`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:platform`
+- record_digest: `sha256:1effb6d01bf14ba51d681775cbd9bc597710805eed4f4dcaf1d96af624d7dc15`
+- notes: Explicit non-live administration scoped to SQFV ownership; shared transport does not create a parent runtime.
+
+- feature_id: `ssfv:symphony:sqtv-conversion-engine`
+- feature_file: `modules/sqtv-conversion-engine/FEATURES.md`
+- owner_contract: `modules/sqtv-conversion-engine/SPEC.md`
+- source_scope: `modules/sqtv-conversion-engine`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:platform`
+- record_digest: `sha256:8d8c9b89e2c4f71ce8e55301e1742d14f31adf815ee23b1e211f552e0f6b94ae`
+- notes: Explicit non-live administration scoped to SQTV ownership; shared transport does not create a parent runtime.
+
+- feature_id: `ssfv:symphony:sqpv-inspection-engine`
+- feature_file: `modules/sqpv-inspection-engine/FEATURES.md`
+- owner_contract: `modules/sqpv-inspection-engine/SPEC.md`
+- source_scope: `modules/sqpv-inspection-engine`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:platform`
+- record_digest: `sha256:983c9833e02080d6aebd7edcf32031054e5818c78f9b500a1ee5ee1c41865224`
+- notes: Explicit non-live administration scoped to SQPV ownership; shared transport does not create a parent runtime.
+
+- feature_id: `ssfv:symphony:sqdv-checkpoint-engine`
+- feature_file: `modules/sqdv-checkpoint-engine/FEATURES.md`
+- owner_contract: `modules/sqdv-checkpoint-engine/SPEC.md`
+- source_scope: `modules/sqdv-checkpoint-engine`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:platform`
+- record_digest: `sha256:2f375422fc2af4e89adbc803075dd7423b86b8ae17cf9a137a11154db16f5419`
+- notes: Explicit non-live administration scoped to SQDV ownership; shared transport does not create a parent runtime.
+
+- feature_id: `ssfv:symphony:sqav-attempt-engine`
+- feature_file: `modules/sqav-attempt-engine/FEATURES.md`
+- owner_contract: `modules/sqav-attempt-engine/SPEC.md`
+- source_scope: `modules/sqav-attempt-engine`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:platform`
+- record_digest: `sha256:56bfe0493136ae76e6af9d74847d0594dd0ca99885ee9b03c200dfdb3b6f0c40`
+- notes: Explicit non-live administration scoped to SQAV ownership; shared transport does not create a parent runtime.
 
 ## Prohibited Entries
 
@@ -1170,4 +1224,4 @@ Do not register:
 
 ## Non-Authorization Statement
 
-This 125-record registry is an explicitly partial catalog governed by `COVERAGE.md`. It does not authorize an unratified feature record, an unregistered distributed file, repository-wide or installed-host completeness, complete legacy-invariant coverage, engine-decided feature-worthiness, or canonical mutation.
+This 131-record registry is an explicitly partial catalog governed by `COVERAGE.md`. It does not authorize an unratified feature record, an unregistered distributed file, repository-wide or installed-host completeness, complete legacy-invariant coverage, engine-decided feature-worthiness, or canonical mutation.

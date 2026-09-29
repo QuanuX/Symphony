@@ -1,0 +1,33 @@
+{
+  "protocol": "symphony.sqmv.metadata-validate-input.v1",
+  "description": {
+    "dataset_id": "6578616d706c65",
+    "dataset_revision": "7231",
+    "schema_version": "76616c7565732d7631",
+    "layout_version": "62797465732d7631",
+    "access_scope": "707269766174653a74657374",
+    "producer_ref": "74657374",
+    "evidence": [
+      {
+        "role": "schema",
+        "producer_ref": "74657374",
+        "evidence_ref": "736368656d612d7631"
+      },
+      {
+        "role": "layout",
+        "producer_ref": "74657374",
+        "evidence_ref": "6c61796f75742d7631"
+      },
+      {
+        "role": "access",
+        "producer_ref": "74657374",
+        "evidence_ref": "6163636573732d7631"
+      }
+    ]
+  },
+  "limits": {
+    "max_manifest_bytes": "65536",
+    "max_field_bytes": "4096",
+    "max_evidence_refs": "128"
+  }
+}

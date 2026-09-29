@@ -362,3 +362,10 @@ The SCV gate adds exact graph-index schema discovery, keeping connector receipt-
 - `tools/qxctl/internal/knowledgeengine/sqav_request.go`
 - `tools/qxctl/internal/knowledgeengine/sqav_request_test.go`
 - `tools/qxctl/internal/knowledgeengine/sqav_request_interface_generated.go`
+
+## SQV administration extension
+
+- `tools/qxctl/internal/knowledgeengine/sqv_administration.go`
+- `tools/qxctl/internal/knowledgeengine/sqv_administration_test.go`
+
+Seven native-owner operations extend the existing shared schema/template and discovery routes. Declared output shapes, request/result digests and exact receipt-owned resources are independently checked. Native vector semantics remain C++26.

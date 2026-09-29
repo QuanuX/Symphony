@@ -26,3 +26,7 @@ First-party research-data conversion and transformation on the data plane are na
 ## Non-Authorization Statement
 
 This manifest authorizes no data access, provider collection, information-reducing conversion, strategy calculation, or publication.
+
+## Non-live administration
+
+`modules/sqtv-conversion-engine/MANIFEST.md` and `modules/sqtv-conversion-engine/SPEC.md` declare the independently installed C++26 owner adapter. Operations: `conversion_validate`. Shared qxctl schema/template and source discovery supply the resource surface. Live runtime activation remains deferred.

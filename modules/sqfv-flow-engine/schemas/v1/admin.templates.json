@@ -1,0 +1,45 @@
+{
+  "protocol": "symphony.sqfv.administration-templates.v1",
+  "templates": {
+    "flow_validate": {
+      "protocol": "symphony.sqfv.flow-validate-input.v1",
+      "limits": {
+        "max_payload_bytes": null,
+        "max_frame_bytes": null,
+        "max_descriptor_bytes": null,
+        "global_allocation_bytes": null,
+        "max_ports": null
+      },
+      "port": {
+        "binding": {
+          "metadata_ref": null,
+          "dataset_revision": null,
+          "schema_version": null,
+          "layout_version": null,
+          "access_scope": null
+        },
+        "partition": null,
+        "producer_generation": null,
+        "next_sequence": null,
+        "outstanding_byte_credit": null,
+        "max_pending_entries": null
+      },
+      "frame": {
+        "binding": {
+          "metadata_ref": null,
+          "dataset_revision": null,
+          "schema_version": null,
+          "layout_version": null,
+          "access_scope": null
+        },
+        "partition": null,
+        "source_binding": null,
+        "source_position": null,
+        "producer_generation": null,
+        "batch_sequence": null,
+        "record_count": null,
+        "payload_bytes": null
+      }
+    }
+  }
+}

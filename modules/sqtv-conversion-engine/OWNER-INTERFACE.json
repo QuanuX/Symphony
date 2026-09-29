@@ -1,0 +1,46 @@
+{
+  "protocol": "symphony.shv.owner-interface.v2",
+  "module_id": "sqtv-conversion-engine",
+  "engine_id": "symphony-sqtv-conversion",
+  "namespace": "symphony::sqtv::administration",
+  "current_version": "0.1.0-dev",
+  "releases": {
+    "0.1.0-dev": [
+      "conversion_validate"
+    ]
+  },
+  "contract_versions": [
+    "modules/sqtv-conversion-engine/SPEC.md@v1",
+    "symphony.sqtv.conversion-validate-input.v1",
+    "symphony.sqtv.conversion-validate.v1"
+  ],
+  "operations": [
+    {
+      "administration_disposition": "qxctl_required",
+      "administrative_interactions": [
+        "validate"
+      ],
+      "authorization_requirement": "none",
+      "availability": "implemented",
+      "direct_invocation": "supported",
+      "engine_operation_id": "engop:symphony:sqtv-conversion.validate",
+      "expected_state_required": false,
+      "feature_ids": [
+        "ssfv:symphony:sqtv-conversion-engine"
+      ],
+      "idempotency": "idempotent",
+      "input_protocol": "symphony.sqtv.conversion-validate-input.v1",
+      "mutability": "read_only",
+      "operation_name": "conversion_validate",
+      "output_protocol": "symphony.sqtv.conversion-validate.v1",
+      "recovery_operation_id": null,
+      "thermal_path": "freezing"
+    }
+  ],
+  "schemas": [
+    "modules/sqtv-conversion-engine/schemas/v1/admin.schema.json",
+    "modules/sqtv-conversion-engine/schemas/v1/admin.templates.json"
+  ],
+  "companions": [],
+  "embedded_dependencies": []
+}
