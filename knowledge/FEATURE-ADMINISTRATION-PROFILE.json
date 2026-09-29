@@ -2038,23 +2038,47 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "discover",
-          "rationale": "Exact native local request validation and receipt-owned resources; source module contracts remain distinct from runtime state.",
+          "rationale": "Shared exact native-owner schemas and unanswered templates; source module discovery is distinct from runtime observation.",
           "requirement": "required"
         },
         {
           "command_ids": [
-            "qxcmd:symphony:sqv.acquisition.validate"
+            "qxcmd:symphony:sqv.acquisition.attempts",
+            "qxcmd:symphony:sqv.checkpoint.inspect",
+            "qxcmd:symphony:sqv.metadata.inspect",
+            "qxcmd:symphony:sqv.store.inspect"
           ],
           "delivery": "composed",
           "engine_operation_ids": [],
           "evidence": [
             "modules/sqav-request-engine/SPEC.md",
             "tools/qxctl/COMMANDS.json",
-            "tools/qxctl/FEATURES.md"
+            "tools/qxctl/FEATURES.md",
+            "tools/qxctl/internal/knowledgeengine/sqv_administration.go"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "inspect",
+          "rationale": "One canonical leaf per native action; projection selection and shared schema/template resources consolidate overlap.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:sqv.acquisition.validate",
+            "qxcmd:symphony:sqv.conversion.validate",
+            "qxcmd:symphony:sqv.flow.validate",
+            "qxcmd:symphony:sqv.metadata.validate"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [],
+          "evidence": [
+            "modules/sqav-request-engine/SPEC.md",
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/FEATURES.md",
+            "tools/qxctl/internal/knowledgeengine/sqv_administration.go"
           ],
           "inherited_from_feature_id": null,
           "interaction": "validate",
-          "rationale": "Exact native local request validation and receipt-owned resources; source module contracts remain distinct from runtime state.",
+          "rationale": "One canonical leaf per native action; projection selection and shared schema/template resources consolidate overlap.",
           "requirement": "required"
         }
       ],
@@ -7043,6 +7067,46 @@
       "expectations": [
         {
           "command_ids": [
+            "qxcmd:symphony:sqv.schema",
+            "qxcmd:symphony:sqv.template"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [],
+          "evidence": [
+            "modules/sqav-attempt-engine/SPEC.md",
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "discover",
+          "rationale": "Exact installed owner declarations and schemas; existing source discovery remains separate from runtime state.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:sqv.acquisition.attempts"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:sqav-attempt.inspect"
+          ],
+          "evidence": [
+            "modules/sqav-attempt-engine/SPEC.md",
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "inspect",
+          "rationale": "Inspect persisted acquisition attempts and conservative charge ceilings without recovering records or reissuing execution capability.",
+          "requirement": "required"
+        }
+      ],
+      "feature_id": "ssfv:symphony:sqav-attempt-engine"
+    },
+    {
+      "expectations": [
+        {
+          "command_ids": [
             "qxcmd:symphony:inventory",
             "qxcmd:symphony:inventory.digest",
             "qxcmd:symphony:module.check",
@@ -7288,6 +7352,46 @@
       "expectations": [
         {
           "command_ids": [
+            "qxcmd:symphony:sqv.schema",
+            "qxcmd:symphony:sqv.template"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [],
+          "evidence": [
+            "modules/sqdv-checkpoint-engine/SPEC.md",
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "discover",
+          "rationale": "Exact installed owner declarations and schemas; existing source discovery remains separate from runtime state.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:sqv.checkpoint.inspect"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:sqdv-checkpoint.inspect"
+          ],
+          "evidence": [
+            "modules/sqdv-checkpoint-engine/SPEC.md",
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "inspect",
+          "rationale": "Inspect persisted local-processing checkpoints without repairing or advancing the journal.",
+          "requirement": "required"
+        }
+      ],
+      "feature_id": "ssfv:symphony:sqdv-checkpoint-engine"
+    },
+    {
+      "expectations": [
+        {
+          "command_ids": [
             "qxcmd:symphony:inventory",
             "qxcmd:symphony:inventory.digest",
             "qxcmd:symphony:module.check",
@@ -7370,6 +7474,46 @@
       "expectations": [
         {
           "command_ids": [
+            "qxcmd:symphony:sqv.schema",
+            "qxcmd:symphony:sqv.template"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [],
+          "evidence": [
+            "modules/sqfv-flow-engine/SPEC.md",
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "discover",
+          "rationale": "Exact installed owner declarations and schemas; existing source discovery remains separate from runtime state.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:sqv.flow.validate"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:sqfv-flow.validate"
+          ],
+          "evidence": [
+            "modules/sqfv-flow-engine/SPEC.md",
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "validate",
+          "rationale": "Validate one explicit flow binding, resource budget, credit and queue configuration through an isolated native frame trial.",
+          "requirement": "required"
+        }
+      ],
+      "feature_id": "ssfv:symphony:sqfv-flow-engine"
+    },
+    {
+      "expectations": [
+        {
+          "command_ids": [
             "qxcmd:symphony:inventory",
             "qxcmd:symphony:inventory.digest",
             "qxcmd:symphony:module.check",
@@ -7411,6 +7555,104 @@
       "expectations": [
         {
           "command_ids": [
+            "qxcmd:symphony:sqv.schema",
+            "qxcmd:symphony:sqv.template"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [],
+          "evidence": [
+            "modules/sqmv-metadata-engine/SPEC.md",
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "discover",
+          "rationale": "Exact installed owner declarations and schemas; existing source discovery remains separate from runtime state.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:sqv.metadata.inspect"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:sqmv-metadata.inspect"
+          ],
+          "evidence": [
+            "modules/sqmv-metadata-engine/SPEC.md",
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "inspect",
+          "rationale": "Validate native metadata descriptions and inspect canonical manifests with selected evidence projections.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:sqv.metadata.validate"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:sqmv-metadata.validate"
+          ],
+          "evidence": [
+            "modules/sqmv-metadata-engine/SPEC.md",
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "validate",
+          "rationale": "Validate native metadata descriptions and inspect canonical manifests with selected evidence projections.",
+          "requirement": "required"
+        }
+      ],
+      "feature_id": "ssfv:symphony:sqmv-metadata-engine"
+    },
+    {
+      "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:sqv.schema",
+            "qxcmd:symphony:sqv.template"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [],
+          "evidence": [
+            "modules/sqpv-inspection-engine/SPEC.md",
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "discover",
+          "rationale": "Exact installed owner declarations and schemas; existing source discovery remains separate from runtime state.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:sqv.store.inspect"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:sqpv-inspection.inspect"
+          ],
+          "evidence": [
+            "modules/sqpv-inspection-engine/SPEC.md",
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "inspect",
+          "rationale": "Inspect published-head retention and full frame integrity through a read-only, bounded, fenced store reader.",
+          "requirement": "required"
+        }
+      ],
+      "feature_id": "ssfv:symphony:sqpv-inspection-engine"
+    },
+    {
+      "expectations": [
+        {
+          "command_ids": [
             "qxcmd:symphony:inventory",
             "qxcmd:symphony:inventory.digest",
             "qxcmd:symphony:module.check",
@@ -7447,6 +7689,46 @@
         }
       ],
       "feature_id": "ssfv:symphony:sqpv-local-store-cpp"
+    },
+    {
+      "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:sqv.schema",
+            "qxcmd:symphony:sqv.template"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [],
+          "evidence": [
+            "modules/sqtv-conversion-engine/SPEC.md",
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "discover",
+          "rationale": "Exact installed owner declarations and schemas; existing source discovery remains separate from runtime state.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:sqv.conversion.validate"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:sqtv-conversion.validate"
+          ],
+          "evidence": [
+            "modules/sqtv-conversion-engine/SPEC.md",
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "validate",
+          "rationale": "Validate exact integer conversion layouts, element counts and resource limits without claiming value-range validity.",
+          "requirement": "required"
+        }
+      ],
+      "feature_id": "ssfv:symphony:sqtv-conversion-engine"
     },
     {
       "expectations": [
@@ -8484,9 +8766,9 @@
   ],
   "format_version": 1,
   "forward_gate": "enforce_new_records",
-  "profile_digest": "sha256:92723a09f262b68cbb6e52d464d05621b3a9008f6c3d3ffe672987b251be16c3",
+  "profile_digest": "sha256:c77420c2fffeae39b37166873ed795f6b6c9c1bb92ae0054efb05f0ddd512250",
   "profile_id": "symphony.registered-features.administration.v1",
   "protocol": "symphony.knowledge.feature-administration-profile.v1",
-  "registered_feature_count": 125,
-  "ssfv_registry_digest": "sha256:f8e5de0b40d95b4bbb47837293d5be8ec1a7b0e6569052dbce4ae187edc9e295"
+  "registered_feature_count": 131,
+  "ssfv_registry_digest": "sha256:bb9dacd8a11ea68a23506f4efa396820f54676a3e1f7236432c95aa28472d353"
 }

@@ -1,0 +1,6 @@
+cmake_minimum_required(VERSION 3.30)
+get_filename_component(SYMPHONY_REPOSITORY_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/../.." ABSOLUTE)
+include("${SYMPHONY_REPOSITORY_ROOT}/cmake/SqpvInspectionInterface.generated.cmake")
+project(SymphonySqpvInspection VERSION ${SQPV_INSPECTION_VERSION} LANGUAGES CXX)
+include("${SYMPHONY_REPOSITORY_ROOT}/cmake/SymphonySqvAdministration.cmake")
+symphony_sqv_administration(sqpv-inspection-engine sqpv inspection ${SQPV_INSPECTION_SCHEMA_FILES})

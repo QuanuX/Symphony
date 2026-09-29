@@ -1,0 +1,17 @@
+{
+  "protocol": "symphony.sqav.administration-templates.v1",
+  "templates": {
+    "attempts_inspect": {
+      "protocol": "symphony.sqav.attempts-inspect-input.v1",
+      "store": {
+        "root": null,
+        "expected_metadata_reference": null,
+        "expected_store_generation": null,
+        "max_read_bytes": null,
+        "max_batches": null
+      },
+      "offset": null,
+      "limit": null
+    }
+  }
+}

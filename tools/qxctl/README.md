@@ -369,3 +369,7 @@ qxctl sclv warning reopen --tops-id UUID --state-root /local/validation-state --
 Use the current state digest for subsequent syncs and mutations. Acknowledge also accepts an optional future UTC `--valid-until`. Ordinary `validate scan` using the same TOPS/state omits accepted warnings from actionable details; raw evidence remains complete. The exact subjects are independent, including two different warnings about one path. New records and other warnings remain visible.
 
 Keep this state, logs and test/build evidence outside the repository and delivered packages. Before delivery, use a clean build for each vector and fresh validation state; local acknowledgement is not release acceptance evidence. See [the validation contract](../../knowledge/VALIDATION.md#sclv-historical-warning-acknowledgement).
+
+## SQV administration
+
+The non-live SQV surface includes native acquisition request validation, metadata validation/inspection, flow and integer-conversion validation, and read-only retained-store/checkpoint/attempt inspection. Use `sqv schema` and `sqv template` with an exact operation and installed release. See `COMMANDS.md` and the selected owner's installed SPEC. Live activation and mutating recovery remain separate work.

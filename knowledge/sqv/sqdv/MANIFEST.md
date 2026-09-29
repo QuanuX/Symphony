@@ -26,3 +26,7 @@ First-party research-data delivery adapters on the data plane use C++26 in this 
 ## Non-Authorization Statement
 
 This manifest authorizes no recipient access, external data export, credential use, private-data disclosure, remote ingestion, or live strategy execution.
+
+## Non-live administration
+
+`modules/sqdv-checkpoint-engine/MANIFEST.md` and `modules/sqdv-checkpoint-engine/SPEC.md` declare the independently installed C++26 owner adapter. Operations: `checkpoint_inspect`. Shared qxctl schema/template and source discovery supply the resource surface. Live runtime activation remains deferred.

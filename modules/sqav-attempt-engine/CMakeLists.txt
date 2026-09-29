@@ -1,0 +1,6 @@
+cmake_minimum_required(VERSION 3.30)
+get_filename_component(SYMPHONY_REPOSITORY_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/../.." ABSOLUTE)
+include("${SYMPHONY_REPOSITORY_ROOT}/cmake/SqavAttemptInterface.generated.cmake")
+project(SymphonySqavAttempt VERSION ${SQAV_ATTEMPT_VERSION} LANGUAGES CXX)
+include("${SYMPHONY_REPOSITORY_ROOT}/cmake/SymphonySqvAdministration.cmake")
+symphony_sqv_administration(sqav-attempt-engine sqav attempt ${SQAV_ATTEMPT_SCHEMA_FILES})

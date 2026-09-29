@@ -1,0 +1,6 @@
+cmake_minimum_required(VERSION 3.30)
+get_filename_component(SYMPHONY_REPOSITORY_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/../.." ABSOLUTE)
+include("${SYMPHONY_REPOSITORY_ROOT}/cmake/SqfvFlowInterface.generated.cmake")
+project(SymphonySqfvFlow VERSION ${SQFV_FLOW_VERSION} LANGUAGES CXX)
+include("${SYMPHONY_REPOSITORY_ROOT}/cmake/SymphonySqvAdministration.cmake")
+symphony_sqv_administration(sqfv-flow-engine sqfv flow ${SQFV_FLOW_SCHEMA_FILES})

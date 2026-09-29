@@ -1,0 +1,46 @@
+{
+  "protocol": "symphony.shv.owner-interface.v2",
+  "module_id": "sqpv-inspection-engine",
+  "engine_id": "symphony-sqpv-inspection",
+  "namespace": "symphony::sqpv::administration",
+  "current_version": "0.1.0-dev",
+  "releases": {
+    "0.1.0-dev": [
+      "store_inspect"
+    ]
+  },
+  "contract_versions": [
+    "modules/sqpv-inspection-engine/SPEC.md@v1",
+    "symphony.sqpv.store-inspect-input.v1",
+    "symphony.sqpv.store-inspect.v1"
+  ],
+  "operations": [
+    {
+      "administration_disposition": "qxctl_required",
+      "administrative_interactions": [
+        "inspect"
+      ],
+      "authorization_requirement": "none",
+      "availability": "implemented",
+      "direct_invocation": "supported",
+      "engine_operation_id": "engop:symphony:sqpv-inspection.inspect",
+      "expected_state_required": false,
+      "feature_ids": [
+        "ssfv:symphony:sqpv-inspection-engine"
+      ],
+      "idempotency": "idempotent",
+      "input_protocol": "symphony.sqpv.store-inspect-input.v1",
+      "mutability": "read_only",
+      "operation_name": "store_inspect",
+      "output_protocol": "symphony.sqpv.store-inspect.v1",
+      "recovery_operation_id": null,
+      "thermal_path": "freezing"
+    }
+  ],
+  "schemas": [
+    "modules/sqpv-inspection-engine/schemas/v1/admin.schema.json",
+    "modules/sqpv-inspection-engine/schemas/v1/admin.templates.json"
+  ],
+  "companions": [],
+  "embedded_dependencies": []
+}

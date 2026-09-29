@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/QuanuX/Symphony/tools/qxctl/internal/commandregistry"
+	"github.com/QuanuX/Symphony/tools/qxctl/internal/knowledgeengine"
 	"strings"
 	"testing"
 )
@@ -16,6 +17,9 @@ func TestSQVCanonicalSurface(t *testing.T) {
 		t.Fatal(err)
 	}
 	want := map[string]bool{"qxcmd:symphony:sqv.acquisition.validate": false, "qxcmd:symphony:sqv.schema": false, "qxcmd:symphony:sqv.template": false}
+	for _, op := range knowledgeengine.SQVAdministrationOperations {
+		want["qxcmd:symphony:sqv."+op.Domain+"."+op.Leaf] = false
+	}
 	for _, c := range m.Commands {
 		if strings.HasPrefix(c.CommandID, "qxcmd:symphony:sqv.") {
 			if _, ok := want[c.CommandID]; !ok || len(c.Aliases) != 0 {

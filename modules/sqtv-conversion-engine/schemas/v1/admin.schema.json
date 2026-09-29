@@ -1,0 +1,161 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "protocol": "symphony.sqtv.administration-schemas.v1",
+  "requests": {
+    "conversion_validate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "input_layout",
+        "output_layout",
+        "element_count",
+        "limits"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "symphony.sqtv.conversion-validate-input.v1"
+        },
+        "input_layout": {
+          "type": "string",
+          "maxLength": 64
+        },
+        "output_layout": {
+          "type": "string",
+          "maxLength": 64
+        },
+        "element_count": {
+          "type": "string",
+          "format": "uint64-decimal",
+          "pattern": "^(0|[1-9][0-9]{0,19})$",
+          "description": "Canonical unsigned decimal, at most UINT64_MAX; native owner checks all semantic limits."
+        },
+        "limits": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "max_elements",
+            "max_input_bytes",
+            "max_output_bytes"
+          ],
+          "properties": {
+            "max_elements": {
+              "type": "string",
+              "format": "uint64-decimal",
+              "pattern": "^(0|[1-9][0-9]{0,19})$",
+              "description": "Canonical unsigned decimal, at most UINT64_MAX; native owner checks all semantic limits."
+            },
+            "max_input_bytes": {
+              "type": "string",
+              "format": "uint64-decimal",
+              "pattern": "^(0|[1-9][0-9]{0,19})$",
+              "description": "Canonical unsigned decimal, at most UINT64_MAX; native owner checks all semantic limits."
+            },
+            "max_output_bytes": {
+              "type": "string",
+              "format": "uint64-decimal",
+              "pattern": "^(0|[1-9][0-9]{0,19})$",
+              "description": "Canonical unsigned decimal, at most UINT64_MAX; native owner checks all semantic limits."
+            }
+          }
+        }
+      }
+    }
+  },
+  "results": {
+    "conversion_validate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "operation",
+        "owner",
+        "request_digest",
+        "data",
+        "provider_observation",
+        "persistent_mutation",
+        "result_digest"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "symphony.sqtv.conversion-validate.v1"
+        },
+        "operation": {
+          "const": "conversion_validate"
+        },
+        "owner": {
+          "const": "sqtv"
+        },
+        "request_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "data": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "operation_reference",
+            "converter_identity",
+            "input_bytes",
+            "output_bytes",
+            "validation_scope",
+            "value_range_check",
+            "input_observation"
+          ],
+          "properties": {
+            "operation_reference": {
+              "type": "string",
+              "maxLength": 128
+            },
+            "converter_identity": {
+              "type": "string",
+              "enum": [
+                "sqtv-integer-conversion-cpp/0.2.0-dev"
+              ]
+            },
+            "input_bytes": {
+              "type": "string",
+              "format": "uint64-decimal",
+              "pattern": "^(0|[1-9][0-9]{0,19})$",
+              "description": "Canonical unsigned decimal, at most UINT64_MAX; native owner checks all semantic limits."
+            },
+            "output_bytes": {
+              "type": "string",
+              "format": "uint64-decimal",
+              "pattern": "^(0|[1-9][0-9]{0,19})$",
+              "description": "Canonical unsigned decimal, at most UINT64_MAX; native owner checks all semantic limits."
+            },
+            "validation_scope": {
+              "type": "string",
+              "enum": [
+                "formats_count_and_limits_only"
+              ]
+            },
+            "value_range_check": {
+              "type": "string",
+              "enum": [
+                "required_at_conversion"
+              ]
+            },
+            "input_observation": {
+              "type": "string",
+              "enum": [
+                "not_performed"
+              ]
+            }
+          }
+        },
+        "provider_observation": {
+          "const": "not_performed"
+        },
+        "persistent_mutation": {
+          "const": false
+        },
+        "result_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      }
+    }
+  }
+}

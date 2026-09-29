@@ -26,3 +26,7 @@ First-party research-data batch, queue, and transport implementation on the data
 ## Non-Authorization Statement
 
 This manifest authorizes no network listener, provider connection, credential use, private-data disclosure, durable commit, or live strategy execution.
+
+## Non-live administration
+
+`modules/sqfv-flow-engine/MANIFEST.md` and `modules/sqfv-flow-engine/SPEC.md` declare the independently installed C++26 owner adapter. Operations: `flow_validate`. Shared qxctl schema/template and source discovery supply the resource surface. Live runtime activation remains deferred.

@@ -1,0 +1,18 @@
+{
+  "protocol": "symphony.shv.interface-registration.v1",
+  "declaration": "modules/sqav-attempt-engine/OWNER-INTERFACE.json",
+  "history": "modules/sqav-attempt-engine/tests/fixtures/interface-history.v1.json",
+  "history_digest": "sha256:2768d09f67ec55e48f2cef5ad95b7ebf98918568c555eedc9acbbabf5108e224",
+  "go_title": "Attempt",
+  "go_stem": "attempt",
+  "cpp_output": "modules/sqav-attempt-engine/src/interface.generated.hpp",
+  "go_output": "tools/qxctl/internal/knowledgeengine/sqav_attempt_interface_generated.go",
+  "cmake_output": "cmake/SqavAttemptInterface.generated.cmake",
+  "embedded_compatibility_version": null,
+  "embedded_macro": "SYMPHONY_SQAV_ATTEMPT_PREVIOUS",
+  "symbol_prefixes": {
+    "go_export": "SQAV",
+    "go_private": "sqav",
+    "cmake": "SQAV_ATTEMPT"
+  }
+}

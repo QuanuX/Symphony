@@ -1,0 +1,70 @@
+{
+  "protocol": "symphony.shv.owner-interface.v2",
+  "module_id": "sqmv-metadata-engine",
+  "engine_id": "symphony-sqmv-metadata",
+  "namespace": "symphony::sqmv::administration",
+  "current_version": "0.1.0-dev",
+  "releases": {
+    "0.1.0-dev": [
+      "metadata_validate",
+      "metadata_inspect"
+    ]
+  },
+  "contract_versions": [
+    "modules/sqmv-metadata-engine/SPEC.md@v1",
+    "symphony.sqmv.metadata-validate-input.v1",
+    "symphony.sqmv.metadata-validate.v1",
+    "symphony.sqmv.metadata-inspect-input.v1",
+    "symphony.sqmv.metadata-inspect.v1"
+  ],
+  "operations": [
+    {
+      "administration_disposition": "qxctl_required",
+      "administrative_interactions": [
+        "validate"
+      ],
+      "authorization_requirement": "none",
+      "availability": "implemented",
+      "direct_invocation": "supported",
+      "engine_operation_id": "engop:symphony:sqmv-metadata.validate",
+      "expected_state_required": false,
+      "feature_ids": [
+        "ssfv:symphony:sqmv-metadata-engine"
+      ],
+      "idempotency": "idempotent",
+      "input_protocol": "symphony.sqmv.metadata-validate-input.v1",
+      "mutability": "read_only",
+      "operation_name": "metadata_validate",
+      "output_protocol": "symphony.sqmv.metadata-validate.v1",
+      "recovery_operation_id": null,
+      "thermal_path": "freezing"
+    },
+    {
+      "administration_disposition": "qxctl_required",
+      "administrative_interactions": [
+        "inspect"
+      ],
+      "authorization_requirement": "none",
+      "availability": "implemented",
+      "direct_invocation": "supported",
+      "engine_operation_id": "engop:symphony:sqmv-metadata.inspect",
+      "expected_state_required": false,
+      "feature_ids": [
+        "ssfv:symphony:sqmv-metadata-engine"
+      ],
+      "idempotency": "idempotent",
+      "input_protocol": "symphony.sqmv.metadata-inspect-input.v1",
+      "mutability": "read_only",
+      "operation_name": "metadata_inspect",
+      "output_protocol": "symphony.sqmv.metadata-inspect.v1",
+      "recovery_operation_id": null,
+      "thermal_path": "freezing"
+    }
+  ],
+  "schemas": [
+    "modules/sqmv-metadata-engine/schemas/v1/admin.schema.json",
+    "modules/sqmv-metadata-engine/schemas/v1/admin.templates.json"
+  ],
+  "companions": [],
+  "embedded_dependencies": []
+}

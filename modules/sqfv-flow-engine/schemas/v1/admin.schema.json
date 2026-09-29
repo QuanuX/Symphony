@@ -1,0 +1,339 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "protocol": "symphony.sqfv.administration-schemas.v1",
+  "requests": {
+    "flow_validate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "limits",
+        "port",
+        "frame"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "symphony.sqfv.flow-validate-input.v1"
+        },
+        "limits": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "max_payload_bytes",
+            "max_frame_bytes",
+            "max_descriptor_bytes",
+            "global_allocation_bytes",
+            "max_ports"
+          ],
+          "properties": {
+            "max_payload_bytes": {
+              "type": "string",
+              "format": "uint64-decimal",
+              "pattern": "^(0|[1-9][0-9]{0,19})$",
+              "description": "Canonical unsigned decimal, at most UINT64_MAX; native owner checks all semantic limits."
+            },
+            "max_frame_bytes": {
+              "type": "string",
+              "format": "uint64-decimal",
+              "pattern": "^(0|[1-9][0-9]{0,19})$",
+              "description": "Canonical unsigned decimal, at most UINT64_MAX; native owner checks all semantic limits."
+            },
+            "max_descriptor_bytes": {
+              "type": "string",
+              "format": "uint64-decimal",
+              "pattern": "^(0|[1-9][0-9]{0,19})$",
+              "description": "Canonical unsigned decimal, at most UINT64_MAX; native owner checks all semantic limits."
+            },
+            "global_allocation_bytes": {
+              "type": "string",
+              "format": "uint64-decimal",
+              "pattern": "^(0|[1-9][0-9]{0,19})$",
+              "description": "Canonical unsigned decimal, at most UINT64_MAX; native owner checks all semantic limits."
+            },
+            "max_ports": {
+              "type": "string",
+              "format": "uint64-decimal",
+              "pattern": "^(0|[1-9][0-9]{0,19})$",
+              "description": "Canonical unsigned decimal, at most UINT64_MAX; native owner checks all semantic limits."
+            }
+          }
+        },
+        "port": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "binding",
+            "partition",
+            "producer_generation",
+            "next_sequence",
+            "outstanding_byte_credit",
+            "max_pending_entries"
+          ],
+          "properties": {
+            "binding": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "metadata_ref",
+                "dataset_revision",
+                "schema_version",
+                "layout_version",
+                "access_scope"
+              ],
+              "properties": {
+                "metadata_ref": {
+                  "type": "string",
+                  "pattern": "^([0-9a-f]{2})*$",
+                  "maxLength": 8192,
+                  "description": "Exact opaque bytes as lower-case hexadecimal."
+                },
+                "dataset_revision": {
+                  "type": "string",
+                  "pattern": "^([0-9a-f]{2})*$",
+                  "maxLength": 8192,
+                  "description": "Exact opaque bytes as lower-case hexadecimal."
+                },
+                "schema_version": {
+                  "type": "string",
+                  "pattern": "^([0-9a-f]{2})*$",
+                  "maxLength": 8192,
+                  "description": "Exact opaque bytes as lower-case hexadecimal."
+                },
+                "layout_version": {
+                  "type": "string",
+                  "pattern": "^([0-9a-f]{2})*$",
+                  "maxLength": 8192,
+                  "description": "Exact opaque bytes as lower-case hexadecimal."
+                },
+                "access_scope": {
+                  "type": "string",
+                  "pattern": "^([0-9a-f]{2})*$",
+                  "maxLength": 8192,
+                  "description": "Exact opaque bytes as lower-case hexadecimal."
+                }
+              }
+            },
+            "partition": {
+              "type": "string",
+              "pattern": "^([0-9a-f]{2})*$",
+              "maxLength": 8192,
+              "description": "Exact opaque bytes as lower-case hexadecimal."
+            },
+            "producer_generation": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{32}$"
+            },
+            "next_sequence": {
+              "type": "string",
+              "format": "uint64-decimal",
+              "pattern": "^(0|[1-9][0-9]{0,19})$",
+              "description": "Canonical unsigned decimal, at most UINT64_MAX; native owner checks all semantic limits."
+            },
+            "outstanding_byte_credit": {
+              "type": "string",
+              "format": "uint64-decimal",
+              "pattern": "^(0|[1-9][0-9]{0,19})$",
+              "description": "Canonical unsigned decimal, at most UINT64_MAX; native owner checks all semantic limits."
+            },
+            "max_pending_entries": {
+              "type": "string",
+              "format": "uint64-decimal",
+              "pattern": "^(0|[1-9][0-9]{0,19})$",
+              "description": "Canonical unsigned decimal, at most UINT64_MAX; native owner checks all semantic limits."
+            }
+          }
+        },
+        "frame": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "binding",
+            "partition",
+            "source_binding",
+            "source_position",
+            "producer_generation",
+            "batch_sequence",
+            "record_count",
+            "payload_bytes"
+          ],
+          "properties": {
+            "binding": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "metadata_ref",
+                "dataset_revision",
+                "schema_version",
+                "layout_version",
+                "access_scope"
+              ],
+              "properties": {
+                "metadata_ref": {
+                  "type": "string",
+                  "pattern": "^([0-9a-f]{2})*$",
+                  "maxLength": 8192,
+                  "description": "Exact opaque bytes as lower-case hexadecimal."
+                },
+                "dataset_revision": {
+                  "type": "string",
+                  "pattern": "^([0-9a-f]{2})*$",
+                  "maxLength": 8192,
+                  "description": "Exact opaque bytes as lower-case hexadecimal."
+                },
+                "schema_version": {
+                  "type": "string",
+                  "pattern": "^([0-9a-f]{2})*$",
+                  "maxLength": 8192,
+                  "description": "Exact opaque bytes as lower-case hexadecimal."
+                },
+                "layout_version": {
+                  "type": "string",
+                  "pattern": "^([0-9a-f]{2})*$",
+                  "maxLength": 8192,
+                  "description": "Exact opaque bytes as lower-case hexadecimal."
+                },
+                "access_scope": {
+                  "type": "string",
+                  "pattern": "^([0-9a-f]{2})*$",
+                  "maxLength": 8192,
+                  "description": "Exact opaque bytes as lower-case hexadecimal."
+                }
+              }
+            },
+            "partition": {
+              "type": "string",
+              "pattern": "^([0-9a-f]{2})*$",
+              "maxLength": 8192,
+              "description": "Exact opaque bytes as lower-case hexadecimal."
+            },
+            "source_binding": {
+              "type": "string",
+              "pattern": "^([0-9a-f]{2})*$",
+              "maxLength": 8192,
+              "description": "Exact opaque bytes as lower-case hexadecimal."
+            },
+            "source_position": {
+              "type": "string",
+              "pattern": "^([0-9a-f]{2})*$",
+              "maxLength": 8192,
+              "description": "Exact opaque bytes as lower-case hexadecimal."
+            },
+            "producer_generation": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{32}$"
+            },
+            "batch_sequence": {
+              "type": "string",
+              "format": "uint64-decimal",
+              "pattern": "^(0|[1-9][0-9]{0,19})$",
+              "description": "Canonical unsigned decimal, at most UINT64_MAX; native owner checks all semantic limits."
+            },
+            "record_count": {
+              "type": "string",
+              "format": "uint64-decimal",
+              "pattern": "^(0|[1-9][0-9]{0,19})$",
+              "description": "Canonical unsigned decimal, at most UINT64_MAX; native owner checks all semantic limits."
+            },
+            "payload_bytes": {
+              "type": "string",
+              "format": "uint64-decimal",
+              "pattern": "^(0|[1-9][0-9]{0,19})$",
+              "description": "Canonical unsigned decimal, at most UINT64_MAX; native owner checks all semantic limits."
+            }
+          }
+        }
+      }
+    }
+  },
+  "results": {
+    "flow_validate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "operation",
+        "owner",
+        "request_digest",
+        "data",
+        "provider_observation",
+        "persistent_mutation",
+        "result_digest"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "symphony.sqfv.flow-validate.v1"
+        },
+        "operation": {
+          "const": "flow_validate"
+        },
+        "owner": {
+          "const": "sqfv"
+        },
+        "request_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "data": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "validation_scope",
+            "frame_bytes",
+            "trial_peak_allocation_bytes",
+            "payload_bytes",
+            "binding_resolution",
+            "runtime_observation"
+          ],
+          "properties": {
+            "validation_scope": {
+              "type": "string",
+              "enum": [
+                "isolated_configuration_trial"
+              ]
+            },
+            "frame_bytes": {
+              "type": "string",
+              "format": "uint64-decimal",
+              "pattern": "^(0|[1-9][0-9]{0,19})$",
+              "description": "Canonical unsigned decimal, at most UINT64_MAX; native owner checks all semantic limits."
+            },
+            "trial_peak_allocation_bytes": {
+              "type": "string",
+              "format": "uint64-decimal",
+              "pattern": "^(0|[1-9][0-9]{0,19})$",
+              "description": "Canonical unsigned decimal, at most UINT64_MAX; native owner checks all semantic limits."
+            },
+            "payload_bytes": {
+              "type": "string",
+              "format": "uint64-decimal",
+              "pattern": "^(0|[1-9][0-9]{0,19})$",
+              "description": "Canonical unsigned decimal, at most UINT64_MAX; native owner checks all semantic limits."
+            },
+            "binding_resolution": {
+              "type": "string",
+              "enum": [
+                "not_performed"
+              ]
+            },
+            "runtime_observation": {
+              "type": "string",
+              "enum": [
+                "not_performed"
+              ]
+            }
+          }
+        },
+        "provider_observation": {
+          "const": "not_performed"
+        },
+        "persistent_mutation": {
+          "const": false
+        },
+        "result_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      }
+    }
+  }
+}

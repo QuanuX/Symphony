@@ -527,6 +527,19 @@
       "version_policy": "exact_receipt_v2_entry_point_and_capability_compatible"
     },
     {
+      "adapter_id": "adapter:symphony:symphony-sqav-attempt.v1",
+      "command_protocol": "symphony.knowledge.engine-process.v1",
+      "component": "sqav-attempt-engine",
+      "entry_point_id": "symphony-sqav-attempt",
+      "format_version": 3,
+      "implementation_path": "modules/sqav-attempt-engine",
+      "operation_ids": [
+        "engop:symphony:sqav-attempt.inspect"
+      ],
+      "owner_contract": "modules/sqav-attempt-engine/SPEC.md",
+      "version_policy": "exact_receipt_v2_entry_point_and_capability_compatible"
+    },
+    {
       "adapter_id": "adapter:symphony:symphony-sqav-request.v1",
       "command_protocol": "symphony.knowledge.engine-process.v1",
       "component": "sqav-request-engine",
@@ -537,6 +550,72 @@
         "engop:symphony:sqav-request.validate"
       ],
       "owner_contract": "modules/sqav-request-engine/SPEC.md",
+      "version_policy": "exact_receipt_v2_entry_point_and_capability_compatible"
+    },
+    {
+      "adapter_id": "adapter:symphony:symphony-sqdv-checkpoint.v1",
+      "command_protocol": "symphony.knowledge.engine-process.v1",
+      "component": "sqdv-checkpoint-engine",
+      "entry_point_id": "symphony-sqdv-checkpoint",
+      "format_version": 3,
+      "implementation_path": "modules/sqdv-checkpoint-engine",
+      "operation_ids": [
+        "engop:symphony:sqdv-checkpoint.inspect"
+      ],
+      "owner_contract": "modules/sqdv-checkpoint-engine/SPEC.md",
+      "version_policy": "exact_receipt_v2_entry_point_and_capability_compatible"
+    },
+    {
+      "adapter_id": "adapter:symphony:symphony-sqfv-flow.v1",
+      "command_protocol": "symphony.knowledge.engine-process.v1",
+      "component": "sqfv-flow-engine",
+      "entry_point_id": "symphony-sqfv-flow",
+      "format_version": 3,
+      "implementation_path": "modules/sqfv-flow-engine",
+      "operation_ids": [
+        "engop:symphony:sqfv-flow.validate"
+      ],
+      "owner_contract": "modules/sqfv-flow-engine/SPEC.md",
+      "version_policy": "exact_receipt_v2_entry_point_and_capability_compatible"
+    },
+    {
+      "adapter_id": "adapter:symphony:symphony-sqmv-metadata.v1",
+      "command_protocol": "symphony.knowledge.engine-process.v1",
+      "component": "sqmv-metadata-engine",
+      "entry_point_id": "symphony-sqmv-metadata",
+      "format_version": 3,
+      "implementation_path": "modules/sqmv-metadata-engine",
+      "operation_ids": [
+        "engop:symphony:sqmv-metadata.inspect",
+        "engop:symphony:sqmv-metadata.validate"
+      ],
+      "owner_contract": "modules/sqmv-metadata-engine/SPEC.md",
+      "version_policy": "exact_receipt_v2_entry_point_and_capability_compatible"
+    },
+    {
+      "adapter_id": "adapter:symphony:symphony-sqpv-inspection.v1",
+      "command_protocol": "symphony.knowledge.engine-process.v1",
+      "component": "sqpv-inspection-engine",
+      "entry_point_id": "symphony-sqpv-inspection",
+      "format_version": 3,
+      "implementation_path": "modules/sqpv-inspection-engine",
+      "operation_ids": [
+        "engop:symphony:sqpv-inspection.inspect"
+      ],
+      "owner_contract": "modules/sqpv-inspection-engine/SPEC.md",
+      "version_policy": "exact_receipt_v2_entry_point_and_capability_compatible"
+    },
+    {
+      "adapter_id": "adapter:symphony:symphony-sqtv-conversion.v1",
+      "command_protocol": "symphony.knowledge.engine-process.v1",
+      "component": "sqtv-conversion-engine",
+      "entry_point_id": "symphony-sqtv-conversion",
+      "format_version": 3,
+      "implementation_path": "modules/sqtv-conversion-engine",
+      "operation_ids": [
+        "engop:symphony:sqtv-conversion.validate"
+      ],
+      "owner_contract": "modules/sqtv-conversion-engine/SPEC.md",
       "version_policy": "exact_receipt_v2_entry_point_and_capability_compatible"
     }
   ],
@@ -2307,6 +2386,49 @@
       "title": "SHV source selection commits only the exact authorized owner transition"
     },
     {
+      "allowed_adapter_ids": [
+        "adapter:symphony:symphony-sqav-attempt.v1"
+      ],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "TestSQVAdministrationInstalled",
+            "TestSQVTransportShape"
+          ],
+          "path": "tools/qxctl/internal/knowledgeengine/sqv_administration_test.go"
+        }
+      ],
+      "invariant_id": "invariant:symphony:sqav.attempt-administration",
+      "ipc_boundary": true,
+      "owner_component": "sqav-attempt-engine",
+      "owner_contract": "modules/sqav-attempt-engine/SPEC.md",
+      "producer_implementations": [
+        "modules/sqav-attempt-engine/src/admin.cpp",
+        "modules/sqpv-inspection-engine/src/store_reader.cpp",
+        "tools/sqv-administration-cpp/main.cpp",
+        "tools/sqv-administration-cpp/request.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "main"
+          ],
+          "path": "tests/sqv-administration/reader_test.cpp"
+        }
+      ],
+      "real_process_regressions": [
+        {
+          "cases": [
+            "test_installed_requests"
+          ],
+          "path": "modules/sqav-attempt-engine/tests/process.cpp"
+        }
+      ],
+      "statement": "Inspect persisted acquisition attempts and conservative charge ceilings without recovering records or reissuing execution capability. The exact process result preserves request identity and observation scope. Read-only commands perform no application-state writes or implicit recovery.",
+      "status": "active",
+      "title": "SQAV administration preserves ownership and evidence scope"
+    },
+    {
       "allowed_adapter_ids": [],
       "consumer_boundary_rejections": [
         {
@@ -2741,6 +2863,49 @@
       "title": "SQDV processing acknowledgement is separate from physical release"
     },
     {
+      "allowed_adapter_ids": [
+        "adapter:symphony:symphony-sqdv-checkpoint.v1"
+      ],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "TestSQVAdministrationInstalled",
+            "TestSQVTransportShape"
+          ],
+          "path": "tools/qxctl/internal/knowledgeengine/sqv_administration_test.go"
+        }
+      ],
+      "invariant_id": "invariant:symphony:sqdv.checkpoint-administration",
+      "ipc_boundary": true,
+      "owner_component": "sqdv-checkpoint-engine",
+      "owner_contract": "modules/sqdv-checkpoint-engine/SPEC.md",
+      "producer_implementations": [
+        "modules/sqdv-checkpoint-engine/src/admin.cpp",
+        "modules/sqpv-inspection-engine/src/store_reader.cpp",
+        "tools/sqv-administration-cpp/main.cpp",
+        "tools/sqv-administration-cpp/request.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "main"
+          ],
+          "path": "tests/sqv-administration/reader_test.cpp"
+        }
+      ],
+      "real_process_regressions": [
+        {
+          "cases": [
+            "test_installed_requests"
+          ],
+          "path": "modules/sqdv-checkpoint-engine/tests/process.cpp"
+        }
+      ],
+      "statement": "Inspect persisted local-processing checkpoints without repairing or advancing the journal. The exact process result preserves request identity and observation scope. Read-only commands perform no application-state writes or implicit recovery.",
+      "status": "active",
+      "title": "SQDV administration preserves ownership and evidence scope"
+    },
+    {
       "allowed_adapter_ids": [],
       "consumer_boundary_rejections": [
         {
@@ -2908,6 +3073,48 @@
       "title": "SQDV retained delivery depends on actual selected SQPV evidence"
     },
     {
+      "allowed_adapter_ids": [
+        "adapter:symphony:symphony-sqfv-flow.v1"
+      ],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "TestSQVAdministrationInstalled",
+            "TestSQVTransportShape"
+          ],
+          "path": "tools/qxctl/internal/knowledgeengine/sqv_administration_test.go"
+        }
+      ],
+      "invariant_id": "invariant:symphony:sqfv.flow-administration",
+      "ipc_boundary": true,
+      "owner_component": "sqfv-flow-engine",
+      "owner_contract": "modules/sqfv-flow-engine/SPEC.md",
+      "producer_implementations": [
+        "modules/sqfv-flow-engine/src/admin.cpp",
+        "tools/sqv-administration-cpp/main.cpp",
+        "tools/sqv-administration-cpp/request.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "main"
+          ],
+          "path": "tests/sqv-administration/validation_test.cpp"
+        }
+      ],
+      "real_process_regressions": [
+        {
+          "cases": [
+            "test_installed_requests"
+          ],
+          "path": "modules/sqfv-flow-engine/tests/process.cpp"
+        }
+      ],
+      "statement": "Validate one explicit flow binding, resource budget, credit and queue configuration through an isolated native frame trial. The exact process result preserves request identity and observation scope. Read-only commands perform no application-state writes or implicit recovery.",
+      "status": "active",
+      "title": "SQFV administration preserves ownership and evidence scope"
+    },
+    {
       "allowed_adapter_ids": [],
       "consumer_boundary_rejections": [
         {
@@ -3073,6 +3280,48 @@
       "title": "SQMV immutable manifests preserve exact attributable content"
     },
     {
+      "allowed_adapter_ids": [
+        "adapter:symphony:symphony-sqmv-metadata.v1"
+      ],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "TestSQVAdministrationInstalled",
+            "TestSQVTransportShape"
+          ],
+          "path": "tools/qxctl/internal/knowledgeengine/sqv_administration_test.go"
+        }
+      ],
+      "invariant_id": "invariant:symphony:sqmv.metadata-administration",
+      "ipc_boundary": true,
+      "owner_component": "sqmv-metadata-engine",
+      "owner_contract": "modules/sqmv-metadata-engine/SPEC.md",
+      "producer_implementations": [
+        "modules/sqmv-metadata-engine/src/admin.cpp",
+        "tools/sqv-administration-cpp/main.cpp",
+        "tools/sqv-administration-cpp/request.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "main"
+          ],
+          "path": "tests/sqv-administration/validation_test.cpp"
+        }
+      ],
+      "real_process_regressions": [
+        {
+          "cases": [
+            "test_installed_requests"
+          ],
+          "path": "modules/sqmv-metadata-engine/tests/process.cpp"
+        }
+      ],
+      "statement": "Validate native metadata descriptions and inspect canonical manifests with selected evidence projections. The exact process result preserves request identity and observation scope. Read-only commands perform no application-state writes or implicit recovery.",
+      "status": "active",
+      "title": "SQMV administration preserves ownership and evidence scope"
+    },
+    {
       "allowed_adapter_ids": [],
       "consumer_boundary_rejections": [
         {
@@ -3197,6 +3446,49 @@
       "title": "SQPV store mutation requires exact exclusive local ownership"
     },
     {
+      "allowed_adapter_ids": [
+        "adapter:symphony:symphony-sqpv-inspection.v1"
+      ],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "TestSQVAdministrationInstalled",
+            "TestSQVTransportShape"
+          ],
+          "path": "tools/qxctl/internal/knowledgeengine/sqv_administration_test.go"
+        }
+      ],
+      "invariant_id": "invariant:symphony:sqpv.inspection-administration",
+      "ipc_boundary": true,
+      "owner_component": "sqpv-inspection-engine",
+      "owner_contract": "modules/sqpv-inspection-engine/SPEC.md",
+      "producer_implementations": [
+        "modules/sqpv-inspection-engine/src/admin.cpp",
+        "modules/sqpv-inspection-engine/src/store_reader.cpp",
+        "tools/sqv-administration-cpp/main.cpp",
+        "tools/sqv-administration-cpp/request.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "main"
+          ],
+          "path": "tests/sqv-administration/reader_test.cpp"
+        }
+      ],
+      "real_process_regressions": [
+        {
+          "cases": [
+            "test_installed_requests"
+          ],
+          "path": "modules/sqpv-inspection-engine/tests/process.cpp"
+        }
+      ],
+      "statement": "Inspect published-head retention and full frame integrity through a read-only, bounded, fenced store reader. The exact process result preserves request identity and observation scope. Read-only commands perform no application-state writes or implicit recovery.",
+      "status": "active",
+      "title": "SQPV administration preserves ownership and evidence scope"
+    },
+    {
       "allowed_adapter_ids": [],
       "consumer_boundary_rejections": [
         {
@@ -3246,6 +3538,48 @@
       "statement": "Retained frames, hash-linked commit records and the checked head bind one exact stream. Recovery verifies all acknowledged history and fails on missing or corrupt committed evidence; only complete verified pending commits may advance the head under the stated synchronization guarantee. A lost acknowledgement permits only exact retry.",
       "status": "active",
       "title": "SQPV retained commit evidence survives explicit recovery"
+    },
+    {
+      "allowed_adapter_ids": [
+        "adapter:symphony:symphony-sqtv-conversion.v1"
+      ],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "TestSQVAdministrationInstalled",
+            "TestSQVTransportShape"
+          ],
+          "path": "tools/qxctl/internal/knowledgeengine/sqv_administration_test.go"
+        }
+      ],
+      "invariant_id": "invariant:symphony:sqtv.conversion-administration",
+      "ipc_boundary": true,
+      "owner_component": "sqtv-conversion-engine",
+      "owner_contract": "modules/sqtv-conversion-engine/SPEC.md",
+      "producer_implementations": [
+        "modules/sqtv-conversion-engine/src/admin.cpp",
+        "tools/sqv-administration-cpp/main.cpp",
+        "tools/sqv-administration-cpp/request.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "main"
+          ],
+          "path": "tests/sqv-administration/validation_test.cpp"
+        }
+      ],
+      "real_process_regressions": [
+        {
+          "cases": [
+            "test_installed_requests"
+          ],
+          "path": "modules/sqtv-conversion-engine/tests/process.cpp"
+        }
+      ],
+      "statement": "Validate exact integer conversion layouts, element counts and resource limits without claiming value-range validity. The exact process result preserves request identity and observation scope. Read-only commands perform no application-state writes or implicit recovery.",
+      "status": "active",
+      "title": "SQTV administration preserves ownership and evidence scope"
     },
     {
       "allowed_adapter_ids": [],
@@ -3583,7 +3917,7 @@
     }
   ],
   "protocol": "symphony.knowledge.invariant-ownership-registry.v3",
-  "registry_digest": "sha256:6379906ebb0bc3c00f38555f261909184436bd9e5445645277173e290ebdcdf3",
+  "registry_digest": "sha256:e3ac8272770d6a8b1e219b80fab725e871c582abaea7037861cb8487295f18dd",
   "scope": "common_lowest_authoritative_layer",
   "test_policy": {
     "consumer_boundary_rejection_required": true,

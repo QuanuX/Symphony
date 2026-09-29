@@ -17664,3 +17664,1706 @@ These entries locate existing implementation and regression surfaces referenced 
 - deferred_projections: verification evidence
 - notes: Explicit installed prefix; no provider or credential traffic.
 - status: canonical
+
+### SQV administration cmake SqavAttemptInterface.generated.cmake
+- path: `cmake/SqavAttemptInterface.generated.cmake`
+- title: SQV administration cmake SqavAttemptInterface.generated.cmake
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQV administration maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `knowledge/sqv/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration cmake SqdvCheckpointInterface.generated.cmake
+- path: `cmake/SqdvCheckpointInterface.generated.cmake`
+- title: SQV administration cmake SqdvCheckpointInterface.generated.cmake
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQV administration maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `knowledge/sqv/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration cmake SqfvFlowInterface.generated.cmake
+- path: `cmake/SqfvFlowInterface.generated.cmake`
+- title: SQV administration cmake SqfvFlowInterface.generated.cmake
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQV administration maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `knowledge/sqv/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration cmake SqmvMetadataInterface.generated.cmake
+- path: `cmake/SqmvMetadataInterface.generated.cmake`
+- title: SQV administration cmake SqmvMetadataInterface.generated.cmake
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQV administration maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `knowledge/sqv/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration cmake SqpvInspectionInterface.generated.cmake
+- path: `cmake/SqpvInspectionInterface.generated.cmake`
+- title: SQV administration cmake SqpvInspectionInterface.generated.cmake
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQV administration maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `knowledge/sqv/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration cmake SqtvConversionInterface.generated.cmake
+- path: `cmake/SqtvConversionInterface.generated.cmake`
+- title: SQV administration cmake SqtvConversionInterface.generated.cmake
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQV administration maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `knowledge/sqv/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration cmake SymphonySqvAdministration.cmake
+- path: `cmake/SymphonySqvAdministration.cmake`
+- title: SQV administration cmake SymphonySqvAdministration.cmake
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQV administration maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `knowledge/sqv/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqav-attempt-engine CMakeLists.txt
+- path: `modules/sqav-attempt-engine/CMakeLists.txt`
+- title: SQV administration modules sqav-attempt-engine CMakeLists.txt
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQAV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqav-attempt-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqav-attempt-engine FEATURES.md
+- path: `modules/sqav-attempt-engine/FEATURES.md`
+- title: SQV administration modules sqav-attempt-engine FEATURES.md
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQAV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqav-attempt-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqav-attempt-engine INSTALL.md
+- path: `modules/sqav-attempt-engine/INSTALL.md`
+- title: SQV administration modules sqav-attempt-engine INSTALL.md
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQAV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqav-attempt-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqav-attempt-engine INTENT.md
+- path: `modules/sqav-attempt-engine/INTENT.md`
+- title: SQV administration modules sqav-attempt-engine INTENT.md
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQAV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqav-attempt-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqav-attempt-engine INTERFACE-GENERATOR.json
+- path: `modules/sqav-attempt-engine/INTERFACE-GENERATOR.json`
+- title: SQV administration modules sqav-attempt-engine INTERFACE-GENERATOR.json
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQAV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqav-attempt-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqav-attempt-engine MANIFEST.md
+- path: `modules/sqav-attempt-engine/MANIFEST.md`
+- title: SQV administration modules sqav-attempt-engine MANIFEST.md
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQAV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqav-attempt-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqav-attempt-engine OWNER-INTERFACE.json
+- path: `modules/sqav-attempt-engine/OWNER-INTERFACE.json`
+- title: SQV administration modules sqav-attempt-engine OWNER-INTERFACE.json
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQAV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqav-attempt-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqav-attempt-engine SKILL.md
+- path: `modules/sqav-attempt-engine/SKILL.md`
+- title: SQV administration modules sqav-attempt-engine SKILL.md
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQAV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqav-attempt-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqav-attempt-engine SPEC.md
+- path: `modules/sqav-attempt-engine/SPEC.md`
+- title: SQV administration modules sqav-attempt-engine SPEC.md
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQAV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqav-attempt-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqav-attempt-engine cmake uninstall.cmake.in
+- path: `modules/sqav-attempt-engine/cmake/uninstall.cmake.in`
+- title: SQV administration modules sqav-attempt-engine cmake uninstall.cmake.in
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQAV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqav-attempt-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqav-attempt-engine schemas v1 admin.schema.json
+- path: `modules/sqav-attempt-engine/schemas/v1/admin.schema.json`
+- title: SQV administration modules sqav-attempt-engine schemas v1 admin.schema.json
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQAV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqav-attempt-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqav-attempt-engine schemas v1 admin.templates.json
+- path: `modules/sqav-attempt-engine/schemas/v1/admin.templates.json`
+- title: SQV administration modules sqav-attempt-engine schemas v1 admin.templates.json
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQAV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqav-attempt-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqav-attempt-engine src admin.cpp
+- path: `modules/sqav-attempt-engine/src/admin.cpp`
+- title: SQV administration modules sqav-attempt-engine src admin.cpp
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQAV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqav-attempt-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqav-attempt-engine src interface.generated.hpp
+- path: `modules/sqav-attempt-engine/src/interface.generated.hpp`
+- title: SQV administration modules sqav-attempt-engine src interface.generated.hpp
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQAV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqav-attempt-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqav-attempt-engine tests fixtures interface-history.v1.json
+- path: `modules/sqav-attempt-engine/tests/fixtures/interface-history.v1.json`
+- title: SQV administration modules sqav-attempt-engine tests fixtures interface-history.v1.json
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQAV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqav-attempt-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqdv-checkpoint-engine CMakeLists.txt
+- path: `modules/sqdv-checkpoint-engine/CMakeLists.txt`
+- title: SQV administration modules sqdv-checkpoint-engine CMakeLists.txt
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQDV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqdv-checkpoint-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqdv-checkpoint-engine FEATURES.md
+- path: `modules/sqdv-checkpoint-engine/FEATURES.md`
+- title: SQV administration modules sqdv-checkpoint-engine FEATURES.md
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQDV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqdv-checkpoint-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqdv-checkpoint-engine INSTALL.md
+- path: `modules/sqdv-checkpoint-engine/INSTALL.md`
+- title: SQV administration modules sqdv-checkpoint-engine INSTALL.md
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQDV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqdv-checkpoint-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqdv-checkpoint-engine INTENT.md
+- path: `modules/sqdv-checkpoint-engine/INTENT.md`
+- title: SQV administration modules sqdv-checkpoint-engine INTENT.md
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQDV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqdv-checkpoint-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqdv-checkpoint-engine INTERFACE-GENERATOR.json
+- path: `modules/sqdv-checkpoint-engine/INTERFACE-GENERATOR.json`
+- title: SQV administration modules sqdv-checkpoint-engine INTERFACE-GENERATOR.json
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQDV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqdv-checkpoint-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqdv-checkpoint-engine MANIFEST.md
+- path: `modules/sqdv-checkpoint-engine/MANIFEST.md`
+- title: SQV administration modules sqdv-checkpoint-engine MANIFEST.md
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQDV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqdv-checkpoint-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqdv-checkpoint-engine OWNER-INTERFACE.json
+- path: `modules/sqdv-checkpoint-engine/OWNER-INTERFACE.json`
+- title: SQV administration modules sqdv-checkpoint-engine OWNER-INTERFACE.json
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQDV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqdv-checkpoint-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqdv-checkpoint-engine SKILL.md
+- path: `modules/sqdv-checkpoint-engine/SKILL.md`
+- title: SQV administration modules sqdv-checkpoint-engine SKILL.md
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQDV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqdv-checkpoint-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqdv-checkpoint-engine SPEC.md
+- path: `modules/sqdv-checkpoint-engine/SPEC.md`
+- title: SQV administration modules sqdv-checkpoint-engine SPEC.md
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQDV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqdv-checkpoint-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqdv-checkpoint-engine cmake uninstall.cmake.in
+- path: `modules/sqdv-checkpoint-engine/cmake/uninstall.cmake.in`
+- title: SQV administration modules sqdv-checkpoint-engine cmake uninstall.cmake.in
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQDV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqdv-checkpoint-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqdv-checkpoint-engine schemas v1 admin.schema.json
+- path: `modules/sqdv-checkpoint-engine/schemas/v1/admin.schema.json`
+- title: SQV administration modules sqdv-checkpoint-engine schemas v1 admin.schema.json
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQDV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqdv-checkpoint-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqdv-checkpoint-engine schemas v1 admin.templates.json
+- path: `modules/sqdv-checkpoint-engine/schemas/v1/admin.templates.json`
+- title: SQV administration modules sqdv-checkpoint-engine schemas v1 admin.templates.json
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQDV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqdv-checkpoint-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqdv-checkpoint-engine src admin.cpp
+- path: `modules/sqdv-checkpoint-engine/src/admin.cpp`
+- title: SQV administration modules sqdv-checkpoint-engine src admin.cpp
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQDV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqdv-checkpoint-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqdv-checkpoint-engine src interface.generated.hpp
+- path: `modules/sqdv-checkpoint-engine/src/interface.generated.hpp`
+- title: SQV administration modules sqdv-checkpoint-engine src interface.generated.hpp
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQDV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqdv-checkpoint-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqdv-checkpoint-engine tests fixtures interface-history.v1.json
+- path: `modules/sqdv-checkpoint-engine/tests/fixtures/interface-history.v1.json`
+- title: SQV administration modules sqdv-checkpoint-engine tests fixtures interface-history.v1.json
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQDV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqdv-checkpoint-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqfv-flow-engine CMakeLists.txt
+- path: `modules/sqfv-flow-engine/CMakeLists.txt`
+- title: SQV administration modules sqfv-flow-engine CMakeLists.txt
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQFV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqfv-flow-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqfv-flow-engine FEATURES.md
+- path: `modules/sqfv-flow-engine/FEATURES.md`
+- title: SQV administration modules sqfv-flow-engine FEATURES.md
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQFV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqfv-flow-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqfv-flow-engine INSTALL.md
+- path: `modules/sqfv-flow-engine/INSTALL.md`
+- title: SQV administration modules sqfv-flow-engine INSTALL.md
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQFV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqfv-flow-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqfv-flow-engine INTENT.md
+- path: `modules/sqfv-flow-engine/INTENT.md`
+- title: SQV administration modules sqfv-flow-engine INTENT.md
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQFV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqfv-flow-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqfv-flow-engine INTERFACE-GENERATOR.json
+- path: `modules/sqfv-flow-engine/INTERFACE-GENERATOR.json`
+- title: SQV administration modules sqfv-flow-engine INTERFACE-GENERATOR.json
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQFV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqfv-flow-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqfv-flow-engine MANIFEST.md
+- path: `modules/sqfv-flow-engine/MANIFEST.md`
+- title: SQV administration modules sqfv-flow-engine MANIFEST.md
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQFV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqfv-flow-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqfv-flow-engine OWNER-INTERFACE.json
+- path: `modules/sqfv-flow-engine/OWNER-INTERFACE.json`
+- title: SQV administration modules sqfv-flow-engine OWNER-INTERFACE.json
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQFV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqfv-flow-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqfv-flow-engine SKILL.md
+- path: `modules/sqfv-flow-engine/SKILL.md`
+- title: SQV administration modules sqfv-flow-engine SKILL.md
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQFV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqfv-flow-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqfv-flow-engine SPEC.md
+- path: `modules/sqfv-flow-engine/SPEC.md`
+- title: SQV administration modules sqfv-flow-engine SPEC.md
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQFV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqfv-flow-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqfv-flow-engine cmake uninstall.cmake.in
+- path: `modules/sqfv-flow-engine/cmake/uninstall.cmake.in`
+- title: SQV administration modules sqfv-flow-engine cmake uninstall.cmake.in
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQFV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqfv-flow-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqfv-flow-engine schemas v1 admin.schema.json
+- path: `modules/sqfv-flow-engine/schemas/v1/admin.schema.json`
+- title: SQV administration modules sqfv-flow-engine schemas v1 admin.schema.json
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQFV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqfv-flow-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqfv-flow-engine schemas v1 admin.templates.json
+- path: `modules/sqfv-flow-engine/schemas/v1/admin.templates.json`
+- title: SQV administration modules sqfv-flow-engine schemas v1 admin.templates.json
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQFV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqfv-flow-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqfv-flow-engine src admin.cpp
+- path: `modules/sqfv-flow-engine/src/admin.cpp`
+- title: SQV administration modules sqfv-flow-engine src admin.cpp
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQFV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqfv-flow-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqfv-flow-engine src interface.generated.hpp
+- path: `modules/sqfv-flow-engine/src/interface.generated.hpp`
+- title: SQV administration modules sqfv-flow-engine src interface.generated.hpp
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQFV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqfv-flow-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqfv-flow-engine tests fixtures flow_validate.json
+- path: `modules/sqfv-flow-engine/tests/fixtures/flow_validate.json`
+- title: SQV administration modules sqfv-flow-engine tests fixtures flow_validate.json
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQFV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqfv-flow-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqfv-flow-engine tests fixtures interface-history.v1.json
+- path: `modules/sqfv-flow-engine/tests/fixtures/interface-history.v1.json`
+- title: SQV administration modules sqfv-flow-engine tests fixtures interface-history.v1.json
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQFV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqfv-flow-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqmv-metadata-engine CMakeLists.txt
+- path: `modules/sqmv-metadata-engine/CMakeLists.txt`
+- title: SQV administration modules sqmv-metadata-engine CMakeLists.txt
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQMV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqmv-metadata-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqmv-metadata-engine FEATURES.md
+- path: `modules/sqmv-metadata-engine/FEATURES.md`
+- title: SQV administration modules sqmv-metadata-engine FEATURES.md
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQMV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqmv-metadata-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqmv-metadata-engine INSTALL.md
+- path: `modules/sqmv-metadata-engine/INSTALL.md`
+- title: SQV administration modules sqmv-metadata-engine INSTALL.md
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQMV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqmv-metadata-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqmv-metadata-engine INTENT.md
+- path: `modules/sqmv-metadata-engine/INTENT.md`
+- title: SQV administration modules sqmv-metadata-engine INTENT.md
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQMV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqmv-metadata-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqmv-metadata-engine INTERFACE-GENERATOR.json
+- path: `modules/sqmv-metadata-engine/INTERFACE-GENERATOR.json`
+- title: SQV administration modules sqmv-metadata-engine INTERFACE-GENERATOR.json
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQMV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqmv-metadata-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqmv-metadata-engine MANIFEST.md
+- path: `modules/sqmv-metadata-engine/MANIFEST.md`
+- title: SQV administration modules sqmv-metadata-engine MANIFEST.md
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQMV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqmv-metadata-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqmv-metadata-engine OWNER-INTERFACE.json
+- path: `modules/sqmv-metadata-engine/OWNER-INTERFACE.json`
+- title: SQV administration modules sqmv-metadata-engine OWNER-INTERFACE.json
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQMV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqmv-metadata-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqmv-metadata-engine SKILL.md
+- path: `modules/sqmv-metadata-engine/SKILL.md`
+- title: SQV administration modules sqmv-metadata-engine SKILL.md
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQMV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqmv-metadata-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqmv-metadata-engine SPEC.md
+- path: `modules/sqmv-metadata-engine/SPEC.md`
+- title: SQV administration modules sqmv-metadata-engine SPEC.md
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQMV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqmv-metadata-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqmv-metadata-engine cmake uninstall.cmake.in
+- path: `modules/sqmv-metadata-engine/cmake/uninstall.cmake.in`
+- title: SQV administration modules sqmv-metadata-engine cmake uninstall.cmake.in
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQMV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqmv-metadata-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqmv-metadata-engine schemas v1 admin.schema.json
+- path: `modules/sqmv-metadata-engine/schemas/v1/admin.schema.json`
+- title: SQV administration modules sqmv-metadata-engine schemas v1 admin.schema.json
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQMV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqmv-metadata-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqmv-metadata-engine schemas v1 admin.templates.json
+- path: `modules/sqmv-metadata-engine/schemas/v1/admin.templates.json`
+- title: SQV administration modules sqmv-metadata-engine schemas v1 admin.templates.json
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQMV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqmv-metadata-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqmv-metadata-engine src admin.cpp
+- path: `modules/sqmv-metadata-engine/src/admin.cpp`
+- title: SQV administration modules sqmv-metadata-engine src admin.cpp
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQMV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqmv-metadata-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqmv-metadata-engine src interface.generated.hpp
+- path: `modules/sqmv-metadata-engine/src/interface.generated.hpp`
+- title: SQV administration modules sqmv-metadata-engine src interface.generated.hpp
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQMV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqmv-metadata-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqmv-metadata-engine src metadata_json.hpp
+- path: `modules/sqmv-metadata-engine/src/metadata_json.hpp`
+- title: SQV administration modules sqmv-metadata-engine src metadata_json.hpp
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQMV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqmv-metadata-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqmv-metadata-engine tests fixtures interface-history.v1.json
+- path: `modules/sqmv-metadata-engine/tests/fixtures/interface-history.v1.json`
+- title: SQV administration modules sqmv-metadata-engine tests fixtures interface-history.v1.json
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQMV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqmv-metadata-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqmv-metadata-engine tests fixtures metadata_validate.json
+- path: `modules/sqmv-metadata-engine/tests/fixtures/metadata_validate.json`
+- title: SQV administration modules sqmv-metadata-engine tests fixtures metadata_validate.json
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQMV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqmv-metadata-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqpv-inspection-engine CMakeLists.txt
+- path: `modules/sqpv-inspection-engine/CMakeLists.txt`
+- title: SQV administration modules sqpv-inspection-engine CMakeLists.txt
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQPV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqpv-inspection-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqpv-inspection-engine FEATURES.md
+- path: `modules/sqpv-inspection-engine/FEATURES.md`
+- title: SQV administration modules sqpv-inspection-engine FEATURES.md
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQPV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqpv-inspection-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqpv-inspection-engine INSTALL.md
+- path: `modules/sqpv-inspection-engine/INSTALL.md`
+- title: SQV administration modules sqpv-inspection-engine INSTALL.md
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQPV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqpv-inspection-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqpv-inspection-engine INTENT.md
+- path: `modules/sqpv-inspection-engine/INTENT.md`
+- title: SQV administration modules sqpv-inspection-engine INTENT.md
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQPV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqpv-inspection-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqpv-inspection-engine INTERFACE-GENERATOR.json
+- path: `modules/sqpv-inspection-engine/INTERFACE-GENERATOR.json`
+- title: SQV administration modules sqpv-inspection-engine INTERFACE-GENERATOR.json
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQPV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqpv-inspection-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqpv-inspection-engine MANIFEST.md
+- path: `modules/sqpv-inspection-engine/MANIFEST.md`
+- title: SQV administration modules sqpv-inspection-engine MANIFEST.md
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQPV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqpv-inspection-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqpv-inspection-engine OWNER-INTERFACE.json
+- path: `modules/sqpv-inspection-engine/OWNER-INTERFACE.json`
+- title: SQV administration modules sqpv-inspection-engine OWNER-INTERFACE.json
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQPV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqpv-inspection-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqpv-inspection-engine SKILL.md
+- path: `modules/sqpv-inspection-engine/SKILL.md`
+- title: SQV administration modules sqpv-inspection-engine SKILL.md
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQPV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqpv-inspection-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqpv-inspection-engine SPEC.md
+- path: `modules/sqpv-inspection-engine/SPEC.md`
+- title: SQV administration modules sqpv-inspection-engine SPEC.md
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQPV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqpv-inspection-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqpv-inspection-engine cmake uninstall.cmake.in
+- path: `modules/sqpv-inspection-engine/cmake/uninstall.cmake.in`
+- title: SQV administration modules sqpv-inspection-engine cmake uninstall.cmake.in
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQPV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqpv-inspection-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqpv-inspection-engine schemas v1 admin.schema.json
+- path: `modules/sqpv-inspection-engine/schemas/v1/admin.schema.json`
+- title: SQV administration modules sqpv-inspection-engine schemas v1 admin.schema.json
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQPV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqpv-inspection-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqpv-inspection-engine schemas v1 admin.templates.json
+- path: `modules/sqpv-inspection-engine/schemas/v1/admin.templates.json`
+- title: SQV administration modules sqpv-inspection-engine schemas v1 admin.templates.json
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQPV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqpv-inspection-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqpv-inspection-engine src admin.cpp
+- path: `modules/sqpv-inspection-engine/src/admin.cpp`
+- title: SQV administration modules sqpv-inspection-engine src admin.cpp
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQPV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqpv-inspection-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqpv-inspection-engine src interface.generated.hpp
+- path: `modules/sqpv-inspection-engine/src/interface.generated.hpp`
+- title: SQV administration modules sqpv-inspection-engine src interface.generated.hpp
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQPV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqpv-inspection-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqpv-inspection-engine src store_reader.cpp
+- path: `modules/sqpv-inspection-engine/src/store_reader.cpp`
+- title: SQV administration modules sqpv-inspection-engine src store_reader.cpp
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQPV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqpv-inspection-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqpv-inspection-engine src store_reader.hpp
+- path: `modules/sqpv-inspection-engine/src/store_reader.hpp`
+- title: SQV administration modules sqpv-inspection-engine src store_reader.hpp
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQPV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqpv-inspection-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqpv-inspection-engine tests fixtures interface-history.v1.json
+- path: `modules/sqpv-inspection-engine/tests/fixtures/interface-history.v1.json`
+- title: SQV administration modules sqpv-inspection-engine tests fixtures interface-history.v1.json
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQPV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqpv-inspection-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqtv-conversion-engine CMakeLists.txt
+- path: `modules/sqtv-conversion-engine/CMakeLists.txt`
+- title: SQV administration modules sqtv-conversion-engine CMakeLists.txt
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQTV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqtv-conversion-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqtv-conversion-engine FEATURES.md
+- path: `modules/sqtv-conversion-engine/FEATURES.md`
+- title: SQV administration modules sqtv-conversion-engine FEATURES.md
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQTV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqtv-conversion-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqtv-conversion-engine INSTALL.md
+- path: `modules/sqtv-conversion-engine/INSTALL.md`
+- title: SQV administration modules sqtv-conversion-engine INSTALL.md
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQTV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqtv-conversion-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqtv-conversion-engine INTENT.md
+- path: `modules/sqtv-conversion-engine/INTENT.md`
+- title: SQV administration modules sqtv-conversion-engine INTENT.md
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQTV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqtv-conversion-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqtv-conversion-engine INTERFACE-GENERATOR.json
+- path: `modules/sqtv-conversion-engine/INTERFACE-GENERATOR.json`
+- title: SQV administration modules sqtv-conversion-engine INTERFACE-GENERATOR.json
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQTV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqtv-conversion-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqtv-conversion-engine MANIFEST.md
+- path: `modules/sqtv-conversion-engine/MANIFEST.md`
+- title: SQV administration modules sqtv-conversion-engine MANIFEST.md
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQTV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqtv-conversion-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqtv-conversion-engine OWNER-INTERFACE.json
+- path: `modules/sqtv-conversion-engine/OWNER-INTERFACE.json`
+- title: SQV administration modules sqtv-conversion-engine OWNER-INTERFACE.json
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQTV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqtv-conversion-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqtv-conversion-engine SKILL.md
+- path: `modules/sqtv-conversion-engine/SKILL.md`
+- title: SQV administration modules sqtv-conversion-engine SKILL.md
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQTV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqtv-conversion-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqtv-conversion-engine SPEC.md
+- path: `modules/sqtv-conversion-engine/SPEC.md`
+- title: SQV administration modules sqtv-conversion-engine SPEC.md
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQTV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqtv-conversion-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqtv-conversion-engine cmake uninstall.cmake.in
+- path: `modules/sqtv-conversion-engine/cmake/uninstall.cmake.in`
+- title: SQV administration modules sqtv-conversion-engine cmake uninstall.cmake.in
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQTV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqtv-conversion-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqtv-conversion-engine schemas v1 admin.schema.json
+- path: `modules/sqtv-conversion-engine/schemas/v1/admin.schema.json`
+- title: SQV administration modules sqtv-conversion-engine schemas v1 admin.schema.json
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQTV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqtv-conversion-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqtv-conversion-engine schemas v1 admin.templates.json
+- path: `modules/sqtv-conversion-engine/schemas/v1/admin.templates.json`
+- title: SQV administration modules sqtv-conversion-engine schemas v1 admin.templates.json
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQTV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqtv-conversion-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqtv-conversion-engine src admin.cpp
+- path: `modules/sqtv-conversion-engine/src/admin.cpp`
+- title: SQV administration modules sqtv-conversion-engine src admin.cpp
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQTV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqtv-conversion-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqtv-conversion-engine src interface.generated.hpp
+- path: `modules/sqtv-conversion-engine/src/interface.generated.hpp`
+- title: SQV administration modules sqtv-conversion-engine src interface.generated.hpp
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQTV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqtv-conversion-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqtv-conversion-engine tests fixtures conversion_validate.json
+- path: `modules/sqtv-conversion-engine/tests/fixtures/conversion_validate.json`
+- title: SQV administration modules sqtv-conversion-engine tests fixtures conversion_validate.json
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQTV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqtv-conversion-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqtv-conversion-engine tests fixtures interface-history.v1.json
+- path: `modules/sqtv-conversion-engine/tests/fixtures/interface-history.v1.json`
+- title: SQV administration modules sqtv-conversion-engine tests fixtures interface-history.v1.json
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQTV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqtv-conversion-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqtv-integer-conversion-cpp src limits.hpp
+- path: `modules/sqtv-integer-conversion-cpp/src/limits.hpp`
+- title: SQV administration modules sqtv-integer-conversion-cpp src limits.hpp
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQTV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqtv-integer-conversion-cpp/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration tests sqv-administration CMakeLists.txt
+- path: `tests/sqv-administration/CMakeLists.txt`
+- title: SQV administration tests sqv-administration CMakeLists.txt
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQV administration maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `knowledge/sqv/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration tests sqv-administration README.md
+- path: `tests/sqv-administration/README.md`
+- title: SQV administration tests sqv-administration README.md
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQV administration maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `knowledge/sqv/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration tests sqv-administration fixtures.cpp
+- path: `tests/sqv-administration/fixtures.cpp`
+- title: SQV administration tests sqv-administration fixtures.cpp
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQV administration maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `knowledge/sqv/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration tests sqv-administration reader_test.cpp
+- path: `tests/sqv-administration/reader_test.cpp`
+- title: SQV administration tests sqv-administration reader_test.cpp
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQV administration maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `knowledge/sqv/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration tests sqv-administration validation_test.cpp
+- path: `tests/sqv-administration/validation_test.cpp`
+- title: SQV administration tests sqv-administration validation_test.cpp
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQV administration maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `knowledge/sqv/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration tools qxctl internal knowledgeengine sqav_attempt_interface_generated.go
+- path: `tools/qxctl/internal/knowledgeengine/sqav_attempt_interface_generated.go`
+- title: SQV administration tools qxctl internal knowledgeengine sqav_attempt_interface_generated.go
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: qxctl maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `tools/qxctl/MANIFEST.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration tools qxctl internal knowledgeengine sqdv_checkpoint_interface_generated.go
+- path: `tools/qxctl/internal/knowledgeengine/sqdv_checkpoint_interface_generated.go`
+- title: SQV administration tools qxctl internal knowledgeengine sqdv_checkpoint_interface_generated.go
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: qxctl maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `tools/qxctl/MANIFEST.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration tools qxctl internal knowledgeengine sqfv_flow_interface_generated.go
+- path: `tools/qxctl/internal/knowledgeengine/sqfv_flow_interface_generated.go`
+- title: SQV administration tools qxctl internal knowledgeengine sqfv_flow_interface_generated.go
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: qxctl maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `tools/qxctl/MANIFEST.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration tools qxctl internal knowledgeengine sqmv_metadata_interface_generated.go
+- path: `tools/qxctl/internal/knowledgeengine/sqmv_metadata_interface_generated.go`
+- title: SQV administration tools qxctl internal knowledgeengine sqmv_metadata_interface_generated.go
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: qxctl maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `tools/qxctl/MANIFEST.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration tools qxctl internal knowledgeengine sqpv_inspection_interface_generated.go
+- path: `tools/qxctl/internal/knowledgeengine/sqpv_inspection_interface_generated.go`
+- title: SQV administration tools qxctl internal knowledgeengine sqpv_inspection_interface_generated.go
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: qxctl maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `tools/qxctl/MANIFEST.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration tools qxctl internal knowledgeengine sqtv_conversion_interface_generated.go
+- path: `tools/qxctl/internal/knowledgeengine/sqtv_conversion_interface_generated.go`
+- title: SQV administration tools qxctl internal knowledgeengine sqtv_conversion_interface_generated.go
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: qxctl maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `tools/qxctl/MANIFEST.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration tools qxctl internal knowledgeengine sqv_administration.go
+- path: `tools/qxctl/internal/knowledgeengine/sqv_administration.go`
+- title: SQV administration tools qxctl internal knowledgeengine sqv_administration.go
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: qxctl maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `tools/qxctl/MANIFEST.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration tools qxctl internal knowledgeengine sqv_administration_test.go
+- path: `tools/qxctl/internal/knowledgeengine/sqv_administration_test.go`
+- title: SQV administration tools qxctl internal knowledgeengine sqv_administration_test.go
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: qxctl maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `tools/qxctl/MANIFEST.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration tools sqv-administration-cpp INTENT.md
+- path: `tools/sqv-administration-cpp/INTENT.md`
+- title: SQV administration tools sqv-administration-cpp INTENT.md
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQV administration maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `tools/sqv-administration-cpp/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration tools sqv-administration-cpp MANIFEST.md
+- path: `tools/sqv-administration-cpp/MANIFEST.md`
+- title: SQV administration tools sqv-administration-cpp MANIFEST.md
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQV administration maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `tools/sqv-administration-cpp/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration tools sqv-administration-cpp SKILL.md
+- path: `tools/sqv-administration-cpp/SKILL.md`
+- title: SQV administration tools sqv-administration-cpp SKILL.md
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQV administration maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `tools/sqv-administration-cpp/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration tools sqv-administration-cpp SPEC.md
+- path: `tools/sqv-administration-cpp/SPEC.md`
+- title: SQV administration tools sqv-administration-cpp SPEC.md
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQV administration maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `tools/sqv-administration-cpp/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration tools sqv-administration-cpp common.hpp
+- path: `tools/sqv-administration-cpp/common.hpp`
+- title: SQV administration tools sqv-administration-cpp common.hpp
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQV administration maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `tools/sqv-administration-cpp/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration tools sqv-administration-cpp main.cpp
+- path: `tools/sqv-administration-cpp/main.cpp`
+- title: SQV administration tools sqv-administration-cpp main.cpp
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQV administration maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `tools/sqv-administration-cpp/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration tools sqv-administration-cpp request.cpp
+- path: `tools/sqv-administration-cpp/request.cpp`
+- title: SQV administration tools sqv-administration-cpp request.cpp
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQV administration maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `tools/sqv-administration-cpp/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration tools sqv-administration-cpp request.hpp
+- path: `tools/sqv-administration-cpp/request.hpp`
+- title: SQV administration tools sqv-administration-cpp request.hpp
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQV administration maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `tools/sqv-administration-cpp/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqav-attempt-engine tests process.cpp
+- path: `modules/sqav-attempt-engine/tests/process.cpp`
+- title: SQV administration modules sqav-attempt-engine tests process.cpp
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQAV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqav-attempt-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqdv-checkpoint-engine tests process.cpp
+- path: `modules/sqdv-checkpoint-engine/tests/process.cpp`
+- title: SQV administration modules sqdv-checkpoint-engine tests process.cpp
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQDV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqdv-checkpoint-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqfv-flow-engine tests process.cpp
+- path: `modules/sqfv-flow-engine/tests/process.cpp`
+- title: SQV administration modules sqfv-flow-engine tests process.cpp
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQFV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqfv-flow-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqmv-metadata-engine tests process.cpp
+- path: `modules/sqmv-metadata-engine/tests/process.cpp`
+- title: SQV administration modules sqmv-metadata-engine tests process.cpp
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQMV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqmv-metadata-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqpv-inspection-engine tests process.cpp
+- path: `modules/sqpv-inspection-engine/tests/process.cpp`
+- title: SQV administration modules sqpv-inspection-engine tests process.cpp
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQPV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqpv-inspection-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical
+
+### SQV administration modules sqtv-conversion-engine tests process.cpp
+- path: `modules/sqtv-conversion-engine/tests/process.cpp`
+- title: SQV administration modules sqtv-conversion-engine tests process.cpp
+- surface_type: native administration contract, implementation or focused verification
+- truth_role: explicitly scoped source truth and executable evidence
+- owner: SQTV maintainers
+- scope: Non-live validation and read-only retained-state observation with exact owner identity.
+- relationships: governed_by -> `modules/sqtv-conversion-engine/SPEC.md`
+- consumers: operators, implementers, reviewers, tests
+- deferred_projections: native capability and verification discovery
+- notes: No provider authority, implicit recovery or live runtime state is inferred.
+- status: canonical

@@ -1,0 +1,674 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "protocol": "symphony.sqmv.administration-schemas.v1",
+  "requests": {
+    "metadata_validate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "description",
+        "limits"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "symphony.sqmv.metadata-validate-input.v1"
+        },
+        "description": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "dataset_id",
+            "dataset_revision",
+            "schema_version",
+            "layout_version",
+            "access_scope",
+            "producer_ref",
+            "evidence"
+          ],
+          "properties": {
+            "dataset_id": {
+              "type": "string",
+              "pattern": "^([0-9a-f]{2})*$",
+              "maxLength": 8192,
+              "description": "Exact opaque bytes as lower-case hexadecimal."
+            },
+            "dataset_revision": {
+              "type": "string",
+              "pattern": "^([0-9a-f]{2})*$",
+              "maxLength": 8192,
+              "description": "Exact opaque bytes as lower-case hexadecimal."
+            },
+            "schema_version": {
+              "type": "string",
+              "pattern": "^([0-9a-f]{2})*$",
+              "maxLength": 8192,
+              "description": "Exact opaque bytes as lower-case hexadecimal."
+            },
+            "layout_version": {
+              "type": "string",
+              "pattern": "^([0-9a-f]{2})*$",
+              "maxLength": 8192,
+              "description": "Exact opaque bytes as lower-case hexadecimal."
+            },
+            "access_scope": {
+              "type": "string",
+              "pattern": "^([0-9a-f]{2})*$",
+              "maxLength": 8192,
+              "description": "Exact opaque bytes as lower-case hexadecimal."
+            },
+            "producer_ref": {
+              "type": "string",
+              "pattern": "^([0-9a-f]{2})*$",
+              "maxLength": 8192,
+              "description": "Exact opaque bytes as lower-case hexadecimal."
+            },
+            "evidence": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "role",
+                  "producer_ref",
+                  "evidence_ref"
+                ],
+                "properties": {
+                  "role": {
+                    "type": "string",
+                    "enum": [
+                      "schema",
+                      "layout",
+                      "access",
+                      "source",
+                      "time",
+                      "coverage",
+                      "lineage",
+                      "units"
+                    ]
+                  },
+                  "producer_ref": {
+                    "type": "string",
+                    "pattern": "^([0-9a-f]{2})*$",
+                    "maxLength": 8192,
+                    "description": "Exact opaque bytes as lower-case hexadecimal."
+                  },
+                  "evidence_ref": {
+                    "type": "string",
+                    "pattern": "^([0-9a-f]{2})*$",
+                    "maxLength": 8192,
+                    "description": "Exact opaque bytes as lower-case hexadecimal."
+                  }
+                }
+              },
+              "maxItems": 128
+            }
+          }
+        },
+        "limits": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "max_manifest_bytes",
+            "max_field_bytes",
+            "max_evidence_refs"
+          ],
+          "properties": {
+            "max_manifest_bytes": {
+              "type": "string",
+              "format": "uint64-decimal",
+              "pattern": "^(0|[1-9][0-9]{0,19})$",
+              "description": "Canonical unsigned decimal, at most UINT64_MAX; native owner checks all semantic limits."
+            },
+            "max_field_bytes": {
+              "type": "string",
+              "format": "uint64-decimal",
+              "pattern": "^(0|[1-9][0-9]{0,19})$",
+              "description": "Canonical unsigned decimal, at most UINT64_MAX; native owner checks all semantic limits."
+            },
+            "max_evidence_refs": {
+              "type": "string",
+              "format": "uint64-decimal",
+              "pattern": "^(0|[1-9][0-9]{0,19})$",
+              "description": "Canonical unsigned decimal, at most UINT64_MAX; native owner checks all semantic limits."
+            }
+          }
+        }
+      }
+    },
+    "metadata_inspect": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "encoded_hex_chunks",
+        "expected_reference",
+        "limits",
+        "projection"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "symphony.sqmv.metadata-inspect-input.v1"
+        },
+        "encoded_hex_chunks": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 4,
+          "items": {
+            "type": "string",
+            "pattern": "^([0-9a-f]{2})+$",
+            "maxLength": 32768
+          },
+          "description": "Consecutive 16384-byte chunks; only the final chunk may be shorter."
+        },
+        "expected_reference": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "limits": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "max_manifest_bytes",
+            "max_field_bytes",
+            "max_evidence_refs"
+          ],
+          "properties": {
+            "max_manifest_bytes": {
+              "type": "string",
+              "format": "uint64-decimal",
+              "pattern": "^(0|[1-9][0-9]{0,19})$",
+              "description": "Canonical unsigned decimal, at most UINT64_MAX; native owner checks all semantic limits."
+            },
+            "max_field_bytes": {
+              "type": "string",
+              "format": "uint64-decimal",
+              "pattern": "^(0|[1-9][0-9]{0,19})$",
+              "description": "Canonical unsigned decimal, at most UINT64_MAX; native owner checks all semantic limits."
+            },
+            "max_evidence_refs": {
+              "type": "string",
+              "format": "uint64-decimal",
+              "pattern": "^(0|[1-9][0-9]{0,19})$",
+              "description": "Canonical unsigned decimal, at most UINT64_MAX; native owner checks all semantic limits."
+            }
+          }
+        },
+        "projection": {
+          "type": "string",
+          "enum": [
+            "all",
+            "schema",
+            "layout",
+            "access",
+            "source",
+            "time",
+            "coverage",
+            "lineage",
+            "units"
+          ]
+        }
+      }
+    }
+  },
+  "results": {
+    "metadata_validate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "operation",
+        "owner",
+        "request_digest",
+        "data",
+        "provider_observation",
+        "persistent_mutation",
+        "result_digest"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "symphony.sqmv.metadata-validate.v1"
+        },
+        "operation": {
+          "const": "metadata_validate"
+        },
+        "owner": {
+          "const": "sqmv"
+        },
+        "request_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "data": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "metadata_reference",
+            "encoded_bytes",
+            "encoded_hex_chunks",
+            "binding",
+            "description",
+            "projection",
+            "evidence_resolution"
+          ],
+          "properties": {
+            "metadata_reference": {
+              "type": "string",
+              "maxLength": 128
+            },
+            "encoded_bytes": {
+              "type": "string",
+              "format": "uint64-decimal",
+              "pattern": "^(0|[1-9][0-9]{0,19})$",
+              "description": "Canonical unsigned decimal, at most UINT64_MAX; native owner checks all semantic limits."
+            },
+            "encoded_hex_chunks": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 4,
+              "items": {
+                "type": "string",
+                "pattern": "^([0-9a-f]{2})+$",
+                "maxLength": 32768
+              },
+              "description": "Consecutive 16384-byte chunks; only the final chunk may be shorter."
+            },
+            "binding": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "metadata_ref",
+                "dataset_revision",
+                "schema_version",
+                "layout_version",
+                "access_scope"
+              ],
+              "properties": {
+                "metadata_ref": {
+                  "type": "string",
+                  "pattern": "^([0-9a-f]{2})*$",
+                  "maxLength": 8192,
+                  "description": "Exact opaque bytes as lower-case hexadecimal."
+                },
+                "dataset_revision": {
+                  "type": "string",
+                  "pattern": "^([0-9a-f]{2})*$",
+                  "maxLength": 8192,
+                  "description": "Exact opaque bytes as lower-case hexadecimal."
+                },
+                "schema_version": {
+                  "type": "string",
+                  "pattern": "^([0-9a-f]{2})*$",
+                  "maxLength": 8192,
+                  "description": "Exact opaque bytes as lower-case hexadecimal."
+                },
+                "layout_version": {
+                  "type": "string",
+                  "pattern": "^([0-9a-f]{2})*$",
+                  "maxLength": 8192,
+                  "description": "Exact opaque bytes as lower-case hexadecimal."
+                },
+                "access_scope": {
+                  "type": "string",
+                  "pattern": "^([0-9a-f]{2})*$",
+                  "maxLength": 8192,
+                  "description": "Exact opaque bytes as lower-case hexadecimal."
+                }
+              }
+            },
+            "description": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "dataset_id",
+                "dataset_revision",
+                "schema_version",
+                "layout_version",
+                "access_scope",
+                "producer_ref",
+                "evidence"
+              ],
+              "properties": {
+                "dataset_id": {
+                  "type": "string",
+                  "pattern": "^([0-9a-f]{2})*$",
+                  "maxLength": 8192,
+                  "description": "Exact opaque bytes as lower-case hexadecimal."
+                },
+                "dataset_revision": {
+                  "type": "string",
+                  "pattern": "^([0-9a-f]{2})*$",
+                  "maxLength": 8192,
+                  "description": "Exact opaque bytes as lower-case hexadecimal."
+                },
+                "schema_version": {
+                  "type": "string",
+                  "pattern": "^([0-9a-f]{2})*$",
+                  "maxLength": 8192,
+                  "description": "Exact opaque bytes as lower-case hexadecimal."
+                },
+                "layout_version": {
+                  "type": "string",
+                  "pattern": "^([0-9a-f]{2})*$",
+                  "maxLength": 8192,
+                  "description": "Exact opaque bytes as lower-case hexadecimal."
+                },
+                "access_scope": {
+                  "type": "string",
+                  "pattern": "^([0-9a-f]{2})*$",
+                  "maxLength": 8192,
+                  "description": "Exact opaque bytes as lower-case hexadecimal."
+                },
+                "producer_ref": {
+                  "type": "string",
+                  "pattern": "^([0-9a-f]{2})*$",
+                  "maxLength": 8192,
+                  "description": "Exact opaque bytes as lower-case hexadecimal."
+                },
+                "evidence": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "role",
+                      "producer_ref",
+                      "evidence_ref"
+                    ],
+                    "properties": {
+                      "role": {
+                        "type": "string",
+                        "enum": [
+                          "schema",
+                          "layout",
+                          "access",
+                          "source",
+                          "time",
+                          "coverage",
+                          "lineage",
+                          "units"
+                        ]
+                      },
+                      "producer_ref": {
+                        "type": "string",
+                        "pattern": "^([0-9a-f]{2})*$",
+                        "maxLength": 8192,
+                        "description": "Exact opaque bytes as lower-case hexadecimal."
+                      },
+                      "evidence_ref": {
+                        "type": "string",
+                        "pattern": "^([0-9a-f]{2})*$",
+                        "maxLength": 8192,
+                        "description": "Exact opaque bytes as lower-case hexadecimal."
+                      }
+                    }
+                  },
+                  "maxItems": 128
+                }
+              }
+            },
+            "projection": {
+              "type": "string",
+              "enum": [
+                "all",
+                "schema",
+                "layout",
+                "access",
+                "source",
+                "time",
+                "coverage",
+                "lineage",
+                "units"
+              ]
+            },
+            "evidence_resolution": {
+              "type": "string",
+              "enum": [
+                "not_performed"
+              ]
+            }
+          }
+        },
+        "provider_observation": {
+          "const": "not_performed"
+        },
+        "persistent_mutation": {
+          "const": false
+        },
+        "result_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      }
+    },
+    "metadata_inspect": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "operation",
+        "owner",
+        "request_digest",
+        "data",
+        "provider_observation",
+        "persistent_mutation",
+        "result_digest"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "symphony.sqmv.metadata-inspect.v1"
+        },
+        "operation": {
+          "const": "metadata_inspect"
+        },
+        "owner": {
+          "const": "sqmv"
+        },
+        "request_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "data": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "metadata_reference",
+            "encoded_bytes",
+            "encoded_hex_chunks",
+            "binding",
+            "description",
+            "projection",
+            "evidence_resolution"
+          ],
+          "properties": {
+            "metadata_reference": {
+              "type": "string",
+              "maxLength": 128
+            },
+            "encoded_bytes": {
+              "type": "string",
+              "format": "uint64-decimal",
+              "pattern": "^(0|[1-9][0-9]{0,19})$",
+              "description": "Canonical unsigned decimal, at most UINT64_MAX; native owner checks all semantic limits."
+            },
+            "encoded_hex_chunks": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 4,
+              "items": {
+                "type": "string",
+                "pattern": "^([0-9a-f]{2})+$",
+                "maxLength": 32768
+              },
+              "description": "Consecutive 16384-byte chunks; only the final chunk may be shorter."
+            },
+            "binding": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "metadata_ref",
+                "dataset_revision",
+                "schema_version",
+                "layout_version",
+                "access_scope"
+              ],
+              "properties": {
+                "metadata_ref": {
+                  "type": "string",
+                  "pattern": "^([0-9a-f]{2})*$",
+                  "maxLength": 8192,
+                  "description": "Exact opaque bytes as lower-case hexadecimal."
+                },
+                "dataset_revision": {
+                  "type": "string",
+                  "pattern": "^([0-9a-f]{2})*$",
+                  "maxLength": 8192,
+                  "description": "Exact opaque bytes as lower-case hexadecimal."
+                },
+                "schema_version": {
+                  "type": "string",
+                  "pattern": "^([0-9a-f]{2})*$",
+                  "maxLength": 8192,
+                  "description": "Exact opaque bytes as lower-case hexadecimal."
+                },
+                "layout_version": {
+                  "type": "string",
+                  "pattern": "^([0-9a-f]{2})*$",
+                  "maxLength": 8192,
+                  "description": "Exact opaque bytes as lower-case hexadecimal."
+                },
+                "access_scope": {
+                  "type": "string",
+                  "pattern": "^([0-9a-f]{2})*$",
+                  "maxLength": 8192,
+                  "description": "Exact opaque bytes as lower-case hexadecimal."
+                }
+              }
+            },
+            "description": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "dataset_id",
+                "dataset_revision",
+                "schema_version",
+                "layout_version",
+                "access_scope",
+                "producer_ref",
+                "evidence"
+              ],
+              "properties": {
+                "dataset_id": {
+                  "type": "string",
+                  "pattern": "^([0-9a-f]{2})*$",
+                  "maxLength": 8192,
+                  "description": "Exact opaque bytes as lower-case hexadecimal."
+                },
+                "dataset_revision": {
+                  "type": "string",
+                  "pattern": "^([0-9a-f]{2})*$",
+                  "maxLength": 8192,
+                  "description": "Exact opaque bytes as lower-case hexadecimal."
+                },
+                "schema_version": {
+                  "type": "string",
+                  "pattern": "^([0-9a-f]{2})*$",
+                  "maxLength": 8192,
+                  "description": "Exact opaque bytes as lower-case hexadecimal."
+                },
+                "layout_version": {
+                  "type": "string",
+                  "pattern": "^([0-9a-f]{2})*$",
+                  "maxLength": 8192,
+                  "description": "Exact opaque bytes as lower-case hexadecimal."
+                },
+                "access_scope": {
+                  "type": "string",
+                  "pattern": "^([0-9a-f]{2})*$",
+                  "maxLength": 8192,
+                  "description": "Exact opaque bytes as lower-case hexadecimal."
+                },
+                "producer_ref": {
+                  "type": "string",
+                  "pattern": "^([0-9a-f]{2})*$",
+                  "maxLength": 8192,
+                  "description": "Exact opaque bytes as lower-case hexadecimal."
+                },
+                "evidence": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "role",
+                      "producer_ref",
+                      "evidence_ref"
+                    ],
+                    "properties": {
+                      "role": {
+                        "type": "string",
+                        "enum": [
+                          "schema",
+                          "layout",
+                          "access",
+                          "source",
+                          "time",
+                          "coverage",
+                          "lineage",
+                          "units"
+                        ]
+                      },
+                      "producer_ref": {
+                        "type": "string",
+                        "pattern": "^([0-9a-f]{2})*$",
+                        "maxLength": 8192,
+                        "description": "Exact opaque bytes as lower-case hexadecimal."
+                      },
+                      "evidence_ref": {
+                        "type": "string",
+                        "pattern": "^([0-9a-f]{2})*$",
+                        "maxLength": 8192,
+                        "description": "Exact opaque bytes as lower-case hexadecimal."
+                      }
+                    }
+                  },
+                  "maxItems": 128
+                }
+              }
+            },
+            "projection": {
+              "type": "string",
+              "enum": [
+                "all",
+                "schema",
+                "layout",
+                "access",
+                "source",
+                "time",
+                "coverage",
+                "lineage",
+                "units"
+              ]
+            },
+            "evidence_resolution": {
+              "type": "string",
+              "enum": [
+                "not_performed"
+              ]
+            }
+          }
+        },
+        "provider_observation": {
+          "const": "not_performed"
+        },
+        "persistent_mutation": {
+          "const": false
+        },
+        "result_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      }
+    }
+  }
+}

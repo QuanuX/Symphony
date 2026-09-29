@@ -1,0 +1,18 @@
+{
+  "protocol": "symphony.shv.interface-registration.v1",
+  "declaration": "modules/sqfv-flow-engine/OWNER-INTERFACE.json",
+  "history": "modules/sqfv-flow-engine/tests/fixtures/interface-history.v1.json",
+  "history_digest": "sha256:2768d09f67ec55e48f2cef5ad95b7ebf98918568c555eedc9acbbabf5108e224",
+  "go_title": "Flow",
+  "go_stem": "flow",
+  "cpp_output": "modules/sqfv-flow-engine/src/interface.generated.hpp",
+  "go_output": "tools/qxctl/internal/knowledgeengine/sqfv_flow_interface_generated.go",
+  "cmake_output": "cmake/SqfvFlowInterface.generated.cmake",
+  "embedded_compatibility_version": null,
+  "embedded_macro": "SYMPHONY_SQFV_FLOW_PREVIOUS",
+  "symbol_prefixes": {
+    "go_export": "SQFV",
+    "go_private": "sqfv",
+    "cmake": "SQFV_FLOW"
+  }
+}

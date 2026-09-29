@@ -1,0 +1,18 @@
+{
+  "protocol": "symphony.shv.interface-registration.v1",
+  "declaration": "modules/sqtv-conversion-engine/OWNER-INTERFACE.json",
+  "history": "modules/sqtv-conversion-engine/tests/fixtures/interface-history.v1.json",
+  "history_digest": "sha256:2768d09f67ec55e48f2cef5ad95b7ebf98918568c555eedc9acbbabf5108e224",
+  "go_title": "Conversion",
+  "go_stem": "conversion",
+  "cpp_output": "modules/sqtv-conversion-engine/src/interface.generated.hpp",
+  "go_output": "tools/qxctl/internal/knowledgeengine/sqtv_conversion_interface_generated.go",
+  "cmake_output": "cmake/SqtvConversionInterface.generated.cmake",
+  "embedded_compatibility_version": null,
+  "embedded_macro": "SYMPHONY_SQTV_CONVERSION_PREVIOUS",
+  "symbol_prefixes": {
+    "go_export": "SQTV",
+    "go_private": "sqtv",
+    "cmake": "SQTV_CONVERSION"
+  }
+}

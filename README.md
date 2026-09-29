@@ -125,9 +125,9 @@ The emerging SOV remote-operation and deployment contracts do not make provider 
 
 This bounded summary is derived from canonical SSFV coverage and routing, the feature-administration profile, the qxctl command registry, and completed SODV publication records. Edit its source contracts, then regenerate; do not hand-edit the values below.
 
-- SSFV catalog state: `partial`; registered features: **125**; registered owner scopes: **49**; ratified nested features: **76**.
-- Feature-administration expectations: **325** reviewed surfaces; **315** required, **26** evidence-backed exemptions, **9** prohibitions, **0** unreviewed.
-- qxctl stable command identities: **376**.
+- SSFV catalog state: `partial`; registered features: **131**; registered owner scopes: **55**; ratified nested features: **76**.
+- Feature-administration expectations: **339** reviewed surfaces; **329** required, **26** evidence-backed exemptions, **9** prohibitions, **0** unreviewed.
+- qxctl stable command identities: **383**.
 - Registered owner capabilities:
   - `ssfv:symphony:accordare-stav-producer`
   - `ssfv:symphony:knowledge-session-coordinator`
@@ -161,16 +161,22 @@ This bounded summary is derived from canonical SSFV coverage and routing, the fe
   - `ssfv:symphony:shv-source-engine`
   - `ssfv:symphony:skvi-engine`
   - `ssfv:symphony:sodv-engine`
+  - `ssfv:symphony:sqav-attempt-engine`
   - `ssfv:symphony:sqav-capture-cpp`
   - `ssfv:symphony:sqav-databento-dbn-cpp`
   - `ssfv:symphony:sqav-databento-reference-cpp`
   - `ssfv:symphony:sqav-fred-cpp`
   - `ssfv:symphony:sqav-news-api-cpp`
   - `ssfv:symphony:sqav-request-engine`
+  - `ssfv:symphony:sqdv-checkpoint-engine`
   - `ssfv:symphony:sqdv-delivery-cpp`
   - `ssfv:symphony:sqfv-batch-cpp`
+  - `ssfv:symphony:sqfv-flow-engine`
   - `ssfv:symphony:sqmv-metadata-cpp`
+  - `ssfv:symphony:sqmv-metadata-engine`
+  - `ssfv:symphony:sqpv-inspection-engine`
   - `ssfv:symphony:sqpv-local-store-cpp`
+  - `ssfv:symphony:sqtv-conversion-engine`
   - `ssfv:symphony:sqtv-integer-conversion-cpp`
   - `ssfv:symphony:ssfv-engine`
   - `ssfv:symphony:ssiag-foundation`
@@ -182,7 +188,7 @@ This bounded summary is derived from canonical SSFV coverage and routing, the fe
   - `github.com/QuanuX/Symphony/libraries/stav-protocol-go` `v0.2.0` (tag `libraries/stav-protocol-go/v0.2.0`, source `55f8faf26f4f85213ac23cc1de7ba897b2129a4c`)
   - `github.com/QuanuX/Symphony/modules/stav-append-authority` `v0.1.0` (tag `modules/stav-append-authority/v0.1.0`, source `55f8faf26f4f85213ac23cc1de7ba897b2129a4c`)
   - `github.com/QuanuX/Symphony/modules/stav-append-authority` `v0.2.0` (tag `modules/stav-append-authority/v0.2.0`, source `ed7484d70607aa96e64916dd4e59d3972a61980b`)
-- Snapshot digest: `sha256:3030e375688e99d7e3128ee7216367092f6cde169d84a0ae1e28a4343b99b510`
+- Snapshot digest: `sha256:4de356b1749cc01f7989ce8d5943bc1459565709ac8b58a6207106fbfb02ac16`
 <!-- symphony:root-summary:v1:end -->
 
 ## Releases and Documentation

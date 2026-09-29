@@ -26,3 +26,7 @@ First-party research-data storage bridges on the data plane use C++26. The first
 ## Non-Authorization Statement
 
 This manifest authorizes no storage write, credential use, artifact deletion, private-data disclosure, remote commit, or live strategy execution.
+
+## Non-live administration
+
+`modules/sqpv-inspection-engine/MANIFEST.md` and `modules/sqpv-inspection-engine/SPEC.md` declare the independently installed C++26 owner adapter. Operations: `store_inspect`. Shared qxctl schema/template and source discovery supply the resource surface. Live runtime activation remains deferred.

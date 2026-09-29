@@ -1,0 +1,33 @@
+{
+  "protocol": "symphony.sqmv.administration-templates.v1",
+  "templates": {
+    "metadata_validate": {
+      "protocol": "symphony.sqmv.metadata-validate-input.v1",
+      "description": {
+        "dataset_id": null,
+        "dataset_revision": null,
+        "schema_version": null,
+        "layout_version": null,
+        "access_scope": null,
+        "producer_ref": null,
+        "evidence": null
+      },
+      "limits": {
+        "max_manifest_bytes": null,
+        "max_field_bytes": null,
+        "max_evidence_refs": null
+      }
+    },
+    "metadata_inspect": {
+      "protocol": "symphony.sqmv.metadata-inspect-input.v1",
+      "encoded_hex_chunks": null,
+      "expected_reference": null,
+      "limits": {
+        "max_manifest_bytes": null,
+        "max_field_bytes": null,
+        "max_evidence_refs": null
+      },
+      "projection": null
+    }
+  }
+}

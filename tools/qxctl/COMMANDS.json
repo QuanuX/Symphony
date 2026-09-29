@@ -180,6 +180,10 @@
           "interaction": "discover"
         },
         {
+          "feature_id": "ssfv:symphony:sqav-attempt-engine",
+          "interaction": "discover"
+        },
+        {
           "feature_id": "ssfv:symphony:sqav-capture-cpp",
           "interaction": "discover"
         },
@@ -204,6 +208,10 @@
           "interaction": "discover"
         },
         {
+          "feature_id": "ssfv:symphony:sqdv-checkpoint-engine",
+          "interaction": "discover"
+        },
+        {
           "feature_id": "ssfv:symphony:sqdv-delivery-cpp",
           "interaction": "discover"
         },
@@ -212,11 +220,27 @@
           "interaction": "discover"
         },
         {
+          "feature_id": "ssfv:symphony:sqfv-flow-engine",
+          "interaction": "discover"
+        },
+        {
           "feature_id": "ssfv:symphony:sqmv-metadata-cpp",
           "interaction": "discover"
         },
         {
+          "feature_id": "ssfv:symphony:sqmv-metadata-engine",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqpv-inspection-engine",
+          "interaction": "discover"
+        },
+        {
           "feature_id": "ssfv:symphony:sqpv-local-store-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqtv-conversion-engine",
           "interaction": "discover"
         },
         {
@@ -263,6 +287,10 @@
           "interaction": "discover"
         },
         {
+          "feature_id": "ssfv:symphony:sqav-attempt-engine",
+          "interaction": "discover"
+        },
+        {
           "feature_id": "ssfv:symphony:sqav-capture-cpp",
           "interaction": "discover"
         },
@@ -287,6 +315,10 @@
           "interaction": "discover"
         },
         {
+          "feature_id": "ssfv:symphony:sqdv-checkpoint-engine",
+          "interaction": "discover"
+        },
+        {
           "feature_id": "ssfv:symphony:sqdv-delivery-cpp",
           "interaction": "discover"
         },
@@ -295,11 +327,27 @@
           "interaction": "discover"
         },
         {
+          "feature_id": "ssfv:symphony:sqfv-flow-engine",
+          "interaction": "discover"
+        },
+        {
           "feature_id": "ssfv:symphony:sqmv-metadata-cpp",
           "interaction": "discover"
         },
         {
+          "feature_id": "ssfv:symphony:sqmv-metadata-engine",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqpv-inspection-engine",
+          "interaction": "discover"
+        },
+        {
           "feature_id": "ssfv:symphony:sqpv-local-store-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqtv-conversion-engine",
           "interaction": "discover"
         },
         {
@@ -1971,6 +2019,10 @@
           "interaction": "discover"
         },
         {
+          "feature_id": "ssfv:symphony:sqav-attempt-engine",
+          "interaction": "discover"
+        },
+        {
           "feature_id": "ssfv:symphony:sqav-capture-cpp",
           "interaction": "discover"
         },
@@ -1995,6 +2047,10 @@
           "interaction": "discover"
         },
         {
+          "feature_id": "ssfv:symphony:sqdv-checkpoint-engine",
+          "interaction": "discover"
+        },
+        {
           "feature_id": "ssfv:symphony:sqdv-delivery-cpp",
           "interaction": "discover"
         },
@@ -2003,11 +2059,27 @@
           "interaction": "discover"
         },
         {
+          "feature_id": "ssfv:symphony:sqfv-flow-engine",
+          "interaction": "discover"
+        },
+        {
           "feature_id": "ssfv:symphony:sqmv-metadata-cpp",
           "interaction": "discover"
         },
         {
+          "feature_id": "ssfv:symphony:sqmv-metadata-engine",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqpv-inspection-engine",
+          "interaction": "discover"
+        },
+        {
           "feature_id": "ssfv:symphony:sqpv-local-store-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqtv-conversion-engine",
           "interaction": "discover"
         },
         {
@@ -2058,6 +2130,10 @@
           "interaction": "discover"
         },
         {
+          "feature_id": "ssfv:symphony:sqav-attempt-engine",
+          "interaction": "discover"
+        },
+        {
           "feature_id": "ssfv:symphony:sqav-capture-cpp",
           "interaction": "discover"
         },
@@ -2082,6 +2158,10 @@
           "interaction": "discover"
         },
         {
+          "feature_id": "ssfv:symphony:sqdv-checkpoint-engine",
+          "interaction": "discover"
+        },
+        {
           "feature_id": "ssfv:symphony:sqdv-delivery-cpp",
           "interaction": "discover"
         },
@@ -2090,11 +2170,27 @@
           "interaction": "discover"
         },
         {
+          "feature_id": "ssfv:symphony:sqfv-flow-engine",
+          "interaction": "discover"
+        },
+        {
           "feature_id": "ssfv:symphony:sqmv-metadata-cpp",
           "interaction": "discover"
         },
         {
+          "feature_id": "ssfv:symphony:sqmv-metadata-engine",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqpv-inspection-engine",
+          "interaction": "discover"
+        },
+        {
           "feature_id": "ssfv:symphony:sqpv-local-store-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqtv-conversion-engine",
           "interaction": "discover"
         },
         {
@@ -2141,6 +2237,10 @@
           "interaction": "discover"
         },
         {
+          "feature_id": "ssfv:symphony:sqav-attempt-engine",
+          "interaction": "discover"
+        },
+        {
           "feature_id": "ssfv:symphony:sqav-capture-cpp",
           "interaction": "discover"
         },
@@ -2165,6 +2265,10 @@
           "interaction": "discover"
         },
         {
+          "feature_id": "ssfv:symphony:sqdv-checkpoint-engine",
+          "interaction": "discover"
+        },
+        {
           "feature_id": "ssfv:symphony:sqdv-delivery-cpp",
           "interaction": "discover"
         },
@@ -2173,11 +2277,27 @@
           "interaction": "discover"
         },
         {
+          "feature_id": "ssfv:symphony:sqfv-flow-engine",
+          "interaction": "discover"
+        },
+        {
           "feature_id": "ssfv:symphony:sqmv-metadata-cpp",
           "interaction": "discover"
         },
         {
+          "feature_id": "ssfv:symphony:sqmv-metadata-engine",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqpv-inspection-engine",
+          "interaction": "discover"
+        },
+        {
           "feature_id": "ssfv:symphony:sqpv-local-store-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqtv-conversion-engine",
           "interaction": "discover"
         },
         {
@@ -2228,6 +2348,10 @@
           "interaction": "discover"
         },
         {
+          "feature_id": "ssfv:symphony:sqav-attempt-engine",
+          "interaction": "discover"
+        },
+        {
           "feature_id": "ssfv:symphony:sqav-capture-cpp",
           "interaction": "discover"
         },
@@ -2252,6 +2376,10 @@
           "interaction": "discover"
         },
         {
+          "feature_id": "ssfv:symphony:sqdv-checkpoint-engine",
+          "interaction": "discover"
+        },
+        {
           "feature_id": "ssfv:symphony:sqdv-delivery-cpp",
           "interaction": "discover"
         },
@@ -2260,11 +2388,27 @@
           "interaction": "discover"
         },
         {
+          "feature_id": "ssfv:symphony:sqfv-flow-engine",
+          "interaction": "discover"
+        },
+        {
           "feature_id": "ssfv:symphony:sqmv-metadata-cpp",
           "interaction": "discover"
         },
         {
+          "feature_id": "ssfv:symphony:sqmv-metadata-engine",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqpv-inspection-engine",
+          "interaction": "discover"
+        },
+        {
           "feature_id": "ssfv:symphony:sqpv-local-store-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqtv-conversion-engine",
           "interaction": "discover"
         },
         {
@@ -2311,6 +2455,10 @@
           "interaction": "discover"
         },
         {
+          "feature_id": "ssfv:symphony:sqav-attempt-engine",
+          "interaction": "discover"
+        },
+        {
           "feature_id": "ssfv:symphony:sqav-capture-cpp",
           "interaction": "discover"
         },
@@ -2335,6 +2483,10 @@
           "interaction": "discover"
         },
         {
+          "feature_id": "ssfv:symphony:sqdv-checkpoint-engine",
+          "interaction": "discover"
+        },
+        {
           "feature_id": "ssfv:symphony:sqdv-delivery-cpp",
           "interaction": "discover"
         },
@@ -2343,11 +2495,27 @@
           "interaction": "discover"
         },
         {
+          "feature_id": "ssfv:symphony:sqfv-flow-engine",
+          "interaction": "discover"
+        },
+        {
           "feature_id": "ssfv:symphony:sqmv-metadata-cpp",
           "interaction": "discover"
         },
         {
+          "feature_id": "ssfv:symphony:sqmv-metadata-engine",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqpv-inspection-engine",
+          "interaction": "discover"
+        },
+        {
           "feature_id": "ssfv:symphony:sqpv-local-store-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqtv-conversion-engine",
           "interaction": "discover"
         },
         {
@@ -2394,6 +2562,10 @@
           "interaction": "discover"
         },
         {
+          "feature_id": "ssfv:symphony:sqav-attempt-engine",
+          "interaction": "discover"
+        },
+        {
           "feature_id": "ssfv:symphony:sqav-capture-cpp",
           "interaction": "discover"
         },
@@ -2418,6 +2590,10 @@
           "interaction": "discover"
         },
         {
+          "feature_id": "ssfv:symphony:sqdv-checkpoint-engine",
+          "interaction": "discover"
+        },
+        {
           "feature_id": "ssfv:symphony:sqdv-delivery-cpp",
           "interaction": "discover"
         },
@@ -2426,11 +2602,27 @@
           "interaction": "discover"
         },
         {
+          "feature_id": "ssfv:symphony:sqfv-flow-engine",
+          "interaction": "discover"
+        },
+        {
           "feature_id": "ssfv:symphony:sqmv-metadata-cpp",
           "interaction": "discover"
         },
         {
+          "feature_id": "ssfv:symphony:sqmv-metadata-engine",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqpv-inspection-engine",
+          "interaction": "discover"
+        },
+        {
           "feature_id": "ssfv:symphony:sqpv-local-store-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqtv-conversion-engine",
           "interaction": "discover"
         },
         {
@@ -15089,6 +15281,45 @@
       "aliases": [],
       "authority_mode": "none",
       "backend_operation_ids": [
+        "engop:symphony:sqav-attempt.inspect"
+      ],
+      "command_id": "qxcmd:symphony:sqv.acquisition.attempts",
+      "deprecated_in": null,
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.sqv-administration",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqav-attempt-engine",
+          "interaction": "inspect"
+        }
+      ],
+      "grammar": "qxctl sqv acquisition attempts [--input VALUE] [--json] [--prefix VALUE] [--version VALUE]",
+      "infrastructure_purpose": null,
+      "input_protocols": [
+        "symphony.sqav.attempts-inspect-input.v1"
+      ],
+      "introduced_in": "0.1.0-dev",
+      "json_output": true,
+      "mutability": "read_only",
+      "noninteractive": true,
+      "output_protocols": [
+        "symphony.sqav.attempts-inspect.v1"
+      ],
+      "recovery_command_id": null,
+      "replacement_ids": [],
+      "result_validation_protocols": [
+        "symphony.sqav.attempts-inspect.v1"
+      ],
+      "status": "experimental",
+      "target_scope": "local",
+      "visibility": "public"
+    },
+    {
+      "aliases": [],
+      "authority_mode": "none",
+      "backend_operation_ids": [
         "engop:symphony:sqav-request.validate"
       ],
       "command_id": "qxcmd:symphony:sqv.acquisition.validate",
@@ -15127,6 +15358,201 @@
     {
       "aliases": [],
       "authority_mode": "none",
+      "backend_operation_ids": [
+        "engop:symphony:sqdv-checkpoint.inspect"
+      ],
+      "command_id": "qxcmd:symphony:sqv.checkpoint.inspect",
+      "deprecated_in": null,
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.sqv-administration",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqdv-checkpoint-engine",
+          "interaction": "inspect"
+        }
+      ],
+      "grammar": "qxctl sqv checkpoint inspect [--input VALUE] [--json] [--prefix VALUE] [--version VALUE]",
+      "infrastructure_purpose": null,
+      "input_protocols": [
+        "symphony.sqdv.checkpoint-inspect-input.v1"
+      ],
+      "introduced_in": "0.1.0-dev",
+      "json_output": true,
+      "mutability": "read_only",
+      "noninteractive": true,
+      "output_protocols": [
+        "symphony.sqdv.checkpoint-inspect.v1"
+      ],
+      "recovery_command_id": null,
+      "replacement_ids": [],
+      "result_validation_protocols": [
+        "symphony.sqdv.checkpoint-inspect.v1"
+      ],
+      "status": "experimental",
+      "target_scope": "local",
+      "visibility": "public"
+    },
+    {
+      "aliases": [],
+      "authority_mode": "none",
+      "backend_operation_ids": [
+        "engop:symphony:sqtv-conversion.validate"
+      ],
+      "command_id": "qxcmd:symphony:sqv.conversion.validate",
+      "deprecated_in": null,
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.sqv-administration",
+          "interaction": "validate"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqtv-conversion-engine",
+          "interaction": "validate"
+        }
+      ],
+      "grammar": "qxctl sqv conversion validate [--input VALUE] [--json] [--prefix VALUE] [--version VALUE]",
+      "infrastructure_purpose": null,
+      "input_protocols": [
+        "symphony.sqtv.conversion-validate-input.v1"
+      ],
+      "introduced_in": "0.1.0-dev",
+      "json_output": true,
+      "mutability": "read_only",
+      "noninteractive": true,
+      "output_protocols": [
+        "symphony.sqtv.conversion-validate.v1"
+      ],
+      "recovery_command_id": null,
+      "replacement_ids": [],
+      "result_validation_protocols": [
+        "symphony.sqtv.conversion-validate.v1"
+      ],
+      "status": "experimental",
+      "target_scope": "local",
+      "visibility": "public"
+    },
+    {
+      "aliases": [],
+      "authority_mode": "none",
+      "backend_operation_ids": [
+        "engop:symphony:sqfv-flow.validate"
+      ],
+      "command_id": "qxcmd:symphony:sqv.flow.validate",
+      "deprecated_in": null,
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.sqv-administration",
+          "interaction": "validate"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqfv-flow-engine",
+          "interaction": "validate"
+        }
+      ],
+      "grammar": "qxctl sqv flow validate [--input VALUE] [--json] [--prefix VALUE] [--version VALUE]",
+      "infrastructure_purpose": null,
+      "input_protocols": [
+        "symphony.sqfv.flow-validate-input.v1"
+      ],
+      "introduced_in": "0.1.0-dev",
+      "json_output": true,
+      "mutability": "read_only",
+      "noninteractive": true,
+      "output_protocols": [
+        "symphony.sqfv.flow-validate.v1"
+      ],
+      "recovery_command_id": null,
+      "replacement_ids": [],
+      "result_validation_protocols": [
+        "symphony.sqfv.flow-validate.v1"
+      ],
+      "status": "experimental",
+      "target_scope": "local",
+      "visibility": "public"
+    },
+    {
+      "aliases": [],
+      "authority_mode": "none",
+      "backend_operation_ids": [
+        "engop:symphony:sqmv-metadata.inspect"
+      ],
+      "command_id": "qxcmd:symphony:sqv.metadata.inspect",
+      "deprecated_in": null,
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.sqv-administration",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqmv-metadata-engine",
+          "interaction": "inspect"
+        }
+      ],
+      "grammar": "qxctl sqv metadata inspect [--input VALUE] [--json] [--prefix VALUE] [--version VALUE]",
+      "infrastructure_purpose": null,
+      "input_protocols": [
+        "symphony.sqmv.metadata-inspect-input.v1"
+      ],
+      "introduced_in": "0.1.0-dev",
+      "json_output": true,
+      "mutability": "read_only",
+      "noninteractive": true,
+      "output_protocols": [
+        "symphony.sqmv.metadata-inspect.v1"
+      ],
+      "recovery_command_id": null,
+      "replacement_ids": [],
+      "result_validation_protocols": [
+        "symphony.sqmv.metadata-inspect.v1"
+      ],
+      "status": "experimental",
+      "target_scope": "local",
+      "visibility": "public"
+    },
+    {
+      "aliases": [],
+      "authority_mode": "none",
+      "backend_operation_ids": [
+        "engop:symphony:sqmv-metadata.validate"
+      ],
+      "command_id": "qxcmd:symphony:sqv.metadata.validate",
+      "deprecated_in": null,
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.sqv-administration",
+          "interaction": "validate"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqmv-metadata-engine",
+          "interaction": "validate"
+        }
+      ],
+      "grammar": "qxctl sqv metadata validate [--input VALUE] [--json] [--prefix VALUE] [--version VALUE]",
+      "infrastructure_purpose": null,
+      "input_protocols": [
+        "symphony.sqmv.metadata-validate-input.v1"
+      ],
+      "introduced_in": "0.1.0-dev",
+      "json_output": true,
+      "mutability": "read_only",
+      "noninteractive": true,
+      "output_protocols": [
+        "symphony.sqmv.metadata-validate.v1"
+      ],
+      "recovery_command_id": null,
+      "replacement_ids": [],
+      "result_validation_protocols": [
+        "symphony.sqmv.metadata-validate.v1"
+      ],
+      "status": "experimental",
+      "target_scope": "local",
+      "visibility": "public"
+    },
+    {
+      "aliases": [],
+      "authority_mode": "none",
       "backend_operation_ids": [],
       "command_id": "qxcmd:symphony:sqv.schema",
       "deprecated_in": null,
@@ -15136,7 +15562,31 @@
           "interaction": "discover"
         },
         {
+          "feature_id": "ssfv:symphony:sqav-attempt-engine",
+          "interaction": "discover"
+        },
+        {
           "feature_id": "ssfv:symphony:sqav-request-engine",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqdv-checkpoint-engine",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqfv-flow-engine",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqmv-metadata-engine",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqpv-inspection-engine",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqtv-conversion-engine",
           "interaction": "discover"
         }
       ],
@@ -15162,6 +15612,45 @@
     {
       "aliases": [],
       "authority_mode": "none",
+      "backend_operation_ids": [
+        "engop:symphony:sqpv-inspection.inspect"
+      ],
+      "command_id": "qxcmd:symphony:sqv.store.inspect",
+      "deprecated_in": null,
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.sqv-administration",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqpv-inspection-engine",
+          "interaction": "inspect"
+        }
+      ],
+      "grammar": "qxctl sqv store inspect [--input VALUE] [--json] [--prefix VALUE] [--version VALUE]",
+      "infrastructure_purpose": null,
+      "input_protocols": [
+        "symphony.sqpv.store-inspect-input.v1"
+      ],
+      "introduced_in": "0.1.0-dev",
+      "json_output": true,
+      "mutability": "read_only",
+      "noninteractive": true,
+      "output_protocols": [
+        "symphony.sqpv.store-inspect.v1"
+      ],
+      "recovery_command_id": null,
+      "replacement_ids": [],
+      "result_validation_protocols": [
+        "symphony.sqpv.store-inspect.v1"
+      ],
+      "status": "experimental",
+      "target_scope": "local",
+      "visibility": "public"
+    },
+    {
+      "aliases": [],
+      "authority_mode": "none",
       "backend_operation_ids": [],
       "command_id": "qxcmd:symphony:sqv.template",
       "deprecated_in": null,
@@ -15171,7 +15660,31 @@
           "interaction": "discover"
         },
         {
+          "feature_id": "ssfv:symphony:sqav-attempt-engine",
+          "interaction": "discover"
+        },
+        {
           "feature_id": "ssfv:symphony:sqav-request-engine",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqdv-checkpoint-engine",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqfv-flow-engine",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqmv-metadata-engine",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqpv-inspection-engine",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sqtv-conversion-engine",
           "interaction": "discover"
         }
       ],
@@ -17721,6 +18234,6 @@
   "format_version": 1,
   "protocol": "symphony.qxctl.command-registry.v1",
   "receipt_digest": null,
-  "registry_digest": "sha256:fa93b3bb562bd1ead835bbef51a3281d4997806888c9781a851ada891c7f52b2",
+  "registry_digest": "sha256:52026cfe39276aa24b33d004a1820dd055640304ac3e047b21801356a19646bc",
   "registry_kind": "expected"
 }

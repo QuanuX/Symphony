@@ -1,0 +1,15 @@
+{
+  "protocol": "symphony.sqpv.administration-templates.v1",
+  "templates": {
+    "store_inspect": {
+      "protocol": "symphony.sqpv.store-inspect-input.v1",
+      "store": {
+        "root": null,
+        "expected_metadata_reference": null,
+        "expected_store_generation": null,
+        "max_read_bytes": null,
+        "max_batches": null
+      }
+    }
+  }
+}

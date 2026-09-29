@@ -1,3 +1,4 @@
+#include "limits.hpp"
 #include <algorithm>
 #include <array>
 #include <limits>
@@ -34,11 +35,6 @@ int index(Format f) noexcept {
   return static_cast<int>(width - widths.begin()) * 4 +
          (static_cast<int>(f.signedness) - 1) * 2 +
          (static_cast<int>(f.order) - 1);
-}
-bool valid(const Limits &l) noexcept {
-  return l.max_elements > 0 && l.max_elements <= (1ULL << 23) &&
-         l.max_input_bytes > 0 && l.max_input_bytes <= (64ULL << 20) &&
-         l.max_output_bytes > 0 && l.max_output_bytes <= (64ULL << 20);
 }
 std::uint64_t mask(unsigned bits) noexcept {
   return bits == 64 ? UINT64_MAX : (std::uint64_t{1} << bits) - 1;
@@ -201,7 +197,7 @@ Status Result::convert(sqfv::Context &context, const sqfv::Batch &input,
                        const sqmv::Manifest &manifest, Format output,
                        const Position &position, const Limits &limits,
                        Result &out) noexcept {
-  if (!context || !input || !manifest || !valid(limits))
+  if (!context || !input || !manifest || !detail::valid_limits(limits))
     return Status::invalid_argument;
   if (index(output) < 0)
     return Status::unsupported_representation;
