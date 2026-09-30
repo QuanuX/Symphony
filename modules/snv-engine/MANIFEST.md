@@ -32,3 +32,4 @@ Version 0.1.0-dev. Independent C++26 executable and static Symphony::Snv SDK. Em
 - `modules/snv-engine/tests/fixtures/snv_inspect.json`
 - `modules/snv-engine/tests/process.cpp`
 - `modules/snv-engine/tests/snv_test.cpp`
+- `modules/snv-engine/tests/fixtures/native-result-contract-cases.v1.json`

@@ -53,7 +53,14 @@ func ValidateSNVDescriptor(owner, version string, result, declaration []byte) er
 			return fmt.Errorf("SNV descriptor field missing")
 		}
 	}
-	if descriptor["protocol"] != "symphony.knowledge.engine-descriptor.v2" || descriptor["format_version"] != int64(2) || descriptor["module_id"] != owner+"-engine" || descriptor["engine_id"] != "symphony-"+owner || descriptor["vector_id"] != owner || descriptor["engine_version"] != version || descriptor["language"] != "C++26" || descriptor["thermal_path"] != "freezing" || descriptor["canonical_apply_enabled"] != false || descriptor["session_mutation_enabled"] != false || descriptor["network_listener"] != false || !reflect.DeepEqual(descriptor["process_protocols"], []any{processProtocol}) || !reflect.DeepEqual(descriptor["supported_scopes"], []any{"user"}) {
+	spec := snvEngineSpec(owner)
+	var expectedVector any = owner
+	recordLimit := int64(2048)
+	if owner == "local-observer" {
+		expectedVector = nil
+		recordLimit = 4
+	}
+	if descriptor["protocol"] != "symphony.knowledge.engine-descriptor.v2" || descriptor["format_version"] != int64(2) || descriptor["module_id"] != spec.moduleID || descriptor["engine_id"] != spec.engineID || descriptor["vector_id"] != expectedVector || descriptor["engine_version"] != version || descriptor["language"] != "C++26" || descriptor["thermal_path"] != "freezing" || descriptor["canonical_apply_enabled"] != false || descriptor["session_mutation_enabled"] != false || descriptor["network_listener"] != false || !reflect.DeepEqual(descriptor["process_protocols"], []any{processProtocol}) || !reflect.DeepEqual(descriptor["supported_scopes"], []any{"user"}) {
 		return fmt.Errorf("SNV descriptor identity or execution scope mismatch")
 	}
 	expectedOperations, okay := contract["operations"].([]any)
@@ -89,7 +96,7 @@ func ValidateSNVDescriptor(owner, version string, result, declaration []byte) er
 		seen[name] = true
 	}
 	limits, okay := descriptor["limits"].(map[string]any)
-	if !okay || !reflect.DeepEqual(limits, map[string]any{"request_bytes": int64(maxRequestBytes), "response_bytes": int64(maxResponseBytes), "json_depth": int64(maxJSONDepth), "json_values": int64(snvJSONValues), "records": int64(2048), "deadline_ahead_ms": int64(300000)}) {
+	if !okay || !reflect.DeepEqual(limits, map[string]any{"request_bytes": int64(maxRequestBytes), "response_bytes": int64(maxResponseBytes), "json_depth": int64(maxJSONDepth), "json_values": int64(snvJSONValues), "records": recordLimit, "deadline_ahead_ms": int64(300000)}) {
 		return fmt.Errorf("SNV descriptor limits mismatch")
 	}
 	if !reflect.DeepEqual(descriptor["embedded_dependencies"], contract["embedded_dependencies"]) {

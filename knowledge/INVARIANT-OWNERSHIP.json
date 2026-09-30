@@ -581,6 +581,19 @@
       "version_policy": "exact_receipt_v2_entry_point_and_capability_compatible"
     },
     {
+      "adapter_id": "adapter:symphony:symphony-snv-local-observer.v1",
+      "command_protocol": "symphony.knowledge.engine-process.v1",
+      "component": "snv-local-observer",
+      "entry_point_id": "symphony-snv-local-observer",
+      "format_version": 3,
+      "implementation_path": "modules/snv-local-observer",
+      "operation_ids": [
+        "engop:symphony:snv-local-observer.observe"
+      ],
+      "owner_contract": "modules/snv-local-observer/SPEC.md",
+      "version_policy": "exact_receipt_v2_entry_point_and_capability_compatible"
+    },
+    {
       "adapter_id": "adapter:symphony:symphony-snv.v1",
       "command_protocol": "symphony.knowledge.engine-process.v1",
       "component": "snv-engine",
@@ -2621,6 +2634,52 @@
     },
     {
       "allowed_adapter_ids": [
+        "adapter:symphony:symphony-snv-local-observer.v1"
+      ],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "TestSNVObserverInstalledConsumer"
+          ],
+          "path": "tools/qxctl/internal/knowledgeengine/snv_observer_installed_test.go"
+        },
+        {
+          "cases": [
+            "TestSNVObserverActualPortableResultShape"
+          ],
+          "path": "tools/qxctl/internal/knowledgeengine/snv_observer_shape_test.go"
+        }
+      ],
+      "invariant_id": "invariant:symphony:snv-local-observer.observation-boundary",
+      "ipc_boundary": true,
+      "owner_component": "snv-local-observer",
+      "owner_contract": "modules/snv-local-observer/SPEC.md",
+      "producer_implementations": [
+        "modules/snv-local-observer/src/main.cpp",
+        "modules/snv-local-observer/src/observer.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "main"
+          ],
+          "path": "modules/snv-local-observer/tests/observer_test.cpp"
+        }
+      ],
+      "real_process_regressions": [
+        {
+          "cases": [
+            "test_installed_observation"
+          ],
+          "path": "modules/snv-local-observer/tests/process.cpp"
+        }
+      ],
+      "statement": "The optional collector reads only explicitly selected fixed sources under its bounded Linux profile. Results retain original request/subject association, source coverage, exact units, unavailable/partial/changed states and finite capture checks without physical identity, full inventory, allocation, retention or selected-state authority. Sensitive boot consistency evidence remains private. Module/null domain receipt identities, exact collector entry points and receipt-owned interface resources are independently admitted; response correspondence and unsupported/sensitive/invented fields fail at the consumer boundary.",
+      "status": "active",
+      "title": "Optional local observation and finite module boundary"
+    },
+    {
+      "allowed_adapter_ids": [
         "adapter:symphony:symphony-snv.v1"
       ],
       "consumer_boundary_rejections": [
@@ -4192,7 +4251,7 @@
     }
   ],
   "protocol": "symphony.knowledge.invariant-ownership-registry.v3",
-  "registry_digest": "sha256:7f0b5e19de508eedfa9f4f9934a2b366da613510636d0dbc5b112d67e132ab94",
+  "registry_digest": "sha256:bb879413948c35f4ed8d52fe73d4d7dd37b08b5ed2c4406ac5c20167f32842a7",
   "scope": "common_lowest_authoritative_layer",
   "test_policy": {
     "consumer_boundary_rejection_required": true,

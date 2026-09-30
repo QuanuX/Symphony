@@ -69,11 +69,17 @@ int run(int argc,char** argv,std::string_view owner,std::string_view version,
     } catch(const engine::Error& e) {
       std::cout<<engine::serialize_response(engine::error_response(request.request_id,request.correlation_id,request.operation,engine_id,std::string(version),e.code(),e.what()),max_json_values)<<'\n';
       return e.exit_status();
+    } catch(...) {
+      // The envelope is admitted already: retain its routing identity even if
+      // an owner or SDK consumer throws an unexpected exception. Exception
+      // text can contain supplied evidence, so return only the fixed message.
+      std::cout<<engine::serialize_response(engine::error_response(request.request_id,request.correlation_id,request.operation,engine_id,std::string(version),"internal.failure","bounded operation failed"),max_json_values)<<'\n';
+      return 1;
     }
   } catch(const engine::Error& e) {
     std::cout<<engine::serialize_response(engine::error_response("unavailable","unavailable","unavailable",engine_id,std::string(version),e.code(),e.what()))<<'\n';
     return e.exit_status();
-  } catch(const std::exception&) {
+  } catch(...) {
     std::cout<<engine::serialize_response(engine::error_response("unavailable","unavailable","unavailable",engine_id,std::string(version),"internal.failure","bounded operation failed"))<<'\n';
     return 1;
   }

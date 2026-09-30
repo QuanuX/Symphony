@@ -20,7 +20,9 @@ SNV owns the shared boundary among Node identity, Node resources, cluster identi
 
 The bounded SNV `0.1.0-dev` C++26 composition engine is implemented in `modules/snv-engine` and preserves the exact SNIV, SNRV, SCIV and SCNV supplied-evidence reducers. The five finite processes, static SDKs, strict schemas and installed owner interfaces have distinct package contracts. Agentic qxctl administration retains original evidence and controls selected views through the shared SSIAG/STAV authority circuit. Current release and validation status is recorded in `knowledge/snv/VALIDATION.md`; implementation presence is not a completed acceptance or publication claim.
 
-Live hardware discovery, provider queries, active bus observers, infrastructure provisioning, universal naming, the reserved `::` shorthand and automatic name allocation remain outside this admitted release.
+The separately selected `modules/snv-local-observer` is an optional finite C++26 collector with its own module receipt, SDK and fixed Linux proc/sysfs CPU/memory profile. It is not a sixth semantic engine and is not required by any supplied-evidence owner. It supplies attributed observations and caller-supplied subject association; retention, identity interpretation and protected selected-view operations remain separate.
+
+Broader hardware discovery, provider queries, active bus observers, infrastructure provisioning, universal naming, the reserved `::` shorthand and automatic name allocation remain outside the admitted scope.
 
 ## Installability
 

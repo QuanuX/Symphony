@@ -66,6 +66,9 @@ func (s Store) withDirectory(operation func(func() ([]byte, error), func([]byte,
 		return err
 	}
 	if err := unix.Flock(lockfd, unix.LOCK_EX|unix.LOCK_NB); err != nil {
+		if errors.Is(err, unix.EWOULDBLOCK) {
+			return Refusal("snv.state_busy", err)
+		}
 		return fmt.Errorf("head store is busy or cannot be locked: %w", err)
 	}
 	defer unix.Flock(lockfd, unix.LOCK_UN)
@@ -83,7 +86,7 @@ func openChild(parent int, name string, private bool) (int, error) {
 }
 func openChildMode(parent int, name string, private, create bool) (int, error) {
 	if name == "" || name == "." || name == ".." || strings.Contains(name, "/") {
-		return -1, fmt.Errorf("unsafe state path component")
+		return -1, Refusal("snv.unsafe_state", nil)
 	}
 	fd, err := unix.Openat(parent, name, unix.O_RDONLY|unix.O_CLOEXEC|unix.O_NOFOLLOW|unix.O_DIRECTORY, 0)
 	if create && errors.Is(err, unix.ENOENT) {
@@ -107,7 +110,7 @@ func openChildMode(parent int, name string, private, create bool) (int, error) {
 	// sticky temporary directory is permitted, but selected state itself is private.
 	if status.Uid != uint32(os.Geteuid()) && status.Uid != 0 || status.Mode&0o022 != 0 && !(status.Uid == 0 && status.Mode&unix.S_ISVTX != 0) {
 		_ = unix.Close(fd)
-		return -1, fmt.Errorf("untrusted head state ancestor")
+		return -1, Refusal("snv.unsafe_state", nil)
 	}
 	if private {
 		if err := privateDirectory(fd, true); err != nil {
@@ -168,7 +171,7 @@ func (s Store) readDirectory(operation func([]byte) error) error {
 			return readErr
 		}
 		if data != nil {
-			return fmt.Errorf("SNV retained state lacks its stable lock")
+			return Refusal("snv.recovery_required", nil)
 		}
 		return operation(nil)
 	}
@@ -180,6 +183,9 @@ func (s Store) readDirectory(operation func([]byte) error) error {
 		return err
 	}
 	if err := unix.Flock(lockfd, unix.LOCK_SH|unix.LOCK_NB); err != nil {
+		if errors.Is(err, unix.EWOULDBLOCK) {
+			return Refusal("snv.state_busy", err)
+		}
 		return fmt.Errorf("SNV observation is busy or cannot be locked: %w", err)
 	}
 	defer unix.Flock(lockfd, unix.LOCK_UN)
@@ -195,7 +201,7 @@ func privateDirectory(fd int, strict bool) error {
 		return err
 	}
 	if st.Mode&unix.S_IFMT != unix.S_IFDIR || st.Uid != uint32(os.Geteuid()) || st.Mode&0o022 != 0 || strict && st.Mode&0o077 != 0 {
-		return fmt.Errorf("head directory must be owned and private")
+		return Refusal("snv.unsafe_state", nil)
 	}
 	return nil
 }
@@ -205,7 +211,7 @@ func privateFile(fd int) error {
 		return err
 	}
 	if st.Mode&unix.S_IFMT != unix.S_IFREG || st.Uid != uint32(os.Geteuid()) || st.Mode&0o077 != 0 || st.Nlink != 1 {
-		return fmt.Errorf("head state file must be private, owned, regular and singly linked")
+		return Refusal("snv.unsafe_state", nil)
 	}
 	return nil
 }
@@ -227,14 +233,20 @@ func readState(directory int) ([]byte, error) {
 		return nil, err
 	}
 	if len(data) > maxStoreBytes {
-		return nil, fmt.Errorf("head store exceeds bound")
+		return nil, Refusal("snv.capacity_exceeded", nil)
 	}
 	return data, nil
 }
 func writeState(directory int, data []byte) error {
 	return writeStateGuarded(directory, data, nil)
 }
-func writeStateGuarded(directory int, data []byte, beforePublication func() error) error {
+func writeStateGuarded(directory int, data []byte, beforePublication func() error) (result error) {
+	defer func() {
+		var known *BoundaryError
+		if !errors.As(result, &known) && errors.Is(result, unix.ENOSPC) {
+			result = Refusal("snv.capacity_exceeded", result)
+		}
+	}()
 	// Validate an existing destination before replacing it: no symlink or hard
 	// link should be silently repaired and thereby hide an unsafe state path.
 	if _, err := readState(directory); err != nil {
@@ -269,7 +281,7 @@ func writeStateGuarded(directory int, data []byte, beforePublication func() erro
 	if beforePublication != nil {
 		barrier("snv.before_guard")
 		if err := beforePublication(); err != nil {
-			return fmt.Errorf("head publication authority no longer valid; retained intent is recoverable: %w", err)
+			return Refusal("snv.recovery_required", err)
 		}
 	}
 	if beforePublication != nil {
@@ -282,7 +294,7 @@ func writeStateGuarded(directory int, data []byte, beforePublication func() erro
 		barrier("snv.after_rename")
 	}
 	if err := unix.Fsync(directory); err != nil {
-		return fmt.Errorf("head commit durability uncertain; inspect/recover exact operation: %w", err)
+		return Refusal("snv.recovery_required", err)
 	}
 	return nil
 }
@@ -301,7 +313,7 @@ func cleanupOwnedTemps(directory int) error {
 		return err
 	}
 	if len(names) > 513 {
-		return fmt.Errorf("SNV journal directory capacity exceeded")
+		return Refusal("snv.capacity_exceeded", nil)
 	}
 	changed := false
 	for _, name := range names {

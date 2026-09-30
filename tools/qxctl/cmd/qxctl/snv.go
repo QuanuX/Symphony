@@ -22,12 +22,14 @@ const snvEvidenceResultProtocol = "symphony.qxctl.snv-evidence-result.v1"
 const snvProposalProtocol = "symphony.qxctl.snv-state-proposal.v1"
 
 type snvOptions struct {
-	prefix, version, input, owner, operation, stateRoot, topsID, viewID, operationID, mode, baseline string
-	offset, limit                                                                                    int64
+	prefix, version, input, owner, operation, stateRoot, topsID, viewID, operationID, mode, baseline, expectedHead string
+	offset, limit, authorizationOffset, authorizationLimit                                                         int64
+	expectedJournal                                                                                                string
 }
 type snvLeafSpec struct{ path, owner, native, inputProtocol, outputProtocol, interaction string }
 
 var snvLeaves = []snvLeafSpec{
+	{"observe", "local-observer", "observe", "symphony.snv.local-observe-input.v1", "symphony.snv.local-observe.v1", "inspect"},
 	{"identity.validate", "sniv", "identity_validate", "symphony.sniv.identity-validate-input.v1", "symphony.sniv.identity-validate.v1", "validate"},
 	{"resources.validate", "snrv", "resources_validate", "symphony.snrv.resources-validate-input.v1", "symphony.snrv.resources-validate.v1", "validate"},
 	{"clusters.validate", "sciv", "sciv_validate", "symphony.snv.sciv.evidence.v1", "symphony.snv.sciv.result.v1", "validate"},
@@ -64,7 +66,7 @@ func newSNVCommand() *cobra.Command {
 	return root
 }
 func newSNVLeaf(name string, spec snvLeafSpec) *cobra.Command {
-	o := snvOptions{owner: spec.owner, mode: "projection", limit: 128}
+	o := snvOptions{owner: spec.owner, mode: "projection", limit: 128, authorizationLimit: 16}
 	c := &cobra.Command{Use: name, Short: "Operate exact independently installed SNV evidence", Args: usageOnlyArgs, RunE: func(*cobra.Command, []string) error {
 		if e := runSNV(spec, o); e != nil {
 			return snvSafeError(e)
@@ -77,15 +79,15 @@ func newSNVLeaf(name string, spec snvLeafSpec) *cobra.Command {
 	_ = c.MarkFlagRequired("prefix")
 	_ = c.MarkFlagRequired("version")
 	if spec.path == "schema" || spec.path == "template" {
-		c.Flags().StringVar(&o.owner, "owner", "", "exact owner: sniv, snrv, sciv, scnv, snv")
+		c.Flags().StringVar(&o.owner, "owner", "", "exact owner: sniv, snrv, sciv, scnv, snv, local-observer")
 		c.Flags().StringVar(&o.operation, "operation", "", "exact advertised native operation")
 		_ = c.MarkFlagRequired("owner")
 		_ = c.MarkFlagRequired("operation")
 	} else {
-		if spec.path == "inspect" || spec.path == "state.apply" || spec.path == "state.plan" || spec.path == "evidence.prepare" || strings.HasSuffix(spec.path, ".validate") || spec.path == "names.resolve" {
+		if spec.path == "inspect" || spec.path == "state.apply" || spec.path == "state.plan" || spec.path == "evidence.prepare" || strings.HasSuffix(spec.path, ".validate") || spec.path == "names.resolve" || spec.path == "observe" {
 			c.Flags().StringVar(&o.input, "input", "", "bounded no-follow public JSON input")
 		}
-		if spec.path == "state.plan" || spec.path == "evidence.prepare" || strings.HasSuffix(spec.path, ".validate") || spec.path == "names.resolve" {
+		if spec.path == "state.plan" || spec.path == "evidence.prepare" || strings.HasSuffix(spec.path, ".validate") || spec.path == "names.resolve" || spec.path == "observe" {
 			_ = c.MarkFlagRequired("input")
 		}
 		if strings.HasPrefix(spec.path, "state.") || strings.HasPrefix(spec.path, "evidence.") || spec.path == "inspect" {
@@ -108,9 +110,15 @@ func newSNVLeaf(name string, spec snvLeafSpec) *cobra.Command {
 				_ = c.MarkFlagRequired("operation-id")
 			}
 		}
+		if spec.path == "state.status" {
+			c.Flags().Int64Var(&o.authorizationOffset, "authorization-offset", 0, "prior authorization history offset for an exact attempt")
+			c.Flags().Int64Var(&o.authorizationLimit, "authorization-limit", 16, "prior authorization page limit,1..128")
+			c.Flags().StringVar(&o.expectedJournal, "expected-journal-digest", "", "exact captured journal digest; required for later authorization pages")
+		}
 		if spec.path == "inspect" {
 			c.Flags().StringVar(&o.mode, "mode", "projection", "named-view projection, replay, diff, history, export_manifest or export_chunk")
 			c.Flags().StringVar(&o.baseline, "baseline-input", "", "explicit baseline bundle for named-view diff")
+			c.Flags().StringVar(&o.expectedHead, "expected-head-digest", "", "exact captured head digest; required for named-view export chunks and later history pages")
 			c.Flags().Int64Var(&o.offset, "offset", 0, "snapshot-bound history offset or export chunk index")
 			c.Flags().Int64Var(&o.limit, "limit", 128, "bounded page limit")
 		}
@@ -118,10 +126,21 @@ func newSNVLeaf(name string, spec snvLeafSpec) *cobra.Command {
 	c.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
 	s := commandSpec("snv."+spec.path, featureSNVAdministration, spec.interaction)
 	if spec.owner != "" {
-		s.FeatureBindings = append(s.FeatureBindings, commandregistry.FeatureBinding{FeatureID: "ssfv:symphony:" + spec.owner + "-engine", Interaction: spec.interaction})
+		feature := "ssfv:symphony:" + spec.owner + "-engine"
+		if spec.owner == "local-observer" {
+			feature = "ssfv:symphony:snv-local-observer"
+		}
+		s.FeatureBindings = append(s.FeatureBindings, commandregistry.FeatureBinding{FeatureID: feature, Interaction: spec.interaction})
 	}
 	if spec.native != "" {
-		s.BackendOperationIDs = []string{"engop:symphony:" + spec.owner + "." + strings.ReplaceAll(spec.native, "_", "-")}
+		backendOwner := spec.owner
+		if spec.owner == "local-observer" {
+			backendOwner = "snv-local-observer"
+		}
+		s.BackendOperationIDs = []string{"engop:symphony:" + backendOwner + "." + strings.ReplaceAll(spec.native, "_", "-")}
+	}
+	if spec.path == "schema" || spec.path == "template" {
+		s.FeatureBindings = append(s.FeatureBindings, commandregistry.FeatureBinding{FeatureID: "ssfv:symphony:snv-local-observer", Interaction: "discover"})
 	}
 	if spec.path == "clusters.validate" {
 		s.BackendOperationIDs = append(s.BackendOperationIDs, "engop:symphony:sciv.sciv-transition")
@@ -170,6 +189,21 @@ func newSNVLeaf(name string, spec snvLeafSpec) *cobra.Command {
 func snvSafeError(e error) error {
 	if errors.Is(e, errUsageOnly) {
 		return errUsageOnly
+	}
+	var boundary *snvstate.BoundaryError
+	if errors.As(e, &boundary) && safeSCVEngineCode(boundary.Code) != nil {
+		// A publication guard retains its specific typed cause when known.
+		if boundary.Code == "snv.recovery_required" && boundary.Cause != nil {
+			var process *knowledgeengine.ProcessError
+			if errors.As(boundary.Cause, &process) && safeSCVEngineCode(process.Code) != nil {
+				return &knowledgeengine.ProcessError{Code: process.Code, Message: "SNV operation refused; inspect exact retained attempt"}
+			}
+			var inner *snvstate.BoundaryError
+			if errors.As(boundary.Cause, &inner) && safeSCVEngineCode(inner.Code) != nil {
+				return &knowledgeengine.ProcessError{Code: inner.Code, Message: "SNV operation refused; inspect exact retained attempt"}
+			}
+		}
+		return &knowledgeengine.ProcessError{Code: boundary.Code, Message: "SNV operation refused; inspect exact retained attempt"}
 	}
 	var pe *knowledgeengine.ProcessError
 	if errors.As(e, &pe) && safeSCVEngineCode(pe.Code) != nil {
@@ -245,7 +279,7 @@ func snvBundle(root, digest string) (json.RawMessage, error) {
 		var ok bool
 		raw, ok = tx.Bundle(digest)
 		if !ok {
-			return fmt.Errorf("SNV candidate is not durably retained")
+			return snvstate.Refusal("snv.evidence_missing", nil)
 		}
 		return nil
 	})
@@ -271,22 +305,55 @@ func snvProveBundle(o snvOptions, input json.RawMessage) error {
 		return e
 	}
 	if !snvSame(retained, m["bundle"]) {
-		return fmt.Errorf("SNV retained candidate differs")
+		return snvstate.Refusal("snv.candidate_drift", nil)
 	}
 	return nil
 }
-func snvAttemptSummary(a snvstate.Attempt) map[string]any {
-	return map[string]any{"kind": a.Kind, "operation_id": a.OperationID, "intent_digest": a.IntentDigest, "status": a.Status, "installation": a.Installation, "correlation_id": a.CorrelationID, "authorization": a.Authorization, "prior_authorizations": a.PriorAuthorizations}
+
+type snvAuthorizationPage struct {
+	offset, limit   int64
+	expectedJournal string
 }
-func snvStoreResult(op string, tx *snvstate.Transaction, id string, owner json.RawMessage) (json.RawMessage, error) {
+
+func snvAttemptSummary(a snvstate.Attempt, page snvAuthorizationPage) (map[string]any, error) {
+	count := int64(len(a.PriorAuthorizations))
+	if page.offset < 0 || page.offset > count || page.limit < 1 || page.limit > 128 {
+		return nil, snvstate.Refusal("snv.invalid_input", nil)
+	}
+	end := page.offset + page.limit
+	if end > count {
+		end = count
+	}
+	history := append([]json.RawMessage{}, a.PriorAuthorizations[page.offset:end]...)
+	var next any
+	if end < count {
+		next = end
+	}
+	return map[string]any{"kind": a.Kind, "operation_id": a.OperationID, "intent_digest": a.IntentDigest, "status": a.Status, "installation": a.Installation, "correlation_id": a.CorrelationID, "authorization": a.Authorization, "prior_authorizations": history, "prior_authorization_count": count, "prior_authorization_offset": page.offset, "prior_authorization_limit": page.limit, "next_prior_authorization_offset": next}, nil
+}
+func snvStoreResult(op string, tx *snvstate.Transaction, id string, owner json.RawMessage, options ...snvAuthorizationPage) (json.RawMessage, error) {
 	doc := tx.Snapshot()
+	page := snvAuthorizationPage{limit: 16}
+	if len(options) > 0 {
+		page = options[0]
+	}
+	if page.offset > 0 && page.expectedJournal == "" {
+		return nil, errUsageOnly
+	}
+	if page.expectedJournal != "" && page.expectedJournal != doc.Digest {
+		return nil, &knowledgeengine.ProcessError{Code: "snv.snapshot_conflict", Message: "SNV history snapshot differs"}
+	}
 	var attempt any
 	if id != "" {
 		a, ok := tx.Attempt(id)
 		if !ok {
-			return nil, fmt.Errorf("unknown retained SNV operation")
+			return nil, snvstate.Refusal("snv.evidence_missing", nil)
 		}
-		attempt = snvAttemptSummary(a)
+		summary, e := snvAttemptSummary(a, page)
+		if e != nil {
+			return nil, e
+		}
+		attempt = summary
 	}
 	hashes := []string{}
 	for hash := range doc.Bundles {
@@ -297,7 +364,25 @@ func snvStoreResult(op string, tx *snvstate.Transaction, id string, owner json.R
 	if doc.Kind == "evidence" {
 		resultProtocol = snvEvidenceResultProtocol
 	}
-	return snvSeal(map[string]any{"protocol": resultProtocol, "operation": op, "tops_id": doc.TOPSID, "view_id": doc.ViewID, "state_digest": doc.StateDigest, "head": doc.Head, "attempt": attempt, "operation_count": len(doc.Operations), "bundle_digests": hashes, "owner_result": owner, "authorization_audit": "ssiag_policy_decision_only", "head_write_stav_receipt": nil, "canonical_apply_enabled": false})
+	var journal any
+	if doc.Digest != "" {
+		journal = doc.Digest
+	}
+	return snvSeal(map[string]any{"protocol": resultProtocol, "operation": op, "tops_id": doc.TOPSID, "view_id": doc.ViewID, "state_digest": doc.StateDigest, "journal_digest": journal, "head": doc.Head, "attempt": attempt, "operation_count": len(doc.Operations), "bundle_digests": hashes, "owner_result": owner, "authorization_audit": "ssiag_policy_decision_only", "head_write_stav_receipt": nil, "canonical_apply_enabled": false})
+}
+
+// Bound the complete emitted wrapper before writing any success bytes. A write
+// that already committed remains observable through its exact status/retry.
+func snvPrintJSON(value any) error {
+	encoded, e := json.MarshalIndent(value, "", "  ")
+	if e != nil {
+		return e
+	}
+	if len(encoded)+1 > 4*1024*1024 {
+		return snvstate.Refusal("snv.capacity_exceeded", nil)
+	}
+	fmt.Println(string(encoded))
+	return nil
 }
 func runSNV(spec snvLeafSpec, o snvOptions) error {
 	if spec.path == "schema" || spec.path == "template" {
@@ -305,7 +390,7 @@ func runSNV(spec snvLeafSpec, o snvOptions) error {
 		if e != nil {
 			return e
 		}
-		return printIndentedJSON(map[string]any{"protocol": "symphony.qxctl.snv-" + spec.path + ".v1", "owner": o.owner, "operation": o.operation, "installation": inst, spec.path: raw})
+		return snvPrintJSON(map[string]any{"protocol": "symphony.qxctl.snv-" + spec.path + ".v1", "owner": o.owner, "operation": o.operation, "installation": inst, spec.path: raw})
 	}
 	inst, e := knowledgeengine.InspectSNV(o.prefix, o.version, o.owner)
 	if e != nil {
@@ -338,11 +423,23 @@ func runSNV(spec snvLeafSpec, o snvOptions) error {
 	if e != nil {
 		return e
 	}
-	return printIndentedJSON(r)
+	return snvPrintJSON(r)
+}
+
+// Continuation reads bind the captured immutable head rather than reusing an
+// offset against whatever view happens to be selected on the next invocation.
+func snvInspectHeadBinding(o snvOptions, head map[string]any) error {
+	if (o.mode == "export_chunk" || (o.mode == "history" && o.offset > 0)) && o.expectedHead == "" {
+		return errUsageOnly
+	}
+	if o.expectedHead != "" && head["digest"] != o.expectedHead {
+		return &knowledgeengine.ProcessError{Code: "snv.snapshot_conflict", Message: "SNV captured head differs from expected revision"}
+	}
+	return nil
 }
 func runSNVInspect(o snvOptions) error {
 	if o.input != "" {
-		if o.topsID != "" || o.viewID != "" || o.stateRoot != "" {
+		if o.topsID != "" || o.viewID != "" || o.stateRoot != "" || o.expectedHead != "" {
 			return errUsageOnly
 		}
 		raw, e := knowledgeengine.ReadPayload(o.input)
@@ -353,7 +450,7 @@ func runSNVInspect(o snvOptions) error {
 		if e != nil {
 			return e
 		}
-		return printIndentedJSON(r)
+		return snvPrintJSON(r)
 	}
 	store, e := snvstate.NewView(o.stateRoot, o.topsID, o.viewID)
 	if e != nil {
@@ -365,12 +462,18 @@ func runSNVInspect(o snvOptions) error {
 		return e
 	}
 	h, e := snvObject(head)
-	if e != nil || h["tombstone"] == true {
-		return fmt.Errorf("SNV view is absent or unselected")
+	if e != nil {
+		return snvstate.Refusal("snv.recovery_required", e)
+	}
+	if h["tombstone"] == true {
+		return snvstate.Refusal("snv.evidence_missing", nil)
+	}
+	if e := snvInspectHeadBinding(o, h); e != nil {
+		return e
 	}
 	hash, ok := h["bundle_digest"].(string)
 	if !ok {
-		return fmt.Errorf("SNV head has no bundle")
+		return snvstate.Refusal("snv.recovery_required", nil)
 	}
 	bundle, e := snvBundle(o.stateRoot, hash)
 	if e != nil {
@@ -391,7 +494,7 @@ func runSNVInspect(o snvOptions) error {
 	if e != nil {
 		return e
 	}
-	return printIndentedJSON(output)
+	return snvPrintJSON(output)
 }
 func runSNVEvidence(spec snvLeafSpec, o snvOptions, inst knowledgeengine.Installation) error {
 	store, e := snvstate.NewEvidence(o.stateRoot)
@@ -457,5 +560,5 @@ func runSNVEvidence(spec snvLeafSpec, o snvOptions, inst knowledgeengine.Install
 	if e != nil {
 		return e
 	}
-	return printIndentedJSON(output)
+	return snvPrintJSON(output)
 }

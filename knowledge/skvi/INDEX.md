@@ -21305,3 +21305,432 @@ These entries locate existing implementation and regression surfaces referenced 
 - deferred_projections: publication and separately admitted platform certification
 - notes: Exact completed source resolves through SCLV-CHG-20260930-SNV-BOUNDED-IMPLEMENTATION; local bounded results do not imply publication or another platform.
 - status: canonical
+
+### SNV follow-up modules/snv-local-observer/CMakeLists.txt
+- path: `modules/snv-local-observer/CMakeLists.txt`
+- title: SNV follow-up modules/snv-local-observer/CMakeLists.txt
+- surface_type: owner contract, implementation, derived interface or verification
+- truth_role: exact optional observation or neutral process/package boundary
+- owner: SNV follow-up maintainers
+- scope: Independently installed optional local observation and exact agentic administration.
+- relationships: governed_by -> `modules/snv-local-observer/SPEC.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: exact installed resource and administration discovery
+- notes: Observation, supplied subject association, physical identity, retention and authority remain distinct.
+- status: canonical
+
+### SNV follow-up modules/snv-local-observer/FEATURES.md
+- path: `modules/snv-local-observer/FEATURES.md`
+- title: SNV follow-up modules/snv-local-observer/FEATURES.md
+- surface_type: owner contract, implementation, derived interface or verification
+- truth_role: exact optional observation or neutral process/package boundary
+- owner: SNV follow-up maintainers
+- scope: Independently installed optional local observation and exact agentic administration.
+- relationships: governed_by -> `modules/snv-local-observer/SPEC.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: exact installed resource and administration discovery
+- notes: Observation, supplied subject association, physical identity, retention and authority remain distinct.
+- status: canonical
+
+### SNV follow-up modules/snv-local-observer/INSTALL.md
+- path: `modules/snv-local-observer/INSTALL.md`
+- title: SNV follow-up modules/snv-local-observer/INSTALL.md
+- surface_type: owner contract, implementation, derived interface or verification
+- truth_role: exact optional observation or neutral process/package boundary
+- owner: SNV follow-up maintainers
+- scope: Independently installed optional local observation and exact agentic administration.
+- relationships: governed_by -> `modules/snv-local-observer/SPEC.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: exact installed resource and administration discovery
+- notes: Observation, supplied subject association, physical identity, retention and authority remain distinct.
+- status: canonical
+
+### SNV follow-up modules/snv-local-observer/INTENT.md
+- path: `modules/snv-local-observer/INTENT.md`
+- title: SNV follow-up modules/snv-local-observer/INTENT.md
+- surface_type: owner contract, implementation, derived interface or verification
+- truth_role: exact optional observation or neutral process/package boundary
+- owner: SNV follow-up maintainers
+- scope: Independently installed optional local observation and exact agentic administration.
+- relationships: governed_by -> `modules/snv-local-observer/SPEC.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: exact installed resource and administration discovery
+- notes: Observation, supplied subject association, physical identity, retention and authority remain distinct.
+- status: canonical
+
+### SNV follow-up modules/snv-local-observer/INTERFACE-GENERATOR.json
+- path: `modules/snv-local-observer/INTERFACE-GENERATOR.json`
+- title: SNV follow-up modules/snv-local-observer/INTERFACE-GENERATOR.json
+- surface_type: owner contract, implementation, derived interface or verification
+- truth_role: exact optional observation or neutral process/package boundary
+- owner: SNV follow-up maintainers
+- scope: Independently installed optional local observation and exact agentic administration.
+- relationships: governed_by -> `modules/snv-local-observer/SPEC.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: exact installed resource and administration discovery
+- notes: Observation, supplied subject association, physical identity, retention and authority remain distinct.
+- status: canonical
+
+### SNV follow-up modules/snv-local-observer/MANIFEST.md
+- path: `modules/snv-local-observer/MANIFEST.md`
+- title: SNV follow-up modules/snv-local-observer/MANIFEST.md
+- surface_type: owner contract, implementation, derived interface or verification
+- truth_role: exact optional observation or neutral process/package boundary
+- owner: SNV follow-up maintainers
+- scope: Independently installed optional local observation and exact agentic administration.
+- relationships: governed_by -> `modules/snv-local-observer/SPEC.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: exact installed resource and administration discovery
+- notes: Observation, supplied subject association, physical identity, retention and authority remain distinct.
+- status: canonical
+
+### SNV follow-up modules/snv-local-observer/OWNER-INTERFACE.json
+- path: `modules/snv-local-observer/OWNER-INTERFACE.json`
+- title: SNV follow-up modules/snv-local-observer/OWNER-INTERFACE.json
+- surface_type: owner contract, implementation, derived interface or verification
+- truth_role: exact optional observation or neutral process/package boundary
+- owner: SNV follow-up maintainers
+- scope: Independently installed optional local observation and exact agentic administration.
+- relationships: governed_by -> `modules/snv-local-observer/SPEC.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: exact installed resource and administration discovery
+- notes: Observation, supplied subject association, physical identity, retention and authority remain distinct.
+- status: canonical
+
+### SNV follow-up modules/snv-local-observer/SKILL.md
+- path: `modules/snv-local-observer/SKILL.md`
+- title: SNV follow-up modules/snv-local-observer/SKILL.md
+- surface_type: owner contract, implementation, derived interface or verification
+- truth_role: exact optional observation or neutral process/package boundary
+- owner: SNV follow-up maintainers
+- scope: Independently installed optional local observation and exact agentic administration.
+- relationships: governed_by -> `modules/snv-local-observer/SPEC.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: exact installed resource and administration discovery
+- notes: Observation, supplied subject association, physical identity, retention and authority remain distinct.
+- status: canonical
+
+### SNV follow-up modules/snv-local-observer/SPEC.md
+- path: `modules/snv-local-observer/SPEC.md`
+- title: SNV follow-up modules/snv-local-observer/SPEC.md
+- surface_type: owner contract, implementation, derived interface or verification
+- truth_role: exact optional observation or neutral process/package boundary
+- owner: SNV follow-up maintainers
+- scope: Independently installed optional local observation and exact agentic administration.
+- relationships: governed_by -> `modules/snv-local-observer/SPEC.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: exact installed resource and administration discovery
+- notes: Observation, supplied subject association, physical identity, retention and authority remain distinct.
+- status: canonical
+
+### SNV follow-up modules/snv-local-observer/include/symphony/snv/local_observer.hpp
+- path: `modules/snv-local-observer/include/symphony/snv/local_observer.hpp`
+- title: SNV follow-up modules/snv-local-observer/include/symphony/snv/local_observer.hpp
+- surface_type: owner contract, implementation, derived interface or verification
+- truth_role: exact optional observation or neutral process/package boundary
+- owner: SNV follow-up maintainers
+- scope: Independently installed optional local observation and exact agentic administration.
+- relationships: governed_by -> `modules/snv-local-observer/SPEC.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: exact installed resource and administration discovery
+- notes: Observation, supplied subject association, physical identity, retention and authority remain distinct.
+- status: canonical
+
+### SNV follow-up modules/snv-local-observer/schemas/v1/admin.schema.json
+- path: `modules/snv-local-observer/schemas/v1/admin.schema.json`
+- title: SNV follow-up modules/snv-local-observer/schemas/v1/admin.schema.json
+- surface_type: owner contract, implementation, derived interface or verification
+- truth_role: exact optional observation or neutral process/package boundary
+- owner: SNV follow-up maintainers
+- scope: Independently installed optional local observation and exact agentic administration.
+- relationships: governed_by -> `modules/snv-local-observer/SPEC.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: exact installed resource and administration discovery
+- notes: Observation, supplied subject association, physical identity, retention and authority remain distinct.
+- status: canonical
+
+### SNV follow-up modules/snv-local-observer/schemas/v1/admin.templates.json
+- path: `modules/snv-local-observer/schemas/v1/admin.templates.json`
+- title: SNV follow-up modules/snv-local-observer/schemas/v1/admin.templates.json
+- surface_type: owner contract, implementation, derived interface or verification
+- truth_role: exact optional observation or neutral process/package boundary
+- owner: SNV follow-up maintainers
+- scope: Independently installed optional local observation and exact agentic administration.
+- relationships: governed_by -> `modules/snv-local-observer/SPEC.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: exact installed resource and administration discovery
+- notes: Observation, supplied subject association, physical identity, retention and authority remain distinct.
+- status: canonical
+
+### SNV follow-up modules/snv-local-observer/src/interface.generated.hpp
+- path: `modules/snv-local-observer/src/interface.generated.hpp`
+- title: SNV follow-up modules/snv-local-observer/src/interface.generated.hpp
+- surface_type: owner contract, implementation, derived interface or verification
+- truth_role: exact optional observation or neutral process/package boundary
+- owner: SNV follow-up maintainers
+- scope: Independently installed optional local observation and exact agentic administration.
+- relationships: governed_by -> `modules/snv-local-observer/SPEC.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: exact installed resource and administration discovery
+- notes: Observation, supplied subject association, physical identity, retention and authority remain distinct.
+- status: canonical
+
+### SNV follow-up modules/snv-local-observer/src/main.cpp
+- path: `modules/snv-local-observer/src/main.cpp`
+- title: SNV follow-up modules/snv-local-observer/src/main.cpp
+- surface_type: owner contract, implementation, derived interface or verification
+- truth_role: exact optional observation or neutral process/package boundary
+- owner: SNV follow-up maintainers
+- scope: Independently installed optional local observation and exact agentic administration.
+- relationships: governed_by -> `modules/snv-local-observer/SPEC.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: exact installed resource and administration discovery
+- notes: Observation, supplied subject association, physical identity, retention and authority remain distinct.
+- status: canonical
+
+### SNV follow-up modules/snv-local-observer/src/observer.cpp
+- path: `modules/snv-local-observer/src/observer.cpp`
+- title: SNV follow-up modules/snv-local-observer/src/observer.cpp
+- surface_type: owner contract, implementation, derived interface or verification
+- truth_role: exact optional observation or neutral process/package boundary
+- owner: SNV follow-up maintainers
+- scope: Independently installed optional local observation and exact agentic administration.
+- relationships: governed_by -> `modules/snv-local-observer/SPEC.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: exact installed resource and administration discovery
+- notes: Observation, supplied subject association, physical identity, retention and authority remain distinct.
+- status: canonical
+
+### SNV follow-up modules/snv-local-observer/tests/fixtures/interface-history.v1.json
+- path: `modules/snv-local-observer/tests/fixtures/interface-history.v1.json`
+- title: SNV follow-up modules/snv-local-observer/tests/fixtures/interface-history.v1.json
+- surface_type: owner contract, implementation, derived interface or verification
+- truth_role: exact optional observation or neutral process/package boundary
+- owner: SNV follow-up maintainers
+- scope: Independently installed optional local observation and exact agentic administration.
+- relationships: governed_by -> `modules/snv-local-observer/SPEC.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: exact installed resource and administration discovery
+- notes: Observation, supplied subject association, physical identity, retention and authority remain distinct.
+- status: canonical
+
+### SNV follow-up modules/snv-local-observer/tests/fixtures/observe.json
+- path: `modules/snv-local-observer/tests/fixtures/observe.json`
+- title: SNV follow-up modules/snv-local-observer/tests/fixtures/observe.json
+- surface_type: owner contract, implementation, derived interface or verification
+- truth_role: exact optional observation or neutral process/package boundary
+- owner: SNV follow-up maintainers
+- scope: Independently installed optional local observation and exact agentic administration.
+- relationships: governed_by -> `modules/snv-local-observer/SPEC.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: exact installed resource and administration discovery
+- notes: Observation, supplied subject association, physical identity, retention and authority remain distinct.
+- status: canonical
+
+### SNV follow-up modules/snv-local-observer/tests/observer_test.cpp
+- path: `modules/snv-local-observer/tests/observer_test.cpp`
+- title: SNV follow-up modules/snv-local-observer/tests/observer_test.cpp
+- surface_type: owner contract, implementation, derived interface or verification
+- truth_role: exact optional observation or neutral process/package boundary
+- owner: SNV follow-up maintainers
+- scope: Independently installed optional local observation and exact agentic administration.
+- relationships: governed_by -> `modules/snv-local-observer/SPEC.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: exact installed resource and administration discovery
+- notes: Observation, supplied subject association, physical identity, retention and authority remain distinct.
+- status: canonical
+
+### SNV follow-up libraries/snv-common-cpp/tests/common_test.cpp
+- path: `libraries/snv-common-cpp/tests/common_test.cpp`
+- title: SNV follow-up libraries/snv-common-cpp/tests/common_test.cpp
+- surface_type: native process regression
+- truth_role: Admitted request/correlation preservation for safe standard and nonstandard failure envelopes.
+- owner: SNV common mechanics maintainers
+- scope: Admitted request/correlation preservation for safe standard and nonstandard failure envelopes.
+- relationships: governed_by -> `libraries/snv-common-cpp/SPEC.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: exact installed resource and administration discovery
+- notes: Unexpected handler exceptions retain exact admitted routing and suppress private exception text.
+- status: canonical
+
+### SNV follow-up libraries/snv-common-cpp/tests/sdk_receipt_admission.cpp
+- path: `libraries/snv-common-cpp/tests/sdk_receipt_admission.cpp`
+- title: SNV follow-up libraries/snv-common-cpp/tests/sdk_receipt_admission.cpp
+- surface_type: native installed SDK regression
+- truth_role: Exact receipt ownership of configured archives, public headers and CMake exports.
+- owner: SNV package mechanics maintainers
+- scope: Exact receipt ownership of configured archives, public headers and CMake exports.
+- relationships: governed_by -> `libraries/snv-common-cpp/SPEC.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: exact installed resource and administration discovery
+- notes: Four private CMake admission cases preserve the supplied installed prefix; receipt digests do not authenticate publishers.
+- status: canonical
+
+### SNV follow-up cmake/SnvObserverInterface.generated.cmake
+- path: `cmake/SnvObserverInterface.generated.cmake`
+- title: SNV follow-up cmake/SnvObserverInterface.generated.cmake
+- surface_type: derived native owner resource inventory
+- truth_role: Mechanical exact observer declaration and resource digest encoding.
+- owner: SNV local observer owner
+- scope: Mechanical exact observer declaration and resource digest encoding.
+- relationships: governed_by -> `modules/snv-local-observer/SPEC.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: exact installed resource and administration discovery
+- notes: Generated resource identity is derived from the owner declaration and does not prove observation semantics.
+- status: canonical
+
+### SNV follow-up tools/qxctl/internal/knowledgeengine/snv_observer_interface_generated.go
+- path: `tools/qxctl/internal/knowledgeengine/snv_observer_interface_generated.go`
+- title: SNV follow-up tools/qxctl/internal/knowledgeengine/snv_observer_interface_generated.go
+- surface_type: owner contract, implementation, derived interface or verification
+- truth_role: exact optional observation or neutral process/package boundary
+- owner: SNV follow-up maintainers
+- scope: Independently installed optional local observation and exact agentic administration.
+- relationships: governed_by -> `tools/qxctl/MANIFEST.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: exact installed resource and administration discovery
+- notes: Observation, supplied subject association, physical identity, retention and authority remain distinct.
+- status: canonical
+
+### SNV follow-up tools/qxctl/internal/knowledgeengine/snv_wrapper_schema_test.go
+- path: `tools/qxctl/internal/knowledgeengine/snv_wrapper_schema_test.go`
+- title: SNV follow-up tools/qxctl/internal/knowledgeengine/snv_wrapper_schema_test.go
+- surface_type: owner contract, implementation, derived interface or verification
+- truth_role: exact optional observation or neutral process/package boundary
+- owner: SNV follow-up maintainers
+- scope: Independently installed optional local observation and exact agentic administration.
+- relationships: governed_by -> `tools/qxctl/MANIFEST.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: exact installed resource and administration discovery
+- notes: Observation, supplied subject association, physical identity, retention and authority remain distinct.
+- status: canonical
+
+### SNV follow-up tools/qxctl/cmd/qxctl/snv_followup_test.go
+- path: `tools/qxctl/cmd/qxctl/snv_followup_test.go`
+- title: SNV follow-up tools/qxctl/cmd/qxctl/snv_followup_test.go
+- surface_type: owner contract, implementation, derived interface or verification
+- truth_role: exact optional observation or neutral process/package boundary
+- owner: SNV follow-up maintainers
+- scope: Independently installed optional local observation and exact agentic administration.
+- relationships: governed_by -> `tools/qxctl/MANIFEST.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: exact installed resource and administration discovery
+- notes: Observation, supplied subject association, physical identity, retention and authority remain distinct.
+- status: canonical
+
+### SNV observer boundary modules/snv-local-observer/tests/process.cpp
+- path: `modules/snv-local-observer/tests/process.cpp`
+- title: SNV observer boundary modules/snv-local-observer/tests/process.cpp
+- surface_type: installed native collector regression
+- truth_role: Exact module receipt, finite descriptor, response correspondence and safe refusal checks.
+- owner: SNV local observer owner
+- scope: Exact module receipt, finite descriptor, response correspondence and safe refusal checks.
+- relationships: governed_by -> `modules/snv-local-observer/SPEC.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: invariant and installed process assurance
+- notes: This explicit installed-process check does not admit the neutral collector as a semantic vector engine.
+- status: canonical
+
+### SNV observer boundary modules/snv-local-observer/tests/fixtures/portable-unavailable-result.v1.json
+- path: `modules/snv-local-observer/tests/fixtures/portable-unavailable-result.v1.json`
+- title: SNV observer boundary modules/snv-local-observer/tests/fixtures/portable-unavailable-result.v1.json
+- surface_type: independent owner or consumer regression evidence
+- truth_role: exact observed optional collector process/response boundary
+- owner: SNV follow-up maintainers
+- scope: Optional observation with module receipt identity and independent consumer admission.
+- relationships: governed_by -> `modules/snv-local-observer/SPEC.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: invariant and installed process assurance
+- notes: Synthetic or unsupported-platform examples do not certify Linux execution.
+- status: canonical
+
+### SNV observer boundary tools/qxctl/internal/knowledgeengine/snv_observer_shape_test.go
+- path: `tools/qxctl/internal/knowledgeengine/snv_observer_shape_test.go`
+- title: SNV observer boundary tools/qxctl/internal/knowledgeengine/snv_observer_shape_test.go
+- surface_type: independent owner or consumer regression evidence
+- truth_role: exact observed optional collector process/response boundary
+- owner: SNV follow-up maintainers
+- scope: Optional observation with module receipt identity and independent consumer admission.
+- relationships: governed_by -> `tools/qxctl/MANIFEST.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: invariant and installed process assurance
+- notes: Synthetic or unsupported-platform examples do not certify Linux execution.
+- status: canonical
+
+### SNV follow-up correspondence modules/snv-engine/tests/fixtures/native-result-contract-cases.v1.json
+- path: `modules/snv-engine/tests/fixtures/native-result-contract-cases.v1.json`
+- title: SNV follow-up correspondence modules/snv-engine/tests/fixtures/native-result-contract-cases.v1.json
+- surface_type: owner or independent consumer contract verification
+- truth_role: closed result correspondence or safe administration errors
+- owner: SNV follow-up maintainers
+- scope: Supplied-evidence and optional observation administration boundaries.
+- relationships: governed_by -> `modules/snv-engine/SPEC.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: result and error boundary assurance
+- notes: Fixtures and tests are source verification evidence, not runtime acceptance receipts.
+- status: canonical
+
+### SNV follow-up correspondence tools/qxctl/internal/knowledgeengine/snv_result_shape_test.go
+- path: `tools/qxctl/internal/knowledgeengine/snv_result_shape_test.go`
+- title: SNV follow-up correspondence tools/qxctl/internal/knowledgeengine/snv_result_shape_test.go
+- surface_type: owner or independent consumer contract verification
+- truth_role: closed result correspondence or safe administration errors
+- owner: SNV follow-up maintainers
+- scope: Supplied-evidence and optional observation administration boundaries.
+- relationships: governed_by -> `tools/qxctl/MANIFEST.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: result and error boundary assurance
+- notes: Fixtures and tests are source verification evidence, not runtime acceptance receipts.
+- status: canonical
+
+### SNV follow-up correspondence tools/qxctl/internal/snvstate/errors.go
+- path: `tools/qxctl/internal/snvstate/errors.go`
+- title: SNV follow-up correspondence tools/qxctl/internal/snvstate/errors.go
+- surface_type: owner or independent consumer contract verification
+- truth_role: closed result correspondence or safe administration errors
+- owner: SNV follow-up maintainers
+- scope: Supplied-evidence and optional observation administration boundaries.
+- relationships: governed_by -> `tools/qxctl/MANIFEST.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: result and error boundary assurance
+- notes: Fixtures and tests are source verification evidence, not runtime acceptance receipts.
+- status: canonical
+
+### SNV follow-up correspondence tools/qxctl/internal/snvstate/errors_test.go
+- path: `tools/qxctl/internal/snvstate/errors_test.go`
+- title: SNV follow-up correspondence tools/qxctl/internal/snvstate/errors_test.go
+- surface_type: owner or independent consumer contract verification
+- truth_role: closed result correspondence or safe administration errors
+- owner: SNV follow-up maintainers
+- scope: Supplied-evidence and optional observation administration boundaries.
+- relationships: governed_by -> `tools/qxctl/MANIFEST.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: result and error boundary assurance
+- notes: Fixtures and tests are source verification evidence, not runtime acceptance receipts.
+- status: canonical
+
+### Native authoring local schema resource regression
+- path: `tools/authoring-cpp/local_refs_test.cpp`
+- title: Native authoring local schema resource regression
+- surface_type: reusable native authoring verification
+- truth_role: mechanical local fragment and embedded resource-root checks
+- owner: SHV interface authoring maintainers
+- scope: Registration-driven schema reference verification shared by explicit native owners.
+- relationships: governed_by -> `tools/shv-interface-codegen/SPEC.md`
+- consumers: native authoring frontends, implementers, reviewers, tests
+- deferred_projections: generation conformance evidence
+- notes: Authoring helpers do not allocate semantic capabilities or become installed runtime authorities.
+- status: canonical
+
+### Independently installed optional observer consumer regression
+- path: `tools/qxctl/internal/knowledgeengine/snv_observer_installed_test.go`
+- title: Independently installed optional observer consumer regression
+- surface_type: installed native consumer verification
+- truth_role: exact collector release/resource admission and native acquisition correspondence
+- owner: qxctl SNV installed consumer maintainers
+- scope: Selects the optional observer's independent prefix without requiring it in the five semantic engine fixture.
+- relationships: governed_by -> `tools/qxctl/MANIFEST.md`
+- consumers: qxctl implementers, native collector maintainers, reviewers, tests
+- deferred_projections: installed collector compatibility evidence
+- notes: Floating releases reject; real collector output remains bounded observation with no physical inventory or allocation proof.
+- status: canonical

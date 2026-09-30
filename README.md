@@ -110,6 +110,7 @@ Seven delivery sprints remain. Their detailed sequence and contents will be pres
 - [Symphony Accordare Vector Engine](modules/sav-engine/) is a freezing-path C++26 engine for deterministic Accord reference resolution, immutable derived CURRENT snapshots, three-axis evaluation, comparison, explanation, graphs, Named Version validation/diff, Extension Capsule checks, Installation Blueprint planning, and compatibility negotiation. It produces evidence and proposals, not canonical mutations.
 - [Symphony Evolution Vector Engine](modules/sev-engine/) is a freezing-path C++26 engine for deterministic evolution cases, impact/disposition planning, dependency-ready-set recalculation, transition verification, recovery advice, SCSEV assessment, novelty/watch checks, trigger coalescing, lifecycle-session binding, and graph projection. It neither watches a host nor applies a transition.
 - [SCV source-knowledge engines](knowledge/scv/SOURCE-KNOWLEDGE.md) provide eight independently packaged C++26 SCV, hyperscaler, edge and provider domains. They preserve explicit source revisions and bounded captures, retain qualified claims and native document structure, and produce reproducible graph/query evidence. qxctl separately administers audited local source changes and coherent graph selection; provider operations and complete cloud catalogs remain outside this increment.
+- [SNV engines](knowledge/snv/VALIDATION.md) provide five independently installable C++26 identity, resource, cluster, naming and composition engines with exact public SDKs. Sixteen qxctl leaves administer supplied evidence, protected selected views and the separate optional [local observer](modules/snv-local-observer/). The collector reports selected CPU/memory observations and explicit uncertainty; it allocates no identity, membership, names or selected state.
 - [`knowledge/`](knowledge/) contains the current canonical SKV corpus: vector Contract Quads, schemas, registries, profiles, ledgers, companion surfaces, and the emerging Phase 2–8 architecture. Implementations remain subordinate to their semantic owners.
 
 `hotpath-runtime` remains a proposal-only contract seed awaiting its own architectural review. It has no executable implementation or installation-readiness claim.
@@ -127,9 +128,9 @@ The emerging SOV remote-operation and deployment contracts do not make provider 
 
 This bounded summary is derived from canonical SSFV coverage and routing, the feature-administration profile, the qxctl command registry, and completed SODV publication records. Edit its source contracts, then regenerate; do not hand-edit the values below.
 
-- SSFV catalog state: `partial`; registered features: **138**; registered owner scopes: **61**; ratified nested features: **78**.
-- Feature-administration expectations: **370** reviewed surfaces; **360** required, **27** evidence-backed exemptions, **9** prohibitions, **0** unreviewed.
-- qxctl stable command identities: **398**.
+- SSFV catalog state: `partial`; registered features: **139**; registered owner scopes: **62**; ratified nested features: **78**.
+- Feature-administration expectations: **373** reviewed surfaces; **362** required, **28** evidence-backed exemptions, **9** prohibitions, **0** unreviewed.
+- qxctl stable command identities: **399**.
 - Registered owner capabilities:
   - `ssfv:symphony:accordare-stav-producer`
   - `ssfv:symphony:knowledge-session-coordinator`
@@ -168,6 +169,7 @@ This bounded summary is derived from canonical SSFV coverage and routing, the fe
   - `ssfv:symphony:snrv-engine`
   - `ssfv:symphony:snv-common-cpp`
   - `ssfv:symphony:snv-engine`
+  - `ssfv:symphony:snv-local-observer`
   - `ssfv:symphony:sodv-engine`
   - `ssfv:symphony:sqav-attempt-engine`
   - `ssfv:symphony:sqav-capture-cpp`
@@ -196,7 +198,7 @@ This bounded summary is derived from canonical SSFV coverage and routing, the fe
   - `github.com/QuanuX/Symphony/libraries/stav-protocol-go` `v0.2.0` (tag `libraries/stav-protocol-go/v0.2.0`, source `55f8faf26f4f85213ac23cc1de7ba897b2129a4c`)
   - `github.com/QuanuX/Symphony/modules/stav-append-authority` `v0.1.0` (tag `modules/stav-append-authority/v0.1.0`, source `55f8faf26f4f85213ac23cc1de7ba897b2129a4c`)
   - `github.com/QuanuX/Symphony/modules/stav-append-authority` `v0.2.0` (tag `modules/stav-append-authority/v0.2.0`, source `ed7484d70607aa96e64916dd4e59d3972a61980b`)
-- Snapshot digest: `sha256:4548e67e66b03aea7606bfb5f5181602c3215897a107916a2a3dd95db413864a`
+- Snapshot digest: `sha256:b8e12ca90abd89b4bfad892f9c367a6a3ba2bbb31464f01114197ab242f18940`
 <!-- symphony:root-summary:v1:end -->
 
 ## Releases and Documentation

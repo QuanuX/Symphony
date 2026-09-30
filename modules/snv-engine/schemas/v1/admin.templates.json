@@ -79,6 +79,40 @@
     "snv.state.recover": {
       "operation_id_from": "retained apply attempt",
       "notice": "Recover requires fresh authority for an uncommitted exact attempt; status is observational."
+    },
+    "snv.state.status": {
+      "notice": "Prior authorization history is a bounded page of retained policy decisions, not a head-write event receipt. Retained journal history is never pruned by inspection.",
+      "first_page": {
+        "command": "qxctl snv state status",
+        "required_flags": [
+          "--prefix EXACT_PREFIX",
+          "--version 0.1.0-dev",
+          "--state-root EXPLICIT_ABSOLUTE_ROOT",
+          "--tops-id EXPLICIT_TOPS_UUID",
+          "--view-id EXPLICIT_VIEW",
+          "--operation-id EXACT_OPERATION",
+          "--authorization-offset 0",
+          "--authorization-limit 16",
+          "--json"
+        ]
+      },
+      "continuation": {
+        "command": "qxctl snv state status",
+        "flags": [
+          "--authorization-offset NEXT_PRIOR_AUTHORIZATION_OFFSET",
+          "--authorization-limit 16",
+          "--expected-journal-digest JOURNAL_DIGEST_FROM_FIRST_PAGE"
+        ],
+        "notice": "Use the same prefix/version/root/TOPS/view/operation. Later pages require the exact journal digest; a changed snapshot rejects."
+      },
+      "result_fields": [
+        "journal_digest",
+        "attempt.prior_authorization_count",
+        "attempt.prior_authorization_offset",
+        "attempt.prior_authorization_limit",
+        "attempt.next_prior_authorization_offset",
+        "attempt.prior_authorizations"
+      ]
     }
   }
 }

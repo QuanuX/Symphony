@@ -23,10 +23,12 @@
       ],
       "distinctions": [],
       "evidence": [
+        "libraries/snv-common-cpp/tests/common_test.cpp",
+        "libraries/snv-common-cpp/tests/sdk_receipt_admission.cpp",
         "modules/sciv-engine/tests/sciv_test.cpp"
       ],
       "feature_id": "ssfv:symphony:snv-common-cpp",
-      "how": "Exact native semantic reducers and receipt-bound interfaces preserve original evidence, deterministic correspondence, uncertainty and disclosed dependencies.",
+      "how": "Bounded envelopes preserve admitted request correlation on unexpected failures; exact installed SDK checks bind archives, public files and CMake exports to their receipt without claiming publisher authenticity.",
       "implementation_languages": [
         {
           "language": "C++26",

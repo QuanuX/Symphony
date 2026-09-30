@@ -39,7 +39,7 @@ var SQVModules = []string{
 }
 
 // SNVModules declares source contracts, independently of installation or docking.
-var SNVModules = []string{"sniv-engine", "snrv-engine", "sciv-engine", "scnv-engine", "snv-engine"}
+var SNVModules = []string{"sniv-engine", "snrv-engine", "sciv-engine", "scnv-engine", "snv-engine", "snv-local-observer"}
 
 var CanonicalModules = append(append([]string{
 	"hotpath-runtime",

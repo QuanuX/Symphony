@@ -21,6 +21,7 @@ type SNVOperation struct {
 }
 
 var SNVOperations = []SNVOperation{
+	{"", "observe", "local-observer", "observe", "engop:symphony:snv-local-observer.observe", "symphony.snv.local-observe-input.v1", "symphony.snv.local-observe.v1"},
 	{"identity", "validate", "sniv", "identity_validate", "engop:symphony:sniv.identity-validate", "symphony.sniv.identity-validate-input.v1", "symphony.sniv.identity-validate.v1"},
 	{"resources", "validate", "snrv", "resources_validate", "engop:symphony:snrv.resources-validate", "symphony.snrv.resources-validate-input.v1", "symphony.snrv.resources-validate.v1"},
 	{"clusters", "validate", "sciv", "sciv_validate", "engop:symphony:sciv.sciv-validate", "symphony.snv.sciv.evidence.v1", "symphony.snv.sciv.result.v1"},
@@ -42,6 +43,8 @@ type snvInterface struct {
 
 func snvInterfaceFor(owner string) (snvInterface, error) {
 	switch owner {
+	case "local-observer":
+		return snvInterface{snvObserverAdministrationInterfaceAdmission, snvObserverAdministrationInterfaceOutputs, snvObserverAdministrationInterfaceDigest, snvObserverAdministrationInterfaceResources}, nil
 	case "sniv":
 		return snvInterface{snivAdministrationInterfaceAdmission, snivAdministrationInterfaceOutputs, snivAdministrationInterfaceDigest, snivAdministrationInterfaceResources}, nil
 	case "snrv":
@@ -57,6 +60,9 @@ func snvInterfaceFor(owner string) (snvInterface, error) {
 }
 
 func snvEngineSpec(owner string) engineSpec {
+	if owner == "local-observer" {
+		return engineSpec{label: "SNV-local-observer", moduleID: "snv-local-observer", engineID: "symphony-snv-local-observer", componentKind: "module", processProtocol: processProtocol, responseJSONValuesByVersion: map[string]int{"0.1.0-dev": snvJSONValues}}
+	}
 	return engineSpec{label: strings.ToUpper(owner), moduleID: owner + "-engine", engineID: "symphony-" + owner, componentKind: "vector_engine", vectorID: owner, processProtocol: processProtocol, responseJSONValuesByVersion: map[string]int{"0.1.0-dev": snvJSONValues}}
 }
 
@@ -117,7 +123,11 @@ func InspectSNV(prefix, version, owner string) (Installation, error) {
 		return Installation{}, fmt.Errorf("Unsupported exact SNV release")
 	}
 	spec := snvEngineSpec(owner)
-	e, err := InspectReceiptV2EntryPoint(prefix, version, ReceiptV2EntryPointSpec{Label: spec.label, ComponentID: spec.moduleID, ComponentKind: spec.componentKind, ModuleID: spec.moduleID, PackageID: spec.moduleID, VectorID: &spec.vectorID, EngineID: &spec.engineID, EntryPointID: spec.engineID, EntryPointKind: "executable", EntryPointRelativePath: filepath.ToSlash(filepath.Join("libexec", "symphony", spec.moduleID, version, spec.engineID)), RequiredProtocols: []string{processProtocol}})
+	var vectorID, engineID *string
+	if owner != "local-observer" {
+		vectorID, engineID = &spec.vectorID, &spec.engineID
+	}
+	e, err := InspectReceiptV2EntryPoint(prefix, version, ReceiptV2EntryPointSpec{Label: spec.label, ComponentID: spec.moduleID, ComponentKind: spec.componentKind, ModuleID: spec.moduleID, PackageID: spec.moduleID, VectorID: vectorID, EngineID: engineID, EntryPointID: spec.engineID, EntryPointKind: "executable", EntryPointRelativePath: filepath.ToSlash(filepath.Join("libexec", "symphony", spec.moduleID, version, spec.engineID)), RequiredProtocols: []string{processProtocol}})
 	if err != nil {
 		return Installation{}, err
 	}
@@ -268,6 +278,9 @@ func SNVResource(prefix, version, owner, operation string, templates bool) (Inst
 			if cli, present := object["cli_inputs"]; present {
 				value["cli_inputs"] = cli
 			}
+			if cli, present := object["cli_results"]; present {
+				value["cli_results"] = cli
+			}
 		}
 		selected = value
 	}
@@ -375,6 +388,48 @@ func ValidateSNVResult(owner, operation string, payload, result, contract []byte
 			if !okay || output["head"] == nil || !reflect.DeepEqual(output["head"], plan["head"]) || output["plan_digest"] != plan["digest"] || output["operation_id"] != plan["operation_id"] || output["expected_state_digest"] != plan["expected_state_digest"] || output["effect"] != "proposed_only" {
 				return fmt.Errorf("SNV transition differs from supplied plan")
 			}
+		}
+	}
+	if owner == "local-observer" {
+		if output["acquisition_route"] != "native_fixed_sources" {
+			return fmt.Errorf("SNV finite observation acquisition route mismatch")
+		}
+		if output["observation_id"] != input["observation_id"] || output["node_ref"] != input["node_ref"] || output["profile"] != input["profile"] {
+			return fmt.Errorf("SNV observation request binding mismatch")
+		}
+		subjects := []any{}
+		if input["node_ref"] != nil {
+			subjects = append(subjects, input["node_ref"])
+		}
+		if !reflect.DeepEqual(output["subject_ids"], subjects) {
+			return fmt.Errorf("SNV observation subject binding mismatch")
+		}
+		requested, ok := input["fields"].([]any)
+		observed, observedOK := output["fields"].([]any)
+		if !ok || !observedOK || len(requested) != len(observed) {
+			return fmt.Errorf("SNV observation field census mismatch")
+		}
+		wanted := map[any]bool{}
+		for _, field := range requested {
+			text, ok := field.(string)
+			if !ok || wanted[text] {
+				return fmt.Errorf("SNV observation request field mismatch")
+			}
+			wanted[text] = true
+		}
+		for _, value := range observed {
+			field, ok := value.(map[string]any)
+			if !ok {
+				return fmt.Errorf("SNV observation field shape mismatch")
+			}
+			key, ok := field["field"].(string)
+			if !ok || !wanted[key] {
+				return fmt.Errorf("SNV observation returned unrequested field")
+			}
+			delete(wanted, key)
+		}
+		if len(wanted) != 0 {
+			return fmt.Errorf("SNV observation fields incomplete")
 		}
 	}
 	if owner == "snv" {

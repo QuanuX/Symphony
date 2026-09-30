@@ -15,8 +15,8 @@ var snvAdministrationInterfaceAdmission = map[string]map[string]bool{
 }
 
 var snvAdministrationInterfaceResources = map[string]string{
-	"admin.schema.json":                    "sha256:8268fa1d6194835db4c1efe75b41d915b0489c6cb934b7070e11dc234401e7f4",
-	"admin.templates.json":                 "sha256:c95694691525e35ec1c59b9defc70db8fd804e5e8a28621da879f9d98dec78c4",
+	"admin.schema.json":                    "sha256:0fb75b0ed3da20b11f1676a649b0146c6dba36a46d90e564c5ce2b2e15269261",
+	"admin.templates.json":                 "sha256:4af560a1e4d8f753e6e81b3de732ad206d0eee4c14229f7fe1e957d5a3997829",
 	"snv_evidence_plan.result.schema.json": "sha256:b93b5663d5085247434721c5474843d9b6e1db3899f6fa3aa73383eeddb69c5d",
 	"snv_evidence_plan.schema.json":        "sha256:ff285e931c0f16d19cc084a6408ab87c3af98afbd22e3197e993e42e6874575d",
 	"snv_inspect.result.schema.json":       "sha256:18af5bc3d2177ee36ea1ac36bbfac7de87feb0c48d0cac76a46b6066b2610234",

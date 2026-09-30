@@ -77,6 +77,7 @@ The inventory is intentionally explicit. Directory discovery, file count, langua
 | `modules/sciv-engine` | registered | `ssfv:symphony:sciv-engine` | `modules/sciv-engine/FEATURES.md` |
 | `modules/scnv-engine` | registered | `ssfv:symphony:scnv-engine` | `modules/scnv-engine/FEATURES.md` |
 | `modules/snv-engine` | registered | `ssfv:symphony:snv-engine` | `modules/snv-engine/FEATURES.md` |
+| `modules/snv-local-observer` | registered | `ssfv:symphony:snv-local-observer` | `modules/snv-local-observer/FEATURES.md` |
 | `libraries/snv-common-cpp` | registered | `ssfv:symphony:snv-common-cpp` | `libraries/snv-common-cpp/FEATURES.md` |
 | `tools/qxctl` | registered | `ssfv:symphony:qxctl` | `tools/qxctl/FEATURES.md` |
 | `tools/symphony-validator` | registered | `ssfv:symphony:symphony-validator` | `tools/symphony-validator/FEATURES.md` |

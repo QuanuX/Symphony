@@ -1,0 +1,612 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "protocol": "symphony.snv.local-observer.administration-schemas.v1",
+  "requests": {
+    "observe": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "observation_id",
+        "node_ref",
+        "profile",
+        "fields"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "symphony.snv.local-observe-input.v1"
+        },
+        "observation_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^[^\\u0000-\\u001f\\u007f]+$"
+        },
+        "node_ref": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256,
+              "pattern": "^[^\\u0000-\\u001f\\u007f]+$"
+            }
+          ]
+        },
+        "profile": {
+          "const": "linux-proc-sysfs-v1"
+        },
+        "fields": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "cpu_present",
+              "cpu_online",
+              "memory_total",
+              "memory_available"
+            ]
+          },
+          "minItems": 1,
+          "maxItems": 4,
+          "uniqueItems": true
+        }
+      }
+    }
+  },
+  "results": {
+    "observe": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "owner",
+        "owner_version",
+        "source_digest",
+        "observation_id",
+        "node_ref",
+        "subject_ids",
+        "profile",
+        "method",
+        "platform",
+        "visibility_scope",
+        "node_association",
+        "physical_inventory_complete",
+        "allocation_verified",
+        "capture",
+        "status",
+        "fields",
+        "limitations",
+        "acquisition_route"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "symphony.snv.local-observe.v1"
+        },
+        "owner": {
+          "const": "local-observer"
+        },
+        "owner_version": {
+          "const": "0.1.0-dev"
+        },
+        "source_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "observation_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^[^\\u0000-\\u001f\\u007f]+$"
+        },
+        "node_ref": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256,
+              "pattern": "^[^\\u0000-\\u001f\\u007f]+$"
+            }
+          ]
+        },
+        "subject_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256,
+            "pattern": "^[^\\u0000-\\u001f\\u007f]+$"
+          },
+          "minItems": 0,
+          "maxItems": 1,
+          "uniqueItems": true
+        },
+        "profile": {
+          "const": "linux-proc-sysfs-v1"
+        },
+        "method": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "id",
+            "version"
+          ],
+          "properties": {
+            "id": {
+              "const": "linux-proc-sysfs"
+            },
+            "version": {
+              "const": "1"
+            }
+          }
+        },
+        "platform": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "os",
+            "architecture",
+            "kernel_release"
+          ],
+          "properties": {
+            "os": {
+              "enum": [
+                "linux",
+                null
+              ]
+            },
+            "architecture": {
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 256,
+                  "pattern": "^[^\\u0000-\\u001f\\u007f]+$"
+                }
+              ]
+            },
+            "kernel_release": {
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 256,
+                  "pattern": "^[^\\u0000-\\u001f\\u007f]+$"
+                }
+              ]
+            }
+          }
+        },
+        "visibility_scope": {
+          "const": "invoked_process_kernel_proc_sysfs_exposure"
+        },
+        "node_association": {
+          "const": "caller_supplied_unverified"
+        },
+        "physical_inventory_complete": {
+          "const": false
+        },
+        "allocation_verified": {
+          "const": false
+        },
+        "capture": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "started_unix_ms",
+            "finished_unix_ms",
+            "elapsed_ms",
+            "boot_consistency",
+            "boot_before_status",
+            "boot_after_status",
+            "atomic_inventory"
+          ],
+          "properties": {
+            "started_unix_ms": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "finished_unix_ms": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "elapsed_ms": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 5000
+            },
+            "boot_consistency": {
+              "type": "string",
+              "enum": [
+                "stable",
+                "changed",
+                "unavailable"
+              ]
+            },
+            "boot_before_status": {
+              "type": "string",
+              "enum": [
+                "observed",
+                "unavailable",
+                "permission_denied",
+                "unsupported_source",
+                "too_large",
+                "io_error",
+                "malformed"
+              ]
+            },
+            "boot_after_status": {
+              "type": "string",
+              "enum": [
+                "observed",
+                "unavailable",
+                "permission_denied",
+                "unsupported_source",
+                "too_large",
+                "io_error",
+                "malformed"
+              ]
+            },
+            "atomic_inventory": {
+              "const": false
+            }
+          }
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "complete",
+            "partial",
+            "changed_during_capture",
+            "unavailable"
+          ]
+        },
+        "fields": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "field",
+              "source_path",
+              "status",
+              "value",
+              "consistency",
+              "verification_status"
+            ],
+            "properties": {
+              "field": {
+                "type": "string",
+                "enum": [
+                  "cpu_present",
+                  "cpu_online",
+                  "memory_total",
+                  "memory_available"
+                ]
+              },
+              "source_path": {
+                "type": "string",
+                "enum": [
+                  "/sys/devices/system/cpu/present",
+                  "/sys/devices/system/cpu/online",
+                  "/proc/meminfo"
+                ]
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "observed",
+                  "unavailable",
+                  "permission_denied",
+                  "unsupported_source",
+                  "too_large",
+                  "io_error",
+                  "malformed"
+                ]
+              },
+              "value": {
+                "anyOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "anyOf": [
+                      {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": [
+                          "logical_cpu_indices",
+                          "value",
+                          "unit"
+                        ],
+                        "properties": {
+                          "logical_cpu_indices": {
+                            "type": "string",
+                            "maxLength": 4096,
+                            "pattern": "^([0-9]+(-[0-9]+)?)(,[0-9]+(-[0-9]+)?)*$|^$"
+                          },
+                          "value": {
+                            "type": "string",
+                            "pattern": "^(0|[1-9][0-9]{0,19})$"
+                          },
+                          "unit": {
+                            "const": "count"
+                          }
+                        }
+                      },
+                      {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": [
+                          "value",
+                          "unit"
+                        ],
+                        "properties": {
+                          "value": {
+                            "type": "string",
+                            "pattern": "^(0|[1-9][0-9]{0,19})$"
+                          },
+                          "unit": {
+                            "const": "bytes"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              "consistency": {
+                "type": "string",
+                "enum": [
+                  "stable",
+                  "changed",
+                  "unavailable",
+                  "not_checked"
+                ]
+              },
+              "verification_status": {
+                "anyOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "observed",
+                      "unavailable",
+                      "permission_denied",
+                      "unsupported_source",
+                      "too_large",
+                      "io_error",
+                      "malformed"
+                    ]
+                  }
+                ]
+              }
+            },
+            "allOf": [
+              {
+                "if": {
+                  "properties": {
+                    "field": {
+                      "enum": [
+                        "cpu_present",
+                        "cpu_online"
+                      ]
+                    }
+                  }
+                },
+                "then": {
+                  "properties": {
+                    "value": {
+                      "anyOf": [
+                        {
+                          "type": "null"
+                        },
+                        {
+                          "type": "object",
+                          "additionalProperties": false,
+                          "required": [
+                            "logical_cpu_indices",
+                            "value",
+                            "unit"
+                          ],
+                          "properties": {
+                            "logical_cpu_indices": {
+                              "type": "string",
+                              "maxLength": 4096,
+                              "pattern": "^([0-9]+(-[0-9]+)?)(,[0-9]+(-[0-9]+)?)*$|^$"
+                            },
+                            "value": {
+                              "type": "string",
+                              "pattern": "^(0|[1-9][0-9]{0,19})$"
+                            },
+                            "unit": {
+                              "const": "count"
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    "verification_status": {
+                      "type": "string",
+                      "enum": [
+                        "observed",
+                        "unavailable",
+                        "permission_denied",
+                        "unsupported_source",
+                        "too_large",
+                        "io_error",
+                        "malformed"
+                      ]
+                    },
+                    "consistency": {
+                      "type": "string",
+                      "enum": [
+                        "stable",
+                        "changed",
+                        "unavailable"
+                      ]
+                    }
+                  }
+                },
+                "else": {
+                  "properties": {
+                    "value": {
+                      "anyOf": [
+                        {
+                          "type": "null"
+                        },
+                        {
+                          "type": "object",
+                          "additionalProperties": false,
+                          "required": [
+                            "value",
+                            "unit"
+                          ],
+                          "properties": {
+                            "value": {
+                              "type": "string",
+                              "pattern": "^(0|[1-9][0-9]{0,19})$"
+                            },
+                            "unit": {
+                              "const": "bytes"
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    "verification_status": {
+                      "type": "null"
+                    },
+                    "consistency": {
+                      "const": "not_checked"
+                    }
+                  }
+                }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "status": {
+                      "const": "observed"
+                    }
+                  }
+                },
+                "then": {
+                  "properties": {
+                    "value": {
+                      "type": "object"
+                    }
+                  }
+                },
+                "else": {
+                  "properties": {
+                    "value": {
+                      "type": "null"
+                    }
+                  }
+                }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "field": {
+                      "const": "cpu_present"
+                    }
+                  }
+                },
+                "then": {
+                  "properties": {
+                    "source_path": {
+                      "const": "/sys/devices/system/cpu/present"
+                    }
+                  }
+                }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "field": {
+                      "const": "cpu_online"
+                    }
+                  }
+                },
+                "then": {
+                  "properties": {
+                    "source_path": {
+                      "const": "/sys/devices/system/cpu/online"
+                    }
+                  }
+                }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "field": {
+                      "const": "memory_total"
+                    }
+                  }
+                },
+                "then": {
+                  "properties": {
+                    "source_path": {
+                      "const": "/proc/meminfo"
+                    }
+                  }
+                }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "field": {
+                      "const": "memory_available"
+                    }
+                  }
+                },
+                "then": {
+                  "properties": {
+                    "source_path": {
+                      "const": "/proc/meminfo"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          "minItems": 1,
+          "maxItems": 4
+        },
+        "limitations": {
+          "const": [
+            "logical_cpu_indices_not_physical_cores",
+            "kernel_memory_view_not_cgroup_allocation",
+            "stable_checks_cover_only_checked_interval_fields",
+            "memory_available_is_kernel_estimate",
+            "no_physical_identity_or_full_inventory_attestation"
+          ]
+        },
+        "acquisition_route": {
+          "type": "string",
+          "enum": [
+            "native_fixed_sources",
+            "sdk_supplied_reader"
+          ]
+        }
+      }
+    }
+  }
+}

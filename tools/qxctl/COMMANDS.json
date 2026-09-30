@@ -200,6 +200,10 @@
           "interaction": "discover"
         },
         {
+          "feature_id": "ssfv:symphony:snv-local-observer",
+          "interaction": "discover"
+        },
+        {
           "feature_id": "ssfv:symphony:sqav-attempt-engine",
           "interaction": "discover"
         },
@@ -327,6 +331,10 @@
           "interaction": "discover"
         },
         {
+          "feature_id": "ssfv:symphony:snv-local-observer",
+          "interaction": "discover"
+        },
+        {
           "feature_id": "ssfv:symphony:sqav-attempt-engine",
           "interaction": "discover"
         },
@@ -422,7 +430,7 @@
           "interaction": "configure"
         }
       ],
-      "grammar": "qxctl knowledge engines bind [--expected-registry-digest VALUE] [--json] [--prefix VALUE] [--state-root VALUE] [--version VALUE]",
+      "grammar": "qxctl knowledge engines bind <role> [--expected-registry-digest VALUE] [--json] [--prefix VALUE] [--state-root VALUE] [--version VALUE]",
       "infrastructure_purpose": null,
       "input_protocols": [],
       "introduced_in": "0.1.0-dev",
@@ -476,7 +484,7 @@
           "interaction": "inspect"
         }
       ],
-      "grammar": "qxctl knowledge engines inspect [--json] [--state-root VALUE]",
+      "grammar": "qxctl knowledge engines inspect <role> [--json] [--state-root VALUE]",
       "infrastructure_purpose": null,
       "input_protocols": [],
       "introduced_in": "0.1.0-dev",
@@ -557,7 +565,7 @@
           "interaction": "configure"
         }
       ],
-      "grammar": "qxctl knowledge engines unbind [--expected-registry-digest VALUE] [--json] [--state-root VALUE]",
+      "grammar": "qxctl knowledge engines unbind <role> [--expected-registry-digest VALUE] [--json] [--state-root VALUE]",
       "infrastructure_purpose": null,
       "input_protocols": [],
       "introduced_in": "0.1.0-dev",
@@ -2079,6 +2087,10 @@
           "interaction": "discover"
         },
         {
+          "feature_id": "ssfv:symphony:snv-local-observer",
+          "interaction": "discover"
+        },
+        {
           "feature_id": "ssfv:symphony:sqav-attempt-engine",
           "interaction": "discover"
         },
@@ -2210,6 +2222,10 @@
           "interaction": "discover"
         },
         {
+          "feature_id": "ssfv:symphony:snv-local-observer",
+          "interaction": "discover"
+        },
+        {
           "feature_id": "ssfv:symphony:sqav-attempt-engine",
           "interaction": "discover"
         },
@@ -2334,6 +2350,10 @@
         },
         {
           "feature_id": "ssfv:symphony:snv-engine",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:snv-local-observer",
           "interaction": "discover"
         },
         {
@@ -2468,6 +2488,10 @@
           "interaction": "discover"
         },
         {
+          "feature_id": "ssfv:symphony:snv-local-observer",
+          "interaction": "discover"
+        },
+        {
           "feature_id": "ssfv:symphony:sqav-attempt-engine",
           "interaction": "discover"
         },
@@ -2595,6 +2619,10 @@
           "interaction": "discover"
         },
         {
+          "feature_id": "ssfv:symphony:snv-local-observer",
+          "interaction": "discover"
+        },
+        {
           "feature_id": "ssfv:symphony:sqav-attempt-engine",
           "interaction": "discover"
         },
@@ -2719,6 +2747,10 @@
         },
         {
           "feature_id": "ssfv:symphony:snv-engine",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:snv-local-observer",
           "interaction": "discover"
         },
         {
@@ -15502,7 +15534,7 @@
           "interaction": "query"
         }
       ],
-      "grammar": "qxctl snv inspect [--baseline-input VALUE] [--input VALUE] [--json] [--limit VALUE] [--mode VALUE] [--offset VALUE] [--prefix VALUE] [--state-root VALUE] [--tops-id VALUE] [--version VALUE] [--view-id VALUE]",
+      "grammar": "qxctl snv inspect [--baseline-input VALUE] [--expected-head-digest VALUE] [--input VALUE] [--json] [--limit VALUE] [--mode VALUE] [--offset VALUE] [--prefix VALUE] [--state-root VALUE] [--tops-id VALUE] [--version VALUE] [--view-id VALUE]",
       "infrastructure_purpose": null,
       "input_protocols": [
         "symphony.snv.inspect-input.v1"
@@ -15619,6 +15651,45 @@
       "aliases": [],
       "authority_mode": "none",
       "backend_operation_ids": [
+        "engop:symphony:snv-local-observer.observe"
+      ],
+      "command_id": "qxcmd:symphony:snv.observe",
+      "deprecated_in": null,
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl-snv-administration",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:snv-local-observer",
+          "interaction": "inspect"
+        }
+      ],
+      "grammar": "qxctl snv observe [--input VALUE] [--json] [--prefix VALUE] [--version VALUE]",
+      "infrastructure_purpose": null,
+      "input_protocols": [
+        "symphony.snv.local-observe-input.v1"
+      ],
+      "introduced_in": "0.1.0-dev",
+      "json_output": true,
+      "mutability": "read_only",
+      "noninteractive": true,
+      "output_protocols": [
+        "symphony.snv.local-observe.v1"
+      ],
+      "recovery_command_id": null,
+      "replacement_ids": [],
+      "result_validation_protocols": [
+        "symphony.snv.local-observe.v1"
+      ],
+      "status": "experimental",
+      "target_scope": "local",
+      "visibility": "public"
+    },
+    {
+      "aliases": [],
+      "authority_mode": "none",
+      "backend_operation_ids": [
         "engop:symphony:snrv.resources-validate"
       ],
       "command_id": "qxcmd:symphony:snv.resources.validate",
@@ -15667,6 +15738,10 @@
       "feature_bindings": [
         {
           "feature_id": "ssfv:symphony:qxctl-snv-administration",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:snv-local-observer",
           "interaction": "discover"
         }
       ],
@@ -15828,7 +15903,7 @@
           "interaction": "inspect"
         }
       ],
-      "grammar": "qxctl snv state status [--json] [--operation-id VALUE] [--prefix VALUE] [--state-root VALUE] [--tops-id VALUE] [--version VALUE] [--view-id VALUE]",
+      "grammar": "qxctl snv state status [--authorization-limit VALUE] [--authorization-offset VALUE] [--expected-journal-digest VALUE] [--json] [--operation-id VALUE] [--prefix VALUE] [--state-root VALUE] [--tops-id VALUE] [--version VALUE] [--view-id VALUE]",
       "infrastructure_purpose": null,
       "input_protocols": [],
       "introduced_in": "0.1.0-dev",
@@ -15856,6 +15931,10 @@
       "feature_bindings": [
         {
           "feature_id": "ssfv:symphony:qxctl-snv-administration",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:snv-local-observer",
           "interaction": "discover"
         }
       ],
@@ -18997,6 +19076,6 @@
   "format_version": 1,
   "protocol": "symphony.qxctl.command-registry.v1",
   "receipt_digest": null,
-  "registry_digest": "sha256:c80c5f2f89746c7a64582440197019308bb61fe5fccd68a7acec5e8292ebca5b",
+  "registry_digest": "sha256:a5b231308f5361afbe14436003232da8bab6246a20e29ac4e8a1714057c9195b",
   "registry_kind": "expected"
 }

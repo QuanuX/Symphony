@@ -13,3 +13,5 @@ Version 0.1.0-dev. Static Symphony::SnvCommon SDK depends exactly on SymphonyKno
 - `libraries/snv-common-cpp/SPEC.md`
 - `libraries/snv-common-cpp/include/symphony/snv/common.hpp`
 - `libraries/snv-common-cpp/src/common.cpp`
+- `libraries/snv-common-cpp/tests/common_test.cpp`
+- `libraries/snv-common-cpp/tests/sdk_receipt_admission.cpp`

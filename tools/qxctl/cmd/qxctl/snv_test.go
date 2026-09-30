@@ -32,8 +32,8 @@ func TestSNVCanonicalSurface(t *testing.T) {
 			}
 		}
 	}
-	if len(seen) != 15 {
-		t.Fatalf("SNV leaf count %d, want15", len(seen))
+	if len(seen) != 16 {
+		t.Fatalf("SNV leaf count %d, want16", len(seen))
 	}
 	for _, leaf := range snvLeaves {
 		if !seen["qxcmd:symphony:snv."+leaf.path] {

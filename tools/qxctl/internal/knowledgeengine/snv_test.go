@@ -236,6 +236,11 @@ func TestSNVInstalledConsumer(t *testing.T) {
 		}
 	}
 	for _, op := range SNVOperations {
+		// The optional collector has its own installation selector and gate.
+		// A core-only prefix must remain sufficient for the five core owners.
+		if op.Owner == "local-observer" {
+			continue
+		}
 		t.Run(op.Owner+"/"+op.Operation+"/resources", func(t *testing.T) {
 			for _, templates := range []bool{false, true} {
 				_, raw, err := SNVResource(prefix, "0.1.0-dev", op.Owner, op.Operation, templates)

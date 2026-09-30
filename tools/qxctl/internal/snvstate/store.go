@@ -60,10 +60,10 @@ func NewView(root, topsID, viewID string) (Store, error) {
 }
 func newStore(root, kind, topsID, viewID string) (Store, error) {
 	if !filepath.IsAbs(root) || filepath.Clean(root) != root || root == "/" {
-		return Store{}, fmt.Errorf("SNV state root must be an explicit clean absolute descendant")
+		return Store{}, Refusal("snv.invalid_input", nil)
 	}
 	if kind != "evidence" && kind != "view" || kind == "evidence" && (topsID != "" || viewID != "") || kind == "view" && (!topsPattern.MatchString(topsID) || !tokenPattern.MatchString(viewID)) {
-		return Store{}, fmt.Errorf("invalid SNV store identity")
+		return Store{}, Refusal("snv.invalid_input", nil)
 	}
 	return Store{root, kind, topsID, viewID}, nil
 }
@@ -266,7 +266,7 @@ func (s Store) WithLock(operation func(*Transaction) error) error {
 				return e
 			}
 			if len(data) > maxStoreBytes {
-				return fmt.Errorf("SNV journal capacity exceeded; no history is pruned")
+				return Refusal("snv.capacity_exceeded", nil)
 			}
 			if e = write(data, guard); e != nil {
 				return e
@@ -305,14 +305,14 @@ func (s Store) loadDocument(data []byte) (Document, error) {
 	d := json.NewDecoder(bytes.NewReader(data))
 	d.DisallowUnknownFields()
 	if d.Decode(&doc) != nil {
-		return Document{}, fmt.Errorf("invalid SNV journal")
+		return Document{}, Refusal("snv.recovery_required", nil)
 	}
 	if e := validateDocument(doc, s); e != nil {
-		return Document{}, e
+		return Document{}, Refusal("snv.recovery_required", e)
 	}
 	canonical, e := knowledgeengine.SCVCanonical(doc)
 	if e != nil || !bytes.Equal(canonical, data) {
-		return Document{}, fmt.Errorf("SNV journal is not exact canonical JSON")
+		return Document{}, Refusal("snv.recovery_required", nil)
 	}
 	return doc, nil
 }
@@ -401,12 +401,12 @@ func (t *Transaction) Prepare(a Attempt) (bool, error) {
 	}
 	if old, ok := t.Attempt(a.OperationID); ok {
 		if old.IntentDigest != a.IntentDigest {
-			return false, fmt.Errorf("SNV operation binds another immutable intent")
+			return false, Refusal("snv.intent_conflict", nil)
 		}
 		return old.Status == "committed", nil
 	}
 	if len(t.document.Operations) >= maxOperations {
-		return false, fmt.Errorf("SNV operation capacity exceeded")
+		return false, Refusal("snv.capacity_exceeded", nil)
 	}
 	if a.Kind == "selection" {
 		p, e := rawObject(a.Input)
@@ -414,11 +414,11 @@ func (t *Transaction) Prepare(a Attempt) (bool, error) {
 			return false, e
 		}
 		if !same(p["prior_head"], t.Current()) || !same(p["expected_state_digest"], t.document.StateDigest) {
-			return false, fmt.Errorf("SNV expected head conflict")
+			return false, Refusal("snv.state_conflict", nil)
 		}
 		view, e := normalized(map[string]any{"tops_id": t.store.TOPSID, "view_id": t.store.ViewID})
 		if e != nil || !same(p["view"], view) {
-			return false, fmt.Errorf("SNV selected view scope mismatch")
+			return false, Refusal("snv.state_conflict", nil)
 		}
 		a.CorrelationID, e = stavprotocol.GenerateUUIDv4()
 		if e != nil {
@@ -436,13 +436,13 @@ func (t *Transaction) Prepare(a Attempt) (bool, error) {
 func (t *Transaction) CommitEvidence(id string, guard func() error) error {
 	a, ok := t.Attempt(id)
 	if !ok || a.Kind != "evidence" {
-		return fmt.Errorf("SNV evidence attempt absent")
+		return Refusal("snv.evidence_missing", nil)
 	}
 	if a.Status == "committed" {
 		return nil
 	}
 	if guard == nil {
-		return fmt.Errorf("SNV retention requires original input replay at the effect boundary")
+		return Refusal("snv.recovery_required", nil)
 	}
 	plan, e := rawObject(a.Plan)
 	if e != nil {
@@ -457,11 +457,11 @@ func (t *Transaction) CommitEvidence(id string, guard func() error) error {
 		return e
 	}
 	if prior, ok := t.Bundle(hash); ok && !same(prior, json.RawMessage(bundle)) {
-		return fmt.Errorf("SNV immutable bundle collision")
+		return Refusal("snv.candidate_drift", nil)
 	}
 	next := t.Snapshot()
 	if _, ok := next.Bundles[hash]; !ok && len(next.Bundles) >= maxOperations {
-		return fmt.Errorf("SNV retained bundle capacity exceeded")
+		return Refusal("snv.capacity_exceeded", nil)
 	}
 	next.Bundles[hash] = bundle
 	a.Status = "committed"
@@ -471,7 +471,7 @@ func (t *Transaction) CommitEvidence(id string, guard func() error) error {
 func (t *Transaction) CommitSelection(id string, authorization json.RawMessage, guard func() error) error {
 	a, ok := t.Attempt(id)
 	if !ok || a.Kind != "selection" {
-		return fmt.Errorf("SNV selection attempt absent")
+		return Refusal("snv.evidence_missing", nil)
 	}
 	if a.Status == "committed" {
 		return nil
@@ -484,7 +484,7 @@ func (t *Transaction) CommitSelection(id string, authorization json.RawMessage, 
 		return e
 	}
 	if !same(input["prior_head"], t.Current()) || !same(input["expected_state_digest"], t.document.StateDigest) {
-		return fmt.Errorf("SNV expected head conflict")
+		return Refusal("snv.state_conflict", nil)
 	}
 	next := t.Snapshot()
 	if string(a.Authorization) != "null" && !same(a.Authorization, authorization) {
@@ -514,7 +514,7 @@ func (t *Transaction) CommitSelection(id string, authorization json.RawMessage, 
 			return e
 		}
 		if guard == nil {
-			return fmt.Errorf("SNV selection requires a live effect guard")
+			return Refusal("snv.recovery_required", nil)
 		}
 		return guard()
 	})

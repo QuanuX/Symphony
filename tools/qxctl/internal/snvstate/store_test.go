@@ -517,6 +517,8 @@ func TestSNVCapacityPreservesAcknowledgedJournal(t *testing.T) {
 	if e := s.WithLock(func(tx *Transaction) error {
 		if _, e := tx.Prepare(evidenceFixture(t, "operation-513")); e == nil {
 			t.Fatal("operation 513 accepted")
+		} else {
+			requireBoundary(t, e, "snv.capacity_exceeded")
 		}
 		if len(tx.Snapshot().Operations) != 512 || string(tx.Current()) != "null" {
 			t.Fatal("capacity refusal pruned history or selected head")
@@ -608,9 +610,7 @@ func TestSNVByteCapacityPreservesAcknowledgedHead(t *testing.T) {
 			a := largeSelectionFixture(t, fmt.Sprintf("large-evidence-%03d", i), acknowledged)
 			before, _ := os.ReadFile(path)
 			if _, e := tx.Prepare(a); e != nil {
-				if !strings.Contains(e.Error(), "journal capacity exceeded") {
-					return e
-				}
+				requireBoundary(t, e, "snv.capacity_exceeded")
 				after, _ := os.ReadFile(path)
 				if string(after) != string(before) || !same(tx.Current(), acknowledged) || len(after) > 16*1024*1024 {
 					t.Fatal("byte refusal changed acknowledged head or journal")

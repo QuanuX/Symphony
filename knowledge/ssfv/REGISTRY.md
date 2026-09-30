@@ -2,7 +2,7 @@
 
 ## Status
 
-Canonical SSFV feature-routing registry. The partial catalog routes 138 experimental records across the platform governance scope and 61 owner scopes enumerated by `COVERAGE.md`.
+Canonical SSFV feature-routing registry. The partial catalog routes 139 experimental records across the platform governance scope and 62 owner scopes enumerated by `COVERAGE.md`.
 
 ## Purpose
 
@@ -1267,7 +1267,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `libraries/snv-common-cpp`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:platform`
-- record_digest: `sha256:efa9c9d521b3ba595b621c4526e0fcec699853dcd7e1c7ec1a0de609c7c49b6c`
+- record_digest: `sha256:63c5c7bc66b5d14d648de06fa1b4587dae803aa34eb3cb118b088a472006b922`
 - notes: Bounded SNV owner or administration contract; independently installed interfaces preserve exact semantic ownership and declared operational gates.
 
 
@@ -1279,6 +1279,16 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - parent_feature_id: `ssfv:symphony:qxctl`
 - record_digest: `sha256:5158857df2a54ff96f509b58bcad97b140dd1213a841c4a94eff073842a7e71c`
 - notes: Bounded SNV owner or administration contract; independently installed interfaces preserve exact semantic ownership and declared operational gates.
+
+
+- feature_id: `ssfv:symphony:snv-local-observer`
+- feature_file: `modules/snv-local-observer/FEATURES.md`
+- owner_contract: `modules/snv-local-observer/SPEC.md`
+- source_scope: `modules/snv-local-observer`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:platform`
+- record_digest: `sha256:c05a3d8b9a78249fd0b475f15215f5dd6ccea6bc3f584f8a5828951401c4d611`
+- notes: Optional finite Linux proc/sysfs CPU and memory observation; no semantic engine identity, physical proof, retention, selected head or operational authority.
 
 
 ## Prohibited Entries

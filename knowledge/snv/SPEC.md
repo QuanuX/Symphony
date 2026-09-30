@@ -4,6 +4,8 @@
 
 Architect-ratified composition and ownership boundary, with bounded `0.1.0-dev` supplied-evidence implementations. Exact schemas, finite-process behavior and SDK interfaces belong to `modules/{sniv,snrv,sciv,scnv,snv}-engine`; neutral mechanics belong to `libraries/snv-common-cpp`. `knowledge/snv/VALIDATION.md` distinguishes implemented surfaces, observed gates and final closure.
 
+The optional `modules/snv-local-observer` owns only its selected finite Linux proc/sysfs observation contract. Its observations do not allocate physical identity, materiality, resources, names, incarnations, membership or selected state. Native fixed-source capture and caller-authored SDK readers remain distinguishable acquisition routes. A supplied Node reference is association, never proof that the observed process exposure belongs to that physical Node.
+
 ## Composition
 
 SNIV, SNRV, SCIV, and SCNV remain separately defined semantic owners beneath SNV. SNV may project their relationships but must not collapse physical identity, resources, cluster membership, or names into one interchangeable field.

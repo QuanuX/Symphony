@@ -52,7 +52,7 @@ func capabilityBinding(c ssiagclient.Capability) string {
 func authorizationFresh(raw json.RawMessage) error {
 	var d ssiagclient.AuthorizationDecision
 	if json.Unmarshal(raw, &d) != nil || d.ExpiresAt == nil || d.Capability == nil || !d.ExpiresAt.After(time.Now().UTC()) || !d.Capability.ExpiresAt.After(time.Now().UTC()) {
-		return fmt.Errorf("SNV head authorization expired before publication")
+		return Refusal("snv.authority_expired", nil)
 	}
 	return nil
 }

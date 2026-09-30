@@ -1,7 +1,7 @@
 #pragma once
 
-#include "symphony/knowledge/engine/digest.hpp"
 #include "native_test.hpp"
+#include "symphony/knowledge/engine/digest.hpp"
 #include <algorithm>
 #include <cerrno>
 #include <fcntl.h>
@@ -162,20 +162,35 @@ inline fs::path local(const fs::path &root, const Json &value,
   return q;
 }
 inline void local_refs(const Json &doc) {
-  std::function<void(const Json &)> walk = [&](const Json &value) {
-    if (value.is_object()) {
-      if (value.contains("$ref")) {
-        const auto ref = string(value.at("$ref"));
-        require(ref.starts_with("#/"), "nonlocal schema reference");
-        static_cast<void>(doc.at(Json::json_pointer(ref.substr(1))));
-      }
-      for (const auto &child : value)
-        walk(child);
-    } else if (value.is_array())
-      for (const auto &child : value)
-        walk(child);
-  };
-  walk(doc);
+  std::function<void(const Json &, const Json &, bool)> walk =
+      [&](const Json &value, const Json &resource, bool schema_map) {
+        if (value.is_object()) {
+          // An embedded schema with its own $id is a schema resource. Its local
+          // fragments resolve inside that resource; a nested $defs alone does
+          // not change the base. No external reference is fetched or admitted.
+          const Json *base = &resource;
+          if (!schema_map && value.contains("$id")) {
+            require(value.at("$id").is_string() &&
+                        !value.at("$id").get<std::string>().empty(),
+                    "schema resource ID must be a nonempty string");
+            base = &value;
+          }
+          if (!schema_map && value.contains("$ref")) {
+            const auto ref = string(value.at("$ref"));
+            require(ref.starts_with("#/"), "nonlocal schema reference");
+            static_cast<void>(base->at(Json::json_pointer(ref.substr(1))));
+          }
+          for (auto it = value.begin(); it != value.end(); ++it)
+            walk(it.value(), *base,
+                 !schema_map &&
+                     (it.key() == "$defs" || it.key() == "properties" ||
+                      it.key() == "patternProperties" ||
+                      it.key() == "dependentSchemas"));
+        } else if (value.is_array())
+          for (const auto &child : value)
+            walk(child, resource, false);
+      };
+  walk(doc, doc, false);
 }
 struct TempDir {
   fs::path path;

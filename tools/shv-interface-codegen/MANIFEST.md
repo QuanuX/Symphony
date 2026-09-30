@@ -23,6 +23,7 @@ Canonical owner: tools/shv-interface-codegen/SPEC.md. Owned surfaces: INTENT.md,
 - `tools/authoring-cpp/schemas.hpp`
 - `tools/authoring-cpp/test_support.hpp`
 - `tools/authoring-cpp/schema_test.cpp`
+- `tools/authoring-cpp/local_refs_test.cpp`
 
 ## Shared Native Authoring Support
 
