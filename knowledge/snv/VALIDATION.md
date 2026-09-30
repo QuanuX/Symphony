@@ -65,3 +65,12 @@ Focused follow-up gates passed: observer Debug and ASan/UBSan each exercised 51 
 The engineering review also closes safe correlation for unexpected native exceptions and exact installed SDK ownership of compiler/CMake-consumed files, with GNUInstallDirs library paths preserved. Shared discovery and receipt-owned schema/template routes serve the optional collector. Activation, docking and service lifecycle are not applicable to this finite module; receipt-owned CMake install/remove do not establish generic qxctl activation support.
 
 The eight shared source module/inventory routes enumerate the collector's contract. Generic semantic engine inspection and engine-role binding remain scoped to their admitted engines; source discovery does not admit this neutral module into those routes. The collector uses its distinct receipt-backed `snv observe`, `snv schema` and `snv template` routes.
+
+The completed follow-up implementation and exact source tree resolve through
+`SCLV-CHG-20260930-SNV-OBSERVER-QXCTL-FOLLOWUP` in the append-only SCLV ledger.
+The final same-UID SSIAG/STAV workflow passed 109 checks across 74 commands, with
+actual policy callbacks, two history pages, selected journal/head pins, export,
+recovery and unselection checked. Six native/CLI wrapper schema gates checked
+64 actual outputs. Exact independently installed collector and five-engine Go
+consumer gates used separate prefixes. These are bounded local results; the
+prior supplied-record ledger above retains its original revision and conditions.
