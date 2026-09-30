@@ -8,3 +8,4 @@ Current libraries:
 
 - `stav-protocol-go`: pure-Go implementation of the canonical STAV v1 serialization, validation, digest, identifier, and local-frame contracts.
 - `knowledge-vector-engine-cpp`: C++26 authority-free bounded process, digest, path, snapshot, receipt, and static-link foundation for independently installed knowledge-vector executables.
+- `snv-common-cpp`: exact C++26 static SDK for bounded SNV process envelopes and descriptor mechanics. SNIV, SNRV, SCIV, SCNV and the thin SNV engine retain their separate semantics, packages and runtime identities; the SDK has no resident executable or operating authority.

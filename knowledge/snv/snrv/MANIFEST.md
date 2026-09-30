@@ -17,7 +17,7 @@ SNRV owns SNV's distinction between local Node resources and qualified remote-re
 
 ## Implementation Status
 
-Canonical contract only. The resource record schema, inventory mechanism, `::` grammar, engine, and qxctl operations remain unimplemented.
+The bounded supplied-record native implementation is `modules/snrv-engine` at exact release `0.1.0-dev`, with strict schemas/templates and independently installable executable/static SDK. Actual inventory probes and the reserved `::` shorthand remain future scopes; administration is declared by its owner interface.
 
 ## Non-Authorization Statement
 

@@ -1,0 +1,75 @@
+{
+  "protocol": "symphony.shv.owner-interface.v2",
+  "module_id": "sciv-engine",
+  "engine_id": "symphony-sciv",
+  "namespace": "symphony::snv::sciv::interface",
+  "current_version": "0.1.0-dev",
+  "releases": {
+    "0.1.0-dev": [
+      "sciv_validate",
+      "sciv_transition"
+    ]
+  },
+  "contract_versions": [
+    "modules/sciv-engine/SPEC.md@v1",
+    "symphony.snv.sciv.evidence.v1",
+    "symphony.snv.sciv.result.v1",
+    "symphony.snv.sciv.transition.v1",
+    "symphony.snv.sciv.transition-result.v1"
+  ],
+  "operations": [
+    {
+      "administration_disposition": "qxctl_required",
+      "administrative_interactions": [
+        "validate",
+        "inspect"
+      ],
+      "authorization_requirement": "none",
+      "availability": "implemented",
+      "direct_invocation": "supported",
+      "engine_operation_id": "engop:symphony:sciv.sciv-validate",
+      "expected_state_required": false,
+      "feature_ids": [
+        "ssfv:symphony:sciv-engine"
+      ],
+      "idempotency": "idempotent",
+      "input_protocol": "symphony.snv.sciv.evidence.v1",
+      "mutability": "read_only",
+      "operation_name": "sciv_validate",
+      "output_protocol": "symphony.snv.sciv.result.v1",
+      "recovery_operation_id": null,
+      "thermal_path": "freezing"
+    },
+    {
+      "administration_disposition": "qxctl_required",
+      "administrative_interactions": [
+        "propose"
+      ],
+      "authorization_requirement": "none",
+      "availability": "implemented",
+      "direct_invocation": "supported",
+      "engine_operation_id": "engop:symphony:sciv.sciv-transition",
+      "expected_state_required": true,
+      "feature_ids": [
+        "ssfv:symphony:sciv-engine"
+      ],
+      "idempotency": "idempotent",
+      "input_protocol": "symphony.snv.sciv.transition.v1",
+      "mutability": "proposal_only",
+      "operation_name": "sciv_transition",
+      "output_protocol": "symphony.snv.sciv.transition-result.v1",
+      "recovery_operation_id": null,
+      "thermal_path": "freezing"
+    }
+  ],
+  "schemas": [
+    "modules/sciv-engine/schemas/v1/sciv-evidence.schema.json",
+    "modules/sciv-engine/schemas/v1/sciv-evidence.template.json",
+    "modules/sciv-engine/schemas/v1/sciv-result.schema.json",
+    "modules/sciv-engine/schemas/v1/sciv-transition-result.schema.json",
+    "modules/sciv-engine/schemas/v1/sciv-transition.schema.json",
+    "modules/sciv-engine/schemas/v1/sciv-transition.template.json"
+  ],
+  "companions": [],
+  "embedded_dependencies": []
+}

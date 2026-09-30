@@ -49,6 +49,11 @@ var supportedRoles = map[string]roleIdentity{
 	"sav":         {moduleID: "sav-engine", engineID: "symphony-sav"},
 	"sev":         {moduleID: "sev-engine", engineID: "symphony-sev"},
 	"ssfv":        {moduleID: "ssfv-engine", engineID: "symphony-ssfv"},
+	"sniv":        {moduleID: "sniv-engine", engineID: "symphony-sniv"},
+	"snrv":        {moduleID: "snrv-engine", engineID: "symphony-snrv"},
+	"sciv":        {moduleID: "sciv-engine", engineID: "symphony-sciv"},
+	"scnv":        {moduleID: "scnv-engine", engineID: "symphony-scnv"},
+	"snv":         {moduleID: "snv-engine", engineID: "symphony-snv"},
 }
 
 var v1Roles = map[string]roleIdentity{

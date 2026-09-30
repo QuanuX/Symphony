@@ -1,0 +1,358 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "symphony.snv.state-plan-input.v1",
+  "type": "object",
+  "properties": {
+    "protocol": {
+      "const": "symphony.snv.state-plan-input.v1"
+    },
+    "view": {
+      "type": "object",
+      "properties": {
+        "tops_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "view_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        }
+      },
+      "required": [
+        "tops_id",
+        "view_id"
+      ],
+      "additionalProperties": false
+    },
+    "operation_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "expected_state_digest": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$"
+        }
+      ]
+    },
+    "prior_head": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "protocol": {
+              "const": "symphony.snv.head.v1"
+            },
+            "view": {
+              "type": "object",
+              "properties": {
+                "tops_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                "view_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                }
+              },
+              "required": [
+                "tops_id",
+                "view_id"
+              ],
+              "additionalProperties": false
+            },
+            "generation": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9007199254740991
+            },
+            "previous_digest": {
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "string",
+                  "pattern": "^sha256:[a-f0-9]{64}$"
+                }
+              ]
+            },
+            "bundle_digest": {
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "string",
+                  "pattern": "^sha256:[a-f0-9]{64}$"
+                }
+              ]
+            },
+            "tombstone": {
+              "type": "boolean"
+            },
+            "operation_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "owner_version": {
+              "const": "0.1.0-dev"
+            },
+            "digest": {
+              "type": "string",
+              "pattern": "^sha256:[a-f0-9]{64}$"
+            }
+          },
+          "required": [
+            "protocol",
+            "view",
+            "generation",
+            "previous_digest",
+            "bundle_digest",
+            "tombstone",
+            "operation_id",
+            "owner_version",
+            "digest"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "change_kind": {
+      "enum": [
+        "select",
+        "unselect"
+      ]
+    },
+    "bundle": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "protocol": {
+              "const": "symphony.snv.bundle.v1"
+            },
+            "bundle_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "artifacts": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "owner": {
+                    "enum": [
+                      "sniv",
+                      "snrv",
+                      "sciv",
+                      "scnv"
+                    ]
+                  },
+                  "owner_version": {
+                    "const": "0.1.0-dev"
+                  },
+                  "operation": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128
+                  },
+                  "source_utf8": {
+                    "type": "string",
+                    "maxLength": 65536
+                  },
+                  "source_digest": {
+                    "type": "string",
+                    "pattern": "^sha256:[a-f0-9]{64}$"
+                  }
+                },
+                "required": [
+                  "owner",
+                  "owner_version",
+                  "operation",
+                  "source_utf8",
+                  "source_digest"
+                ],
+                "additionalProperties": false
+              },
+              "maxItems": 4
+            },
+            "relations": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "relationship_id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128
+                  },
+                  "kind": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128
+                  },
+                  "from": {
+                    "type": "object",
+                    "properties": {
+                      "owner": {
+                        "enum": [
+                          "sniv",
+                          "snrv",
+                          "sciv",
+                          "scnv"
+                        ]
+                      },
+                      "id": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 128
+                      },
+                      "kind": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 128
+                      }
+                    },
+                    "required": [
+                      "owner",
+                      "kind",
+                      "id"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "to": {
+                    "type": "object",
+                    "properties": {
+                      "owner": {
+                        "enum": [
+                          "sniv",
+                          "snrv",
+                          "sciv",
+                          "scnv"
+                        ]
+                      },
+                      "id": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 128
+                      },
+                      "kind": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 128
+                      }
+                    },
+                    "required": [
+                      "owner",
+                      "kind",
+                      "id"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "source_ref": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 1024
+                  }
+                },
+                "required": [
+                  "relationship_id",
+                  "kind",
+                  "from",
+                  "to",
+                  "source_ref"
+                ],
+                "additionalProperties": false
+              },
+              "maxItems": 2048
+            }
+          },
+          "required": [
+            "protocol",
+            "bundle_id",
+            "artifacts",
+            "relations"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "reason": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1024
+    },
+    "migration": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "from_owner_version": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "to_owner_version": {
+              "const": "0.1.0-dev"
+            },
+            "source_bundle_digest": {
+              "type": "string",
+              "pattern": "^sha256:[a-f0-9]{64}$"
+            },
+            "method": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "method_version": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          },
+          "required": [
+            "from_owner_version",
+            "to_owner_version",
+            "source_bundle_digest",
+            "method",
+            "method_version"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    }
+  },
+  "required": [
+    "protocol",
+    "view",
+    "operation_id",
+    "expected_state_digest",
+    "prior_head",
+    "change_kind",
+    "bundle",
+    "reason",
+    "migration"
+  ],
+  "additionalProperties": false
+}

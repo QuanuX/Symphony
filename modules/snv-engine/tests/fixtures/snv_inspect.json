@@ -1,0 +1,42 @@
+{
+  "protocol": "symphony.snv.inspect-input.v1",
+  "mode": "replay",
+  "bundle": {
+    "protocol": "symphony.snv.bundle.v1",
+    "bundle_id": "reference-all-owners",
+    "artifacts": [
+      {
+        "owner": "sniv",
+        "owner_version": "0.1.0-dev",
+        "operation": "identity_validate",
+        "source_utf8": "{\"mode\":\"snapshot\",\"participations\":[{\"boot_id\":\"boot-1\",\"bus_ids\":[\"bus-1\"],\"effective_at\":null,\"generation\":1,\"incarnation_id\":\"episode-node-a\",\"last_event\":\"establish\",\"physical_node_id\":\"node-a\",\"predecessor_record_id\":null,\"record_id\":\"participation-node-a\",\"sources\":[{\"evidence_digest\":\"sha256:0000000000000000000000000000000000000000000000000000000000000000\",\"kind\":\"user\",\"method_id\":\"supplied-record\",\"method_version\":\"1\",\"observed_at\":null,\"source_id\":\"user-evidence-1\",\"source_ref\":\"supplied:fixture\",\"source_revision\":\"1\"}],\"state\":\"active\",\"system_id\":\"research-1\"},{\"boot_id\":\"boot-1\",\"bus_ids\":[\"bus-1\"],\"effective_at\":null,\"generation\":1,\"incarnation_id\":\"episode-node-b\",\"last_event\":\"establish\",\"physical_node_id\":\"node-b\",\"predecessor_record_id\":null,\"record_id\":\"participation-node-b\",\"sources\":[{\"evidence_digest\":\"sha256:0000000000000000000000000000000000000000000000000000000000000000\",\"kind\":\"user\",\"method_id\":\"supplied-record\",\"method_version\":\"1\",\"observed_at\":null,\"source_id\":\"user-evidence-1\",\"source_ref\":\"supplied:fixture\",\"source_revision\":\"1\"}],\"state\":\"active\",\"system_id\":\"research-1\"}],\"physical_records\":[{\"assertions\":[{\"field\":\"serial\",\"source_id\":\"user-evidence-1\",\"value\":\"serial-1\"}],\"generation\":1,\"physical_node_id\":\"node-a\",\"predecessor_node_id\":null,\"predecessor_record_id\":null,\"provider_resource\":null,\"record_id\":\"physical-record-1\",\"sources\":[{\"evidence_digest\":\"sha256:0000000000000000000000000000000000000000000000000000000000000000\",\"kind\":\"user\",\"method_id\":\"supplied-record\",\"method_version\":\"1\",\"observed_at\":null,\"source_id\":\"user-evidence-1\",\"source_ref\":\"supplied:fixture\",\"source_revision\":\"1\"}],\"status\":\"active\"},{\"assertions\":[{\"field\":\"serial\",\"source_id\":\"user-evidence-1\",\"value\":\"serial-1-b\"}],\"generation\":1,\"physical_node_id\":\"node-b\",\"predecessor_node_id\":null,\"predecessor_record_id\":null,\"provider_resource\":null,\"record_id\":\"physical-b\",\"sources\":[{\"evidence_digest\":\"sha256:0000000000000000000000000000000000000000000000000000000000000000\",\"kind\":\"user\",\"method_id\":\"supplied-record\",\"method_version\":\"1\",\"observed_at\":null,\"source_id\":\"user-evidence-1\",\"source_ref\":\"supplied:fixture\",\"source_revision\":\"1\"}],\"status\":\"active\"}],\"protocol\":\"symphony.sniv.identity-validate-input.v1\",\"record_limit\":2048,\"transition\":null}",
+        "source_digest": "sha256:41668f7a00acfbbfac75fa6711198ca27552390bcd6028f5f303dbb41efb59f9"
+      },
+      {
+        "owner": "snrv",
+        "owner_version": "0.1.0-dev",
+        "operation": "resources_validate",
+        "source_utf8": "{\"inventories\":[{\"coverage\":\"complete\",\"generation\":1,\"identity_rebind\":null,\"local_resources\":[{\"available_capacity\":{\"unit\":\"bytes\",\"value\":\"9007199254740993\"},\"capacity\":{\"unit\":\"bytes\",\"value\":\"18446744073709551615\"},\"capacity_kind\":\"physical\",\"component_kind\":\"memory\",\"instance_ref\":\"dimm-1\",\"instance_scope\":\"physical\",\"model_ref\":null,\"operational_state\":\"available\",\"presence\":\"present\",\"resource_id\":\"memory-1\",\"source_ids\":[\"user-evidence-1\"]}],\"model_refs\":[\"shv-model-ref\"],\"observed_at\":null,\"offering_refs\":[\"scv-offering-ref\"],\"physical_node_id\":\"node-a\",\"predecessor_record_id\":null,\"record_id\":\"inventory-1\",\"remote_attachments\":[{\"allocation_ref\":\"allocation-1\",\"attachment_id\":\"gpu-remote-1\",\"capacity\":{\"unit\":\"count\",\"value\":\"1\"},\"endpoint_ref\":\"gpu-service\",\"remote_subject_ref\":null,\"resource_kind\":\"gpu\",\"source_ids\":[\"user-evidence-1\"],\"state\":\"attached\"}],\"sources\":[{\"evidence_digest\":\"sha256:0000000000000000000000000000000000000000000000000000000000000000\",\"kind\":\"user\",\"method_id\":\"supplied-record\",\"method_version\":\"1\",\"observed_at\":null,\"source_id\":\"user-evidence-1\",\"source_ref\":\"supplied:fixture\",\"source_revision\":\"1\"}],\"status\":\"active\"}],\"mode\":\"snapshot\",\"protocol\":\"symphony.snrv.resources-validate-input.v1\",\"record_limit\":2048,\"transition\":null}",
+        "source_digest": "sha256:8bab8774fe58cfe47c57943ded0c412360bc0a50a2dbf2e93883bc0d80aceaa2"
+      },
+      {
+        "owner": "sciv",
+        "owner_version": "0.1.0-dev",
+        "operation": "sciv_validate",
+        "source_utf8": "{\"at_unix_ms\":10000,\"cluster\":{\"cluster_id\":\"cluster-1\",\"system_id\":\"research-1\"},\"memberships\":[{\"effective_unix_ms\":10000,\"incarnation_id\":\"episode-node-a\",\"node_id\":\"node-a\",\"record_id\":\"join-node-a\",\"source\":{\"method\":\"declared-fixture\",\"method_version\":\"1\",\"source_id\":\"supplied-observer\",\"source_revision\":\"capture-1\"},\"state\":\"joined\"},{\"effective_unix_ms\":10000,\"incarnation_id\":\"episode-node-b\",\"node_id\":\"node-b\",\"record_id\":\"join-node-b\",\"source\":{\"method\":\"declared-fixture\",\"method_version\":\"1\",\"source_id\":\"supplied-observer\",\"source_revision\":\"capture-1\"},\"state\":\"joined\"}],\"nodes\":[{\"incarnation_id\":\"episode-node-a\",\"node_id\":\"node-a\",\"system_id\":\"research-1\"},{\"incarnation_id\":\"episode-node-b\",\"node_id\":\"node-b\",\"system_id\":\"research-1\"}],\"observations\":[{\"bus_id\":\"bus-1\",\"coverage\":\"complete\",\"from_node_id\":\"node-a\",\"observed_unix_ms\":10000,\"record_id\":\"connection-1\",\"source\":{\"method\":\"declared-fixture\",\"method_version\":\"1\",\"source_id\":\"supplied-observer\",\"source_revision\":\"capture-1\"},\"state\":\"connected\",\"to_node_id\":\"node-b\"}],\"profile\":{\"direction\":\"undirected\",\"max_age_ms\":1000,\"transitive\":true},\"protocol\":\"symphony.snv.sciv.evidence.v1\",\"record_limit\":2048}",
+        "source_digest": "sha256:4fe8493135d7b837a6e2f50f9972fc89804505d6b4465950b3f2a4d8fe2ba521"
+      },
+      {
+        "owner": "scnv",
+        "owner_version": "0.1.0-dev",
+        "operation": "names_validate",
+        "source_utf8": "{\"coverage\":\"complete\",\"limits\":{\"max_records\":512},\"mode\":\"records\",\"protocol\":\"scnv.names.v1\",\"records\":[{\"association_id\":\"association-annex\",\"interval\":{\"from_unix_ms\":100,\"until_unix_ms\":null},\"kind\":\"assignment\",\"name\":\"annex\",\"name_kind\":\"short_name\",\"namespace\":\"user-assigned\",\"observed_unix_ms\":100,\"origin_record_id\":null,\"previous_record_id\":null,\"record_id\":\"record-annex-1\",\"recorded_unix_ms\":110,\"scope\":{\"id\":\"cluster-1\",\"kind\":\"cluster\"},\"source\":{\"id\":\"caller-a\",\"kind\":\"user\"},\"subject\":{\"id\":\"node-a\",\"kind\":\"node\"}}]}",
+        "source_digest": "sha256:aa22d758258dc01ddc74ba29a0213e069ecb8112b32a21154deea5512519b5ae"
+      }
+    ],
+    "relations": []
+  },
+  "baseline": null,
+  "offset": 0,
+  "limit": 64
+}

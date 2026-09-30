@@ -1,0 +1,76 @@
+{
+  "protocol": "symphony.shv.owner-interface.v2",
+  "module_id": "scnv-engine",
+  "engine_id": "symphony-scnv",
+  "namespace": "symphony::snv::scnv::interface",
+  "current_version": "0.1.0-dev",
+  "releases": {
+    "0.1.0-dev": [
+      "names_validate",
+      "names_resolve"
+    ]
+  },
+  "contract_versions": [
+    "modules/scnv-engine/SPEC.md@v1",
+    "scnv.names.v1",
+    "scnv.names-result.v1",
+    "scnv.resolve.v1",
+    "scnv.resolve-result.v1"
+  ],
+  "operations": [
+    {
+      "administration_disposition": "qxctl_required",
+      "administrative_interactions": [
+        "inspect",
+        "validate",
+        "propose"
+      ],
+      "authorization_requirement": "none",
+      "availability": "implemented",
+      "direct_invocation": "supported",
+      "engine_operation_id": "engop:symphony:scnv.names-validate",
+      "expected_state_required": false,
+      "feature_ids": [
+        "ssfv:symphony:scnv-engine"
+      ],
+      "idempotency": "idempotent",
+      "input_protocol": "scnv.names.v1",
+      "mutability": "read_only",
+      "operation_name": "names_validate",
+      "output_protocol": "scnv.names-result.v1",
+      "recovery_operation_id": null,
+      "thermal_path": "freezing"
+    },
+    {
+      "administration_disposition": "qxctl_required",
+      "administrative_interactions": [
+        "inspect",
+        "query"
+      ],
+      "authorization_requirement": "none",
+      "availability": "implemented",
+      "direct_invocation": "supported",
+      "engine_operation_id": "engop:symphony:scnv.names-resolve",
+      "expected_state_required": false,
+      "feature_ids": [
+        "ssfv:symphony:scnv-engine"
+      ],
+      "idempotency": "idempotent",
+      "input_protocol": "scnv.resolve.v1",
+      "mutability": "read_only",
+      "operation_name": "names_resolve",
+      "output_protocol": "scnv.resolve-result.v1",
+      "recovery_operation_id": null,
+      "thermal_path": "freezing"
+    }
+  ],
+  "schemas": [
+    "modules/scnv-engine/schemas/v1/admin.templates.json",
+    "modules/scnv-engine/schemas/v1/names-result.schema.json",
+    "modules/scnv-engine/schemas/v1/names.schema.json",
+    "modules/scnv-engine/schemas/v1/resolve-result.schema.json",
+    "modules/scnv-engine/schemas/v1/resolve.schema.json"
+  ],
+  "companions": [],
+  "embedded_dependencies": []
+}

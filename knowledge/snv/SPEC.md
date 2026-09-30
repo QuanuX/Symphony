@@ -2,7 +2,7 @@
 
 ## Status
 
-Architect-ratified composition and ownership boundary. Exact record schemas and executable behavior remain deferred.
+Architect-ratified composition and ownership boundary, with bounded `0.1.0-dev` supplied-evidence implementations. Exact schemas, finite-process behavior and SDK interfaces belong to `modules/{sniv,snrv,sciv,scnv,snv}-engine`; neutral mechanics belong to `libraries/snv-common-cpp`. `knowledge/snv/VALIDATION.md` distinguishes implemented surfaces, observed gates and final closure.
 
 ## Composition
 
@@ -16,7 +16,7 @@ A remote or virtual resource attached to a Node is not silently incorporated int
 
 ## Node Incarnation
 
-A Node incarnation begins when a physical Node is attached to a bus and established as a participant in a trading system, research cluster, or another Symphony-built system. Incarnation, physical identity, boot identity, Habitat identity, and cluster membership are distinct facts. Their exact transition and cardinality rules require their future record contracts.
+A Node incarnation begins when a physical Node is attached to a bus and established as a participant in a trading system, research cluster, or another Symphony-built system. Incarnation, physical identity, boot identity, Habitat identity, and cluster membership are distinct facts. The exact SNIV participation records and explicit transitions preserve an incarnation across temporary disconnect/reconnect until explicit end/rejoin. Physical continuity uses the caller-selected, versioned material-hardware profile; SCIV fabric observations do not create or end an incarnation.
 
 ## Cluster Condition
 
@@ -30,7 +30,7 @@ No name is proof of physical identity by itself. If a proposed resource has no i
 
 ## Scope and Reuse
 
-Names registered directly within a TOPS or TROG follow that declared scope. Where multiple named clusters exist, the same Node short name may identify different Nodes in different clusters, while two active Nodes in the same cluster require unambiguous identifiers. Reuse after retirement is permitted under the exact future naming record contract.
+Names registered directly within a TOPS or TROG follow that declared scope. Where multiple named clusters exist, the same Node short name may identify different Nodes in different clusters, while two active Nodes in the same cluster require unambiguous identifiers. Reuse after retirement follows the exact SCNV name-association records, interval and retirement rules. Resolution preserves ambiguity, evidence provenance and absent temporal context rather than allocating a name or inferring a missing subject.
 
 ## Non-Authorization Statement
 

@@ -1,0 +1,2721 @@
+{
+  "protocol": "symphony.snv.administration-schema.v1",
+  "requests": {
+    "snv_inspect": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.snv.inspect-input.v1"
+        },
+        "mode": {
+          "enum": [
+            "replay",
+            "projection",
+            "diff",
+            "history",
+            "export_manifest",
+            "export_chunk"
+          ]
+        },
+        "bundle": {
+          "type": "object",
+          "properties": {
+            "protocol": {
+              "const": "symphony.snv.bundle.v1"
+            },
+            "bundle_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "artifacts": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "owner": {
+                    "enum": [
+                      "sniv",
+                      "snrv",
+                      "sciv",
+                      "scnv"
+                    ]
+                  },
+                  "owner_version": {
+                    "const": "0.1.0-dev"
+                  },
+                  "operation": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128
+                  },
+                  "source_utf8": {
+                    "type": "string",
+                    "maxLength": 65536
+                  },
+                  "source_digest": {
+                    "type": "string",
+                    "pattern": "^sha256:[a-f0-9]{64}$"
+                  }
+                },
+                "required": [
+                  "owner",
+                  "owner_version",
+                  "operation",
+                  "source_utf8",
+                  "source_digest"
+                ],
+                "additionalProperties": false
+              },
+              "maxItems": 4
+            },
+            "relations": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "relationship_id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128
+                  },
+                  "kind": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128
+                  },
+                  "from": {
+                    "type": "object",
+                    "properties": {
+                      "owner": {
+                        "enum": [
+                          "sniv",
+                          "snrv",
+                          "sciv",
+                          "scnv"
+                        ]
+                      },
+                      "id": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 128
+                      },
+                      "kind": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 128
+                      }
+                    },
+                    "required": [
+                      "owner",
+                      "kind",
+                      "id"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "to": {
+                    "type": "object",
+                    "properties": {
+                      "owner": {
+                        "enum": [
+                          "sniv",
+                          "snrv",
+                          "sciv",
+                          "scnv"
+                        ]
+                      },
+                      "id": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 128
+                      },
+                      "kind": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 128
+                      }
+                    },
+                    "required": [
+                      "owner",
+                      "kind",
+                      "id"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "source_ref": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 1024
+                  }
+                },
+                "required": [
+                  "relationship_id",
+                  "kind",
+                  "from",
+                  "to",
+                  "source_ref"
+                ],
+                "additionalProperties": false
+              },
+              "maxItems": 2048
+            }
+          },
+          "required": [
+            "protocol",
+            "bundle_id",
+            "artifacts",
+            "relations"
+          ],
+          "additionalProperties": false
+        },
+        "baseline": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "protocol": {
+                  "const": "symphony.snv.bundle.v1"
+                },
+                "bundle_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                "artifacts": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "owner": {
+                        "enum": [
+                          "sniv",
+                          "snrv",
+                          "sciv",
+                          "scnv"
+                        ]
+                      },
+                      "owner_version": {
+                        "const": "0.1.0-dev"
+                      },
+                      "operation": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 128
+                      },
+                      "source_utf8": {
+                        "type": "string",
+                        "maxLength": 65536
+                      },
+                      "source_digest": {
+                        "type": "string",
+                        "pattern": "^sha256:[a-f0-9]{64}$"
+                      }
+                    },
+                    "required": [
+                      "owner",
+                      "owner_version",
+                      "operation",
+                      "source_utf8",
+                      "source_digest"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "maxItems": 4
+                },
+                "relations": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "relationship_id": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 128
+                      },
+                      "kind": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 128
+                      },
+                      "from": {
+                        "type": "object",
+                        "properties": {
+                          "owner": {
+                            "enum": [
+                              "sniv",
+                              "snrv",
+                              "sciv",
+                              "scnv"
+                            ]
+                          },
+                          "id": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 128
+                          },
+                          "kind": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 128
+                          }
+                        },
+                        "required": [
+                          "owner",
+                          "kind",
+                          "id"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "to": {
+                        "type": "object",
+                        "properties": {
+                          "owner": {
+                            "enum": [
+                              "sniv",
+                              "snrv",
+                              "sciv",
+                              "scnv"
+                            ]
+                          },
+                          "id": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 128
+                          },
+                          "kind": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 128
+                          }
+                        },
+                        "required": [
+                          "owner",
+                          "kind",
+                          "id"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "source_ref": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 1024
+                      }
+                    },
+                    "required": [
+                      "relationship_id",
+                      "kind",
+                      "from",
+                      "to",
+                      "source_ref"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "maxItems": 2048
+                }
+              },
+              "required": [
+                "protocol",
+                "bundle_id",
+                "artifacts",
+                "relations"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        },
+        "offset": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2048
+        },
+        "limit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2048
+        }
+      },
+      "required": [
+        "protocol",
+        "mode",
+        "bundle",
+        "baseline",
+        "offset",
+        "limit"
+      ],
+      "additionalProperties": false
+    },
+    "snv_evidence_plan": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.snv.evidence-plan-input.v1"
+        },
+        "operation_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "mode": {
+          "enum": [
+            "bundle",
+            "import"
+          ]
+        },
+        "bundle": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "protocol": {
+                  "const": "symphony.snv.bundle.v1"
+                },
+                "bundle_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                "artifacts": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "owner": {
+                        "enum": [
+                          "sniv",
+                          "snrv",
+                          "sciv",
+                          "scnv"
+                        ]
+                      },
+                      "owner_version": {
+                        "const": "0.1.0-dev"
+                      },
+                      "operation": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 128
+                      },
+                      "source_utf8": {
+                        "type": "string",
+                        "maxLength": 65536
+                      },
+                      "source_digest": {
+                        "type": "string",
+                        "pattern": "^sha256:[a-f0-9]{64}$"
+                      }
+                    },
+                    "required": [
+                      "owner",
+                      "owner_version",
+                      "operation",
+                      "source_utf8",
+                      "source_digest"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "maxItems": 4
+                },
+                "relations": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "relationship_id": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 128
+                      },
+                      "kind": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 128
+                      },
+                      "from": {
+                        "type": "object",
+                        "properties": {
+                          "owner": {
+                            "enum": [
+                              "sniv",
+                              "snrv",
+                              "sciv",
+                              "scnv"
+                            ]
+                          },
+                          "id": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 128
+                          },
+                          "kind": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 128
+                          }
+                        },
+                        "required": [
+                          "owner",
+                          "kind",
+                          "id"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "to": {
+                        "type": "object",
+                        "properties": {
+                          "owner": {
+                            "enum": [
+                              "sniv",
+                              "snrv",
+                              "sciv",
+                              "scnv"
+                            ]
+                          },
+                          "id": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 128
+                          },
+                          "kind": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 128
+                          }
+                        },
+                        "required": [
+                          "owner",
+                          "kind",
+                          "id"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "source_ref": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 1024
+                      }
+                    },
+                    "required": [
+                      "relationship_id",
+                      "kind",
+                      "from",
+                      "to",
+                      "source_ref"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "maxItems": 2048
+                }
+              },
+              "required": [
+                "protocol",
+                "bundle_id",
+                "artifacts",
+                "relations"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        },
+        "export_records": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "manifest": {
+                  "type": "object",
+                  "properties": {
+                    "protocol": {
+                      "const": "symphony.snv.export-manifest.v1"
+                    },
+                    "writer": {
+                      "const": "symphony-snv"
+                    },
+                    "writer_version": {
+                      "const": "0.1.0-dev"
+                    },
+                    "bundle_digest": {
+                      "type": "string",
+                      "pattern": "^sha256:[a-f0-9]{64}$"
+                    },
+                    "byte_count": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 262144
+                    },
+                    "encoding": {
+                      "const": "hex"
+                    },
+                    "chunk_size": {
+                      "const": 16384
+                    },
+                    "chunks": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "index": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 63
+                          },
+                          "byte_count": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 16384
+                          },
+                          "digest": {
+                            "type": "string",
+                            "pattern": "^sha256:[a-f0-9]{64}$"
+                          }
+                        },
+                        "required": [
+                          "index",
+                          "byte_count",
+                          "digest"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "maxItems": 64
+                    },
+                    "embedded_dependencies": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      },
+                      "maxItems": 4
+                    },
+                    "digest": {
+                      "type": "string",
+                      "pattern": "^sha256:[a-f0-9]{64}$"
+                    }
+                  },
+                  "required": [
+                    "protocol",
+                    "writer",
+                    "writer_version",
+                    "bundle_digest",
+                    "byte_count",
+                    "encoding",
+                    "chunk_size",
+                    "chunks",
+                    "embedded_dependencies",
+                    "digest"
+                  ],
+                  "additionalProperties": false
+                },
+                "chunks": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "protocol": {
+                        "const": "symphony.snv.export-chunk.v1"
+                      },
+                      "manifest_digest": {
+                        "type": "string",
+                        "pattern": "^sha256:[a-f0-9]{64}$"
+                      },
+                      "bundle_digest": {
+                        "type": "string",
+                        "pattern": "^sha256:[a-f0-9]{64}$"
+                      },
+                      "index": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 63
+                      },
+                      "hex": {
+                        "type": "string",
+                        "pattern": "^(?:[0-9a-f]{2})*$",
+                        "maxLength": 32768
+                      },
+                      "byte_count": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 16384
+                      },
+                      "digest": {
+                        "type": "string",
+                        "pattern": "^sha256:[a-f0-9]{64}$"
+                      }
+                    },
+                    "required": [
+                      "protocol",
+                      "manifest_digest",
+                      "bundle_digest",
+                      "index",
+                      "hex",
+                      "byte_count",
+                      "digest"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "maxItems": 64
+                }
+              },
+              "required": [
+                "manifest",
+                "chunks"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        }
+      },
+      "required": [
+        "protocol",
+        "operation_id",
+        "mode",
+        "bundle",
+        "export_records"
+      ],
+      "additionalProperties": false
+    },
+    "snv_state_plan": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.snv.state-plan-input.v1"
+        },
+        "view": {
+          "type": "object",
+          "properties": {
+            "tops_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "view_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          },
+          "required": [
+            "tops_id",
+            "view_id"
+          ],
+          "additionalProperties": false
+        },
+        "operation_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "expected_state_digest": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "pattern": "^sha256:[a-f0-9]{64}$"
+            }
+          ]
+        },
+        "prior_head": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "protocol": {
+                  "const": "symphony.snv.head.v1"
+                },
+                "view": {
+                  "type": "object",
+                  "properties": {
+                    "tops_id": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 128
+                    },
+                    "view_id": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 128
+                    }
+                  },
+                  "required": [
+                    "tops_id",
+                    "view_id"
+                  ],
+                  "additionalProperties": false
+                },
+                "generation": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 9007199254740991
+                },
+                "previous_digest": {
+                  "anyOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "string",
+                      "pattern": "^sha256:[a-f0-9]{64}$"
+                    }
+                  ]
+                },
+                "bundle_digest": {
+                  "anyOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "string",
+                      "pattern": "^sha256:[a-f0-9]{64}$"
+                    }
+                  ]
+                },
+                "tombstone": {
+                  "type": "boolean"
+                },
+                "operation_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                "owner_version": {
+                  "const": "0.1.0-dev"
+                },
+                "digest": {
+                  "type": "string",
+                  "pattern": "^sha256:[a-f0-9]{64}$"
+                }
+              },
+              "required": [
+                "protocol",
+                "view",
+                "generation",
+                "previous_digest",
+                "bundle_digest",
+                "tombstone",
+                "operation_id",
+                "owner_version",
+                "digest"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        },
+        "change_kind": {
+          "enum": [
+            "select",
+            "unselect"
+          ]
+        },
+        "bundle": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "protocol": {
+                  "const": "symphony.snv.bundle.v1"
+                },
+                "bundle_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                "artifacts": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "owner": {
+                        "enum": [
+                          "sniv",
+                          "snrv",
+                          "sciv",
+                          "scnv"
+                        ]
+                      },
+                      "owner_version": {
+                        "const": "0.1.0-dev"
+                      },
+                      "operation": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 128
+                      },
+                      "source_utf8": {
+                        "type": "string",
+                        "maxLength": 65536
+                      },
+                      "source_digest": {
+                        "type": "string",
+                        "pattern": "^sha256:[a-f0-9]{64}$"
+                      }
+                    },
+                    "required": [
+                      "owner",
+                      "owner_version",
+                      "operation",
+                      "source_utf8",
+                      "source_digest"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "maxItems": 4
+                },
+                "relations": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "relationship_id": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 128
+                      },
+                      "kind": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 128
+                      },
+                      "from": {
+                        "type": "object",
+                        "properties": {
+                          "owner": {
+                            "enum": [
+                              "sniv",
+                              "snrv",
+                              "sciv",
+                              "scnv"
+                            ]
+                          },
+                          "id": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 128
+                          },
+                          "kind": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 128
+                          }
+                        },
+                        "required": [
+                          "owner",
+                          "kind",
+                          "id"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "to": {
+                        "type": "object",
+                        "properties": {
+                          "owner": {
+                            "enum": [
+                              "sniv",
+                              "snrv",
+                              "sciv",
+                              "scnv"
+                            ]
+                          },
+                          "id": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 128
+                          },
+                          "kind": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 128
+                          }
+                        },
+                        "required": [
+                          "owner",
+                          "kind",
+                          "id"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "source_ref": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 1024
+                      }
+                    },
+                    "required": [
+                      "relationship_id",
+                      "kind",
+                      "from",
+                      "to",
+                      "source_ref"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "maxItems": 2048
+                }
+              },
+              "required": [
+                "protocol",
+                "bundle_id",
+                "artifacts",
+                "relations"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024
+        },
+        "migration": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "from_owner_version": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                "to_owner_version": {
+                  "const": "0.1.0-dev"
+                },
+                "source_bundle_digest": {
+                  "type": "string",
+                  "pattern": "^sha256:[a-f0-9]{64}$"
+                },
+                "method": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                "method_version": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                }
+              },
+              "required": [
+                "from_owner_version",
+                "to_owner_version",
+                "source_bundle_digest",
+                "method",
+                "method_version"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        }
+      },
+      "required": [
+        "protocol",
+        "view",
+        "operation_id",
+        "expected_state_digest",
+        "prior_head",
+        "change_kind",
+        "bundle",
+        "reason",
+        "migration"
+      ],
+      "additionalProperties": false
+    },
+    "snv_state_reduce": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.snv.state-reduce-input.v1"
+        },
+        "input": {
+          "type": "object",
+          "properties": {
+            "protocol": {
+              "const": "symphony.snv.state-plan-input.v1"
+            },
+            "view": {
+              "type": "object",
+              "properties": {
+                "tops_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                "view_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                }
+              },
+              "required": [
+                "tops_id",
+                "view_id"
+              ],
+              "additionalProperties": false
+            },
+            "operation_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "expected_state_digest": {
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "string",
+                  "pattern": "^sha256:[a-f0-9]{64}$"
+                }
+              ]
+            },
+            "prior_head": {
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "protocol": {
+                      "const": "symphony.snv.head.v1"
+                    },
+                    "view": {
+                      "type": "object",
+                      "properties": {
+                        "tops_id": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 128
+                        },
+                        "view_id": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 128
+                        }
+                      },
+                      "required": [
+                        "tops_id",
+                        "view_id"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "generation": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 9007199254740991
+                    },
+                    "previous_digest": {
+                      "anyOf": [
+                        {
+                          "type": "null"
+                        },
+                        {
+                          "type": "string",
+                          "pattern": "^sha256:[a-f0-9]{64}$"
+                        }
+                      ]
+                    },
+                    "bundle_digest": {
+                      "anyOf": [
+                        {
+                          "type": "null"
+                        },
+                        {
+                          "type": "string",
+                          "pattern": "^sha256:[a-f0-9]{64}$"
+                        }
+                      ]
+                    },
+                    "tombstone": {
+                      "type": "boolean"
+                    },
+                    "operation_id": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 128
+                    },
+                    "owner_version": {
+                      "const": "0.1.0-dev"
+                    },
+                    "digest": {
+                      "type": "string",
+                      "pattern": "^sha256:[a-f0-9]{64}$"
+                    }
+                  },
+                  "required": [
+                    "protocol",
+                    "view",
+                    "generation",
+                    "previous_digest",
+                    "bundle_digest",
+                    "tombstone",
+                    "operation_id",
+                    "owner_version",
+                    "digest"
+                  ],
+                  "additionalProperties": false
+                }
+              ]
+            },
+            "change_kind": {
+              "enum": [
+                "select",
+                "unselect"
+              ]
+            },
+            "bundle": {
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "protocol": {
+                      "const": "symphony.snv.bundle.v1"
+                    },
+                    "bundle_id": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 128
+                    },
+                    "artifacts": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "owner": {
+                            "enum": [
+                              "sniv",
+                              "snrv",
+                              "sciv",
+                              "scnv"
+                            ]
+                          },
+                          "owner_version": {
+                            "const": "0.1.0-dev"
+                          },
+                          "operation": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 128
+                          },
+                          "source_utf8": {
+                            "type": "string",
+                            "maxLength": 65536
+                          },
+                          "source_digest": {
+                            "type": "string",
+                            "pattern": "^sha256:[a-f0-9]{64}$"
+                          }
+                        },
+                        "required": [
+                          "owner",
+                          "owner_version",
+                          "operation",
+                          "source_utf8",
+                          "source_digest"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "maxItems": 4
+                    },
+                    "relations": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "relationship_id": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 128
+                          },
+                          "kind": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 128
+                          },
+                          "from": {
+                            "type": "object",
+                            "properties": {
+                              "owner": {
+                                "enum": [
+                                  "sniv",
+                                  "snrv",
+                                  "sciv",
+                                  "scnv"
+                                ]
+                              },
+                              "id": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 128
+                              },
+                              "kind": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 128
+                              }
+                            },
+                            "required": [
+                              "owner",
+                              "kind",
+                              "id"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "to": {
+                            "type": "object",
+                            "properties": {
+                              "owner": {
+                                "enum": [
+                                  "sniv",
+                                  "snrv",
+                                  "sciv",
+                                  "scnv"
+                                ]
+                              },
+                              "id": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 128
+                              },
+                              "kind": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 128
+                              }
+                            },
+                            "required": [
+                              "owner",
+                              "kind",
+                              "id"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "source_ref": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 1024
+                          }
+                        },
+                        "required": [
+                          "relationship_id",
+                          "kind",
+                          "from",
+                          "to",
+                          "source_ref"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "maxItems": 2048
+                    }
+                  },
+                  "required": [
+                    "protocol",
+                    "bundle_id",
+                    "artifacts",
+                    "relations"
+                  ],
+                  "additionalProperties": false
+                }
+              ]
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1024
+            },
+            "migration": {
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "from_owner_version": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 128
+                    },
+                    "to_owner_version": {
+                      "const": "0.1.0-dev"
+                    },
+                    "source_bundle_digest": {
+                      "type": "string",
+                      "pattern": "^sha256:[a-f0-9]{64}$"
+                    },
+                    "method": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 128
+                    },
+                    "method_version": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 128
+                    }
+                  },
+                  "required": [
+                    "from_owner_version",
+                    "to_owner_version",
+                    "source_bundle_digest",
+                    "method",
+                    "method_version"
+                  ],
+                  "additionalProperties": false
+                }
+              ]
+            }
+          },
+          "required": [
+            "protocol",
+            "view",
+            "operation_id",
+            "expected_state_digest",
+            "prior_head",
+            "change_kind",
+            "bundle",
+            "reason",
+            "migration"
+          ],
+          "additionalProperties": false
+        },
+        "plan": {
+          "type": "object",
+          "properties": {
+            "protocol": {
+              "const": "symphony.snv.state-plan.v1"
+            },
+            "operation_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "expected_state_digest": {
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "string",
+                  "pattern": "^sha256:[a-f0-9]{64}$"
+                }
+              ]
+            },
+            "change_kind": {
+              "enum": [
+                "select",
+                "unselect"
+              ]
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1024
+            },
+            "migration": {
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "from_owner_version": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 128
+                    },
+                    "to_owner_version": {
+                      "const": "0.1.0-dev"
+                    },
+                    "source_bundle_digest": {
+                      "type": "string",
+                      "pattern": "^sha256:[a-f0-9]{64}$"
+                    },
+                    "method": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 128
+                    },
+                    "method_version": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 128
+                    }
+                  },
+                  "required": [
+                    "from_owner_version",
+                    "to_owner_version",
+                    "source_bundle_digest",
+                    "method",
+                    "method_version"
+                  ],
+                  "additionalProperties": false
+                }
+              ]
+            },
+            "head": {
+              "type": "object",
+              "properties": {
+                "protocol": {
+                  "const": "symphony.snv.head.v1"
+                },
+                "view": {
+                  "type": "object",
+                  "properties": {
+                    "tops_id": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 128
+                    },
+                    "view_id": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 128
+                    }
+                  },
+                  "required": [
+                    "tops_id",
+                    "view_id"
+                  ],
+                  "additionalProperties": false
+                },
+                "generation": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 9007199254740991
+                },
+                "previous_digest": {
+                  "anyOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "string",
+                      "pattern": "^sha256:[a-f0-9]{64}$"
+                    }
+                  ]
+                },
+                "bundle_digest": {
+                  "anyOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "string",
+                      "pattern": "^sha256:[a-f0-9]{64}$"
+                    }
+                  ]
+                },
+                "tombstone": {
+                  "type": "boolean"
+                },
+                "operation_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                "owner_version": {
+                  "const": "0.1.0-dev"
+                },
+                "digest": {
+                  "type": "string",
+                  "pattern": "^sha256:[a-f0-9]{64}$"
+                }
+              },
+              "required": [
+                "protocol",
+                "view",
+                "generation",
+                "previous_digest",
+                "bundle_digest",
+                "tombstone",
+                "operation_id",
+                "owner_version",
+                "digest"
+              ],
+              "additionalProperties": false
+            },
+            "input_digest": {
+              "type": "string",
+              "pattern": "^sha256:[a-f0-9]{64}$"
+            },
+            "digest": {
+              "type": "string",
+              "pattern": "^sha256:[a-f0-9]{64}$"
+            }
+          },
+          "required": [
+            "protocol",
+            "operation_id",
+            "expected_state_digest",
+            "change_kind",
+            "reason",
+            "migration",
+            "head",
+            "input_digest",
+            "digest"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "protocol",
+        "input",
+        "plan"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "results": {
+    "snv_inspect": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.snv.inspect.v1"
+        },
+        "owner": {
+          "const": "symphony-snv"
+        },
+        "owner_version": {
+          "const": "0.1.0-dev"
+        }
+      },
+      "required": [
+        "protocol",
+        "owner",
+        "owner_version",
+        "bundle_digest",
+        "source_digest",
+        "mode"
+      ]
+    },
+    "snv_evidence_plan": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.snv.evidence-plan.v1"
+        },
+        "operation_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "bundle": {
+          "type": "object",
+          "properties": {
+            "protocol": {
+              "const": "symphony.snv.bundle.v1"
+            },
+            "bundle_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "artifacts": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "owner": {
+                    "enum": [
+                      "sniv",
+                      "snrv",
+                      "sciv",
+                      "scnv"
+                    ]
+                  },
+                  "owner_version": {
+                    "const": "0.1.0-dev"
+                  },
+                  "operation": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128
+                  },
+                  "source_utf8": {
+                    "type": "string",
+                    "maxLength": 65536
+                  },
+                  "source_digest": {
+                    "type": "string",
+                    "pattern": "^sha256:[a-f0-9]{64}$"
+                  }
+                },
+                "required": [
+                  "owner",
+                  "owner_version",
+                  "operation",
+                  "source_utf8",
+                  "source_digest"
+                ],
+                "additionalProperties": false
+              },
+              "maxItems": 4
+            },
+            "relations": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "relationship_id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128
+                  },
+                  "kind": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128
+                  },
+                  "from": {
+                    "type": "object",
+                    "properties": {
+                      "owner": {
+                        "enum": [
+                          "sniv",
+                          "snrv",
+                          "sciv",
+                          "scnv"
+                        ]
+                      },
+                      "id": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 128
+                      },
+                      "kind": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 128
+                      }
+                    },
+                    "required": [
+                      "owner",
+                      "kind",
+                      "id"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "to": {
+                    "type": "object",
+                    "properties": {
+                      "owner": {
+                        "enum": [
+                          "sniv",
+                          "snrv",
+                          "sciv",
+                          "scnv"
+                        ]
+                      },
+                      "id": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 128
+                      },
+                      "kind": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 128
+                      }
+                    },
+                    "required": [
+                      "owner",
+                      "kind",
+                      "id"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "source_ref": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 1024
+                  }
+                },
+                "required": [
+                  "relationship_id",
+                  "kind",
+                  "from",
+                  "to",
+                  "source_ref"
+                ],
+                "additionalProperties": false
+              },
+              "maxItems": 2048
+            }
+          },
+          "required": [
+            "protocol",
+            "bundle_id",
+            "artifacts",
+            "relations"
+          ],
+          "additionalProperties": false
+        },
+        "bundle_digest": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$"
+        },
+        "replay": {
+          "type": "object"
+        },
+        "source_digest": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$"
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "protocol",
+        "operation_id",
+        "bundle",
+        "bundle_digest",
+        "replay",
+        "source_digest",
+        "digest"
+      ],
+      "additionalProperties": false
+    },
+    "snv_state_plan": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.snv.state-plan.v1"
+        },
+        "operation_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "expected_state_digest": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "pattern": "^sha256:[a-f0-9]{64}$"
+            }
+          ]
+        },
+        "change_kind": {
+          "enum": [
+            "select",
+            "unselect"
+          ]
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024
+        },
+        "migration": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "from_owner_version": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                "to_owner_version": {
+                  "const": "0.1.0-dev"
+                },
+                "source_bundle_digest": {
+                  "type": "string",
+                  "pattern": "^sha256:[a-f0-9]{64}$"
+                },
+                "method": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                "method_version": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                }
+              },
+              "required": [
+                "from_owner_version",
+                "to_owner_version",
+                "source_bundle_digest",
+                "method",
+                "method_version"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        },
+        "head": {
+          "type": "object",
+          "properties": {
+            "protocol": {
+              "const": "symphony.snv.head.v1"
+            },
+            "view": {
+              "type": "object",
+              "properties": {
+                "tops_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                "view_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                }
+              },
+              "required": [
+                "tops_id",
+                "view_id"
+              ],
+              "additionalProperties": false
+            },
+            "generation": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9007199254740991
+            },
+            "previous_digest": {
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "string",
+                  "pattern": "^sha256:[a-f0-9]{64}$"
+                }
+              ]
+            },
+            "bundle_digest": {
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "string",
+                  "pattern": "^sha256:[a-f0-9]{64}$"
+                }
+              ]
+            },
+            "tombstone": {
+              "type": "boolean"
+            },
+            "operation_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "owner_version": {
+              "const": "0.1.0-dev"
+            },
+            "digest": {
+              "type": "string",
+              "pattern": "^sha256:[a-f0-9]{64}$"
+            }
+          },
+          "required": [
+            "protocol",
+            "view",
+            "generation",
+            "previous_digest",
+            "bundle_digest",
+            "tombstone",
+            "operation_id",
+            "owner_version",
+            "digest"
+          ],
+          "additionalProperties": false
+        },
+        "input_digest": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$"
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "protocol",
+        "operation_id",
+        "expected_state_digest",
+        "change_kind",
+        "reason",
+        "migration",
+        "head",
+        "input_digest",
+        "digest"
+      ],
+      "additionalProperties": false
+    },
+    "snv_state_reduce": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.snv.state-transition.v1"
+        },
+        "operation_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "expected_state_digest": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "pattern": "^sha256:[a-f0-9]{64}$"
+            }
+          ]
+        },
+        "head": {
+          "type": "object",
+          "properties": {
+            "protocol": {
+              "const": "symphony.snv.head.v1"
+            },
+            "view": {
+              "type": "object",
+              "properties": {
+                "tops_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                "view_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                }
+              },
+              "required": [
+                "tops_id",
+                "view_id"
+              ],
+              "additionalProperties": false
+            },
+            "generation": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9007199254740991
+            },
+            "previous_digest": {
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "string",
+                  "pattern": "^sha256:[a-f0-9]{64}$"
+                }
+              ]
+            },
+            "bundle_digest": {
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "string",
+                  "pattern": "^sha256:[a-f0-9]{64}$"
+                }
+              ]
+            },
+            "tombstone": {
+              "type": "boolean"
+            },
+            "operation_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "owner_version": {
+              "const": "0.1.0-dev"
+            },
+            "digest": {
+              "type": "string",
+              "pattern": "^sha256:[a-f0-9]{64}$"
+            }
+          },
+          "required": [
+            "protocol",
+            "view",
+            "generation",
+            "previous_digest",
+            "bundle_digest",
+            "tombstone",
+            "operation_id",
+            "owner_version",
+            "digest"
+          ],
+          "additionalProperties": false
+        },
+        "plan_digest": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$"
+        },
+        "effect": {
+          "const": "proposed_only"
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "protocol",
+        "operation_id",
+        "expected_state_digest",
+        "head",
+        "plan_digest",
+        "effect",
+        "digest"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "cli_inputs": {
+    "snv.state.apply": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.qxctl.snv-state-proposal.v1"
+        },
+        "input": {
+          "type": "object",
+          "properties": {
+            "protocol": {
+              "const": "symphony.snv.state-plan-input.v1"
+            },
+            "view": {
+              "type": "object",
+              "properties": {
+                "tops_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                "view_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                }
+              },
+              "required": [
+                "tops_id",
+                "view_id"
+              ],
+              "additionalProperties": false
+            },
+            "operation_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "expected_state_digest": {
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "string",
+                  "pattern": "^sha256:[a-f0-9]{64}$"
+                }
+              ]
+            },
+            "prior_head": {
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "protocol": {
+                      "const": "symphony.snv.head.v1"
+                    },
+                    "view": {
+                      "type": "object",
+                      "properties": {
+                        "tops_id": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 128
+                        },
+                        "view_id": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 128
+                        }
+                      },
+                      "required": [
+                        "tops_id",
+                        "view_id"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "generation": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 9007199254740991
+                    },
+                    "previous_digest": {
+                      "anyOf": [
+                        {
+                          "type": "null"
+                        },
+                        {
+                          "type": "string",
+                          "pattern": "^sha256:[a-f0-9]{64}$"
+                        }
+                      ]
+                    },
+                    "bundle_digest": {
+                      "anyOf": [
+                        {
+                          "type": "null"
+                        },
+                        {
+                          "type": "string",
+                          "pattern": "^sha256:[a-f0-9]{64}$"
+                        }
+                      ]
+                    },
+                    "tombstone": {
+                      "type": "boolean"
+                    },
+                    "operation_id": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 128
+                    },
+                    "owner_version": {
+                      "const": "0.1.0-dev"
+                    },
+                    "digest": {
+                      "type": "string",
+                      "pattern": "^sha256:[a-f0-9]{64}$"
+                    }
+                  },
+                  "required": [
+                    "protocol",
+                    "view",
+                    "generation",
+                    "previous_digest",
+                    "bundle_digest",
+                    "tombstone",
+                    "operation_id",
+                    "owner_version",
+                    "digest"
+                  ],
+                  "additionalProperties": false
+                }
+              ]
+            },
+            "change_kind": {
+              "enum": [
+                "select",
+                "unselect"
+              ]
+            },
+            "bundle": {
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "protocol": {
+                      "const": "symphony.snv.bundle.v1"
+                    },
+                    "bundle_id": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 128
+                    },
+                    "artifacts": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "owner": {
+                            "enum": [
+                              "sniv",
+                              "snrv",
+                              "sciv",
+                              "scnv"
+                            ]
+                          },
+                          "owner_version": {
+                            "const": "0.1.0-dev"
+                          },
+                          "operation": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 128
+                          },
+                          "source_utf8": {
+                            "type": "string",
+                            "maxLength": 65536
+                          },
+                          "source_digest": {
+                            "type": "string",
+                            "pattern": "^sha256:[a-f0-9]{64}$"
+                          }
+                        },
+                        "required": [
+                          "owner",
+                          "owner_version",
+                          "operation",
+                          "source_utf8",
+                          "source_digest"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "maxItems": 4
+                    },
+                    "relations": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "relationship_id": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 128
+                          },
+                          "kind": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 128
+                          },
+                          "from": {
+                            "type": "object",
+                            "properties": {
+                              "owner": {
+                                "enum": [
+                                  "sniv",
+                                  "snrv",
+                                  "sciv",
+                                  "scnv"
+                                ]
+                              },
+                              "id": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 128
+                              },
+                              "kind": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 128
+                              }
+                            },
+                            "required": [
+                              "owner",
+                              "kind",
+                              "id"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "to": {
+                            "type": "object",
+                            "properties": {
+                              "owner": {
+                                "enum": [
+                                  "sniv",
+                                  "snrv",
+                                  "sciv",
+                                  "scnv"
+                                ]
+                              },
+                              "id": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 128
+                              },
+                              "kind": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 128
+                              }
+                            },
+                            "required": [
+                              "owner",
+                              "kind",
+                              "id"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "source_ref": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 1024
+                          }
+                        },
+                        "required": [
+                          "relationship_id",
+                          "kind",
+                          "from",
+                          "to",
+                          "source_ref"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "maxItems": 2048
+                    }
+                  },
+                  "required": [
+                    "protocol",
+                    "bundle_id",
+                    "artifacts",
+                    "relations"
+                  ],
+                  "additionalProperties": false
+                }
+              ]
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1024
+            },
+            "migration": {
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "from_owner_version": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 128
+                    },
+                    "to_owner_version": {
+                      "const": "0.1.0-dev"
+                    },
+                    "source_bundle_digest": {
+                      "type": "string",
+                      "pattern": "^sha256:[a-f0-9]{64}$"
+                    },
+                    "method": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 128
+                    },
+                    "method_version": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 128
+                    }
+                  },
+                  "required": [
+                    "from_owner_version",
+                    "to_owner_version",
+                    "source_bundle_digest",
+                    "method",
+                    "method_version"
+                  ],
+                  "additionalProperties": false
+                }
+              ]
+            }
+          },
+          "required": [
+            "protocol",
+            "view",
+            "operation_id",
+            "expected_state_digest",
+            "prior_head",
+            "change_kind",
+            "bundle",
+            "reason",
+            "migration"
+          ],
+          "additionalProperties": false
+        },
+        "plan": {
+          "type": "object",
+          "properties": {
+            "protocol": {
+              "const": "symphony.snv.state-plan.v1"
+            },
+            "operation_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "expected_state_digest": {
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "string",
+                  "pattern": "^sha256:[a-f0-9]{64}$"
+                }
+              ]
+            },
+            "change_kind": {
+              "enum": [
+                "select",
+                "unselect"
+              ]
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1024
+            },
+            "migration": {
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "from_owner_version": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 128
+                    },
+                    "to_owner_version": {
+                      "const": "0.1.0-dev"
+                    },
+                    "source_bundle_digest": {
+                      "type": "string",
+                      "pattern": "^sha256:[a-f0-9]{64}$"
+                    },
+                    "method": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 128
+                    },
+                    "method_version": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 128
+                    }
+                  },
+                  "required": [
+                    "from_owner_version",
+                    "to_owner_version",
+                    "source_bundle_digest",
+                    "method",
+                    "method_version"
+                  ],
+                  "additionalProperties": false
+                }
+              ]
+            },
+            "head": {
+              "type": "object",
+              "properties": {
+                "protocol": {
+                  "const": "symphony.snv.head.v1"
+                },
+                "view": {
+                  "type": "object",
+                  "properties": {
+                    "tops_id": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 128
+                    },
+                    "view_id": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 128
+                    }
+                  },
+                  "required": [
+                    "tops_id",
+                    "view_id"
+                  ],
+                  "additionalProperties": false
+                },
+                "generation": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 9007199254740991
+                },
+                "previous_digest": {
+                  "anyOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "string",
+                      "pattern": "^sha256:[a-f0-9]{64}$"
+                    }
+                  ]
+                },
+                "bundle_digest": {
+                  "anyOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "string",
+                      "pattern": "^sha256:[a-f0-9]{64}$"
+                    }
+                  ]
+                },
+                "tombstone": {
+                  "type": "boolean"
+                },
+                "operation_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                "owner_version": {
+                  "const": "0.1.0-dev"
+                },
+                "digest": {
+                  "type": "string",
+                  "pattern": "^sha256:[a-f0-9]{64}$"
+                }
+              },
+              "required": [
+                "protocol",
+                "view",
+                "generation",
+                "previous_digest",
+                "bundle_digest",
+                "tombstone",
+                "operation_id",
+                "owner_version",
+                "digest"
+              ],
+              "additionalProperties": false
+            },
+            "input_digest": {
+              "type": "string",
+              "pattern": "^sha256:[a-f0-9]{64}$"
+            },
+            "digest": {
+              "type": "string",
+              "pattern": "^sha256:[a-f0-9]{64}$"
+            }
+          },
+          "required": [
+            "protocol",
+            "operation_id",
+            "expected_state_digest",
+            "change_kind",
+            "reason",
+            "migration",
+            "head",
+            "input_digest",
+            "digest"
+          ],
+          "additionalProperties": false
+        },
+        "installation": {
+          "type": "object",
+          "properties": {
+            "Role": {
+              "const": "snv-engine"
+            },
+            "ModuleID": {
+              "const": "snv-engine"
+            },
+            "EngineID": {
+              "const": "symphony-snv"
+            },
+            "Version": {
+              "const": "0.1.0-dev"
+            },
+            "Prefix": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4096
+            },
+            "ReceiptPath": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4096
+            },
+            "ReceiptDigest": {
+              "type": "string",
+              "pattern": "^sha256:[a-f0-9]{64}$"
+            },
+            "ReceiptProtocol": {
+              "const": "symphony.knowledge.install-receipt.v2"
+            },
+            "ExecutablePath": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4096
+            },
+            "ExecutableDigest": {
+              "type": "string",
+              "pattern": "^sha256:[a-f0-9]{64}$"
+            }
+          },
+          "required": [
+            "Role",
+            "ModuleID",
+            "EngineID",
+            "Version",
+            "Prefix",
+            "ReceiptPath",
+            "ReceiptDigest",
+            "ReceiptProtocol",
+            "ExecutablePath",
+            "ExecutableDigest"
+          ],
+          "additionalProperties": false
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "protocol",
+        "input",
+        "plan",
+        "installation",
+        "digest"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

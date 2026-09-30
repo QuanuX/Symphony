@@ -1,0 +1,1194 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "protocol": "symphony.snrv.administration-schemas.v1",
+  "requests": {
+    "resources_validate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "mode",
+        "record_limit",
+        "inventories",
+        "transition"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "symphony.snrv.resources-validate-input.v1"
+        },
+        "mode": {
+          "type": "string",
+          "enum": [
+            "snapshot",
+            "transition"
+          ]
+        },
+        "record_limit": {
+          "enum": [
+            512,
+            1024,
+            2048
+          ]
+        },
+        "inventories": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/inventory"
+          },
+          "maxItems": 2048,
+          "minItems": 0
+        },
+        "transition": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "kind",
+                "predecessor_record_id",
+                "candidate_record"
+              ],
+              "properties": {
+                "kind": {
+                  "type": "string",
+                  "enum": [
+                    "correction",
+                    "retirement",
+                    "restoration",
+                    "resource_change"
+                  ]
+                },
+                "predecessor_record_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 256,
+                  "pattern": "^[^\\u0000-\\u001f\\u007f]+$"
+                },
+                "candidate_record": {
+                  "$ref": "#/$defs/inventory"
+                }
+              }
+            }
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "mode": {
+                "const": "snapshot"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "transition": {
+                "type": "null"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "transition": {
+                "type": "object"
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
+  "results": {
+    "resources_validate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "owner",
+        "owner_version",
+        "source_digest",
+        "subject_ids",
+        "status",
+        "records",
+        "proposed_records",
+        "findings",
+        "resource_changes",
+        "identity_handoff"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "symphony.snrv.resources-validate.v1"
+        },
+        "owner": {
+          "const": "snrv"
+        },
+        "owner_version": {
+          "const": "0.1.0-dev"
+        },
+        "source_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "subject_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256,
+            "pattern": "^[^\\u0000-\\u001f\\u007f]+$"
+          },
+          "maxItems": 2048,
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "valid",
+            "conflicting",
+            "insufficient"
+          ]
+        },
+        "records": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/inventory"
+          },
+          "maxItems": 2048,
+          "minItems": 0
+        },
+        "proposed_records": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/inventory"
+          },
+          "maxItems": 2048,
+          "minItems": 0
+        },
+        "findings": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          },
+          "maxItems": 16384,
+          "minItems": 0
+        },
+        "resource_changes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "resource_id",
+              "component_kind",
+              "locality",
+              "change",
+              "physical_change_evidence",
+              "evidence_refs"
+            ],
+            "properties": {
+              "resource_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 256,
+                "pattern": "^[^\\u0000-\\u001f\\u007f]+$"
+              },
+              "component_kind": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 256,
+                "pattern": "^[^\\u0000-\\u001f\\u007f]+$"
+              },
+              "locality": {
+                "type": "string",
+                "enum": [
+                  "local",
+                  "remote"
+                ]
+              },
+              "change": {
+                "type": "string",
+                "enum": [
+                  "added",
+                  "removed",
+                  "replaced",
+                  "capacity_changed",
+                  "availability_changed",
+                  "unchanged",
+                  "unknown",
+                  "attachment_changed"
+                ]
+              },
+              "physical_change_evidence": {
+                "type": "boolean"
+              },
+              "evidence_refs": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 256,
+                  "pattern": "^[^\\u0000-\\u001f\\u007f]+$"
+                },
+                "maxItems": 128,
+                "minItems": 0,
+                "uniqueItems": true
+              }
+            }
+          },
+          "maxItems": 2048,
+          "minItems": 0
+        },
+        "identity_handoff": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "required",
+            "authority",
+            "physical_identity_changed",
+            "subject_rebind"
+          ],
+          "properties": {
+            "required": {
+              "type": "boolean"
+            },
+            "authority": {
+              "const": "sniv"
+            },
+            "physical_identity_changed": {
+              "const": false
+            },
+            "subject_rebind": {
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "sniv_record_ref",
+                    "predecessor_node_id",
+                    "successor_node_id"
+                  ],
+                  "properties": {
+                    "sniv_record_ref": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 256
+                    },
+                    "predecessor_node_id": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 256
+                    },
+                    "successor_node_id": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 256
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_id",
+        "kind",
+        "source_ref",
+        "source_revision",
+        "observed_at",
+        "evidence_digest",
+        "method_id",
+        "method_version"
+      ],
+      "properties": {
+        "source_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^[^\\u0000-\\u001f\\u007f]+$"
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "provider",
+            "firmware",
+            "probe",
+            "user",
+            "artifact",
+            "shv",
+            "scv"
+          ]
+        },
+        "source_ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024,
+          "pattern": "^[^\\u0000-\\u001f\\u007f]+$"
+        },
+        "source_revision": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256,
+              "pattern": "^[^\\u0000-\\u001f\\u007f]+$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "observed_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "evidence_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "method_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^[^\\u0000-\\u001f\\u007f]+$"
+        },
+        "method_version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^[^\\u0000-\\u001f\\u007f]+$"
+        }
+      }
+    },
+    "physical_record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "record_id",
+        "generation",
+        "predecessor_record_id",
+        "physical_node_id",
+        "predecessor_node_id",
+        "status",
+        "provider_resource",
+        "assertions",
+        "sources"
+      ],
+      "properties": {
+        "record_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^[^\\u0000-\\u001f\\u007f]+$"
+        },
+        "generation": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "predecessor_record_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256,
+              "pattern": "^[^\\u0000-\\u001f\\u007f]+$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "physical_node_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256,
+              "pattern": "^[^\\u0000-\\u001f\\u007f]+$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "predecessor_node_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256,
+              "pattern": "^[^\\u0000-\\u001f\\u007f]+$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "active",
+            "retired"
+          ]
+        },
+        "provider_resource": {
+          "anyOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "provider",
+                "scope",
+                "native_id",
+                "established",
+                "source_ids"
+              ],
+              "properties": {
+                "provider": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 256,
+                  "pattern": "^[^\\u0000-\\u001f\\u007f]+$"
+                },
+                "scope": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 1024,
+                  "pattern": "^[^\\u0000-\\u001f\\u007f]+$"
+                },
+                "native_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 1024,
+                  "pattern": "^[^\\u0000-\\u001f\\u007f]+$"
+                },
+                "established": {
+                  "type": "boolean"
+                },
+                "source_ids": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 256,
+                    "pattern": "^[^\\u0000-\\u001f\\u007f]+$"
+                  },
+                  "maxItems": 128,
+                  "minItems": 1,
+                  "uniqueItems": true
+                }
+              }
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "assertions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "field",
+              "value",
+              "source_id"
+            ],
+            "properties": {
+              "field": {
+                "type": "string",
+                "enum": [
+                  "serial",
+                  "firmware_uuid",
+                  "provider_label",
+                  "infrastructure_ref",
+                  "user_identity",
+                  "habitat_ref"
+                ]
+              },
+              "value": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1024,
+                "pattern": "^[^\\u0000-\\u001f\\u007f]+$"
+              },
+              "source_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 256,
+                "pattern": "^[^\\u0000-\\u001f\\u007f]+$"
+              }
+            }
+          },
+          "maxItems": 128,
+          "minItems": 0
+        },
+        "sources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/source"
+          },
+          "maxItems": 128,
+          "minItems": 1
+        }
+      }
+    },
+    "participation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "record_id",
+        "generation",
+        "predecessor_record_id",
+        "physical_node_id",
+        "incarnation_id",
+        "system_id",
+        "bus_ids",
+        "boot_id",
+        "state",
+        "last_event",
+        "effective_at",
+        "sources"
+      ],
+      "properties": {
+        "record_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^[^\\u0000-\\u001f\\u007f]+$"
+        },
+        "generation": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "predecessor_record_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256,
+              "pattern": "^[^\\u0000-\\u001f\\u007f]+$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "physical_node_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^[^\\u0000-\\u001f\\u007f]+$"
+        },
+        "incarnation_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^[^\\u0000-\\u001f\\u007f]+$"
+        },
+        "system_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^[^\\u0000-\\u001f\\u007f]+$"
+        },
+        "bus_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256,
+            "pattern": "^[^\\u0000-\\u001f\\u007f]+$"
+          },
+          "maxItems": 128,
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "boot_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256,
+              "pattern": "^[^\\u0000-\\u001f\\u007f]+$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "state": {
+          "type": "string",
+          "enum": [
+            "active",
+            "ended"
+          ]
+        },
+        "last_event": {
+          "type": "string",
+          "enum": [
+            "establish",
+            "disconnect",
+            "reconnect",
+            "end",
+            "rejoin",
+            "boot_change",
+            "correction"
+          ]
+        },
+        "effective_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "sources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/source"
+          },
+          "maxItems": 128,
+          "minItems": 1
+        }
+      }
+    },
+    "materiality_profile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "profile_id",
+        "version",
+        "rules",
+        "unknown_decision"
+      ],
+      "properties": {
+        "profile_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^[^\\u0000-\\u001f\\u007f]+$"
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^[^\\u0000-\\u001f\\u007f]+$"
+        },
+        "rules": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "component_kind",
+              "change",
+              "decision"
+            ],
+            "properties": {
+              "component_kind": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 256,
+                "pattern": "^[^\\u0000-\\u001f\\u007f]+$"
+              },
+              "change": {
+                "type": "string",
+                "enum": [
+                  "added",
+                  "removed",
+                  "replaced",
+                  "capacity_changed",
+                  "availability_changed"
+                ]
+              },
+              "decision": {
+                "type": "string",
+                "enum": [
+                  "material",
+                  "non_material"
+                ]
+              }
+            }
+          },
+          "maxItems": 128,
+          "minItems": 0
+        },
+        "unknown_decision": {
+          "const": "unresolved"
+        }
+      }
+    },
+    "change": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "component_kind",
+        "change",
+        "locality",
+        "evidence_refs"
+      ],
+      "properties": {
+        "component_kind": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^[^\\u0000-\\u001f\\u007f]+$"
+        },
+        "change": {
+          "type": "string",
+          "enum": [
+            "added",
+            "removed",
+            "replaced",
+            "capacity_changed",
+            "availability_changed"
+          ]
+        },
+        "locality": {
+          "type": "string",
+          "enum": [
+            "local",
+            "remote",
+            "software"
+          ]
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256,
+            "pattern": "^[^\\u0000-\\u001f\\u007f]+$"
+          },
+          "maxItems": 128,
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      }
+    },
+    "quantity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "value",
+        "unit"
+      ],
+      "properties": {
+        "value": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,19})$",
+          "description": "Exact canonical uint64 decimal, additionally checked for 18446744073709551615 maximum by native owner."
+        },
+        "unit": {
+          "type": "string",
+          "enum": [
+            "bytes",
+            "count",
+            "hertz",
+            "bits_per_second"
+          ]
+        }
+      }
+    },
+    "resource": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "resource_id",
+        "component_kind",
+        "instance_ref",
+        "instance_scope",
+        "model_ref",
+        "presence",
+        "capacity_kind",
+        "capacity",
+        "available_capacity",
+        "operational_state",
+        "source_ids"
+      ],
+      "properties": {
+        "resource_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^[^\\u0000-\\u001f\\u007f]+$"
+        },
+        "component_kind": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^[^\\u0000-\\u001f\\u007f]+$"
+        },
+        "instance_ref": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256,
+              "pattern": "^[^\\u0000-\\u001f\\u007f]+$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "instance_scope": {
+          "type": "string",
+          "enum": [
+            "physical",
+            "exposed",
+            "unknown"
+          ]
+        },
+        "model_ref": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256,
+              "pattern": "^[^\\u0000-\\u001f\\u007f]+$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "presence": {
+          "type": "string",
+          "enum": [
+            "present",
+            "absent",
+            "unknown"
+          ]
+        },
+        "capacity_kind": {
+          "type": "string",
+          "enum": [
+            "physical",
+            "exposed",
+            "unknown"
+          ]
+        },
+        "capacity": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/quantity"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "available_capacity": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/quantity"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "operational_state": {
+          "type": "string",
+          "enum": [
+            "available",
+            "unavailable",
+            "unknown"
+          ]
+        },
+        "source_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256,
+            "pattern": "^[^\\u0000-\\u001f\\u007f]+$"
+          },
+          "maxItems": 128,
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      }
+    },
+    "attachment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "attachment_id",
+        "resource_kind",
+        "allocation_ref",
+        "remote_subject_ref",
+        "endpoint_ref",
+        "capacity",
+        "state",
+        "source_ids"
+      ],
+      "properties": {
+        "attachment_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^[^\\u0000-\\u001f\\u007f]+$"
+        },
+        "resource_kind": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^[^\\u0000-\\u001f\\u007f]+$"
+        },
+        "allocation_ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024,
+          "pattern": "^[^\\u0000-\\u001f\\u007f]+$"
+        },
+        "remote_subject_ref": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256,
+              "pattern": "^[^\\u0000-\\u001f\\u007f]+$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "endpoint_ref": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256,
+              "pattern": "^[^\\u0000-\\u001f\\u007f]+$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "capacity": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/quantity"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "state": {
+          "type": "string",
+          "enum": [
+            "attached",
+            "detached",
+            "unknown"
+          ]
+        },
+        "source_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256,
+            "pattern": "^[^\\u0000-\\u001f\\u007f]+$"
+          },
+          "maxItems": 128,
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      }
+    },
+    "inventory": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "record_id",
+        "generation",
+        "predecessor_record_id",
+        "physical_node_id",
+        "status",
+        "coverage",
+        "observed_at",
+        "sources",
+        "local_resources",
+        "remote_attachments",
+        "offering_refs",
+        "model_refs",
+        "identity_rebind"
+      ],
+      "properties": {
+        "record_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^[^\\u0000-\\u001f\\u007f]+$"
+        },
+        "generation": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "predecessor_record_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256,
+              "pattern": "^[^\\u0000-\\u001f\\u007f]+$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "physical_node_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^[^\\u0000-\\u001f\\u007f]+$"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "active",
+            "retired"
+          ]
+        },
+        "coverage": {
+          "type": "string",
+          "enum": [
+            "complete",
+            "partial",
+            "unknown"
+          ]
+        },
+        "observed_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "sources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/source"
+          },
+          "maxItems": 128,
+          "minItems": 1
+        },
+        "local_resources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/resource"
+          },
+          "maxItems": 2048,
+          "minItems": 0
+        },
+        "remote_attachments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/attachment"
+          },
+          "maxItems": 2048,
+          "minItems": 0
+        },
+        "offering_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256,
+            "pattern": "^[^\\u0000-\\u001f\\u007f]+$"
+          },
+          "maxItems": 128,
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "model_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256,
+            "pattern": "^[^\\u0000-\\u001f\\u007f]+$"
+          },
+          "maxItems": 128,
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "identity_rebind": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "sniv_record_ref",
+                "predecessor_node_id",
+                "successor_node_id"
+              ],
+              "properties": {
+                "sniv_record_ref": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 256
+                },
+                "predecessor_node_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 256
+                },
+                "successor_node_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 256
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

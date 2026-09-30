@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "symphony.snv.inspect.v1",
+  "type": "object",
+  "properties": {
+    "protocol": {
+      "const": "symphony.snv.inspect.v1"
+    },
+    "owner": {
+      "const": "symphony-snv"
+    },
+    "owner_version": {
+      "const": "0.1.0-dev"
+    }
+  },
+  "required": [
+    "protocol",
+    "owner",
+    "owner_version",
+    "bundle_digest",
+    "source_digest",
+    "mode"
+  ]
+}

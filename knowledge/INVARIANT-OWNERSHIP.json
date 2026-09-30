@@ -327,6 +327,34 @@
       "version_policy": "exact_receipt_v2_entry_point_and_capability_compatible"
     },
     {
+      "adapter_id": "adapter:symphony:symphony-sciv.v1",
+      "command_protocol": "symphony.knowledge.engine-process.v1",
+      "component": "sciv-engine",
+      "entry_point_id": "symphony-sciv",
+      "format_version": 2,
+      "implementation_path": "modules/sciv-engine",
+      "operation_ids": [
+        "engop:symphony:sciv.sciv-transition",
+        "engop:symphony:sciv.sciv-validate"
+      ],
+      "owner_contract": "modules/sciv-engine/SPEC.md",
+      "version_policy": "exact_receipt_v2_entry_point_and_capability_compatible"
+    },
+    {
+      "adapter_id": "adapter:symphony:symphony-scnv.v1",
+      "command_protocol": "symphony.knowledge.engine-process.v1",
+      "component": "scnv-engine",
+      "entry_point_id": "symphony-scnv",
+      "format_version": 2,
+      "implementation_path": "modules/scnv-engine",
+      "operation_ids": [
+        "engop:symphony:scnv.names-resolve",
+        "engop:symphony:scnv.names-validate"
+      ],
+      "owner_contract": "modules/scnv-engine/SPEC.md",
+      "version_policy": "exact_receipt_v2_entry_point_and_capability_compatible"
+    },
+    {
       "adapter_id": "adapter:symphony:symphony-scv-graph-duckdb-connector.v1",
       "command_protocol": "symphony.knowledge.engine-process.v1",
       "component": "scv-graph-duckdb-connector",
@@ -524,6 +552,48 @@
         "engop:symphony:shv.inspect"
       ],
       "owner_contract": "modules/shv-engine/SPEC.md",
+      "version_policy": "exact_receipt_v2_entry_point_and_capability_compatible"
+    },
+    {
+      "adapter_id": "adapter:symphony:symphony-sniv.v1",
+      "command_protocol": "symphony.knowledge.engine-process.v1",
+      "component": "sniv-engine",
+      "entry_point_id": "symphony-sniv",
+      "format_version": 2,
+      "implementation_path": "modules/sniv-engine",
+      "operation_ids": [
+        "engop:symphony:sniv.identity-validate"
+      ],
+      "owner_contract": "modules/sniv-engine/SPEC.md",
+      "version_policy": "exact_receipt_v2_entry_point_and_capability_compatible"
+    },
+    {
+      "adapter_id": "adapter:symphony:symphony-snrv.v1",
+      "command_protocol": "symphony.knowledge.engine-process.v1",
+      "component": "snrv-engine",
+      "entry_point_id": "symphony-snrv",
+      "format_version": 2,
+      "implementation_path": "modules/snrv-engine",
+      "operation_ids": [
+        "engop:symphony:snrv.resources-validate"
+      ],
+      "owner_contract": "modules/snrv-engine/SPEC.md",
+      "version_policy": "exact_receipt_v2_entry_point_and_capability_compatible"
+    },
+    {
+      "adapter_id": "adapter:symphony:symphony-snv.v1",
+      "command_protocol": "symphony.knowledge.engine-process.v1",
+      "component": "snv-engine",
+      "entry_point_id": "symphony-snv",
+      "format_version": 2,
+      "implementation_path": "modules/snv-engine",
+      "operation_ids": [
+        "engop:symphony:snv.snv-evidence-plan",
+        "engop:symphony:snv.snv-inspect",
+        "engop:symphony:snv.snv-state-plan",
+        "engop:symphony:snv.snv-state-reduce"
+      ],
+      "owner_contract": "modules/snv-engine/SPEC.md",
       "version_policy": "exact_receipt_v2_entry_point_and_capability_compatible"
     },
     {
@@ -1085,6 +1155,88 @@
       "statement": "Finite read-only native request/callback state around the external Stable 10.45 SDK dependency. Invalid or mismatched input never establishes complete provider evidence.",
       "status": "active",
       "title": "IBKR TWS Stable read adapter boundary"
+    },
+    {
+      "allowed_adapter_ids": [
+        "adapter:symphony:symphony-sciv.v1"
+      ],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "TestSNVDescriptorRejectsUnsupportedOperation",
+            "TestSNVInterfaceResourcesRejectTampering",
+            "TestSNVResultRejectsUnboundOwner"
+          ],
+          "path": "tools/qxctl/internal/knowledgeengine/snv_test.go"
+        }
+      ],
+      "invariant_id": "invariant:symphony:sciv.evidence-boundary",
+      "ipc_boundary": true,
+      "owner_component": "sciv-engine",
+      "owner_contract": "modules/sciv-engine/SPEC.md",
+      "producer_implementations": [
+        "modules/sciv-engine/src/sciv.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "main"
+          ],
+          "path": "modules/sciv-engine/tests/sciv_test.cpp"
+        }
+      ],
+      "real_process_regressions": [
+        {
+          "cases": [
+            "test_installed_requests"
+          ],
+          "path": "modules/sciv-engine/tests/process.cpp"
+        }
+      ],
+      "statement": "Exact independently installed owner semantics retain subject distinctions, scope, time, source and original evidence. Native request-bound results identify the admitted owner release and original source digest. Unknown/conflicting evidence remains visible. Typed proposals change no selected head; retained-state operations preserve their declared effect and authorization boundaries. Receipt, descriptor, resource and response identity drift fail before evidence is accepted.",
+      "status": "active",
+      "title": "SCIV exact evidence and process ownership"
+    },
+    {
+      "allowed_adapter_ids": [
+        "adapter:symphony:symphony-scnv.v1"
+      ],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "TestSNVDescriptorRejectsUnsupportedOperation",
+            "TestSNVInterfaceResourcesRejectTampering",
+            "TestSNVResultRejectsUnboundOwner"
+          ],
+          "path": "tools/qxctl/internal/knowledgeengine/snv_test.go"
+        }
+      ],
+      "invariant_id": "invariant:symphony:scnv.evidence-boundary",
+      "ipc_boundary": true,
+      "owner_component": "scnv-engine",
+      "owner_contract": "modules/scnv-engine/SPEC.md",
+      "producer_implementations": [
+        "modules/scnv-engine/src/scnv.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "main"
+          ],
+          "path": "modules/scnv-engine/tests/scnv_test.cpp"
+        }
+      ],
+      "real_process_regressions": [
+        {
+          "cases": [
+            "test_installed_requests"
+          ],
+          "path": "modules/scnv-engine/tests/process.cpp"
+        }
+      ],
+      "statement": "Exact independently installed owner semantics retain subject distinctions, scope, time, source and original evidence. Native request-bound results identify the admitted owner release and original source digest. Unknown/conflicting evidence remains visible. Typed proposals change no selected head; retained-state operations preserve their declared effect and authorization boundaries. Receipt, descriptor, resource and response identity drift fail before evidence is accepted.",
+      "status": "active",
+      "title": "SCNV exact evidence and process ownership"
     },
     {
       "allowed_adapter_ids": [],
@@ -2384,6 +2536,129 @@
       "statement": "Protected SHV source selection retains the exact owner plan, source transition and installation before requesting authenticated SSIAG permission. The journal verifies every retained predecessor and contiguous committed history, serializes CAS, and atomically publishes only with fresh permission and unchanged installation. Recovery preserves intent/correlation; historical replay never rewinds current head. Source and permission semantics remain with their owners.",
       "status": "active",
       "title": "SHV source selection commits only the exact authorized owner transition"
+    },
+    {
+      "allowed_adapter_ids": [
+        "adapter:symphony:symphony-sniv.v1"
+      ],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "TestSNVDescriptorRejectsUnsupportedOperation",
+            "TestSNVInterfaceResourcesRejectTampering",
+            "TestSNVResultRejectsUnboundOwner"
+          ],
+          "path": "tools/qxctl/internal/knowledgeengine/snv_test.go"
+        }
+      ],
+      "invariant_id": "invariant:symphony:sniv.evidence-boundary",
+      "ipc_boundary": true,
+      "owner_component": "sniv-engine",
+      "owner_contract": "modules/sniv-engine/SPEC.md",
+      "producer_implementations": [
+        "modules/sniv-engine/src/sniv.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "main"
+          ],
+          "path": "modules/sniv-engine/tests/sniv_test.cpp"
+        }
+      ],
+      "real_process_regressions": [
+        {
+          "cases": [
+            "test_installed_requests"
+          ],
+          "path": "modules/sniv-engine/tests/process.cpp"
+        }
+      ],
+      "statement": "Exact independently installed owner semantics retain subject distinctions, scope, time, source and original evidence. Native request-bound results identify the admitted owner release and original source digest. Unknown/conflicting evidence remains visible. Typed proposals change no selected head; retained-state operations preserve their declared effect and authorization boundaries. Receipt, descriptor, resource and response identity drift fail before evidence is accepted.",
+      "status": "active",
+      "title": "SNIV exact evidence and process ownership"
+    },
+    {
+      "allowed_adapter_ids": [
+        "adapter:symphony:symphony-snrv.v1"
+      ],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "TestSNVDescriptorRejectsUnsupportedOperation",
+            "TestSNVInterfaceResourcesRejectTampering",
+            "TestSNVResultRejectsUnboundOwner"
+          ],
+          "path": "tools/qxctl/internal/knowledgeengine/snv_test.go"
+        }
+      ],
+      "invariant_id": "invariant:symphony:snrv.evidence-boundary",
+      "ipc_boundary": true,
+      "owner_component": "snrv-engine",
+      "owner_contract": "modules/snrv-engine/SPEC.md",
+      "producer_implementations": [
+        "modules/snrv-engine/src/snrv.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "main"
+          ],
+          "path": "modules/snrv-engine/tests/snrv_test.cpp"
+        }
+      ],
+      "real_process_regressions": [
+        {
+          "cases": [
+            "test_installed_requests"
+          ],
+          "path": "modules/snrv-engine/tests/process.cpp"
+        }
+      ],
+      "statement": "Exact independently installed owner semantics retain subject distinctions, scope, time, source and original evidence. Native request-bound results identify the admitted owner release and original source digest. Unknown/conflicting evidence remains visible. Typed proposals change no selected head; retained-state operations preserve their declared effect and authorization boundaries. Receipt, descriptor, resource and response identity drift fail before evidence is accepted.",
+      "status": "active",
+      "title": "SNRV exact evidence and process ownership"
+    },
+    {
+      "allowed_adapter_ids": [
+        "adapter:symphony:symphony-snv.v1"
+      ],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "TestSNVDescriptorRejectsUnsupportedOperation",
+            "TestSNVInterfaceResourcesRejectTampering",
+            "TestSNVResultRejectsUnboundOwner"
+          ],
+          "path": "tools/qxctl/internal/knowledgeengine/snv_test.go"
+        }
+      ],
+      "invariant_id": "invariant:symphony:snv.evidence-boundary",
+      "ipc_boundary": true,
+      "owner_component": "snv-engine",
+      "owner_contract": "modules/snv-engine/SPEC.md",
+      "producer_implementations": [
+        "modules/snv-engine/src/snv.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "main"
+          ],
+          "path": "modules/snv-engine/tests/snv_test.cpp"
+        }
+      ],
+      "real_process_regressions": [
+        {
+          "cases": [
+            "test_installed_requests"
+          ],
+          "path": "modules/snv-engine/tests/process.cpp"
+        }
+      ],
+      "statement": "Exact independently installed owner semantics retain subject distinctions, scope, time, source and original evidence. Native request-bound results identify the admitted owner release and original source digest. Unknown/conflicting evidence remains visible. Typed proposals change no selected head; retained-state operations preserve their declared effect and authorization boundaries. Receipt, descriptor, resource and response identity drift fail before evidence is accepted.",
+      "status": "active",
+      "title": "SNV exact evidence and process ownership"
     },
     {
       "allowed_adapter_ids": [
@@ -3917,7 +4192,7 @@
     }
   ],
   "protocol": "symphony.knowledge.invariant-ownership-registry.v3",
-  "registry_digest": "sha256:e3ac8272770d6a8b1e219b80fab725e871c582abaea7037861cb8487295f18dd",
+  "registry_digest": "sha256:7f0b5e19de508eedfa9f4f9934a2b366da613510636d0dbc5b112d67e132ab94",
   "scope": "common_lowest_authoritative_layer",
   "test_policy": {
     "consumer_boundary_rejection_required": true,

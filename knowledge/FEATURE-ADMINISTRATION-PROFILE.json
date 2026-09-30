@@ -914,6 +914,154 @@
       "expectations": [
         {
           "command_ids": [
+            "qxcmd:symphony:snv.state.apply"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [],
+          "evidence": [
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/cmd/qxctl/snv.go",
+            "tools/qxctl/cmd/qxctl/snv_state.go",
+            "tools/qxctl/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "apply",
+          "rationale": "Reviewed exact SNV routes keep pure owner interpretation, private evidence retention, observational snapshots and SSIAG-backed local view selection distinct. Each typed mode uses the existing semantic leaf; schema and template are shared receipt-bound resources.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:snv.schema",
+            "qxcmd:symphony:snv.template"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [],
+          "evidence": [
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/cmd/qxctl/snv.go",
+            "tools/qxctl/cmd/qxctl/snv_state.go",
+            "tools/qxctl/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "discover",
+          "rationale": "Reviewed exact SNV routes keep pure owner interpretation, private evidence retention, observational snapshots and SSIAG-backed local view selection distinct. Each typed mode uses the existing semantic leaf; schema and template are shared receipt-bound resources.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:snv.evidence.status",
+            "qxcmd:symphony:snv.inspect",
+            "qxcmd:symphony:snv.state.status"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [],
+          "evidence": [
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/cmd/qxctl/snv.go",
+            "tools/qxctl/cmd/qxctl/snv_state.go",
+            "tools/qxctl/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "inspect",
+          "rationale": "Reviewed exact SNV routes keep pure owner interpretation, private evidence retention, observational snapshots and SSIAG-backed local view selection distinct. Each typed mode uses the existing semantic leaf; schema and template are shared receipt-bound resources.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:snv.evidence.commit"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [],
+          "evidence": [
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/cmd/qxctl/snv.go",
+            "tools/qxctl/cmd/qxctl/snv_state.go",
+            "tools/qxctl/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "invoke",
+          "rationale": "Reviewed exact SNV routes keep pure owner interpretation, private evidence retention, observational snapshots and SSIAG-backed local view selection distinct. Each typed mode uses the existing semantic leaf; schema and template are shared receipt-bound resources.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:snv.evidence.prepare",
+            "qxcmd:symphony:snv.state.plan"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [],
+          "evidence": [
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/cmd/qxctl/snv.go",
+            "tools/qxctl/cmd/qxctl/snv_state.go",
+            "tools/qxctl/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "propose",
+          "rationale": "Reviewed exact SNV routes keep pure owner interpretation, private evidence retention, observational snapshots and SSIAG-backed local view selection distinct. Each typed mode uses the existing semantic leaf; schema and template are shared receipt-bound resources.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:snv.names.resolve"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [],
+          "evidence": [
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/cmd/qxctl/snv.go",
+            "tools/qxctl/cmd/qxctl/snv_state.go",
+            "tools/qxctl/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "query",
+          "rationale": "Reviewed exact SNV routes keep pure owner interpretation, private evidence retention, observational snapshots and SSIAG-backed local view selection distinct. Each typed mode uses the existing semantic leaf; schema and template are shared receipt-bound resources.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:snv.state.recover"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [],
+          "evidence": [
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/cmd/qxctl/snv.go",
+            "tools/qxctl/cmd/qxctl/snv_state.go",
+            "tools/qxctl/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "recover",
+          "rationale": "Reviewed exact SNV routes keep pure owner interpretation, private evidence retention, observational snapshots and SSIAG-backed local view selection distinct. Each typed mode uses the existing semantic leaf; schema and template are shared receipt-bound resources.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:snv.clusters.validate",
+            "qxcmd:symphony:snv.identity.validate",
+            "qxcmd:symphony:snv.names.validate",
+            "qxcmd:symphony:snv.resources.validate"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [],
+          "evidence": [
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/cmd/qxctl/snv.go",
+            "tools/qxctl/cmd/qxctl/snv_state.go",
+            "tools/qxctl/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "validate",
+          "rationale": "Reviewed exact SNV routes keep pure owner interpretation, private evidence retention, observational snapshots and SSIAG-backed local view selection distinct. Each typed mode uses the existing semantic leaf; schema and template are shared receipt-bound resources.",
+          "requirement": "required"
+        }
+      ],
+      "feature_id": "ssfv:symphony:qxctl-snv-administration"
+    },
+    {
+      "expectations": [
+        {
+          "command_ids": [
             "qxcmd:symphony:knowledge.session.begin",
             "qxcmd:symphony:knowledge.session.checkpoint",
             "qxcmd:symphony:knowledge.session.close",
@@ -5163,6 +5311,96 @@
       "expectations": [
         {
           "command_ids": [
+            "qxcmd:symphony:inventory",
+            "qxcmd:symphony:inventory.digest",
+            "qxcmd:symphony:module.check",
+            "qxcmd:symphony:module.inspect",
+            "qxcmd:symphony:module.metadata",
+            "qxcmd:symphony:modules",
+            "qxcmd:symphony:modules.check",
+            "qxcmd:symphony:modules.metadata"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [],
+          "evidence": [
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/cmd/qxctl/snv.go",
+            "tools/qxctl/cmd/qxctl/snv_state.go",
+            "modules/sciv-engine/SPEC.md",
+            "modules/sciv-engine/OWNER-INTERFACE.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "discover",
+          "rationale": "Reviewed exact SNV routes keep pure owner interpretation, private evidence retention, observational snapshots and SSIAG-backed local view selection distinct. Each typed mode uses the existing semantic leaf; schema and template are shared receipt-bound resources.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:snv.clusters.validate"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:sciv.sciv-validate"
+          ],
+          "evidence": [
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/cmd/qxctl/snv.go",
+            "tools/qxctl/cmd/qxctl/snv_state.go",
+            "modules/sciv-engine/SPEC.md",
+            "modules/sciv-engine/OWNER-INTERFACE.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "inspect",
+          "rationale": "Reviewed exact SNV routes keep pure owner interpretation, private evidence retention, observational snapshots and SSIAG-backed local view selection distinct. Each typed mode uses the existing semantic leaf; schema and template are shared receipt-bound resources.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:snv.clusters.validate"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:sciv.sciv-transition"
+          ],
+          "evidence": [
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/cmd/qxctl/snv.go",
+            "tools/qxctl/cmd/qxctl/snv_state.go",
+            "modules/sciv-engine/SPEC.md",
+            "modules/sciv-engine/OWNER-INTERFACE.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "propose",
+          "rationale": "Reviewed exact SNV routes keep pure owner interpretation, private evidence retention, observational snapshots and SSIAG-backed local view selection distinct. Each typed mode uses the existing semantic leaf; schema and template are shared receipt-bound resources.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:snv.clusters.validate"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:sciv.sciv-validate"
+          ],
+          "evidence": [
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/cmd/qxctl/snv.go",
+            "tools/qxctl/cmd/qxctl/snv_state.go",
+            "modules/sciv-engine/SPEC.md",
+            "modules/sciv-engine/OWNER-INTERFACE.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "validate",
+          "rationale": "Reviewed exact SNV routes keep pure owner interpretation, private evidence retention, observational snapshots and SSIAG-backed local view selection distinct. Each typed mode uses the existing semantic leaf; schema and template are shared receipt-bound resources.",
+          "requirement": "required"
+        }
+      ],
+      "feature_id": "ssfv:symphony:sciv-engine"
+    },
+    {
+      "expectations": [
+        {
+          "command_ids": [
             "qxcmd:symphony:sclv.inspect"
           ],
           "delivery": "direct",
@@ -5299,6 +5537,118 @@
         }
       ],
       "feature_id": "ssfv:symphony:sclv-engine.provider-neutral-evidence-normalization"
+    },
+    {
+      "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:inventory",
+            "qxcmd:symphony:inventory.digest",
+            "qxcmd:symphony:module.check",
+            "qxcmd:symphony:module.inspect",
+            "qxcmd:symphony:module.metadata",
+            "qxcmd:symphony:modules",
+            "qxcmd:symphony:modules.check",
+            "qxcmd:symphony:modules.metadata"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [],
+          "evidence": [
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/cmd/qxctl/snv.go",
+            "tools/qxctl/cmd/qxctl/snv_state.go",
+            "modules/scnv-engine/SPEC.md",
+            "modules/scnv-engine/OWNER-INTERFACE.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "discover",
+          "rationale": "Reviewed exact SNV routes keep pure owner interpretation, private evidence retention, observational snapshots and SSIAG-backed local view selection distinct. Each typed mode uses the existing semantic leaf; schema and template are shared receipt-bound resources.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:snv.names.resolve",
+            "qxcmd:symphony:snv.names.validate"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:scnv.names-resolve",
+            "engop:symphony:scnv.names-validate"
+          ],
+          "evidence": [
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/cmd/qxctl/snv.go",
+            "tools/qxctl/cmd/qxctl/snv_state.go",
+            "modules/scnv-engine/SPEC.md",
+            "modules/scnv-engine/OWNER-INTERFACE.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "inspect",
+          "rationale": "Reviewed exact SNV routes keep pure owner interpretation, private evidence retention, observational snapshots and SSIAG-backed local view selection distinct. Each typed mode uses the existing semantic leaf; schema and template are shared receipt-bound resources.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:snv.names.validate"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:scnv.names-validate"
+          ],
+          "evidence": [
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/cmd/qxctl/snv.go",
+            "tools/qxctl/cmd/qxctl/snv_state.go",
+            "modules/scnv-engine/SPEC.md",
+            "modules/scnv-engine/OWNER-INTERFACE.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "propose",
+          "rationale": "Reviewed exact SNV routes keep pure owner interpretation, private evidence retention, observational snapshots and SSIAG-backed local view selection distinct. Each typed mode uses the existing semantic leaf; schema and template are shared receipt-bound resources.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:snv.names.resolve"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:scnv.names-resolve"
+          ],
+          "evidence": [
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/cmd/qxctl/snv.go",
+            "tools/qxctl/cmd/qxctl/snv_state.go",
+            "modules/scnv-engine/SPEC.md",
+            "modules/scnv-engine/OWNER-INTERFACE.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "query",
+          "rationale": "Reviewed exact SNV routes keep pure owner interpretation, private evidence retention, observational snapshots and SSIAG-backed local view selection distinct. Each typed mode uses the existing semantic leaf; schema and template are shared receipt-bound resources.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:snv.names.validate"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:scnv.names-validate"
+          ],
+          "evidence": [
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/cmd/qxctl/snv.go",
+            "tools/qxctl/cmd/qxctl/snv_state.go",
+            "modules/scnv-engine/SPEC.md",
+            "modules/scnv-engine/OWNER-INTERFACE.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "validate",
+          "rationale": "Reviewed exact SNV routes keep pure owner interpretation, private evidence retention, observational snapshots and SSIAG-backed local view selection distinct. Each typed mode uses the existing semantic leaf; schema and template are shared receipt-bound resources.",
+          "requirement": "required"
+        }
+      ],
+      "feature_id": "ssfv:symphony:scnv-engine"
     },
     {
       "expectations": [
@@ -6922,6 +7272,317 @@
         }
       ],
       "feature_id": "ssfv:symphony:skvi-engine.structural-index-assurance"
+    },
+    {
+      "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:inventory",
+            "qxcmd:symphony:inventory.digest",
+            "qxcmd:symphony:module.check",
+            "qxcmd:symphony:module.inspect",
+            "qxcmd:symphony:module.metadata",
+            "qxcmd:symphony:modules",
+            "qxcmd:symphony:modules.check",
+            "qxcmd:symphony:modules.metadata"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [],
+          "evidence": [
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/cmd/qxctl/snv.go",
+            "tools/qxctl/cmd/qxctl/snv_state.go",
+            "modules/sniv-engine/SPEC.md",
+            "modules/sniv-engine/OWNER-INTERFACE.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "discover",
+          "rationale": "Reviewed exact SNV routes keep pure owner interpretation, private evidence retention, observational snapshots and SSIAG-backed local view selection distinct. Each typed mode uses the existing semantic leaf; schema and template are shared receipt-bound resources.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:snv.identity.validate"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:sniv.identity-validate"
+          ],
+          "evidence": [
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/cmd/qxctl/snv.go",
+            "tools/qxctl/cmd/qxctl/snv_state.go",
+            "modules/sniv-engine/SPEC.md",
+            "modules/sniv-engine/OWNER-INTERFACE.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "propose",
+          "rationale": "Reviewed exact SNV routes keep pure owner interpretation, private evidence retention, observational snapshots and SSIAG-backed local view selection distinct. Each typed mode uses the existing semantic leaf; schema and template are shared receipt-bound resources.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:snv.identity.validate"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:sniv.identity-validate"
+          ],
+          "evidence": [
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/cmd/qxctl/snv.go",
+            "tools/qxctl/cmd/qxctl/snv_state.go",
+            "modules/sniv-engine/SPEC.md",
+            "modules/sniv-engine/OWNER-INTERFACE.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "validate",
+          "rationale": "Reviewed exact SNV routes keep pure owner interpretation, private evidence retention, observational snapshots and SSIAG-backed local view selection distinct. Each typed mode uses the existing semantic leaf; schema and template are shared receipt-bound resources.",
+          "requirement": "required"
+        }
+      ],
+      "feature_id": "ssfv:symphony:sniv-engine"
+    },
+    {
+      "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:inventory",
+            "qxcmd:symphony:inventory.digest",
+            "qxcmd:symphony:module.check",
+            "qxcmd:symphony:module.inspect",
+            "qxcmd:symphony:module.metadata",
+            "qxcmd:symphony:modules",
+            "qxcmd:symphony:modules.check",
+            "qxcmd:symphony:modules.metadata"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [],
+          "evidence": [
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/cmd/qxctl/snv.go",
+            "tools/qxctl/cmd/qxctl/snv_state.go",
+            "modules/snrv-engine/SPEC.md",
+            "modules/snrv-engine/OWNER-INTERFACE.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "discover",
+          "rationale": "Reviewed exact SNV routes keep pure owner interpretation, private evidence retention, observational snapshots and SSIAG-backed local view selection distinct. Each typed mode uses the existing semantic leaf; schema and template are shared receipt-bound resources.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:snv.resources.validate"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:snrv.resources-validate"
+          ],
+          "evidence": [
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/cmd/qxctl/snv.go",
+            "tools/qxctl/cmd/qxctl/snv_state.go",
+            "modules/snrv-engine/SPEC.md",
+            "modules/snrv-engine/OWNER-INTERFACE.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "propose",
+          "rationale": "Reviewed exact SNV routes keep pure owner interpretation, private evidence retention, observational snapshots and SSIAG-backed local view selection distinct. Each typed mode uses the existing semantic leaf; schema and template are shared receipt-bound resources.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:snv.resources.validate"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:snrv.resources-validate"
+          ],
+          "evidence": [
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/cmd/qxctl/snv.go",
+            "tools/qxctl/cmd/qxctl/snv_state.go",
+            "modules/snrv-engine/SPEC.md",
+            "modules/snrv-engine/OWNER-INTERFACE.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "validate",
+          "rationale": "Reviewed exact SNV routes keep pure owner interpretation, private evidence retention, observational snapshots and SSIAG-backed local view selection distinct. Each typed mode uses the existing semantic leaf; schema and template are shared receipt-bound resources.",
+          "requirement": "required"
+        }
+      ],
+      "feature_id": "ssfv:symphony:snrv-engine"
+    },
+    {
+      "expectations": [
+        {
+          "command_ids": [],
+          "delivery": "runtime_only",
+          "engine_operation_ids": [],
+          "evidence": [
+            "libraries/snv-common-cpp/SPEC.md",
+            "libraries/snv-common-cpp/FEATURES.md",
+            "cmake/SymphonySnvEngine.cmake"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "invoke",
+          "rationale": "Neutral shared C++26 JSON/process/descriptor mechanics are invoked only by exact native owners or SDK consumers; this SDK has no semantic engine or separate administration surface.",
+          "requirement": "required"
+        }
+      ],
+      "feature_id": "ssfv:symphony:snv-common-cpp"
+    },
+    {
+      "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:snv.state.apply"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+            "engop:symphony:snv.snv-state-reduce"
+          ],
+          "evidence": [
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/cmd/qxctl/snv.go",
+            "tools/qxctl/cmd/qxctl/snv_state.go",
+            "modules/snv-engine/SPEC.md",
+            "modules/snv-engine/OWNER-INTERFACE.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "apply",
+          "rationale": "Reviewed exact SNV routes keep pure owner interpretation, private evidence retention, observational snapshots and SSIAG-backed local view selection distinct. Each typed mode uses the existing semantic leaf; schema and template are shared receipt-bound resources.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:inventory",
+            "qxcmd:symphony:inventory.digest",
+            "qxcmd:symphony:module.check",
+            "qxcmd:symphony:module.inspect",
+            "qxcmd:symphony:module.metadata",
+            "qxcmd:symphony:modules",
+            "qxcmd:symphony:modules.check",
+            "qxcmd:symphony:modules.metadata"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [],
+          "evidence": [
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/cmd/qxctl/snv.go",
+            "tools/qxctl/cmd/qxctl/snv_state.go",
+            "modules/snv-engine/SPEC.md",
+            "modules/snv-engine/OWNER-INTERFACE.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "discover",
+          "rationale": "Reviewed exact SNV routes keep pure owner interpretation, private evidence retention, observational snapshots and SSIAG-backed local view selection distinct. Each typed mode uses the existing semantic leaf; schema and template are shared receipt-bound resources.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:snv.evidence.status",
+            "qxcmd:symphony:snv.inspect",
+            "qxcmd:symphony:snv.state.status"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:snv.snv-inspect"
+          ],
+          "evidence": [
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/cmd/qxctl/snv.go",
+            "tools/qxctl/cmd/qxctl/snv_state.go",
+            "modules/snv-engine/SPEC.md",
+            "modules/snv-engine/OWNER-INTERFACE.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "inspect",
+          "rationale": "Reviewed exact SNV routes keep pure owner interpretation, private evidence retention, observational snapshots and SSIAG-backed local view selection distinct. Each typed mode uses the existing semantic leaf; schema and template are shared receipt-bound resources.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:snv.evidence.commit"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [],
+          "evidence": [
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/cmd/qxctl/snv.go",
+            "tools/qxctl/cmd/qxctl/snv_state.go",
+            "modules/snv-engine/SPEC.md",
+            "modules/snv-engine/OWNER-INTERFACE.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "invoke",
+          "rationale": "Reviewed exact SNV routes keep pure owner interpretation, private evidence retention, observational snapshots and SSIAG-backed local view selection distinct. Each typed mode uses the existing semantic leaf; schema and template are shared receipt-bound resources.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:snv.evidence.prepare",
+            "qxcmd:symphony:snv.state.plan"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:snv.snv-evidence-plan",
+            "engop:symphony:snv.snv-state-plan"
+          ],
+          "evidence": [
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/cmd/qxctl/snv.go",
+            "tools/qxctl/cmd/qxctl/snv_state.go",
+            "modules/snv-engine/SPEC.md",
+            "modules/snv-engine/OWNER-INTERFACE.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "propose",
+          "rationale": "Reviewed exact SNV routes keep pure owner interpretation, private evidence retention, observational snapshots and SSIAG-backed local view selection distinct. Each typed mode uses the existing semantic leaf; schema and template are shared receipt-bound resources.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:snv.inspect"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:snv.snv-inspect"
+          ],
+          "evidence": [
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/cmd/qxctl/snv.go",
+            "tools/qxctl/cmd/qxctl/snv_state.go",
+            "modules/snv-engine/SPEC.md",
+            "modules/snv-engine/OWNER-INTERFACE.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "query",
+          "rationale": "Reviewed exact SNV routes keep pure owner interpretation, private evidence retention, observational snapshots and SSIAG-backed local view selection distinct. Each typed mode uses the existing semantic leaf; schema and template are shared receipt-bound resources.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:snv.state.recover"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+            "engop:symphony:snv.snv-state-reduce"
+          ],
+          "evidence": [
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/cmd/qxctl/snv.go",
+            "tools/qxctl/cmd/qxctl/snv_state.go",
+            "modules/snv-engine/SPEC.md",
+            "modules/snv-engine/OWNER-INTERFACE.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "recover",
+          "rationale": "Reviewed exact SNV routes keep pure owner interpretation, private evidence retention, observational snapshots and SSIAG-backed local view selection distinct. Each typed mode uses the existing semantic leaf; schema and template are shared receipt-bound resources.",
+          "requirement": "required"
+        }
+      ],
+      "feature_id": "ssfv:symphony:snv-engine"
     },
     {
       "expectations": [
@@ -8766,9 +9427,9 @@
   ],
   "format_version": 1,
   "forward_gate": "enforce_new_records",
-  "profile_digest": "sha256:c77420c2fffeae39b37166873ed795f6b6c9c1bb92ae0054efb05f0ddd512250",
+  "profile_digest": "sha256:ee3f2fb9f0bf6e80001509fece40f9fd34ca58c4d95db5f37917815fad2f627f",
   "profile_id": "symphony.registered-features.administration.v1",
   "protocol": "symphony.knowledge.feature-administration-profile.v1",
-  "registered_feature_count": 131,
-  "ssfv_registry_digest": "sha256:bb9dacd8a11ea68a23506f4efa396820f54676a3e1f7236432c95aa28472d353"
+  "registered_feature_count": 138,
+  "ssfv_registry_digest": "sha256:0621c5f0b5b62d49eb925107260f562ef69cf50f46d9cfcc9221e419f77ff667"
 }

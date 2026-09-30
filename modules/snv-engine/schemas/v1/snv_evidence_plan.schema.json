@@ -1,0 +1,335 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "symphony.snv.evidence-plan-input.v1",
+  "type": "object",
+  "properties": {
+    "protocol": {
+      "const": "symphony.snv.evidence-plan-input.v1"
+    },
+    "operation_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "mode": {
+      "enum": [
+        "bundle",
+        "import"
+      ]
+    },
+    "bundle": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "protocol": {
+              "const": "symphony.snv.bundle.v1"
+            },
+            "bundle_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "artifacts": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "owner": {
+                    "enum": [
+                      "sniv",
+                      "snrv",
+                      "sciv",
+                      "scnv"
+                    ]
+                  },
+                  "owner_version": {
+                    "const": "0.1.0-dev"
+                  },
+                  "operation": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128
+                  },
+                  "source_utf8": {
+                    "type": "string",
+                    "maxLength": 65536
+                  },
+                  "source_digest": {
+                    "type": "string",
+                    "pattern": "^sha256:[a-f0-9]{64}$"
+                  }
+                },
+                "required": [
+                  "owner",
+                  "owner_version",
+                  "operation",
+                  "source_utf8",
+                  "source_digest"
+                ],
+                "additionalProperties": false
+              },
+              "maxItems": 4
+            },
+            "relations": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "relationship_id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128
+                  },
+                  "kind": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128
+                  },
+                  "from": {
+                    "type": "object",
+                    "properties": {
+                      "owner": {
+                        "enum": [
+                          "sniv",
+                          "snrv",
+                          "sciv",
+                          "scnv"
+                        ]
+                      },
+                      "id": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 128
+                      },
+                      "kind": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 128
+                      }
+                    },
+                    "required": [
+                      "owner",
+                      "kind",
+                      "id"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "to": {
+                    "type": "object",
+                    "properties": {
+                      "owner": {
+                        "enum": [
+                          "sniv",
+                          "snrv",
+                          "sciv",
+                          "scnv"
+                        ]
+                      },
+                      "id": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 128
+                      },
+                      "kind": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 128
+                      }
+                    },
+                    "required": [
+                      "owner",
+                      "kind",
+                      "id"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "source_ref": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 1024
+                  }
+                },
+                "required": [
+                  "relationship_id",
+                  "kind",
+                  "from",
+                  "to",
+                  "source_ref"
+                ],
+                "additionalProperties": false
+              },
+              "maxItems": 2048
+            }
+          },
+          "required": [
+            "protocol",
+            "bundle_id",
+            "artifacts",
+            "relations"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "export_records": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "manifest": {
+              "type": "object",
+              "properties": {
+                "protocol": {
+                  "const": "symphony.snv.export-manifest.v1"
+                },
+                "writer": {
+                  "const": "symphony-snv"
+                },
+                "writer_version": {
+                  "const": "0.1.0-dev"
+                },
+                "bundle_digest": {
+                  "type": "string",
+                  "pattern": "^sha256:[a-f0-9]{64}$"
+                },
+                "byte_count": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 262144
+                },
+                "encoding": {
+                  "const": "hex"
+                },
+                "chunk_size": {
+                  "const": 16384
+                },
+                "chunks": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "index": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 63
+                      },
+                      "byte_count": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 16384
+                      },
+                      "digest": {
+                        "type": "string",
+                        "pattern": "^sha256:[a-f0-9]{64}$"
+                      }
+                    },
+                    "required": [
+                      "index",
+                      "byte_count",
+                      "digest"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "maxItems": 64
+                },
+                "embedded_dependencies": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  },
+                  "maxItems": 4
+                },
+                "digest": {
+                  "type": "string",
+                  "pattern": "^sha256:[a-f0-9]{64}$"
+                }
+              },
+              "required": [
+                "protocol",
+                "writer",
+                "writer_version",
+                "bundle_digest",
+                "byte_count",
+                "encoding",
+                "chunk_size",
+                "chunks",
+                "embedded_dependencies",
+                "digest"
+              ],
+              "additionalProperties": false
+            },
+            "chunks": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "protocol": {
+                    "const": "symphony.snv.export-chunk.v1"
+                  },
+                  "manifest_digest": {
+                    "type": "string",
+                    "pattern": "^sha256:[a-f0-9]{64}$"
+                  },
+                  "bundle_digest": {
+                    "type": "string",
+                    "pattern": "^sha256:[a-f0-9]{64}$"
+                  },
+                  "index": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 63
+                  },
+                  "hex": {
+                    "type": "string",
+                    "pattern": "^(?:[0-9a-f]{2})*$",
+                    "maxLength": 32768
+                  },
+                  "byte_count": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 16384
+                  },
+                  "digest": {
+                    "type": "string",
+                    "pattern": "^sha256:[a-f0-9]{64}$"
+                  }
+                },
+                "required": [
+                  "protocol",
+                  "manifest_digest",
+                  "bundle_digest",
+                  "index",
+                  "hex",
+                  "byte_count",
+                  "digest"
+                ],
+                "additionalProperties": false
+              },
+              "maxItems": 64
+            }
+          },
+          "required": [
+            "manifest",
+            "chunks"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    }
+  },
+  "required": [
+    "protocol",
+    "operation_id",
+    "mode",
+    "bundle",
+    "export_records"
+  ],
+  "additionalProperties": false
+}

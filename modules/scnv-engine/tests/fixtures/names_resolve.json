@@ -1,0 +1,51 @@
+{
+  "protocol": "scnv.resolve.v1",
+  "records": [
+    {
+      "record_id": "record-annex-1",
+      "association_id": "association-annex",
+      "kind": "assignment",
+      "previous_record_id": null,
+      "origin_record_id": null,
+      "subject": {
+        "kind": "node",
+        "id": "node-a"
+      },
+      "name": "annex",
+      "name_kind": "short_name",
+      "namespace": "user-assigned",
+      "source": {
+        "kind": "user",
+        "id": "caller-a"
+      },
+      "scope": {
+        "kind": "cluster",
+        "id": "cluster-a"
+      },
+      "interval": {
+        "from_unix_ms": 100,
+        "until_unix_ms": null
+      },
+      "observed_unix_ms": 100,
+      "recorded_unix_ms": 110
+    }
+  ],
+  "coverage": "complete",
+  "limits": {
+    "max_records": 512
+  },
+  "query": {
+    "mode": "exact",
+    "name": "annex",
+    "scope": {
+      "kind": "cluster",
+      "id": "cluster-a"
+    },
+    "namespace": null,
+    "name_kind": null,
+    "as_of_unix_ms": 150,
+    "offset": 0,
+    "limit": 128,
+    "expected_evidence_digest": null
+  }
+}

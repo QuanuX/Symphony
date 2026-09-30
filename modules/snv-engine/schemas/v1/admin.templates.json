@@ -1,0 +1,84 @@
+{
+  "protocol": "symphony.snv.administration-templates.v1",
+  "notice": "Caller must supply actual evidence and exact plan; placeholders establish neither identity nor authority.",
+  "templates": {
+    "snv_inspect": {
+      "protocol": "symphony.snv.inspect-input.v1",
+      "mode": "replay",
+      "bundle": {
+        "protocol": "symphony.snv.bundle.v1",
+        "bundle_id": "caller-bundle-id",
+        "artifacts": [],
+        "relations": []
+      },
+      "baseline": null,
+      "offset": 0,
+      "limit": 64
+    },
+    "snv_evidence_plan": {
+      "protocol": "symphony.snv.evidence-plan-input.v1",
+      "operation_id": "caller-operation-id",
+      "mode": "bundle",
+      "bundle": {
+        "protocol": "symphony.snv.bundle.v1",
+        "bundle_id": "caller-bundle-id",
+        "artifacts": [],
+        "relations": []
+      },
+      "export_records": null
+    },
+    "snv_state_plan": {
+      "protocol": "symphony.snv.state-plan-input.v1",
+      "view": {
+        "tops_id": "caller-tops-id",
+        "view_id": "caller-view-id"
+      },
+      "operation_id": "caller-operation-id",
+      "expected_state_digest": null,
+      "prior_head": null,
+      "change_kind": "select",
+      "bundle": {
+        "protocol": "symphony.snv.bundle.v1",
+        "bundle_id": "caller-bundle-id",
+        "artifacts": [],
+        "relations": []
+      },
+      "reason": "caller supplied reason",
+      "migration": null
+    },
+    "snv_state_reduce": {
+      "protocol": "symphony.snv.state-reduce-input.v1",
+      "input": {
+        "protocol": "symphony.snv.state-plan-input.v1",
+        "view": {
+          "tops_id": "caller-tops-id",
+          "view_id": "caller-view-id"
+        },
+        "operation_id": "caller-operation-id",
+        "expected_state_digest": null,
+        "prior_head": null,
+        "change_kind": "select",
+        "bundle": {
+          "protocol": "symphony.snv.bundle.v1",
+          "bundle_id": "caller-bundle-id",
+          "artifacts": [],
+          "relations": []
+        },
+        "reason": "caller supplied reason",
+        "migration": null
+      },
+      "plan": null
+    }
+  },
+  "workflows": {
+    "snv.state.apply": {
+      "input_from": "snv state plan result",
+      "protocol": "symphony.qxctl.snv-state-proposal.v1",
+      "notice": "Save the complete plan result; apply accepts it unchanged. It is a proposal and grants no permission."
+    },
+    "snv.state.recover": {
+      "operation_id_from": "retained apply attempt",
+      "notice": "Recover requires fresh authority for an uncommitted exact attempt; status is observational."
+    }
+  }
+}

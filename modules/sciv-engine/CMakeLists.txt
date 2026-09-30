@@ -1,0 +1,6 @@
+cmake_minimum_required(VERSION 3.30)
+project(SymphonySciv VERSION 0.1.0 LANGUAGES CXX)
+include(CTest)
+get_filename_component(SYMPHONY_REPOSITORY_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/../.." ABSOLUTE)
+include("${SYMPHONY_REPOSITORY_ROOT}/cmake/SymphonySnvEngine.cmake")
+symphony_snv_engine(OWNER sciv SDK Sciv SOURCES src/sciv.cpp TEST_SOURCES tests/sciv_test.cpp)

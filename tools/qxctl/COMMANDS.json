@@ -180,6 +180,26 @@
           "interaction": "discover"
         },
         {
+          "feature_id": "ssfv:symphony:sciv-engine",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:scnv-engine",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sniv-engine",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:snrv-engine",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:snv-engine",
+          "interaction": "discover"
+        },
+        {
           "feature_id": "ssfv:symphony:sqav-attempt-engine",
           "interaction": "discover"
         },
@@ -284,6 +304,26 @@
         },
         {
           "feature_id": "ssfv:symphony:scabv-ibkr-tws-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sciv-engine",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:scnv-engine",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sniv-engine",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:snrv-engine",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:snv-engine",
           "interaction": "discover"
         },
         {
@@ -2019,6 +2059,26 @@
           "interaction": "discover"
         },
         {
+          "feature_id": "ssfv:symphony:sciv-engine",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:scnv-engine",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sniv-engine",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:snrv-engine",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:snv-engine",
+          "interaction": "discover"
+        },
+        {
           "feature_id": "ssfv:symphony:sqav-attempt-engine",
           "interaction": "discover"
         },
@@ -2130,6 +2190,26 @@
           "interaction": "discover"
         },
         {
+          "feature_id": "ssfv:symphony:sciv-engine",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:scnv-engine",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sniv-engine",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:snrv-engine",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:snv-engine",
+          "interaction": "discover"
+        },
+        {
           "feature_id": "ssfv:symphony:sqav-attempt-engine",
           "interaction": "discover"
         },
@@ -2234,6 +2314,26 @@
         },
         {
           "feature_id": "ssfv:symphony:scabv-ibkr-tws-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sciv-engine",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:scnv-engine",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sniv-engine",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:snrv-engine",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:snv-engine",
           "interaction": "discover"
         },
         {
@@ -2348,6 +2448,26 @@
           "interaction": "discover"
         },
         {
+          "feature_id": "ssfv:symphony:sciv-engine",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:scnv-engine",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sniv-engine",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:snrv-engine",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:snv-engine",
+          "interaction": "discover"
+        },
+        {
           "feature_id": "ssfv:symphony:sqav-attempt-engine",
           "interaction": "discover"
         },
@@ -2455,6 +2575,26 @@
           "interaction": "discover"
         },
         {
+          "feature_id": "ssfv:symphony:sciv-engine",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:scnv-engine",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sniv-engine",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:snrv-engine",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:snv-engine",
+          "interaction": "discover"
+        },
+        {
           "feature_id": "ssfv:symphony:sqav-attempt-engine",
           "interaction": "discover"
         },
@@ -2559,6 +2699,26 @@
         },
         {
           "feature_id": "ssfv:symphony:scabv-ibkr-tws-cpp",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sciv-engine",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:scnv-engine",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sniv-engine",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:snrv-engine",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:snv-engine",
           "interaction": "discover"
         },
         {
@@ -15118,6 +15278,609 @@
     {
       "aliases": [],
       "authority_mode": "none",
+      "backend_operation_ids": [
+        "engop:symphony:sciv.sciv-transition",
+        "engop:symphony:sciv.sciv-validate"
+      ],
+      "command_id": "qxcmd:symphony:snv.clusters.validate",
+      "deprecated_in": null,
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl-snv-administration",
+          "interaction": "validate"
+        },
+        {
+          "feature_id": "ssfv:symphony:sciv-engine",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:sciv-engine",
+          "interaction": "propose"
+        },
+        {
+          "feature_id": "ssfv:symphony:sciv-engine",
+          "interaction": "validate"
+        }
+      ],
+      "grammar": "qxctl snv clusters validate [--input VALUE] [--json] [--prefix VALUE] [--version VALUE]",
+      "infrastructure_purpose": null,
+      "input_protocols": [
+        "symphony.snv.sciv.evidence.v1",
+        "symphony.snv.sciv.transition.v1"
+      ],
+      "introduced_in": "0.1.0-dev",
+      "json_output": true,
+      "mutability": "read_only",
+      "noninteractive": true,
+      "output_protocols": [
+        "symphony.snv.sciv.result.v1",
+        "symphony.snv.sciv.transition-result.v1"
+      ],
+      "recovery_command_id": null,
+      "replacement_ids": [],
+      "result_validation_protocols": [
+        "symphony.snv.sciv.result.v1",
+        "symphony.snv.sciv.transition-result.v1"
+      ],
+      "status": "experimental",
+      "target_scope": "local",
+      "visibility": "public"
+    },
+    {
+      "aliases": [],
+      "authority_mode": "none",
+      "backend_operation_ids": [
+        "engop:symphony:snv.snv-evidence-plan"
+      ],
+      "command_id": "qxcmd:symphony:snv.evidence.commit",
+      "deprecated_in": null,
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl-snv-administration",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:snv-engine",
+          "interaction": "invoke"
+        }
+      ],
+      "grammar": "qxctl snv evidence commit [--json] [--operation-id VALUE] [--prefix VALUE] [--state-root VALUE] [--version VALUE]",
+      "infrastructure_purpose": null,
+      "input_protocols": [],
+      "introduced_in": "0.1.0-dev",
+      "json_output": true,
+      "mutability": "evidence_only",
+      "noninteractive": true,
+      "output_protocols": [
+        "symphony.qxctl.snv-evidence-result.v1"
+      ],
+      "recovery_command_id": "qxcmd:symphony:snv.evidence.commit",
+      "replacement_ids": [],
+      "result_validation_protocols": [
+        "symphony.qxctl.snv-evidence-result.v1"
+      ],
+      "status": "experimental",
+      "target_scope": "local",
+      "visibility": "public"
+    },
+    {
+      "aliases": [],
+      "authority_mode": "none",
+      "backend_operation_ids": [
+        "engop:symphony:snv.snv-evidence-plan"
+      ],
+      "command_id": "qxcmd:symphony:snv.evidence.prepare",
+      "deprecated_in": null,
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl-snv-administration",
+          "interaction": "propose"
+        },
+        {
+          "feature_id": "ssfv:symphony:snv-engine",
+          "interaction": "propose"
+        }
+      ],
+      "grammar": "qxctl snv evidence prepare [--input VALUE] [--json] [--prefix VALUE] [--state-root VALUE] [--version VALUE]",
+      "infrastructure_purpose": null,
+      "input_protocols": [
+        "symphony.snv.evidence-plan-input.v1"
+      ],
+      "introduced_in": "0.1.0-dev",
+      "json_output": true,
+      "mutability": "evidence_only",
+      "noninteractive": true,
+      "output_protocols": [
+        "symphony.qxctl.snv-evidence-result.v1"
+      ],
+      "recovery_command_id": "qxcmd:symphony:snv.evidence.commit",
+      "replacement_ids": [],
+      "result_validation_protocols": [
+        "symphony.qxctl.snv-evidence-result.v1"
+      ],
+      "status": "experimental",
+      "target_scope": "local",
+      "visibility": "public"
+    },
+    {
+      "aliases": [],
+      "authority_mode": "none",
+      "backend_operation_ids": [],
+      "command_id": "qxcmd:symphony:snv.evidence.status",
+      "deprecated_in": null,
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl-snv-administration",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:snv-engine",
+          "interaction": "inspect"
+        }
+      ],
+      "grammar": "qxctl snv evidence status [--json] [--operation-id VALUE] [--prefix VALUE] [--state-root VALUE] [--version VALUE]",
+      "infrastructure_purpose": null,
+      "input_protocols": [],
+      "introduced_in": "0.1.0-dev",
+      "json_output": true,
+      "mutability": "read_only",
+      "noninteractive": true,
+      "output_protocols": [
+        "symphony.qxctl.snv-evidence-result.v1"
+      ],
+      "recovery_command_id": null,
+      "replacement_ids": [],
+      "result_validation_protocols": [
+        "symphony.qxctl.snv-evidence-result.v1"
+      ],
+      "status": "experimental",
+      "target_scope": "local",
+      "visibility": "public"
+    },
+    {
+      "aliases": [],
+      "authority_mode": "none",
+      "backend_operation_ids": [
+        "engop:symphony:sniv.identity-validate"
+      ],
+      "command_id": "qxcmd:symphony:snv.identity.validate",
+      "deprecated_in": null,
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl-snv-administration",
+          "interaction": "validate"
+        },
+        {
+          "feature_id": "ssfv:symphony:sniv-engine",
+          "interaction": "propose"
+        },
+        {
+          "feature_id": "ssfv:symphony:sniv-engine",
+          "interaction": "validate"
+        }
+      ],
+      "grammar": "qxctl snv identity validate [--input VALUE] [--json] [--prefix VALUE] [--version VALUE]",
+      "infrastructure_purpose": null,
+      "input_protocols": [
+        "symphony.sniv.identity-validate-input.v1"
+      ],
+      "introduced_in": "0.1.0-dev",
+      "json_output": true,
+      "mutability": "read_only",
+      "noninteractive": true,
+      "output_protocols": [
+        "symphony.sniv.identity-validate.v1"
+      ],
+      "recovery_command_id": null,
+      "replacement_ids": [],
+      "result_validation_protocols": [
+        "symphony.sniv.identity-validate.v1"
+      ],
+      "status": "experimental",
+      "target_scope": "local",
+      "visibility": "public"
+    },
+    {
+      "aliases": [],
+      "authority_mode": "none",
+      "backend_operation_ids": [
+        "engop:symphony:snv.snv-inspect"
+      ],
+      "command_id": "qxcmd:symphony:snv.inspect",
+      "deprecated_in": null,
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl-snv-administration",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:snv-engine",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:snv-engine",
+          "interaction": "query"
+        }
+      ],
+      "grammar": "qxctl snv inspect [--baseline-input VALUE] [--input VALUE] [--json] [--limit VALUE] [--mode VALUE] [--offset VALUE] [--prefix VALUE] [--state-root VALUE] [--tops-id VALUE] [--version VALUE] [--view-id VALUE]",
+      "infrastructure_purpose": null,
+      "input_protocols": [
+        "symphony.snv.inspect-input.v1"
+      ],
+      "introduced_in": "0.1.0-dev",
+      "json_output": true,
+      "mutability": "read_only",
+      "noninteractive": true,
+      "output_protocols": [
+        "symphony.qxctl.snv-view-inspect.v1",
+        "symphony.snv.inspect.v1"
+      ],
+      "recovery_command_id": null,
+      "replacement_ids": [],
+      "result_validation_protocols": [
+        "symphony.qxctl.snv-view-inspect.v1",
+        "symphony.snv.inspect.v1"
+      ],
+      "status": "experimental",
+      "target_scope": "local",
+      "visibility": "public"
+    },
+    {
+      "aliases": [],
+      "authority_mode": "none",
+      "backend_operation_ids": [
+        "engop:symphony:scnv.names-resolve"
+      ],
+      "command_id": "qxcmd:symphony:snv.names.resolve",
+      "deprecated_in": null,
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl-snv-administration",
+          "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:scnv-engine",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:scnv-engine",
+          "interaction": "query"
+        }
+      ],
+      "grammar": "qxctl snv names resolve [--input VALUE] [--json] [--prefix VALUE] [--version VALUE]",
+      "infrastructure_purpose": null,
+      "input_protocols": [
+        "scnv.resolve.v1"
+      ],
+      "introduced_in": "0.1.0-dev",
+      "json_output": true,
+      "mutability": "read_only",
+      "noninteractive": true,
+      "output_protocols": [
+        "scnv.resolve-result.v1"
+      ],
+      "recovery_command_id": null,
+      "replacement_ids": [],
+      "result_validation_protocols": [
+        "scnv.resolve-result.v1"
+      ],
+      "status": "experimental",
+      "target_scope": "local",
+      "visibility": "public"
+    },
+    {
+      "aliases": [],
+      "authority_mode": "none",
+      "backend_operation_ids": [
+        "engop:symphony:scnv.names-validate"
+      ],
+      "command_id": "qxcmd:symphony:snv.names.validate",
+      "deprecated_in": null,
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl-snv-administration",
+          "interaction": "validate"
+        },
+        {
+          "feature_id": "ssfv:symphony:scnv-engine",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:scnv-engine",
+          "interaction": "propose"
+        },
+        {
+          "feature_id": "ssfv:symphony:scnv-engine",
+          "interaction": "validate"
+        }
+      ],
+      "grammar": "qxctl snv names validate [--input VALUE] [--json] [--prefix VALUE] [--version VALUE]",
+      "infrastructure_purpose": null,
+      "input_protocols": [
+        "scnv.names.v1"
+      ],
+      "introduced_in": "0.1.0-dev",
+      "json_output": true,
+      "mutability": "read_only",
+      "noninteractive": true,
+      "output_protocols": [
+        "scnv.names-result.v1"
+      ],
+      "recovery_command_id": null,
+      "replacement_ids": [],
+      "result_validation_protocols": [
+        "scnv.names-result.v1"
+      ],
+      "status": "experimental",
+      "target_scope": "local",
+      "visibility": "public"
+    },
+    {
+      "aliases": [],
+      "authority_mode": "none",
+      "backend_operation_ids": [
+        "engop:symphony:snrv.resources-validate"
+      ],
+      "command_id": "qxcmd:symphony:snv.resources.validate",
+      "deprecated_in": null,
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl-snv-administration",
+          "interaction": "validate"
+        },
+        {
+          "feature_id": "ssfv:symphony:snrv-engine",
+          "interaction": "propose"
+        },
+        {
+          "feature_id": "ssfv:symphony:snrv-engine",
+          "interaction": "validate"
+        }
+      ],
+      "grammar": "qxctl snv resources validate [--input VALUE] [--json] [--prefix VALUE] [--version VALUE]",
+      "infrastructure_purpose": null,
+      "input_protocols": [
+        "symphony.snrv.resources-validate-input.v1"
+      ],
+      "introduced_in": "0.1.0-dev",
+      "json_output": true,
+      "mutability": "read_only",
+      "noninteractive": true,
+      "output_protocols": [
+        "symphony.snrv.resources-validate.v1"
+      ],
+      "recovery_command_id": null,
+      "replacement_ids": [],
+      "result_validation_protocols": [
+        "symphony.snrv.resources-validate.v1"
+      ],
+      "status": "experimental",
+      "target_scope": "local",
+      "visibility": "public"
+    },
+    {
+      "aliases": [],
+      "authority_mode": "none",
+      "backend_operation_ids": [],
+      "command_id": "qxcmd:symphony:snv.schema",
+      "deprecated_in": null,
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl-snv-administration",
+          "interaction": "discover"
+        }
+      ],
+      "grammar": "qxctl snv schema [--json] [--operation VALUE] [--owner VALUE] [--prefix VALUE] [--version VALUE]",
+      "infrastructure_purpose": null,
+      "input_protocols": [],
+      "introduced_in": "0.1.0-dev",
+      "json_output": true,
+      "mutability": "read_only",
+      "noninteractive": true,
+      "output_protocols": [
+        "symphony.qxctl.snv-schema.v1"
+      ],
+      "recovery_command_id": null,
+      "replacement_ids": [],
+      "result_validation_protocols": [
+        "symphony.qxctl.snv-schema.v1"
+      ],
+      "status": "experimental",
+      "target_scope": "local",
+      "visibility": "public"
+    },
+    {
+      "aliases": [],
+      "authority_mode": "target_host_permission",
+      "backend_operation_ids": [
+        "engop:symphony:snv.snv-state-reduce"
+      ],
+      "command_id": "qxcmd:symphony:snv.state.apply",
+      "deprecated_in": null,
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl-snv-administration",
+          "interaction": "apply"
+        },
+        {
+          "feature_id": "ssfv:symphony:snv-engine",
+          "interaction": "apply"
+        },
+        {
+          "feature_id": "ssfv:symphony:ssiag-foundation",
+          "interaction": "invoke"
+        }
+      ],
+      "grammar": "qxctl snv state apply [--input VALUE] [--json] [--operation-id VALUE] [--prefix VALUE] [--state-root VALUE] [--tops-id VALUE] [--version VALUE] [--view-id VALUE]",
+      "infrastructure_purpose": null,
+      "input_protocols": [
+        "symphony.qxctl.snv-state-proposal.v1"
+      ],
+      "introduced_in": "0.1.0-dev",
+      "json_output": true,
+      "mutability": "permission_backed_mutation",
+      "noninteractive": true,
+      "output_protocols": [
+        "symphony.qxctl.snv-state-result.v1"
+      ],
+      "recovery_command_id": "qxcmd:symphony:snv.state.recover",
+      "replacement_ids": [],
+      "result_validation_protocols": [
+        "symphony.qxctl.snv-state-result.v1"
+      ],
+      "status": "experimental",
+      "target_scope": "local",
+      "visibility": "public"
+    },
+    {
+      "aliases": [],
+      "authority_mode": "none",
+      "backend_operation_ids": [
+        "engop:symphony:snv.snv-state-plan"
+      ],
+      "command_id": "qxcmd:symphony:snv.state.plan",
+      "deprecated_in": null,
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl-snv-administration",
+          "interaction": "propose"
+        },
+        {
+          "feature_id": "ssfv:symphony:snv-engine",
+          "interaction": "propose"
+        }
+      ],
+      "grammar": "qxctl snv state plan [--input VALUE] [--json] [--prefix VALUE] [--state-root VALUE] [--tops-id VALUE] [--version VALUE] [--view-id VALUE]",
+      "infrastructure_purpose": null,
+      "input_protocols": [
+        "symphony.snv.state-plan-input.v1"
+      ],
+      "introduced_in": "0.1.0-dev",
+      "json_output": true,
+      "mutability": "proposal_only",
+      "noninteractive": true,
+      "output_protocols": [
+        "symphony.qxctl.snv-state-proposal.v1"
+      ],
+      "recovery_command_id": null,
+      "replacement_ids": [],
+      "result_validation_protocols": [
+        "symphony.qxctl.snv-state-proposal.v1"
+      ],
+      "status": "experimental",
+      "target_scope": "local",
+      "visibility": "public"
+    },
+    {
+      "aliases": [],
+      "authority_mode": "target_host_permission",
+      "backend_operation_ids": [
+        "engop:symphony:snv.snv-state-reduce"
+      ],
+      "command_id": "qxcmd:symphony:snv.state.recover",
+      "deprecated_in": null,
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl-snv-administration",
+          "interaction": "recover"
+        },
+        {
+          "feature_id": "ssfv:symphony:snv-engine",
+          "interaction": "recover"
+        },
+        {
+          "feature_id": "ssfv:symphony:ssiag-foundation",
+          "interaction": "invoke"
+        }
+      ],
+      "grammar": "qxctl snv state recover [--json] [--operation-id VALUE] [--prefix VALUE] [--state-root VALUE] [--tops-id VALUE] [--version VALUE] [--view-id VALUE]",
+      "infrastructure_purpose": null,
+      "input_protocols": [],
+      "introduced_in": "0.1.0-dev",
+      "json_output": true,
+      "mutability": "permission_backed_mutation",
+      "noninteractive": true,
+      "output_protocols": [
+        "symphony.qxctl.snv-state-result.v1"
+      ],
+      "recovery_command_id": "qxcmd:symphony:snv.state.recover",
+      "replacement_ids": [],
+      "result_validation_protocols": [
+        "symphony.qxctl.snv-state-result.v1"
+      ],
+      "status": "experimental",
+      "target_scope": "local",
+      "visibility": "public"
+    },
+    {
+      "aliases": [],
+      "authority_mode": "none",
+      "backend_operation_ids": [],
+      "command_id": "qxcmd:symphony:snv.state.status",
+      "deprecated_in": null,
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl-snv-administration",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:snv-engine",
+          "interaction": "inspect"
+        }
+      ],
+      "grammar": "qxctl snv state status [--json] [--operation-id VALUE] [--prefix VALUE] [--state-root VALUE] [--tops-id VALUE] [--version VALUE] [--view-id VALUE]",
+      "infrastructure_purpose": null,
+      "input_protocols": [],
+      "introduced_in": "0.1.0-dev",
+      "json_output": true,
+      "mutability": "read_only",
+      "noninteractive": true,
+      "output_protocols": [
+        "symphony.qxctl.snv-state-result.v1"
+      ],
+      "recovery_command_id": null,
+      "replacement_ids": [],
+      "result_validation_protocols": [
+        "symphony.qxctl.snv-state-result.v1"
+      ],
+      "status": "experimental",
+      "target_scope": "local",
+      "visibility": "public"
+    },
+    {
+      "aliases": [],
+      "authority_mode": "none",
+      "backend_operation_ids": [],
+      "command_id": "qxcmd:symphony:snv.template",
+      "deprecated_in": null,
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl-snv-administration",
+          "interaction": "discover"
+        }
+      ],
+      "grammar": "qxctl snv template [--json] [--operation VALUE] [--owner VALUE] [--prefix VALUE] [--version VALUE]",
+      "infrastructure_purpose": null,
+      "input_protocols": [],
+      "introduced_in": "0.1.0-dev",
+      "json_output": true,
+      "mutability": "read_only",
+      "noninteractive": true,
+      "output_protocols": [
+        "symphony.qxctl.snv-template.v1"
+      ],
+      "recovery_command_id": null,
+      "replacement_ids": [],
+      "result_validation_protocols": [
+        "symphony.qxctl.snv-template.v1"
+      ],
+      "status": "experimental",
+      "target_scope": "local",
+      "visibility": "public"
+    },
+    {
+      "aliases": [],
+      "authority_mode": "none",
       "backend_operation_ids": [],
       "command_id": "qxcmd:symphony:sodv.check",
       "deprecated_in": null,
@@ -18234,6 +18997,6 @@
   "format_version": 1,
   "protocol": "symphony.qxctl.command-registry.v1",
   "receipt_digest": null,
-  "registry_digest": "sha256:52026cfe39276aa24b33d004a1820dd055640304ac3e047b21801356a19646bc",
+  "registry_digest": "sha256:c80c5f2f89746c7a64582440197019308bb61fe5fccd68a7acec5e8292ebca5b",
   "registry_kind": "expected"
 }

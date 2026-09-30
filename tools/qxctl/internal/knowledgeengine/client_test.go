@@ -949,3 +949,24 @@ func TestSafeRelativePathAndTokens(t *testing.T) {
 		t.Fatal("version validation mismatch")
 	}
 }
+
+// This body is handwritten in C++ Json::dump key order. It tests the native
+// representation independently of either Go canonical encoder.
+func TestNativeResponseCanonicalUnicodeMatchesCpp(t *testing.T) {
+	body := []byte(`{"correlation_id":"request-1","engine_id":"symphony-skvi","engine_version":"0.1.0-dev","error":null,"operation":"project","outcome":"ok","protocol":"symphony.knowledge.engine-process.v1","request_id":"request-1","result":{"value":"A` + "\u2028" + `B` + "\u2029" + `C <>& literal \\u2028"}}`)
+	hash := sha256.Sum256(body)
+	encoded := append([]byte(nil), body[:len(body)-1]...)
+	encoded = append(encoded, []byte(`,"response_digest":"sha256:`+hex.EncodeToString(hash[:])+`"}`)...)
+	response, err := validateResponseFor(skviSpec, encoded, "request-1", "project", "0.1.0-dev")
+	if err != nil {
+		t.Fatal(err)
+	}
+	var result map[string]string
+	if json.Unmarshal(response.Result, &result) != nil || result["value"] != "A\u2028B\u2029C <>& literal \\u2028" {
+		t.Fatal("Native Unicode or literal backslash spelling changed")
+	}
+	changed := strings.Replace(string(encoded), "literal \\\\u2028", "literal changed", 1)
+	if _, err := validateResponseFor(skviSpec, []byte(changed), "request-1", "project", "0.1.0-dev"); err == nil {
+		t.Fatal("Changed native result accepted old envelope digest")
+	}
+}

@@ -117,7 +117,7 @@ func safeSCVEngineCode(code string) *string {
 // us which flags consume the next token, including a value spelled "--json".
 // This does not make misplaced/unknown flags valid or change Cobra's grammar.
 func scvJSONRequested(root *cobra.Command, args []string) bool {
-	if len(args) == 0 || (args[0] != "scv" && args[0] != "shv" && args[0] != "sqv") {
+	if len(args) == 0 || (args[0] != "scv" && args[0] != "shv" && args[0] != "sqv" && args[0] != "snv") {
 		return false
 	}
 	consumesValue := map[string]bool{}

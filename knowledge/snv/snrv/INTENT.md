@@ -6,7 +6,7 @@ The Symphony Node Resource Vector (SNRV) records the evidenced installation-loca
 
 ## Scope
 
-SNRV is primarily concerned with local physical resources. It may later record explicitly qualified remote or virtual resources and their attachment to the Node without treating them as local hardware.
+SNRV is primarily concerned with local physical resources. It records explicitly qualified supplied remote or virtual resources and their attachment to the Node without treating them as local hardware.
 
 ## Non-Scope
 

@@ -1,0 +1,181 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "symphony.snv.state-plan.v1",
+  "type": "object",
+  "properties": {
+    "protocol": {
+      "const": "symphony.snv.state-plan.v1"
+    },
+    "operation_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "expected_state_digest": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$"
+        }
+      ]
+    },
+    "change_kind": {
+      "enum": [
+        "select",
+        "unselect"
+      ]
+    },
+    "reason": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1024
+    },
+    "migration": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "from_owner_version": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "to_owner_version": {
+              "const": "0.1.0-dev"
+            },
+            "source_bundle_digest": {
+              "type": "string",
+              "pattern": "^sha256:[a-f0-9]{64}$"
+            },
+            "method": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "method_version": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          },
+          "required": [
+            "from_owner_version",
+            "to_owner_version",
+            "source_bundle_digest",
+            "method",
+            "method_version"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "head": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.snv.head.v1"
+        },
+        "view": {
+          "type": "object",
+          "properties": {
+            "tops_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "view_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          },
+          "required": [
+            "tops_id",
+            "view_id"
+          ],
+          "additionalProperties": false
+        },
+        "generation": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "previous_digest": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "pattern": "^sha256:[a-f0-9]{64}$"
+            }
+          ]
+        },
+        "bundle_digest": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "pattern": "^sha256:[a-f0-9]{64}$"
+            }
+          ]
+        },
+        "tombstone": {
+          "type": "boolean"
+        },
+        "operation_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "owner_version": {
+          "const": "0.1.0-dev"
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "protocol",
+        "view",
+        "generation",
+        "previous_digest",
+        "bundle_digest",
+        "tombstone",
+        "operation_id",
+        "owner_version",
+        "digest"
+      ],
+      "additionalProperties": false
+    },
+    "input_digest": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "digest": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    }
+  },
+  "required": [
+    "protocol",
+    "operation_id",
+    "expected_state_digest",
+    "change_kind",
+    "reason",
+    "migration",
+    "head",
+    "input_digest",
+    "digest"
+  ],
+  "additionalProperties": false
+}

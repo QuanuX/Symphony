@@ -1,0 +1,191 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "symphony.snv.evidence-plan.v1",
+  "type": "object",
+  "properties": {
+    "protocol": {
+      "const": "symphony.snv.evidence-plan.v1"
+    },
+    "operation_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "bundle": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.snv.bundle.v1"
+        },
+        "bundle_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "artifacts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "owner": {
+                "enum": [
+                  "sniv",
+                  "snrv",
+                  "sciv",
+                  "scnv"
+                ]
+              },
+              "owner_version": {
+                "const": "0.1.0-dev"
+              },
+              "operation": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              "source_utf8": {
+                "type": "string",
+                "maxLength": 65536
+              },
+              "source_digest": {
+                "type": "string",
+                "pattern": "^sha256:[a-f0-9]{64}$"
+              }
+            },
+            "required": [
+              "owner",
+              "owner_version",
+              "operation",
+              "source_utf8",
+              "source_digest"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 4
+        },
+        "relations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "relationship_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              "kind": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              "from": {
+                "type": "object",
+                "properties": {
+                  "owner": {
+                    "enum": [
+                      "sniv",
+                      "snrv",
+                      "sciv",
+                      "scnv"
+                    ]
+                  },
+                  "id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128
+                  },
+                  "kind": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128
+                  }
+                },
+                "required": [
+                  "owner",
+                  "kind",
+                  "id"
+                ],
+                "additionalProperties": false
+              },
+              "to": {
+                "type": "object",
+                "properties": {
+                  "owner": {
+                    "enum": [
+                      "sniv",
+                      "snrv",
+                      "sciv",
+                      "scnv"
+                    ]
+                  },
+                  "id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128
+                  },
+                  "kind": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128
+                  }
+                },
+                "required": [
+                  "owner",
+                  "kind",
+                  "id"
+                ],
+                "additionalProperties": false
+              },
+              "source_ref": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1024
+              }
+            },
+            "required": [
+              "relationship_id",
+              "kind",
+              "from",
+              "to",
+              "source_ref"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 2048
+        }
+      },
+      "required": [
+        "protocol",
+        "bundle_id",
+        "artifacts",
+        "relations"
+      ],
+      "additionalProperties": false
+    },
+    "bundle_digest": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "replay": {
+      "type": "object"
+    },
+    "source_digest": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "digest": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    }
+  },
+  "required": [
+    "protocol",
+    "operation_id",
+    "bundle",
+    "bundle_digest",
+    "replay",
+    "source_digest",
+    "digest"
+  ],
+  "additionalProperties": false
+}

@@ -72,6 +72,12 @@ The inventory is intentionally explicit. Directory discovery, file count, langua
 | `modules/sqpv-inspection-engine` | registered | `ssfv:symphony:sqpv-inspection-engine` | `modules/sqpv-inspection-engine/FEATURES.md` |
 | `modules/sqdv-checkpoint-engine` | registered | `ssfv:symphony:sqdv-checkpoint-engine` | `modules/sqdv-checkpoint-engine/FEATURES.md` |
 | `modules/sqav-attempt-engine` | registered | `ssfv:symphony:sqav-attempt-engine` | `modules/sqav-attempt-engine/FEATURES.md` |
+| `modules/sniv-engine` | registered | `ssfv:symphony:sniv-engine` | `modules/sniv-engine/FEATURES.md` |
+| `modules/snrv-engine` | registered | `ssfv:symphony:snrv-engine` | `modules/snrv-engine/FEATURES.md` |
+| `modules/sciv-engine` | registered | `ssfv:symphony:sciv-engine` | `modules/sciv-engine/FEATURES.md` |
+| `modules/scnv-engine` | registered | `ssfv:symphony:scnv-engine` | `modules/scnv-engine/FEATURES.md` |
+| `modules/snv-engine` | registered | `ssfv:symphony:snv-engine` | `modules/snv-engine/FEATURES.md` |
+| `libraries/snv-common-cpp` | registered | `ssfv:symphony:snv-common-cpp` | `libraries/snv-common-cpp/FEATURES.md` |
 | `tools/qxctl` | registered | `ssfv:symphony:qxctl` | `tools/qxctl/FEATURES.md` |
 | `tools/symphony-validator` | registered | `ssfv:symphony:symphony-validator` | `tools/symphony-validator/FEATURES.md` |
 
@@ -81,11 +87,11 @@ The inventory is intentionally explicit. Directory discovery, file count, langua
 
 ## Ratified Nested Review Progress
 
-The F1 through F3 review, feature-administration assurance slice, root-summary assurance slice, invariant-assurance slice, provider-trust assurance slice, provider-binding lifecycle slice, and Accordare durability/supervision review record seventy-six ratified nested feature-worthy boundaries inside seventeen registered non-root owner scopes:
+The F1 through F3 review, feature-administration assurance slice, root-summary assurance slice, invariant-assurance slice, provider-trust assurance slice, provider-binding lifecycle slice, and Accordare durability/supervision review record seventy-eight ratified nested feature-worthy boundaries inside seventeen registered non-root owner scopes:
 
 | Owner scope | Ratified nested records | Review disposition |
 |---|---:|---|
-| `tools/qxctl` | 12 | Exact engine bindings, authenticated sessions, lifecycle convergence, Linux report-only host receptor, SSIAG administration, STAV administration, Maestro administration, governed validation, the stable command registry, invariant assurance, protected SCV source/graph administration, and SHV source-backed kernel/generic graph administration are registered. |
+| `tools/qxctl` | 14 | Exact engine bindings, authenticated sessions, lifecycle convergence, Linux report-only host receptor, SSIAG administration, STAV administration, Maestro administration, governed validation, the stable command registry, invariant assurance, protected SCV source/graph administration, and SHV source-backed kernel/generic graph administration, non-live SQV administration, and bounded SNV administration are registered. |
 | `modules/knowledge-session-coordinator` | 6 | Reconciliation, authority epochs, semantic maintenance, lifecycle planning, lifecycle apply coordination, and protected Named Version durability are registered. |
 | `modules/maestro` | 1 | Complete derived receptor inventory is registered separately from durable receptor presence. |
 | `libraries/stav-protocol-go` | 2 | Canonical bytes, digests, and bounded local frames are separated from exact content and identifier validation; durable checksummed ledger framing is explicitly owned by the append authority. |

@@ -48,7 +48,7 @@ The detailed, ratified baseline is in [Symphony Emerging Vector Architecture](kn
 | **SKVI / SCLV / SACV / SODV / SSFV / SAV / SEV** | Source routing, change truth, API governance, official documentation and release-publication governance, semantic feature truth, Accordare composition, and governed evolution. | Contracted Phase 1 domains with bounded engines and administrative integrations where their individual contracts say so. SODV governs official projection; it is not the publisher. |
 | **SOV — Symphony Ops Vector** | qxctl-administered provisioning, Habitat conditioning, Nest delivery, bus-adapter setup, and optional remote-Node operations. | Emerging operations domain; provider, Terraform, Habitat, Nest, bus, and remote-operation protocols remain to be designed and implemented. |
 | **SCV — Symphony Cloud Vector** | Private knowledge of offsite provider resources, offerings, regions, constraints, observations, and hybrid possibilities. | Eight independently installed C++ engines provide bounded source/corpus knowledge, portable provider packages and finite caller-directed composition. qxctl supports retained workflows and protected graph selection; an optional DuckDB connector adds retained relational graph indexing through qxctl. Comprehensive provider coverage, dedicated graph traversal and operational adapters remain separate work. |
-| **SNV — Symphony Node Vector** | Records and relates Node identity, resources, cluster relationships, and names without dictating them. | Emerging composition of **SNIV** (identity), **SNRV** (resources), **SCIV** (cluster identity/connectivity), and SNV-bounded **SCNV** (consolidated naming). Record schemas and engines remain deferred. |
+| **SNV — Symphony Node Vector** | Records and relates Node identity, resources, cluster relationships, and names without dictating them. | Five independently installable C++26 engines implement supplied **SNIV** identity, **SNRV** resources, **SCIV** cluster relationships, SNV-bounded **SCNV** names and thin **SNV** composition/retention. Exact owner replay, explicit scope/time, retained history and agentic qxctl administration preserve uncertainty and source provenance. See the [bounded release and validation status](knowledge/snv/VALIDATION.md). Live observation and SOV provisioning remain separately scoped work. |
 | **SQV — Symphony Quantitative Vector** | Reusable quantitative and trading-system framework contracts without acquiring user strategy logic. | **SQAV**, **SQMV**, **SQFV**, **SQTV**, **SQPV**, and **SQDV** have bounded C++26 libraries for capture, metadata, flow, integer conversion, local retention, and replay/checkpoints. Seven independently installable administration engines expose request and configuration validation, metadata projections, and read-only retained-state inspection through qxctl. Source adapters retain their individually declared non-live scope; authenticated provider execution and live collection remain future work. **SOOV — Symphony Orchestra Omega Vector** separately retains the future C++ FIX architecture. |
 | **SHV — Symphony Hardware Vector** | Hardware-capability knowledge for processors, CPU topology and execution-unit designs, caches, GPUs, NICs and fibre interfaces, motherboards, RAM and NVMe; default curation prioritizes original components and evidenced variants. | Initial C++ kernel: caller-defined coverage, retained-source catalogue replay, requirement evaluation and graph projection. Source revision/capture provenance engine and generic graph exchange are implemented; protected source activation, broad component mappings, durable vendor drivers and Composer integration remain open. |
 | **SIV — Symphony Intelligence Vector** | Future local and remote agent collaboration, extended context, structured long-term logic, communication, and governed Symphony interaction. | Emerging domain. **SMCV** is its optional Markdown conversion component; **SAIV** is reserved for a later integration subvector and currently has no behavior. |
@@ -92,7 +92,7 @@ Seven delivery sprints remain. Their detailed sequence and contents will be pres
 
 ## Implemented Foundations
 
-- [`qxctl`](tools/qxctl/) is Symphony's Go-based, agentic-first administrative and query CLI. Its checked-in registry binds **373** executable command leaves to stable machine identities and reviewed feature-administration evidence. It implements repository and contract inspection; validator, warning, invariant, feature, lifecycle, session, reconciliation, binding, Maestro, SSIAG, STAV, Accordare, and implemented vector-engine administration. Exact installation verification, bounded subprocesses, hard deadlines, response identity/digest checks, expected-state transactions, and durable recovery are used where the owning contract requires them. Engine-binding registry v2 supports the eight established roles and bounded future role identities; legacy v1 state is dual-read and requires explicit digest-bound migration before mutation.
+- [`qxctl`](tools/qxctl/) is Symphony's Go-based, agentic-first administrative and query CLI. Its checked-in registry binds executable command leaves to stable machine identities and reviewed feature-administration evidence. It implements repository and contract inspection; validator, warning, invariant, feature, lifecycle, session, reconciliation, binding, Maestro, SSIAG, STAV, Accordare, and implemented vector-engine administration. Exact installation verification, bounded subprocesses, hard deadlines, response identity/digest checks, expected-state transactions, and durable recovery are used where the owning contract requires them. Engine-binding registry v2 supports thirteen established roles, including the five exact SNV owners, and bounded future role identities; legacy v1 state is dual-read and requires explicit digest-bound migration before mutation.
 - [Symphony Secure Identity and Access Governance](modules/secure-identity-access-governance/) is an independently installable, cgo-free Go foundation for exact caller-neutral authorization, per-TOPS enrollment, local endpoint trust, protected policy lifecycle, provider-installation and binding lifecycle, safe audit metadata, and native launchd/systemd supervision. Ordinary foundational mutation fails closed pending its required audit route. Operational credential use, canonical knowledge apply, and secret delivery remain disabled.
 - [STAV Append Authority](modules/stav-append-authority/) is an independently installable Go service for per-TOPS append-only audit ledgers, mutually authenticated local IPC, exact producer/reader grants, fsync-before-receipt durability, bounded reads, verification, recovery, enrollment, and native supervision. qxctl never receives raw append authority.
 - [STAV Protocol for Go](libraries/stav-protocol-go/) is an authority-free Go library implementing the canonical STAV v1 codec, strict validation, digests, framing, conformance rules, and closed producer vocabulary.
@@ -127,9 +127,9 @@ The emerging SOV remote-operation and deployment contracts do not make provider 
 
 This bounded summary is derived from canonical SSFV coverage and routing, the feature-administration profile, the qxctl command registry, and completed SODV publication records. Edit its source contracts, then regenerate; do not hand-edit the values below.
 
-- SSFV catalog state: `partial`; registered features: **131**; registered owner scopes: **55**; ratified nested features: **76**.
-- Feature-administration expectations: **339** reviewed surfaces; **329** required, **26** evidence-backed exemptions, **9** prohibitions, **0** unreviewed.
-- qxctl stable command identities: **383**.
+- SSFV catalog state: `partial`; registered features: **138**; registered owner scopes: **61**; ratified nested features: **78**.
+- Feature-administration expectations: **370** reviewed surfaces; **360** required, **27** evidence-backed exemptions, **9** prohibitions, **0** unreviewed.
+- qxctl stable command identities: **398**.
 - Registered owner capabilities:
   - `ssfv:symphony:accordare-stav-producer`
   - `ssfv:symphony:knowledge-session-coordinator`
@@ -149,7 +149,9 @@ This bounded summary is derived from canonical SSFV coverage and routing, the fe
   - `ssfv:symphony:schv-do-engine`
   - `ssfv:symphony:schv-engine`
   - `ssfv:symphony:schv-gcp-engine`
+  - `ssfv:symphony:sciv-engine`
   - `ssfv:symphony:sclv-engine`
+  - `ssfv:symphony:scnv-engine`
   - `ssfv:symphony:scv-engine`
   - `ssfv:symphony:scv-graph-duckdb-connector`
   - `ssfv:symphony:sev-engine`
@@ -162,6 +164,10 @@ This bounded summary is derived from canonical SSFV coverage and routing, the fe
   - `ssfv:symphony:shv-publication-engine`
   - `ssfv:symphony:shv-source-engine`
   - `ssfv:symphony:skvi-engine`
+  - `ssfv:symphony:sniv-engine`
+  - `ssfv:symphony:snrv-engine`
+  - `ssfv:symphony:snv-common-cpp`
+  - `ssfv:symphony:snv-engine`
   - `ssfv:symphony:sodv-engine`
   - `ssfv:symphony:sqav-attempt-engine`
   - `ssfv:symphony:sqav-capture-cpp`
@@ -190,7 +196,7 @@ This bounded summary is derived from canonical SSFV coverage and routing, the fe
   - `github.com/QuanuX/Symphony/libraries/stav-protocol-go` `v0.2.0` (tag `libraries/stav-protocol-go/v0.2.0`, source `55f8faf26f4f85213ac23cc1de7ba897b2129a4c`)
   - `github.com/QuanuX/Symphony/modules/stav-append-authority` `v0.1.0` (tag `modules/stav-append-authority/v0.1.0`, source `55f8faf26f4f85213ac23cc1de7ba897b2129a4c`)
   - `github.com/QuanuX/Symphony/modules/stav-append-authority` `v0.2.0` (tag `modules/stav-append-authority/v0.2.0`, source `ed7484d70607aa96e64916dd4e59d3972a61980b`)
-- Snapshot digest: `sha256:4de356b1749cc01f7989ce8d5943bc1459565709ac8b58a6207106fbfb02ac16`
+- Snapshot digest: `sha256:4548e67e66b03aea7606bfb5f5181602c3215897a107916a2a3dd95db413864a`
 <!-- symphony:root-summary:v1:end -->
 
 ## Releases and Documentation

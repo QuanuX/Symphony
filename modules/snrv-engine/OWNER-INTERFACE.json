@@ -1,0 +1,47 @@
+{
+  "protocol": "symphony.shv.owner-interface.v2",
+  "module_id": "snrv-engine",
+  "engine_id": "symphony-snrv",
+  "namespace": "symphony::snv::snrv::interface",
+  "current_version": "0.1.0-dev",
+  "releases": {
+    "0.1.0-dev": [
+      "resources_validate"
+    ]
+  },
+  "contract_versions": [
+    "modules/snrv-engine/SPEC.md@v1",
+    "symphony.snrv.resources-validate-input.v1",
+    "symphony.snrv.resources-validate.v1"
+  ],
+  "operations": [
+    {
+      "administration_disposition": "qxctl_required",
+      "administrative_interactions": [
+        "validate",
+        "propose"
+      ],
+      "authorization_requirement": "none",
+      "availability": "implemented",
+      "direct_invocation": "supported",
+      "engine_operation_id": "engop:symphony:snrv.resources-validate",
+      "expected_state_required": false,
+      "feature_ids": [
+        "ssfv:symphony:snrv-engine"
+      ],
+      "idempotency": "idempotent",
+      "input_protocol": "symphony.snrv.resources-validate-input.v1",
+      "mutability": "read_only",
+      "operation_name": "resources_validate",
+      "output_protocol": "symphony.snrv.resources-validate.v1",
+      "recovery_operation_id": null,
+      "thermal_path": "freezing"
+    }
+  ],
+  "schemas": [
+    "modules/snrv-engine/schemas/v1/admin.schema.json",
+    "modules/snrv-engine/schemas/v1/admin.templates.json"
+  ],
+  "companions": [],
+  "embedded_dependencies": []
+}

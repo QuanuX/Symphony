@@ -17,7 +17,7 @@ SNIV is the SNV subvector that owns physical Node identity and its evidenced lin
 
 ## Implementation Status
 
-Canonical contract only. No identity registry, encoder, probe, engine, or qxctl operation is implemented.
+The bounded supplied-record native implementation is `modules/sniv-engine` at exact release `0.1.0-dev`. Its independently installable executable/static SDK validates identity and participation evidence and reduces explicit transitions. Live discovery and provider probes remain future scopes; administration is declared by its owner interface.
 
 ## Non-Authorization Statement
 

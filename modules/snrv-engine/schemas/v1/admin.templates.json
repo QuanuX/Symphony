@@ -1,0 +1,81 @@
+{
+  "protocol": "symphony.snrv.administration-templates.v1",
+  "templates": {
+    "resources_validate": {
+      "protocol": "symphony.snrv.resources-validate-input.v1",
+      "mode": "snapshot",
+      "record_limit": 2048,
+      "inventories": [
+        {
+          "record_id": "inventory-1",
+          "generation": 1,
+          "predecessor_record_id": null,
+          "physical_node_id": "node-1",
+          "status": "active",
+          "coverage": "complete",
+          "observed_at": null,
+          "sources": [
+            {
+              "source_id": "user-evidence-1",
+              "kind": "user",
+              "source_ref": "supplied:fixture",
+              "source_revision": "1",
+              "observed_at": null,
+              "evidence_digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+              "method_id": "supplied-record",
+              "method_version": "1"
+            }
+          ],
+          "local_resources": [
+            {
+              "resource_id": "memory-1",
+              "component_kind": "memory",
+              "instance_ref": "dimm-1",
+              "instance_scope": "physical",
+              "model_ref": null,
+              "presence": "present",
+              "capacity_kind": "physical",
+              "capacity": {
+                "value": "18446744073709551615",
+                "unit": "bytes"
+              },
+              "available_capacity": {
+                "value": "9007199254740993",
+                "unit": "bytes"
+              },
+              "operational_state": "available",
+              "source_ids": [
+                "user-evidence-1"
+              ]
+            }
+          ],
+          "remote_attachments": [
+            {
+              "attachment_id": "gpu-remote-1",
+              "resource_kind": "gpu",
+              "allocation_ref": "allocation-1",
+              "remote_subject_ref": null,
+              "endpoint_ref": "gpu-service",
+              "capacity": {
+                "value": "1",
+                "unit": "count"
+              },
+              "state": "attached",
+              "source_ids": [
+                "user-evidence-1"
+              ]
+            }
+          ],
+          "offering_refs": [
+            "scv-offering-ref"
+          ],
+          "model_refs": [
+            "shv-model-ref"
+          ],
+          "identity_rebind": null
+        }
+      ],
+      "transition": null
+    }
+  }
+}

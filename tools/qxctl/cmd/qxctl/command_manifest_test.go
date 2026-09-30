@@ -8,6 +8,7 @@ import (
 	"testing"
 
 	"github.com/QuanuX/Symphony/tools/qxctl/internal/commandregistry"
+	"github.com/QuanuX/Symphony/tools/qxctl/internal/modules"
 )
 
 const commandManifestTestDigest = "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
@@ -23,8 +24,8 @@ func TestCommandRegistryCobraParityAndStableIdentity(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(manifest.Commands) != 383 {
-		t.Fatalf("registered command count = %d, want 383", len(manifest.Commands))
+	if len(manifest.Commands) != 398 {
+		t.Fatalf("registered command count = %d, want 398", len(manifest.Commands))
 	}
 	seen := make(map[string]*string, len(manifest.Commands))
 	for _, command := range manifest.Commands {
@@ -210,8 +211,15 @@ func TestReviewedBackendFeatureBindingsReachExpectedRegistry(t *testing.T) {
 			continue
 		}
 		found++
-		if len(command.FeatureBindings) != len(bindings)+1 {
-			t.Errorf("%s bindings = %#v, want one wrapper plus %#v", command.CommandID, command.FeatureBindings, bindings)
+		wantCount := len(bindings) + 1
+		// Generic source discovery enumerates the admitted package contracts
+		// in addition to the independently reviewed backend interaction.
+		switch key {
+		case "modules", "modules.check", "modules.metadata", "module.inspect", "module.check", "module.metadata", "inventory", "inventory.digest":
+			wantCount += len(modules.SQVModules) + len(modules.SNVModules)
+		}
+		if len(command.FeatureBindings) != wantCount {
+			t.Errorf("%s binding count = %d, want %d with reviewed backend and exact source discovery", command.CommandID, len(command.FeatureBindings), wantCount)
 			continue
 		}
 		for _, binding := range bindings {
@@ -561,5 +569,39 @@ func TestCheckedInExpectedRegistryMatchesCommandTree(t *testing.T) {
 	}
 	if !bytes.Equal(gotBytes, wantBytes) {
 		t.Fatalf("COMMANDS.json is stale; regenerate with commands expected --json")
+	}
+}
+
+func TestSNVGenericDiscoveryNamesOnlyEnumeratedModules(t *testing.T) {
+	root, err := newRootCommand()
+	if err != nil {
+		t.Fatal(err)
+	}
+	manifest, err := commandregistry.BuildExpected(root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	routes := map[string]bool{"modules": true, "modules.check": true, "modules.metadata": true, "module.inspect": true, "module.check": true, "module.metadata": true, "inventory": true, "inventory.digest": true}
+	found := 0
+	for _, command := range manifest.Commands {
+		key := strings.TrimPrefix(command.CommandID, "qxcmd:symphony:")
+		if !routes[key] {
+			continue
+		}
+		found++
+		for _, mod := range modules.SNVModules {
+			binding := commandregistry.FeatureBinding{FeatureID: "ssfv:symphony:" + mod, Interaction: "discover"}
+			if !containsFeatureBinding(command.FeatureBindings, binding) {
+				t.Errorf("%s missing enumerated owner %s", command.CommandID, mod)
+			}
+		}
+		for _, binding := range command.FeatureBindings {
+			if binding.FeatureID == "ssfv:symphony:snv-common-cpp" {
+				t.Errorf("%s fabricated common SDK module discovery", command.CommandID)
+			}
+		}
+	}
+	if found != len(routes) {
+		t.Fatalf("generic discovery routes = %d, want %d", found, len(routes))
 	}
 }
