@@ -1,0 +1,146 @@
+{
+  "protocol": "symphony.shv.owner-interface.v2",
+  "module_id": "snv-engine",
+  "engine_id": "symphony-snv",
+  "namespace": "symphony::snv::snv::interface",
+  "current_version": "0.1.0-dev",
+  "releases": {
+    "0.1.0-dev": [
+      "snv_inspect",
+      "snv_evidence_plan",
+      "snv_state_plan",
+      "snv_state_reduce"
+    ]
+  },
+  "contract_versions": [
+    "modules/snv-engine/SPEC.md@v1",
+    "symphony.snv.inspect-input.v1",
+    "symphony.snv.inspect.v1",
+    "symphony.snv.evidence-plan-input.v1",
+    "symphony.snv.evidence-plan.v1",
+    "symphony.snv.state-plan-input.v1",
+    "symphony.snv.state-plan.v1",
+    "symphony.snv.state-reduce-input.v1",
+    "symphony.snv.state-transition.v1"
+  ],
+  "operations": [
+    {
+      "administration_disposition": "qxctl_required",
+      "administrative_interactions": [
+        "inspect",
+        "query"
+      ],
+      "authorization_requirement": "none",
+      "availability": "implemented",
+      "direct_invocation": "supported",
+      "engine_operation_id": "engop:symphony:snv.snv-inspect",
+      "expected_state_required": false,
+      "feature_ids": [
+        "ssfv:symphony:snv-engine"
+      ],
+      "idempotency": "idempotent",
+      "input_protocol": "symphony.snv.inspect-input.v1",
+      "mutability": "read_only",
+      "operation_name": "snv_inspect",
+      "output_protocol": "symphony.snv.inspect.v1",
+      "recovery_operation_id": null,
+      "thermal_path": "freezing"
+    },
+    {
+      "administration_disposition": "qxctl_required",
+      "administrative_interactions": [
+        "propose"
+      ],
+      "authorization_requirement": "none",
+      "availability": "implemented",
+      "direct_invocation": "supported",
+      "engine_operation_id": "engop:symphony:snv.snv-evidence-plan",
+      "expected_state_required": false,
+      "feature_ids": [
+        "ssfv:symphony:snv-engine"
+      ],
+      "idempotency": "idempotent",
+      "input_protocol": "symphony.snv.evidence-plan-input.v1",
+      "mutability": "read_only",
+      "operation_name": "snv_evidence_plan",
+      "output_protocol": "symphony.snv.evidence-plan.v1",
+      "recovery_operation_id": null,
+      "thermal_path": "freezing"
+    },
+    {
+      "administration_disposition": "qxctl_required",
+      "administrative_interactions": [
+        "propose"
+      ],
+      "authorization_requirement": "none",
+      "availability": "implemented",
+      "direct_invocation": "supported",
+      "engine_operation_id": "engop:symphony:snv.snv-state-plan",
+      "expected_state_required": false,
+      "feature_ids": [
+        "ssfv:symphony:snv-engine"
+      ],
+      "idempotency": "idempotent",
+      "input_protocol": "symphony.snv.state-plan-input.v1",
+      "mutability": "read_only",
+      "operation_name": "snv_state_plan",
+      "output_protocol": "symphony.snv.state-plan.v1",
+      "recovery_operation_id": null,
+      "thermal_path": "freezing"
+    },
+    {
+      "administration_disposition": "qxctl_required",
+      "administrative_interactions": [
+        "apply",
+        "recover"
+      ],
+      "authorization_requirement": "none",
+      "availability": "implemented",
+      "direct_invocation": "supported",
+      "engine_operation_id": "engop:symphony:snv.snv-state-reduce",
+      "expected_state_required": false,
+      "feature_ids": [
+        "ssfv:symphony:snv-engine"
+      ],
+      "idempotency": "idempotent",
+      "input_protocol": "symphony.snv.state-reduce-input.v1",
+      "mutability": "read_only",
+      "operation_name": "snv_state_reduce",
+      "output_protocol": "symphony.snv.state-transition.v1",
+      "recovery_operation_id": null,
+      "thermal_path": "freezing"
+    }
+  ],
+  "schemas": [
+    "modules/snv-engine/schemas/v1/admin.schema.json",
+    "modules/snv-engine/schemas/v1/admin.templates.json",
+    "modules/snv-engine/schemas/v1/snv_evidence_plan.result.schema.json",
+    "modules/snv-engine/schemas/v1/snv_evidence_plan.schema.json",
+    "modules/snv-engine/schemas/v1/snv_inspect.result.schema.json",
+    "modules/snv-engine/schemas/v1/snv_inspect.schema.json",
+    "modules/snv-engine/schemas/v1/snv_state_plan.result.schema.json",
+    "modules/snv-engine/schemas/v1/snv_state_plan.schema.json",
+    "modules/snv-engine/schemas/v1/snv_state_reduce.result.schema.json",
+    "modules/snv-engine/schemas/v1/snv_state_reduce.schema.json",
+    "modules/snv-engine/schemas/v1/state-proposal.schema.json"
+  ],
+  "companions": [],
+  "embedded_dependencies": [
+    {
+      "engine_id": "symphony-sniv",
+      "version": "0.1.0-dev"
+    },
+    {
+      "engine_id": "symphony-snrv",
+      "version": "0.1.0-dev"
+    },
+    {
+      "engine_id": "symphony-sciv",
+      "version": "0.1.0-dev"
+    },
+    {
+      "engine_id": "symphony-scnv",
+      "version": "0.1.0-dev"
+    }
+  ]
+}

@@ -10,6 +10,29 @@ import (
 	"time"
 )
 
+func TestSNVRolesPreserveFrozenLegacyBoundaries(t *testing.T) {
+	roles := Roles()
+	for _, owner := range []string{"sniv", "snrv", "sciv", "scnv", "snv"} {
+		identity, present := supportedRoles[owner]
+		if !present || identity.moduleID != owner+"-engine" || identity.engineID != "symphony-"+owner {
+			t.Fatalf("incorrect independently installed SNV role %s: %#v", owner, identity)
+		}
+		found := false
+		for _, role := range roles {
+			found = found || role == owner
+		}
+		if !found {
+			t.Fatalf("SNV role absent from advertised discovery: %s", owner)
+		}
+		if _, present := v1Roles[owner]; present {
+			t.Fatalf("SNV role widened canonical v1: %s", owner)
+		}
+		if _, present := legacyV1Roles[owner]; present {
+			t.Fatalf("SNV role widened legacy migration adapter: %s", owner)
+		}
+	}
+}
+
 func TestTemporalProfilesAndLegacyReadCompatibility(t *testing.T) {
 	now := time.Date(2026, time.August, 10, 12, 34, 56, 987654321, time.FixedZone("fixture", -4*60*60))
 	registry := nextRegistry(Registry{}, false, now)

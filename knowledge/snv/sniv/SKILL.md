@@ -10,4 +10,4 @@
 
 ## Stop Conditions
 
-Stop before inventing identifier syntax, evidence precedence, automatic discovery, provider ownership, or incarnation cardinality.
+Use the admitted v1 owner schema for opaque supplied identifiers, explicit causal records and the selected materiality profile. Additional precedence, discovery or lifecycle behavior requires a new exact contract; do not infer provider ownership.

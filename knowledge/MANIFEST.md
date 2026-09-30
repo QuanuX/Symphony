@@ -56,6 +56,13 @@ The platform governance companions under `knowledge/platform/` retain Symphony-w
 
 ## Subordinate Manifests
 
+- `libraries/snv-common-cpp/MANIFEST.md`
+- `modules/sniv-engine/MANIFEST.md`
+- `modules/snrv-engine/MANIFEST.md`
+- `modules/sciv-engine/MANIFEST.md`
+- `modules/scnv-engine/MANIFEST.md`
+- `modules/snv-engine/MANIFEST.md`
+
 - `tools/shv-interface-codegen/MANIFEST.md`
 
 - `knowledge/sacv/MANIFEST.md`
@@ -168,6 +175,12 @@ These exact declarations are the machine-discoverable canonical-surface closure.
 | SCHV-DO source-knowledge engine | `modules/schv-do-engine/` | `symphony-schv-do` |
 | SCHV-GCP source-knowledge engine | `modules/schv-gcp-engine/` | `symphony-schv-gcp` |
 | SCEV-CF source-knowledge engine | `modules/scev-cf-engine/` | `symphony-scev-cf` |
+| neutral Node evidence SDK | `libraries/snv-common-cpp/` | none |
+| SNIV Node evidence engine | `modules/sniv-engine/` | `symphony-sniv` |
+| SNRV Node evidence engine | `modules/snrv-engine/` | `symphony-snrv` |
+| SCIV Node evidence engine | `modules/sciv-engine/` | `symphony-sciv` |
+| SCNV Node evidence engine | `modules/scnv-engine/` | `symphony-scnv` |
+| SNV Node evidence engine | `modules/snv-engine/` | `symphony-snv` |
 
 These independently installable modules remain in the Symphony monorepo. Source co-location grants no runtime authority or deployment coupling.
 
@@ -222,3 +235,7 @@ The common v3 invariant registry schema additionally admits explicitly named pro
 ## SQAV request administration
 
 - `modules/sqav-request-engine/MANIFEST.md`
+
+## SNV Supplied-Evidence Increment
+
+Five exact `0.1.0-dev` C++26 engines independently install SNIV identity, SNRV resource, SCIV cluster, SNV-bounded SCNV naming and thin SNV composition/retention interfaces. `libraries/snv-common-cpp/` is their neutral static SDK. Child installation requires no parent, bus adapter, provider account, resident observer or Maestro. The parent embeds exact semantic libraries so separately installed child versions cannot alter replay. qxctl discovers exact receipt-backed owner resources and invokes disclosed operations; separately authorized retained selection preserves SSIAG and STAV ownership. Canonical domain contracts remain under `knowledge/snv/`. Live observation and provisioning remain separately scoped.

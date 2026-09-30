@@ -1,0 +1,18 @@
+{
+  "protocol": "symphony.shv.interface-registration.v1",
+  "declaration": "modules/snrv-engine/OWNER-INTERFACE.json",
+  "history": "modules/snrv-engine/tests/fixtures/interface-history.v1.json",
+  "history_digest": "sha256:2768d09f67ec55e48f2cef5ad95b7ebf98918568c555eedc9acbbabf5108e224",
+  "go_title": "Administration",
+  "go_stem": "snrv",
+  "cpp_output": "modules/snrv-engine/src/interface.generated.hpp",
+  "go_output": "tools/qxctl/internal/knowledgeengine/snrv_interface_generated.go",
+  "cmake_output": "cmake/SnrvInterface.generated.cmake",
+  "embedded_compatibility_version": null,
+  "embedded_macro": "SYMPHONY_SNRV_PREVIOUS",
+  "symbol_prefixes": {
+    "go_export": "SNRV",
+    "go_private": "snrv",
+    "cmake": "SNRV"
+  }
+}

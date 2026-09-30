@@ -22,7 +22,7 @@ func createValidTestRepo(t *testing.T) string {
 		if err := os.MkdirAll(modPath, 0755); err != nil {
 			t.Fatalf("failed to create module dir: %v", err)
 		}
-		for _, f := range files {
+		for _, f := range qxmodules.ContractsFor(mod) {
 			filePath := filepath.Join(modPath, f)
 			content := "# " + f + "\n\nvalid content\n"
 			if err := os.WriteFile(filePath, []byte(content), 0644); err != nil {
@@ -132,13 +132,26 @@ func TestReportJSON_ValidRepo(t *testing.T) {
 		t.Errorf("expected modules ok=true count=%d, got ok=%v count=%d", len(qxmodules.CanonicalModules), status.Modules.Ok, status.Modules.Count)
 	}
 
-	expectedContracts := len(qxmodules.CanonicalModules) * len(qxmodules.ExpectedFiles)
+	expectedContracts := 0
+	for _, module := range qxmodules.CanonicalModules {
+		expectedContracts += len(qxmodules.ContractsFor(module))
+	}
 	if !status.Contracts.Ok || status.Contracts.Count != expectedContracts {
 		t.Errorf("expected contracts ok=true count=%d, got ok=%v count=%d", expectedContracts, status.Contracts.Ok, status.Contracts.Count)
 	}
 
 	if !status.Digest.Ok || status.Digest.Algorithm != "sha256" || len(status.Digest.Value) != 64 {
 		t.Errorf("invalid digest structure: %+v", status.Digest)
+	}
+}
+
+func TestReportRejectsMissingSNVOwnerSpecification(t *testing.T) {
+	repoPath := createValidTestRepo(t)
+	if err := os.Remove(filepath.Join(repoPath, "modules", "sciv-engine", "SPEC.md")); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := ReportJSON(repoPath); err == nil || !strings.Contains(err.Error(), "SPEC.md") {
+		t.Fatalf("missing SNV owner contract accepted by status inventory: %v", err)
 	}
 }
 

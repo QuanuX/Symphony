@@ -259,7 +259,7 @@ func newRootCommand() (*cobra.Command, error) {
 	stav := newSTAVCommand()
 	root.AddCommand(
 		ssiag, stav, newKnowledgeCommand(), newSKVICommand(), newSCLVCommand(),
-		newSACVCommand(), newSODVCommand(), newSAVCommand(), newSEVCommand(), newSSFVCommand(), newMaestroCommand(), newSCVCommand(), newSHVCommand(), newSQVCommand(),
+		newSACVCommand(), newSODVCommand(), newSAVCommand(), newSEVCommand(), newSSFVCommand(), newMaestroCommand(), newSCVCommand(), newSHVCommand(), newSQVCommand(), newSNVCommand(),
 		newValidateCommand(),
 	)
 	if err := commandregistry.Validate(root); err != nil {
@@ -274,8 +274,12 @@ func newKnowledgeCommand() *cobra.Command {
 	engines := structural("engines", fmt.Errorf("knowledge engines subcommand is required: list, inspect, doctor, bind, unbind, or migrate"))
 	for _, operation := range []string{"list", "inspect", "doctor", "bind", "unbind", "migrate"} {
 		options := knowledgeEngineOptions{version: "0.1.0-dev"}
+		use := operation
+		if operation == "inspect" || operation == "bind" || operation == "unbind" {
+			use += " <role>"
+		}
 		child := &cobra.Command{
-			Use: operation,
+			Use: use,
 			Args: func(_ *cobra.Command, args []string) error {
 				if operation == "inspect" || operation == "bind" || operation == "unbind" {
 					if len(args) != 1 {
@@ -1517,7 +1521,7 @@ func exactOneUsageArg(_ *cobra.Command, args []string) error {
 
 func knownTopLevel(value string) bool {
 	switch value {
-	case "--help", "--version", "doctor", "contracts", "commands", "inventory", "status", "modules", "module", "ssiag", "stav", "knowledge", "skvi", "sclv", "sacv", "sodv", "sav", "sev", "ssfv", "maestro", "validate", "scv", "shv", "sqv":
+	case "--help", "--version", "doctor", "contracts", "commands", "inventory", "status", "modules", "module", "ssiag", "stav", "knowledge", "skvi", "sclv", "sacv", "sodv", "sav", "sev", "ssfv", "maestro", "validate", "scv", "shv", "sqv", "snv":
 		return true
 	default:
 		return false

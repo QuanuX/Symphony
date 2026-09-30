@@ -1,0 +1,129 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "symphony.snv.state-transition.v1",
+  "type": "object",
+  "properties": {
+    "protocol": {
+      "const": "symphony.snv.state-transition.v1"
+    },
+    "operation_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "expected_state_digest": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$"
+        }
+      ]
+    },
+    "head": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.snv.head.v1"
+        },
+        "view": {
+          "type": "object",
+          "properties": {
+            "tops_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "view_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          },
+          "required": [
+            "tops_id",
+            "view_id"
+          ],
+          "additionalProperties": false
+        },
+        "generation": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "previous_digest": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "pattern": "^sha256:[a-f0-9]{64}$"
+            }
+          ]
+        },
+        "bundle_digest": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "pattern": "^sha256:[a-f0-9]{64}$"
+            }
+          ]
+        },
+        "tombstone": {
+          "type": "boolean"
+        },
+        "operation_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "owner_version": {
+          "const": "0.1.0-dev"
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "protocol",
+        "view",
+        "generation",
+        "previous_digest",
+        "bundle_digest",
+        "tombstone",
+        "operation_id",
+        "owner_version",
+        "digest"
+      ],
+      "additionalProperties": false
+    },
+    "plan_digest": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "effect": {
+      "const": "proposed_only"
+    },
+    "digest": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    }
+  },
+  "required": [
+    "protocol",
+    "operation_id",
+    "expected_state_digest",
+    "head",
+    "plan_digest",
+    "effect",
+    "digest"
+  ],
+  "additionalProperties": false
+}

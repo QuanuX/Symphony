@@ -1,0 +1,509 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "scnv.names-result.v1",
+  "oneOf": [
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "owner": {
+          "const": "scnv"
+        },
+        "owner_version": {
+          "const": "0.1.0-dev"
+        },
+        "source_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "subject_ids": {
+          "type": "array",
+          "maxItems": 2048,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          }
+        },
+        "evidence_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "comparison": {
+          "const": "utf8_bytes"
+        },
+        "coverage": {
+          "enum": [
+            "complete",
+            "partial"
+          ]
+        },
+        "protocol": {
+          "const": "scnv.names-result.v1"
+        },
+        "mode": {
+          "const": "records"
+        },
+        "valid": {
+          "type": "boolean"
+        },
+        "collisions": {
+          "type": "array",
+          "maxItems": 2048,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "scope": {
+                "$ref": "#/$defs/scope"
+              },
+              "name": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 512
+              },
+              "kind": {
+                "const": "unqualified_temporal_collision"
+              },
+              "record_ids": {
+                "type": "array",
+                "maxItems": 2048,
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 256
+                }
+              },
+              "subjects": {
+                "type": "array",
+                "maxItems": 2048,
+                "items": {
+                  "$ref": "#/$defs/subject"
+                }
+              }
+            },
+            "required": [
+              "scope",
+              "name",
+              "kind",
+              "record_ids",
+              "subjects"
+            ]
+          }
+        },
+        "record_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2048
+        },
+        "association_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2048
+        }
+      },
+      "required": [
+        "owner",
+        "owner_version",
+        "source_digest",
+        "subject_ids",
+        "evidence_digest",
+        "comparison",
+        "coverage",
+        "protocol",
+        "mode",
+        "valid",
+        "collisions",
+        "record_count",
+        "association_count"
+      ]
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "owner": {
+          "const": "scnv"
+        },
+        "owner_version": {
+          "const": "0.1.0-dev"
+        },
+        "source_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "subject_ids": {
+          "type": "array",
+          "maxItems": 2048,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          }
+        },
+        "evidence_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "comparison": {
+          "const": "utf8_bytes"
+        },
+        "coverage": {
+          "enum": [
+            "complete",
+            "partial"
+          ]
+        },
+        "protocol": {
+          "const": "scnv.names-result.v1"
+        },
+        "mode": {
+          "const": "transition"
+        },
+        "valid": {
+          "type": "boolean"
+        },
+        "collisions": {
+          "type": "array",
+          "maxItems": 2048,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "scope": {
+                "$ref": "#/$defs/scope"
+              },
+              "name": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 512
+              },
+              "kind": {
+                "const": "unqualified_temporal_collision"
+              },
+              "record_ids": {
+                "type": "array",
+                "maxItems": 2048,
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 256
+                }
+              },
+              "subjects": {
+                "type": "array",
+                "maxItems": 2048,
+                "items": {
+                  "$ref": "#/$defs/subject"
+                }
+              }
+            },
+            "required": [
+              "scope",
+              "name",
+              "kind",
+              "record_ids",
+              "subjects"
+            ]
+          }
+        },
+        "record_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2048
+        },
+        "association_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2048
+        },
+        "predecessor_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "intent_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "policy_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "proposed_records": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 1,
+          "items": {
+            "$ref": "#/$defs/record"
+          }
+        },
+        "transition_kind": {
+          "enum": [
+            "assign",
+            "correct",
+            "retire",
+            "reuse",
+            "restore"
+          ]
+        }
+      },
+      "required": [
+        "owner",
+        "owner_version",
+        "source_digest",
+        "subject_ids",
+        "evidence_digest",
+        "comparison",
+        "coverage",
+        "protocol",
+        "mode",
+        "valid",
+        "collisions",
+        "record_count",
+        "association_count",
+        "predecessor_digest",
+        "intent_digest",
+        "policy_digest",
+        "proposed_records",
+        "transition_kind"
+      ]
+    }
+  ],
+  "$defs": {
+    "subject": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "node",
+            "incarnation",
+            "resource",
+            "cluster",
+            "relationship"
+          ]
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "description": "Exact valid UTF-8 bytes, at most 256 UTF-8 bytes; C0/C1/DEL controls forbidden. No normalization."
+        }
+      },
+      "required": [
+        "kind",
+        "id"
+      ]
+    },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "tops",
+            "trog",
+            "cluster"
+          ]
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "description": "Exact valid UTF-8 bytes, at most 256 UTF-8 bytes; C0/C1/DEL controls forbidden. No normalization."
+        }
+      },
+      "required": [
+        "kind",
+        "id"
+      ]
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "provider",
+            "infrastructure",
+            "symphony",
+            "user",
+            "observation"
+          ]
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "description": "Exact valid UTF-8 bytes, at most 256 UTF-8 bytes; C0/C1/DEL controls forbidden. No normalization."
+        }
+      },
+      "required": [
+        "kind",
+        "id"
+      ]
+    },
+    "record": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "record_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "description": "Exact valid UTF-8 bytes, at most 256 UTF-8 bytes; C0/C1/DEL controls forbidden. No normalization."
+        },
+        "association_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "description": "Exact valid UTF-8 bytes, at most 256 UTF-8 bytes; C0/C1/DEL controls forbidden. No normalization."
+        },
+        "kind": {
+          "enum": [
+            "assignment",
+            "correction",
+            "retirement",
+            "reuse",
+            "restoration"
+          ]
+        },
+        "previous_record_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256,
+              "description": "Exact valid UTF-8 bytes, at most 256 UTF-8 bytes; C0/C1/DEL controls forbidden. No normalization."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "origin_record_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256,
+              "description": "Exact valid UTF-8 bytes, at most 256 UTF-8 bytes; C0/C1/DEL controls forbidden. No normalization."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "subject": {
+          "$ref": "#/$defs/subject"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512,
+          "description": "Exact valid UTF-8 bytes, at most 512 UTF-8 bytes; C0/C1/DEL controls forbidden. No normalization."
+        },
+        "name_kind": {
+          "enum": [
+            "provider_resource_id",
+            "provider_offering_name",
+            "infrastructure_name",
+            "node_identity",
+            "cluster_name",
+            "user_nickname",
+            "short_name",
+            "resource_name",
+            "incarnation_name",
+            "relationship_name",
+            "external_name"
+          ]
+        },
+        "namespace": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "description": "Exact valid UTF-8 bytes, at most 256 UTF-8 bytes; C0/C1/DEL controls forbidden. No normalization."
+        },
+        "source": {
+          "$ref": "#/$defs/source"
+        },
+        "scope": {
+          "$ref": "#/$defs/scope"
+        },
+        "interval": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "from_unix_ms": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "until_unix_ms": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "from_unix_ms",
+            "until_unix_ms"
+          ]
+        },
+        "observed_unix_ms": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "recorded_unix_ms": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        }
+      },
+      "required": [
+        "record_id",
+        "association_id",
+        "kind",
+        "previous_record_id",
+        "origin_record_id",
+        "subject",
+        "name",
+        "name_kind",
+        "namespace",
+        "source",
+        "scope",
+        "interval",
+        "observed_unix_ms",
+        "recorded_unix_ms"
+      ]
+    },
+    "limits": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "max_records": {
+          "enum": [
+            512,
+            1024,
+            2048
+          ]
+        }
+      },
+      "required": [
+        "max_records"
+      ]
+    }
+  }
+}

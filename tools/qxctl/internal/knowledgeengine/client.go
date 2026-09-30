@@ -138,6 +138,11 @@ var engineSpecsByRole = map[string]engineSpec{
 	"sev":         sevSpec,
 	"ssfv":        ssfvSpec,
 	"coordinator": sessionSpec,
+	"sniv":        snvEngineSpec("sniv"),
+	"snrv":        snvEngineSpec("snrv"),
+	"sciv":        snvEngineSpec("sciv"),
+	"scnv":        snvEngineSpec("scnv"),
+	"snv":         snvEngineSpec("snv"),
 }
 
 // Installation is the exact, receipt-validated local engine installation
@@ -315,6 +320,10 @@ func InvokeMaestro(ctx context.Context, prefix, version, repositoryRoot, operati
 // returns content-addressed evidence suitable for the user-scope binding
 // registry. Installation remains distinct from activation and docking.
 func InspectInstallation(role, prefix, version string) (Installation, error) {
+	switch role {
+	case "sniv", "snrv", "sciv", "scnv", "snv":
+		return InspectSNV(prefix, version, role)
+	}
 	spec, ok := engineSpecsByRole[role]
 	if !ok {
 		return Installation{}, fmt.Errorf("unsupported knowledge engine role %q", role)
@@ -441,9 +450,13 @@ func invokeResolved(
 	stderr := &boundedBuffer{limit: 64 * 1024}
 	command.Stdout = stdout
 	command.Stderr = stderr
+	configureEngineProcess(command)
 	runErr := command.Run()
+	if err := terminateEngineProcessGroup(command); err != nil && !errors.Is(err, os.ErrProcessDone) {
+		return Response{}, fmt.Errorf("clean up %s engine process group: %w", spec.label, err)
+	}
 	if childContext.Err() != nil {
-		return Response{}, fmt.Errorf("%s engine exceeded its hard process deadline: %w", spec.label, childContext.Err())
+		return Response{}, fmt.Errorf("%s engine exceeded its hard process deadline: %w", spec.label, context.Cause(childContext))
 	}
 	if stdout.exceeded {
 		return Response{}, fmt.Errorf("%s engine response exceeds %d bytes", spec.label, maxResponseBytes)
@@ -1154,7 +1167,7 @@ func validateResponseFor(spec engineSpec, data []byte, requestID, operation, ver
 		return Response{}, fmt.Errorf("decode %s response digest input: %w", spec.label, err)
 	}
 	delete(object, "response_digest")
-	canonical, err := marshalCanonical(object)
+	canonical, err := SCVCanonical(object)
 	if err != nil {
 		return Response{}, fmt.Errorf("canonicalize %s response: %w", spec.label, err)
 	}

@@ -11,7 +11,8 @@ Guide agents through Node identity, resource, cluster, and naming questions with
 3. `knowledge/NAMESPACES.md`
 4. the SNV Contract Quad
 5. the relevant SNIV, SNRV, SCIV, and SCNV Contract Quads
-6. applicable SCV, SOV, SHV, SKV lifecycle, SSIAG, STAV, and SODV contracts
+6. `knowledge/snv/VALIDATION.md` and exact installed module interfaces/resources
+7. applicable SCV, SOV, SHV, SKV lifecycle, SSIAG, STAV, and SODV contracts
 
 ## Procedure
 
@@ -24,4 +25,4 @@ Guide agents through Node identity, resource, cluster, and naming questions with
 
 ## Stop Conditions
 
-Stop for Architect review before defining an identifier encoding, `::` grammar, name-allocation service, discovery mechanism, incarnation transition, cardinality, graph database, engine operation, or qxctl command.
+Use the admitted native operations and qxctl commands under their exact installed contracts. Stop for Architect review before extending an identifier encoding, `::` grammar, name-allocation service, discovery mechanism, incarnation transition, cardinality, graph database, engine operation or qxctl surface beyond that admitted scope. Never interpret a candidate, stored digest or successful resolver result as operational authority.

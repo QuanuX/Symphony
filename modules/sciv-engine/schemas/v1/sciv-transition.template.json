@@ -1,0 +1,93 @@
+{
+  "protocol": "symphony.snv.sciv.transition.v1",
+  "evidence": {
+    "protocol": "symphony.snv.sciv.evidence.v1",
+    "record_limit": 2048,
+    "at_unix_ms": 10000,
+    "profile": {
+      "direction": "undirected",
+      "transitive": true,
+      "max_age_ms": 1000
+    },
+    "cluster": {
+      "cluster_id": "cluster-1",
+      "system_id": "research-1"
+    },
+    "nodes": [
+      {
+        "node_id": "node-a",
+        "system_id": "research-1",
+        "incarnation_id": "episode-node-a"
+      },
+      {
+        "node_id": "node-b",
+        "system_id": "research-1",
+        "incarnation_id": "episode-node-b"
+      }
+    ],
+    "memberships": [
+      {
+        "record_id": "join-node-a",
+        "node_id": "node-a",
+        "incarnation_id": "episode-node-a",
+        "state": "joined",
+        "effective_unix_ms": 10000,
+        "source": {
+          "source_id": "supplied-observer",
+          "source_revision": "capture-1",
+          "method": "declared-fixture",
+          "method_version": "1"
+        }
+      },
+      {
+        "record_id": "join-node-b",
+        "node_id": "node-b",
+        "incarnation_id": "episode-node-b",
+        "state": "joined",
+        "effective_unix_ms": 10000,
+        "source": {
+          "source_id": "supplied-observer",
+          "source_revision": "capture-1",
+          "method": "declared-fixture",
+          "method_version": "1"
+        }
+      }
+    ],
+    "observations": [
+      {
+        "record_id": "connection-1",
+        "bus_id": "bus-1",
+        "from_node_id": "node-a",
+        "to_node_id": "node-b",
+        "state": "connected",
+        "coverage": "complete",
+        "observed_unix_ms": 10000,
+        "source": {
+          "source_id": "supplied-observer",
+          "source_revision": "capture-1",
+          "method": "declared-fixture",
+          "method_version": "1"
+        }
+      }
+    ]
+  },
+  "expected_source_digest": "sha256:4fe8493135d7b837a6e2f50f9972fc89804505d6b4465950b3f2a4d8fe2ba521",
+  "change": {
+    "kind": "connection",
+    "record": {
+      "record_id": "connection-2",
+      "bus_id": "bus-1",
+      "from_node_id": "node-a",
+      "to_node_id": "node-b",
+      "state": "disconnected",
+      "coverage": "complete",
+      "observed_unix_ms": 10001,
+      "source": {
+        "source_id": "supplied-observer",
+        "source_revision": "capture-1",
+        "method": "declared-fixture",
+        "method_version": "1"
+      }
+    }
+  }
+}

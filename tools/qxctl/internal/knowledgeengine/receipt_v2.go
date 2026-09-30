@@ -1,15 +1,22 @@
 package knowledgeengine
 
 import (
+	"bytes"
 	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
+	"io"
 	"os"
 	"path/filepath"
 	"runtime"
 	"sort"
 	"strconv"
+	"strings"
 )
+
+// Package artifacts include executable and static SDK objects. Their hashing
+// bound is independent from the process protocol's JSON byte limits.
+const maxReceiptV2ArtifactBytes int64 = 64 * 1024 * 1024
 
 // ReceiptV2EntryPointSpec identifies one typed executable owned by one exact
 // immutable package receipt. It is also used by the existing engine verifier,
@@ -149,12 +156,11 @@ func validateReceiptV2EntryPoint(prefix, version, receiptRelative string, receip
 		if _, duplicate := seen[file.Path]; duplicate {
 			return "", "", "", fmt.Errorf("%s receipt-v2 contains a duplicate path", spec.Label)
 		}
-		data, err := readTrustedNoFollowRelative(prefix, file.Path, maxInstalledFileBytes(file.Path))
+		digest, err := hashTrustedReceiptArtifact(prefix, file.Path, file.Size)
 		if err != nil {
 			return "", "", "", fmt.Errorf("validate receipt-v2-owned file %s: %w", file.Path, err)
 		}
-		digest := digestBytes(data)
-		if uint64(len(data)) != file.Size || digest != file.Digest {
+		if digest != file.Digest {
 			return "", "", "", fmt.Errorf("receipt-v2-owned file content mismatch: %s", file.Path)
 		}
 		seen[file.Path] = file
@@ -223,7 +229,50 @@ func validateReceiptV2EntryPoint(prefix, version, receiptRelative string, receip
 	if err != nil || info.Mode()&os.ModeSymlink != 0 || !info.Mode().IsRegular() || info.Mode().Perm()&0o111 == 0 || info.Mode().Perm()&0o022 != 0 {
 		return "", "", "", fmt.Errorf("%s typed entry point is not a protected no-follow executable regular file", spec.Label)
 	}
+	afterReceipt, err := readTrustedNoFollowRelative(prefix, receiptRelative, maxReceiptBytes)
+	if err != nil || !bytes.Equal(afterReceipt, receiptBytes) {
+		return "", "", "", fmt.Errorf("%s receipt-v2 changed during artifact verification", spec.Label)
+	}
 	return binary, receiptDigest, owned.Digest, nil
+}
+
+func hashTrustedReceiptArtifact(root, relative string, expectedSize uint64) (string, error) {
+	if !safeRelativePath(relative) || expectedSize > uint64(maxReceiptV2ArtifactBytes) {
+		return "", fmt.Errorf("artifact path or size exceeds the bounded package contract")
+	}
+	file, err := openTrustedRelativeNoFollow(root, strings.Split(relative, "/"))
+	if err != nil {
+		return "", fmt.Errorf("trusted no-follow artifact open failed: %w", err)
+	}
+	defer file.Close()
+	before, err := file.Stat()
+	if err != nil || !before.Mode().IsRegular() || before.Size() < 0 || uint64(before.Size()) != expectedSize {
+		return "", fmt.Errorf("artifact is not a regular file of the receipt-declared size")
+	}
+	hash := sha256.New()
+	count, err := io.Copy(hash, io.LimitReader(file, maxReceiptV2ArtifactBytes+1))
+	if err != nil || count > maxReceiptV2ArtifactBytes || uint64(count) != expectedSize {
+		return "", fmt.Errorf("artifact read differs from its bounded receipt-declared size")
+	}
+	after, err := file.Stat()
+	if err != nil || !os.SameFile(before, after) || before.Size() != after.Size() || !before.ModTime().Equal(after.ModTime()) {
+		return "", fmt.Errorf("artifact changed while hashing")
+	}
+	if err := validateTrustedInstalledFile(file); err != nil {
+		return "", err
+	}
+	// Reopen beneath the trusted prefix to bind the path to the same descriptor
+	// identity after reading, including protection against file replacement.
+	bound, err := openTrustedRelativeNoFollow(root, strings.Split(relative, "/"))
+	if err != nil {
+		return "", fmt.Errorf("artifact path changed while hashing: %w", err)
+	}
+	defer bound.Close()
+	info, err := bound.Stat()
+	if err != nil || !os.SameFile(after, info) || info.Size() != after.Size() || !info.ModTime().Equal(after.ModTime()) {
+		return "", fmt.Errorf("artifact path changed while hashing")
+	}
+	return "sha256:" + hex.EncodeToString(hash.Sum(nil)), nil
 }
 
 func digestBytes(value []byte) string {

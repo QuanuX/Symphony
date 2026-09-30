@@ -10,15 +10,15 @@ Canonical reviewed policy for `symphony.knowledge.feature-administration-profile
 - SSFV source: `knowledge/ssfv/REGISTRY.md`
 - catalog scope: `registered_partial_catalog`
 - catalog complete: `false`
-- registered feature count: `131`
-- reviewed interaction expectations: `339`
+- registered feature count: `139`
+- reviewed interaction expectations: `373`
 - forward gate: `enforce_new_records`
 
-The 131 registered feature IDs appear exactly once. Their 339 reviewed expectations comprise 329 required, 9 prohibited and 1 not-applicable interactions. Runtime-only and system-orchestrated exceptions retain their owner evidence. The SCV increment adds explicit domain-engine operation mappings and a separately owned qxctl adapter for immutable corpus retention, profile/connection evidence and protected source/graph administration. A source or graph result is not permission, durable selection or a provider action.
+The 139 registered feature IDs appear exactly once. Their 373 reviewed expectations comprise 362 required, 9 prohibited and 2 not-applicable interactions. Runtime-only and system-orchestrated exceptions retain their owner evidence. The SCV increment adds explicit domain-engine operation mappings and a separately owned qxctl adapter for immutable corpus retention, profile/connection evidence and protected source/graph administration. A source or graph result is not permission, durable selection or a provider action.
 
 ## Exact Machine Evidence
 
-The profile digest is `sha256:c77420c2fffeae39b37166873ed795f6b6c9c1bb92ae0054efb05f0ddd512250`. Its bound SSFV registry digest is `sha256:bb9dacd8a11ea68a23506f4efa396820f54676a3e1f7236432c95aa28472d353`. The expected qxctl registry has 383 leaves with digest `sha256:52026cfe39276aa24b33d004a1820dd055640304ac3e047b21801356a19646bc`. These are source-level mappings; installed acceptance also requires exact owner descriptors, receipts and exercised process/storage boundaries. Catalog completeness remains false.
+The profile digest is `sha256:fbd5112169ecb8ac66b8dd9e61e046b08e5be2acf41c7051108cc48bbbd9e3cc`. Its bound SSFV registry digest is `sha256:eb8a1ac706db3a4ff28639e5da431d4806548e9e1ef665fbe57d171edb01763a`. The expected qxctl registry has 399 leaves with digest `sha256:a5b231308f5361afbe14436003232da8bab6246a20e29ac4e8a1714057c9195b`. These are source-level mappings; installed acceptance also requires exact owner descriptors, receipts and exercised process/storage boundaries. Catalog completeness remains false.
 
 ## Advancement
 
@@ -49,3 +49,5 @@ The SQV increment adds runtime-only invocation expectations for exact C++26 SQAV
 The SQAV Databento DBNv1/v3 MBO file library has its own runtime-only invocation expectation; it supplies no network or credential command.
 
 The non-live SQV administration pass adds six exact native owner adapters and seven canonical leaves. Metadata projections, flow resource trials, integer selection and retained-state inspection share schema/template and discovery paths. Read-only observation does not recover storage or activate providers.
+
+The SNV increment adds five independently installed semantic engines and one neutral shared SDK. Fifteen canonical qxctl leaves cover typed validation/proposals, naming, exact replay, receipt-bound resources, immutable evidence retention and SSIAG-backed named-view selection/recovery. The 31 new reviewed expectations distinguish native pure interpretation from Go filesystem administration. The separately selected optional local collector now adds `snv observe` as the sixteenth SNV leaf. Its three reviewed expectations require exact discovery and native inspection, and mark activation/docking/service lifecycle not applicable. Five semantic engines remain distinct from this independent module. Live buses, provider provisioning and data erasure remain outside the admitted scope.

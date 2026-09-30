@@ -1,0 +1,144 @@
+{
+  "protocol": "symphony.scnv.templates.v1",
+  "templates": {
+    "names_validate": {
+      "protocol": "scnv.names.v1",
+      "mode": "records",
+      "records": [
+        {
+          "record_id": "record-annex-1",
+          "association_id": "association-annex",
+          "kind": "assignment",
+          "previous_record_id": null,
+          "origin_record_id": null,
+          "subject": {
+            "kind": "node",
+            "id": "node-a"
+          },
+          "name": "annex",
+          "name_kind": "short_name",
+          "namespace": "user-assigned",
+          "source": {
+            "kind": "user",
+            "id": "caller-a"
+          },
+          "scope": {
+            "kind": "cluster",
+            "id": "cluster-a"
+          },
+          "interval": {
+            "from_unix_ms": 100,
+            "until_unix_ms": null
+          },
+          "observed_unix_ms": 100,
+          "recorded_unix_ms": 110
+        }
+      ],
+      "coverage": "complete",
+      "limits": {
+        "max_records": 512
+      }
+    },
+    "names_resolve": {
+      "protocol": "scnv.resolve.v1",
+      "records": [
+        {
+          "record_id": "record-annex-1",
+          "association_id": "association-annex",
+          "kind": "assignment",
+          "previous_record_id": null,
+          "origin_record_id": null,
+          "subject": {
+            "kind": "node",
+            "id": "node-a"
+          },
+          "name": "annex",
+          "name_kind": "short_name",
+          "namespace": "user-assigned",
+          "source": {
+            "kind": "user",
+            "id": "caller-a"
+          },
+          "scope": {
+            "kind": "cluster",
+            "id": "cluster-a"
+          },
+          "interval": {
+            "from_unix_ms": 100,
+            "until_unix_ms": null
+          },
+          "observed_unix_ms": 100,
+          "recorded_unix_ms": 110
+        }
+      ],
+      "coverage": "complete",
+      "limits": {
+        "max_records": 512
+      },
+      "query": {
+        "mode": "exact",
+        "name": "annex",
+        "scope": {
+          "kind": "cluster",
+          "id": "cluster-a"
+        },
+        "namespace": null,
+        "name_kind": null,
+        "as_of_unix_ms": 150,
+        "offset": 0,
+        "limit": 128,
+        "expected_evidence_digest": null
+      }
+    },
+    "names_assign": {
+      "protocol": "scnv.names.v1",
+      "mode": "transition",
+      "records": [],
+      "coverage": "complete",
+      "limits": {
+        "max_records": 512
+      },
+      "policy": {
+        "id": "caller-naming-policy",
+        "version": "1",
+        "comparison": "utf8_bytes",
+        "scope": "exact_scope",
+        "collision": "report",
+        "interval": "half_open"
+      },
+      "intent": {
+        "action": "assign",
+        "expected_evidence_digest": "sha256:08143e341276d10976050247f40bd9f0e2b74e7c8ad69f633970cbac62f68828",
+        "new_record": {
+          "record_id": "record-annex-1",
+          "association_id": "association-annex",
+          "kind": "assignment",
+          "previous_record_id": null,
+          "origin_record_id": null,
+          "subject": {
+            "kind": "node",
+            "id": "node-a"
+          },
+          "name": "annex",
+          "name_kind": "short_name",
+          "namespace": "user-assigned",
+          "source": {
+            "kind": "user",
+            "id": "caller-a"
+          },
+          "scope": {
+            "kind": "cluster",
+            "id": "cluster-a"
+          },
+          "interval": {
+            "from_unix_ms": 100,
+            "until_unix_ms": null
+          },
+          "observed_unix_ms": 100,
+          "recorded_unix_ms": 110
+        },
+        "reason": "record caller-selected short name"
+      }
+    }
+  }
+}

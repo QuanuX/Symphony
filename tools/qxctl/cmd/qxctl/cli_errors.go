@@ -58,6 +58,11 @@ func finishCommandError(root, command *cobra.Command, args []string, err error) 
 	if errors.As(err, &validatorExit) {
 		status = boundedCLIExit(validatorExit.ExitCode)
 	}
+	var engineError *knowledgeengine.ProcessError
+	if spec, specErr := commandregistry.Spec(command); specErr == nil &&
+		strings.HasPrefix(spec.CommandID, "qxcmd:symphony:snv.") && errors.As(err, &engineError) && engineError != nil {
+		status = snvEngineErrorExit(engineError.Code)
+	}
 	if scvJSONRequested(root, args) {
 		writeCLIError(command, err, status)
 	} else {
@@ -87,6 +92,12 @@ func writeCLIError(command *cobra.Command, err error, status int) {
 	var engineError *knowledgeengine.ProcessError
 	if errors.As(err, &engineError) && engineError != nil {
 		detail = cliErrorDetail{Code: "engine_rejected", Message: "The selected engine rejected the request.", EngineCode: safeSCVEngineCode(engineError.Code)}
+		if detail.EngineCode != nil && strings.HasPrefix(engineError.Code, "snv.") {
+			// Admitted SNV codes include local authority/storage boundaries;
+			// they do not all describe a rejection by the native reducer.
+			detail.Code = "operation_refused"
+			detail.Message = "The SNV workflow was refused; inspect its exact state or retained attempt."
+		}
 	}
 	// Only fixed messages, registered command identity, and allowlisted engine
 	// codes cross this boundary. In particular, never serialize err.Error().
@@ -108,8 +119,40 @@ func safeSCVEngineCode(code string) *string {
 		"scv.stale_state", "scv.plan_mismatch", "scv.time", "scv.capture_size", "scv.capture_encoding",
 		"scv.capture_digest", "scv.completeness":
 		return &code
+	case "invalid_input", "invalid_payload", "unsupported_protocol", "capacity_exceeded",
+		"reference_mismatch", "reference_conflict", "conflict", "unsupported_operation", "deadline_exceeded",
+		"scnv.invalid_input", "scnv.capacity_exceeded", "scnv.lineage_conflict",
+		"scnv.expected_evidence_conflict", "scnv.snapshot_required",
+		"snv.invalid_input", "snv.deadline_exceeded", "snv.unsupported_owner", "snv.unsupported_mode",
+		"snv.unsupported_operation", "snv.snapshot_conflict", "snv.state_conflict", "snv.intent_conflict",
+		"snv.capacity_exceeded", "snv.authority_denied", "snv.authority_unavailable", "snv.authority_expired",
+		"snv.recovery_required", "snv.state_busy", "snv.unsafe_state", "snv.authority_conflict", "snv.installation_drift", "snv.candidate_drift", "snv.evidence_missing", "invocation.arguments", "descriptor.input", "deadline.exceeded":
+		return &code
 	}
 	return nil
+}
+
+// These are reviewed domain categories, not a copy of an untrusted process
+// status. Preserve existing owners' CLI behavior; this mapping belongs to SNV.
+func snvEngineErrorExit(code string) int {
+	switch code {
+	case "reference_mismatch", "reference_conflict", "conflict", "scnv.lineage_conflict",
+		"scnv.expected_evidence_conflict", "snv.snapshot_conflict", "snv.state_conflict", "snv.intent_conflict", "snv.authority_conflict", "snv.installation_drift", "snv.candidate_drift":
+		return 4
+	case "deadline_exceeded", "snv.deadline_exceeded", "request.deadline_expired", "deadline.exceeded", "snv.authority_unavailable", "snv.state_busy":
+		return 3
+	case "invalid_input", "invalid_payload", "unsupported_protocol", "capacity_exceeded", "unsupported_operation",
+		"scnv.invalid_input", "scnv.capacity_exceeded", "scnv.snapshot_required",
+		"snv.invalid_input", "snv.unsupported_owner", "snv.unsupported_mode", "snv.unsupported_operation",
+		"operation.unsupported", "invocation.arguments", "descriptor.input", "snv.capacity_exceeded", "snv.evidence_missing", "snv.unsafe_state":
+		return 2
+	case "snv.authority_denied", "snv.authority_expired":
+		return 5
+	case "snv.recovery_required":
+		return 6
+	default:
+		return 1
+	}
 }
 
 // Parsing can fail before Cobra reaches --json. Inspect output intent without
@@ -117,7 +160,7 @@ func safeSCVEngineCode(code string) *string {
 // us which flags consume the next token, including a value spelled "--json".
 // This does not make misplaced/unknown flags valid or change Cobra's grammar.
 func scvJSONRequested(root *cobra.Command, args []string) bool {
-	if len(args) == 0 || (args[0] != "scv" && args[0] != "shv" && args[0] != "sqv") {
+	if len(args) == 0 || (args[0] != "scv" && args[0] != "shv" && args[0] != "sqv" && args[0] != "snv") {
 		return false
 	}
 	consumesValue := map[string]bool{}

@@ -117,6 +117,93 @@
       "cross_vector_references": [
         {
           "applicability": "applicable",
+          "reason": "Completed source changes receive attributable closure evidence at their actual gates.",
+          "reference": "knowledge/sclv/SPEC.md",
+          "vector": "sclv"
+        },
+        {
+          "applicability": "applicable",
+          "reason": "Canonical owner truth, implementation and checks have explicit indexed routes.",
+          "reference": "knowledge/skvi/INDEX.md",
+          "vector": "skvi"
+        },
+        {
+          "applicability": "applicable",
+          "reason": "Caller-named selection requires exact authenticated capability and effect-boundary revalidation.",
+          "reference": "knowledge/ssiag/SPEC.md",
+          "vector": "ssiag"
+        },
+        {
+          "applicability": "applicable",
+          "reason": "Policy-decision audit and retained local outcome remain distinct; qxctl gains no raw append authority.",
+          "reference": "knowledge/stav/SPEC.md",
+          "vector": "stav"
+        }
+      ],
+      "distinctions": [],
+      "evidence": [
+        "tools/qxctl/cmd/qxctl/snv_test.go"
+      ],
+      "feature_id": "ssfv:symphony:qxctl-snv-administration",
+      "how": "Receipt-bound exact native owners reduce supplied evidence. Go validates installed interface/schema bytes, bounded transport, result provenance and typed expected-state plans, then retains or selects evidence through its separately authorized local adapter.",
+      "implementation_languages": [
+        {
+          "language": "Go",
+          "role": "Exact owner installation discovery, bounded process consumption, retained administrative state and agentic command grammar."
+        }
+      ],
+      "implementation_paths": [
+        "tools/qxctl/cmd/qxctl/snv.go",
+        "tools/qxctl/internal/knowledgeengine/snv.go",
+        "tools/qxctl/internal/snvstate/store.go"
+      ],
+      "kind": "subfeature",
+      "non_claims": [
+        "No implicit provider activation, live bus operation, generated physical identity or authorization from names, record locators or digests."
+      ],
+      "owner_contract": "tools/qxctl/MANIFEST.md",
+      "parent_feature_id": "ssfv:symphony:qxctl",
+      "record_version": 2,
+      "relationships": [
+        {
+          "rationale": "Calls the independently installed exact owner without moving native interpretation into Go.",
+          "target_feature_id": "ssfv:symphony:sciv-engine",
+          "type": "composes_with"
+        },
+        {
+          "rationale": "Calls the independently installed exact owner without moving native interpretation into Go.",
+          "target_feature_id": "ssfv:symphony:scnv-engine",
+          "type": "composes_with"
+        },
+        {
+          "rationale": "Calls the independently installed exact owner without moving native interpretation into Go.",
+          "target_feature_id": "ssfv:symphony:sniv-engine",
+          "type": "composes_with"
+        },
+        {
+          "rationale": "Calls the independently installed exact owner without moving native interpretation into Go.",
+          "target_feature_id": "ssfv:symphony:snrv-engine",
+          "type": "composes_with"
+        },
+        {
+          "rationale": "Calls the independently installed exact owner without moving native interpretation into Go.",
+          "target_feature_id": "ssfv:symphony:snv-engine",
+          "type": "composes_with"
+        }
+      ],
+      "source_scope": "tools/qxctl",
+      "status": "experimental",
+      "title": "Agentic SNV administration",
+      "what": "Discover and invoke exact owner validation, resolution, inspection, retention and caller-named selection through receipt-bound native contracts.",
+      "when": "Explicit bounded caller-selected invocation.",
+      "where": "qxctl snv on the selected administrative Node, outside hot and warm execution paths.",
+      "who": "Operators, agents, automation and other callers operating within effective host permissions.",
+      "why": "Expose independently installed Node evidence owners through one discoverable administrative family while preserving native semantics and separate effect authority."
+    },
+    {
+      "cross_vector_references": [
+        {
+          "applicability": "applicable",
           "reason": "SCLV records reviewed session and authorization-boundary changes.",
           "reference": "knowledge/sclv/CHANGELOG.md",
           "vector": "sclv"

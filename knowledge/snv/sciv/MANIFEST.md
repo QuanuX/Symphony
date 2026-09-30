@@ -17,7 +17,7 @@ SCIV owns SNV's cluster identities and evidenced bus-connectivity relationships.
 
 ## Implementation Status
 
-Canonical contract only. No cluster registry, connectivity observer, graph, engine, or qxctl command is implemented.
+The bounded `sciv-engine` 0.1.0-dev C++26 library and finite process interpret supplied cluster/membership/connection evidence and produce typed candidates with exact attributed history. Installation and qxctl integration have their own exact release/administration gates. This module supplies no live connectivity observer or transport configuration operation.
 
 ## Non-Authorization Statement
 

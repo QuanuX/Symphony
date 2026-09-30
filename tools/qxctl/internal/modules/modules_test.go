@@ -7,6 +7,34 @@ import (
 	"testing"
 )
 
+func TestSNVSourceDiscoveryKeepsExactOwnerContracts(t *testing.T) {
+	for _, owner := range []string{"sniv", "snrv", "sciv", "scnv", "snv"} {
+		module := owner + "-engine"
+		count := 0
+		for _, declared := range CanonicalModules {
+			if declared == module {
+				count++
+			}
+		}
+		if count != 1 {
+			t.Fatalf("SNV owner source declaration count %s: %d", module, count)
+		}
+		contracts := ContractsFor(module)
+		if len(contracts) != 6 {
+			t.Fatalf("SNV owner contract discovery %s: %v", module, contracts)
+		}
+		for _, required := range []string{"INTENT.md", "MANIFEST.md", "INSTALL.md", "SKILL.md", "SPEC.md", "FEATURES.md"} {
+			present := false
+			for _, contract := range contracts {
+				present = present || contract == required
+			}
+			if !present {
+				t.Fatalf("missing SNV owner contract %s/%s", module, required)
+			}
+		}
+	}
+}
+
 func TestList_Success(t *testing.T) {
 	tempDir := t.TempDir()
 

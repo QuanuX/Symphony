@@ -19367,3 +19367,2370 @@ These entries locate existing implementation and regression surfaces referenced 
 - deferred_projections: native capability and verification discovery
 - notes: No provider authority, implicit recovery or live runtime state is inferred.
 - status: canonical
+
+
+### SNIV package CMakeLists.txt
+- path: `modules/sniv-engine/CMakeLists.txt`
+- title: SNIV package CMakeLists.txt
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SNIV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/sniv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SNIV package FEATURES.md
+- path: `modules/sniv-engine/FEATURES.md`
+- title: SNIV package FEATURES.md
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SNIV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/sniv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SNIV package INSTALL.md
+- path: `modules/sniv-engine/INSTALL.md`
+- title: SNIV package INSTALL.md
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SNIV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/sniv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SNIV package INTENT.md
+- path: `modules/sniv-engine/INTENT.md`
+- title: SNIV package INTENT.md
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SNIV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/sniv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SNIV package INTERFACE-GENERATOR.json
+- path: `modules/sniv-engine/INTERFACE-GENERATOR.json`
+- title: SNIV package INTERFACE-GENERATOR.json
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SNIV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/sniv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SNIV package MANIFEST.md
+- path: `modules/sniv-engine/MANIFEST.md`
+- title: SNIV package MANIFEST.md
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SNIV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/sniv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SNIV package OWNER-INTERFACE.json
+- path: `modules/sniv-engine/OWNER-INTERFACE.json`
+- title: SNIV package OWNER-INTERFACE.json
+- surface_type: native owner contract, source, resource or verification
+- truth_role: derived mechanical encoding of the exact owner declaration
+- owner: SNIV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/sniv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SNIV package SKILL.md
+- path: `modules/sniv-engine/SKILL.md`
+- title: SNIV package SKILL.md
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SNIV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/sniv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SNIV package SPEC.md
+- path: `modules/sniv-engine/SPEC.md`
+- title: SNIV package SPEC.md
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SNIV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/sniv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SNIV package include/symphony/snv/sniv.hpp
+- path: `modules/sniv-engine/include/symphony/snv/sniv.hpp`
+- title: SNIV package include/symphony/snv/sniv.hpp
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SNIV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/sniv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SNIV package schemas/v1/admin.schema.json
+- path: `modules/sniv-engine/schemas/v1/admin.schema.json`
+- title: SNIV package schemas/v1/admin.schema.json
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SNIV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/sniv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SNIV package schemas/v1/admin.templates.json
+- path: `modules/sniv-engine/schemas/v1/admin.templates.json`
+- title: SNIV package schemas/v1/admin.templates.json
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SNIV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/sniv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SNIV package src/interface.generated.hpp
+- path: `modules/sniv-engine/src/interface.generated.hpp`
+- title: SNIV package src/interface.generated.hpp
+- surface_type: native owner contract, source, resource or verification
+- truth_role: derived mechanical encoding of the exact owner declaration
+- owner: SNIV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/sniv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SNIV package src/sniv.cpp
+- path: `modules/sniv-engine/src/sniv.cpp`
+- title: SNIV package src/sniv.cpp
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SNIV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/sniv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SNIV package src/validation.hpp
+- path: `modules/sniv-engine/src/validation.hpp`
+- title: SNIV package src/validation.hpp
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SNIV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/sniv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SNIV package tests/fixture.hpp
+- path: `modules/sniv-engine/tests/fixture.hpp`
+- title: SNIV package tests/fixture.hpp
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SNIV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/sniv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SNIV package tests/fixtures/identity_validate.json
+- path: `modules/sniv-engine/tests/fixtures/identity_validate.json`
+- title: SNIV package tests/fixtures/identity_validate.json
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SNIV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/sniv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SNIV package tests/fixtures/interface-history.v1.json
+- path: `modules/sniv-engine/tests/fixtures/interface-history.v1.json`
+- title: SNIV package tests/fixtures/interface-history.v1.json
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SNIV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/sniv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SNIV package tests/process.cpp
+- path: `modules/sniv-engine/tests/process.cpp`
+- title: SNIV package tests/process.cpp
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SNIV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/sniv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SNIV package tests/sniv_test.cpp
+- path: `modules/sniv-engine/tests/sniv_test.cpp`
+- title: SNIV package tests/sniv_test.cpp
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SNIV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/sniv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SNRV package CMakeLists.txt
+- path: `modules/snrv-engine/CMakeLists.txt`
+- title: SNRV package CMakeLists.txt
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SNRV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/snrv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SNRV package FEATURES.md
+- path: `modules/snrv-engine/FEATURES.md`
+- title: SNRV package FEATURES.md
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SNRV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/snrv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SNRV package INSTALL.md
+- path: `modules/snrv-engine/INSTALL.md`
+- title: SNRV package INSTALL.md
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SNRV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/snrv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SNRV package INTENT.md
+- path: `modules/snrv-engine/INTENT.md`
+- title: SNRV package INTENT.md
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SNRV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/snrv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SNRV package INTERFACE-GENERATOR.json
+- path: `modules/snrv-engine/INTERFACE-GENERATOR.json`
+- title: SNRV package INTERFACE-GENERATOR.json
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SNRV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/snrv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SNRV package MANIFEST.md
+- path: `modules/snrv-engine/MANIFEST.md`
+- title: SNRV package MANIFEST.md
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SNRV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/snrv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SNRV package OWNER-INTERFACE.json
+- path: `modules/snrv-engine/OWNER-INTERFACE.json`
+- title: SNRV package OWNER-INTERFACE.json
+- surface_type: native owner contract, source, resource or verification
+- truth_role: derived mechanical encoding of the exact owner declaration
+- owner: SNRV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/snrv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SNRV package SKILL.md
+- path: `modules/snrv-engine/SKILL.md`
+- title: SNRV package SKILL.md
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SNRV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/snrv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SNRV package SPEC.md
+- path: `modules/snrv-engine/SPEC.md`
+- title: SNRV package SPEC.md
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SNRV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/snrv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SNRV package include/symphony/snv/snrv.hpp
+- path: `modules/snrv-engine/include/symphony/snv/snrv.hpp`
+- title: SNRV package include/symphony/snv/snrv.hpp
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SNRV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/snrv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SNRV package schemas/v1/admin.schema.json
+- path: `modules/snrv-engine/schemas/v1/admin.schema.json`
+- title: SNRV package schemas/v1/admin.schema.json
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SNRV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/snrv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SNRV package schemas/v1/admin.templates.json
+- path: `modules/snrv-engine/schemas/v1/admin.templates.json`
+- title: SNRV package schemas/v1/admin.templates.json
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SNRV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/snrv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SNRV package src/interface.generated.hpp
+- path: `modules/snrv-engine/src/interface.generated.hpp`
+- title: SNRV package src/interface.generated.hpp
+- surface_type: native owner contract, source, resource or verification
+- truth_role: derived mechanical encoding of the exact owner declaration
+- owner: SNRV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/snrv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SNRV package src/snrv.cpp
+- path: `modules/snrv-engine/src/snrv.cpp`
+- title: SNRV package src/snrv.cpp
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SNRV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/snrv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SNRV package src/validation.hpp
+- path: `modules/snrv-engine/src/validation.hpp`
+- title: SNRV package src/validation.hpp
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SNRV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/snrv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SNRV package tests/fixture.hpp
+- path: `modules/snrv-engine/tests/fixture.hpp`
+- title: SNRV package tests/fixture.hpp
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SNRV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/snrv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SNRV package tests/fixtures/interface-history.v1.json
+- path: `modules/snrv-engine/tests/fixtures/interface-history.v1.json`
+- title: SNRV package tests/fixtures/interface-history.v1.json
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SNRV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/snrv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SNRV package tests/fixtures/resources_validate.json
+- path: `modules/snrv-engine/tests/fixtures/resources_validate.json`
+- title: SNRV package tests/fixtures/resources_validate.json
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SNRV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/snrv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SNRV package tests/process.cpp
+- path: `modules/snrv-engine/tests/process.cpp`
+- title: SNRV package tests/process.cpp
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SNRV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/snrv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SNRV package tests/snrv_test.cpp
+- path: `modules/snrv-engine/tests/snrv_test.cpp`
+- title: SNRV package tests/snrv_test.cpp
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SNRV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/snrv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SCIV package CMakeLists.txt
+- path: `modules/sciv-engine/CMakeLists.txt`
+- title: SCIV package CMakeLists.txt
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SCIV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/sciv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SCIV package FEATURES.md
+- path: `modules/sciv-engine/FEATURES.md`
+- title: SCIV package FEATURES.md
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SCIV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/sciv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SCIV package INSTALL.md
+- path: `modules/sciv-engine/INSTALL.md`
+- title: SCIV package INSTALL.md
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SCIV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/sciv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SCIV package INTENT.md
+- path: `modules/sciv-engine/INTENT.md`
+- title: SCIV package INTENT.md
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SCIV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/sciv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SCIV package INTERFACE-GENERATOR.json
+- path: `modules/sciv-engine/INTERFACE-GENERATOR.json`
+- title: SCIV package INTERFACE-GENERATOR.json
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SCIV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/sciv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SCIV package MANIFEST.md
+- path: `modules/sciv-engine/MANIFEST.md`
+- title: SCIV package MANIFEST.md
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SCIV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/sciv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SCIV package OWNER-INTERFACE.json
+- path: `modules/sciv-engine/OWNER-INTERFACE.json`
+- title: SCIV package OWNER-INTERFACE.json
+- surface_type: native owner contract, source, resource or verification
+- truth_role: derived mechanical encoding of the exact owner declaration
+- owner: SCIV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/sciv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SCIV package SKILL.md
+- path: `modules/sciv-engine/SKILL.md`
+- title: SCIV package SKILL.md
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SCIV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/sciv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SCIV package SPEC.md
+- path: `modules/sciv-engine/SPEC.md`
+- title: SCIV package SPEC.md
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SCIV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/sciv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SCIV package include/symphony/snv/sciv.hpp
+- path: `modules/sciv-engine/include/symphony/snv/sciv.hpp`
+- title: SCIV package include/symphony/snv/sciv.hpp
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SCIV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/sciv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SCIV package schemas/v1/sciv-evidence.schema.json
+- path: `modules/sciv-engine/schemas/v1/sciv-evidence.schema.json`
+- title: SCIV package schemas/v1/sciv-evidence.schema.json
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SCIV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/sciv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SCIV package schemas/v1/sciv-evidence.template.json
+- path: `modules/sciv-engine/schemas/v1/sciv-evidence.template.json`
+- title: SCIV package schemas/v1/sciv-evidence.template.json
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SCIV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/sciv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SCIV package schemas/v1/sciv-result.schema.json
+- path: `modules/sciv-engine/schemas/v1/sciv-result.schema.json`
+- title: SCIV package schemas/v1/sciv-result.schema.json
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SCIV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/sciv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SCIV package schemas/v1/sciv-transition-result.schema.json
+- path: `modules/sciv-engine/schemas/v1/sciv-transition-result.schema.json`
+- title: SCIV package schemas/v1/sciv-transition-result.schema.json
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SCIV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/sciv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SCIV package schemas/v1/sciv-transition.schema.json
+- path: `modules/sciv-engine/schemas/v1/sciv-transition.schema.json`
+- title: SCIV package schemas/v1/sciv-transition.schema.json
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SCIV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/sciv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SCIV package schemas/v1/sciv-transition.template.json
+- path: `modules/sciv-engine/schemas/v1/sciv-transition.template.json`
+- title: SCIV package schemas/v1/sciv-transition.template.json
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SCIV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/sciv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SCIV package src/interface.generated.hpp
+- path: `modules/sciv-engine/src/interface.generated.hpp`
+- title: SCIV package src/interface.generated.hpp
+- surface_type: native owner contract, source, resource or verification
+- truth_role: derived mechanical encoding of the exact owner declaration
+- owner: SCIV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/sciv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SCIV package src/sciv.cpp
+- path: `modules/sciv-engine/src/sciv.cpp`
+- title: SCIV package src/sciv.cpp
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SCIV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/sciv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SCIV package tests/fixtures/interface-history.v1.json
+- path: `modules/sciv-engine/tests/fixtures/interface-history.v1.json`
+- title: SCIV package tests/fixtures/interface-history.v1.json
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SCIV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/sciv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SCIV package tests/process.cpp
+- path: `modules/sciv-engine/tests/process.cpp`
+- title: SCIV package tests/process.cpp
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SCIV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/sciv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SCIV package tests/sciv_test.cpp
+- path: `modules/sciv-engine/tests/sciv_test.cpp`
+- title: SCIV package tests/sciv_test.cpp
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SCIV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/sciv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SCNV package CMakeLists.txt
+- path: `modules/scnv-engine/CMakeLists.txt`
+- title: SCNV package CMakeLists.txt
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SCNV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/scnv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SCNV package FEATURES.md
+- path: `modules/scnv-engine/FEATURES.md`
+- title: SCNV package FEATURES.md
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SCNV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/scnv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SCNV package INSTALL.md
+- path: `modules/scnv-engine/INSTALL.md`
+- title: SCNV package INSTALL.md
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SCNV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/scnv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SCNV package INTENT.md
+- path: `modules/scnv-engine/INTENT.md`
+- title: SCNV package INTENT.md
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SCNV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/scnv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SCNV package INTERFACE-GENERATOR.json
+- path: `modules/scnv-engine/INTERFACE-GENERATOR.json`
+- title: SCNV package INTERFACE-GENERATOR.json
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SCNV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/scnv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SCNV package MANIFEST.md
+- path: `modules/scnv-engine/MANIFEST.md`
+- title: SCNV package MANIFEST.md
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SCNV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/scnv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SCNV package OWNER-INTERFACE.json
+- path: `modules/scnv-engine/OWNER-INTERFACE.json`
+- title: SCNV package OWNER-INTERFACE.json
+- surface_type: native owner contract, source, resource or verification
+- truth_role: derived mechanical encoding of the exact owner declaration
+- owner: SCNV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/scnv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SCNV package SKILL.md
+- path: `modules/scnv-engine/SKILL.md`
+- title: SCNV package SKILL.md
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SCNV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/scnv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SCNV package SPEC.md
+- path: `modules/scnv-engine/SPEC.md`
+- title: SCNV package SPEC.md
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SCNV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/scnv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SCNV package include/symphony/snv/scnv.hpp
+- path: `modules/scnv-engine/include/symphony/snv/scnv.hpp`
+- title: SCNV package include/symphony/snv/scnv.hpp
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SCNV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/scnv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SCNV package schemas/v1/admin.templates.json
+- path: `modules/scnv-engine/schemas/v1/admin.templates.json`
+- title: SCNV package schemas/v1/admin.templates.json
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SCNV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/scnv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SCNV package schemas/v1/names-result.schema.json
+- path: `modules/scnv-engine/schemas/v1/names-result.schema.json`
+- title: SCNV package schemas/v1/names-result.schema.json
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SCNV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/scnv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SCNV package schemas/v1/names.schema.json
+- path: `modules/scnv-engine/schemas/v1/names.schema.json`
+- title: SCNV package schemas/v1/names.schema.json
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SCNV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/scnv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SCNV package schemas/v1/resolve-result.schema.json
+- path: `modules/scnv-engine/schemas/v1/resolve-result.schema.json`
+- title: SCNV package schemas/v1/resolve-result.schema.json
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SCNV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/scnv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SCNV package schemas/v1/resolve.schema.json
+- path: `modules/scnv-engine/schemas/v1/resolve.schema.json`
+- title: SCNV package schemas/v1/resolve.schema.json
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SCNV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/scnv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SCNV package src/interface.generated.hpp
+- path: `modules/scnv-engine/src/interface.generated.hpp`
+- title: SCNV package src/interface.generated.hpp
+- surface_type: native owner contract, source, resource or verification
+- truth_role: derived mechanical encoding of the exact owner declaration
+- owner: SCNV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/scnv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SCNV package src/scnv.cpp
+- path: `modules/scnv-engine/src/scnv.cpp`
+- title: SCNV package src/scnv.cpp
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SCNV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/scnv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SCNV package tests/fixtures/interface-history.v1.json
+- path: `modules/scnv-engine/tests/fixtures/interface-history.v1.json`
+- title: SCNV package tests/fixtures/interface-history.v1.json
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SCNV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/scnv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SCNV package tests/fixtures/names_assign.json
+- path: `modules/scnv-engine/tests/fixtures/names_assign.json`
+- title: SCNV package tests/fixtures/names_assign.json
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SCNV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/scnv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SCNV package tests/fixtures/names_resolve.json
+- path: `modules/scnv-engine/tests/fixtures/names_resolve.json`
+- title: SCNV package tests/fixtures/names_resolve.json
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SCNV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/scnv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SCNV package tests/fixtures/names_validate.json
+- path: `modules/scnv-engine/tests/fixtures/names_validate.json`
+- title: SCNV package tests/fixtures/names_validate.json
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SCNV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/scnv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SCNV package tests/process.cpp
+- path: `modules/scnv-engine/tests/process.cpp`
+- title: SCNV package tests/process.cpp
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SCNV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/scnv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SCNV package tests/scnv_test.cpp
+- path: `modules/scnv-engine/tests/scnv_test.cpp`
+- title: SCNV package tests/scnv_test.cpp
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SCNV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/scnv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SNV package CMakeLists.txt
+- path: `modules/snv-engine/CMakeLists.txt`
+- title: SNV package CMakeLists.txt
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SNV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/snv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SNV package FEATURES.md
+- path: `modules/snv-engine/FEATURES.md`
+- title: SNV package FEATURES.md
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SNV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/snv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SNV package INSTALL.md
+- path: `modules/snv-engine/INSTALL.md`
+- title: SNV package INSTALL.md
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SNV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/snv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SNV package INTENT.md
+- path: `modules/snv-engine/INTENT.md`
+- title: SNV package INTENT.md
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SNV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/snv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SNV package INTERFACE-GENERATOR.json
+- path: `modules/snv-engine/INTERFACE-GENERATOR.json`
+- title: SNV package INTERFACE-GENERATOR.json
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SNV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/snv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SNV package MANIFEST.md
+- path: `modules/snv-engine/MANIFEST.md`
+- title: SNV package MANIFEST.md
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SNV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/snv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SNV package OWNER-INTERFACE.json
+- path: `modules/snv-engine/OWNER-INTERFACE.json`
+- title: SNV package OWNER-INTERFACE.json
+- surface_type: native owner contract, source, resource or verification
+- truth_role: derived mechanical encoding of the exact owner declaration
+- owner: SNV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/snv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SNV package SKILL.md
+- path: `modules/snv-engine/SKILL.md`
+- title: SNV package SKILL.md
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SNV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/snv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SNV package SPEC.md
+- path: `modules/snv-engine/SPEC.md`
+- title: SNV package SPEC.md
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SNV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/snv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SNV package include/symphony/snv/snv.hpp
+- path: `modules/snv-engine/include/symphony/snv/snv.hpp`
+- title: SNV package include/symphony/snv/snv.hpp
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SNV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/snv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SNV package schemas/v1/admin.schema.json
+- path: `modules/snv-engine/schemas/v1/admin.schema.json`
+- title: SNV package schemas/v1/admin.schema.json
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SNV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/snv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SNV package schemas/v1/admin.templates.json
+- path: `modules/snv-engine/schemas/v1/admin.templates.json`
+- title: SNV package schemas/v1/admin.templates.json
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SNV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/snv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SNV package schemas/v1/snv_evidence_plan.result.schema.json
+- path: `modules/snv-engine/schemas/v1/snv_evidence_plan.result.schema.json`
+- title: SNV package schemas/v1/snv_evidence_plan.result.schema.json
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SNV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/snv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SNV package schemas/v1/snv_evidence_plan.schema.json
+- path: `modules/snv-engine/schemas/v1/snv_evidence_plan.schema.json`
+- title: SNV package schemas/v1/snv_evidence_plan.schema.json
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SNV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/snv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SNV package schemas/v1/snv_inspect.result.schema.json
+- path: `modules/snv-engine/schemas/v1/snv_inspect.result.schema.json`
+- title: SNV package schemas/v1/snv_inspect.result.schema.json
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SNV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/snv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SNV package schemas/v1/snv_inspect.schema.json
+- path: `modules/snv-engine/schemas/v1/snv_inspect.schema.json`
+- title: SNV package schemas/v1/snv_inspect.schema.json
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SNV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/snv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SNV package schemas/v1/snv_state_plan.result.schema.json
+- path: `modules/snv-engine/schemas/v1/snv_state_plan.result.schema.json`
+- title: SNV package schemas/v1/snv_state_plan.result.schema.json
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SNV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/snv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SNV package schemas/v1/snv_state_plan.schema.json
+- path: `modules/snv-engine/schemas/v1/snv_state_plan.schema.json`
+- title: SNV package schemas/v1/snv_state_plan.schema.json
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SNV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/snv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SNV package schemas/v1/snv_state_reduce.result.schema.json
+- path: `modules/snv-engine/schemas/v1/snv_state_reduce.result.schema.json`
+- title: SNV package schemas/v1/snv_state_reduce.result.schema.json
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SNV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/snv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SNV package schemas/v1/snv_state_reduce.schema.json
+- path: `modules/snv-engine/schemas/v1/snv_state_reduce.schema.json`
+- title: SNV package schemas/v1/snv_state_reduce.schema.json
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SNV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/snv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SNV package src/interface.generated.hpp
+- path: `modules/snv-engine/src/interface.generated.hpp`
+- title: SNV package src/interface.generated.hpp
+- surface_type: native owner contract, source, resource or verification
+- truth_role: derived mechanical encoding of the exact owner declaration
+- owner: SNV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/snv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SNV package src/snv.cpp
+- path: `modules/snv-engine/src/snv.cpp`
+- title: SNV package src/snv.cpp
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SNV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/snv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SNV package tests/fixtures/interface-history.v1.json
+- path: `modules/snv-engine/tests/fixtures/interface-history.v1.json`
+- title: SNV package tests/fixtures/interface-history.v1.json
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SNV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/snv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SNV package tests/process.cpp
+- path: `modules/snv-engine/tests/process.cpp`
+- title: SNV package tests/process.cpp
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SNV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/snv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SNV package tests/snv_test.cpp
+- path: `modules/snv-engine/tests/snv_test.cpp`
+- title: SNV package tests/snv_test.cpp
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SNV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `modules/snv-engine/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SNV package CMakeLists.txt
+- path: `libraries/snv-common-cpp/CMakeLists.txt`
+- title: SNV package CMakeLists.txt
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SNV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `libraries/snv-common-cpp/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SNV package FEATURES.md
+- path: `libraries/snv-common-cpp/FEATURES.md`
+- title: SNV package FEATURES.md
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SNV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `libraries/snv-common-cpp/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SNV package INSTALL.md
+- path: `libraries/snv-common-cpp/INSTALL.md`
+- title: SNV package INSTALL.md
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SNV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `libraries/snv-common-cpp/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SNV package INTENT.md
+- path: `libraries/snv-common-cpp/INTENT.md`
+- title: SNV package INTENT.md
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SNV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `libraries/snv-common-cpp/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SNV package MANIFEST.md
+- path: `libraries/snv-common-cpp/MANIFEST.md`
+- title: SNV package MANIFEST.md
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SNV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `libraries/snv-common-cpp/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SNV package SKILL.md
+- path: `libraries/snv-common-cpp/SKILL.md`
+- title: SNV package SKILL.md
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SNV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `libraries/snv-common-cpp/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SNV package SPEC.md
+- path: `libraries/snv-common-cpp/SPEC.md`
+- title: SNV package SPEC.md
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SNV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `libraries/snv-common-cpp/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SNV package include/symphony/snv/common.hpp
+- path: `libraries/snv-common-cpp/include/symphony/snv/common.hpp`
+- title: SNV package include/symphony/snv/common.hpp
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SNV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `libraries/snv-common-cpp/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SNV package src/common.cpp
+- path: `libraries/snv-common-cpp/src/common.cpp`
+- title: SNV package src/common.cpp
+- surface_type: native owner contract, source, resource or verification
+- truth_role: owner-controlled contract, implementation or verification evidence
+- owner: SNV maintainers
+- scope: Bounded independently installed Node evidence and exact disclosed interfaces.
+- relationships: governed_by -> `libraries/snv-common-cpp/SPEC.md`
+- consumers: operators, agents, implementers, reviewers, tests
+- deferred_projections: evidence and administration discovery
+- notes: Identity, evidence, proposal, retained state and operational authority remain distinct.
+- status: canonical
+
+### SNV integration cmake/SymphonySnvEngine.cmake
+- path: `cmake/SymphonySnvEngine.cmake`
+- title: SNV integration cmake/SymphonySnvEngine.cmake
+- surface_type: compiled interface mechanics, administration or focused verification
+- truth_role: scoped implementation and verification evidence
+- owner: SNV integration maintainers
+- scope: Exact owner admission, independently installed packages and agentic administration.
+- relationships: governed_by -> `libraries/snv-common-cpp/SPEC.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: installed interface and verification discovery
+- notes: Shared mechanics carry no domain semantics or implicit docking requirement.
+- status: canonical
+
+### SNV integration cmake/SymphonySnvMain.cpp
+- path: `cmake/SymphonySnvMain.cpp`
+- title: SNV integration cmake/SymphonySnvMain.cpp
+- surface_type: compiled interface mechanics, administration or focused verification
+- truth_role: scoped implementation and verification evidence
+- owner: SNV integration maintainers
+- scope: Exact owner admission, independently installed packages and agentic administration.
+- relationships: governed_by -> `libraries/snv-common-cpp/SPEC.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: installed interface and verification discovery
+- notes: Shared mechanics carry no domain semantics or implicit docking requirement.
+- status: canonical
+
+### SNV integration tests/snv/native_process.hpp
+- path: `tests/snv/native_process.hpp`
+- title: SNV integration tests/snv/native_process.hpp
+- surface_type: compiled interface mechanics, administration or focused verification
+- truth_role: scoped implementation and verification evidence
+- owner: SNV integration maintainers
+- scope: Exact owner admission, independently installed packages and agentic administration.
+- relationships: governed_by -> `libraries/snv-common-cpp/SPEC.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: installed interface and verification discovery
+- notes: Shared mechanics carry no domain semantics or implicit docking requirement.
+- status: canonical
+
+### SNV integration tools/qxctl/internal/knowledgeengine/snv.go
+- path: `tools/qxctl/internal/knowledgeengine/snv.go`
+- title: SNV integration tools/qxctl/internal/knowledgeengine/snv.go
+- surface_type: compiled interface mechanics, administration or focused verification
+- truth_role: scoped implementation and verification evidence
+- owner: SNV integration maintainers
+- scope: Exact owner admission, independently installed packages and agentic administration.
+- relationships: governed_by -> `tools/qxctl/MANIFEST.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: installed interface and verification discovery
+- notes: Shared mechanics carry no domain semantics or implicit docking requirement.
+- status: canonical
+
+### SNV integration tools/qxctl/cmd/qxctl/snv.go
+- path: `tools/qxctl/cmd/qxctl/snv.go`
+- title: SNV integration tools/qxctl/cmd/qxctl/snv.go
+- surface_type: compiled interface mechanics, administration or focused verification
+- truth_role: scoped implementation and verification evidence
+- owner: SNV integration maintainers
+- scope: Exact owner admission, independently installed packages and agentic administration.
+- relationships: governed_by -> `tools/qxctl/MANIFEST.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: installed interface and verification discovery
+- notes: Shared mechanics carry no domain semantics or implicit docking requirement.
+- status: canonical
+
+### SNV integration cmake/ScivInterface.generated.cmake
+- path: `cmake/ScivInterface.generated.cmake`
+- title: SNV integration cmake/ScivInterface.generated.cmake
+- surface_type: owner implementation, interface resource or focused verification
+- truth_role: derived mechanical encoding of exact owner-controlled interfaces; not an additional semantic owner
+- owner: SNV integration maintainers
+- scope: Independently installed bounded Node evidence and agentic administration.
+- relationships: governed_by -> `libraries/snv-common-cpp/SPEC.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: installed interface and verification discovery
+- notes: Source routing does not grant operational authority or require docking.
+- status: canonical
+
+### SNV integration cmake/ScnvInterface.generated.cmake
+- path: `cmake/ScnvInterface.generated.cmake`
+- title: SNV integration cmake/ScnvInterface.generated.cmake
+- surface_type: owner implementation, interface resource or focused verification
+- truth_role: derived mechanical encoding of exact owner-controlled interfaces; not an additional semantic owner
+- owner: SNV integration maintainers
+- scope: Independently installed bounded Node evidence and agentic administration.
+- relationships: governed_by -> `libraries/snv-common-cpp/SPEC.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: installed interface and verification discovery
+- notes: Source routing does not grant operational authority or require docking.
+- status: canonical
+
+### SNV integration cmake/SnvInterface.generated.cmake
+- path: `cmake/SnvInterface.generated.cmake`
+- title: SNV integration cmake/SnvInterface.generated.cmake
+- surface_type: owner implementation, interface resource or focused verification
+- truth_role: derived mechanical encoding of exact owner-controlled interfaces; not an additional semantic owner
+- owner: SNV integration maintainers
+- scope: Independently installed bounded Node evidence and agentic administration.
+- relationships: governed_by -> `libraries/snv-common-cpp/SPEC.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: installed interface and verification discovery
+- notes: Source routing does not grant operational authority or require docking.
+- status: canonical
+
+### SNV integration modules/snv-engine/schemas/v1/state-proposal.schema.json
+- path: `modules/snv-engine/schemas/v1/state-proposal.schema.json`
+- title: SNV integration modules/snv-engine/schemas/v1/state-proposal.schema.json
+- surface_type: owner implementation, interface resource or focused verification
+- truth_role: scoped owner-controlled implementation, contract or verification evidence
+- owner: SNV integration maintainers
+- scope: Independently installed bounded Node evidence and agentic administration.
+- relationships: governed_by -> `modules/snv-engine/SPEC.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: installed interface and verification discovery
+- notes: Source routing does not grant operational authority or require docking.
+- status: canonical
+
+### SNV integration modules/snv-engine/tests/fixtures/complete.bundle.json
+- path: `modules/snv-engine/tests/fixtures/complete.bundle.json`
+- title: SNV integration modules/snv-engine/tests/fixtures/complete.bundle.json
+- surface_type: owner implementation, interface resource or focused verification
+- truth_role: scoped owner-controlled implementation, contract or verification evidence
+- owner: SNV integration maintainers
+- scope: Independently installed bounded Node evidence and agentic administration.
+- relationships: governed_by -> `modules/snv-engine/SPEC.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: installed interface and verification discovery
+- notes: Source routing does not grant operational authority or require docking.
+- status: canonical
+
+### SNV integration modules/snv-engine/tests/fixtures/snv_inspect.json
+- path: `modules/snv-engine/tests/fixtures/snv_inspect.json`
+- title: SNV integration modules/snv-engine/tests/fixtures/snv_inspect.json
+- surface_type: owner implementation, interface resource or focused verification
+- truth_role: scoped owner-controlled implementation, contract or verification evidence
+- owner: SNV integration maintainers
+- scope: Independently installed bounded Node evidence and agentic administration.
+- relationships: governed_by -> `modules/snv-engine/SPEC.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: installed interface and verification discovery
+- notes: Source routing does not grant operational authority or require docking.
+- status: canonical
+
+### SNV integration tools/qxctl/cmd/qxctl/snv_state.go
+- path: `tools/qxctl/cmd/qxctl/snv_state.go`
+- title: SNV integration tools/qxctl/cmd/qxctl/snv_state.go
+- surface_type: owner implementation, interface resource or focused verification
+- truth_role: scoped owner-controlled implementation, contract or verification evidence
+- owner: SNV integration maintainers
+- scope: Independently installed bounded Node evidence and agentic administration.
+- relationships: governed_by -> `tools/qxctl/MANIFEST.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: installed interface and verification discovery
+- notes: Source routing does not grant operational authority or require docking.
+- status: canonical
+
+### SNV integration tools/qxctl/cmd/qxctl/snv_test.go
+- path: `tools/qxctl/cmd/qxctl/snv_test.go`
+- title: SNV integration tools/qxctl/cmd/qxctl/snv_test.go
+- surface_type: owner implementation, interface resource or focused verification
+- truth_role: scoped owner-controlled implementation, contract or verification evidence
+- owner: SNV integration maintainers
+- scope: Independently installed bounded Node evidence and agentic administration.
+- relationships: governed_by -> `tools/qxctl/MANIFEST.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: installed interface and verification discovery
+- notes: Source routing does not grant operational authority or require docking.
+- status: canonical
+
+### SNV integration tools/qxctl/internal/knowledgeengine/sciv_interface_generated.go
+- path: `tools/qxctl/internal/knowledgeengine/sciv_interface_generated.go`
+- title: SNV integration tools/qxctl/internal/knowledgeengine/sciv_interface_generated.go
+- surface_type: owner implementation, interface resource or focused verification
+- truth_role: derived mechanical encoding of exact owner-controlled interfaces; not an additional semantic owner
+- owner: SNV integration maintainers
+- scope: Independently installed bounded Node evidence and agentic administration.
+- relationships: governed_by -> `tools/qxctl/MANIFEST.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: installed interface and verification discovery
+- notes: Source routing does not grant operational authority or require docking.
+- status: canonical
+
+### SNV integration tools/qxctl/internal/knowledgeengine/scnv_interface_generated.go
+- path: `tools/qxctl/internal/knowledgeengine/scnv_interface_generated.go`
+- title: SNV integration tools/qxctl/internal/knowledgeengine/scnv_interface_generated.go
+- surface_type: owner implementation, interface resource or focused verification
+- truth_role: derived mechanical encoding of exact owner-controlled interfaces; not an additional semantic owner
+- owner: SNV integration maintainers
+- scope: Independently installed bounded Node evidence and agentic administration.
+- relationships: governed_by -> `tools/qxctl/MANIFEST.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: installed interface and verification discovery
+- notes: Source routing does not grant operational authority or require docking.
+- status: canonical
+
+### SNV integration tools/qxctl/internal/knowledgeengine/snv_descriptor.go
+- path: `tools/qxctl/internal/knowledgeengine/snv_descriptor.go`
+- title: SNV integration tools/qxctl/internal/knowledgeengine/snv_descriptor.go
+- surface_type: owner implementation, interface resource or focused verification
+- truth_role: scoped owner-controlled implementation, contract or verification evidence
+- owner: SNV integration maintainers
+- scope: Independently installed bounded Node evidence and agentic administration.
+- relationships: governed_by -> `tools/qxctl/MANIFEST.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: installed interface and verification discovery
+- notes: Source routing does not grant operational authority or require docking.
+- status: canonical
+
+### SNV integration tools/qxctl/internal/knowledgeengine/snv_interface_generated.go
+- path: `tools/qxctl/internal/knowledgeengine/snv_interface_generated.go`
+- title: SNV integration tools/qxctl/internal/knowledgeengine/snv_interface_generated.go
+- surface_type: owner implementation, interface resource or focused verification
+- truth_role: derived mechanical encoding of exact owner-controlled interfaces; not an additional semantic owner
+- owner: SNV integration maintainers
+- scope: Independently installed bounded Node evidence and agentic administration.
+- relationships: governed_by -> `tools/qxctl/MANIFEST.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: installed interface and verification discovery
+- notes: Source routing does not grant operational authority or require docking.
+- status: canonical
+
+### SNV integration tools/qxctl/internal/knowledgeengine/snv_schema.go
+- path: `tools/qxctl/internal/knowledgeengine/snv_schema.go`
+- title: SNV integration tools/qxctl/internal/knowledgeengine/snv_schema.go
+- surface_type: owner implementation, interface resource or focused verification
+- truth_role: scoped owner-controlled implementation, contract or verification evidence
+- owner: SNV integration maintainers
+- scope: Independently installed bounded Node evidence and agentic administration.
+- relationships: governed_by -> `tools/qxctl/MANIFEST.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: installed interface and verification discovery
+- notes: Source routing does not grant operational authority or require docking.
+- status: canonical
+
+### SNV integration tools/qxctl/internal/knowledgeengine/snv_test.go
+- path: `tools/qxctl/internal/knowledgeengine/snv_test.go`
+- title: SNV integration tools/qxctl/internal/knowledgeengine/snv_test.go
+- surface_type: owner implementation, interface resource or focused verification
+- truth_role: scoped owner-controlled implementation, contract or verification evidence
+- owner: SNV integration maintainers
+- scope: Independently installed bounded Node evidence and agentic administration.
+- relationships: governed_by -> `tools/qxctl/MANIFEST.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: installed interface and verification discovery
+- notes: Source routing does not grant operational authority or require docking.
+- status: canonical
+
+### SNV integration tools/qxctl/internal/snvstate/authorization.go
+- path: `tools/qxctl/internal/snvstate/authorization.go`
+- title: SNV integration tools/qxctl/internal/snvstate/authorization.go
+- surface_type: owner implementation, interface resource or focused verification
+- truth_role: scoped owner-controlled implementation, contract or verification evidence
+- owner: SNV integration maintainers
+- scope: Independently installed bounded Node evidence and agentic administration.
+- relationships: governed_by -> `tools/qxctl/MANIFEST.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: installed interface and verification discovery
+- notes: Source routing does not grant operational authority or require docking.
+- status: canonical
+
+### SNV integration tools/qxctl/internal/snvstate/barrier.go
+- path: `tools/qxctl/internal/snvstate/barrier.go`
+- title: SNV integration tools/qxctl/internal/snvstate/barrier.go
+- surface_type: owner implementation, interface resource or focused verification
+- truth_role: scoped owner-controlled implementation, contract or verification evidence
+- owner: SNV integration maintainers
+- scope: Independently installed bounded Node evidence and agentic administration.
+- relationships: governed_by -> `tools/qxctl/MANIFEST.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: installed interface and verification discovery
+- notes: Source routing does not grant operational authority or require docking.
+- status: canonical
+
+### SNV integration tools/qxctl/internal/snvstate/barrier_faults.go
+- path: `tools/qxctl/internal/snvstate/barrier_faults.go`
+- title: SNV integration tools/qxctl/internal/snvstate/barrier_faults.go
+- surface_type: owner implementation, interface resource or focused verification
+- truth_role: scoped owner-controlled implementation, contract or verification evidence
+- owner: SNV integration maintainers
+- scope: Independently installed bounded Node evidence and agentic administration.
+- relationships: governed_by -> `tools/qxctl/MANIFEST.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: installed interface and verification discovery
+- notes: Source routing does not grant operational authority or require docking.
+- status: canonical
+
+### SNV integration tools/qxctl/internal/snvstate/storage_unix.go
+- path: `tools/qxctl/internal/snvstate/storage_unix.go`
+- title: SNV integration tools/qxctl/internal/snvstate/storage_unix.go
+- surface_type: owner implementation, interface resource or focused verification
+- truth_role: scoped owner-controlled implementation, contract or verification evidence
+- owner: SNV integration maintainers
+- scope: Independently installed bounded Node evidence and agentic administration.
+- relationships: governed_by -> `tools/qxctl/MANIFEST.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: installed interface and verification discovery
+- notes: Source routing does not grant operational authority or require docking.
+- status: canonical
+
+### SNV integration tools/qxctl/internal/snvstate/storage_unsupported.go
+- path: `tools/qxctl/internal/snvstate/storage_unsupported.go`
+- title: SNV integration tools/qxctl/internal/snvstate/storage_unsupported.go
+- surface_type: owner implementation, interface resource or focused verification
+- truth_role: scoped owner-controlled implementation, contract or verification evidence
+- owner: SNV integration maintainers
+- scope: Independently installed bounded Node evidence and agentic administration.
+- relationships: governed_by -> `tools/qxctl/MANIFEST.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: installed interface and verification discovery
+- notes: Source routing does not grant operational authority or require docking.
+- status: canonical
+
+### SNV integration tools/qxctl/internal/snvstate/store.go
+- path: `tools/qxctl/internal/snvstate/store.go`
+- title: SNV integration tools/qxctl/internal/snvstate/store.go
+- surface_type: owner implementation, interface resource or focused verification
+- truth_role: scoped owner-controlled implementation, contract or verification evidence
+- owner: SNV integration maintainers
+- scope: Independently installed bounded Node evidence and agentic administration.
+- relationships: governed_by -> `tools/qxctl/MANIFEST.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: installed interface and verification discovery
+- notes: Source routing does not grant operational authority or require docking.
+- status: canonical
+
+### SNV integration tools/qxctl/internal/snvstate/store_test.go
+- path: `tools/qxctl/internal/snvstate/store_test.go`
+- title: SNV integration tools/qxctl/internal/snvstate/store_test.go
+- surface_type: owner implementation, interface resource or focused verification
+- truth_role: scoped owner-controlled implementation, contract or verification evidence
+- owner: SNV integration maintainers
+- scope: Independently installed bounded Node evidence and agentic administration.
+- relationships: governed_by -> `tools/qxctl/MANIFEST.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: installed interface and verification discovery
+- notes: Source routing does not grant operational authority or require docking.
+- status: canonical
+
+### SNV derived interface cmake/SnivInterface.generated.cmake
+- path: `cmake/SnivInterface.generated.cmake`
+- title: SNV derived interface cmake/SnivInterface.generated.cmake
+- surface_type: generated owner interface encoding
+- truth_role: derived mechanical encoding of exact owner interfaces
+- owner: SNV integration maintainers
+- scope: Receipt-bound independent owner discovery.
+- relationships: governed_by -> `libraries/snv-common-cpp/SPEC.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: exact installed interface discovery
+- notes: Generation does not invent semantic meaning or grant authority.
+- status: canonical
+
+### SNV derived interface tools/qxctl/internal/knowledgeengine/sniv_interface_generated.go
+- path: `tools/qxctl/internal/knowledgeengine/sniv_interface_generated.go`
+- title: SNV derived interface tools/qxctl/internal/knowledgeengine/sniv_interface_generated.go
+- surface_type: generated owner interface encoding
+- truth_role: derived mechanical encoding of exact owner interfaces
+- owner: SNV integration maintainers
+- scope: Receipt-bound independent owner discovery.
+- relationships: governed_by -> `tools/qxctl/MANIFEST.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: exact installed interface discovery
+- notes: Generation does not invent semantic meaning or grant authority.
+- status: canonical
+
+### SNV derived interface cmake/SnrvInterface.generated.cmake
+- path: `cmake/SnrvInterface.generated.cmake`
+- title: SNV derived interface cmake/SnrvInterface.generated.cmake
+- surface_type: generated owner interface encoding
+- truth_role: derived mechanical encoding of exact owner interfaces
+- owner: SNV integration maintainers
+- scope: Receipt-bound independent owner discovery.
+- relationships: governed_by -> `libraries/snv-common-cpp/SPEC.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: exact installed interface discovery
+- notes: Generation does not invent semantic meaning or grant authority.
+- status: canonical
+
+### SNV derived interface tools/qxctl/internal/knowledgeengine/snrv_interface_generated.go
+- path: `tools/qxctl/internal/knowledgeengine/snrv_interface_generated.go`
+- title: SNV derived interface tools/qxctl/internal/knowledgeengine/snrv_interface_generated.go
+- surface_type: generated owner interface encoding
+- truth_role: derived mechanical encoding of exact owner interfaces
+- owner: SNV integration maintainers
+- scope: Receipt-bound independent owner discovery.
+- relationships: governed_by -> `tools/qxctl/MANIFEST.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: exact installed interface discovery
+- notes: Generation does not invent semantic meaning or grant authority.
+- status: canonical
+
+### SNV bounded release and validation status
+- path: `knowledge/snv/VALIDATION.md`
+- title: SNV bounded release and validation status
+- surface_type: owner validation and release boundary
+- truth_role: completed bounded scope, exact validation evidence and source closure
+- owner: SNV maintainers
+- scope: Exact supplied-evidence engines, independent packages and agentic administration.
+- relationships: governed_by -> `knowledge/snv/MANIFEST.md`
+- consumers: agents, operators, implementers, reviewers, validators
+- deferred_projections: publication and separately admitted platform certification
+- notes: Exact completed source resolves through SCLV-CHG-20260930-SNV-BOUNDED-IMPLEMENTATION; local bounded results do not imply publication or another platform.
+- status: canonical
+
+### SNV follow-up modules/snv-local-observer/CMakeLists.txt
+- path: `modules/snv-local-observer/CMakeLists.txt`
+- title: SNV follow-up modules/snv-local-observer/CMakeLists.txt
+- surface_type: owner contract, implementation, derived interface or verification
+- truth_role: exact optional observation or neutral process/package boundary
+- owner: SNV follow-up maintainers
+- scope: Independently installed optional local observation and exact agentic administration.
+- relationships: governed_by -> `modules/snv-local-observer/SPEC.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: exact installed resource and administration discovery
+- notes: Observation, supplied subject association, physical identity, retention and authority remain distinct.
+- status: canonical
+
+### SNV follow-up modules/snv-local-observer/FEATURES.md
+- path: `modules/snv-local-observer/FEATURES.md`
+- title: SNV follow-up modules/snv-local-observer/FEATURES.md
+- surface_type: owner contract, implementation, derived interface or verification
+- truth_role: exact optional observation or neutral process/package boundary
+- owner: SNV follow-up maintainers
+- scope: Independently installed optional local observation and exact agentic administration.
+- relationships: governed_by -> `modules/snv-local-observer/SPEC.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: exact installed resource and administration discovery
+- notes: Observation, supplied subject association, physical identity, retention and authority remain distinct.
+- status: canonical
+
+### SNV follow-up modules/snv-local-observer/INSTALL.md
+- path: `modules/snv-local-observer/INSTALL.md`
+- title: SNV follow-up modules/snv-local-observer/INSTALL.md
+- surface_type: owner contract, implementation, derived interface or verification
+- truth_role: exact optional observation or neutral process/package boundary
+- owner: SNV follow-up maintainers
+- scope: Independently installed optional local observation and exact agentic administration.
+- relationships: governed_by -> `modules/snv-local-observer/SPEC.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: exact installed resource and administration discovery
+- notes: Observation, supplied subject association, physical identity, retention and authority remain distinct.
+- status: canonical
+
+### SNV follow-up modules/snv-local-observer/INTENT.md
+- path: `modules/snv-local-observer/INTENT.md`
+- title: SNV follow-up modules/snv-local-observer/INTENT.md
+- surface_type: owner contract, implementation, derived interface or verification
+- truth_role: exact optional observation or neutral process/package boundary
+- owner: SNV follow-up maintainers
+- scope: Independently installed optional local observation and exact agentic administration.
+- relationships: governed_by -> `modules/snv-local-observer/SPEC.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: exact installed resource and administration discovery
+- notes: Observation, supplied subject association, physical identity, retention and authority remain distinct.
+- status: canonical
+
+### SNV follow-up modules/snv-local-observer/INTERFACE-GENERATOR.json
+- path: `modules/snv-local-observer/INTERFACE-GENERATOR.json`
+- title: SNV follow-up modules/snv-local-observer/INTERFACE-GENERATOR.json
+- surface_type: owner contract, implementation, derived interface or verification
+- truth_role: exact optional observation or neutral process/package boundary
+- owner: SNV follow-up maintainers
+- scope: Independently installed optional local observation and exact agentic administration.
+- relationships: governed_by -> `modules/snv-local-observer/SPEC.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: exact installed resource and administration discovery
+- notes: Observation, supplied subject association, physical identity, retention and authority remain distinct.
+- status: canonical
+
+### SNV follow-up modules/snv-local-observer/MANIFEST.md
+- path: `modules/snv-local-observer/MANIFEST.md`
+- title: SNV follow-up modules/snv-local-observer/MANIFEST.md
+- surface_type: owner contract, implementation, derived interface or verification
+- truth_role: exact optional observation or neutral process/package boundary
+- owner: SNV follow-up maintainers
+- scope: Independently installed optional local observation and exact agentic administration.
+- relationships: governed_by -> `modules/snv-local-observer/SPEC.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: exact installed resource and administration discovery
+- notes: Observation, supplied subject association, physical identity, retention and authority remain distinct.
+- status: canonical
+
+### SNV follow-up modules/snv-local-observer/OWNER-INTERFACE.json
+- path: `modules/snv-local-observer/OWNER-INTERFACE.json`
+- title: SNV follow-up modules/snv-local-observer/OWNER-INTERFACE.json
+- surface_type: owner contract, implementation, derived interface or verification
+- truth_role: exact optional observation or neutral process/package boundary
+- owner: SNV follow-up maintainers
+- scope: Independently installed optional local observation and exact agentic administration.
+- relationships: governed_by -> `modules/snv-local-observer/SPEC.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: exact installed resource and administration discovery
+- notes: Observation, supplied subject association, physical identity, retention and authority remain distinct.
+- status: canonical
+
+### SNV follow-up modules/snv-local-observer/SKILL.md
+- path: `modules/snv-local-observer/SKILL.md`
+- title: SNV follow-up modules/snv-local-observer/SKILL.md
+- surface_type: owner contract, implementation, derived interface or verification
+- truth_role: exact optional observation or neutral process/package boundary
+- owner: SNV follow-up maintainers
+- scope: Independently installed optional local observation and exact agentic administration.
+- relationships: governed_by -> `modules/snv-local-observer/SPEC.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: exact installed resource and administration discovery
+- notes: Observation, supplied subject association, physical identity, retention and authority remain distinct.
+- status: canonical
+
+### SNV follow-up modules/snv-local-observer/SPEC.md
+- path: `modules/snv-local-observer/SPEC.md`
+- title: SNV follow-up modules/snv-local-observer/SPEC.md
+- surface_type: owner contract, implementation, derived interface or verification
+- truth_role: exact optional observation or neutral process/package boundary
+- owner: SNV follow-up maintainers
+- scope: Independently installed optional local observation and exact agentic administration.
+- relationships: governed_by -> `modules/snv-local-observer/SPEC.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: exact installed resource and administration discovery
+- notes: Observation, supplied subject association, physical identity, retention and authority remain distinct.
+- status: canonical
+
+### SNV follow-up modules/snv-local-observer/include/symphony/snv/local_observer.hpp
+- path: `modules/snv-local-observer/include/symphony/snv/local_observer.hpp`
+- title: SNV follow-up modules/snv-local-observer/include/symphony/snv/local_observer.hpp
+- surface_type: owner contract, implementation, derived interface or verification
+- truth_role: exact optional observation or neutral process/package boundary
+- owner: SNV follow-up maintainers
+- scope: Independently installed optional local observation and exact agentic administration.
+- relationships: governed_by -> `modules/snv-local-observer/SPEC.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: exact installed resource and administration discovery
+- notes: Observation, supplied subject association, physical identity, retention and authority remain distinct.
+- status: canonical
+
+### SNV follow-up modules/snv-local-observer/schemas/v1/admin.schema.json
+- path: `modules/snv-local-observer/schemas/v1/admin.schema.json`
+- title: SNV follow-up modules/snv-local-observer/schemas/v1/admin.schema.json
+- surface_type: owner contract, implementation, derived interface or verification
+- truth_role: exact optional observation or neutral process/package boundary
+- owner: SNV follow-up maintainers
+- scope: Independently installed optional local observation and exact agentic administration.
+- relationships: governed_by -> `modules/snv-local-observer/SPEC.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: exact installed resource and administration discovery
+- notes: Observation, supplied subject association, physical identity, retention and authority remain distinct.
+- status: canonical
+
+### SNV follow-up modules/snv-local-observer/schemas/v1/admin.templates.json
+- path: `modules/snv-local-observer/schemas/v1/admin.templates.json`
+- title: SNV follow-up modules/snv-local-observer/schemas/v1/admin.templates.json
+- surface_type: owner contract, implementation, derived interface or verification
+- truth_role: exact optional observation or neutral process/package boundary
+- owner: SNV follow-up maintainers
+- scope: Independently installed optional local observation and exact agentic administration.
+- relationships: governed_by -> `modules/snv-local-observer/SPEC.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: exact installed resource and administration discovery
+- notes: Observation, supplied subject association, physical identity, retention and authority remain distinct.
+- status: canonical
+
+### SNV follow-up modules/snv-local-observer/src/interface.generated.hpp
+- path: `modules/snv-local-observer/src/interface.generated.hpp`
+- title: SNV follow-up modules/snv-local-observer/src/interface.generated.hpp
+- surface_type: owner contract, implementation, derived interface or verification
+- truth_role: exact optional observation or neutral process/package boundary
+- owner: SNV follow-up maintainers
+- scope: Independently installed optional local observation and exact agentic administration.
+- relationships: governed_by -> `modules/snv-local-observer/SPEC.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: exact installed resource and administration discovery
+- notes: Observation, supplied subject association, physical identity, retention and authority remain distinct.
+- status: canonical
+
+### SNV follow-up modules/snv-local-observer/src/main.cpp
+- path: `modules/snv-local-observer/src/main.cpp`
+- title: SNV follow-up modules/snv-local-observer/src/main.cpp
+- surface_type: owner contract, implementation, derived interface or verification
+- truth_role: exact optional observation or neutral process/package boundary
+- owner: SNV follow-up maintainers
+- scope: Independently installed optional local observation and exact agentic administration.
+- relationships: governed_by -> `modules/snv-local-observer/SPEC.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: exact installed resource and administration discovery
+- notes: Observation, supplied subject association, physical identity, retention and authority remain distinct.
+- status: canonical
+
+### SNV follow-up modules/snv-local-observer/src/observer.cpp
+- path: `modules/snv-local-observer/src/observer.cpp`
+- title: SNV follow-up modules/snv-local-observer/src/observer.cpp
+- surface_type: owner contract, implementation, derived interface or verification
+- truth_role: exact optional observation or neutral process/package boundary
+- owner: SNV follow-up maintainers
+- scope: Independently installed optional local observation and exact agentic administration.
+- relationships: governed_by -> `modules/snv-local-observer/SPEC.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: exact installed resource and administration discovery
+- notes: Observation, supplied subject association, physical identity, retention and authority remain distinct.
+- status: canonical
+
+### SNV follow-up modules/snv-local-observer/tests/fixtures/interface-history.v1.json
+- path: `modules/snv-local-observer/tests/fixtures/interface-history.v1.json`
+- title: SNV follow-up modules/snv-local-observer/tests/fixtures/interface-history.v1.json
+- surface_type: owner contract, implementation, derived interface or verification
+- truth_role: exact optional observation or neutral process/package boundary
+- owner: SNV follow-up maintainers
+- scope: Independently installed optional local observation and exact agentic administration.
+- relationships: governed_by -> `modules/snv-local-observer/SPEC.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: exact installed resource and administration discovery
+- notes: Observation, supplied subject association, physical identity, retention and authority remain distinct.
+- status: canonical
+
+### SNV follow-up modules/snv-local-observer/tests/fixtures/observe.json
+- path: `modules/snv-local-observer/tests/fixtures/observe.json`
+- title: SNV follow-up modules/snv-local-observer/tests/fixtures/observe.json
+- surface_type: owner contract, implementation, derived interface or verification
+- truth_role: exact optional observation or neutral process/package boundary
+- owner: SNV follow-up maintainers
+- scope: Independently installed optional local observation and exact agentic administration.
+- relationships: governed_by -> `modules/snv-local-observer/SPEC.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: exact installed resource and administration discovery
+- notes: Observation, supplied subject association, physical identity, retention and authority remain distinct.
+- status: canonical
+
+### SNV follow-up modules/snv-local-observer/tests/observer_test.cpp
+- path: `modules/snv-local-observer/tests/observer_test.cpp`
+- title: SNV follow-up modules/snv-local-observer/tests/observer_test.cpp
+- surface_type: owner contract, implementation, derived interface or verification
+- truth_role: exact optional observation or neutral process/package boundary
+- owner: SNV follow-up maintainers
+- scope: Independently installed optional local observation and exact agentic administration.
+- relationships: governed_by -> `modules/snv-local-observer/SPEC.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: exact installed resource and administration discovery
+- notes: Observation, supplied subject association, physical identity, retention and authority remain distinct.
+- status: canonical
+
+### SNV follow-up libraries/snv-common-cpp/tests/common_test.cpp
+- path: `libraries/snv-common-cpp/tests/common_test.cpp`
+- title: SNV follow-up libraries/snv-common-cpp/tests/common_test.cpp
+- surface_type: native process regression
+- truth_role: Admitted request/correlation preservation for safe standard and nonstandard failure envelopes.
+- owner: SNV common mechanics maintainers
+- scope: Admitted request/correlation preservation for safe standard and nonstandard failure envelopes.
+- relationships: governed_by -> `libraries/snv-common-cpp/SPEC.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: exact installed resource and administration discovery
+- notes: Unexpected handler exceptions retain exact admitted routing and suppress private exception text.
+- status: canonical
+
+### SNV follow-up libraries/snv-common-cpp/tests/sdk_receipt_admission.cpp
+- path: `libraries/snv-common-cpp/tests/sdk_receipt_admission.cpp`
+- title: SNV follow-up libraries/snv-common-cpp/tests/sdk_receipt_admission.cpp
+- surface_type: native installed SDK regression
+- truth_role: Exact receipt ownership of configured archives, public headers and CMake exports.
+- owner: SNV package mechanics maintainers
+- scope: Exact receipt ownership of configured archives, public headers and CMake exports.
+- relationships: governed_by -> `libraries/snv-common-cpp/SPEC.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: exact installed resource and administration discovery
+- notes: Four private CMake admission cases preserve the supplied installed prefix; receipt digests do not authenticate publishers.
+- status: canonical
+
+### SNV follow-up cmake/SnvObserverInterface.generated.cmake
+- path: `cmake/SnvObserverInterface.generated.cmake`
+- title: SNV follow-up cmake/SnvObserverInterface.generated.cmake
+- surface_type: derived native owner resource inventory
+- truth_role: Mechanical exact observer declaration and resource digest encoding.
+- owner: SNV local observer owner
+- scope: Mechanical exact observer declaration and resource digest encoding.
+- relationships: governed_by -> `modules/snv-local-observer/SPEC.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: exact installed resource and administration discovery
+- notes: Generated resource identity is derived from the owner declaration and does not prove observation semantics.
+- status: canonical
+
+### SNV follow-up tools/qxctl/internal/knowledgeengine/snv_observer_interface_generated.go
+- path: `tools/qxctl/internal/knowledgeengine/snv_observer_interface_generated.go`
+- title: SNV follow-up tools/qxctl/internal/knowledgeengine/snv_observer_interface_generated.go
+- surface_type: owner contract, implementation, derived interface or verification
+- truth_role: exact optional observation or neutral process/package boundary
+- owner: SNV follow-up maintainers
+- scope: Independently installed optional local observation and exact agentic administration.
+- relationships: governed_by -> `tools/qxctl/MANIFEST.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: exact installed resource and administration discovery
+- notes: Observation, supplied subject association, physical identity, retention and authority remain distinct.
+- status: canonical
+
+### SNV follow-up tools/qxctl/internal/knowledgeengine/snv_wrapper_schema_test.go
+- path: `tools/qxctl/internal/knowledgeengine/snv_wrapper_schema_test.go`
+- title: SNV follow-up tools/qxctl/internal/knowledgeengine/snv_wrapper_schema_test.go
+- surface_type: owner contract, implementation, derived interface or verification
+- truth_role: exact optional observation or neutral process/package boundary
+- owner: SNV follow-up maintainers
+- scope: Independently installed optional local observation and exact agentic administration.
+- relationships: governed_by -> `tools/qxctl/MANIFEST.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: exact installed resource and administration discovery
+- notes: Observation, supplied subject association, physical identity, retention and authority remain distinct.
+- status: canonical
+
+### SNV follow-up tools/qxctl/cmd/qxctl/snv_followup_test.go
+- path: `tools/qxctl/cmd/qxctl/snv_followup_test.go`
+- title: SNV follow-up tools/qxctl/cmd/qxctl/snv_followup_test.go
+- surface_type: owner contract, implementation, derived interface or verification
+- truth_role: exact optional observation or neutral process/package boundary
+- owner: SNV follow-up maintainers
+- scope: Independently installed optional local observation and exact agentic administration.
+- relationships: governed_by -> `tools/qxctl/MANIFEST.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: exact installed resource and administration discovery
+- notes: Observation, supplied subject association, physical identity, retention and authority remain distinct.
+- status: canonical
+
+### SNV observer boundary modules/snv-local-observer/tests/process.cpp
+- path: `modules/snv-local-observer/tests/process.cpp`
+- title: SNV observer boundary modules/snv-local-observer/tests/process.cpp
+- surface_type: installed native collector regression
+- truth_role: Exact module receipt, finite descriptor, response correspondence and safe refusal checks.
+- owner: SNV local observer owner
+- scope: Exact module receipt, finite descriptor, response correspondence and safe refusal checks.
+- relationships: governed_by -> `modules/snv-local-observer/SPEC.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: invariant and installed process assurance
+- notes: This explicit installed-process check does not admit the neutral collector as a semantic vector engine.
+- status: canonical
+
+### SNV observer boundary modules/snv-local-observer/tests/fixtures/portable-unavailable-result.v1.json
+- path: `modules/snv-local-observer/tests/fixtures/portable-unavailable-result.v1.json`
+- title: SNV observer boundary modules/snv-local-observer/tests/fixtures/portable-unavailable-result.v1.json
+- surface_type: independent owner or consumer regression evidence
+- truth_role: exact observed optional collector process/response boundary
+- owner: SNV follow-up maintainers
+- scope: Optional observation with module receipt identity and independent consumer admission.
+- relationships: governed_by -> `modules/snv-local-observer/SPEC.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: invariant and installed process assurance
+- notes: Synthetic or unsupported-platform examples do not certify Linux execution.
+- status: canonical
+
+### SNV observer boundary tools/qxctl/internal/knowledgeengine/snv_observer_shape_test.go
+- path: `tools/qxctl/internal/knowledgeengine/snv_observer_shape_test.go`
+- title: SNV observer boundary tools/qxctl/internal/knowledgeengine/snv_observer_shape_test.go
+- surface_type: independent owner or consumer regression evidence
+- truth_role: exact observed optional collector process/response boundary
+- owner: SNV follow-up maintainers
+- scope: Optional observation with module receipt identity and independent consumer admission.
+- relationships: governed_by -> `tools/qxctl/MANIFEST.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: invariant and installed process assurance
+- notes: Synthetic or unsupported-platform examples do not certify Linux execution.
+- status: canonical
+
+### SNV follow-up correspondence modules/snv-engine/tests/fixtures/native-result-contract-cases.v1.json
+- path: `modules/snv-engine/tests/fixtures/native-result-contract-cases.v1.json`
+- title: SNV follow-up correspondence modules/snv-engine/tests/fixtures/native-result-contract-cases.v1.json
+- surface_type: owner or independent consumer contract verification
+- truth_role: closed result correspondence or safe administration errors
+- owner: SNV follow-up maintainers
+- scope: Supplied-evidence and optional observation administration boundaries.
+- relationships: governed_by -> `modules/snv-engine/SPEC.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: result and error boundary assurance
+- notes: Fixtures and tests are source verification evidence, not runtime acceptance receipts.
+- status: canonical
+
+### SNV follow-up correspondence tools/qxctl/internal/knowledgeengine/snv_result_shape_test.go
+- path: `tools/qxctl/internal/knowledgeengine/snv_result_shape_test.go`
+- title: SNV follow-up correspondence tools/qxctl/internal/knowledgeengine/snv_result_shape_test.go
+- surface_type: owner or independent consumer contract verification
+- truth_role: closed result correspondence or safe administration errors
+- owner: SNV follow-up maintainers
+- scope: Supplied-evidence and optional observation administration boundaries.
+- relationships: governed_by -> `tools/qxctl/MANIFEST.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: result and error boundary assurance
+- notes: Fixtures and tests are source verification evidence, not runtime acceptance receipts.
+- status: canonical
+
+### SNV follow-up correspondence tools/qxctl/internal/snvstate/errors.go
+- path: `tools/qxctl/internal/snvstate/errors.go`
+- title: SNV follow-up correspondence tools/qxctl/internal/snvstate/errors.go
+- surface_type: owner or independent consumer contract verification
+- truth_role: closed result correspondence or safe administration errors
+- owner: SNV follow-up maintainers
+- scope: Supplied-evidence and optional observation administration boundaries.
+- relationships: governed_by -> `tools/qxctl/MANIFEST.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: result and error boundary assurance
+- notes: Fixtures and tests are source verification evidence, not runtime acceptance receipts.
+- status: canonical
+
+### SNV follow-up correspondence tools/qxctl/internal/snvstate/errors_test.go
+- path: `tools/qxctl/internal/snvstate/errors_test.go`
+- title: SNV follow-up correspondence tools/qxctl/internal/snvstate/errors_test.go
+- surface_type: owner or independent consumer contract verification
+- truth_role: closed result correspondence or safe administration errors
+- owner: SNV follow-up maintainers
+- scope: Supplied-evidence and optional observation administration boundaries.
+- relationships: governed_by -> `tools/qxctl/MANIFEST.md`
+- consumers: agents, operators, implementers, reviewers, tests
+- deferred_projections: result and error boundary assurance
+- notes: Fixtures and tests are source verification evidence, not runtime acceptance receipts.
+- status: canonical
+
+### Native authoring local schema resource regression
+- path: `tools/authoring-cpp/local_refs_test.cpp`
+- title: Native authoring local schema resource regression
+- surface_type: reusable native authoring verification
+- truth_role: mechanical local fragment and embedded resource-root checks
+- owner: SHV interface authoring maintainers
+- scope: Registration-driven schema reference verification shared by explicit native owners.
+- relationships: governed_by -> `tools/shv-interface-codegen/SPEC.md`
+- consumers: native authoring frontends, implementers, reviewers, tests
+- deferred_projections: generation conformance evidence
+- notes: Authoring helpers do not allocate semantic capabilities or become installed runtime authorities.
+- status: canonical
+
+### Independently installed optional observer consumer regression
+- path: `tools/qxctl/internal/knowledgeengine/snv_observer_installed_test.go`
+- title: Independently installed optional observer consumer regression
+- surface_type: installed native consumer verification
+- truth_role: exact collector release/resource admission and native acquisition correspondence
+- owner: qxctl SNV installed consumer maintainers
+- scope: Selects the optional observer's independent prefix without requiring it in the five semantic engine fixture.
+- relationships: governed_by -> `tools/qxctl/MANIFEST.md`
+- consumers: qxctl implementers, native collector maintainers, reviewers, tests
+- deferred_projections: installed collector compatibility evidence
+- notes: Floating releases reject; real collector output remains bounded observation with no physical inventory or allocation proof.
+- status: canonical

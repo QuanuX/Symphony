@@ -10,4 +10,4 @@
 
 ## Stop Conditions
 
-Stop before issuing a name, defining universal namespace policy, inferring physical identity from a nickname, or inventing a machine grammar or resolver operation.
+Use the exact module schemas and advertised `names_validate`/`names_resolve` operations for the bounded v1 implementation. Stop before issuing a name, defining universal namespace policy, inferring physical identity from a nickname, interpreting textual slash/`::` shorthand as machine grammar, or treating a proposed record as durably selected evidence.

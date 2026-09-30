@@ -1,0 +1,5 @@
+cmake_minimum_required(VERSION 3.30)
+project(SymphonySnrv VERSION 0.1.0 LANGUAGES CXX)
+include(CTest)
+include("${CMAKE_CURRENT_SOURCE_DIR}/../../cmake/SymphonySnvEngine.cmake")
+symphony_snv_engine(OWNER snrv SDK Snrv SOURCES src/snrv.cpp TEST_SOURCES tests/snrv_test.cpp)

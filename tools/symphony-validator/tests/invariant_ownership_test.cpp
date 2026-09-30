@@ -105,6 +105,7 @@ void copy_regular(const fs::path& repository, const fs::path& destination, const
 void copy_fixture(const fs::path &repository, const fs::path &destination) {
     const auto registry = read_json(repository / "knowledge/INVARIANT-OWNERSHIP.json");
     // Source evidence includes the C++ test headers used by its executable.
+    copy_regular(repository, destination, "tests/snv/native_process.hpp");
     for (const auto &scope : {"modules", "tools", "libraries"}) {
         for (const auto &file : fs::recursive_directory_iterator(repository / scope)) {
             const auto relative = fs::relative(file.path(), repository).generic_string();
@@ -384,6 +385,38 @@ void test_cpp_header_traceability(const fs::path& repository) {
             "C++ header traversal was not rejected");
 }
 
+void test_shared_snv_owner_probe(const fs::path& repository) {
+    TemporaryDirectory temporary;
+    const auto registry = generic_registry_fixture(temporary.path());
+    const auto source = temporary.path() / "modules/example-engine/tests/process.cpp";
+    const auto probe = temporary.path() / "tests/snv/native_process.hpp";
+    write_file(temporary.path() / "libraries/knowledge-vector-engine-cpp/tests/support/native_test.hpp",
+               read_file(repository / "libraries/knowledge-vector-engine-cpp/tests/support/native_test.hpp"));
+    write_file(probe, read_file(repository / "tests/snv/native_process.hpp"));
+    const std::string wrapper = "#include \"native_process.hpp\"\n"
+        "void installed_process(const native_test::Arguments& args) { "
+        "snv_native_test::test_installed_requests(args, \"example\"); }\n";
+    write_file(source, wrapper);
+    write_registry(temporary.path(), registry);
+    auto result = check_invariant_ownership(temporary.path().string());
+    require(result.success, "exact shared owner probe rejected:" + messages(result));
+    write_file(source, "#include \"native_process.hpp\"\nvoid installed_process() {}\n");
+    result = check_invariant_ownership(temporary.path().string());
+    require(!result.success && contains(result, "invariant_ownership.real_process_mechanics"),
+            "unused shared owner probe admitted an empty wrapper");
+    auto wrong_owner = wrapper;
+    wrong_owner.replace(wrong_owner.find("\"example\""), 9U, "\"foreign\"");
+    write_file(source, wrong_owner);
+    result = check_invariant_ownership(temporary.path().string());
+    require(!result.success && contains(result, "invariant_ownership.real_process_mechanics"),
+            "shared owner probe accepted another module's owner identity");
+    write_file(source, wrapper);
+    write_file(probe, "#include \"native_test.hpp\"\nvoid test_installed_requests() {}\n");
+    result = check_invariant_ownership(temporary.path().string());
+    require(!result.success && contains(result, "invariant_ownership.real_process_mechanics"),
+            "empty shared probe borrowed transport as owner invocation");
+}
+
 void test_v1_registry_compatibility(const fs::path& repository) {
     TemporaryDirectory temporary;
     copy_fixture(repository, temporary.path());
@@ -654,6 +687,7 @@ int main(int argc, char** argv) {
         test_canonical(repository);
         test_registered_shv_owner_inventory(repository);
         test_cpp_header_traceability(repository);
+        test_shared_snv_owner_probe(repository);
         test_v1_registry_compatibility(repository);
         test_shape_digest_and_order(repository);
         test_adapter_closure(repository);

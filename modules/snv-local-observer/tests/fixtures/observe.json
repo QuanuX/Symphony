@@ -1,0 +1,12 @@
+{
+  "protocol": "symphony.snv.local-observe-input.v1",
+  "observation_id": "caller-observation-1",
+  "node_ref": null,
+  "profile": "linux-proc-sysfs-v1",
+  "fields": [
+    "cpu_present",
+    "cpu_online",
+    "memory_total",
+    "memory_available"
+  ]
+}

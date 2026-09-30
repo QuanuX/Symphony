@@ -10,4 +10,4 @@
 
 ## Stop Conditions
 
-Stop before defining the `::` grammar, inventory schema, materiality algorithm, probe, scoring system, or resource mutation.
+Use the admitted v1 owner schema for supplied inventories. Preserve guest exposure, unknown coverage and remote attachment distinctions. Materiality decisions stay with SNIV; additional probe, shorthand or mutation behavior requires a separately admitted contract.

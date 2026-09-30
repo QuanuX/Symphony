@@ -360,6 +360,7 @@ std::string cpp_test_sources(const fs::path &root, const std::string &entry,
         combined += source + "\n";
         if (path != "libraries/knowledge-vector-engine-cpp/tests/support/native_test.hpp" &&
             path != "tools/qxctl/tests/shv-invariants/installed_support.hpp" &&
+            path != "tests/snv/native_process.hpp" &&
             !path.starts_with("tools/authoring-cpp/"))
             owner_source += source + "\n";
         std::istringstream lines(source);
@@ -382,9 +383,9 @@ std::string cpp_test_sources(const fs::path &root, const std::string &entry,
                         "path=" + path);
                 continue;
             }
-            const std::array<fs::path, 4> search_roots{
+            const std::array<fs::path, 5> search_roots{
                 fs::path(path).parent_path(), "libraries/knowledge-vector-engine-cpp/tests/support",
-                "tools/qxctl/tests/shv-invariants", "tools/authoring-cpp"};
+                "tools/qxctl/tests/shv-invariants", "tools/authoring-cpp", "tests/snv"};
             for (const auto &directory : search_roots) {
                 const auto candidate = (directory / include).generic_string();
                 std::error_code error;
@@ -522,10 +523,24 @@ std::vector<TestReference> check_test_references(
                     contents.find("ssiag provider verify") != std::string::npos &&
                     contents.find("SERVER_PID=$!") != std::string::npos &&
                     contents.find("wait \"$SERVER_PID\"") != std::string::npos;
-                // Imported mechanics cannot supply the owner test's actual invocation.
-                const bool owner_invocation = std::regex_search(owner_source,
+                // Shared transport cannot supply an owner's invocation. An exact
+                // installed-owner probe may be delegated only by a local wrapper
+                // naming its own module, and the declared probe must itself call
+                // the installed engine rather than merely include transport.
+                std::smatch owner_match, call_match;
+                const auto probe = cache.files.find("tests/snv/native_process.hpp");
+                const bool delegated_owner_probe =
+                    std::regex_match(path, owner_match, std::regex(R"(^modules/([a-z0-9-]+)-engine/tests/process\.cpp$)")) &&
+                    std::regex_search(owner_source, call_match,
+                        std::regex(R"probe(snv_native_test::test_installed_requests\s*\(\s*args\s*,\s*"([a-z0-9-]+)"\s*\))probe")) &&
+                    owner_match[1].str() == call_match[1].str() &&
+                    probe != cache.files.end() && probe->second &&
+                    std::regex_search(*probe->second, std::regex(R"(::run\s*\()")) &&
+                    std::regex_search(*probe->second, std::regex(R"(installed_engine\s*\()"));
+                const bool owner_invocation = delegated_owner_probe || std::regex_search(owner_source,
                     std::regex(R"((::run|::fork|\.call)\s*\()"));
-                const bool owner_installation = owner_source.find("install-receipt.json") != std::string::npos ||
+                const bool owner_installation = delegated_owner_probe ||
+                    owner_source.find("install-receipt.json") != std::string::npos ||
                     std::regex_search(owner_source, std::regex(R"((installed_engine|\.installation)\s*\()"));
                 const bool cpp_process_evidence = path.ends_with(".cpp") &&
                     owner_invocation && owner_installation &&

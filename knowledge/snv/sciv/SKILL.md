@@ -10,4 +10,4 @@
 
 ## Stop Conditions
 
-Stop before defining cluster cardinality beyond the ratified minimum, membership-retention rules, bus identity syntax, connectivity polling, routing, or cluster creation behavior.
+Use the exact native version for supplied membership lifecycle, connectivity profiles and candidates. Stop before generating identifiers/incarnations from observations, accepting unsupported profiles/versions, or adding live observation, polling, routing or transport configuration without its separately admitted contract.

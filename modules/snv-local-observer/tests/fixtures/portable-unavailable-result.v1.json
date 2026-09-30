@@ -1,0 +1,75 @@
+{
+  "acquisition_route": "native_fixed_sources",
+  "allocation_verified": false,
+  "capture": {
+    "atomic_inventory": false,
+    "boot_after_status": "unavailable",
+    "boot_before_status": "unavailable",
+    "boot_consistency": "unavailable",
+    "elapsed_ms": 0,
+    "finished_unix_ms": 1790754761192,
+    "started_unix_ms": 1790754761192
+  },
+  "fields": [
+    {
+      "consistency": "unavailable",
+      "field": "cpu_online",
+      "source_path": "/sys/devices/system/cpu/online",
+      "status": "unavailable",
+      "value": null,
+      "verification_status": "unavailable"
+    },
+    {
+      "consistency": "unavailable",
+      "field": "cpu_present",
+      "source_path": "/sys/devices/system/cpu/present",
+      "status": "unavailable",
+      "value": null,
+      "verification_status": "unavailable"
+    },
+    {
+      "consistency": "not_checked",
+      "field": "memory_available",
+      "source_path": "/proc/meminfo",
+      "status": "unavailable",
+      "value": null,
+      "verification_status": null
+    },
+    {
+      "consistency": "not_checked",
+      "field": "memory_total",
+      "source_path": "/proc/meminfo",
+      "status": "unavailable",
+      "value": null,
+      "verification_status": null
+    }
+  ],
+  "limitations": [
+    "logical_cpu_indices_not_physical_cores",
+    "kernel_memory_view_not_cgroup_allocation",
+    "stable_checks_cover_only_checked_interval_fields",
+    "memory_available_is_kernel_estimate",
+    "no_physical_identity_or_full_inventory_attestation"
+  ],
+  "method": {
+    "id": "linux-proc-sysfs",
+    "version": "1"
+  },
+  "node_association": "caller_supplied_unverified",
+  "node_ref": null,
+  "observation_id": "caller-observation-1",
+  "owner": "local-observer",
+  "owner_version": "0.1.0-dev",
+  "physical_inventory_complete": false,
+  "platform": {
+    "architecture": null,
+    "kernel_release": null,
+    "os": null
+  },
+  "profile": "linux-proc-sysfs-v1",
+  "protocol": "symphony.snv.local-observe.v1",
+  "source_digest": "sha256:79387fbf3c0d077da5b3666f14b64e1a1e30a48d2f1ef704ed69a3e080d764dc",
+  "status": "unavailable",
+  "subject_ids": [],
+  "visibility_scope": "invoked_process_kernel_proc_sysfs_exposure"
+}

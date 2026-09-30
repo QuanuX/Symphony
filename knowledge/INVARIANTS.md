@@ -170,7 +170,7 @@ The four added format-3 adapters bind existing owner declarations and their fini
 
 Each native record names distinct owner regressions, independent Go consumer rejections and a receipt-backed process entry under its own module. The installed entries use `tools/qxctl/tests/shv-invariants/installed_support.hpp` for exact receipt/resource/executable verification and complete request/response checks; they accept explicit installation inputs and exercise temporary evidence/storage only. Existing build-tree tests with synthetic installation fields remain producer tests. The catalogue journal's decision fixtures test rejection of consumed evidence, not live SSIAG authentication. Registration and named-test discovery establish traceability; fresh focused execution results and any deferred integration checks must be recorded separately.
 
-C++ invariant traceability follows quoted headers in the referencing test directory and the explicitly declared common native-test and authoring support directories. No-follow reads are capped at 16 source/header files and 8 MiB combined per reference; traversal includes and symlinked evidence are rejected. This source inspection does not execute a test or claim acceptance results.
+C++ invariant traceability follows quoted headers in the referencing test directory and the explicitly declared common native-test, authoring and `tests/snv` owner-probe support directories. No-follow reads are capped at 16 source/header files and 8 MiB combined per reference; traversal includes and symlinked evidence are rejected. This source inspection does not execute a test or claim acceptance results.
 
 ## SQAV original-byte capture
 
@@ -205,3 +205,9 @@ Durable-checkpoint, historical-attempt-admission and historical-http-boundary
 owner invariants bind processing persistence, conservative cost admission and
 actual transport observations. Operational SSIAG and external destination
 commit evidence remain distinct prerequisites.
+
+## SNV Owner Evidence Boundaries
+
+Five format-2 engine adapters bind the exact SNIV, SNRV, SCIV, SCNV and thin SNV operations under their module-owned SPEC contracts. Their `invariant:symphony:<owner>.evidence-boundary` records keep identity/resource/cluster/name interpretation and parent original-evidence replay at those native owners. Selected retained-state effect authority remains separately governed; registration does not promote a computed candidate into an applied view.
+
+Each owner names distinct native producer checks, rejecting Go consumer checks and its own installed-process entry. The shared `tests/snv/native_process.hpp` probe reduces duplicate transport assertions while each module wrapper must explicitly invoke it with that module's exact owner. The source checker rejects unused shared imports, foreign owner delegation and empty probes borrowing native transport. Actual receipt-backed execution, resource-tamper rejection and standalone package/SDK evidence are required separately; source traceability does not claim those tests passed. The expanded registry remains a partial catalogue.

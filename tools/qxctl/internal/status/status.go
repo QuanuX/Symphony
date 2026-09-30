@@ -108,7 +108,7 @@ func GetStatus(repoRoot string) (AdministrativeStatus, error) {
 	contractCount := 0
 	for _, mod := range modules.CanonicalModules {
 		modRelPath := filepath.Join("modules", mod)
-		for _, file := range modules.ExpectedFiles {
+		for _, file := range modules.ContractsFor(mod) {
 			relPath := filepath.Join(modRelPath, file)
 			if !repository.IsFile(filepath.Join(repoRoot, relPath)) {
 				return status, fmt.Errorf("missing contract file: %s in %s", file, modRelPath)

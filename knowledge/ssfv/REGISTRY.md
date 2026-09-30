@@ -2,7 +2,7 @@
 
 ## Status
 
-Canonical SSFV feature-routing registry. The partial catalog routes 131 experimental records across the platform governance scope and 55 owner scopes enumerated by `COVERAGE.md`.
+Canonical SSFV feature-routing registry. The partial catalog routes 139 experimental records across the platform governance scope and 62 owner scopes enumerated by `COVERAGE.md`.
 
 ## Purpose
 
@@ -1210,6 +1210,87 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - record_digest: `sha256:56bfe0493136ae76e6af9d74847d0594dd0ca99885ee9b03c200dfdb3b6f0c40`
 - notes: Explicit non-live administration scoped to SQAV ownership; shared transport does not create a parent runtime.
 
+
+- feature_id: `ssfv:symphony:sniv-engine`
+- feature_file: `modules/sniv-engine/FEATURES.md`
+- owner_contract: `modules/sniv-engine/SPEC.md`
+- source_scope: `modules/sniv-engine`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:platform`
+- record_digest: `sha256:f541a852f771d7c6893296ad643b357f1256cb0dc2fe260da40e7a4e80954f78`
+- notes: Bounded SNV owner or administration contract; independently installed interfaces preserve exact semantic ownership and declared operational gates.
+
+
+- feature_id: `ssfv:symphony:snrv-engine`
+- feature_file: `modules/snrv-engine/FEATURES.md`
+- owner_contract: `modules/snrv-engine/SPEC.md`
+- source_scope: `modules/snrv-engine`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:platform`
+- record_digest: `sha256:175e2d1017efdc512bad1e00d47618eb96f5ffa02638f786a5f59cd522927690`
+- notes: Bounded SNV owner or administration contract; independently installed interfaces preserve exact semantic ownership and declared operational gates.
+
+
+- feature_id: `ssfv:symphony:sciv-engine`
+- feature_file: `modules/sciv-engine/FEATURES.md`
+- owner_contract: `modules/sciv-engine/SPEC.md`
+- source_scope: `modules/sciv-engine`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:platform`
+- record_digest: `sha256:d978e9256f17cc2a66adda00c0e0669e7fac7f5fb2d98abd433b890ea1d04124`
+- notes: Bounded SNV owner or administration contract; independently installed interfaces preserve exact semantic ownership and declared operational gates.
+
+
+- feature_id: `ssfv:symphony:scnv-engine`
+- feature_file: `modules/scnv-engine/FEATURES.md`
+- owner_contract: `modules/scnv-engine/SPEC.md`
+- source_scope: `modules/scnv-engine`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:platform`
+- record_digest: `sha256:07df51d2db0712e5513065c1390e475c217bccf7e7c9356d6d6b76164107e631`
+- notes: Bounded SNV owner or administration contract; independently installed interfaces preserve exact semantic ownership and declared operational gates.
+
+
+- feature_id: `ssfv:symphony:snv-engine`
+- feature_file: `modules/snv-engine/FEATURES.md`
+- owner_contract: `modules/snv-engine/SPEC.md`
+- source_scope: `modules/snv-engine`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:platform`
+- record_digest: `sha256:8e3f6091924b28d086594cbf6665d8c1e8a0b06b9fa3bb630bf8f1613b6ebd89`
+- notes: Bounded SNV owner or administration contract; independently installed interfaces preserve exact semantic ownership and declared operational gates.
+
+
+- feature_id: `ssfv:symphony:snv-common-cpp`
+- feature_file: `libraries/snv-common-cpp/FEATURES.md`
+- owner_contract: `libraries/snv-common-cpp/SPEC.md`
+- source_scope: `libraries/snv-common-cpp`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:platform`
+- record_digest: `sha256:63c5c7bc66b5d14d648de06fa1b4587dae803aa34eb3cb118b088a472006b922`
+- notes: Bounded SNV owner or administration contract; independently installed interfaces preserve exact semantic ownership and declared operational gates.
+
+
+- feature_id: `ssfv:symphony:qxctl-snv-administration`
+- feature_file: `tools/qxctl/FEATURES.md`
+- owner_contract: `tools/qxctl/MANIFEST.md`
+- source_scope: `tools/qxctl`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:qxctl`
+- record_digest: `sha256:5158857df2a54ff96f509b58bcad97b140dd1213a841c4a94eff073842a7e71c`
+- notes: Bounded SNV owner or administration contract; independently installed interfaces preserve exact semantic ownership and declared operational gates.
+
+
+- feature_id: `ssfv:symphony:snv-local-observer`
+- feature_file: `modules/snv-local-observer/FEATURES.md`
+- owner_contract: `modules/snv-local-observer/SPEC.md`
+- source_scope: `modules/snv-local-observer`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:platform`
+- record_digest: `sha256:c05a3d8b9a78249fd0b475f15215f5dd6ccea6bc3f584f8a5828951401c4d611`
+- notes: Optional finite Linux proc/sysfs CPU and memory observation; no semantic engine identity, physical proof, retention, selected head or operational authority.
+
+
 ## Prohibited Entries
 
 Do not register:
@@ -1224,4 +1305,4 @@ Do not register:
 
 ## Non-Authorization Statement
 
-This 131-record registry is an explicitly partial catalog governed by `COVERAGE.md`. It does not authorize an unratified feature record, an unregistered distributed file, repository-wide or installed-host completeness, complete legacy-invariant coverage, engine-decided feature-worthiness, or canonical mutation.
+This 138-record registry is an explicitly partial catalog governed by `COVERAGE.md`. It does not authorize an unratified feature record, an unregistered distributed file, repository-wide or installed-host completeness, complete legacy-invariant coverage, engine-decided feature-worthiness, or canonical mutation.

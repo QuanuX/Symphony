@@ -19,3 +19,7 @@ Provider declarations, firmware, local probes, user declarations, and SHV knowle
 ## Non-Authorization Statement
 
 SNRV records resources. It does not attach them, reserve them, score them, recommend them, or assert that a Nest can use them.
+
+## Admitted implementation profile
+
+`snrv-engine 0.1.0-dev` supplies strict attributed inventory validation, exact uint64 decimal quantities, separate presence/available-capacity facts, guest exposure versus physical instance scope, structured remote attachments and pure correction/retirement/restoration/resource-change proposals. Partial captures do not prove removal. Physical local change evidence is handed to SNIV without applying materiality or silently changing identity. See `modules/snrv-engine/SPEC.md` and installed v1 schemas for exact behavior.
