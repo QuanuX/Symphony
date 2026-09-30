@@ -13927,3 +13927,276 @@ This PR authorizes none of the following:
   - `No complete operational SQV coverage, detached-job, external receiver or streaming-overhead completion claim.`
 - notes: |
     Start and completion identify exact local source-commit finalization. The v3 post_merge disposition records ordinary completed local-Git closure; no main or remote merge occurred. Verification is macOS/amd64 APFS. Full unrelated suites and Linux delivery were not rerun. Store observation cooperates with the writer lock and detects replacement; it does not isolate a hostile same-user actor. Filesystem access-time accounting is outside SQV application-state mutation.
+
+- record_id: `SCLV-CHG-20260930-SNV-BOUNDED-IMPLEMENTATION`
+- record_version: `3`
+- title: `Implement bounded SNV engines and agentic qxctl administration`
+- status: `canonical`
+- date: `2026-09-30`
+- change_started_at: `2026-09-30T03:18:44Z`
+- change_completed_at: `2026-09-30T06:14:20Z`
+- recorded_at: `2026-09-30T06:18:19Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `implementation_change`
+- change_request_state: `not_applicable`
+- change_request_provider: `not_applicable`
+- change_request_id: `not_applicable`
+- change_request_reference: `not_applicable`
+- change_request_absence_reason: `User-authorized implementation finalized as an isolated local branch commit; no forge request or main-branch merge exists.`
+- revision_scheme: `git-sha1`
+- revision_value: `837aadff2eeec78bfbb8c30769b2748ef40bf373`
+- tree_digest: `sha256:966c30315f08514c3335113fa8a8bd5df0079b0044d880d3ce09fe50f27a383c`
+- ratification_subject: `Duncan, Architect`
+- ratification_permission: `Requested local SNV implementation, integrations, WP-00 through WP-18, milestones through M3 and planned qxctl administration within the admitted scope`
+- ratification_method: `explicit-user-instruction`
+- ratification_evidence_reference: `/Users/Duncan/Documents/ChatGPT/Symphony p2-p8/context/decisions/2026-09-29-snv-implementation.md`
+- ratification_evidence_digest: `sha256:dc08a8b62e9920c5da1d9c97c7206e6bd4b48cd2ac4892362994bd7b1c09d480`
+- affected_surfaces:
+  - `README.md`
+  - `cmake/ScivInterface.generated.cmake`
+  - `cmake/ScnvInterface.generated.cmake`
+  - `cmake/SnivInterface.generated.cmake`
+  - `cmake/SnrvInterface.generated.cmake`
+  - `cmake/SnvInterface.generated.cmake`
+  - `cmake/SymphonySnvEngine.cmake`
+  - `cmake/SymphonySnvMain.cpp`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.json`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.md`
+  - `knowledge/INVARIANT-OWNERSHIP.json`
+  - `knowledge/INVARIANTS.md`
+  - `knowledge/MANIFEST.md`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/snv/MANIFEST.md`
+  - `knowledge/snv/SKILL.md`
+  - `knowledge/snv/SPEC.md`
+  - `knowledge/snv/VALIDATION.md`
+  - `knowledge/snv/sciv/MANIFEST.md`
+  - `knowledge/snv/sciv/SKILL.md`
+  - `knowledge/snv/sciv/SPEC.md`
+  - `knowledge/snv/scnv/MANIFEST.md`
+  - `knowledge/snv/scnv/SKILL.md`
+  - `knowledge/snv/scnv/SPEC.md`
+  - `knowledge/snv/sniv/MANIFEST.md`
+  - `knowledge/snv/sniv/SKILL.md`
+  - `knowledge/snv/sniv/SPEC.md`
+  - `knowledge/snv/snrv/INTENT.md`
+  - `knowledge/snv/snrv/MANIFEST.md`
+  - `knowledge/snv/snrv/SKILL.md`
+  - `knowledge/snv/snrv/SPEC.md`
+  - `knowledge/ssfv/COVERAGE.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `libraries/README.md`
+  - `libraries/snv-common-cpp/CMakeLists.txt`
+  - `libraries/snv-common-cpp/FEATURES.md`
+  - `libraries/snv-common-cpp/INSTALL.md`
+  - `libraries/snv-common-cpp/INTENT.md`
+  - `libraries/snv-common-cpp/MANIFEST.md`
+  - `libraries/snv-common-cpp/SKILL.md`
+  - `libraries/snv-common-cpp/SPEC.md`
+  - `libraries/snv-common-cpp/include/symphony/snv/common.hpp`
+  - `libraries/snv-common-cpp/src/common.cpp`
+  - `modules/sciv-engine/CMakeLists.txt`
+  - `modules/sciv-engine/FEATURES.md`
+  - `modules/sciv-engine/INSTALL.md`
+  - `modules/sciv-engine/INTENT.md`
+  - `modules/sciv-engine/INTERFACE-GENERATOR.json`
+  - `modules/sciv-engine/MANIFEST.md`
+  - `modules/sciv-engine/OWNER-INTERFACE.json`
+  - `modules/sciv-engine/SKILL.md`
+  - `modules/sciv-engine/SPEC.md`
+  - `modules/sciv-engine/include/symphony/snv/sciv.hpp`
+  - `modules/sciv-engine/schemas/v1/sciv-evidence.schema.json`
+  - `modules/sciv-engine/schemas/v1/sciv-evidence.template.json`
+  - `modules/sciv-engine/schemas/v1/sciv-result.schema.json`
+  - `modules/sciv-engine/schemas/v1/sciv-transition-result.schema.json`
+  - `modules/sciv-engine/schemas/v1/sciv-transition.schema.json`
+  - `modules/sciv-engine/schemas/v1/sciv-transition.template.json`
+  - `modules/sciv-engine/src/interface.generated.hpp`
+  - `modules/sciv-engine/src/sciv.cpp`
+  - `modules/sciv-engine/tests/fixtures/interface-history.v1.json`
+  - `modules/sciv-engine/tests/process.cpp`
+  - `modules/sciv-engine/tests/sciv_test.cpp`
+  - `modules/scnv-engine/CMakeLists.txt`
+  - `modules/scnv-engine/FEATURES.md`
+  - `modules/scnv-engine/INSTALL.md`
+  - `modules/scnv-engine/INTENT.md`
+  - `modules/scnv-engine/INTERFACE-GENERATOR.json`
+  - `modules/scnv-engine/MANIFEST.md`
+  - `modules/scnv-engine/OWNER-INTERFACE.json`
+  - `modules/scnv-engine/SKILL.md`
+  - `modules/scnv-engine/SPEC.md`
+  - `modules/scnv-engine/include/symphony/snv/scnv.hpp`
+  - `modules/scnv-engine/schemas/v1/admin.templates.json`
+  - `modules/scnv-engine/schemas/v1/names-result.schema.json`
+  - `modules/scnv-engine/schemas/v1/names.schema.json`
+  - `modules/scnv-engine/schemas/v1/resolve-result.schema.json`
+  - `modules/scnv-engine/schemas/v1/resolve.schema.json`
+  - `modules/scnv-engine/src/interface.generated.hpp`
+  - `modules/scnv-engine/src/scnv.cpp`
+  - `modules/scnv-engine/tests/fixtures/interface-history.v1.json`
+  - `modules/scnv-engine/tests/fixtures/names_assign.json`
+  - `modules/scnv-engine/tests/fixtures/names_resolve.json`
+  - `modules/scnv-engine/tests/fixtures/names_validate.json`
+  - `modules/scnv-engine/tests/process.cpp`
+  - `modules/scnv-engine/tests/scnv_test.cpp`
+  - `modules/sniv-engine/CMakeLists.txt`
+  - `modules/sniv-engine/FEATURES.md`
+  - `modules/sniv-engine/INSTALL.md`
+  - `modules/sniv-engine/INTENT.md`
+  - `modules/sniv-engine/INTERFACE-GENERATOR.json`
+  - `modules/sniv-engine/MANIFEST.md`
+  - `modules/sniv-engine/OWNER-INTERFACE.json`
+  - `modules/sniv-engine/SKILL.md`
+  - `modules/sniv-engine/SPEC.md`
+  - `modules/sniv-engine/include/symphony/snv/sniv.hpp`
+  - `modules/sniv-engine/schemas/v1/admin.schema.json`
+  - `modules/sniv-engine/schemas/v1/admin.templates.json`
+  - `modules/sniv-engine/src/interface.generated.hpp`
+  - `modules/sniv-engine/src/sniv.cpp`
+  - `modules/sniv-engine/src/validation.hpp`
+  - `modules/sniv-engine/tests/fixture.hpp`
+  - `modules/sniv-engine/tests/fixtures/identity_validate.json`
+  - `modules/sniv-engine/tests/fixtures/interface-history.v1.json`
+  - `modules/sniv-engine/tests/process.cpp`
+  - `modules/sniv-engine/tests/sniv_test.cpp`
+  - `modules/snrv-engine/CMakeLists.txt`
+  - `modules/snrv-engine/FEATURES.md`
+  - `modules/snrv-engine/INSTALL.md`
+  - `modules/snrv-engine/INTENT.md`
+  - `modules/snrv-engine/INTERFACE-GENERATOR.json`
+  - `modules/snrv-engine/MANIFEST.md`
+  - `modules/snrv-engine/OWNER-INTERFACE.json`
+  - `modules/snrv-engine/SKILL.md`
+  - `modules/snrv-engine/SPEC.md`
+  - `modules/snrv-engine/include/symphony/snv/snrv.hpp`
+  - `modules/snrv-engine/schemas/v1/admin.schema.json`
+  - `modules/snrv-engine/schemas/v1/admin.templates.json`
+  - `modules/snrv-engine/src/interface.generated.hpp`
+  - `modules/snrv-engine/src/snrv.cpp`
+  - `modules/snrv-engine/src/validation.hpp`
+  - `modules/snrv-engine/tests/fixture.hpp`
+  - `modules/snrv-engine/tests/fixtures/interface-history.v1.json`
+  - `modules/snrv-engine/tests/fixtures/resources_validate.json`
+  - `modules/snrv-engine/tests/process.cpp`
+  - `modules/snrv-engine/tests/snrv_test.cpp`
+  - `modules/snv-engine/CMakeLists.txt`
+  - `modules/snv-engine/FEATURES.md`
+  - `modules/snv-engine/INSTALL.md`
+  - `modules/snv-engine/INTENT.md`
+  - `modules/snv-engine/INTERFACE-GENERATOR.json`
+  - `modules/snv-engine/MANIFEST.md`
+  - `modules/snv-engine/OWNER-INTERFACE.json`
+  - `modules/snv-engine/SKILL.md`
+  - `modules/snv-engine/SPEC.md`
+  - `modules/snv-engine/include/symphony/snv/snv.hpp`
+  - `modules/snv-engine/schemas/v1/admin.schema.json`
+  - `modules/snv-engine/schemas/v1/admin.templates.json`
+  - `modules/snv-engine/schemas/v1/snv_evidence_plan.result.schema.json`
+  - `modules/snv-engine/schemas/v1/snv_evidence_plan.schema.json`
+  - `modules/snv-engine/schemas/v1/snv_inspect.result.schema.json`
+  - `modules/snv-engine/schemas/v1/snv_inspect.schema.json`
+  - `modules/snv-engine/schemas/v1/snv_state_plan.result.schema.json`
+  - `modules/snv-engine/schemas/v1/snv_state_plan.schema.json`
+  - `modules/snv-engine/schemas/v1/snv_state_reduce.result.schema.json`
+  - `modules/snv-engine/schemas/v1/snv_state_reduce.schema.json`
+  - `modules/snv-engine/schemas/v1/state-proposal.schema.json`
+  - `modules/snv-engine/src/interface.generated.hpp`
+  - `modules/snv-engine/src/snv.cpp`
+  - `modules/snv-engine/tests/fixtures/complete.bundle.json`
+  - `modules/snv-engine/tests/fixtures/interface-history.v1.json`
+  - `modules/snv-engine/tests/fixtures/snv_inspect.json`
+  - `modules/snv-engine/tests/process.cpp`
+  - `modules/snv-engine/tests/snv_test.cpp`
+  - `tests/snv/native_process.hpp`
+  - `tools/qxctl/COMMANDS.json`
+  - `tools/qxctl/COMMANDS.md`
+  - `tools/qxctl/FEATURES.md`
+  - `tools/qxctl/cmd/qxctl/cli_errors.go`
+  - `tools/qxctl/cmd/qxctl/command_manifest_test.go`
+  - `tools/qxctl/cmd/qxctl/command_specs.go`
+  - `tools/qxctl/cmd/qxctl/commands.go`
+  - `tools/qxctl/cmd/qxctl/snv.go`
+  - `tools/qxctl/cmd/qxctl/snv_state.go`
+  - `tools/qxctl/cmd/qxctl/snv_test.go`
+  - `tools/qxctl/internal/knowledgebinding/registry.go`
+  - `tools/qxctl/internal/knowledgebinding/registry_test.go`
+  - `tools/qxctl/internal/knowledgeengine/client.go`
+  - `tools/qxctl/internal/knowledgeengine/client_test.go`
+  - `tools/qxctl/internal/knowledgeengine/process_unix.go`
+  - `tools/qxctl/internal/knowledgeengine/process_unix_test.go`
+  - `tools/qxctl/internal/knowledgeengine/receipt_v2.go`
+  - `tools/qxctl/internal/knowledgeengine/receipt_v2_artifact_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sciv_interface_generated.go`
+  - `tools/qxctl/internal/knowledgeengine/scnv_interface_generated.go`
+  - `tools/qxctl/internal/knowledgeengine/sniv_interface_generated.go`
+  - `tools/qxctl/internal/knowledgeengine/snrv_interface_generated.go`
+  - `tools/qxctl/internal/knowledgeengine/snv.go`
+  - `tools/qxctl/internal/knowledgeengine/snv_descriptor.go`
+  - `tools/qxctl/internal/knowledgeengine/snv_interface_generated.go`
+  - `tools/qxctl/internal/knowledgeengine/snv_schema.go`
+  - `tools/qxctl/internal/knowledgeengine/snv_test.go`
+  - `tools/qxctl/internal/knowledgeengine/snv_transport_adversarial_test.go`
+  - `tools/qxctl/internal/modules/modules.go`
+  - `tools/qxctl/internal/modules/modules_test.go`
+  - `tools/qxctl/internal/snvstate/authorization.go`
+  - `tools/qxctl/internal/snvstate/barrier.go`
+  - `tools/qxctl/internal/snvstate/barrier_faults.go`
+  - `tools/qxctl/internal/snvstate/storage_unix.go`
+  - `tools/qxctl/internal/snvstate/storage_unix_test.go`
+  - `tools/qxctl/internal/snvstate/storage_unsupported.go`
+  - `tools/qxctl/internal/snvstate/store.go`
+  - `tools/qxctl/internal/snvstate/store_test.go`
+  - `tools/qxctl/internal/status/status.go`
+  - `tools/qxctl/internal/status/status_test.go`
+  - `tools/symphony-validator/SPEC.md`
+  - `tools/symphony-validator/src/invariant_ownership.cpp`
+  - `tools/symphony-validator/tests/invariant_ownership_test.cpp`
+- skvi_references:
+  - `README.md`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.json`
+  - `knowledge/INVARIANT-OWNERSHIP.json`
+  - `knowledge/sclv/CHANGELOG.md`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/snv/MANIFEST.md`
+  - `knowledge/snv/SPEC.md`
+  - `knowledge/snv/VALIDATION.md`
+  - `knowledge/ssfv/COVERAGE.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `libraries/snv-common-cpp/MANIFEST.md`
+  - `modules/sciv-engine/MANIFEST.md`
+  - `modules/scnv-engine/MANIFEST.md`
+  - `modules/sniv-engine/MANIFEST.md`
+  - `modules/snrv-engine/MANIFEST.md`
+  - `modules/snv-engine/MANIFEST.md`
+  - `tools/qxctl/COMMANDS.json`
+  - `tools/qxctl/MANIFEST.md`
+- change_summary: |
+    Complete the bounded supplied-record SNV release: five independently installable C++26 semantic engines and static SDKs, neutral shared mechanics, original owner replay, typed cross-owner relationships, portable evidence, private durable retention and protected selected-view proposals/effects. Fifteen reviewed agentic qxctl command leaves reuse existing interaction forms. Exact compiled/installed gates and current source governance are recorded separately from the unchanged prospective research artifacts. Optional WP-15/A064/A065 observation remains unselected; live collection and infrastructure actions are outside this release.
+- relationship_changes: |
+    SNIV owns physical identity, caller-selected versioned materiality and participation; SNRV owns local inventories, qualified remote attachments and evidence-bound identity rebinds; SCIV owns membership intent and separately evidenced fabric connectivity; SCNV owns scoped temporal associations of names already assigned. SNV composes their original inputs without manufacturing missing subjects or authority. The Go adapter owns private retention and selected-view transactions; actual SSIAG policy authorization and STAV policy-decision audit remain separate owners. Source discovery admits five semantic modules and thirteen binding roles while preserving frozen legacy-v1 maps. The neutral SDK has no engine identity and is not fabricated as a source inventory module.
+- doctrine_changes: |
+    Apply the user-ratified versioned material-hardware rules and incarnation continuity through temporary disconnect/reconnect until explicit end/rejoin. Preserve physical identity, boot, Habitat, incarnation, resources, membership intent, bus observations and names as distinct facts. Missing, stale, partial, conflicting and absent-time evidence retain uncertainty. Multiple buses may support one cluster; unproved cross-fabric bridges are never inferred. No universal identifier or name-allocation doctrine is introduced.
+- compatibility_consequences: |
+    Admit initial exact engine release 0.1.0-dev and CMake SDK version 0.1.0 with KnowledgeVectorEngine 0.2.0 and neutral SnvCommon 0.1.0. Child SDKs have only the exact foundation/common dependencies; the parent SDK explicitly links all four child libraries and its finite process embeds them. Installed receipts bind unchanged bytes and exact owner schemas/templates, not publisher authenticity. Legacy binding-v1 records retain their established role meanings and require explicit migration before mutation. Unsupported writers, versions and incompatible migrations reject; no fictional legacy reducer or newest-version substitution is admitted.
+- publication_consequences: |
+    Local source completion only. No push, pull request, tag, main-branch merge, remote cleanup, hosted publication or Linux certification is authorized or performed by this change. All five packages and the neutral SDK retain explicit independent installation boundaries and receipt-owned dependency license notices.
+- projection_consequences: |
+    Route implemented contracts, interfaces, schemas, tests and validation through current SKVI and owner manifests. Register 138 SSFV features in 61 owner scopes with 78 nested features; the repository-wide catalog remains partial. Derive 398 stable qxctl leaves and 370 reviewed feature-administration expectations from their exact owner registries. Preserve immutable historical SCLV references to retired paths as warnings. Evidence retention, selected views, history, diff and portable export remain disposable or private projections over attributed owner inputs; no projection becomes identity, permission, publication or runtime audit authority.
+- evidence:
+  - `Exact implementation revision 837aadff2eeec78bfbb8c30769b2748ef40bf373; raw recursive NUL-delimited Git tree listing digest sha256:966c30315f08514c3335113fa8a8bd5df0079b0044d880d3ce09fe50f27a383c under the fixed SCLV local-Git environment.`
+  - `Current public bounded gate and condition record: knowledge/snv/VALIDATION.md at the implementation revision.`
+  - `Local source preparation: ../snv-execution/SOURCE_PREPARATION.json, first isolated worktree reflog captured before the implementation commit.`
+  - `Final five-owner Clang 23 C++26 and ASan/UBSan gates: ../snv-execution/evidence/native-final.log and sanitize-final.log.`
+  - `Final independent license ownership/removal and three changed-owner SDK replay: ../snv-execution/evidence/license-receipt-final.json and final-sdk-replay.json; six owned notices and seven exact dependency receipts verified.`
+  - `Independent minimal package consumers/builds/processes and guarded removal: ../snv-execution/evidence/package-OWNER.json; parent replay after all separately installed child/common removals: package-isolated-all-removal.json; six incorrectly identified self-resealed SDK receipts rejected: sdk-identity-negative.json.`
+  - `Actual final same-UID SSIAG/STAV workflow: ../snv-execution/evidence/authority-flow-final/ACCEPTANCE.json, 77 checks across 60 commands. Separate naming correction/retirement, alias/drift, process interruption, client abandonment and capacity campaigns retain their concrete execution records.`
+  - `Pinned Go 1.26.5 shared discovery/transport/state/CLI tests, focused race checks, vet, five owner generator checks and rebuilt invariant-ownership adversarial checks are bound by the execution acceptance register. Final source-validator evidence is the closure-carrier gate, not a prospective research result.`
+- non_authorizations:
+  - `No live hardware/provider collection, active bus observer, provisioning, bus connection, automatic name allocation, universal naming or reserved :: grammar.`
+  - `No operational permission inferred from a name, digest, identity claim, successful reducer, retained evidence or pure candidate transition.`
+  - `No data erasure, external deletion or garbage collection. Name retirement, selected-view unselection and package removal retain separate meanings.`
+  - `No fabricated STAV receipt for the head write; actual policy-decision audit and local outcome journals remain distinct.`
+  - `No remote publication, main-branch merge, Linux certification, broad distinct-account isolation or hardware power-loss claim.`
+- notes: |
+    Start is the captured first isolated-worktree HEAD reflog; completion is the exact local implementation commit. The v3 post_merge disposition denotes ordinary local committed closure and does not imply a main-branch or remote merge. Existing ledger bytes remain unchanged. Runtime evidence is macOS x86_64 with private filesystem/same-UID acceptance services. Actual different-owner descriptor refusal, hostile FIFO/symlink/hardlink rejection and real ENOSPC on a disposable detached 32 MiB HFS+ image were exercised. Inode exhaustion, hardware fsync failures, broad cross-account isolation, Linux and power-loss behavior were not certified. Authorization retains its documented check-to-effect race. The formal qxctl follow-up surface protocol remains a subsequent pass.

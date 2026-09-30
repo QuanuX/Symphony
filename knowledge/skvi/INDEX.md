@@ -21297,11 +21297,11 @@ These entries locate existing implementation and regression surfaces referenced 
 - path: `knowledge/snv/VALIDATION.md`
 - title: SNV bounded release and validation status
 - surface_type: owner validation and release boundary
-- truth_role: implemented scope, observed evidence and explicit open closure gates
+- truth_role: completed bounded scope, exact validation evidence and source closure
 - owner: SNV maintainers
 - scope: Exact supplied-evidence engines, independent packages and agentic administration.
 - relationships: governed_by -> `knowledge/snv/MANIFEST.md`
 - consumers: agents, operators, implementers, reviewers, validators
-- deferred_projections: completed source revision, acceptance seal and SCLV closure
-- notes: Focused local success does not imply prospective acceptance, publication or another platform.
+- deferred_projections: publication and separately admitted platform certification
+- notes: Exact completed source resolves through SCLV-CHG-20260930-SNV-BOUNDED-IMPLEMENTATION; local bounded results do not imply publication or another platform.
 - status: canonical
