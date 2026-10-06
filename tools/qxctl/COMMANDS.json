@@ -4516,6 +4516,45 @@
       "json_output": true
     },
     {
+      "command_id": "qxcmd:symphony:sbv.research.history",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl sbv research-history [--deadline-unix-ms VALUE] [--format VALUE] [--input VALUE] [--json] [--prefix VALUE] [--timeout VALUE] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl-sbv-administration",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:sbv-engine",
+          "interaction": "invoke"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:sbv.research-history"
+      ],
+      "mutability": "permission_backed_mutation",
+      "authority_mode": "target_host_permission",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.sbv.research-history-input.v1"
+      ],
+      "output_protocols": [
+        "symphony.sbv.research-history.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.sbv.research-history.v1"
+      ],
+      "recovery_command_id": "qxcmd:symphony:sbv.result.inspect",
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
       "command_id": "qxcmd:symphony:sbv.result.export",
       "status": "experimental",
       "introduced_in": "0.1.0-dev",
@@ -20249,5 +20288,5 @@
       "json_output": true
     }
   ],
-  "registry_digest": "sha256:ab62e9d9140e65b371211409b1be89340cf59145589acd6d714bbd7929fbed95"
+  "registry_digest": "sha256:05f0d4c33b600566e87350d8684bb91c9c5c2e266d66c50309cc0049e88d65d0"
 }

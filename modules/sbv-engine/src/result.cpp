@@ -285,6 +285,7 @@ Json dispatch(const std::string &op, const Json &p, std::int64_t end) {
     return d::compose(p, end);
   if (op == "compose_joint")
     return d::compose_joint(p, end);
+  if (op == "research_history") return d::research_history(p, end);
   if (op == "fit") return d::fit(p, end);
   if (op == "predict") return d::predict(p, end);
   if (op == "split")

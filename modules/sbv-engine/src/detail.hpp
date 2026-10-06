@@ -94,6 +94,7 @@ int resident_worker();
 Json compose(const Json &, std::int64_t);
 Json compose_joint(const Json &, std::int64_t);
 Json evaluate(const Json &, std::int64_t, const Dataset * = nullptr);
+Json research_history(const Json &, std::int64_t);
 Json fit(const Json &, std::int64_t);
 Json predict(const Json &, std::int64_t);
 Json split(const Json &, std::int64_t);

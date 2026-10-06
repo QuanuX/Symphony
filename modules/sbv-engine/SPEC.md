@@ -2,7 +2,7 @@
 
 ## Version and ownership
 
-Contract v1; package `sbv-engine` 0.17.0-dev; engine `symphony-sbv`; vector `sbv`. C++26 owns computations, result sealing and artifact queries. Go qxctl verifies the exact installation and projects native evidence. OWNER-INTERFACE.json is the exact operation declaration; generated C++/Go metadata must match it. This release is experimental.
+Contract v1; package `sbv-engine` 0.18.0-dev; engine `symphony-sbv`; vector `sbv`. C++26 owns computations, result sealing and artifact queries. Go qxctl verifies the exact installation and projects native evidence. OWNER-INTERFACE.json is the exact operation declaration; generated C++/Go metadata must match it. This release is experimental.
 
 The engine uses knowledge-vector-engine-cpp 0.2.0-dev and sqav-databento-dbn-cpp 0.5.0-dev, with that adapter's exact static dependencies. It performs no provider calls. Signal/replay semantics belong to SBV; acquisition remains SQAV, metadata SQMV, batch ownership SQFV, transformation SQTV, physical stores SQPV and recipient delivery SQDV. Its portable local JSON result is a derived artifact, not a new market-data persistence service. SQPV/SQDV integrations are not wired in this release.
 
@@ -213,7 +213,7 @@ The versioned native shared library exposes `symphony_sbv_sdk_abi_v1`, `symphony
 
 The exact installed `SymphonySbvSdkConfig.cmake` exports `Symphony::SbvSdk`. Its public C header has no C++/JSON/vendor dependency. `sdk.hpp` is an optional RAII byte-buffer wrapper. A separately packaged external standard-library Python consumer in the implementation evidence loads the same installed ABI, verifies local receipt/file identities and response correspondence, and reproduces native results without recomputing finance. It is deliberately outside the Python-free native repository and installation. Its receipt checks are local integrity checks, not an authenticated distribution signature or protection against a concurrent hostile owner of the installation. External consumer languages do not become engine dependencies.
 
-JSON transfer currently copies bytes and preserves rational/integer strings. The SDK does not pretend to be zero-copy Arrow/DLPack, a vendor model runtime, a CUDA implementation or an isolation boundary for untrusted native pointers. Those optional adapters can compose with the independent interop lifetime/stream contract and native external-outcome admission. All twenty-six owner operations remain available through qxctl; capabilities reports the installed SDK contract and bindings. The shared library adds a language boundary rather than a separate quantitative meaning.
+JSON transfer currently copies bytes and preserves rational/integer strings. The SDK does not pretend to be zero-copy Arrow/DLPack, a vendor model runtime, a CUDA implementation or an isolation boundary for untrusted native pointers. Those optional adapters can compose with the independent interop lifetime/stream contract and native external-outcome admission. All twenty-seven owner operations remain available through qxctl; capabilities reports the installed SDK contract and bindings. The shared library adds a language boundary rather than a separate quantitative meaning.
 
 
 ## Temporal partitions — experimental 0.11
@@ -228,7 +228,7 @@ Choose `by_fit_cutoff` to exclude candidates whose supplied whole-observation av
 
 Output retains normalized observation coordinates, each resolved fold window, train/test source indices, exclusion reasons, exact test/purge interval unions and embargo endpoints. Index-only output binds the source digest/pointer; selected `retain_rows` embeds unchanged source rows for direct native analyze/resample or external fitting. No weights are normalized or recalculated. All nodes are inspectable/queryable/selectable/exportable through qxctl and the installed SDK. The source artifact and original replay remain untouched and linked by digest.
 
-For explicit/rolling/expanding plans: 65,536 source rows, 128 folds, 131,072 row-fold pairs, 64 MiB cumulative canonical embedded row bytes and the existing 128 MiB artifact/JSON-value limit. An explicit zero-fold plan and empty source array are supported. This implementation uses one CPU worker, interval-union sorting and binary search; independent split trials may use the existing experiment runner. Oversized retention rejects without silently switching to index-only output. The current release has twenty-six native operations and twenty-nine qxctl leaves.
+For explicit/rolling/expanding plans: 65,536 source rows, 128 folds, 131,072 row-fold pairs, 64 MiB cumulative canonical embedded row bytes and the existing 128 MiB artifact/JSON-value limit. An explicit zero-fold plan and empty source array are supported. This implementation uses one CPU worker, interval-union sorting and binary search; independent split trials may use the existing experiment runner. Oversized retention rejects without silently switching to index-only output. The current release has twenty-seven native operations and thirty qxctl leaves.
 
 The operation computes partitions, not fitted models, predicted scores, enforced holdout authority, nested validation or stitched combinatorial performance paths, multiple-testing correction or independence. Repeated test selection remains in the fold records. Arbitrary external protocols and user-defined clocks/conventions remain possible through other implementations and exact source artifacts.
 
@@ -633,3 +633,77 @@ search-space expansion, optimizer selection or a cross-run holdout-access ledger
 No default deadline or dataset capacity policy was added. All graph records,
 claims and results use the existing qxctl/SDK result contract for terminal and
 future external/GUI consumers.
+
+## Supplied research usage and selection history (0.18)
+
+`research_history` (`qxctl sbv research-history`) creates an immutable history
+result from caller-selected fit/prediction and comparison artifacts. It accepts
+ordered `entries` and independently ordered `selections`, explicit duplicate
+counting/unavailable-identity policies, observation retention, and the caller's
+ordering/coverage descriptions. No filesystem discovery, authenticated chronology,
+complete access capture, automatic holdout classification or promotion gate is
+implied. All twenty-seven native operations are exposed through thirty qxctl leaves.
+
+Each entry specifies a unique nonempty `id`, `kind` (`fit` or `predict`), a source
+reference, arbitrary nonempty `role` and extension object. References contain
+`path`, `expected_sha256` and RFC6901 `pointer`: the path/digest bind the complete
+outer SBV result; the pointer selects either its root or a nested complete SBV
+result. Both content digests are verified, and outer file bytes/digest/selection
+identity are retained. The selected choices protocol must match the declared kind.
+Native-style source profiles are structurally checked; hashes do not authenticate
+that a particular executable produced them, and estimates are not recomputed.
+
+An available fit contributes its model's retained training IDs. This works when
+training predictions were not retained. Model, choices and source provenance must
+agree on namespace/source coordinates and the training count. An unavailable fit
+has unknown IDs, not zero IDs: `on_unavailable=retain` records null counts and
+partial history status; `reject` refuses publication. The engine does not reread
+original observations to infer unrecorded usage. Predictions contribute retained
+prediction-row IDs; target availability must agree across choices, summary and
+rows. IDs are unique within an entry. Excluded rows are not counted, and retained
+zero-weight rows are counted. A prediction's inherited model training reference
+is preserved as attribution, not counted as an additional fit event.
+
+Identity comparison is exact on `(identity_namespace, observation_id)`. Different
+namespaces are not compared; they are not presumed causally disjoint. Entry order
+comes from the supplied array, not source timestamps. Each counted entry reports
+its number of distinct earlier overlapping entries, reused observations,
+previously fitted observations, previously predicted observations and observations
+whose targets were previously supplied. These are observation counts, not weight
+mass, exposure probabilities, actual physical reads or evidence of human viewing.
+A targetless prediction still counts as prediction use, but not target exposure.
+All counts are exact integer strings. Roles such as `holdout` remain user labels.
+
+`duplicate_artifacts=collapse` counts only the first entry for a selected result
+content digest; `count_entries` counts every supplied entry. All records retain
+`duplicate_of`, and collapsed records retain their available observation count
+with null reuse counters. A repeated listing does not prove repeated execution.
+Totals distinguish entries, counted/collapsed/unresolved entries, observation
+occurrences, unique/reused namespaced identities and namespaces with counted IDs.
+Unknown identities prevent any complete-coverage interpretation of those totals.
+
+`retain_observations=true` includes per-entry reused IDs/prior entry IDs and a
+lexicographically ordered per-identity occurrence ledger. False omits those two
+expanded projections while retaining the same aggregate counts. It does not
+redact source model-training references, selection records or artifact paths.
+The original result artifacts remain independently accessible through qxctl.
+
+A selection specifies unique `id`, comparison source reference,
+`chosen_candidate_ids`, nonempty `reason` and extensions. Candidate choices must
+be unique and present in that supplied comparison; an empty or multiple selection
+is allowed. The record retains every comparison candidate, objectives, methods,
+weighted order and Pareto fronts, plus exact chosen rows. Selecting a lower-ranked,
+excluded, failed or pruned candidate is allowed and disclosed. This records a
+caller decision against immutable comparison evidence; it does not calculate a
+new ranking, claim execution of failed/pruned candidates, infer a link to usage
+entries or authorize deployment. The two input arrays have separate caller orders.
+
+The operation is a local, single-worker result transform. No new entry, observation
+or read-total policy cap is imposed; request/artifact representation, host address
+space and checked byte-accounting bounds still apply. No default deadline is
+introduced. Supplied references can bind history as a dependent native experiment
+trial; ordinary immutable claim/receipt and no-repeat reconciliation apply. The
+same result is inspectable/queryable/exportable through qxctl and the installed
+SDK for future GUI and external research consumers. Automatic nested fitting,
+complete cross-run access capture and causal leakage inference remain separate
+unimplemented capabilities.

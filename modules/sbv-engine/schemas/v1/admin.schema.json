@@ -3693,6 +3693,152 @@
         "studies"
       ],
       "additionalProperties": false
+    },
+    "research_history": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.research-history-input.v1"
+        },
+        "output_path": {
+          "type": "string"
+        },
+        "entries": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "kind": {
+                "enum": [
+                  "fit",
+                  "predict"
+                ]
+              },
+              "source": {
+                "type": "object",
+                "properties": {
+                  "path": {
+                    "type": "string"
+                  },
+                  "expected_sha256": {
+                    "type": "string"
+                  },
+                  "pointer": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "path",
+                  "expected_sha256",
+                  "pointer"
+                ],
+                "additionalProperties": false
+              },
+              "role": {
+                "type": "string"
+              },
+              "extensions": {}
+            },
+            "required": [
+              "id",
+              "kind",
+              "source",
+              "role",
+              "extensions"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "selections": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "source": {
+                "type": "object",
+                "properties": {
+                  "path": {
+                    "type": "string"
+                  },
+                  "expected_sha256": {
+                    "type": "string"
+                  },
+                  "pointer": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "path",
+                  "expected_sha256",
+                  "pointer"
+                ],
+                "additionalProperties": false
+              },
+              "chosen_candidate_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "reason": {
+                "type": "string"
+              },
+              "extensions": {}
+            },
+            "required": [
+              "id",
+              "source",
+              "chosen_candidate_ids",
+              "reason",
+              "extensions"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "duplicate_artifacts": {
+          "enum": [
+            "collapse",
+            "count_entries"
+          ]
+        },
+        "on_unavailable": {
+          "enum": [
+            "retain",
+            "reject"
+          ]
+        },
+        "retain_observations": {
+          "type": "boolean"
+        },
+        "ordering_description": {
+          "type": "string"
+        },
+        "coverage_description": {
+          "type": "string"
+        },
+        "extensions": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "protocol",
+        "output_path",
+        "entries",
+        "selections",
+        "duplicate_artifacts",
+        "on_unavailable",
+        "retain_observations",
+        "ordering_description",
+        "coverage_description",
+        "extensions"
+      ],
+      "additionalProperties": false
     }
   },
   "results": {
@@ -3703,7 +3849,7 @@
           "const": "symphony.sbv.capabilities.v1"
         },
         "engine_version": {
-          "const": "0.17.0-dev"
+          "const": "0.18.0-dev"
         },
         "cpu": {
           "type": "object",
@@ -4328,7 +4474,7 @@
           "const": "symphony.sbv.catalogue.v1"
         },
         "engine_version": {
-          "const": "0.17.0-dev"
+          "const": "0.18.0-dev"
         },
         "models": {
           "type": "array",
@@ -4919,7 +5065,7 @@
           "const": "symphony.sbv.backend-plan.v1"
         },
         "engine_version": {
-          "const": "0.17.0-dev"
+          "const": "0.18.0-dev"
         },
         "status": {
           "enum": [
@@ -5212,7 +5358,7 @@
           "const": "symphony.sbv.live-plan.v1"
         },
         "engine_version": {
-          "const": "0.17.0-dev"
+          "const": "0.18.0-dev"
         },
         "can_activate": {
           "const": false
@@ -6328,6 +6474,70 @@
       "properties": {
         "protocol": {
           "const": "symphony.sbv.predict.v1"
+        },
+        "path": {
+          "type": "string"
+        },
+        "content_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "file_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "bytes": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$"
+        },
+        "status": {
+          "enum": [
+            "completed",
+            "partial"
+          ]
+        },
+        "summary": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "enum": [
+                "available",
+                "partial",
+                "unavailable",
+                "not_selected"
+              ]
+            },
+            "reason": {
+              "type": "string"
+            },
+            "data": {
+              "$ref": "#/$defs/node"
+            }
+          },
+          "required": [
+            "status",
+            "reason",
+            "data"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "protocol",
+        "path",
+        "content_sha256",
+        "file_sha256",
+        "bytes",
+        "status",
+        "summary"
+      ],
+      "additionalProperties": false
+    },
+    "research_history": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.research-history.v1"
         },
         "path": {
           "type": "string"
@@ -11733,6 +11943,263 @@
         "reused_observations",
         "reused_count",
         "scope"
+      ],
+      "additionalProperties": false
+    },
+    "research_usage_entry": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "ordinal": {
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "fit",
+            "predict"
+          ]
+        },
+        "role": {
+          "type": "string"
+        },
+        "source": {},
+        "identity_namespace": {
+          "type": "string"
+        },
+        "identities_available": {
+          "type": "boolean"
+        },
+        "observation_count": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "counted": {
+          "type": "boolean"
+        },
+        "duplicate_of": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "targets_supplied": {
+          "type": "boolean"
+        },
+        "prior_entry_count": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "reused_observation_count": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "previously_fitted_observation_count": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "previously_predicted_observation_count": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "previously_targeted_observation_count": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "reused_observations": {},
+        "model_training_reference": {},
+        "reason": {
+          "type": "string"
+        },
+        "extensions": {},
+        "source_purpose": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "observation_source": {}
+      },
+      "required": [
+        "id",
+        "ordinal",
+        "kind",
+        "role",
+        "source",
+        "identity_namespace",
+        "identities_available",
+        "observation_count",
+        "counted",
+        "duplicate_of",
+        "targets_supplied",
+        "prior_entry_count",
+        "reused_observation_count",
+        "previously_fitted_observation_count",
+        "previously_predicted_observation_count",
+        "previously_targeted_observation_count",
+        "reused_observations",
+        "model_training_reference",
+        "reason",
+        "extensions",
+        "source_purpose",
+        "observation_source"
+      ],
+      "additionalProperties": false
+    },
+    "research_observation_usage": {
+      "type": "object",
+      "properties": {
+        "identity_namespace": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "occurrence_count": {
+          "type": "string"
+        },
+        "occurrences": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "entry_id": {
+                "type": "string"
+              },
+              "kind": {
+                "enum": [
+                  "fit",
+                  "predict"
+                ]
+              },
+              "targets_supplied": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "entry_id",
+              "kind",
+              "targets_supplied"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "identity_namespace",
+        "id",
+        "occurrence_count",
+        "occurrences"
+      ],
+      "additionalProperties": false
+    },
+    "research_selection_record": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "ordinal": {
+          "type": "string"
+        },
+        "source": {},
+        "chosen_candidate_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "chosen_candidates": {
+          "type": "array",
+          "items": {}
+        },
+        "reason": {
+          "type": "string"
+        },
+        "candidates": {
+          "type": "array",
+          "items": {}
+        },
+        "objectives": {
+          "type": "array",
+          "items": {}
+        },
+        "methods": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "weighted_order": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "pareto_fronts": {
+          "type": "array",
+          "items": {}
+        },
+        "extensions": {}
+      },
+      "required": [
+        "id",
+        "ordinal",
+        "source",
+        "chosen_candidate_ids",
+        "chosen_candidates",
+        "reason",
+        "candidates",
+        "objectives",
+        "methods",
+        "weighted_order",
+        "pareto_fronts",
+        "extensions"
       ],
       "additionalProperties": false
     }

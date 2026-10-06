@@ -23020,3 +23020,45 @@ automatic nested fitting and cross-run holdout history remain unimplemented.
 - deferred_projections: remote scheduling, automatic nested fitting and holdout history
 - notes: Completed producer receipts do not impose statistical quality gates.
 - status: canonical
+
+### SBV history.cpp
+
+- path: `modules/sbv-engine/src/history.cpp`
+- title: Supplied research usage and selection history
+- surface_type: implementation contract or test
+- truth_role: Exact source-bound observation reuse and declared model-selection records
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.18 native and installed selected-history boundary.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, agents and external research pipelines
+- deferred_projections: complete access capture, automatic nested fitting and causal leakage inference
+- notes: Caller scope/order/namespaces and selections are explicit; no holdout prohibition or automatic promotion.
+- status: canonical
+
+### SBV history_test.cpp
+
+- path: `modules/sbv-engine/tests/history_test.cpp`
+- title: Supplied research usage and selection history
+- surface_type: implementation contract or test
+- truth_role: Exact source-bound observation reuse and declared model-selection records
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.18 native and installed selected-history boundary.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, agents and external research pipelines
+- deferred_projections: complete access capture, automatic nested fitting and causal leakage inference
+- notes: Caller scope/order/namespaces and selections are explicit; no holdout prohibition or automatic promotion.
+- status: canonical
+
+### SBV sbv_history_test.go
+
+- path: `tools/qxctl/internal/knowledgeengine/sbv_history_test.go`
+- title: Supplied research usage and selection history
+- surface_type: implementation contract or test
+- truth_role: Exact source-bound observation reuse and declared model-selection records
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.18 native and installed selected-history boundary.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, agents and external research pipelines
+- deferred_projections: complete access capture, automatic nested fitting and causal leakage inference
+- notes: Caller scope/order/namespaces and selections are explicit; no holdout prohibition or automatic promotion.
+- status: canonical

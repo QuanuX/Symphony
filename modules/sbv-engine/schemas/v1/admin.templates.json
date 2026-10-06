@@ -864,6 +864,30 @@
       "studies": [
         "regression_errors"
       ]
+    },
+    "research_history": {
+      "protocol": "symphony.sbv.research-history-input.v1",
+      "output_path": "/absolute/private/research-history.json",
+      "entries": [
+        {
+          "id": "prediction-review",
+          "kind": "predict",
+          "source": {
+            "path": "/absolute/private/predictions.json",
+            "expected_sha256": "REPLACE_WITH_CONTENT_SHA256",
+            "pointer": ""
+          },
+          "role": "user-defined holdout or exploratory label",
+          "extensions": {}
+        }
+      ],
+      "selections": [],
+      "duplicate_artifacts": "collapse",
+      "on_unavailable": "retain",
+      "retain_observations": true,
+      "ordering_description": "Caller-selected record order; no authenticated chronology inferred",
+      "coverage_description": "Only explicitly listed artifacts; not a complete record of access",
+      "extensions": {}
     }
   }
 }
