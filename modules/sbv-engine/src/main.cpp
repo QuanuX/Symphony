@@ -19,7 +19,7 @@ int main(int argc, char **argv) {
       return 0;
     }
     if (argc == 2 && std::string(argv[1]) == "--help") {
-      std::cout << "symphony-sbv: one engine-process.v1 JSON request on stdin; "
+      std::cout << "symphony-sbv: one engine-process.v2 JSON request on stdin; "
                    "--descriptor, --version\n";
       return 0;
     }
@@ -27,7 +27,7 @@ int main(int argc, char **argv) {
       throw e::Error("invocation.arguments", "unsupported invocation", 2);
     const auto request = e::parse_request(
         e::read_bounded(std::cin, e::Limits::max_request_bytes), id,
-        e::unix_time_ms());
+        e::unix_time_ms(), e::Limits::max_json_values, true);
     try {
       auto result =
           request.operation == "descriptor"
@@ -40,18 +40,18 @@ int main(int argc, char **argv) {
       // A run may have committed its artifact just before its deadline. The
       // result includes its digest/path; never mislabel a published artifact as
       // absent.
-      std::cout << e::serialize_response(
+      std::cout << symphony::sbv::detail::process_response(
                        e::success_response(request, id, version, result))
                 << '\n';
       return 0;
     } catch (const e::Error &x) {
-      std::cout << e::serialize_response(e::error_response(
+      std::cout << symphony::sbv::detail::process_response(e::error_response(
                        request.request_id, request.correlation_id,
                        request.operation, id, version, x.code(), x.what()))
                 << '\n';
       return x.exit_status();
     } catch (...) {
-      std::cout << e::serialize_response(e::error_response(
+      std::cout << symphony::sbv::detail::process_response(e::error_response(
                        request.request_id, request.correlation_id,
                        request.operation, id, version, "sbv.failure",
                        "SBV operation failed; inspect output destination "
@@ -60,7 +60,7 @@ int main(int argc, char **argv) {
       return 4;
     }
   } catch (const e::Error &x) {
-    std::cout << e::serialize_response(e::error_response(
+    std::cout << symphony::sbv::detail::process_response(e::error_response(
                      "unavailable", "unavailable", "unavailable", id, version,
                      x.code(), "SBV request rejected"))
               << '\n';

@@ -21,6 +21,7 @@ import (
 
 const (
 	processProtocol          = "symphony.knowledge.engine-process.v1"
+	processProtocolV2        = "symphony.knowledge.engine-process.v2"
 	receiptProtocol          = "symphony.knowledge.install-receipt.v1"
 	receiptProtocolV2        = "symphony.knowledge.install-receipt.v2"
 	moduleID                 = "skvi-engine"
@@ -220,7 +221,7 @@ type processRequest struct {
 	CorrelationID  string          `json:"correlation_id"`
 	Operation      string          `json:"operation"`
 	TargetEngine   string          `json:"target_engine"`
-	DeadlineUnixMS int64           `json:"deadline_unix_ms"`
+	DeadlineUnixMS any             `json:"deadline_unix_ms"`
 	Payload        json.RawMessage `json:"payload"`
 }
 
@@ -403,6 +404,29 @@ func invoke(ctx context.Context, spec engineSpec, prefix, version, repositoryRoo
 	return invokeResolved(ctx, spec, binary, version, repositoryRoot, operation, payload)
 }
 
+func responseProcessProtocol(spec engineSpec) string {
+	if spec.processProtocol == processProtocolV2 {
+		return processProtocolV2
+	}
+	return processProtocol
+}
+func invocationContext(ctx context.Context, spec engineSpec, version string) (context.Context, context.CancelFunc, any) {
+	if spec.processProtocol == processProtocolV2 {
+		child, cancel := context.WithCancel(ctx)
+		var deadline any
+		if value, ok := ctx.Deadline(); ok {
+			deadline = strconv.FormatInt(value.UnixMilli(), 10)
+		}
+		return child, cancel, deadline
+	}
+	window := spec.operationTimeoutByVersion[version]
+	if window == 0 {
+		window = operationTimeout
+	}
+	child, cancel := context.WithTimeout(ctx, window+time.Second)
+	return child, cancel, time.Now().Add(window).UnixMilli()
+}
+
 func invokeResolved(
 	ctx context.Context,
 	spec engineSpec,
@@ -419,17 +443,19 @@ func invokeResolved(
 	if err != nil {
 		return Response{}, fmt.Errorf("generate %s request identity: %w", spec.label, err)
 	}
-	deadlineWindow := spec.operationTimeoutByVersion[version]
-	if deadlineWindow == 0 {
-		deadlineWindow = operationTimeout
+	childContext, cancel, wireDeadline := invocationContext(ctx, spec, version)
+	defer cancel()
+	protocol := processProtocol
+	if spec.processProtocol == processProtocolV2 {
+		protocol = processProtocolV2
 	}
 	request := processRequest{
-		Protocol:       processProtocol,
+		Protocol:       protocol,
 		RequestID:      requestID,
 		CorrelationID:  requestID,
 		Operation:      operation,
 		TargetEngine:   spec.engineID,
-		DeadlineUnixMS: time.Now().Add(deadlineWindow).UnixMilli(),
+		DeadlineUnixMS: wireDeadline,
 		Payload:        json.RawMessage(payload),
 	}
 	encoded, err := json.Marshal(request)
@@ -440,8 +466,6 @@ func invokeResolved(
 		return Response{}, fmt.Errorf("encoded %s request exceeds %d bytes", spec.label, maxRequestBytes)
 	}
 
-	childContext, cancel := context.WithTimeout(ctx, deadlineWindow+time.Second)
-	defer cancel()
 	command := exec.CommandContext(childContext, binary)
 	command.Dir = repositoryRoot
 	command.Env = []string{}
@@ -456,6 +480,9 @@ func invokeResolved(
 		return Response{}, fmt.Errorf("clean up %s engine process group: %w", spec.label, err)
 	}
 	if childContext.Err() != nil {
+		if spec.processProtocol == processProtocolV2 {
+			return Response{}, fmt.Errorf("%s engine stopped by caller context: %w", spec.label, context.Cause(childContext))
+		}
 		return Response{}, fmt.Errorf("%s engine exceeded its hard process deadline: %w", spec.label, context.Cause(childContext))
 	}
 	if stdout.exceeded {
@@ -1152,7 +1179,7 @@ func validateResponseFor(spec engineSpec, data []byte, requestID, operation, ver
 	if err := decodeExact(data, &response); err != nil {
 		return Response{}, fmt.Errorf("decode %s engine response: %w", spec.label, err)
 	}
-	if response.Protocol != processProtocol || response.RequestID != requestID ||
+	if response.Protocol != responseProcessProtocol(spec) || response.RequestID != requestID ||
 		response.CorrelationID != requestID || response.Operation != operation ||
 		response.EngineID != spec.engineID || response.EngineVersion != version {
 		return Response{}, fmt.Errorf("%s engine response identity mismatch", spec.label)

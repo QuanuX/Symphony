@@ -40,3 +40,11 @@ No operation writes a file, creates a feature record, authenticates or classifie
 Administration checking is repository-independent after its bounded request is supplied. The current registered profile is `enforce_new_records`; a new empty or unreviewed feature disposition therefore fails closed. Missing command bindings and backend-operation mappings remain uncovered gaps, while qxctl absence is a live state rather than a design failure. Installation may proceed independently, but semantic-registration or required-administration gaps make integration and docking readiness false. Remediation output describes required evidence and never generates canonical feature IDs, command IDs, grammar, or AI-specific authority.
 
 Composed administration evaluates a union: each expected qxctl command must bind the exact feature/interaction, and each expected backend operation must be targeted by at least one valid expected command. It does not require every command to target every operation. This preserves multi-step begin/checkpoint/close and prepare/finalize/recover workflows while still exposing every missing command edge and backend edge independently.
+
+
+Process-v2 descriptor admission: a descriptor selecting only
+`symphony.knowledge.engine-process.v2` may report `limits.deadline_ahead_ms: null`
+to declare no engine-selected future deadline ceiling. This exception applies
+only to that field and explicit protocol profile. Other descriptor limits remain
+positive integers; v1 admission retains its previous positive-deadline rule.
+SBV 0.14 exercises this additive contract through administration coverage.

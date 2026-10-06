@@ -22,9 +22,9 @@ Implemented development foundation, version `0.2.0-dev`. It is not a published m
 | declarations per manifest | 1,024 |
 | manifest issues | 1,024 |
 | physical manifest line | 8,192 bytes |
-| deadline window | 300,000 ms |
+| v1 deadline window | 300,000 ms |
 
-JSON objects reject duplicate names. Process JSON rejects floating-point values, integers outside the interoperable range `[-9007199254740991, 9007199254740991]`, invalid UTF-8, unknown envelope fields, trailing bytes, excess nesting/count/size, unsupported protocol versions, expired or excessively distant deadlines, and target-engine mismatches. The value ceiling counts aggregate parser events; it does not widen narrower collection-shape limits in the common envelope or operation-specific schemas. The parsing and response-serialization APIs accept an explicit finite value-count bound so an engine whose closed protocol legitimately carries a larger aggregate document can advertise and enforce its own limit without widening the shared default or another engine. The one-argument response serializer retains the 32,768-event default. The 1 MiB request, 4 MiB response, depth, string, integer, duplicate-key, and deadline bounds remain unchanged.
+JSON objects reject duplicate names. Process JSON rejects floating-point values, integers outside the interoperable range `[-9007199254740991, 9007199254740991]`, invalid UTF-8, unknown envelope fields, trailing bytes, excess nesting/count/size, unsupported protocol versions, expired or excessively distant deadlines, and target-engine mismatches. The value ceiling counts aggregate parser events; it does not widen narrower collection-shape limits in the common envelope or operation-specific schemas. The parsing and response-serialization APIs accept an explicit finite value-count bound so an engine whose closed protocol legitimately carries a larger aggregate document can advertise and enforce its own limit without widening the shared default or another engine. The one-argument response serializer retains the 32,768-event default. The 1 MiB request, 4 MiB response, depth, string, integer, duplicate-key, and v1 deadline bounds remain unchanged.
 
 Snapshot reads check the request deadline before and between file-read chunks. The future qxctl process client must also enforce that deadline on the child lifetime; the shared library does not claim that a cooperative check can cancel a blocked kernel/filesystem call.
 
@@ -65,3 +65,24 @@ The installed CMake package accepts only its exact `0.2.0` project version. A co
 ## Non-Authorization
 
 The library has no semantic, authentication, ratification, mutation, publication, network, runtime-ledger, or docking authority.
+
+
+## Opt-in process v2 deadline contract
+
+`parse_request(..., max_json_values, true)` explicitly selects
+`symphony.knowledge.engine-process.v2`. The default remains v1 and retains its
+exact bounded numeric-deadline admission. V2 retains the same seven envelope
+fields, token checks, payload object and structural limits. Its required
+`deadline_unix_ms` is null for no deadline, or a canonical positive decimal
+string in 1..9223372036854775806, interpreted as absolute Unix milliseconds.
+Expired finite values fail; there is no default or maximum future duration.
+Strings avoid JSON integer precision loss. INT64_MAX (`no_deadline`) is reserved
+as the internal sentinel, not an elapsed timeout. Consumers must propagate it
+without introducing their own duration cap. Request.protocol preserves the
+selected profile and success_response uses it. Owners emit the v2 protocol on
+all responses, including errors, before digest sealing. SBV 0.14 opts in through
+its own response wrapper; existing vector consumers retain v1 by default.
+
+The foundation exposes cooperative deadline checks. It does not invent a timer
+for null deadlines or promise preemptive SDK cancellation. Process clients own
+selected deadline enforcement and explicit cancellation of their child groups.

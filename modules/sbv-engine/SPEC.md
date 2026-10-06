@@ -2,13 +2,13 @@
 
 ## Version and ownership
 
-Contract v1; package `sbv-engine` 0.13.0-dev; engine `symphony-sbv`; vector `sbv`. C++26 owns computations, result sealing and artifact queries. Go qxctl verifies the exact installation and projects native evidence. OWNER-INTERFACE.json is the exact operation declaration; generated C++/Go metadata must match it. This release is experimental.
+Contract v1; package `sbv-engine` 0.14.0-dev; engine `symphony-sbv`; vector `sbv`. C++26 owns computations, result sealing and artifact queries. Go qxctl verifies the exact installation and projects native evidence. OWNER-INTERFACE.json is the exact operation declaration; generated C++/Go metadata must match it. This release is experimental.
 
 The engine uses knowledge-vector-engine-cpp 0.2.0-dev and sqav-databento-dbn-cpp 0.5.0-dev, with that adapter's exact static dependencies. It performs no provider calls. Signal/replay semantics belong to SBV; acquisition remains SQAV, metadata SQMV, batch ownership SQFV, transformation SQTV, physical stores SQPV and recipient delivery SQDV. Its portable local JSON result is a derived artifact, not a new market-data persistence service. SQPV/SQDV integrations are not wired in this release.
 
 ## Administrative boundary
 
-One engine-process.v1 request on stdin, one digest-bound response on stdout. Request 1 MiB, response 4 MiB, JSON depth 64, values 32768 and string 65536-byte limits remain unchanged. qxctl uses a 300-second operation deadline and process-group cleanup. Artifact files have a separate 128 MiB / 4,000,000-value bound; large artifacts never travel in one administrative response. All native operation inputs reject unknown fields. All numeric experiment input/output values use canonical decimal strings or exact rationals; no floating JSON values.
+One engine-process.v2 request on stdin, one digest-bound response on stdout. Request 1 MiB, response 4 MiB, JSON depth 64, values 32768 and string 65536-byte limits remain unchanged. qxctl imposes no operation deadline. The user may select a timeout or absolute deadline; caller cancellation retains process-group cleanup. Artifact files have a separate 128 MiB / 4,000,000-value bound; large artifacts never travel in one administrative response. All native operation inputs reject unknown fields. All numeric experiment input/output values use canonical decimal strings or exact rationals; no floating JSON values.
 
 `capabilities`, `run`, `evaluate`, `catalogue`, `compose`, `compose_joint`, `economics`, `book`, `liquidity`, `allocation_economics`, `result_select`, `backend_plan`, `live_plan`, `result_inspect`, `result_query` are implemented. Every operation has an exact `symphony.sbv.<hyphenated-operation>-input.v1` request and `symphony.sbv.<hyphenated-operation>.v1` response. Installed schemas/templates describe their shapes. qxctl also exposes schema, template and complete result export.
 
@@ -209,7 +209,7 @@ Concurrent producers with identical content use distinct staging names derived f
 
 ## Independently installed SDK — experimental 0.10
 
-The versioned native shared library exposes `symphony_sbv_sdk_abi_v1`, `symphony_sbv_sdk_version_v1`, `symphony_sbv_sdk_process_v1` and `symphony_sbv_sdk_release_v1`. It accepts the same bounded engine-process.v1 request envelope, native operations, deadlines and exact payload conventions as qxctl. It returns the same digested response envelope with native status. No C++ exceptions cross the C ABI. Request bytes are borrowed until return; each response is a separate native allocation with length and convenience NUL termination, released exactly once by the originating library. Null release is valid. Invalid ABI arguments return 64; allocation/boundary failure returns 70 without a response. As with process failures, a caller must inspect output paths after uncertain writes. Concurrent calls are permitted; artifact and experiment exclusivity rules still apply.
+The versioned native shared library exposes `symphony_sbv_sdk_abi_v1`, `symphony_sbv_sdk_version_v1`, `symphony_sbv_sdk_process_v1` and `symphony_sbv_sdk_release_v1`. It accepts the same bounded engine-process.v2 request envelope, native operations, deadlines and exact payload conventions as qxctl. It returns the same digested response envelope with native status. No C++ exceptions cross the C ABI. Request bytes are borrowed until return; each response is a separate native allocation with length and convenience NUL termination, released exactly once by the originating library. Null release is valid. Invalid ABI arguments return 64; allocation/boundary failure returns 70 without a response. As with process failures, a caller must inspect output paths after uncertain writes. Concurrent calls are permitted; artifact and experiment exclusivity rules still apply.
 
 The exact installed `SymphonySbvSdkConfig.cmake` exports `Symphony::SbvSdk`. Its public C header has no C++/JSON/vendor dependency. `sdk.hpp` is an optional RAII byte-buffer wrapper. A separately packaged external standard-library Python consumer in the implementation evidence loads the same installed ABI, verifies local receipt/file identities and response correspondence, and reproduces native results without recomputing finance. It is deliberately outside the Python-free native repository and installation. Its receipt checks are local integrity checks, not an authenticated distribution signature or protection against a concurrent hostile owner of the installation. External consumer languages do not become engine dependencies.
 
@@ -249,7 +249,7 @@ buffer bytes, selected budget, residency, decode/read counters, active jobs and
 workers, completed/failed jobs and idle expiry. `dataset_release` refuses while
 jobs are active; on success it stops admission and frees the event allocation.
 Release removes its endpoint before attempting the acknowledgement, whose
-wait is bounded to one second and the remaining request deadline. Release
+wait follows the user-selected request deadline, or has no time limit. Release
 reports historical allocation sizes, not remaining allocated memory.
 No endpoint/PID kill or implicit file fallback occurs. A failed transport after
 submission has uncertain outcome: inspect the requested result before retrying.
@@ -282,15 +282,15 @@ budget. An over-capacity submission is rejected without execution; there is no
 hidden retry/oversubscription. Run/evaluate retain their own 1–64 workers; book
 uses one. Completed threads are reclaimed; accepted jobs share the allocation
 without copying or IPC transport of event bytes. `idle_timeout_ms` is either
-zero (explicit release/crash) or 1,000–86,400,000; active jobs prevent expiry.
+zero (the default: explicit release/crash) or a positive uint64 millisecond duration; active jobs prevent expiry.
 Status and attempted submissions count as activity. Wire requests have the
-normal bounded request size and at most a five-minute deadline. Disconnects do
+normal bounded request size and a user-selected deadline or null (none). Disconnects do
 not promise cancellation of accepted work.
 
-The ordinary engine-process.v1 boundary remains one request/response. The
+The ordinary engine-process.v2 boundary remains one request/response. The
 companion's `--resident-worker` entrypoint uses internal resident-wire.v1 on a
 private socketpair for startup, then local IPC; it is not a stream extension to
-engine-process.v1. `posix_spawn` starts the exact companion beside the current
+engine-process.v2. `posix_spawn` starts the exact companion beside the current
 executable, or under the same installed prefix as the SDK. The SDK needs that
 companion installed; it owns no global cache inside the embedding application.
 The freshly executed, single-threaded companion reparents the resident host;
@@ -353,8 +353,51 @@ All controls and evidence use the same qxctl, SDK and portable JSON surfaces.
 This removes dataset-size ceilings; it does not implement pooled cluster RAM,
 distributed loading, NUMA placement, streaming or GPU memory placement. The
 current local execution host must fit the dataset and complete the operation
-within the existing process-v1 deadline (qxctl: 300 seconds). Result retention,
+within a deadline only if the user selects one. Result retention,
 strategy profiles, concurrency and administrative-message contracts have their
 own documented limits. Removing the dataset ceilings alone is not evidence of
-terabyte-scale throughput or completion. Large-host/distributed and long-running
-job support require their own implementation and measurement.
+terabyte-scale throughput or completion. Large-host/distributed placement still requires its own implementation and measurement. Long-running synchronous requests are supported with no default deadline.
+
+
+## User-controlled deadlines (0.14)
+
+This release selects `symphony.knowledge.engine-process.v2` for the executable,
+SDK request JSON and installation entry point. Its seven request fields and
+response digest/identity binding follow v1, but `deadline_unix_ms` is required
+and is either null (no deadline) or a canonical positive decimal string for an
+absolute Unix-millisecond deadline. Finite values use signed int64 representation
+below INT64_MAX; INT64_MAX is the internal no-deadline sentinel. Expired, malformed
+or unrepresentable deadlines fail. There is no maximum future window or default
+duration. Protocol v1 is not silently reinterpreted; earlier installed releases
+remain preserved. The C SDK ABI remains v1, independently of the JSON protocol.
+
+Every qxctl SBV engine leaf, including result export and dataset operations,
+accepts `--timeout none` (default; `0` is an alias), a positive Go duration such as
+`--timeout 30m`, or `--deadline-unix-ms <decimal>`. Absolute and relative options
+are mutually exclusive. Relative-duration parsing has its representation limits;
+the absolute form handles longer representable deadlines. Parent caller contexts
+can also set a deadline or cancel. No default qxctl timer is inserted into v2.
+The CLI catches Ctrl-C and cancels its child process group. This is cancellation
+of that invocation; accepted work in a separate resident host may continue.
+
+The selected absolute time is propagated through native work, experiment trials,
+resident startup, IPC, dataset decoding and job execution. Resident-wire.v2 uses
+null/string deadline_ms with the same meaning. Startup, handshake and release
+acknowledgements have no independent fixed timeout. A client that never finishes
+its frame can therefore occupy its caller-owned host indefinitely when no
+deadline is selected. The user owns that availability choice. Poll intervals
+are scheduling cadence, not operation timeouts. qxctl's process-group teardown
+and pipe cleanup are lifecycle cleanup, not a running-job time limit.
+
+`idle_timeout_ms` is a separate selected residency lifetime: zero is the default,
+positive canonical uint64 durations are accepted without the former one-second
+minimum or one-day maximum. Status preserves the user's exact value. Active jobs
+prevent idle expiry. This policy does not reset a request's selected deadline.
+
+Capabilities and the native descriptor advertise no default/max deadline and
+user authority. Finite native deadlines are cooperative checks, not a promise of
+preempting every blocked syscall or every compute instruction. qxctl enforces its
+caller deadline on the invoked process; SDK callers own their outer scheduling.
+A deadline/cancellation near artifact publication leaves an uncertain outcome:
+inspect the output before retrying. No deadline means work may remain active
+until completion, failure, explicit caller action or system termination.

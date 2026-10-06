@@ -36,7 +36,7 @@ template <class F> void rejects(F f) {
   check(rejected);
 }
 J call(const std::string &op, const J &p) {
-  return s::dispatch(op, p, e::unix_time_ms() + 30000);
+  return s::dispatch(op, p, e::no_deadline);
 }
 J read(const std::string &path) {
   std::ifstream f(path);
@@ -241,16 +241,18 @@ int main() try {
   check(::recv(fd, hello.data(), hello.size(), MSG_WAITALL) ==
         static_cast<ssize_t>(hello.size()));
   check(J::parse(hello).at("instance_id") == load["instance_id"]);
-  J wire{{"protocol", "symphony.sbv.resident-wire.v1"},
+  J wire{{"protocol", "symphony.sbv.resident-wire.v2"},
          {"engine_version", s::version},
          {"operation", "dataset_release"},
          {"input", release},
-         {"deadline_ms", std::to_string(e::unix_time_ms() + 30000)}};
+         {"deadline_ms", nullptr}};
   const auto message = wire.dump();
   std::string frame(4, '\0');
   for (unsigned i = 0; i < 4; ++i)
     frame[i] = static_cast<char>(message.size() >> (24 - 8 * i));
   frame += message;
+  // Exceed the former two-second handshake cap before submitting the request.
+  std::this_thread::sleep_for(std::chrono::milliseconds(2100));
   check(::shutdown(fd, SHUT_RD) == 0);
   check(::send(fd, frame.data(), frame.size(), 0) ==
         static_cast<ssize_t>(frame.size()));
@@ -288,7 +290,8 @@ int main() try {
   check(db::FileView::inspect_dataset(large, {}, view) == db::Status::ok);
   check(view.metadata().record_count == count);
   const auto prior_data = view.original().data();
-  check(db::FileView::inspect(large, {64U << 20, 1U << 20, 1U << 20}, view) == db::Status::limit);
+  check(db::FileView::inspect(large, {64U << 20, 1U << 20, 1U << 20}, view) ==
+        db::Status::limit);
   check(view.original().data() == prior_data);
   for (auto l : {db::DatasetLimits{large.size() - 1, {}, {}},
                  db::DatasetLimits{{}, metadata_size - 1, {}},
@@ -326,7 +329,9 @@ int main() try {
   load["dataset_limits"] = unlimited;
   load["instance_id"] = "00000000000000000000000000000008";
   load["idle_timeout_ms"] = "60000";
-  const auto big = call("dataset_load", load);
+  load["idle_timeout_ms"] = "18446744073709551615";
+  const auto big =
+      s::dispatch("dataset_load", load, e::unix_time_ms() + 7LL * 86400000);
   check(big["events"] == std::to_string(count) &&
         big["memory_budget_bytes"].is_null() &&
         big["dataset_limits"] == unlimited);
@@ -341,10 +346,11 @@ int main() try {
   job["output_path"] = root + "/large-resident.json";
   call("dataset_execute", job);
   const auto resident_large = read(job["output_path"]);
-  for (auto key : {"signals", "execution", "studies", "replay", "summary",
-                   "provenance"})
+  for (auto key :
+       {"signals", "execution", "studies", "replay", "summary", "provenance"})
     check(resident_large["sections"][key] == file_large["sections"][key]);
-  check(resident_large["sections"]["choices"]["data"]["memory_budget_bytes"] == "1099511627776");
+  check(resident_large["sections"]["choices"]["data"]["memory_budget_bytes"] ==
+        "1099511627776");
   job["output_path"] = root + "/large-rejected.json";
   for (auto key :
        {"max_source_bytes", "max_source_events", "max_metadata_bytes"}) {

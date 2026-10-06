@@ -3694,7 +3694,7 @@
       "introduced_in": "0.1.0-dev",
       "deprecated_in": null,
       "replacement_ids": [],
-      "grammar": "qxctl sbv allocation-economics [--format VALUE] [--input VALUE] [--json] [--prefix VALUE] [--version VALUE]",
+      "grammar": "qxctl sbv allocation-economics [--deadline-unix-ms VALUE] [--format VALUE] [--input VALUE] [--json] [--prefix VALUE] [--timeout VALUE] [--version VALUE]",
       "aliases": [],
       "visibility": "public",
       "feature_bindings": [
@@ -3733,7 +3733,7 @@
       "introduced_in": "0.1.0-dev",
       "deprecated_in": null,
       "replacement_ids": [],
-      "grammar": "qxctl sbv analyze [--format VALUE] [--input VALUE] [--json] [--prefix VALUE] [--version VALUE]",
+      "grammar": "qxctl sbv analyze [--deadline-unix-ms VALUE] [--format VALUE] [--input VALUE] [--json] [--prefix VALUE] [--timeout VALUE] [--version VALUE]",
       "aliases": [],
       "visibility": "public",
       "feature_bindings": [
@@ -3772,7 +3772,7 @@
       "introduced_in": "0.1.0-dev",
       "deprecated_in": null,
       "replacement_ids": [],
-      "grammar": "qxctl sbv backend-plan [--format VALUE] [--input VALUE] [--json] [--prefix VALUE] [--version VALUE]",
+      "grammar": "qxctl sbv backend-plan [--deadline-unix-ms VALUE] [--format VALUE] [--input VALUE] [--json] [--prefix VALUE] [--timeout VALUE] [--version VALUE]",
       "aliases": [],
       "visibility": "public",
       "feature_bindings": [
@@ -3811,7 +3811,7 @@
       "introduced_in": "0.1.0-dev",
       "deprecated_in": null,
       "replacement_ids": [],
-      "grammar": "qxctl sbv book [--format VALUE] [--input VALUE] [--json] [--prefix VALUE] [--version VALUE]",
+      "grammar": "qxctl sbv book [--deadline-unix-ms VALUE] [--format VALUE] [--input VALUE] [--json] [--prefix VALUE] [--timeout VALUE] [--version VALUE]",
       "aliases": [],
       "visibility": "public",
       "feature_bindings": [
@@ -3850,7 +3850,7 @@
       "introduced_in": "0.1.0-dev",
       "deprecated_in": null,
       "replacement_ids": [],
-      "grammar": "qxctl sbv capabilities [--format VALUE] [--input VALUE] [--json] [--prefix VALUE] [--version VALUE]",
+      "grammar": "qxctl sbv capabilities [--deadline-unix-ms VALUE] [--format VALUE] [--input VALUE] [--json] [--prefix VALUE] [--timeout VALUE] [--version VALUE]",
       "aliases": [],
       "visibility": "public",
       "feature_bindings": [
@@ -3889,7 +3889,7 @@
       "introduced_in": "0.1.0-dev",
       "deprecated_in": null,
       "replacement_ids": [],
-      "grammar": "qxctl sbv catalogue [--format VALUE] [--input VALUE] [--json] [--prefix VALUE] [--version VALUE]",
+      "grammar": "qxctl sbv catalogue [--deadline-unix-ms VALUE] [--format VALUE] [--input VALUE] [--json] [--prefix VALUE] [--timeout VALUE] [--version VALUE]",
       "aliases": [],
       "visibility": "public",
       "feature_bindings": [
@@ -3928,7 +3928,7 @@
       "introduced_in": "0.1.0-dev",
       "deprecated_in": null,
       "replacement_ids": [],
-      "grammar": "qxctl sbv compare [--format VALUE] [--input VALUE] [--json] [--prefix VALUE] [--version VALUE]",
+      "grammar": "qxctl sbv compare [--deadline-unix-ms VALUE] [--format VALUE] [--input VALUE] [--json] [--prefix VALUE] [--timeout VALUE] [--version VALUE]",
       "aliases": [],
       "visibility": "public",
       "feature_bindings": [
@@ -3967,7 +3967,7 @@
       "introduced_in": "0.1.0-dev",
       "deprecated_in": null,
       "replacement_ids": [],
-      "grammar": "qxctl sbv compose [--format VALUE] [--input VALUE] [--json] [--prefix VALUE] [--version VALUE]",
+      "grammar": "qxctl sbv compose [--deadline-unix-ms VALUE] [--format VALUE] [--input VALUE] [--json] [--prefix VALUE] [--timeout VALUE] [--version VALUE]",
       "aliases": [],
       "visibility": "public",
       "feature_bindings": [
@@ -4006,7 +4006,7 @@
       "introduced_in": "0.1.0-dev",
       "deprecated_in": null,
       "replacement_ids": [],
-      "grammar": "qxctl sbv compose-joint [--format VALUE] [--input VALUE] [--json] [--prefix VALUE] [--version VALUE]",
+      "grammar": "qxctl sbv compose-joint [--deadline-unix-ms VALUE] [--format VALUE] [--input VALUE] [--json] [--prefix VALUE] [--timeout VALUE] [--version VALUE]",
       "aliases": [],
       "visibility": "public",
       "feature_bindings": [
@@ -4045,7 +4045,7 @@
       "introduced_in": "0.1.0-dev",
       "deprecated_in": null,
       "replacement_ids": [],
-      "grammar": "qxctl sbv dataset execute [--format VALUE] [--input VALUE] [--json] [--prefix VALUE] [--version VALUE]",
+      "grammar": "qxctl sbv dataset execute [--deadline-unix-ms VALUE] [--format VALUE] [--input VALUE] [--json] [--prefix VALUE] [--timeout VALUE] [--version VALUE]",
       "aliases": [],
       "visibility": "public",
       "feature_bindings": [
@@ -4084,7 +4084,7 @@
       "introduced_in": "0.1.0-dev",
       "deprecated_in": null,
       "replacement_ids": [],
-      "grammar": "qxctl sbv dataset inspect [--format VALUE] [--input VALUE] [--json] [--prefix VALUE] [--version VALUE]",
+      "grammar": "qxctl sbv dataset inspect [--deadline-unix-ms VALUE] [--format VALUE] [--input VALUE] [--json] [--prefix VALUE] [--timeout VALUE] [--version VALUE]",
       "aliases": [],
       "visibility": "public",
       "feature_bindings": [
@@ -4131,7 +4131,7 @@
       "introduced_in": "0.1.0-dev",
       "deprecated_in": null,
       "replacement_ids": [],
-      "grammar": "qxctl sbv dataset load [--format VALUE] [--input VALUE] [--json] [--prefix VALUE] [--version VALUE]",
+      "grammar": "qxctl sbv dataset load [--deadline-unix-ms VALUE] [--format VALUE] [--input VALUE] [--json] [--prefix VALUE] [--timeout VALUE] [--version VALUE]",
       "aliases": [],
       "visibility": "public",
       "feature_bindings": [
@@ -4170,7 +4170,7 @@
       "introduced_in": "0.1.0-dev",
       "deprecated_in": null,
       "replacement_ids": [],
-      "grammar": "qxctl sbv dataset release [--format VALUE] [--input VALUE] [--json] [--prefix VALUE] [--version VALUE]",
+      "grammar": "qxctl sbv dataset release [--deadline-unix-ms VALUE] [--format VALUE] [--input VALUE] [--json] [--prefix VALUE] [--timeout VALUE] [--version VALUE]",
       "aliases": [],
       "visibility": "public",
       "feature_bindings": [
@@ -4209,7 +4209,7 @@
       "introduced_in": "0.1.0-dev",
       "deprecated_in": null,
       "replacement_ids": [],
-      "grammar": "qxctl sbv economics [--format VALUE] [--input VALUE] [--json] [--prefix VALUE] [--version VALUE]",
+      "grammar": "qxctl sbv economics [--deadline-unix-ms VALUE] [--format VALUE] [--input VALUE] [--json] [--prefix VALUE] [--timeout VALUE] [--version VALUE]",
       "aliases": [],
       "visibility": "public",
       "feature_bindings": [
@@ -4248,7 +4248,7 @@
       "introduced_in": "0.1.0-dev",
       "deprecated_in": null,
       "replacement_ids": [],
-      "grammar": "qxctl sbv evaluate [--format VALUE] [--input VALUE] [--json] [--prefix VALUE] [--version VALUE]",
+      "grammar": "qxctl sbv evaluate [--deadline-unix-ms VALUE] [--format VALUE] [--input VALUE] [--json] [--prefix VALUE] [--timeout VALUE] [--version VALUE]",
       "aliases": [],
       "visibility": "public",
       "feature_bindings": [
@@ -4287,7 +4287,7 @@
       "introduced_in": "0.1.0-dev",
       "deprecated_in": null,
       "replacement_ids": [],
-      "grammar": "qxctl sbv experiment [--format VALUE] [--input VALUE] [--json] [--prefix VALUE] [--version VALUE]",
+      "grammar": "qxctl sbv experiment [--deadline-unix-ms VALUE] [--format VALUE] [--input VALUE] [--json] [--prefix VALUE] [--timeout VALUE] [--version VALUE]",
       "aliases": [],
       "visibility": "public",
       "feature_bindings": [
@@ -4326,7 +4326,7 @@
       "introduced_in": "0.1.0-dev",
       "deprecated_in": null,
       "replacement_ids": [],
-      "grammar": "qxctl sbv liquidity [--format VALUE] [--input VALUE] [--json] [--prefix VALUE] [--version VALUE]",
+      "grammar": "qxctl sbv liquidity [--deadline-unix-ms VALUE] [--format VALUE] [--input VALUE] [--json] [--prefix VALUE] [--timeout VALUE] [--version VALUE]",
       "aliases": [],
       "visibility": "public",
       "feature_bindings": [
@@ -4365,7 +4365,7 @@
       "introduced_in": "0.1.0-dev",
       "deprecated_in": null,
       "replacement_ids": [],
-      "grammar": "qxctl sbv live-plan [--format VALUE] [--input VALUE] [--json] [--prefix VALUE] [--version VALUE]",
+      "grammar": "qxctl sbv live-plan [--deadline-unix-ms VALUE] [--format VALUE] [--input VALUE] [--json] [--prefix VALUE] [--timeout VALUE] [--version VALUE]",
       "aliases": [],
       "visibility": "public",
       "feature_bindings": [
@@ -4404,7 +4404,7 @@
       "introduced_in": "0.1.0-dev",
       "deprecated_in": null,
       "replacement_ids": [],
-      "grammar": "qxctl sbv resample [--format VALUE] [--input VALUE] [--json] [--prefix VALUE] [--version VALUE]",
+      "grammar": "qxctl sbv resample [--deadline-unix-ms VALUE] [--format VALUE] [--input VALUE] [--json] [--prefix VALUE] [--timeout VALUE] [--version VALUE]",
       "aliases": [],
       "visibility": "public",
       "feature_bindings": [
@@ -4443,7 +4443,7 @@
       "introduced_in": "0.1.0-dev",
       "deprecated_in": null,
       "replacement_ids": [],
-      "grammar": "qxctl sbv result export [--digest VALUE] [--format VALUE] [--json] [--path VALUE] [--prefix VALUE] [--version VALUE]",
+      "grammar": "qxctl sbv result export [--deadline-unix-ms VALUE] [--digest VALUE] [--format VALUE] [--json] [--path VALUE] [--prefix VALUE] [--timeout VALUE] [--version VALUE]",
       "aliases": [],
       "visibility": "public",
       "feature_bindings": [
@@ -4483,7 +4483,7 @@
       "introduced_in": "0.1.0-dev",
       "deprecated_in": null,
       "replacement_ids": [],
-      "grammar": "qxctl sbv result inspect [--digest VALUE] [--format VALUE] [--json] [--path VALUE] [--prefix VALUE] [--version VALUE]",
+      "grammar": "qxctl sbv result inspect [--deadline-unix-ms VALUE] [--digest VALUE] [--format VALUE] [--json] [--path VALUE] [--prefix VALUE] [--timeout VALUE] [--version VALUE]",
       "aliases": [],
       "visibility": "public",
       "feature_bindings": [
@@ -4530,7 +4530,7 @@
       "introduced_in": "0.1.0-dev",
       "deprecated_in": null,
       "replacement_ids": [],
-      "grammar": "qxctl sbv result query [--cursor VALUE] [--digest VALUE] [--format VALUE] [--json] [--limit VALUE] [--path VALUE] [--pointer VALUE] [--prefix VALUE] [--version VALUE]",
+      "grammar": "qxctl sbv result query [--cursor VALUE] [--deadline-unix-ms VALUE] [--digest VALUE] [--format VALUE] [--json] [--limit VALUE] [--path VALUE] [--pointer VALUE] [--prefix VALUE] [--timeout VALUE] [--version VALUE]",
       "aliases": [],
       "visibility": "public",
       "feature_bindings": [
@@ -4569,7 +4569,7 @@
       "introduced_in": "0.1.0-dev",
       "deprecated_in": null,
       "replacement_ids": [],
-      "grammar": "qxctl sbv result select [--format VALUE] [--input VALUE] [--json] [--prefix VALUE] [--version VALUE]",
+      "grammar": "qxctl sbv result select [--deadline-unix-ms VALUE] [--format VALUE] [--input VALUE] [--json] [--prefix VALUE] [--timeout VALUE] [--version VALUE]",
       "aliases": [],
       "visibility": "public",
       "feature_bindings": [
@@ -4608,7 +4608,7 @@
       "introduced_in": "0.1.0-dev",
       "deprecated_in": null,
       "replacement_ids": [],
-      "grammar": "qxctl sbv run [--format VALUE] [--input VALUE] [--json] [--prefix VALUE] [--version VALUE]",
+      "grammar": "qxctl sbv run [--deadline-unix-ms VALUE] [--format VALUE] [--input VALUE] [--json] [--prefix VALUE] [--timeout VALUE] [--version VALUE]",
       "aliases": [],
       "visibility": "public",
       "feature_bindings": [
@@ -4682,7 +4682,7 @@
       "introduced_in": "0.1.0-dev",
       "deprecated_in": null,
       "replacement_ids": [],
-      "grammar": "qxctl sbv split [--format VALUE] [--input VALUE] [--json] [--prefix VALUE] [--version VALUE]",
+      "grammar": "qxctl sbv split [--deadline-unix-ms VALUE] [--format VALUE] [--input VALUE] [--json] [--prefix VALUE] [--timeout VALUE] [--version VALUE]",
       "aliases": [],
       "visibility": "public",
       "feature_bindings": [
@@ -20171,5 +20171,5 @@
       "json_output": true
     }
   ],
-  "registry_digest": "sha256:4a7ca0cac5b7d561094f040ed3d0e0cff47163352378b60f6e9a48445ef51117"
+  "registry_digest": "sha256:8da11faf48755b813f4a7e4f935b62d830a1db170ae92460c4cc8a04724a009d"
 }

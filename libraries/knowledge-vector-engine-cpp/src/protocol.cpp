@@ -6,6 +6,7 @@
 
 #include <algorithm>
 #include <chrono>
+#include <charconv>
 #include <set>
 #include <sstream>
 #include <string_view>
@@ -162,7 +163,8 @@ Request parse_request(
     const std::string& input,
     const std::string& expected_engine,
     std::int64_t now_unix_ms,
-    const std::size_t max_json_values) {
+    const std::size_t max_json_values,
+    const bool user_deadlines) {
     const auto document = parse_bounded_json(
         input, Limits::max_request_bytes, max_json_values);
     if (!document.is_object()) {
@@ -183,11 +185,12 @@ Request parse_request(
     }
 
     if (!document.at("protocol").is_string() ||
-        document.at("protocol").get<std::string>() != process_protocol_v1) {
+        document.at("protocol").get<std::string>() != (user_deadlines ? process_protocol_v2 : process_protocol_v1)) {
         throw Error("protocol.unsupported", "unsupported process protocol", 3);
     }
 
     Request request;
+    request.protocol = user_deadlines ? process_protocol_v2 : process_protocol_v1;
     request.request_id = require_string(document, "request_id", Limits::max_token_bytes);
     request.correlation_id = require_string(document, "correlation_id", Limits::max_token_bytes);
     request.operation = require_string(document, "operation", Limits::max_operation_bytes);
@@ -197,6 +200,21 @@ Request parse_request(
     }
 
     const auto& deadline = document.at("deadline_unix_ms");
+    if (user_deadlines) {
+        request.deadline_unix_ms = no_deadline;
+        if (!deadline.is_null()) {
+            if (!deadline.is_string())
+                throw Error("request.invalid_deadline", "v2 deadline must be null or a canonical positive decimal string", 2);
+            const auto text = deadline.get<std::string>();
+            std::int64_t value{};
+            const auto [end, ec] = std::from_chars(text.data(), text.data() + text.size(), value);
+            if (ec != std::errc{} || end != text.data() + text.size() || value <= 0 || value == no_deadline || std::to_string(value) != text)
+                throw Error("request.invalid_deadline", "v2 deadline is outside the representable finite range", 2);
+            request.deadline_unix_ms = value;
+        }
+        if (request.deadline_unix_ms != no_deadline && request.deadline_unix_ms <= now_unix_ms)
+            throw Error("request.deadline_expired", "user deadline has expired", 3);
+    } else {
     if ((!deadline.is_number_integer() && !deadline.is_number_unsigned()) ||
         (deadline.is_number_unsigned() && deadline.get<std::uint64_t>() > 9007199254740991ULL)) {
         throw Error("request.invalid_deadline", "deadline_unix_ms must be a safe integer", 2);
@@ -212,6 +230,7 @@ Request parse_request(
     if (request.deadline_unix_ms - now_unix_ms > Limits::max_deadline_ahead_ms) {
         throw Error("request.deadline_too_far", "request deadline exceeds the allowed window", 3);
     }
+    }
 
     request.payload = document.at("payload");
     if (!request.payload.is_object()) {
@@ -226,7 +245,7 @@ Json success_response(
     const std::string& engine_version,
     Json result) {
     return Json{
-        {"protocol", process_protocol_v1},
+        {"protocol", request.protocol},
         {"request_id", request.request_id},
         {"correlation_id", request.correlation_id},
         {"operation", request.operation},

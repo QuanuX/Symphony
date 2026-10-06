@@ -23,12 +23,12 @@ int main() try {
   check(symphony_sbv_sdk_process_v1(nullptr, 0, nullptr, &size) == 64);
   check(symphony_sbv_sdk_process_v1(nullptr, 0, &buffer, nullptr) == 64);
   symphony_sbv_sdk_release_v1(nullptr);
-  J input{{"protocol", e::process_protocol_v1},
+  J input{{"protocol", e::process_protocol_v2},
           {"request_id", "sdk-test"},
           {"correlation_id", "sdk-test"},
           {"operation", "capabilities"},
           {"target_engine", "symphony-sbv"},
-          {"deadline_unix_ms", e::unix_time_ms() + 30000},
+          {"deadline_unix_ms", nullptr},
           {"payload", {{"protocol", "symphony.sbv.capabilities-input.v1"}}}};
   auto response = s::sdk::process(input.dump());
   check(response.status == 0);
@@ -38,6 +38,30 @@ int main() try {
   auto digest = parsed.at("response_digest");
   parsed.erase("response_digest");
   check(digest == e::tagged_sha256(parsed.dump()));
+  check(parsed.at("protocol") == e::process_protocol_v2);
+  for (J selected : {J(nullptr), J(std::to_string(e::unix_time_ms() + 400000)),
+                     J(std::to_string(e::unix_time_ms() + 7LL * 86400000)),
+                     J("9223372036854775806")}) {
+    auto selected_request = input;
+    selected_request["deadline_unix_ms"] = selected;
+    check(s::sdk::process(selected_request.dump()).status == 0);
+    auto admitted =
+        e::parse_request(selected_request.dump(), "symphony-sbv",
+                         e::unix_time_ms(), e::Limits::max_json_values, true);
+    check(admitted.deadline_unix_ms ==
+          (selected.is_null() ? e::no_deadline
+                              : std::stoll(selected.get<std::string>())));
+  }
+  auto expired = input;
+  expired["deadline_unix_ms"] = std::to_string(e::unix_time_ms() - 1);
+  check(J::parse(s::sdk::process(expired.dump()).json).at("error").at("code") ==
+        "request.deadline_expired");
+  for (J invalid :
+       {J("0"), J("01"), J("-1"), J("9223372036854775807"), J(1234), J(true)}) {
+    auto bad = input;
+    bad["deadline_unix_ms"] = invalid;
+    check(s::sdk::process(bad.dump()).status != 0);
+  }
   auto q = input;
   q["operation"] = "descriptor";
   q["payload"] = J::object();
@@ -53,7 +77,7 @@ int main() try {
     if (i == 1)
       q["deadline_unix_ms"] = 0;
     if (i == 2)
-      q["deadline_unix_ms"] = e::unix_time_ms() + 400000;
+      q["deadline_unix_ms"] = "9223372036854775808";
     if (i == 3)
       q["payload"]["unknown"] = "x";
     if (i == 4)

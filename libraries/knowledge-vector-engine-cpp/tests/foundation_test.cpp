@@ -204,6 +204,18 @@ void test_json_and_protocol() {
         static_cast<void>(parse_request(request_json(now + 1000), "another-engine", now));
     }, "engine.target_mismatch");
 
+    auto v2 = Json::parse(request_json(now + 1000));
+    v2["protocol"] = process_protocol_v2;
+    v2["deadline_unix_ms"] = nullptr;
+    auto user = parse_request(v2.dump(), "symphony-test", now + 600000, Limits::max_json_values, true);
+    require(user.deadline_unix_ms == no_deadline, "v2 null stays unbounded after the old window");
+    require(success_response(user, "symphony-test", "0.2.0-dev", Json::object()).at("protocol") == process_protocol_v2, "v2 response profile");
+    v2["deadline_unix_ms"] = std::to_string(now + 86400000);
+    require(parse_request(v2.dump(), "symphony-test", now, Limits::max_json_values, true).deadline_unix_ms == now + 86400000, "user deadline beyond five minutes");
+    require_error([&] { static_cast<void>(parse_request(v2.dump(), "symphony-test", now)); }, "protocol.unsupported");
+    v2["deadline_unix_ms"] = std::to_string(now);
+    require_error([&] { static_cast<void>(parse_request(v2.dump(), "symphony-test", now, Limits::max_json_values, true)); }, "request.deadline_expired");
+
     const auto encoded = serialize_response(success_response(
         request, "symphony-test", "0.1.0-dev", Json{{"ready", true}}));
     const auto parsed = Json::parse(encoded);

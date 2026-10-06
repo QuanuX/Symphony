@@ -3,6 +3,7 @@
 #include <fstream>
 #include <iostream>
 #include <symphony/sbv/sbv.hpp>
+#include <symphony/knowledge/engine/digest.hpp>
 namespace e = symphony::knowledge::engine;
 namespace f = symphony::knowledge::ssfv;
 using J = e::Json;
@@ -59,6 +60,23 @@ int main(int argc, char **argv) try {
       return 1;
     }
     evidence.push_back(result);
+  }
+  for (bool legacy : {true, false}) {
+    auto invalid = descriptor;
+    if (legacy) invalid["process_protocols"] = J::array({e::process_protocol_v1});
+    else invalid["limits"]["response_bytes"] = nullptr;
+    invalid.erase("descriptor_digest");
+    invalid["descriptor_digest"] = e::tagged_sha256(invalid.dump());
+    auto result = call("administration-check",
+        {{"protocol", "symphony.knowledge.administration-coverage-input.v1"},
+         {"format_version", 1}, {"semantic_snapshot", check.at("semantic_snapshot")},
+         {"profile", read("knowledge/FEATURE-ADMINISTRATION-PROFILE.json")},
+         {"expected_command_registry", read("tools/qxctl/COMMANDS.json")},
+         {"observed_qxctl_state", "not_evaluated"}, {"observed_command_registry", nullptr},
+         {"engine_descriptors", J::array({invalid})},
+         {"requested_feature_id", "ssfv:symphony:sbv-engine"}});
+    if (result.at("module_integrations")[0].at("integration_state") != "descriptor_invalid")
+      throw std::runtime_error("deadline-profile exception escaped its scope");
   }
   std::cout << evidence.dump(2) << '\n';
   return 0;

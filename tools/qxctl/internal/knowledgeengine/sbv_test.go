@@ -1,8 +1,14 @@
 package knowledgeengine
 
 import (
+	"context"
 	"encoding/json"
+	"errors"
+	"os"
+	"path/filepath"
+	"strconv"
 	"testing"
+	"time"
 )
 
 func TestSBVQueryCorrespondence(t *testing.T) {
@@ -31,7 +37,7 @@ func TestSBVExactReleaseAndCapabilities(t *testing.T) {
 		t.Fatal("implicit release upgrade")
 	}
 	p := map[string]any{}
-	if validateSBVResult("capabilities", p, []byte(`{"protocol":"symphony.sbv.capabilities.v1","engine_version":"0.13.0-dev","cpu":{"available":true},"cuda":{"available":true},"tensor":{"available":false},"live":{"available":false}}`)) == nil {
+	if validateSBVResult("capabilities", p, []byte(`{"protocol":"symphony.sbv.capabilities.v1","engine_version":"0.14.0-dev","cpu":{"available":true},"cuda":{"available":true},"tensor":{"available":false},"live":{"available":false}}`)) == nil {
 		t.Fatal("unexpected accelerator capability accepted")
 	}
 }
@@ -71,4 +77,63 @@ func TestSBVDatasetUserLimitEvidence(t *testing.T) {
 	verify(false)
 	p["memory_budget_bytes"] = "1099511627776"
 	verify(true)
+}
+
+func TestSBVUserDeadlineTransport(t *testing.T) {
+	spec := sbvSpec()
+	spec.operationTimeoutByVersion = map[string]time.Duration{SBVAdministrationInterfaceVersion: time.Millisecond}
+	ctx, cancel, wire := invocationContext(context.Background(), spec, SBVAdministrationInterfaceVersion)
+	if _, set := ctx.Deadline(); set || wire != nil {
+		t.Fatal("hidden transport deadline", wire)
+	}
+	cancel()
+	when := time.Now().Add(7 * 24 * time.Hour)
+	parent, stop := context.WithDeadline(context.Background(), when)
+	defer stop()
+	ctx, cancel, wire = invocationContext(parent, spec, SBVAdministrationInterfaceVersion)
+	if wire != strconv.FormatInt(when.UnixMilli(), 10) {
+		t.Fatal("user deadline clamped", wire)
+	}
+	cancel()
+	old, cancel, wire := invocationContext(context.Background(), skviSpec, "0.1.0-dev")
+	if _, set := old.Deadline(); !set {
+		t.Fatal("legacy policy changed")
+	}
+	if _, ok := wire.(int64); !ok {
+		t.Fatal("legacy wire changed")
+	}
+	cancel()
+	// A deliberately tiny legacy timeout must not terminate a v2 child. Caller cancellation must.
+	dir := t.TempDir()
+	binary := filepath.Join(dir, "waiting-engine")
+	if err := os.WriteFile(binary, []byte("#!/bin/sh\n/bin/sleep 10\n"), 0700); err != nil {
+		t.Fatal(err)
+	}
+	parent, stop = context.WithCancel(context.Background())
+	defer stop()
+	done := make(chan error, 1)
+	go func() {
+		_, err := invokeResolved(parent, spec, binary, SBVAdministrationInterfaceVersion, dir, "capabilities", []byte(`{}`))
+		done <- err
+	}()
+	select {
+	case err := <-done:
+		t.Fatal("unrequested deadline terminated child", err)
+	case <-time.After(80 * time.Millisecond):
+	}
+	stop()
+	select {
+	case err := <-done:
+		if !errors.Is(err, context.Canceled) {
+			t.Fatal(err)
+		}
+	case <-time.After(2 * time.Second):
+		t.Fatal("user cancellation did not stop child")
+	}
+	parent, stop = context.WithTimeout(context.Background(), 30*time.Millisecond)
+	defer stop()
+	_, err := invokeResolved(parent, spec, binary, SBVAdministrationInterfaceVersion, dir, "capabilities", []byte(`{}`))
+	if !errors.Is(err, context.DeadlineExceeded) {
+		t.Fatal("user timeout not enforced", err)
+	}
 }

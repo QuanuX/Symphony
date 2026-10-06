@@ -3213,7 +3213,7 @@
           "const": "symphony.sbv.capabilities.v1"
         },
         "engine_version": {
-          "const": "0.13.0-dev"
+          "const": "0.14.0-dev"
         },
         "cpu": {
           "type": "object",
@@ -3319,6 +3319,15 @@
             },
             "dataset_limit_authority": {
               "const": "user"
+            },
+            "deadline_authority": {
+              "const": "user"
+            },
+            "default_deadline_unix_ms": {
+              "type": "null"
+            },
+            "max_deadline_ahead_ms": {
+              "type": "null"
             }
           },
           "required": [
@@ -3327,7 +3336,10 @@
             "max_signals",
             "max_source_events",
             "max_source_bytes",
-            "dataset_limit_authority"
+            "dataset_limit_authority",
+            "deadline_authority",
+            "default_deadline_unix_ms",
+            "max_deadline_ahead_ms"
           ],
           "additionalProperties": false
         },
@@ -3356,7 +3368,7 @@
               }
             },
             "request_protocol": {
-              "const": "symphony.knowledge.engine-process.v1"
+              "const": "symphony.knowledge.engine-process.v2"
             }
           },
           "required": [
@@ -3826,7 +3838,7 @@
           "const": "symphony.sbv.catalogue.v1"
         },
         "engine_version": {
-          "const": "0.13.0-dev"
+          "const": "0.14.0-dev"
         },
         "models": {
           "type": "array",
@@ -4417,7 +4429,7 @@
           "const": "symphony.sbv.backend-plan.v1"
         },
         "engine_version": {
-          "const": "0.13.0-dev"
+          "const": "0.14.0-dev"
         },
         "status": {
           "enum": [
@@ -4710,7 +4722,7 @@
           "const": "symphony.sbv.live-plan.v1"
         },
         "engine_version": {
-          "const": "0.13.0-dev"
+          "const": "0.14.0-dev"
         },
         "can_activate": {
           "const": false

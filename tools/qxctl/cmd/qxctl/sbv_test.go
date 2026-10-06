@@ -2,10 +2,13 @@ package main
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"errors"
+	"strconv"
 	"strings"
 	"testing"
+	"time"
 )
 
 func TestSBVRenderingPreservesAllNodes(t *testing.T) {
@@ -78,4 +81,51 @@ func TestSBVStreamFailureHasNoCompleteFrame(t *testing.T) {
 	if strings.Contains(w.String(), `"complete"`) {
 		t.Fatal("false completion")
 	}
+}
+
+func TestSBVUserDeadlineFlags(t *testing.T) {
+	for _, text := range []string{"none", "0"} {
+		ctx, cancel, err := sbvDeadlineContext(context.Background(), text, "", true)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if _, set := ctx.Deadline(); set {
+			t.Fatal("implicit deadline")
+		}
+		cancel()
+	}
+	future := time.Now().Add(48 * time.Hour).UnixMilli()
+	ctx, cancel, err := sbvDeadlineContext(context.Background(), "none", strconv.FormatInt(future, 10), false)
+	if err != nil {
+		t.Fatal(err)
+	}
+	d, ok := ctx.Deadline()
+	if !ok || d.UnixMilli() != future {
+		t.Fatal("changed user deadline")
+	}
+	cancel()
+	ctx, cancel, err = sbvDeadlineContext(context.Background(), "48h", "", true)
+	if err != nil {
+		t.Fatal(err)
+	}
+	d, _ = ctx.Deadline()
+	if time.Until(d) < 47*time.Hour {
+		t.Fatal("timeout clamped")
+	}
+	cancel()
+	for _, pair := range [][2]string{{"-1s", ""}, {"garbage", ""}, {"none", "01"}, {"none", "9223372036854775807"}, {"1h", strconv.FormatInt(future, 10)}} {
+		if _, _, err := sbvDeadlineContext(context.Background(), pair[0], pair[1], true); err == nil {
+			t.Fatal("invalid selection admitted", pair)
+		}
+	}
+	parent, stop := context.WithCancel(context.Background())
+	ctx, cancel, err = sbvDeadlineContext(parent, "none", "", false)
+	if err != nil {
+		t.Fatal(err)
+	}
+	stop()
+	if ctx.Err() != context.Canceled {
+		t.Fatal("parent cancellation lost")
+	}
+	cancel()
 }

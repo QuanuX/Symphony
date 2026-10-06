@@ -7,10 +7,13 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"math"
 	"os"
+	"os/signal"
 	"sort"
 	"strconv"
 	"strings"
+	"time"
 	"unicode/utf16"
 
 	"github.com/QuanuX/Symphony/tools/qxctl/internal/commandregistry"
@@ -48,6 +51,7 @@ func sbvSafeError(err error) error {
 }
 func newSBVLeaf(op, leaf string) *cobra.Command {
 	var prefix, version, input, operation, path, digest, pointer, cursor, format string
+	var timeout, absoluteDeadline string
 	var limit uint
 	var machine bool
 	resource := op == "schema" || op == "template"
@@ -79,12 +83,18 @@ func newSBVLeaf(op, leaf string) *cobra.Command {
 			}
 			return renderSBV(c.OutOrStdout(), wrapper, format)
 		}
+		caller, stop := signal.NotifyContext(c.Context(), os.Interrupt)
+		defer stop()
+		ctx, cancel, err := sbvDeadlineContext(caller, timeout, absoluteDeadline, c.Flags().Changed("timeout"))
+		if err != nil {
+			return err
+		}
+		defer cancel()
 		nativeOp := op
 		if op == "result_export" {
 			nativeOp = "result_inspect"
 		}
 		var raw []byte
-		var err error
 		if read {
 			if input != "" {
 				return errUsageOnly
@@ -108,7 +118,7 @@ func newSBVLeaf(op, leaf string) *cobra.Command {
 		if err != nil {
 			return sbvSafeError(err)
 		}
-		result, err := knowledgeengine.InvokeSBV(c.Context(), prefix, version, cwd, nativeOp, raw)
+		result, err := knowledgeengine.InvokeSBV(ctx, prefix, version, cwd, nativeOp, raw)
 		if err != nil {
 			return sbvSafeError(err)
 		}
@@ -121,7 +131,6 @@ func newSBVLeaf(op, leaf string) *cobra.Command {
 		}
 		return renderSBV(c.OutOrStdout(), out, format)
 	}}
-	c.SetContext(context.Background())
 	c.Flags().StringVar(&prefix, "prefix", "", "exact SBV installation prefix")
 	c.Flags().StringVar(&version, "version", "", "exact SBV release")
 	c.Flags().StringVar(&format, "format", "text", "text, json or lossless pointer ndjson")
@@ -149,6 +158,10 @@ func newSBVLeaf(op, leaf string) *cobra.Command {
 		if op != "capabilities" && op != "catalogue" {
 			_ = c.MarkFlagRequired("input")
 		}
+	}
+	if !resource {
+		c.Flags().StringVar(&timeout, "timeout", "none", "user timeout (e.g. 30m), none or 0; no default deadline")
+		c.Flags().StringVar(&absoluteDeadline, "deadline-unix-ms", "", "user absolute Unix-millisecond deadline; exclusive with --timeout")
 	}
 	c.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
 	key := "sbv." + strings.ReplaceAll(op, "_", ".")
@@ -190,6 +203,28 @@ func newSBVLeaf(op, leaf string) *cobra.Command {
 	}
 	commandregistry.Attach(c, spec)
 	return c
+}
+
+// No timer is introduced unless selected by the caller; parent cancellation survives.
+func sbvDeadlineContext(parent context.Context, timeout, absolute string, timeoutSet bool) (context.Context, context.CancelFunc, error) {
+	if absolute != "" {
+		value, err := strconv.ParseInt(absolute, 10, 64)
+		if timeoutSet || err != nil || value <= 0 || value == math.MaxInt64 || strconv.FormatInt(value, 10) != absolute {
+			return nil, nil, fmt.Errorf("select one deadline: --timeout or a canonical positive --deadline-unix-ms")
+		}
+		ctx, cancel := context.WithDeadline(parent, time.UnixMilli(value))
+		return ctx, cancel, nil
+	}
+	if timeout == "none" || timeout == "0" {
+		ctx, cancel := context.WithCancel(parent)
+		return ctx, cancel, nil
+	}
+	duration, err := time.ParseDuration(timeout)
+	if err != nil || duration <= 0 {
+		return nil, nil, fmt.Errorf("--timeout requires a positive duration, none or 0")
+	}
+	ctx, cancel := context.WithTimeout(parent, duration)
+	return ctx, cancel, nil
 }
 
 // The frontend renders only the owner payload. A later GUI can use the same

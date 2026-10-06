@@ -5,11 +5,14 @@
 
 #include <cstdint>
 #include <istream>
+#include <limits>
 #include <string>
 
 namespace symphony::knowledge::engine {
 
 inline constexpr const char* process_protocol_v1 = "symphony.knowledge.engine-process.v1";
+inline constexpr const char* process_protocol_v2 = "symphony.knowledge.engine-process.v2";
+inline constexpr std::int64_t no_deadline = std::numeric_limits<std::int64_t>::max();
 inline constexpr const char* descriptor_protocol_v1 = "symphony.knowledge.engine-descriptor.v1";
 inline constexpr const char* descriptor_protocol_v2 = "symphony.knowledge.engine-descriptor.v2";
 inline constexpr const char* install_receipt_protocol_v1 = "symphony.knowledge.install-receipt.v1";
@@ -22,6 +25,7 @@ struct Request final {
     std::string target_engine;
     std::int64_t deadline_unix_ms;
     Json payload;
+    std::string protocol = process_protocol_v1;
 };
 
 [[nodiscard]] std::int64_t unix_time_ms();
@@ -34,7 +38,8 @@ struct Request final {
     const std::string& input,
     const std::string& expected_engine,
     std::int64_t now_unix_ms,
-    std::size_t max_json_values = Limits::max_json_values);
+    std::size_t max_json_values = Limits::max_json_values,
+    bool user_deadlines = false);
 [[nodiscard]] Json success_response(
     const Request& request,
     const std::string& engine_id,

@@ -2853,7 +2853,11 @@ ParsedEngineDescriptor parse_engine_descriptor(const engine::Json& value) {
         "snapshot_files", "snapshot_file_bytes", "deadline_ahead_ms",
     }, "administration.engine_descriptor.limit_fields");
     for (const auto& [name, limit] : value.at("limits").items()) {
-        static_cast<void>(name);
+        // Process v2 explicitly assigns deadline authority to the caller.
+        if (name == "deadline_ahead_ms" && limit.is_null() &&
+            value.at("process_protocols") == engine::Json::array({engine::process_protocol_v2})) {
+            continue;
+        }
         const bool positive = limit.is_number_unsigned()
             ? limit.get<std::uint64_t>() > 0U
             : limit.is_number_integer() && limit.get<std::int64_t>() > 0;

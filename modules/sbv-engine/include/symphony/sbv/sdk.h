@@ -17,7 +17,7 @@ extern "C" {
 #else
 #define SBV_SDK_NOEXCEPT
 #endif
-/* This ABI transports exact engine-process.v1 JSON; C++26 owns calculations.
+/* This ABI transports exact engine-process.v2 JSON; C++26 owns calculations.
  * Caller buffers must be valid for their declared lengths. Request bytes are
  * borrowed only until return. On return the response is a separate allocation,
  * NUL-terminated for convenience; size excludes NUL. Release it exactly once

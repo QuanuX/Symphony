@@ -14,8 +14,12 @@ inline void need(bool b, const char *message) {
     throw e::Error("sbv.contract", message, 2);
 }
 inline void deadline(std::int64_t d) {
-  if (e::unix_time_ms() > d)
+  if (d != e::no_deadline && e::unix_time_ms() >= d)
     throw e::Error("deadline.exceeded", "SBV deadline exceeded", 3);
+}
+inline std::string process_response(Json response) {
+  response["protocol"] = e::process_protocol_v2;
+  return e::serialize_response(std::move(response));
 }
 inline void keys(const Json &v, std::initializer_list<const char *> names) {
   need(v.is_object() && v.size() == names.size(), "unexpected object fields");

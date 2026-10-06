@@ -1,3 +1,4 @@
+#include "detail.hpp"
 #include <cstdlib>
 #include <cstring>
 #include <symphony/knowledge/engine/error.hpp>
@@ -29,9 +30,9 @@ int symphony_sbv_sdk_process_v1(const char *input, size_t size, char **output,
     try {
       if (size > e::Limits::max_request_bytes)
         throw e::Error("request.too_large", "request exceeds byte limit", 2);
-      const auto request =
-          e::parse_request(size ? std::string(input, size) : std::string{},
-                           "symphony-sbv", e::unix_time_ms());
+      const auto request = e::parse_request(
+          size ? std::string(input, size) : std::string{}, "symphony-sbv",
+          e::unix_time_ms(), e::Limits::max_json_values, true);
       try {
         if (request.operation == "descriptor" &&
             (!request.payload.is_object() || !request.payload.empty()))
@@ -40,29 +41,29 @@ int symphony_sbv_sdk_process_v1(const char *input, size_t size, char **output,
                           ? s::descriptor()
                           : s::dispatch(request.operation, request.payload,
                                         request.deadline_unix_ms);
-        response = e::serialize_response(
+        response = symphony::sbv::detail::process_response(
             e::success_response(request, "symphony-sbv", s::version, result));
       } catch (const e::Error &error) {
         status = error.exit_status();
-        response = e::serialize_response(e::error_response(
+        response = symphony::sbv::detail::process_response(e::error_response(
             request.request_id, request.correlation_id, request.operation,
             "symphony-sbv", s::version, error.code(),
             "SBV SDK operation failed; inspect output artifacts before retry"));
       } catch (...) {
         status = 4;
-        response = e::serialize_response(e::error_response(
+        response = symphony::sbv::detail::process_response(e::error_response(
             request.request_id, request.correlation_id, request.operation,
             "symphony-sbv", s::version, "sbv.failure",
             "SBV SDK operation failed; inspect output artifacts before retry"));
       }
     } catch (const e::Error &error) {
       status = error.exit_status();
-      response = e::serialize_response(e::error_response(
+      response = symphony::sbv::detail::process_response(e::error_response(
           "unavailable", "unavailable", "unavailable", "symphony-sbv",
           s::version, error.code(), "SBV SDK request rejected"));
     } catch (...) {
       status = 4;
-      response = e::serialize_response(e::error_response(
+      response = symphony::sbv::detail::process_response(e::error_response(
           "unavailable", "unavailable", "unavailable", "symphony-sbv",
           s::version, "sbv.failure",
           "SBV SDK request failed; inspect output artifacts before retry"));

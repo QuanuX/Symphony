@@ -154,22 +154,29 @@ void peer(int fd) {
        "resident peer owner mismatch");
 #endif
 }
+std::int64_t wire_deadline(const Json &w) {
+  if (w.at("deadline_ms").is_null())
+    return e::no_deadline;
+  const auto value = i64(w.at("deadline_ms"));
+  need(value > 0 && value != e::no_deadline,
+       "invalid finite resident deadline");
+  return value;
+}
 Json wire(const std::string &op, const Json &p, std::int64_t end) {
-  return {{"protocol", "symphony.sbv.resident-wire.v1"},
-          {"engine_version", version},
-          {"operation", op},
-          {"input", p},
-          {"deadline_ms", dec(end)}};
+  return {
+      {"protocol", "symphony.sbv.resident-wire.v2"},
+      {"engine_version", version},
+      {"operation", op},
+      {"input", p},
+      {"deadline_ms", end == e::no_deadline ? Json(nullptr) : Json(dec(end))}};
 }
 void validate_wire(const Json &w) {
   keys(w, {"protocol", "engine_version", "operation", "input", "deadline_ms"});
-  need(w.at("protocol") == "symphony.sbv.resident-wire.v1" &&
+  need(w.at("protocol") == "symphony.sbv.resident-wire.v2" &&
            w.at("engine_version") == version,
        "resident protocol/version mismatch");
-  const auto end = i64(w.at("deadline_ms"));
+  const auto end = wire_deadline(w);
   deadline(end);
-  need(end <= e::unix_time_ms() + 300000,
-       "resident request deadline exceeds five minutes");
 }
 Json unwrap(const Json &j) {
   need(j.is_object() && j.value("engine_version", "") == version,
@@ -189,7 +196,7 @@ Json failure(const std::string &code, const std::string &message) {
 }
 Json transact(const Json &w) {
   const auto &p = w.at("input");
-  const auto end = i64(w.at("deadline_ms"));
+  const auto end = wire_deadline(w);
   auto a = address(p);
   struct stat st{};
   need(::lstat(a.sun_path, &st) == 0 && S_ISSOCK(st.st_mode) &&
@@ -241,7 +248,7 @@ std::string host_path() {
   return candidate.string();
 }
 Json launch(const Json &w) {
-  const auto end = i64(w.at("deadline_ms"));
+  const auto end = wire_deadline(w);
   int pair[2];
   need(::socketpair(AF_UNIX, SOCK_STREAM, 0, pair) == 0,
        "resident startup channel unavailable");
@@ -309,9 +316,7 @@ void control_shape(const std::string &op, const Json &p) {
          "resident concurrent job bound 1..16");
     need(u64(p.at("worker_budget")) >= 1 && u64(p.at("worker_budget")) <= 64,
          "resident worker budget 1..64");
-    const auto idle = u64(p.at("idle_timeout_ms"));
-    need(idle == 0 || (idle >= 1000 && idle <= 86400000),
-         "idle timeout zero or 1000..86400000 ms required");
+    (void)u64(p.at("idle_timeout_ms"));
   } else if (op == "dataset_execute") {
     keys(p, {"protocol", "directory", "instance_id", "operation", "request",
              "output_path"});
@@ -343,7 +348,7 @@ Json dataset_control(const std::string &op, const Json &p, std::int64_t end) {
 }
 int resident_worker() {
   // This entrypoint is a separate bounded local wire protocol. It does not
-  // change the one-request/one-response engine-process.v1 contract.
+  // change the one-request/one-response engine-process.v2 contract.
   // Fork only in this freshly exec'd single-threaded companion, never in the
   // embedding SDK process (which may have unrelated threads and locks).
   const auto child = ::fork();
@@ -366,7 +371,7 @@ int resident_worker() {
     }
     ~Endpoint() { remove(); }
   } endpoint;
-  auto startup_end = e::unix_time_ms() + 300000;
+  auto startup_end = e::no_deadline;
   try {
     configure(STDIN_FILENO);
     auto w = receive(STDIN_FILENO, startup_end);
@@ -375,7 +380,7 @@ int resident_worker() {
          "resident startup operation mismatch");
     const auto p = w.at("input");
     control_shape("dataset_load", p);
-    startup_end = i64(w.at("deadline_ms"));
+    startup_end = wire_deadline(w);
     auto a = address(p);
     // An incarnation is never reused, including after a failed load or crash.
     auto dir = directory(str(p.at("directory")));
@@ -451,7 +456,8 @@ int resident_worker() {
       {
         std::lock_guard lock(mutex);
         if (idle && active == 0 &&
-            e::unix_time_ms() - last >= static_cast<std::int64_t>(idle))
+            static_cast<std::uint64_t>(
+                std::max<std::int64_t>(0, e::unix_time_ms() - last)) >= idle)
           break;
       }
       pollfd poller{listener.n, POLLIN, 0};
@@ -464,7 +470,7 @@ int resident_worker() {
       FD client(::accept(listener.n, nullptr, nullptr));
       if (client.n < 0)
         continue;
-      auto end = e::unix_time_ms() + 2000;
+      auto end = e::no_deadline;
       try {
         configure(client.n);
         peer(client.n);
@@ -475,7 +481,7 @@ int resident_worker() {
              end);
         auto q = receive(client.n, end);
         validate_wire(q);
-        end = i64(q.at("deadline_ms"));
+        end = wire_deadline(q);
         const auto op = str(q.at("operation"));
         const auto input = q.at("input");
         control_shape(op, input);
@@ -498,10 +504,10 @@ int resident_worker() {
           listener.n = -1;
           data.reset();
           endpoint.remove();
-          // A lost acknowledgement must not keep a released host alive.
+          // A disconnected peer fails immediately; acknowledgement follows the
+          // user deadline.
           try {
-            send(client.n, success(result),
-                 std::min(end, e::unix_time_ms() + 1000));
+            send(client.n, success(result), end);
           } catch (...) {
           }
           break;

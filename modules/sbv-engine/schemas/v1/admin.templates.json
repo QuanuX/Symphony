@@ -555,7 +555,7 @@
       "memory_budget_bytes": null,
       "max_concurrent_jobs": "4",
       "worker_budget": "16",
-      "idle_timeout_ms": "3600000",
+      "idle_timeout_ms": "0",
       "residency": "pageable",
       "dataset_limits": {
         "max_source_bytes": null,

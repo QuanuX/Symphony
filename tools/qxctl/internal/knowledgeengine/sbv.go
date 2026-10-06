@@ -9,21 +9,20 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
-	"time"
 )
 
 var SBVOperations = []string{"capabilities", "run", "compose", "result_inspect", "result_query", "evaluate", "catalogue", "compose_joint", "economics", "book", "liquidity", "allocation_economics", "result_select", "backend_plan", "live_plan", "analyze", "compare", "resample", "experiment", "split", "dataset_load", "dataset_inspect", "dataset_execute", "dataset_release"}
 var sbvSHA = regexp.MustCompile(`^[0-9a-f]{64}$`)
 
 func sbvSpec() engineSpec {
-	return engineSpec{label: "SBV", moduleID: "sbv-engine", vectorID: "sbv", engineID: "symphony-sbv", componentKind: "vector_engine", processProtocol: processProtocol, operationTimeoutByVersion: map[string]time.Duration{"0.13.0-dev": 5 * time.Minute}}
+	return engineSpec{label: "SBV", moduleID: "sbv-engine", vectorID: "sbv", engineID: "symphony-sbv", componentKind: "vector_engine", processProtocol: processProtocolV2}
 }
 func InspectSBV(prefix, version string) (Installation, error) {
 	s := sbvSpec()
 	if prefix == "" || sbvAdministrationInterfaceAdmission[version] == nil {
 		return Installation{}, fmt.Errorf("SBV exact release required")
 	}
-	e, err := InspectReceiptV2EntryPoint(prefix, version, ReceiptV2EntryPointSpec{Label: s.label, ComponentID: s.moduleID, ComponentKind: s.componentKind, ModuleID: s.moduleID, PackageID: s.moduleID, VectorID: &s.vectorID, EngineID: &s.engineID, EntryPointID: s.engineID, EntryPointKind: "executable", EntryPointRelativePath: filepath.ToSlash(filepath.Join("libexec", "symphony", s.moduleID, version, s.engineID)), RequiredProtocols: []string{processProtocol}})
+	e, err := InspectReceiptV2EntryPoint(prefix, version, ReceiptV2EntryPointSpec{Label: s.label, ComponentID: s.moduleID, ComponentKind: s.componentKind, ModuleID: s.moduleID, PackageID: s.moduleID, VectorID: &s.vectorID, EngineID: &s.engineID, EntryPointID: s.engineID, EntryPointKind: "executable", EntryPointRelativePath: filepath.ToSlash(filepath.Join("libexec", "symphony", s.moduleID, version, s.engineID)), RequiredProtocols: []string{processProtocolV2}})
 	if err != nil {
 		return Installation{}, err
 	}
