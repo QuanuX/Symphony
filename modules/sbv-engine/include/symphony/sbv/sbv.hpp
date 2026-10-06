@@ -6,7 +6,7 @@
 
 namespace symphony::sbv {
 using Json = knowledge::engine::Json;
-inline constexpr auto version = "0.6.0-dev";
+inline constexpr auto version = "0.7.0-dev";
 inline constexpr auto result_protocol = "symphony.sbv.result.v1";
 // Owns no process-global state. Callers may invoke independent jobs
 // concurrently. Paths must be absolute, traverse no symlinks and name private

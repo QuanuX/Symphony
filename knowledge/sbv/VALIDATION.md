@@ -1,5 +1,7 @@
 # SBV implementation validation
 
+The 0.7 continuation adds typed selection and disconnected planning/interop. Eight native targets pass (762 assertions plus administration), ten installed/unit SBV Go checks pass, and a separate CMake consumer compiles against only the installed header target. Current registry: eighteen SBV leaves / fifteen native operations / 417 commands. Actual terminal replay selection is independently checked with BigInt ordering. Backend/live plans make no runtime GPU, resource-reservation or provider-activation claim. Earlier 0.6 evidence below retains its scope.
+
 Experimental 0.6.0-dev adds quantity-aware allocation markout with explicit user cost/unit conventions, optional activation mixtures, cost breakdown and exact moments. M1 and the eighteen-package/96-case programme remain open.
 
 Seven native CTest targets pass: 70 census/replay/scenario, 66 model, 86 prior economics, 207 book, 125 liquidity and 135 allocation-economic assertions, totaling 689, plus administration. Cases include partial fills, active zero-fill cost versus inactive P&L, rebates, signed nonzero return basis, missing evidence, shared-source conditioning/frame consistency, subset selection with full allocation retention, exact wide values and checked optional-variance overflow. An older catalogue count was corrected from nine to eleven; final checks pass.

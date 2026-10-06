@@ -2,6 +2,8 @@
 
 ## Canonical Surfaces
 
+- `tools/qxctl/internal/knowledgeengine/sbv_planning_test.go`
+
 - `tools/qxctl/internal/knowledgeengine/sbv_allocation_economics_test.go`
 
 - `tools/qxctl/internal/knowledgeengine/sbv_liquidity_test.go`

@@ -22518,3 +22518,101 @@ These entries locate existing implementation and regression surfaces referenced 
 - deferred_projections: queue/fill calibration, provider-specific profiles and broader release gates
 - notes: Mark, value units, fees, return basis and inactive outcomes remain caller choices.
 - status: canonical
+
+### SBV select.cpp
+
+- path: `modules/sbv-engine/src/select.cpp`
+- title: SBV select.cpp
+- surface_type: implementation contract or test
+- truth_role: Typed result access and independently consumed planning/interop capability
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.7 native, terminal and installed contract boundaries.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, agents and independent C++ consumers
+- deferred_projections: runtime GPU/tensor adapters, live capture and resource reservation
+- notes: Metadata admission is distinct from foreign ownership proof and runtime execution.
+- status: canonical
+
+### SBV planning.cpp
+
+- path: `modules/sbv-engine/src/planning.cpp`
+- title: SBV planning.cpp
+- surface_type: implementation contract or test
+- truth_role: Typed result access and independently consumed planning/interop capability
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.7 native, terminal and installed contract boundaries.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, agents and independent C++ consumers
+- deferred_projections: runtime GPU/tensor adapters, live capture and resource reservation
+- notes: Metadata admission is distinct from foreign ownership proof and runtime execution.
+- status: canonical
+
+### SBV interop.hpp
+
+- path: `modules/sbv-engine/include/symphony/sbv/interop.hpp`
+- title: SBV interop.hpp
+- surface_type: implementation contract or test
+- truth_role: Typed result access and independently consumed planning/interop capability
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.7 native, terminal and installed contract boundaries.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, agents and independent C++ consumers
+- deferred_projections: runtime GPU/tensor adapters, live capture and resource reservation
+- notes: Metadata admission is distinct from foreign ownership proof and runtime execution.
+- status: canonical
+
+### SBV SymphonySbvInteropConfig.cmake.in
+
+- path: `modules/sbv-engine/cmake/SymphonySbvInteropConfig.cmake.in`
+- title: SBV SymphonySbvInteropConfig.cmake.in
+- surface_type: implementation contract or test
+- truth_role: Typed result access and independently consumed planning/interop capability
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.7 native, terminal and installed contract boundaries.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, agents and independent C++ consumers
+- deferred_projections: runtime GPU/tensor adapters, live capture and resource reservation
+- notes: Metadata admission is distinct from foreign ownership proof and runtime execution.
+- status: canonical
+
+### SBV planning_test.cpp
+
+- path: `modules/sbv-engine/tests/planning_test.cpp`
+- title: SBV planning_test.cpp
+- surface_type: implementation contract or test
+- truth_role: Typed result access and independently consumed planning/interop capability
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.7 native, terminal and installed contract boundaries.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, agents and independent C++ consumers
+- deferred_projections: runtime GPU/tensor adapters, live capture and resource reservation
+- notes: Metadata admission is distinct from foreign ownership proof and runtime execution.
+- status: canonical
+
+### SBV interop_consumer.cpp
+
+- path: `modules/sbv-engine/tests/interop_consumer.cpp`
+- title: SBV interop_consumer.cpp
+- surface_type: implementation contract or test
+- truth_role: Typed result access and independently consumed planning/interop capability
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.7 native, terminal and installed contract boundaries.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, agents and independent C++ consumers
+- deferred_projections: runtime GPU/tensor adapters, live capture and resource reservation
+- notes: Metadata admission is distinct from foreign ownership proof and runtime execution.
+- status: canonical
+
+### SBV sbv_planning_test.go
+
+- path: `tools/qxctl/internal/knowledgeengine/sbv_planning_test.go`
+- title: SBV sbv_planning_test.go
+- surface_type: implementation contract or test
+- truth_role: Typed result access and independently consumed planning/interop capability
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.7 native, terminal and installed contract boundaries.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, agents and independent C++ consumers
+- deferred_projections: runtime GPU/tensor adapters, live capture and resource reservation
+- notes: Metadata admission is distinct from foreign ownership proof and runtime execution.
+- status: canonical

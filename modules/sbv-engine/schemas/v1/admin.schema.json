@@ -1721,6 +1721,376 @@
         "extensions"
       ],
       "additionalProperties": false
+    },
+    "result_select": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.result-select-input.v1"
+        },
+        "path": {
+          "type": "string"
+        },
+        "expected_sha256": {
+          "type": "string"
+        },
+        "pointer": {
+          "type": "string"
+        },
+        "filters": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "pointer": {
+                "type": "string"
+              },
+              "type": {
+                "enum": [
+                  "text",
+                  "integer",
+                  "rational",
+                  "boolean"
+                ]
+              },
+              "op": {
+                "enum": [
+                  "eq",
+                  "ne",
+                  "lt",
+                  "le",
+                  "gt",
+                  "ge"
+                ]
+              },
+              "value": {},
+              "missing": {
+                "enum": [
+                  "include",
+                  "exclude",
+                  "reject"
+                ]
+              }
+            },
+            "required": [
+              "pointer",
+              "type",
+              "op",
+              "value",
+              "missing"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 0,
+          "maxItems": 16
+        },
+        "order_by": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "pointer": {
+                "type": "string"
+              },
+              "type": {
+                "enum": [
+                  "text",
+                  "integer",
+                  "rational",
+                  "boolean"
+                ]
+              },
+              "direction": {
+                "enum": [
+                  "asc",
+                  "desc"
+                ]
+              },
+              "missing": {
+                "enum": [
+                  "first",
+                  "last",
+                  "reject"
+                ]
+              }
+            },
+            "required": [
+              "pointer",
+              "type",
+              "direction",
+              "missing"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 0,
+          "maxItems": 8
+        },
+        "columns": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "pointer": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "name",
+              "pointer"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 0,
+          "maxItems": 64
+        },
+        "limit": {
+          "type": "string"
+        },
+        "cursor": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "protocol",
+        "path",
+        "expected_sha256",
+        "pointer",
+        "filters",
+        "order_by",
+        "columns",
+        "limit",
+        "cursor"
+      ],
+      "additionalProperties": false
+    },
+    "backend_plan": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.backend-plan-input.v1"
+        },
+        "backend": {
+          "enum": [
+            "cpu",
+            "cuda",
+            "tensor"
+          ]
+        },
+        "fallback": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "const": "cpu"
+            }
+          ]
+        },
+        "limit_policy": {
+          "enum": [
+            "reject",
+            "reduce"
+          ]
+        },
+        "scheduling": {
+          "enum": [
+            "independent",
+            "serial_state"
+          ]
+        },
+        "workers": {
+          "type": "string"
+        },
+        "memory_bytes": {
+          "type": "string"
+        },
+        "declared_limits": {
+          "type": "object",
+          "properties": {
+            "workers": {
+              "type": "string"
+            },
+            "memory_bytes": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "workers",
+            "memory_bytes"
+          ],
+          "additionalProperties": false
+        },
+        "buffer": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "dtype": {
+                  "type": "string"
+                },
+                "device": {
+                  "enum": [
+                    "cpu",
+                    "cuda",
+                    "tensor"
+                  ]
+                },
+                "owner_id": {
+                  "type": "string"
+                },
+                "stream_id": {
+                  "type": "string"
+                },
+                "storage_bytes": {
+                  "type": "string"
+                },
+                "byte_offset": {
+                  "type": "string"
+                },
+                "shape": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "minItems": 0,
+                  "maxItems": 16
+                },
+                "byte_strides": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "minItems": 0,
+                  "maxItems": 16
+                },
+                "completion": {
+                  "enum": [
+                    "pending",
+                    "ready",
+                    "failed",
+                    "cancelled"
+                  ]
+                }
+              },
+              "required": [
+                "dtype",
+                "device",
+                "owner_id",
+                "stream_id",
+                "storage_bytes",
+                "byte_offset",
+                "shape",
+                "byte_strides",
+                "completion"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        },
+        "extensions": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "protocol",
+        "backend",
+        "fallback",
+        "limit_policy",
+        "scheduling",
+        "workers",
+        "memory_bytes",
+        "declared_limits",
+        "buffer",
+        "extensions"
+      ],
+      "additionalProperties": false
+    },
+    "live_plan": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.live-plan-input.v1"
+        },
+        "pre_ns": {
+          "type": "string"
+        },
+        "post_ns": {
+          "type": "string"
+        },
+        "event_cap": {
+          "type": "string"
+        },
+        "byte_cap": {
+          "type": "string"
+        },
+        "pending_cap": {
+          "type": "string"
+        },
+        "overflow": {
+          "enum": [
+            "reject",
+            "drop_oldest",
+            "drop_newest"
+          ]
+        },
+        "pending_overflow": {
+          "enum": [
+            "reject",
+            "skip_signal"
+          ]
+        },
+        "observed_until_ns": {
+          "type": "string"
+        },
+        "events": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "available_ns": {
+                "type": "string"
+              },
+              "bytes": {
+                "type": "string"
+              },
+              "signal": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "available_ns",
+              "bytes",
+              "signal"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 0,
+          "maxItems": 512
+        },
+        "extensions": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "protocol",
+        "pre_ns",
+        "post_ns",
+        "event_cap",
+        "byte_cap",
+        "pending_cap",
+        "overflow",
+        "pending_overflow",
+        "observed_until_ns",
+        "events",
+        "extensions"
+      ],
+      "additionalProperties": false
     }
   },
   "results": {
@@ -1731,7 +2101,7 @@
           "const": "symphony.sbv.capabilities.v1"
         },
         "engine_version": {
-          "const": "0.6.0-dev"
+          "const": "0.7.0-dev"
         },
         "cpu": {
           "type": "object",
@@ -2271,7 +2641,7 @@
           "const": "symphony.sbv.catalogue.v1"
         },
         "engine_version": {
-          "const": "0.6.0-dev"
+          "const": "0.7.0-dev"
         },
         "models": {
           "type": "array",
@@ -2752,6 +3122,616 @@
         "bytes",
         "status",
         "summary"
+      ],
+      "additionalProperties": false
+    },
+    "result_select": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.result-select.v1"
+        },
+        "content_sha256": {
+          "type": "string"
+        },
+        "query_sha256": {
+          "type": "string"
+        },
+        "pointer": {
+          "type": "string"
+        },
+        "source_rows": {
+          "type": "string"
+        },
+        "matched_rows": {
+          "type": "string"
+        },
+        "offset": {
+          "type": "string"
+        },
+        "rows": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "source_index": {
+                "type": "string"
+              },
+              "pointer": {
+                "type": "string"
+              },
+              "value": {}
+            },
+            "required": [
+              "source_index",
+              "pointer",
+              "value"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 0,
+          "maxItems": 256
+        },
+        "complete": {
+          "type": "boolean"
+        },
+        "next_cursor": {
+          "type": "string"
+        },
+        "ordering": {
+          "type": "string"
+        },
+        "columns": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "pointer": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "name",
+              "pointer"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 0,
+          "maxItems": 64
+        }
+      },
+      "required": [
+        "protocol",
+        "content_sha256",
+        "query_sha256",
+        "pointer",
+        "source_rows",
+        "matched_rows",
+        "offset",
+        "rows",
+        "complete",
+        "next_cursor",
+        "ordering",
+        "columns"
+      ],
+      "additionalProperties": false
+    },
+    "backend_plan": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.backend-plan.v1"
+        },
+        "engine_version": {
+          "const": "0.7.0-dev"
+        },
+        "status": {
+          "enum": [
+            "planned",
+            "unavailable"
+          ]
+        },
+        "reason": {
+          "type": "string"
+        },
+        "requested": {
+          "type": "object",
+          "properties": {
+            "protocol": {
+              "const": "symphony.sbv.backend-plan-input.v1"
+            },
+            "backend": {
+              "enum": [
+                "cpu",
+                "cuda",
+                "tensor"
+              ]
+            },
+            "fallback": {
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "const": "cpu"
+                }
+              ]
+            },
+            "limit_policy": {
+              "enum": [
+                "reject",
+                "reduce"
+              ]
+            },
+            "scheduling": {
+              "enum": [
+                "independent",
+                "serial_state"
+              ]
+            },
+            "workers": {
+              "type": "string"
+            },
+            "memory_bytes": {
+              "type": "string"
+            },
+            "declared_limits": {
+              "type": "object",
+              "properties": {
+                "workers": {
+                  "type": "string"
+                },
+                "memory_bytes": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "workers",
+                "memory_bytes"
+              ],
+              "additionalProperties": false
+            },
+            "buffer": {
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "dtype": {
+                      "type": "string"
+                    },
+                    "device": {
+                      "enum": [
+                        "cpu",
+                        "cuda",
+                        "tensor"
+                      ]
+                    },
+                    "owner_id": {
+                      "type": "string"
+                    },
+                    "stream_id": {
+                      "type": "string"
+                    },
+                    "storage_bytes": {
+                      "type": "string"
+                    },
+                    "byte_offset": {
+                      "type": "string"
+                    },
+                    "shape": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "minItems": 0,
+                      "maxItems": 16
+                    },
+                    "byte_strides": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "minItems": 0,
+                      "maxItems": 16
+                    },
+                    "completion": {
+                      "enum": [
+                        "pending",
+                        "ready",
+                        "failed",
+                        "cancelled"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "dtype",
+                    "device",
+                    "owner_id",
+                    "stream_id",
+                    "storage_bytes",
+                    "byte_offset",
+                    "shape",
+                    "byte_strides",
+                    "completion"
+                  ],
+                  "additionalProperties": false
+                }
+              ]
+            },
+            "extensions": {}
+          },
+          "required": [
+            "protocol",
+            "backend",
+            "fallback",
+            "limit_policy",
+            "scheduling",
+            "workers",
+            "memory_bytes",
+            "declared_limits",
+            "buffer",
+            "extensions"
+          ],
+          "additionalProperties": false
+        },
+        "resolved": {
+          "type": "object",
+          "properties": {
+            "backend": {
+              "type": "string"
+            },
+            "workers": {
+              "type": "string"
+            },
+            "memory_bytes": {
+              "type": "string"
+            },
+            "fallback_used": {
+              "type": "boolean"
+            },
+            "numeric_profile": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "backend",
+            "workers",
+            "memory_bytes",
+            "fallback_used",
+            "numeric_profile"
+          ],
+          "additionalProperties": false
+        },
+        "buffer": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "const": "unavailable"
+                },
+                "reason": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "null"
+                }
+              },
+              "required": [
+                "status",
+                "reason",
+                "value"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "enum": [
+                    "descriptor_ready",
+                    "unavailable"
+                  ]
+                },
+                "reason": {
+                  "type": "string"
+                },
+                "element_bytes": {
+                  "type": "string"
+                },
+                "required_bytes": {
+                  "type": "string"
+                },
+                "empty": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "status",
+                "reason",
+                "element_bytes",
+                "required_bytes",
+                "empty"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        },
+        "applied": {
+          "type": "null"
+        },
+        "reservation": {
+          "const": false
+        },
+        "contract": {
+          "const": "symphony.sbv.interop.v1"
+        },
+        "capabilities": {
+          "type": "object",
+          "properties": {
+            "cpu": {
+              "const": true
+            },
+            "cuda_runtime": {
+              "const": false
+            },
+            "tensor_runtime": {
+              "const": false
+            },
+            "adapter_completion": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "cpu",
+            "cuda_runtime",
+            "tensor_runtime",
+            "adapter_completion"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "protocol",
+        "engine_version",
+        "status",
+        "reason",
+        "requested",
+        "resolved",
+        "buffer",
+        "applied",
+        "reservation",
+        "contract",
+        "capabilities"
+      ],
+      "additionalProperties": false
+    },
+    "live_plan": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.live-plan.v1"
+        },
+        "engine_version": {
+          "const": "0.7.0-dev"
+        },
+        "can_activate": {
+          "const": false
+        },
+        "mode": {
+          "const": "disconnected_offline_simulation"
+        },
+        "requested": {
+          "type": "object",
+          "properties": {
+            "protocol": {
+              "const": "symphony.sbv.live-plan-input.v1"
+            },
+            "pre_ns": {
+              "type": "string"
+            },
+            "post_ns": {
+              "type": "string"
+            },
+            "event_cap": {
+              "type": "string"
+            },
+            "byte_cap": {
+              "type": "string"
+            },
+            "pending_cap": {
+              "type": "string"
+            },
+            "overflow": {
+              "enum": [
+                "reject",
+                "drop_oldest",
+                "drop_newest"
+              ]
+            },
+            "pending_overflow": {
+              "enum": [
+                "reject",
+                "skip_signal"
+              ]
+            },
+            "observed_until_ns": {
+              "type": "string"
+            },
+            "events": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "available_ns": {
+                    "type": "string"
+                  },
+                  "bytes": {
+                    "type": "string"
+                  },
+                  "signal": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "available_ns",
+                  "bytes",
+                  "signal"
+                ],
+                "additionalProperties": false
+              },
+              "minItems": 0,
+              "maxItems": 512
+            },
+            "extensions": {}
+          },
+          "required": [
+            "protocol",
+            "pre_ns",
+            "post_ns",
+            "event_cap",
+            "byte_cap",
+            "pending_cap",
+            "overflow",
+            "pending_overflow",
+            "observed_until_ns",
+            "events",
+            "extensions"
+          ],
+          "additionalProperties": false
+        },
+        "windows": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "signal_index": {
+                "type": "string"
+              },
+              "start_ns": {
+                "type": "string"
+              },
+              "end_ns": {
+                "type": "string"
+              },
+              "status": {
+                "enum": [
+                  "fixture_complete",
+                  "fixture_loss",
+                  "pending"
+                ]
+              },
+              "fixture_expected_events": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "retained_event_count": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "market_completeness": {
+                "const": "not_established"
+              }
+            },
+            "required": [
+              "signal_index",
+              "start_ns",
+              "end_ns",
+              "status",
+              "fixture_expected_events",
+              "retained_event_count",
+              "market_completeness"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 0,
+          "maxItems": 128
+        },
+        "dropped_events": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "event_index": {
+                "type": "string"
+              },
+              "reason": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "event_index",
+              "reason"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "skipped_signal_indices": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "peak": {
+          "type": "object",
+          "properties": {
+            "events": {
+              "type": "string"
+            },
+            "bytes": {
+              "type": "string"
+            },
+            "pending_windows": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "events",
+            "bytes",
+            "pending_windows"
+          ],
+          "additionalProperties": false
+        },
+        "provider_requests": {
+          "const": "0"
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "protocol",
+        "engine_version",
+        "can_activate",
+        "mode",
+        "requested",
+        "windows",
+        "dropped_events",
+        "skipped_signal_indices",
+        "peak",
+        "provider_requests",
+        "limitations"
       ],
       "additionalProperties": false
     }
@@ -6823,6 +7803,69 @@
           "additionalProperties": false
         }
       ]
+    },
+    "interop_buffer": {
+      "type": "object",
+      "properties": {
+        "dtype": {
+          "type": "string"
+        },
+        "device": {
+          "enum": [
+            "cpu",
+            "cuda",
+            "tensor"
+          ]
+        },
+        "owner_id": {
+          "type": "string"
+        },
+        "stream_id": {
+          "type": "string"
+        },
+        "storage_bytes": {
+          "type": "string"
+        },
+        "byte_offset": {
+          "type": "string"
+        },
+        "shape": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 0,
+          "maxItems": 16
+        },
+        "byte_strides": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 0,
+          "maxItems": 16
+        },
+        "completion": {
+          "enum": [
+            "pending",
+            "ready",
+            "failed",
+            "cancelled"
+          ]
+        }
+      },
+      "required": [
+        "dtype",
+        "device",
+        "owner_id",
+        "stream_id",
+        "storage_bytes",
+        "byte_offset",
+        "shape",
+        "byte_strides",
+        "completion"
+      ],
+      "additionalProperties": false
     }
   },
   "$schema": "https://json-schema.org/draft/2020-12/schema"

@@ -11,11 +11,11 @@ import (
 	"time"
 )
 
-var SBVOperations = []string{"capabilities", "run", "compose", "result_inspect", "result_query", "evaluate", "catalogue", "compose_joint", "economics", "book", "liquidity", "allocation_economics"}
+var SBVOperations = []string{"capabilities", "run", "compose", "result_inspect", "result_query", "evaluate", "catalogue", "compose_joint", "economics", "book", "liquidity", "allocation_economics", "result_select", "backend_plan", "live_plan"}
 var sbvSHA = regexp.MustCompile(`^[0-9a-f]{64}$`)
 
 func sbvSpec() engineSpec {
-	return engineSpec{label: "SBV", moduleID: "sbv-engine", vectorID: "sbv", engineID: "symphony-sbv", componentKind: "vector_engine", processProtocol: processProtocol, operationTimeoutByVersion: map[string]time.Duration{"0.6.0-dev": 5 * time.Minute}}
+	return engineSpec{label: "SBV", moduleID: "sbv-engine", vectorID: "sbv", engineID: "symphony-sbv", componentKind: "vector_engine", processProtocol: processProtocol, operationTimeoutByVersion: map[string]time.Duration{"0.7.0-dev": 5 * time.Minute}}
 }
 func InspectSBV(prefix, version string) (Installation, error) {
 	s := sbvSpec()
@@ -160,6 +160,72 @@ func validateSBVResult(op string, p map[string]any, raw []byte) error {
 				}
 			}
 		}
+	case "backend_plan", "live_plan":
+		if m["engine_version"] != SBVAdministrationInterfaceVersion {
+			return bad()
+		}
+		if op == "live_plan" && m["can_activate"] != false {
+			return bad()
+		}
+	case "result_select":
+		if m["content_sha256"] != p["expected_sha256"] || m["pointer"] != p["pointer"] || !digest("query_sha256") {
+			return bad()
+		}
+		offset, a := number("offset")
+		total, b := number("matched_rows")
+		rows, c := m["rows"].([]any)
+		complete, d := m["complete"].(bool)
+		cursor, e := m["next_cursor"].(string)
+		limit, _ := strconv.ParseUint(p["limit"].(string), 10, 64)
+		if !a || !b || !c || !d || !e || offset > total || uint64(len(rows)) > limit || uint64(len(rows)) > total-offset || complete != (offset+uint64(len(rows)) == total) || (complete && cursor != "") || (!complete && len(rows) == 0) {
+			return bad()
+		}
+		definition := make(map[string]any, len(p))
+		for k, v := range p {
+			if k != "cursor" {
+				definition[k] = v
+			}
+		}
+		encoded, err := sbvNativeCanonical(definition)
+		if err != nil {
+			return bad()
+		}
+		hash := strings.TrimPrefix(digestBytes(encoded), "sha256:")
+		expectedOffset := uint64(0)
+		inputCursor := p["cursor"].(string)
+		if inputCursor != "" {
+			if !strings.HasPrefix(inputCursor, hash+":") {
+				return bad()
+			}
+			expectedOffset, err = strconv.ParseUint(strings.TrimPrefix(inputCursor, hash+":"), 10, 64)
+			if err != nil {
+				return bad()
+			}
+		}
+		sourceRows, ok := number("source_rows")
+		if !ok || total > sourceRows || m["query_sha256"] != hash || offset != expectedOffset || (!complete && cursor != hash+":"+strconv.FormatUint(offset+uint64(len(rows)), 10)) {
+			return bad()
+		}
+		seen := map[uint64]bool{}
+		for _, item := range rows {
+			row, ok := item.(map[string]any)
+			if !ok || len(row) != 3 {
+				return bad()
+			}
+			rawIndex, ok := row["source_index"].(string)
+			if !ok {
+				return bad()
+			}
+			index, err := strconv.ParseUint(rawIndex, 10, 64)
+			if err != nil || strconv.FormatUint(index, 10) != rawIndex || index >= sourceRows || seen[index] || row["pointer"] != p["pointer"].(string)+"/"+rawIndex {
+				return bad()
+			}
+			seen[index] = true
+			if _, ok = row["value"]; !ok {
+				return bad()
+			}
+		}
+
 	case "result_query":
 		if m["content_sha256"] != p["expected_sha256"] || m["pointer"] != p["pointer"] || !digest("content_sha256") || !digest("query_sha256") {
 			return bad()
@@ -173,7 +239,7 @@ func validateSBVResult(op string, p map[string]any, raw []byte) error {
 		if !a || !b || !c || !d || !e || offset > total || uint64(len(nodes)) > limit || uint64(len(nodes)) > total-offset || complete != (offset+uint64(len(nodes)) == total) {
 			return bad()
 		}
-		query, _ := SCVCanonical(map[string]any{"snapshot": p["expected_sha256"], "pointer": p["pointer"], "limit": p["limit"]})
+		query, _ := sbvNativeCanonical(map[string]any{"snapshot": p["expected_sha256"], "pointer": p["pointer"], "limit": p["limit"]})
 		hash := strings.TrimPrefix(digestBytes(query), "sha256:")
 		if m["query_sha256"] != hash {
 			return bad()
@@ -294,4 +360,34 @@ func SBVSchema(prefix, version, operation string) (json.RawMessage, error) {
 		return nil, fmt.Errorf("SBV result schemas missing")
 	}
 	return SCVCanonical(map[string]any{"input": requests[operation], "output": results[operation], "$defs": all["$defs"]})
+}
+
+// Native nlohmann JSON uses UTF-8 for U+2028/U+2029. Go's encoder escapes
+// these even with HTML escaping off. Match the native hash representation,
+// while preserving literal backslash-u text and all other escaped pairs.
+func sbvNativeCanonical(value any) ([]byte, error) {
+	raw, err := SCVCanonical(value)
+	if err != nil {
+		return nil, err
+	}
+	out := make([]byte, 0, len(raw))
+	for i := 0; i < len(raw); {
+		if raw[i] == '\\' && i+1 < len(raw) {
+			if i+6 <= len(raw) && (string(raw[i:i+6]) == "\\u2028" || string(raw[i:i+6]) == "\\u2029") {
+				if raw[i+5] == '8' {
+					out = append(out, []byte(" ")...)
+				} else {
+					out = append(out, []byte(" ")...)
+				}
+				i += 6
+				continue
+			}
+			out = append(out, raw[i], raw[i+1])
+			i += 2
+			continue
+		}
+		out = append(out, raw[i])
+		i++
+	}
+	return out, nil
 }

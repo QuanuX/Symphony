@@ -26,12 +26,14 @@
         "modules/sbv-engine/tests/allocation_economics_test.cpp",
         "modules/sbv-engine/tests/book_test.cpp",
         "modules/sbv-engine/tests/economics_test.cpp",
+        "modules/sbv-engine/tests/interop_consumer.cpp",
         "modules/sbv-engine/tests/liquidity_test.cpp",
         "modules/sbv-engine/tests/models_test.cpp",
+        "modules/sbv-engine/tests/planning_test.cpp",
         "modules/sbv-engine/tests/sbv_test.cpp"
       ],
       "feature_id": "ssfv:symphony:sbv-engine",
-      "how": "C++26 source-bound census, selected models/economics and strict order-book reconstruction and explicit execution scenarios with complete portable result access.",
+      "how": "C++26 calculations and generic exact result access; independent header-only tensor/backend ownership and completion contract; no device or live runtime activation.",
       "implementation_languages": [
         {
           "language": "C++26",
@@ -43,6 +45,7 @@
         }
       ],
       "implementation_paths": [
+        "modules/sbv-engine/include/symphony/sbv/interop.hpp",
         "modules/sbv-engine/src/allocation_economics.cpp",
         "modules/sbv-engine/src/book.cpp",
         "modules/sbv-engine/src/compose.cpp",
@@ -51,8 +54,10 @@
         "modules/sbv-engine/src/evaluate.cpp",
         "modules/sbv-engine/src/liquidity.cpp",
         "modules/sbv-engine/src/model.cpp",
+        "modules/sbv-engine/src/planning.cpp",
         "modules/sbv-engine/src/result.cpp",
         "modules/sbv-engine/src/run.cpp",
+        "modules/sbv-engine/src/select.cpp",
         "modules/sbv-engine/src/wide_rational.hpp"
       ],
       "kind": "feature",
@@ -72,7 +77,7 @@
       "source_scope": "modules/sbv-engine",
       "status": "experimental",
       "title": "Native historical experiments and portable results",
-      "what": "Close signal censuses, evaluate models and economics, reconstruct books and evaluate user-selected independent/shared-snapshot liquidity scenarios, compute quantity-aware markout and optional activation economics, and retain portable replay/results.",
+      "what": "Native closed-census backtesting, models, exact economics, replay, typed result selection and disconnected backend/live planning with installed interop contracts.",
       "when": "Explicit bounded caller-selected invocation.",
       "where": "Independently versioned and installed owner package.",
       "who": "Direct native consumers, operators and qxctl agents.",

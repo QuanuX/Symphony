@@ -1,8 +1,20 @@
 # SBV engine manifest
 
-Module `sbv-engine`, engine `symphony-sbv`, vector `sbv`, release `0.6.0-dev`. Native executable with exact static source dependencies and versioned receipt-v2 ownership. Source SDK header is available; installed SDK packaging is deferred. Backtest artifacts are user-owned outputs outside the install receipt.
+Module `sbv-engine`, engine `symphony-sbv`, vector `sbv`, release `0.7.0-dev`. Native executable with exact static source dependencies and versioned receipt-v2 ownership. Independent interop SDK header/CMake target is installed; full calculation/model SDK packaging remains deferred. Backtest artifacts are user-owned outputs outside the install receipt.
 
 ## Canonical Surfaces
+
+- `modules/sbv-engine/tests/interop_consumer.cpp`
+
+- `modules/sbv-engine/tests/planning_test.cpp`
+
+- `modules/sbv-engine/cmake/SymphonySbvInteropConfig.cmake.in`
+
+- `modules/sbv-engine/include/symphony/sbv/interop.hpp`
+
+- `modules/sbv-engine/src/planning.cpp`
+
+- `modules/sbv-engine/src/select.cpp`
 
 - `modules/sbv-engine/tests/allocation_economics_test.cpp`
 

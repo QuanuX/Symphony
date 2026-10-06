@@ -48,7 +48,7 @@ func newSBVLeaf(op, leaf string) *cobra.Command {
 	var limit uint
 	var machine bool
 	resource := op == "schema" || op == "template"
-	read := strings.HasPrefix(op, "result_")
+	read := strings.HasPrefix(op, "result_") && op != "result_select"
 	c := &cobra.Command{Use: leaf, Short: "Native SBV " + strings.ReplaceAll(op, "_", " "), Args: usageOnlyArgs, RunE: func(c *cobra.Command, _ []string) error {
 		if format != "text" && format != "json" && format != "ndjson" {
 			return errUsageOnly
@@ -152,7 +152,7 @@ func newSBVLeaf(op, leaf string) *cobra.Command {
 	interaction := "invoke"
 	if resource || op == "capabilities" || op == "catalogue" {
 		interaction = "discover"
-	} else if read {
+	} else if read || op == "result_select" {
 		interaction = "inspect"
 	}
 	spec := commandSpec(key, featureSBVAdministration, interaction)

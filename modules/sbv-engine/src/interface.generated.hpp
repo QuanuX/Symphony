@@ -3,7 +3,7 @@
 #include "symphony/knowledge/engine/operation.hpp"
 namespace symphony::sbv::interface {
 namespace engine = symphony::knowledge::engine;
-inline constexpr auto version = "0.6.0-dev";
+inline constexpr auto version = "0.7.0-dev";
 inline std::vector<engine::OperationSpec> interface_operations() { return {
   {"engop:symphony:sbv.capabilities", "capabilities", "implemented", false, true, {"ssfv:symphony:sbv-engine"}, {"discover"}, "qxctl_required", "symphony.sbv.capabilities-input.v1", "symphony.sbv.capabilities.v1", "read_only", "idempotent", false, "none", "", "supported", "freezing"},
   {"engop:symphony:sbv.run", "run", "implemented", false, true, {"ssfv:symphony:sbv-engine"}, {"invoke"}, "qxctl_required", "symphony.sbv.run-input.v1", "symphony.sbv.run.v1", "permission_backed_mutation", "non_idempotent", false, "target_host_permission", "engop:symphony:sbv.result-inspect", "supported", "freezing"},
@@ -17,5 +17,8 @@ inline std::vector<engine::OperationSpec> interface_operations() { return {
   {"engop:symphony:sbv.book", "book", "implemented", false, true, {"ssfv:symphony:sbv-engine"}, {"invoke"}, "qxctl_required", "symphony.sbv.book-input.v1", "symphony.sbv.book.v1", "permission_backed_mutation", "non_idempotent", false, "target_host_permission", "engop:symphony:sbv.result-inspect", "supported", "freezing"},
   {"engop:symphony:sbv.liquidity", "liquidity", "implemented", false, true, {"ssfv:symphony:sbv-engine"}, {"invoke"}, "qxctl_required", "symphony.sbv.liquidity-input.v1", "symphony.sbv.liquidity.v1", "permission_backed_mutation", "non_idempotent", false, "target_host_permission", "engop:symphony:sbv.result-inspect", "supported", "freezing"},
   {"engop:symphony:sbv.allocation-economics", "allocation_economics", "implemented", false, true, {"ssfv:symphony:sbv-engine"}, {"invoke"}, "qxctl_required", "symphony.sbv.allocation-economics-input.v1", "symphony.sbv.allocation-economics.v1", "permission_backed_mutation", "non_idempotent", false, "target_host_permission", "engop:symphony:sbv.result-inspect", "supported", "freezing"},
+  {"engop:symphony:sbv.result-select", "result_select", "implemented", false, true, {"ssfv:symphony:sbv-engine"}, {"inspect"}, "qxctl_required", "symphony.sbv.result-select-input.v1", "symphony.sbv.result-select.v1", "read_only", "idempotent", false, "none", "", "supported", "freezing"},
+  {"engop:symphony:sbv.backend-plan", "backend_plan", "implemented", false, true, {"ssfv:symphony:sbv-engine"}, {"invoke"}, "qxctl_required", "symphony.sbv.backend-plan-input.v1", "symphony.sbv.backend-plan.v1", "read_only", "idempotent", false, "none", "", "supported", "freezing"},
+  {"engop:symphony:sbv.live-plan", "live_plan", "implemented", false, true, {"ssfv:symphony:sbv-engine"}, {"invoke"}, "qxctl_required", "symphony.sbv.live-plan-input.v1", "symphony.sbv.live-plan.v1", "read_only", "idempotent", false, "none", "", "supported", "freezing"},
 }; }
 }

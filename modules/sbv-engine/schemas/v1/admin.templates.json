@@ -350,6 +350,45 @@
       ],
       "on_unavailable": "unavailable",
       "extensions": {}
+    },
+    "result_select": {
+      "protocol": "symphony.sbv.result-select-input.v1",
+      "path": "/absolute/private/result.json",
+      "expected_sha256": "REPLACE_WITH_CONTENT_SHA256",
+      "pointer": "/sections/signals/data",
+      "filters": [],
+      "order_by": [],
+      "columns": [],
+      "limit": "100",
+      "cursor": ""
+    },
+    "backend_plan": {
+      "protocol": "symphony.sbv.backend-plan-input.v1",
+      "backend": "cpu",
+      "fallback": null,
+      "limit_policy": "reject",
+      "scheduling": "independent",
+      "workers": "4",
+      "memory_bytes": "67108864",
+      "declared_limits": {
+        "workers": "4",
+        "memory_bytes": "67108864"
+      },
+      "buffer": null,
+      "extensions": {}
+    },
+    "live_plan": {
+      "protocol": "symphony.sbv.live-plan-input.v1",
+      "pre_ns": "1000000000",
+      "post_ns": "1000000000",
+      "event_cap": "1024",
+      "byte_cap": "1048576",
+      "pending_cap": "32",
+      "overflow": "reject",
+      "pending_overflow": "reject",
+      "observed_until_ns": "0",
+      "events": [],
+      "extensions": {}
     }
   }
 }

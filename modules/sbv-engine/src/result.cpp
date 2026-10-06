@@ -244,6 +244,12 @@ Json dispatch(const std::string &op, const Json &p, std::int64_t end) {
     return d::compose(p, end);
   if (op == "compose_joint")
     return d::compose_joint(p, end);
+  if (op == "result_select")
+    return d::result_select(p, end);
+  if (op == "backend_plan")
+    return d::backend_plan(p, end);
+  if (op == "live_plan")
+    return d::live_plan(p, end);
   if (op == "allocation_economics")
     return d::allocation_economics(p, end);
   if (op == "liquidity")

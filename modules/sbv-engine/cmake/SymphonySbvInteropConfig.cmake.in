@@ -1,0 +1,8 @@
+# Exact header-only source contract; no GPU/vendor runtime dependency.
+get_filename_component(_sbv_prefix "${CMAKE_CURRENT_LIST_DIR}/../../../.." ABSOLUTE)
+if(NOT TARGET Symphony::SbvInterop)
+ add_library(Symphony::SbvInterop INTERFACE IMPORTED)
+ set_target_properties(Symphony::SbvInterop PROPERTIES INTERFACE_INCLUDE_DIRECTORIES "${_sbv_prefix}/include/symphony/sbv-engine/@release@" INTERFACE_COMPILE_FEATURES cxx_std_26)
+endif()
+set(SymphonySbvInterop_VERSION "@release@")
+unset(_sbv_prefix)
