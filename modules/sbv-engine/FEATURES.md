@@ -28,6 +28,7 @@
         "modules/sbv-engine/tests/book_test.cpp",
         "modules/sbv-engine/tests/combinatorial_test.cpp",
         "modules/sbv-engine/tests/dataset_test.cpp",
+        "modules/sbv-engine/tests/dependencies_test.cpp",
         "modules/sbv-engine/tests/economics_test.cpp",
         "modules/sbv-engine/tests/fit_test.cpp",
         "modules/sbv-engine/tests/interop_consumer.cpp",
@@ -101,7 +102,7 @@
       "source_scope": "modules/sbv-engine",
       "status": "experimental",
       "title": "Native historical experiments and portable results",
-      "what": "Native multipass backtesting, replay, exact economics, selectable studies and comparison, deterministic bootstrap and durable local native trial execution. Temporal interval partitions expose expanding/rolling/explicit schedules, optional purging, embargo and availability filtering. Optional user-constrained resident DBN preloads share decoded events across native jobs, experiments, qxctl and SDK calls with explicit memory and lifecycle controls. Dataset bytes, records, metadata and load memory have nullable user-selected limits, with no built-in dataset-volume cap. Process v2 exposes optional user deadlines without an engine-selected duration or resident handshake timeout. Combinatorial temporal partitions expose exact fold addressing, complementary groups, per-group embargo and selected-page reuse counts. Native exact linear fitting and prediction preserve explicit weights, penalties, column identities and training-overlap disclosure.",
+      "what": "Native multipass backtesting, replay, exact economics, selectable studies and comparison, deterministic bootstrap and durable local native trial execution. Temporal interval partitions expose expanding/rolling/explicit schedules, optional purging, embargo and availability filtering. Optional user-constrained resident DBN preloads share decoded events across native jobs, experiments, qxctl and SDK calls with explicit memory and lifecycle controls. Dataset bytes, records, metadata and load memory have nullable user-selected limits, with no built-in dataset-volume cap. Process v2 exposes optional user deadlines without an engine-selected duration or resident handshake timeout. Combinatorial temporal partitions expose exact fold addressing, complementary groups, per-group embargo and selected-page reuse counts. Native exact linear fitting and prediction preserve explicit weights, penalties, column identities and training-overlap disclosure. Explicit local dependency graphs bind immutable results, preserve resolved claims and block unavailable prerequisites without duplicate execution.",
       "when": "Explicit bounded caller-selected invocation.",
       "where": "Independently versioned and installed owner package.",
       "who": "Direct native consumers, operators and qxctl agents.",
@@ -112,3 +113,5 @@
 }
 ```
 <!-- symphony:ssfv:feature-file:v1:end -->
+
+Experimental 0.17 adds explicit local experiment dependencies and immutable result-reference bindings for split/fit/predict graphs. Resolved claims, parent receipts, blocked states and stable wave order are terminal-queryable; exact-plan reconciliation reuses completed trials. See SPEC.md for scope and remaining orchestration work.

@@ -35,7 +35,7 @@ func TestSBVInstalledAllocationEconomics(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		return InvokeSBV(context.Background(), prefix, "0.16.0-dev", cwd, op, b)
+		return InvokeSBV(context.Background(), prefix, "0.17.0-dev", cwd, op, b)
 	}
 	response, err := invoke("allocation_economics", request)
 	if err != nil {
@@ -53,7 +53,7 @@ func TestSBVInstalledAllocationEconomics(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	schema, err := SBVSchema(prefix, "0.16.0-dev", "allocation_economics")
+	schema, err := SBVSchema(prefix, "0.17.0-dev", "allocation_economics")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -101,7 +101,7 @@ func TestSBVInstalledAllocationEconomics(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	catalogueSchema, err := SBVSchema(prefix, "0.16.0-dev", "catalogue")
+	catalogueSchema, err := SBVSchema(prefix, "0.17.0-dev", "catalogue")
 	if err != nil {
 		t.Fatal(err)
 	}

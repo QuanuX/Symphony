@@ -3,9 +3,9 @@
   "module_id": "sbv-engine",
   "engine_id": "symphony-sbv",
   "namespace": "symphony::sbv::interface",
-  "current_version": "0.16.0-dev",
+  "current_version": "0.17.0-dev",
   "releases": {
-    "0.16.0-dev": [
+    "0.17.0-dev": [
       "capabilities",
       "run",
       "compose",

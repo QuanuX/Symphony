@@ -2,7 +2,7 @@
 
 ## Version and ownership
 
-Contract v1; package `sbv-engine` 0.16.0-dev; engine `symphony-sbv`; vector `sbv`. C++26 owns computations, result sealing and artifact queries. Go qxctl verifies the exact installation and projects native evidence. OWNER-INTERFACE.json is the exact operation declaration; generated C++/Go metadata must match it. This release is experimental.
+Contract v1; package `sbv-engine` 0.17.0-dev; engine `symphony-sbv`; vector `sbv`. C++26 owns computations, result sealing and artifact queries. Go qxctl verifies the exact installation and projects native evidence. OWNER-INTERFACE.json is the exact operation declaration; generated C++/Go metadata must match it. This release is experimental.
 
 The engine uses knowledge-vector-engine-cpp 0.2.0-dev and sqav-databento-dbn-cpp 0.5.0-dev, with that adapter's exact static dependencies. It performs no provider calls. Signal/replay semantics belong to SBV; acquisition remains SQAV, metadata SQMV, batch ownership SQFV, transformation SQTV, physical stores SQPV and recipient delivery SQDV. Its portable local JSON result is a derived artifact, not a new market-data persistence service. SQPV/SQDV integrations are not wired in this release.
 
@@ -561,7 +561,7 @@ access ledger or claim that a holdout remains untouched.
 These operations can be composed with retained train/test rows from `split`,
 including combinatorial pages; their outputs also feed `analyze`, `compare` and
 external pipelines. Local `experiment` admits both operations with already
-resolved input/model references. Dependency scheduling, automatic nested fitting,
+resolved input/model references; 0.17 adds explicit dependency binding below. Automatic nested fitting,
 stitched performance paths and cross-run holdout-access history remain separate
 work. Existing operation identity and immutable journal rules still apply.
 
@@ -574,3 +574,62 @@ resources or another implementation; there is no silent approximation. This
 first baseline uses one native worker per fit/prediction; independent trials may
 run through the existing threaded experiment runner. It is not a GPU, large-dense
 solver or competitive-performance claim.
+
+## Explicit local trial dependencies (0.17)
+
+`experiment` optionally accepts `depends_on` and `bindings` on each ready trial.
+Omitted arrays mean no dependencies. Each dependency names a unique other trial
+in the same plan, including trials later in the input array. All IDs, edges,
+binding destinations and acyclicity are validated before creating the journal.
+Pruned trials keep null operation/request and have no dependencies or bindings.
+A ready trial may depend on a pruned trial; it becomes blocked.
+
+Each binding has `target_pointer`, `trial_id` and `result_pointer`. The named
+trial must also appear in `depends_on`. The destination is an existing null slot
+in the consumer request, addressed by RFC6901; the request root, assigned output
+path, existing values and duplicate/overlapping destinations cannot be replaced.
+The source pointer is RFC6901 within the parent's complete result (empty selects
+the root). Before the consumer is claimed, the engine checks the parent's receipt,
+content hash and exact file bytes and verifies the source selection exists. It
+replaces the null slot with `{path, expected_sha256, pointer}` referencing that
+immutable result. It does not copy the selected data or infer compatible units,
+feature meanings or an estimator. The selected producer validates its request as
+usual. A selected null value is present; its consumer decides whether it is usable.
+These reference bindings support native split → fit → predict compositions and
+other producers whose input accepts this reference object. Arbitrary expression
+evaluation, scalar substitution and implicit translation of other input shapes
+are outside this release.
+
+Scheduling uses stable topological waves. At each wave, ready graph nodes are
+ordered by the caller's trial-array position; up to `workers` execute concurrently.
+A wave joins before the next starts, so dependencies always precede consumers.
+The ledger retains the caller's original order. `planned_waves` records the
+schedule, `wave_count` its length and `actual_outer_workers` the maximum admitted
+wave concurrency (not measured utilization). With `on_failure=stop`, one worker
+is required; the first noncompleted executed node stops remaining claims in this
+stable topological order. Continue mode executes independent branches. The prior
+64-trial/16-outer-worker/64-worker-product operational profile is unchanged.
+
+A dependency in failed, pruned, ambiguous or blocked state blocks its dependents.
+An absent or invalid selection also blocks before claim. Blocked rows have no
+request hash, journal or result; dependency receipts and any already resolved
+bindings remain inspectable. They are observations, not claimed/failed runs.
+Unexpected journal files for a blocked trial reject reconciliation. Descendant
+blocking propagates transitively; independent work continues under continue mode.
+A completed dependency means its native operation committed an artifact, not that
+all its studies/model fields are available or statistically valid. Result status
+is retained in its receipt. No automatic quality threshold or holdout authority
+is imposed.
+
+Every claim records the full resolved request, its hash, dependency states/receipts
+and resolved bindings. Completion receipts retain plan/request correspondence.
+On repeated invocation the same graph is resolved and every completed ancestor is
+verified before dependent claims/receipts can be reused. No completed trial is
+reexecuted. An incomplete claim remains ambiguous; its descendants are not run.
+A separately identified experiment is the explicit retry path. Version/plan
+changes still require a separate directory. This is local artifact composition,
+not distributed scheduling, nested cross-validation orchestration, automatic
+search-space expansion, optimizer selection or a cross-run holdout-access ledger.
+No default deadline or dataset capacity policy was added. All graph records,
+claims and results use the existing qxctl/SDK result contract for terminal and
+future external/GUI consumers.

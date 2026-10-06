@@ -82,24 +82,19 @@ Json experiment(const Json &p, std::int64_t end) {
   const auto &trials = p.at("trials");
   need(trials.is_array() && trials.size() <= 64, "experiment trial bound 64");
   std::set<std::string> names;
+  std::map<std::string, std::size_t> indices;
   std::vector<Json> requests;
   std::uint64_t inner_max = 1;
-  const std::set<std::string> operations{"run",
-                                         "evaluate",
-                                         "compose",
-                                         "compose_joint",
-                                         "economics",
-                                         "book",
-                                         "liquidity",
-                                         "allocation_economics",
-                                         "analyze",
-                                         "compare",
-                                         "resample",
-                                         "split", "fit", "predict",
-                                         "dataset_execute"};
+  const std::set<std::string> operations{
+      "run",       "evaluate", "compose",        "compose_joint",
+      "economics", "book",     "liquidity",      "allocation_economics",
+      "analyze",   "compare",  "resample",       "split",
+      "fit",       "predict",  "dataset_execute"};
   for (const auto &t : trials) {
-    keys(t, {"id", "state", "operation", "request", "reason", "parameters",
-             "lineage"});
+    keys_optional(t,
+                  {"id", "state", "operation", "request", "reason",
+                   "parameters", "lineage"},
+                  {"depends_on", "bindings"});
     auto name = str(t.at("id"));
     need(id_ok(name) && names.insert(name).second,
          "unique safe trial id required");
@@ -108,6 +103,7 @@ Json experiment(const Json &p, std::int64_t end) {
     need(str(t.at("reason")).size() <= 4096 && t.at("parameters").is_object() &&
              t.at("lineage").is_object(),
          "trial metadata required");
+    indices.emplace(name, requests.size());
     auto request = t.at("request");
     if (t.at("state") == "ready") {
       need(operations.contains(str(t.at("operation"))) && request.is_object() &&
@@ -128,6 +124,64 @@ Json experiment(const Json &p, std::int64_t end) {
                !str(t.at("reason")).empty(),
            "pruned trial requires reason and null operation/request");
     requests.push_back(request);
+  }
+  // Admit the entire graph and destination slots before creating the journal.
+  // Dependencies can point forward in the caller's list; results retain that
+  // list order.
+  std::vector<std::vector<std::size_t>> dependencies(trials.size());
+  std::vector<std::size_t> levels(trials.size(), trials.size());
+  for (std::size_t i = 0; i < trials.size(); ++i) {
+    const auto &t = trials[i];
+    const auto deps = t.value("depends_on", Json::array());
+    const auto bindings = t.value("bindings", Json::array());
+    need(deps.is_array() && bindings.is_array(),
+         "dependency and binding arrays required");
+    std::set<std::string> unique;
+    for (const auto &dep : deps) {
+      const auto id = str(dep);
+      need(indices.contains(id) && indices.at(id) != i &&
+               unique.insert(id).second,
+           "dependency must name a unique other trial");
+      dependencies[i].push_back(indices.at(id));
+    }
+    need(t.at("state") != "pruned" || (deps.empty() && bindings.empty()),
+         "pruned trials have no dependencies or bindings");
+    auto slots = requests[i];
+    for (const auto &b : bindings) {
+      keys(b, {"target_pointer", "trial_id", "result_pointer"});
+      need(unique.contains(str(b.at("trial_id"))),
+           "binding trial must be an explicit dependency");
+      const auto target = str(b.at("target_pointer")),
+                 source = str(b.at("result_pointer"));
+      need(!target.empty() && target[0] == '/' &&
+               (source.empty() || source[0] == '/'),
+           "binding pointers must be RFC6901 pointers; request root cannot be "
+           "replaced");
+      try {
+        Json::json_pointer destination(target), selection(source);
+        (void)selection;
+        need(slots.at(destination).is_null(),
+             "binding target must be a unique existing null slot");
+        slots.at(destination) = Json::object();
+      } catch (const Json::exception &) {
+        need(false, "invalid binding pointer or missing destination slot");
+      }
+    }
+  }
+  std::vector<std::vector<std::size_t>> waves;
+  std::size_t remaining = trials.size();
+  while (remaining) {
+    std::vector<std::size_t> wave;
+    for (std::size_t i = 0; i < trials.size(); ++i)
+      if (levels[i] == trials.size() &&
+          std::all_of(dependencies[i].begin(), dependencies[i].end(),
+                      [&](auto dep) { return levels[dep] < waves.size(); }))
+        wave.push_back(i);
+    need(!wave.empty(), "experiment dependency cycle");
+    for (auto i : wave)
+      levels[i] = waves.size();
+    remaining -= wave.size();
+    waves.push_back(std::move(wave));
   }
   need(workers * inner_max <= 64,
        "selected outer and inner worker product exceeds 64; choose explicit "
@@ -178,35 +232,114 @@ Json experiment(const Json &p, std::int64_t end) {
   std::atomic<bool> stop{false};
   std::exception_ptr failure;
   std::mutex errors;
-  const auto actual = std::min<std::uint64_t>(workers, trials.size());
+  std::size_t actual = 0;
+  for (const auto &wave : waves)
+    actual = std::max(actual, std::min<std::size_t>(workers, wave.size()));
+  const std::vector<std::size_t> *active_wave = nullptr;
   auto work = [&] {
     try {
       for (;;) {
         if (stop)
           break;
-        auto i = cursor.fetch_add(1);
-        if (i >= trials.size())
+        auto offset = cursor.fetch_add(1);
+        if (offset >= active_wave->size())
           break;
+        const auto i = active_wave->at(offset);
         deadline(end);
         const auto &t = trials[i];
         auto name = str(t.at("id"));
-        Json row{{"id", name},        {"state", "not_started"},
-                 {"reason", ""},      {"request_sha256", nullptr},
-                 {"result", nullptr}, {"journal", nullptr}};
+        Json row{{"id", name},
+                 {"state", "not_started"},
+                 {"reason", ""},
+                 {"request_sha256", nullptr},
+                 {"result", nullptr},
+                 {"journal", nullptr},
+                 {"dependencies", Json::array()},
+                 {"bindings", Json::array()}};
         if (t.at("state") == "pruned") {
           row["state"] = "pruned";
           row["reason"] = t.at("reason");
           rows[i] = row;
           continue;
         }
-        const auto &request = requests[i];
+        auto request = requests[i];
+        bool blocked = false;
+        for (auto dep : dependencies[i]) {
+          const auto &parent = rows[dep];
+          need(!parent.is_null(), "dependency scheduler invariant");
+          row["dependencies"].push_back({{"trial_id", parent.at("id")},
+                                         {"state", parent.at("state")},
+                                         {"result", parent.at("result")}});
+          blocked |= parent.at("state") != "completed";
+        }
+        if (!blocked) {
+          // Recheck referenced immutable bytes before binding their content
+          // identity.
+          std::map<std::string, Json> sources;
+          for (const auto &b : t.value("bindings", Json::array())) {
+            const auto parent_id = str(b.at("trial_id"));
+            const auto &receipt = rows[indices.at(parent_id)].at("result");
+            if (!sources.contains(parent_id)) {
+              const auto bytes = read_file(str(receipt.at("path")), end);
+              auto result =
+                  e::parse_bounded_json(bytes, artifact_bytes, artifact_values);
+              validate_result(result);
+              need(result.at("content_sha256") ==
+                           receipt.at("content_sha256") &&
+                       e::sha256_hex(bytes) == str(receipt.at("file_sha256")) &&
+                       dec(bytes.size()) == str(receipt.at("bytes")),
+                   "dependency result changed before binding");
+              sources.emplace(parent_id, std::move(result));
+            }
+            const Json::json_pointer selection(str(b.at("result_pointer")));
+            bool selected = false;
+            try {
+              selected = sources.at(parent_id).contains(selection);
+            } catch (
+                const Json::exception &) { /* invalid index for this result */
+            }
+            if (!selected) {
+              blocked = true;
+              row["reason"] = "dependency result pointer is absent";
+              break;
+            }
+            Json reference{{"path", receipt.at("path")},
+                           {"expected_sha256", receipt.at("content_sha256")},
+                           {"pointer", b.at("result_pointer")}};
+            request.at(Json::json_pointer(str(b.at("target_pointer")))) =
+                reference;
+            row["bindings"].push_back(
+                {{"target_pointer", b.at("target_pointer")},
+                 {"trial_id", parent_id},
+                 {"reference", reference}});
+          }
+        }
+        if (blocked) {
+          // Never leave or reuse a claimed dependent when its required evidence
+          // is absent.
+          for (const auto *suffix :
+               {".claim.json", ".receipt.json", ".result.json"})
+            need(!exists(dir.fd, name + suffix),
+                 "blocked trial has unexpected journal artifacts");
+          row["state"] = "blocked";
+          if (row.at("reason") == "")
+            row["reason"] = "one or more dependencies did not complete";
+          if (p.at("on_failure") == "stop")
+            stop = true;
+          rows[i] = std::move(row);
+          continue;
+        }
         const auto request_hash = e::sha256_hex(request.dump());
         row["request_sha256"] = request_hash;
         auto claim = base("local experiment trial claim");
-        claim["sections"]["search"] = section({{"plan_sha256", plan_hash},
-                                               {"trial_id", name},
-                                               {"request_sha256", request_hash},
-                                               {"state", "claimed"}});
+        claim["sections"]["search"] =
+            section({{"plan_sha256", plan_hash},
+                     {"trial_id", name},
+                     {"request_sha256", request_hash},
+                     {"state", "claimed"},
+                     {"resolved_request", request},
+                     {"dependencies", row.at("dependencies")},
+                     {"bindings", row.at("bindings")}});
         claim = seal_result(claim);
         const auto claim_path = root + "/" + name + ".claim.json",
                    receipt_path = root + "/" + name + ".receipt.json";
@@ -302,24 +435,31 @@ Json experiment(const Json &p, std::int64_t end) {
       stop = true;
     }
   };
-  std::vector<std::jthread> pool;
-  try {
-    for (std::uint64_t i = 0; i < actual; ++i)
-      pool.emplace_back(work);
-  } catch (...) {
-    stop = true;
-    throw;
+  for (const auto &wave : waves) {
+    if (stop)
+      break;
+    active_wave = &wave;
+    cursor = 0;
+    std::vector<std::jthread> pool;
+    try {
+      for (std::size_t i = 0; i < std::min<std::size_t>(workers, wave.size());
+           ++i)
+        pool.emplace_back(work);
+    } catch (...) {
+      stop = true;
+      throw;
+    }
+    // Joining a complete wave publishes all parent rows before a child can read
+    // them.
+    pool.clear();
+    if (failure)
+      std::rethrow_exception(failure);
   }
-  pool.clear();
-  if (failure)
-    std::rethrow_exception(failure);
   deadline(end);
   Json ledger = Json::array();
-  std::map<std::string, std::size_t> counts{{"completed", 0},
-                                            {"failed", 0},
-                                            {"pruned", 0},
-                                            {"ambiguous", 0},
-                                            {"not_started", 0}};
+  std::map<std::string, std::size_t> counts{
+      {"completed", 0}, {"failed", 0},      {"pruned", 0},
+      {"ambiguous", 0}, {"not_started", 0}, {"blocked", 0}};
   for (std::size_t i = 0; i < rows.size(); ++i) {
     if (rows[i].is_null())
       rows[i] = {{"id", trials[i].at("id")},
@@ -327,24 +467,37 @@ Json experiment(const Json &p, std::int64_t end) {
                  {"reason", "ordered stop-on-failure prevented claim"},
                  {"request_sha256", nullptr},
                  {"result", nullptr},
-                 {"journal", nullptr}};
+                 {"journal", nullptr},
+                 {"dependencies", Json::array()},
+                 {"bindings", Json::array()}};
     ++counts.at(str(rows[i].at("state")));
     ledger.push_back(rows[i]);
   }
   auto result = base("durable private local SBV experiment observation");
-  if (counts["failed"] || counts["ambiguous"] || counts["not_started"])
+  if (counts["failed"] || counts["ambiguous"] || counts["not_started"] ||
+      counts["blocked"])
     result["status"] = "partial";
   auto &s = result["sections"];
   Json summary = Json::object();
   for (const auto &[state, n] : counts)
     summary[state] = dec(n);
   s["summary"] = section(summary);
+  Json planned_waves = Json::array();
+  for (const auto &wave : waves) {
+    Json ids = Json::array();
+    for (auto i : wave)
+      ids.push_back(trials[i].at("id"));
+    planned_waves.push_back(std::move(ids));
+  }
   s["search"] = section({{"experiment_id", id},
                          {"plan_sha256", plan_hash},
                          {"plan_path", plan_path},
                          {"trials", ledger},
                          {"executed_this_invocation", dec(executed.load())},
-                         {"reused_receipts", dec(reused.load())}});
+                         {"reused_receipts", dec(reused.load())},
+                         {"schedule", "stable_topological_waves_v1"},
+                         {"wave_count", dec(waves.size())},
+                         {"planned_waves", planned_waves}});
   s["choices"] = section(choices);
   s["resources"] =
       section({{"backend", "cpu"},
@@ -368,6 +521,12 @@ Json experiment(const Json &p, std::int64_t end) {
        "experiment after review.",
        "Reconciliation verifies exact plan/version, request hash, source "
        "result content and file bytes before reusing completed trials.",
+       "Explicit dependencies execute in stable topological waves; dependent "
+       "claims bind resolved requests and immutable parent receipts. "
+       "Noncompleted "
+       "parents and absent selections block dependents without claiming them.",
+       "Completed means producer execution committed; child result status and "
+       "per-study availability remain visible and are not a quality gate.",
        "This is bounded local native trial execution; optimizer proposals, "
        "holdout history and pruning decisions remain user supplied."}));
   s["user_extensions"] = section(p.at("extensions"));

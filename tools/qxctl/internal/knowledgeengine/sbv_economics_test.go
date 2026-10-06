@@ -35,7 +35,7 @@ func TestSBVInstalledEconomics(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		return InvokeSBV(context.Background(), prefix, "0.16.0-dev", cwd, op, b)
+		return InvokeSBV(context.Background(), prefix, "0.17.0-dev", cwd, op, b)
 	}
 	response, err := invoke("economics", request)
 	if err != nil {
@@ -53,7 +53,7 @@ func TestSBVInstalledEconomics(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	schema, err := SBVSchema(prefix, "0.16.0-dev", "economics")
+	schema, err := SBVSchema(prefix, "0.17.0-dev", "economics")
 	if err != nil {
 		t.Fatal(err)
 	}

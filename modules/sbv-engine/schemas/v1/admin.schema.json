@@ -2780,7 +2780,37 @@
                 "type": "string"
               },
               "parameters": {},
-              "lineage": {}
+              "lineage": {},
+              "depends_on": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Each dependency must name a unique other trial; native graph admission validates uniqueness and acyclicity."
+              },
+              "bindings": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "target_pointer": {
+                      "type": "string"
+                    },
+                    "trial_id": {
+                      "type": "string"
+                    },
+                    "result_pointer": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "target_pointer",
+                    "trial_id",
+                    "result_pointer"
+                  ],
+                  "additionalProperties": false
+                }
+              }
             },
             "required": [
               "id",
@@ -3673,7 +3703,7 @@
           "const": "symphony.sbv.capabilities.v1"
         },
         "engine_version": {
-          "const": "0.16.0-dev"
+          "const": "0.17.0-dev"
         },
         "cpu": {
           "type": "object",
@@ -4298,7 +4328,7 @@
           "const": "symphony.sbv.catalogue.v1"
         },
         "engine_version": {
-          "const": "0.16.0-dev"
+          "const": "0.17.0-dev"
         },
         "models": {
           "type": "array",
@@ -4889,7 +4919,7 @@
           "const": "symphony.sbv.backend-plan.v1"
         },
         "engine_version": {
-          "const": "0.16.0-dev"
+          "const": "0.17.0-dev"
         },
         "status": {
           "enum": [
@@ -5182,7 +5212,7 @@
           "const": "symphony.sbv.live-plan.v1"
         },
         "engine_version": {
-          "const": "0.16.0-dev"
+          "const": "0.17.0-dev"
         },
         "can_activate": {
           "const": false
@@ -10819,7 +10849,8 @@
             "failed",
             "pruned",
             "ambiguous",
-            "not_started"
+            "not_started",
+            "blocked"
           ]
         },
         "reason": {
@@ -10858,6 +10889,67 @@
               "additionalProperties": false
             }
           ]
+        },
+        "dependencies": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "trial_id": {
+                "type": "string"
+              },
+              "state": {
+                "type": "string"
+              },
+              "result": {}
+            },
+            "required": [
+              "trial_id",
+              "state",
+              "result"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "bindings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "target_pointer": {
+                "type": "string"
+              },
+              "trial_id": {
+                "type": "string"
+              },
+              "reference": {
+                "type": "object",
+                "properties": {
+                  "path": {
+                    "type": "string"
+                  },
+                  "expected_sha256": {
+                    "type": "string"
+                  },
+                  "pointer": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "path",
+                  "expected_sha256",
+                  "pointer"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "target_pointer",
+              "trial_id",
+              "reference"
+            ],
+            "additionalProperties": false
+          }
         }
       },
       "required": [
@@ -10866,7 +10958,9 @@
         "reason",
         "request_sha256",
         "result",
-        "journal"
+        "journal",
+        "dependencies",
+        "bindings"
       ],
       "additionalProperties": false
     },

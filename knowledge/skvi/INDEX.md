@@ -22981,3 +22981,42 @@ These entries locate existing implementation and regression surfaces referenced 
 - deferred_projections: nonlinear estimators, nested orchestration and complete holdout access history
 - notes: Caller units, weights and purposes remain explicit; no predictive validity or secrecy is inferred.
 - status: canonical
+
+## SBV explicit dependency scheduling (experimental 0.17)
+
+Owner: `modules/sbv-engine/SPEC.md`, local experiment dependency section.
+Implementation: `modules/sbv-engine/src/experiment.cpp`.
+Evidence: `modules/sbv-engine/tests/dependencies_test.cpp` and
+`tools/qxctl/internal/knowledgeengine/sbv_dependencies_test.go`.
+The existing `sbv experiment` command admits explicit acyclic dependencies and
+immutable result-reference bindings, publishes resolved claims and blocked rows,
+and reconciles exact-plan completion without duplicated trials. Remote scheduling,
+automatic nested fitting and cross-run holdout history remain unimplemented.
+
+### SBV dependencies_test.cpp
+
+- path: `modules/sbv-engine/tests/dependencies_test.cpp`
+- title: Explicit local experiment dependencies
+- surface_type: implementation test
+- truth_role: Focused native and installed dependency graph verification
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.17 graph admission, binding, execution and reconciliation.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, agents and external pipelines
+- deferred_projections: remote scheduling, automatic nested fitting and holdout history
+- notes: Completed producer receipts do not impose statistical quality gates.
+- status: canonical
+
+### SBV sbv_dependencies_test.go
+
+- path: `tools/qxctl/internal/knowledgeengine/sbv_dependencies_test.go`
+- title: Explicit local experiment dependencies
+- surface_type: implementation test
+- truth_role: Focused native and installed dependency graph verification
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.17 graph admission, binding, execution and reconciliation.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, agents and external pipelines
+- deferred_projections: remote scheduling, automatic nested fitting and holdout history
+- notes: Completed producer receipts do not impose statistical quality gates.
+- status: canonical

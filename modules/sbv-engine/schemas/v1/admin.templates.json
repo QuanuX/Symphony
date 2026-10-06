@@ -509,7 +509,164 @@
       "output_path": "/absolute/private/experiment-summary.json",
       "directory": "/absolute/private/existing-experiment-directory",
       "experiment_id": "caller-experiment",
-      "trials": [],
+      "trials": [
+        {
+          "id": "split",
+          "state": "ready",
+          "operation": "split",
+          "request": {
+            "protocol": "symphony.sbv.split-input.v1",
+            "path": "/absolute/private/source.json",
+            "expected_sha256": "REPLACE_WITH_CONTENT_SHA256",
+            "pointer": "/sections/user_extensions/data/observations",
+            "id_pointer": "/id",
+            "start_pointer": "/start_ns",
+            "end_pointer": "/end_ns",
+            "available_pointer": "/available_ns",
+            "clock_domain": "caller_declared_nanosecond_clock",
+            "input_description": "Declare actual label intervals and availability of the whole training observation",
+            "plan": {
+              "kind": "expanding",
+              "train_start_ns": "0",
+              "first_train_end_ns": "100",
+              "first_fit_cutoff_ns": "100",
+              "gap_ns": "0",
+              "test_duration_ns": "20",
+              "step_ns": "20",
+              "fold_count": "1"
+            },
+            "chronology": "past_only",
+            "purge": "label_overlap",
+            "purge_before_ns": "0",
+            "purge_after_ns": "0",
+            "embargo_ns": "0",
+            "availability": "by_fit_cutoff",
+            "retain_rows": true,
+            "extensions": {}
+          },
+          "reason": "",
+          "parameters": {},
+          "lineage": {},
+          "depends_on": [],
+          "bindings": []
+        },
+        {
+          "id": "fit",
+          "state": "ready",
+          "operation": "fit",
+          "request": {
+            "protocol": "symphony.sbv.fit-input.v1",
+            "source": null,
+            "features": [
+              {
+                "id": "x",
+                "pointer": "/x",
+                "value_type": "integer",
+                "unit": "caller_feature_unit"
+              }
+            ],
+            "target": {
+              "pointer": "/y",
+              "value_type": "integer",
+              "unit": "caller_target_unit"
+            },
+            "id_pointer": "/id",
+            "identity_namespace": "caller_observation_namespace",
+            "input_description": "Caller-supplied feature and target meaning; no causal lineage inferred",
+            "weights": {
+              "kind": "uniform",
+              "pointer": null,
+              "domain": "nonnegative"
+            },
+            "missing": "reject",
+            "extensions": {},
+            "intercept": true,
+            "regularization": {
+              "feature_penalties": [
+                {
+                  "numerator": "0",
+                  "denominator": "1"
+                }
+              ],
+              "intercept_penalty": {
+                "numerator": "0",
+                "denominator": "1"
+              }
+            },
+            "on_unsolved": "unavailable",
+            "retain_training_predictions": true
+          },
+          "reason": "",
+          "parameters": {},
+          "lineage": {},
+          "depends_on": [
+            "split"
+          ],
+          "bindings": [
+            {
+              "target_pointer": "/source",
+              "trial_id": "split",
+              "result_pointer": "/sections/folds/data/0/train_rows"
+            }
+          ]
+        },
+        {
+          "id": "predict",
+          "state": "ready",
+          "operation": "predict",
+          "request": {
+            "protocol": "symphony.sbv.predict-input.v1",
+            "source": null,
+            "features": [
+              {
+                "id": "x",
+                "pointer": "/x",
+                "value_type": "integer",
+                "unit": "caller_feature_unit"
+              }
+            ],
+            "target": {
+              "pointer": "/y",
+              "value_type": "integer",
+              "unit": "caller_target_unit"
+            },
+            "id_pointer": "/id",
+            "identity_namespace": "caller_observation_namespace",
+            "input_description": "Caller-supplied feature and target meaning; no causal lineage inferred",
+            "weights": {
+              "kind": "uniform",
+              "pointer": null,
+              "domain": "nonnegative"
+            },
+            "missing": "reject",
+            "extensions": {},
+            "model": null,
+            "purpose": "exploratory",
+            "studies": [
+              "regression_errors"
+            ]
+          },
+          "reason": "",
+          "parameters": {},
+          "lineage": {},
+          "depends_on": [
+            "split",
+            "fit"
+          ],
+          "bindings": [
+            {
+              "target_pointer": "/source",
+              "trial_id": "split",
+              "result_pointer": "/sections/folds/data/0/test_rows"
+            },
+            {
+              "target_pointer": "/model",
+              "trial_id": "fit",
+              "result_pointer": "/sections/model/data"
+            }
+          ]
+        }
+      ],
       "workers": "1",
       "on_failure": "continue",
       "extensions": {}
