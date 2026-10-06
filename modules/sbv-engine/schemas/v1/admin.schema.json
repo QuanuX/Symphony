@@ -2665,7 +2665,7 @@
           "const": "symphony.sbv.capabilities.v1"
         },
         "engine_version": {
-          "const": "0.9.0-dev"
+          "const": "0.10.0-dev"
         },
         "cpu": {
           "type": "object",
@@ -2781,6 +2781,36 @@
           "items": {
             "type": "string"
           }
+        },
+        "sdk": {
+          "type": "object",
+          "properties": {
+            "abi": {
+              "const": "symphony.sbv.sdk.v1"
+            },
+            "shared_library": {
+              "const": true
+            },
+            "bindings": {
+              "type": "array",
+              "items": {
+                "enum": [
+                  "c",
+                  "cpp"
+                ]
+              }
+            },
+            "request_protocol": {
+              "const": "symphony.knowledge.engine-process.v1"
+            }
+          },
+          "required": [
+            "abi",
+            "shared_library",
+            "bindings",
+            "request_protocol"
+          ],
+          "additionalProperties": false
         }
       },
       "required": [
@@ -2793,7 +2823,8 @@
         "studies",
         "execution_models",
         "limits",
-        "economic_transforms"
+        "economic_transforms",
+        "sdk"
       ],
       "additionalProperties": false
     },
@@ -3205,7 +3236,7 @@
           "const": "symphony.sbv.catalogue.v1"
         },
         "engine_version": {
-          "const": "0.9.0-dev"
+          "const": "0.10.0-dev"
         },
         "models": {
           "type": "array",
@@ -3796,7 +3827,7 @@
           "const": "symphony.sbv.backend-plan.v1"
         },
         "engine_version": {
-          "const": "0.9.0-dev"
+          "const": "0.10.0-dev"
         },
         "status": {
           "enum": [
@@ -4089,7 +4120,7 @@
           "const": "symphony.sbv.live-plan.v1"
         },
         "engine_version": {
-          "const": "0.9.0-dev"
+          "const": "0.10.0-dev"
         },
         "can_activate": {
           "const": false

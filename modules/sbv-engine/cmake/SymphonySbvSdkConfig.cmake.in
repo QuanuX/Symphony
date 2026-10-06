@@ -1,0 +1,8 @@
+# Exact installed native C ABI. sdk.hpp is an optional C++ ownership wrapper.
+get_filename_component(_sbv_prefix "${CMAKE_CURRENT_LIST_DIR}/../../../.." ABSOLUTE)
+if(NOT TARGET Symphony::SbvSdk)
+ add_library(Symphony::SbvSdk SHARED IMPORTED)
+ set_target_properties(Symphony::SbvSdk PROPERTIES IMPORTED_LOCATION "${_sbv_prefix}/lib/symphony/sbv-engine/@release@/@CMAKE_SHARED_LIBRARY_PREFIX@symphony-sbv-sdk@CMAKE_SHARED_LIBRARY_SUFFIX@" INTERFACE_INCLUDE_DIRECTORIES "${_sbv_prefix}/include/symphony/sbv-engine/@release@")
+endif()
+set(SymphonySbvSdk_VERSION "@release@")
+unset(_sbv_prefix)

@@ -15,7 +15,7 @@ var SBVOperations = []string{"capabilities", "run", "compose", "result_inspect",
 var sbvSHA = regexp.MustCompile(`^[0-9a-f]{64}$`)
 
 func sbvSpec() engineSpec {
-	return engineSpec{label: "SBV", moduleID: "sbv-engine", vectorID: "sbv", engineID: "symphony-sbv", componentKind: "vector_engine", processProtocol: processProtocol, operationTimeoutByVersion: map[string]time.Duration{"0.9.0-dev": 5 * time.Minute}}
+	return engineSpec{label: "SBV", moduleID: "sbv-engine", vectorID: "sbv", engineID: "symphony-sbv", componentKind: "vector_engine", processProtocol: processProtocol, operationTimeoutByVersion: map[string]time.Duration{"0.10.0-dev": 5 * time.Minute}}
 }
 func InspectSBV(prefix, version string) (Installation, error) {
 	s := sbvSpec()

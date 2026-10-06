@@ -9722,9 +9722,9 @@
   ],
   "format_version": 1,
   "forward_gate": "enforce_new_records",
-  "profile_digest": "sha256:962fd45431b7f305fd254131e83559895980c96ee09474afe121735549af8bb2",
+  "profile_digest": "sha256:eec2dd562d197bb131601c5427068003813ec0f81173cff7112971d1a2c5c1e8",
   "profile_id": "symphony.registered-features.administration.v1",
   "protocol": "symphony.knowledge.feature-administration-profile.v1",
   "registered_feature_count": 141,
-  "ssfv_registry_digest": "sha256:07cb9b0b9a314a8e88fbd600c6909606e07504f02d8d04a8731495e8dc89afc7"
+  "ssfv_registry_digest": "sha256:b5eadde0658011bc4139646604f830c3530253624bcfd5494b2968e4dda93c95"
 }

@@ -26,7 +26,7 @@ func TestSBVInstalledResearch(t *testing.T) {
 		if e != nil {
 			t.Fatal(e)
 		}
-		return InvokeSBV(context.Background(), prefix, "0.9.0-dev", cwd, op, b)
+		return InvokeSBV(context.Background(), prefix, "0.10.0-dev", cwd, op, b)
 	}
 	for _, op := range []string{"resample", "experiment"} {
 		t.Run(op, func(t *testing.T) {
@@ -62,7 +62,7 @@ func TestSBVInstalledResearch(t *testing.T) {
 				t.Fatal(err)
 			}
 			sections := artifact["sections"].(map[string]any)
-			schema, err := SBVSchema(prefix, "0.9.0-dev", op)
+			schema, err := SBVSchema(prefix, "0.10.0-dev", op)
 			if err != nil {
 				t.Fatal(err)
 			}

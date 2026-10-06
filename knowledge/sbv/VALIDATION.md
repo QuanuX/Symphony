@@ -1,5 +1,8 @@
 # SBV implementation validation
 
+Experimental 0.10 adds the installed C ABI and C++ ownership wrapper. Eleven native targets pass (1,294 assertions plus administration and 128 concurrent SDK calls). Four focused AddressSanitizer/UndefinedBehaviorSanitizer targets pass; Darwin leak detection was not enabled. Twelve installed/unit SBV Go tests pass. Separately compiled C/C++ consumers and an external standard-library Python consumer produce byte-identical artifacts with qxctl (21 consumer checks, 64 concurrent calls); the native repository/package remains Python-free. All 20 owned files pass lifecycle drift/removal checks. Local 100,000-record AAPL/ESZ6 workloads preserve all non-resource fields across 1/2/4/8 workers; descriptive timing is not a peer ranking. Source validator: 16,452 passes, zero violations, four historical warnings.
+
+
 Experimental 0.9 adds deterministic uniform-row/block bootstrap and durable private local native experiments. Ten native targets pass (1,258 assertions plus administration), including real SIGKILL reconciliation, immutable completed-trial reuse, source drift/lock/symlink refusal and concurrent identical-content results. Twelve installed/unit SBV Go tests pass. Six Databento criteria trials completed with three outer workers, one caller-pruned trial was retained, and reconciliation reused all six without re-execution. Independent Python integer/Fraction code reproduced all 96 bootstrap indices and exact replica moments/quantiles. Source validator: 16,410 passes, zero violations, four historical warnings. Registry: 421 commands, twenty-two SBV leaves and nineteen native operations. Remote/SOV jobs, adaptive optimization and confidence coverage are not claimed.
 
 

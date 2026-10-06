@@ -22728,3 +22728,101 @@ These entries locate existing implementation and regression surfaces referenced 
 - deferred_projections: remote orchestration, adaptive optimizers and calibrated confidence coverage
 - notes: Caller source roles and objective choices remain attributed inputs.
 - status: canonical
+
+### SBV sdk.cpp
+
+- path: `modules/sbv-engine/src/sdk.cpp`
+- title: SBV sdk.cpp
+- surface_type: native SDK contract or consumer
+- truth_role: Independently installed exact C ABI and optional C++/Python bindings
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.10 native shared library and independently compiled/loaded consumers.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: external native and AI/ML programs
+- deferred_projections: zero-copy device data, vendor model runtimes and remote execution
+- notes: Native JSON transfer copies bytes and retains exact numeric strings.
+- status: canonical
+
+### SBV sdk.h
+
+- path: `modules/sbv-engine/include/symphony/sbv/sdk.h`
+- title: SBV sdk.h
+- surface_type: native SDK contract or consumer
+- truth_role: Independently installed exact C ABI and optional C++/Python bindings
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.10 native shared library and independently compiled/loaded consumers.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: external native and AI/ML programs
+- deferred_projections: zero-copy device data, vendor model runtimes and remote execution
+- notes: Native JSON transfer copies bytes and retains exact numeric strings.
+- status: canonical
+
+### SBV sdk.hpp
+
+- path: `modules/sbv-engine/include/symphony/sbv/sdk.hpp`
+- title: SBV sdk.hpp
+- surface_type: native SDK contract or consumer
+- truth_role: Independently installed exact C ABI and optional C++/Python bindings
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.10 native shared library and independently compiled/loaded consumers.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: external native and AI/ML programs
+- deferred_projections: zero-copy device data, vendor model runtimes and remote execution
+- notes: Native JSON transfer copies bytes and retains exact numeric strings.
+- status: canonical
+
+### SBV SymphonySbvSdkConfig.cmake.in
+
+- path: `modules/sbv-engine/cmake/SymphonySbvSdkConfig.cmake.in`
+- title: SBV SymphonySbvSdkConfig.cmake.in
+- surface_type: native SDK contract or consumer
+- truth_role: Independently installed exact C ABI and optional C++/Python bindings
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.10 native shared library and independently compiled/loaded consumers.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: external native and AI/ML programs
+- deferred_projections: zero-copy device data, vendor model runtimes and remote execution
+- notes: Native JSON transfer copies bytes and retains exact numeric strings.
+- status: canonical
+
+### SBV sdk_test.cpp
+
+- path: `modules/sbv-engine/tests/sdk_test.cpp`
+- title: SBV sdk_test.cpp
+- surface_type: native SDK contract or consumer
+- truth_role: Independently installed exact C ABI and optional C++/Python bindings
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.10 native shared library and independently compiled/loaded consumers.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: external native and AI/ML programs
+- deferred_projections: zero-copy device data, vendor model runtimes and remote execution
+- notes: Native JSON transfer copies bytes and retains exact numeric strings.
+- status: canonical
+
+### SBV sdk_consumer.cpp
+
+- path: `modules/sbv-engine/tests/sdk_consumer.cpp`
+- title: SBV sdk_consumer.cpp
+- surface_type: native SDK contract or consumer
+- truth_role: Independently installed exact C ABI and optional C++/Python bindings
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.10 native shared library and independently compiled/loaded consumers.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: external native and AI/ML programs
+- deferred_projections: zero-copy device data, vendor model runtimes and remote execution
+- notes: Native JSON transfer copies bytes and retains exact numeric strings.
+- status: canonical
+
+### SBV sdk_consumer.c
+
+- path: `modules/sbv-engine/tests/sdk_consumer.c`
+- title: SBV sdk_consumer.c
+- surface_type: native SDK contract or consumer
+- truth_role: Independently installed exact C ABI and optional C++/Python bindings
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.10 native shared library and independently compiled/loaded consumers.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: external native and AI/ML programs
+- deferred_projections: zero-copy device data, vendor model runtimes and remote execution
+- notes: Native JSON transfer copies bytes and retains exact numeric strings.
+- status: canonical

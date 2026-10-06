@@ -223,6 +223,11 @@ Json dispatch(const std::string &op, const Json &p, std::int64_t end) {
     return {
         {"protocol", "symphony.sbv.capabilities.v1"},
         {"engine_version", version},
+        {"sdk",
+         {{"abi", "symphony.sbv.sdk.v1"},
+          {"shared_library", true},
+          {"bindings", Json::array({"c", "cpp"})},
+          {"request_protocol", e::process_protocol_v1}}},
         {"cpu",
          {{"available", true},
           {"max_workers", "64"},

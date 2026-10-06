@@ -32,10 +32,13 @@
         "modules/sbv-engine/tests/models_test.cpp",
         "modules/sbv-engine/tests/planning_test.cpp",
         "modules/sbv-engine/tests/research_test.cpp",
-        "modules/sbv-engine/tests/sbv_test.cpp"
+        "modules/sbv-engine/tests/sbv_test.cpp",
+        "modules/sbv-engine/tests/sdk_consumer.c",
+        "modules/sbv-engine/tests/sdk_consumer.cpp",
+        "modules/sbv-engine/tests/sdk_test.cpp"
       ],
       "feature_id": "ssfv:symphony:sbv-engine",
-      "how": "C++26 exact arithmetic and fixed per-replicate random streams; bounded worker scheduling and immutable plan/claim/completion reconciliation; full terminal result access.",
+      "how": "C++26 computations behind exact native process and installed C ABI; optional C++ ownership wrapper; external language consumers reuse identical native results and explicit contracts.",
       "implementation_languages": [
         {
           "language": "C++26",
@@ -47,7 +50,10 @@
         }
       ],
       "implementation_paths": [
+        "modules/sbv-engine/cmake/SymphonySbvSdkConfig.cmake.in",
         "modules/sbv-engine/include/symphony/sbv/interop.hpp",
+        "modules/sbv-engine/include/symphony/sbv/sdk.h",
+        "modules/sbv-engine/include/symphony/sbv/sdk.hpp",
         "modules/sbv-engine/src/allocation_economics.cpp",
         "modules/sbv-engine/src/analyze.cpp",
         "modules/sbv-engine/src/book.cpp",
@@ -63,6 +69,7 @@
         "modules/sbv-engine/src/resample.cpp",
         "modules/sbv-engine/src/result.cpp",
         "modules/sbv-engine/src/run.cpp",
+        "modules/sbv-engine/src/sdk.cpp",
         "modules/sbv-engine/src/select.cpp",
         "modules/sbv-engine/src/wide_rational.hpp"
       ],
