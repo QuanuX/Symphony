@@ -152,6 +152,7 @@
         "tools/qxctl/internal/knowledgeengine/sbv_models_test.go",
         "tools/qxctl/internal/knowledgeengine/sbv_planning_test.go",
         "tools/qxctl/internal/knowledgeengine/sbv_research_test.go",
+        "tools/qxctl/internal/knowledgeengine/sbv_split_test.go",
         "tools/qxctl/internal/knowledgeengine/sbv_test.go"
       ],
       "feature_id": "ssfv:symphony:qxctl-sbv-administration",

@@ -35,7 +35,7 @@ func TestSBVInstalledLiquidity(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		return InvokeSBV(context.Background(), prefix, "0.10.0-dev", cwd, op, b)
+		return InvokeSBV(context.Background(), prefix, "0.11.0-dev", cwd, op, b)
 	}
 	response, err := invoke("liquidity", request)
 	if err != nil {
@@ -53,7 +53,7 @@ func TestSBVInstalledLiquidity(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	schema, err := SBVSchema(prefix, "0.10.0-dev", "liquidity")
+	schema, err := SBVSchema(prefix, "0.11.0-dev", "liquidity")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -101,7 +101,7 @@ func TestSBVInstalledLiquidity(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	catalogueSchema, err := SBVSchema(prefix, "0.10.0-dev", "catalogue")
+	catalogueSchema, err := SBVSchema(prefix, "0.11.0-dev", "catalogue")
 	if err != nil {
 		t.Fatal(err)
 	}

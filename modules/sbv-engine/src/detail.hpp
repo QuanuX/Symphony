@@ -71,6 +71,7 @@ Json run(const Json &, std::int64_t);
 Json compose(const Json &, std::int64_t);
 Json compose_joint(const Json &, std::int64_t);
 Json evaluate(const Json &, std::int64_t);
+Json split(const Json &, std::int64_t);
 Json resample(const Json &, std::int64_t);
 Json experiment(const Json &, std::int64_t);
 Json analyze(const Json &, std::int64_t);

@@ -3,7 +3,7 @@
 #include "symphony/knowledge/engine/operation.hpp"
 namespace symphony::sbv::interface {
 namespace engine = symphony::knowledge::engine;
-inline constexpr auto version = "0.10.0-dev";
+inline constexpr auto version = "0.11.0-dev";
 inline std::vector<engine::OperationSpec> interface_operations() { return {
   {"engop:symphony:sbv.capabilities", "capabilities", "implemented", false, true, {"ssfv:symphony:sbv-engine"}, {"discover"}, "qxctl_required", "symphony.sbv.capabilities-input.v1", "symphony.sbv.capabilities.v1", "read_only", "idempotent", false, "none", "", "supported", "freezing"},
   {"engop:symphony:sbv.run", "run", "implemented", false, true, {"ssfv:symphony:sbv-engine"}, {"invoke"}, "qxctl_required", "symphony.sbv.run-input.v1", "symphony.sbv.run.v1", "permission_backed_mutation", "non_idempotent", false, "target_host_permission", "engop:symphony:sbv.result-inspect", "supported", "freezing"},
@@ -24,5 +24,6 @@ inline std::vector<engine::OperationSpec> interface_operations() { return {
   {"engop:symphony:sbv.compare", "compare", "implemented", false, true, {"ssfv:symphony:sbv-engine"}, {"invoke"}, "qxctl_required", "symphony.sbv.compare-input.v1", "symphony.sbv.compare.v1", "permission_backed_mutation", "non_idempotent", false, "target_host_permission", "engop:symphony:sbv.result-inspect", "supported", "freezing"},
   {"engop:symphony:sbv.resample", "resample", "implemented", false, true, {"ssfv:symphony:sbv-engine"}, {"invoke"}, "qxctl_required", "symphony.sbv.resample-input.v1", "symphony.sbv.resample.v1", "permission_backed_mutation", "non_idempotent", false, "target_host_permission", "engop:symphony:sbv.result-inspect", "supported", "freezing"},
   {"engop:symphony:sbv.experiment", "experiment", "implemented", false, true, {"ssfv:symphony:sbv-engine"}, {"invoke"}, "qxctl_required", "symphony.sbv.experiment-input.v1", "symphony.sbv.experiment.v1", "permission_backed_mutation", "non_idempotent", false, "target_host_permission", "engop:symphony:sbv.result-inspect", "supported", "freezing"},
+  {"engop:symphony:sbv.split", "split", "implemented", false, true, {"ssfv:symphony:sbv-engine"}, {"invoke"}, "qxctl_required", "symphony.sbv.split-input.v1", "symphony.sbv.split.v1", "permission_backed_mutation", "non_idempotent", false, "target_host_permission", "engop:symphony:sbv.result-inspect", "supported", "freezing"},
 }; }
 }

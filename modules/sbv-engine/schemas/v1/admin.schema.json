@@ -2655,6 +2655,204 @@
         "extensions"
       ],
       "additionalProperties": false
+    },
+    "split": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.split-input.v1"
+        },
+        "path": {
+          "type": "string"
+        },
+        "expected_sha256": {
+          "type": "string"
+        },
+        "output_path": {
+          "type": "string"
+        },
+        "pointer": {
+          "type": "string"
+        },
+        "id_pointer": {
+          "type": "string"
+        },
+        "start_pointer": {
+          "type": "string"
+        },
+        "end_pointer": {
+          "type": "string"
+        },
+        "available_pointer": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "clock_domain": {
+          "type": "string"
+        },
+        "input_description": {
+          "type": "string"
+        },
+        "plan": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "kind": {
+                  "const": "explicit"
+                },
+                "folds": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "train_start_ns": {
+                        "type": "string"
+                      },
+                      "train_end_ns": {
+                        "type": "string"
+                      },
+                      "test_start_ns": {
+                        "type": "string"
+                      },
+                      "test_end_ns": {
+                        "type": "string"
+                      },
+                      "fit_cutoff_ns": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "train_start_ns",
+                      "train_end_ns",
+                      "test_start_ns",
+                      "test_end_ns",
+                      "fit_cutoff_ns"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "minItems": 0,
+                  "maxItems": 128
+                }
+              },
+              "required": [
+                "kind",
+                "folds"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "kind": {
+                  "enum": [
+                    "rolling",
+                    "expanding"
+                  ]
+                },
+                "train_start_ns": {
+                  "type": "string"
+                },
+                "first_train_end_ns": {
+                  "type": "string"
+                },
+                "first_fit_cutoff_ns": {
+                  "type": "string"
+                },
+                "gap_ns": {
+                  "type": "string"
+                },
+                "test_duration_ns": {
+                  "type": "string"
+                },
+                "step_ns": {
+                  "type": "string"
+                },
+                "fold_count": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "kind",
+                "train_start_ns",
+                "first_train_end_ns",
+                "first_fit_cutoff_ns",
+                "gap_ns",
+                "test_duration_ns",
+                "step_ns",
+                "fold_count"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        },
+        "chronology": {
+          "enum": [
+            "past_only",
+            "unrestricted"
+          ]
+        },
+        "purge": {
+          "enum": [
+            "label_overlap",
+            "none"
+          ]
+        },
+        "purge_before_ns": {
+          "type": "string"
+        },
+        "purge_after_ns": {
+          "type": "string"
+        },
+        "embargo_ns": {
+          "type": "string"
+        },
+        "availability": {
+          "enum": [
+            "by_fit_cutoff",
+            "ignore"
+          ]
+        },
+        "retain_rows": {
+          "type": "boolean"
+        },
+        "extensions": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "protocol",
+        "path",
+        "expected_sha256",
+        "output_path",
+        "pointer",
+        "id_pointer",
+        "start_pointer",
+        "end_pointer",
+        "available_pointer",
+        "clock_domain",
+        "input_description",
+        "plan",
+        "chronology",
+        "purge",
+        "purge_before_ns",
+        "purge_after_ns",
+        "embargo_ns",
+        "availability",
+        "retain_rows",
+        "extensions"
+      ],
+      "additionalProperties": false
     }
   },
   "results": {
@@ -2665,7 +2863,7 @@
           "const": "symphony.sbv.capabilities.v1"
         },
         "engine_version": {
-          "const": "0.10.0-dev"
+          "const": "0.11.0-dev"
         },
         "cpu": {
           "type": "object",
@@ -3236,7 +3434,7 @@
           "const": "symphony.sbv.catalogue.v1"
         },
         "engine_version": {
-          "const": "0.10.0-dev"
+          "const": "0.11.0-dev"
         },
         "models": {
           "type": "array",
@@ -3827,7 +4025,7 @@
           "const": "symphony.sbv.backend-plan.v1"
         },
         "engine_version": {
-          "const": "0.10.0-dev"
+          "const": "0.11.0-dev"
         },
         "status": {
           "enum": [
@@ -4120,7 +4318,7 @@
           "const": "symphony.sbv.live-plan.v1"
         },
         "engine_version": {
-          "const": "0.10.0-dev"
+          "const": "0.11.0-dev"
         },
         "can_activate": {
           "const": false
@@ -4533,6 +4731,70 @@
       "properties": {
         "protocol": {
           "const": "symphony.sbv.experiment.v1"
+        },
+        "path": {
+          "type": "string"
+        },
+        "content_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "file_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "bytes": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$"
+        },
+        "status": {
+          "enum": [
+            "completed",
+            "partial"
+          ]
+        },
+        "summary": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "enum": [
+                "available",
+                "partial",
+                "unavailable",
+                "not_selected"
+              ]
+            },
+            "reason": {
+              "type": "string"
+            },
+            "data": {
+              "$ref": "#/$defs/node"
+            }
+          },
+          "required": [
+            "status",
+            "reason",
+            "data"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "protocol",
+        "path",
+        "content_sha256",
+        "file_sha256",
+        "bytes",
+        "status",
+        "summary"
+      ],
+      "additionalProperties": false
+    },
+    "split": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.split.v1"
         },
         "path": {
           "type": "string"
@@ -9102,6 +9364,280 @@
         "request_sha256",
         "result",
         "journal"
+      ],
+      "additionalProperties": false
+    },
+    "split_observation": {
+      "type": "object",
+      "properties": {
+        "source_index": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "start_ns": {
+          "type": "string"
+        },
+        "end_ns": {
+          "type": "string"
+        },
+        "available_ns": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "source_index",
+        "id",
+        "start_ns",
+        "end_ns",
+        "available_ns"
+      ],
+      "additionalProperties": false
+    },
+    "temporal_fold": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "windows": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "train_start_ns": {
+              "type": "string"
+            },
+            "train_end_ns": {
+              "type": "string"
+            },
+            "test_start_ns": {
+              "type": "string"
+            },
+            "test_end_ns": {
+              "type": "string"
+            },
+            "fit_cutoff_ns": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "id",
+            "train_start_ns",
+            "train_end_ns",
+            "test_start_ns",
+            "test_end_ns",
+            "fit_cutoff_ns"
+          ],
+          "additionalProperties": false
+        },
+        "status": {
+          "enum": [
+            "available",
+            "unavailable"
+          ]
+        },
+        "reason": {
+          "type": "string"
+        },
+        "train_indices": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 0,
+          "maxItems": 65536
+        },
+        "test_indices": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 0,
+          "maxItems": 65536
+        },
+        "excluded": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "source_index": {
+                "type": "string"
+              },
+              "reasons": {
+                "type": "array",
+                "items": {
+                  "enum": [
+                    "test_member",
+                    "label_overlap_or_padding",
+                    "embargo",
+                    "unavailable_at_fit_cutoff"
+                  ]
+                },
+                "minItems": 0,
+                "maxItems": 4
+              }
+            },
+            "required": [
+              "source_index",
+              "reasons"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 0,
+          "maxItems": 65536
+        },
+        "train_rows": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {},
+              "minItems": 0,
+              "maxItems": 65536
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "test_rows": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {},
+              "minItems": 0,
+              "maxItems": 65536
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "test_label_union": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "start_ns": {
+                "type": "string"
+              },
+              "end_ns": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "start_ns",
+              "end_ns"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 0,
+          "maxItems": 65536
+        },
+        "purge_union": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "start_ns": {
+                "type": "string"
+              },
+              "end_ns": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "start_ns",
+              "end_ns"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 0,
+          "maxItems": 65536
+        },
+        "embargo_interval": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "start_exclusive_ns": {
+                  "type": "string"
+                },
+                "end_inclusive_ns": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "start_exclusive_ns",
+                "end_inclusive_ns"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "diagnostics": {
+          "type": "object",
+          "properties": {
+            "train_candidates": {
+              "type": "string"
+            },
+            "overlap_candidates": {
+              "type": "string"
+            },
+            "late_candidates": {
+              "type": "string"
+            },
+            "unknown_availability_candidates": {
+              "type": "string"
+            },
+            "embargo_candidates": {
+              "type": "string"
+            },
+            "retained_overlaps": {
+              "type": "string"
+            },
+            "retained_late": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "train_candidates",
+            "overlap_candidates",
+            "late_candidates",
+            "unknown_availability_candidates",
+            "embargo_candidates",
+            "retained_overlaps",
+            "retained_late"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "id",
+        "windows",
+        "status",
+        "reason",
+        "train_indices",
+        "test_indices",
+        "excluded",
+        "train_rows",
+        "test_rows",
+        "test_label_union",
+        "purge_union",
+        "embargo_interval",
+        "diagnostics"
       ],
       "additionalProperties": false
     }

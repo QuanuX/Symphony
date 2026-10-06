@@ -35,7 +35,8 @@
         "modules/sbv-engine/tests/sbv_test.cpp",
         "modules/sbv-engine/tests/sdk_consumer.c",
         "modules/sbv-engine/tests/sdk_consumer.cpp",
-        "modules/sbv-engine/tests/sdk_test.cpp"
+        "modules/sbv-engine/tests/sdk_test.cpp",
+        "modules/sbv-engine/tests/split_test.cpp"
       ],
       "feature_id": "ssfv:symphony:sbv-engine",
       "how": "C++26 computations behind exact native process and installed C ABI; optional C++ ownership wrapper; external language consumers reuse identical native results and explicit contracts.",
@@ -71,6 +72,7 @@
         "modules/sbv-engine/src/run.cpp",
         "modules/sbv-engine/src/sdk.cpp",
         "modules/sbv-engine/src/select.cpp",
+        "modules/sbv-engine/src/split.cpp",
         "modules/sbv-engine/src/wide_rational.hpp"
       ],
       "kind": "feature",
@@ -90,7 +92,7 @@
       "source_scope": "modules/sbv-engine",
       "status": "experimental",
       "title": "Native historical experiments and portable results",
-      "what": "Native multipass backtesting, replay, exact economics, selectable studies and comparison, deterministic bootstrap and durable local native trial execution.",
+      "what": "Native multipass backtesting, replay, exact economics, selectable studies and comparison, deterministic bootstrap and durable local native trial execution. Temporal interval partitions expose expanding/rolling/explicit schedules, optional purging, embargo and availability filtering.",
       "when": "Explicit bounded caller-selected invocation.",
       "where": "Independently versioned and installed owner package.",
       "who": "Direct native consumers, operators and qxctl agents.",

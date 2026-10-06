@@ -4513,6 +4513,45 @@
       "json_output": true
     },
     {
+      "command_id": "qxcmd:symphony:sbv.split",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl sbv split [--format VALUE] [--input VALUE] [--json] [--prefix VALUE] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl-sbv-administration",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:sbv-engine",
+          "interaction": "invoke"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:sbv.split"
+      ],
+      "mutability": "permission_backed_mutation",
+      "authority_mode": "target_host_permission",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.sbv.split-input.v1"
+      ],
+      "output_protocols": [
+        "symphony.sbv.split.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.sbv.split.v1"
+      ],
+      "recovery_command_id": "qxcmd:symphony:sbv.result.inspect",
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
       "command_id": "qxcmd:symphony:sbv.template",
       "status": "experimental",
       "introduced_in": "0.1.0-dev",
@@ -19968,5 +20007,5 @@
       "json_output": true
     }
   ],
-  "registry_digest": "sha256:959c83cebc92409c2f5cf56f6cdb81cbf17c71cb4f5153df9a510e4d1ae95e2e"
+  "registry_digest": "sha256:05eed32e71146a86ac609f83a5dbf451a9166643afe2ea248a9c525a250c6158"
 }

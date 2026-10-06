@@ -87,7 +87,7 @@ Json experiment(const Json &p, std::int64_t end) {
   const std::set<std::string> operations{
       "run",       "evaluate", "compose",   "compose_joint",
       "economics", "book",     "liquidity", "allocation_economics",
-      "analyze",   "compare",  "resample"};
+      "analyze",   "compare",  "resample", "split"};
   for (const auto &t : trials) {
     keys(t, {"id", "state", "operation", "request", "reason", "parameters",
              "lineage"});

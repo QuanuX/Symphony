@@ -3,9 +3,9 @@
   "module_id": "sbv-engine",
   "engine_id": "symphony-sbv",
   "namespace": "symphony::sbv::interface",
-  "current_version": "0.10.0-dev",
+  "current_version": "0.11.0-dev",
   "releases": {
-    "0.10.0-dev": [
+    "0.11.0-dev": [
       "capabilities",
       "run",
       "compose",
@@ -24,7 +24,8 @@
       "analyze",
       "compare",
       "resample",
-      "experiment"
+      "experiment",
+      "split"
     ]
   },
   "contract_versions": [
@@ -67,7 +68,9 @@
     "symphony.sbv.resample-input.v1",
     "symphony.sbv.resample.v1",
     "symphony.sbv.experiment-input.v1",
-    "symphony.sbv.experiment.v1"
+    "symphony.sbv.experiment.v1",
+    "symphony.sbv.split-input.v1",
+    "symphony.sbv.split.v1"
   ],
   "operations": [
     {
@@ -467,6 +470,27 @@
       "mutability": "permission_backed_mutation",
       "operation_name": "experiment",
       "output_protocol": "symphony.sbv.experiment.v1",
+      "recovery_operation_id": "engop:symphony:sbv.result-inspect",
+      "thermal_path": "freezing"
+    },
+    {
+      "administration_disposition": "qxctl_required",
+      "administrative_interactions": [
+        "invoke"
+      ],
+      "authorization_requirement": "target_host_permission",
+      "availability": "implemented",
+      "direct_invocation": "supported",
+      "engine_operation_id": "engop:symphony:sbv.split",
+      "expected_state_required": false,
+      "feature_ids": [
+        "ssfv:symphony:sbv-engine"
+      ],
+      "idempotency": "non_idempotent",
+      "input_protocol": "symphony.sbv.split-input.v1",
+      "mutability": "permission_backed_mutation",
+      "operation_name": "split",
+      "output_protocol": "symphony.sbv.split.v1",
       "recovery_operation_id": "engop:symphony:sbv.result-inspect",
       "thermal_path": "freezing"
     }

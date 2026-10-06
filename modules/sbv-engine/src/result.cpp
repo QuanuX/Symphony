@@ -271,6 +271,8 @@ Json dispatch(const std::string &op, const Json &p, std::int64_t end) {
     return d::compose(p, end);
   if (op == "compose_joint")
     return d::compose_joint(p, end);
+  if (op == "split")
+    return d::split(p, end);
   if (op == "resample")
     return d::resample(p, end);
   if (op == "experiment")

@@ -157,7 +157,7 @@ func newSBVLeaf(op, leaf string) *cobra.Command {
 	}
 	spec := commandSpec(key, featureSBVAdministration, interaction)
 	spec.FeatureBindings = append(spec.FeatureBindings, commandregistry.FeatureBinding{FeatureID: "ssfv:symphony:sbv-engine", Interaction: interaction})
-	if op == "run" || op == "compose" || op == "evaluate" || op == "compose_joint" || op == "economics" || op == "book" || op == "liquidity" || op == "allocation_economics" || op == "analyze" || op == "compare" || op == "resample" || op == "experiment" {
+	if op == "run" || op == "compose" || op == "evaluate" || op == "compose_joint" || op == "economics" || op == "book" || op == "liquidity" || op == "allocation_economics" || op == "analyze" || op == "compare" || op == "resample" || op == "experiment" || op == "split" {
 		spec.Mutability = "permission_backed_mutation"
 		spec.AuthorityMode = "target_host_permission"
 		spec.RecoveryCommandID = stringPointer("qxcmd:symphony:sbv.result.inspect")

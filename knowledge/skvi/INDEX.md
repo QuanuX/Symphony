@@ -22826,3 +22826,45 @@ These entries locate existing implementation and regression surfaces referenced 
 - deferred_projections: zero-copy device data, vendor model runtimes and remote execution
 - notes: Native JSON transfer copies bytes and retains exact numeric strings.
 - status: canonical
+
+### SBV split.cpp
+
+- path: `modules/sbv-engine/src/split.cpp`
+- title: SBV split.cpp
+- surface_type: implementation contract or test
+- truth_role: User-selected temporal partitions with explicit interval and availability semantics
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.11 native and installed terminal contract boundaries.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, agents and external fitting pipelines
+- deferred_projections: fitted models, enforced holdouts and combinatorial validation
+- notes: Partitions preserve user policies and disclose exclusions without claiming statistical independence.
+- status: canonical
+
+### SBV split_test.cpp
+
+- path: `modules/sbv-engine/tests/split_test.cpp`
+- title: SBV split_test.cpp
+- surface_type: implementation contract or test
+- truth_role: User-selected temporal partitions with explicit interval and availability semantics
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.11 native and installed terminal contract boundaries.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, agents and external fitting pipelines
+- deferred_projections: fitted models, enforced holdouts and combinatorial validation
+- notes: Partitions preserve user policies and disclose exclusions without claiming statistical independence.
+- status: canonical
+
+### SBV sbv_split_test.go
+
+- path: `tools/qxctl/internal/knowledgeengine/sbv_split_test.go`
+- title: SBV sbv_split_test.go
+- surface_type: implementation contract or test
+- truth_role: User-selected temporal partitions with explicit interval and availability semantics
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.11 native and installed terminal contract boundaries.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, agents and external fitting pipelines
+- deferred_projections: fitted models, enforced holdouts and combinatorial validation
+- notes: Partitions preserve user policies and disclose exclusions without claiming statistical independence.
+- status: canonical

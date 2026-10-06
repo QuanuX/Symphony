@@ -972,7 +972,8 @@
             "qxcmd:symphony:sbv.liquidity",
             "qxcmd:symphony:sbv.live.plan",
             "qxcmd:symphony:sbv.resample",
-            "qxcmd:symphony:sbv.run"
+            "qxcmd:symphony:sbv.run",
+            "qxcmd:symphony:sbv.split"
           ],
           "delivery": "direct",
           "engine_operation_ids": [
@@ -989,7 +990,8 @@
             "engop:symphony:sbv.liquidity",
             "engop:symphony:sbv.live-plan",
             "engop:symphony:sbv.resample",
-            "engop:symphony:sbv.run"
+            "engop:symphony:sbv.run",
+            "engop:symphony:sbv.split"
           ],
           "evidence": [
             "modules/sbv-engine/OWNER-INTERFACE.json",
@@ -2889,7 +2891,8 @@
             "qxcmd:symphony:sbv.liquidity",
             "qxcmd:symphony:sbv.live.plan",
             "qxcmd:symphony:sbv.resample",
-            "qxcmd:symphony:sbv.run"
+            "qxcmd:symphony:sbv.run",
+            "qxcmd:symphony:sbv.split"
           ],
           "delivery": "direct",
           "engine_operation_ids": [
@@ -2906,7 +2909,8 @@
             "engop:symphony:sbv.liquidity",
             "engop:symphony:sbv.live-plan",
             "engop:symphony:sbv.resample",
-            "engop:symphony:sbv.run"
+            "engop:symphony:sbv.run",
+            "engop:symphony:sbv.split"
           ],
           "evidence": [
             "modules/sbv-engine/OWNER-INTERFACE.json",
@@ -9722,9 +9726,9 @@
   ],
   "format_version": 1,
   "forward_gate": "enforce_new_records",
-  "profile_digest": "sha256:eec2dd562d197bb131601c5427068003813ec0f81173cff7112971d1a2c5c1e8",
   "profile_id": "symphony.registered-features.administration.v1",
   "protocol": "symphony.knowledge.feature-administration-profile.v1",
   "registered_feature_count": 141,
-  "ssfv_registry_digest": "sha256:b5eadde0658011bc4139646604f830c3530253624bcfd5494b2968e4dda93c95"
+  "ssfv_registry_digest": "sha256:07838b1aba99cf03a3e3a71d98fb363b44c6edde091c0a05ec4818f04188fad3",
+  "profile_digest": "sha256:971e69ee63f8ee1280b2ed1fc09e0cac67d3d796915cab859c0f777781e926fe"
 }

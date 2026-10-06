@@ -22,7 +22,7 @@ func TestSBVInstalledPlanning(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		response, err := InvokeSBV(context.Background(), prefix, "0.10.0-dev", cwd, pair[0], raw)
+		response, err := InvokeSBV(context.Background(), prefix, "0.11.0-dev", cwd, pair[0], raw)
 		if err != nil {
 			t.Fatalf("%s: %v", pair[0], err)
 		}
@@ -30,7 +30,7 @@ func TestSBVInstalledPlanning(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		schema, err := SBVSchema(prefix, "0.10.0-dev", pair[0])
+		schema, err := SBVSchema(prefix, "0.11.0-dev", pair[0])
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -61,7 +61,7 @@ func TestSBVInstalledPlanning(t *testing.T) {
 			}
 			request["columns"].([]any)[0].(map[string]any)["name"] = "separator\u2028 and literal\\u2028"
 			unicodeRaw, _ := json.Marshal(request)
-			unicodeResponse, err := InvokeSBV(context.Background(), prefix, "0.10.0-dev", cwd, pair[0], unicodeRaw)
+			unicodeResponse, err := InvokeSBV(context.Background(), prefix, "0.11.0-dev", cwd, pair[0], unicodeRaw)
 			if err != nil {
 				t.Fatalf("Unicode query identity: %v", err)
 			}
@@ -72,7 +72,7 @@ func TestSBVInstalledPlanning(t *testing.T) {
 			request["cursor"] = unicodeResult["next_cursor"]
 			request["limit"] = "1"
 			bad, _ := json.Marshal(request)
-			if _, err = InvokeSBV(context.Background(), prefix, "0.10.0-dev", cwd, pair[0], bad); err == nil {
+			if _, err = InvokeSBV(context.Background(), prefix, "0.11.0-dev", cwd, pair[0], bad); err == nil {
 				t.Fatal("cursor rebound to changed query")
 			}
 		}
