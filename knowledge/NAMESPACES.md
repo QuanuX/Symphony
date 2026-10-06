@@ -80,6 +80,8 @@ A shared field label such as `module_id` does not create a shared identity space
 
 The existence of the SCV, SOV, SNV, SHV, SQV, SQAV, SQMV, SQFV, SQTV, SQPV, SQDV, SIV, SOOV, SCABV, SMCV, SAIV, SNIV, SNRV, SCIV, or SCNV domain name does not allocate a matching colon-prefixed family. Architecture admission of the six SQV research-data children allocates none either. Any future machine identity for those domains requires its own reviewed owner grammar and an entry in this register.
 
+SBV owns the versioned `symphony.sbv.*.v1` experiment/result protocols and `engop:symphony:sbv.*` operation identities declared in `modules/sbv-engine/OWNER-INTERFACE.json`. Signal/path identifiers are local to a digest-bound result and convey no universal identity or execution authority. Candidate SBV subvector names remain unallocated design proposals.
+
 ## Reserved Non-Reusable Module Tombstones
 
 The following exact first-party module identities are retired and remain reserved as non-reusable tombstones:

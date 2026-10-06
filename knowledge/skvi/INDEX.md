@@ -21734,3 +21734,787 @@ These entries locate existing implementation and regression surfaces referenced 
 - deferred_projections: installed collector compatibility evidence
 - notes: Floating releases reject; real collector output remains bounded observation with no physical inventory or allocation proof.
 - status: canonical
+
+### SBV SbvInterface.generated.cmake
+
+- path: `cmake/SbvInterface.generated.cmake`
+- title: SBV SbvInterface.generated.cmake
+- surface_type: implementation source
+- truth_role: generated exact owner-interface projection
+- owner: Symphony Backtesting Vector maintainers
+- scope: Initial native historical experiments and complete portable terminal results.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, native consumers, agents and future GUI adapters
+- deferred_projections: broader studies and execution models
+- notes: Does not claim full roadmap implementation or calibrated fills.
+- status: canonical
+
+### SBV INTENT.md
+
+- path: `knowledge/sbv/INTENT.md`
+- title: SBV INTENT.md
+- surface_type: markdown
+- truth_role: bounded experimental SBV contract or implementation evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Initial native historical experiments and complete portable terminal results.
+- relationships: depends_on -> `knowledge/sbv/SPEC.md`
+- consumers: qxctl, native consumers, agents and future GUI adapters
+- deferred_projections: broader studies and execution models
+- notes: Does not claim full roadmap implementation or calibrated fills.
+- status: canonical
+
+### SBV MANIFEST.md
+
+- path: `knowledge/sbv/MANIFEST.md`
+- title: SBV MANIFEST.md
+- surface_type: markdown
+- truth_role: bounded experimental SBV contract or implementation evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Initial native historical experiments and complete portable terminal results.
+- relationships: depends_on -> `knowledge/sbv/SPEC.md`
+- consumers: qxctl, native consumers, agents and future GUI adapters
+- deferred_projections: broader studies and execution models
+- notes: Does not claim full roadmap implementation or calibrated fills.
+- status: canonical
+
+### SBV SKILL.md
+
+- path: `knowledge/sbv/SKILL.md`
+- title: SBV SKILL.md
+- surface_type: markdown
+- truth_role: bounded experimental SBV contract or implementation evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Initial native historical experiments and complete portable terminal results.
+- relationships: depends_on -> `knowledge/sbv/SPEC.md`
+- consumers: qxctl, native consumers, agents and future GUI adapters
+- deferred_projections: broader studies and execution models
+- notes: Does not claim full roadmap implementation or calibrated fills.
+- status: canonical
+
+### SBV SPEC.md
+
+- path: `knowledge/sbv/SPEC.md`
+- title: SBV SPEC.md
+- surface_type: markdown
+- truth_role: bounded experimental SBV contract or implementation evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Initial native historical experiments and complete portable terminal results.
+- relationships: depends_on -> `knowledge/sbv/INTENT.md`
+- consumers: qxctl, native consumers, agents and future GUI adapters
+- deferred_projections: broader studies and execution models
+- notes: Does not claim full roadmap implementation or calibrated fills.
+- status: canonical
+
+### SBV VALIDATION.md
+
+- path: `knowledge/sbv/VALIDATION.md`
+- title: SBV VALIDATION.md
+- surface_type: markdown
+- truth_role: bounded experimental SBV contract or implementation evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Initial native historical experiments and complete portable terminal results.
+- relationships: depends_on -> `knowledge/sbv/SPEC.md`
+- consumers: qxctl, native consumers, agents and future GUI adapters
+- deferred_projections: broader studies and execution models
+- notes: Does not claim full roadmap implementation or calibrated fills.
+- status: canonical
+
+### SBV CMakeLists.txt
+
+- path: `modules/sbv-engine/CMakeLists.txt`
+- title: SBV CMakeLists.txt
+- surface_type: implementation source
+- truth_role: bounded experimental SBV contract or implementation evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Initial native historical experiments and complete portable terminal results.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, native consumers, agents and future GUI adapters
+- deferred_projections: broader studies and execution models
+- notes: Does not claim full roadmap implementation or calibrated fills.
+- status: canonical
+
+### SBV FEATURES.md
+
+- path: `modules/sbv-engine/FEATURES.md`
+- title: SBV FEATURES.md
+- surface_type: markdown
+- truth_role: bounded experimental SBV contract or implementation evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Initial native historical experiments and complete portable terminal results.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, native consumers, agents and future GUI adapters
+- deferred_projections: broader studies and execution models
+- notes: Does not claim full roadmap implementation or calibrated fills.
+- status: canonical
+
+### SBV INSTALL.md
+
+- path: `modules/sbv-engine/INSTALL.md`
+- title: SBV INSTALL.md
+- surface_type: markdown
+- truth_role: bounded experimental SBV contract or implementation evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Initial native historical experiments and complete portable terminal results.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, native consumers, agents and future GUI adapters
+- deferred_projections: broader studies and execution models
+- notes: Does not claim full roadmap implementation or calibrated fills.
+- status: canonical
+
+### SBV INTENT.md
+
+- path: `modules/sbv-engine/INTENT.md`
+- title: SBV INTENT.md
+- surface_type: markdown
+- truth_role: bounded experimental SBV contract or implementation evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Initial native historical experiments and complete portable terminal results.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, native consumers, agents and future GUI adapters
+- deferred_projections: broader studies and execution models
+- notes: Does not claim full roadmap implementation or calibrated fills.
+- status: canonical
+
+### SBV INTERFACE-GENERATOR.json
+
+- path: `modules/sbv-engine/INTERFACE-GENERATOR.json`
+- title: SBV INTERFACE-GENERATOR.json
+- surface_type: JSON contract
+- truth_role: bounded experimental SBV contract or implementation evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Initial native historical experiments and complete portable terminal results.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, native consumers, agents and future GUI adapters
+- deferred_projections: broader studies and execution models
+- notes: Does not claim full roadmap implementation or calibrated fills.
+- status: canonical
+
+### SBV MANIFEST.md
+
+- path: `modules/sbv-engine/MANIFEST.md`
+- title: SBV MANIFEST.md
+- surface_type: markdown
+- truth_role: bounded experimental SBV contract or implementation evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Initial native historical experiments and complete portable terminal results.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, native consumers, agents and future GUI adapters
+- deferred_projections: broader studies and execution models
+- notes: Does not claim full roadmap implementation or calibrated fills.
+- status: canonical
+
+### SBV OWNER-INTERFACE.json
+
+- path: `modules/sbv-engine/OWNER-INTERFACE.json`
+- title: SBV OWNER-INTERFACE.json
+- surface_type: JSON contract
+- truth_role: bounded experimental SBV contract or implementation evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Initial native historical experiments and complete portable terminal results.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, native consumers, agents and future GUI adapters
+- deferred_projections: broader studies and execution models
+- notes: Does not claim full roadmap implementation or calibrated fills.
+- status: canonical
+
+### SBV SKILL.md
+
+- path: `modules/sbv-engine/SKILL.md`
+- title: SBV SKILL.md
+- surface_type: markdown
+- truth_role: bounded experimental SBV contract or implementation evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Initial native historical experiments and complete portable terminal results.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, native consumers, agents and future GUI adapters
+- deferred_projections: broader studies and execution models
+- notes: Does not claim full roadmap implementation or calibrated fills.
+- status: canonical
+
+### SBV SPEC.md
+
+- path: `modules/sbv-engine/SPEC.md`
+- title: SBV SPEC.md
+- surface_type: markdown
+- truth_role: bounded experimental SBV contract or implementation evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Initial native historical experiments and complete portable terminal results.
+- relationships: depends_on -> `knowledge/sbv/INTENT.md`
+- consumers: qxctl, native consumers, agents and future GUI adapters
+- deferred_projections: broader studies and execution models
+- notes: Does not claim full roadmap implementation or calibrated fills.
+- status: canonical
+
+### SBV uninstall.cmake.in
+
+- path: `modules/sbv-engine/cmake/uninstall.cmake.in`
+- title: SBV uninstall.cmake.in
+- surface_type: implementation source
+- truth_role: bounded experimental SBV contract or implementation evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Initial native historical experiments and complete portable terminal results.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, native consumers, agents and future GUI adapters
+- deferred_projections: broader studies and execution models
+- notes: Does not claim full roadmap implementation or calibrated fills.
+- status: canonical
+
+### SBV sbv.hpp
+
+- path: `modules/sbv-engine/include/symphony/sbv/sbv.hpp`
+- title: SBV sbv.hpp
+- surface_type: implementation source
+- truth_role: bounded experimental SBV contract or implementation evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Initial native historical experiments and complete portable terminal results.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, native consumers, agents and future GUI adapters
+- deferred_projections: broader studies and execution models
+- notes: Does not claim full roadmap implementation or calibrated fills.
+- status: canonical
+
+### SBV admin.schema.json
+
+- path: `modules/sbv-engine/schemas/v1/admin.schema.json`
+- title: SBV admin.schema.json
+- surface_type: JSON contract
+- truth_role: bounded experimental SBV contract or implementation evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Initial native historical experiments and complete portable terminal results.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, native consumers, agents and future GUI adapters
+- deferred_projections: broader studies and execution models
+- notes: Does not claim full roadmap implementation or calibrated fills.
+- status: canonical
+
+### SBV admin.templates.json
+
+- path: `modules/sbv-engine/schemas/v1/admin.templates.json`
+- title: SBV admin.templates.json
+- surface_type: JSON contract
+- truth_role: bounded experimental SBV contract or implementation evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Initial native historical experiments and complete portable terminal results.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, native consumers, agents and future GUI adapters
+- deferred_projections: broader studies and execution models
+- notes: Does not claim full roadmap implementation or calibrated fills.
+- status: canonical
+
+### SBV compose.cpp
+
+- path: `modules/sbv-engine/src/compose.cpp`
+- title: SBV compose.cpp
+- surface_type: implementation source
+- truth_role: bounded experimental SBV contract or implementation evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Initial native historical experiments and complete portable terminal results.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, native consumers, agents and future GUI adapters
+- deferred_projections: broader studies and execution models
+- notes: Does not claim full roadmap implementation or calibrated fills.
+- status: canonical
+
+### SBV detail.hpp
+
+- path: `modules/sbv-engine/src/detail.hpp`
+- title: SBV detail.hpp
+- surface_type: implementation source
+- truth_role: bounded experimental SBV contract or implementation evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Initial native historical experiments and complete portable terminal results.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, native consumers, agents and future GUI adapters
+- deferred_projections: broader studies and execution models
+- notes: Does not claim full roadmap implementation or calibrated fills.
+- status: canonical
+
+### SBV interface.generated.hpp
+
+- path: `modules/sbv-engine/src/interface.generated.hpp`
+- title: SBV interface.generated.hpp
+- surface_type: implementation source
+- truth_role: generated exact owner-interface projection
+- owner: Symphony Backtesting Vector maintainers
+- scope: Initial native historical experiments and complete portable terminal results.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, native consumers, agents and future GUI adapters
+- deferred_projections: broader studies and execution models
+- notes: Does not claim full roadmap implementation or calibrated fills.
+- status: canonical
+
+### SBV main.cpp
+
+- path: `modules/sbv-engine/src/main.cpp`
+- title: SBV main.cpp
+- surface_type: implementation source
+- truth_role: bounded experimental SBV contract or implementation evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Initial native historical experiments and complete portable terminal results.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, native consumers, agents and future GUI adapters
+- deferred_projections: broader studies and execution models
+- notes: Does not claim full roadmap implementation or calibrated fills.
+- status: canonical
+
+### SBV result.cpp
+
+- path: `modules/sbv-engine/src/result.cpp`
+- title: SBV result.cpp
+- surface_type: implementation source
+- truth_role: bounded experimental SBV contract or implementation evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Initial native historical experiments and complete portable terminal results.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, native consumers, agents and future GUI adapters
+- deferred_projections: broader studies and execution models
+- notes: Does not claim full roadmap implementation or calibrated fills.
+- status: canonical
+
+### SBV run.cpp
+
+- path: `modules/sbv-engine/src/run.cpp`
+- title: SBV run.cpp
+- surface_type: implementation source
+- truth_role: bounded experimental SBV contract or implementation evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Initial native historical experiments and complete portable terminal results.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, native consumers, agents and future GUI adapters
+- deferred_projections: broader studies and execution models
+- notes: Does not claim full roadmap implementation or calibrated fills.
+- status: canonical
+
+### SBV interface-history.v1.json
+
+- path: `modules/sbv-engine/tests/fixtures/interface-history.v1.json`
+- title: SBV interface-history.v1.json
+- surface_type: JSON contract
+- truth_role: bounded experimental SBV contract or implementation evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Initial native historical experiments and complete portable terminal results.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, native consumers, agents and future GUI adapters
+- deferred_projections: broader studies and execution models
+- notes: Does not claim full roadmap implementation or calibrated fills.
+- status: canonical
+
+### SBV sbv_test.cpp
+
+- path: `modules/sbv-engine/tests/sbv_test.cpp`
+- title: SBV sbv_test.cpp
+- surface_type: implementation source
+- truth_role: bounded experimental SBV contract or implementation evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Initial native historical experiments and complete portable terminal results.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, native consumers, agents and future GUI adapters
+- deferred_projections: broader studies and execution models
+- notes: Does not claim full roadmap implementation or calibrated fills.
+- status: canonical
+
+### SBV sbv.go
+
+- path: `tools/qxctl/cmd/qxctl/sbv.go`
+- title: SBV sbv.go
+- surface_type: implementation source
+- truth_role: bounded experimental SBV contract or implementation evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Initial native historical experiments and complete portable terminal results.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, native consumers, agents and future GUI adapters
+- deferred_projections: broader studies and execution models
+- notes: Does not claim full roadmap implementation or calibrated fills.
+- status: canonical
+
+### SBV sbv_test.go
+
+- path: `tools/qxctl/cmd/qxctl/sbv_test.go`
+- title: SBV sbv_test.go
+- surface_type: implementation source
+- truth_role: bounded experimental SBV contract or implementation evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Initial native historical experiments and complete portable terminal results.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, native consumers, agents and future GUI adapters
+- deferred_projections: broader studies and execution models
+- notes: Does not claim full roadmap implementation or calibrated fills.
+- status: canonical
+
+### SBV sbv.go
+
+- path: `tools/qxctl/internal/knowledgeengine/sbv.go`
+- title: SBV sbv.go
+- surface_type: implementation source
+- truth_role: bounded experimental SBV contract or implementation evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Initial native historical experiments and complete portable terminal results.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, native consumers, agents and future GUI adapters
+- deferred_projections: broader studies and execution models
+- notes: Does not claim full roadmap implementation or calibrated fills.
+- status: canonical
+
+### SBV sbv_interface_generated.go
+
+- path: `tools/qxctl/internal/knowledgeengine/sbv_interface_generated.go`
+- title: SBV sbv_interface_generated.go
+- surface_type: implementation source
+- truth_role: generated exact owner-interface projection
+- owner: Symphony Backtesting Vector maintainers
+- scope: Initial native historical experiments and complete portable terminal results.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, native consumers, agents and future GUI adapters
+- deferred_projections: broader studies and execution models
+- notes: Does not claim full roadmap implementation or calibrated fills.
+- status: canonical
+
+### SBV sbv_test.go
+
+- path: `tools/qxctl/internal/knowledgeengine/sbv_test.go`
+- title: SBV sbv_test.go
+- surface_type: implementation source
+- truth_role: bounded experimental SBV contract or implementation evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Initial native historical experiments and complete portable terminal results.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, native consumers, agents and future GUI adapters
+- deferred_projections: broader studies and execution models
+- notes: Does not claim full roadmap implementation or calibrated fills.
+- status: canonical
+
+### SBV administration_test.cpp
+
+- path: `modules/sbv-engine/tests/administration_test.cpp`
+- title: SBV administration_test.cpp
+- surface_type: implementation contract or test
+- truth_role: Exact portable output and installed administration evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Initial native SBV release and terminal interoperability.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, agents and independent result consumers
+- deferred_projections: broader studies, model adapters and release gates
+- notes: Experimental implemented scope only; the wider roadmap remains open.
+- status: canonical
+
+### SBV result.schema.json
+
+- path: `modules/sbv-engine/schemas/v1/result.schema.json`
+- title: SBV result.schema.json
+- surface_type: implementation contract or test
+- truth_role: Exact portable output and installed administration evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Initial native SBV release and terminal interoperability.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, agents and independent result consumers
+- deferred_projections: broader studies, model adapters and release gates
+- notes: Experimental implemented scope only; the wider roadmap remains open.
+- status: canonical
+
+### SBV pointer-stream.schema.json
+
+- path: `modules/sbv-engine/schemas/v1/pointer-stream.schema.json`
+- title: SBV pointer-stream.schema.json
+- surface_type: implementation contract or test
+- truth_role: Exact portable output and installed administration evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Initial native SBV release and terminal interoperability.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, agents and independent result consumers
+- deferred_projections: broader studies, model adapters and release gates
+- notes: Experimental implemented scope only; the wider roadmap remains open.
+- status: canonical
+
+### SBV sbv_installed_test.go
+
+- path: `tools/qxctl/internal/knowledgeengine/sbv_installed_test.go`
+- title: SBV sbv_installed_test.go
+- surface_type: implementation contract or test
+- truth_role: Exact portable output and installed administration evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Initial native SBV release and terminal interoperability.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, agents and independent result consumers
+- deferred_projections: broader studies, model adapters and release gates
+- notes: Experimental implemented scope only; the wider roadmap remains open.
+- status: canonical
+
+### SBV models.hpp
+
+- path: `modules/sbv-engine/include/symphony/sbv/models.hpp`
+- title: SBV models.hpp
+- surface_type: implementation contract or test
+- truth_role: Exact external census, model measure and joint-path implementation evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.2 native and terminal contracts.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, agents and independent result consumers
+- deferred_projections: initialized books, calibrated execution and broader release gates
+- notes: Model claims remain attributable; user measure domains are not silently reinterpreted.
+- status: canonical
+
+### SBV model.cpp
+
+- path: `modules/sbv-engine/src/model.cpp`
+- title: SBV model.cpp
+- surface_type: implementation contract or test
+- truth_role: Exact external census, model measure and joint-path implementation evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.2 native and terminal contracts.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, agents and independent result consumers
+- deferred_projections: initialized books, calibrated execution and broader release gates
+- notes: Model claims remain attributable; user measure domains are not silently reinterpreted.
+- status: canonical
+
+### SBV evaluate.cpp
+
+- path: `modules/sbv-engine/src/evaluate.cpp`
+- title: SBV evaluate.cpp
+- surface_type: implementation contract or test
+- truth_role: Exact external census, model measure and joint-path implementation evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.2 native and terminal contracts.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, agents and independent result consumers
+- deferred_projections: initialized books, calibrated execution and broader release gates
+- notes: Model claims remain attributable; user measure domains are not silently reinterpreted.
+- status: canonical
+
+### SBV compose_joint.cpp
+
+- path: `modules/sbv-engine/src/compose_joint.cpp`
+- title: SBV compose_joint.cpp
+- surface_type: implementation contract or test
+- truth_role: Exact external census, model measure and joint-path implementation evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.2 native and terminal contracts.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, agents and independent result consumers
+- deferred_projections: initialized books, calibrated execution and broader release gates
+- notes: Model claims remain attributable; user measure domains are not silently reinterpreted.
+- status: canonical
+
+### SBV rational.hpp
+
+- path: `modules/sbv-engine/src/rational.hpp`
+- title: SBV rational.hpp
+- surface_type: implementation contract or test
+- truth_role: Exact external census, model measure and joint-path implementation evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.2 native and terminal contracts.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, agents and independent result consumers
+- deferred_projections: initialized books, calibrated execution and broader release gates
+- notes: Model claims remain attributable; user measure domains are not silently reinterpreted.
+- status: canonical
+
+### SBV models_test.cpp
+
+- path: `modules/sbv-engine/tests/models_test.cpp`
+- title: SBV models_test.cpp
+- surface_type: implementation contract or test
+- truth_role: Exact external census, model measure and joint-path implementation evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.2 native and terminal contracts.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, agents and independent result consumers
+- deferred_projections: initialized books, calibrated execution and broader release gates
+- notes: Model claims remain attributable; user measure domains are not silently reinterpreted.
+- status: canonical
+
+### SBV sbv_models_test.go
+
+- path: `tools/qxctl/internal/knowledgeengine/sbv_models_test.go`
+- title: SBV sbv_models_test.go
+- surface_type: implementation contract or test
+- truth_role: Exact external census, model measure and joint-path implementation evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.2 native and terminal contracts.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, agents and independent result consumers
+- deferred_projections: initialized books, calibrated execution and broader release gates
+- notes: Model claims remain attributable; user measure domains are not silently reinterpreted.
+- status: canonical
+
+### SBV economics.cpp
+
+- path: `modules/sbv-engine/src/economics.cpp`
+- title: SBV economics.cpp
+- surface_type: implementation contract or test
+- truth_role: Exact native economic transform, selected studies and terminal boundary evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.3 native and terminal contracts.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, agents and independent result consumers
+- deferred_projections: portfolio accounting, initialized books and broader release gates
+- notes: User measure and economic assumptions remain explicit.
+- status: canonical
+
+### SBV economics_test.cpp
+
+- path: `modules/sbv-engine/tests/economics_test.cpp`
+- title: SBV economics_test.cpp
+- surface_type: implementation contract or test
+- truth_role: Exact native economic transform, selected studies and terminal boundary evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.3 native and terminal contracts.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, agents and independent result consumers
+- deferred_projections: portfolio accounting, initialized books and broader release gates
+- notes: User measure and economic assumptions remain explicit.
+- status: canonical
+
+### SBV sbv_economics_test.go
+
+- path: `tools/qxctl/internal/knowledgeengine/sbv_economics_test.go`
+- title: SBV sbv_economics_test.go
+- surface_type: implementation contract or test
+- truth_role: Exact native economic transform, selected studies and terminal boundary evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.3 native and terminal contracts.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, agents and independent result consumers
+- deferred_projections: portfolio accounting, initialized books and broader release gates
+- notes: User measure and economic assumptions remain explicit.
+- status: canonical
+
+### SBV book.cpp
+
+- path: `modules/sbv-engine/src/book.cpp`
+- title: SBV book.cpp
+- surface_type: implementation contract or test
+- truth_role: Exact native order-book frames, checkpoints and terminal boundary evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.4 native and terminal contracts.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, agents and independent result consumers
+- deferred_projections: queue/fill calibration, provider-specific profiles and broader release gates
+- notes: Initialization, anomaly policy and retained replay are explicit.
+- status: canonical
+
+### SBV book_test.cpp
+
+- path: `modules/sbv-engine/tests/book_test.cpp`
+- title: SBV book_test.cpp
+- surface_type: implementation contract or test
+- truth_role: Exact native order-book frames, checkpoints and terminal boundary evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.4 native and terminal contracts.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, agents and independent result consumers
+- deferred_projections: queue/fill calibration, provider-specific profiles and broader release gates
+- notes: Initialization, anomaly policy and retained replay are explicit.
+- status: canonical
+
+### SBV sbv_book_test.go
+
+- path: `tools/qxctl/internal/knowledgeengine/sbv_book_test.go`
+- title: SBV sbv_book_test.go
+- surface_type: implementation contract or test
+- truth_role: Exact native order-book frames, checkpoints and terminal boundary evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.4 native and terminal contracts.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, agents and independent result consumers
+- deferred_projections: queue/fill calibration, provider-specific profiles and broader release gates
+- notes: Initialization, anomaly policy and retained replay are explicit.
+- status: canonical
+
+### SBV liquidity.cpp
+
+- path: `modules/sbv-engine/src/liquidity.cpp`
+- title: SBV liquidity.cpp
+- surface_type: implementation contract or test
+- truth_role: Exact native displayed-depth execution scenarios and terminal boundary evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.5 native and terminal contracts.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, agents and independent result consumers
+- deferred_projections: queue/fill calibration, provider-specific profiles and broader release gates
+- notes: Activation probability, participation, shared liquidity and evidence policies are explicit.
+- status: canonical
+
+### SBV liquidity_test.cpp
+
+- path: `modules/sbv-engine/tests/liquidity_test.cpp`
+- title: SBV liquidity_test.cpp
+- surface_type: implementation contract or test
+- truth_role: Exact native displayed-depth execution scenarios and terminal boundary evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.5 native and terminal contracts.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, agents and independent result consumers
+- deferred_projections: queue/fill calibration, provider-specific profiles and broader release gates
+- notes: Activation probability, participation, shared liquidity and evidence policies are explicit.
+- status: canonical
+
+### SBV sbv_liquidity_test.go
+
+- path: `tools/qxctl/internal/knowledgeengine/sbv_liquidity_test.go`
+- title: SBV sbv_liquidity_test.go
+- surface_type: implementation contract or test
+- truth_role: Exact native displayed-depth execution scenarios and terminal boundary evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.5 native and terminal contracts.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, agents and independent result consumers
+- deferred_projections: queue/fill calibration, provider-specific profiles and broader release gates
+- notes: Activation probability, participation, shared liquidity and evidence policies are explicit.
+- status: canonical
+
+### SBV allocation_economics.cpp
+
+- path: `modules/sbv-engine/src/allocation_economics.cpp`
+- title: SBV allocation_economics.cpp
+- surface_type: implementation contract or test
+- truth_role: Quantity-aware allocation economics and exact wide rational arithmetic
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.6 native and terminal contracts.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, agents and independent result consumers
+- deferred_projections: queue/fill calibration, provider-specific profiles and broader release gates
+- notes: Mark, value units, fees, return basis and inactive outcomes remain caller choices.
+- status: canonical
+
+### SBV wide_rational.hpp
+
+- path: `modules/sbv-engine/src/wide_rational.hpp`
+- title: SBV wide_rational.hpp
+- surface_type: implementation contract or test
+- truth_role: Quantity-aware allocation economics and exact wide rational arithmetic
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.6 native and terminal contracts.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, agents and independent result consumers
+- deferred_projections: queue/fill calibration, provider-specific profiles and broader release gates
+- notes: Mark, value units, fees, return basis and inactive outcomes remain caller choices.
+- status: canonical
+
+### SBV allocation_economics_test.cpp
+
+- path: `modules/sbv-engine/tests/allocation_economics_test.cpp`
+- title: SBV allocation_economics_test.cpp
+- surface_type: implementation contract or test
+- truth_role: Quantity-aware allocation economics and exact wide rational arithmetic
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.6 native and terminal contracts.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, agents and independent result consumers
+- deferred_projections: queue/fill calibration, provider-specific profiles and broader release gates
+- notes: Mark, value units, fees, return basis and inactive outcomes remain caller choices.
+- status: canonical
+
+### SBV sbv_allocation_economics_test.go
+
+- path: `tools/qxctl/internal/knowledgeengine/sbv_allocation_economics_test.go`
+- title: SBV sbv_allocation_economics_test.go
+- surface_type: implementation contract or test
+- truth_role: Quantity-aware allocation economics and exact wide rational arithmetic
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.6 native and terminal contracts.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, agents and independent result consumers
+- deferred_projections: queue/fill calibration, provider-specific profiles and broader release gates
+- notes: Mark, value units, fees, return basis and inactive outcomes remain caller choices.
+- status: canonical

@@ -111,7 +111,7 @@ func writeCLIError(command *cobra.Command, err error, status int) {
 // could contain caller data. Unknown/new codes remain null until admitted here.
 func safeSCVEngineCode(code string) *string {
 	switch code {
-	case "sqav.request.invalid", "sqav.request.rejected", "sqav.request.limit", "sqav.request.unavailable", "request.invalid_deadline", "request.deadline_expired", "argument.count", "argument.unsupported", "internal.failure", "operation.unsupported",
+	case "sbv.contract", "sbv.pointer", "sbv.failure", "sbv.outcome_uncertain", "sqav.request.invalid", "sqav.request.rejected", "sqav.request.limit", "sqav.request.unavailable", "request.invalid_deadline", "request.deadline_expired", "argument.count", "argument.unsupported", "internal.failure", "operation.unsupported",
 		"request.deadline", "request.deadline_exceeded", "corpus.invalid", "interpretation.invalid", "coverage.invalid", "pack.invalid", "composition.invalid",
 		"knowledge.invalid", "knowledge.evaluation_limit",
 		"scv.fields", "scv.type", "scv.bounds", "scv.identity", "scv.locator", "scv.digest",
@@ -160,7 +160,7 @@ func snvEngineErrorExit(code string) int {
 // us which flags consume the next token, including a value spelled "--json".
 // This does not make misplaced/unknown flags valid or change Cobra's grammar.
 func scvJSONRequested(root *cobra.Command, args []string) bool {
-	if len(args) == 0 || (args[0] != "scv" && args[0] != "shv" && args[0] != "sqv" && args[0] != "snv") {
+	if len(args) == 0 || (args[0] != "scv" && args[0] != "shv" && args[0] != "sqv" && args[0] != "snv" && args[0] != "sbv") {
 		return false
 	}
 	consumesValue := map[string]bool{}
@@ -189,7 +189,9 @@ func scvJSONRequested(root *cobra.Command, args []string) bool {
 		if arg == "--" {
 			break
 		}
-		if arg == "--json" {
+		if args[0] == "sbv" && ((arg == "--format" && index+1 < len(args) && (args[index+1] == "json" || args[index+1] == "ndjson")) || arg == "--format=json" || arg == "--format=ndjson") {
+			requested = true
+		} else if arg == "--json" {
 			requested = true
 		} else if value, found := strings.CutPrefix(arg, "--json="); found {
 			parsed, err := strconv.ParseBool(value)

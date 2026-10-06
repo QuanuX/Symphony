@@ -542,6 +542,12 @@ A term is admitted only after its semantic owner exists. A name used in discussi
 - counterexample: `Renaming or removing a current surface means its historical names and evidence never existed.`
 - notes: History is not silently rewritten to resemble the present.
 
+### Symphony Backtesting Vector (SBV)
+
+- owner_contract: `knowledge/sbv/SPEC.md`
+- meaning: User-directed quantitative experiments, causal signal census, execution-model evidence, replay and portable results.
+- status: Initial experimental native implementation; broader study/model/optimization design remains proposed.
+
 ## Admission and Review Rules
 
 A reviewed change that introduces or materially changes platform terminology MUST:

@@ -1,0 +1,6829 @@
+{
+  "requests": {
+    "capabilities": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.capabilities-input.v1"
+        }
+      },
+      "required": [
+        "protocol"
+      ],
+      "additionalProperties": false
+    },
+    "run": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.run-input.v1"
+        },
+        "source_path": {
+          "type": "string"
+        },
+        "source_sha256": {
+          "type": "string"
+        },
+        "dataset": {
+          "type": "string"
+        },
+        "output_path": {
+          "type": "string"
+        },
+        "criteria": {
+          "type": "object",
+          "properties": {
+            "rule": {
+              "enum": [
+                "spaced_trades",
+                "trade_direction"
+              ]
+            },
+            "spacing_ns": {
+              "type": "string"
+            },
+            "min_trade_size": {
+              "type": "string"
+            },
+            "direction": {
+              "enum": [
+                "any",
+                "up",
+                "down",
+                "unchanged"
+              ]
+            },
+            "max_signals": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "rule",
+            "spacing_ns",
+            "min_trade_size",
+            "direction",
+            "max_signals"
+          ],
+          "additionalProperties": false
+        },
+        "replay": {
+          "type": "object",
+          "properties": {
+            "before_ns": {
+              "type": "string"
+            },
+            "after_ns": {
+              "type": "string"
+            },
+            "retain_events": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "before_ns",
+            "after_ns",
+            "retain_events"
+          ],
+          "additionalProperties": false
+        },
+        "execution": {
+          "type": "object",
+          "properties": {
+            "model": {
+              "enum": [
+                "none",
+                "touch_observation",
+                "user_probability"
+              ]
+            },
+            "horizon_ns": {
+              "type": "string"
+            },
+            "price_offsets_nanos": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "probability_numerator": {
+              "type": "string"
+            },
+            "probability_denominator": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "model",
+            "horizon_ns",
+            "price_offsets_nanos",
+            "probability_numerator",
+            "probability_denominator"
+          ],
+          "additionalProperties": false
+        },
+        "studies": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "workers": {
+          "type": "string"
+        },
+        "extensions": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "protocol",
+        "source_path",
+        "source_sha256",
+        "dataset",
+        "output_path",
+        "criteria",
+        "replay",
+        "execution",
+        "studies",
+        "workers",
+        "extensions"
+      ],
+      "additionalProperties": false
+    },
+    "compose": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.compose-input.v1"
+        },
+        "returns": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "numerator": {
+                "type": "string"
+              },
+              "denominator": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "numerator",
+              "denominator"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "weights": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "numerator": {
+                "type": "string"
+              },
+              "denominator": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "numerator",
+              "denominator"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "steps": {
+          "type": "string"
+        },
+        "dependence": {
+          "enum": [
+            "independent",
+            "same_draw"
+          ]
+        },
+        "output_path": {
+          "type": "string"
+        },
+        "extensions": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "protocol",
+        "returns",
+        "weights",
+        "steps",
+        "dependence",
+        "output_path",
+        "extensions"
+      ],
+      "additionalProperties": false
+    },
+    "result_inspect": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.result-inspect-input.v1"
+        },
+        "path": {
+          "type": "string"
+        },
+        "expected_sha256": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "protocol",
+        "path",
+        "expected_sha256"
+      ],
+      "additionalProperties": false
+    },
+    "result_query": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.result-query-input.v1"
+        },
+        "path": {
+          "type": "string"
+        },
+        "expected_sha256": {
+          "type": "string"
+        },
+        "pointer": {
+          "type": "string"
+        },
+        "limit": {
+          "type": "string"
+        },
+        "cursor": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "protocol",
+        "path",
+        "expected_sha256",
+        "pointer",
+        "limit",
+        "cursor"
+      ],
+      "additionalProperties": false
+    },
+    "evaluate": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.evaluate-input.v1"
+        },
+        "source_path": {
+          "type": "string"
+        },
+        "source_sha256": {
+          "type": "string"
+        },
+        "dataset": {
+          "type": "string"
+        },
+        "output_path": {
+          "type": "string"
+        },
+        "census": {
+          "type": "object",
+          "properties": {
+            "protocol": {
+              "const": "symphony.sbv.external-census.v1"
+            },
+            "source_sha256": {
+              "type": "string"
+            },
+            "mode": {
+              "enum": [
+                "causal_declared",
+                "retrospective"
+              ]
+            },
+            "producer": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "version": {
+                  "type": "string"
+                },
+                "artifact_sha256": {
+                  "type": "string"
+                },
+                "reproducibility": {
+                  "enum": [
+                    "deterministic_declared",
+                    "nondeterministic",
+                    "uncaptured"
+                  ]
+                }
+              },
+              "required": [
+                "id",
+                "version",
+                "artifact_sha256",
+                "reproducibility"
+              ],
+              "additionalProperties": false
+            },
+            "signals": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "signal_id": {
+                    "type": "string"
+                  },
+                  "source_ordinal": {
+                    "type": "string",
+                    "pattern": "^(0|[1-9][0-9]*)$"
+                  },
+                  "available_ns": {
+                    "type": "string",
+                    "pattern": "^(0|[1-9][0-9]*)$"
+                  },
+                  "anchor_price_nanos": {
+                    "type": "string",
+                    "pattern": "^-?(0|[1-9][0-9]*)$"
+                  },
+                  "causal_end_ordinal_exclusive": {
+                    "type": "string",
+                    "pattern": "^(0|[1-9][0-9]*)$"
+                  },
+                  "context_reference": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "signal_id",
+                  "source_ordinal",
+                  "available_ns",
+                  "anchor_price_nanos",
+                  "causal_end_ordinal_exclusive",
+                  "context_reference"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": [
+            "protocol",
+            "source_sha256",
+            "mode",
+            "producer",
+            "signals"
+          ],
+          "additionalProperties": false
+        },
+        "model": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "protocol": {
+                  "const": "symphony.sbv.model-selection.v1"
+                },
+                "id": {
+                  "const": "observed_trade_levels"
+                },
+                "version": {
+                  "const": "1"
+                },
+                "horizon_ns": {
+                  "type": "string",
+                  "pattern": "^(0|[1-9][0-9]*)$"
+                },
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "levels_per_side": {
+                      "type": "string",
+                      "pattern": "^(0|[1-9][0-9]*)$"
+                    },
+                    "include_anchor": {
+                      "type": "boolean"
+                    },
+                    "thin_support": {
+                      "enum": [
+                        "unavailable",
+                        "reject"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "levels_per_side",
+                    "include_anchor",
+                    "thin_support"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "protocol",
+                "id",
+                "version",
+                "horizon_ns",
+                "parameters"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "protocol": {
+                  "const": "symphony.sbv.model-selection.v1"
+                },
+                "id": {
+                  "const": "external_outcomes"
+                },
+                "version": {
+                  "const": "1"
+                },
+                "horizon_ns": {
+                  "type": "string",
+                  "pattern": "^(0|[1-9][0-9]*)$"
+                },
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "producer": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "version": {
+                          "type": "string"
+                        },
+                        "artifact_sha256": {
+                          "type": "string"
+                        },
+                        "reproducibility": {
+                          "enum": [
+                            "deterministic_declared",
+                            "nondeterministic",
+                            "uncaptured"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "version",
+                        "artifact_sha256",
+                        "reproducibility"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "measure": {
+                      "enum": [
+                        "probability",
+                        "scenario_weight",
+                        "signed_coefficient"
+                      ]
+                    },
+                    "conditioning": {
+                      "enum": [
+                        "execution",
+                        "scenario"
+                      ]
+                    },
+                    "calibration_reference": {
+                      "type": "string"
+                    },
+                    "outcomes": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "signal_id": {
+                            "type": "string"
+                          },
+                          "support": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "price_nanos": {
+                                  "type": "string",
+                                  "pattern": "^-?(0|[1-9][0-9]*)$"
+                                },
+                                "weight": {
+                                  "type": "object",
+                                  "properties": {
+                                    "numerator": {
+                                      "type": "string",
+                                      "pattern": "^-?(0|[1-9][0-9]*)$"
+                                    },
+                                    "denominator": {
+                                      "type": "string",
+                                      "pattern": "^(0|[1-9][0-9]*)$"
+                                    }
+                                  },
+                                  "required": [
+                                    "numerator",
+                                    "denominator"
+                                  ],
+                                  "additionalProperties": false
+                                }
+                              },
+                              "required": [
+                                "price_nanos",
+                                "weight"
+                              ],
+                              "additionalProperties": false
+                            }
+                          },
+                          "execution_probability": {
+                            "anyOf": [
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "status": {
+                                    "const": "supplied"
+                                  },
+                                  "value": {
+                                    "type": "object",
+                                    "properties": {
+                                      "numerator": {
+                                        "type": "string",
+                                        "pattern": "^-?(0|[1-9][0-9]*)$"
+                                      },
+                                      "denominator": {
+                                        "type": "string",
+                                        "pattern": "^(0|[1-9][0-9]*)$"
+                                      }
+                                    },
+                                    "required": [
+                                      "numerator",
+                                      "denominator"
+                                    ],
+                                    "additionalProperties": false
+                                  }
+                                },
+                                "required": [
+                                  "status",
+                                  "value"
+                                ],
+                                "additionalProperties": false
+                              },
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "status": {
+                                    "const": "unavailable"
+                                  },
+                                  "reason": {
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "status",
+                                  "reason"
+                                ],
+                                "additionalProperties": false
+                              }
+                            ]
+                          },
+                          "evidence_reference": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "signal_id",
+                          "support",
+                          "execution_probability",
+                          "evidence_reference"
+                        ],
+                        "additionalProperties": false
+                      }
+                    }
+                  },
+                  "required": [
+                    "producer",
+                    "measure",
+                    "conditioning",
+                    "calibration_reference",
+                    "outcomes"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "protocol",
+                "id",
+                "version",
+                "horizon_ns",
+                "parameters"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        },
+        "replay": {
+          "type": "object",
+          "properties": {
+            "before_ns": {
+              "type": "string"
+            },
+            "after_ns": {
+              "type": "string"
+            },
+            "retain_events": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "before_ns",
+            "after_ns",
+            "retain_events"
+          ],
+          "additionalProperties": false
+        },
+        "studies": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "signal_summary",
+              "model_summary",
+              "path_excursion"
+            ]
+          }
+        },
+        "workers": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$"
+        },
+        "extensions": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "protocol",
+        "source_path",
+        "source_sha256",
+        "dataset",
+        "output_path",
+        "census",
+        "model",
+        "replay",
+        "studies",
+        "workers",
+        "extensions"
+      ],
+      "additionalProperties": false
+    },
+    "catalogue": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.catalogue-input.v1"
+        }
+      },
+      "required": [
+        "protocol"
+      ],
+      "additionalProperties": false
+    },
+    "compose_joint": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.compose-joint-input.v1"
+        },
+        "paths": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "path_id": {
+                "type": "string"
+              },
+              "returns": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "numerator": {
+                      "type": "string",
+                      "pattern": "^-?(0|[1-9][0-9]*)$"
+                    },
+                    "denominator": {
+                      "type": "string",
+                      "pattern": "^(0|[1-9][0-9]*)$"
+                    }
+                  },
+                  "required": [
+                    "numerator",
+                    "denominator"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "probability": {
+                "type": "object",
+                "properties": {
+                  "numerator": {
+                    "type": "string",
+                    "pattern": "^-?(0|[1-9][0-9]*)$"
+                  },
+                  "denominator": {
+                    "type": "string",
+                    "pattern": "^(0|[1-9][0-9]*)$"
+                  }
+                },
+                "required": [
+                  "numerator",
+                  "denominator"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "path_id",
+              "returns",
+              "probability"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "output_path": {
+          "type": "string"
+        },
+        "extensions": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "protocol",
+        "paths",
+        "output_path",
+        "extensions"
+      ],
+      "additionalProperties": false
+    },
+    "economics": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.economics-input.v1"
+        },
+        "path": {
+          "type": "string"
+        },
+        "expected_sha256": {
+          "type": "string"
+        },
+        "output_path": {
+          "type": "string"
+        },
+        "selections": {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "signal_id": {
+                    "type": "string"
+                  },
+                  "transform": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "const": "linear_price_pnl"
+                      },
+                      "version": {
+                        "const": "1"
+                      },
+                      "reference_price_nanos": {
+                        "type": "string"
+                      },
+                      "price_unit_nanos": {
+                        "type": "string"
+                      },
+                      "position_units": {
+                        "type": "object",
+                        "properties": {
+                          "numerator": {
+                            "type": "string"
+                          },
+                          "denominator": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "numerator",
+                          "denominator"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "value_per_price_unit": {
+                        "type": "object",
+                        "properties": {
+                          "numerator": {
+                            "type": "string"
+                          },
+                          "denominator": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "numerator",
+                          "denominator"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "cost_per_outcome": {
+                        "type": "object",
+                        "properties": {
+                          "numerator": {
+                            "type": "string"
+                          },
+                          "denominator": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "numerator",
+                          "denominator"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "return_basis": {
+                        "type": "object",
+                        "properties": {
+                          "numerator": {
+                            "type": "string"
+                          },
+                          "denominator": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "numerator",
+                          "denominator"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "pnl_unit": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "version",
+                      "reference_price_nanos",
+                      "price_unit_nanos",
+                      "position_units",
+                      "value_per_price_unit",
+                      "cost_per_outcome",
+                      "return_basis",
+                      "pnl_unit"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "mode": {
+                    "const": "support_only"
+                  },
+                  "nonexecution_pnl": {
+                    "type": "null"
+                  }
+                },
+                "required": [
+                  "signal_id",
+                  "transform",
+                  "mode",
+                  "nonexecution_pnl"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "signal_id": {
+                    "type": "string"
+                  },
+                  "transform": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "const": "linear_price_pnl"
+                      },
+                      "version": {
+                        "const": "1"
+                      },
+                      "reference_price_nanos": {
+                        "type": "string"
+                      },
+                      "price_unit_nanos": {
+                        "type": "string"
+                      },
+                      "position_units": {
+                        "type": "object",
+                        "properties": {
+                          "numerator": {
+                            "type": "string"
+                          },
+                          "denominator": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "numerator",
+                          "denominator"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "value_per_price_unit": {
+                        "type": "object",
+                        "properties": {
+                          "numerator": {
+                            "type": "string"
+                          },
+                          "denominator": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "numerator",
+                          "denominator"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "cost_per_outcome": {
+                        "type": "object",
+                        "properties": {
+                          "numerator": {
+                            "type": "string"
+                          },
+                          "denominator": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "numerator",
+                          "denominator"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "return_basis": {
+                        "type": "object",
+                        "properties": {
+                          "numerator": {
+                            "type": "string"
+                          },
+                          "denominator": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "numerator",
+                          "denominator"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "pnl_unit": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "version",
+                      "reference_price_nanos",
+                      "price_unit_nanos",
+                      "position_units",
+                      "value_per_price_unit",
+                      "cost_per_outcome",
+                      "return_basis",
+                      "pnl_unit"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "mode": {
+                    "const": "execution_mixture"
+                  },
+                  "nonexecution_pnl": {
+                    "type": "object",
+                    "properties": {
+                      "numerator": {
+                        "type": "string"
+                      },
+                      "denominator": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "numerator",
+                      "denominator"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "required": [
+                  "signal_id",
+                  "transform",
+                  "mode",
+                  "nonexecution_pnl"
+                ],
+                "additionalProperties": false
+              }
+            ]
+          },
+          "minItems": 0,
+          "maxItems": 4096
+        },
+        "studies": {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "enum": [
+                      "weighted_return_sum",
+                      "return_moments"
+                    ]
+                  },
+                  "version": {
+                    "const": "1"
+                  },
+                  "parameters": {
+                    "type": "object",
+                    "properties": {},
+                    "required": [],
+                    "additionalProperties": false
+                  }
+                },
+                "required": [
+                  "id",
+                  "version",
+                  "parameters"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "const": "return_quantiles"
+                  },
+                  "version": {
+                    "const": "1"
+                  },
+                  "parameters": {
+                    "type": "object",
+                    "properties": {
+                      "levels": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "numerator": {
+                              "type": "string"
+                            },
+                            "denominator": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "numerator",
+                            "denominator"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "minItems": 1,
+                        "maxItems": 32
+                      }
+                    },
+                    "required": [
+                      "levels"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "required": [
+                  "id",
+                  "version",
+                  "parameters"
+                ],
+                "additionalProperties": false
+              }
+            ]
+          },
+          "minItems": 0,
+          "maxItems": 3
+        },
+        "on_incompatible": {
+          "enum": [
+            "unavailable",
+            "reject"
+          ]
+        },
+        "extensions": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "protocol",
+        "path",
+        "expected_sha256",
+        "output_path",
+        "selections",
+        "studies",
+        "on_incompatible",
+        "extensions"
+      ],
+      "additionalProperties": false
+    },
+    "book": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.book-input.v1"
+        },
+        "source_path": {
+          "type": "string"
+        },
+        "source_sha256": {
+          "type": "string"
+        },
+        "dataset": {
+          "type": "string"
+        },
+        "census_result": {
+          "type": "object",
+          "properties": {
+            "path": {
+              "type": "string"
+            },
+            "expected_sha256": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "path",
+            "expected_sha256"
+          ],
+          "additionalProperties": false
+        },
+        "signal_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 0,
+          "maxItems": 4096
+        },
+        "output_path": {
+          "type": "string"
+        },
+        "initial_state": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "mode": {
+                  "const": "uninitialized"
+                }
+              },
+              "required": [
+                "mode"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "mode": {
+                  "const": "checkpoint"
+                },
+                "result": {
+                  "type": "object",
+                  "properties": {
+                    "path": {
+                      "type": "string"
+                    },
+                    "expected_sha256": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "path",
+                    "expected_sha256"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "mode",
+                "result"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        },
+        "on_anomaly": {
+          "enum": [
+            "reject",
+            "invalidate_until_reset"
+          ]
+        },
+        "replay": {
+          "type": "object",
+          "properties": {
+            "before_ns": {
+              "type": "string"
+            },
+            "after_ns": {
+              "type": "string"
+            },
+            "retain_events": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "before_ns",
+            "after_ns",
+            "retain_events"
+          ],
+          "additionalProperties": false
+        },
+        "frames": {
+          "type": "object",
+          "properties": {
+            "cadence": {
+              "enum": [
+                "signals",
+                "signals_and_event_ends"
+              ]
+            },
+            "levels_per_side": {
+              "type": "string"
+            },
+            "maximum": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "cadence",
+            "levels_per_side",
+            "maximum"
+          ],
+          "additionalProperties": false
+        },
+        "emit_checkpoint": {
+          "type": "boolean"
+        },
+        "extensions": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "protocol",
+        "source_path",
+        "source_sha256",
+        "dataset",
+        "census_result",
+        "signal_ids",
+        "output_path",
+        "initial_state",
+        "on_anomaly",
+        "replay",
+        "frames",
+        "emit_checkpoint",
+        "extensions"
+      ],
+      "additionalProperties": false
+    },
+    "liquidity": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.liquidity-input.v1"
+        },
+        "path": {
+          "type": "string"
+        },
+        "expected_sha256": {
+          "type": "string"
+        },
+        "output_path": {
+          "type": "string"
+        },
+        "orders": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "order_id": {
+                "type": "string"
+              },
+              "signal_id": {
+                "type": "string"
+              },
+              "frame_source_ordinal": {
+                "type": "string"
+              },
+              "side": {
+                "enum": [
+                  "buy",
+                  "sell"
+                ]
+              },
+              "quantity": {
+                "type": "string"
+              },
+              "limit_price_nanos": {
+                "anyOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              },
+              "time_in_force": {
+                "enum": [
+                  "IOC",
+                  "FOK"
+                ]
+              },
+              "max_level_participation": {
+                "type": "object",
+                "properties": {
+                  "numerator": {
+                    "type": "string"
+                  },
+                  "denominator": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "numerator",
+                  "denominator"
+                ],
+                "additionalProperties": false
+              },
+              "activation_probability": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "status": {
+                        "const": "supplied"
+                      },
+                      "value": {
+                        "type": "object",
+                        "properties": {
+                          "numerator": {
+                            "type": "string"
+                          },
+                          "denominator": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "numerator",
+                          "denominator"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "required": [
+                      "status",
+                      "value"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "status": {
+                        "const": "unavailable"
+                      },
+                      "reason": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "status",
+                      "reason"
+                    ],
+                    "additionalProperties": false
+                  }
+                ]
+              }
+            },
+            "required": [
+              "order_id",
+              "signal_id",
+              "frame_source_ordinal",
+              "side",
+              "quantity",
+              "limit_price_nanos",
+              "time_in_force",
+              "max_level_participation",
+              "activation_probability"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 0,
+          "maxItems": 4096
+        },
+        "liquidity_mode": {
+          "enum": [
+            "independent",
+            "shared_snapshot"
+          ]
+        },
+        "depth_policy": {
+          "enum": [
+            "require_sufficient",
+            "visible_only"
+          ]
+        },
+        "market_state_policy": {
+          "enum": [
+            "uncrossed_only",
+            "allow_locked_crossed"
+          ]
+        },
+        "receive_time_policy": {
+          "enum": [
+            "unflagged_only",
+            "allow_flagged"
+          ]
+        },
+        "on_unavailable": {
+          "enum": [
+            "unavailable",
+            "reject"
+          ]
+        },
+        "studies": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "liquidity_summary",
+              "fill_quality"
+            ]
+          },
+          "minItems": 0,
+          "maxItems": 2
+        },
+        "workers": {
+          "type": "string"
+        },
+        "extensions": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "protocol",
+        "path",
+        "expected_sha256",
+        "output_path",
+        "orders",
+        "liquidity_mode",
+        "depth_policy",
+        "market_state_policy",
+        "receive_time_policy",
+        "on_unavailable",
+        "studies",
+        "workers",
+        "extensions"
+      ],
+      "additionalProperties": false
+    },
+    "allocation_economics": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.allocation-economics-input.v1"
+        },
+        "path": {
+          "type": "string"
+        },
+        "expected_sha256": {
+          "type": "string"
+        },
+        "output_path": {
+          "type": "string"
+        },
+        "selections": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "order_id": {
+                "type": "string"
+              },
+              "valuation": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "const": "filled_quantity_markout"
+                  },
+                  "version": {
+                    "const": "1"
+                  },
+                  "mark_price_nanos": {
+                    "type": "string"
+                  },
+                  "mark_available_ns": {
+                    "type": "string"
+                  },
+                  "mark_evidence": {
+                    "type": "string"
+                  },
+                  "price_unit_nanos": {
+                    "type": "string"
+                  },
+                  "value_per_price_unit": {
+                    "type": "object",
+                    "properties": {
+                      "numerator": {
+                        "type": "string"
+                      },
+                      "denominator": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "numerator",
+                      "denominator"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "activation_cost": {
+                    "type": "object",
+                    "properties": {
+                      "numerator": {
+                        "type": "string"
+                      },
+                      "denominator": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "numerator",
+                      "denominator"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "filled_order_cost": {
+                    "type": "object",
+                    "properties": {
+                      "numerator": {
+                        "type": "string"
+                      },
+                      "denominator": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "numerator",
+                      "denominator"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "per_filled_unit_cost": {
+                    "type": "object",
+                    "properties": {
+                      "numerator": {
+                        "type": "string"
+                      },
+                      "denominator": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "numerator",
+                      "denominator"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "return_basis": {
+                    "type": "object",
+                    "properties": {
+                      "numerator": {
+                        "type": "string"
+                      },
+                      "denominator": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "numerator",
+                      "denominator"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "pnl_unit": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "id",
+                  "version",
+                  "mark_price_nanos",
+                  "mark_available_ns",
+                  "mark_evidence",
+                  "price_unit_nanos",
+                  "value_per_price_unit",
+                  "activation_cost",
+                  "filled_order_cost",
+                  "per_filled_unit_cost",
+                  "return_basis",
+                  "pnl_unit"
+                ],
+                "additionalProperties": false
+              },
+              "mode": {
+                "enum": [
+                  "conditional_only",
+                  "activation_mixture"
+                ]
+              },
+              "inactive_pnl": {
+                "anyOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "numerator": {
+                        "type": "string"
+                      },
+                      "denominator": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "numerator",
+                      "denominator"
+                    ],
+                    "additionalProperties": false
+                  }
+                ]
+              }
+            },
+            "required": [
+              "order_id",
+              "valuation",
+              "mode",
+              "inactive_pnl"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 0,
+          "maxItems": 4096
+        },
+        "studies": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "allocation_costs",
+              "activation_moments"
+            ]
+          },
+          "minItems": 0,
+          "maxItems": 2
+        },
+        "on_unavailable": {
+          "enum": [
+            "unavailable",
+            "reject"
+          ]
+        },
+        "extensions": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "protocol",
+        "path",
+        "expected_sha256",
+        "output_path",
+        "selections",
+        "studies",
+        "on_unavailable",
+        "extensions"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "results": {
+    "capabilities": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.capabilities.v1"
+        },
+        "engine_version": {
+          "const": "0.6.0-dev"
+        },
+        "cpu": {
+          "type": "object",
+          "properties": {
+            "available": {
+              "const": true
+            },
+            "max_workers": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]*)$"
+            },
+            "deterministic_output_order": {
+              "const": true
+            }
+          },
+          "required": [
+            "available",
+            "max_workers",
+            "deterministic_output_order"
+          ],
+          "additionalProperties": false
+        },
+        "cuda": {
+          "type": "object",
+          "properties": {
+            "available": {
+              "const": false
+            },
+            "contract": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "available",
+            "contract"
+          ],
+          "additionalProperties": false
+        },
+        "tensor": {
+          "type": "object",
+          "properties": {
+            "available": {
+              "const": false
+            },
+            "contract": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "available",
+            "contract"
+          ],
+          "additionalProperties": false
+        },
+        "live": {
+          "type": "object",
+          "properties": {
+            "available": {
+              "const": false
+            },
+            "plan": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "available",
+            "plan"
+          ],
+          "additionalProperties": false
+        },
+        "studies": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "execution_models": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "limits": {
+          "type": "object",
+          "properties": {
+            "max_artifact_bytes": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]*)$"
+            },
+            "max_composed_paths": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]*)$"
+            },
+            "max_signals": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]*)$"
+            },
+            "max_source_events": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]*)$"
+            }
+          },
+          "required": [
+            "max_artifact_bytes",
+            "max_composed_paths",
+            "max_signals",
+            "max_source_events"
+          ],
+          "additionalProperties": false
+        },
+        "economic_transforms": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "protocol",
+        "engine_version",
+        "cpu",
+        "cuda",
+        "tensor",
+        "live",
+        "studies",
+        "execution_models",
+        "limits",
+        "economic_transforms"
+      ],
+      "additionalProperties": false
+    },
+    "run": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.run.v1"
+        },
+        "path": {
+          "type": "string"
+        },
+        "content_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "file_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "bytes": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$"
+        },
+        "status": {
+          "enum": [
+            "completed",
+            "partial"
+          ]
+        },
+        "summary": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "enum": [
+                "available",
+                "partial",
+                "unavailable",
+                "not_selected"
+              ]
+            },
+            "reason": {
+              "type": "string"
+            },
+            "data": {
+              "$ref": "#/$defs/node"
+            }
+          },
+          "required": [
+            "status",
+            "reason",
+            "data"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "protocol",
+        "path",
+        "content_sha256",
+        "file_sha256",
+        "bytes",
+        "status",
+        "summary"
+      ],
+      "additionalProperties": false
+    },
+    "compose": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.compose.v1"
+        },
+        "path": {
+          "type": "string"
+        },
+        "content_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "file_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "bytes": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$"
+        },
+        "status": {
+          "enum": [
+            "completed",
+            "partial"
+          ]
+        },
+        "summary": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "enum": [
+                "available",
+                "partial",
+                "unavailable",
+                "not_selected"
+              ]
+            },
+            "reason": {
+              "type": "string"
+            },
+            "data": {
+              "$ref": "#/$defs/node"
+            }
+          },
+          "required": [
+            "status",
+            "reason",
+            "data"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "protocol",
+        "path",
+        "content_sha256",
+        "file_sha256",
+        "bytes",
+        "status",
+        "summary"
+      ],
+      "additionalProperties": false
+    },
+    "result_inspect": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.result-inspect.v1"
+        },
+        "path": {
+          "type": "string"
+        },
+        "content_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "file_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "bytes": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$"
+        },
+        "status": {
+          "enum": [
+            "completed",
+            "partial"
+          ]
+        },
+        "expected_digest_verified": {
+          "type": "boolean"
+        },
+        "sections": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "pointer": {
+                "type": "string"
+              },
+              "status": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "name",
+              "pointer",
+              "status"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "protocol",
+        "path",
+        "content_sha256",
+        "file_sha256",
+        "bytes",
+        "status",
+        "expected_digest_verified",
+        "sections"
+      ],
+      "additionalProperties": false
+    },
+    "result_query": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.result-query.v1"
+        },
+        "content_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "pointer": {
+          "type": "string"
+        },
+        "query_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "offset": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$"
+        },
+        "total": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$"
+        },
+        "complete": {
+          "type": "boolean"
+        },
+        "next_cursor": {
+          "type": "string"
+        },
+        "nodes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "pointer": {
+                "type": "string"
+              },
+              "type": {
+                "enum": [
+                  "object",
+                  "array",
+                  "string",
+                  "boolean",
+                  "null"
+                ]
+              },
+              "value": {
+                "$ref": "#/$defs/node"
+              },
+              "children": {
+                "type": "string",
+                "pattern": "^(0|[1-9][0-9]*)$"
+              }
+            },
+            "required": [
+              "pointer",
+              "type",
+              "value",
+              "children"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "protocol",
+        "content_sha256",
+        "pointer",
+        "query_sha256",
+        "offset",
+        "total",
+        "complete",
+        "next_cursor",
+        "nodes"
+      ],
+      "additionalProperties": false
+    },
+    "evaluate": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.evaluate.v1"
+        },
+        "path": {
+          "type": "string"
+        },
+        "content_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "file_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "bytes": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$"
+        },
+        "status": {
+          "enum": [
+            "completed",
+            "partial"
+          ]
+        },
+        "summary": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "enum": [
+                "available",
+                "partial",
+                "unavailable",
+                "not_selected"
+              ]
+            },
+            "reason": {
+              "type": "string"
+            },
+            "data": {
+              "$ref": "#/$defs/node"
+            }
+          },
+          "required": [
+            "status",
+            "reason",
+            "data"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "protocol",
+        "path",
+        "content_sha256",
+        "file_sha256",
+        "bytes",
+        "status",
+        "summary"
+      ],
+      "additionalProperties": false
+    },
+    "compose_joint": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.compose-joint.v1"
+        },
+        "path": {
+          "type": "string"
+        },
+        "content_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "file_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "bytes": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$"
+        },
+        "status": {
+          "enum": [
+            "completed",
+            "partial"
+          ]
+        },
+        "summary": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "enum": [
+                "available",
+                "partial",
+                "unavailable",
+                "not_selected"
+              ]
+            },
+            "reason": {
+              "type": "string"
+            },
+            "data": {
+              "$ref": "#/$defs/node"
+            }
+          },
+          "required": [
+            "status",
+            "reason",
+            "data"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "protocol",
+        "path",
+        "content_sha256",
+        "file_sha256",
+        "bytes",
+        "status",
+        "summary"
+      ],
+      "additionalProperties": false
+    },
+    "catalogue": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.catalogue.v1"
+        },
+        "engine_version": {
+          "const": "0.6.0-dev"
+        },
+        "models": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "version": {
+                "type": "string"
+              },
+              "input_protocol": {
+                "type": "string"
+              },
+              "output_protocol": {
+                "type": "string"
+              },
+              "measure": {
+                "type": "string"
+              },
+              "evidence": {
+                "type": "string"
+              },
+              "parameters": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "operations": {
+                "type": "array",
+                "items": {
+                  "enum": [
+                    "run",
+                    "evaluate",
+                    "liquidity",
+                    "allocation_economics"
+                  ]
+                }
+              }
+            },
+            "required": [
+              "id",
+              "version",
+              "input_protocol",
+              "output_protocol",
+              "measure",
+              "evidence",
+              "parameters",
+              "operations"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "studies": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "version": {
+                "type": "string"
+              },
+              "unit": {
+                "type": "string"
+              },
+              "definition": {
+                "type": "string"
+              },
+              "operations": {
+                "type": "array",
+                "items": {
+                  "enum": [
+                    "run",
+                    "evaluate",
+                    "economics",
+                    "liquidity",
+                    "allocation_economics"
+                  ]
+                }
+              },
+              "descriptor": {
+                "type": "object",
+                "properties": {
+                  "protocol": {
+                    "const": "symphony.sbv.study-descriptor.v1"
+                  },
+                  "required_inputs": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "weighting_domains": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "parameters": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "grouping": {
+                    "type": "string"
+                  },
+                  "missingness": {
+                    "type": "string"
+                  },
+                  "method": {
+                    "type": "string"
+                  },
+                  "backend": {
+                    "const": "cpu"
+                  },
+                  "maximum_atoms": {
+                    "type": "string"
+                  },
+                  "output_schema": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "protocol",
+                  "required_inputs",
+                  "weighting_domains",
+                  "parameters",
+                  "grouping",
+                  "missingness",
+                  "method",
+                  "backend",
+                  "maximum_atoms",
+                  "output_schema"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "id",
+              "version",
+              "unit",
+              "definition",
+              "operations"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "transforms": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "version": {
+                "type": "string"
+              },
+              "operations": {
+                "type": "array",
+                "items": {
+                  "enum": [
+                    "economics",
+                    "allocation_economics"
+                  ]
+                }
+              },
+              "definition": {
+                "type": "string"
+              },
+              "domain": {
+                "type": "string"
+              },
+              "input_schema": {
+                "type": "string"
+              },
+              "output_schema": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "version",
+              "operations",
+              "definition",
+              "domain",
+              "input_schema",
+              "output_schema"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "book_profiles": {
+          "const": [
+            {
+              "id": "databento_mbo_orders_strict_v1",
+              "version": "1",
+              "operations": [
+                "book"
+              ],
+              "initialization": "source reset or exact source-bound supplied checkpoint",
+              "anomalies": "reject or invalidate_until_reset",
+              "scope": "one publisher/instrument/channel; A/M/C/R updates; T/F/N informational; no queue priority or fill prediction",
+              "input_schema": "symphony.sbv.book-input.v1",
+              "output_schemas": [
+                "symphony.sbv.book-frame.v1",
+                "symphony.sbv.book-checkpoint.v1"
+              ]
+            }
+          ]
+        }
+      },
+      "required": [
+        "protocol",
+        "engine_version",
+        "models",
+        "studies",
+        "transforms",
+        "book_profiles"
+      ],
+      "additionalProperties": false
+    },
+    "economics": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.economics.v1"
+        },
+        "path": {
+          "type": "string"
+        },
+        "content_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "file_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "bytes": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$"
+        },
+        "status": {
+          "enum": [
+            "completed",
+            "partial"
+          ]
+        },
+        "summary": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "enum": [
+                "available",
+                "partial",
+                "unavailable",
+                "not_selected"
+              ]
+            },
+            "reason": {
+              "type": "string"
+            },
+            "data": {
+              "$ref": "#/$defs/node"
+            }
+          },
+          "required": [
+            "status",
+            "reason",
+            "data"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "protocol",
+        "path",
+        "content_sha256",
+        "file_sha256",
+        "bytes",
+        "status",
+        "summary"
+      ],
+      "additionalProperties": false
+    },
+    "book": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.book.v1"
+        },
+        "path": {
+          "type": "string"
+        },
+        "content_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "file_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "bytes": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$"
+        },
+        "status": {
+          "enum": [
+            "completed",
+            "partial"
+          ]
+        },
+        "summary": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "enum": [
+                "available",
+                "partial",
+                "unavailable",
+                "not_selected"
+              ]
+            },
+            "reason": {
+              "type": "string"
+            },
+            "data": {
+              "$ref": "#/$defs/node"
+            }
+          },
+          "required": [
+            "status",
+            "reason",
+            "data"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "protocol",
+        "path",
+        "content_sha256",
+        "file_sha256",
+        "bytes",
+        "status",
+        "summary"
+      ],
+      "additionalProperties": false
+    },
+    "liquidity": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.liquidity.v1"
+        },
+        "path": {
+          "type": "string"
+        },
+        "content_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "file_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "bytes": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$"
+        },
+        "status": {
+          "enum": [
+            "completed",
+            "partial"
+          ]
+        },
+        "summary": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "enum": [
+                "available",
+                "partial",
+                "unavailable",
+                "not_selected"
+              ]
+            },
+            "reason": {
+              "type": "string"
+            },
+            "data": {
+              "$ref": "#/$defs/node"
+            }
+          },
+          "required": [
+            "status",
+            "reason",
+            "data"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "protocol",
+        "path",
+        "content_sha256",
+        "file_sha256",
+        "bytes",
+        "status",
+        "summary"
+      ],
+      "additionalProperties": false
+    },
+    "allocation_economics": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.allocation-economics.v1"
+        },
+        "path": {
+          "type": "string"
+        },
+        "content_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "file_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "bytes": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$"
+        },
+        "status": {
+          "enum": [
+            "completed",
+            "partial"
+          ]
+        },
+        "summary": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "enum": [
+                "available",
+                "partial",
+                "unavailable",
+                "not_selected"
+              ]
+            },
+            "reason": {
+              "type": "string"
+            },
+            "data": {
+              "$ref": "#/$defs/node"
+            }
+          },
+          "required": [
+            "status",
+            "reason",
+            "data"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "protocol",
+        "path",
+        "content_sha256",
+        "file_sha256",
+        "bytes",
+        "status",
+        "summary"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "$defs": {
+    "node": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        },
+        {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/node"
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/node"
+          }
+        }
+      ]
+    },
+    "external_census": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.external-census.v1"
+        },
+        "source_sha256": {
+          "type": "string"
+        },
+        "mode": {
+          "enum": [
+            "causal_declared",
+            "retrospective"
+          ]
+        },
+        "producer": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "version": {
+              "type": "string"
+            },
+            "artifact_sha256": {
+              "type": "string"
+            },
+            "reproducibility": {
+              "enum": [
+                "deterministic_declared",
+                "nondeterministic",
+                "uncaptured"
+              ]
+            }
+          },
+          "required": [
+            "id",
+            "version",
+            "artifact_sha256",
+            "reproducibility"
+          ],
+          "additionalProperties": false
+        },
+        "signals": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "signal_id": {
+                "type": "string"
+              },
+              "source_ordinal": {
+                "type": "string",
+                "pattern": "^(0|[1-9][0-9]*)$"
+              },
+              "available_ns": {
+                "type": "string",
+                "pattern": "^(0|[1-9][0-9]*)$"
+              },
+              "anchor_price_nanos": {
+                "type": "string",
+                "pattern": "^-?(0|[1-9][0-9]*)$"
+              },
+              "causal_end_ordinal_exclusive": {
+                "type": "string",
+                "pattern": "^(0|[1-9][0-9]*)$"
+              },
+              "context_reference": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "signal_id",
+              "source_ordinal",
+              "available_ns",
+              "anchor_price_nanos",
+              "causal_end_ordinal_exclusive",
+              "context_reference"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "protocol",
+        "source_sha256",
+        "mode",
+        "producer",
+        "signals"
+      ],
+      "additionalProperties": false
+    },
+    "model_selection": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "protocol": {
+              "const": "symphony.sbv.model-selection.v1"
+            },
+            "id": {
+              "const": "observed_trade_levels"
+            },
+            "version": {
+              "const": "1"
+            },
+            "horizon_ns": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]*)$"
+            },
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "levels_per_side": {
+                  "type": "string",
+                  "pattern": "^(0|[1-9][0-9]*)$"
+                },
+                "include_anchor": {
+                  "type": "boolean"
+                },
+                "thin_support": {
+                  "enum": [
+                    "unavailable",
+                    "reject"
+                  ]
+                }
+              },
+              "required": [
+                "levels_per_side",
+                "include_anchor",
+                "thin_support"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "protocol",
+            "id",
+            "version",
+            "horizon_ns",
+            "parameters"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "protocol": {
+              "const": "symphony.sbv.model-selection.v1"
+            },
+            "id": {
+              "const": "external_outcomes"
+            },
+            "version": {
+              "const": "1"
+            },
+            "horizon_ns": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]*)$"
+            },
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "producer": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "version": {
+                      "type": "string"
+                    },
+                    "artifact_sha256": {
+                      "type": "string"
+                    },
+                    "reproducibility": {
+                      "enum": [
+                        "deterministic_declared",
+                        "nondeterministic",
+                        "uncaptured"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "version",
+                    "artifact_sha256",
+                    "reproducibility"
+                  ],
+                  "additionalProperties": false
+                },
+                "measure": {
+                  "enum": [
+                    "probability",
+                    "scenario_weight",
+                    "signed_coefficient"
+                  ]
+                },
+                "conditioning": {
+                  "enum": [
+                    "execution",
+                    "scenario"
+                  ]
+                },
+                "calibration_reference": {
+                  "type": "string"
+                },
+                "outcomes": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "signal_id": {
+                        "type": "string"
+                      },
+                      "support": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "price_nanos": {
+                              "type": "string",
+                              "pattern": "^-?(0|[1-9][0-9]*)$"
+                            },
+                            "weight": {
+                              "type": "object",
+                              "properties": {
+                                "numerator": {
+                                  "type": "string",
+                                  "pattern": "^-?(0|[1-9][0-9]*)$"
+                                },
+                                "denominator": {
+                                  "type": "string",
+                                  "pattern": "^(0|[1-9][0-9]*)$"
+                                }
+                              },
+                              "required": [
+                                "numerator",
+                                "denominator"
+                              ],
+                              "additionalProperties": false
+                            }
+                          },
+                          "required": [
+                            "price_nanos",
+                            "weight"
+                          ],
+                          "additionalProperties": false
+                        }
+                      },
+                      "execution_probability": {
+                        "anyOf": [
+                          {
+                            "type": "object",
+                            "properties": {
+                              "status": {
+                                "const": "supplied"
+                              },
+                              "value": {
+                                "type": "object",
+                                "properties": {
+                                  "numerator": {
+                                    "type": "string",
+                                    "pattern": "^-?(0|[1-9][0-9]*)$"
+                                  },
+                                  "denominator": {
+                                    "type": "string",
+                                    "pattern": "^(0|[1-9][0-9]*)$"
+                                  }
+                                },
+                                "required": [
+                                  "numerator",
+                                  "denominator"
+                                ],
+                                "additionalProperties": false
+                              }
+                            },
+                            "required": [
+                              "status",
+                              "value"
+                            ],
+                            "additionalProperties": false
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "status": {
+                                "const": "unavailable"
+                              },
+                              "reason": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "status",
+                              "reason"
+                            ],
+                            "additionalProperties": false
+                          }
+                        ]
+                      },
+                      "evidence_reference": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "signal_id",
+                      "support",
+                      "execution_probability",
+                      "evidence_reference"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              },
+              "required": [
+                "producer",
+                "measure",
+                "conditioning",
+                "calibration_reference",
+                "outcomes"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "protocol",
+            "id",
+            "version",
+            "horizon_ns",
+            "parameters"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "model_outcome": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.model-outcome.v1"
+        },
+        "signal_id": {
+          "type": "string"
+        },
+        "model_id": {
+          "enum": [
+            "observed_trade_levels",
+            "external_outcomes"
+          ]
+        },
+        "model_version": {
+          "const": "1"
+        },
+        "status": {
+          "enum": [
+            "available",
+            "unavailable"
+          ]
+        },
+        "reason": {
+          "type": "string"
+        },
+        "price_unit": {
+          "const": "price_nanos"
+        },
+        "price_scale": {
+          "const": "1e-9"
+        },
+        "horizon_end_ns": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$"
+        },
+        "horizon_within_observed_span": {
+          "type": "boolean"
+        },
+        "calibration": {
+          "const": "not_verified"
+        },
+        "support": {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "price_nanos": {
+                    "type": "string",
+                    "pattern": "^-?(0|[1-9][0-9]*)$"
+                  },
+                  "weight": {
+                    "type": "object",
+                    "properties": {
+                      "numerator": {
+                        "type": "string",
+                        "pattern": "^-?(0|[1-9][0-9]*)$"
+                      },
+                      "denominator": {
+                        "type": "string",
+                        "pattern": "^(0|[1-9][0-9]*)$"
+                      }
+                    },
+                    "required": [
+                      "numerator",
+                      "denominator"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "required": [
+                  "price_nanos",
+                  "weight"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "price_nanos": {
+                    "type": "string",
+                    "pattern": "^-?(0|[1-9][0-9]*)$"
+                  },
+                  "weight": {
+                    "type": "object",
+                    "properties": {
+                      "numerator": {
+                        "type": "string",
+                        "pattern": "^-?(0|[1-9][0-9]*)$"
+                      },
+                      "denominator": {
+                        "type": "string",
+                        "pattern": "^(0|[1-9][0-9]*)$"
+                      }
+                    },
+                    "required": [
+                      "numerator",
+                      "denominator"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "source_ordinal": {
+                    "type": "string",
+                    "pattern": "^(0|[1-9][0-9]*)$"
+                  },
+                  "available_ns": {
+                    "type": "string",
+                    "pattern": "^(0|[1-9][0-9]*)$"
+                  }
+                },
+                "required": [
+                  "price_nanos",
+                  "weight",
+                  "source_ordinal",
+                  "available_ns"
+                ],
+                "additionalProperties": false
+              }
+            ]
+          }
+        },
+        "fill_probability": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "const": "unavailable"
+                },
+                "reason": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "null"
+                }
+              },
+              "required": [
+                "status",
+                "reason",
+                "value"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "const": "external_assumption"
+                },
+                "value": {
+                  "type": "object",
+                  "properties": {
+                    "numerator": {
+                      "type": "string",
+                      "pattern": "^-?(0|[1-9][0-9]*)$"
+                    },
+                    "denominator": {
+                      "type": "string",
+                      "pattern": "^(0|[1-9][0-9]*)$"
+                    }
+                  },
+                  "required": [
+                    "numerator",
+                    "denominator"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "status",
+                "value"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        },
+        "no_fill_probability": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "const": "unavailable"
+                },
+                "reason": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "null"
+                }
+              },
+              "required": [
+                "status",
+                "reason",
+                "value"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "const": "external_assumption"
+                },
+                "value": {
+                  "type": "object",
+                  "properties": {
+                    "numerator": {
+                      "type": "string",
+                      "pattern": "^-?(0|[1-9][0-9]*)$"
+                    },
+                    "denominator": {
+                      "type": "string",
+                      "pattern": "^(0|[1-9][0-9]*)$"
+                    }
+                  },
+                  "required": [
+                    "numerator",
+                    "denominator"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "status",
+                "value"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        },
+        "fill_quantity": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "const": "unavailable"
+            },
+            "reason": {
+              "type": "string"
+            },
+            "value": {
+              "type": "null"
+            }
+          },
+          "required": [
+            "status",
+            "reason",
+            "value"
+          ],
+          "additionalProperties": false
+        },
+        "fill_time": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "const": "unavailable"
+            },
+            "reason": {
+              "type": "string"
+            },
+            "value": {
+              "type": "null"
+            }
+          },
+          "required": [
+            "status",
+            "reason",
+            "value"
+          ],
+          "additionalProperties": false
+        },
+        "actual_execution": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "const": "unavailable"
+            },
+            "reason": {
+              "type": "string"
+            },
+            "value": {
+              "type": "null"
+            }
+          },
+          "required": [
+            "status",
+            "reason",
+            "value"
+          ],
+          "additionalProperties": false
+        },
+        "evidence_origin": {
+          "enum": [
+            "externally_supplied",
+            "observed_post_signal_trades"
+          ]
+        },
+        "measure": {
+          "enum": [
+            "probability",
+            "scenario_weight",
+            "signed_coefficient"
+          ]
+        },
+        "conditioning": {
+          "enum": [
+            "execution",
+            "scenario"
+          ]
+        },
+        "producer": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "version": {
+              "type": "string"
+            },
+            "artifact_sha256": {
+              "type": "string"
+            },
+            "reproducibility": {
+              "enum": [
+                "deterministic_declared",
+                "nondeterministic",
+                "uncaptured"
+              ]
+            }
+          },
+          "required": [
+            "id",
+            "version",
+            "artifact_sha256",
+            "reproducibility"
+          ],
+          "additionalProperties": false
+        },
+        "calibration_reference": {
+          "type": "string"
+        },
+        "evidence_reference": {
+          "type": "string"
+        },
+        "assumption": {
+          "type": "string"
+        },
+        "observed_below_count": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$"
+        },
+        "observed_above_count": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$"
+        },
+        "observed_candidates": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "price_nanos": {
+                "type": "string"
+              },
+              "source_ordinal": {
+                "type": "string"
+              },
+              "available_ns": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "price_nanos",
+              "source_ordinal",
+              "available_ns"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "protocol",
+        "signal_id",
+        "model_id",
+        "model_version",
+        "status",
+        "reason",
+        "price_unit",
+        "price_scale",
+        "horizon_end_ns",
+        "horizon_within_observed_span",
+        "calibration",
+        "support",
+        "fill_probability",
+        "no_fill_probability",
+        "fill_quantity",
+        "fill_time",
+        "actual_execution",
+        "evidence_origin",
+        "measure",
+        "conditioning"
+      ],
+      "additionalProperties": false
+    },
+    "excursion": {
+      "type": "object",
+      "properties": {
+        "signal_id": {
+          "type": "string"
+        },
+        "horizon_end_ns": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$"
+        },
+        "unit": {
+          "const": "price_nanos"
+        },
+        "coverage": {
+          "enum": [
+            "observed_span_only",
+            "truncated_observed_span"
+          ]
+        },
+        "minimum": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "const": "unavailable"
+                },
+                "reason": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "null"
+                }
+              },
+              "required": [
+                "status",
+                "reason",
+                "value"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "const": "available"
+                },
+                "value": {
+                  "type": "string",
+                  "pattern": "^-?(0|[1-9][0-9]*)$"
+                },
+                "source_ordinal": {
+                  "type": "string",
+                  "pattern": "^(0|[1-9][0-9]*)$"
+                },
+                "available_ns": {
+                  "type": "string",
+                  "pattern": "^(0|[1-9][0-9]*)$"
+                }
+              },
+              "required": [
+                "status",
+                "value",
+                "source_ordinal",
+                "available_ns"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        },
+        "maximum": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "const": "unavailable"
+                },
+                "reason": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "null"
+                }
+              },
+              "required": [
+                "status",
+                "reason",
+                "value"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "const": "available"
+                },
+                "value": {
+                  "type": "string",
+                  "pattern": "^-?(0|[1-9][0-9]*)$"
+                },
+                "source_ordinal": {
+                  "type": "string",
+                  "pattern": "^(0|[1-9][0-9]*)$"
+                },
+                "available_ns": {
+                  "type": "string",
+                  "pattern": "^(0|[1-9][0-9]*)$"
+                }
+              },
+              "required": [
+                "status",
+                "value",
+                "source_ordinal",
+                "available_ns"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        }
+      },
+      "required": [
+        "signal_id",
+        "horizon_end_ns",
+        "unit",
+        "coverage",
+        "minimum",
+        "maximum"
+      ],
+      "additionalProperties": false
+    },
+    "economic_transform": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "const": "linear_price_pnl"
+        },
+        "version": {
+          "const": "1"
+        },
+        "reference_price_nanos": {
+          "type": "string"
+        },
+        "price_unit_nanos": {
+          "type": "string"
+        },
+        "position_units": {
+          "type": "object",
+          "properties": {
+            "numerator": {
+              "type": "string"
+            },
+            "denominator": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "numerator",
+            "denominator"
+          ],
+          "additionalProperties": false
+        },
+        "value_per_price_unit": {
+          "type": "object",
+          "properties": {
+            "numerator": {
+              "type": "string"
+            },
+            "denominator": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "numerator",
+            "denominator"
+          ],
+          "additionalProperties": false
+        },
+        "cost_per_outcome": {
+          "type": "object",
+          "properties": {
+            "numerator": {
+              "type": "string"
+            },
+            "denominator": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "numerator",
+            "denominator"
+          ],
+          "additionalProperties": false
+        },
+        "return_basis": {
+          "type": "object",
+          "properties": {
+            "numerator": {
+              "type": "string"
+            },
+            "denominator": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "numerator",
+            "denominator"
+          ],
+          "additionalProperties": false
+        },
+        "pnl_unit": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "version",
+        "reference_price_nanos",
+        "price_unit_nanos",
+        "position_units",
+        "value_per_price_unit",
+        "cost_per_outcome",
+        "return_basis",
+        "pnl_unit"
+      ],
+      "additionalProperties": false
+    },
+    "economic_selection": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "signal_id": {
+              "type": "string"
+            },
+            "transform": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "const": "linear_price_pnl"
+                },
+                "version": {
+                  "const": "1"
+                },
+                "reference_price_nanos": {
+                  "type": "string"
+                },
+                "price_unit_nanos": {
+                  "type": "string"
+                },
+                "position_units": {
+                  "type": "object",
+                  "properties": {
+                    "numerator": {
+                      "type": "string"
+                    },
+                    "denominator": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "numerator",
+                    "denominator"
+                  ],
+                  "additionalProperties": false
+                },
+                "value_per_price_unit": {
+                  "type": "object",
+                  "properties": {
+                    "numerator": {
+                      "type": "string"
+                    },
+                    "denominator": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "numerator",
+                    "denominator"
+                  ],
+                  "additionalProperties": false
+                },
+                "cost_per_outcome": {
+                  "type": "object",
+                  "properties": {
+                    "numerator": {
+                      "type": "string"
+                    },
+                    "denominator": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "numerator",
+                    "denominator"
+                  ],
+                  "additionalProperties": false
+                },
+                "return_basis": {
+                  "type": "object",
+                  "properties": {
+                    "numerator": {
+                      "type": "string"
+                    },
+                    "denominator": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "numerator",
+                    "denominator"
+                  ],
+                  "additionalProperties": false
+                },
+                "pnl_unit": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id",
+                "version",
+                "reference_price_nanos",
+                "price_unit_nanos",
+                "position_units",
+                "value_per_price_unit",
+                "cost_per_outcome",
+                "return_basis",
+                "pnl_unit"
+              ],
+              "additionalProperties": false
+            },
+            "mode": {
+              "const": "support_only"
+            },
+            "nonexecution_pnl": {
+              "type": "null"
+            }
+          },
+          "required": [
+            "signal_id",
+            "transform",
+            "mode",
+            "nonexecution_pnl"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "signal_id": {
+              "type": "string"
+            },
+            "transform": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "const": "linear_price_pnl"
+                },
+                "version": {
+                  "const": "1"
+                },
+                "reference_price_nanos": {
+                  "type": "string"
+                },
+                "price_unit_nanos": {
+                  "type": "string"
+                },
+                "position_units": {
+                  "type": "object",
+                  "properties": {
+                    "numerator": {
+                      "type": "string"
+                    },
+                    "denominator": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "numerator",
+                    "denominator"
+                  ],
+                  "additionalProperties": false
+                },
+                "value_per_price_unit": {
+                  "type": "object",
+                  "properties": {
+                    "numerator": {
+                      "type": "string"
+                    },
+                    "denominator": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "numerator",
+                    "denominator"
+                  ],
+                  "additionalProperties": false
+                },
+                "cost_per_outcome": {
+                  "type": "object",
+                  "properties": {
+                    "numerator": {
+                      "type": "string"
+                    },
+                    "denominator": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "numerator",
+                    "denominator"
+                  ],
+                  "additionalProperties": false
+                },
+                "return_basis": {
+                  "type": "object",
+                  "properties": {
+                    "numerator": {
+                      "type": "string"
+                    },
+                    "denominator": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "numerator",
+                    "denominator"
+                  ],
+                  "additionalProperties": false
+                },
+                "pnl_unit": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id",
+                "version",
+                "reference_price_nanos",
+                "price_unit_nanos",
+                "position_units",
+                "value_per_price_unit",
+                "cost_per_outcome",
+                "return_basis",
+                "pnl_unit"
+              ],
+              "additionalProperties": false
+            },
+            "mode": {
+              "const": "execution_mixture"
+            },
+            "nonexecution_pnl": {
+              "type": "object",
+              "properties": {
+                "numerator": {
+                  "type": "string"
+                },
+                "denominator": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "numerator",
+                "denominator"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "signal_id",
+            "transform",
+            "mode",
+            "nonexecution_pnl"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "economic_outcome": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.economic-outcome.v1"
+        },
+        "signal_id": {
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "available",
+            "unavailable"
+          ]
+        },
+        "reason": {
+          "type": "string"
+        },
+        "measure": {
+          "enum": [
+            "probability",
+            "scenario_weight",
+            "signed_coefficient"
+          ]
+        },
+        "conditioning": {
+          "enum": [
+            "execution",
+            "scenario",
+            "execution_and_nonexecution"
+          ]
+        },
+        "mode": {
+          "enum": [
+            "support_only",
+            "execution_mixture"
+          ]
+        },
+        "transform": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "const": "linear_price_pnl"
+            },
+            "version": {
+              "const": "1"
+            },
+            "reference_price_nanos": {
+              "type": "string"
+            },
+            "price_unit_nanos": {
+              "type": "string"
+            },
+            "position_units": {
+              "type": "object",
+              "properties": {
+                "numerator": {
+                  "type": "string"
+                },
+                "denominator": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "numerator",
+                "denominator"
+              ],
+              "additionalProperties": false
+            },
+            "value_per_price_unit": {
+              "type": "object",
+              "properties": {
+                "numerator": {
+                  "type": "string"
+                },
+                "denominator": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "numerator",
+                "denominator"
+              ],
+              "additionalProperties": false
+            },
+            "cost_per_outcome": {
+              "type": "object",
+              "properties": {
+                "numerator": {
+                  "type": "string"
+                },
+                "denominator": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "numerator",
+                "denominator"
+              ],
+              "additionalProperties": false
+            },
+            "return_basis": {
+              "type": "object",
+              "properties": {
+                "numerator": {
+                  "type": "string"
+                },
+                "denominator": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "numerator",
+                "denominator"
+              ],
+              "additionalProperties": false
+            },
+            "pnl_unit": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "id",
+            "version",
+            "reference_price_nanos",
+            "price_unit_nanos",
+            "position_units",
+            "value_per_price_unit",
+            "cost_per_outcome",
+            "return_basis",
+            "pnl_unit"
+          ],
+          "additionalProperties": false
+        },
+        "transformed_support": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "price_nanos": {
+                "type": "string"
+              },
+              "weight": {
+                "type": "object",
+                "properties": {
+                  "numerator": {
+                    "type": "string"
+                  },
+                  "denominator": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "numerator",
+                  "denominator"
+                ],
+                "additionalProperties": false
+              },
+              "gross_pnl": {
+                "type": "object",
+                "properties": {
+                  "numerator": {
+                    "type": "string"
+                  },
+                  "denominator": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "numerator",
+                  "denominator"
+                ],
+                "additionalProperties": false
+              },
+              "cost": {
+                "type": "object",
+                "properties": {
+                  "numerator": {
+                    "type": "string"
+                  },
+                  "denominator": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "numerator",
+                  "denominator"
+                ],
+                "additionalProperties": false
+              },
+              "net_pnl": {
+                "type": "object",
+                "properties": {
+                  "numerator": {
+                    "type": "string"
+                  },
+                  "denominator": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "numerator",
+                  "denominator"
+                ],
+                "additionalProperties": false
+              },
+              "return": {
+                "type": "object",
+                "properties": {
+                  "numerator": {
+                    "type": "string"
+                  },
+                  "denominator": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "numerator",
+                  "denominator"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "price_nanos",
+              "weight",
+              "gross_pnl",
+              "cost",
+              "net_pnl",
+              "return"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 0,
+          "maxItems": 65
+        },
+        "nonexecution_pnl": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "numerator": {
+                  "type": "string"
+                },
+                "denominator": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "numerator",
+                "denominator"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        },
+        "atoms": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "enum": [
+                  "price_outcome",
+                  "nonexecution"
+                ]
+              },
+              "support_index": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "return": {
+                "type": "object",
+                "properties": {
+                  "numerator": {
+                    "type": "string"
+                  },
+                  "denominator": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "numerator",
+                  "denominator"
+                ],
+                "additionalProperties": false
+              },
+              "weight": {
+                "type": "object",
+                "properties": {
+                  "numerator": {
+                    "type": "string"
+                  },
+                  "denominator": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "numerator",
+                  "denominator"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "kind",
+              "support_index",
+              "return",
+              "weight"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 0,
+          "maxItems": 66
+        },
+        "calibration": {
+          "const": "not_verified"
+        }
+      },
+      "required": [
+        "protocol",
+        "signal_id",
+        "status",
+        "reason",
+        "measure",
+        "conditioning",
+        "mode",
+        "transform",
+        "transformed_support",
+        "nonexecution_pnl",
+        "atoms",
+        "calibration"
+      ],
+      "additionalProperties": false
+    },
+    "economic_study_selection": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "id": {
+              "enum": [
+                "weighted_return_sum",
+                "return_moments"
+              ]
+            },
+            "version": {
+              "const": "1"
+            },
+            "parameters": {
+              "type": "object",
+              "properties": {},
+              "required": [],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "id",
+            "version",
+            "parameters"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "id": {
+              "const": "return_quantiles"
+            },
+            "version": {
+              "const": "1"
+            },
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "levels": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "numerator": {
+                        "type": "string"
+                      },
+                      "denominator": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "numerator",
+                      "denominator"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "minItems": 1,
+                  "maxItems": 32
+                }
+              },
+              "required": [
+                "levels"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "id",
+            "version",
+            "parameters"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "economic_study": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.economic-study.v1"
+        },
+        "id": {
+          "enum": [
+            "weighted_return_sum",
+            "return_moments",
+            "return_quantiles"
+          ]
+        },
+        "version": {
+          "const": "1"
+        },
+        "signal_id": {
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "available",
+            "unavailable"
+          ]
+        },
+        "reason": {
+          "type": "string"
+        },
+        "measure": {
+          "enum": [
+            "probability",
+            "scenario_weight",
+            "signed_coefficient"
+          ]
+        },
+        "conditioning": {
+          "enum": [
+            "execution",
+            "scenario",
+            "execution_and_nonexecution"
+          ]
+        },
+        "parameters": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {},
+              "required": [],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "levels": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "numerator": {
+                        "type": "string"
+                      },
+                      "denominator": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "numerator",
+                      "denominator"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "minItems": 1,
+                  "maxItems": 32
+                }
+              },
+              "required": [
+                "levels"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        },
+        "input_pointer": {
+          "type": "string"
+        },
+        "atom_count": {
+          "type": "string"
+        },
+        "method": {
+          "enum": [
+            "inverse_cdf_positive_mass",
+            "exact_population_moments",
+            "exact_unnormalized_weighted_sum"
+          ]
+        },
+        "uncertainty": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "const": "unavailable"
+            },
+            "reason": {
+              "type": "string"
+            },
+            "value": {
+              "type": "null"
+            }
+          },
+          "required": [
+            "status",
+            "reason",
+            "value"
+          ],
+          "additionalProperties": false
+        },
+        "data": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "weighted_sum": {
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "object",
+                      "properties": {
+                        "numerator": {
+                          "type": "string"
+                        },
+                        "denominator": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "numerator",
+                        "denominator"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "unit": {
+                      "const": "return"
+                    }
+                  },
+                  "required": [
+                    "value",
+                    "unit"
+                  ],
+                  "additionalProperties": false
+                },
+                "normalization": {
+                  "const": "none"
+                }
+              },
+              "required": [
+                "weighted_sum",
+                "normalization"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "mean": {
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "object",
+                      "properties": {
+                        "numerator": {
+                          "type": "string"
+                        },
+                        "denominator": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "numerator",
+                        "denominator"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "unit": {
+                      "const": "return"
+                    }
+                  },
+                  "required": [
+                    "value",
+                    "unit"
+                  ],
+                  "additionalProperties": false
+                },
+                "variance": {
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "object",
+                      "properties": {
+                        "numerator": {
+                          "type": "string"
+                        },
+                        "denominator": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "numerator",
+                        "denominator"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "unit": {
+                      "const": "return_squared"
+                    }
+                  },
+                  "required": [
+                    "value",
+                    "unit"
+                  ],
+                  "additionalProperties": false
+                },
+                "probability_mass": {
+                  "type": "object",
+                  "properties": {
+                    "numerator": {
+                      "type": "string"
+                    },
+                    "denominator": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "numerator",
+                    "denominator"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "mean",
+                "variance",
+                "probability_mass"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "quantiles": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "level": {
+                        "type": "object",
+                        "properties": {
+                          "numerator": {
+                            "type": "string"
+                          },
+                          "denominator": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "numerator",
+                          "denominator"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "return": {
+                        "type": "object",
+                        "properties": {
+                          "numerator": {
+                            "type": "string"
+                          },
+                          "denominator": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "numerator",
+                          "denominator"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "required": [
+                      "level",
+                      "return"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "minItems": 1,
+                  "maxItems": 32
+                },
+                "boundary_rule": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "quantiles",
+                "boundary_rule"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        }
+      },
+      "required": [
+        "protocol",
+        "id",
+        "version",
+        "signal_id",
+        "status",
+        "reason",
+        "measure",
+        "conditioning",
+        "parameters",
+        "input_pointer",
+        "atom_count",
+        "method",
+        "uncertainty",
+        "data"
+      ],
+      "additionalProperties": false
+    },
+    "study_descriptor": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.study-descriptor.v1"
+        },
+        "required_inputs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "weighting_domains": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "parameters": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "grouping": {
+          "type": "string"
+        },
+        "missingness": {
+          "type": "string"
+        },
+        "method": {
+          "type": "string"
+        },
+        "backend": {
+          "const": "cpu"
+        },
+        "maximum_atoms": {
+          "type": "string"
+        },
+        "output_schema": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "protocol",
+        "required_inputs",
+        "weighting_domains",
+        "parameters",
+        "grouping",
+        "missingness",
+        "method",
+        "backend",
+        "maximum_atoms",
+        "output_schema"
+      ],
+      "additionalProperties": false
+    },
+    "book_frame": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.book-frame.v1"
+        },
+        "source_ordinal": {
+          "type": "string"
+        },
+        "available_ns": {
+          "type": "string"
+        },
+        "signal_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "status": {
+          "enum": [
+            "available",
+            "unavailable"
+          ]
+        },
+        "reason": {
+          "type": "string"
+        },
+        "event_boundary": {
+          "type": "boolean"
+        },
+        "receive_time_flagged": {
+          "type": "boolean"
+        },
+        "initialization": {
+          "type": "string"
+        },
+        "layer": {
+          "const": "reconstructed"
+        },
+        "data": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "bids": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "price_nanos": {
+                        "type": "string"
+                      },
+                      "size": {
+                        "type": "string"
+                      },
+                      "order_count": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "price_nanos",
+                      "size",
+                      "order_count"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "minItems": 0,
+                  "maxItems": 64
+                },
+                "asks": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "price_nanos": {
+                        "type": "string"
+                      },
+                      "size": {
+                        "type": "string"
+                      },
+                      "order_count": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "price_nanos",
+                      "size",
+                      "order_count"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "minItems": 0,
+                  "maxItems": 64
+                },
+                "order_count": {
+                  "type": "string"
+                },
+                "bid_level_count": {
+                  "type": "string"
+                },
+                "ask_level_count": {
+                  "type": "string"
+                },
+                "market_state": {
+                  "enum": [
+                    "one_or_both_sides_empty",
+                    "uncrossed",
+                    "locked",
+                    "crossed"
+                  ]
+                }
+              },
+              "required": [
+                "bids",
+                "asks",
+                "order_count",
+                "bid_level_count",
+                "ask_level_count",
+                "market_state"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        }
+      },
+      "required": [
+        "protocol",
+        "source_ordinal",
+        "available_ns",
+        "signal_ids",
+        "status",
+        "reason",
+        "event_boundary",
+        "receive_time_flagged",
+        "initialization",
+        "layer",
+        "data"
+      ],
+      "additionalProperties": false
+    },
+    "book_checkpoint": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.book-checkpoint.v1"
+        },
+        "profile": {
+          "const": "databento_mbo_orders_strict_v1"
+        },
+        "binding": {
+          "type": "object",
+          "properties": {
+            "source_sha256": {
+              "type": "string"
+            },
+            "dataset": {
+              "type": "string"
+            },
+            "publisher_id": {
+              "type": "string"
+            },
+            "instrument_id": {
+              "type": "string"
+            },
+            "channel_id": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "source_sha256",
+            "dataset",
+            "publisher_id",
+            "instrument_id",
+            "channel_id"
+          ],
+          "additionalProperties": false
+        },
+        "next_ordinal": {
+          "type": "string"
+        },
+        "preceding_available_ns": {
+          "type": "string"
+        },
+        "event_boundary": {
+          "const": true
+        },
+        "initialization": {
+          "type": "string"
+        },
+        "orders": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "order_id": {
+                "type": "string"
+              },
+              "price_nanos": {
+                "type": "string"
+              },
+              "size": {
+                "type": "string"
+              },
+              "side": {
+                "enum": [
+                  "B",
+                  "A"
+                ]
+              }
+            },
+            "required": [
+              "order_id",
+              "price_nanos",
+              "size",
+              "side"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 0,
+          "maxItems": 200000
+        }
+      },
+      "required": [
+        "protocol",
+        "profile",
+        "binding",
+        "next_ordinal",
+        "preceding_available_ns",
+        "event_boundary",
+        "initialization",
+        "orders"
+      ],
+      "additionalProperties": false
+    },
+    "liquidity_order": {
+      "type": "object",
+      "properties": {
+        "order_id": {
+          "type": "string"
+        },
+        "signal_id": {
+          "type": "string"
+        },
+        "frame_source_ordinal": {
+          "type": "string"
+        },
+        "side": {
+          "enum": [
+            "buy",
+            "sell"
+          ]
+        },
+        "quantity": {
+          "type": "string"
+        },
+        "limit_price_nanos": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string"
+            }
+          ]
+        },
+        "time_in_force": {
+          "enum": [
+            "IOC",
+            "FOK"
+          ]
+        },
+        "max_level_participation": {
+          "type": "object",
+          "properties": {
+            "numerator": {
+              "type": "string"
+            },
+            "denominator": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "numerator",
+            "denominator"
+          ],
+          "additionalProperties": false
+        },
+        "activation_probability": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "const": "supplied"
+                },
+                "value": {
+                  "type": "object",
+                  "properties": {
+                    "numerator": {
+                      "type": "string"
+                    },
+                    "denominator": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "numerator",
+                    "denominator"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "status",
+                "value"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "const": "unavailable"
+                },
+                "reason": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "status",
+                "reason"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        }
+      },
+      "required": [
+        "order_id",
+        "signal_id",
+        "frame_source_ordinal",
+        "side",
+        "quantity",
+        "limit_price_nanos",
+        "time_in_force",
+        "max_level_participation",
+        "activation_probability"
+      ],
+      "additionalProperties": false
+    },
+    "liquidity_outcome": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.liquidity-outcome.v1"
+        },
+        "model_id": {
+          "const": "displayed_depth_sweep"
+        },
+        "model_version": {
+          "const": "1"
+        },
+        "order_id": {
+          "type": "string"
+        },
+        "signal_id": {
+          "type": "string"
+        },
+        "frame_source_ordinal": {
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "available",
+            "unavailable"
+          ]
+        },
+        "reason": {
+          "type": "string"
+        },
+        "order": {
+          "type": "object",
+          "properties": {
+            "order_id": {
+              "type": "string"
+            },
+            "signal_id": {
+              "type": "string"
+            },
+            "frame_source_ordinal": {
+              "type": "string"
+            },
+            "side": {
+              "enum": [
+                "buy",
+                "sell"
+              ]
+            },
+            "quantity": {
+              "type": "string"
+            },
+            "limit_price_nanos": {
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "string"
+                }
+              ]
+            },
+            "time_in_force": {
+              "enum": [
+                "IOC",
+                "FOK"
+              ]
+            },
+            "max_level_participation": {
+              "type": "object",
+              "properties": {
+                "numerator": {
+                  "type": "string"
+                },
+                "denominator": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "numerator",
+                "denominator"
+              ],
+              "additionalProperties": false
+            },
+            "activation_probability": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "const": "supplied"
+                    },
+                    "value": {
+                      "type": "object",
+                      "properties": {
+                        "numerator": {
+                          "type": "string"
+                        },
+                        "denominator": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "numerator",
+                        "denominator"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "required": [
+                    "status",
+                    "value"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "const": "unavailable"
+                    },
+                    "reason": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "status",
+                    "reason"
+                  ],
+                  "additionalProperties": false
+                }
+              ]
+            }
+          },
+          "required": [
+            "order_id",
+            "signal_id",
+            "frame_source_ordinal",
+            "side",
+            "quantity",
+            "limit_price_nanos",
+            "time_in_force",
+            "max_level_participation",
+            "activation_probability"
+          ],
+          "additionalProperties": false
+        },
+        "calibration": {
+          "const": "not_verified"
+        },
+        "conditioning": {
+          "enum": [
+            "all_orders_active_in_input_order",
+            "selected_order_active"
+          ]
+        },
+        "data": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "requested_quantity": {
+                  "type": "string"
+                },
+                "filled_quantity": {
+                  "type": "string"
+                },
+                "unfilled_quantity": {
+                  "type": "string"
+                },
+                "disposition": {
+                  "enum": [
+                    "fok_canceled",
+                    "no_fill",
+                    "full_fill",
+                    "partial_fill"
+                  ]
+                },
+                "fills": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "price_nanos": {
+                        "type": "string"
+                      },
+                      "quantity": {
+                        "type": "string"
+                      },
+                      "displayed_quantity": {
+                        "type": "string"
+                      },
+                      "remaining_before": {
+                        "type": "string"
+                      },
+                      "participation_cap": {
+                        "type": "string"
+                      },
+                      "remaining_after": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "price_nanos",
+                      "quantity",
+                      "displayed_quantity",
+                      "remaining_before",
+                      "participation_cap",
+                      "remaining_after"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "minItems": 0,
+                  "maxItems": 64
+                },
+                "notional_price_nanos_times_quantity": {
+                  "type": "string"
+                },
+                "vwap_price_nanos": {
+                  "anyOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "const": "unavailable"
+                        },
+                        "reason": {
+                          "type": "string"
+                        },
+                        "value": {
+                          "type": "null"
+                        }
+                      },
+                      "required": [
+                        "status",
+                        "reason",
+                        "value"
+                      ],
+                      "additionalProperties": false
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "const": "available"
+                        },
+                        "value": {
+                          "type": "object",
+                          "properties": {
+                            "numerator": {
+                              "type": "string"
+                            },
+                            "denominator": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "numerator",
+                            "denominator"
+                          ],
+                          "additionalProperties": false
+                        }
+                      },
+                      "required": [
+                        "status",
+                        "value"
+                      ],
+                      "additionalProperties": false
+                    }
+                  ]
+                },
+                "coverage": {
+                  "enum": [
+                    "visible_depth_only",
+                    "sufficient_for_selected_order"
+                  ]
+                },
+                "frame_available_ns": {
+                  "type": "string"
+                },
+                "frame_delay_from_signal_ns": {
+                  "type": "string"
+                },
+                "receive_time_flagged": {
+                  "type": "boolean"
+                },
+                "market_state": {
+                  "enum": [
+                    "one_or_both_sides_empty",
+                    "uncrossed",
+                    "locked",
+                    "crossed"
+                  ]
+                }
+              },
+              "required": [
+                "requested_quantity",
+                "filled_quantity",
+                "unfilled_quantity",
+                "disposition",
+                "fills",
+                "notional_price_nanos_times_quantity",
+                "vwap_price_nanos",
+                "coverage",
+                "frame_available_ns",
+                "frame_delay_from_signal_ns",
+                "receive_time_flagged",
+                "market_state"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        },
+        "any_fill_probability": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "const": "unavailable"
+                },
+                "reason": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "null"
+                }
+              },
+              "required": [
+                "status",
+                "reason",
+                "value"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "const": "scenario_assumption"
+                },
+                "value": {
+                  "type": "object",
+                  "properties": {
+                    "numerator": {
+                      "type": "string"
+                    },
+                    "denominator": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "numerator",
+                    "denominator"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "status",
+                "value"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        },
+        "complete_fill_probability": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "const": "unavailable"
+                },
+                "reason": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "null"
+                }
+              },
+              "required": [
+                "status",
+                "reason",
+                "value"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "const": "scenario_assumption"
+                },
+                "value": {
+                  "type": "object",
+                  "properties": {
+                    "numerator": {
+                      "type": "string"
+                    },
+                    "denominator": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "numerator",
+                    "denominator"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "status",
+                "value"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        },
+        "no_fill_probability": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "const": "unavailable"
+                },
+                "reason": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "null"
+                }
+              },
+              "required": [
+                "status",
+                "reason",
+                "value"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "const": "scenario_assumption"
+                },
+                "value": {
+                  "type": "object",
+                  "properties": {
+                    "numerator": {
+                      "type": "string"
+                    },
+                    "denominator": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "numerator",
+                    "denominator"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "status",
+                "value"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        },
+        "quantity_distribution": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "const": "unavailable"
+                },
+                "reason": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "null"
+                }
+              },
+              "required": [
+                "status",
+                "reason",
+                "value"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "const": "scenario_assumption"
+                },
+                "value": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "filled_quantity": {
+                        "type": "string"
+                      },
+                      "weight": {
+                        "type": "object",
+                        "properties": {
+                          "numerator": {
+                            "type": "string"
+                          },
+                          "denominator": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "numerator",
+                          "denominator"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "required": [
+                      "filled_quantity",
+                      "weight"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "minItems": 1,
+                  "maxItems": 2
+                }
+              },
+              "required": [
+                "status",
+                "value"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        },
+        "actual_execution": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "const": "unavailable"
+            },
+            "reason": {
+              "type": "string"
+            },
+            "value": {
+              "type": "null"
+            }
+          },
+          "required": [
+            "status",
+            "reason",
+            "value"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "protocol",
+        "model_id",
+        "model_version",
+        "order_id",
+        "signal_id",
+        "frame_source_ordinal",
+        "status",
+        "reason",
+        "order",
+        "calibration",
+        "conditioning",
+        "data",
+        "any_fill_probability",
+        "complete_fill_probability",
+        "no_fill_probability",
+        "quantity_distribution",
+        "actual_execution"
+      ],
+      "additionalProperties": false
+    },
+    "liquidity_study": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "study_id": {
+              "const": "liquidity_summary"
+            },
+            "version": {
+              "const": "1"
+            },
+            "available": {
+              "type": "string"
+            },
+            "unavailable": {
+              "type": "string"
+            },
+            "full_fill": {
+              "type": "string"
+            },
+            "partial_fill": {
+              "type": "string"
+            },
+            "no_fill": {
+              "type": "string"
+            },
+            "interpretation": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "study_id",
+            "version",
+            "available",
+            "unavailable",
+            "full_fill",
+            "partial_fill",
+            "no_fill",
+            "interpretation"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "study_id": {
+              "const": "fill_quality"
+            },
+            "version": {
+              "const": "1"
+            },
+            "results": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "order_id": {
+                    "type": "string"
+                  },
+                  "status": {
+                    "enum": [
+                      "available",
+                      "unavailable"
+                    ]
+                  },
+                  "reason": {
+                    "type": "string"
+                  },
+                  "data": {
+                    "anyOf": [
+                      {
+                        "type": "null"
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "fill_ratio": {
+                            "type": "object",
+                            "properties": {
+                              "numerator": {
+                                "type": "string"
+                              },
+                              "denominator": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "numerator",
+                              "denominator"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "adverse_slippage_price_nanos": {
+                            "anyOf": [
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "status": {
+                                    "const": "unavailable"
+                                  },
+                                  "reason": {
+                                    "type": "string"
+                                  },
+                                  "value": {
+                                    "type": "null"
+                                  }
+                                },
+                                "required": [
+                                  "status",
+                                  "reason",
+                                  "value"
+                                ],
+                                "additionalProperties": false
+                              },
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "status": {
+                                    "const": "available"
+                                  },
+                                  "value": {
+                                    "type": "object",
+                                    "properties": {
+                                      "numerator": {
+                                        "type": "string"
+                                      },
+                                      "denominator": {
+                                        "type": "string"
+                                      }
+                                    },
+                                    "required": [
+                                      "numerator",
+                                      "denominator"
+                                    ],
+                                    "additionalProperties": false
+                                  }
+                                },
+                                "required": [
+                                  "status",
+                                  "value"
+                                ],
+                                "additionalProperties": false
+                              }
+                            ]
+                          }
+                        },
+                        "required": [
+                          "fill_ratio",
+                          "adverse_slippage_price_nanos"
+                        ],
+                        "additionalProperties": false
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "order_id",
+                  "status",
+                  "reason",
+                  "data"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "interpretation": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "study_id",
+            "version",
+            "results",
+            "interpretation"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "allocation_valuation": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "const": "filled_quantity_markout"
+        },
+        "version": {
+          "const": "1"
+        },
+        "mark_price_nanos": {
+          "type": "string"
+        },
+        "mark_available_ns": {
+          "type": "string"
+        },
+        "mark_evidence": {
+          "type": "string"
+        },
+        "price_unit_nanos": {
+          "type": "string"
+        },
+        "value_per_price_unit": {
+          "type": "object",
+          "properties": {
+            "numerator": {
+              "type": "string"
+            },
+            "denominator": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "numerator",
+            "denominator"
+          ],
+          "additionalProperties": false
+        },
+        "activation_cost": {
+          "type": "object",
+          "properties": {
+            "numerator": {
+              "type": "string"
+            },
+            "denominator": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "numerator",
+            "denominator"
+          ],
+          "additionalProperties": false
+        },
+        "filled_order_cost": {
+          "type": "object",
+          "properties": {
+            "numerator": {
+              "type": "string"
+            },
+            "denominator": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "numerator",
+            "denominator"
+          ],
+          "additionalProperties": false
+        },
+        "per_filled_unit_cost": {
+          "type": "object",
+          "properties": {
+            "numerator": {
+              "type": "string"
+            },
+            "denominator": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "numerator",
+            "denominator"
+          ],
+          "additionalProperties": false
+        },
+        "return_basis": {
+          "type": "object",
+          "properties": {
+            "numerator": {
+              "type": "string"
+            },
+            "denominator": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "numerator",
+            "denominator"
+          ],
+          "additionalProperties": false
+        },
+        "pnl_unit": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "version",
+        "mark_price_nanos",
+        "mark_available_ns",
+        "mark_evidence",
+        "price_unit_nanos",
+        "value_per_price_unit",
+        "activation_cost",
+        "filled_order_cost",
+        "per_filled_unit_cost",
+        "return_basis",
+        "pnl_unit"
+      ],
+      "additionalProperties": false
+    },
+    "allocation_economic_outcome": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.allocation-economic-outcome.v1"
+        },
+        "order_id": {
+          "type": "string"
+        },
+        "signal_id": {
+          "type": "string"
+        },
+        "conditioning": {
+          "enum": [
+            "all_orders_active_in_input_order",
+            "selected_order_active"
+          ]
+        },
+        "valuation": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "const": "filled_quantity_markout"
+            },
+            "version": {
+              "const": "1"
+            },
+            "mark_price_nanos": {
+              "type": "string"
+            },
+            "mark_available_ns": {
+              "type": "string"
+            },
+            "mark_evidence": {
+              "type": "string"
+            },
+            "price_unit_nanos": {
+              "type": "string"
+            },
+            "value_per_price_unit": {
+              "type": "object",
+              "properties": {
+                "numerator": {
+                  "type": "string"
+                },
+                "denominator": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "numerator",
+                "denominator"
+              ],
+              "additionalProperties": false
+            },
+            "activation_cost": {
+              "type": "object",
+              "properties": {
+                "numerator": {
+                  "type": "string"
+                },
+                "denominator": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "numerator",
+                "denominator"
+              ],
+              "additionalProperties": false
+            },
+            "filled_order_cost": {
+              "type": "object",
+              "properties": {
+                "numerator": {
+                  "type": "string"
+                },
+                "denominator": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "numerator",
+                "denominator"
+              ],
+              "additionalProperties": false
+            },
+            "per_filled_unit_cost": {
+              "type": "object",
+              "properties": {
+                "numerator": {
+                  "type": "string"
+                },
+                "denominator": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "numerator",
+                "denominator"
+              ],
+              "additionalProperties": false
+            },
+            "return_basis": {
+              "type": "object",
+              "properties": {
+                "numerator": {
+                  "type": "string"
+                },
+                "denominator": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "numerator",
+                "denominator"
+              ],
+              "additionalProperties": false
+            },
+            "pnl_unit": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "id",
+            "version",
+            "mark_price_nanos",
+            "mark_available_ns",
+            "mark_evidence",
+            "price_unit_nanos",
+            "value_per_price_unit",
+            "activation_cost",
+            "filled_order_cost",
+            "per_filled_unit_cost",
+            "return_basis",
+            "pnl_unit"
+          ],
+          "additionalProperties": false
+        },
+        "status": {
+          "enum": [
+            "available",
+            "partial",
+            "unavailable"
+          ]
+        },
+        "reason": {
+          "type": "string"
+        },
+        "conditional": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "const": "unavailable"
+                },
+                "reason": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "null"
+                }
+              },
+              "required": [
+                "status",
+                "reason",
+                "value"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "const": "available"
+                },
+                "value": {
+                  "type": "object",
+                  "properties": {
+                    "filled_quantity": {
+                      "type": "string"
+                    },
+                    "unfilled_quantity": {
+                      "type": "string"
+                    },
+                    "gross_markout": {
+                      "type": "object",
+                      "properties": {
+                        "numerator": {
+                          "type": "string"
+                        },
+                        "denominator": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "numerator",
+                        "denominator"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "costs": {
+                      "type": "object",
+                      "properties": {
+                        "activation": {
+                          "type": "object",
+                          "properties": {
+                            "numerator": {
+                              "type": "string"
+                            },
+                            "denominator": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "numerator",
+                            "denominator"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "filled_order": {
+                          "type": "object",
+                          "properties": {
+                            "numerator": {
+                              "type": "string"
+                            },
+                            "denominator": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "numerator",
+                            "denominator"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "filled_units": {
+                          "type": "object",
+                          "properties": {
+                            "numerator": {
+                              "type": "string"
+                            },
+                            "denominator": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "numerator",
+                            "denominator"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "total": {
+                          "type": "object",
+                          "properties": {
+                            "numerator": {
+                              "type": "string"
+                            },
+                            "denominator": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "numerator",
+                            "denominator"
+                          ],
+                          "additionalProperties": false
+                        }
+                      },
+                      "required": [
+                        "activation",
+                        "filled_order",
+                        "filled_units",
+                        "total"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "net_markout": {
+                      "type": "object",
+                      "properties": {
+                        "numerator": {
+                          "type": "string"
+                        },
+                        "denominator": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "numerator",
+                        "denominator"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "return": {
+                      "type": "object",
+                      "properties": {
+                        "numerator": {
+                          "type": "string"
+                        },
+                        "denominator": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "numerator",
+                        "denominator"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "required": [
+                    "filled_quantity",
+                    "unfilled_quantity",
+                    "gross_markout",
+                    "costs",
+                    "net_markout",
+                    "return"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "status",
+                "value"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        },
+        "mixture": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "const": "unavailable"
+                },
+                "reason": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "null"
+                }
+              },
+              "required": [
+                "status",
+                "reason",
+                "value"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "const": "not_selected"
+                },
+                "reason": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "null"
+                }
+              },
+              "required": [
+                "status",
+                "reason",
+                "value"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "const": "scenario_assumption"
+                },
+                "value": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "branch": {
+                        "enum": [
+                          "active",
+                          "inactive"
+                        ]
+                      },
+                      "weight": {
+                        "type": "object",
+                        "properties": {
+                          "numerator": {
+                            "type": "string"
+                          },
+                          "denominator": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "numerator",
+                          "denominator"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "net_markout": {
+                        "type": "object",
+                        "properties": {
+                          "numerator": {
+                            "type": "string"
+                          },
+                          "denominator": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "numerator",
+                          "denominator"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "return": {
+                        "type": "object",
+                        "properties": {
+                          "numerator": {
+                            "type": "string"
+                          },
+                          "denominator": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "numerator",
+                          "denominator"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "required": [
+                      "branch",
+                      "weight",
+                      "net_markout",
+                      "return"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "minItems": 2,
+                  "maxItems": 2
+                }
+              },
+              "required": [
+                "status",
+                "value"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        }
+      },
+      "required": [
+        "protocol",
+        "order_id",
+        "signal_id",
+        "conditioning",
+        "valuation",
+        "status",
+        "reason",
+        "conditional",
+        "mixture"
+      ],
+      "additionalProperties": false
+    },
+    "allocation_economic_study": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "study_id": {
+              "const": "allocation_costs"
+            },
+            "version": {
+              "const": "1"
+            },
+            "results": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "order_id": {
+                    "type": "string"
+                  },
+                  "pnl_unit": {
+                    "type": "string"
+                  },
+                  "result": {
+                    "anyOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "status": {
+                            "const": "unavailable"
+                          },
+                          "reason": {
+                            "type": "string"
+                          },
+                          "value": {
+                            "type": "null"
+                          }
+                        },
+                        "required": [
+                          "status",
+                          "reason",
+                          "value"
+                        ],
+                        "additionalProperties": false
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "status": {
+                            "const": "available"
+                          },
+                          "value": {
+                            "type": "object",
+                            "properties": {
+                              "activation": {
+                                "type": "object",
+                                "properties": {
+                                  "numerator": {
+                                    "type": "string"
+                                  },
+                                  "denominator": {
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "numerator",
+                                  "denominator"
+                                ],
+                                "additionalProperties": false
+                              },
+                              "filled_order": {
+                                "type": "object",
+                                "properties": {
+                                  "numerator": {
+                                    "type": "string"
+                                  },
+                                  "denominator": {
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "numerator",
+                                  "denominator"
+                                ],
+                                "additionalProperties": false
+                              },
+                              "filled_units": {
+                                "type": "object",
+                                "properties": {
+                                  "numerator": {
+                                    "type": "string"
+                                  },
+                                  "denominator": {
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "numerator",
+                                  "denominator"
+                                ],
+                                "additionalProperties": false
+                              },
+                              "total": {
+                                "type": "object",
+                                "properties": {
+                                  "numerator": {
+                                    "type": "string"
+                                  },
+                                  "denominator": {
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "numerator",
+                                  "denominator"
+                                ],
+                                "additionalProperties": false
+                              }
+                            },
+                            "required": [
+                              "activation",
+                              "filled_order",
+                              "filled_units",
+                              "total"
+                            ],
+                            "additionalProperties": false
+                          }
+                        },
+                        "required": [
+                          "status",
+                          "value"
+                        ],
+                        "additionalProperties": false
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "order_id",
+                  "pnl_unit",
+                  "result"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": [
+            "study_id",
+            "version",
+            "results"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "study_id": {
+              "const": "activation_moments"
+            },
+            "version": {
+              "const": "1"
+            },
+            "results": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "order_id": {
+                    "type": "string"
+                  },
+                  "pnl_unit": {
+                    "type": "string"
+                  },
+                  "result": {
+                    "anyOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "status": {
+                            "const": "unavailable"
+                          },
+                          "reason": {
+                            "type": "string"
+                          },
+                          "value": {
+                            "type": "null"
+                          }
+                        },
+                        "required": [
+                          "status",
+                          "reason",
+                          "value"
+                        ],
+                        "additionalProperties": false
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "status": {
+                            "const": "scenario_assumption"
+                          },
+                          "value": {
+                            "type": "object",
+                            "properties": {
+                              "expected_net_markout": {
+                                "type": "object",
+                                "properties": {
+                                  "numerator": {
+                                    "type": "string"
+                                  },
+                                  "denominator": {
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "numerator",
+                                  "denominator"
+                                ],
+                                "additionalProperties": false
+                              },
+                              "net_markout_variance": {
+                                "type": "object",
+                                "properties": {
+                                  "numerator": {
+                                    "type": "string"
+                                  },
+                                  "denominator": {
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "numerator",
+                                  "denominator"
+                                ],
+                                "additionalProperties": false
+                              },
+                              "expected_return": {
+                                "type": "object",
+                                "properties": {
+                                  "numerator": {
+                                    "type": "string"
+                                  },
+                                  "denominator": {
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "numerator",
+                                  "denominator"
+                                ],
+                                "additionalProperties": false
+                              },
+                              "return_variance": {
+                                "type": "object",
+                                "properties": {
+                                  "numerator": {
+                                    "type": "string"
+                                  },
+                                  "denominator": {
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "numerator",
+                                  "denominator"
+                                ],
+                                "additionalProperties": false
+                              }
+                            },
+                            "required": [
+                              "expected_net_markout",
+                              "net_markout_variance",
+                              "expected_return",
+                              "return_variance"
+                            ],
+                            "additionalProperties": false
+                          }
+                        },
+                        "required": [
+                          "status",
+                          "value"
+                        ],
+                        "additionalProperties": false
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "order_id",
+                  "pnl_unit",
+                  "result"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": [
+            "study_id",
+            "version",
+            "results"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

@@ -352,7 +352,7 @@ func commandSpec(key, featureID, interaction string) commandregistry.CommandSpec
 	featureBindings = append(featureBindings, reviewedBackendFeatureBindings[key]...)
 	switch key {
 	case "modules", "modules.check", "modules.metadata", "module.inspect", "module.check", "module.metadata", "inventory", "inventory.digest":
-		for _, mod := range append(append([]string{}, modules.SQVModules...), modules.SNVModules...) {
+		for _, mod := range append(append(append([]string{}, modules.SQVModules...), modules.SNVModules...), modules.SBVModules...) {
 			featureBindings = append(featureBindings, commandregistry.FeatureBinding{FeatureID: "ssfv:symphony:" + mod, Interaction: "discover"})
 		}
 	}

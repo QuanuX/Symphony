@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:sbv:result:v1",
+  "$comment": "The native validator also checks canonical content SHA256, depth 64, key/string 65536-byte limits and 4,000,000 key/value nodes. All financial quantities and nanosecond coordinates are strings; semantic units and provenance are retained within the owner sections. User extensions are attributed data, never native computation.",
+  "type": "object",
+  "properties": {
+    "protocol": {
+      "const": "symphony.sbv.result.v1"
+    },
+    "origin": {
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "completed",
+        "partial"
+      ]
+    },
+    "content_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "sections": {
+      "type": "object",
+      "required": [
+        "summary",
+        "signals",
+        "execution",
+        "distributions",
+        "studies",
+        "replay",
+        "comparisons",
+        "search",
+        "resources",
+        "diagnostics",
+        "choices",
+        "provenance"
+      ],
+      "additionalProperties": {
+        "$ref": "#/$defs/section"
+      }
+    }
+  },
+  "required": [
+    "protocol",
+    "origin",
+    "status",
+    "content_sha256",
+    "sections"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "node": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        },
+        {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/node"
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/node"
+          }
+        }
+      ]
+    },
+    "section": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "enum": [
+            "available",
+            "partial",
+            "unavailable",
+            "not_selected"
+          ]
+        },
+        "reason": {
+          "type": "string"
+        },
+        "data": {
+          "$ref": "#/$defs/node"
+        }
+      },
+      "required": [
+        "status",
+        "reason",
+        "data"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

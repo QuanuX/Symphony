@@ -130,3 +130,7 @@ This baseline does not yet define:
 - autonomous canonical application of knowledge changes.
 
 Missing details remain explicit research obligations. They must not be filled by inference.
+
+## Symphony Backtesting Vector
+
+`knowledge/sbv/SPEC.md` owns SBV experiment architecture. `modules/sbv-engine/SPEC.md` declares the initial bounded C++26 implementation and its explicit gaps. All implemented operations are administered through qxctl and all retained results are portable. No candidate subvector or unavailable CUDA/tensor/live connector is silently promoted into an implemented owner.

@@ -142,6 +142,79 @@
       ],
       "distinctions": [],
       "evidence": [
+        "tools/qxctl/cmd/qxctl/sbv_test.go",
+        "tools/qxctl/internal/knowledgeengine/sbv_allocation_economics_test.go",
+        "tools/qxctl/internal/knowledgeengine/sbv_book_test.go",
+        "tools/qxctl/internal/knowledgeengine/sbv_economics_test.go",
+        "tools/qxctl/internal/knowledgeengine/sbv_installed_test.go",
+        "tools/qxctl/internal/knowledgeengine/sbv_liquidity_test.go",
+        "tools/qxctl/internal/knowledgeengine/sbv_models_test.go",
+        "tools/qxctl/internal/knowledgeengine/sbv_test.go"
+      ],
+      "feature_id": "ssfv:symphony:qxctl-sbv-administration",
+      "how": "Exact receipt/interface admission, owner schema resources, bounded native queries and lossless complete exports.",
+      "implementation_languages": [
+        {
+          "language": "Go",
+          "role": "Exact owner installation discovery, bounded process consumption, retained administrative state and agentic command grammar."
+        }
+      ],
+      "implementation_paths": [
+        "tools/qxctl/cmd/qxctl/sbv.go",
+        "tools/qxctl/internal/knowledgeengine/sbv.go"
+      ],
+      "kind": "subfeature",
+      "non_claims": [
+        "No frontend financial recomputation, silent release upgrade, GPU or live activation."
+      ],
+      "owner_contract": "tools/qxctl/MANIFEST.md",
+      "parent_feature_id": "ssfv:symphony:qxctl",
+      "record_version": 2,
+      "relationships": [
+        {
+          "rationale": "Native SBV owns experiment and artifact semantics.",
+          "target_feature_id": "ssfv:symphony:sbv-engine",
+          "type": "depends_on"
+        }
+      ],
+      "source_scope": "tools/qxctl",
+      "status": "experimental",
+      "title": "SBV terminal control and portable results",
+      "what": "Administer all implemented SBV operations and display/export every retained result field.",
+      "when": "Explicit bounded caller-selected invocation.",
+      "where": "qxctl snv on the selected administrative Node, outside hot and warm execution paths.",
+      "who": "Operators, agents, automation and other callers operating within effective host permissions.",
+      "why": "Keep headless agents and future GUI consumers on the same native evidence."
+    },
+    {
+      "cross_vector_references": [
+        {
+          "applicability": "applicable",
+          "reason": "Completed source changes receive attributable closure evidence at their actual gates.",
+          "reference": "knowledge/sclv/SPEC.md",
+          "vector": "sclv"
+        },
+        {
+          "applicability": "applicable",
+          "reason": "Canonical owner truth, implementation and checks have explicit indexed routes.",
+          "reference": "knowledge/skvi/INDEX.md",
+          "vector": "skvi"
+        },
+        {
+          "applicability": "applicable",
+          "reason": "Caller-named selection requires exact authenticated capability and effect-boundary revalidation.",
+          "reference": "knowledge/ssiag/SPEC.md",
+          "vector": "ssiag"
+        },
+        {
+          "applicability": "applicable",
+          "reason": "Policy-decision audit and retained local outcome remain distinct; qxctl gains no raw append authority.",
+          "reference": "knowledge/stav/SPEC.md",
+          "vector": "stav"
+        }
+      ],
+      "distinctions": [],
+      "evidence": [
         "tools/qxctl/cmd/qxctl/snv_test.go"
       ],
       "feature_id": "ssfv:symphony:qxctl-snv-administration",

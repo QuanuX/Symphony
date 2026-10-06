@@ -1,0 +1,355 @@
+{
+  "templates": {
+    "capabilities": {
+      "protocol": "symphony.sbv.capabilities-input.v1"
+    },
+    "run": {
+      "protocol": "symphony.sbv.run-input.v1",
+      "source_path": "/absolute/private/ESZ6.dbn",
+      "source_sha256": "REPLACE_WITH_EXACT_FILE_SHA256",
+      "dataset": "GLBX.MDP3",
+      "output_path": "/absolute/private/new-result.json",
+      "criteria": {
+        "rule": "spaced_trades",
+        "spacing_ns": "1000000000",
+        "min_trade_size": "1",
+        "direction": "any",
+        "max_signals": "256"
+      },
+      "replay": {
+        "before_ns": "1000000000",
+        "after_ns": "2000000000",
+        "retain_events": true
+      },
+      "execution": {
+        "model": "touch_observation",
+        "horizon_ns": "2000000000",
+        "price_offsets_nanos": [
+          "-1000000000",
+          "1000000000"
+        ],
+        "probability_numerator": "0",
+        "probability_denominator": "1"
+      },
+      "studies": [
+        "signal_summary",
+        "forward_markout"
+      ],
+      "workers": "4",
+      "extensions": {}
+    },
+    "compose": {
+      "protocol": "symphony.sbv.compose-input.v1",
+      "returns": [
+        {
+          "numerator": "-1",
+          "denominator": "100"
+        },
+        {
+          "numerator": "1",
+          "denominator": "100"
+        }
+      ],
+      "weights": [
+        {
+          "numerator": "1",
+          "denominator": "2"
+        },
+        {
+          "numerator": "1",
+          "denominator": "2"
+        }
+      ],
+      "steps": "2",
+      "dependence": "independent",
+      "output_path": "/absolute/private/new-composition.json",
+      "extensions": {}
+    },
+    "result_inspect": {
+      "protocol": "symphony.sbv.result-inspect-input.v1",
+      "path": "/absolute/private/result.json",
+      "expected_sha256": "REPLACE_WITH_CONTENT_SHA256"
+    },
+    "result_query": {
+      "protocol": "symphony.sbv.result-query-input.v1",
+      "path": "/absolute/private/result.json",
+      "expected_sha256": "REPLACE_WITH_CONTENT_SHA256",
+      "pointer": "/sections/signals/data",
+      "limit": "20",
+      "cursor": ""
+    },
+    "catalogue": {
+      "protocol": "symphony.sbv.catalogue-input.v1"
+    },
+    "evaluate": {
+      "protocol": "symphony.sbv.evaluate-input.v1",
+      "source_path": "/absolute/private/source.dbn",
+      "source_sha256": "REPLACE_WITH_EXACT_FILE_SHA256",
+      "dataset": "GLBX.MDP3",
+      "output_path": "/absolute/private/new-evaluation.json",
+      "census": {
+        "protocol": "symphony.sbv.external-census.v1",
+        "source_sha256": "REPLACE_WITH_EXACT_FILE_SHA256",
+        "mode": "causal_declared",
+        "producer": {
+          "id": "user.signal-producer",
+          "version": "1",
+          "artifact_sha256": "",
+          "reproducibility": "uncaptured"
+        },
+        "signals": [
+          {
+            "signal_id": "user-signal-1",
+            "source_ordinal": "0",
+            "available_ns": "REPLACE_WITH_MATCHING_TS_RECV",
+            "anchor_price_nanos": "100000000000",
+            "causal_end_ordinal_exclusive": "1",
+            "context_reference": "user://economic-context/1"
+          }
+        ]
+      },
+      "model": {
+        "protocol": "symphony.sbv.model-selection.v1",
+        "id": "observed_trade_levels",
+        "version": "1",
+        "horizon_ns": "2000000000",
+        "parameters": {
+          "levels_per_side": "5",
+          "include_anchor": false,
+          "thin_support": "unavailable"
+        }
+      },
+      "replay": {
+        "before_ns": "1000000000",
+        "after_ns": "2000000000",
+        "retain_events": true
+      },
+      "studies": [
+        "signal_summary",
+        "model_summary",
+        "path_excursion"
+      ],
+      "workers": "4",
+      "extensions": {}
+    },
+    "compose_joint": {
+      "protocol": "symphony.sbv.compose-joint-input.v1",
+      "paths": [
+        {
+          "path_id": "loss-then-gain",
+          "returns": [
+            {
+              "numerator": "-1",
+              "denominator": "100"
+            },
+            {
+              "numerator": "1",
+              "denominator": "100"
+            }
+          ],
+          "probability": {
+            "numerator": "1",
+            "denominator": "2"
+          }
+        },
+        {
+          "path_id": "gain-then-loss",
+          "returns": [
+            {
+              "numerator": "1",
+              "denominator": "100"
+            },
+            {
+              "numerator": "-1",
+              "denominator": "100"
+            }
+          ],
+          "probability": {
+            "numerator": "1",
+            "denominator": "2"
+          }
+        }
+      ],
+      "output_path": "/absolute/private/new-joint.json",
+      "extensions": {}
+    },
+    "economics": {
+      "protocol": "symphony.sbv.economics-input.v1",
+      "path": "/absolute/private/evaluated-models.json",
+      "expected_sha256": "REPLACE_WITH_CONTENT_SHA256",
+      "output_path": "/absolute/private/new-economics.json",
+      "selections": [
+        {
+          "signal_id": "signal-0",
+          "transform": {
+            "id": "linear_price_pnl",
+            "version": "1",
+            "reference_price_nanos": "100000000000",
+            "price_unit_nanos": "1000000000",
+            "position_units": {
+              "numerator": "1",
+              "denominator": "1"
+            },
+            "value_per_price_unit": {
+              "numerator": "1",
+              "denominator": "1"
+            },
+            "cost_per_outcome": {
+              "numerator": "0",
+              "denominator": "1"
+            },
+            "return_basis": {
+              "numerator": "100",
+              "denominator": "1"
+            },
+            "pnl_unit": "user-defined account unit"
+          },
+          "mode": "support_only",
+          "nonexecution_pnl": null
+        }
+      ],
+      "studies": [
+        {
+          "id": "return_moments",
+          "version": "1",
+          "parameters": {}
+        },
+        {
+          "id": "return_quantiles",
+          "version": "1",
+          "parameters": {
+            "levels": [
+              {
+                "numerator": "1",
+                "denominator": "20"
+              },
+              {
+                "numerator": "1",
+                "denominator": "2"
+              },
+              {
+                "numerator": "19",
+                "denominator": "20"
+              }
+            ]
+          }
+        }
+      ],
+      "on_incompatible": "unavailable",
+      "extensions": {}
+    },
+    "book": {
+      "protocol": "symphony.sbv.book-input.v1",
+      "source_path": "/absolute/private/source.dbn",
+      "source_sha256": "REPLACE_WITH_EXACT_FILE_SHA256",
+      "dataset": "XNAS.ITCH",
+      "census_result": {
+        "path": "/absolute/private/census-result.json",
+        "expected_sha256": "REPLACE_WITH_CONTENT_SHA256"
+      },
+      "signal_ids": [
+        "signal-0"
+      ],
+      "output_path": "/absolute/private/new-book.json",
+      "initial_state": {
+        "mode": "uninitialized"
+      },
+      "on_anomaly": "invalidate_until_reset",
+      "replay": {
+        "before_ns": "1000000000",
+        "after_ns": "2000000000",
+        "retain_events": true
+      },
+      "frames": {
+        "cadence": "signals",
+        "levels_per_side": "10",
+        "maximum": "4096"
+      },
+      "emit_checkpoint": true,
+      "extensions": {}
+    },
+    "liquidity": {
+      "protocol": "symphony.sbv.liquidity-input.v1",
+      "path": "/absolute/private/book.json",
+      "expected_sha256": "REPLACE_WITH_CONTENT_SHA256",
+      "output_path": "/absolute/private/new-liquidity.json",
+      "orders": [
+        {
+          "order_id": "order-0",
+          "signal_id": "signal-0",
+          "frame_source_ordinal": "REPLACE_WITH_RETAINED_POST_SIGNAL_FRAME_ORDINAL",
+          "side": "buy",
+          "quantity": "10",
+          "limit_price_nanos": null,
+          "time_in_force": "IOC",
+          "max_level_participation": {
+            "numerator": "1",
+            "denominator": "1"
+          },
+          "activation_probability": {
+            "status": "unavailable",
+            "reason": "No activation probability selected"
+          }
+        }
+      ],
+      "liquidity_mode": "independent",
+      "depth_policy": "require_sufficient",
+      "market_state_policy": "uncrossed_only",
+      "receive_time_policy": "unflagged_only",
+      "on_unavailable": "unavailable",
+      "studies": [
+        "liquidity_summary",
+        "fill_quality"
+      ],
+      "workers": "4",
+      "extensions": {}
+    },
+    "allocation_economics": {
+      "protocol": "symphony.sbv.allocation-economics-input.v1",
+      "path": "/absolute/private/liquidity.json",
+      "expected_sha256": "REPLACE_WITH_CONTENT_SHA256",
+      "output_path": "/absolute/private/new-allocation-economics.json",
+      "selections": [
+        {
+          "order_id": "order-0",
+          "valuation": {
+            "id": "filled_quantity_markout",
+            "version": "1",
+            "mark_price_nanos": "REPLACE_WITH_CALLER_MARK",
+            "mark_available_ns": "REPLACE_WITH_POST_EXECUTION_TIMESTAMP",
+            "mark_evidence": "REPLACE_WITH_MARK_PROVENANCE_OR_SCENARIO_DESCRIPTION",
+            "price_unit_nanos": "1000000000",
+            "value_per_price_unit": {
+              "numerator": "1",
+              "denominator": "1"
+            },
+            "activation_cost": {
+              "numerator": "0",
+              "denominator": "1"
+            },
+            "filled_order_cost": {
+              "numerator": "0",
+              "denominator": "1"
+            },
+            "per_filled_unit_cost": {
+              "numerator": "0",
+              "denominator": "1"
+            },
+            "return_basis": {
+              "numerator": "1",
+              "denominator": "1"
+            },
+            "pnl_unit": "REPLACE_WITH_CALLER_UNIT"
+          },
+          "mode": "conditional_only",
+          "inactive_pnl": null
+        }
+      ],
+      "studies": [
+        "allocation_costs"
+      ],
+      "on_unavailable": "unavailable",
+      "extensions": {}
+    }
+  }
+}

@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:sbv:pointer-stream:v1",
+  "$comment": "NDJSON: begin, ordered preorder nodes with unique RFC6901 JSON Pointers, then end. Container value is an empty shell; scalar value is exact. Consumers reconstruct the complete tree and verify its native content_sha256 when the root is a result. A missing end is incomplete.",
+  "oneOf": [
+    {
+      "type": "object",
+      "properties": {
+        "event": {
+          "const": "begin"
+        },
+        "protocol": {
+          "const": "symphony.sbv.pointer-stream.v1"
+        }
+      },
+      "required": [
+        "event",
+        "protocol"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "event": {
+          "const": "node"
+        },
+        "pointer": {
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "scalar",
+            "object",
+            "array"
+          ]
+        },
+        "value": {
+          "$ref": "#/$defs/node"
+        }
+      },
+      "required": [
+        "event",
+        "pointer",
+        "kind",
+        "value"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "event": {
+          "const": "end"
+        },
+        "status": {
+          "const": "complete"
+        },
+        "nodes": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$"
+        }
+      },
+      "required": [
+        "event",
+        "status",
+        "nodes"
+      ],
+      "additionalProperties": false
+    }
+  ],
+  "$defs": {
+    "node": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        },
+        {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/node"
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/node"
+          }
+        }
+      ]
+    }
+  }
+}

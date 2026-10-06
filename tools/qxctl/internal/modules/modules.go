@@ -41,12 +41,14 @@ var SQVModules = []string{
 // SNVModules declares source contracts, independently of installation or docking.
 var SNVModules = []string{"sniv-engine", "snrv-engine", "sciv-engine", "scnv-engine", "snv-engine", "snv-local-observer"}
 
-var CanonicalModules = append(append([]string{
+var SBVModules = []string{"sbv-engine"}
+
+var CanonicalModules = append(append(append([]string{
 	"hotpath-runtime",
 	"secure-identity-access-governance",
 	"ssiag-provider-macos-keychain",
 	"stav-append-authority",
-}, SQVModules...), SNVModules...)
+}, SQVModules...), SNVModules...), SBVModules...)
 
 var ExpectedFiles = []string{
 	"INTENT.md",
@@ -58,7 +60,7 @@ var ExpectedFiles = []string{
 // ContractsFor preserves the four legacy contracts and admits the explicit SQV
 // specification and semantic feature record without adding a CLI namespace.
 func ContractsFor(module string) []string {
-	for _, name := range SNVModules {
+	for _, name := range append(append([]string{}, SNVModules...), SBVModules...) {
 		if module == name {
 			return append(append([]string{}, ExpectedFiles...), "SPEC.md", "FEATURES.md")
 		}

@@ -2,7 +2,7 @@
 
 ## Status
 
-Canonical SSFV feature-routing registry. The partial catalog routes 139 experimental records across the platform governance scope and 62 owner scopes enumerated by `COVERAGE.md`.
+Canonical SSFV feature-routing registry. The partial catalog routes 141 experimental records across the platform governance scope and 63 owner scopes enumerated by `COVERAGE.md`.
 
 ## Purpose
 
@@ -1290,6 +1290,24 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - record_digest: `sha256:c05a3d8b9a78249fd0b475f15215f5dd6ccea6bc3f584f8a5828951401c4d611`
 - notes: Optional finite Linux proc/sysfs CPU and memory observation; no semantic engine identity, physical proof, retention, selected head or operational authority.
 
+
+- feature_id: `ssfv:symphony:sbv-engine`
+- feature_file: `modules/sbv-engine/FEATURES.md`
+- owner_contract: `modules/sbv-engine/SPEC.md`
+- source_scope: `modules/sbv-engine`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:platform`
+- record_digest: `sha256:de6592f58057916976e6c701b1fdee482589f945d11f5c4360b6e16ab7382dc5`
+- notes: Experimental SBV first implementation; exact declared operations and portable retained evidence only.
+
+- feature_id: `ssfv:symphony:qxctl-sbv-administration`
+- feature_file: `tools/qxctl/FEATURES.md`
+- owner_contract: `tools/qxctl/MANIFEST.md`
+- source_scope: `tools/qxctl`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:qxctl`
+- record_digest: `sha256:7fae9a0eb465c7e3525531e16a01fc9d93421cfe30bf1e282addc039370eefeb`
+- notes: Experimental SBV first implementation; exact declared operations and portable retained evidence only.
 
 ## Prohibited Entries
 

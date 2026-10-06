@@ -128,9 +128,9 @@ The emerging SOV remote-operation and deployment contracts do not make provider 
 
 This bounded summary is derived from canonical SSFV coverage and routing, the feature-administration profile, the qxctl command registry, and completed SODV publication records. Edit its source contracts, then regenerate; do not hand-edit the values below.
 
-- SSFV catalog state: `partial`; registered features: **139**; registered owner scopes: **62**; ratified nested features: **78**.
-- Feature-administration expectations: **373** reviewed surfaces; **362** required, **28** evidence-backed exemptions, **9** prohibitions, **0** unreviewed.
-- qxctl stable command identities: **399**.
+- SSFV catalog state: `partial`; registered features: **141**; registered owner scopes: **63**; ratified nested features: **78**.
+- Feature-administration expectations: **381** reviewed surfaces; **370** required, **28** evidence-backed exemptions, **9** prohibitions, **0** unreviewed.
+- qxctl stable command identities: **414**.
 - Registered owner capabilities:
   - `ssfv:symphony:accordare-stav-producer`
   - `ssfv:symphony:knowledge-session-coordinator`
@@ -141,6 +141,7 @@ This bounded summary is derived from canonical SSFV coverage and routing, the fe
   - `ssfv:symphony:qxctl`
   - `ssfv:symphony:sacv-engine`
   - `ssfv:symphony:sav-engine`
+  - `ssfv:symphony:sbv-engine`
   - `ssfv:symphony:scabv-ibkr-client-portal-cpp`
   - `ssfv:symphony:scabv-ibkr-tws-cpp`
   - `ssfv:symphony:scev-cf-engine`
@@ -198,7 +199,7 @@ This bounded summary is derived from canonical SSFV coverage and routing, the fe
   - `github.com/QuanuX/Symphony/libraries/stav-protocol-go` `v0.2.0` (tag `libraries/stav-protocol-go/v0.2.0`, source `55f8faf26f4f85213ac23cc1de7ba897b2129a4c`)
   - `github.com/QuanuX/Symphony/modules/stav-append-authority` `v0.1.0` (tag `modules/stav-append-authority/v0.1.0`, source `55f8faf26f4f85213ac23cc1de7ba897b2129a4c`)
   - `github.com/QuanuX/Symphony/modules/stav-append-authority` `v0.2.0` (tag `modules/stav-append-authority/v0.2.0`, source `ed7484d70607aa96e64916dd4e59d3972a61980b`)
-- Snapshot digest: `sha256:b8e12ca90abd89b4bfad892f9c367a6a3ba2bbb31464f01114197ab242f18940`
+- Snapshot digest: `sha256:78c8206892f0dcfc1fa3de48b0389eef2267b586e42d8040cc03f72f3376f5b6`
 <!-- symphony:root-summary:v1:end -->
 
 ## Releases and Documentation

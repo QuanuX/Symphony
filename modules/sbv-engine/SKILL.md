@@ -1,0 +1,9 @@
+# SBV operational contract
+
+Use the exact installed version and receipt-owned schema/template. Select all study, criteria, execution and replay choices explicitly. Run creates a new private result path; inspect a possibly committed destination before retrying an uncertain write. To read, supply the returned content SHA256. qxctl result export renders all retained fields; result query permits bounded traversal. Unavailable is not zero. Trade touch is not fill probability. No command contacts Databento or a live broker. Do not infer production readiness or full roadmap implementation from this experimental package.
+
+For `book`, select an existing source-bound census, signal IDs, replay window, display depth, cadence, anomaly policy and optional checkpoint. Use its installed schema/template. Unknown initial state must remain unavailable until a reset/checkpoint; never relabel observed trade support or incomplete fragments as executable liquidity. All frame/checkpoint fields use the ordinary result query/export surface.
+
+For `liquidity`, select a bound book result, explicit order/frame intents and all evidence policies. Activation is optional and remains an assumption. Independent orders use separate snapshots; shared-snapshot orders preserve input order under all-active conditioning. Do not turn unknown earlier shared outcomes into zero consumption, or conditional fill quantity into calibrated likelihood. Retained frames, replay, allocations and optional studies use ordinary result access.
+
+For `allocation_economics`, select exact liquidity allocations and explicit mark/evidence, units, costs, return basis and conditional or activation-mixture mode. Use actual filled quantity, preserve active zero-fill costs and source shared conditioning, and keep hypothetical markout distinct from realized P&L. Query/export retains all source allocations and replay; no portfolio independence is inferred.

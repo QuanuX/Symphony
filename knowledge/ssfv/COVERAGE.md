@@ -86,6 +86,8 @@ The inventory is intentionally explicit. Directory discovery, file count, langua
 
 
 
+| `modules/sbv-engine` | registered | `ssfv:symphony:sbv-engine` | `modules/sbv-engine/FEATURES.md` |
+
 ## Ratified Nested Review Progress
 
 The F1 through F3 review, feature-administration assurance slice, root-summary assurance slice, invariant-assurance slice, provider-trust assurance slice, provider-binding lifecycle slice, and Accordare durability/supervision review record seventy-eight ratified nested feature-worthy boundaries inside seventeen registered non-root owner scopes:

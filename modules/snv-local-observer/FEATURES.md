@@ -40,8 +40,8 @@
         }
       ],
       "implementation_paths": [
-        "modules/snv-local-observer/src/observer.cpp",
-        "modules/snv-local-observer/src/main.cpp"
+        "modules/snv-local-observer/src/main.cpp",
+        "modules/snv-local-observer/src/observer.cpp"
       ],
       "kind": "feature",
       "non_claims": [

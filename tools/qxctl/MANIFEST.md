@@ -2,6 +2,24 @@
 
 ## Canonical Surfaces
 
+- `tools/qxctl/internal/knowledgeengine/sbv_allocation_economics_test.go`
+
+- `tools/qxctl/internal/knowledgeengine/sbv_liquidity_test.go`
+
+- `tools/qxctl/internal/knowledgeengine/sbv_book_test.go`
+
+- `tools/qxctl/internal/knowledgeengine/sbv_economics_test.go`
+
+- `tools/qxctl/internal/knowledgeengine/sbv_models_test.go`
+
+- `tools/qxctl/internal/knowledgeengine/sbv_installed_test.go`
+
+- `tools/qxctl/cmd/qxctl/sbv.go`
+- `tools/qxctl/cmd/qxctl/sbv_test.go`
+- `tools/qxctl/internal/knowledgeengine/sbv.go`
+- `tools/qxctl/internal/knowledgeengine/sbv_test.go`
+- `tools/qxctl/internal/knowledgeengine/sbv_interface_generated.go`
+
 - `tools/qxctl/tests/shv-invariants/installed_support.hpp`
 
 - `tools/qxctl/tests/scv-source-maintenance/CMakeLists.txt`

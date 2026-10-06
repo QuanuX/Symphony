@@ -1,0 +1,314 @@
+{
+  "protocol": "symphony.shv.owner-interface.v2",
+  "module_id": "sbv-engine",
+  "engine_id": "symphony-sbv",
+  "namespace": "symphony::sbv::interface",
+  "current_version": "0.6.0-dev",
+  "releases": {
+    "0.6.0-dev": [
+      "capabilities",
+      "run",
+      "compose",
+      "result_inspect",
+      "result_query",
+      "evaluate",
+      "catalogue",
+      "compose_joint",
+      "economics",
+      "book",
+      "liquidity",
+      "allocation_economics"
+    ]
+  },
+  "contract_versions": [
+    "modules/sbv-engine/SPEC.md@v1",
+    "symphony.sbv.result.v1",
+    "symphony.sbv.capabilities-input.v1",
+    "symphony.sbv.capabilities.v1",
+    "symphony.sbv.run-input.v1",
+    "symphony.sbv.run.v1",
+    "symphony.sbv.compose-input.v1",
+    "symphony.sbv.compose.v1",
+    "symphony.sbv.result-inspect-input.v1",
+    "symphony.sbv.result-inspect.v1",
+    "symphony.sbv.result-query-input.v1",
+    "symphony.sbv.result-query.v1",
+    "symphony.sbv.evaluate-input.v1",
+    "symphony.sbv.evaluate.v1",
+    "symphony.sbv.catalogue-input.v1",
+    "symphony.sbv.catalogue.v1",
+    "symphony.sbv.compose-joint-input.v1",
+    "symphony.sbv.compose-joint.v1",
+    "symphony.sbv.economics-input.v1",
+    "symphony.sbv.economics.v1",
+    "symphony.sbv.book-input.v1",
+    "symphony.sbv.book.v1",
+    "symphony.sbv.liquidity-input.v1",
+    "symphony.sbv.liquidity.v1",
+    "symphony.sbv.allocation-economics-input.v1",
+    "symphony.sbv.allocation-economics.v1"
+  ],
+  "operations": [
+    {
+      "administration_disposition": "qxctl_required",
+      "administrative_interactions": [
+        "discover"
+      ],
+      "authorization_requirement": "none",
+      "availability": "implemented",
+      "direct_invocation": "supported",
+      "engine_operation_id": "engop:symphony:sbv.capabilities",
+      "expected_state_required": false,
+      "feature_ids": [
+        "ssfv:symphony:sbv-engine"
+      ],
+      "idempotency": "idempotent",
+      "input_protocol": "symphony.sbv.capabilities-input.v1",
+      "mutability": "read_only",
+      "operation_name": "capabilities",
+      "output_protocol": "symphony.sbv.capabilities.v1",
+      "recovery_operation_id": null,
+      "thermal_path": "freezing"
+    },
+    {
+      "administration_disposition": "qxctl_required",
+      "administrative_interactions": [
+        "invoke"
+      ],
+      "authorization_requirement": "target_host_permission",
+      "availability": "implemented",
+      "direct_invocation": "supported",
+      "engine_operation_id": "engop:symphony:sbv.run",
+      "expected_state_required": false,
+      "feature_ids": [
+        "ssfv:symphony:sbv-engine"
+      ],
+      "idempotency": "non_idempotent",
+      "input_protocol": "symphony.sbv.run-input.v1",
+      "mutability": "permission_backed_mutation",
+      "operation_name": "run",
+      "output_protocol": "symphony.sbv.run.v1",
+      "recovery_operation_id": "engop:symphony:sbv.result-inspect",
+      "thermal_path": "freezing"
+    },
+    {
+      "administration_disposition": "qxctl_required",
+      "administrative_interactions": [
+        "invoke"
+      ],
+      "authorization_requirement": "target_host_permission",
+      "availability": "implemented",
+      "direct_invocation": "supported",
+      "engine_operation_id": "engop:symphony:sbv.compose",
+      "expected_state_required": false,
+      "feature_ids": [
+        "ssfv:symphony:sbv-engine"
+      ],
+      "idempotency": "non_idempotent",
+      "input_protocol": "symphony.sbv.compose-input.v1",
+      "mutability": "permission_backed_mutation",
+      "operation_name": "compose",
+      "output_protocol": "symphony.sbv.compose.v1",
+      "recovery_operation_id": "engop:symphony:sbv.result-inspect",
+      "thermal_path": "freezing"
+    },
+    {
+      "administration_disposition": "qxctl_required",
+      "administrative_interactions": [
+        "inspect",
+        "recover"
+      ],
+      "authorization_requirement": "none",
+      "availability": "implemented",
+      "direct_invocation": "supported",
+      "engine_operation_id": "engop:symphony:sbv.result-inspect",
+      "expected_state_required": false,
+      "feature_ids": [
+        "ssfv:symphony:sbv-engine"
+      ],
+      "idempotency": "idempotent",
+      "input_protocol": "symphony.sbv.result-inspect-input.v1",
+      "mutability": "read_only",
+      "operation_name": "result_inspect",
+      "output_protocol": "symphony.sbv.result-inspect.v1",
+      "recovery_operation_id": null,
+      "thermal_path": "freezing"
+    },
+    {
+      "administration_disposition": "qxctl_required",
+      "administrative_interactions": [
+        "inspect"
+      ],
+      "authorization_requirement": "none",
+      "availability": "implemented",
+      "direct_invocation": "supported",
+      "engine_operation_id": "engop:symphony:sbv.result-query",
+      "expected_state_required": false,
+      "feature_ids": [
+        "ssfv:symphony:sbv-engine"
+      ],
+      "idempotency": "idempotent",
+      "input_protocol": "symphony.sbv.result-query-input.v1",
+      "mutability": "read_only",
+      "operation_name": "result_query",
+      "output_protocol": "symphony.sbv.result-query.v1",
+      "recovery_operation_id": null,
+      "thermal_path": "freezing"
+    },
+    {
+      "administration_disposition": "qxctl_required",
+      "administrative_interactions": [
+        "invoke"
+      ],
+      "authorization_requirement": "target_host_permission",
+      "availability": "implemented",
+      "direct_invocation": "supported",
+      "engine_operation_id": "engop:symphony:sbv.evaluate",
+      "expected_state_required": false,
+      "feature_ids": [
+        "ssfv:symphony:sbv-engine"
+      ],
+      "idempotency": "non_idempotent",
+      "input_protocol": "symphony.sbv.evaluate-input.v1",
+      "mutability": "permission_backed_mutation",
+      "operation_name": "evaluate",
+      "output_protocol": "symphony.sbv.evaluate.v1",
+      "recovery_operation_id": "engop:symphony:sbv.result-inspect",
+      "thermal_path": "freezing"
+    },
+    {
+      "administration_disposition": "qxctl_required",
+      "administrative_interactions": [
+        "discover"
+      ],
+      "authorization_requirement": "none",
+      "availability": "implemented",
+      "direct_invocation": "supported",
+      "engine_operation_id": "engop:symphony:sbv.catalogue",
+      "expected_state_required": false,
+      "feature_ids": [
+        "ssfv:symphony:sbv-engine"
+      ],
+      "idempotency": "idempotent",
+      "input_protocol": "symphony.sbv.catalogue-input.v1",
+      "mutability": "read_only",
+      "operation_name": "catalogue",
+      "output_protocol": "symphony.sbv.catalogue.v1",
+      "recovery_operation_id": null,
+      "thermal_path": "freezing"
+    },
+    {
+      "administration_disposition": "qxctl_required",
+      "administrative_interactions": [
+        "invoke"
+      ],
+      "authorization_requirement": "target_host_permission",
+      "availability": "implemented",
+      "direct_invocation": "supported",
+      "engine_operation_id": "engop:symphony:sbv.compose-joint",
+      "expected_state_required": false,
+      "feature_ids": [
+        "ssfv:symphony:sbv-engine"
+      ],
+      "idempotency": "non_idempotent",
+      "input_protocol": "symphony.sbv.compose-joint-input.v1",
+      "mutability": "permission_backed_mutation",
+      "operation_name": "compose_joint",
+      "output_protocol": "symphony.sbv.compose-joint.v1",
+      "recovery_operation_id": "engop:symphony:sbv.result-inspect",
+      "thermal_path": "freezing"
+    },
+    {
+      "administration_disposition": "qxctl_required",
+      "administrative_interactions": [
+        "invoke"
+      ],
+      "authorization_requirement": "target_host_permission",
+      "availability": "implemented",
+      "direct_invocation": "supported",
+      "engine_operation_id": "engop:symphony:sbv.economics",
+      "expected_state_required": false,
+      "feature_ids": [
+        "ssfv:symphony:sbv-engine"
+      ],
+      "idempotency": "non_idempotent",
+      "input_protocol": "symphony.sbv.economics-input.v1",
+      "mutability": "permission_backed_mutation",
+      "operation_name": "economics",
+      "output_protocol": "symphony.sbv.economics.v1",
+      "recovery_operation_id": "engop:symphony:sbv.result-inspect",
+      "thermal_path": "freezing"
+    },
+    {
+      "administration_disposition": "qxctl_required",
+      "administrative_interactions": [
+        "invoke"
+      ],
+      "authorization_requirement": "target_host_permission",
+      "availability": "implemented",
+      "direct_invocation": "supported",
+      "engine_operation_id": "engop:symphony:sbv.book",
+      "expected_state_required": false,
+      "feature_ids": [
+        "ssfv:symphony:sbv-engine"
+      ],
+      "idempotency": "non_idempotent",
+      "input_protocol": "symphony.sbv.book-input.v1",
+      "mutability": "permission_backed_mutation",
+      "operation_name": "book",
+      "output_protocol": "symphony.sbv.book.v1",
+      "recovery_operation_id": "engop:symphony:sbv.result-inspect",
+      "thermal_path": "freezing"
+    },
+    {
+      "administration_disposition": "qxctl_required",
+      "administrative_interactions": [
+        "invoke"
+      ],
+      "authorization_requirement": "target_host_permission",
+      "availability": "implemented",
+      "direct_invocation": "supported",
+      "engine_operation_id": "engop:symphony:sbv.liquidity",
+      "expected_state_required": false,
+      "feature_ids": [
+        "ssfv:symphony:sbv-engine"
+      ],
+      "idempotency": "non_idempotent",
+      "input_protocol": "symphony.sbv.liquidity-input.v1",
+      "mutability": "permission_backed_mutation",
+      "operation_name": "liquidity",
+      "output_protocol": "symphony.sbv.liquidity.v1",
+      "recovery_operation_id": "engop:symphony:sbv.result-inspect",
+      "thermal_path": "freezing"
+    },
+    {
+      "administration_disposition": "qxctl_required",
+      "administrative_interactions": [
+        "invoke"
+      ],
+      "authorization_requirement": "target_host_permission",
+      "availability": "implemented",
+      "direct_invocation": "supported",
+      "engine_operation_id": "engop:symphony:sbv.allocation-economics",
+      "expected_state_required": false,
+      "feature_ids": [
+        "ssfv:symphony:sbv-engine"
+      ],
+      "idempotency": "non_idempotent",
+      "input_protocol": "symphony.sbv.allocation-economics-input.v1",
+      "mutability": "permission_backed_mutation",
+      "operation_name": "allocation_economics",
+      "output_protocol": "symphony.sbv.allocation-economics.v1",
+      "recovery_operation_id": "engop:symphony:sbv.result-inspect",
+      "thermal_path": "freezing"
+    }
+  ],
+  "schemas": [
+    "modules/sbv-engine/schemas/v1/admin.schema.json",
+    "modules/sbv-engine/schemas/v1/admin.templates.json",
+    "modules/sbv-engine/schemas/v1/result.schema.json",
+    "modules/sbv-engine/schemas/v1/pointer-stream.schema.json"
+  ],
+  "companions": [],
+  "embedded_dependencies": []
+}

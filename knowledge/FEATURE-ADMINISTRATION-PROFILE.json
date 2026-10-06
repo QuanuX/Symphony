@@ -914,15 +914,113 @@
       "expectations": [
         {
           "command_ids": [
+            "qxcmd:symphony:sbv.capabilities",
+            "qxcmd:symphony:sbv.catalogue",
+            "qxcmd:symphony:sbv.schema",
+            "qxcmd:symphony:sbv.template"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:sbv.capabilities",
+            "engop:symphony:sbv.catalogue"
+          ],
+          "evidence": [
+            "modules/sbv-engine/OWNER-INTERFACE.json",
+            "modules/sbv-engine/SPEC.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "discover",
+          "rationale": "Every implemented SBV operation and retained result is controlled through exact installed native contracts; uncertain creation is recovered by inspecting its immutable destination.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:sbv.result.export",
+            "qxcmd:symphony:sbv.result.inspect",
+            "qxcmd:symphony:sbv.result.query"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:sbv.result-inspect",
+            "engop:symphony:sbv.result-query"
+          ],
+          "evidence": [
+            "modules/sbv-engine/OWNER-INTERFACE.json",
+            "modules/sbv-engine/SPEC.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "inspect",
+          "rationale": "Every implemented SBV operation and retained result is controlled through exact installed native contracts; uncertain creation is recovered by inspecting its immutable destination.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:sbv.allocation.economics",
+            "qxcmd:symphony:sbv.book",
+            "qxcmd:symphony:sbv.compose",
+            "qxcmd:symphony:sbv.compose.joint",
+            "qxcmd:symphony:sbv.economics",
+            "qxcmd:symphony:sbv.evaluate",
+            "qxcmd:symphony:sbv.liquidity",
+            "qxcmd:symphony:sbv.run"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:sbv.allocation-economics",
+            "engop:symphony:sbv.book",
+            "engop:symphony:sbv.compose",
+            "engop:symphony:sbv.compose-joint",
+            "engop:symphony:sbv.economics",
+            "engop:symphony:sbv.evaluate",
+            "engop:symphony:sbv.liquidity",
+            "engop:symphony:sbv.run"
+          ],
+          "evidence": [
+            "modules/sbv-engine/OWNER-INTERFACE.json",
+            "modules/sbv-engine/SPEC.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "invoke",
+          "rationale": "Every implemented SBV operation and retained result is controlled through exact installed native contracts; uncertain creation is recovered by inspecting its immutable destination.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:sbv.result.inspect"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:sbv.result-inspect"
+          ],
+          "evidence": [
+            "modules/sbv-engine/OWNER-INTERFACE.json",
+            "modules/sbv-engine/SPEC.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "recover",
+          "rationale": "Every implemented SBV operation and retained result is controlled through exact installed native contracts; uncertain creation is recovered by inspecting its immutable destination.",
+          "requirement": "required"
+        }
+      ],
+      "feature_id": "ssfv:symphony:qxctl-sbv-administration"
+    },
+    {
+      "expectations": [
+        {
+          "command_ids": [
             "qxcmd:symphony:snv.state.apply"
           ],
           "delivery": "composed",
           "engine_operation_ids": [],
           "evidence": [
             "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/FEATURES.md",
             "tools/qxctl/cmd/qxctl/snv.go",
-            "tools/qxctl/cmd/qxctl/snv_state.go",
-            "tools/qxctl/FEATURES.md"
+            "tools/qxctl/cmd/qxctl/snv_state.go"
           ],
           "inherited_from_feature_id": null,
           "interaction": "apply",
@@ -938,9 +1036,9 @@
           "engine_operation_ids": [],
           "evidence": [
             "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/FEATURES.md",
             "tools/qxctl/cmd/qxctl/snv.go",
-            "tools/qxctl/cmd/qxctl/snv_state.go",
-            "tools/qxctl/FEATURES.md"
+            "tools/qxctl/cmd/qxctl/snv_state.go"
           ],
           "inherited_from_feature_id": null,
           "interaction": "discover",
@@ -960,9 +1058,9 @@
           ],
           "evidence": [
             "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/FEATURES.md",
             "tools/qxctl/cmd/qxctl/snv.go",
-            "tools/qxctl/cmd/qxctl/snv_state.go",
-            "tools/qxctl/FEATURES.md"
+            "tools/qxctl/cmd/qxctl/snv_state.go"
           ],
           "inherited_from_feature_id": null,
           "interaction": "inspect",
@@ -977,9 +1075,9 @@
           "engine_operation_ids": [],
           "evidence": [
             "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/FEATURES.md",
             "tools/qxctl/cmd/qxctl/snv.go",
-            "tools/qxctl/cmd/qxctl/snv_state.go",
-            "tools/qxctl/FEATURES.md"
+            "tools/qxctl/cmd/qxctl/snv_state.go"
           ],
           "inherited_from_feature_id": null,
           "interaction": "invoke",
@@ -995,9 +1093,9 @@
           "engine_operation_ids": [],
           "evidence": [
             "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/FEATURES.md",
             "tools/qxctl/cmd/qxctl/snv.go",
-            "tools/qxctl/cmd/qxctl/snv_state.go",
-            "tools/qxctl/FEATURES.md"
+            "tools/qxctl/cmd/qxctl/snv_state.go"
           ],
           "inherited_from_feature_id": null,
           "interaction": "propose",
@@ -1012,9 +1110,9 @@
           "engine_operation_ids": [],
           "evidence": [
             "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/FEATURES.md",
             "tools/qxctl/cmd/qxctl/snv.go",
-            "tools/qxctl/cmd/qxctl/snv_state.go",
-            "tools/qxctl/FEATURES.md"
+            "tools/qxctl/cmd/qxctl/snv_state.go"
           ],
           "inherited_from_feature_id": null,
           "interaction": "query",
@@ -1029,9 +1127,9 @@
           "engine_operation_ids": [],
           "evidence": [
             "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/FEATURES.md",
             "tools/qxctl/cmd/qxctl/snv.go",
-            "tools/qxctl/cmd/qxctl/snv_state.go",
-            "tools/qxctl/FEATURES.md"
+            "tools/qxctl/cmd/qxctl/snv_state.go"
           ],
           "inherited_from_feature_id": null,
           "interaction": "recover",
@@ -1049,9 +1147,9 @@
           "engine_operation_ids": [],
           "evidence": [
             "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/FEATURES.md",
             "tools/qxctl/cmd/qxctl/snv.go",
-            "tools/qxctl/cmd/qxctl/snv_state.go",
-            "tools/qxctl/FEATURES.md"
+            "tools/qxctl/cmd/qxctl/snv_state.go"
           ],
           "inherited_from_feature_id": null,
           "interaction": "validate",
@@ -2714,6 +2812,104 @@
         }
       ],
       "feature_id": "ssfv:symphony:sav-engine.named-version"
+    },
+    {
+      "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:sbv.capabilities",
+            "qxcmd:symphony:sbv.catalogue",
+            "qxcmd:symphony:sbv.schema",
+            "qxcmd:symphony:sbv.template"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:sbv.capabilities",
+            "engop:symphony:sbv.catalogue"
+          ],
+          "evidence": [
+            "modules/sbv-engine/OWNER-INTERFACE.json",
+            "modules/sbv-engine/SPEC.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "discover",
+          "rationale": "Every implemented SBV operation and retained result is controlled through exact installed native contracts; uncertain creation is recovered by inspecting its immutable destination.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:sbv.result.export",
+            "qxcmd:symphony:sbv.result.inspect",
+            "qxcmd:symphony:sbv.result.query"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:sbv.result-inspect",
+            "engop:symphony:sbv.result-query"
+          ],
+          "evidence": [
+            "modules/sbv-engine/OWNER-INTERFACE.json",
+            "modules/sbv-engine/SPEC.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "inspect",
+          "rationale": "Every implemented SBV operation and retained result is controlled through exact installed native contracts; uncertain creation is recovered by inspecting its immutable destination.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:sbv.allocation.economics",
+            "qxcmd:symphony:sbv.book",
+            "qxcmd:symphony:sbv.compose",
+            "qxcmd:symphony:sbv.compose.joint",
+            "qxcmd:symphony:sbv.economics",
+            "qxcmd:symphony:sbv.evaluate",
+            "qxcmd:symphony:sbv.liquidity",
+            "qxcmd:symphony:sbv.run"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:sbv.allocation-economics",
+            "engop:symphony:sbv.book",
+            "engop:symphony:sbv.compose",
+            "engop:symphony:sbv.compose-joint",
+            "engop:symphony:sbv.economics",
+            "engop:symphony:sbv.evaluate",
+            "engop:symphony:sbv.liquidity",
+            "engop:symphony:sbv.run"
+          ],
+          "evidence": [
+            "modules/sbv-engine/OWNER-INTERFACE.json",
+            "modules/sbv-engine/SPEC.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "invoke",
+          "rationale": "Every implemented SBV operation and retained result is controlled through exact installed native contracts; uncertain creation is recovered by inspecting its immutable destination.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:sbv.result.inspect"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:sbv.result-inspect"
+          ],
+          "evidence": [
+            "modules/sbv-engine/OWNER-INTERFACE.json",
+            "modules/sbv-engine/SPEC.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "recover",
+          "rationale": "Every implemented SBV operation and retained result is controlled through exact installed native contracts; uncertain creation is recovered by inspecting its immutable destination.",
+          "requirement": "required"
+        }
+      ],
+      "feature_id": "ssfv:symphony:sbv-engine"
     },
     {
       "expectations": [
@@ -5326,11 +5522,11 @@
           "delivery": "direct",
           "engine_operation_ids": [],
           "evidence": [
+            "modules/sciv-engine/OWNER-INTERFACE.json",
+            "modules/sciv-engine/SPEC.md",
             "tools/qxctl/COMMANDS.json",
             "tools/qxctl/cmd/qxctl/snv.go",
-            "tools/qxctl/cmd/qxctl/snv_state.go",
-            "modules/sciv-engine/SPEC.md",
-            "modules/sciv-engine/OWNER-INTERFACE.json"
+            "tools/qxctl/cmd/qxctl/snv_state.go"
           ],
           "inherited_from_feature_id": null,
           "interaction": "discover",
@@ -5346,11 +5542,11 @@
             "engop:symphony:sciv.sciv-validate"
           ],
           "evidence": [
+            "modules/sciv-engine/OWNER-INTERFACE.json",
+            "modules/sciv-engine/SPEC.md",
             "tools/qxctl/COMMANDS.json",
             "tools/qxctl/cmd/qxctl/snv.go",
-            "tools/qxctl/cmd/qxctl/snv_state.go",
-            "modules/sciv-engine/SPEC.md",
-            "modules/sciv-engine/OWNER-INTERFACE.json"
+            "tools/qxctl/cmd/qxctl/snv_state.go"
           ],
           "inherited_from_feature_id": null,
           "interaction": "inspect",
@@ -5366,11 +5562,11 @@
             "engop:symphony:sciv.sciv-transition"
           ],
           "evidence": [
+            "modules/sciv-engine/OWNER-INTERFACE.json",
+            "modules/sciv-engine/SPEC.md",
             "tools/qxctl/COMMANDS.json",
             "tools/qxctl/cmd/qxctl/snv.go",
-            "tools/qxctl/cmd/qxctl/snv_state.go",
-            "modules/sciv-engine/SPEC.md",
-            "modules/sciv-engine/OWNER-INTERFACE.json"
+            "tools/qxctl/cmd/qxctl/snv_state.go"
           ],
           "inherited_from_feature_id": null,
           "interaction": "propose",
@@ -5386,11 +5582,11 @@
             "engop:symphony:sciv.sciv-validate"
           ],
           "evidence": [
+            "modules/sciv-engine/OWNER-INTERFACE.json",
+            "modules/sciv-engine/SPEC.md",
             "tools/qxctl/COMMANDS.json",
             "tools/qxctl/cmd/qxctl/snv.go",
-            "tools/qxctl/cmd/qxctl/snv_state.go",
-            "modules/sciv-engine/SPEC.md",
-            "modules/sciv-engine/OWNER-INTERFACE.json"
+            "tools/qxctl/cmd/qxctl/snv_state.go"
           ],
           "inherited_from_feature_id": null,
           "interaction": "validate",
@@ -5557,11 +5753,11 @@
           "delivery": "direct",
           "engine_operation_ids": [],
           "evidence": [
+            "modules/scnv-engine/OWNER-INTERFACE.json",
+            "modules/scnv-engine/SPEC.md",
             "tools/qxctl/COMMANDS.json",
             "tools/qxctl/cmd/qxctl/snv.go",
-            "tools/qxctl/cmd/qxctl/snv_state.go",
-            "modules/scnv-engine/SPEC.md",
-            "modules/scnv-engine/OWNER-INTERFACE.json"
+            "tools/qxctl/cmd/qxctl/snv_state.go"
           ],
           "inherited_from_feature_id": null,
           "interaction": "discover",
@@ -5579,11 +5775,11 @@
             "engop:symphony:scnv.names-validate"
           ],
           "evidence": [
+            "modules/scnv-engine/OWNER-INTERFACE.json",
+            "modules/scnv-engine/SPEC.md",
             "tools/qxctl/COMMANDS.json",
             "tools/qxctl/cmd/qxctl/snv.go",
-            "tools/qxctl/cmd/qxctl/snv_state.go",
-            "modules/scnv-engine/SPEC.md",
-            "modules/scnv-engine/OWNER-INTERFACE.json"
+            "tools/qxctl/cmd/qxctl/snv_state.go"
           ],
           "inherited_from_feature_id": null,
           "interaction": "inspect",
@@ -5599,11 +5795,11 @@
             "engop:symphony:scnv.names-validate"
           ],
           "evidence": [
+            "modules/scnv-engine/OWNER-INTERFACE.json",
+            "modules/scnv-engine/SPEC.md",
             "tools/qxctl/COMMANDS.json",
             "tools/qxctl/cmd/qxctl/snv.go",
-            "tools/qxctl/cmd/qxctl/snv_state.go",
-            "modules/scnv-engine/SPEC.md",
-            "modules/scnv-engine/OWNER-INTERFACE.json"
+            "tools/qxctl/cmd/qxctl/snv_state.go"
           ],
           "inherited_from_feature_id": null,
           "interaction": "propose",
@@ -5619,11 +5815,11 @@
             "engop:symphony:scnv.names-resolve"
           ],
           "evidence": [
+            "modules/scnv-engine/OWNER-INTERFACE.json",
+            "modules/scnv-engine/SPEC.md",
             "tools/qxctl/COMMANDS.json",
             "tools/qxctl/cmd/qxctl/snv.go",
-            "tools/qxctl/cmd/qxctl/snv_state.go",
-            "modules/scnv-engine/SPEC.md",
-            "modules/scnv-engine/OWNER-INTERFACE.json"
+            "tools/qxctl/cmd/qxctl/snv_state.go"
           ],
           "inherited_from_feature_id": null,
           "interaction": "query",
@@ -5639,11 +5835,11 @@
             "engop:symphony:scnv.names-validate"
           ],
           "evidence": [
+            "modules/scnv-engine/OWNER-INTERFACE.json",
+            "modules/scnv-engine/SPEC.md",
             "tools/qxctl/COMMANDS.json",
             "tools/qxctl/cmd/qxctl/snv.go",
-            "tools/qxctl/cmd/qxctl/snv_state.go",
-            "modules/scnv-engine/SPEC.md",
-            "modules/scnv-engine/OWNER-INTERFACE.json"
+            "tools/qxctl/cmd/qxctl/snv_state.go"
           ],
           "inherited_from_feature_id": null,
           "interaction": "validate",
@@ -7292,11 +7488,11 @@
           "delivery": "direct",
           "engine_operation_ids": [],
           "evidence": [
+            "modules/sniv-engine/OWNER-INTERFACE.json",
+            "modules/sniv-engine/SPEC.md",
             "tools/qxctl/COMMANDS.json",
             "tools/qxctl/cmd/qxctl/snv.go",
-            "tools/qxctl/cmd/qxctl/snv_state.go",
-            "modules/sniv-engine/SPEC.md",
-            "modules/sniv-engine/OWNER-INTERFACE.json"
+            "tools/qxctl/cmd/qxctl/snv_state.go"
           ],
           "inherited_from_feature_id": null,
           "interaction": "discover",
@@ -7312,11 +7508,11 @@
             "engop:symphony:sniv.identity-validate"
           ],
           "evidence": [
+            "modules/sniv-engine/OWNER-INTERFACE.json",
+            "modules/sniv-engine/SPEC.md",
             "tools/qxctl/COMMANDS.json",
             "tools/qxctl/cmd/qxctl/snv.go",
-            "tools/qxctl/cmd/qxctl/snv_state.go",
-            "modules/sniv-engine/SPEC.md",
-            "modules/sniv-engine/OWNER-INTERFACE.json"
+            "tools/qxctl/cmd/qxctl/snv_state.go"
           ],
           "inherited_from_feature_id": null,
           "interaction": "propose",
@@ -7332,11 +7528,11 @@
             "engop:symphony:sniv.identity-validate"
           ],
           "evidence": [
+            "modules/sniv-engine/OWNER-INTERFACE.json",
+            "modules/sniv-engine/SPEC.md",
             "tools/qxctl/COMMANDS.json",
             "tools/qxctl/cmd/qxctl/snv.go",
-            "tools/qxctl/cmd/qxctl/snv_state.go",
-            "modules/sniv-engine/SPEC.md",
-            "modules/sniv-engine/OWNER-INTERFACE.json"
+            "tools/qxctl/cmd/qxctl/snv_state.go"
           ],
           "inherited_from_feature_id": null,
           "interaction": "validate",
@@ -7362,11 +7558,11 @@
           "delivery": "direct",
           "engine_operation_ids": [],
           "evidence": [
+            "modules/snrv-engine/OWNER-INTERFACE.json",
+            "modules/snrv-engine/SPEC.md",
             "tools/qxctl/COMMANDS.json",
             "tools/qxctl/cmd/qxctl/snv.go",
-            "tools/qxctl/cmd/qxctl/snv_state.go",
-            "modules/snrv-engine/SPEC.md",
-            "modules/snrv-engine/OWNER-INTERFACE.json"
+            "tools/qxctl/cmd/qxctl/snv_state.go"
           ],
           "inherited_from_feature_id": null,
           "interaction": "discover",
@@ -7382,11 +7578,11 @@
             "engop:symphony:snrv.resources-validate"
           ],
           "evidence": [
+            "modules/snrv-engine/OWNER-INTERFACE.json",
+            "modules/snrv-engine/SPEC.md",
             "tools/qxctl/COMMANDS.json",
             "tools/qxctl/cmd/qxctl/snv.go",
-            "tools/qxctl/cmd/qxctl/snv_state.go",
-            "modules/snrv-engine/SPEC.md",
-            "modules/snrv-engine/OWNER-INTERFACE.json"
+            "tools/qxctl/cmd/qxctl/snv_state.go"
           ],
           "inherited_from_feature_id": null,
           "interaction": "propose",
@@ -7402,11 +7598,11 @@
             "engop:symphony:snrv.resources-validate"
           ],
           "evidence": [
+            "modules/snrv-engine/OWNER-INTERFACE.json",
+            "modules/snrv-engine/SPEC.md",
             "tools/qxctl/COMMANDS.json",
             "tools/qxctl/cmd/qxctl/snv.go",
-            "tools/qxctl/cmd/qxctl/snv_state.go",
-            "modules/snrv-engine/SPEC.md",
-            "modules/snrv-engine/OWNER-INTERFACE.json"
+            "tools/qxctl/cmd/qxctl/snv_state.go"
           ],
           "inherited_from_feature_id": null,
           "interaction": "validate",
@@ -7423,9 +7619,9 @@
           "delivery": "runtime_only",
           "engine_operation_ids": [],
           "evidence": [
-            "libraries/snv-common-cpp/SPEC.md",
+            "cmake/SymphonySnvEngine.cmake",
             "libraries/snv-common-cpp/FEATURES.md",
-            "cmake/SymphonySnvEngine.cmake"
+            "libraries/snv-common-cpp/SPEC.md"
           ],
           "inherited_from_feature_id": null,
           "interaction": "invoke",
@@ -7446,11 +7642,11 @@
             "engop:symphony:snv.snv-state-reduce"
           ],
           "evidence": [
+            "modules/snv-engine/OWNER-INTERFACE.json",
+            "modules/snv-engine/SPEC.md",
             "tools/qxctl/COMMANDS.json",
             "tools/qxctl/cmd/qxctl/snv.go",
-            "tools/qxctl/cmd/qxctl/snv_state.go",
-            "modules/snv-engine/SPEC.md",
-            "modules/snv-engine/OWNER-INTERFACE.json"
+            "tools/qxctl/cmd/qxctl/snv_state.go"
           ],
           "inherited_from_feature_id": null,
           "interaction": "apply",
@@ -7471,11 +7667,11 @@
           "delivery": "direct",
           "engine_operation_ids": [],
           "evidence": [
+            "modules/snv-engine/OWNER-INTERFACE.json",
+            "modules/snv-engine/SPEC.md",
             "tools/qxctl/COMMANDS.json",
             "tools/qxctl/cmd/qxctl/snv.go",
-            "tools/qxctl/cmd/qxctl/snv_state.go",
-            "modules/snv-engine/SPEC.md",
-            "modules/snv-engine/OWNER-INTERFACE.json"
+            "tools/qxctl/cmd/qxctl/snv_state.go"
           ],
           "inherited_from_feature_id": null,
           "interaction": "discover",
@@ -7493,11 +7689,11 @@
             "engop:symphony:snv.snv-inspect"
           ],
           "evidence": [
+            "modules/snv-engine/OWNER-INTERFACE.json",
+            "modules/snv-engine/SPEC.md",
             "tools/qxctl/COMMANDS.json",
             "tools/qxctl/cmd/qxctl/snv.go",
-            "tools/qxctl/cmd/qxctl/snv_state.go",
-            "modules/snv-engine/SPEC.md",
-            "modules/snv-engine/OWNER-INTERFACE.json"
+            "tools/qxctl/cmd/qxctl/snv_state.go"
           ],
           "inherited_from_feature_id": null,
           "interaction": "inspect",
@@ -7511,11 +7707,11 @@
           "delivery": "composed",
           "engine_operation_ids": [],
           "evidence": [
+            "modules/snv-engine/OWNER-INTERFACE.json",
+            "modules/snv-engine/SPEC.md",
             "tools/qxctl/COMMANDS.json",
             "tools/qxctl/cmd/qxctl/snv.go",
-            "tools/qxctl/cmd/qxctl/snv_state.go",
-            "modules/snv-engine/SPEC.md",
-            "modules/snv-engine/OWNER-INTERFACE.json"
+            "tools/qxctl/cmd/qxctl/snv_state.go"
           ],
           "inherited_from_feature_id": null,
           "interaction": "invoke",
@@ -7533,11 +7729,11 @@
             "engop:symphony:snv.snv-state-plan"
           ],
           "evidence": [
+            "modules/snv-engine/OWNER-INTERFACE.json",
+            "modules/snv-engine/SPEC.md",
             "tools/qxctl/COMMANDS.json",
             "tools/qxctl/cmd/qxctl/snv.go",
-            "tools/qxctl/cmd/qxctl/snv_state.go",
-            "modules/snv-engine/SPEC.md",
-            "modules/snv-engine/OWNER-INTERFACE.json"
+            "tools/qxctl/cmd/qxctl/snv_state.go"
           ],
           "inherited_from_feature_id": null,
           "interaction": "propose",
@@ -7553,11 +7749,11 @@
             "engop:symphony:snv.snv-inspect"
           ],
           "evidence": [
+            "modules/snv-engine/OWNER-INTERFACE.json",
+            "modules/snv-engine/SPEC.md",
             "tools/qxctl/COMMANDS.json",
             "tools/qxctl/cmd/qxctl/snv.go",
-            "tools/qxctl/cmd/qxctl/snv_state.go",
-            "modules/snv-engine/SPEC.md",
-            "modules/snv-engine/OWNER-INTERFACE.json"
+            "tools/qxctl/cmd/qxctl/snv_state.go"
           ],
           "inherited_from_feature_id": null,
           "interaction": "query",
@@ -7573,11 +7769,11 @@
             "engop:symphony:snv.snv-state-reduce"
           ],
           "evidence": [
+            "modules/snv-engine/OWNER-INTERFACE.json",
+            "modules/snv-engine/SPEC.md",
             "tools/qxctl/COMMANDS.json",
             "tools/qxctl/cmd/qxctl/snv.go",
-            "tools/qxctl/cmd/qxctl/snv_state.go",
-            "modules/snv-engine/SPEC.md",
-            "modules/snv-engine/OWNER-INTERFACE.json"
+            "tools/qxctl/cmd/qxctl/snv_state.go"
           ],
           "inherited_from_feature_id": null,
           "interaction": "recover",
@@ -7605,9 +7801,9 @@
           "delivery": "direct",
           "engine_operation_ids": [],
           "evidence": [
-            "modules/snv-local-observer/SPEC.md",
             "modules/snv-local-observer/FEATURES.md",
             "modules/snv-local-observer/OWNER-INTERFACE.json",
+            "modules/snv-local-observer/SPEC.md",
             "tools/qxctl/COMMANDS.json",
             "tools/qxctl/cmd/qxctl/snv.go"
           ],
@@ -7625,9 +7821,9 @@
             "engop:symphony:snv-local-observer.observe"
           ],
           "evidence": [
-            "modules/snv-local-observer/SPEC.md",
             "modules/snv-local-observer/FEATURES.md",
             "modules/snv-local-observer/OWNER-INTERFACE.json",
+            "modules/snv-local-observer/SPEC.md",
             "tools/qxctl/COMMANDS.json",
             "tools/qxctl/cmd/qxctl/snv.go"
           ],
@@ -7641,9 +7837,9 @@
           "delivery": "none",
           "engine_operation_ids": [],
           "evidence": [
-            "modules/snv-local-observer/SPEC.md",
             "modules/snv-local-observer/FEATURES.md",
             "modules/snv-local-observer/OWNER-INTERFACE.json",
+            "modules/snv-local-observer/SPEC.md",
             "tools/qxctl/COMMANDS.json",
             "tools/qxctl/cmd/qxctl/snv.go"
           ],
@@ -9498,9 +9694,9 @@
   ],
   "format_version": 1,
   "forward_gate": "enforce_new_records",
-  "profile_digest": "sha256:fbd5112169ecb8ac66b8dd9e61e046b08e5be2acf41c7051108cc48bbbd9e3cc",
+  "profile_digest": "sha256:cc202689e796965379a0ef3f4d7cb63f679de10ea3f5462bbaedc17b4109f496",
   "profile_id": "symphony.registered-features.administration.v1",
   "protocol": "symphony.knowledge.feature-administration-profile.v1",
-  "registered_feature_count": 139,
-  "ssfv_registry_digest": "sha256:eb8a1ac706db3a4ff28639e5da431d4806548e9e1ef665fbe57d171edb01763a"
+  "registered_feature_count": 141,
+  "ssfv_registry_digest": "sha256:833eb0012780f8ce3c45ede7833560d154ca265429bca8242cb93da3bfb9ef20"
 }

@@ -24,8 +24,8 @@ func TestCommandRegistryCobraParityAndStableIdentity(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(manifest.Commands) != 398 {
-		t.Fatalf("registered command count = %d, want 398", len(manifest.Commands))
+	if len(manifest.Commands) != 414 {
+		t.Fatalf("registered command count = %d, want 414", len(manifest.Commands))
 	}
 	seen := make(map[string]*string, len(manifest.Commands))
 	for _, command := range manifest.Commands {
@@ -216,7 +216,13 @@ func TestReviewedBackendFeatureBindingsReachExpectedRegistry(t *testing.T) {
 		// in addition to the independently reviewed backend interaction.
 		switch key {
 		case "modules", "modules.check", "modules.metadata", "module.inspect", "module.check", "module.metadata", "inventory", "inventory.digest":
-			wantCount += len(modules.SQVModules) + len(modules.SNVModules)
+			wantCount += len(modules.SQVModules) + len(modules.SNVModules) + len(modules.SBVModules)
+			for _, mod := range modules.SBVModules {
+				binding := commandregistry.FeatureBinding{FeatureID: "ssfv:symphony:" + mod, Interaction: "discover"}
+				if !containsFeatureBinding(command.FeatureBindings, binding) {
+					t.Errorf("%s missing admitted SBV owner %s", command.CommandID, mod)
+				}
+			}
 		}
 		if len(command.FeatureBindings) != wantCount {
 			t.Errorf("%s binding count = %d, want %d with reviewed backend and exact source discovery", command.CommandID, len(command.FeatureBindings), wantCount)
