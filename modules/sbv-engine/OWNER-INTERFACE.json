@@ -3,9 +3,9 @@
   "module_id": "sbv-engine",
   "engine_id": "symphony-sbv",
   "namespace": "symphony::sbv::interface",
-  "current_version": "0.11.0-dev",
+  "current_version": "0.12.0-dev",
   "releases": {
-    "0.11.0-dev": [
+    "0.12.0-dev": [
       "capabilities",
       "run",
       "compose",
@@ -25,7 +25,11 @@
       "compare",
       "resample",
       "experiment",
-      "split"
+      "split",
+      "dataset_load",
+      "dataset_inspect",
+      "dataset_execute",
+      "dataset_release"
     ]
   },
   "contract_versions": [
@@ -70,7 +74,15 @@
     "symphony.sbv.experiment-input.v1",
     "symphony.sbv.experiment.v1",
     "symphony.sbv.split-input.v1",
-    "symphony.sbv.split.v1"
+    "symphony.sbv.split.v1",
+    "symphony.sbv.dataset-load-input.v1",
+    "symphony.sbv.dataset-load.v1",
+    "symphony.sbv.dataset-inspect-input.v1",
+    "symphony.sbv.dataset-inspect.v1",
+    "symphony.sbv.dataset-execute-input.v1",
+    "symphony.sbv.dataset-execute.v1",
+    "symphony.sbv.dataset-release-input.v1",
+    "symphony.sbv.dataset-release.v1"
   ],
   "operations": [
     {
@@ -492,6 +504,91 @@
       "operation_name": "split",
       "output_protocol": "symphony.sbv.split.v1",
       "recovery_operation_id": "engop:symphony:sbv.result-inspect",
+      "thermal_path": "freezing"
+    },
+    {
+      "administration_disposition": "qxctl_required",
+      "administrative_interactions": [
+        "invoke"
+      ],
+      "authorization_requirement": "target_host_permission",
+      "availability": "implemented",
+      "direct_invocation": "supported",
+      "engine_operation_id": "engop:symphony:sbv.dataset-load",
+      "expected_state_required": false,
+      "feature_ids": [
+        "ssfv:symphony:sbv-engine"
+      ],
+      "idempotency": "non_idempotent",
+      "input_protocol": "symphony.sbv.dataset-load-input.v1",
+      "mutability": "permission_backed_mutation",
+      "operation_name": "dataset_load",
+      "output_protocol": "symphony.sbv.dataset-load.v1",
+      "recovery_operation_id": "engop:symphony:sbv.dataset-inspect",
+      "thermal_path": "freezing"
+    },
+    {
+      "administration_disposition": "qxctl_required",
+      "administrative_interactions": [
+        "inspect",
+        "recover"
+      ],
+      "authorization_requirement": "none",
+      "availability": "implemented",
+      "direct_invocation": "supported",
+      "engine_operation_id": "engop:symphony:sbv.dataset-inspect",
+      "expected_state_required": false,
+      "feature_ids": [
+        "ssfv:symphony:sbv-engine"
+      ],
+      "idempotency": "idempotent",
+      "input_protocol": "symphony.sbv.dataset-inspect-input.v1",
+      "mutability": "read_only",
+      "operation_name": "dataset_inspect",
+      "output_protocol": "symphony.sbv.dataset-inspect.v1",
+      "recovery_operation_id": null,
+      "thermal_path": "freezing"
+    },
+    {
+      "administration_disposition": "qxctl_required",
+      "administrative_interactions": [
+        "invoke"
+      ],
+      "authorization_requirement": "target_host_permission",
+      "availability": "implemented",
+      "direct_invocation": "supported",
+      "engine_operation_id": "engop:symphony:sbv.dataset-execute",
+      "expected_state_required": false,
+      "feature_ids": [
+        "ssfv:symphony:sbv-engine"
+      ],
+      "idempotency": "non_idempotent",
+      "input_protocol": "symphony.sbv.dataset-execute-input.v1",
+      "mutability": "permission_backed_mutation",
+      "operation_name": "dataset_execute",
+      "output_protocol": "symphony.sbv.dataset-execute.v1",
+      "recovery_operation_id": "engop:symphony:sbv.result-inspect",
+      "thermal_path": "freezing"
+    },
+    {
+      "administration_disposition": "qxctl_required",
+      "administrative_interactions": [
+        "invoke"
+      ],
+      "authorization_requirement": "target_host_permission",
+      "availability": "implemented",
+      "direct_invocation": "supported",
+      "engine_operation_id": "engop:symphony:sbv.dataset-release",
+      "expected_state_required": false,
+      "feature_ids": [
+        "ssfv:symphony:sbv-engine"
+      ],
+      "idempotency": "non_idempotent",
+      "input_protocol": "symphony.sbv.dataset-release-input.v1",
+      "mutability": "permission_backed_mutation",
+      "operation_name": "dataset_release",
+      "output_protocol": "symphony.sbv.dataset-release.v1",
+      "recovery_operation_id": "engop:symphony:sbv.dataset-inspect",
       "thermal_path": "freezing"
     }
   ],

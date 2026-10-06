@@ -228,6 +228,11 @@ Json dispatch(const std::string &op, const Json &p, std::int64_t end) {
           {"shared_library", true},
           {"bindings", Json::array({"c", "cpp"})},
           {"request_protocol", e::process_protocol_v1}}},
+        {"resident_data",
+         {{"available", true}, {"scope", "local immutable decoded DBN"},
+          {"residency_modes", Json::array({"pageable", "locked"})},
+          {"operations", Json::array({"run", "evaluate", "book"})},
+          {"implicit_file_fallback", false}}},
         {"cpu",
          {{"available", true},
           {"max_workers", "64"},
@@ -265,6 +270,8 @@ Json dispatch(const std::string &op, const Json &p, std::int64_t end) {
           {"max_artifact_bytes", d::dec(d::artifact_bytes)},
           {"max_composed_paths", "65536"}}}};
   }
+  if (op.starts_with("dataset_"))
+    return d::dataset_control(op, p, end);
   if (op == "run")
     return d::run(p, end);
   if (op == "compose")

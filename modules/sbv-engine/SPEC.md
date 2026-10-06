@@ -2,7 +2,7 @@
 
 ## Version and ownership
 
-Contract v1; package `sbv-engine` 0.11.0-dev; engine `symphony-sbv`; vector `sbv`. C++26 owns computations, result sealing and artifact queries. Go qxctl verifies the exact installation and projects native evidence. OWNER-INTERFACE.json is the exact operation declaration; generated C++/Go metadata must match it. This release is experimental.
+Contract v1; package `sbv-engine` 0.12.0-dev; engine `symphony-sbv`; vector `sbv`. C++26 owns computations, result sealing and artifact queries. Go qxctl verifies the exact installation and projects native evidence. OWNER-INTERFACE.json is the exact operation declaration; generated C++/Go metadata must match it. This release is experimental.
 
 The engine uses knowledge-vector-engine-cpp 0.2.0-dev and sqav-databento-dbn-cpp 0.5.0-dev, with that adapter's exact static dependencies. It performs no provider calls. Signal/replay semantics belong to SBV; acquisition remains SQAV, metadata SQMV, batch ownership SQFV, transformation SQTV, physical stores SQPV and recipient delivery SQDV. Its portable local JSON result is a derived artifact, not a new market-data persistence service. SQPV/SQDV integrations are not wired in this release.
 
@@ -231,3 +231,81 @@ Output retains normalized observation coordinates, each resolved fold window, tr
 Bounds: 65,536 source rows, 128 folds, 131,072 row-fold pairs, 64 MiB cumulative canonical embedded row bytes and the existing 128 MiB artifact/JSON-value limit. An explicit zero-fold plan and empty source array are supported. This implementation uses one CPU worker, interval-union sorting and binary search; independent split trials may use the existing experiment runner. Oversized retention rejects without silently switching to index-only output. This release has twenty native operations and twenty-three qxctl leaves.
 
 The operation computes partitions, not fitted models, predicted scores, enforced holdout authority, nested/combinatorial CV paths, multiple-testing correction or independence. Repeated test selection remains in the fold records. Arbitrary external protocols and user-defined clocks/conventions remain possible through other implementations and exact source artifacts.
+
+## Resident datasets (0.12)
+
+`dataset_load` validates the exact source path, SHA256 and dataset through the
+selected SQAV DBN decoder once, then retains immutable decoded MBO events in a
+native companion process. `dataset_execute` invokes `run`, `evaluate` or `book`
+against that shared allocation; its nested original request omits `output_path`,
+which is supplied by the wrapper. Exact source identity must match the load.
+The original file can subsequently disappear; the resident snapshot remains
+unchanged. Signals, models, reconstructed books and replay are computed afresh
+from those immutable events. This is an execution cache, not SQPV persistence,
+SQDV delivery or a new provider binding.
+
+`dataset_inspect` exposes identity, event count, decoded bytes, accounted load
+buffer bytes, selected budget, residency, decode/read counters, active jobs and
+workers, completed/failed jobs and idle expiry. `dataset_release` refuses while
+jobs are active; on success it stops admission and frees the event allocation.
+Release removes its endpoint before attempting the acknowledgement, whose
+wait is bounded to one second and the remaining request deadline. Release
+reports historical allocation sizes, not remaining allocated memory.
+No endpoint/PID kill or implicit file fallback occurs. A failed transport after
+submission has uncertain outcome: inspect the requested result before retrying.
+Memory is volatile; a crash requires an explicit reload with a fresh instance.
+
+The caller supplies an existing no-symlink mode-0700 private directory and a
+fresh 32-hex instance id. Use a short directory to satisfy Unix socket path
+limits. Each instance uses a mode-0600 local Unix-domain socket, same-user peer
+checks, bounded length-framed messages and exact version/instance checks.
+The host sends an authenticated readiness frame before accepting a request. A
+permanent exclusive `.claim` prevents reusing an incarnation after release,
+expiry, startup failure or crash. Claims and crash-stale endpoints remain in the
+caller-owned directory for inspection; choose a new id rather than replacing
+an existing endpoint. Multiple datasets use separate independently owned hosts.
+`network_listener: false` means no TCP/network endpoint; this local IPC endpoint
+is explicitly part of this release. No live feed or provider connection is made.
+
+`memory_budget_bytes` bounds accounted simultaneous source-string capacity plus
+decoded event-vector capacity during load; raw DBN bytes are discarded after
+validation/decoding. It is **not** a process RSS cap or a budget for results,
+allocator overhead, OS pages, metadata or job working sets. `pageable` selects
+ordinary RAM (the OS may page it); `locked` requires successful `mlock` of the
+decoded event span and fails explicitly if unavailable. OS locking rounds to
+pages; this is not CUDA-pinned memory. Current source admission remains 64 MiB,
+200,000 events and one ordered instrument. Book additionally requires one
+publisher/channel. These are scoped initial decoder/engine limits.
+
+The caller selects 1–16 simultaneous jobs and a 1–64 aggregate inner worker
+budget. An over-capacity submission is rejected without execution; there is no
+hidden retry/oversubscription. Run/evaluate retain their own 1–64 workers; book
+uses one. Completed threads are reclaimed; accepted jobs share the allocation
+without copying or IPC transport of event bytes. `idle_timeout_ms` is either
+zero (explicit release/crash) or 1,000–86,400,000; active jobs prevent expiry.
+Status and attempted submissions count as activity. Wire requests have the
+normal bounded request size and at most a five-minute deadline. Disconnects do
+not promise cancellation of accepted work.
+
+The ordinary engine-process.v1 boundary remains one request/response. The
+companion's `--resident-worker` entrypoint uses internal resident-wire.v1 on a
+private socketpair for startup, then local IPC; it is not a stream extension to
+engine-process.v1. `posix_spawn` starts the exact companion beside the current
+executable, or under the same installed prefix as the SDK. The SDK needs that
+companion installed; it owns no global cache inside the embedding application.
+The freshly executed, single-threaded companion reparents the resident host;
+the embedding SDK neither forks itself nor retains a background reaper thread.
+Receipt-verified qxctl and the installed SDK can use the same handles. Native
+`experiment` admits `dataset_execute` trials, preserves handle identity in its
+immutable plan, and accounts nested workers. Caller policies decide scheduling;
+no optimization of parameters or metrics is inferred.
+
+All four operations are exposed as `qxctl sbv dataset load|inspect|execute|release`
+with the same explicit prefix/version/input and text/JSON/NDJSON choices.
+Schema/template discovery uses operation ids `dataset_load`, `dataset_inspect`,
+`dataset_execute`, `dataset_release`. Execute's child schema is the selected
+run/evaluate/book schema minus output_path; its ordinary output is the same
+portable SBV artifact, with explicit `resources.data.dataset_feed` evidence.
+The result's quantitative sections do not change merely because data was
+preloaded. No claim of fastest performance, device integration, NUMA placement,
+cross-host handles or restart-persistent RAM is made.

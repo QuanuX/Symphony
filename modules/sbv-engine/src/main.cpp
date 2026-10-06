@@ -1,3 +1,4 @@
+#include "detail.hpp"
 #include <iostream>
 #include <symphony/knowledge/engine/error.hpp>
 #include <symphony/knowledge/engine/limits.hpp>
@@ -7,6 +8,8 @@ namespace e = symphony::knowledge::engine;
 int main(int argc, char **argv) {
   const std::string id = "symphony-sbv", version = symphony::sbv::version;
   try {
+    if (argc == 2 && std::string(argv[1]) == "--resident-worker")
+      return symphony::sbv::detail::resident_worker();
     if (argc == 2 && std::string(argv[1]) == "--descriptor") {
       std::cout << symphony::sbv::descriptor().dump() << '\n';
       return 0;

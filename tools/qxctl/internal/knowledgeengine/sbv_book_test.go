@@ -35,7 +35,7 @@ func TestSBVInstalledBook(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		return InvokeSBV(context.Background(), prefix, "0.11.0-dev", cwd, op, b)
+		return InvokeSBV(context.Background(), prefix, "0.12.0-dev", cwd, op, b)
 	}
 	response, err := invoke("book", request)
 	if err != nil {
@@ -53,7 +53,7 @@ func TestSBVInstalledBook(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	schema, err := SBVSchema(prefix, "0.11.0-dev", "book")
+	schema, err := SBVSchema(prefix, "0.12.0-dev", "book")
 	if err != nil {
 		t.Fatal(err)
 	}

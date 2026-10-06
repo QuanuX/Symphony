@@ -11,11 +11,11 @@ import (
 	"time"
 )
 
-var SBVOperations = []string{"capabilities", "run", "compose", "result_inspect", "result_query", "evaluate", "catalogue", "compose_joint", "economics", "book", "liquidity", "allocation_economics", "result_select", "backend_plan", "live_plan", "analyze", "compare", "resample", "experiment", "split"}
+var SBVOperations = []string{"capabilities", "run", "compose", "result_inspect", "result_query", "evaluate", "catalogue", "compose_joint", "economics", "book", "liquidity", "allocation_economics", "result_select", "backend_plan", "live_plan", "analyze", "compare", "resample", "experiment", "split", "dataset_load", "dataset_inspect", "dataset_execute", "dataset_release"}
 var sbvSHA = regexp.MustCompile(`^[0-9a-f]{64}$`)
 
 func sbvSpec() engineSpec {
-	return engineSpec{label: "SBV", moduleID: "sbv-engine", vectorID: "sbv", engineID: "symphony-sbv", componentKind: "vector_engine", processProtocol: processProtocol, operationTimeoutByVersion: map[string]time.Duration{"0.11.0-dev": 5 * time.Minute}}
+	return engineSpec{label: "SBV", moduleID: "sbv-engine", vectorID: "sbv", engineID: "symphony-sbv", componentKind: "vector_engine", processProtocol: processProtocol, operationTimeoutByVersion: map[string]time.Duration{"0.12.0-dev": 5 * time.Minute}}
 }
 func InspectSBV(prefix, version string) (Installation, error) {
 	s := sbvSpec()
@@ -76,6 +76,32 @@ func InvokeSBV(ctx context.Context, prefix, version, cwd, operation string, payl
 	if err != nil || !sbvInputShape(shape, p) {
 		return Response{}, fmt.Errorf("SBV input shape rejected")
 	}
+	if operation == "dataset_execute" {
+		child, ok := p["request"].(map[string]any)
+		if !ok {
+			return Response{}, fmt.Errorf("SBV resident child request required")
+		}
+		if _, present := child["output_path"]; present {
+			return Response{}, fmt.Errorf("SBV resident child must omit output_path")
+		}
+		childOp, _ := p["operation"].(string)
+		_, childSchema, e := SBVResource(prefix, version, childOp, false)
+		if e != nil {
+			return Response{}, e
+		}
+		childShape, e := sqavObject(childSchema, maxRequestBytes)
+		if e != nil {
+			return Response{}, e
+		}
+		expanded := make(map[string]any, len(child)+1)
+		for k, v := range child {
+			expanded[k] = v
+		}
+		expanded["output_path"] = p["output_path"]
+		if !sbvInputShape(childShape, expanded) {
+			return Response{}, fmt.Errorf("SBV resident child shape rejected")
+		}
+	}
 	canonical, err := SCVCanonical(p)
 	if err != nil {
 		return Response{}, err
@@ -109,6 +135,32 @@ func validateSBVResult(op string, p map[string]any, raw []byte) error {
 		return n, ok && e == nil && strconv.FormatUint(n, 10) == s
 	}
 	switch op {
+	case "dataset_load", "dataset_inspect", "dataset_release":
+		if m["engine_version"] != SBVAdministrationInterfaceVersion || m["directory"] != p["directory"] || m["instance_id"] != p["instance_id"] || !digest("source_sha256") {
+			return bad()
+		}
+		state := "ready"
+		if op == "dataset_release" {
+			state = "released"
+		}
+		if m["state"] != state {
+			return bad()
+		}
+		for _, k := range []string{"events", "decoded_bytes", "load_buffer_bytes", "memory_budget_bytes", "source_reads", "decode_passes", "active_jobs", "active_workers", "completed_jobs", "failed_jobs", "max_concurrent_jobs", "worker_budget", "idle_timeout_ms"} {
+			if _, ok := number(k); !ok {
+				return bad()
+			}
+		}
+		if m["source_reads"] != "1" || m["decode_passes"] != "1" || (m["residency"] != "pageable" && m["residency"] != "locked") {
+			return bad()
+		}
+		if op == "dataset_load" {
+			for _, k := range []string{"source_path", "source_sha256", "dataset", "memory_budget_bytes", "residency", "max_concurrent_jobs", "worker_budget", "idle_timeout_ms"} {
+				if m[k] != p[k] {
+					return bad()
+				}
+			}
+		}
 	case "capabilities":
 		if m["engine_version"] != SBVAdministrationInterfaceVersion {
 			return bad()
@@ -123,7 +175,7 @@ func validateSBVResult(op string, p map[string]any, raw []byte) error {
 				return bad()
 			}
 		}
-	case "run", "compose", "evaluate", "compose_joint", "economics", "book", "liquidity", "allocation_economics", "analyze", "compare", "resample", "experiment", "split", "result_inspect":
+	case "run", "compose", "evaluate", "compose_joint", "economics", "book", "liquidity", "allocation_economics", "analyze", "compare", "resample", "experiment", "split", "dataset_execute", "result_inspect":
 		target := "output_path"
 		if op == "result_inspect" {
 			target = "path"

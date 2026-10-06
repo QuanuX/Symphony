@@ -936,6 +936,7 @@
         },
         {
           "command_ids": [
+            "qxcmd:symphony:sbv.dataset.inspect",
             "qxcmd:symphony:sbv.result.export",
             "qxcmd:symphony:sbv.result.inspect",
             "qxcmd:symphony:sbv.result.query",
@@ -943,6 +944,7 @@
           ],
           "delivery": "direct",
           "engine_operation_ids": [
+            "engop:symphony:sbv.dataset-inspect",
             "engop:symphony:sbv.result-inspect",
             "engop:symphony:sbv.result-query",
             "engop:symphony:sbv.result-select"
@@ -966,6 +968,9 @@
             "qxcmd:symphony:sbv.compare",
             "qxcmd:symphony:sbv.compose",
             "qxcmd:symphony:sbv.compose.joint",
+            "qxcmd:symphony:sbv.dataset.execute",
+            "qxcmd:symphony:sbv.dataset.load",
+            "qxcmd:symphony:sbv.dataset.release",
             "qxcmd:symphony:sbv.economics",
             "qxcmd:symphony:sbv.evaluate",
             "qxcmd:symphony:sbv.experiment",
@@ -984,6 +989,9 @@
             "engop:symphony:sbv.compare",
             "engop:symphony:sbv.compose",
             "engop:symphony:sbv.compose-joint",
+            "engop:symphony:sbv.dataset-execute",
+            "engop:symphony:sbv.dataset-load",
+            "engop:symphony:sbv.dataset-release",
             "engop:symphony:sbv.economics",
             "engop:symphony:sbv.evaluate",
             "engop:symphony:sbv.experiment",
@@ -1005,10 +1013,12 @@
         },
         {
           "command_ids": [
+            "qxcmd:symphony:sbv.dataset.inspect",
             "qxcmd:symphony:sbv.result.inspect"
           ],
           "delivery": "direct",
           "engine_operation_ids": [
+            "engop:symphony:sbv.dataset-inspect",
             "engop:symphony:sbv.result-inspect"
           ],
           "evidence": [
@@ -2855,6 +2865,7 @@
         },
         {
           "command_ids": [
+            "qxcmd:symphony:sbv.dataset.inspect",
             "qxcmd:symphony:sbv.result.export",
             "qxcmd:symphony:sbv.result.inspect",
             "qxcmd:symphony:sbv.result.query",
@@ -2862,6 +2873,7 @@
           ],
           "delivery": "direct",
           "engine_operation_ids": [
+            "engop:symphony:sbv.dataset-inspect",
             "engop:symphony:sbv.result-inspect",
             "engop:symphony:sbv.result-query",
             "engop:symphony:sbv.result-select"
@@ -2885,6 +2897,9 @@
             "qxcmd:symphony:sbv.compare",
             "qxcmd:symphony:sbv.compose",
             "qxcmd:symphony:sbv.compose.joint",
+            "qxcmd:symphony:sbv.dataset.execute",
+            "qxcmd:symphony:sbv.dataset.load",
+            "qxcmd:symphony:sbv.dataset.release",
             "qxcmd:symphony:sbv.economics",
             "qxcmd:symphony:sbv.evaluate",
             "qxcmd:symphony:sbv.experiment",
@@ -2903,6 +2918,9 @@
             "engop:symphony:sbv.compare",
             "engop:symphony:sbv.compose",
             "engop:symphony:sbv.compose-joint",
+            "engop:symphony:sbv.dataset-execute",
+            "engop:symphony:sbv.dataset-load",
+            "engop:symphony:sbv.dataset-release",
             "engop:symphony:sbv.economics",
             "engop:symphony:sbv.evaluate",
             "engop:symphony:sbv.experiment",
@@ -2924,10 +2942,12 @@
         },
         {
           "command_ids": [
+            "qxcmd:symphony:sbv.dataset.inspect",
             "qxcmd:symphony:sbv.result.inspect"
           ],
           "delivery": "direct",
           "engine_operation_ids": [
+            "engop:symphony:sbv.dataset-inspect",
             "engop:symphony:sbv.result-inspect"
           ],
           "evidence": [
@@ -9729,6 +9749,6 @@
   "profile_id": "symphony.registered-features.administration.v1",
   "protocol": "symphony.knowledge.feature-administration-profile.v1",
   "registered_feature_count": 141,
-  "ssfv_registry_digest": "sha256:07838b1aba99cf03a3e3a71d98fb363b44c6edde091c0a05ec4818f04188fad3",
-  "profile_digest": "sha256:971e69ee63f8ee1280b2ed1fc09e0cac67d3d796915cab859c0f777781e926fe"
+  "ssfv_registry_digest": "sha256:af0b4a8c876dd58cae04a27af8092b055fb29f50590dec6cd46170e3a927663e",
+  "profile_digest": "sha256:ec6e99f7c020951bf2bed91fd086999f71c1c910bd0273ed33a81dc0801069b6"
 }

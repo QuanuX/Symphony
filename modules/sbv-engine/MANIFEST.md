@@ -1,6 +1,6 @@
 # SBV engine manifest
 
-Module `sbv-engine`, engine `symphony-sbv`, vector `sbv`, release `0.11.0-dev`. Native executable with exact static source dependencies and versioned receipt-v2 ownership. Independent interop headers and the native C ABI/C++ calculation SDK with exact CMake targets are installed. Vendor model runtime adapters remain optional future work. Backtest artifacts are user-owned outputs outside the install receipt.
+Module `sbv-engine`, engine `symphony-sbv`, vector `sbv`, release `0.12.0-dev`. Native executable with exact static source dependencies and versioned receipt-v2 ownership. Independent interop headers and the native C ABI/C++ calculation SDK with exact CMake targets are installed. Vendor model runtime adapters remain optional future work. Backtest artifacts are user-owned outputs outside the install receipt.
 
 ## Canonical Surfaces
 
@@ -108,3 +108,8 @@ Module `sbv-engine`, engine `symphony-sbv`, vector `sbv`, release `0.11.0-dev`. 
 - `modules/sqav-databento-dbn-cpp/MANIFEST.md`
 - `tools/qxctl/cmd/qxctl/sbv.go`
 - `tools/qxctl/internal/knowledgeengine/sbv.go`
+
+- `modules/sbv-engine/src/dataset.hpp`
+- `modules/sbv-engine/src/dataset.cpp`
+- `modules/sbv-engine/src/resident.cpp`
+- `modules/sbv-engine/tests/dataset_test.cpp`

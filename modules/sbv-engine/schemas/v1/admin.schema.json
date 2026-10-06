@@ -2853,6 +2853,139 @@
         "extensions"
       ],
       "additionalProperties": false
+    },
+    "dataset_load": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.dataset-load-input.v1"
+        },
+        "directory": {
+          "type": "string"
+        },
+        "instance_id": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{32}$"
+        },
+        "source_path": {
+          "type": "string"
+        },
+        "source_sha256": {
+          "type": "string"
+        },
+        "dataset": {
+          "type": "string"
+        },
+        "memory_budget_bytes": {
+          "type": "string"
+        },
+        "max_concurrent_jobs": {
+          "type": "string"
+        },
+        "worker_budget": {
+          "type": "string"
+        },
+        "idle_timeout_ms": {
+          "type": "string"
+        },
+        "residency": {
+          "enum": [
+            "pageable",
+            "locked"
+          ]
+        }
+      },
+      "required": [
+        "protocol",
+        "directory",
+        "instance_id",
+        "source_path",
+        "source_sha256",
+        "dataset",
+        "memory_budget_bytes",
+        "max_concurrent_jobs",
+        "worker_budget",
+        "idle_timeout_ms",
+        "residency"
+      ],
+      "additionalProperties": false
+    },
+    "dataset_inspect": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.dataset-inspect-input.v1"
+        },
+        "directory": {
+          "type": "string"
+        },
+        "instance_id": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{32}$"
+        }
+      },
+      "required": [
+        "protocol",
+        "directory",
+        "instance_id"
+      ],
+      "additionalProperties": false
+    },
+    "dataset_execute": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.dataset-execute-input.v1"
+        },
+        "directory": {
+          "type": "string"
+        },
+        "instance_id": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{32}$"
+        },
+        "operation": {
+          "enum": [
+            "run",
+            "evaluate",
+            "book"
+          ]
+        },
+        "request": {},
+        "output_path": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "protocol",
+        "directory",
+        "instance_id",
+        "operation",
+        "request",
+        "output_path"
+      ],
+      "additionalProperties": false
+    },
+    "dataset_release": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.dataset-release-input.v1"
+        },
+        "directory": {
+          "type": "string"
+        },
+        "instance_id": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{32}$"
+        }
+      },
+      "required": [
+        "protocol",
+        "directory",
+        "instance_id"
+      ],
+      "additionalProperties": false
     }
   },
   "results": {
@@ -2863,7 +2996,7 @@
           "const": "symphony.sbv.capabilities.v1"
         },
         "engine_version": {
-          "const": "0.11.0-dev"
+          "const": "0.12.0-dev"
         },
         "cpu": {
           "type": "object",
@@ -3009,6 +3142,40 @@
             "request_protocol"
           ],
           "additionalProperties": false
+        },
+        "resident_data": {
+          "type": "object",
+          "properties": {
+            "available": {
+              "const": true
+            },
+            "scope": {
+              "type": "string"
+            },
+            "residency_modes": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "operations": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "implicit_file_fallback": {
+              "const": false
+            }
+          },
+          "required": [
+            "available",
+            "scope",
+            "residency_modes",
+            "operations",
+            "implicit_file_fallback"
+          ],
+          "additionalProperties": false
         }
       },
       "required": [
@@ -3022,7 +3189,8 @@
         "execution_models",
         "limits",
         "economic_transforms",
-        "sdk"
+        "sdk",
+        "resident_data"
       ],
       "additionalProperties": false
     },
@@ -3434,7 +3602,7 @@
           "const": "symphony.sbv.catalogue.v1"
         },
         "engine_version": {
-          "const": "0.11.0-dev"
+          "const": "0.12.0-dev"
         },
         "models": {
           "type": "array",
@@ -4025,7 +4193,7 @@
           "const": "symphony.sbv.backend-plan.v1"
         },
         "engine_version": {
-          "const": "0.11.0-dev"
+          "const": "0.12.0-dev"
         },
         "status": {
           "enum": [
@@ -4318,7 +4486,7 @@
           "const": "symphony.sbv.live-plan.v1"
         },
         "engine_version": {
-          "const": "0.11.0-dev"
+          "const": "0.12.0-dev"
         },
         "can_activate": {
           "const": false
@@ -4851,6 +5019,358 @@
         "bytes",
         "status",
         "summary"
+      ],
+      "additionalProperties": false
+    },
+    "dataset_load": {
+      "type": "object",
+      "properties": {
+        "engine_version": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string"
+        },
+        "directory": {
+          "type": "string"
+        },
+        "instance_id": {
+          "type": "string"
+        },
+        "source_path": {
+          "type": "string"
+        },
+        "source_sha256": {
+          "type": "string"
+        },
+        "dataset": {
+          "type": "string"
+        },
+        "events": {
+          "type": "string"
+        },
+        "decoded_bytes": {
+          "type": "string"
+        },
+        "load_buffer_bytes": {
+          "type": "string"
+        },
+        "memory_budget_bytes": {
+          "type": "string"
+        },
+        "residency": {
+          "type": "string"
+        },
+        "source_reads": {
+          "type": "string"
+        },
+        "decode_passes": {
+          "type": "string"
+        },
+        "active_jobs": {
+          "type": "string"
+        },
+        "active_workers": {
+          "type": "string"
+        },
+        "completed_jobs": {
+          "type": "string"
+        },
+        "failed_jobs": {
+          "type": "string"
+        },
+        "max_concurrent_jobs": {
+          "type": "string"
+        },
+        "worker_budget": {
+          "type": "string"
+        },
+        "idle_timeout_ms": {
+          "type": "string"
+        },
+        "protocol": {
+          "const": "symphony.sbv.dataset-load.v1"
+        }
+      },
+      "required": [
+        "engine_version",
+        "state",
+        "directory",
+        "instance_id",
+        "source_path",
+        "source_sha256",
+        "dataset",
+        "events",
+        "decoded_bytes",
+        "load_buffer_bytes",
+        "memory_budget_bytes",
+        "residency",
+        "source_reads",
+        "decode_passes",
+        "active_jobs",
+        "active_workers",
+        "completed_jobs",
+        "failed_jobs",
+        "max_concurrent_jobs",
+        "worker_budget",
+        "idle_timeout_ms",
+        "protocol"
+      ],
+      "additionalProperties": false
+    },
+    "dataset_inspect": {
+      "type": "object",
+      "properties": {
+        "engine_version": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string"
+        },
+        "directory": {
+          "type": "string"
+        },
+        "instance_id": {
+          "type": "string"
+        },
+        "source_path": {
+          "type": "string"
+        },
+        "source_sha256": {
+          "type": "string"
+        },
+        "dataset": {
+          "type": "string"
+        },
+        "events": {
+          "type": "string"
+        },
+        "decoded_bytes": {
+          "type": "string"
+        },
+        "load_buffer_bytes": {
+          "type": "string"
+        },
+        "memory_budget_bytes": {
+          "type": "string"
+        },
+        "residency": {
+          "type": "string"
+        },
+        "source_reads": {
+          "type": "string"
+        },
+        "decode_passes": {
+          "type": "string"
+        },
+        "active_jobs": {
+          "type": "string"
+        },
+        "active_workers": {
+          "type": "string"
+        },
+        "completed_jobs": {
+          "type": "string"
+        },
+        "failed_jobs": {
+          "type": "string"
+        },
+        "max_concurrent_jobs": {
+          "type": "string"
+        },
+        "worker_budget": {
+          "type": "string"
+        },
+        "idle_timeout_ms": {
+          "type": "string"
+        },
+        "protocol": {
+          "const": "symphony.sbv.dataset-inspect.v1"
+        }
+      },
+      "required": [
+        "engine_version",
+        "state",
+        "directory",
+        "instance_id",
+        "source_path",
+        "source_sha256",
+        "dataset",
+        "events",
+        "decoded_bytes",
+        "load_buffer_bytes",
+        "memory_budget_bytes",
+        "residency",
+        "source_reads",
+        "decode_passes",
+        "active_jobs",
+        "active_workers",
+        "completed_jobs",
+        "failed_jobs",
+        "max_concurrent_jobs",
+        "worker_budget",
+        "idle_timeout_ms",
+        "protocol"
+      ],
+      "additionalProperties": false
+    },
+    "dataset_execute": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.dataset-execute.v1"
+        },
+        "path": {
+          "type": "string"
+        },
+        "content_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "file_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "bytes": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$"
+        },
+        "status": {
+          "enum": [
+            "completed",
+            "partial"
+          ]
+        },
+        "summary": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "enum": [
+                "available",
+                "partial",
+                "unavailable",
+                "not_selected"
+              ]
+            },
+            "reason": {
+              "type": "string"
+            },
+            "data": {
+              "$ref": "#/$defs/node"
+            }
+          },
+          "required": [
+            "status",
+            "reason",
+            "data"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "protocol",
+        "path",
+        "content_sha256",
+        "file_sha256",
+        "bytes",
+        "status",
+        "summary"
+      ],
+      "additionalProperties": false
+    },
+    "dataset_release": {
+      "type": "object",
+      "properties": {
+        "engine_version": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string"
+        },
+        "directory": {
+          "type": "string"
+        },
+        "instance_id": {
+          "type": "string"
+        },
+        "source_path": {
+          "type": "string"
+        },
+        "source_sha256": {
+          "type": "string"
+        },
+        "dataset": {
+          "type": "string"
+        },
+        "events": {
+          "type": "string"
+        },
+        "decoded_bytes": {
+          "type": "string"
+        },
+        "load_buffer_bytes": {
+          "type": "string"
+        },
+        "memory_budget_bytes": {
+          "type": "string"
+        },
+        "residency": {
+          "type": "string"
+        },
+        "source_reads": {
+          "type": "string"
+        },
+        "decode_passes": {
+          "type": "string"
+        },
+        "active_jobs": {
+          "type": "string"
+        },
+        "active_workers": {
+          "type": "string"
+        },
+        "completed_jobs": {
+          "type": "string"
+        },
+        "failed_jobs": {
+          "type": "string"
+        },
+        "max_concurrent_jobs": {
+          "type": "string"
+        },
+        "worker_budget": {
+          "type": "string"
+        },
+        "idle_timeout_ms": {
+          "type": "string"
+        },
+        "protocol": {
+          "const": "symphony.sbv.dataset-release.v1"
+        }
+      },
+      "required": [
+        "engine_version",
+        "state",
+        "directory",
+        "instance_id",
+        "source_path",
+        "source_sha256",
+        "dataset",
+        "events",
+        "decoded_bytes",
+        "load_buffer_bytes",
+        "memory_budget_bytes",
+        "residency",
+        "source_reads",
+        "decode_passes",
+        "active_jobs",
+        "active_workers",
+        "completed_jobs",
+        "failed_jobs",
+        "max_concurrent_jobs",
+        "worker_budget",
+        "idle_timeout_ms",
+        "protocol"
       ],
       "additionalProperties": false
     }

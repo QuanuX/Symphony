@@ -1,3 +1,4 @@
+#include "dataset.hpp"
 #include "detail.hpp"
 #include <algorithm>
 #include <atomic>
@@ -33,7 +34,7 @@ U end_at(U t, U delta) {
   need(delta <= UINT64_MAX - t, "time window overflow");
   return t + delta;
 }
-Json run(const Json &p, std::int64_t end) {
+Json run(const Json &p, std::int64_t end, const Dataset *resident) {
   keys(p,
        {"protocol", "source_path", "source_sha256", "dataset", "output_path",
         "criteria", "replay", "execution", "studies", "workers", "extensions"});
@@ -94,20 +95,11 @@ Json run(const Json &p, std::int64_t end) {
   const auto workers = u64(p.at("workers"));
   need(workers >= 1 && workers <= 64, "workers 1..64");
   need(p.at("extensions").is_object(), "extensions object required");
-  const auto bytes = read_file(str(p.at("source_path")), end);
-  need(bytes.size() <= (64U << 20), "DBN source exceeds 64 MiB");
-  need(e::sha256_hex(bytes) == str(p.at("source_sha256")),
-       "source byte digest mismatch");
-  db::FileView view;
-  const auto span = std::span<const unsigned char>(
-      reinterpret_cast<const unsigned char *>(bytes.data()), bytes.size());
-  need(db::FileView::inspect(span, {64U << 20, 1U << 20, 200000}, view) ==
-           db::Status::ok,
-       "Databento DBN input rejected");
-  need(view.metadata().dataset == str(p.at("dataset")),
-       "Databento dataset mismatch");
-  need(view.metadata().record_count > 0, "source contains no events");
-  std::vector<db::Mbo> events(view.metadata().record_count);
+  const auto owned = resident ? nullptr : load_dataset(p, end);
+  const auto &source = resident ? *resident : *owned;
+  source.bind(p);
+  const auto &events = source.events;
+
   Json signals = Json::array();
   std::vector<std::size_t> census;
   std::optional<std::int64_t> previous;
@@ -117,13 +109,7 @@ Json run(const Json &p, std::int64_t end) {
   for (std::size_t i = 0; i < events.size(); ++i) {
     if (i % 1024 == 0)
       deadline(end);
-    auto &x = events[i];
-    need(view.record(i, x) == db::Status::ok, "Databento decode failed");
-    need(x.ts_recv != UINT64_MAX &&
-             (i == 0 || x.ts_recv >= events[i - 1].ts_recv),
-         "ts_recv must be known and ordered");
-    need(i == 0 || x.instrument_id == events[0].instrument_id,
-         "one instrument per initial run");
+    const auto &x = events[i];
     if (!trade(x))
       continue;
     const bool match =
@@ -384,7 +370,7 @@ Json run(const Json &p, std::int64_t end) {
   auto choices = p;
   choices.erase("output_path");
   s["choices"] = section(choices);
-  const auto &meta = view.metadata();
+  const auto &meta = source.metadata;
   s["provenance"] = section(
       {{"source_path", p.at("source_path")},
        {"source_sha256", p.at("source_sha256")},
@@ -406,6 +392,8 @@ Json run(const Json &p, std::int64_t end) {
         "SQAV decoded immutable source; SBV semantic derived artifact; "
         "SQPV/SQDV are optional separate storage/delivery contracts"}});
   s["user_extensions"] = section(p.at("extensions"));
+  result["sections"]["resources"]["data"]["dataset_feed"] =
+      source.evidence(resident != nullptr);
   return persist(std::move(result), p, "run", end);
 }
 } // namespace symphony::sbv::detail

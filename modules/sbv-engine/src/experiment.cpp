@@ -84,10 +84,19 @@ Json experiment(const Json &p, std::int64_t end) {
   std::set<std::string> names;
   std::vector<Json> requests;
   std::uint64_t inner_max = 1;
-  const std::set<std::string> operations{
-      "run",       "evaluate", "compose",   "compose_joint",
-      "economics", "book",     "liquidity", "allocation_economics",
-      "analyze",   "compare",  "resample", "split"};
+  const std::set<std::string> operations{"run",
+                                         "evaluate",
+                                         "compose",
+                                         "compose_joint",
+                                         "economics",
+                                         "book",
+                                         "liquidity",
+                                         "allocation_economics",
+                                         "analyze",
+                                         "compare",
+                                         "resample",
+                                         "split",
+                                         "dataset_execute"};
   for (const auto &t : trials) {
     keys(t, {"id", "state", "operation", "request", "reason", "parameters",
              "lineage"});
@@ -106,8 +115,11 @@ Json experiment(const Json &p, std::int64_t end) {
            "trial operation must be a native SBV producer and request must "
            "omit output_path");
       request["output_path"] = root + "/" + name + ".result.json";
-      if (request.contains("workers")) {
-        const auto inner = u64(request.at("workers"));
+      const auto &worker_request = t.at("operation") == "dataset_execute"
+                                       ? request.at("request")
+                                       : request;
+      if (worker_request.contains("workers")) {
+        const auto inner = u64(worker_request.at("workers"));
         need(inner >= 1 && inner <= 64, "child worker bound");
         inner_max = std::max(inner_max, inner);
       }

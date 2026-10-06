@@ -22868,3 +22868,59 @@ These entries locate existing implementation and regression surfaces referenced 
 - deferred_projections: fitted models, enforced holdouts and combinatorial validation
 - notes: Partitions preserve user policies and disclose exclusions without claiming statistical independence.
 - status: canonical
+
+### SBV resident dataset dataset.hpp
+
+- path: `modules/sbv-engine/src/dataset.hpp`
+- title: SBV resident dataset dataset.hpp
+- surface_type: implementation contract or test
+- truth_role: Explicit immutable resident dataset lifecycle and native execution
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.12 local preload, reuse, memory controls and release.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, native SDK and external research pipelines
+- deferred_projections: shared device buffers, NUMA placement and distributed residency
+- notes: Caller selects pageable or locked RAM; no implicit file fallback.
+- status: canonical
+
+### SBV resident dataset dataset.cpp
+
+- path: `modules/sbv-engine/src/dataset.cpp`
+- title: SBV resident dataset dataset.cpp
+- surface_type: implementation contract or test
+- truth_role: Explicit immutable resident dataset lifecycle and native execution
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.12 local preload, reuse, memory controls and release.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, native SDK and external research pipelines
+- deferred_projections: shared device buffers, NUMA placement and distributed residency
+- notes: Caller selects pageable or locked RAM; no implicit file fallback.
+- status: canonical
+
+### SBV resident dataset resident.cpp
+
+- path: `modules/sbv-engine/src/resident.cpp`
+- title: SBV resident dataset resident.cpp
+- surface_type: implementation contract or test
+- truth_role: Explicit immutable resident dataset lifecycle and native execution
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.12 local preload, reuse, memory controls and release.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, native SDK and external research pipelines
+- deferred_projections: shared device buffers, NUMA placement and distributed residency
+- notes: Caller selects pageable or locked RAM; no implicit file fallback.
+- status: canonical
+
+### SBV resident dataset dataset_test.cpp
+
+- path: `modules/sbv-engine/tests/dataset_test.cpp`
+- title: SBV resident dataset dataset_test.cpp
+- surface_type: implementation contract or test
+- truth_role: Explicit immutable resident dataset lifecycle and native execution
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.12 local preload, reuse, memory controls and release.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, native SDK and external research pipelines
+- deferred_projections: shared device buffers, NUMA placement and distributed residency
+- notes: Caller selects pageable or locked RAM; no implicit file fallback.
+- status: canonical

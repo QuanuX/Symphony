@@ -35,7 +35,7 @@ func TestSBVInstalledTemporalSplit(t *testing.T) {
 		if e != nil {
 			t.Fatal(e)
 		}
-		return InvokeSBV(context.Background(), prefix, "0.11.0-dev", cwd, op, b)
+		return InvokeSBV(context.Background(), prefix, "0.12.0-dev", cwd, op, b)
 	}
 	response, err := invoke("split", p)
 	if err != nil {
@@ -58,7 +58,7 @@ func TestSBVInstalledTemporalSplit(t *testing.T) {
 		t.Fatal(err)
 	}
 	sections := artifact["sections"].(map[string]any)
-	schema, err := SBVSchema(prefix, "0.11.0-dev", "split")
+	schema, err := SBVSchema(prefix, "0.12.0-dev", "split")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -86,7 +86,7 @@ func TestSBVInstalledTemporalSplit(t *testing.T) {
 	if page["nodes"].([]any)[0].(map[string]any)["value"] != "0" {
 		t.Fatal("wrong terminal train row")
 	}
-	_, template, err := SBVResource(prefix, "0.11.0-dev", "split", true)
+	_, template, err := SBVResource(prefix, "0.12.0-dev", "split", true)
 	if err != nil {
 		t.Fatal(err)
 	}

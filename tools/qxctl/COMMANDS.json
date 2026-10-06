@@ -4040,6 +4040,170 @@
       "json_output": true
     },
     {
+      "command_id": "qxcmd:symphony:sbv.dataset.execute",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl sbv dataset execute [--format VALUE] [--input VALUE] [--json] [--prefix VALUE] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl-sbv-administration",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:sbv-engine",
+          "interaction": "invoke"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:sbv.dataset-execute"
+      ],
+      "mutability": "permission_backed_mutation",
+      "authority_mode": "target_host_permission",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.sbv.dataset-execute-input.v1"
+      ],
+      "output_protocols": [
+        "symphony.sbv.dataset-execute.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.sbv.dataset-execute.v1"
+      ],
+      "recovery_command_id": "qxcmd:symphony:sbv.result.inspect",
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:sbv.dataset.inspect",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl sbv dataset inspect [--format VALUE] [--input VALUE] [--json] [--prefix VALUE] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl-sbv-administration",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:qxctl-sbv-administration",
+          "interaction": "recover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sbv-engine",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:sbv-engine",
+          "interaction": "recover"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:sbv.dataset-inspect"
+      ],
+      "mutability": "read_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.sbv.dataset-inspect-input.v1"
+      ],
+      "output_protocols": [
+        "symphony.sbv.dataset-inspect.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.sbv.dataset-inspect.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:sbv.dataset.load",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl sbv dataset load [--format VALUE] [--input VALUE] [--json] [--prefix VALUE] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl-sbv-administration",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:sbv-engine",
+          "interaction": "invoke"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:sbv.dataset-load"
+      ],
+      "mutability": "permission_backed_mutation",
+      "authority_mode": "target_host_permission",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.sbv.dataset-load-input.v1"
+      ],
+      "output_protocols": [
+        "symphony.sbv.dataset-load.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.sbv.dataset-load.v1"
+      ],
+      "recovery_command_id": "qxcmd:symphony:sbv.dataset.inspect",
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:sbv.dataset.release",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl sbv dataset release [--format VALUE] [--input VALUE] [--json] [--prefix VALUE] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl-sbv-administration",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:sbv-engine",
+          "interaction": "invoke"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:sbv.dataset-release"
+      ],
+      "mutability": "permission_backed_mutation",
+      "authority_mode": "target_host_permission",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.sbv.dataset-release-input.v1"
+      ],
+      "output_protocols": [
+        "symphony.sbv.dataset-release.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.sbv.dataset-release.v1"
+      ],
+      "recovery_command_id": "qxcmd:symphony:sbv.dataset.inspect",
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
       "command_id": "qxcmd:symphony:sbv.economics",
       "status": "experimental",
       "introduced_in": "0.1.0-dev",
@@ -20007,5 +20171,5 @@
       "json_output": true
     }
   ],
-  "registry_digest": "sha256:05eed32e71146a86ac609f83a5dbf451a9166643afe2ea248a9c525a250c6158"
+  "registry_digest": "sha256:4a7ca0cac5b7d561094f040ed3d0e0cff47163352378b60f6e9a48445ef51117"
 }

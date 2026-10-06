@@ -23,17 +23,20 @@ const featureSBVAdministration = "ssfv:symphony:qxctl-sbv-administration"
 func newSBVCommand() *cobra.Command {
 	root := structural("sbv", errUsageOnly)
 	results := structural("result", errUsageOnly)
+	datasets := structural("dataset", errUsageOnly)
 	for _, op := range knowledgeengine.SBVOperations {
-		leaf := strings.TrimPrefix(op, "result_")
+		leaf := strings.TrimPrefix(strings.TrimPrefix(op, "result_"), "dataset_")
 		c := newSBVLeaf(op, strings.ReplaceAll(leaf, "_", "-"))
 		if strings.HasPrefix(op, "result_") {
 			results.AddCommand(c)
+		} else if strings.HasPrefix(op, "dataset_") {
+			datasets.AddCommand(c)
 		} else {
 			root.AddCommand(c)
 		}
 	}
 	results.AddCommand(newSBVLeaf("result_export", "export"))
-	root.AddCommand(results, newSBVLeaf("schema", "schema"), newSBVLeaf("template", "template"))
+	root.AddCommand(results, datasets, newSBVLeaf("schema", "schema"), newSBVLeaf("template", "template"))
 	return root
 }
 func sbvSafeError(err error) error {
@@ -152,17 +155,20 @@ func newSBVLeaf(op, leaf string) *cobra.Command {
 	interaction := "invoke"
 	if resource || op == "capabilities" || op == "catalogue" {
 		interaction = "discover"
-	} else if read || op == "result_select" {
+	} else if read || op == "result_select" || op == "dataset_inspect" {
 		interaction = "inspect"
 	}
 	spec := commandSpec(key, featureSBVAdministration, interaction)
 	spec.FeatureBindings = append(spec.FeatureBindings, commandregistry.FeatureBinding{FeatureID: "ssfv:symphony:sbv-engine", Interaction: interaction})
-	if op == "run" || op == "compose" || op == "evaluate" || op == "compose_joint" || op == "economics" || op == "book" || op == "liquidity" || op == "allocation_economics" || op == "analyze" || op == "compare" || op == "resample" || op == "experiment" || op == "split" {
+	if op == "run" || op == "compose" || op == "evaluate" || op == "compose_joint" || op == "economics" || op == "book" || op == "liquidity" || op == "allocation_economics" || op == "analyze" || op == "compare" || op == "resample" || op == "experiment" || op == "split" || op == "dataset_load" || op == "dataset_release" || op == "dataset_execute" {
 		spec.Mutability = "permission_backed_mutation"
 		spec.AuthorityMode = "target_host_permission"
 		spec.RecoveryCommandID = stringPointer("qxcmd:symphony:sbv.result.inspect")
 	}
-	if op == "result_inspect" {
+	if op == "dataset_load" || op == "dataset_release" {
+		spec.RecoveryCommandID = stringPointer("qxcmd:symphony:sbv.dataset.inspect")
+	}
+	if op == "result_inspect" || op == "dataset_inspect" {
 		spec.FeatureBindings = append(spec.FeatureBindings, commandregistry.FeatureBinding{FeatureID: "ssfv:symphony:sbv-engine", Interaction: "recover"}, commandregistry.FeatureBinding{FeatureID: featureSBVAdministration, Interaction: "recover"})
 	}
 	nativeOp := op

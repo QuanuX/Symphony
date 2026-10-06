@@ -13,3 +13,12 @@ For source-series statistics, select `analyze` with explicit source role, unit, 
 For reproducible sensitivity studies, `resample` requires an explicit uniform-row scheme, seed, block/sample lengths and worker count. Preserve index tapes where selected; empirical percentiles are not automatically confidence intervals. `experiment` executes only native local SBV producers from caller-supplied trial requests. Use a private existing directory and new summary destination on reconciliation. Preserve ambiguous claims and never claim that a missing completion means no child result was published. Inspect every trial and its exact artifact identity through qxctl. Remote dispatch and adaptive optimizer proposals remain separate integrations.
 
 Independent programs may use the exact installed C ABI (`Symphony::SbvSdk`), optional C++ RAII wrapper or a separately supplied external language bridge. Native C++ owns the calculations; these bindings carry the same process envelope and typed result. Release response allocations with the originating SDK, retain exact release selection and inspect output artifacts after uncertain failures. A successful byte transfer does not establish a vendor tensor, zero-copy or CUDA integration.
+
+Optional resident data: create a short caller-owned mode-0700 directory, obtain
+`sbv template --operation dataset_load`, select source identity, fresh instance
+id, RAM budget/residency, concurrency and idle policy, then call `sbv dataset
+load`. `dataset_execute` wraps run/evaluate/book input without its output_path;
+the wrapper owns the destination. Use dataset inspect for counters and dataset
+release after jobs finish. Explicit file operations remain available. All
+commands support text, JSON and NDJSON; future GUIs use identical payloads.
+A transport failure may follow a completed write; inspect its destination.

@@ -1,3 +1,4 @@
+#include "dataset.hpp"
 #include "detail.hpp"
 #include <algorithm>
 #include <map>
@@ -79,7 +80,7 @@ Json load_result(const Json &ref, std::int64_t end) {
   return result;
 }
 } // namespace
-Json book(const Json &p, std::int64_t end) {
+Json book(const Json &p, std::int64_t end, const Dataset *resident) {
   keys(p, {"protocol", "source_path", "source_sha256", "dataset",
            "census_result", "signal_ids", "output_path", "initial_state",
            "on_anomaly", "replay", "frames", "emit_checkpoint", "extensions"});
@@ -100,32 +101,13 @@ Json book(const Json &p, std::int64_t end) {
   need(depth >= 1 && depth <= 64 && maximum >= 1 && maximum <= 4096 &&
            (cadence == "signals" || cadence == "signals_and_event_ends"),
        "book frame bounds/cadence");
-  const auto bytes = read_file(str(p.at("source_path")), end);
-  need(bytes.size() <= (64U << 20) &&
-           e::sha256_hex(bytes) == str(p.at("source_sha256")),
-       "source bytes/digest mismatch");
-  db::FileView view;
-  need(db::FileView::inspect(
-           std::span<const unsigned char>(
-               reinterpret_cast<const unsigned char *>(bytes.data()),
-               bytes.size()),
-           {64U << 20, 1U << 20, 200000}, view) == db::Status::ok &&
-           view.metadata().dataset == str(p.at("dataset")) &&
-           view.metadata().record_count > 0,
-       "DBN book source contract mismatch");
-  std::vector<db::Mbo> events(view.metadata().record_count);
-  for (std::size_t i = 0; i < events.size(); ++i) {
-    if (i % 1024 == 0)
-      deadline(end);
-    auto &x = events[i];
-    need(view.record(i, x) == db::Status::ok && x.ts_recv != UINT64_MAX &&
-             (i == 0 || (x.ts_recv >= events[i - 1].ts_recv &&
-                         x.instrument_id == events[0].instrument_id &&
-                         x.publisher_id == events[0].publisher_id &&
-                         x.channel_id == events[0].channel_id)),
-         "book requires one publisher/instrument/channel and ordered known "
-         "receive timestamps");
-  }
+  const auto owned = resident ? nullptr : load_dataset(p, end);
+  const auto &source = resident ? *resident : *owned;
+  source.bind(p);
+  const auto &events = source.events;
+
+  need(source.book_compatible,
+       "book requires one publisher/instrument/channel");
   const auto parent = load_result(p.at("census_result"), end);
   const auto &ps = parent.at("sections"),
              &prov = ps.at("provenance").at("data"),
@@ -428,7 +410,7 @@ Json book(const Json &p, std::int64_t end) {
                {"source_path", p.at("source_path")},
                {"adapter", db::adapter_id},
                {"adapter_version", db::adapter_version},
-               {"dbn_version", dec(view.metadata().version)},
+               {"dbn_version", dec(source.metadata.version)},
                {"parent_result_sha256", parent.at("content_sha256")},
                {"parent_census", ps.at("summary")},
                {"parent_provenance", ps.at("provenance")},
@@ -436,6 +418,8 @@ Json book(const Json &p, std::int64_t end) {
                {"provider_requests", "0"},
                {"additional_spend_usd", "0"}});
   s["user_extensions"] = section(p.at("extensions"));
+  result["sections"]["resources"]["data"]["dataset_feed"] =
+      source.evidence(resident != nullptr);
   return persist(std::move(result), p, "book", end);
 }
 } // namespace symphony::sbv::detail

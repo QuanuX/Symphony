@@ -526,6 +526,70 @@
       "availability": "by_fit_cutoff",
       "retain_rows": false,
       "extensions": {}
+    },
+    "dataset_load": {
+      "protocol": "symphony.sbv.dataset-load-input.v1",
+      "directory": "/private/tmp/sbv-private",
+      "instance_id": "0123456789abcdef0123456789abcdef",
+      "source_path": "/absolute/private/sample.dbn",
+      "source_sha256": "REPLACE_WITH_FILE_SHA256",
+      "dataset": "XNAS.ITCH",
+      "memory_budget_bytes": "67108864",
+      "max_concurrent_jobs": "4",
+      "worker_budget": "16",
+      "idle_timeout_ms": "3600000",
+      "residency": "pageable"
+    },
+    "dataset_inspect": {
+      "protocol": "symphony.sbv.dataset-inspect-input.v1",
+      "directory": "/private/tmp/sbv-private",
+      "instance_id": "0123456789abcdef0123456789abcdef"
+    },
+    "dataset_execute": {
+      "protocol": "symphony.sbv.dataset-execute-input.v1",
+      "directory": "/private/tmp/sbv-private",
+      "instance_id": "0123456789abcdef0123456789abcdef",
+      "operation": "run",
+      "request": {
+        "protocol": "symphony.sbv.run-input.v1",
+        "source_path": "/absolute/private/ESZ6.dbn",
+        "source_sha256": "REPLACE_WITH_EXACT_FILE_SHA256",
+        "dataset": "GLBX.MDP3",
+        "criteria": {
+          "rule": "spaced_trades",
+          "spacing_ns": "1000000000",
+          "min_trade_size": "1",
+          "direction": "any",
+          "max_signals": "256"
+        },
+        "replay": {
+          "before_ns": "1000000000",
+          "after_ns": "2000000000",
+          "retain_events": true
+        },
+        "execution": {
+          "model": "touch_observation",
+          "horizon_ns": "2000000000",
+          "price_offsets_nanos": [
+            "-1000000000",
+            "1000000000"
+          ],
+          "probability_numerator": "0",
+          "probability_denominator": "1"
+        },
+        "studies": [
+          "signal_summary",
+          "forward_markout"
+        ],
+        "workers": "4",
+        "extensions": {}
+      },
+      "output_path": "/absolute/private/resident-result.json"
+    },
+    "dataset_release": {
+      "protocol": "symphony.sbv.dataset-release-input.v1",
+      "directory": "/private/tmp/sbv-private",
+      "instance_id": "0123456789abcdef0123456789abcdef"
     }
   }
 }
