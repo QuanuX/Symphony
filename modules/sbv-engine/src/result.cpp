@@ -208,6 +208,7 @@ Json descriptor() {
     r["contract_versions"].push_back(*op.input_protocol);
     r["contract_versions"].push_back(*op.output_protocol);
   }
+  r["contract_versions"].push_back("symphony.sbv.linear-model.v1");
   r["descriptor_digest"] = e::tagged_sha256(r.dump());
   return r;
 }
@@ -258,7 +259,7 @@ Json dispatch(const std::string &op, const Json &p, std::int64_t end) {
                       "series_summary", "series_moments", "series_quantiles",
                       "equity_drawdown", "return_ratios",
                       "bootstrap_mean_distribution",
-                      "bootstrap_mean_quantiles"})},
+                      "bootstrap_mean_quantiles", "regression_errors"})},
         {"execution_models",
          Json::array({"none", "touch_observation", "user_probability",
                       "observed_trade_levels", "external_outcomes",
@@ -284,6 +285,8 @@ Json dispatch(const std::string &op, const Json &p, std::int64_t end) {
     return d::compose(p, end);
   if (op == "compose_joint")
     return d::compose_joint(p, end);
+  if (op == "fit") return d::fit(p, end);
+  if (op == "predict") return d::predict(p, end);
   if (op == "split")
     return d::split(p, end);
   if (op == "resample")

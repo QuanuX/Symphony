@@ -3262,6 +3262,407 @@
         "instance_id"
       ],
       "additionalProperties": false
+    },
+    "fit": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.fit-input.v1"
+        },
+        "source": {
+          "type": "object",
+          "properties": {
+            "path": {
+              "type": "string"
+            },
+            "expected_sha256": {
+              "type": "string"
+            },
+            "pointer": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "path",
+            "expected_sha256",
+            "pointer"
+          ],
+          "additionalProperties": false
+        },
+        "output_path": {
+          "type": "string"
+        },
+        "features": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "pointer": {
+                "type": "string"
+              },
+              "value_type": {
+                "enum": [
+                  "integer",
+                  "rational"
+                ]
+              },
+              "unit": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "pointer",
+              "value_type",
+              "unit"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "target": {
+          "type": "object",
+          "properties": {
+            "pointer": {
+              "type": "string"
+            },
+            "value_type": {
+              "enum": [
+                "integer",
+                "rational"
+              ]
+            },
+            "unit": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "pointer",
+            "value_type",
+            "unit"
+          ],
+          "additionalProperties": false
+        },
+        "id_pointer": {
+          "type": "string"
+        },
+        "identity_namespace": {
+          "type": "string"
+        },
+        "input_description": {
+          "type": "string"
+        },
+        "weights": {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "enum": [
+                "uniform",
+                "supplied"
+              ]
+            },
+            "pointer": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "domain": {
+              "enum": [
+                "nonnegative",
+                "signed"
+              ]
+            }
+          },
+          "required": [
+            "kind",
+            "pointer",
+            "domain"
+          ],
+          "additionalProperties": false
+        },
+        "missing": {
+          "enum": [
+            "reject",
+            "exclude"
+          ]
+        },
+        "extensions": {
+          "type": "object"
+        },
+        "intercept": {
+          "type": "boolean"
+        },
+        "regularization": {
+          "type": "object",
+          "properties": {
+            "feature_penalties": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "numerator": {
+                    "type": "string"
+                  },
+                  "denominator": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "numerator",
+                  "denominator"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "intercept_penalty": {
+              "type": "object",
+              "properties": {
+                "numerator": {
+                  "type": "string"
+                },
+                "denominator": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "numerator",
+                "denominator"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "feature_penalties",
+            "intercept_penalty"
+          ],
+          "additionalProperties": false
+        },
+        "on_unsolved": {
+          "enum": [
+            "reject",
+            "unavailable"
+          ]
+        },
+        "retain_training_predictions": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "protocol",
+        "source",
+        "output_path",
+        "features",
+        "target",
+        "id_pointer",
+        "identity_namespace",
+        "input_description",
+        "weights",
+        "missing",
+        "extensions",
+        "intercept",
+        "regularization",
+        "on_unsolved",
+        "retain_training_predictions"
+      ],
+      "additionalProperties": false
+    },
+    "predict": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.predict-input.v1"
+        },
+        "source": {
+          "type": "object",
+          "properties": {
+            "path": {
+              "type": "string"
+            },
+            "expected_sha256": {
+              "type": "string"
+            },
+            "pointer": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "path",
+            "expected_sha256",
+            "pointer"
+          ],
+          "additionalProperties": false
+        },
+        "output_path": {
+          "type": "string"
+        },
+        "features": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "pointer": {
+                "type": "string"
+              },
+              "value_type": {
+                "enum": [
+                  "integer",
+                  "rational"
+                ]
+              },
+              "unit": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "pointer",
+              "value_type",
+              "unit"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "target": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "pointer": {
+                  "type": "string"
+                },
+                "value_type": {
+                  "enum": [
+                    "integer",
+                    "rational"
+                  ]
+                },
+                "unit": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "pointer",
+                "value_type",
+                "unit"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "id_pointer": {
+          "type": "string"
+        },
+        "identity_namespace": {
+          "type": "string"
+        },
+        "input_description": {
+          "type": "string"
+        },
+        "weights": {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "enum": [
+                "uniform",
+                "supplied"
+              ]
+            },
+            "pointer": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "domain": {
+              "enum": [
+                "nonnegative",
+                "signed"
+              ]
+            }
+          },
+          "required": [
+            "kind",
+            "pointer",
+            "domain"
+          ],
+          "additionalProperties": false
+        },
+        "missing": {
+          "enum": [
+            "reject",
+            "exclude"
+          ]
+        },
+        "extensions": {
+          "type": "object"
+        },
+        "model": {
+          "type": "object",
+          "properties": {
+            "path": {
+              "type": "string"
+            },
+            "expected_sha256": {
+              "type": "string"
+            },
+            "pointer": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "path",
+            "expected_sha256",
+            "pointer"
+          ],
+          "additionalProperties": false
+        },
+        "purpose": {
+          "type": "string"
+        },
+        "studies": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "regression_errors"
+            ]
+          },
+          "maxItems": 1
+        }
+      },
+      "required": [
+        "protocol",
+        "source",
+        "output_path",
+        "features",
+        "target",
+        "id_pointer",
+        "identity_namespace",
+        "input_description",
+        "weights",
+        "missing",
+        "extensions",
+        "model",
+        "purpose",
+        "studies"
+      ],
+      "additionalProperties": false
     }
   },
   "results": {
@@ -3272,7 +3673,7 @@
           "const": "symphony.sbv.capabilities.v1"
         },
         "engine_version": {
-          "const": "0.15.0-dev"
+          "const": "0.16.0-dev"
         },
         "cpu": {
           "type": "object",
@@ -3897,7 +4298,7 @@
           "const": "symphony.sbv.catalogue.v1"
         },
         "engine_version": {
-          "const": "0.15.0-dev"
+          "const": "0.16.0-dev"
         },
         "models": {
           "type": "array",
@@ -4488,7 +4889,7 @@
           "const": "symphony.sbv.backend-plan.v1"
         },
         "engine_version": {
-          "const": "0.15.0-dev"
+          "const": "0.16.0-dev"
         },
         "status": {
           "enum": [
@@ -4781,7 +5182,7 @@
           "const": "symphony.sbv.live-plan.v1"
         },
         "engine_version": {
-          "const": "0.15.0-dev"
+          "const": "0.16.0-dev"
         },
         "can_activate": {
           "const": false
@@ -5825,6 +6226,134 @@
         "idle_timeout_ms",
         "protocol",
         "dataset_limits"
+      ],
+      "additionalProperties": false
+    },
+    "fit": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.fit.v1"
+        },
+        "path": {
+          "type": "string"
+        },
+        "content_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "file_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "bytes": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$"
+        },
+        "status": {
+          "enum": [
+            "completed",
+            "partial"
+          ]
+        },
+        "summary": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "enum": [
+                "available",
+                "partial",
+                "unavailable",
+                "not_selected"
+              ]
+            },
+            "reason": {
+              "type": "string"
+            },
+            "data": {
+              "$ref": "#/$defs/node"
+            }
+          },
+          "required": [
+            "status",
+            "reason",
+            "data"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "protocol",
+        "path",
+        "content_sha256",
+        "file_sha256",
+        "bytes",
+        "status",
+        "summary"
+      ],
+      "additionalProperties": false
+    },
+    "predict": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.predict.v1"
+        },
+        "path": {
+          "type": "string"
+        },
+        "content_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "file_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "bytes": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$"
+        },
+        "status": {
+          "enum": [
+            "completed",
+            "partial"
+          ]
+        },
+        "summary": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "enum": [
+                "available",
+                "partial",
+                "unavailable",
+                "not_selected"
+              ]
+            },
+            "reason": {
+              "type": "string"
+            },
+            "data": {
+              "$ref": "#/$defs/node"
+            }
+          },
+          "required": [
+            "status",
+            "reason",
+            "data"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "protocol",
+        "path",
+        "content_sha256",
+        "file_sha256",
+        "bytes",
+        "status",
+        "summary"
       ],
       "additionalProperties": false
     }
@@ -10755,6 +11284,361 @@
         "complete_space",
         "test_appearances_per_group_in_complete_space",
         "ordering"
+      ],
+      "additionalProperties": false
+    },
+    "linear_model": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.linear-model.v1"
+        },
+        "method": {
+          "const": "penalized_linear_normal_equations_v1"
+        },
+        "features": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "pointer": {
+                "type": "string"
+              },
+              "value_type": {
+                "enum": [
+                  "integer",
+                  "rational"
+                ]
+              },
+              "unit": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "pointer",
+              "value_type",
+              "unit"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "target": {
+          "type": "object",
+          "properties": {
+            "pointer": {
+              "type": "string"
+            },
+            "value_type": {
+              "enum": [
+                "integer",
+                "rational"
+              ]
+            },
+            "unit": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "pointer",
+            "value_type",
+            "unit"
+          ],
+          "additionalProperties": false
+        },
+        "intercept": {
+          "type": "boolean"
+        },
+        "coefficients": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "numerator": {
+                "type": "string"
+              },
+              "denominator": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "numerator",
+              "denominator"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "regularization": {
+          "type": "object",
+          "properties": {
+            "feature_penalties": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "numerator": {
+                    "type": "string"
+                  },
+                  "denominator": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "numerator",
+                  "denominator"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "intercept_penalty": {
+              "type": "object",
+              "properties": {
+                "numerator": {
+                  "type": "string"
+                },
+                "denominator": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "numerator",
+                "denominator"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "feature_penalties",
+            "intercept_penalty"
+          ],
+          "additionalProperties": false
+        },
+        "weights": {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "enum": [
+                "uniform",
+                "supplied"
+              ]
+            },
+            "pointer": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "domain": {
+              "enum": [
+                "nonnegative",
+                "signed"
+              ]
+            }
+          },
+          "required": [
+            "kind",
+            "pointer",
+            "domain"
+          ],
+          "additionalProperties": false
+        },
+        "training": {
+          "type": "object",
+          "properties": {
+            "source_result_sha256": {
+              "type": "string"
+            },
+            "source_pointer": {
+              "type": "string"
+            },
+            "identity_namespace": {
+              "type": "string"
+            },
+            "observation_ids": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "source_result_sha256",
+            "source_pointer",
+            "identity_namespace",
+            "observation_ids"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "protocol",
+        "method",
+        "features",
+        "target",
+        "intercept",
+        "coefficients",
+        "regularization",
+        "weights",
+        "training"
+      ],
+      "additionalProperties": false
+    },
+    "linear_prediction": {
+      "type": "object",
+      "properties": {
+        "source_index": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "prediction": {
+          "type": "object",
+          "properties": {
+            "numerator": {
+              "type": "string"
+            },
+            "denominator": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "numerator",
+            "denominator"
+          ],
+          "additionalProperties": false
+        },
+        "target": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "numerator": {
+                  "type": "string"
+                },
+                "denominator": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "numerator",
+                "denominator"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "residual": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "numerator": {
+                  "type": "string"
+                },
+                "denominator": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "numerator",
+                "denominator"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "weight": {
+          "type": "object",
+          "properties": {
+            "numerator": {
+              "type": "string"
+            },
+            "denominator": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "numerator",
+            "denominator"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "source_index",
+        "id",
+        "prediction",
+        "target",
+        "residual",
+        "weight"
+      ],
+      "additionalProperties": false
+    },
+    "linear_training_overlap": {
+      "type": "object",
+      "properties": {
+        "identity_comparable": {
+          "type": "boolean"
+        },
+        "reused_observations": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "source_index": {
+                    "type": "string"
+                  },
+                  "id": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "source_index",
+                  "id"
+                ],
+                "additionalProperties": false
+              }
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "reused_count": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "scope": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "identity_comparable",
+        "reused_observations",
+        "reused_count",
+        "scope"
       ],
       "additionalProperties": false
     }

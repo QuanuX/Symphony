@@ -325,6 +325,9 @@ Json model_catalogue() {
       const auto &card : Json::parse(
           R"BOOT([{"id":"bootstrap_mean_distribution","version":"1","unit":"caller unit and square","definition":"Exact population moments of deterministic replicate means","operations":["resample"]},{"id":"bootstrap_mean_quantiles","version":"1","unit":"caller unit and square","definition":"Inverse empirical CDF of uniform-row or block bootstrap means; no confidence coverage claim","operations":["resample"]}])BOOT"))
     result["studies"].push_back(card);
+  result["studies"].push_back({{"id", "regression_errors"}, {"version", "1"},
+    {"unit", "caller target unit and square"}, {"operations", Json::array({"predict"})},
+    {"definition", "Exact weighted residual, absolute and squared error sums and algebraic weight-normalized means. Signed weights do not define probability; zero total weight leaves means unavailable."}});
   result["book_profiles"] = Json::parse(
       R"BOOK([{"id":"databento_mbo_orders_strict_v1","version":"1","operations":["book"],"initialization":"source reset or exact source-bound supplied checkpoint","anomalies":"reject or invalidate_until_reset","scope":"one publisher/instrument/channel; A/M/C/R updates; T/F/N informational; no queue priority or fill prediction","input_schema":"symphony.sbv.book-input.v1","output_schemas":["symphony.sbv.book-frame.v1","symphony.sbv.book-checkpoint.v1"]}])BOOK");
   return result;

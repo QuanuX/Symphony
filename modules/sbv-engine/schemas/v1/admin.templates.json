@@ -619,6 +619,94 @@
       "protocol": "symphony.sbv.dataset-release-input.v1",
       "directory": "/private/tmp/sbv-private",
       "instance_id": "0123456789abcdef0123456789abcdef"
+    },
+    "fit": {
+      "protocol": "symphony.sbv.fit-input.v1",
+      "source": {
+        "path": "/absolute/private/source.json",
+        "expected_sha256": "REPLACE_WITH_CONTENT_SHA256",
+        "pointer": "/sections/user_extensions/data/observations"
+      },
+      "output_path": "/absolute/private/model.json",
+      "features": [
+        {
+          "id": "x",
+          "pointer": "/x",
+          "value_type": "integer",
+          "unit": "caller_feature_unit"
+        }
+      ],
+      "target": {
+        "pointer": "/y",
+        "value_type": "integer",
+        "unit": "caller_target_unit"
+      },
+      "id_pointer": "/id",
+      "identity_namespace": "caller_observation_namespace",
+      "input_description": "Caller-supplied feature and target meaning; no causal lineage inferred",
+      "weights": {
+        "kind": "uniform",
+        "pointer": null,
+        "domain": "nonnegative"
+      },
+      "missing": "reject",
+      "extensions": {},
+      "intercept": true,
+      "regularization": {
+        "feature_penalties": [
+          {
+            "numerator": "0",
+            "denominator": "1"
+          }
+        ],
+        "intercept_penalty": {
+          "numerator": "0",
+          "denominator": "1"
+        }
+      },
+      "on_unsolved": "unavailable",
+      "retain_training_predictions": true
+    },
+    "predict": {
+      "protocol": "symphony.sbv.predict-input.v1",
+      "source": {
+        "path": "/absolute/private/source.json",
+        "expected_sha256": "REPLACE_WITH_CONTENT_SHA256",
+        "pointer": "/sections/user_extensions/data/observations"
+      },
+      "output_path": "/absolute/private/predictions.json",
+      "features": [
+        {
+          "id": "x",
+          "pointer": "/x",
+          "value_type": "integer",
+          "unit": "caller_feature_unit"
+        }
+      ],
+      "target": {
+        "pointer": "/y",
+        "value_type": "integer",
+        "unit": "caller_target_unit"
+      },
+      "id_pointer": "/id",
+      "identity_namespace": "caller_observation_namespace",
+      "input_description": "Caller-supplied feature and target meaning; no causal lineage inferred",
+      "weights": {
+        "kind": "uniform",
+        "pointer": null,
+        "domain": "nonnegative"
+      },
+      "missing": "reject",
+      "extensions": {},
+      "model": {
+        "path": "/absolute/private/model.json",
+        "expected_sha256": "REPLACE_WITH_CONTENT_SHA256",
+        "pointer": "/sections/model/data"
+      },
+      "purpose": "exploratory",
+      "studies": [
+        "regression_errors"
+      ]
     }
   }
 }

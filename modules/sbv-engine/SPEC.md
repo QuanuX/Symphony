@@ -2,7 +2,7 @@
 
 ## Version and ownership
 
-Contract v1; package `sbv-engine` 0.15.0-dev; engine `symphony-sbv`; vector `sbv`. C++26 owns computations, result sealing and artifact queries. Go qxctl verifies the exact installation and projects native evidence. OWNER-INTERFACE.json is the exact operation declaration; generated C++/Go metadata must match it. This release is experimental.
+Contract v1; package `sbv-engine` 0.16.0-dev; engine `symphony-sbv`; vector `sbv`. C++26 owns computations, result sealing and artifact queries. Go qxctl verifies the exact installation and projects native evidence. OWNER-INTERFACE.json is the exact operation declaration; generated C++/Go metadata must match it. This release is experimental.
 
 The engine uses knowledge-vector-engine-cpp 0.2.0-dev and sqav-databento-dbn-cpp 0.5.0-dev, with that adapter's exact static dependencies. It performs no provider calls. Signal/replay semantics belong to SBV; acquisition remains SQAV, metadata SQMV, batch ownership SQFV, transformation SQTV, physical stores SQPV and recipient delivery SQDV. Its portable local JSON result is a derived artifact, not a new market-data persistence service. SQPV/SQDV integrations are not wired in this release.
 
@@ -213,7 +213,7 @@ The versioned native shared library exposes `symphony_sbv_sdk_abi_v1`, `symphony
 
 The exact installed `SymphonySbvSdkConfig.cmake` exports `Symphony::SbvSdk`. Its public C header has no C++/JSON/vendor dependency. `sdk.hpp` is an optional RAII byte-buffer wrapper. A separately packaged external standard-library Python consumer in the implementation evidence loads the same installed ABI, verifies local receipt/file identities and response correspondence, and reproduces native results without recomputing finance. It is deliberately outside the Python-free native repository and installation. Its receipt checks are local integrity checks, not an authenticated distribution signature or protection against a concurrent hostile owner of the installation. External consumer languages do not become engine dependencies.
 
-JSON transfer currently copies bytes and preserves rational/integer strings. The SDK does not pretend to be zero-copy Arrow/DLPack, a vendor model runtime, a CUDA implementation or an isolation boundary for untrusted native pointers. Those optional adapters can compose with the independent interop lifetime/stream contract and native external-outcome admission. All twenty-four owner operations remain available through qxctl; capabilities reports the installed SDK contract and bindings. The shared library adds a language boundary rather than a separate quantitative meaning.
+JSON transfer currently copies bytes and preserves rational/integer strings. The SDK does not pretend to be zero-copy Arrow/DLPack, a vendor model runtime, a CUDA implementation or an isolation boundary for untrusted native pointers. Those optional adapters can compose with the independent interop lifetime/stream contract and native external-outcome admission. All twenty-six owner operations remain available through qxctl; capabilities reports the installed SDK contract and bindings. The shared library adds a language boundary rather than a separate quantitative meaning.
 
 
 ## Temporal partitions — experimental 0.11
@@ -228,7 +228,7 @@ Choose `by_fit_cutoff` to exclude candidates whose supplied whole-observation av
 
 Output retains normalized observation coordinates, each resolved fold window, train/test source indices, exclusion reasons, exact test/purge interval unions and embargo endpoints. Index-only output binds the source digest/pointer; selected `retain_rows` embeds unchanged source rows for direct native analyze/resample or external fitting. No weights are normalized or recalculated. All nodes are inspectable/queryable/selectable/exportable through qxctl and the installed SDK. The source artifact and original replay remain untouched and linked by digest.
 
-For explicit/rolling/expanding plans: 65,536 source rows, 128 folds, 131,072 row-fold pairs, 64 MiB cumulative canonical embedded row bytes and the existing 128 MiB artifact/JSON-value limit. An explicit zero-fold plan and empty source array are supported. This implementation uses one CPU worker, interval-union sorting and binary search; independent split trials may use the existing experiment runner. Oversized retention rejects without silently switching to index-only output. The current release has twenty-four native operations and twenty-seven qxctl leaves.
+For explicit/rolling/expanding plans: 65,536 source rows, 128 folds, 131,072 row-fold pairs, 64 MiB cumulative canonical embedded row bytes and the existing 128 MiB artifact/JSON-value limit. An explicit zero-fold plan and empty source array are supported. This implementation uses one CPU worker, interval-union sorting and binary search; independent split trials may use the existing experiment runner. Oversized retention rejects without silently switching to index-only output. The current release has twenty-six native operations and twenty-nine qxctl leaves.
 
 The operation computes partitions, not fitted models, predicted scores, enforced holdout authority, nested validation or stitched combinatorial performance paths, multiple-testing correction or independence. Repeated test selection remains in the fold records. Arbitrary external protocols and user-defined clocks/conventions remain possible through other implementations and exact source artifacts.
 
@@ -471,3 +471,106 @@ caller deadline on the invoked process; SDK callers own their outer scheduling.
 A deadline/cancellation near artifact publication leaves an uncertain outcome:
 inspect the output before retrying. No deadline means work may remain active
 until completion, failure, explicit caller action or system termination.
+
+
+## Native linear fitting and prediction (0.16)
+
+`fit` and `predict` are optional native producers. Each is fully available through
+qxctl, the installed SDK and local experiment trials. They use immutable result
+artifacts, the existing exact source/digest/pointer boundary, and user-selected
+or absent deadlines. No external runtime, live source or model service is needed.
+This baseline does not replace external models or make a linear estimator a
+platform-wide requirement.
+
+Input columns declare JSON Pointers, `integer` or `rational` values, and explicit
+unit strings. Features also have unique IDs and an ordered list. Observation IDs
+are unique nonempty strings in a caller-defined `identity_namespace`. A supplied
+target has its own pointer/type/unit. Missing feature, target or weight fields
+follow `reject` or `exclude`; present malformed numbers always reject, including
+in a row missing a different selected field. Missing/duplicate/malformed IDs
+always reject. Null is a present malformed numeric value, not a missing field.
+No scaling, centering, imputation or feature selection happens implicitly.
+
+Fit selects an intercept, `uniform` weights (exactly one per retained row), or
+`supplied` exact rational weights. Supplied weights are never normalized.
+`nonnegative` rejects negative weights; `signed` explicitly admits them. The
+regularization object supplies one nonnegative quadratic penalty per feature in
+feature order and an intercept penalty; no intercept requires a zero intercept
+penalty. Zero penalties select the unregularized calculation. All these fields
+are mandatory choices; there is no hidden regularizer or optimizer stop policy.
+
+For design matrix X (intercept first when selected), target y, diagonal weights W
+and selected diagonal penalties L, native code solves `(X^T W X + L) beta = X^T W y`.
+The corresponding objective is `sum(w_i * (prediction_i - y_i)^2) +
+sum(lambda_j * beta_j^2)`, without division by sample count. With nonnegative
+weights/penalties and a unique solution this is the quadratic minimizer. Signed
+weights define stationary equations and an algebraic objective; a unique solution
+may be a maximum or saddle. Neither kind supplies a calibrated probability.
+
+The numerical profile is checked exact signed-128-bit rational arithmetic, with
+canonical string numerators/positive denominators. Deterministic Gauss-Jordan
+elimination chooses the first nonzero row in each column. No pivot tolerance,
+pseudoinverse, precision downgrade or silent column removal is applied. The
+reported rank belongs to the regularized normal system, not necessarily the raw
+design matrix. Empty retained training data, inconsistent equations and
+non-unique solutions follow `on_unsolved: reject|unavailable`. The unavailable
+choice persists a normal result with an unavailable model and explicit reason;
+no fabricated coefficients are emitted. Overflow always rejects before publication.
+A zero-feature intercept-only model is supported, as is a user-selected
+zero-feature/no-intercept zero predictor on nonempty training input.
+
+Available models use `symphony.sbv.linear-model.v1`, with method
+`penalized_linear_normal_equations_v1`, declared feature order/units and target,
+intercept, coefficients (intercept first), penalties, weights and exact training
+source digest/pointer/namespace/retained IDs. Fit diagnostics retain residual,
+absolute-error and squared-error weighted sums, algebraic means, penalty and
+objective values. Zero weight total leaves means unavailable. Optional normalized
+training prediction rows contain the original source index, ID, target,
+prediction, residual and weight; original feature/source rows remain bound by
+digest. Coefficients have target/feature units; intercept has target units.
+
+`predict` consumes a digest-bound model at an explicit pointer, validates its
+supported shape and numerical values, and evaluates it in C++. This validation
+does not authenticate authorship or recompute a supplied model's fit. Prediction
+feature mappings may be reordered or use different source pointers/numeric
+representations: matching IDs and unit strings resolve them into trained order.
+Missing/extra IDs or mismatched units reject. Target is optional; when supplied,
+its unit must match the model target unit. Targets never enter the prediction
+formula. There is no automatic clipping of predictions to probabilities or any
+other domain.
+
+Prediction weights have the same explicit semantics and affect error studies,
+not predicted values. Select no studies or `regression_errors` v1. The latter
+reports count, algebraic weight total, weighted residual/absolute/squared-error
+sums and means divided by algebraic weight total. Signed-weight absolute/squared
+sums or their means may be negative; they are not probability MAE/MSE. Zero total
+weight leaves means unavailable; absent targets make the selected study
+unavailable while prediction rows remain useful. These diagnostics do not claim
+predictive validity or independent observations.
+
+The arbitrary nonempty `purpose` string is preserved as user context, not enforced
+holdout authority. When training and prediction identity namespaces match, the
+result lists retained prediction IDs also present in the model's retained
+training IDs, with exact prediction source indices and reuse count. Different
+namespaces yield unknown overlap (null list/count), never a fabricated zero.
+Same namespace and no matched IDs establishes only no matching declared IDs;
+it does not rule out shared events, feature lookbacks, labels or prior selection.
+Exploratory reuse is allowed and visible. Repeated calls do not create a global
+access ledger or claim that a holdout remains untouched.
+
+These operations can be composed with retained train/test rows from `split`,
+including combinatorial pages; their outputs also feed `analyze`, `compare` and
+external pipelines. Local `experiment` admits both operations with already
+resolved input/model references. Dependency scheduling, automatic nested fitting,
+stitched performance paths and cross-run holdout-access history remain separate
+work. Existing operation identity and immutable journal rules still apply.
+
+There are no new fixed row/feature policy caps. Materialized inputs/outputs remain
+subject to the existing 128 MiB/four-million-value result representation, request
+limits and host address space. Matrix storage is quadratic and elimination cubic
+in selected parameter count; exact rational intermediates may overflow even when
+the final mathematical value would fit. Users select data representation and
+resources or another implementation; there is no silent approximation. This
+first baseline uses one native worker per fit/prediction; independent trials may
+run through the existing threaded experiment runner. It is not a GPU, large-dense
+solver or competitive-performance claim.

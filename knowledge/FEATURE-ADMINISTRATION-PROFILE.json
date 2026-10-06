@@ -974,8 +974,10 @@
             "qxcmd:symphony:sbv.economics",
             "qxcmd:symphony:sbv.evaluate",
             "qxcmd:symphony:sbv.experiment",
+            "qxcmd:symphony:sbv.fit",
             "qxcmd:symphony:sbv.liquidity",
             "qxcmd:symphony:sbv.live.plan",
+            "qxcmd:symphony:sbv.predict",
             "qxcmd:symphony:sbv.resample",
             "qxcmd:symphony:sbv.run",
             "qxcmd:symphony:sbv.split"
@@ -995,8 +997,10 @@
             "engop:symphony:sbv.economics",
             "engop:symphony:sbv.evaluate",
             "engop:symphony:sbv.experiment",
+            "engop:symphony:sbv.fit",
             "engop:symphony:sbv.liquidity",
             "engop:symphony:sbv.live-plan",
+            "engop:symphony:sbv.predict",
             "engop:symphony:sbv.resample",
             "engop:symphony:sbv.run",
             "engop:symphony:sbv.split"
@@ -2903,8 +2907,10 @@
             "qxcmd:symphony:sbv.economics",
             "qxcmd:symphony:sbv.evaluate",
             "qxcmd:symphony:sbv.experiment",
+            "qxcmd:symphony:sbv.fit",
             "qxcmd:symphony:sbv.liquidity",
             "qxcmd:symphony:sbv.live.plan",
+            "qxcmd:symphony:sbv.predict",
             "qxcmd:symphony:sbv.resample",
             "qxcmd:symphony:sbv.run",
             "qxcmd:symphony:sbv.split"
@@ -2924,8 +2930,10 @@
             "engop:symphony:sbv.economics",
             "engop:symphony:sbv.evaluate",
             "engop:symphony:sbv.experiment",
+            "engop:symphony:sbv.fit",
             "engop:symphony:sbv.liquidity",
             "engop:symphony:sbv.live-plan",
+            "engop:symphony:sbv.predict",
             "engop:symphony:sbv.resample",
             "engop:symphony:sbv.run",
             "engop:symphony:sbv.split"
@@ -9749,6 +9757,6 @@
   "profile_id": "symphony.registered-features.administration.v1",
   "protocol": "symphony.knowledge.feature-administration-profile.v1",
   "registered_feature_count": 141,
-  "ssfv_registry_digest": "sha256:d22c1073192b77d3e913a852450bcd540d5635d42e7ef98460aa4a52ea1cc8a3",
-  "profile_digest": "sha256:761a5e48f956373871801ba1774c8b19f9f2f6fdae87eadf367805c2e4af727d"
+  "ssfv_registry_digest": "sha256:bc33fb7863193e16e2a9e8ac8dd346006301806dc17f4a7a8146db5055305114",
+  "profile_digest": "sha256:a6c648a72be07fe86de46111e8f67ab356cc031a563ea8c70eb1f3d99efcbb9b"
 }

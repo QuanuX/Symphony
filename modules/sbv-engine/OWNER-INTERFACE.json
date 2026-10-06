@@ -3,9 +3,9 @@
   "module_id": "sbv-engine",
   "engine_id": "symphony-sbv",
   "namespace": "symphony::sbv::interface",
-  "current_version": "0.15.0-dev",
+  "current_version": "0.16.0-dev",
   "releases": {
-    "0.15.0-dev": [
+    "0.16.0-dev": [
       "capabilities",
       "run",
       "compose",
@@ -29,7 +29,9 @@
       "dataset_load",
       "dataset_inspect",
       "dataset_execute",
-      "dataset_release"
+      "dataset_release",
+      "fit",
+      "predict"
     ]
   },
   "contract_versions": [
@@ -82,7 +84,12 @@
     "symphony.sbv.dataset-execute-input.v1",
     "symphony.sbv.dataset-execute.v1",
     "symphony.sbv.dataset-release-input.v1",
-    "symphony.sbv.dataset-release.v1"
+    "symphony.sbv.dataset-release.v1",
+    "symphony.sbv.fit-input.v1",
+    "symphony.sbv.fit.v1",
+    "symphony.sbv.predict-input.v1",
+    "symphony.sbv.predict.v1",
+    "symphony.sbv.linear-model.v1"
   ],
   "operations": [
     {
@@ -589,6 +596,48 @@
       "operation_name": "dataset_release",
       "output_protocol": "symphony.sbv.dataset-release.v1",
       "recovery_operation_id": "engop:symphony:sbv.dataset-inspect",
+      "thermal_path": "freezing"
+    },
+    {
+      "administration_disposition": "qxctl_required",
+      "administrative_interactions": [
+        "invoke"
+      ],
+      "authorization_requirement": "target_host_permission",
+      "availability": "implemented",
+      "direct_invocation": "supported",
+      "engine_operation_id": "engop:symphony:sbv.fit",
+      "expected_state_required": false,
+      "feature_ids": [
+        "ssfv:symphony:sbv-engine"
+      ],
+      "idempotency": "non_idempotent",
+      "input_protocol": "symphony.sbv.fit-input.v1",
+      "mutability": "permission_backed_mutation",
+      "operation_name": "fit",
+      "output_protocol": "symphony.sbv.fit.v1",
+      "recovery_operation_id": "engop:symphony:sbv.result-inspect",
+      "thermal_path": "freezing"
+    },
+    {
+      "administration_disposition": "qxctl_required",
+      "administrative_interactions": [
+        "invoke"
+      ],
+      "authorization_requirement": "target_host_permission",
+      "availability": "implemented",
+      "direct_invocation": "supported",
+      "engine_operation_id": "engop:symphony:sbv.predict",
+      "expected_state_required": false,
+      "feature_ids": [
+        "ssfv:symphony:sbv-engine"
+      ],
+      "idempotency": "non_idempotent",
+      "input_protocol": "symphony.sbv.predict-input.v1",
+      "mutability": "permission_backed_mutation",
+      "operation_name": "predict",
+      "output_protocol": "symphony.sbv.predict.v1",
+      "recovery_operation_id": "engop:symphony:sbv.result-inspect",
       "thermal_path": "freezing"
     }
   ],

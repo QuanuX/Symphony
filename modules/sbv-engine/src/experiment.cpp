@@ -95,7 +95,7 @@ Json experiment(const Json &p, std::int64_t end) {
                                          "analyze",
                                          "compare",
                                          "resample",
-                                         "split",
+                                         "split", "fit", "predict",
                                          "dataset_execute"};
   for (const auto &t : trials) {
     keys(t, {"id", "state", "operation", "request", "reason", "parameters",

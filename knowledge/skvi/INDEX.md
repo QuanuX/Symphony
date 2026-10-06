@@ -22953,3 +22953,31 @@ These entries locate existing implementation and regression surfaces referenced 
 - deferred_projections: fitted models, untouched holdout proofs and stitched performance paths
 - notes: Partitions preserve user policies and disclose exclusions without claiming statistical independence.
 - status: canonical
+
+### SBV fit.cpp
+
+- path: `modules/sbv-engine/src/fit.cpp`
+- title: Native linear fitting and prediction
+- surface_type: implementation contract or test
+- truth_role: User-selected exact linear-model fitting, prediction and disclosed observation reuse
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.16 native and installed model boundaries.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, agents and external fitting pipelines
+- deferred_projections: nonlinear estimators, nested orchestration and complete holdout access history
+- notes: Caller units, weights and purposes remain explicit; no predictive validity or secrecy is inferred.
+- status: canonical
+
+### SBV fit_test.cpp
+
+- path: `modules/sbv-engine/tests/fit_test.cpp`
+- title: Native linear fitting and prediction
+- surface_type: implementation contract or test
+- truth_role: User-selected exact linear-model fitting, prediction and disclosed observation reuse
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.16 native and installed model boundaries.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, agents and external fitting pipelines
+- deferred_projections: nonlinear estimators, nested orchestration and complete holdout access history
+- notes: Caller units, weights and purposes remain explicit; no predictive validity or secrecy is inferred.
+- status: canonical
