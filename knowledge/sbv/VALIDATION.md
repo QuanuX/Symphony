@@ -1,5 +1,8 @@
 # SBV implementation validation
 
+Experimental 0.8 adds selected series studies and supplied-trial comparison. Nine native CTest targets pass (917 assertions plus administration); eleven installed/unit SBV Go tests pass. Source validation reports 16,386 passes, zero violations and four historical warnings. Registry: twenty SBV leaves, seventeen native operations, 419 commands. Independent Fraction checks match native AAPL/ESZ6 signal-price means/variances; their 340/122 replay events survive unchanged. Three complete JSON/text/NDJSON exports match 11,388 native result nodes. This does not close M1, execute an optimizer or validate calibrated fills.
+
+
 The 0.7 continuation adds typed selection and disconnected planning/interop. Eight native targets pass (762 assertions plus administration), ten installed/unit SBV Go checks pass, and a separate CMake consumer compiles against only the installed header target. Current registry: eighteen SBV leaves / fifteen native operations / 417 commands. Actual terminal replay selection is independently checked with BigInt ordering. Backend/live plans make no runtime GPU, resource-reservation or provider-activation claim. Earlier 0.6 evidence below retains its scope.
 
 Experimental 0.6.0-dev adds quantity-aware allocation markout with explicit user cost/unit conventions, optional activation mixtures, cost breakdown and exact moments. M1 and the eighteen-package/96-case programme remain open.

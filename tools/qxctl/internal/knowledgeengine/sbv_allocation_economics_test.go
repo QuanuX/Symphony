@@ -35,7 +35,7 @@ func TestSBVInstalledAllocationEconomics(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		return InvokeSBV(context.Background(), prefix, "0.7.0-dev", cwd, op, b)
+		return InvokeSBV(context.Background(), prefix, "0.8.0-dev", cwd, op, b)
 	}
 	response, err := invoke("allocation_economics", request)
 	if err != nil {
@@ -53,7 +53,7 @@ func TestSBVInstalledAllocationEconomics(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	schema, err := SBVSchema(prefix, "0.7.0-dev", "allocation_economics")
+	schema, err := SBVSchema(prefix, "0.8.0-dev", "allocation_economics")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -101,7 +101,7 @@ func TestSBVInstalledAllocationEconomics(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	catalogueSchema, err := SBVSchema(prefix, "0.7.0-dev", "catalogue")
+	catalogueSchema, err := SBVSchema(prefix, "0.8.0-dev", "catalogue")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -112,7 +112,7 @@ func TestSBVInstalledAllocationEconomics(t *testing.T) {
 	if !sqvTransportShape(cs["output"], catalogue, 0) {
 		t.Fatal("catalogue schema mismatch")
 	}
-	if len(catalogue["models"].([]any)) != 6 || len(catalogue["studies"].([]any)) != 11 {
+	if len(catalogue["models"].([]any)) != 6 || len(catalogue["studies"].([]any)) != 16 {
 		t.Fatal("catalogue incomplete")
 	}
 }

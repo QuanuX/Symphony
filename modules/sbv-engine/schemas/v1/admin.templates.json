@@ -389,6 +389,68 @@
       "observed_until_ns": "0",
       "events": [],
       "extensions": {}
+    },
+    "analyze": {
+      "protocol": "symphony.sbv.analyze-input.v1",
+      "path": "/absolute/private/result.json",
+      "expected_sha256": "REPLACE_WITH_CONTENT_SHA256",
+      "output_path": "/absolute/private/analysis.json",
+      "pointer": "/sections/user_extensions/data/observations",
+      "value_pointer": "/value",
+      "value_type": "rational",
+      "weighting": "equal_probability",
+      "weight_pointer": null,
+      "series_role": "observations",
+      "unit": "caller_unit",
+      "input_description": "Caller-selected observations; define unit, ordering and sampling before use",
+      "missing": "reject",
+      "studies": [
+        "series_summary",
+        "series_moments"
+      ],
+      "quantiles": [],
+      "variance_estimator": "population",
+      "relative_drawdown": "positive_peak_only",
+      "benchmark": {
+        "numerator": "0",
+        "denominator": "1"
+      },
+      "periods_per_year": {
+        "numerator": "1",
+        "denominator": "1"
+      },
+      "numeric_profile": "exact_rational",
+      "on_incompatible": "unavailable",
+      "extensions": {}
+    },
+    "compare": {
+      "protocol": "symphony.sbv.compare-input.v1",
+      "output_path": "/absolute/private/comparison.json",
+      "candidates": [],
+      "objectives": [
+        {
+          "id": "caller_metric",
+          "pointer": "/sections/studies/data/0/data/weighted_sum",
+          "type": "rational",
+          "direction": "maximize",
+          "weight": {
+            "numerator": "1",
+            "denominator": "1"
+          },
+          "scale": {
+            "numerator": "1",
+            "denominator": "1"
+          },
+          "unit": "caller_unit"
+        }
+      ],
+      "methods": [
+        "weighted_sum",
+        "pareto"
+      ],
+      "missing": "exclude_candidate",
+      "comparison_description": "Compare exact source values under explicit caller objectives and units",
+      "extensions": {}
     }
   }
 }

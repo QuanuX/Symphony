@@ -24,6 +24,7 @@
       "distinctions": [],
       "evidence": [
         "modules/sbv-engine/tests/allocation_economics_test.cpp",
+        "modules/sbv-engine/tests/analysis_test.cpp",
         "modules/sbv-engine/tests/book_test.cpp",
         "modules/sbv-engine/tests/economics_test.cpp",
         "modules/sbv-engine/tests/interop_consumer.cpp",
@@ -33,7 +34,7 @@
         "modules/sbv-engine/tests/sbv_test.cpp"
       ],
       "feature_id": "ssfv:symphony:sbv-engine",
-      "how": "C++26 calculations and generic exact result access; independent header-only tensor/backend ownership and completion contract; no device or live runtime activation.",
+      "how": "C++26 exact arithmetic with explicitly selected round-trip binary64 ratio estimates; user-controlled study and comparison conventions; immutable results with complete terminal access.",
       "implementation_languages": [
         {
           "language": "C++26",
@@ -47,7 +48,9 @@
       "implementation_paths": [
         "modules/sbv-engine/include/symphony/sbv/interop.hpp",
         "modules/sbv-engine/src/allocation_economics.cpp",
+        "modules/sbv-engine/src/analyze.cpp",
         "modules/sbv-engine/src/book.cpp",
+        "modules/sbv-engine/src/compare.cpp",
         "modules/sbv-engine/src/compose.cpp",
         "modules/sbv-engine/src/compose_joint.cpp",
         "modules/sbv-engine/src/economics.cpp",
@@ -77,7 +80,7 @@
       "source_scope": "modules/sbv-engine",
       "status": "experimental",
       "title": "Native historical experiments and portable results",
-      "what": "Native closed-census backtesting, models, exact economics, replay, typed result selection and disconnected backend/live planning with installed interop contracts.",
+      "what": "Native closed-census backtesting, exact economics, replay, selectable source-series studies, candidate comparison, typed result selection and disconnected backend/live planning.",
       "when": "Explicit bounded caller-selected invocation.",
       "where": "Independently versioned and installed owner package.",
       "who": "Direct native consumers, operators and qxctl agents.",

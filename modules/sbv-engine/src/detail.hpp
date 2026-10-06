@@ -70,6 +70,8 @@ Json run(const Json &, std::int64_t);
 Json compose(const Json &, std::int64_t);
 Json compose_joint(const Json &, std::int64_t);
 Json evaluate(const Json &, std::int64_t);
+Json analyze(const Json &, std::int64_t);
+Json compare(const Json &, std::int64_t);
 Json result_select(const Json &, std::int64_t);
 Json backend_plan(const Json &, std::int64_t);
 Json live_plan(const Json &, std::int64_t);

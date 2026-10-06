@@ -3,28 +3,6 @@
 namespace symphony::sbv::detail {
 namespace {
 namespace w = wide_rational;
-int compare_ratio(w::R a, w::R b) {
-  a = w::reduce(a);
-  b = w::reduce(b);
-  if (a.n < 0 && b.n >= 0)
-    return -1;
-  if (a.n >= 0 && b.n < 0)
-    return 1;
-  int sign = a.n < 0 ? -1 : 1;
-  a.n = w::absolute(a.n);
-  b.n = w::absolute(b.n);
-  for (;;) {
-    auto aq = a.n / a.d, bq = b.n / b.d;
-    if (aq != bq)
-      return sign * (aq < bq ? -1 : 1);
-    auto ar = a.n % a.d, br = b.n % b.d;
-    if (!ar || !br)
-      return ar == br ? 0 : sign * (!ar ? -1 : 1);
-    a = {a.d, ar};
-    b = {b.d, br};
-    sign = -sign;
-  }
-}
 const Json *at(const Json &row, const std::string &pointer) {
   need(pointer.size() <= 4096 && (pointer.empty() || pointer.front() == '/'),
        "bounded JSON Pointer required");
@@ -56,7 +34,7 @@ int compare(const Json &a, const Json &b, const std::string &type) {
     return w::reduce(
         {w::integer(j.at("numerator")), w::integer(j.at("denominator"))});
   };
-  return compare_ratio(parse(a), parse(b));
+  return w::compare(parse(a), parse(b));
 }
 struct Predicate {
   std::string pointer, type, op, missing;

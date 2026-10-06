@@ -3,9 +3,9 @@
   "module_id": "sbv-engine",
   "engine_id": "symphony-sbv",
   "namespace": "symphony::sbv::interface",
-  "current_version": "0.7.0-dev",
+  "current_version": "0.8.0-dev",
   "releases": {
-    "0.7.0-dev": [
+    "0.8.0-dev": [
       "capabilities",
       "run",
       "compose",
@@ -20,7 +20,9 @@
       "allocation_economics",
       "result_select",
       "backend_plan",
-      "live_plan"
+      "live_plan",
+      "analyze",
+      "compare"
     ]
   },
   "contract_versions": [
@@ -55,7 +57,11 @@
     "symphony.sbv.backend-plan-input.v1",
     "symphony.sbv.backend-plan.v1",
     "symphony.sbv.live-plan-input.v1",
-    "symphony.sbv.live-plan.v1"
+    "symphony.sbv.live-plan.v1",
+    "symphony.sbv.analyze-input.v1",
+    "symphony.sbv.analyze.v1",
+    "symphony.sbv.compare-input.v1",
+    "symphony.sbv.compare.v1"
   ],
   "operations": [
     {
@@ -372,6 +378,48 @@
       "operation_name": "live_plan",
       "output_protocol": "symphony.sbv.live-plan.v1",
       "recovery_operation_id": null,
+      "thermal_path": "freezing"
+    },
+    {
+      "administration_disposition": "qxctl_required",
+      "administrative_interactions": [
+        "invoke"
+      ],
+      "authorization_requirement": "target_host_permission",
+      "availability": "implemented",
+      "direct_invocation": "supported",
+      "engine_operation_id": "engop:symphony:sbv.analyze",
+      "expected_state_required": false,
+      "feature_ids": [
+        "ssfv:symphony:sbv-engine"
+      ],
+      "idempotency": "non_idempotent",
+      "input_protocol": "symphony.sbv.analyze-input.v1",
+      "mutability": "permission_backed_mutation",
+      "operation_name": "analyze",
+      "output_protocol": "symphony.sbv.analyze.v1",
+      "recovery_operation_id": "engop:symphony:sbv.result-inspect",
+      "thermal_path": "freezing"
+    },
+    {
+      "administration_disposition": "qxctl_required",
+      "administrative_interactions": [
+        "invoke"
+      ],
+      "authorization_requirement": "target_host_permission",
+      "availability": "implemented",
+      "direct_invocation": "supported",
+      "engine_operation_id": "engop:symphony:sbv.compare",
+      "expected_state_required": false,
+      "feature_ids": [
+        "ssfv:symphony:sbv-engine"
+      ],
+      "idempotency": "non_idempotent",
+      "input_protocol": "symphony.sbv.compare-input.v1",
+      "mutability": "permission_backed_mutation",
+      "operation_name": "compare",
+      "output_protocol": "symphony.sbv.compare.v1",
+      "recovery_operation_id": "engop:symphony:sbv.result-inspect",
       "thermal_path": "freezing"
     }
   ],

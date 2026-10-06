@@ -2091,6 +2091,364 @@
         "extensions"
       ],
       "additionalProperties": false
+    },
+    "analyze": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.analyze-input.v1"
+        },
+        "path": {
+          "type": "string"
+        },
+        "expected_sha256": {
+          "type": "string"
+        },
+        "output_path": {
+          "type": "string"
+        },
+        "pointer": {
+          "type": "string"
+        },
+        "value_pointer": {
+          "type": "string"
+        },
+        "value_type": {
+          "enum": [
+            "integer",
+            "rational"
+          ]
+        },
+        "weighting": {
+          "enum": [
+            "equal_probability",
+            "supplied_probability",
+            "scenario_weight",
+            "signed_coefficient"
+          ]
+        },
+        "weight_pointer": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "series_role": {
+          "enum": [
+            "observations",
+            "returns",
+            "equity"
+          ]
+        },
+        "unit": {
+          "type": "string"
+        },
+        "input_description": {
+          "type": "string"
+        },
+        "missing": {
+          "enum": [
+            "exclude",
+            "reject"
+          ]
+        },
+        "studies": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "series_summary",
+              "series_moments",
+              "series_quantiles",
+              "equity_drawdown",
+              "return_ratios"
+            ]
+          },
+          "minItems": 0,
+          "maxItems": 5
+        },
+        "quantiles": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "numerator": {
+                "type": "string"
+              },
+              "denominator": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "numerator",
+              "denominator"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 0,
+          "maxItems": 32
+        },
+        "variance_estimator": {
+          "enum": [
+            "population",
+            "sample_equal_weight"
+          ]
+        },
+        "relative_drawdown": {
+          "enum": [
+            "absolute_peak",
+            "positive_peak_only"
+          ]
+        },
+        "benchmark": {
+          "type": "object",
+          "properties": {
+            "numerator": {
+              "type": "string"
+            },
+            "denominator": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "numerator",
+            "denominator"
+          ],
+          "additionalProperties": false
+        },
+        "periods_per_year": {
+          "type": "object",
+          "properties": {
+            "numerator": {
+              "type": "string"
+            },
+            "denominator": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "numerator",
+            "denominator"
+          ],
+          "additionalProperties": false
+        },
+        "numeric_profile": {
+          "enum": [
+            "exact_rational",
+            "binary64_roundtrip"
+          ]
+        },
+        "on_incompatible": {
+          "enum": [
+            "unavailable",
+            "reject"
+          ]
+        },
+        "extensions": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "protocol",
+        "path",
+        "expected_sha256",
+        "output_path",
+        "pointer",
+        "value_pointer",
+        "value_type",
+        "weighting",
+        "weight_pointer",
+        "series_role",
+        "unit",
+        "input_description",
+        "missing",
+        "studies",
+        "quantiles",
+        "variance_estimator",
+        "relative_drawdown",
+        "benchmark",
+        "periods_per_year",
+        "numeric_profile",
+        "on_incompatible",
+        "extensions"
+      ],
+      "additionalProperties": false
+    },
+    "compare": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.compare-input.v1"
+        },
+        "output_path": {
+          "type": "string"
+        },
+        "candidates": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "state": {
+                "enum": [
+                  "completed",
+                  "failed",
+                  "pruned"
+                ]
+              },
+              "reason": {
+                "type": "string"
+              },
+              "path": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "expected_sha256": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "parameters": {},
+              "lineage": {}
+            },
+            "required": [
+              "id",
+              "state",
+              "reason",
+              "path",
+              "expected_sha256",
+              "parameters",
+              "lineage"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 0,
+          "maxItems": 128
+        },
+        "objectives": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "pointer": {
+                "type": "string"
+              },
+              "type": {
+                "enum": [
+                  "integer",
+                  "rational"
+                ]
+              },
+              "direction": {
+                "enum": [
+                  "maximize",
+                  "minimize"
+                ]
+              },
+              "weight": {
+                "type": "object",
+                "properties": {
+                  "numerator": {
+                    "type": "string"
+                  },
+                  "denominator": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "numerator",
+                  "denominator"
+                ],
+                "additionalProperties": false
+              },
+              "scale": {
+                "type": "object",
+                "properties": {
+                  "numerator": {
+                    "type": "string"
+                  },
+                  "denominator": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "numerator",
+                  "denominator"
+                ],
+                "additionalProperties": false
+              },
+              "unit": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "pointer",
+              "type",
+              "direction",
+              "weight",
+              "scale",
+              "unit"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1,
+          "maxItems": 16
+        },
+        "methods": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "weighted_sum",
+              "pareto"
+            ]
+          },
+          "minItems": 0,
+          "maxItems": 2
+        },
+        "missing": {
+          "enum": [
+            "exclude_candidate",
+            "reject"
+          ]
+        },
+        "comparison_description": {
+          "type": "string"
+        },
+        "extensions": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "protocol",
+        "output_path",
+        "candidates",
+        "objectives",
+        "methods",
+        "missing",
+        "comparison_description",
+        "extensions"
+      ],
+      "additionalProperties": false
     }
   },
   "results": {
@@ -2101,7 +2459,7 @@
           "const": "symphony.sbv.capabilities.v1"
         },
         "engine_version": {
-          "const": "0.7.0-dev"
+          "const": "0.8.0-dev"
         },
         "cpu": {
           "type": "object",
@@ -2641,7 +2999,7 @@
           "const": "symphony.sbv.catalogue.v1"
         },
         "engine_version": {
-          "const": "0.7.0-dev"
+          "const": "0.8.0-dev"
         },
         "models": {
           "type": "array",
@@ -2679,7 +3037,8 @@
                     "run",
                     "evaluate",
                     "liquidity",
-                    "allocation_economics"
+                    "allocation_economics",
+                    "analyze"
                   ]
                 }
               }
@@ -2722,7 +3081,8 @@
                     "evaluate",
                     "economics",
                     "liquidity",
-                    "allocation_economics"
+                    "allocation_economics",
+                    "analyze"
                   ]
                 }
               },
@@ -2810,7 +3170,8 @@
                 "items": {
                   "enum": [
                     "economics",
-                    "allocation_economics"
+                    "allocation_economics",
+                    "analyze"
                   ]
                 }
               },
@@ -3226,7 +3587,7 @@
           "const": "symphony.sbv.backend-plan.v1"
         },
         "engine_version": {
-          "const": "0.7.0-dev"
+          "const": "0.8.0-dev"
         },
         "status": {
           "enum": [
@@ -3519,7 +3880,7 @@
           "const": "symphony.sbv.live-plan.v1"
         },
         "engine_version": {
-          "const": "0.7.0-dev"
+          "const": "0.8.0-dev"
         },
         "can_activate": {
           "const": false
@@ -3732,6 +4093,134 @@
         "peak",
         "provider_requests",
         "limitations"
+      ],
+      "additionalProperties": false
+    },
+    "analyze": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.analyze.v1"
+        },
+        "path": {
+          "type": "string"
+        },
+        "content_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "file_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "bytes": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$"
+        },
+        "status": {
+          "enum": [
+            "completed",
+            "partial"
+          ]
+        },
+        "summary": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "enum": [
+                "available",
+                "partial",
+                "unavailable",
+                "not_selected"
+              ]
+            },
+            "reason": {
+              "type": "string"
+            },
+            "data": {
+              "$ref": "#/$defs/node"
+            }
+          },
+          "required": [
+            "status",
+            "reason",
+            "data"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "protocol",
+        "path",
+        "content_sha256",
+        "file_sha256",
+        "bytes",
+        "status",
+        "summary"
+      ],
+      "additionalProperties": false
+    },
+    "compare": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.compare.v1"
+        },
+        "path": {
+          "type": "string"
+        },
+        "content_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "file_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "bytes": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$"
+        },
+        "status": {
+          "enum": [
+            "completed",
+            "partial"
+          ]
+        },
+        "summary": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "enum": [
+                "available",
+                "partial",
+                "unavailable",
+                "not_selected"
+              ]
+            },
+            "reason": {
+              "type": "string"
+            },
+            "data": {
+              "$ref": "#/$defs/node"
+            }
+          },
+          "required": [
+            "status",
+            "reason",
+            "data"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "protocol",
+        "path",
+        "content_sha256",
+        "file_sha256",
+        "bytes",
+        "status",
+        "summary"
       ],
       "additionalProperties": false
     }
@@ -7864,6 +8353,281 @@
         "shape",
         "byte_strides",
         "completion"
+      ],
+      "additionalProperties": false
+    },
+    "series_observation": {
+      "type": "object",
+      "properties": {
+        "source_index": {
+          "type": "string"
+        },
+        "value": {
+          "type": "object",
+          "properties": {
+            "numerator": {
+              "type": "string"
+            },
+            "denominator": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "numerator",
+            "denominator"
+          ],
+          "additionalProperties": false
+        },
+        "weight": {
+          "type": "object",
+          "properties": {
+            "numerator": {
+              "type": "string"
+            },
+            "denominator": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "numerator",
+            "denominator"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "source_index",
+        "value",
+        "weight"
+      ],
+      "additionalProperties": false
+    },
+    "series_study": {
+      "type": "object",
+      "properties": {
+        "study_id": {
+          "enum": [
+            "series_summary",
+            "series_moments",
+            "series_quantiles",
+            "equity_drawdown",
+            "return_ratios"
+          ]
+        },
+        "version": {
+          "const": "1"
+        },
+        "status": {
+          "enum": [
+            "available",
+            "unavailable"
+          ]
+        },
+        "reason": {
+          "type": "string"
+        },
+        "data": {}
+      },
+      "required": [
+        "study_id",
+        "version",
+        "status",
+        "reason",
+        "data"
+      ],
+      "additionalProperties": false
+    },
+    "comparison_candidate": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "state": {
+          "enum": [
+            "completed",
+            "failed",
+            "pruned"
+          ]
+        },
+        "reason": {
+          "type": "string"
+        },
+        "source": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": "string"
+                },
+                "content_sha256": {
+                  "type": "string"
+                },
+                "result_status": {
+                  "type": "string"
+                },
+                "origin": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "path",
+                "content_sha256",
+                "result_status",
+                "origin"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        },
+        "objectives": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "status": {
+                "enum": [
+                  "available",
+                  "unavailable"
+                ]
+              },
+              "reason": {
+                "type": "string"
+              },
+              "value": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "numerator": {
+                        "type": "string"
+                      },
+                      "denominator": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "numerator",
+                      "denominator"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "id",
+              "status",
+              "reason",
+              "value"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "eligibility": {
+          "enum": [
+            "eligible",
+            "excluded"
+          ]
+        },
+        "exclusion_reason": {
+          "type": "string"
+        },
+        "utility": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "const": "available"
+                },
+                "value": {
+                  "type": "object",
+                  "properties": {
+                    "numerator": {
+                      "type": "string"
+                    },
+                    "denominator": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "numerator",
+                    "denominator"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "status",
+                "value"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "const": "unavailable"
+                },
+                "reason": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "null"
+                }
+              },
+              "required": [
+                "status",
+                "reason",
+                "value"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        },
+        "weighted_rank": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "pareto_front": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "state",
+        "reason",
+        "source",
+        "objectives",
+        "eligibility",
+        "exclusion_reason",
+        "utility",
+        "weighted_rank",
+        "pareto_front"
       ],
       "additionalProperties": false
     }

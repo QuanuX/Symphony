@@ -400,7 +400,7 @@ int main() try {
   const auto cat =
       call("catalogue", {{"protocol", "symphony.sbv.catalogue-input.v1"}});
   check(cat["transforms"][0]["id"] == "linear_price_pnl");
-  check(cat["studies"].size() == 11);
+  check(cat["studies"].size() == 16);
   std::cout << checks << " native economic assertions passed\n";
   return 0;
 } catch (const std::exception &ex) {

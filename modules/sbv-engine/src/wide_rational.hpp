@@ -85,6 +85,33 @@ inline Json wire(R r) {
   r = reduce(r);
   return {{"numerator", decimal(r.n)}, {"denominator", decimal(r.d)}};
 }
+// Exact comparison by continued fractions; no cross-product overflow.
+inline int compare(R a, R b) {
+  a = reduce(a);
+  b = reduce(b);
+  if (a.n < 0 && b.n >= 0)
+    return -1;
+  if (a.n >= 0 && b.n < 0)
+    return 1;
+  int sign = a.n < 0 ? -1 : 1;
+  a.n = absolute(a.n);
+  b.n = absolute(b.n);
+  for (;;) {
+    auto aq = a.n / a.d, bq = b.n / b.d;
+    if (aq != bq)
+      return sign * (aq < bq ? -1 : 1);
+    auto ar = a.n % a.d, br = b.n % b.d;
+    if (!ar || !br)
+      return ar == br ? 0 : sign * (!ar ? -1 : 1);
+    a = {a.d, ar};
+    b = {b.d, br};
+    sign = -sign;
+  }
+}
+inline R artifact(const Json &j) {
+  keys(j, {"numerator", "denominator"});
+  return reduce({integer(j.at("numerator")), integer(j.at("denominator"))});
+}
 inline bool equal(R a, R b) {
   a = reduce(a);
   b = reduce(b);

@@ -225,7 +225,9 @@ Json dispatch(const std::string &op, const Json &p, std::int64_t end) {
          Json::array({"signal_summary", "forward_markout", "model_summary",
                       "path_excursion", "weighted_return_sum", "return_moments",
                       "return_quantiles", "liquidity_summary", "fill_quality",
-                      "allocation_costs", "activation_moments"})},
+                      "allocation_costs", "activation_moments",
+                      "series_summary", "series_moments", "series_quantiles",
+                      "equity_drawdown", "return_ratios"})},
         {"execution_models",
          Json::array({"none", "touch_observation", "user_probability",
                       "observed_trade_levels", "external_outcomes",
@@ -244,6 +246,10 @@ Json dispatch(const std::string &op, const Json &p, std::int64_t end) {
     return d::compose(p, end);
   if (op == "compose_joint")
     return d::compose_joint(p, end);
+  if (op == "analyze")
+    return d::analyze(p, end);
+  if (op == "compare")
+    return d::compare(p, end);
   if (op == "result_select")
     return d::result_select(p, end);
   if (op == "backend_plan")

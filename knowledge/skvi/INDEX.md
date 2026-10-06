@@ -22616,3 +22616,59 @@ These entries locate existing implementation and regression surfaces referenced 
 - deferred_projections: runtime GPU/tensor adapters, live capture and resource reservation
 - notes: Metadata admission is distinct from foreign ownership proof and runtime execution.
 - status: canonical
+
+### SBV analyze.cpp
+
+- path: `modules/sbv-engine/src/analyze.cpp`
+- title: SBV analyze.cpp
+- surface_type: implementation contract or test
+- truth_role: User-selected series statistics and supplied candidate comparison
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.8 native and installed terminal contract boundaries.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, agents and external result consumers
+- deferred_projections: executed search, statistical calibration and account-feasible equity
+- notes: Caller source roles and objective choices remain attributed inputs.
+- status: canonical
+
+### SBV compare.cpp
+
+- path: `modules/sbv-engine/src/compare.cpp`
+- title: SBV compare.cpp
+- surface_type: implementation contract or test
+- truth_role: User-selected series statistics and supplied candidate comparison
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.8 native and installed terminal contract boundaries.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, agents and external result consumers
+- deferred_projections: executed search, statistical calibration and account-feasible equity
+- notes: Caller source roles and objective choices remain attributed inputs.
+- status: canonical
+
+### SBV analysis_test.cpp
+
+- path: `modules/sbv-engine/tests/analysis_test.cpp`
+- title: SBV analysis_test.cpp
+- surface_type: implementation contract or test
+- truth_role: User-selected series statistics and supplied candidate comparison
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.8 native and installed terminal contract boundaries.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, agents and external result consumers
+- deferred_projections: executed search, statistical calibration and account-feasible equity
+- notes: Caller source roles and objective choices remain attributed inputs.
+- status: canonical
+
+### SBV sbv_analysis_test.go
+
+- path: `tools/qxctl/internal/knowledgeengine/sbv_analysis_test.go`
+- title: SBV sbv_analysis_test.go
+- surface_type: implementation contract or test
+- truth_role: User-selected series statistics and supplied candidate comparison
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.8 native and installed terminal contract boundaries.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, agents and external result consumers
+- deferred_projections: executed search, statistical calibration and account-feasible equity
+- notes: Caller source roles and objective choices remain attributed inputs.
+- status: canonical

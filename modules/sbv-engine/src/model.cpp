@@ -317,6 +317,10 @@ Json model_catalogue() {
       const auto &card : Json::parse(
           R"ALLOC([{"id":"allocation_costs","version":"1","unit":"caller P&L unit","definition":"separate activation, filled-order and filled-unit costs; negative costs represent caller rebates","operations":["allocation_economics"]},{"id":"activation_moments","version":"1","unit":"caller P&L unit, its square and dimensionless returns","definition":"per-order two-branch activation mean and variance; no cross-order joint assumption","operations":["allocation_economics"]}])ALLOC"))
     result["studies"].push_back(card);
+  for (
+      const auto &card : Json::parse(
+          R"SERIES([{"id":"series_summary","version":"1","unit":"caller unit","definition":"Count, exact sum and extrema without normalizing supplied weights","operations":["analyze"]},{"id":"series_moments","version":"1","unit":"caller unit and square","definition":"Exact probability mean with selected population or equal-weight sample variance","operations":["analyze"]},{"id":"series_quantiles","version":"1","unit":"caller unit","definition":"Exact inverse CDF on positive probability mass","operations":["analyze"]},{"id":"equity_drawdown","version":"1","unit":"caller equity unit and ratio","definition":"Ordered supplied valuations, absolute/relative peak drawdown and recovery index","operations":["analyze"]},{"id":"return_ratios","version":"1","unit":"return ratio","definition":"Caller benchmark and annualization; explicit binary64 square roots, round-trip decimal and bit identity","operations":["analyze"]}])SERIES"))
+    result["studies"].push_back(card);
   result["book_profiles"] = Json::parse(
       R"BOOK([{"id":"databento_mbo_orders_strict_v1","version":"1","operations":["book"],"initialization":"source reset or exact source-bound supplied checkpoint","anomalies":"reject or invalidate_until_reset","scope":"one publisher/instrument/channel; A/M/C/R updates; T/F/N informational; no queue priority or fill prediction","input_schema":"symphony.sbv.book-input.v1","output_schemas":["symphony.sbv.book-frame.v1","symphony.sbv.book-checkpoint.v1"]}])BOOK");
   return result;

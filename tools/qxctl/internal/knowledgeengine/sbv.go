@@ -11,11 +11,11 @@ import (
 	"time"
 )
 
-var SBVOperations = []string{"capabilities", "run", "compose", "result_inspect", "result_query", "evaluate", "catalogue", "compose_joint", "economics", "book", "liquidity", "allocation_economics", "result_select", "backend_plan", "live_plan"}
+var SBVOperations = []string{"capabilities", "run", "compose", "result_inspect", "result_query", "evaluate", "catalogue", "compose_joint", "economics", "book", "liquidity", "allocation_economics", "result_select", "backend_plan", "live_plan", "analyze", "compare"}
 var sbvSHA = regexp.MustCompile(`^[0-9a-f]{64}$`)
 
 func sbvSpec() engineSpec {
-	return engineSpec{label: "SBV", moduleID: "sbv-engine", vectorID: "sbv", engineID: "symphony-sbv", componentKind: "vector_engine", processProtocol: processProtocol, operationTimeoutByVersion: map[string]time.Duration{"0.7.0-dev": 5 * time.Minute}}
+	return engineSpec{label: "SBV", moduleID: "sbv-engine", vectorID: "sbv", engineID: "symphony-sbv", componentKind: "vector_engine", processProtocol: processProtocol, operationTimeoutByVersion: map[string]time.Duration{"0.8.0-dev": 5 * time.Minute}}
 }
 func InspectSBV(prefix, version string) (Installation, error) {
 	s := sbvSpec()
@@ -123,7 +123,7 @@ func validateSBVResult(op string, p map[string]any, raw []byte) error {
 				return bad()
 			}
 		}
-	case "run", "compose", "evaluate", "compose_joint", "economics", "book", "liquidity", "allocation_economics", "result_inspect":
+	case "run", "compose", "evaluate", "compose_joint", "economics", "book", "liquidity", "allocation_economics", "analyze", "compare", "result_inspect":
 		target := "output_path"
 		if op == "result_inspect" {
 			target = "path"
