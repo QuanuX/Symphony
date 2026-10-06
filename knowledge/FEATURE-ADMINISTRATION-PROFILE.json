@@ -968,8 +968,10 @@
             "qxcmd:symphony:sbv.compose.joint",
             "qxcmd:symphony:sbv.economics",
             "qxcmd:symphony:sbv.evaluate",
+            "qxcmd:symphony:sbv.experiment",
             "qxcmd:symphony:sbv.liquidity",
             "qxcmd:symphony:sbv.live.plan",
+            "qxcmd:symphony:sbv.resample",
             "qxcmd:symphony:sbv.run"
           ],
           "delivery": "direct",
@@ -983,8 +985,10 @@
             "engop:symphony:sbv.compose-joint",
             "engop:symphony:sbv.economics",
             "engop:symphony:sbv.evaluate",
+            "engop:symphony:sbv.experiment",
             "engop:symphony:sbv.liquidity",
             "engop:symphony:sbv.live-plan",
+            "engop:symphony:sbv.resample",
             "engop:symphony:sbv.run"
           ],
           "evidence": [
@@ -2881,8 +2885,10 @@
             "qxcmd:symphony:sbv.compose.joint",
             "qxcmd:symphony:sbv.economics",
             "qxcmd:symphony:sbv.evaluate",
+            "qxcmd:symphony:sbv.experiment",
             "qxcmd:symphony:sbv.liquidity",
             "qxcmd:symphony:sbv.live.plan",
+            "qxcmd:symphony:sbv.resample",
             "qxcmd:symphony:sbv.run"
           ],
           "delivery": "direct",
@@ -2896,8 +2902,10 @@
             "engop:symphony:sbv.compose-joint",
             "engop:symphony:sbv.economics",
             "engop:symphony:sbv.evaluate",
+            "engop:symphony:sbv.experiment",
             "engop:symphony:sbv.liquidity",
             "engop:symphony:sbv.live-plan",
+            "engop:symphony:sbv.resample",
             "engop:symphony:sbv.run"
           ],
           "evidence": [
@@ -9714,9 +9722,9 @@
   ],
   "format_version": 1,
   "forward_gate": "enforce_new_records",
-  "profile_digest": "sha256:862e58b4db312e22f35c8a115ee2c106247ac9bccc117b299e317ea1b1bae8a7",
+  "profile_digest": "sha256:962fd45431b7f305fd254131e83559895980c96ee09474afe121735549af8bb2",
   "profile_id": "symphony.registered-features.administration.v1",
   "protocol": "symphony.knowledge.feature-administration-profile.v1",
   "registered_feature_count": 141,
-  "ssfv_registry_digest": "sha256:4c521da1946433f015771a100d94e2cc021c3f47f22a513f6aa92ede6ca2d71f"
+  "ssfv_registry_digest": "sha256:07cb9b0b9a314a8e88fbd600c6909606e07504f02d8d04a8731495e8dc89afc7"
 }

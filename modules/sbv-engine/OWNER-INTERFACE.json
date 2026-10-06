@@ -3,9 +3,9 @@
   "module_id": "sbv-engine",
   "engine_id": "symphony-sbv",
   "namespace": "symphony::sbv::interface",
-  "current_version": "0.8.0-dev",
+  "current_version": "0.9.0-dev",
   "releases": {
-    "0.8.0-dev": [
+    "0.9.0-dev": [
       "capabilities",
       "run",
       "compose",
@@ -22,7 +22,9 @@
       "backend_plan",
       "live_plan",
       "analyze",
-      "compare"
+      "compare",
+      "resample",
+      "experiment"
     ]
   },
   "contract_versions": [
@@ -61,7 +63,11 @@
     "symphony.sbv.analyze-input.v1",
     "symphony.sbv.analyze.v1",
     "symphony.sbv.compare-input.v1",
-    "symphony.sbv.compare.v1"
+    "symphony.sbv.compare.v1",
+    "symphony.sbv.resample-input.v1",
+    "symphony.sbv.resample.v1",
+    "symphony.sbv.experiment-input.v1",
+    "symphony.sbv.experiment.v1"
   ],
   "operations": [
     {
@@ -419,6 +425,48 @@
       "mutability": "permission_backed_mutation",
       "operation_name": "compare",
       "output_protocol": "symphony.sbv.compare.v1",
+      "recovery_operation_id": "engop:symphony:sbv.result-inspect",
+      "thermal_path": "freezing"
+    },
+    {
+      "administration_disposition": "qxctl_required",
+      "administrative_interactions": [
+        "invoke"
+      ],
+      "authorization_requirement": "target_host_permission",
+      "availability": "implemented",
+      "direct_invocation": "supported",
+      "engine_operation_id": "engop:symphony:sbv.resample",
+      "expected_state_required": false,
+      "feature_ids": [
+        "ssfv:symphony:sbv-engine"
+      ],
+      "idempotency": "non_idempotent",
+      "input_protocol": "symphony.sbv.resample-input.v1",
+      "mutability": "permission_backed_mutation",
+      "operation_name": "resample",
+      "output_protocol": "symphony.sbv.resample.v1",
+      "recovery_operation_id": "engop:symphony:sbv.result-inspect",
+      "thermal_path": "freezing"
+    },
+    {
+      "administration_disposition": "qxctl_required",
+      "administrative_interactions": [
+        "invoke"
+      ],
+      "authorization_requirement": "target_host_permission",
+      "availability": "implemented",
+      "direct_invocation": "supported",
+      "engine_operation_id": "engop:symphony:sbv.experiment",
+      "expected_state_required": false,
+      "feature_ids": [
+        "ssfv:symphony:sbv-engine"
+      ],
+      "idempotency": "non_idempotent",
+      "input_protocol": "symphony.sbv.experiment-input.v1",
+      "mutability": "permission_backed_mutation",
+      "operation_name": "experiment",
+      "output_protocol": "symphony.sbv.experiment.v1",
       "recovery_operation_id": "engop:symphony:sbv.result-inspect",
       "thermal_path": "freezing"
     }

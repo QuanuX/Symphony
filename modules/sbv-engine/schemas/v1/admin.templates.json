@@ -451,6 +451,50 @@
       "missing": "exclude_candidate",
       "comparison_description": "Compare exact source values under explicit caller objectives and units",
       "extensions": {}
+    },
+    "resample": {
+      "protocol": "symphony.sbv.resample-input.v1",
+      "path": "/absolute/private/result.json",
+      "expected_sha256": "REPLACE_WITH_CONTENT_SHA256",
+      "output_path": "/absolute/private/bootstrap.json",
+      "pointer": "/sections/series/data",
+      "value_pointer": "/value",
+      "value_type": "rational",
+      "sampling_measure": "uniform_rows",
+      "scheme": "iid",
+      "sample_size": "100",
+      "block_size": "1",
+      "replicates": "100",
+      "seed": "0",
+      "workers": "1",
+      "retain_indices": false,
+      "studies": [
+        "bootstrap_mean_distribution",
+        "bootstrap_mean_quantiles"
+      ],
+      "quantiles": [
+        {
+          "numerator": "1",
+          "denominator": "40"
+        },
+        {
+          "numerator": "39",
+          "denominator": "40"
+        }
+      ],
+      "unit": "caller_unit",
+      "input_description": "Declare observation role, sampling and dependence assumptions",
+      "extensions": {}
+    },
+    "experiment": {
+      "protocol": "symphony.sbv.experiment-input.v1",
+      "output_path": "/absolute/private/experiment-summary.json",
+      "directory": "/absolute/private/existing-experiment-directory",
+      "experiment_id": "caller-experiment",
+      "trials": [],
+      "workers": "1",
+      "on_failure": "continue",
+      "extensions": {}
     }
   }
 }

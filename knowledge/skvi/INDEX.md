@@ -22672,3 +22672,59 @@ These entries locate existing implementation and regression surfaces referenced 
 - deferred_projections: executed search, statistical calibration and account-feasible equity
 - notes: Caller source roles and objective choices remain attributed inputs.
 - status: canonical
+
+### SBV resample.cpp
+
+- path: `modules/sbv-engine/src/resample.cpp`
+- title: SBV resample.cpp
+- surface_type: implementation contract or test
+- truth_role: Deterministic bootstrap and private durable native trials
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.9 native and installed terminal contract boundaries.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, agents and external result consumers
+- deferred_projections: remote orchestration, adaptive optimizers and calibrated confidence coverage
+- notes: Caller source roles and objective choices remain attributed inputs.
+- status: canonical
+
+### SBV experiment.cpp
+
+- path: `modules/sbv-engine/src/experiment.cpp`
+- title: SBV experiment.cpp
+- surface_type: implementation contract or test
+- truth_role: Deterministic bootstrap and private durable native trials
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.9 native and installed terminal contract boundaries.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, agents and external result consumers
+- deferred_projections: remote orchestration, adaptive optimizers and calibrated confidence coverage
+- notes: Caller source roles and objective choices remain attributed inputs.
+- status: canonical
+
+### SBV research_test.cpp
+
+- path: `modules/sbv-engine/tests/research_test.cpp`
+- title: SBV research_test.cpp
+- surface_type: implementation contract or test
+- truth_role: Deterministic bootstrap and private durable native trials
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.9 native and installed terminal contract boundaries.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, agents and external result consumers
+- deferred_projections: remote orchestration, adaptive optimizers and calibrated confidence coverage
+- notes: Caller source roles and objective choices remain attributed inputs.
+- status: canonical
+
+### SBV sbv_research_test.go
+
+- path: `tools/qxctl/internal/knowledgeengine/sbv_research_test.go`
+- title: SBV sbv_research_test.go
+- surface_type: implementation contract or test
+- truth_role: Deterministic bootstrap and private durable native trials
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.9 native and installed terminal contract boundaries.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, agents and external result consumers
+- deferred_projections: remote orchestration, adaptive optimizers and calibrated confidence coverage
+- notes: Caller source roles and objective choices remain attributed inputs.
+- status: canonical

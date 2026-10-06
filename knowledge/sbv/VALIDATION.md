@@ -1,5 +1,8 @@
 # SBV implementation validation
 
+Experimental 0.9 adds deterministic uniform-row/block bootstrap and durable private local native experiments. Ten native targets pass (1,258 assertions plus administration), including real SIGKILL reconciliation, immutable completed-trial reuse, source drift/lock/symlink refusal and concurrent identical-content results. Twelve installed/unit SBV Go tests pass. Six Databento criteria trials completed with three outer workers, one caller-pruned trial was retained, and reconciliation reused all six without re-execution. Independent Python integer/Fraction code reproduced all 96 bootstrap indices and exact replica moments/quantiles. Source validator: 16,410 passes, zero violations, four historical warnings. Registry: 421 commands, twenty-two SBV leaves and nineteen native operations. Remote/SOV jobs, adaptive optimization and confidence coverage are not claimed.
+
+
 Experimental 0.8 adds selected series studies and supplied-trial comparison. Nine native CTest targets pass (917 assertions plus administration); eleven installed/unit SBV Go tests pass. Source validation reports 16,386 passes, zero violations and four historical warnings. Registry: twenty SBV leaves, seventeen native operations, 419 commands. Independent Fraction checks match native AAPL/ESZ6 signal-price means/variances; their 340/122 replay events survive unchanged. Three complete JSON/text/NDJSON exports match 11,388 native result nodes. This does not close M1, execute an optimizer or validate calibrated fills.
 
 

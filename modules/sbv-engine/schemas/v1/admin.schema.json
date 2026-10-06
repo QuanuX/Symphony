@@ -2449,6 +2449,212 @@
         "extensions"
       ],
       "additionalProperties": false
+    },
+    "resample": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.resample-input.v1"
+        },
+        "path": {
+          "type": "string"
+        },
+        "expected_sha256": {
+          "type": "string"
+        },
+        "output_path": {
+          "type": "string"
+        },
+        "pointer": {
+          "type": "string"
+        },
+        "value_pointer": {
+          "type": "string"
+        },
+        "value_type": {
+          "enum": [
+            "integer",
+            "rational"
+          ]
+        },
+        "sampling_measure": {
+          "const": "uniform_rows"
+        },
+        "scheme": {
+          "enum": [
+            "iid",
+            "moving_block",
+            "circular_block"
+          ]
+        },
+        "sample_size": {
+          "type": "string"
+        },
+        "block_size": {
+          "type": "string"
+        },
+        "replicates": {
+          "type": "string"
+        },
+        "seed": {
+          "type": "string"
+        },
+        "workers": {
+          "type": "string"
+        },
+        "retain_indices": {
+          "type": "boolean"
+        },
+        "studies": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "bootstrap_mean_distribution",
+              "bootstrap_mean_quantiles"
+            ]
+          },
+          "minItems": 0,
+          "maxItems": 2
+        },
+        "quantiles": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "numerator": {
+                "type": "string"
+              },
+              "denominator": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "numerator",
+              "denominator"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 0,
+          "maxItems": 32
+        },
+        "unit": {
+          "type": "string"
+        },
+        "input_description": {
+          "type": "string"
+        },
+        "extensions": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "protocol",
+        "path",
+        "expected_sha256",
+        "output_path",
+        "pointer",
+        "value_pointer",
+        "value_type",
+        "sampling_measure",
+        "scheme",
+        "sample_size",
+        "block_size",
+        "replicates",
+        "seed",
+        "workers",
+        "retain_indices",
+        "studies",
+        "quantiles",
+        "unit",
+        "input_description",
+        "extensions"
+      ],
+      "additionalProperties": false
+    },
+    "experiment": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.experiment-input.v1"
+        },
+        "output_path": {
+          "type": "string"
+        },
+        "directory": {
+          "type": "string"
+        },
+        "experiment_id": {
+          "type": "string"
+        },
+        "trials": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "state": {
+                "enum": [
+                  "ready",
+                  "pruned"
+                ]
+              },
+              "operation": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "request": {},
+              "reason": {
+                "type": "string"
+              },
+              "parameters": {},
+              "lineage": {}
+            },
+            "required": [
+              "id",
+              "state",
+              "operation",
+              "request",
+              "reason",
+              "parameters",
+              "lineage"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 0,
+          "maxItems": 64
+        },
+        "workers": {
+          "type": "string"
+        },
+        "on_failure": {
+          "enum": [
+            "continue",
+            "stop"
+          ]
+        },
+        "extensions": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "protocol",
+        "output_path",
+        "directory",
+        "experiment_id",
+        "trials",
+        "workers",
+        "on_failure",
+        "extensions"
+      ],
+      "additionalProperties": false
     }
   },
   "results": {
@@ -2459,7 +2665,7 @@
           "const": "symphony.sbv.capabilities.v1"
         },
         "engine_version": {
-          "const": "0.8.0-dev"
+          "const": "0.9.0-dev"
         },
         "cpu": {
           "type": "object",
@@ -2999,7 +3205,7 @@
           "const": "symphony.sbv.catalogue.v1"
         },
         "engine_version": {
-          "const": "0.8.0-dev"
+          "const": "0.9.0-dev"
         },
         "models": {
           "type": "array",
@@ -3038,7 +3244,8 @@
                     "evaluate",
                     "liquidity",
                     "allocation_economics",
-                    "analyze"
+                    "analyze",
+                    "resample"
                   ]
                 }
               }
@@ -3082,7 +3289,8 @@
                     "economics",
                     "liquidity",
                     "allocation_economics",
-                    "analyze"
+                    "analyze",
+                    "resample"
                   ]
                 }
               },
@@ -3171,7 +3379,8 @@
                   "enum": [
                     "economics",
                     "allocation_economics",
-                    "analyze"
+                    "analyze",
+                    "resample"
                   ]
                 }
               },
@@ -3587,7 +3796,7 @@
           "const": "symphony.sbv.backend-plan.v1"
         },
         "engine_version": {
-          "const": "0.8.0-dev"
+          "const": "0.9.0-dev"
         },
         "status": {
           "enum": [
@@ -3880,7 +4089,7 @@
           "const": "symphony.sbv.live-plan.v1"
         },
         "engine_version": {
-          "const": "0.8.0-dev"
+          "const": "0.9.0-dev"
         },
         "can_activate": {
           "const": false
@@ -4165,6 +4374,134 @@
       "properties": {
         "protocol": {
           "const": "symphony.sbv.compare.v1"
+        },
+        "path": {
+          "type": "string"
+        },
+        "content_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "file_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "bytes": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$"
+        },
+        "status": {
+          "enum": [
+            "completed",
+            "partial"
+          ]
+        },
+        "summary": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "enum": [
+                "available",
+                "partial",
+                "unavailable",
+                "not_selected"
+              ]
+            },
+            "reason": {
+              "type": "string"
+            },
+            "data": {
+              "$ref": "#/$defs/node"
+            }
+          },
+          "required": [
+            "status",
+            "reason",
+            "data"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "protocol",
+        "path",
+        "content_sha256",
+        "file_sha256",
+        "bytes",
+        "status",
+        "summary"
+      ],
+      "additionalProperties": false
+    },
+    "resample": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.resample.v1"
+        },
+        "path": {
+          "type": "string"
+        },
+        "content_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "file_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "bytes": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$"
+        },
+        "status": {
+          "enum": [
+            "completed",
+            "partial"
+          ]
+        },
+        "summary": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "enum": [
+                "available",
+                "partial",
+                "unavailable",
+                "not_selected"
+              ]
+            },
+            "reason": {
+              "type": "string"
+            },
+            "data": {
+              "$ref": "#/$defs/node"
+            }
+          },
+          "required": [
+            "status",
+            "reason",
+            "data"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "protocol",
+        "path",
+        "content_sha256",
+        "file_sha256",
+        "bytes",
+        "status",
+        "summary"
+      ],
+      "additionalProperties": false
+    },
+    "experiment": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.experiment.v1"
         },
         "path": {
           "type": "string"
@@ -8628,6 +8965,112 @@
         "utility",
         "weighted_rank",
         "pareto_front"
+      ],
+      "additionalProperties": false
+    },
+    "bootstrap_replicate": {
+      "type": "object",
+      "properties": {
+        "replicate": {
+          "type": "string"
+        },
+        "mean": {
+          "type": "object",
+          "properties": {
+            "numerator": {
+              "type": "string"
+            },
+            "denominator": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "numerator",
+            "denominator"
+          ],
+          "additionalProperties": false
+        },
+        "source_indices": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          ]
+        }
+      },
+      "required": [
+        "replicate",
+        "mean",
+        "source_indices"
+      ],
+      "additionalProperties": false
+    },
+    "experiment_trial": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "state": {
+          "enum": [
+            "completed",
+            "failed",
+            "pruned",
+            "ambiguous",
+            "not_started"
+          ]
+        },
+        "reason": {
+          "type": "string"
+        },
+        "request_sha256": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "result": {},
+        "journal": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "claim": {
+                  "type": "string"
+                },
+                "receipt": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "claim",
+                "receipt"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "state",
+        "reason",
+        "request_sha256",
+        "result",
+        "journal"
       ],
       "additionalProperties": false
     }

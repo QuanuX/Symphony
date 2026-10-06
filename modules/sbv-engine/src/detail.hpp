@@ -64,12 +64,15 @@ inline Json base(const std::string &origin) {
           {"sections", s}};
 }
 std::string read_file(const std::string &, std::int64_t);
+void require_new_file(const std::string &);
 void create_file(const std::string &, const std::string &, std::int64_t);
 Json persist(Json, const Json &, const std::string &, std::int64_t);
 Json run(const Json &, std::int64_t);
 Json compose(const Json &, std::int64_t);
 Json compose_joint(const Json &, std::int64_t);
 Json evaluate(const Json &, std::int64_t);
+Json resample(const Json &, std::int64_t);
+Json experiment(const Json &, std::int64_t);
 Json analyze(const Json &, std::int64_t);
 Json compare(const Json &, std::int64_t);
 Json result_select(const Json &, std::int64_t);

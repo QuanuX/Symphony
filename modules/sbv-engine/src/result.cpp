@@ -34,6 +34,24 @@ std::string read_file(const std::string &path, std::int64_t end) {
   return e::read_regular_file_no_follow("/", relative(path), artifact_bytes,
                                         end);
 }
+void require_new_file(const std::string &path) {
+  relative(path);
+  const auto parent = std::filesystem::path(path).parent_path();
+  FD dir(::open("/", O_RDONLY | O_DIRECTORY | O_CLOEXEC));
+  need(dir.n >= 0, "output root unavailable");
+  for (const auto &part : parent.relative_path()) {
+    const auto next = ::openat(dir.n, part.c_str(),
+                               O_RDONLY | O_DIRECTORY | O_NOFOLLOW | O_CLOEXEC);
+    need(next >= 0, "output parent must exist without symlinks");
+    ::close(dir.n);
+    dir.n = next;
+  }
+  struct stat st{};
+  const auto leaf = std::filesystem::path(path).filename().string();
+  need(::fstatat(dir.n, leaf.c_str(), &st, AT_SYMLINK_NOFOLLOW) != 0 &&
+           errno == ENOENT,
+       "output must not exist before experiment execution");
+}
 void create_file(const std::string &path, const std::string &bytes,
                  std::int64_t end) {
   need(bytes.size() <= artifact_bytes, "artifact exceeds 128 MiB bound");
@@ -53,7 +71,7 @@ void create_file(const std::string &path, const std::string &bytes,
   // Exclusive staging and linkat publication give no-replace semantics. Readers
   // see either no result or a fully written result, never a partial JSON file.
   const auto temp = ".sbv-" + dec(::getpid()) + "-" +
-                    e::sha256_hex(bytes).substr(0, 24) + ".tmp";
+                    e::sha256_hex(leaf + "\n" + bytes).substr(0, 24) + ".tmp";
   FD file(::openat(dir.n, temp.c_str(),
                    O_WRONLY | O_CREAT | O_EXCL | O_NOFOLLOW | O_CLOEXEC, 0600));
   need(file.n >= 0, "exclusive artifact staging failed");
@@ -227,7 +245,9 @@ Json dispatch(const std::string &op, const Json &p, std::int64_t end) {
                       "return_quantiles", "liquidity_summary", "fill_quality",
                       "allocation_costs", "activation_moments",
                       "series_summary", "series_moments", "series_quantiles",
-                      "equity_drawdown", "return_ratios"})},
+                      "equity_drawdown", "return_ratios",
+                      "bootstrap_mean_distribution",
+                      "bootstrap_mean_quantiles"})},
         {"execution_models",
          Json::array({"none", "touch_observation", "user_probability",
                       "observed_trade_levels", "external_outcomes",
@@ -246,6 +266,10 @@ Json dispatch(const std::string &op, const Json &p, std::int64_t end) {
     return d::compose(p, end);
   if (op == "compose_joint")
     return d::compose_joint(p, end);
+  if (op == "resample")
+    return d::resample(p, end);
+  if (op == "experiment")
+    return d::experiment(p, end);
   if (op == "analyze")
     return d::analyze(p, end);
   if (op == "compare")

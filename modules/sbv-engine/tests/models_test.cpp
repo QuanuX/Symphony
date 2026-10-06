@@ -290,7 +290,7 @@ int main() try {
   auto catalogue =
       call("catalogue", {{"protocol", "symphony.sbv.catalogue-input.v1"}});
   check(catalogue.at("models").size() == 6 &&
-        catalogue.at("studies").size() == 16);
+        catalogue.at("studies").size() == 18);
   J joint{
       {"protocol", "symphony.sbv.compose-joint-input.v1"},
       {"output_path", root + "/joint.json"},

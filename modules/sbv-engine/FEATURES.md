@@ -31,10 +31,11 @@
         "modules/sbv-engine/tests/liquidity_test.cpp",
         "modules/sbv-engine/tests/models_test.cpp",
         "modules/sbv-engine/tests/planning_test.cpp",
+        "modules/sbv-engine/tests/research_test.cpp",
         "modules/sbv-engine/tests/sbv_test.cpp"
       ],
       "feature_id": "ssfv:symphony:sbv-engine",
-      "how": "C++26 exact arithmetic with explicitly selected round-trip binary64 ratio estimates; user-controlled study and comparison conventions; immutable results with complete terminal access.",
+      "how": "C++26 exact arithmetic and fixed per-replicate random streams; bounded worker scheduling and immutable plan/claim/completion reconciliation; full terminal result access.",
       "implementation_languages": [
         {
           "language": "C++26",
@@ -55,9 +56,11 @@
         "modules/sbv-engine/src/compose_joint.cpp",
         "modules/sbv-engine/src/economics.cpp",
         "modules/sbv-engine/src/evaluate.cpp",
+        "modules/sbv-engine/src/experiment.cpp",
         "modules/sbv-engine/src/liquidity.cpp",
         "modules/sbv-engine/src/model.cpp",
         "modules/sbv-engine/src/planning.cpp",
+        "modules/sbv-engine/src/resample.cpp",
         "modules/sbv-engine/src/result.cpp",
         "modules/sbv-engine/src/run.cpp",
         "modules/sbv-engine/src/select.cpp",
@@ -80,7 +83,7 @@
       "source_scope": "modules/sbv-engine",
       "status": "experimental",
       "title": "Native historical experiments and portable results",
-      "what": "Native closed-census backtesting, exact economics, replay, selectable source-series studies, candidate comparison, typed result selection and disconnected backend/live planning.",
+      "what": "Native multipass backtesting, replay, exact economics, selectable studies and comparison, deterministic bootstrap and durable local native trial execution.",
       "when": "Explicit bounded caller-selected invocation.",
       "where": "Independently versioned and installed owner package.",
       "who": "Direct native consumers, operators and qxctl agents.",
