@@ -28,13 +28,13 @@ func TestSBVInstalledBoundary(t *testing.T) {
 		if e != nil {
 			t.Fatal(e)
 		}
-		return InvokeSBV(context.Background(), prefix, "0.14.0-dev", cwd, op, raw)
+		return InvokeSBV(context.Background(), prefix, "0.15.0-dev", cwd, op, raw)
 	}
 	for _, op := range SBVOperations {
-		if _, _, e := SBVResource(prefix, "0.14.0-dev", op, true); e != nil {
+		if _, _, e := SBVResource(prefix, "0.15.0-dev", op, true); e != nil {
 			t.Fatal(op, e)
 		}
-		if _, _, e := SBVResource(prefix, "0.14.0-dev", op, false); e != nil {
+		if _, _, e := SBVResource(prefix, "0.15.0-dev", op, false); e != nil {
 			t.Fatal(op, e)
 		}
 	}

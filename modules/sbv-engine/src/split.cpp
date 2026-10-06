@@ -1,3 +1,4 @@
+#include "combinatorial.hpp"
 #include "detail.hpp"
 #include <algorithm>
 #include <limits>
@@ -39,6 +40,83 @@ Json intervals(const std::vector<Interval> &v) {
   Json out = Json::array();
   for (auto x : v)
     out.push_back({{"start_ns", dec(x.start)}, {"end_ns", dec(x.end)}});
+  return out;
+}
+struct GroupedPlan {
+  Json groups = Json::array(), folds = Json::array(), selection;
+};
+GroupedPlan grouped_plan(const Json &plan, std::int64_t end) {
+  keys(plan, {"kind", "groups", "test_group_count", "fold_offset", "fold_count",
+              "fit_cutoff_ns"});
+  const auto &groups = plan.at("groups");
+  need(groups.is_array() && groups.size() >= 2,
+       "at least two time groups required");
+  const auto k = u64(plan.at("test_group_count"));
+  need(k > 0 && k < groups.size(),
+       "test_group_count must leave training groups");
+  std::set<std::string> ids;
+  U previous_end = 0;
+  for (const auto &g : groups) {
+    deadline(end);
+    keys(g, {"id", "start_ns", "end_ns"});
+    const auto id = str(g.at("id"));
+    const auto a = u64(g.at("start_ns")), b = u64(g.at("end_ns"));
+    need(!id.empty() && id.size() <= 256 && ids.insert(id).second,
+         "bounded unique group id required");
+    need(
+        a < b && a >= previous_end,
+        "time groups must be nonempty, ordered and disjoint; gaps are allowed");
+    previous_end = b;
+  }
+  const auto cutoff = u64(plan.at("fit_cutoff_ns"));
+  const auto total = combinatorial::choose(groups.size(), k, end);
+  auto rank = combinatorial::Natural(plan.at("fold_offset"));
+  need(rank.compare(total) <= 0, "fold offset exceeds combination count");
+  auto remaining = total;
+  remaining.subtract(rank);
+  // A single materialized page must be host-addressable. The complete space
+  // and page offset do not have that restriction.
+  auto count = plan.at("fold_count").is_null() ? u64(Json(remaining.text()))
+                                               : u64(plan.at("fold_count"));
+  need(combinatorial::Natural(count).compare(remaining) <= 0 &&
+           count <= std::numeric_limits<std::size_t>::max(),
+       "fold page exceeds remaining combinations or host address space");
+  GroupedPlan out;
+  out.groups = groups;
+  std::vector<std::size_t> picked;
+  if (count)
+    picked = combinatorial::unrank(groups.size(), k, rank, end);
+  for (U i = 0; i < count; ++i) {
+    deadline(end);
+    Json train = Json::array(), test = Json::array();
+    std::size_t at = 0;
+    for (std::size_t j = 0; j < groups.size(); ++j) {
+      if (at < picked.size() && picked[at] == j) {
+        test.push_back(dec(j));
+        ++at;
+      } else
+        train.push_back(dec(j));
+    }
+    out.folds.push_back({{"id", "combination-" + rank.text()},
+                         {"combination_rank", rank.text()},
+                         {"train_groups", train},
+                         {"test_groups", test},
+                         {"fit_cutoff_ns", dec(cutoff)}});
+    rank.increment();
+    if (i + 1 < count)
+      combinatorial::next(picked, groups.size());
+  }
+  out.selection = {
+      {"total_combinations", total.text()},
+      {"fold_offset", plan.at("fold_offset")},
+      {"materialized_folds", dec(count)},
+      {"next_fold_offset",
+       rank.compare(total) < 0 ? Json(rank.text()) : Json(nullptr)},
+      {"complete_space",
+       plan.at("fold_offset") == "0" && rank.compare(total) == 0},
+      {"test_appearances_per_group_in_complete_space",
+       combinatorial::choose(groups.size() - 1, k - 1, end).text()},
+      {"ordering", "lexicographic input group indices"}};
   return out;
 }
 Json fold_plan(const Json &plan) {
@@ -129,14 +207,32 @@ Json split(const Json &p, std::int64_t end) {
            source.at(ptr).size() <= 65536,
        "bounded split source array required");
   const auto &rows = source.at(ptr);
-  const auto plans = fold_plan(p.at("plan"));
-  need(rows.size() * plans.size() <= 131072,
-       "split row-fold workload bound 131072");
+  const bool grouped = str(p.at("plan").at("kind")) == "combinatorial";
+  auto gp = grouped ? grouped_plan(p.at("plan"), end) : GroupedPlan{};
+  const auto plans = grouped ? gp.folds : fold_plan(p.at("plan"));
+  need(grouped || rows.size() * plans.size() <= 131072,
+       "legacy split row-fold workload bound 131072");
+  need(plans.empty() || rows.size() <= std::numeric_limits<std::size_t>::max() /
+                                           plans.size(),
+       "split row-fold size exceeds host representation");
+  std::vector<Interval> group_windows;
+  for (const auto &g : gp.groups)
+    group_windows.push_back({u64(g.at("start_ns")), u64(g.at("end_ns"))});
+  auto group_at = [&](U t) {
+    auto it = std::upper_bound(group_windows.begin(), group_windows.end(), t,
+                               [](U time, auto w) { return time < w.start; });
+    if (it == group_windows.begin() || t >= (it - 1)->end)
+      return group_windows.size();
+    return static_cast<std::size_t>(it - group_windows.begin() - 1);
+  };
+  std::vector<U> test_uses(group_windows.size()),
+      train_uses(group_windows.size());
   struct Observation {
     Interval label;
     U available;
   };
   std::vector<Observation> observations;
+  std::vector<std::size_t> row_groups;
   Json table = Json::array();
   const bool retain = p.at("retain_rows").get<bool>();
   std::vector<std::size_t> row_bytes;
@@ -155,6 +251,7 @@ Json split(const Json &p, std::int64_t end) {
          available = has_available ? u64(row.at(ap)) : 0;
     need(a <= b, "reversed label interval");
     observations.push_back({{a, b}, available});
+    row_groups.push_back(group_at(a));
     row_bytes.push_back(retain ? row.dump().size() : 0);
     table.push_back({{"source_index", dec(i)},
                      {"id", id},
@@ -177,23 +274,45 @@ Json split(const Json &p, std::int64_t end) {
   U ready = 0;
   for (const auto &f : plans) {
     deadline(end);
-    keys(f, {"id", "train_start_ns", "train_end_ns", "test_start_ns",
-             "test_end_ns", "fit_cutoff_ns"});
     const auto id = str(f.at("id"));
-    need(!id.empty() && id.size() <= 256 && fold_ids.insert(id).second,
-         "bounded unique fold id required");
-    const auto train_start = u64(f.at("train_start_ns")),
-               train_end = u64(f.at("train_end_ns")),
-               test_start = u64(f.at("test_start_ns")),
-               test_end = u64(f.at("test_end_ns")),
-               cutoff = u64(f.at("fit_cutoff_ns"));
-    need(train_start < train_end && test_start < test_end,
-         "nonempty half-open selection windows required");
+    need(!id.empty() && (grouped || id.size() <= 256) &&
+             fold_ids.insert(id).second,
+         "unique fold id required");
+    const auto cutoff = u64(f.at("fit_cutoff_ns"));
+    U train_start = 0, train_end = 0, test_start = 0, test_end = 0;
+    std::vector<bool> held_out(group_windows.size());
+    if (grouped) {
+      for (const auto &g : f.at("test_groups")) {
+        held_out[u64(g)] = true;
+        ++test_uses[u64(g)];
+      }
+      test_start = group_windows[u64(f.at("test_groups")[0])].start;
+      for (const auto &g : f.at("train_groups")) {
+        train_end = std::max(train_end, group_windows[u64(g)].end);
+        ++train_uses[u64(g)];
+      }
+    } else {
+      keys(f, {"id", "train_start_ns", "train_end_ns", "test_start_ns",
+               "test_end_ns", "fit_cutoff_ns"});
+      train_start = u64(f.at("train_start_ns"));
+      train_end = u64(f.at("train_end_ns"));
+      test_start = u64(f.at("test_start_ns"));
+      test_end = u64(f.at("test_end_ns"));
+      need(train_start < train_end && test_start < test_end,
+           "nonempty half-open selection windows required");
+    }
     need(chronology != "past_only" ||
              (train_end <= test_start && cutoff <= test_start),
-         "past_only requires train window and fit cutoff no later than test "
-         "start");
-    auto in_test = [&](U t) { return t >= test_start && t < test_end; };
+         "past_only requires all train windows and fit cutoff no later than "
+         "first test start");
+    auto in_test = [&](std::size_t i) {
+      auto g = row_groups[i];
+      return grouped ? g < held_out.size() && held_out[g]
+                     : observations[i].label.start >= test_start &&
+                           observations[i].label.start < test_end;
+    };
+    std::vector<U> group_label_ends(group_windows.size());
+    std::vector<bool> populated(group_windows.size());
     std::vector<Interval> labels, padded;
     U last_label_end = 0;
     Json train = Json::array(), test = Json::array(), excluded = Json::array(),
@@ -201,7 +320,7 @@ Json split(const Json &p, std::int64_t end) {
     for (std::size_t i = 0; i < observations.size(); ++i) {
       deadline(end);
       auto x = observations[i].label;
-      if (!in_test(x.start))
+      if (!in_test(i))
         continue;
       test.push_back(dec(i));
       retain_row(test_rows, i);
@@ -211,28 +330,53 @@ Json split(const Json &p, std::int64_t end) {
       if (purge == "label_overlap")
         padded.push_back({sub(x.start, before), add(x.end, after)});
       last_label_end = std::max(last_label_end, x.end);
+      if (grouped) {
+        const auto g = row_groups[i];
+        populated[g] = true;
+        group_label_ends[g] = std::max(group_label_ends[g], x.end);
+      }
     }
     labels = merge(std::move(labels));
     padded = merge(std::move(padded));
-    const auto embargo_end = test.empty() ? 0 : add(last_label_end, embargo);
+    const auto embargo_end =
+        grouped || test.empty() ? 0 : add(last_label_end, embargo);
+    Json embargo_records = Json::array();
+    std::vector<Interval> embargo_union;
+    if (grouped && embargo) {
+      for (std::size_t g = 0; g < group_windows.size(); ++g) {
+        if (!populated[g])
+          continue;
+        const auto a = group_label_ends[g], b = add(a, embargo);
+        embargo_records.push_back({{"group_index", dec(g)},
+                                   {"start_exclusive_ns", dec(a)},
+                                   {"end_inclusive_ns", dec(b)}});
+        // Integer nanoseconds let (a,b] use the shared closed-interval lookup.
+        embargo_union.push_back({add(a, 1), b});
+      }
+      embargo_union = merge(std::move(embargo_union));
+    }
     U candidates = 0, overlap_count = 0, late_count = 0, unknown_count = 0,
       embargo_count = 0, retained_overlaps = 0, retained_late = 0;
     for (std::size_t i = 0; i < observations.size(); ++i) {
       deadline(end);
       const auto x = observations[i];
-      if (x.label.start < train_start || x.label.start >= train_end)
+      if (grouped ? row_groups[i] >= held_out.size() || held_out[row_groups[i]]
+                  : x.label.start < train_start || x.label.start >= train_end)
         continue;
       ++candidates;
       const bool overlap = overlaps(labels, x.label),
                  late = has_available && x.available > cutoff,
-                 embargoed = !test.empty() && x.label.start > last_label_end &&
-                             x.label.start <= embargo_end;
+                 embargoed = grouped ? overlaps(embargo_union,
+                                                {x.label.start, x.label.start})
+                                     : !test.empty() &&
+                                           x.label.start > last_label_end &&
+                                           x.label.start <= embargo_end;
       overlap_count += overlap;
       late_count += late;
       unknown_count += !has_available;
       embargo_count += embargoed;
       Json reasons = Json::array();
-      if (in_test(x.label.start))
+      if (in_test(i))
         reasons.push_back("test_member");
       if (purge == "label_overlap" && overlaps(padded, x.label))
         reasons.push_back("label_overlap_or_padding");
@@ -264,7 +408,7 @@ Json split(const Json &p, std::int64_t end) {
          {"test_label_union", intervals(labels)},
          {"purge_union", intervals(padded)},
          {"embargo_interval",
-          test.empty() || embargo == 0
+          grouped || test.empty() || embargo == 0
               ? Json(nullptr)
               : Json{{"start_exclusive_ns", dec(last_label_end)},
                      {"end_inclusive_ns", dec(embargo_end)}}},
@@ -276,6 +420,8 @@ Json split(const Json &p, std::int64_t end) {
            {"embargo_candidates", dec(embargo_count)},
            {"retained_overlaps", dec(retained_overlaps)},
            {"retained_late", dec(retained_late)}}}});
+    if (grouped)
+      folds.back()["embargo_intervals"] = embargo_records;
   }
   auto result = base(
       "user-selected temporal sample partitions; no model fitting executed");
@@ -284,6 +430,20 @@ Json split(const Json &p, std::int64_t end) {
                           {"folds", dec(folds.size())},
                           {"available_folds", dec(ready)},
                           {"clock_domain", p.at("clock_domain")}});
+  if (grouped) {
+    Json groups = gp.groups;
+    for (std::size_t g = 0; g < groups.size(); ++g) {
+      groups[g]["group_index"] = dec(g);
+      groups[g]["source_indices"] = Json::array();
+      groups[g]["selected_test_folds"] = dec(test_uses[g]);
+      groups[g]["selected_train_candidate_folds"] = dec(train_uses[g]);
+    }
+    for (std::size_t i = 0; i < row_groups.size(); ++i)
+      if (row_groups[i] < groups.size())
+        groups[row_groups[i]]["source_indices"].push_back(dec(i));
+    s["groups"] = section(groups);
+    s["combination_selection"] = section(gp.selection);
+  }
   s["observations"] = section(table);
   s["folds"] = section(folds);
   auto choices = p;
@@ -293,7 +453,8 @@ Json split(const Json &p, std::int64_t end) {
       section({{"engine_version", version},
                {"source_result_sha256", source.at("content_sha256")},
                {"source_pointer", p.at("pointer")},
-               {"profile", "temporal_intervals_v1"},
+               {"profile", grouped ? "combinatorial_intervals_v1"
+                                   : "temporal_intervals_v1"},
                {"provider_requests", "0"},
                {"additional_spend_usd", "0"}});
   s["resources"] =
@@ -321,6 +482,20 @@ Json split(const Json &p, std::int64_t end) {
        "All intervals share the caller-declared nanosecond clock. Missing "
        "clocks, censored label ends and unrepresented feature lookbacks are "
        "not inferred."}));
+  if (grouped) {
+    s["diagnostics"]["data"][1] =
+        "Purging uses the union of selected test labels with chosen padding. "
+        "Embargo is applied separately after the maximum label end of each "
+        "populated test group. Empty groups create no embargo.";
+    s["diagnostics"]["data"][2] =
+        "Test groups are selected k-of-N; training candidates come only from "
+        "complementary groups. Group membership uses label start, not label "
+        "end. Gaps and rows outside groups are not assigned.";
+    s["diagnostics"]["data"].push_back(
+        "Combinations and group-use counts describe the selected page. Folds "
+        "share observations; no independent performance paths, fitted models, "
+        "nested CV or untouched holdout are implied.");
+  }
   s["source_context"] =
       section({{"choices", source.at("sections").at("choices")},
                {"provenance", source.at("sections").at("provenance")}});

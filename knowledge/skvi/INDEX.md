@@ -22837,7 +22837,7 @@ These entries locate existing implementation and regression surfaces referenced 
 - scope: Experimental 0.11 native and installed terminal contract boundaries.
 - relationships: depends_on -> `modules/sbv-engine/SPEC.md`
 - consumers: qxctl, agents and external fitting pipelines
-- deferred_projections: fitted models, enforced holdouts and combinatorial validation
+- deferred_projections: fitted models, untouched holdout proofs and stitched performance paths
 - notes: Partitions preserve user policies and disclose exclusions without claiming statistical independence.
 - status: canonical
 
@@ -22851,7 +22851,7 @@ These entries locate existing implementation and regression surfaces referenced 
 - scope: Experimental 0.11 native and installed terminal contract boundaries.
 - relationships: depends_on -> `modules/sbv-engine/SPEC.md`
 - consumers: qxctl, agents and external fitting pipelines
-- deferred_projections: fitted models, enforced holdouts and combinatorial validation
+- deferred_projections: fitted models, untouched holdout proofs and stitched performance paths
 - notes: Partitions preserve user policies and disclose exclusions without claiming statistical independence.
 - status: canonical
 
@@ -22865,7 +22865,7 @@ These entries locate existing implementation and regression surfaces referenced 
 - scope: Experimental 0.11 native and installed terminal contract boundaries.
 - relationships: depends_on -> `modules/sbv-engine/SPEC.md`
 - consumers: qxctl, agents and external fitting pipelines
-- deferred_projections: fitted models, enforced holdouts and combinatorial validation
+- deferred_projections: fitted models, untouched holdout proofs and stitched performance paths
 - notes: Partitions preserve user policies and disclose exclusions without claiming statistical independence.
 - status: canonical
 
@@ -22923,4 +22923,33 @@ These entries locate existing implementation and regression surfaces referenced 
 - consumers: qxctl, native SDK and external research pipelines
 - deferred_projections: shared device buffers, NUMA placement and distributed residency
 - notes: Caller selects pageable or locked RAM; no implicit file fallback.
+- status: canonical
+
+### SBV combinatorial.hpp
+
+- path: `modules/sbv-engine/src/combinatorial.hpp`
+- title: SBV combinatorial.hpp
+- surface_type: implementation contract or test
+- truth_role: User-selected temporal partitions with explicit interval and availability semantics
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.15 native and installed terminal contract boundaries.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, agents and external fitting pipelines
+- deferred_projections: fitted models, untouched holdout proofs and stitched performance paths
+- notes: Partitions preserve user policies and disclose exclusions without claiming statistical independence.
+- status: canonical
+
+
+### SBV combinatorial_test.cpp
+
+- path: `modules/sbv-engine/tests/combinatorial_test.cpp`
+- title: SBV combinatorial_test.cpp
+- surface_type: implementation contract or test
+- truth_role: User-selected temporal partitions with explicit interval and availability semantics
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.15 native and installed terminal contract boundaries.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, agents and external fitting pipelines
+- deferred_projections: fitted models, untouched holdout proofs and stitched performance paths
+- notes: Partitions preserve user policies and disclose exclusions without claiming statistical independence.
 - status: canonical

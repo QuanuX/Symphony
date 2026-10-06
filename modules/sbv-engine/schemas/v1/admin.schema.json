@@ -2958,6 +2958,65 @@
                 "fold_count"
               ],
               "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "kind": {
+                  "const": "combinatorial"
+                },
+                "groups": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "start_ns": {
+                        "type": "string"
+                      },
+                      "end_ns": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "start_ns",
+                      "end_ns"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "test_group_count": {
+                  "type": "string"
+                },
+                "fold_offset": {
+                  "type": "string"
+                },
+                "fold_count": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "fit_cutoff_ns": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "kind",
+                "groups",
+                "test_group_count",
+                "fold_offset",
+                "fold_count",
+                "fit_cutoff_ns"
+              ],
+              "additionalProperties": false
             }
           ]
         },
@@ -3213,7 +3272,7 @@
           "const": "symphony.sbv.capabilities.v1"
         },
         "engine_version": {
-          "const": "0.14.0-dev"
+          "const": "0.15.0-dev"
         },
         "cpu": {
           "type": "object",
@@ -3838,7 +3897,7 @@
           "const": "symphony.sbv.catalogue.v1"
         },
         "engine_version": {
-          "const": "0.14.0-dev"
+          "const": "0.15.0-dev"
         },
         "models": {
           "type": "array",
@@ -4429,7 +4488,7 @@
           "const": "symphony.sbv.backend-plan.v1"
         },
         "engine_version": {
-          "const": "0.14.0-dev"
+          "const": "0.15.0-dev"
         },
         "status": {
           "enum": [
@@ -4722,7 +4781,7 @@
           "const": "symphony.sbv.live-plan.v1"
         },
         "engine_version": {
-          "const": "0.14.0-dev"
+          "const": "0.15.0-dev"
         },
         "can_activate": {
           "const": false
@@ -10324,36 +10383,74 @@
           "type": "string"
         },
         "windows": {
-          "type": "object",
-          "properties": {
-            "id": {
-              "type": "string"
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "train_start_ns": {
+                  "type": "string"
+                },
+                "train_end_ns": {
+                  "type": "string"
+                },
+                "test_start_ns": {
+                  "type": "string"
+                },
+                "test_end_ns": {
+                  "type": "string"
+                },
+                "fit_cutoff_ns": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id",
+                "train_start_ns",
+                "train_end_ns",
+                "test_start_ns",
+                "test_end_ns",
+                "fit_cutoff_ns"
+              ],
+              "additionalProperties": false
             },
-            "train_start_ns": {
-              "type": "string"
-            },
-            "train_end_ns": {
-              "type": "string"
-            },
-            "test_start_ns": {
-              "type": "string"
-            },
-            "test_end_ns": {
-              "type": "string"
-            },
-            "fit_cutoff_ns": {
-              "type": "string"
+            {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "combination_rank": {
+                  "type": "string"
+                },
+                "train_groups": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "test_groups": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "fit_cutoff_ns": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id",
+                "combination_rank",
+                "train_groups",
+                "test_groups",
+                "fit_cutoff_ns"
+              ],
+              "additionalProperties": false
             }
-          },
-          "required": [
-            "id",
-            "train_start_ns",
-            "train_end_ns",
-            "test_start_ns",
-            "test_end_ns",
-            "fit_cutoff_ns"
-          ],
-          "additionalProperties": false
+          ]
         },
         "status": {
           "enum": [
@@ -10537,6 +10634,29 @@
             "retained_late"
           ],
           "additionalProperties": false
+        },
+        "embargo_intervals": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "group_index": {
+                "type": "string"
+              },
+              "start_exclusive_ns": {
+                "type": "string"
+              },
+              "end_inclusive_ns": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "group_index",
+              "start_exclusive_ns",
+              "end_inclusive_ns"
+            ],
+            "additionalProperties": false
+          }
         }
       },
       "required": [
@@ -10553,6 +10673,88 @@
         "purge_union",
         "embargo_interval",
         "diagnostics"
+      ],
+      "additionalProperties": false
+    },
+    "combinatorial_group": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "start_ns": {
+          "type": "string"
+        },
+        "end_ns": {
+          "type": "string"
+        },
+        "group_index": {
+          "type": "string"
+        },
+        "source_indices": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "selected_test_folds": {
+          "type": "string"
+        },
+        "selected_train_candidate_folds": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "start_ns",
+        "end_ns",
+        "group_index",
+        "source_indices",
+        "selected_test_folds",
+        "selected_train_candidate_folds"
+      ],
+      "additionalProperties": false
+    },
+    "combination_selection": {
+      "type": "object",
+      "properties": {
+        "total_combinations": {
+          "type": "string"
+        },
+        "fold_offset": {
+          "type": "string"
+        },
+        "materialized_folds": {
+          "type": "string"
+        },
+        "next_fold_offset": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "complete_space": {
+          "type": "boolean"
+        },
+        "test_appearances_per_group_in_complete_space": {
+          "type": "string"
+        },
+        "ordering": {
+          "const": "lexicographic input group indices"
+        }
+      },
+      "required": [
+        "total_combinations",
+        "fold_offset",
+        "materialized_folds",
+        "next_fold_offset",
+        "complete_space",
+        "test_appearances_per_group_in_complete_space",
+        "ordering"
       ],
       "additionalProperties": false
     }

@@ -2,7 +2,7 @@
 
 ## Version and ownership
 
-Contract v1; package `sbv-engine` 0.14.0-dev; engine `symphony-sbv`; vector `sbv`. C++26 owns computations, result sealing and artifact queries. Go qxctl verifies the exact installation and projects native evidence. OWNER-INTERFACE.json is the exact operation declaration; generated C++/Go metadata must match it. This release is experimental.
+Contract v1; package `sbv-engine` 0.15.0-dev; engine `symphony-sbv`; vector `sbv`. C++26 owns computations, result sealing and artifact queries. Go qxctl verifies the exact installation and projects native evidence. OWNER-INTERFACE.json is the exact operation declaration; generated C++/Go metadata must match it. This release is experimental.
 
 The engine uses knowledge-vector-engine-cpp 0.2.0-dev and sqav-databento-dbn-cpp 0.5.0-dev, with that adapter's exact static dependencies. It performs no provider calls. Signal/replay semantics belong to SBV; acquisition remains SQAV, metadata SQMV, batch ownership SQFV, transformation SQTV, physical stores SQPV and recipient delivery SQDV. Its portable local JSON result is a derived artifact, not a new market-data persistence service. SQPV/SQDV integrations are not wired in this release.
 
@@ -213,7 +213,7 @@ The versioned native shared library exposes `symphony_sbv_sdk_abi_v1`, `symphony
 
 The exact installed `SymphonySbvSdkConfig.cmake` exports `Symphony::SbvSdk`. Its public C header has no C++/JSON/vendor dependency. `sdk.hpp` is an optional RAII byte-buffer wrapper. A separately packaged external standard-library Python consumer in the implementation evidence loads the same installed ABI, verifies local receipt/file identities and response correspondence, and reproduces native results without recomputing finance. It is deliberately outside the Python-free native repository and installation. Its receipt checks are local integrity checks, not an authenticated distribution signature or protection against a concurrent hostile owner of the installation. External consumer languages do not become engine dependencies.
 
-JSON transfer currently copies bytes and preserves rational/integer strings. The SDK does not pretend to be zero-copy Arrow/DLPack, a vendor model runtime, a CUDA implementation or an isolation boundary for untrusted native pointers. Those optional adapters can compose with the independent interop lifetime/stream contract and native external-outcome admission. All nineteen owner operations remain available through qxctl; capabilities reports the installed SDK contract and bindings. The shared library adds a language boundary rather than a separate quantitative meaning.
+JSON transfer currently copies bytes and preserves rational/integer strings. The SDK does not pretend to be zero-copy Arrow/DLPack, a vendor model runtime, a CUDA implementation or an isolation boundary for untrusted native pointers. Those optional adapters can compose with the independent interop lifetime/stream contract and native external-outcome admission. All twenty-four owner operations remain available through qxctl; capabilities reports the installed SDK contract and bindings. The shared library adds a language boundary rather than a separate quantitative meaning.
 
 
 ## Temporal partitions — experimental 0.11
@@ -228,9 +228,79 @@ Choose `by_fit_cutoff` to exclude candidates whose supplied whole-observation av
 
 Output retains normalized observation coordinates, each resolved fold window, train/test source indices, exclusion reasons, exact test/purge interval unions and embargo endpoints. Index-only output binds the source digest/pointer; selected `retain_rows` embeds unchanged source rows for direct native analyze/resample or external fitting. No weights are normalized or recalculated. All nodes are inspectable/queryable/selectable/exportable through qxctl and the installed SDK. The source artifact and original replay remain untouched and linked by digest.
 
-Bounds: 65,536 source rows, 128 folds, 131,072 row-fold pairs, 64 MiB cumulative canonical embedded row bytes and the existing 128 MiB artifact/JSON-value limit. An explicit zero-fold plan and empty source array are supported. This implementation uses one CPU worker, interval-union sorting and binary search; independent split trials may use the existing experiment runner. Oversized retention rejects without silently switching to index-only output. This release has twenty native operations and twenty-three qxctl leaves.
+For explicit/rolling/expanding plans: 65,536 source rows, 128 folds, 131,072 row-fold pairs, 64 MiB cumulative canonical embedded row bytes and the existing 128 MiB artifact/JSON-value limit. An explicit zero-fold plan and empty source array are supported. This implementation uses one CPU worker, interval-union sorting and binary search; independent split trials may use the existing experiment runner. Oversized retention rejects without silently switching to index-only output. The current release has twenty-four native operations and twenty-seven qxctl leaves.
 
-The operation computes partitions, not fitted models, predicted scores, enforced holdout authority, nested/combinatorial CV paths, multiple-testing correction or independence. Repeated test selection remains in the fold records. Arbitrary external protocols and user-defined clocks/conventions remain possible through other implementations and exact source artifacts.
+The operation computes partitions, not fitted models, predicted scores, enforced holdout authority, nested validation or stitched combinatorial performance paths, multiple-testing correction or independence. Repeated test selection remains in the fold records. Arbitrary external protocols and user-defined clocks/conventions remain possible through other implementations and exact source artifacts.
+
+## Combinatorial temporal partitions (0.15)
+
+The additive `split` plan kind `combinatorial` selects k-of-N time groups as
+held-out groups, with the complementary groups as training candidates. Supply
+`groups` in chronological order, each with a unique `id` and uint64 nanosecond
+`start_ns`/`end_ns`. Groups are nonempty, disjoint half-open windows; adjacent
+windows and gaps are permitted. At least two groups and `0 < test_group_count < N`
+are required. Labels are assigned by start time even if they cross group ends.
+Rows in gaps or outside the groups remain visible in the observation table and
+source artifact; they are not silently assigned to a nearby group. Row order is
+preserved. No observation weights or user fields are changed.
+
+Supply a common `fit_cutoff_ns` and the existing user-selected chronology,
+availability, purging, padding and embargo policies. `past_only` requires every
+training window end and the cutoff to be no later than the first held-out
+window start in every requested fold; ordinary symmetric combinations therefore
+use `unrestricted`. No policy is silently changed and no fold is silently skipped.
+A fold with an empty retained training or test selection is explicitly unavailable.
+
+Purging uses the union of actual test label intervals across all selected groups,
+with the chosen padding. Embargo applies separately to each populated test group:
+`(maximum label end in that group, maximum end + embargo_ns]`. It can therefore
+exclude rows following an earlier held-out group even when another held-out group
+occurs later. Empty groups create no embargo. Group-level embargo records preserve
+their origin, including overlapping embargo intervals. Native membership checks
+use their merged union. The existing `embargo_interval` is null for this profile;
+`embargo_intervals` is the explicit per-group list. All timestamp overflow and
+underflow reject before artifact publication. Ignoring availability, disabling
+purging or setting zero embargo remains a user choice; overlap/late diagnostics
+remain visible.
+
+Combinations are ordered lexicographically by input group indices. `fold_offset`
+is a canonical nonnegative decimal string of arbitrary precision. `fold_count`
+is a canonical uint64 decimal page size, including zero for discovery, or null
+to materialize all remaining folds when that page fits the host representation.
+Exact total counts and offsets are not limited to uint64. Direct unranking skips
+whole combination subtrees; it does not enumerate earlier folds. Nonzero pages
+past the end or extending beyond the remaining space reject. Offset equal to the
+total with a zero/null page returns an empty terminal page. Offset beyond the
+total always rejects. `next_fold_offset`, `complete_space`, the total number of
+combinations and full-space test appearances per group describe the selection.
+A completed page is not presented as completion of the entire combination space.
+No implicit deadline, random subset, sampling, fold cap or row-fold workload cap
+is imposed on this new plan mode. The user selects the page and deadline.
+
+This is still an in-memory result-artifact consumer: the existing 65,536-row
+source profile, 64 MiB embedded-row retention profile, 128 MiB artifact and JSON
+value representation bounds apply. These are distinct from the unlimited-size
+local DBN dataset feed. Page sizes must be host-addressable and the selected output
+must fit the artifact representation; a large source/retention-format release
+remains separate work. No silent truncation, spill or index-only substitution
+occurs. Index-only output avoids copying retained rows across folds.
+
+Results use `combinatorial_intervals_v1`, with exact source/digest/pointer and
+choices. `groups` records source membership plus selected-page test/training
+candidate use counts. `folds[*].windows` binds `combination_rank`, train/test group
+indices and cutoff; group window definitions are in `groups`. All exclusions,
+retained rows, diagnostics and counts are available through the same qxctl
+`sbv split`, `result inspect/query/select/export`, schema, and installed SDK
+surfaces. The ordinary expanding template remains available; the installed
+split schema describes this alternative plan fully. Existing temporal plans
+retain their selection and embargo semantics.
+
+These are combinatorial partitions with optionally selected purging. They do not
+fit a model, assemble independent out-of-sample performance paths, compute a
+multiple-testing estimator, orchestrate nested fits or prove an untouched holdout.
+Repeated test use is disclosed rather than prohibited. External fitting/search
+pipelines can consume exact fold indices or retained rows and preserve the
+native result digest as their lineage reference.
 
 ## Resident datasets (0.12)
 
