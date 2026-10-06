@@ -36,7 +36,13 @@
         "forward_markout"
       ],
       "workers": "4",
-      "extensions": {}
+      "extensions": {},
+      "memory_budget_bytes": null,
+      "dataset_limits": {
+        "max_source_bytes": null,
+        "max_source_events": null,
+        "max_metadata_bytes": null
+      }
     },
     "compose": {
       "protocol": "symphony.sbv.compose-input.v1",
@@ -130,7 +136,13 @@
         "path_excursion"
       ],
       "workers": "4",
-      "extensions": {}
+      "extensions": {},
+      "memory_budget_bytes": null,
+      "dataset_limits": {
+        "max_source_bytes": null,
+        "max_source_events": null,
+        "max_metadata_bytes": null
+      }
     },
     "compose_joint": {
       "protocol": "symphony.sbv.compose-joint-input.v1",
@@ -266,7 +278,13 @@
         "maximum": "4096"
       },
       "emit_checkpoint": true,
-      "extensions": {}
+      "extensions": {},
+      "memory_budget_bytes": null,
+      "dataset_limits": {
+        "max_source_bytes": null,
+        "max_source_events": null,
+        "max_metadata_bytes": null
+      }
     },
     "liquidity": {
       "protocol": "symphony.sbv.liquidity-input.v1",
@@ -534,11 +552,16 @@
       "source_path": "/absolute/private/sample.dbn",
       "source_sha256": "REPLACE_WITH_FILE_SHA256",
       "dataset": "XNAS.ITCH",
-      "memory_budget_bytes": "67108864",
+      "memory_budget_bytes": null,
       "max_concurrent_jobs": "4",
       "worker_budget": "16",
       "idle_timeout_ms": "3600000",
-      "residency": "pageable"
+      "residency": "pageable",
+      "dataset_limits": {
+        "max_source_bytes": null,
+        "max_source_events": null,
+        "max_metadata_bytes": null
+      }
     },
     "dataset_inspect": {
       "protocol": "symphony.sbv.dataset-inspect-input.v1",
@@ -582,7 +605,13 @@
           "forward_markout"
         ],
         "workers": "4",
-        "extensions": {}
+        "extensions": {},
+        "memory_budget_bytes": null,
+        "dataset_limits": {
+          "max_source_bytes": null,
+          "max_source_events": null,
+          "max_metadata_bytes": null
+        }
       },
       "output_path": "/absolute/private/resident-result.json"
     },

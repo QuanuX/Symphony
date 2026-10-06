@@ -2,7 +2,7 @@
 
 ## Version and ownership
 
-Contract v1; package `sbv-engine` 0.12.0-dev; engine `symphony-sbv`; vector `sbv`. C++26 owns computations, result sealing and artifact queries. Go qxctl verifies the exact installation and projects native evidence. OWNER-INTERFACE.json is the exact operation declaration; generated C++/Go metadata must match it. This release is experimental.
+Contract v1; package `sbv-engine` 0.13.0-dev; engine `symphony-sbv`; vector `sbv`. C++26 owns computations, result sealing and artifact queries. Go qxctl verifies the exact installation and projects native evidence. OWNER-INTERFACE.json is the exact operation declaration; generated C++/Go metadata must match it. This release is experimental.
 
 The engine uses knowledge-vector-engine-cpp 0.2.0-dev and sqav-databento-dbn-cpp 0.5.0-dev, with that adapter's exact static dependencies. It performs no provider calls. Signal/replay semantics belong to SBV; acquisition remains SQAV, metadata SQMV, batch ownership SQFV, transformation SQTV, physical stores SQPV and recipient delivery SQDV. Its portable local JSON result is a derived artifact, not a new market-data persistence service. SQPV/SQDV integrations are not wired in this release.
 
@@ -18,7 +18,7 @@ Paths must be absolute and component-safe. Reads and parent traversal reject sym
 
 ## Historical run
 
-One uncompressed DBNv1 or DBNv3 MBO file, one instrument, at most 64 MiB and 200,000 records. The caller supplies the exact source SHA256 and dataset; both are verified. Availability order is nondecreasing provider ts_recv with original source ordinal as tie-break. Unknown receive timestamps or mixed instruments are rejected; input is not silently sorted. Event timestamp, receive timestamp, sequence, flags and all other decoded MBO fields remain separate. The DBN undefined price sentinel INT64_MAX (9223372036854775807) is retained verbatim in replay but excluded from trade predicates. Provider timestamp sentinels remain original values; ts_recv must be known for this ordered mode.
+One uncompressed DBNv1 or DBNv3 MBO file, one instrument, with no application-imposed source-byte, metadata-byte or event-count ceiling. Optional constraints are selected by the user (see Dataset resource authority). The caller supplies the exact source SHA256 and dataset; both are verified. Availability order is nondecreasing provider ts_recv with original source ordinal as tie-break. Unknown receive timestamps or mixed instruments are rejected; input is not silently sorted. Event timestamp, receive timestamp, sequence, flags and all other decoded MBO fields remain separate. The DBN undefined price sentinel INT64_MAX (9223372036854775807) is retained verbatim in replay but excluded from trade predicates. Provider timestamp sentinels remain original values; ts_recv must be known for this ordered mode.
 
 The initial criteria catalogue contains spaced positive-size trades and direction of current trade relative to the preceding observed trade. The user selects minimum size, spacing, direction and a cap of 1–4096 signals. Zero spacing is admitted. Direction uses past/current observations only. Selection stops admitting signals at the cap; the reported additional eligible count uses the final admitted signal as spacing anchor. This count is diagnostic, not the count of a hypothetical uncapped strategy. The closed signal array has its own canonical SHA256 and cannot depend on later execution/replay choices.
 
@@ -48,7 +48,7 @@ qxctl export first obtains native inspection, then reads no-follow bytes and ver
 
 ### External census and model evaluation in 0.2
 
-`evaluate` reads the same exact bounded Databento source as `run`, and admits `symphony.sbv.external-census.v1`. Signal identifiers remain exactly user supplied, unique within the census and ordered by nondecreasing source ordinal; multiple signals may share an ordinal. The available timestamp must match that source record's receive timestamp. Anchor prices are explicit signed nanounits, not inferred order instructions. The DBN undefined-price sentinel is rejected as an anchor. Context references are inert attributable strings, never executed or fetched.
+`evaluate` reads the same exact user-constrained Databento source as `run`, and admits `symphony.sbv.external-census.v1`. Signal identifiers remain exactly user supplied, unique within the census and ordered by nondecreasing source ordinal; multiple signals may share an ordinal. The available timestamp must match that source record's receive timestamp. Anchor prices are explicit signed nanounits, not inferred order instructions. The DBN undefined-price sentinel is rejected as an anchor. Context references are inert attributable strings, never executed or fetched.
 
 The declared causal prefix is an end-exclusive source ordinal. `causal_declared` bounds it at the signal cursor; `retrospective` permits later evidence within the source. Producer id/version, optional artifact hash and `deterministic_declared`, `nondeterministic` or `uncaptured` reproducibility remain visible. Reference validity does not prove external code was causal or deterministic. The census digest covers its complete canonical declaration including source identity and producer, before model admission. Changing a follow-up model cannot change that digest. Changing original source bytes intentionally changes source/census identity.
 
@@ -267,15 +267,15 @@ an existing endpoint. Multiple datasets use separate independently owned hosts.
 `network_listener: false` means no TCP/network endpoint; this local IPC endpoint
 is explicitly part of this release. No live feed or provider connection is made.
 
-`memory_budget_bytes` bounds accounted simultaneous source-string capacity plus
+When non-null, `memory_budget_bytes` bounds accounted simultaneous source-string capacity plus
 decoded event-vector capacity during load; raw DBN bytes are discarded after
 validation/decoding. It is **not** a process RSS cap or a budget for results,
 allocator overhead, OS pages, metadata or job working sets. `pageable` selects
 ordinary RAM (the OS may page it); `locked` requires successful `mlock` of the
 decoded event span and fails explicitly if unavailable. OS locking rounds to
-pages; this is not CUDA-pinned memory. Current source admission remains 64 MiB,
-200,000 events and one ordered instrument. Book additionally requires one
-publisher/channel. These are scoped initial decoder/engine limits.
+pages; this is not CUDA-pinned memory. Source admission requires one ordered
+instrument; book additionally requires one publisher/channel. These format and
+model contracts are separate from dataset volume. See the 0.13 resource controls below.
 
 The caller selects 1–16 simultaneous jobs and a 1–64 aggregate inner worker
 budget. An over-capacity submission is rejected without execution; there is no
@@ -309,3 +309,52 @@ portable SBV artifact, with explicit `resources.data.dataset_feed` evidence.
 The result's quantitative sections do not change merely because data was
 preloaded. No claim of fastest performance, device integration, NUMA placement,
 cross-host handles or restart-persistent RAM is made.
+
+
+## Dataset resource authority (0.13)
+
+SBV imposes no dataset-volume policy ceiling. File-fed `run`, `evaluate` and
+`book`, and resident `dataset_load`, accept `dataset_limits` with exactly
+`max_source_bytes`, `max_source_events`, and `max_metadata_bytes`. Each value is
+null (no user limit) or a positive canonical uint64 decimal string. Omission
+means all three values are null. `memory_budget_bytes` is likewise null or a
+positive canonical uint64 decimal string; it remains required for resident load
+and is optional for file-fed producers, where omission means null. Templates
+select null throughout. Zero, numeric JSON values, noncanonical decimal strings,
+and unrepresentable explicit limits fail. Terabyte-scale limits are accepted;
+there is no smaller engine-selected maximum or automatic budget substitution.
+
+Limits apply before admission and decoded allocation where possible. The memory
+budget accounts the source string capacity including its NUL and decoded event
+vector capacity simultaneously; it is not total RSS or a job working-set cap.
+File loading reserves the observed file size instead of repeatedly growing the
+buffer. SHA256 hashes directly from that buffer with two constant-size padding
+blocks, without making another complete file copy. Allocation failures and
+checked arithmetic/address-space/container representation bounds still apply.
+The selected DBN format itself has finite field widths. No dataset is silently
+truncated, sampled, spilled, split or relocated to satisfy a selected constraint.
+
+The additive local reader contract is
+`symphony.sqav.databento.dataset-user-limits.v1`, provided by
+`FileView::inspect_dataset` / `DatasetLimits` in the selected 0.5.0-dev native
+adapter. The old `FileView::inspect` / `Limits` bounded inspection and paid
+historical capture/download contracts remain unchanged; no provider version,
+acquisition budget, or live integration is selected by this local reader change.
+
+Resident inspect/release evidence reports the original nullable budget and all
+three selected constraints. A job may additionally select tighter admission
+constraints; they are checked against the complete loaded snapshot, even if the
+job only examines a small window. Omitting job controls does not modify the
+original resident allocation or its load policy. Dataset feed evidence records
+the reader contract and source-load controls. Capabilities advertises null
+`max_source_bytes` and `max_source_events` and `dataset_limit_authority: user`.
+All controls and evidence use the same qxctl, SDK and portable JSON surfaces.
+
+This removes dataset-size ceilings; it does not implement pooled cluster RAM,
+distributed loading, NUMA placement, streaming or GPU memory placement. The
+current local execution host must fit the dataset and complete the operation
+within the existing process-v1 deadline (qxctl: 300 seconds). Result retention,
+strategy profiles, concurrency and administrative-message contracts have their
+own documented limits. Removing the dataset ceilings alone is not evidence of
+terabyte-scale throughput or completion. Large-host/distributed and long-running
+job support require their own implementation and measurement.

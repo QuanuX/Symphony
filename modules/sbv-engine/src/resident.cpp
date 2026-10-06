@@ -293,13 +293,17 @@ Json launch(const Json &w) {
 }
 void control_shape(const std::string &op, const Json &p) {
   if (op == "dataset_load") {
-    keys(p, {"protocol", "directory", "instance_id", "source_path",
-             "source_sha256", "dataset", "memory_budget_bytes", "residency",
-             "max_concurrent_jobs", "worker_budget", "idle_timeout_ms"});
+    keys_optional(p,
+                  {"protocol", "directory", "instance_id", "source_path",
+                   "source_sha256", "dataset", "memory_budget_bytes",
+                   "residency", "max_concurrent_jobs", "worker_budget",
+                   "idle_timeout_ms"},
+                  {"dataset_limits"});
     need(p.at("residency") == "pageable" || p.at("residency") == "locked",
          "residency must be pageable or locked");
-    need(u64(p.at("memory_budget_bytes")) > 0,
-         "positive load buffer budget required");
+    need(p.at("memory_budget_bytes").is_null() ||
+             u64(p.at("memory_budget_bytes")) > 0,
+         "positive load buffer budget or null required");
     need(u64(p.at("max_concurrent_jobs")) >= 1 &&
              u64(p.at("max_concurrent_jobs")) <= 16,
          "resident concurrent job bound 1..16");
@@ -393,8 +397,7 @@ int resident_worker() {
     endpoint.ino = st.st_ino;
     need(::chmod(a.sun_path, 0600) == 0 && ::listen(listener.n, 16) == 0,
          "resident endpoint activation failed");
-    auto data = load_dataset(p, startup_end, u64(p.at("memory_budget_bytes")),
-                             p.at("residency") == "locked");
+    auto data = load_dataset(p, startup_end, p.at("residency") == "locked");
     data->resident_identity = {{"directory", p.at("directory")},
                                {"instance_id", p.at("instance_id")},
                                {"engine_version", version}};
@@ -420,6 +423,7 @@ int resident_worker() {
           {"decoded_bytes", dec(data->events.size() * sizeof(data->events[0]))},
           {"load_buffer_bytes", dec(data->load_buffer_bytes)},
           {"memory_budget_bytes", p.at("memory_budget_bytes")},
+          {"dataset_limits", data->limits_evidence()},
           {"residency", p.at("residency")},
           {"source_reads", "1"},
           {"decode_passes", "1"},

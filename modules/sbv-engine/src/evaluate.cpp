@@ -11,8 +11,11 @@ namespace db = sqav::databento;
 Json event_json(const db::Mbo &, std::size_t);
 std::uint64_t end_at(std::uint64_t, std::uint64_t);
 Json evaluate(const Json &p, std::int64_t end, const Dataset *resident) {
-  keys(p, {"protocol", "source_path", "source_sha256", "dataset", "output_path",
-           "census", "model", "replay", "studies", "workers", "extensions"});
+  keys_optional(p,
+                {"protocol", "source_path", "source_sha256", "dataset",
+                 "output_path", "census", "model", "replay", "studies",
+                 "workers", "extensions"},
+                {"memory_budget_bytes", "dataset_limits"});
   const auto workers = u64(p.at("workers"));
   need(workers >= 1 && workers <= 64, "workers 1..64");
   need(p.at("extensions").is_object(), "extensions object required");

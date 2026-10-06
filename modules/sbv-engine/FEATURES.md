@@ -97,7 +97,7 @@
       "source_scope": "modules/sbv-engine",
       "status": "experimental",
       "title": "Native historical experiments and portable results",
-      "what": "Native multipass backtesting, replay, exact economics, selectable studies and comparison, deterministic bootstrap and durable local native trial execution. Temporal interval partitions expose expanding/rolling/explicit schedules, optional purging, embargo and availability filtering. Optional bounded resident DBN preloads share decoded events across native jobs, experiments, qxctl and SDK calls with explicit memory and lifecycle controls.",
+      "what": "Native multipass backtesting, replay, exact economics, selectable studies and comparison, deterministic bootstrap and durable local native trial execution. Temporal interval partitions expose expanding/rolling/explicit schedules, optional purging, embargo and availability filtering. Optional user-constrained resident DBN preloads share decoded events across native jobs, experiments, qxctl and SDK calls with explicit memory and lifecycle controls. Dataset bytes, records, metadata and load memory have nullable user-selected limits, with no built-in dataset-volume cap.",
       "when": "Explicit bounded caller-selected invocation.",
       "where": "Independently versioned and installed owner package.",
       "who": "Direct native consumers, operators and qxctl agents.",

@@ -8,7 +8,10 @@ struct Dataset {
   std::string path, sha256, dataset_name;
   sqav::databento::Metadata metadata;
   std::vector<sqav::databento::Mbo> events;
-  std::uint64_t source_bytes{}, load_buffer_bytes{};
+  std::uint64_t source_bytes{}, metadata_bytes{}, load_buffer_bytes{};
+  Json selected_limits = Json::object();
+  Json memory_budget = nullptr;
+  Json limits_evidence() const;
   Json resident_identity = nullptr;
   bool book_compatible = true, locked = false;
   Dataset() = default;
@@ -18,6 +21,5 @@ struct Dataset {
   Json evidence(bool resident) const;
 };
 std::unique_ptr<Dataset> load_dataset(const Json &, std::int64_t,
-                                      std::uint64_t budget = 256U << 20,
                                       bool lock = false);
 } // namespace symphony::sbv::detail

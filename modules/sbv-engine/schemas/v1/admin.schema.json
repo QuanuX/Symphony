@@ -132,6 +132,61 @@
         },
         "extensions": {
           "type": "object"
+        },
+        "memory_budget_bytes": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[1-9][0-9]*$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "dataset_limits": {
+          "type": "object",
+          "properties": {
+            "max_source_bytes": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[1-9][0-9]*$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "max_source_events": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[1-9][0-9]*$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "max_metadata_bytes": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[1-9][0-9]*$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "max_source_bytes",
+            "max_source_events",
+            "max_metadata_bytes"
+          ],
+          "additionalProperties": false
         }
       },
       "required": [
@@ -662,6 +717,61 @@
         },
         "extensions": {
           "type": "object"
+        },
+        "memory_budget_bytes": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[1-9][0-9]*$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "dataset_limits": {
+          "type": "object",
+          "properties": {
+            "max_source_bytes": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[1-9][0-9]*$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "max_source_events": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[1-9][0-9]*$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "max_metadata_bytes": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[1-9][0-9]*$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "max_source_bytes",
+            "max_source_events",
+            "max_metadata_bytes"
+          ],
+          "additionalProperties": false
         }
       },
       "required": [
@@ -1284,6 +1394,61 @@
         },
         "extensions": {
           "type": "object"
+        },
+        "memory_budget_bytes": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[1-9][0-9]*$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "dataset_limits": {
+          "type": "object",
+          "properties": {
+            "max_source_bytes": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[1-9][0-9]*$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "max_source_events": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[1-9][0-9]*$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "max_metadata_bytes": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[1-9][0-9]*$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "max_source_bytes",
+            "max_source_events",
+            "max_metadata_bytes"
+          ],
+          "additionalProperties": false
         }
       },
       "required": [
@@ -2877,7 +3042,15 @@
           "type": "string"
         },
         "memory_budget_bytes": {
-          "type": "string"
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[1-9][0-9]*$"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "max_concurrent_jobs": {
           "type": "string"
@@ -2893,6 +3066,50 @@
             "pageable",
             "locked"
           ]
+        },
+        "dataset_limits": {
+          "type": "object",
+          "properties": {
+            "max_source_bytes": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[1-9][0-9]*$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "max_source_events": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[1-9][0-9]*$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "max_metadata_bytes": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[1-9][0-9]*$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "max_source_bytes",
+            "max_source_events",
+            "max_metadata_bytes"
+          ],
+          "additionalProperties": false
         }
       },
       "required": [
@@ -2996,7 +3213,7 @@
           "const": "symphony.sbv.capabilities.v1"
         },
         "engine_version": {
-          "const": "0.12.0-dev"
+          "const": "0.13.0-dev"
         },
         "cpu": {
           "type": "object",
@@ -3095,15 +3312,22 @@
               "pattern": "^(0|[1-9][0-9]*)$"
             },
             "max_source_events": {
-              "type": "string",
-              "pattern": "^(0|[1-9][0-9]*)$"
+              "type": "null"
+            },
+            "max_source_bytes": {
+              "type": "null"
+            },
+            "dataset_limit_authority": {
+              "const": "user"
             }
           },
           "required": [
             "max_artifact_bytes",
             "max_composed_paths",
             "max_signals",
-            "max_source_events"
+            "max_source_events",
+            "max_source_bytes",
+            "dataset_limit_authority"
           ],
           "additionalProperties": false
         },
@@ -3602,7 +3826,7 @@
           "const": "symphony.sbv.catalogue.v1"
         },
         "engine_version": {
-          "const": "0.12.0-dev"
+          "const": "0.13.0-dev"
         },
         "models": {
           "type": "array",
@@ -4193,7 +4417,7 @@
           "const": "symphony.sbv.backend-plan.v1"
         },
         "engine_version": {
-          "const": "0.12.0-dev"
+          "const": "0.13.0-dev"
         },
         "status": {
           "enum": [
@@ -4486,7 +4710,7 @@
           "const": "symphony.sbv.live-plan.v1"
         },
         "engine_version": {
-          "const": "0.12.0-dev"
+          "const": "0.13.0-dev"
         },
         "can_activate": {
           "const": false
@@ -5056,7 +5280,15 @@
           "type": "string"
         },
         "memory_budget_bytes": {
-          "type": "string"
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[1-9][0-9]*$"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "residency": {
           "type": "string"
@@ -5090,6 +5322,50 @@
         },
         "protocol": {
           "const": "symphony.sbv.dataset-load.v1"
+        },
+        "dataset_limits": {
+          "type": "object",
+          "properties": {
+            "max_source_bytes": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[1-9][0-9]*$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "max_source_events": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[1-9][0-9]*$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "max_metadata_bytes": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[1-9][0-9]*$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "max_source_bytes",
+            "max_source_events",
+            "max_metadata_bytes"
+          ],
+          "additionalProperties": false
         }
       },
       "required": [
@@ -5114,7 +5390,8 @@
         "max_concurrent_jobs",
         "worker_budget",
         "idle_timeout_ms",
-        "protocol"
+        "protocol",
+        "dataset_limits"
       ],
       "additionalProperties": false
     },
@@ -5152,7 +5429,15 @@
           "type": "string"
         },
         "memory_budget_bytes": {
-          "type": "string"
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[1-9][0-9]*$"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "residency": {
           "type": "string"
@@ -5186,6 +5471,50 @@
         },
         "protocol": {
           "const": "symphony.sbv.dataset-inspect.v1"
+        },
+        "dataset_limits": {
+          "type": "object",
+          "properties": {
+            "max_source_bytes": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[1-9][0-9]*$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "max_source_events": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[1-9][0-9]*$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "max_metadata_bytes": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[1-9][0-9]*$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "max_source_bytes",
+            "max_source_events",
+            "max_metadata_bytes"
+          ],
+          "additionalProperties": false
         }
       },
       "required": [
@@ -5210,7 +5539,8 @@
         "max_concurrent_jobs",
         "worker_budget",
         "idle_timeout_ms",
-        "protocol"
+        "protocol",
+        "dataset_limits"
       ],
       "additionalProperties": false
     },
@@ -5312,7 +5642,15 @@
           "type": "string"
         },
         "memory_budget_bytes": {
-          "type": "string"
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[1-9][0-9]*$"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "residency": {
           "type": "string"
@@ -5346,6 +5684,50 @@
         },
         "protocol": {
           "const": "symphony.sbv.dataset-release.v1"
+        },
+        "dataset_limits": {
+          "type": "object",
+          "properties": {
+            "max_source_bytes": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[1-9][0-9]*$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "max_source_events": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[1-9][0-9]*$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "max_metadata_bytes": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[1-9][0-9]*$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "max_source_bytes",
+            "max_source_events",
+            "max_metadata_bytes"
+          ],
+          "additionalProperties": false
         }
       },
       "required": [
@@ -5370,7 +5752,8 @@
         "max_concurrent_jobs",
         "worker_budget",
         "idle_timeout_ms",
-        "protocol"
+        "protocol",
+        "dataset_limits"
       ],
       "additionalProperties": false
     }

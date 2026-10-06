@@ -10,6 +10,7 @@
 #include <symphony/knowledge/engine/error.hpp>
 #include <symphony/knowledge/engine/protocol.hpp>
 #include <symphony/sbv/sbv.hpp>
+#include <symphony/sqav/databento/dbn.hpp>
 #include <sys/socket.h>
 #include <sys/stat.h>
 #include <sys/un.h>
@@ -261,6 +262,117 @@ int main() try {
   if (!released)
     call("dataset_release", release);
   check(released);
+  // Cross all former source-byte, event-count and metadata ceilings together.
+  namespace db = symphony::sqav::databento;
+  constexpr std::size_t extra_symbols = 15000, count = 1200000;
+  std::vector<unsigned char> large(original.begin(), original.begin() + 116);
+  for (std::size_t i = 0; i <= extra_symbols; ++i)
+    large.insert(large.end(), original.begin() + 116, original.begin() + 187);
+  large.insert(large.end(), original.begin() + 187, original.begin() + 360);
+  auto write_le = [&](std::size_t offset, std::uint64_t value, unsigned width) {
+    for (unsigned i = 0; i < width; ++i)
+      large[offset + i] = static_cast<unsigned char>(value >> (8 * i));
+  };
+  const auto metadata_size = large.size();
+  write_le(4, metadata_size - 8, 4);
+  write_le(112, extra_symbols + 1, 4);
+  large.reserve(metadata_size + count * 56);
+  for (std::size_t i = 0; i < count; ++i) {
+    const auto offset = large.size();
+    large.insert(large.end(), bytes.begin() + 360, bytes.begin() + 416);
+    write_le(offset + 8, 1609160400000000000ULL + i * 100, 8);
+    write_le(offset + 40, 1609160400000000000ULL + i * 100, 8);
+  }
+  check(large.size() > (64U << 20) && metadata_size > (1U << 20));
+  db::FileView view;
+  check(db::FileView::inspect_dataset(large, {}, view) == db::Status::ok);
+  check(view.metadata().record_count == count);
+  const auto prior_data = view.original().data();
+  check(db::FileView::inspect(large, {64U << 20, 1U << 20, 1U << 20}, view) == db::Status::limit);
+  check(view.original().data() == prior_data);
+  for (auto l : {db::DatasetLimits{large.size() - 1, {}, {}},
+                 db::DatasetLimits{{}, metadata_size - 1, {}},
+                 db::DatasetLimits{{}, {}, count - 1}}) {
+    check(db::FileView::inspect_dataset(large, l, view) == db::Status::limit);
+    check(view.original().data() == prior_data);
+  }
+  check(db::FileView::inspect_dataset(large, {0, {}, {}}, view) ==
+        db::Status::invalid_argument);
+  check(db::FileView::inspect_dataset(large,
+                                      {UINT64_MAX, UINT64_MAX, UINT64_MAX},
+                                      view) == db::Status::ok);
+  const auto large_path = root + "/large.dbn";
+  {
+    std::ofstream f(large_path, std::ios::binary);
+    f.write(reinterpret_cast<const char *>(large.data()), large.size());
+  }
+  p["source_path"] = large_path;
+  p["source_sha256"] = e::sha256_hex(std::span<const unsigned char>(large));
+  p["criteria"]["max_signals"] = "2";
+  p["output_path"] = root + "/large-file.json";
+  large.clear();
+  large.shrink_to_fit();
+  call("run", p); // omitted controls mean no user ceiling
+  const auto file_large = read(p["output_path"]);
+  check(file_large["sections"]["resources"]["data"]["dataset_feed"]
+                  ["memory_budget_bytes"]
+                      .is_null());
+  J unlimited{{"max_source_bytes", nullptr},
+              {"max_source_events", nullptr},
+              {"max_metadata_bytes", nullptr}};
+  load["source_path"] = p["source_path"];
+  load["source_sha256"] = p["source_sha256"];
+  load["memory_budget_bytes"] = nullptr;
+  load["dataset_limits"] = unlimited;
+  load["instance_id"] = "00000000000000000000000000000008";
+  load["idle_timeout_ms"] = "60000";
+  const auto big = call("dataset_load", load);
+  check(big["events"] == std::to_string(count) &&
+        big["memory_budget_bytes"].is_null() &&
+        big["dataset_limits"] == unlimited);
+  job["instance_id"] = load["instance_id"];
+  job["request"] = p;
+  job["request"].erase("output_path");
+  job["request"]["memory_budget_bytes"] = "1099511627776";
+  job["request"]["dataset_limits"] = unlimited;
+  for (auto key :
+       {"max_source_bytes", "max_source_events", "max_metadata_bytes"})
+    job["request"]["dataset_limits"][key] = "1099511627776";
+  job["output_path"] = root + "/large-resident.json";
+  call("dataset_execute", job);
+  const auto resident_large = read(job["output_path"]);
+  for (auto key : {"signals", "execution", "studies", "replay", "summary",
+                   "provenance"})
+    check(resident_large["sections"][key] == file_large["sections"][key]);
+  check(resident_large["sections"]["choices"]["data"]["memory_budget_bytes"] == "1099511627776");
+  job["output_path"] = root + "/large-rejected.json";
+  for (auto key :
+       {"max_source_bytes", "max_source_events", "max_metadata_bytes"}) {
+    job["request"]["dataset_limits"] = unlimited;
+    job["request"]["dataset_limits"][key] = "1";
+    rejects([&] { call("dataset_execute", job); });
+  }
+  job["request"]["dataset_limits"] = unlimited;
+  job["request"]["memory_budget_bytes"] = "1";
+  rejects([&] { call("dataset_execute", job); });
+  p["output_path"] = root + "/file-rejected.json";
+  p["dataset_limits"] = unlimited;
+  for (auto key :
+       {"max_source_bytes", "max_source_events", "max_metadata_bytes"}) {
+    p["dataset_limits"] = unlimited;
+    p["dataset_limits"][key] = "1";
+    rejects([&] { call("run", p); });
+  }
+  p["dataset_limits"] = unlimited;
+  for (J invalid : {J("0"), J("01"), J("18446744073709551616"), J(100)}) {
+    p["memory_budget_bytes"] = invalid;
+    rejects([&] { call("run", p); });
+  }
+  release["instance_id"] = load["instance_id"];
+  check(call("dataset_release", release)["state"] == "released");
+  check(caps["limits"]["max_source_events"].is_null() &&
+        caps["limits"]["max_source_bytes"].is_null() &&
+        caps["limits"]["dataset_limit_authority"] == "user");
   std::cout << checks << " resident dataset checks passed\n";
   return 0;
 } catch (const std::exception &x) {

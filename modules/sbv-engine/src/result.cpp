@@ -265,7 +265,8 @@ Json dispatch(const std::string &op, const Json &p, std::int64_t end) {
         {"economic_transforms",
          Json::array({"linear_price_pnl", "filled_quantity_markout"})},
         {"limits",
-         {{"max_source_events", "200000"},
+         {{"max_source_events", nullptr}, {"max_source_bytes", nullptr},
+          {"dataset_limit_authority", "user"},
           {"max_signals", "4096"},
           {"max_artifact_bytes", d::dec(d::artifact_bytes)},
           {"max_composed_paths", "65536"}}}};

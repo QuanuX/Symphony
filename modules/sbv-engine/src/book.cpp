@@ -81,9 +81,12 @@ Json load_result(const Json &ref, std::int64_t end) {
 }
 } // namespace
 Json book(const Json &p, std::int64_t end, const Dataset *resident) {
-  keys(p, {"protocol", "source_path", "source_sha256", "dataset",
-           "census_result", "signal_ids", "output_path", "initial_state",
-           "on_anomaly", "replay", "frames", "emit_checkpoint", "extensions"});
+  keys_optional(p,
+                {"protocol", "source_path", "source_sha256", "dataset",
+                 "census_result", "signal_ids", "output_path", "initial_state",
+                 "on_anomaly", "replay", "frames", "emit_checkpoint",
+                 "extensions"},
+                {"memory_budget_bytes", "dataset_limits"});
   need(p.at("extensions").is_object() && p.at("emit_checkpoint").is_boolean(),
        "invalid book choices");
   const auto policy = str(p.at("on_anomaly"));

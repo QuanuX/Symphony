@@ -2,7 +2,7 @@
 
 #include <array>
 #include <cstdint>
-#include <vector>
+#include <algorithm>
 
 namespace symphony::knowledge::engine {
 namespace {
@@ -33,25 +33,15 @@ constexpr std::uint32_t rotate_right(std::uint32_t value, unsigned int count) {
 }
 
 std::string sha256_hex(std::span<const unsigned char> bytes) {
-    std::vector<unsigned char> message(bytes.begin(), bytes.end());
-    const auto bit_length = static_cast<std::uint64_t>(message.size()) * 8U;
-    message.push_back(0x80U);
-    while ((message.size() % 64U) != 56U) {
-        message.push_back(0U);
-    }
-    for (int shift = 56; shift >= 0; shift -= 8) {
-        message.push_back(static_cast<unsigned char>((bit_length >> shift) & 0xffU));
-    }
-
     std::array<std::uint32_t, 8> state = {
         0x6a09e667U, 0xbb67ae85U, 0x3c6ef372U, 0xa54ff53aU,
         0x510e527fU, 0x9b05688cU, 0x1f83d9abU, 0x5be0cd19U,
     };
 
-    for (std::size_t offset = 0; offset < message.size(); offset += 64U) {
+    const auto compress = [&](const unsigned char* message) {
         std::array<std::uint32_t, 64> schedule{};
         for (std::size_t index = 0; index < 16U; ++index) {
-            const std::size_t base = offset + index * 4U;
+            const std::size_t base = index * 4U;
             schedule[index] =
                 (static_cast<std::uint32_t>(message[base]) << 24U) |
                 (static_cast<std::uint32_t>(message[base + 1U]) << 16U) |
@@ -103,7 +93,23 @@ std::string sha256_hex(std::span<const unsigned char> bytes) {
         state[5] += f;
         state[6] += g;
         state[7] += h;
-    }
+    };
+
+    const auto full_bytes = bytes.size() - bytes.size() % 64U;
+    for (std::size_t offset = 0; offset < full_bytes; offset += 64U)
+        compress(bytes.data() + offset);
+    // Padding needs at most two blocks; never duplicate the caller's dataset.
+    std::array<unsigned char, 128> tail{};
+    const auto remainder = bytes.size() - full_bytes;
+    if (remainder != 0)
+        std::copy_n(bytes.data() + full_bytes, remainder, tail.data());
+    tail[remainder] = 0x80U;
+    const std::size_t padded_bytes = remainder < 56U ? 64U : 128U;
+    const auto bit_length = static_cast<std::uint64_t>(bytes.size()) * 8U;
+    for (unsigned i = 0; i < 8U; ++i)
+        tail[padded_bytes - 1U - i] = static_cast<unsigned char>(bit_length >> (8U * i));
+    compress(tail.data());
+    if (padded_bytes == 128U) compress(tail.data() + 64U);
 
     // A stream may suppress bad_alloc and expose a partial digest. Allocate
     // the complete result before writing so failure propagates to the caller.

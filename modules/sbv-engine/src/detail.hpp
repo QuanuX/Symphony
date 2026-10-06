@@ -22,6 +22,22 @@ inline void keys(const Json &v, std::initializer_list<const char *> names) {
   for (auto n : names)
     need(v.contains(n), "required field missing");
 }
+inline void keys_optional(const Json &v,
+                          std::initializer_list<const char *> required,
+                          std::initializer_list<const char *> optional) {
+  need(v.is_object(), "object required");
+  for (auto name : required)
+    need(v.contains(name), "required field missing");
+  for (const auto &[name, value] : v.items()) {
+    (void)value;
+    bool allowed = false;
+    for (auto key : required)
+      allowed |= name == key;
+    for (auto key : optional)
+      allowed |= name == key;
+    need(allowed, "unexpected object field");
+  }
+}
 inline std::string str(const Json &v) {
   need(v.is_string(), "string required");
   return v.get<std::string>();

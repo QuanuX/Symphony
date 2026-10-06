@@ -52,7 +52,8 @@ bool binding(const Description &d, const FileView &f) noexcept {
   return d.source.provider_ref == "databento" &&
          d.source.dataset_id == f.metadata().dataset &&
          d.source.native_schema_ref == native_schema &&
-         d.source.native_encoding_ref == encoding_for_version(f.metadata().version) &&
+         d.source.native_encoding_ref ==
+             encoding_for_version(f.metadata().version) &&
          (!d.source_record_count ||
           *d.source_record_count == f.metadata().record_count);
 }
@@ -101,16 +102,26 @@ Status FileView::inspect(ByteView b, const Limits &l, FileView &out) noexcept {
       l.max_metadata_bytes == 0 || l.max_metadata_bytes > (1U << 20) ||
       l.max_records == 0 || l.max_records > (1ULL << 20))
     return Status::invalid_argument;
-  if (b.size() > l.max_file_bytes)
+  return inspect_dataset(
+      b, {l.max_file_bytes, l.max_metadata_bytes, l.max_records}, out);
+}
+Status FileView::inspect_dataset(ByteView b, const DatasetLimits &l,
+                                 FileView &out) noexcept {
+  for (const auto &limit :
+       {l.max_file_bytes, l.max_metadata_bytes, l.max_records})
+    if (limit && *limit == 0)
+      return Status::invalid_argument;
+  if (l.max_file_bytes && b.size() > *l.max_file_bytes)
     return Status::limit;
   if (b.size() < 8)
     return Status::malformed;
   if (b[0] != 'D' || b[1] != 'B' || b[2] != 'N' || (b[3] != 1 && b[3] != 3))
     return Status::unsupported;
   const std::uint64_t meta_size = 8ULL + le<std::uint32_t>(b.data() + 4);
-  if (meta_size > l.max_metadata_bytes)
+  if (l.max_metadata_bytes && meta_size > *l.max_metadata_bytes)
     return Status::limit;
-  if (meta_size < 128 || meta_size > b.size() || (b[3] == 3 && meta_size % 8 != 0))
+  if (meta_size < 128 || meta_size > b.size() ||
+      (b[3] == 3 && meta_size % 8 != 0))
     return Status::malformed;
   if (le<std::uint16_t>(b.data() + 24) != 0)
     return Status::unsupported; // single MBO schema
@@ -169,7 +180,7 @@ Status FileView::inspect(ByteView b, const Limits &l, FileView &out) noexcept {
   if (body_size % stride != 0)
     return Status::malformed;
   m.record_count = body_size / stride;
-  if (m.record_count > l.max_records)
+  if (l.max_records && m.record_count > *l.max_records)
     return Status::limit;
   Mbo record;
   for (std::uint64_t i = 0; i < m.record_count; ++i) {
@@ -183,14 +194,19 @@ Status FileView::inspect(ByteView b, const Limits &l, FileView &out) noexcept {
   out = ready;
   return Status::ok;
 }
-Status FileView::symbol(std::uint32_t index, std::string_view &out) const noexcept {
-  if (!*this || index >= metadata_.symbols) return Status::invalid_argument;
+Status FileView::symbol(std::uint32_t index,
+                        std::string_view &out) const noexcept {
+  if (!*this || index >= metadata_.symbols)
+    return Status::invalid_argument;
   // inspect() already checked the whole fixed-width list beginning at 116.
   std::string_view value;
   if (!cstr(original_.subspan(116 + static_cast<std::size_t>(index) *
-      metadata_.symbol_cstr_len, metadata_.symbol_cstr_len), &value))
+                                        metadata_.symbol_cstr_len,
+                              metadata_.symbol_cstr_len),
+            &value))
     return Status::internal_error;
-  out = value; return Status::ok;
+  out = value;
+  return Status::ok;
 }
 Status FileView::record(std::uint64_t index, Mbo &out) const noexcept {
   if (!*this || index >= metadata_.record_count)

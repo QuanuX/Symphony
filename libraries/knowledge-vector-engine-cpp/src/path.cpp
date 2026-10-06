@@ -154,7 +154,12 @@ std::string read_regular_file_no_follow(
     }
     auto file = open_regular_no_follow(root, relative_path);
     std::string contents;
-    contents.reserve(std::min<std::size_t>(max_bytes, 65536U));
+    struct stat status {};
+    if (::fstat(file.get(), &status) != 0)
+        throw_path_error("path.file_stat_failed", relative_path);
+    if (status.st_size < 0 || static_cast<std::uintmax_t>(status.st_size) > max_bytes)
+        throw Error("path.file_too_large", relative_path + ": file exceeds byte limit", 5);
+    contents.reserve(static_cast<std::size_t>(status.st_size));
     char buffer[16384];
     for (;;) {
         if (current_unix_time_ms() >= deadline_unix_ms) {
@@ -170,7 +175,7 @@ std::string read_regular_file_no_follow(
         if (count == 0) {
             break;
         }
-        if (contents.size() + static_cast<std::size_t>(count) > max_bytes) {
+        if (static_cast<std::size_t>(count) > max_bytes - contents.size()) {
             throw Error("path.file_too_large", relative_path + ": file exceeds byte limit", 5);
         }
         contents.append(buffer, static_cast<std::size_t>(count));

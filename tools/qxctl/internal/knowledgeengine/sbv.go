@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"path/filepath"
+	"reflect"
 	"regexp"
 	"strconv"
 	"strings"
@@ -15,7 +16,7 @@ var SBVOperations = []string{"capabilities", "run", "compose", "result_inspect",
 var sbvSHA = regexp.MustCompile(`^[0-9a-f]{64}$`)
 
 func sbvSpec() engineSpec {
-	return engineSpec{label: "SBV", moduleID: "sbv-engine", vectorID: "sbv", engineID: "symphony-sbv", componentKind: "vector_engine", processProtocol: processProtocol, operationTimeoutByVersion: map[string]time.Duration{"0.12.0-dev": 5 * time.Minute}}
+	return engineSpec{label: "SBV", moduleID: "sbv-engine", vectorID: "sbv", engineID: "symphony-sbv", componentKind: "vector_engine", processProtocol: processProtocol, operationTimeoutByVersion: map[string]time.Duration{"0.13.0-dev": 5 * time.Minute}}
 }
 func InspectSBV(prefix, version string) (Installation, error) {
 	s := sbvSpec()
@@ -146,15 +147,44 @@ func validateSBVResult(op string, p map[string]any, raw []byte) error {
 		if m["state"] != state {
 			return bad()
 		}
-		for _, k := range []string{"events", "decoded_bytes", "load_buffer_bytes", "memory_budget_bytes", "source_reads", "decode_passes", "active_jobs", "active_workers", "completed_jobs", "failed_jobs", "max_concurrent_jobs", "worker_budget", "idle_timeout_ms"} {
+		for _, k := range []string{"events", "decoded_bytes", "load_buffer_bytes", "source_reads", "decode_passes", "active_jobs", "active_workers", "completed_jobs", "failed_jobs", "max_concurrent_jobs", "worker_budget", "idle_timeout_ms"} {
 			if _, ok := number(k); !ok {
 				return bad()
+			}
+		}
+		if m["memory_budget_bytes"] != nil {
+			if n, ok := number("memory_budget_bytes"); !ok || n == 0 {
+				return bad()
+			}
+		}
+		limits, ok := m["dataset_limits"].(map[string]any)
+		if !ok || len(limits) != 3 {
+			return bad()
+		}
+		for _, k := range []string{"max_source_bytes", "max_source_events", "max_metadata_bytes"} {
+			v, present := limits[k]
+			if !present {
+				return bad()
+			}
+			if v != nil {
+				raw, ok := v.(string)
+				n, e := strconv.ParseUint(raw, 10, 64)
+				if !ok || e != nil || n == 0 || strconv.FormatUint(n, 10) != raw {
+					return bad()
+				}
 			}
 		}
 		if m["source_reads"] != "1" || m["decode_passes"] != "1" || (m["residency"] != "pageable" && m["residency"] != "locked") {
 			return bad()
 		}
 		if op == "dataset_load" {
+			wantLimits, present := p["dataset_limits"]
+			if !present {
+				wantLimits = map[string]any{"max_source_bytes": nil, "max_source_events": nil, "max_metadata_bytes": nil}
+			}
+			if !reflect.DeepEqual(m["dataset_limits"], wantLimits) {
+				return bad()
+			}
 			for _, k := range []string{"source_path", "source_sha256", "dataset", "memory_budget_bytes", "residency", "max_concurrent_jobs", "worker_budget", "idle_timeout_ms"} {
 				if m[k] != p[k] {
 					return bad()

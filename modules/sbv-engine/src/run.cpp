@@ -35,9 +35,11 @@ U end_at(U t, U delta) {
   return t + delta;
 }
 Json run(const Json &p, std::int64_t end, const Dataset *resident) {
-  keys(p,
-       {"protocol", "source_path", "source_sha256", "dataset", "output_path",
-        "criteria", "replay", "execution", "studies", "workers", "extensions"});
+  keys_optional(p,
+                {"protocol", "source_path", "source_sha256", "dataset",
+                 "output_path", "criteria", "replay", "execution", "studies",
+                 "workers", "extensions"},
+                {"memory_budget_bytes", "dataset_limits"});
   const auto &c = p.at("criteria");
   keys(c, {"rule", "spacing_ns", "min_trade_size", "direction", "max_signals"});
   auto rule = str(c.at("rule")), direction = str(c.at("direction"));

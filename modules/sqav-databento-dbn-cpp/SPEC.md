@@ -336,3 +336,21 @@ Primary libcurl references reviewed 28 September 2026:
 https://curl.se/libcurl/c/CURLOPT_PROTOCOLS_STR.html,
 https://curl.se/libcurl/c/CURLOPT_TIMEOUT_MS.html,
 https://curl.se/libcurl/c/CURLOPT_XFERINFOFUNCTION.html.
+
+
+## Additive local dataset reader profile
+
+`dataset_limits_contract` identifies
+`symphony.sqav.databento.dataset-user-limits.v1`. `FileView::inspect_dataset`
+uses `DatasetLimits` with optional uint64 `max_file_bytes`, `max_metadata_bytes`
+and `max_records`. Absence imposes no application policy ceiling; present values
+must be positive and may use the full uint64 representation. Format constraints,
+valid byte spans and host size representation still apply. Parsing is borrowed,
+allocation-free and preserves the previous output view on failure. The complete
+file is validated before publication of a view.
+
+This profile supports user-governed SBV file/resident datasets. It is additive to
+the existing 0.5.0-dev development source and does not alter the bounded `Limits`
+contract used by `inspect`, capture/import, historical acquisition or transport.
+The selected Databento C++ source reference remains v0.68.0. Callers choose the
+new profile explicitly; no existing acquisition safety/budget settings change.

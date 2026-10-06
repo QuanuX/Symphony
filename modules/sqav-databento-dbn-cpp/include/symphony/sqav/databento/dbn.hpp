@@ -12,8 +12,11 @@ inline constexpr std::string_view native_encoding =
     "databento:dbn-v3-uncompressed";
 inline constexpr std::string_view native_encoding_v1 =
     "databento:dbn-v1-uncompressed";
-[[nodiscard]] constexpr std::string_view encoding_for_version(std::uint8_t version) noexcept {
-  return version == 1 ? native_encoding_v1 : version == 3 ? native_encoding : std::string_view{};
+[[nodiscard]] constexpr std::string_view
+encoding_for_version(std::uint8_t version) noexcept {
+  return version == 1   ? native_encoding_v1
+         : version == 3 ? native_encoding
+                        : std::string_view{};
 }
 enum class Status : std::uint8_t {
   ok,
@@ -30,6 +33,13 @@ struct Limits {
   std::uint32_t max_metadata_bytes =
       0;                         // Includes 8-byte prefix; ceiling 1 MiB.
   std::uint64_t max_records = 0; // Positive; ceiling 1,048,576.
+};
+// Local dataset inspection: absent values impose no application policy limit.
+// The legacy bounded capture/download profile above remains unchanged.
+inline constexpr std::string_view dataset_limits_contract =
+    "symphony.sqav.databento.dataset-user-limits.v1";
+struct DatasetLimits {
+  std::optional<std::uint64_t> max_file_bytes, max_metadata_bytes, max_records;
 };
 struct Mbo {
   std::uint16_t publisher_id = 0;
@@ -60,6 +70,8 @@ class FileView final {
 public:
   [[nodiscard]] static Status inspect(ByteView, const Limits &,
                                       FileView &out) noexcept;
+  [[nodiscard]] static Status inspect_dataset(ByteView, const DatasetLimits &,
+                                              FileView &out) noexcept;
   [[nodiscard]] explicit operator bool() const noexcept {
     return !original_.empty();
   }
@@ -69,7 +81,8 @@ public:
     return original_.first(records_offset_);
   }
   // Requested raw symbol list, borrowed from validated metadata.
-  [[nodiscard]] Status symbol(std::uint32_t index, std::string_view &out) const noexcept;
+  [[nodiscard]] Status symbol(std::uint32_t index,
+                              std::string_view &out) const noexcept;
   [[nodiscard]] Status record(std::uint64_t index, Mbo &out) const noexcept;
 
 private:
