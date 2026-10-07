@@ -1094,6 +1094,78 @@
       "output_path": "/absolute/user-exports/original.dbn",
       "receipt_path": "/absolute/user-results/source-export.json",
       "extensions": {}
+    },
+    "bundle_import": {
+      "input_path": "/absolute/private/canonical-result.json",
+      "expected_file_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "bundle_path": "/absolute/private/new-bundle",
+      "write_options": {
+        "page_bytes": "1048576",
+        "index_fanout": "64"
+      },
+      "protocol": "symphony.sbv.bundle-import-input.v1",
+      "extensions": {}
+    },
+    "bundle_inspect": {
+      "reference": {
+        "manifest_path": "/absolute/private/new-bundle/manifest.json",
+        "manifest_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+        "content_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+      },
+      "read_options": {
+        "max_page_bytes": null,
+        "cache_bytes": "8388608"
+      },
+      "protocol": "symphony.sbv.bundle-inspect-input.v1",
+      "extensions": {}
+    },
+    "bundle_query": {
+      "reference": {
+        "manifest_path": "/absolute/private/new-bundle/manifest.json",
+        "manifest_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+        "content_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+      },
+      "read_options": {
+        "max_page_bytes": null,
+        "cache_bytes": "8388608"
+      },
+      "selector": {
+        "kind": "node_id",
+        "node_id": "0"
+      },
+      "cursor": null,
+      "row_limit": "128",
+      "byte_limit": "1048576",
+      "protocol": "symphony.sbv.bundle-query-input.v1",
+      "extensions": {}
+    },
+    "bundle_verify": {
+      "reference": {
+        "manifest_path": "/absolute/private/new-bundle/manifest.json",
+        "manifest_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+        "content_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+      },
+      "read_options": {
+        "max_page_bytes": null,
+        "cache_bytes": "8388608"
+      },
+      "protocol": "symphony.sbv.bundle-verify-input.v1",
+      "extensions": {}
+    },
+    "bundle_export": {
+      "reference": {
+        "manifest_path": "/absolute/private/new-bundle/manifest.json",
+        "manifest_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+        "content_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+      },
+      "read_options": {
+        "max_page_bytes": null,
+        "cache_bytes": "8388608"
+      },
+      "output_path": "/absolute/private/new-export.json",
+      "format": "json",
+      "protocol": "symphony.sbv.bundle-export-input.v1",
+      "extensions": {}
     }
   }
 }

@@ -1,6 +1,7 @@
 package knowledgeengine
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -11,7 +12,7 @@ import (
 	"strings"
 )
 
-var SBVOperations = []string{"capabilities", "run", "compose", "result_inspect", "result_query", "evaluate", "catalogue", "compose_joint", "economics", "book", "liquidity", "allocation_economics", "result_select", "backend_plan", "live_plan", "analyze", "compare", "resample", "experiment", "split", "fit", "predict", "source_retain", "source_export", "generate_census", "provider_inspect", "compose_economics", "research_history", "dataset_load", "dataset_inspect", "dataset_execute", "dataset_release"}
+var SBVOperations = []string{"capabilities", "run", "compose", "result_inspect", "result_query", "evaluate", "catalogue", "compose_joint", "economics", "book", "liquidity", "allocation_economics", "result_select", "backend_plan", "live_plan", "analyze", "compare", "resample", "experiment", "split", "fit", "predict", "source_retain", "source_export", "generate_census", "provider_inspect", "compose_economics", "research_history", "dataset_load", "dataset_inspect", "dataset_execute", "dataset_release", "bundle_import", "bundle_inspect", "bundle_query", "bundle_verify", "bundle_export"}
 var sbvSHA = regexp.MustCompile(`^[0-9a-f]{64}$`)
 
 func sbvSpec() engineSpec {
@@ -44,11 +45,7 @@ func SBVResource(prefix, version, operation string, templates bool) (Installatio
 	if templates {
 		name = "admin.templates.json"
 	}
-	raw, err := snvOwnedResource(inst, "share/symphony/schemas/sbv-engine/"+version+"/"+name, sbvAdministrationInterfaceResources[name])
-	if err != nil {
-		return inst, nil, err
-	}
-	m, err := sqavObject(raw, maxRequestBytes)
+	m, err := sbvOwnedResourceObject(inst, name)
 	if err != nil {
 		return inst, nil, err
 	}
@@ -60,12 +57,74 @@ func SBVResource(prefix, version, operation string, templates bool) (Installatio
 	if !ok || variants[operation] == nil {
 		return inst, nil, fmt.Errorf("SBV resource variant missing")
 	}
-	out, err := SCVCanonical(variants[operation])
+	out, err := sbvCanonicalControlResource(variants[operation])
 	return inst, out, err
+}
+
+func sbvCanonicalControlResource(value any) (json.RawMessage, error) {
+	out, err := SCVCanonical(value)
+	if err == nil {
+		_, err = sqavObject(out, maxRequestBytes)
+	}
+	return out, err
+}
+
+// A receipt/hash-pinned catalogue is an owned resource, not a process request.
+// Its existing exact-byte admission bounds memory; a JSON value/key consumes
+// at least one byte, so len(raw) is a structural bound rather than a new quota.
+// Each selected operation still has the unchanged control-frame admission.
+func sbvOwnedResourceObject(inst Installation, name string) (map[string]any, error) {
+	digest, ok := sbvAdministrationInterfaceResources[name]
+	if !ok || digest == "" {
+		return nil, fmt.Errorf("SBV resource is not in the exact interface")
+	}
+	raw, err := snvOwnedResource(inst, "share/symphony/schemas/sbv-engine/"+inst.Version+"/"+name, digest)
+	if err != nil {
+		return nil, err
+	}
+	return sbvDecodeOwnedResource(raw)
+}
+
+// Only sbvOwnedResourceObject may supply production bytes to this decoder.
+func sbvDecodeOwnedResource(raw []byte) (map[string]any, error) {
+	if err := validateJSONObjectWithValueLimit(raw, maxRequestBytes, len(raw)); err != nil {
+		return nil, err
+	}
+	if err := ValidateSCVBundleUnicode(raw); err != nil {
+		return nil, err
+	}
+	var object map[string]any
+	decoder := json.NewDecoder(bytes.NewReader(raw))
+	decoder.UseNumber()
+	if err := decoder.Decode(&object); err != nil {
+		return nil, err
+	}
+	var normalize func(any) any
+	normalize = func(value any) any {
+		switch x := value.(type) {
+		case json.Number:
+			n, _ := x.Int64()
+			return n // integral/range admission already passed
+		case map[string]any:
+			for key, child := range x {
+				x[key] = normalize(child)
+			}
+		case []any:
+			for i, child := range x {
+				x[i] = normalize(child)
+			}
+		}
+		return value
+	}
+	normalize(object)
+	return object, nil
 }
 func InvokeSBV(ctx context.Context, prefix, version, cwd, operation string, payload []byte) (Response, error) {
 	p, err := sqavObject(payload, maxRequestBytes)
 	if err != nil {
+		return Response{}, err
+	}
+	if err = sbvBundleControlPreflight(operation, p); err != nil {
 		return Response{}, err
 	}
 	inst, schema, err := SBVResource(prefix, version, operation, false)
@@ -120,6 +179,9 @@ func InvokeSBV(ctx context.Context, prefix, version, cwd, operation string, payl
 	return r, nil
 }
 func validateSBVResult(op string, p map[string]any, raw []byte) error {
+	if strings.HasPrefix(op, "bundle_") {
+		return ValidateSBVBundleResult(op, p, raw)
+	}
 	if handled, err := ValidateSBVRecovery(op, p, raw); handled || err != nil {
 		return err
 	}
@@ -222,6 +284,12 @@ func validateSBVResult(op string, p map[string]any, raw []byte) error {
 		}
 	case "capabilities":
 		if m["engine_version"] != SBVAdministrationInterfaceVersion {
+			return bad()
+		}
+		storage := map[string]any{"legacy": "symphony.sbv.result.v1", "partitioned": "symphony.sbv.partitioned-result.v1",
+			"page": "symphony.sbv.result-page.v1", "stream": "symphony.sbv.node-stream.v1", "max_bundle_bytes": nil, "max_bundle_nodes": nil,
+			"logical_identity": "canonical_result_body_sha256", "physical_identity": "exact_manifest_sha256", "core_producers": "legacy_result_v1"}
+		if !reflect.DeepEqual(m["result_storage"], storage) {
 			return bad()
 		}
 		for _, k := range []string{"cpu", "cuda", "tensor", "live"} {
@@ -641,11 +709,7 @@ func SBVSchema(prefix, version, operation string) (json.RawMessage, error) {
 		return nil, err
 	}
 	read := func(name string) (map[string]any, error) {
-		raw, e := snvOwnedResource(inst, "share/symphony/schemas/sbv-engine/"+version+"/"+name, sbvAdministrationInterfaceResources[name])
-		if e != nil {
-			return nil, e
-		}
-		return sqavObject(raw, maxRequestBytes)
+		return sbvOwnedResourceObject(inst, name)
 	}
 	if operation == "result_export" {
 		result, e := read("result.schema.json")
@@ -656,7 +720,7 @@ func SBVSchema(prefix, version, operation string) (json.RawMessage, error) {
 		if e != nil {
 			return nil, e
 		}
-		return SCVCanonical(map[string]any{"result": result, "ndjson_record": stream})
+		return sbvCanonicalControlResource(map[string]any{"result": result, "ndjson_record": stream})
 	}
 	if !sbvAdministrationInterfaceAdmission[version][operation] {
 		return nil, fmt.Errorf("SBV schema operation unavailable")
@@ -673,7 +737,7 @@ func SBVSchema(prefix, version, operation string) (json.RawMessage, error) {
 	if !ok {
 		return nil, fmt.Errorf("SBV result schemas missing")
 	}
-	return SCVCanonical(map[string]any{"input": requests[operation], "output": results[operation], "$defs": all["$defs"]})
+	return sbvCanonicalControlResource(map[string]any{"input": requests[operation], "output": results[operation], "$defs": all["$defs"]})
 }
 
 // Native nlohmann JSON uses UTF-8 for U+2028/U+2029. Go's encoder escapes

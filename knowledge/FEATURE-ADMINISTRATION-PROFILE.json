@@ -938,6 +938,9 @@
         },
         {
           "command_ids": [
+            "qxcmd:symphony:sbv.bundle.inspect",
+            "qxcmd:symphony:sbv.bundle.query",
+            "qxcmd:symphony:sbv.bundle.verify",
             "qxcmd:symphony:sbv.dataset.inspect",
             "qxcmd:symphony:sbv.result.export",
             "qxcmd:symphony:sbv.result.inspect",
@@ -946,6 +949,9 @@
           ],
           "delivery": "direct",
           "engine_operation_ids": [
+            "engop:symphony:sbv.bundle-inspect",
+            "engop:symphony:sbv.bundle-query",
+            "engop:symphony:sbv.bundle-verify",
             "engop:symphony:sbv.dataset-inspect",
             "engop:symphony:sbv.result-inspect",
             "engop:symphony:sbv.result-query",
@@ -967,6 +973,8 @@
             "qxcmd:symphony:sbv.analyze",
             "qxcmd:symphony:sbv.backend.plan",
             "qxcmd:symphony:sbv.book",
+            "qxcmd:symphony:sbv.bundle.export",
+            "qxcmd:symphony:sbv.bundle.import",
             "qxcmd:symphony:sbv.compare",
             "qxcmd:symphony:sbv.compose",
             "qxcmd:symphony:sbv.compose.economics",
@@ -995,6 +1003,8 @@
             "engop:symphony:sbv.analyze",
             "engop:symphony:sbv.backend-plan",
             "engop:symphony:sbv.book",
+            "engop:symphony:sbv.bundle-export",
+            "engop:symphony:sbv.bundle-import",
             "engop:symphony:sbv.compare",
             "engop:symphony:sbv.compose",
             "engop:symphony:sbv.compose-economics",
@@ -1029,11 +1039,15 @@
         },
         {
           "command_ids": [
+            "qxcmd:symphony:sbv.bundle.inspect",
+            "qxcmd:symphony:sbv.bundle.verify",
             "qxcmd:symphony:sbv.dataset.inspect",
             "qxcmd:symphony:sbv.result.inspect"
           ],
           "delivery": "direct",
           "engine_operation_ids": [
+            "engop:symphony:sbv.bundle-inspect",
+            "engop:symphony:sbv.bundle-verify",
             "engop:symphony:sbv.dataset-inspect",
             "engop:symphony:sbv.result-inspect"
           ],
@@ -2883,6 +2897,9 @@
         },
         {
           "command_ids": [
+            "qxcmd:symphony:sbv.bundle.inspect",
+            "qxcmd:symphony:sbv.bundle.query",
+            "qxcmd:symphony:sbv.bundle.verify",
             "qxcmd:symphony:sbv.dataset.inspect",
             "qxcmd:symphony:sbv.result.export",
             "qxcmd:symphony:sbv.result.inspect",
@@ -2891,6 +2908,9 @@
           ],
           "delivery": "direct",
           "engine_operation_ids": [
+            "engop:symphony:sbv.bundle-inspect",
+            "engop:symphony:sbv.bundle-query",
+            "engop:symphony:sbv.bundle-verify",
             "engop:symphony:sbv.dataset-inspect",
             "engop:symphony:sbv.result-inspect",
             "engop:symphony:sbv.result-query",
@@ -2912,6 +2932,8 @@
             "qxcmd:symphony:sbv.analyze",
             "qxcmd:symphony:sbv.backend.plan",
             "qxcmd:symphony:sbv.book",
+            "qxcmd:symphony:sbv.bundle.export",
+            "qxcmd:symphony:sbv.bundle.import",
             "qxcmd:symphony:sbv.compare",
             "qxcmd:symphony:sbv.compose",
             "qxcmd:symphony:sbv.compose.economics",
@@ -2940,6 +2962,8 @@
             "engop:symphony:sbv.analyze",
             "engop:symphony:sbv.backend-plan",
             "engop:symphony:sbv.book",
+            "engop:symphony:sbv.bundle-export",
+            "engop:symphony:sbv.bundle-import",
             "engop:symphony:sbv.compare",
             "engop:symphony:sbv.compose",
             "engop:symphony:sbv.compose-economics",
@@ -2974,11 +2998,15 @@
         },
         {
           "command_ids": [
+            "qxcmd:symphony:sbv.bundle.inspect",
+            "qxcmd:symphony:sbv.bundle.verify",
             "qxcmd:symphony:sbv.dataset.inspect",
             "qxcmd:symphony:sbv.result.inspect"
           ],
           "delivery": "direct",
           "engine_operation_ids": [
+            "engop:symphony:sbv.bundle-inspect",
+            "engop:symphony:sbv.bundle-verify",
             "engop:symphony:sbv.dataset-inspect",
             "engop:symphony:sbv.result-inspect"
           ],
@@ -9781,6 +9809,6 @@
   "profile_id": "symphony.registered-features.administration.v1",
   "protocol": "symphony.knowledge.feature-administration-profile.v1",
   "registered_feature_count": 141,
-  "ssfv_registry_digest": "sha256:b19665eb0cfd9e6843df4538e0b4896e4088957aa3522740a6c2597e4d38727e",
-  "profile_digest": "sha256:221b31a755b989d91fb870754faa2699beed275ee6ffd77e59776d91fba06355"
+  "ssfv_registry_digest": "sha256:e701827a826056c4cdc4d0af99d1fb892ed7119932cfc1b30a0812641bc80bec",
+  "profile_digest": "sha256:07e2fbd920c0c45ba31e97bc83b7a9eee20e8db3b2222864055888e63a9d345c"
 }

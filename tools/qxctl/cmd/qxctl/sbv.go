@@ -27,19 +27,22 @@ func newSBVCommand() *cobra.Command {
 	root := structural("sbv", errUsageOnly)
 	results := structural("result", errUsageOnly)
 	datasets := structural("dataset", errUsageOnly)
+	bundles := structural("bundle", errUsageOnly)
 	for _, op := range knowledgeengine.SBVOperations {
-		leaf := strings.TrimPrefix(strings.TrimPrefix(op, "result_"), "dataset_")
+		leaf := strings.TrimPrefix(strings.TrimPrefix(strings.TrimPrefix(op, "result_"), "dataset_"), "bundle_")
 		c := newSBVLeaf(op, strings.ReplaceAll(leaf, "_", "-"))
 		if strings.HasPrefix(op, "result_") {
 			results.AddCommand(c)
 		} else if strings.HasPrefix(op, "dataset_") {
 			datasets.AddCommand(c)
+		} else if strings.HasPrefix(op, "bundle_") {
+			bundles.AddCommand(c)
 		} else {
 			root.AddCommand(c)
 		}
 	}
 	results.AddCommand(newSBVLeaf("result_export", "export"))
-	root.AddCommand(results, datasets, newSBVLeaf("schema", "schema"), newSBVLeaf("template", "template"))
+	root.AddCommand(results, datasets, bundles, newSBVLeaf("schema", "schema"), newSBVLeaf("template", "template"))
 	return root
 }
 func sbvSafeError(err error) error {
@@ -53,7 +56,7 @@ func newSBVLeaf(op, leaf string) *cobra.Command {
 	var prefix, version, input, operation, path, digest, pointer, cursor, format string
 	var timeout, absoluteDeadline string
 	var limit uint
-	var machine bool
+	var machine, receiptOnly bool
 	resource := op == "schema" || op == "template"
 	read := strings.HasPrefix(op, "result_") && op != "result_select"
 	c := &cobra.Command{Use: leaf, Short: "Native SBV " + strings.ReplaceAll(op, "_", " "), Args: usageOnlyArgs, RunE: func(c *cobra.Command, _ []string) error {
@@ -114,6 +117,12 @@ func newSBVLeaf(op, leaf string) *cobra.Command {
 		if err != nil {
 			return sbvSafeError(err)
 		}
+		var bulkRequest map[string]any
+		if op == "bundle_export" && !receiptOnly {
+			if err = json.Unmarshal(raw, &bulkRequest); err != nil || !sbvBulkFormatCompatible(bulkRequest, format) {
+				return fmt.Errorf("SBV bulk output format must match the selected native export format before dispatch: %w", errUsageOnly)
+			}
+		}
 		cwd, err := os.Getwd()
 		if err != nil {
 			return sbvSafeError(err)
@@ -123,6 +132,22 @@ func newSBVLeaf(op, leaf string) *cobra.Command {
 			return sbvSafeError(err)
 		}
 		out := []byte(result.Result)
+		if op == "bundle_export" && !receiptOnly {
+			var status struct {
+				Status string `json:"status"`
+			}
+			if err = json.Unmarshal(out, &status); err != nil {
+				return sbvSafeError(err)
+			}
+			if status.Status == "complete" {
+				bulk, e := knowledgeengine.OpenSBVBundleExport(bulkRequest, result.Result)
+				if e != nil {
+					return sbvSafeError(e)
+				}
+				defer bulk.Close()
+				return renderSBVBulk(c, ctx, bulk, format)
+			}
+		}
 		if op == "result_export" {
 			out, err = knowledgeengine.ReadSBVExport(path, result.Result)
 			if err != nil {
@@ -135,6 +160,9 @@ func newSBVLeaf(op, leaf string) *cobra.Command {
 	c.Flags().StringVar(&version, "version", "", "exact SBV release")
 	c.Flags().StringVar(&format, "format", "text", "text, json or lossless pointer ndjson")
 	c.Flags().BoolVar(&machine, "json", false, "JSON output and structured failures")
+	if op == "bundle_export" {
+		c.Flags().BoolVar(&receiptOnly, "receipt-only", false, "render the bounded native receipt instead of streaming exported data")
+	}
 	for _, f := range []string{"prefix", "version"} {
 		_ = c.MarkFlagRequired(f)
 	}
@@ -168,7 +196,7 @@ func newSBVLeaf(op, leaf string) *cobra.Command {
 	interaction := "invoke"
 	if resource || op == "capabilities" || op == "catalogue" || op == "provider_inspect" {
 		interaction = "discover"
-	} else if read || op == "result_select" || op == "dataset_inspect" {
+	} else if read || op == "result_select" || op == "dataset_inspect" || op == "bundle_inspect" || op == "bundle_query" || op == "bundle_verify" {
 		interaction = "inspect"
 	}
 	spec := commandSpec(key, featureSBVAdministration, interaction)
@@ -180,6 +208,14 @@ func newSBVLeaf(op, leaf string) *cobra.Command {
 	}
 	if op == "dataset_load" || op == "dataset_release" {
 		spec.RecoveryCommandID = stringPointer("qxcmd:symphony:sbv.dataset.inspect")
+	}
+	if op == "bundle_import" || op == "bundle_export" {
+		spec.Mutability = "permission_backed_mutation"
+		spec.AuthorityMode = "target_host_permission"
+		spec.RecoveryCommandID = stringPointer("qxcmd:symphony:sbv.bundle.inspect")
+	}
+	if op == "bundle_inspect" || op == "bundle_verify" {
+		spec.FeatureBindings = append(spec.FeatureBindings, commandregistry.FeatureBinding{FeatureID: "ssfv:symphony:sbv-engine", Interaction: "recover"}, commandregistry.FeatureBinding{FeatureID: featureSBVAdministration, Interaction: "recover"})
 	}
 	if op == "result_inspect" || op == "dataset_inspect" {
 		spec.FeatureBindings = append(spec.FeatureBindings, commandregistry.FeatureBinding{FeatureID: "ssfv:symphony:sbv-engine", Interaction: "recover"}, commandregistry.FeatureBinding{FeatureID: featureSBVAdministration, Interaction: "recover"})
@@ -196,6 +232,9 @@ func newSBVLeaf(op, leaf string) *cobra.Command {
 		if op == "result_export" {
 			spec.OutputProtocols = []string{"symphony.sbv.result.v1", "symphony.sbv.pointer-stream.v1"}
 		}
+		if op == "bundle_export" {
+			spec.OutputProtocols = append(spec.OutputProtocols, "symphony.sbv.result.v1", "symphony.sbv.node-stream.v1")
+		}
 		spec.ResultValidationProtocols = []string{"symphony.sbv." + slug + ".v1"}
 	} else {
 		spec.OutputProtocols = []string{"symphony.sbv." + op + ".v1"}
@@ -203,6 +242,69 @@ func newSBVLeaf(op, leaf string) *cobra.Command {
 	}
 	commandregistry.Attach(c, spec)
 	return c
+}
+
+func sbvBulkFormatCompatible(request map[string]any, format string) bool {
+	return ((format == "json" || format == "text") && request["format"] == "json") ||
+		(format == "ndjson" && request["format"] == "ndjson")
+}
+
+// Preserve errors.Is/As for the actual writer error without exposing arbitrary
+// writer-provided text in the root command's diagnostic.
+type sbvBulkOutputError struct{ cause error }
+
+func (e *sbvBulkOutputError) Error() string {
+	return "SBV bulk output failed before any data was emitted"
+}
+func (e *sbvBulkOutputError) Unwrap() error { return e.cause }
+
+func renderSBVBulk(c *cobra.Command, ctx context.Context, bulk *knowledgeengine.SBVBulkExport, format string) error {
+	w := c.OutOrStdout()
+	stop := sbvBulkWriteDeadline(ctx, w)
+	defer stop()
+	progress, err := bulk.Stream(ctx, w, format)
+	if err == nil {
+		return nil
+	}
+	if !progress.Started {
+		return &sbvBulkOutputError{cause: err}
+	}
+	// A generic root error would append another JSON document or human prose to
+	// partial data. The bounded diagnostic belongs on stderr instead.
+	_, _ = fmt.Fprintln(c.ErrOrStderr(), "SBV bulk output did not complete; verify the retained export before retrying delivery.")
+	if format == "ndjson" && ctx.Err() == nil && progress.RecordBoundary && !progress.OutputFailure && progress.CompleteRecords > 0 {
+		code := "export_read_failed"
+		// This counts emitted complete data records, not authenticated values in
+		// a damaged stream. The error terminal never asserts successful closure.
+		_ = json.NewEncoder(w).Encode(map[string]any{"event": "end", "status": "error", "nodes": strconv.FormatUint(progress.CompleteRecords-1, 10), "code": code})
+	}
+	return fmt.Errorf("%w: %w", &exactEvidenceExitError{code: 1}, err)
+}
+
+// No background writes. Supported file deadlines wake a blocked pipe write on
+// cancellation; other writers remain cooperative at Stream's I/O boundaries.
+func sbvBulkWriteDeadline(ctx context.Context, w io.Writer) func() {
+	file, ok := w.(*os.File)
+	if !ok || file.SetWriteDeadline(time.Time{}) != nil {
+		return func() {}
+	}
+	if deadline, ok := ctx.Deadline(); ok {
+		_ = file.SetWriteDeadline(deadline)
+	}
+	stop, done := make(chan struct{}), make(chan struct{})
+	go func() {
+		defer close(done)
+		select {
+		case <-ctx.Done():
+			_ = file.SetWriteDeadline(time.Now())
+		case <-stop:
+		}
+	}()
+	return func() {
+		close(stop)
+		<-done
+		_ = file.SetWriteDeadline(time.Time{})
+	}
 }
 
 // InvokeSBV has already checked the closed recovery contract and request

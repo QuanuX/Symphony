@@ -23398,3 +23398,213 @@ automatic nested fitting and cross-run holdout history remain unimplemented.
 - deferred_projections: Fresh acquisition, durable delivery checkpoints and unbounded owner profiles remain separate work.
 - notes: Selected route limits do not restrict ordinary file/RAM datasets. Publication uncertainty preserves typed evidence.
 - status: canonical
+
+### SBV partitioned results node-stream.schema.json
+
+- path: `modules/sbv-engine/schemas/v1/node-stream.schema.json`
+- title: Partitioned result storage and complete bounded control access
+- surface_type: implementation contract or test
+- truth_role: Exact logical/physical identity, incremental native I/O and portable terminal evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.22 derived-result storage, SDK and qxctl bundle operations.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, SDK and independent result consumers
+- deferred_projections: Large census/evaluation producer migration, remaining consumer/resource work and candidate qualification remain separate gates.
+- notes: No aggregate bundle quota or default deadline; bounded control frames and checked representation remain explicit.
+- status: canonical
+
+### SBV partitioned results partitioned-result.schema.json
+
+- path: `modules/sbv-engine/schemas/v1/partitioned-result.schema.json`
+- title: Partitioned result storage and complete bounded control access
+- surface_type: implementation contract or test
+- truth_role: Exact logical/physical identity, incremental native I/O and portable terminal evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.22 derived-result storage, SDK and qxctl bundle operations.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, SDK and independent result consumers
+- deferred_projections: Large census/evaluation producer migration, remaining consumer/resource work and candidate qualification remain separate gates.
+- notes: No aggregate bundle quota or default deadline; bounded control frames and checked representation remain explicit.
+- status: canonical
+
+### SBV partitioned results result-page.schema.json
+
+- path: `modules/sbv-engine/schemas/v1/result-page.schema.json`
+- title: Partitioned result storage and complete bounded control access
+- surface_type: implementation contract or test
+- truth_role: Exact logical/physical identity, incremental native I/O and portable terminal evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.22 derived-result storage, SDK and qxctl bundle operations.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, SDK and independent result consumers
+- deferred_projections: Large census/evaluation producer migration, remaining consumer/resource work and candidate qualification remain separate gates.
+- notes: No aggregate bundle quota or default deadline; bounded control frames and checked representation remain explicit.
+- status: canonical
+
+### SBV partitioned results bundle_operations.cpp
+
+- path: `modules/sbv-engine/src/bundle_operations.cpp`
+- title: Partitioned result storage and complete bounded control access
+- surface_type: implementation contract or test
+- truth_role: Exact logical/physical identity, incremental native I/O and portable terminal evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.22 derived-result storage, SDK and qxctl bundle operations.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, SDK and independent result consumers
+- deferred_projections: Large census/evaluation producer migration, remaining consumer/resource work and candidate qualification remain separate gates.
+- notes: No aggregate bundle quota or default deadline; bounded control frames and checked representation remain explicit.
+- status: canonical
+
+### SBV partitioned results result_store.cpp
+
+- path: `modules/sbv-engine/src/result_store.cpp`
+- title: Partitioned result storage and complete bounded control access
+- surface_type: implementation contract or test
+- truth_role: Exact logical/physical identity, incremental native I/O and portable terminal evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.22 derived-result storage, SDK and qxctl bundle operations.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, SDK and independent result consumers
+- deferred_projections: Large census/evaluation producer migration, remaining consumer/resource work and candidate qualification remain separate gates.
+- notes: No aggregate bundle quota or default deadline; bounded control frames and checked representation remain explicit.
+- status: canonical
+
+### SBV partitioned results result_store.hpp
+
+- path: `modules/sbv-engine/src/result_store.hpp`
+- title: Partitioned result storage and complete bounded control access
+- surface_type: implementation contract or test
+- truth_role: Exact logical/physical identity, incremental native I/O and portable terminal evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.22 derived-result storage, SDK and qxctl bundle operations.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, SDK and independent result consumers
+- deferred_projections: Large census/evaluation producer migration, remaining consumer/resource work and candidate qualification remain separate gates.
+- notes: No aggregate bundle quota or default deadline; bounded control frames and checked representation remain explicit.
+- status: canonical
+
+### SBV partitioned results streaming_sha256.hpp
+
+- path: `modules/sbv-engine/src/streaming_sha256.hpp`
+- title: Partitioned result storage and complete bounded control access
+- surface_type: implementation contract or test
+- truth_role: Exact logical/physical identity, incremental native I/O and portable terminal evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.22 derived-result storage, SDK and qxctl bundle operations.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, SDK and independent result consumers
+- deferred_projections: Large census/evaluation producer migration, remaining consumer/resource work and candidate qualification remain separate gates.
+- notes: No aggregate bundle quota or default deadline; bounded control frames and checked representation remain explicit.
+- status: canonical
+
+### SBV partitioned results bundle_operations_test.cpp
+
+- path: `modules/sbv-engine/tests/bundle_operations_test.cpp`
+- title: Partitioned result storage and complete bounded control access
+- surface_type: implementation contract or test
+- truth_role: Exact logical/physical identity, incremental native I/O and portable terminal evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.22 derived-result storage, SDK and qxctl bundle operations.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, SDK and independent result consumers
+- deferred_projections: Large census/evaluation producer migration, remaining consumer/resource work and candidate qualification remain separate gates.
+- notes: No aggregate bundle quota or default deadline; bounded control frames and checked representation remain explicit.
+- status: canonical
+
+### SBV partitioned results result_store_test.cpp
+
+- path: `modules/sbv-engine/tests/result_store_test.cpp`
+- title: Partitioned result storage and complete bounded control access
+- surface_type: implementation contract or test
+- truth_role: Exact logical/physical identity, incremental native I/O and portable terminal evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.22 derived-result storage, SDK and qxctl bundle operations.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, SDK and independent result consumers
+- deferred_projections: Large census/evaluation producer migration, remaining consumer/resource work and candidate qualification remain separate gates.
+- notes: No aggregate bundle quota or default deadline; bounded control frames and checked representation remain explicit.
+- status: canonical
+
+### SBV partitioned results sbv_bulk_test.go
+
+- path: `tools/qxctl/cmd/qxctl/sbv_bulk_test.go`
+- title: Partitioned result storage and complete bounded control access
+- surface_type: implementation contract or test
+- truth_role: Exact logical/physical identity, incremental native I/O and portable terminal evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.22 derived-result storage, SDK and qxctl bundle operations.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, SDK and independent result consumers
+- deferred_projections: Large census/evaluation producer migration, remaining consumer/resource work and candidate qualification remain separate gates.
+- notes: No aggregate bundle quota or default deadline; bounded control frames and checked representation remain explicit.
+- status: canonical
+
+### SBV partitioned results sbv_bulk_stream.go
+
+- path: `tools/qxctl/internal/knowledgeengine/sbv_bulk_stream.go`
+- title: Partitioned result storage and complete bounded control access
+- surface_type: implementation contract or test
+- truth_role: Exact logical/physical identity, incremental native I/O and portable terminal evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.22 derived-result storage, SDK and qxctl bundle operations.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, SDK and independent result consumers
+- deferred_projections: Large census/evaluation producer migration, remaining consumer/resource work and candidate qualification remain separate gates.
+- notes: No aggregate bundle quota or default deadline; bounded control frames and checked representation remain explicit.
+- status: canonical
+
+### SBV partitioned results sbv_bulk_stream_test.go
+
+- path: `tools/qxctl/internal/knowledgeengine/sbv_bulk_stream_test.go`
+- title: Partitioned result storage and complete bounded control access
+- surface_type: implementation contract or test
+- truth_role: Exact logical/physical identity, incremental native I/O and portable terminal evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.22 derived-result storage, SDK and qxctl bundle operations.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, SDK and independent result consumers
+- deferred_projections: Large census/evaluation producer migration, remaining consumer/resource work and candidate qualification remain separate gates.
+- notes: No aggregate bundle quota or default deadline; bounded control frames and checked representation remain explicit.
+- status: canonical
+
+### SBV partitioned results sbv_bundle.go
+
+- path: `tools/qxctl/internal/knowledgeengine/sbv_bundle.go`
+- title: Partitioned result storage and complete bounded control access
+- surface_type: implementation contract or test
+- truth_role: Exact logical/physical identity, incremental native I/O and portable terminal evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.22 derived-result storage, SDK and qxctl bundle operations.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, SDK and independent result consumers
+- deferred_projections: Large census/evaluation producer migration, remaining consumer/resource work and candidate qualification remain separate gates.
+- notes: No aggregate bundle quota or default deadline; bounded control frames and checked representation remain explicit.
+- status: canonical
+
+### SBV partitioned results sbv_bundle_test.go
+
+- path: `tools/qxctl/internal/knowledgeengine/sbv_bundle_test.go`
+- title: Partitioned result storage and complete bounded control access
+- surface_type: implementation contract or test
+- truth_role: Exact logical/physical identity, incremental native I/O and portable terminal evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.22 derived-result storage, SDK and qxctl bundle operations.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, SDK and independent result consumers
+- deferred_projections: Large census/evaluation producer migration, remaining consumer/resource work and candidate qualification remain separate gates.
+- notes: No aggregate bundle quota or default deadline; bounded control frames and checked representation remain explicit.
+- status: canonical
+
+### SBV owned schema catalogue admission
+
+- path: `tools/qxctl/internal/knowledgeengine/sbv_resource_test.go`
+- title: Receipt-owned schema catalogue admission and selected control schemas
+- surface_type: implementation contract or test
+- truth_role: Exact owned-resource identity and structural validation
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.22 administration catalogue access through installed qxctl.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl and installed SBV administration
+- deferred_projections: Broad candidate qualification remains a separate gate.
+- notes: Catalogue decoding preserves bounded individual control messages and rejects malformed structure.
+- status: canonical

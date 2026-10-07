@@ -88,6 +88,7 @@ void require_new_file(const std::string &);
 void create_file(const std::string &, const std::string &, std::int64_t);
 Json persist(Json, const Json &, const std::string &, std::int64_t);
 struct Dataset;
+Json bundle_control(const std::string &, const Json &, std::int64_t);
 Json source_owner_profile();
 Json source_retain(const Json &, std::int64_t);
 Json source_export(const Json &, std::int64_t);

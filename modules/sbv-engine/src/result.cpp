@@ -216,6 +216,9 @@ Json descriptor() {
   r["contract_versions"].push_back("symphony.sbv.source-delivery.v1");
   r["contract_versions"].push_back("symphony.sbv.source-binary-receipt.v1");
   r["contract_versions"].push_back("symphony.sbv.source-owner-profile.v1");
+  for (auto contract : {"symphony.sbv.partitioned-result.v1", "symphony.sbv.result-page.v1",
+                        "symphony.sbv.node-stream.v1", "symphony.sbv.bundle-cursor.v1"})
+    r["contract_versions"].push_back(contract);
   r["descriptor_digest"] = e::tagged_sha256(r.dump());
   return r;
 }
@@ -243,6 +246,15 @@ Json dispatch(const std::string &op, const Json &p, std::int64_t end) {
           {"shared_library", true},
           {"bindings", Json::array({"c", "cpp"})},
           {"request_protocol", e::process_protocol_v2}}},
+        {"result_storage",
+         {{"legacy", result_protocol},
+          {"partitioned", "symphony.sbv.partitioned-result.v1"},
+          {"page", "symphony.sbv.result-page.v1"},
+          {"stream", "symphony.sbv.node-stream.v1"},
+          {"max_bundle_bytes", nullptr}, {"max_bundle_nodes", nullptr},
+          {"logical_identity", "canonical_result_body_sha256"},
+          {"physical_identity", "exact_manifest_sha256"},
+          {"core_producers", "legacy_result_v1"}}},
         {"source_owner_profile", d::source_owner_profile()},
         {"data_source_modes",
          Json::array({"file", "retained_source", "resident"})},
@@ -289,6 +301,8 @@ Json dispatch(const std::string &op, const Json &p, std::int64_t end) {
            "legacy compose/compose_joint; compose_economics uses "
            "caller-selected path pages"}}}};
   }
+  if (op.starts_with("bundle_"))
+    return d::bundle_control(op, p, end);
   if (op.starts_with("dataset_"))
     return d::dataset_control(op, p, end);
   if (op == "run")

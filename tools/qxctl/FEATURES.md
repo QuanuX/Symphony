@@ -170,6 +170,8 @@
       "implementation_paths": [
         "tools/qxctl/cmd/qxctl/sbv.go",
         "tools/qxctl/internal/knowledgeengine/sbv.go",
+        "tools/qxctl/internal/knowledgeengine/sbv_bulk_stream.go",
+        "tools/qxctl/internal/knowledgeengine/sbv_bundle.go",
         "tools/qxctl/internal/knowledgeengine/sbv_recovery.go"
       ],
       "kind": "subfeature",

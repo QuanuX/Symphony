@@ -35,7 +35,7 @@ func TestSBVInstalledModels(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		return InvokeSBV(context.Background(), prefix, "0.21.0-dev", cwd, "evaluate", b)
+		return InvokeSBV(context.Background(), prefix, "0.22.0-dev", cwd, "evaluate", b)
 	}
 	if _, err = invoke(request); err != nil {
 		t.Fatal(err)
@@ -50,7 +50,7 @@ func TestSBVInstalledModels(t *testing.T) {
 	}
 	sections := artifact["sections"].(map[string]any)
 	rows := sections["execution"].(map[string]any)["data"].([]any)
-	schema, err := SBVSchema(prefix, "0.21.0-dev", "evaluate")
+	schema, err := SBVSchema(prefix, "0.22.0-dev", "evaluate")
 	if err != nil {
 		t.Fatal(err)
 	}

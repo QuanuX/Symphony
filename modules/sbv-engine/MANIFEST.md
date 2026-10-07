@@ -1,8 +1,20 @@
 # SBV engine manifest
 
-Module `sbv-engine`, engine `symphony-sbv`, vector `sbv`, release `0.21.0-dev`. Native executable with exact static source dependencies and versioned receipt-v2 ownership. Independent interop headers and the native C ABI/C++ calculation SDK with exact CMake targets are installed. Vendor model runtime adapters remain optional future work. Backtest artifacts are user-owned outputs outside the install receipt.
+Module `sbv-engine`, engine `symphony-sbv`, vector `sbv`, release `0.22.0-dev`. Native executable with exact static source dependencies and versioned receipt-v2 ownership. Independent interop headers and the native C ABI/C++ calculation SDK with exact CMake targets are installed. Vendor model runtime adapters remain optional future work. Backtest artifacts are user-owned outputs outside the install receipt.
 
 ## Canonical Surfaces
+
+- `modules/sbv-engine/tests/result_store_test.cpp`
+
+- `modules/sbv-engine/tests/bundle_operations_test.cpp`
+
+- `modules/sbv-engine/src/result_store.hpp`
+- `modules/sbv-engine/src/result_store.cpp`
+- `modules/sbv-engine/src/streaming_sha256.hpp`
+- `modules/sbv-engine/src/bundle_operations.cpp`
+- `modules/sbv-engine/schemas/v1/partitioned-result.schema.json`
+- `modules/sbv-engine/schemas/v1/result-page.schema.json`
+- `modules/sbv-engine/schemas/v1/node-stream.schema.json`
 
 - `modules/sbv-engine/src/source_owners.hpp`
 - `modules/sbv-engine/src/source_owners.cpp`

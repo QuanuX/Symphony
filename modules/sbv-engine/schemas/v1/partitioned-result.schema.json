@@ -1,0 +1,224 @@
+{
+  "type": "object",
+  "properties": {
+    "protocol": {
+      "const": "symphony.sbv.partitioned-result.v1"
+    },
+    "logical_protocol": {
+      "const": "symphony.sbv.result.v1"
+    },
+    "canonicalization": {
+      "const": "nlohmann_compact_utf8_sorted_keys_no_numeric_literals.v1"
+    },
+    "content_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "page_bytes": {
+      "type": "string",
+      "pattern": "^[1-9][0-9]*$",
+      "maxLength": 20,
+      "description": "Canonical positive uint64 decimal; checked range at native and control boundary."
+    },
+    "index_fanout": {
+      "type": "string",
+      "pattern": "^[1-9][0-9]*$",
+      "maxLength": 20,
+      "description": "Canonical positive uint64 decimal; checked range at native and control boundary."
+    },
+    "root": {
+      "$ref": "#/$defs/node"
+    }
+  },
+  "required": [
+    "protocol",
+    "logical_protocol",
+    "canonicalization",
+    "content_sha256",
+    "page_bytes",
+    "index_fanout",
+    "root"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "symphony.sbv.partitioned-result.v1",
+  "$defs": {
+    "logical_value": {
+      "oneOf": [
+        {
+          "type": "string",
+          "maxLength": 65536
+        },
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        },
+        {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/logical_value"
+          }
+        },
+        {
+          "type": "object",
+          "propertyNames": {
+            "type": "string",
+            "maxLength": 65536
+          },
+          "additionalProperties": {
+            "$ref": "#/$defs/logical_value"
+          }
+        }
+      ]
+    },
+    "page_reference": {
+      "type": "object",
+      "properties": {
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "bytes": {
+          "type": "string",
+          "pattern": "^[1-9][0-9]*$",
+          "maxLength": 20,
+          "description": "Canonical positive uint64 decimal; checked range at native and control boundary."
+        },
+        "level": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$",
+          "maxLength": 20,
+          "description": "Canonical uint64 decimal; checked range at native and control boundary."
+        },
+        "start": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$",
+          "maxLength": 20,
+          "description": "Canonical uint64 decimal; checked range at native and control boundary."
+        },
+        "count": {
+          "type": "string",
+          "pattern": "^[1-9][0-9]*$",
+          "maxLength": 20,
+          "description": "Canonical positive uint64 decimal; checked range at native and control boundary."
+        },
+        "values": {
+          "type": "string",
+          "pattern": "^[1-9][0-9]*$",
+          "maxLength": 20,
+          "description": "Canonical positive uint64 decimal; checked range at native and control boundary."
+        },
+        "first_key": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 65536
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "last_key": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 65536
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "sha256",
+        "bytes",
+        "level",
+        "start",
+        "count",
+        "values",
+        "first_key",
+        "last_key"
+      ],
+      "additionalProperties": false
+    },
+    "node": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "inline"
+            },
+            "value": {
+              "$ref": "#/$defs/logical_value"
+            }
+          },
+          "required": [
+            "kind",
+            "value"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "enum": [
+                "array",
+                "object"
+              ]
+            },
+            "children": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]*)$",
+              "maxLength": 20,
+              "description": "Canonical uint64 decimal; checked range at native and control boundary."
+            },
+            "values": {
+              "type": "string",
+              "pattern": "^[1-9][0-9]*$",
+              "maxLength": 20,
+              "description": "Canonical positive uint64 decimal; checked range at native and control boundary."
+            },
+            "nodes": {
+              "type": "string",
+              "pattern": "^[1-9][0-9]*$",
+              "maxLength": 20,
+              "description": "Canonical positive uint64 decimal; checked range at native and control boundary."
+            },
+            "bytes": {
+              "type": "string",
+              "pattern": "^[1-9][0-9]*$",
+              "maxLength": 20,
+              "description": "Canonical positive uint64 decimal; checked range at native and control boundary."
+            },
+            "index": {
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/page_reference"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "kind",
+            "children",
+            "values",
+            "nodes",
+            "bytes",
+            "index"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    }
+  },
+  "description": "Fixed-size root pins a hierarchical immutable page closure. Native semantic validation also checks canonical decimals, uint64 range, layout budgets, exact root fields, index ranges/counts/order, portable depth/string byte bounds and logical identity. No aggregate quota."
+}

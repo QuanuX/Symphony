@@ -8149,6 +8149,546 @@
           }
         }
       ]
+    },
+    "bundle_import": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.bundle-import-input.v1"
+        },
+        "input_path": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 4096,
+          "pattern": "^/",
+          "description": "Absolute clean component-wise no-follow path; native validation rejects controls, symlinks and unsafe components."
+        },
+        "expected_file_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "bundle_path": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 4096,
+          "pattern": "^/",
+          "description": "Absolute clean component-wise no-follow path; native validation rejects controls, symlinks and unsafe components."
+        },
+        "write_options": {
+          "type": "object",
+          "properties": {
+            "page_bytes": {
+              "type": "string",
+              "pattern": "^[1-9][0-9]*$",
+              "maxLength": 20,
+              "description": "Canonical positive uint64 decimal; checked range at native and control boundary."
+            },
+            "index_fanout": {
+              "type": "string",
+              "pattern": "^([2-9]|[1-9][0-9]+)$",
+              "maxLength": 20
+            }
+          },
+          "required": [
+            "page_bytes",
+            "index_fanout"
+          ],
+          "additionalProperties": false
+        },
+        "extensions": {
+          "type": "object",
+          "description": "Opaque portable optional fields within the unchanged control JSON string/depth/value/byte profile; raw numeric literals are not admitted."
+        }
+      },
+      "required": [
+        "protocol",
+        "input_path",
+        "expected_file_sha256",
+        "bundle_path",
+        "write_options",
+        "extensions"
+      ],
+      "additionalProperties": false
+    },
+    "bundle_inspect": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.bundle-inspect-input.v1"
+        },
+        "reference": {
+          "type": "object",
+          "properties": {
+            "manifest_path": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 4096,
+              "pattern": "^/",
+              "description": "Absolute clean component-wise no-follow path; native validation rejects controls, symlinks and unsafe components."
+            },
+            "manifest_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "content_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          },
+          "required": [
+            "manifest_path",
+            "manifest_sha256",
+            "content_sha256"
+          ],
+          "additionalProperties": false
+        },
+        "read_options": {
+          "type": "object",
+          "properties": {
+            "max_page_bytes": {
+              "oneOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[1-9][0-9]*$",
+                  "maxLength": 20,
+                  "description": "Canonical positive uint64 decimal; checked range at native and control boundary."
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "cache_bytes": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]*)$",
+              "maxLength": 20,
+              "description": "Canonical uint64 decimal; checked range at native and control boundary."
+            }
+          },
+          "required": [
+            "max_page_bytes",
+            "cache_bytes"
+          ],
+          "additionalProperties": false
+        },
+        "extensions": {
+          "type": "object",
+          "description": "Opaque portable optional fields within the unchanged control JSON string/depth/value/byte profile; raw numeric literals are not admitted."
+        }
+      },
+      "required": [
+        "protocol",
+        "reference",
+        "read_options",
+        "extensions"
+      ],
+      "additionalProperties": false
+    },
+    "bundle_query": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.bundle-query-input.v1"
+        },
+        "reference": {
+          "type": "object",
+          "properties": {
+            "manifest_path": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 4096,
+              "pattern": "^/",
+              "description": "Absolute clean component-wise no-follow path; native validation rejects controls, symlinks and unsafe components."
+            },
+            "manifest_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "content_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          },
+          "required": [
+            "manifest_path",
+            "manifest_sha256",
+            "content_sha256"
+          ],
+          "additionalProperties": false
+        },
+        "read_options": {
+          "type": "object",
+          "properties": {
+            "max_page_bytes": {
+              "oneOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[1-9][0-9]*$",
+                  "maxLength": 20,
+                  "description": "Canonical positive uint64 decimal; checked range at native and control boundary."
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "cache_bytes": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]*)$",
+              "maxLength": 20,
+              "description": "Canonical uint64 decimal; checked range at native and control boundary."
+            }
+          },
+          "required": [
+            "max_page_bytes",
+            "cache_bytes"
+          ],
+          "additionalProperties": false
+        },
+        "selector": {
+          "oneOf": [
+            {
+              "type": "object",
+              "properties": {
+                "kind": {
+                  "const": "node_id"
+                },
+                "node_id": {
+                  "type": "string",
+                  "pattern": "^(0|[1-9][0-9]*)$",
+                  "maxLength": 20,
+                  "description": "Canonical uint64 decimal; checked range at native and control boundary."
+                }
+              },
+              "required": [
+                "kind",
+                "node_id"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "kind": {
+                  "const": "pointer"
+                },
+                "pointer": {
+                  "type": "string",
+                  "maxLength": 65536,
+                  "pattern": "^(?:/|$)",
+                  "description": "RFC6901 escaping validated natively; source-bound node IDs reach fields whose full pointer exceeds this convenience profile."
+                }
+              },
+              "required": [
+                "kind",
+                "pointer"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        },
+        "cursor": {
+          "oneOf": [
+            {
+              "type": "object",
+              "properties": {
+                "protocol": {
+                  "const": "symphony.sbv.bundle-cursor.v1"
+                },
+                "reference": {
+                  "type": "object",
+                  "properties": {
+                    "manifest_path": {
+                      "type": "string",
+                      "minLength": 2,
+                      "maxLength": 4096,
+                      "pattern": "^/",
+                      "description": "Absolute clean component-wise no-follow path; native validation rejects controls, symlinks and unsafe components."
+                    },
+                    "manifest_sha256": {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{64}$"
+                    },
+                    "content_sha256": {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{64}$"
+                    }
+                  },
+                  "required": [
+                    "manifest_path",
+                    "manifest_sha256",
+                    "content_sha256"
+                  ],
+                  "additionalProperties": false
+                },
+                "selector": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "kind": {
+                          "const": "node_id"
+                        },
+                        "node_id": {
+                          "type": "string",
+                          "pattern": "^(0|[1-9][0-9]*)$",
+                          "maxLength": 20,
+                          "description": "Canonical uint64 decimal; checked range at native and control boundary."
+                        }
+                      },
+                      "required": [
+                        "kind",
+                        "node_id"
+                      ],
+                      "additionalProperties": false
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "kind": {
+                          "const": "pointer"
+                        },
+                        "pointer": {
+                          "type": "string",
+                          "maxLength": 65536,
+                          "pattern": "^(?:/|$)",
+                          "description": "RFC6901 escaping validated natively; source-bound node IDs reach fields whose full pointer exceeds this convenience profile."
+                        }
+                      },
+                      "required": [
+                        "kind",
+                        "pointer"
+                      ],
+                      "additionalProperties": false
+                    }
+                  ]
+                },
+                "selected_node_id": {
+                  "type": "string",
+                  "pattern": "^(0|[1-9][0-9]*)$",
+                  "maxLength": 20,
+                  "description": "Canonical uint64 decimal; checked range at native and control boundary."
+                },
+                "order": {
+                  "const": "canonical_immediate_children.v1"
+                },
+                "access_profile": {
+                  "const": "all_admitted_fields.v1"
+                },
+                "next_offset": {
+                  "type": "string",
+                  "pattern": "^(0|[1-9][0-9]*)$",
+                  "maxLength": 20,
+                  "description": "Canonical uint64 decimal; checked range at native and control boundary."
+                }
+              },
+              "required": [
+                "protocol",
+                "reference",
+                "selector",
+                "selected_node_id",
+                "order",
+                "access_profile",
+                "next_offset"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "row_limit": {
+          "type": "string",
+          "pattern": "^[1-9][0-9]*$",
+          "maxLength": 20,
+          "description": "Canonical positive uint64 decimal; checked range at native and control boundary."
+        },
+        "byte_limit": {
+          "type": "string",
+          "pattern": "^[1-9][0-9]*$",
+          "maxLength": 20,
+          "description": "Canonical positive uint64 decimal; checked range at native and control boundary."
+        },
+        "extensions": {
+          "type": "object",
+          "description": "Opaque portable optional fields within the unchanged control JSON string/depth/value/byte profile; raw numeric literals are not admitted."
+        }
+      },
+      "required": [
+        "protocol",
+        "reference",
+        "read_options",
+        "selector",
+        "cursor",
+        "row_limit",
+        "byte_limit",
+        "extensions"
+      ],
+      "additionalProperties": false
+    },
+    "bundle_verify": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.bundle-verify-input.v1"
+        },
+        "reference": {
+          "type": "object",
+          "properties": {
+            "manifest_path": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 4096,
+              "pattern": "^/",
+              "description": "Absolute clean component-wise no-follow path; native validation rejects controls, symlinks and unsafe components."
+            },
+            "manifest_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "content_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          },
+          "required": [
+            "manifest_path",
+            "manifest_sha256",
+            "content_sha256"
+          ],
+          "additionalProperties": false
+        },
+        "read_options": {
+          "type": "object",
+          "properties": {
+            "max_page_bytes": {
+              "oneOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[1-9][0-9]*$",
+                  "maxLength": 20,
+                  "description": "Canonical positive uint64 decimal; checked range at native and control boundary."
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "cache_bytes": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]*)$",
+              "maxLength": 20,
+              "description": "Canonical uint64 decimal; checked range at native and control boundary."
+            }
+          },
+          "required": [
+            "max_page_bytes",
+            "cache_bytes"
+          ],
+          "additionalProperties": false
+        },
+        "extensions": {
+          "type": "object",
+          "description": "Opaque portable optional fields within the unchanged control JSON string/depth/value/byte profile; raw numeric literals are not admitted."
+        }
+      },
+      "required": [
+        "protocol",
+        "reference",
+        "read_options",
+        "extensions"
+      ],
+      "additionalProperties": false
+    },
+    "bundle_export": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.bundle-export-input.v1"
+        },
+        "reference": {
+          "type": "object",
+          "properties": {
+            "manifest_path": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 4096,
+              "pattern": "^/",
+              "description": "Absolute clean component-wise no-follow path; native validation rejects controls, symlinks and unsafe components."
+            },
+            "manifest_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "content_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          },
+          "required": [
+            "manifest_path",
+            "manifest_sha256",
+            "content_sha256"
+          ],
+          "additionalProperties": false
+        },
+        "read_options": {
+          "type": "object",
+          "properties": {
+            "max_page_bytes": {
+              "oneOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[1-9][0-9]*$",
+                  "maxLength": 20,
+                  "description": "Canonical positive uint64 decimal; checked range at native and control boundary."
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "cache_bytes": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]*)$",
+              "maxLength": 20,
+              "description": "Canonical uint64 decimal; checked range at native and control boundary."
+            }
+          },
+          "required": [
+            "max_page_bytes",
+            "cache_bytes"
+          ],
+          "additionalProperties": false
+        },
+        "output_path": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 4096,
+          "pattern": "^/",
+          "description": "Absolute clean component-wise no-follow path; native validation rejects controls, symlinks and unsafe components."
+        },
+        "format": {
+          "enum": [
+            "json",
+            "ndjson"
+          ]
+        },
+        "extensions": {
+          "type": "object",
+          "description": "Opaque portable optional fields within the unchanged control JSON string/depth/value/byte profile; raw numeric literals are not admitted."
+        }
+      },
+      "required": [
+        "protocol",
+        "reference",
+        "read_options",
+        "output_path",
+        "format",
+        "extensions"
+      ],
+      "additionalProperties": false
     }
   },
   "results": {
@@ -8159,7 +8699,7 @@
           "const": "symphony.sbv.capabilities.v1"
         },
         "engine_version": {
-          "const": "0.21.0-dev"
+          "const": "0.22.0-dev"
         },
         "cpu": {
           "type": "object",
@@ -8383,6 +8923,50 @@
               "resident"
             ]
           }
+        },
+        "result_storage": {
+          "type": "object",
+          "properties": {
+            "legacy": {
+              "const": "symphony.sbv.result.v1"
+            },
+            "partitioned": {
+              "const": "symphony.sbv.partitioned-result.v1"
+            },
+            "page": {
+              "const": "symphony.sbv.result-page.v1"
+            },
+            "stream": {
+              "const": "symphony.sbv.node-stream.v1"
+            },
+            "max_bundle_bytes": {
+              "type": "null"
+            },
+            "max_bundle_nodes": {
+              "type": "null"
+            },
+            "logical_identity": {
+              "const": "canonical_result_body_sha256"
+            },
+            "physical_identity": {
+              "const": "exact_manifest_sha256"
+            },
+            "core_producers": {
+              "const": "legacy_result_v1"
+            }
+          },
+          "required": [
+            "legacy",
+            "partitioned",
+            "page",
+            "stream",
+            "max_bundle_bytes",
+            "max_bundle_nodes",
+            "logical_identity",
+            "physical_identity",
+            "core_producers"
+          ],
+          "additionalProperties": false
         }
       },
       "required": [
@@ -8399,7 +8983,8 @@
         "sdk",
         "resident_data",
         "source_owner_profile",
-        "data_source_modes"
+        "data_source_modes",
+        "result_storage"
       ],
       "additionalProperties": false
     },
@@ -8811,7 +9396,7 @@
           "const": "symphony.sbv.catalogue.v1"
         },
         "engine_version": {
-          "const": "0.21.0-dev"
+          "const": "0.22.0-dev"
         },
         "models": {
           "type": "array",
@@ -9402,7 +9987,7 @@
           "const": "symphony.sbv.backend-plan.v1"
         },
         "engine_version": {
-          "const": "0.21.0-dev"
+          "const": "0.22.0-dev"
         },
         "status": {
           "enum": [
@@ -9695,7 +10280,7 @@
           "const": "symphony.sbv.live-plan.v1"
         },
         "engine_version": {
-          "const": "0.21.0-dev"
+          "const": "0.22.0-dev"
         },
         "can_activate": {
           "const": false
@@ -11087,7 +11672,7 @@
           "const": "symphony.sbv.provider-inspect.v1"
         },
         "engine_version": {
-          "const": "0.21.0-dev"
+          "const": "0.22.0-dev"
         },
         "provider": {
           "type": "object",
@@ -11389,6 +11974,1287 @@
         },
         {
           "$ref": "#/$defs/source_export_recovery"
+        }
+      ]
+    },
+    "bundle_import": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "protocol": {
+              "const": "symphony.sbv.bundle-import.v1"
+            },
+            "status": {
+              "const": "complete"
+            },
+            "source_authorship": {
+              "const": "not_verified"
+            },
+            "verification_extent": {
+              "const": "full_logical_closure"
+            },
+            "reference": {
+              "type": "object",
+              "properties": {
+                "manifest_path": {
+                  "type": "string",
+                  "minLength": 2,
+                  "maxLength": 4096,
+                  "pattern": "^/",
+                  "description": "Absolute clean component-wise no-follow path; native validation rejects controls, symlinks and unsafe components."
+                },
+                "manifest_sha256": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                "content_sha256": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                }
+              },
+              "required": [
+                "manifest_path",
+                "manifest_sha256",
+                "content_sha256"
+              ],
+              "additionalProperties": false
+            },
+            "input_path": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 4096,
+              "pattern": "^/",
+              "description": "Absolute clean component-wise no-follow path; native validation rejects controls, symlinks and unsafe components."
+            },
+            "input_file_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "input_bytes": {
+              "type": "string",
+              "pattern": "^[1-9][0-9]*$",
+              "maxLength": 20,
+              "description": "Canonical positive uint64 decimal; checked range at native and control boundary."
+            },
+            "bundle_path": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 4096,
+              "pattern": "^/",
+              "description": "Absolute clean component-wise no-follow path; native validation rejects controls, symlinks and unsafe components."
+            },
+            "manifest_bytes": {
+              "type": "string",
+              "pattern": "^[1-9][0-9]*$",
+              "maxLength": 20,
+              "description": "Canonical positive uint64 decimal; checked range at native and control boundary."
+            },
+            "page_files_created": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]*)$",
+              "maxLength": 20,
+              "description": "Canonical uint64 decimal; checked range at native and control boundary."
+            },
+            "page_bytes_created": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]*)$",
+              "maxLength": 20,
+              "description": "Canonical uint64 decimal; checked range at native and control boundary."
+            },
+            "write_options": {
+              "type": "object",
+              "properties": {
+                "page_bytes": {
+                  "type": "string",
+                  "pattern": "^[1-9][0-9]*$",
+                  "maxLength": 20,
+                  "description": "Canonical positive uint64 decimal; checked range at native and control boundary."
+                },
+                "index_fanout": {
+                  "type": "string",
+                  "pattern": "^([2-9]|[1-9][0-9]+)$",
+                  "maxLength": 20
+                }
+              },
+              "required": [
+                "page_bytes",
+                "index_fanout"
+              ],
+              "additionalProperties": false
+            },
+            "extensions": {
+              "type": "object",
+              "description": "Opaque portable optional fields within the unchanged control JSON string/depth/value/byte profile; raw numeric literals are not admitted."
+            },
+            "logical_body_bytes": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]*)$",
+              "maxLength": 20,
+              "description": "Canonical uint64 decimal; checked range at native and control boundary."
+            },
+            "logical_body_nodes": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]*)$",
+              "maxLength": 20,
+              "description": "Canonical uint64 decimal; checked range at native and control boundary."
+            },
+            "logical_body_values": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]*)$",
+              "maxLength": 20,
+              "description": "Canonical uint64 decimal; checked range at native and control boundary."
+            },
+            "exported_value_nodes": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]*)$",
+              "maxLength": 20,
+              "description": "Canonical uint64 decimal; checked range at native and control boundary."
+            },
+            "io_stats": {
+              "type": "object",
+              "properties": {
+                "files_read": {
+                  "type": "string",
+                  "pattern": "^(0|[1-9][0-9]*)$",
+                  "maxLength": 20,
+                  "description": "Canonical uint64 decimal; checked range at native and control boundary."
+                },
+                "bytes_read": {
+                  "type": "string",
+                  "pattern": "^(0|[1-9][0-9]*)$",
+                  "maxLength": 20,
+                  "description": "Canonical uint64 decimal; checked range at native and control boundary."
+                },
+                "cache_hits": {
+                  "type": "string",
+                  "pattern": "^(0|[1-9][0-9]*)$",
+                  "maxLength": 20,
+                  "description": "Canonical uint64 decimal; checked range at native and control boundary."
+                },
+                "maximum_file_bytes": {
+                  "type": "string",
+                  "pattern": "^(0|[1-9][0-9]*)$",
+                  "maxLength": 20,
+                  "description": "Canonical uint64 decimal; checked range at native and control boundary."
+                }
+              },
+              "required": [
+                "files_read",
+                "bytes_read",
+                "cache_hits",
+                "maximum_file_bytes"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "protocol",
+            "status",
+            "source_authorship",
+            "verification_extent",
+            "reference",
+            "input_path",
+            "input_file_sha256",
+            "input_bytes",
+            "bundle_path",
+            "manifest_bytes",
+            "page_files_created",
+            "page_bytes_created",
+            "write_options",
+            "extensions",
+            "logical_body_bytes",
+            "logical_body_nodes",
+            "logical_body_values",
+            "exported_value_nodes",
+            "io_stats"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "protocol": {
+              "const": "symphony.sbv.bundle-import.v1"
+            },
+            "status": {
+              "const": "recovery_required"
+            },
+            "code": {
+              "const": "sbv.bundle_import_incomplete"
+            },
+            "request_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "automatic_retry": {
+              "const": false
+            },
+            "rollback_performed": {
+              "const": false
+            },
+            "recovery": {
+              "type": "object",
+              "properties": {
+                "bundle_path": {
+                  "type": "string",
+                  "minLength": 2,
+                  "maxLength": 4096,
+                  "pattern": "^/",
+                  "description": "Absolute clean component-wise no-follow path; native validation rejects controls, symlinks and unsafe components."
+                },
+                "manifest_path": {
+                  "type": "string",
+                  "minLength": 2,
+                  "maxLength": 4096,
+                  "pattern": "^/",
+                  "description": "Absolute clean component-wise no-follow path; native validation rejects controls, symlinks and unsafe components."
+                },
+                "phase": {
+                  "enum": [
+                    "create_directory",
+                    "write_pages",
+                    "publish_manifest",
+                    "sync_manifest"
+                  ]
+                },
+                "manifest_published": {
+                  "type": "boolean"
+                },
+                "durable": {
+                  "type": "boolean"
+                },
+                "page_files_created": {
+                  "type": "string",
+                  "pattern": "^(0|[1-9][0-9]*)$",
+                  "maxLength": 20,
+                  "description": "Canonical uint64 decimal; checked range at native and control boundary."
+                },
+                "page_bytes_created": {
+                  "type": "string",
+                  "pattern": "^(0|[1-9][0-9]*)$",
+                  "maxLength": 20,
+                  "description": "Canonical uint64 decimal; checked range at native and control boundary."
+                },
+                "reference": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "manifest_path": {
+                          "type": "string",
+                          "minLength": 2,
+                          "maxLength": 4096,
+                          "pattern": "^/",
+                          "description": "Absolute clean component-wise no-follow path; native validation rejects controls, symlinks and unsafe components."
+                        },
+                        "manifest_sha256": {
+                          "type": "string",
+                          "pattern": "^[0-9a-f]{64}$"
+                        },
+                        "content_sha256": {
+                          "type": "string",
+                          "pattern": "^[0-9a-f]{64}$"
+                        }
+                      },
+                      "required": [
+                        "manifest_path",
+                        "manifest_sha256",
+                        "content_sha256"
+                      ],
+                      "additionalProperties": false
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "bundle_path",
+                "manifest_path",
+                "phase",
+                "manifest_published",
+                "durable",
+                "page_files_created",
+                "page_bytes_created",
+                "reference"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "protocol",
+            "status",
+            "code",
+            "request_sha256",
+            "automatic_retry",
+            "rollback_performed",
+            "recovery"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "bundle_inspect": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.bundle-inspect.v1"
+        },
+        "status": {
+          "const": "complete"
+        },
+        "source_authorship": {
+          "const": "not_verified"
+        },
+        "verification_extent": {
+          "const": "manifest_only"
+        },
+        "reference": {
+          "type": "object",
+          "properties": {
+            "manifest_path": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 4096,
+              "pattern": "^/",
+              "description": "Absolute clean component-wise no-follow path; native validation rejects controls, symlinks and unsafe components."
+            },
+            "manifest_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "content_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          },
+          "required": [
+            "manifest_path",
+            "manifest_sha256",
+            "content_sha256"
+          ],
+          "additionalProperties": false
+        },
+        "logical_protocol": {
+          "const": "symphony.sbv.result.v1"
+        },
+        "storage_protocol": {
+          "const": "symphony.sbv.partitioned-result.v1"
+        },
+        "canonicalization": {
+          "const": "nlohmann_compact_utf8_sorted_keys_no_numeric_literals.v1"
+        },
+        "root_node_id": {
+          "const": "0"
+        },
+        "root_children": {
+          "const": "5"
+        },
+        "write_options": {
+          "type": "object",
+          "properties": {
+            "page_bytes": {
+              "type": "string",
+              "pattern": "^[1-9][0-9]*$",
+              "maxLength": 20,
+              "description": "Canonical positive uint64 decimal; checked range at native and control boundary."
+            },
+            "index_fanout": {
+              "type": "string",
+              "pattern": "^([2-9]|[1-9][0-9]+)$",
+              "maxLength": 20
+            }
+          },
+          "required": [
+            "page_bytes",
+            "index_fanout"
+          ],
+          "additionalProperties": false
+        },
+        "io_stats": {
+          "type": "object",
+          "properties": {
+            "files_read": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]*)$",
+              "maxLength": 20,
+              "description": "Canonical uint64 decimal; checked range at native and control boundary."
+            },
+            "bytes_read": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]*)$",
+              "maxLength": 20,
+              "description": "Canonical uint64 decimal; checked range at native and control boundary."
+            },
+            "cache_hits": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]*)$",
+              "maxLength": 20,
+              "description": "Canonical uint64 decimal; checked range at native and control boundary."
+            },
+            "maximum_file_bytes": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]*)$",
+              "maxLength": 20,
+              "description": "Canonical uint64 decimal; checked range at native and control boundary."
+            }
+          },
+          "required": [
+            "files_read",
+            "bytes_read",
+            "cache_hits",
+            "maximum_file_bytes"
+          ],
+          "additionalProperties": false
+        },
+        "extensions": {
+          "type": "object",
+          "description": "Opaque portable optional fields within the unchanged control JSON string/depth/value/byte profile; raw numeric literals are not admitted."
+        },
+        "logical_body_bytes": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$",
+          "maxLength": 20,
+          "description": "Canonical uint64 decimal; checked range at native and control boundary."
+        },
+        "logical_body_nodes": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$",
+          "maxLength": 20,
+          "description": "Canonical uint64 decimal; checked range at native and control boundary."
+        },
+        "logical_body_values": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$",
+          "maxLength": 20,
+          "description": "Canonical uint64 decimal; checked range at native and control boundary."
+        },
+        "exported_value_nodes": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$",
+          "maxLength": 20,
+          "description": "Canonical uint64 decimal; checked range at native and control boundary."
+        }
+      },
+      "required": [
+        "protocol",
+        "status",
+        "source_authorship",
+        "verification_extent",
+        "reference",
+        "logical_protocol",
+        "storage_protocol",
+        "canonicalization",
+        "root_node_id",
+        "root_children",
+        "write_options",
+        "io_stats",
+        "extensions",
+        "logical_body_bytes",
+        "logical_body_nodes",
+        "logical_body_values",
+        "exported_value_nodes"
+      ],
+      "additionalProperties": false
+    },
+    "bundle_query": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.bundle-query.v1"
+        },
+        "status": {
+          "const": "complete"
+        },
+        "source_authorship": {
+          "const": "not_verified"
+        },
+        "verification_extent": {
+          "const": "accessed_pages"
+        },
+        "reference": {
+          "type": "object",
+          "properties": {
+            "manifest_path": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 4096,
+              "pattern": "^/",
+              "description": "Absolute clean component-wise no-follow path; native validation rejects controls, symlinks and unsafe components."
+            },
+            "manifest_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "content_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          },
+          "required": [
+            "manifest_path",
+            "manifest_sha256",
+            "content_sha256"
+          ],
+          "additionalProperties": false
+        },
+        "selector": {
+          "oneOf": [
+            {
+              "type": "object",
+              "properties": {
+                "kind": {
+                  "const": "node_id"
+                },
+                "node_id": {
+                  "type": "string",
+                  "pattern": "^(0|[1-9][0-9]*)$",
+                  "maxLength": 20,
+                  "description": "Canonical uint64 decimal; checked range at native and control boundary."
+                }
+              },
+              "required": [
+                "kind",
+                "node_id"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "kind": {
+                  "const": "pointer"
+                },
+                "pointer": {
+                  "type": "string",
+                  "maxLength": 65536,
+                  "pattern": "^(?:/|$)",
+                  "description": "RFC6901 escaping validated natively; source-bound node IDs reach fields whose full pointer exceeds this convenience profile."
+                }
+              },
+              "required": [
+                "kind",
+                "pointer"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        },
+        "selected_node_id": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$",
+          "maxLength": 20,
+          "description": "Canonical uint64 decimal; checked range at native and control boundary."
+        },
+        "selected_kind": {
+          "enum": [
+            "object",
+            "array",
+            "scalar"
+          ]
+        },
+        "order": {
+          "const": "canonical_immediate_children.v1"
+        },
+        "access_profile": {
+          "const": "all_admitted_fields.v1"
+        },
+        "offset": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$",
+          "maxLength": 20,
+          "description": "Canonical uint64 decimal; checked range at native and control boundary."
+        },
+        "total": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$",
+          "maxLength": 20,
+          "description": "Canonical uint64 decimal; checked range at native and control boundary."
+        },
+        "complete": {
+          "type": "boolean"
+        },
+        "next_cursor": {
+          "oneOf": [
+            {
+              "type": "object",
+              "properties": {
+                "protocol": {
+                  "const": "symphony.sbv.bundle-cursor.v1"
+                },
+                "reference": {
+                  "type": "object",
+                  "properties": {
+                    "manifest_path": {
+                      "type": "string",
+                      "minLength": 2,
+                      "maxLength": 4096,
+                      "pattern": "^/",
+                      "description": "Absolute clean component-wise no-follow path; native validation rejects controls, symlinks and unsafe components."
+                    },
+                    "manifest_sha256": {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{64}$"
+                    },
+                    "content_sha256": {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{64}$"
+                    }
+                  },
+                  "required": [
+                    "manifest_path",
+                    "manifest_sha256",
+                    "content_sha256"
+                  ],
+                  "additionalProperties": false
+                },
+                "selector": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "kind": {
+                          "const": "node_id"
+                        },
+                        "node_id": {
+                          "type": "string",
+                          "pattern": "^(0|[1-9][0-9]*)$",
+                          "maxLength": 20,
+                          "description": "Canonical uint64 decimal; checked range at native and control boundary."
+                        }
+                      },
+                      "required": [
+                        "kind",
+                        "node_id"
+                      ],
+                      "additionalProperties": false
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "kind": {
+                          "const": "pointer"
+                        },
+                        "pointer": {
+                          "type": "string",
+                          "maxLength": 65536,
+                          "pattern": "^(?:/|$)",
+                          "description": "RFC6901 escaping validated natively; source-bound node IDs reach fields whose full pointer exceeds this convenience profile."
+                        }
+                      },
+                      "required": [
+                        "kind",
+                        "pointer"
+                      ],
+                      "additionalProperties": false
+                    }
+                  ]
+                },
+                "selected_node_id": {
+                  "type": "string",
+                  "pattern": "^(0|[1-9][0-9]*)$",
+                  "maxLength": 20,
+                  "description": "Canonical uint64 decimal; checked range at native and control boundary."
+                },
+                "order": {
+                  "const": "canonical_immediate_children.v1"
+                },
+                "access_profile": {
+                  "const": "all_admitted_fields.v1"
+                },
+                "next_offset": {
+                  "type": "string",
+                  "pattern": "^(0|[1-9][0-9]*)$",
+                  "maxLength": 20,
+                  "description": "Canonical uint64 decimal; checked range at native and control boundary."
+                }
+              },
+              "required": [
+                "protocol",
+                "reference",
+                "selector",
+                "selected_node_id",
+                "order",
+                "access_profile",
+                "next_offset"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "nodes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "node_id": {
+                "type": "string",
+                "pattern": "^(0|[1-9][0-9]*)$",
+                "maxLength": 20,
+                "description": "Canonical uint64 decimal; checked range at native and control boundary."
+              },
+              "parent_id": {
+                "oneOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^(0|[1-9][0-9]*)$",
+                    "maxLength": 20,
+                    "description": "Canonical uint64 decimal; checked range at native and control boundary."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "edge": {
+                "oneOf": [
+                  {
+                    "type": "string",
+                    "maxLength": 65536
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "kind": {
+                "enum": [
+                  "object",
+                  "array",
+                  "scalar"
+                ]
+              },
+              "value": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "maxProperties": 0
+                  },
+                  {
+                    "type": "array",
+                    "maxItems": 0
+                  },
+                  {
+                    "type": "string",
+                    "maxLength": 65536
+                  },
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "children": {
+                "type": "string",
+                "pattern": "^(0|[1-9][0-9]*)$",
+                "maxLength": 20,
+                "description": "Canonical uint64 decimal; checked range at native and control boundary."
+              }
+            },
+            "required": [
+              "node_id",
+              "parent_id",
+              "edge",
+              "kind",
+              "value",
+              "children"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "io_stats": {
+          "type": "object",
+          "properties": {
+            "files_read": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]*)$",
+              "maxLength": 20,
+              "description": "Canonical uint64 decimal; checked range at native and control boundary."
+            },
+            "bytes_read": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]*)$",
+              "maxLength": 20,
+              "description": "Canonical uint64 decimal; checked range at native and control boundary."
+            },
+            "cache_hits": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]*)$",
+              "maxLength": 20,
+              "description": "Canonical uint64 decimal; checked range at native and control boundary."
+            },
+            "maximum_file_bytes": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]*)$",
+              "maxLength": 20,
+              "description": "Canonical uint64 decimal; checked range at native and control boundary."
+            }
+          },
+          "required": [
+            "files_read",
+            "bytes_read",
+            "cache_hits",
+            "maximum_file_bytes"
+          ],
+          "additionalProperties": false
+        },
+        "extensions": {
+          "type": "object",
+          "description": "Opaque portable optional fields within the unchanged control JSON string/depth/value/byte profile; raw numeric literals are not admitted."
+        }
+      },
+      "required": [
+        "protocol",
+        "status",
+        "source_authorship",
+        "verification_extent",
+        "reference",
+        "selector",
+        "selected_node_id",
+        "selected_kind",
+        "order",
+        "access_profile",
+        "offset",
+        "total",
+        "complete",
+        "next_cursor",
+        "nodes",
+        "io_stats",
+        "extensions"
+      ],
+      "additionalProperties": false
+    },
+    "bundle_verify": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.bundle-verify.v1"
+        },
+        "status": {
+          "const": "complete"
+        },
+        "source_authorship": {
+          "const": "not_verified"
+        },
+        "verification_extent": {
+          "const": "full_logical_closure"
+        },
+        "reference": {
+          "type": "object",
+          "properties": {
+            "manifest_path": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 4096,
+              "pattern": "^/",
+              "description": "Absolute clean component-wise no-follow path; native validation rejects controls, symlinks and unsafe components."
+            },
+            "manifest_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "content_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          },
+          "required": [
+            "manifest_path",
+            "manifest_sha256",
+            "content_sha256"
+          ],
+          "additionalProperties": false
+        },
+        "io_stats": {
+          "type": "object",
+          "properties": {
+            "files_read": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]*)$",
+              "maxLength": 20,
+              "description": "Canonical uint64 decimal; checked range at native and control boundary."
+            },
+            "bytes_read": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]*)$",
+              "maxLength": 20,
+              "description": "Canonical uint64 decimal; checked range at native and control boundary."
+            },
+            "cache_hits": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]*)$",
+              "maxLength": 20,
+              "description": "Canonical uint64 decimal; checked range at native and control boundary."
+            },
+            "maximum_file_bytes": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]*)$",
+              "maxLength": 20,
+              "description": "Canonical uint64 decimal; checked range at native and control boundary."
+            }
+          },
+          "required": [
+            "files_read",
+            "bytes_read",
+            "cache_hits",
+            "maximum_file_bytes"
+          ],
+          "additionalProperties": false
+        },
+        "extensions": {
+          "type": "object",
+          "description": "Opaque portable optional fields within the unchanged control JSON string/depth/value/byte profile; raw numeric literals are not admitted."
+        },
+        "logical_body_bytes": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$",
+          "maxLength": 20,
+          "description": "Canonical uint64 decimal; checked range at native and control boundary."
+        },
+        "logical_body_nodes": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$",
+          "maxLength": 20,
+          "description": "Canonical uint64 decimal; checked range at native and control boundary."
+        },
+        "logical_body_values": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$",
+          "maxLength": 20,
+          "description": "Canonical uint64 decimal; checked range at native and control boundary."
+        },
+        "exported_value_nodes": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$",
+          "maxLength": 20,
+          "description": "Canonical uint64 decimal; checked range at native and control boundary."
+        }
+      },
+      "required": [
+        "protocol",
+        "status",
+        "source_authorship",
+        "verification_extent",
+        "reference",
+        "io_stats",
+        "extensions",
+        "logical_body_bytes",
+        "logical_body_nodes",
+        "logical_body_values",
+        "exported_value_nodes"
+      ],
+      "additionalProperties": false
+    },
+    "bundle_export": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "protocol": {
+              "const": "symphony.sbv.bundle-export.v1"
+            },
+            "status": {
+              "const": "complete"
+            },
+            "source_authorship": {
+              "const": "not_verified"
+            },
+            "verification_extent": {
+              "const": "full_logical_closure"
+            },
+            "reference": {
+              "type": "object",
+              "properties": {
+                "manifest_path": {
+                  "type": "string",
+                  "minLength": 2,
+                  "maxLength": 4096,
+                  "pattern": "^/",
+                  "description": "Absolute clean component-wise no-follow path; native validation rejects controls, symlinks and unsafe components."
+                },
+                "manifest_sha256": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                "content_sha256": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                }
+              },
+              "required": [
+                "manifest_path",
+                "manifest_sha256",
+                "content_sha256"
+              ],
+              "additionalProperties": false
+            },
+            "output_path": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 4096,
+              "pattern": "^/",
+              "description": "Absolute clean component-wise no-follow path; native validation rejects controls, symlinks and unsafe components."
+            },
+            "format": {
+              "enum": [
+                "json",
+                "ndjson"
+              ]
+            },
+            "bytes": {
+              "type": "string",
+              "pattern": "^[1-9][0-9]*$",
+              "maxLength": 20,
+              "description": "Canonical positive uint64 decimal; checked range at native and control boundary."
+            },
+            "file_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "completion_suffix": {
+              "type": "string",
+              "maxLength": 65536
+            },
+            "io_stats": {
+              "type": "object",
+              "properties": {
+                "files_read": {
+                  "type": "string",
+                  "pattern": "^(0|[1-9][0-9]*)$",
+                  "maxLength": 20,
+                  "description": "Canonical uint64 decimal; checked range at native and control boundary."
+                },
+                "bytes_read": {
+                  "type": "string",
+                  "pattern": "^(0|[1-9][0-9]*)$",
+                  "maxLength": 20,
+                  "description": "Canonical uint64 decimal; checked range at native and control boundary."
+                },
+                "cache_hits": {
+                  "type": "string",
+                  "pattern": "^(0|[1-9][0-9]*)$",
+                  "maxLength": 20,
+                  "description": "Canonical uint64 decimal; checked range at native and control boundary."
+                },
+                "maximum_file_bytes": {
+                  "type": "string",
+                  "pattern": "^(0|[1-9][0-9]*)$",
+                  "maxLength": 20,
+                  "description": "Canonical uint64 decimal; checked range at native and control boundary."
+                }
+              },
+              "required": [
+                "files_read",
+                "bytes_read",
+                "cache_hits",
+                "maximum_file_bytes"
+              ],
+              "additionalProperties": false
+            },
+            "extensions": {
+              "type": "object",
+              "description": "Opaque portable optional fields within the unchanged control JSON string/depth/value/byte profile; raw numeric literals are not admitted."
+            },
+            "logical_body_bytes": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]*)$",
+              "maxLength": 20,
+              "description": "Canonical uint64 decimal; checked range at native and control boundary."
+            },
+            "logical_body_nodes": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]*)$",
+              "maxLength": 20,
+              "description": "Canonical uint64 decimal; checked range at native and control boundary."
+            },
+            "logical_body_values": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]*)$",
+              "maxLength": 20,
+              "description": "Canonical uint64 decimal; checked range at native and control boundary."
+            },
+            "exported_value_nodes": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]*)$",
+              "maxLength": 20,
+              "description": "Canonical uint64 decimal; checked range at native and control boundary."
+            }
+          },
+          "required": [
+            "protocol",
+            "status",
+            "source_authorship",
+            "verification_extent",
+            "reference",
+            "output_path",
+            "format",
+            "bytes",
+            "file_sha256",
+            "completion_suffix",
+            "io_stats",
+            "extensions",
+            "logical_body_bytes",
+            "logical_body_nodes",
+            "logical_body_values",
+            "exported_value_nodes"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "protocol": {
+              "const": "symphony.sbv.bundle-export.v1"
+            },
+            "status": {
+              "const": "recovery_required"
+            },
+            "code": {
+              "const": "sbv.bundle_export_incomplete"
+            },
+            "request_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "automatic_retry": {
+              "const": false
+            },
+            "rollback_performed": {
+              "const": false
+            },
+            "recovery": {
+              "type": "object",
+              "properties": {
+                "output_path": {
+                  "type": "string",
+                  "minLength": 2,
+                  "maxLength": 4096,
+                  "pattern": "^/",
+                  "description": "Absolute clean component-wise no-follow path; native validation rejects controls, symlinks and unsafe components."
+                },
+                "stage_path": {
+                  "oneOf": [
+                    {
+                      "type": "string",
+                      "minLength": 2,
+                      "maxLength": 4096,
+                      "pattern": "^/",
+                      "description": "Absolute clean component-wise no-follow path; native validation rejects controls, symlinks and unsafe components."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "phase": {
+                  "enum": [
+                    "create_stage",
+                    "write_export",
+                    "publish_export",
+                    "sync_export"
+                  ]
+                },
+                "published": {
+                  "type": "boolean"
+                },
+                "durable": {
+                  "type": "boolean"
+                },
+                "expected_binary": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "reference": {
+                          "type": "object",
+                          "properties": {
+                            "manifest_path": {
+                              "type": "string",
+                              "minLength": 2,
+                              "maxLength": 4096,
+                              "pattern": "^/",
+                              "description": "Absolute clean component-wise no-follow path; native validation rejects controls, symlinks and unsafe components."
+                            },
+                            "manifest_sha256": {
+                              "type": "string",
+                              "pattern": "^[0-9a-f]{64}$"
+                            },
+                            "content_sha256": {
+                              "type": "string",
+                              "pattern": "^[0-9a-f]{64}$"
+                            }
+                          },
+                          "required": [
+                            "manifest_path",
+                            "manifest_sha256",
+                            "content_sha256"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "format": {
+                          "enum": [
+                            "json",
+                            "ndjson"
+                          ]
+                        },
+                        "bytes": {
+                          "type": "string",
+                          "pattern": "^[1-9][0-9]*$",
+                          "maxLength": 20,
+                          "description": "Canonical positive uint64 decimal; checked range at native and control boundary."
+                        },
+                        "file_sha256": {
+                          "type": "string",
+                          "pattern": "^[0-9a-f]{64}$"
+                        },
+                        "completion_suffix": {
+                          "type": "string",
+                          "maxLength": 65536
+                        }
+                      },
+                      "required": [
+                        "reference",
+                        "format",
+                        "bytes",
+                        "file_sha256",
+                        "completion_suffix"
+                      ],
+                      "additionalProperties": false
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "output_path",
+                "stage_path",
+                "phase",
+                "published",
+                "durable",
+                "expected_binary"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "protocol",
+            "status",
+            "code",
+            "request_sha256",
+            "automatic_retry",
+            "rollback_performed",
+            "recovery"
+          ],
+          "additionalProperties": false
         }
       ]
     }
@@ -23715,6 +25581,941 @@
         "code",
         "stage",
         "receipt_path",
+        "recovery"
+      ],
+      "additionalProperties": false
+    },
+    "bundle_u64": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)$",
+      "maxLength": 20,
+      "description": "Canonical uint64 decimal; checked range at native and control boundary."
+    },
+    "bundle_positive": {
+      "type": "string",
+      "pattern": "^[1-9][0-9]*$",
+      "maxLength": 20,
+      "description": "Canonical positive uint64 decimal; checked range at native and control boundary."
+    },
+    "bundle_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "bundle_path": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 4096,
+      "pattern": "^/",
+      "description": "Absolute clean component-wise no-follow path; native validation rejects controls, symlinks and unsafe components."
+    },
+    "bundle_extensions": {
+      "type": "object",
+      "description": "Opaque portable optional fields within the unchanged control JSON string/depth/value/byte profile; raw numeric literals are not admitted."
+    },
+    "bundle_reference": {
+      "type": "object",
+      "properties": {
+        "manifest_path": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 4096,
+          "pattern": "^/",
+          "description": "Absolute clean component-wise no-follow path; native validation rejects controls, symlinks and unsafe components."
+        },
+        "manifest_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "content_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      },
+      "required": [
+        "manifest_path",
+        "manifest_sha256",
+        "content_sha256"
+      ],
+      "additionalProperties": false
+    },
+    "bundle_write_options": {
+      "type": "object",
+      "properties": {
+        "page_bytes": {
+          "type": "string",
+          "pattern": "^[1-9][0-9]*$",
+          "maxLength": 20,
+          "description": "Canonical positive uint64 decimal; checked range at native and control boundary."
+        },
+        "index_fanout": {
+          "type": "string",
+          "pattern": "^([2-9]|[1-9][0-9]+)$",
+          "maxLength": 20
+        }
+      },
+      "required": [
+        "page_bytes",
+        "index_fanout"
+      ],
+      "additionalProperties": false
+    },
+    "bundle_read_options": {
+      "type": "object",
+      "properties": {
+        "max_page_bytes": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^[1-9][0-9]*$",
+              "maxLength": 20,
+              "description": "Canonical positive uint64 decimal; checked range at native and control boundary."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "cache_bytes": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$",
+          "maxLength": 20,
+          "description": "Canonical uint64 decimal; checked range at native and control boundary."
+        }
+      },
+      "required": [
+        "max_page_bytes",
+        "cache_bytes"
+      ],
+      "additionalProperties": false
+    },
+    "bundle_io_stats": {
+      "type": "object",
+      "properties": {
+        "files_read": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$",
+          "maxLength": 20,
+          "description": "Canonical uint64 decimal; checked range at native and control boundary."
+        },
+        "bytes_read": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$",
+          "maxLength": 20,
+          "description": "Canonical uint64 decimal; checked range at native and control boundary."
+        },
+        "cache_hits": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$",
+          "maxLength": 20,
+          "description": "Canonical uint64 decimal; checked range at native and control boundary."
+        },
+        "maximum_file_bytes": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$",
+          "maxLength": 20,
+          "description": "Canonical uint64 decimal; checked range at native and control boundary."
+        }
+      },
+      "required": [
+        "files_read",
+        "bytes_read",
+        "cache_hits",
+        "maximum_file_bytes"
+      ],
+      "additionalProperties": false
+    },
+    "bundle_selector": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "node_id"
+            },
+            "node_id": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]*)$",
+              "maxLength": 20,
+              "description": "Canonical uint64 decimal; checked range at native and control boundary."
+            }
+          },
+          "required": [
+            "kind",
+            "node_id"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "pointer"
+            },
+            "pointer": {
+              "type": "string",
+              "maxLength": 65536,
+              "pattern": "^(?:/|$)",
+              "description": "RFC6901 escaping validated natively; source-bound node IDs reach fields whose full pointer exceeds this convenience profile."
+            }
+          },
+          "required": [
+            "kind",
+            "pointer"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "bundle_node": {
+      "type": "object",
+      "properties": {
+        "node_id": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$",
+          "maxLength": 20,
+          "description": "Canonical uint64 decimal; checked range at native and control boundary."
+        },
+        "parent_id": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]*)$",
+              "maxLength": 20,
+              "description": "Canonical uint64 decimal; checked range at native and control boundary."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "edge": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 65536
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "kind": {
+          "enum": [
+            "object",
+            "array",
+            "scalar"
+          ]
+        },
+        "value": {
+          "oneOf": [
+            {
+              "type": "object",
+              "maxProperties": 0
+            },
+            {
+              "type": "array",
+              "maxItems": 0
+            },
+            {
+              "type": "string",
+              "maxLength": 65536
+            },
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "children": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$",
+          "maxLength": 20,
+          "description": "Canonical uint64 decimal; checked range at native and control boundary."
+        }
+      },
+      "required": [
+        "node_id",
+        "parent_id",
+        "edge",
+        "kind",
+        "value",
+        "children"
+      ],
+      "additionalProperties": false
+    },
+    "bundle_cursor": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.bundle-cursor.v1"
+        },
+        "reference": {
+          "type": "object",
+          "properties": {
+            "manifest_path": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 4096,
+              "pattern": "^/",
+              "description": "Absolute clean component-wise no-follow path; native validation rejects controls, symlinks and unsafe components."
+            },
+            "manifest_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "content_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          },
+          "required": [
+            "manifest_path",
+            "manifest_sha256",
+            "content_sha256"
+          ],
+          "additionalProperties": false
+        },
+        "selector": {
+          "oneOf": [
+            {
+              "type": "object",
+              "properties": {
+                "kind": {
+                  "const": "node_id"
+                },
+                "node_id": {
+                  "type": "string",
+                  "pattern": "^(0|[1-9][0-9]*)$",
+                  "maxLength": 20,
+                  "description": "Canonical uint64 decimal; checked range at native and control boundary."
+                }
+              },
+              "required": [
+                "kind",
+                "node_id"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "kind": {
+                  "const": "pointer"
+                },
+                "pointer": {
+                  "type": "string",
+                  "maxLength": 65536,
+                  "pattern": "^(?:/|$)",
+                  "description": "RFC6901 escaping validated natively; source-bound node IDs reach fields whose full pointer exceeds this convenience profile."
+                }
+              },
+              "required": [
+                "kind",
+                "pointer"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        },
+        "selected_node_id": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$",
+          "maxLength": 20,
+          "description": "Canonical uint64 decimal; checked range at native and control boundary."
+        },
+        "order": {
+          "const": "canonical_immediate_children.v1"
+        },
+        "access_profile": {
+          "const": "all_admitted_fields.v1"
+        },
+        "next_offset": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$",
+          "maxLength": 20,
+          "description": "Canonical uint64 decimal; checked range at native and control boundary."
+        }
+      },
+      "required": [
+        "protocol",
+        "reference",
+        "selector",
+        "selected_node_id",
+        "order",
+        "access_profile",
+        "next_offset"
+      ],
+      "additionalProperties": false
+    },
+    "bundle_counts": {
+      "type": "object",
+      "properties": {
+        "logical_body_bytes": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$",
+          "maxLength": 20,
+          "description": "Canonical uint64 decimal; checked range at native and control boundary."
+        },
+        "logical_body_nodes": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$",
+          "maxLength": 20,
+          "description": "Canonical uint64 decimal; checked range at native and control boundary."
+        },
+        "logical_body_values": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$",
+          "maxLength": 20,
+          "description": "Canonical uint64 decimal; checked range at native and control boundary."
+        },
+        "exported_value_nodes": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$",
+          "maxLength": 20,
+          "description": "Canonical uint64 decimal; checked range at native and control boundary."
+        }
+      },
+      "required": [
+        "logical_body_bytes",
+        "logical_body_nodes",
+        "logical_body_values",
+        "exported_value_nodes"
+      ],
+      "additionalProperties": false
+    },
+    "bundle_expected_binary": {
+      "type": "object",
+      "properties": {
+        "reference": {
+          "type": "object",
+          "properties": {
+            "manifest_path": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 4096,
+              "pattern": "^/",
+              "description": "Absolute clean component-wise no-follow path; native validation rejects controls, symlinks and unsafe components."
+            },
+            "manifest_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "content_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          },
+          "required": [
+            "manifest_path",
+            "manifest_sha256",
+            "content_sha256"
+          ],
+          "additionalProperties": false
+        },
+        "format": {
+          "enum": [
+            "json",
+            "ndjson"
+          ]
+        },
+        "bytes": {
+          "type": "string",
+          "pattern": "^[1-9][0-9]*$",
+          "maxLength": 20,
+          "description": "Canonical positive uint64 decimal; checked range at native and control boundary."
+        },
+        "file_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "completion_suffix": {
+          "type": "string",
+          "maxLength": 65536
+        }
+      },
+      "required": [
+        "reference",
+        "format",
+        "bytes",
+        "file_sha256",
+        "completion_suffix"
+      ],
+      "additionalProperties": false
+    },
+    "bundle_import_recovery_data": {
+      "type": "object",
+      "properties": {
+        "bundle_path": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 4096,
+          "pattern": "^/",
+          "description": "Absolute clean component-wise no-follow path; native validation rejects controls, symlinks and unsafe components."
+        },
+        "manifest_path": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 4096,
+          "pattern": "^/",
+          "description": "Absolute clean component-wise no-follow path; native validation rejects controls, symlinks and unsafe components."
+        },
+        "phase": {
+          "enum": [
+            "create_directory",
+            "write_pages",
+            "publish_manifest",
+            "sync_manifest"
+          ]
+        },
+        "manifest_published": {
+          "type": "boolean"
+        },
+        "durable": {
+          "type": "boolean"
+        },
+        "page_files_created": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$",
+          "maxLength": 20,
+          "description": "Canonical uint64 decimal; checked range at native and control boundary."
+        },
+        "page_bytes_created": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$",
+          "maxLength": 20,
+          "description": "Canonical uint64 decimal; checked range at native and control boundary."
+        },
+        "reference": {
+          "oneOf": [
+            {
+              "type": "object",
+              "properties": {
+                "manifest_path": {
+                  "type": "string",
+                  "minLength": 2,
+                  "maxLength": 4096,
+                  "pattern": "^/",
+                  "description": "Absolute clean component-wise no-follow path; native validation rejects controls, symlinks and unsafe components."
+                },
+                "manifest_sha256": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                "content_sha256": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                }
+              },
+              "required": [
+                "manifest_path",
+                "manifest_sha256",
+                "content_sha256"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "bundle_path",
+        "manifest_path",
+        "phase",
+        "manifest_published",
+        "durable",
+        "page_files_created",
+        "page_bytes_created",
+        "reference"
+      ],
+      "additionalProperties": false
+    },
+    "bundle_export_recovery_data": {
+      "type": "object",
+      "properties": {
+        "output_path": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 4096,
+          "pattern": "^/",
+          "description": "Absolute clean component-wise no-follow path; native validation rejects controls, symlinks and unsafe components."
+        },
+        "stage_path": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 4096,
+              "pattern": "^/",
+              "description": "Absolute clean component-wise no-follow path; native validation rejects controls, symlinks and unsafe components."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "phase": {
+          "enum": [
+            "create_stage",
+            "write_export",
+            "publish_export",
+            "sync_export"
+          ]
+        },
+        "published": {
+          "type": "boolean"
+        },
+        "durable": {
+          "type": "boolean"
+        },
+        "expected_binary": {
+          "oneOf": [
+            {
+              "type": "object",
+              "properties": {
+                "reference": {
+                  "type": "object",
+                  "properties": {
+                    "manifest_path": {
+                      "type": "string",
+                      "minLength": 2,
+                      "maxLength": 4096,
+                      "pattern": "^/",
+                      "description": "Absolute clean component-wise no-follow path; native validation rejects controls, symlinks and unsafe components."
+                    },
+                    "manifest_sha256": {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{64}$"
+                    },
+                    "content_sha256": {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{64}$"
+                    }
+                  },
+                  "required": [
+                    "manifest_path",
+                    "manifest_sha256",
+                    "content_sha256"
+                  ],
+                  "additionalProperties": false
+                },
+                "format": {
+                  "enum": [
+                    "json",
+                    "ndjson"
+                  ]
+                },
+                "bytes": {
+                  "type": "string",
+                  "pattern": "^[1-9][0-9]*$",
+                  "maxLength": 20,
+                  "description": "Canonical positive uint64 decimal; checked range at native and control boundary."
+                },
+                "file_sha256": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                "completion_suffix": {
+                  "type": "string",
+                  "maxLength": 65536
+                }
+              },
+              "required": [
+                "reference",
+                "format",
+                "bytes",
+                "file_sha256",
+                "completion_suffix"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "output_path",
+        "stage_path",
+        "phase",
+        "published",
+        "durable",
+        "expected_binary"
+      ],
+      "additionalProperties": false
+    },
+    "bundle_import_recovery": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.bundle-import.v1"
+        },
+        "status": {
+          "const": "recovery_required"
+        },
+        "code": {
+          "const": "sbv.bundle_import_incomplete"
+        },
+        "request_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "automatic_retry": {
+          "const": false
+        },
+        "rollback_performed": {
+          "const": false
+        },
+        "recovery": {
+          "type": "object",
+          "properties": {
+            "bundle_path": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 4096,
+              "pattern": "^/",
+              "description": "Absolute clean component-wise no-follow path; native validation rejects controls, symlinks and unsafe components."
+            },
+            "manifest_path": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 4096,
+              "pattern": "^/",
+              "description": "Absolute clean component-wise no-follow path; native validation rejects controls, symlinks and unsafe components."
+            },
+            "phase": {
+              "enum": [
+                "create_directory",
+                "write_pages",
+                "publish_manifest",
+                "sync_manifest"
+              ]
+            },
+            "manifest_published": {
+              "type": "boolean"
+            },
+            "durable": {
+              "type": "boolean"
+            },
+            "page_files_created": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]*)$",
+              "maxLength": 20,
+              "description": "Canonical uint64 decimal; checked range at native and control boundary."
+            },
+            "page_bytes_created": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]*)$",
+              "maxLength": 20,
+              "description": "Canonical uint64 decimal; checked range at native and control boundary."
+            },
+            "reference": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "manifest_path": {
+                      "type": "string",
+                      "minLength": 2,
+                      "maxLength": 4096,
+                      "pattern": "^/",
+                      "description": "Absolute clean component-wise no-follow path; native validation rejects controls, symlinks and unsafe components."
+                    },
+                    "manifest_sha256": {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{64}$"
+                    },
+                    "content_sha256": {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{64}$"
+                    }
+                  },
+                  "required": [
+                    "manifest_path",
+                    "manifest_sha256",
+                    "content_sha256"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "bundle_path",
+            "manifest_path",
+            "phase",
+            "manifest_published",
+            "durable",
+            "page_files_created",
+            "page_bytes_created",
+            "reference"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "protocol",
+        "status",
+        "code",
+        "request_sha256",
+        "automatic_retry",
+        "rollback_performed",
+        "recovery"
+      ],
+      "additionalProperties": false
+    },
+    "bundle_export_recovery": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.bundle-export.v1"
+        },
+        "status": {
+          "const": "recovery_required"
+        },
+        "code": {
+          "const": "sbv.bundle_export_incomplete"
+        },
+        "request_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "automatic_retry": {
+          "const": false
+        },
+        "rollback_performed": {
+          "const": false
+        },
+        "recovery": {
+          "type": "object",
+          "properties": {
+            "output_path": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 4096,
+              "pattern": "^/",
+              "description": "Absolute clean component-wise no-follow path; native validation rejects controls, symlinks and unsafe components."
+            },
+            "stage_path": {
+              "oneOf": [
+                {
+                  "type": "string",
+                  "minLength": 2,
+                  "maxLength": 4096,
+                  "pattern": "^/",
+                  "description": "Absolute clean component-wise no-follow path; native validation rejects controls, symlinks and unsafe components."
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "phase": {
+              "enum": [
+                "create_stage",
+                "write_export",
+                "publish_export",
+                "sync_export"
+              ]
+            },
+            "published": {
+              "type": "boolean"
+            },
+            "durable": {
+              "type": "boolean"
+            },
+            "expected_binary": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "reference": {
+                      "type": "object",
+                      "properties": {
+                        "manifest_path": {
+                          "type": "string",
+                          "minLength": 2,
+                          "maxLength": 4096,
+                          "pattern": "^/",
+                          "description": "Absolute clean component-wise no-follow path; native validation rejects controls, symlinks and unsafe components."
+                        },
+                        "manifest_sha256": {
+                          "type": "string",
+                          "pattern": "^[0-9a-f]{64}$"
+                        },
+                        "content_sha256": {
+                          "type": "string",
+                          "pattern": "^[0-9a-f]{64}$"
+                        }
+                      },
+                      "required": [
+                        "manifest_path",
+                        "manifest_sha256",
+                        "content_sha256"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "format": {
+                      "enum": [
+                        "json",
+                        "ndjson"
+                      ]
+                    },
+                    "bytes": {
+                      "type": "string",
+                      "pattern": "^[1-9][0-9]*$",
+                      "maxLength": 20,
+                      "description": "Canonical positive uint64 decimal; checked range at native and control boundary."
+                    },
+                    "file_sha256": {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{64}$"
+                    },
+                    "completion_suffix": {
+                      "type": "string",
+                      "maxLength": 65536
+                    }
+                  },
+                  "required": [
+                    "reference",
+                    "format",
+                    "bytes",
+                    "file_sha256",
+                    "completion_suffix"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "output_path",
+            "stage_path",
+            "phase",
+            "published",
+            "durable",
+            "expected_binary"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "protocol",
+        "status",
+        "code",
+        "request_sha256",
+        "automatic_retry",
+        "rollback_performed",
         "recovery"
       ],
       "additionalProperties": false

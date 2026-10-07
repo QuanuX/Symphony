@@ -3,9 +3,9 @@
   "module_id": "sbv-engine",
   "engine_id": "symphony-sbv",
   "namespace": "symphony::sbv::interface",
-  "current_version": "0.21.0-dev",
+  "current_version": "0.22.0-dev",
   "releases": {
-    "0.21.0-dev": [
+    "0.22.0-dev": [
       "capabilities",
       "run",
       "compose",
@@ -37,7 +37,12 @@
       "generate_census",
       "provider_inspect",
       "source_retain",
-      "source_export"
+      "source_export",
+      "bundle_import",
+      "bundle_inspect",
+      "bundle_query",
+      "bundle_verify",
+      "bundle_export"
     ]
   },
   "contract_versions": [
@@ -107,6 +112,16 @@
     "symphony.sbv.source-retain.v1",
     "symphony.sbv.source-export-input.v1",
     "symphony.sbv.source-export.v1",
+    "symphony.sbv.bundle-import-input.v1",
+    "symphony.sbv.bundle-import.v1",
+    "symphony.sbv.bundle-inspect-input.v1",
+    "symphony.sbv.bundle-inspect.v1",
+    "symphony.sbv.bundle-query-input.v1",
+    "symphony.sbv.bundle-query.v1",
+    "symphony.sbv.bundle-verify-input.v1",
+    "symphony.sbv.bundle-verify.v1",
+    "symphony.sbv.bundle-export-input.v1",
+    "symphony.sbv.bundle-export.v1",
     "symphony.sbv.linear-model.v1",
     "symphony.sbv.census-evidence.v1",
     "symphony.sbv.native-provider-census.v1",
@@ -114,7 +129,11 @@
     "symphony.sbv.retained-source.v1",
     "symphony.sbv.source-delivery.v1",
     "symphony.sbv.source-binary-receipt.v1",
-    "symphony.sbv.source-owner-profile.v1"
+    "symphony.sbv.source-owner-profile.v1",
+    "symphony.sbv.partitioned-result.v1",
+    "symphony.sbv.result-page.v1",
+    "symphony.sbv.node-stream.v1",
+    "symphony.sbv.bundle-cursor.v1"
   ],
   "operations": [
     {
@@ -790,13 +809,123 @@
       "output_protocol": "symphony.sbv.source-export.v1",
       "recovery_operation_id": "engop:symphony:sbv.result-inspect",
       "thermal_path": "freezing"
+    },
+    {
+      "administration_disposition": "qxctl_required",
+      "administrative_interactions": [
+        "invoke"
+      ],
+      "authorization_requirement": "target_host_permission",
+      "availability": "implemented",
+      "direct_invocation": "supported",
+      "engine_operation_id": "engop:symphony:sbv.bundle-import",
+      "expected_state_required": false,
+      "feature_ids": [
+        "ssfv:symphony:sbv-engine"
+      ],
+      "idempotency": "non_idempotent",
+      "input_protocol": "symphony.sbv.bundle-import-input.v1",
+      "mutability": "permission_backed_mutation",
+      "operation_name": "bundle_import",
+      "output_protocol": "symphony.sbv.bundle-import.v1",
+      "recovery_operation_id": "engop:symphony:sbv.bundle-inspect",
+      "thermal_path": "freezing"
+    },
+    {
+      "administration_disposition": "qxctl_required",
+      "administrative_interactions": [
+        "inspect",
+        "recover"
+      ],
+      "authorization_requirement": "none",
+      "availability": "implemented",
+      "direct_invocation": "supported",
+      "engine_operation_id": "engop:symphony:sbv.bundle-inspect",
+      "expected_state_required": false,
+      "feature_ids": [
+        "ssfv:symphony:sbv-engine"
+      ],
+      "idempotency": "idempotent",
+      "input_protocol": "symphony.sbv.bundle-inspect-input.v1",
+      "mutability": "read_only",
+      "operation_name": "bundle_inspect",
+      "output_protocol": "symphony.sbv.bundle-inspect.v1",
+      "recovery_operation_id": null,
+      "thermal_path": "freezing"
+    },
+    {
+      "administration_disposition": "qxctl_required",
+      "administrative_interactions": [
+        "inspect"
+      ],
+      "authorization_requirement": "none",
+      "availability": "implemented",
+      "direct_invocation": "supported",
+      "engine_operation_id": "engop:symphony:sbv.bundle-query",
+      "expected_state_required": false,
+      "feature_ids": [
+        "ssfv:symphony:sbv-engine"
+      ],
+      "idempotency": "idempotent",
+      "input_protocol": "symphony.sbv.bundle-query-input.v1",
+      "mutability": "read_only",
+      "operation_name": "bundle_query",
+      "output_protocol": "symphony.sbv.bundle-query.v1",
+      "recovery_operation_id": null,
+      "thermal_path": "freezing"
+    },
+    {
+      "administration_disposition": "qxctl_required",
+      "administrative_interactions": [
+        "inspect",
+        "recover"
+      ],
+      "authorization_requirement": "none",
+      "availability": "implemented",
+      "direct_invocation": "supported",
+      "engine_operation_id": "engop:symphony:sbv.bundle-verify",
+      "expected_state_required": false,
+      "feature_ids": [
+        "ssfv:symphony:sbv-engine"
+      ],
+      "idempotency": "idempotent",
+      "input_protocol": "symphony.sbv.bundle-verify-input.v1",
+      "mutability": "read_only",
+      "operation_name": "bundle_verify",
+      "output_protocol": "symphony.sbv.bundle-verify.v1",
+      "recovery_operation_id": null,
+      "thermal_path": "freezing"
+    },
+    {
+      "administration_disposition": "qxctl_required",
+      "administrative_interactions": [
+        "invoke"
+      ],
+      "authorization_requirement": "target_host_permission",
+      "availability": "implemented",
+      "direct_invocation": "supported",
+      "engine_operation_id": "engop:symphony:sbv.bundle-export",
+      "expected_state_required": false,
+      "feature_ids": [
+        "ssfv:symphony:sbv-engine"
+      ],
+      "idempotency": "non_idempotent",
+      "input_protocol": "symphony.sbv.bundle-export-input.v1",
+      "mutability": "permission_backed_mutation",
+      "operation_name": "bundle_export",
+      "output_protocol": "symphony.sbv.bundle-export.v1",
+      "recovery_operation_id": "engop:symphony:sbv.bundle-inspect",
+      "thermal_path": "freezing"
     }
   ],
   "schemas": [
     "modules/sbv-engine/schemas/v1/admin.schema.json",
     "modules/sbv-engine/schemas/v1/admin.templates.json",
     "modules/sbv-engine/schemas/v1/result.schema.json",
-    "modules/sbv-engine/schemas/v1/pointer-stream.schema.json"
+    "modules/sbv-engine/schemas/v1/pointer-stream.schema.json",
+    "modules/sbv-engine/schemas/v1/partitioned-result.schema.json",
+    "modules/sbv-engine/schemas/v1/result-page.schema.json",
+    "modules/sbv-engine/schemas/v1/node-stream.schema.json"
   ],
   "companions": [],
   "embedded_dependencies": []
