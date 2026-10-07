@@ -1,4 +1,5 @@
 #include "census.hpp"
+#include "provider.hpp"
 #include <algorithm>
 #include <optional>
 namespace symphony::sbv::detail {
@@ -30,10 +31,12 @@ void validate(const Json &c) {
        "census evidence protocol/source identity required");
   need(!str(c.at("dataset")).empty(), "census dataset required");
   (void)u64(c.at("instrument_id"));
-  const bool native = c.at("kind") == "native";
-  need(native || c.at("kind") == "external", "unknown census kind");
+  const bool native = c.at("kind") == "native",
+             provider_kind = c.at("kind") == "native_provider";
+  need(native || provider_kind || c.at("kind") == "external",
+       "unknown census kind");
   const auto &signals = c.at("signals"), &d = c.at("declaration");
-  need(signals.is_array() && signals.size() <= 4096,
+  need(signals.is_array() && (provider_kind || signals.size() <= 4096),
        "census signal profile bound");
   if (native) {
     need(c.at("identity_domain") == "native_signals" &&
@@ -64,6 +67,63 @@ void validate(const Json &c) {
     (void)u64(d.at("additional_eligible_after_cap"));
     need(e::sha256_hex(signals.dump()) == str(c.at("census_sha256")),
          "native census digest mismatch");
+  } else if (provider_kind) {
+    need(c.at("identity_domain") == "native_provider_declaration" &&
+             c.at("mode") == "native_provider_prefix",
+         "provider census identity domain required");
+    keys(d, {"protocol", "source_sha256", "dataset", "instrument_id",
+             "provider", "provider_evidence", "signals", "completion"});
+    producer(c.at("producer"));
+    const auto &selection = d.at("provider"), &author = c.at("producer");
+    keys(selection,
+         {"protocol", "library", "id", "version", "role", "input_profile",
+          "concurrency", "parameters", "dependencies", "extensions"});
+    keys(selection.at("library"), {"path", "expected_sha256"});
+    need(d.at("protocol") == "symphony.sbv.native-provider-census.v1" &&
+             d.at("source_sha256") == c.at("source_sha256") &&
+             d.at("dataset") == c.at("dataset") &&
+             d.at("instrument_id") == c.at("instrument_id") &&
+             d.at("signals") == signals &&
+             selection.at("protocol") ==
+                 "symphony.sbv.native-provider-selection.v1" &&
+             selection.at("role") == "strategy" &&
+             selection.at("concurrency") == "serialized_instance" &&
+             selection.at("input_profile") ==
+                 "symphony.sbv.provider-databento-mbo-event.v1" &&
+             selection.at("id") == author.at("id") &&
+             selection.at("version") == author.at("version") &&
+             selection.at("library").at("expected_sha256") ==
+                 author.at("artifact_sha256") &&
+             selection.at("parameters").is_object() &&
+             selection.at("extensions").is_object() &&
+             d.at("provider_evidence").is_object() &&
+             e::sha256_hex(d.dump()) == str(c.at("census_sha256")),
+         "provider census declaration mismatch");
+    const auto &completion = d.at("completion");
+    keys(completion, {"diagnostics", "extensions"});
+    need(completion.at("diagnostics").is_array() &&
+             completion.at("extensions").is_object(),
+         "provider census completion shape");
+    for (const auto &message : completion.at("diagnostics"))
+      (void)str(message);
+    const auto &evidence = d.at("provider_evidence");
+    validate_native_provider_evidence(selection, evidence);
+    need(evidence.at("protocol") ==
+                 "symphony.sbv.native-provider-evidence.v1" &&
+             evidence.at("selection_sha256") ==
+                 e::sha256_hex(selection.dump()) &&
+             evidence.at("id") == author.at("id") &&
+             evidence.at("version") == author.at("version") &&
+             evidence.at("role") == "strategy" &&
+             evidence.at("concurrency") == "serialized_instance" &&
+             evidence.at("reproducibility") == author.at("reproducibility") &&
+             evidence.at("library").at("path") ==
+                 selection.at("library").at("path") &&
+             evidence.at("library").at("expected_sha256") ==
+                 author.at("artifact_sha256") &&
+             evidence.at("descriptor_sha256") ==
+                 e::sha256_hex(str(evidence.at("descriptor_json"))),
+         "provider census captured evidence mismatch");
   } else {
     need(c.at("identity_domain") == "external_declaration" &&
              (c.at("mode") == "causal_declared" ||
@@ -100,8 +160,9 @@ void validate(const Json &c) {
          "census identity/order mismatch");
     need(i64(s.at("anchor_price_nanos")) != INT64_MAX,
          "undefined census anchor");
-    need(native ? causal == ordinal + 1
-                : (c.at("mode") != "causal_declared" || causal <= ordinal + 1),
+    need(native || provider_kind
+             ? causal == ordinal + 1
+             : (c.at("mode") != "causal_declared" || causal <= ordinal + 1),
          "census causal boundary mismatch");
     if (native) {
       const auto &previous = s.at("previous_trade_price_nanos");
@@ -141,9 +202,12 @@ Json census_evidence(const Json &result) {
              &choices = s.at("choices").at("data"),
              &summary = s.at("summary").at("data");
   const auto operation = str(choices.at("protocol"));
-  const bool native_run = operation == "symphony.sbv.run-input.v1";
-  need(native_run || operation == "symphony.sbv.evaluate-input.v1",
-       "census requires a run/evaluate result");
+  const bool native_run = operation == "symphony.sbv.run-input.v1",
+             generated = operation == "symphony.sbv.generate-census-input.v1";
+  need(native_run || generated || operation == "symphony.sbv.evaluate-input.v1",
+       "census requires a run/generate-census/evaluate result");
+  need(!generated || s.contains("census"),
+       "generated provider census evidence missing");
   Json c;
   if (s.contains("census")) {
     need(s.at("census").at("status") == "available",
@@ -191,6 +255,16 @@ Json census_evidence(const Json &result) {
              d.at("additional_eligible_after_cap") ==
                  summary.at("additional_eligible_after_cap"),
          "native census selection context mismatch");
+  } else if (generated) {
+    const auto &d = c.at("declaration"), &provider = s.at("provider");
+    need(c.at("kind") == "native_provider" &&
+             summary.at("causality") == c.at("mode") &&
+             p.at("census_producer") == c.at("producer") &&
+             d.at("provider") == choices.at("provider") &&
+             provider.at("status") == "available" &&
+             provider.at("data").at("evidence") == d.at("provider_evidence") &&
+             provider.at("data").at("completion") == d.at("completion"),
+         "generated provider census context mismatch");
   } else {
     need(summary.at("causality") == c.at("mode") &&
              p.at("census_producer") == c.at("producer"),

@@ -32,5 +32,20 @@ private:
   Json selection_;
   std::map<std::string, Json> supplied_;
 };
+// Trusted native providers propose the same candidate values as an external
+// outcome producer. The host validates their exact domains and authors the
+// typed result; plugin callbacks never replace the final SBV artifact.
+void validate_native_provider_model(const Json &selection,
+                                    const Json &producer);
+// Validate retained model attribution without loading provider binaries or
+// dependencies. Captured evidence is descriptive, not authenticated authorship.
+void validate_native_provider_model_context(const Json &selection,
+                                            const Json &captured_provider,
+                                            const Json &outcomes);
+Json admit_native_provider_outcome(const Json &selection, const Json &producer,
+                                   const Json &candidate,
+                                   const Json &unavailable_error,
+                                   const ModelFrame &,
+                                   std::int64_t deadline_ms);
 Json model_catalogue();
 } // namespace symphony::sbv

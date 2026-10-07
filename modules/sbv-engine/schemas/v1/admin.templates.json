@@ -933,6 +933,56 @@
         "max_terminal_atoms": null
       },
       "extensions": {}
+    },
+    "generate_census": {
+      "protocol": "symphony.sbv.generate-census-input.v1",
+      "source_path": "/absolute/private/source.dbn",
+      "source_sha256": "REPLACE_WITH_SOURCE_SHA256",
+      "dataset": "GLBX.MDP3",
+      "provider": {
+        "protocol": "symphony.sbv.native-provider-selection.v1",
+        "library": {
+          "path": "/absolute/trusted/provider.dylib",
+          "expected_sha256": "REPLACE_WITH_BINARY_SHA256"
+        },
+        "id": "caller-provider",
+        "version": "1",
+        "role": "strategy",
+        "input_profile": "symphony.sbv.provider-databento-mbo-event.v1",
+        "concurrency": "serialized_instance",
+        "parameters": {},
+        "dependencies": {
+          "capture": "uncaptured",
+          "description": "Caller-selected native library; dynamic dependencies are not captured",
+          "artifacts": []
+        },
+        "extensions": {}
+      },
+      "output_path": "/absolute/private/census.json",
+      "extensions": {}
+    },
+    "provider_inspect": {
+      "protocol": "symphony.sbv.provider-inspect-input.v1",
+      "provider": {
+        "protocol": "symphony.sbv.native-provider-selection.v1",
+        "library": {
+          "path": "/absolute/trusted/provider.dylib",
+          "expected_sha256": "REPLACE_WITH_BINARY_SHA256"
+        },
+        "id": "caller-provider",
+        "version": "1",
+        "role": "strategy",
+        "input_profile": "symphony.sbv.provider-databento-mbo-event.v1",
+        "concurrency": "serialized_instance",
+        "parameters": {},
+        "dependencies": {
+          "capture": "uncaptured",
+          "description": "Caller-selected native library; dynamic dependencies are not captured",
+          "artifacts": []
+        },
+        "extensions": {}
+      },
+      "extensions": {}
     }
   }
 }

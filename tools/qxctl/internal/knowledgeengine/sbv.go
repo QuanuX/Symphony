@@ -11,7 +11,7 @@ import (
 	"strings"
 )
 
-var SBVOperations = []string{"capabilities", "run", "compose", "result_inspect", "result_query", "evaluate", "catalogue", "compose_joint", "economics", "book", "liquidity", "allocation_economics", "result_select", "backend_plan", "live_plan", "analyze", "compare", "resample", "experiment", "split", "fit", "predict", "compose_economics", "research_history", "dataset_load", "dataset_inspect", "dataset_execute", "dataset_release"}
+var SBVOperations = []string{"capabilities", "run", "compose", "result_inspect", "result_query", "evaluate", "catalogue", "compose_joint", "economics", "book", "liquidity", "allocation_economics", "result_select", "backend_plan", "live_plan", "analyze", "compare", "resample", "experiment", "split", "fit", "predict", "generate_census", "provider_inspect", "compose_economics", "research_history", "dataset_load", "dataset_inspect", "dataset_execute", "dataset_release"}
 var sbvSHA = regexp.MustCompile(`^[0-9a-f]{64}$`)
 
 func sbvSpec() engineSpec {
@@ -204,7 +204,7 @@ func validateSBVResult(op string, p map[string]any, raw []byte) error {
 				return bad()
 			}
 		}
-	case "run", "compose", "evaluate", "compose_joint", "economics", "book", "liquidity", "allocation_economics", "analyze", "compare", "resample", "experiment", "split", "fit", "predict", "compose_economics", "research_history", "dataset_execute", "result_inspect":
+	case "run", "compose", "evaluate", "compose_joint", "economics", "book", "liquidity", "allocation_economics", "analyze", "compare", "resample", "experiment", "split", "fit", "predict", "generate_census", "compose_economics", "research_history", "dataset_execute", "result_inspect":
 		target := "output_path"
 		if op == "result_inspect" {
 			target = "path"
@@ -218,6 +218,78 @@ func validateSBVResult(op string, p map[string]any, raw []byte) error {
 		}
 		if m["status"] != "completed" && m["status"] != "partial" {
 			return bad()
+		}
+	case "provider_inspect":
+		selection, ok := p["provider"].(map[string]any)
+		if !ok || len(m) != 4 || m["engine_version"] != SBVAdministrationInterfaceVersion || !reflect.DeepEqual(m["extensions"], p["extensions"]) {
+			return bad()
+		}
+		evidence, ok := m["provider"].(map[string]any)
+		if !ok || len(evidence) != 15 || evidence["protocol"] != "symphony.sbv.native-provider-evidence.v1" || evidence["abi_version"] != "1" {
+			return bad()
+		}
+		for _, key := range []string{"id", "version", "role", "concurrency"} {
+			if evidence[key] != selection[key] {
+				return bad()
+			}
+		}
+		canonical, err := sbvNativeCanonical(selection)
+		if err != nil || evidence["selection_sha256"] != strings.TrimPrefix(digestBytes(canonical), "sha256:") {
+			return bad()
+		}
+		descriptor, ok := evidence["descriptor_json"].(string)
+		if !ok || !json.Valid([]byte(descriptor)) || evidence["descriptor_sha256"] != strings.TrimPrefix(digestBytes([]byte(descriptor)), "sha256:") {
+			return bad()
+		}
+		// Descriptor JSON may contain ordinary JSON Schema numbers; its exact
+		// bytes are retained as a string by the numeric-string result contract.
+		var declared map[string]any
+		if json.Unmarshal([]byte(descriptor), &declared) != nil || declared["protocol"] != "symphony.sbv.native-provider-descriptor.v1" {
+			return bad()
+		}
+		for _, key := range []string{"id", "version", "reproducibility", "cancellation"} {
+			v, ok := evidence[key].(string)
+			if !ok || v == "" || declared[key] != v {
+				return bad()
+			}
+		}
+		configuration, ok := evidence["configuration_validation"].(string)
+		loading, present := evidence["loading"].(map[string]any)
+		if !ok || configuration == "" || !present || len(loading) != 6 || loading["isolation"] != false || loading["symbol"] != "symphony_sbv_provider_api_v1" {
+			return bad()
+		}
+		for _, key := range []string{"profile", "visibility", "dependency_resolution", "trust"} {
+			if v, ok := loading[key].(string); !ok || v == "" {
+				return bad()
+			}
+		}
+		verifyFile := func(got, want any) bool {
+			actual, ok := got.(map[string]any)
+			selected, present := want.(map[string]any)
+			if !ok || !present || len(actual) != 3 || actual["path"] != selected["path"] || actual["expected_sha256"] != selected["expected_sha256"] {
+				return false
+			}
+			bytes, ok := actual["bytes"].(string)
+			n, e := strconv.ParseUint(bytes, 10, 64)
+			return ok && e == nil && strconv.FormatUint(n, 10) == bytes
+		}
+		if !verifyFile(evidence["library"], selection["library"]) {
+			return bad()
+		}
+		dependencies, ok := evidence["dependencies"].(map[string]any)
+		selectedDependencies, present := selection["dependencies"].(map[string]any)
+		if !ok || !present || len(dependencies) != 3 || dependencies["capture"] != selectedDependencies["capture"] || dependencies["description"] != selectedDependencies["description"] {
+			return bad()
+		}
+		actualFiles, ok := dependencies["artifacts"].([]any)
+		selectedFiles, present := selectedDependencies["artifacts"].([]any)
+		if !ok || !present || len(actualFiles) != len(selectedFiles) {
+			return bad()
+		}
+		for i := range actualFiles {
+			if !verifyFile(actualFiles[i], selectedFiles[i]) {
+				return bad()
+			}
 		}
 	case "catalogue":
 		if m["engine_version"] != SBVAdministrationInterfaceVersion {
@@ -397,7 +469,44 @@ func sbvInputShape(shape, p map[string]any) bool {
 		}
 		props["extensions"] = map[string]any{"const": ext}
 	}
-	return sqvTransportShape(shape, p, 0)
+	return sqvTransportShape(sbvBindOpenObjects(shape, p, 0), p, 0)
+}
+
+// SBV permits provider-owned configuration objects. Bind explicitly open
+// object schemas to this request after checking their type; other owners keep
+// their closed transport-schema admission unchanged.
+func sbvBindOpenObjects(schema, value any, depth int) any {
+	s, ok := schema.(map[string]any)
+	if !ok || depth > 64 {
+		return schema
+	}
+	if s["type"] == "object" && s["additionalProperties"] == true && len(s) == 2 {
+		if _, ok := value.(map[string]any); ok {
+			return map[string]any{"const": value}
+		}
+		return map[string]any{"enum": []any{}}
+	}
+	out := make(map[string]any, len(s))
+	for k, v := range s {
+		out[k] = v
+	}
+	if alternatives, ok := s["anyOf"].([]any); ok {
+		bound := make([]any, len(alternatives))
+		for i, alternative := range alternatives {
+			bound[i] = sbvBindOpenObjects(alternative, value, depth+1)
+		}
+		out["anyOf"] = bound
+	}
+	if props, ok := s["properties"].(map[string]any); ok {
+		if values, ok := value.(map[string]any); ok {
+			bound := make(map[string]any, len(props))
+			for key, rule := range props {
+				bound[key] = sbvBindOpenObjects(rule, values[key], depth+1)
+			}
+			out["properties"] = bound
+		}
+	}
+	return out
 }
 
 // SBVSchema exposes both sides of an operation and the exact recursive output

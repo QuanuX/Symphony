@@ -6,7 +6,7 @@
 
 namespace symphony::sbv {
 using Json = knowledge::engine::Json;
-inline constexpr auto version = "0.19.0-dev";
+inline constexpr auto version = "0.20.0-dev";
 inline constexpr auto result_protocol = "symphony.sbv.result.v1";
 // Owns no process-global dataset cache. Explicit dataset_load starts a
 // companion native host with caller-controlled lifecycle. Callers may invoke independent jobs

@@ -702,6 +702,172 @@
                 "parameters"
               ],
               "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "protocol": {
+                  "const": "symphony.sbv.model-selection.v1"
+                },
+                "id": {
+                  "const": "native_provider"
+                },
+                "version": {
+                  "const": "1"
+                },
+                "horizon_ns": {
+                  "type": "string"
+                },
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "provider": {
+                      "type": "object",
+                      "properties": {
+                        "protocol": {
+                          "const": "symphony.sbv.native-provider-selection.v1"
+                        },
+                        "library": {
+                          "type": "object",
+                          "properties": {
+                            "path": {
+                              "type": "string"
+                            },
+                            "expected_sha256": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "path",
+                            "expected_sha256"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "id": {
+                          "type": "string"
+                        },
+                        "version": {
+                          "type": "string"
+                        },
+                        "role": {
+                          "enum": [
+                            "strategy",
+                            "model"
+                          ]
+                        },
+                        "input_profile": {
+                          "const": "symphony.sbv.provider-databento-mbo-event.v1"
+                        },
+                        "concurrency": {
+                          "enum": [
+                            "serialized_instance",
+                            "per_worker_instances",
+                            "shared_reentrant_instance"
+                          ]
+                        },
+                        "parameters": {
+                          "type": "object",
+                          "additionalProperties": true
+                        },
+                        "dependencies": {
+                          "type": "object",
+                          "properties": {
+                            "capture": {
+                              "enum": [
+                                "declared_artifacts",
+                                "uncaptured"
+                              ]
+                            },
+                            "description": {
+                              "type": "string"
+                            },
+                            "artifacts": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "path": {
+                                    "type": "string"
+                                  },
+                                  "expected_sha256": {
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "path",
+                                  "expected_sha256"
+                                ],
+                                "additionalProperties": false
+                              }
+                            }
+                          },
+                          "required": [
+                            "capture",
+                            "description",
+                            "artifacts"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "extensions": {
+                          "type": "object",
+                          "additionalProperties": true
+                        }
+                      },
+                      "required": [
+                        "protocol",
+                        "library",
+                        "id",
+                        "version",
+                        "role",
+                        "input_profile",
+                        "concurrency",
+                        "parameters",
+                        "dependencies",
+                        "extensions"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "measure": {
+                      "enum": [
+                        "probability",
+                        "scenario_weight",
+                        "signed_coefficient"
+                      ]
+                    },
+                    "conditioning": {
+                      "enum": [
+                        "execution",
+                        "scenario"
+                      ]
+                    },
+                    "calibration_reference": {
+                      "type": "string"
+                    },
+                    "on_unavailable": {
+                      "enum": [
+                        "unavailable",
+                        "reject"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "provider",
+                    "measure",
+                    "conditioning",
+                    "calibration_reference",
+                    "on_unavailable"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "protocol",
+                "id",
+                "version",
+                "horizon_ns",
+                "parameters"
+              ],
+              "additionalProperties": false
             }
           ]
         },
@@ -4057,7 +4223,8 @@
           "enum": [
             "run",
             "evaluate",
-            "book"
+            "book",
+            "generate_census"
           ]
         },
         "request": {},
@@ -5002,6 +5169,323 @@
         "extensions"
       ],
       "additionalProperties": false
+    },
+    "generate_census": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.generate-census-input.v1"
+        },
+        "source_path": {
+          "type": "string"
+        },
+        "source_sha256": {
+          "type": "string"
+        },
+        "dataset": {
+          "type": "string"
+        },
+        "provider": {
+          "type": "object",
+          "properties": {
+            "protocol": {
+              "const": "symphony.sbv.native-provider-selection.v1"
+            },
+            "library": {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": "string"
+                },
+                "expected_sha256": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "path",
+                "expected_sha256"
+              ],
+              "additionalProperties": false
+            },
+            "id": {
+              "type": "string"
+            },
+            "version": {
+              "type": "string"
+            },
+            "role": {
+              "enum": [
+                "strategy",
+                "model"
+              ]
+            },
+            "input_profile": {
+              "const": "symphony.sbv.provider-databento-mbo-event.v1"
+            },
+            "concurrency": {
+              "enum": [
+                "serialized_instance",
+                "per_worker_instances",
+                "shared_reentrant_instance"
+              ]
+            },
+            "parameters": {
+              "type": "object",
+              "additionalProperties": true
+            },
+            "dependencies": {
+              "type": "object",
+              "properties": {
+                "capture": {
+                  "enum": [
+                    "declared_artifacts",
+                    "uncaptured"
+                  ]
+                },
+                "description": {
+                  "type": "string"
+                },
+                "artifacts": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "path": {
+                        "type": "string"
+                      },
+                      "expected_sha256": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "path",
+                      "expected_sha256"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              },
+              "required": [
+                "capture",
+                "description",
+                "artifacts"
+              ],
+              "additionalProperties": false
+            },
+            "extensions": {
+              "type": "object",
+              "additionalProperties": true
+            }
+          },
+          "required": [
+            "protocol",
+            "library",
+            "id",
+            "version",
+            "role",
+            "input_profile",
+            "concurrency",
+            "parameters",
+            "dependencies",
+            "extensions"
+          ],
+          "additionalProperties": false
+        },
+        "output_path": {
+          "type": "string"
+        },
+        "extensions": {
+          "type": "object"
+        },
+        "memory_budget_bytes": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[1-9][0-9]*$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "dataset_limits": {
+          "type": "object",
+          "properties": {
+            "max_source_bytes": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[1-9][0-9]*$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "max_source_events": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[1-9][0-9]*$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "max_metadata_bytes": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[1-9][0-9]*$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "max_source_bytes",
+            "max_source_events",
+            "max_metadata_bytes"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "protocol",
+        "source_path",
+        "source_sha256",
+        "dataset",
+        "provider",
+        "output_path",
+        "extensions"
+      ],
+      "additionalProperties": false
+    },
+    "provider_inspect": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.provider-inspect-input.v1"
+        },
+        "provider": {
+          "type": "object",
+          "properties": {
+            "protocol": {
+              "const": "symphony.sbv.native-provider-selection.v1"
+            },
+            "library": {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": "string"
+                },
+                "expected_sha256": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "path",
+                "expected_sha256"
+              ],
+              "additionalProperties": false
+            },
+            "id": {
+              "type": "string"
+            },
+            "version": {
+              "type": "string"
+            },
+            "role": {
+              "enum": [
+                "strategy",
+                "model"
+              ]
+            },
+            "input_profile": {
+              "const": "symphony.sbv.provider-databento-mbo-event.v1"
+            },
+            "concurrency": {
+              "enum": [
+                "serialized_instance",
+                "per_worker_instances",
+                "shared_reentrant_instance"
+              ]
+            },
+            "parameters": {
+              "type": "object",
+              "additionalProperties": true
+            },
+            "dependencies": {
+              "type": "object",
+              "properties": {
+                "capture": {
+                  "enum": [
+                    "declared_artifacts",
+                    "uncaptured"
+                  ]
+                },
+                "description": {
+                  "type": "string"
+                },
+                "artifacts": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "path": {
+                        "type": "string"
+                      },
+                      "expected_sha256": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "path",
+                      "expected_sha256"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              },
+              "required": [
+                "capture",
+                "description",
+                "artifacts"
+              ],
+              "additionalProperties": false
+            },
+            "extensions": {
+              "type": "object",
+              "additionalProperties": true
+            }
+          },
+          "required": [
+            "protocol",
+            "library",
+            "id",
+            "version",
+            "role",
+            "input_profile",
+            "concurrency",
+            "parameters",
+            "dependencies",
+            "extensions"
+          ],
+          "additionalProperties": false
+        },
+        "extensions": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "protocol",
+        "provider",
+        "extensions"
+      ],
+      "additionalProperties": false
     }
   },
   "results": {
@@ -5012,7 +5496,7 @@
           "const": "symphony.sbv.capabilities.v1"
         },
         "engine_version": {
-          "const": "0.19.0-dev"
+          "const": "0.20.0-dev"
         },
         "cpu": {
           "type": "object",
@@ -5127,6 +5611,15 @@
             },
             "max_deadline_ahead_ms": {
               "type": "null"
+            },
+            "max_signals_scope": {
+              "type": "string"
+            },
+            "max_generated_census_signals": {
+              "type": "null"
+            },
+            "max_composed_paths_scope": {
+              "type": "string"
             }
           },
           "required": [
@@ -5138,7 +5631,10 @@
             "dataset_limit_authority",
             "deadline_authority",
             "default_deadline_unix_ms",
-            "max_deadline_ahead_ms"
+            "max_deadline_ahead_ms",
+            "max_signals_scope",
+            "max_generated_census_signals",
+            "max_composed_paths_scope"
           ],
           "additionalProperties": false
         },
@@ -5637,7 +6133,7 @@
           "const": "symphony.sbv.catalogue.v1"
         },
         "engine_version": {
-          "const": "0.19.0-dev"
+          "const": "0.20.0-dev"
         },
         "models": {
           "type": "array",
@@ -6228,7 +6724,7 @@
           "const": "symphony.sbv.backend-plan.v1"
         },
         "engine_version": {
-          "const": "0.19.0-dev"
+          "const": "0.20.0-dev"
         },
         "status": {
           "enum": [
@@ -6521,7 +7017,7 @@
           "const": "symphony.sbv.live-plan.v1"
         },
         "engine_version": {
-          "const": "0.19.0-dev"
+          "const": "0.20.0-dev"
         },
         "can_activate": {
           "const": false
@@ -7823,6 +8319,240 @@
         "summary"
       ],
       "additionalProperties": false
+    },
+    "generate_census": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.generate-census.v1"
+        },
+        "path": {
+          "type": "string"
+        },
+        "content_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "file_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "bytes": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$"
+        },
+        "status": {
+          "enum": [
+            "completed",
+            "partial"
+          ]
+        },
+        "summary": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "enum": [
+                "available",
+                "partial",
+                "unavailable",
+                "not_selected"
+              ]
+            },
+            "reason": {
+              "type": "string"
+            },
+            "data": {
+              "$ref": "#/$defs/node"
+            }
+          },
+          "required": [
+            "status",
+            "reason",
+            "data"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "protocol",
+        "path",
+        "content_sha256",
+        "file_sha256",
+        "bytes",
+        "status",
+        "summary"
+      ],
+      "additionalProperties": false
+    },
+    "provider_inspect": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.provider-inspect.v1"
+        },
+        "engine_version": {
+          "const": "0.20.0-dev"
+        },
+        "provider": {
+          "type": "object",
+          "properties": {
+            "protocol": {
+              "const": "symphony.sbv.native-provider-evidence.v1"
+            },
+            "abi_version": {
+              "const": "1"
+            },
+            "library": {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": "string"
+                },
+                "expected_sha256": {
+                  "type": "string"
+                },
+                "bytes": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "path",
+                "expected_sha256",
+                "bytes"
+              ],
+              "additionalProperties": false
+            },
+            "selection_sha256": {
+              "type": "string"
+            },
+            "descriptor_sha256": {
+              "type": "string"
+            },
+            "descriptor_json": {
+              "type": "string"
+            },
+            "id": {
+              "type": "string"
+            },
+            "version": {
+              "type": "string"
+            },
+            "role": {
+              "type": "string"
+            },
+            "concurrency": {
+              "type": "string"
+            },
+            "reproducibility": {
+              "type": "string"
+            },
+            "cancellation": {
+              "type": "string"
+            },
+            "dependencies": {
+              "type": "object",
+              "properties": {
+                "capture": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "artifacts": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "path": {
+                        "type": "string"
+                      },
+                      "expected_sha256": {
+                        "type": "string"
+                      },
+                      "bytes": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "path",
+                      "expected_sha256",
+                      "bytes"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              },
+              "required": [
+                "capture",
+                "description",
+                "artifacts"
+              ],
+              "additionalProperties": false
+            },
+            "configuration_validation": {
+              "type": "string"
+            },
+            "loading": {
+              "type": "object",
+              "properties": {
+                "profile": {
+                  "type": "string"
+                },
+                "symbol": {
+                  "type": "string"
+                },
+                "visibility": {
+                  "type": "string"
+                },
+                "dependency_resolution": {
+                  "type": "string"
+                },
+                "trust": {
+                  "type": "string"
+                },
+                "isolation": {
+                  "const": false
+                }
+              },
+              "required": [
+                "profile",
+                "symbol",
+                "visibility",
+                "dependency_resolution",
+                "trust",
+                "isolation"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "protocol",
+            "abi_version",
+            "library",
+            "selection_sha256",
+            "descriptor_sha256",
+            "descriptor_json",
+            "id",
+            "version",
+            "role",
+            "concurrency",
+            "reproducibility",
+            "cancellation",
+            "dependencies",
+            "configuration_validation",
+            "loading"
+          ],
+          "additionalProperties": false
+        },
+        "extensions": {}
+      },
+      "required": [
+        "protocol",
+        "engine_version",
+        "provider",
+        "extensions"
+      ],
+      "additionalProperties": false
     }
   },
   "$defs": {
@@ -8184,6 +8914,172 @@
             "parameters"
           ],
           "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "protocol": {
+              "const": "symphony.sbv.model-selection.v1"
+            },
+            "id": {
+              "const": "native_provider"
+            },
+            "version": {
+              "const": "1"
+            },
+            "horizon_ns": {
+              "type": "string"
+            },
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "provider": {
+                  "type": "object",
+                  "properties": {
+                    "protocol": {
+                      "const": "symphony.sbv.native-provider-selection.v1"
+                    },
+                    "library": {
+                      "type": "object",
+                      "properties": {
+                        "path": {
+                          "type": "string"
+                        },
+                        "expected_sha256": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "path",
+                        "expected_sha256"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "id": {
+                      "type": "string"
+                    },
+                    "version": {
+                      "type": "string"
+                    },
+                    "role": {
+                      "enum": [
+                        "strategy",
+                        "model"
+                      ]
+                    },
+                    "input_profile": {
+                      "const": "symphony.sbv.provider-databento-mbo-event.v1"
+                    },
+                    "concurrency": {
+                      "enum": [
+                        "serialized_instance",
+                        "per_worker_instances",
+                        "shared_reentrant_instance"
+                      ]
+                    },
+                    "parameters": {
+                      "type": "object",
+                      "additionalProperties": true
+                    },
+                    "dependencies": {
+                      "type": "object",
+                      "properties": {
+                        "capture": {
+                          "enum": [
+                            "declared_artifacts",
+                            "uncaptured"
+                          ]
+                        },
+                        "description": {
+                          "type": "string"
+                        },
+                        "artifacts": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "path": {
+                                "type": "string"
+                              },
+                              "expected_sha256": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "path",
+                              "expected_sha256"
+                            ],
+                            "additionalProperties": false
+                          }
+                        }
+                      },
+                      "required": [
+                        "capture",
+                        "description",
+                        "artifacts"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "extensions": {
+                      "type": "object",
+                      "additionalProperties": true
+                    }
+                  },
+                  "required": [
+                    "protocol",
+                    "library",
+                    "id",
+                    "version",
+                    "role",
+                    "input_profile",
+                    "concurrency",
+                    "parameters",
+                    "dependencies",
+                    "extensions"
+                  ],
+                  "additionalProperties": false
+                },
+                "measure": {
+                  "enum": [
+                    "probability",
+                    "scenario_weight",
+                    "signed_coefficient"
+                  ]
+                },
+                "conditioning": {
+                  "enum": [
+                    "execution",
+                    "scenario"
+                  ]
+                },
+                "calibration_reference": {
+                  "type": "string"
+                },
+                "on_unavailable": {
+                  "enum": [
+                    "unavailable",
+                    "reject"
+                  ]
+                }
+              },
+              "required": [
+                "provider",
+                "measure",
+                "conditioning",
+                "calibration_reference",
+                "on_unavailable"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "protocol",
+            "id",
+            "version",
+            "horizon_ns",
+            "parameters"
+          ],
+          "additionalProperties": false
         }
       ]
     },
@@ -8199,7 +9095,8 @@
         "model_id": {
           "enum": [
             "observed_trade_levels",
-            "external_outcomes"
+            "external_outcomes",
+            "native_provider"
           ]
         },
         "model_version": {
@@ -8484,7 +9381,8 @@
         "evidence_origin": {
           "enum": [
             "externally_supplied",
-            "observed_post_signal_trades"
+            "observed_post_signal_trades",
+            "native_provider"
           ]
         },
         "measure": {
@@ -13452,13 +14350,15 @@
         "kind": {
           "enum": [
             "native",
-            "external"
+            "external",
+            "native_provider"
           ]
         },
         "identity_domain": {
           "enum": [
             "native_signals",
-            "external_declaration"
+            "external_declaration",
+            "native_provider_declaration"
           ]
         },
         "census_sha256": {
@@ -13477,7 +14377,8 @@
           "enum": [
             "native_causal_prefix",
             "causal_declared",
-            "retrospective"
+            "retrospective",
+            "native_provider_prefix"
           ]
         },
         "producer": {},
@@ -14940,13 +15841,15 @@
             "kind": {
               "enum": [
                 "native",
-                "external"
+                "external",
+                "native_provider"
               ]
             },
             "identity_domain": {
               "enum": [
                 "native_signals",
-                "external_declaration"
+                "external_declaration",
+                "native_provider_declaration"
               ]
             },
             "census_sha256": {
@@ -14965,7 +15868,8 @@
               "enum": [
                 "native_causal_prefix",
                 "causal_declared",
-                "retrospective"
+                "retrospective",
+                "native_provider_prefix"
               ]
             },
             "producer": {},
@@ -15030,7 +15934,581 @@
           ],
           "additionalProperties": false
         },
-        "extensions": {}
+        "extensions": {},
+        "model_selection": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "protocol": {
+                  "const": "symphony.sbv.model-selection.v1"
+                },
+                "id": {
+                  "const": "observed_trade_levels"
+                },
+                "version": {
+                  "const": "1"
+                },
+                "horizon_ns": {
+                  "type": "string",
+                  "pattern": "^(0|[1-9][0-9]*)$"
+                },
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "levels_per_side": {
+                      "type": "string",
+                      "pattern": "^(0|[1-9][0-9]*)$"
+                    },
+                    "include_anchor": {
+                      "type": "boolean"
+                    },
+                    "thin_support": {
+                      "enum": [
+                        "unavailable",
+                        "reject"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "levels_per_side",
+                    "include_anchor",
+                    "thin_support"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "protocol",
+                "id",
+                "version",
+                "horizon_ns",
+                "parameters"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "protocol": {
+                  "const": "symphony.sbv.model-selection.v1"
+                },
+                "id": {
+                  "const": "external_outcomes"
+                },
+                "version": {
+                  "const": "1"
+                },
+                "horizon_ns": {
+                  "type": "string",
+                  "pattern": "^(0|[1-9][0-9]*)$"
+                },
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "producer": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "version": {
+                          "type": "string"
+                        },
+                        "artifact_sha256": {
+                          "type": "string"
+                        },
+                        "reproducibility": {
+                          "enum": [
+                            "deterministic_declared",
+                            "nondeterministic",
+                            "uncaptured"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "version",
+                        "artifact_sha256",
+                        "reproducibility"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "measure": {
+                      "enum": [
+                        "probability",
+                        "scenario_weight",
+                        "signed_coefficient"
+                      ]
+                    },
+                    "conditioning": {
+                      "enum": [
+                        "execution",
+                        "scenario"
+                      ]
+                    },
+                    "calibration_reference": {
+                      "type": "string"
+                    },
+                    "outcomes": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "signal_id": {
+                            "type": "string"
+                          },
+                          "support": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "price_nanos": {
+                                  "type": "string",
+                                  "pattern": "^-?(0|[1-9][0-9]*)$"
+                                },
+                                "weight": {
+                                  "type": "object",
+                                  "properties": {
+                                    "numerator": {
+                                      "type": "string",
+                                      "pattern": "^-?(0|[1-9][0-9]*)$"
+                                    },
+                                    "denominator": {
+                                      "type": "string",
+                                      "pattern": "^(0|[1-9][0-9]*)$"
+                                    }
+                                  },
+                                  "required": [
+                                    "numerator",
+                                    "denominator"
+                                  ],
+                                  "additionalProperties": false
+                                }
+                              },
+                              "required": [
+                                "price_nanos",
+                                "weight"
+                              ],
+                              "additionalProperties": false
+                            }
+                          },
+                          "execution_probability": {
+                            "anyOf": [
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "status": {
+                                    "const": "supplied"
+                                  },
+                                  "value": {
+                                    "type": "object",
+                                    "properties": {
+                                      "numerator": {
+                                        "type": "string",
+                                        "pattern": "^-?(0|[1-9][0-9]*)$"
+                                      },
+                                      "denominator": {
+                                        "type": "string",
+                                        "pattern": "^(0|[1-9][0-9]*)$"
+                                      }
+                                    },
+                                    "required": [
+                                      "numerator",
+                                      "denominator"
+                                    ],
+                                    "additionalProperties": false
+                                  }
+                                },
+                                "required": [
+                                  "status",
+                                  "value"
+                                ],
+                                "additionalProperties": false
+                              },
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "status": {
+                                    "const": "unavailable"
+                                  },
+                                  "reason": {
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "status",
+                                  "reason"
+                                ],
+                                "additionalProperties": false
+                              }
+                            ]
+                          },
+                          "evidence_reference": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "signal_id",
+                          "support",
+                          "execution_probability",
+                          "evidence_reference"
+                        ],
+                        "additionalProperties": false
+                      }
+                    }
+                  },
+                  "required": [
+                    "producer",
+                    "measure",
+                    "conditioning",
+                    "calibration_reference",
+                    "outcomes"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "protocol",
+                "id",
+                "version",
+                "horizon_ns",
+                "parameters"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "protocol": {
+                  "const": "symphony.sbv.model-selection.v1"
+                },
+                "id": {
+                  "const": "native_provider"
+                },
+                "version": {
+                  "const": "1"
+                },
+                "horizon_ns": {
+                  "type": "string"
+                },
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "provider": {
+                      "type": "object",
+                      "properties": {
+                        "protocol": {
+                          "const": "symphony.sbv.native-provider-selection.v1"
+                        },
+                        "library": {
+                          "type": "object",
+                          "properties": {
+                            "path": {
+                              "type": "string"
+                            },
+                            "expected_sha256": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "path",
+                            "expected_sha256"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "id": {
+                          "type": "string"
+                        },
+                        "version": {
+                          "type": "string"
+                        },
+                        "role": {
+                          "enum": [
+                            "strategy",
+                            "model"
+                          ]
+                        },
+                        "input_profile": {
+                          "const": "symphony.sbv.provider-databento-mbo-event.v1"
+                        },
+                        "concurrency": {
+                          "enum": [
+                            "serialized_instance",
+                            "per_worker_instances",
+                            "shared_reentrant_instance"
+                          ]
+                        },
+                        "parameters": {
+                          "type": "object",
+                          "additionalProperties": true
+                        },
+                        "dependencies": {
+                          "type": "object",
+                          "properties": {
+                            "capture": {
+                              "enum": [
+                                "declared_artifacts",
+                                "uncaptured"
+                              ]
+                            },
+                            "description": {
+                              "type": "string"
+                            },
+                            "artifacts": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "path": {
+                                    "type": "string"
+                                  },
+                                  "expected_sha256": {
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "path",
+                                  "expected_sha256"
+                                ],
+                                "additionalProperties": false
+                              }
+                            }
+                          },
+                          "required": [
+                            "capture",
+                            "description",
+                            "artifacts"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "extensions": {
+                          "type": "object",
+                          "additionalProperties": true
+                        }
+                      },
+                      "required": [
+                        "protocol",
+                        "library",
+                        "id",
+                        "version",
+                        "role",
+                        "input_profile",
+                        "concurrency",
+                        "parameters",
+                        "dependencies",
+                        "extensions"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "measure": {
+                      "enum": [
+                        "probability",
+                        "scenario_weight",
+                        "signed_coefficient"
+                      ]
+                    },
+                    "conditioning": {
+                      "enum": [
+                        "execution",
+                        "scenario"
+                      ]
+                    },
+                    "calibration_reference": {
+                      "type": "string"
+                    },
+                    "on_unavailable": {
+                      "enum": [
+                        "unavailable",
+                        "reject"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "provider",
+                    "measure",
+                    "conditioning",
+                    "calibration_reference",
+                    "on_unavailable"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "protocol",
+                "id",
+                "version",
+                "horizon_ns",
+                "parameters"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        },
+        "provider": {
+          "type": "object",
+          "properties": {
+            "evidence": {
+              "type": "object",
+              "properties": {
+                "protocol": {
+                  "const": "symphony.sbv.native-provider-evidence.v1"
+                },
+                "abi_version": {
+                  "const": "1"
+                },
+                "library": {
+                  "type": "object",
+                  "properties": {
+                    "path": {
+                      "type": "string"
+                    },
+                    "expected_sha256": {
+                      "type": "string"
+                    },
+                    "bytes": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "path",
+                    "expected_sha256",
+                    "bytes"
+                  ],
+                  "additionalProperties": false
+                },
+                "selection_sha256": {
+                  "type": "string"
+                },
+                "descriptor_sha256": {
+                  "type": "string"
+                },
+                "descriptor_json": {
+                  "type": "string"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "version": {
+                  "type": "string"
+                },
+                "role": {
+                  "type": "string"
+                },
+                "concurrency": {
+                  "type": "string"
+                },
+                "reproducibility": {
+                  "type": "string"
+                },
+                "cancellation": {
+                  "type": "string"
+                },
+                "dependencies": {
+                  "type": "object",
+                  "properties": {
+                    "capture": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    },
+                    "artifacts": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "path": {
+                            "type": "string"
+                          },
+                          "expected_sha256": {
+                            "type": "string"
+                          },
+                          "bytes": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "path",
+                          "expected_sha256",
+                          "bytes"
+                        ],
+                        "additionalProperties": false
+                      }
+                    }
+                  },
+                  "required": [
+                    "capture",
+                    "description",
+                    "artifacts"
+                  ],
+                  "additionalProperties": false
+                },
+                "configuration_validation": {
+                  "type": "string"
+                },
+                "loading": {
+                  "type": "object",
+                  "properties": {
+                    "profile": {
+                      "type": "string"
+                    },
+                    "symbol": {
+                      "type": "string"
+                    },
+                    "visibility": {
+                      "type": "string"
+                    },
+                    "dependency_resolution": {
+                      "type": "string"
+                    },
+                    "trust": {
+                      "type": "string"
+                    },
+                    "isolation": {
+                      "const": false
+                    }
+                  },
+                  "required": [
+                    "profile",
+                    "symbol",
+                    "visibility",
+                    "dependency_resolution",
+                    "trust",
+                    "isolation"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "protocol",
+                "abi_version",
+                "library",
+                "selection_sha256",
+                "descriptor_sha256",
+                "descriptor_json",
+                "id",
+                "version",
+                "role",
+                "concurrency",
+                "reproducibility",
+                "cancellation",
+                "dependencies",
+                "configuration_validation",
+                "loading"
+              ],
+              "additionalProperties": false
+            },
+            "role": {
+              "const": "model"
+            }
+          },
+          "required": [
+            "evidence",
+            "role"
+          ],
+          "additionalProperties": false
+        }
       },
       "required": [
         "id",
@@ -15047,6 +16525,1265 @@
         "census_context_reference",
         "replay_reference",
         "extensions"
+      ],
+      "additionalProperties": false
+    },
+    "native_provider_selection": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.native-provider-selection.v1"
+        },
+        "library": {
+          "type": "object",
+          "properties": {
+            "path": {
+              "type": "string"
+            },
+            "expected_sha256": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "path",
+            "expected_sha256"
+          ],
+          "additionalProperties": false
+        },
+        "id": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "role": {
+          "enum": [
+            "strategy",
+            "model"
+          ]
+        },
+        "input_profile": {
+          "const": "symphony.sbv.provider-databento-mbo-event.v1"
+        },
+        "concurrency": {
+          "enum": [
+            "serialized_instance",
+            "per_worker_instances",
+            "shared_reentrant_instance"
+          ]
+        },
+        "parameters": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "dependencies": {
+          "type": "object",
+          "properties": {
+            "capture": {
+              "enum": [
+                "declared_artifacts",
+                "uncaptured"
+              ]
+            },
+            "description": {
+              "type": "string"
+            },
+            "artifacts": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "path": {
+                    "type": "string"
+                  },
+                  "expected_sha256": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "path",
+                  "expected_sha256"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": [
+            "capture",
+            "description",
+            "artifacts"
+          ],
+          "additionalProperties": false
+        },
+        "extensions": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      },
+      "required": [
+        "protocol",
+        "library",
+        "id",
+        "version",
+        "role",
+        "input_profile",
+        "concurrency",
+        "parameters",
+        "dependencies",
+        "extensions"
+      ],
+      "additionalProperties": false
+    },
+    "native_provider_evidence": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.native-provider-evidence.v1"
+        },
+        "abi_version": {
+          "const": "1"
+        },
+        "library": {
+          "type": "object",
+          "properties": {
+            "path": {
+              "type": "string"
+            },
+            "expected_sha256": {
+              "type": "string"
+            },
+            "bytes": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "path",
+            "expected_sha256",
+            "bytes"
+          ],
+          "additionalProperties": false
+        },
+        "selection_sha256": {
+          "type": "string"
+        },
+        "descriptor_sha256": {
+          "type": "string"
+        },
+        "descriptor_json": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "role": {
+          "type": "string"
+        },
+        "concurrency": {
+          "type": "string"
+        },
+        "reproducibility": {
+          "type": "string"
+        },
+        "cancellation": {
+          "type": "string"
+        },
+        "dependencies": {
+          "type": "object",
+          "properties": {
+            "capture": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "artifacts": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "path": {
+                    "type": "string"
+                  },
+                  "expected_sha256": {
+                    "type": "string"
+                  },
+                  "bytes": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "path",
+                  "expected_sha256",
+                  "bytes"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": [
+            "capture",
+            "description",
+            "artifacts"
+          ],
+          "additionalProperties": false
+        },
+        "configuration_validation": {
+          "type": "string"
+        },
+        "loading": {
+          "type": "object",
+          "properties": {
+            "profile": {
+              "type": "string"
+            },
+            "symbol": {
+              "type": "string"
+            },
+            "visibility": {
+              "type": "string"
+            },
+            "dependency_resolution": {
+              "type": "string"
+            },
+            "trust": {
+              "type": "string"
+            },
+            "isolation": {
+              "const": false
+            }
+          },
+          "required": [
+            "profile",
+            "symbol",
+            "visibility",
+            "dependency_resolution",
+            "trust",
+            "isolation"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "protocol",
+        "abi_version",
+        "library",
+        "selection_sha256",
+        "descriptor_sha256",
+        "descriptor_json",
+        "id",
+        "version",
+        "role",
+        "concurrency",
+        "reproducibility",
+        "cancellation",
+        "dependencies",
+        "configuration_validation",
+        "loading"
+      ],
+      "additionalProperties": false
+    },
+    "native_provider_completion": {
+      "type": "object",
+      "properties": {
+        "diagnostics": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "extensions": {}
+      },
+      "required": [
+        "diagnostics",
+        "extensions"
+      ],
+      "additionalProperties": false
+    },
+    "native_strategy_evidence": {
+      "type": "object",
+      "properties": {
+        "evidence": {
+          "type": "object",
+          "properties": {
+            "protocol": {
+              "const": "symphony.sbv.native-provider-evidence.v1"
+            },
+            "abi_version": {
+              "const": "1"
+            },
+            "library": {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": "string"
+                },
+                "expected_sha256": {
+                  "type": "string"
+                },
+                "bytes": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "path",
+                "expected_sha256",
+                "bytes"
+              ],
+              "additionalProperties": false
+            },
+            "selection_sha256": {
+              "type": "string"
+            },
+            "descriptor_sha256": {
+              "type": "string"
+            },
+            "descriptor_json": {
+              "type": "string"
+            },
+            "id": {
+              "type": "string"
+            },
+            "version": {
+              "type": "string"
+            },
+            "role": {
+              "type": "string"
+            },
+            "concurrency": {
+              "type": "string"
+            },
+            "reproducibility": {
+              "type": "string"
+            },
+            "cancellation": {
+              "type": "string"
+            },
+            "dependencies": {
+              "type": "object",
+              "properties": {
+                "capture": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "artifacts": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "path": {
+                        "type": "string"
+                      },
+                      "expected_sha256": {
+                        "type": "string"
+                      },
+                      "bytes": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "path",
+                      "expected_sha256",
+                      "bytes"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              },
+              "required": [
+                "capture",
+                "description",
+                "artifacts"
+              ],
+              "additionalProperties": false
+            },
+            "configuration_validation": {
+              "type": "string"
+            },
+            "loading": {
+              "type": "object",
+              "properties": {
+                "profile": {
+                  "type": "string"
+                },
+                "symbol": {
+                  "type": "string"
+                },
+                "visibility": {
+                  "type": "string"
+                },
+                "dependency_resolution": {
+                  "type": "string"
+                },
+                "trust": {
+                  "type": "string"
+                },
+                "isolation": {
+                  "const": false
+                }
+              },
+              "required": [
+                "profile",
+                "symbol",
+                "visibility",
+                "dependency_resolution",
+                "trust",
+                "isolation"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "protocol",
+            "abi_version",
+            "library",
+            "selection_sha256",
+            "descriptor_sha256",
+            "descriptor_json",
+            "id",
+            "version",
+            "role",
+            "concurrency",
+            "reproducibility",
+            "cancellation",
+            "dependencies",
+            "configuration_validation",
+            "loading"
+          ],
+          "additionalProperties": false
+        },
+        "completion": {
+          "type": "object",
+          "properties": {
+            "diagnostics": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "extensions": {}
+          },
+          "required": [
+            "diagnostics",
+            "extensions"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "evidence",
+        "completion"
+      ],
+      "additionalProperties": false
+    },
+    "native_model_evidence": {
+      "type": "object",
+      "properties": {
+        "evidence": {
+          "type": "object",
+          "properties": {
+            "protocol": {
+              "const": "symphony.sbv.native-provider-evidence.v1"
+            },
+            "abi_version": {
+              "const": "1"
+            },
+            "library": {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": "string"
+                },
+                "expected_sha256": {
+                  "type": "string"
+                },
+                "bytes": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "path",
+                "expected_sha256",
+                "bytes"
+              ],
+              "additionalProperties": false
+            },
+            "selection_sha256": {
+              "type": "string"
+            },
+            "descriptor_sha256": {
+              "type": "string"
+            },
+            "descriptor_json": {
+              "type": "string"
+            },
+            "id": {
+              "type": "string"
+            },
+            "version": {
+              "type": "string"
+            },
+            "role": {
+              "type": "string"
+            },
+            "concurrency": {
+              "type": "string"
+            },
+            "reproducibility": {
+              "type": "string"
+            },
+            "cancellation": {
+              "type": "string"
+            },
+            "dependencies": {
+              "type": "object",
+              "properties": {
+                "capture": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "artifacts": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "path": {
+                        "type": "string"
+                      },
+                      "expected_sha256": {
+                        "type": "string"
+                      },
+                      "bytes": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "path",
+                      "expected_sha256",
+                      "bytes"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              },
+              "required": [
+                "capture",
+                "description",
+                "artifacts"
+              ],
+              "additionalProperties": false
+            },
+            "configuration_validation": {
+              "type": "string"
+            },
+            "loading": {
+              "type": "object",
+              "properties": {
+                "profile": {
+                  "type": "string"
+                },
+                "symbol": {
+                  "type": "string"
+                },
+                "visibility": {
+                  "type": "string"
+                },
+                "dependency_resolution": {
+                  "type": "string"
+                },
+                "trust": {
+                  "type": "string"
+                },
+                "isolation": {
+                  "const": false
+                }
+              },
+              "required": [
+                "profile",
+                "symbol",
+                "visibility",
+                "dependency_resolution",
+                "trust",
+                "isolation"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "protocol",
+            "abi_version",
+            "library",
+            "selection_sha256",
+            "descriptor_sha256",
+            "descriptor_json",
+            "id",
+            "version",
+            "role",
+            "concurrency",
+            "reproducibility",
+            "cancellation",
+            "dependencies",
+            "configuration_validation",
+            "loading"
+          ],
+          "additionalProperties": false
+        },
+        "role": {
+          "const": "model"
+        }
+      },
+      "required": [
+        "evidence",
+        "role"
+      ],
+      "additionalProperties": false
+    },
+    "native_provider_census": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.native-provider-census.v1"
+        },
+        "source_sha256": {
+          "type": "string"
+        },
+        "dataset": {
+          "type": "string"
+        },
+        "instrument_id": {
+          "type": "string"
+        },
+        "provider": {
+          "type": "object",
+          "properties": {
+            "protocol": {
+              "const": "symphony.sbv.native-provider-selection.v1"
+            },
+            "library": {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": "string"
+                },
+                "expected_sha256": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "path",
+                "expected_sha256"
+              ],
+              "additionalProperties": false
+            },
+            "id": {
+              "type": "string"
+            },
+            "version": {
+              "type": "string"
+            },
+            "role": {
+              "enum": [
+                "strategy",
+                "model"
+              ]
+            },
+            "input_profile": {
+              "const": "symphony.sbv.provider-databento-mbo-event.v1"
+            },
+            "concurrency": {
+              "enum": [
+                "serialized_instance",
+                "per_worker_instances",
+                "shared_reentrant_instance"
+              ]
+            },
+            "parameters": {
+              "type": "object",
+              "additionalProperties": true
+            },
+            "dependencies": {
+              "type": "object",
+              "properties": {
+                "capture": {
+                  "enum": [
+                    "declared_artifacts",
+                    "uncaptured"
+                  ]
+                },
+                "description": {
+                  "type": "string"
+                },
+                "artifacts": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "path": {
+                        "type": "string"
+                      },
+                      "expected_sha256": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "path",
+                      "expected_sha256"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              },
+              "required": [
+                "capture",
+                "description",
+                "artifacts"
+              ],
+              "additionalProperties": false
+            },
+            "extensions": {
+              "type": "object",
+              "additionalProperties": true
+            }
+          },
+          "required": [
+            "protocol",
+            "library",
+            "id",
+            "version",
+            "role",
+            "input_profile",
+            "concurrency",
+            "parameters",
+            "dependencies",
+            "extensions"
+          ],
+          "additionalProperties": false
+        },
+        "provider_evidence": {
+          "type": "object",
+          "properties": {
+            "protocol": {
+              "const": "symphony.sbv.native-provider-evidence.v1"
+            },
+            "abi_version": {
+              "const": "1"
+            },
+            "library": {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": "string"
+                },
+                "expected_sha256": {
+                  "type": "string"
+                },
+                "bytes": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "path",
+                "expected_sha256",
+                "bytes"
+              ],
+              "additionalProperties": false
+            },
+            "selection_sha256": {
+              "type": "string"
+            },
+            "descriptor_sha256": {
+              "type": "string"
+            },
+            "descriptor_json": {
+              "type": "string"
+            },
+            "id": {
+              "type": "string"
+            },
+            "version": {
+              "type": "string"
+            },
+            "role": {
+              "type": "string"
+            },
+            "concurrency": {
+              "type": "string"
+            },
+            "reproducibility": {
+              "type": "string"
+            },
+            "cancellation": {
+              "type": "string"
+            },
+            "dependencies": {
+              "type": "object",
+              "properties": {
+                "capture": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "artifacts": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "path": {
+                        "type": "string"
+                      },
+                      "expected_sha256": {
+                        "type": "string"
+                      },
+                      "bytes": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "path",
+                      "expected_sha256",
+                      "bytes"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              },
+              "required": [
+                "capture",
+                "description",
+                "artifacts"
+              ],
+              "additionalProperties": false
+            },
+            "configuration_validation": {
+              "type": "string"
+            },
+            "loading": {
+              "type": "object",
+              "properties": {
+                "profile": {
+                  "type": "string"
+                },
+                "symbol": {
+                  "type": "string"
+                },
+                "visibility": {
+                  "type": "string"
+                },
+                "dependency_resolution": {
+                  "type": "string"
+                },
+                "trust": {
+                  "type": "string"
+                },
+                "isolation": {
+                  "const": false
+                }
+              },
+              "required": [
+                "profile",
+                "symbol",
+                "visibility",
+                "dependency_resolution",
+                "trust",
+                "isolation"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "protocol",
+            "abi_version",
+            "library",
+            "selection_sha256",
+            "descriptor_sha256",
+            "descriptor_json",
+            "id",
+            "version",
+            "role",
+            "concurrency",
+            "reproducibility",
+            "cancellation",
+            "dependencies",
+            "configuration_validation",
+            "loading"
+          ],
+          "additionalProperties": false
+        },
+        "signals": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "signal_id": {
+                "type": "string"
+              },
+              "source_ordinal": {
+                "type": "string"
+              },
+              "available_ns": {
+                "type": "string"
+              },
+              "anchor_price_nanos": {
+                "type": "string"
+              },
+              "causal_end_ordinal_exclusive": {
+                "type": "string"
+              },
+              "context_reference": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "signal_id",
+              "source_ordinal",
+              "available_ns",
+              "anchor_price_nanos",
+              "causal_end_ordinal_exclusive",
+              "context_reference"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "completion": {
+          "type": "object",
+          "properties": {
+            "diagnostics": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "extensions": {}
+          },
+          "required": [
+            "diagnostics",
+            "extensions"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "protocol",
+        "source_sha256",
+        "dataset",
+        "instrument_id",
+        "provider",
+        "provider_evidence",
+        "signals",
+        "completion"
+      ],
+      "additionalProperties": false
+    },
+    "economic_source_context": {
+      "type": "object",
+      "properties": {
+        "census": {
+          "type": "object",
+          "properties": {
+            "protocol": {
+              "const": "symphony.sbv.census-evidence.v1"
+            },
+            "kind": {
+              "enum": [
+                "native",
+                "external",
+                "native_provider"
+              ]
+            },
+            "identity_domain": {
+              "enum": [
+                "native_signals",
+                "external_declaration",
+                "native_provider_declaration"
+              ]
+            },
+            "census_sha256": {
+              "type": "string"
+            },
+            "source_sha256": {
+              "type": "string"
+            },
+            "dataset": {
+              "type": "string"
+            },
+            "instrument_id": {
+              "type": "string"
+            },
+            "mode": {
+              "enum": [
+                "native_causal_prefix",
+                "causal_declared",
+                "retrospective",
+                "native_provider_prefix"
+              ]
+            },
+            "producer": {},
+            "signals": {
+              "type": "array",
+              "items": {}
+            },
+            "declaration": {}
+          },
+          "required": [
+            "protocol",
+            "kind",
+            "identity_domain",
+            "census_sha256",
+            "source_sha256",
+            "dataset",
+            "instrument_id",
+            "mode",
+            "producer",
+            "signals",
+            "declaration"
+          ],
+          "additionalProperties": false
+        },
+        "choices": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string"
+            },
+            "reason": {
+              "type": "string"
+            },
+            "data": {}
+          },
+          "required": [
+            "status",
+            "reason",
+            "data"
+          ],
+          "additionalProperties": false
+        },
+        "provenance": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string"
+            },
+            "reason": {
+              "type": "string"
+            },
+            "data": {}
+          },
+          "required": [
+            "status",
+            "reason",
+            "data"
+          ],
+          "additionalProperties": false
+        },
+        "reference": {
+          "type": "object",
+          "properties": {
+            "path": {
+              "type": "string"
+            },
+            "expected_sha256": {
+              "type": "string"
+            },
+            "pointer": {
+              "type": "string"
+            },
+            "file_sha256": {
+              "type": "string"
+            },
+            "selected_content_sha256": {
+              "type": "string"
+            },
+            "authorship": {
+              "const": "not_verified"
+            }
+          },
+          "required": [
+            "path",
+            "expected_sha256",
+            "pointer",
+            "file_sha256",
+            "selected_content_sha256",
+            "authorship"
+          ],
+          "additionalProperties": false
+        },
+        "provider": {
+          "type": "object",
+          "properties": {
+            "evidence": {
+              "type": "object",
+              "properties": {
+                "protocol": {
+                  "const": "symphony.sbv.native-provider-evidence.v1"
+                },
+                "abi_version": {
+                  "const": "1"
+                },
+                "library": {
+                  "type": "object",
+                  "properties": {
+                    "path": {
+                      "type": "string"
+                    },
+                    "expected_sha256": {
+                      "type": "string"
+                    },
+                    "bytes": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "path",
+                    "expected_sha256",
+                    "bytes"
+                  ],
+                  "additionalProperties": false
+                },
+                "selection_sha256": {
+                  "type": "string"
+                },
+                "descriptor_sha256": {
+                  "type": "string"
+                },
+                "descriptor_json": {
+                  "type": "string"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "version": {
+                  "type": "string"
+                },
+                "role": {
+                  "type": "string"
+                },
+                "concurrency": {
+                  "type": "string"
+                },
+                "reproducibility": {
+                  "type": "string"
+                },
+                "cancellation": {
+                  "type": "string"
+                },
+                "dependencies": {
+                  "type": "object",
+                  "properties": {
+                    "capture": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    },
+                    "artifacts": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "path": {
+                            "type": "string"
+                          },
+                          "expected_sha256": {
+                            "type": "string"
+                          },
+                          "bytes": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "path",
+                          "expected_sha256",
+                          "bytes"
+                        ],
+                        "additionalProperties": false
+                      }
+                    }
+                  },
+                  "required": [
+                    "capture",
+                    "description",
+                    "artifacts"
+                  ],
+                  "additionalProperties": false
+                },
+                "configuration_validation": {
+                  "type": "string"
+                },
+                "loading": {
+                  "type": "object",
+                  "properties": {
+                    "profile": {
+                      "type": "string"
+                    },
+                    "symbol": {
+                      "type": "string"
+                    },
+                    "visibility": {
+                      "type": "string"
+                    },
+                    "dependency_resolution": {
+                      "type": "string"
+                    },
+                    "trust": {
+                      "type": "string"
+                    },
+                    "isolation": {
+                      "const": false
+                    }
+                  },
+                  "required": [
+                    "profile",
+                    "symbol",
+                    "visibility",
+                    "dependency_resolution",
+                    "trust",
+                    "isolation"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "protocol",
+                "abi_version",
+                "library",
+                "selection_sha256",
+                "descriptor_sha256",
+                "descriptor_json",
+                "id",
+                "version",
+                "role",
+                "concurrency",
+                "reproducibility",
+                "cancellation",
+                "dependencies",
+                "configuration_validation",
+                "loading"
+              ],
+              "additionalProperties": false
+            },
+            "role": {
+              "const": "model"
+            }
+          },
+          "required": [
+            "evidence",
+            "role"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "census",
+        "choices",
+        "provenance",
+        "reference"
       ],
       "additionalProperties": false
     }

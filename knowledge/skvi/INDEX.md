@@ -23146,3 +23146,143 @@ automatic nested fitting and cross-run holdout history remain unimplemented.
 - deferred_projections: Broader release acceptance remains a separate gate.
 - notes: Preserves original native/imported identity through model reevaluation.
 - status: canonical
+
+### SBV native authoring provider.h
+
+- path: `modules/sbv-engine/include/symphony/sbv/provider.h`
+- title: Native strategy and model authoring
+- surface_type: implementation contract or test
+- truth_role: Explicit trusted provider selection, ABI ownership and source-bound calculation
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.20 independently compiled native strategies and models.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl and independent C/C++ authors
+- deferred_projections: Foreign runtime adapters, process isolation and vendor connectors remain optional.
+- notes: User selection, concurrency, no-deadline default and original source fidelity remain explicit.
+- status: canonical
+
+### SBV native authoring provider.hpp
+
+- path: `modules/sbv-engine/src/provider.hpp`
+- title: Native strategy and model authoring
+- surface_type: implementation contract or test
+- truth_role: Explicit trusted provider selection, ABI ownership and source-bound calculation
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.20 independently compiled native strategies and models.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl and independent C/C++ authors
+- deferred_projections: Foreign runtime adapters, process isolation and vendor connectors remain optional.
+- notes: User selection, concurrency, no-deadline default and original source fidelity remain explicit.
+- status: canonical
+
+### SBV native authoring provider.cpp
+
+- path: `modules/sbv-engine/src/provider.cpp`
+- title: Native strategy and model authoring
+- surface_type: implementation contract or test
+- truth_role: Explicit trusted provider selection, ABI ownership and source-bound calculation
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.20 independently compiled native strategies and models.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl and independent C/C++ authors
+- deferred_projections: Foreign runtime adapters, process isolation and vendor connectors remain optional.
+- notes: User selection, concurrency, no-deadline default and original source fidelity remain explicit.
+- status: canonical
+
+### SBV native authoring generate_census.cpp
+
+- path: `modules/sbv-engine/src/generate_census.cpp`
+- title: Native strategy and model authoring
+- surface_type: implementation contract or test
+- truth_role: Explicit trusted provider selection, ABI ownership and source-bound calculation
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.20 independently compiled native strategies and models.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl and independent C/C++ authors
+- deferred_projections: Foreign runtime adapters, process isolation and vendor connectors remain optional.
+- notes: User selection, concurrency, no-deadline default and original source fidelity remain explicit.
+- status: canonical
+
+### SBV native authoring provider_abi_test.c
+
+- path: `modules/sbv-engine/tests/provider_abi_test.c`
+- title: Native strategy and model authoring
+- surface_type: implementation contract or test
+- truth_role: Explicit trusted provider selection, ABI ownership and source-bound calculation
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.20 independently compiled native strategies and models.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl and independent C/C++ authors
+- deferred_projections: Foreign runtime adapters, process isolation and vendor connectors remain optional.
+- notes: User selection, concurrency, no-deadline default and original source fidelity remain explicit.
+- status: canonical
+
+### SBV native authoring provider_fixture.cpp
+
+- path: `modules/sbv-engine/tests/provider_fixture.cpp`
+- title: Native strategy and model authoring
+- surface_type: implementation contract or test
+- truth_role: Explicit trusted provider selection, ABI ownership and source-bound calculation
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.20 independently compiled native strategies and models.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl and independent C/C++ authors
+- deferred_projections: Foreign runtime adapters, process isolation and vendor connectors remain optional.
+- notes: User selection, concurrency, no-deadline default and original source fidelity remain explicit.
+- status: canonical
+
+### SBV native authoring provider_runtime_test.cpp
+
+- path: `modules/sbv-engine/tests/provider_runtime_test.cpp`
+- title: Native strategy and model authoring
+- surface_type: implementation contract or test
+- truth_role: Explicit trusted provider selection, ABI ownership and source-bound calculation
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.20 independently compiled native strategies and models.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl and independent C/C++ authors
+- deferred_projections: Foreign runtime adapters, process isolation and vendor connectors remain optional.
+- notes: User selection, concurrency, no-deadline default and original source fidelity remain explicit.
+- status: canonical
+
+### SBV native authoring provider_integration_test.cpp
+
+- path: `modules/sbv-engine/tests/provider_integration_test.cpp`
+- title: Native strategy and model authoring
+- surface_type: implementation contract or test
+- truth_role: Explicit trusted provider selection, ABI ownership and source-bound calculation
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.20 independently compiled native strategies and models.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl and independent C/C++ authors
+- deferred_projections: Foreign runtime adapters, process isolation and vendor connectors remain optional.
+- notes: User selection, concurrency, no-deadline default and original source fidelity remain explicit.
+- status: canonical
+
+### SBV native authoring SymphonySbvProviderConfig.cmake.in
+
+- path: `modules/sbv-engine/cmake/SymphonySbvProviderConfig.cmake.in`
+- title: Native strategy and model authoring
+- surface_type: implementation contract or test
+- truth_role: Explicit trusted provider selection, ABI ownership and source-bound calculation
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.20 independently compiled native strategies and models.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl and independent C/C++ authors
+- deferred_projections: Foreign runtime adapters, process isolation and vendor connectors remain optional.
+- notes: User selection, concurrency, no-deadline default and original source fidelity remain explicit.
+- status: canonical
+
+### SBV installed native authoring
+
+- path: `tools/qxctl/internal/knowledgeengine/sbv_provider_test.go`
+- title: Installed native provider contract checks
+- surface_type: implementation test
+- truth_role: Installed authoring and evidence correspondence checks
+- owner: Symphony Backtesting Vector maintainers
+- scope: Exact 0.20 installed qxctl workflow.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl and implementation maintainers
+- deferred_projections: Broader candidate acceptance remains a separate gate.
+- notes: Provider evidence and selected concurrency retain the same census.
+- status: canonical

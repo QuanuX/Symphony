@@ -2837,7 +2837,10 @@ ParsedEngineDescriptor parse_engine_descriptor(const engine::Json& value) {
     };
     validate_array(value.at("process_protocols"), 1U, 16U, 256U, true,
                    "administration.engine_descriptor.process_protocols");
-    validate_array(value.at("contract_versions"), 1U, 64U, 256U, false,
+    // Contract inventory grows with operations and retained artifact protocols.
+    // Use the existing request-parser workload budget, not an independent
+    // policy restricting how many contracts a module can describe.
+    validate_array(value.at("contract_versions"), 1U, max_process_json_values, 256U, false,
                    "administration.engine_descriptor.contract_versions");
     validate_array(value.at("supported_scopes"), 1U, 3U, 16U, true,
                    "administration.engine_descriptor.supported_scopes");

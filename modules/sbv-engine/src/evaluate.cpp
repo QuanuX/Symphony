@@ -1,5 +1,6 @@
 #include "census.hpp"
 #include "detail.hpp"
+#include "provider.hpp"
 #include <algorithm>
 #include <atomic>
 #include <mutex>
@@ -55,7 +56,37 @@ Json evaluate(const Json &p, std::int64_t end, const Dataset *resident) {
   std::vector<std::string> ids;
   for (const auto &signal : signals)
     ids.push_back(str(signal.at("signal_id")));
-  const AdmittedModel model(p.at("model"), ids);
+  const bool native_model = p.at("model").at("id") == "native_provider";
+  std::unique_ptr<AdmittedModel> model;
+  std::unique_ptr<NativeProvider> provider;
+  std::vector<std::unique_ptr<NativeProviderInstance>> instances;
+  Json provider_author = nullptr;
+  std::string concurrency = "immutable_native_model";
+  auto applied = signals.empty()
+                     ? std::size_t{0}
+                     : std::min<std::size_t>(workers, signals.size());
+  if (native_model) {
+    const auto &selection = p.at("model").at("parameters").at("provider");
+    need(selection.at("role") == "model", "model provider role required");
+    provider = std::make_unique<NativeProvider>(selection, end);
+    const auto &descriptor = provider->descriptor();
+    provider_author = {
+        {"id", descriptor.at("id")},
+        {"version", descriptor.at("version")},
+        {"artifact_sha256", selection.at("library").at("expected_sha256")},
+        {"reproducibility", descriptor.at("reproducibility")}};
+    validate_native_provider_model(p.at("model"), provider_author);
+    concurrency = str(selection.at("concurrency"));
+    if (concurrency == "serialized_instance" && applied != 0)
+      applied = 1;
+    const auto count = applied == 0                            ? std::size_t{0}
+                       : concurrency == "per_worker_instances" ? applied
+                                                               : std::size_t{1};
+    for (std::size_t i = 0; i < count; ++i)
+      instances.push_back(provider->create(end));
+  } else
+    model = std::make_unique<AdmittedModel>(p.at("model"), ids);
+  const auto horizon_ns = u64(p.at("model").at("horizon_ns"));
   struct Row {
     Json outcome, window, excursion;
     std::size_t begin{}, finish{};
@@ -65,7 +96,7 @@ Json evaluate(const Json &p, std::int64_t end, const Dataset *resident) {
   std::atomic<bool> failed{false};
   std::exception_ptr failure;
   std::mutex mutex;
-  const auto worker = [&] {
+  const auto worker = [&](std::size_t worker_index) {
     try {
       while (!failed) {
         const auto j = next.fetch_add(1);
@@ -76,7 +107,7 @@ Json evaluate(const Json &p, std::int64_t end, const Dataset *resident) {
         const auto ordinal = u64(s.at("source_ordinal")),
                    available = u64(s.at("available_ns"));
         const auto anchor = i64(s.at("anchor_price_nanos"));
-        const auto horizon_end = end_at(available, model.horizon_ns());
+        const auto horizon_end = end_at(available, horizon_ns);
         auto begin_trade = std::upper_bound(
             trades.begin(), trades.end(), ordinal,
             [](auto v, const auto &t) { return v < t.source_ordinal; });
@@ -94,7 +125,47 @@ Json evaluate(const Json &p, std::int64_t end, const Dataset *resident) {
             horizon_end <= events.back().ts_recv,
             std::span<const ObservedTrade>(begin_trade, end_trade)};
         auto &row = rows[j];
-        row.outcome = model.evaluate(frame, end);
+        if (provider) {
+          const auto followup_end = static_cast<std::size_t>(
+              std::upper_bound(
+                  events.begin() + ordinal + 1, events.end(), horizon_end,
+                  [](auto t, const auto &x) { return t < x.ts_recv; }) -
+              events.begin());
+          const Json context{{"signal", s},
+                             {"census_sha256", census_digest},
+                             {"source_sha256", c.at("source_sha256")},
+                             {"dataset", c.at("dataset")},
+                             {"instrument_id", c.at("instrument_id")}};
+          const Json coverage{
+              {"clock", "ts_recv with source ordinal tie-break"},
+              {"causal_first_ordinal", "0"},
+              {"causal_end_ordinal_exclusive", dec(ordinal + 1)},
+              {"followup_first_ordinal", dec(ordinal + 1)},
+              {"followup_end_ordinal_exclusive", dec(followup_end)},
+              {"horizon_end_ns_inclusive", dec(horizon_end)},
+              {"horizon_within_observed_span",
+               frame.horizon_within_observed_span},
+              {"observed_first_ns", dec(events.front().ts_recv)},
+              {"observed_last_ns", dec(events.back().ts_recv)},
+              {"completeness", "unproven"},
+              {"book_state", "uninitialized"},
+              {"payload_layer", "observed"}};
+          auto &instance =
+              instances[concurrency == "per_worker_instances" ? worker_index
+                                                              : 0];
+          auto reply =
+              instance->evaluate(events, ordinal, followup_end, context,
+                                 coverage, horizon_end, end, &failed);
+          need(reply.status == SBV_PROVIDER_OK ||
+                   reply.status == SBV_PROVIDER_UNAVAILABLE,
+               ("native model provider failed: " + reply.error.dump()).c_str());
+          row.outcome = admit_native_provider_outcome(
+              p.at("model"), provider_author, reply.value,
+              reply.status == SBV_PROVIDER_UNAVAILABLE ? reply.error
+                                                       : Json(nullptr),
+              frame, end);
+        } else
+          row.outcome = model->evaluate(frame, end);
         const auto start = available < before ? 0 : available - before,
                    stop = end_at(available, after);
         const auto first = std::lower_bound(
@@ -158,15 +229,15 @@ Json evaluate(const Json &p, std::int64_t end, const Dataset *resident) {
         failure = std::current_exception();
     }
   };
-  const auto applied =
-      signals.empty() ? 0 : std::min<std::size_t>(workers, signals.size());
   {
     std::vector<std::jthread> threads;
     for (std::size_t i = 0; i < applied; ++i)
-      threads.emplace_back(worker);
+      threads.emplace_back(worker, i);
   }
   if (failure)
     std::rethrow_exception(failure);
+  const auto instance_count = instances.size();
+  instances.clear();
   auto result = base("native follow-up of an immutable admitted census");
   result["status"] = "partial";
   auto &s = result["sections"];
@@ -237,6 +308,17 @@ Json evaluate(const Json &p, std::int64_t end, const Dataset *resident) {
   s["resources"] = section({{"requested_workers", dec(workers)},
                             {"actual_workers", dec(applied)},
                             {"backend", "cpu"}});
+  if (provider) {
+    s["provider"] =
+        section({{"evidence", provider->evidence()}, {"role", "model"}});
+    auto &resources = s["resources"]["data"];
+    resources["provider_concurrency"] = concurrency;
+    resources["provider_instances"] = dec(instance_count);
+    resources["signal_assignment"] =
+        concurrency == "serialized_instance"
+            ? "source signal order"
+            : "dynamic signal index queue; output remains census order";
+  }
   s["diagnostics"] = section(Json::array(
       {"Census identity and source coordinates are checked; producer "
        "authorship and external causal declarations are not authenticated.",
@@ -244,6 +326,22 @@ Json evaluate(const Json &p, std::int64_t end, const Dataset *resident) {
        "liquidity or unconditional fill likelihood.",
        "No normalization or probability interpretation is imposed "
        "on a declared non-probability measure."}));
+  if (provider) {
+    auto &messages = s["diagnostics"]["data"];
+    messages.push_back(
+        "Native provider candidates are admitted under the existing exact "
+        "model domains. The external_assumption likelihood status denotes "
+        "provider-supplied assumptions, not a foreign language runtime or "
+        "calibrated execution.");
+    messages.push_back("Callbacks receive full raw causal/followup MBO fields. "
+                       "Trusted native code is not sandboxed, and raw events "
+                       "do not establish book initialization.");
+    messages.push_back(
+        "The selected instance topology and actual workers are retained. "
+        "Stateful per-worker or shared providers may depend on concurrent "
+        "assignment; deterministic ordering of output rows does not prove "
+        "repeatable provider state.");
+  }
   auto choices = p;
   choices.erase("output_path");
   s["choices"] = section(choices);

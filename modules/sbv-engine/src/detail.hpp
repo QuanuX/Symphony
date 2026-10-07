@@ -88,6 +88,8 @@ void require_new_file(const std::string &);
 void create_file(const std::string &, const std::string &, std::int64_t);
 Json persist(Json, const Json &, const std::string &, std::int64_t);
 struct Dataset;
+Json provider_inspect(const Json &, std::int64_t);
+Json generate_census(const Json &, std::int64_t, const Dataset * = nullptr);
 Json run(const Json &, std::int64_t, const Dataset * = nullptr);
 Json dataset_control(const std::string &, const Json &, std::int64_t);
 int resident_worker();

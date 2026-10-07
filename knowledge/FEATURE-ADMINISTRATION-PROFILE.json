@@ -916,13 +916,15 @@
           "command_ids": [
             "qxcmd:symphony:sbv.capabilities",
             "qxcmd:symphony:sbv.catalogue",
+            "qxcmd:symphony:sbv.provider.inspect",
             "qxcmd:symphony:sbv.schema",
             "qxcmd:symphony:sbv.template"
           ],
           "delivery": "direct",
           "engine_operation_ids": [
             "engop:symphony:sbv.capabilities",
-            "engop:symphony:sbv.catalogue"
+            "engop:symphony:sbv.catalogue",
+            "engop:symphony:sbv.provider-inspect"
           ],
           "evidence": [
             "modules/sbv-engine/OWNER-INTERFACE.json",
@@ -976,6 +978,7 @@
             "qxcmd:symphony:sbv.evaluate",
             "qxcmd:symphony:sbv.experiment",
             "qxcmd:symphony:sbv.fit",
+            "qxcmd:symphony:sbv.generate.census",
             "qxcmd:symphony:sbv.liquidity",
             "qxcmd:symphony:sbv.live.plan",
             "qxcmd:symphony:sbv.predict",
@@ -1001,6 +1004,7 @@
             "engop:symphony:sbv.evaluate",
             "engop:symphony:sbv.experiment",
             "engop:symphony:sbv.fit",
+            "engop:symphony:sbv.generate-census",
             "engop:symphony:sbv.liquidity",
             "engop:symphony:sbv.live-plan",
             "engop:symphony:sbv.predict",
@@ -2853,13 +2857,15 @@
           "command_ids": [
             "qxcmd:symphony:sbv.capabilities",
             "qxcmd:symphony:sbv.catalogue",
+            "qxcmd:symphony:sbv.provider.inspect",
             "qxcmd:symphony:sbv.schema",
             "qxcmd:symphony:sbv.template"
           ],
           "delivery": "direct",
           "engine_operation_ids": [
             "engop:symphony:sbv.capabilities",
-            "engop:symphony:sbv.catalogue"
+            "engop:symphony:sbv.catalogue",
+            "engop:symphony:sbv.provider-inspect"
           ],
           "evidence": [
             "modules/sbv-engine/OWNER-INTERFACE.json",
@@ -2913,6 +2919,7 @@
             "qxcmd:symphony:sbv.evaluate",
             "qxcmd:symphony:sbv.experiment",
             "qxcmd:symphony:sbv.fit",
+            "qxcmd:symphony:sbv.generate.census",
             "qxcmd:symphony:sbv.liquidity",
             "qxcmd:symphony:sbv.live.plan",
             "qxcmd:symphony:sbv.predict",
@@ -2938,6 +2945,7 @@
             "engop:symphony:sbv.evaluate",
             "engop:symphony:sbv.experiment",
             "engop:symphony:sbv.fit",
+            "engop:symphony:sbv.generate-census",
             "engop:symphony:sbv.liquidity",
             "engop:symphony:sbv.live-plan",
             "engop:symphony:sbv.predict",
@@ -9765,6 +9773,6 @@
   "profile_id": "symphony.registered-features.administration.v1",
   "protocol": "symphony.knowledge.feature-administration-profile.v1",
   "registered_feature_count": 141,
-  "ssfv_registry_digest": "sha256:f81f2335f2882ccf8045834771fd217e6100b2d7f42e9a02aac7d41366595993",
-  "profile_digest": "sha256:f2b6fc081dbaa26d9628b9f54c39cf518861104b81d1f55c34223b3ca2354f26"
+  "ssfv_registry_digest": "sha256:bb93e64ea3b5706d83c3c33898e25ed65a86cee3804213ef6dbeca2ab7db64fa",
+  "profile_digest": "sha256:755cf4ef27438444494136343fbee65539ea26fe6ecd4a66b6a2afee29c6dc41"
 }

@@ -210,6 +210,8 @@ Json descriptor() {
   }
   r["contract_versions"].push_back("symphony.sbv.linear-model.v1");
   r["contract_versions"].push_back("symphony.sbv.census-evidence.v1");
+  r["contract_versions"].push_back("symphony.sbv.native-provider-census.v1");
+  r["contract_versions"].push_back("symphony.sbv.native-provider-evidence.v1");
   r["descriptor_digest"] = e::tagged_sha256(r.dump());
   return r;
 }
@@ -222,6 +224,13 @@ Json dispatch(const std::string &op, const Json &p, std::int64_t end) {
           "input protocol mismatch");
   if (op == "capabilities") {
     d::keys(p, {"protocol"});
+    const auto catalogue = model_catalogue();
+    const auto ids = [&](const char *key) {
+      auto values = Json::array();
+      for (const auto &card : catalogue.at(key))
+        values.push_back(card.at("id"));
+      return values;
+    };
     return {
         {"protocol", "symphony.sbv.capabilities.v1"},
         {"engine_version", version},
@@ -234,7 +243,8 @@ Json dispatch(const std::string &op, const Json &p, std::int64_t end) {
          {{"available", true},
           {"scope", "local immutable decoded DBN"},
           {"residency_modes", Json::array({"pageable", "locked"})},
-          {"operations", Json::array({"run", "evaluate", "book"})},
+          {"operations",
+           Json::array({"run", "evaluate", "book", "generate_census"})},
           {"implicit_file_fallback", false}}},
         {"cpu",
          {{"available", true},
@@ -252,21 +262,9 @@ Json dispatch(const std::string &op, const Json &p, std::int64_t end) {
           {"plan", "capture -> ordered availability stream -> causal signal "
                    "observer -> pending horizon -> sealed result; reconnect "
                    "and gaps require explicit policy"}}},
-        {"studies",
-         Json::array({"signal_summary", "forward_markout", "model_summary",
-                      "path_excursion", "weighted_return_sum", "return_moments",
-                      "return_quantiles", "liquidity_summary", "fill_quality",
-                      "allocation_costs", "activation_moments",
-                      "series_summary", "series_moments", "series_quantiles",
-                      "equity_drawdown", "return_ratios",
-                      "bootstrap_mean_distribution",
-                      "bootstrap_mean_quantiles", "regression_errors"})},
-        {"execution_models",
-         Json::array({"none", "touch_observation", "user_probability",
-                      "observed_trade_levels", "external_outcomes",
-                      "displayed_depth_sweep"})},
-        {"economic_transforms",
-         Json::array({"linear_price_pnl", "filled_quantity_markout"})},
+        {"studies", ids("studies")},
+        {"execution_models", ids("models")},
+        {"economic_transforms", ids("transforms")},
         {"limits",
          {{"max_source_events", nullptr},
           {"max_source_bytes", nullptr},
@@ -275,8 +273,14 @@ Json dispatch(const std::string &op, const Json &p, std::int64_t end) {
           {"default_deadline_unix_ms", nullptr},
           {"max_deadline_ahead_ms", nullptr},
           {"max_signals", "4096"},
+          {"max_signals_scope", "legacy run/imported census, model admission "
+                                "and economics; not native census generation"},
+          {"max_generated_census_signals", nullptr},
           {"max_artifact_bytes", d::dec(d::artifact_bytes)},
-          {"max_composed_paths", "65536"}}}};
+          {"max_composed_paths", "65536"},
+          {"max_composed_paths_scope",
+           "legacy compose/compose_joint; compose_economics uses "
+           "caller-selected path pages"}}}};
   }
   if (op.starts_with("dataset_"))
     return d::dataset_control(op, p, end);
@@ -286,10 +290,18 @@ Json dispatch(const std::string &op, const Json &p, std::int64_t end) {
     return d::compose(p, end);
   if (op == "compose_joint")
     return d::compose_joint(p, end);
-  if (op == "compose_economics") return d::compose_economics(p, end);
-  if (op == "research_history") return d::research_history(p, end);
-  if (op == "fit") return d::fit(p, end);
-  if (op == "predict") return d::predict(p, end);
+  if (op == "provider_inspect")
+    return d::provider_inspect(p, end);
+  if (op == "generate_census")
+    return d::generate_census(p, end);
+  if (op == "compose_economics")
+    return d::compose_economics(p, end);
+  if (op == "research_history")
+    return d::research_history(p, end);
+  if (op == "fit")
+    return d::fit(p, end);
+  if (op == "predict")
+    return d::predict(p, end);
   if (op == "split")
     return d::split(p, end);
   if (op == "resample")

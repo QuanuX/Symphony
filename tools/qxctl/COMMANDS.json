@@ -4399,6 +4399,45 @@
       "json_output": true
     },
     {
+      "command_id": "qxcmd:symphony:sbv.generate.census",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl sbv generate-census [--deadline-unix-ms VALUE] [--format VALUE] [--input VALUE] [--json] [--prefix VALUE] [--timeout VALUE] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl-sbv-administration",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:sbv-engine",
+          "interaction": "invoke"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:sbv.generate-census"
+      ],
+      "mutability": "permission_backed_mutation",
+      "authority_mode": "target_host_permission",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.sbv.generate-census-input.v1"
+      ],
+      "output_protocols": [
+        "symphony.sbv.generate-census.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.sbv.generate-census.v1"
+      ],
+      "recovery_command_id": "qxcmd:symphony:sbv.result.inspect",
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
       "command_id": "qxcmd:symphony:sbv.liquidity",
       "status": "experimental",
       "introduced_in": "0.1.0-dev",
@@ -4512,6 +4551,45 @@
         "symphony.sbv.predict.v1"
       ],
       "recovery_command_id": "qxcmd:symphony:sbv.result.inspect",
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:sbv.provider.inspect",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl sbv provider-inspect [--deadline-unix-ms VALUE] [--format VALUE] [--input VALUE] [--json] [--prefix VALUE] [--timeout VALUE] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl-sbv-administration",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sbv-engine",
+          "interaction": "discover"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:sbv.provider-inspect"
+      ],
+      "mutability": "read_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.sbv.provider-inspect-input.v1"
+      ],
+      "output_protocols": [
+        "symphony.sbv.provider-inspect.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.sbv.provider-inspect.v1"
+      ],
+      "recovery_command_id": null,
       "noninteractive": true,
       "json_output": true
     },
@@ -20327,5 +20405,5 @@
       "json_output": true
     }
   ],
-  "registry_digest": "sha256:09ff8a31e82a347982468792e2014fba3576badd0a55c4bdbd5b1839ca38b04d"
+  "registry_digest": "sha256:c5536d72a954b876284206eaeb2ea1083f3856b7583d56a3f48cecc789f4318a"
 }

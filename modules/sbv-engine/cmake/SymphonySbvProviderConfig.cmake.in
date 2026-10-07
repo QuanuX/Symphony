@@ -1,0 +1,8 @@
+# Independently consumed plain C authoring ABI; no engine/vendor dependency.
+get_filename_component(_sbv_prefix "${CMAKE_CURRENT_LIST_DIR}/../../../.." ABSOLUTE)
+if(NOT TARGET Symphony::SbvProvider)
+ add_library(Symphony::SbvProvider INTERFACE IMPORTED)
+ set_target_properties(Symphony::SbvProvider PROPERTIES INTERFACE_INCLUDE_DIRECTORIES "${_sbv_prefix}/include/symphony/sbv-engine/@release@")
+endif()
+set(SymphonySbvProvider_VERSION "@release@")
+unset(_sbv_prefix)

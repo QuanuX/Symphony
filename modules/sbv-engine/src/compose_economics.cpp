@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <limits>
 #include <map>
+#include <symphony/sbv/models.hpp>
 
 namespace symphony::sbv::detail {
 namespace {
@@ -97,6 +98,14 @@ Json economic_census(const Json &result) {
          {"declaration", original}};
   }
   validate_census_evidence(c);
+  const bool native_provider_model =
+      parent_choices.at("model").at("id") == "native_provider";
+  need(!context.contains("provider") || native_provider_model,
+       "unexpected economic model provider evidence");
+  if (native_provider_model)
+    validate_native_provider_model_context(parent_choices.at("model"),
+                                           context.at("provider"),
+                                           s.at("execution").at("data"));
   need(c.at("census_sha256") == summary.at("source_census_sha256") &&
            c.at("source_sha256") == parent_choices.at("source_sha256") &&
            c.at("source_sha256") == parent_provenance.at("source_sha256") &&
@@ -364,6 +373,10 @@ Component component(const Json &choice, const Source &source,
       {"census_context_reference", reference("/sections/source_context")},
       {"replay_reference", reference("/sections/replay")},
       {"extensions", choice.at("extensions")}};
+  if (parent_model.at("id") == "native_provider") {
+    c.retained["model_selection"] = parent_model;
+    c.retained["provider"] = s.at("source_context").at("data").at("provider");
+  }
   return c;
 }
 Json wire(const Distribution &distribution) {

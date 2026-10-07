@@ -166,14 +166,14 @@ func newSBVLeaf(op, leaf string) *cobra.Command {
 	c.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
 	key := "sbv." + strings.ReplaceAll(op, "_", ".")
 	interaction := "invoke"
-	if resource || op == "capabilities" || op == "catalogue" {
+	if resource || op == "capabilities" || op == "catalogue" || op == "provider_inspect" {
 		interaction = "discover"
 	} else if read || op == "result_select" || op == "dataset_inspect" {
 		interaction = "inspect"
 	}
 	spec := commandSpec(key, featureSBVAdministration, interaction)
 	spec.FeatureBindings = append(spec.FeatureBindings, commandregistry.FeatureBinding{FeatureID: "ssfv:symphony:sbv-engine", Interaction: interaction})
-	if op == "run" || op == "compose" || op == "evaluate" || op == "compose_joint" || op == "economics" || op == "book" || op == "liquidity" || op == "allocation_economics" || op == "analyze" || op == "compare" || op == "resample" || op == "experiment" || op == "split" || op == "research_history" || op == "compose_economics" || op == "fit" || op == "predict" || op == "dataset_load" || op == "dataset_release" || op == "dataset_execute" {
+	if op == "run" || op == "compose" || op == "evaluate" || op == "compose_joint" || op == "economics" || op == "book" || op == "liquidity" || op == "allocation_economics" || op == "analyze" || op == "compare" || op == "resample" || op == "experiment" || op == "split" || op == "research_history" || op == "generate_census" || op == "compose_economics" || op == "fit" || op == "predict" || op == "dataset_load" || op == "dataset_release" || op == "dataset_execute" {
 		spec.Mutability = "permission_backed_mutation"
 		spec.AuthorityMode = "target_host_permission"
 		spec.RecoveryCommandID = stringPointer("qxcmd:symphony:sbv.result.inspect")

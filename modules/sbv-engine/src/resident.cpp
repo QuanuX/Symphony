@@ -321,12 +321,14 @@ void control_shape(const std::string &op, const Json &p) {
     keys(p, {"protocol", "directory", "instance_id", "operation", "request",
              "output_path"});
     need(p.at("operation") == "run" || p.at("operation") == "evaluate" ||
-             p.at("operation") == "book",
-         "resident execution supports run, evaluate and book");
+             p.at("operation") == "book" ||
+             p.at("operation") == "generate_census",
+         "resident execution supports run, evaluate, book and generate_census");
     const auto &r = p.at("request");
+    auto slug = str(p.at("operation"));
+    std::replace(slug.begin(), slug.end(), '_', '-');
     need(r.is_object() && !r.contains("output_path") &&
-             r.at("protocol") ==
-                 "symphony.sbv." + str(p.at("operation")) + "-input.v1",
+             r.at("protocol") == "symphony.sbv." + slug + "-input.v1",
          "resident child request must omit output_path and match operation");
   } else {
     need(op == "dataset_inspect" || op == "dataset_release",
@@ -392,8 +394,16 @@ int resident_worker() {
          "resident instance id already claimed; choose a fresh id");
     FD listener(::socket(AF_UNIX, SOCK_STREAM, 0));
     configure(listener.n);
-    need(::bind(listener.n, reinterpret_cast<sockaddr *>(&a), sizeof(a)) == 0,
-         "resident endpoint already exists; choose a fresh instance id");
+    if (::bind(listener.n, reinterpret_cast<sockaddr *>(&a), sizeof(a)) != 0) {
+      const int error = errno;
+      need(false,
+           error == EADDRINUSE
+               ? "resident endpoint already exists; choose a fresh instance id"
+               : ("resident endpoint bind failed: " +
+                  std::string(std::strerror(error)) + " (errno " +
+                  std::to_string(error) + ")")
+                     .c_str());
+    }
     struct stat st{};
     need(::lstat(a.sun_path, &st) == 0,
          "resident endpoint identity unavailable");
@@ -516,7 +526,9 @@ int resident_worker() {
         auto request = input.at("request");
         request["output_path"] = input.at("output_path");
         data->bind(request);
-        const auto inner = inner_op == "book" ? 1 : u64(request.at("workers"));
+        const auto inner = (inner_op == "book" || inner_op == "generate_census")
+                               ? 1
+                               : u64(request.at("workers"));
         need(inner >= 1 && inner <= 64 && jobs.size() < max_jobs &&
                  active < max_jobs && inner <= budget - workers,
              "resident job/worker capacity unavailable; select fewer workers "
@@ -531,11 +543,13 @@ int resident_worker() {
                  Json response;
                  bool ok = false;
                  try {
-                   auto receipt = inner_op == "run"
-                                      ? run(request, end, data.get())
-                                  : inner_op == "evaluate"
-                                      ? evaluate(request, end, data.get())
-                                      : book(request, end, data.get());
+                   auto receipt =
+                       inner_op == "run" ? run(request, end, data.get())
+                       : inner_op == "evaluate"
+                           ? evaluate(request, end, data.get())
+                       : inner_op == "generate_census"
+                           ? generate_census(request, end, data.get())
+                           : book(request, end, data.get());
                    receipt["protocol"] = "symphony.sbv.dataset-execute.v1";
                    response = success(receipt);
                    ok = true;

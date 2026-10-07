@@ -3,9 +3,9 @@
   "module_id": "sbv-engine",
   "engine_id": "symphony-sbv",
   "namespace": "symphony::sbv::interface",
-  "current_version": "0.19.0-dev",
+  "current_version": "0.20.0-dev",
   "releases": {
-    "0.19.0-dev": [
+    "0.20.0-dev": [
       "capabilities",
       "run",
       "compose",
@@ -33,7 +33,9 @@
       "fit",
       "predict",
       "research_history",
-      "compose_economics"
+      "compose_economics",
+      "generate_census",
+      "provider_inspect"
     ]
   },
   "contract_versions": [
@@ -95,8 +97,14 @@
     "symphony.sbv.research-history.v1",
     "symphony.sbv.compose-economics-input.v1",
     "symphony.sbv.compose-economics.v1",
+    "symphony.sbv.generate-census-input.v1",
+    "symphony.sbv.generate-census.v1",
+    "symphony.sbv.provider-inspect-input.v1",
+    "symphony.sbv.provider-inspect.v1",
     "symphony.sbv.linear-model.v1",
-    "symphony.sbv.census-evidence.v1"
+    "symphony.sbv.census-evidence.v1",
+    "symphony.sbv.native-provider-census.v1",
+    "symphony.sbv.native-provider-evidence.v1"
   ],
   "operations": [
     {
@@ -687,6 +695,48 @@
       "operation_name": "compose_economics",
       "output_protocol": "symphony.sbv.compose-economics.v1",
       "recovery_operation_id": "engop:symphony:sbv.result-inspect",
+      "thermal_path": "freezing"
+    },
+    {
+      "administration_disposition": "qxctl_required",
+      "administrative_interactions": [
+        "invoke"
+      ],
+      "authorization_requirement": "target_host_permission",
+      "availability": "implemented",
+      "direct_invocation": "supported",
+      "engine_operation_id": "engop:symphony:sbv.generate-census",
+      "expected_state_required": false,
+      "feature_ids": [
+        "ssfv:symphony:sbv-engine"
+      ],
+      "idempotency": "non_idempotent",
+      "input_protocol": "symphony.sbv.generate-census-input.v1",
+      "mutability": "permission_backed_mutation",
+      "operation_name": "generate_census",
+      "output_protocol": "symphony.sbv.generate-census.v1",
+      "recovery_operation_id": "engop:symphony:sbv.result-inspect",
+      "thermal_path": "freezing"
+    },
+    {
+      "administration_disposition": "qxctl_required",
+      "administrative_interactions": [
+        "discover"
+      ],
+      "authorization_requirement": "none",
+      "availability": "implemented",
+      "direct_invocation": "supported",
+      "engine_operation_id": "engop:symphony:sbv.provider-inspect",
+      "expected_state_required": false,
+      "feature_ids": [
+        "ssfv:symphony:sbv-engine"
+      ],
+      "idempotency": "non_idempotent",
+      "input_protocol": "symphony.sbv.provider-inspect-input.v1",
+      "mutability": "read_only",
+      "operation_name": "provider_inspect",
+      "output_protocol": "symphony.sbv.provider-inspect.v1",
+      "recovery_operation_id": null,
       "thermal_path": "freezing"
     }
   ],

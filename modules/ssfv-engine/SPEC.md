@@ -48,3 +48,15 @@ to declare no engine-selected future deadline ceiling. This exception applies
 only to that field and explicit protocol profile. Other descriptor limits remain
 positive integers; v1 admission retains its previous positive-deadline rule.
 SBV 0.14 exercises this additive contract through administration coverage.
+
+Descriptor-v2 contract inventory admission no longer imposes a separate
+64-entry ceiling on `contract_versions`. Entries remain nonempty, unique,
+printable strings of at most 256 bytes. SSFV uses its existing 65,536-value
+request-parser budget as a redundant array guard; the existing one-MiB request
+and complete-envelope JSON limits still apply. This acceptance widening changes
+neither descriptor fields nor their meaning and does not expand process budgets.
+Older validators and exact packaged SCV/SHV schema copies can still reject
+inventories exceeding 64 entries; those consumers require a separately reviewed
+update before admitting the larger inventory. Their historical copies and
+descriptor v1 remain unchanged. SBV 0.20 exercises the widened current reader
+with its complete operation and retained-artifact contract inventory.

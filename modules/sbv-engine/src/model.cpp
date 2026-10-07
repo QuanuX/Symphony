@@ -1,3 +1,4 @@
+#include "provider.hpp"
 #include "rational.hpp"
 #include <algorithm>
 #include <symphony/sbv/models.hpp>
@@ -133,6 +134,96 @@ AdmittedModel::AdmittedModel(Json selection,
 }
 std::uint64_t AdmittedModel::horizon_ns() const {
   return d::u64(selection_.at("horizon_ns"));
+}
+namespace {
+Json provider_candidate_selection(const Json &selection, const Json &author,
+                                  const Json &candidates) {
+  d::keys(selection, {"protocol", "id", "version", "horizon_ns", "parameters"});
+  d::need(selection.at("protocol") == "symphony.sbv.model-selection.v1" &&
+              selection.at("id") == "native_provider" &&
+              selection.at("version") == "1",
+          "native provider model selection mismatch");
+  const auto &p = selection.at("parameters");
+  d::keys(p, {"provider", "measure", "conditioning", "calibration_reference",
+              "on_unavailable"});
+  d::need(p.at("provider").at("role") == "model" &&
+              (p.at("on_unavailable") == "reject" ||
+               p.at("on_unavailable") == "unavailable"),
+          "native model role/unavailable policy required");
+  return {{"protocol", "symphony.sbv.model-selection.v1"},
+          {"id", "external_outcomes"},
+          {"version", "1"},
+          {"horizon_ns", selection.at("horizon_ns")},
+          {"parameters",
+           {{"producer", author},
+            {"measure", p.at("measure")},
+            {"conditioning", p.at("conditioning")},
+            {"calibration_reference", p.at("calibration_reference")},
+            {"outcomes", candidates}}}};
+}
+} // namespace
+void validate_native_provider_model(const Json &selection, const Json &author) {
+  (void)AdmittedModel(
+      provider_candidate_selection(selection, author, Json::array()), {});
+}
+void validate_native_provider_model_context(const Json &selection,
+                                            const Json &captured,
+                                            const Json &outcomes) {
+  d::keys(captured, {"evidence", "role"});
+  d::need(captured.at("role") == "model",
+          "retained model provider role required");
+  const auto &evidence = captured.at("evidence");
+  const auto &parameters = selection.at("parameters");
+  d::validate_native_provider_evidence(parameters.at("provider"), evidence);
+  const Json author{
+      {"id", evidence.at("id")},
+      {"version", evidence.at("version")},
+      {"artifact_sha256", evidence.at("library").at("expected_sha256")},
+      {"reproducibility", evidence.at("reproducibility")}};
+  validate_native_provider_model(selection, author);
+  d::need(outcomes.is_array(), "retained model outcome array required");
+  for (const auto &outcome : outcomes)
+    d::need(outcome.at("protocol") == "symphony.sbv.model-outcome.v1" &&
+                outcome.at("model_id") == "native_provider" &&
+                outcome.at("model_version") == selection.at("version") &&
+                outcome.at("evidence_origin") == "native_provider" &&
+                outcome.at("producer") == author &&
+                outcome.at("measure") == parameters.at("measure") &&
+                outcome.at("conditioning") == parameters.at("conditioning") &&
+                outcome.at("calibration_reference") ==
+                    parameters.at("calibration_reference"),
+            "retained model provider attribution mismatch");
+}
+Json admit_native_provider_outcome(const Json &selection, const Json &author,
+                                   const Json &candidate, const Json &error,
+                                   const ModelFrame &frame, std::int64_t end) {
+  d::deadline(end);
+  Json result;
+  if (error.is_null()) {
+    const AdmittedModel admitted(
+        provider_candidate_selection(selection, author,
+                                     Json::array({candidate})),
+        {frame.signal_id});
+    result = admitted.evaluate(frame, end);
+    result["model_id"] = "native_provider";
+  } else {
+    validate_native_provider_model(selection, author);
+    d::need(selection.at("parameters").at("on_unavailable") == "unavailable",
+            ("native model unavailable: " + error.dump()).c_str());
+    result = outcome(frame, "native_provider");
+    result["status"] = "unavailable";
+    // Canonical JSON text preserves every attributed error field without
+    // coercing arbitrary provider details into the exact-number result tree.
+    result["reason"] = error.dump();
+    result["measure"] = selection.at("parameters").at("measure");
+    result["conditioning"] = selection.at("parameters").at("conditioning");
+    result["producer"] = author;
+    result["calibration_reference"] =
+        selection.at("parameters").at("calibration_reference");
+    result["evidence_reference"] = "native provider returned unavailable";
+  }
+  result["evidence_origin"] = "native_provider";
+  return result;
 }
 Json AdmittedModel::evaluate(const ModelFrame &f, std::int64_t end) const {
   d::deadline(end);
@@ -275,6 +366,22 @@ Json model_catalogue() {
              {"definition",
               "minimum/maximum observed post-signal trade minus anchor with "
               "first extremum cursor; not fill-based MAE/MFE"}}})}};
+  result["models"].push_back(
+      {{"id", "native_provider"},
+       {"version", "1"},
+       {"input_protocol", "symphony.sbv.model-selection.v1"},
+       {"output_protocol", "symphony.sbv.model-outcome.v1"},
+       {"measure",
+        "explicit probability, scenario_weight or signed_coefficient"},
+       {"evidence",
+        "Explicitly selected trusted native provider with full MBO "
+        "causal/followup views; host admits exact candidate values. Execution "
+        "and calibration remain unverified assumptions."},
+       {"parameters", Json::array({"provider", "measure", "conditioning",
+                                   "calibration_reference", "on_unavailable"})},
+       {"concurrency",
+        Json::array({"serialized_instance", "per_worker_instances",
+                     "shared_reentrant_instance"})}});
   for (auto &card : result["models"])
     card["operations"] = Json::array({"evaluate"});
   for (auto &card : result["studies"])
@@ -325,9 +432,15 @@ Json model_catalogue() {
       const auto &card : Json::parse(
           R"BOOT([{"id":"bootstrap_mean_distribution","version":"1","unit":"caller unit and square","definition":"Exact population moments of deterministic replicate means","operations":["resample"]},{"id":"bootstrap_mean_quantiles","version":"1","unit":"caller unit and square","definition":"Inverse empirical CDF of uniform-row or block bootstrap means; no confidence coverage claim","operations":["resample"]}])BOOT"))
     result["studies"].push_back(card);
-  result["studies"].push_back({{"id", "regression_errors"}, {"version", "1"},
-    {"unit", "caller target unit and square"}, {"operations", Json::array({"predict"})},
-    {"definition", "Exact weighted residual, absolute and squared error sums and algebraic weight-normalized means. Signed weights do not define probability; zero total weight leaves means unavailable."}});
+  result["studies"].push_back(
+      {{"id", "regression_errors"},
+       {"version", "1"},
+       {"unit", "caller target unit and square"},
+       {"operations", Json::array({"predict"})},
+       {"definition",
+        "Exact weighted residual, absolute and squared error sums and "
+        "algebraic weight-normalized means. Signed weights do not define "
+        "probability; zero total weight leaves means unavailable."}});
   result["book_profiles"] = Json::parse(
       R"BOOK([{"id":"databento_mbo_orders_strict_v1","version":"1","operations":["book"],"initialization":"source reset or exact source-bound supplied checkpoint","anomalies":"reject or invalidate_until_reset","scope":"one publisher/instrument/channel; A/M/C/R updates; T/F/N informational; no queue priority or fill prediction","input_schema":"symphony.sbv.book-input.v1","output_schemas":["symphony.sbv.book-frame.v1","symphony.sbv.book-checkpoint.v1"]}])BOOK");
   return result;

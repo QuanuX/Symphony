@@ -289,7 +289,7 @@ int main() try {
   check(separate.at("fill_probability").at("value") == rat("3", "4"));
   auto catalogue =
       call("catalogue", {{"protocol", "symphony.sbv.catalogue-input.v1"}});
-  check(catalogue.at("models").size() == 6 &&
+  check(catalogue.at("models").size() == 7 &&
         catalogue.at("studies").size() == 21);
   J joint{
       {"protocol", "symphony.sbv.compose-joint-input.v1"},

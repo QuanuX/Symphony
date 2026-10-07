@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <map>
 #include <symphony/knowledge/engine/limits.hpp>
+#include <symphony/sbv/models.hpp>
 
 namespace symphony::sbv::detail {
 namespace {
@@ -218,6 +219,18 @@ Json economics(const Json &p, std::int64_t end) {
   need(signals.is_array() && signals.size() <= 4096 && models.is_array() &&
            models.size() == signals.size(),
        "source signal/model correspondence required");
+  const auto &parent_choices = sections.at("choices").at("data");
+  const bool native_provider_model =
+      parent_choices.contains("model") &&
+      parent_choices.at("model").at("id") == "native_provider";
+  need(!sections.contains("provider") || native_provider_model,
+       "unexpected model provider evidence");
+  if (native_provider_model) {
+    need(sections.at("provider").at("status") == "available",
+         "model provider evidence must be available");
+    validate_native_provider_model_context(
+        parent_choices.at("model"), sections.at("provider").at("data"), models);
+  }
   std::map<std::string, const Json *> signal_map, model_map;
   for (const auto &s : signals) {
     label(s.at("signal_id"));
@@ -395,6 +408,9 @@ Json economics(const Json &p, std::int64_t end) {
                                  {"choices", sections.at("choices")},
                                  {"provenance", sections.at("provenance")},
                                  {"reference", reference}});
+  if (native_provider_model)
+    s["source_context"]["data"]["provider"] =
+        sections.at("provider").at("data");
   auto choices = p;
   choices.erase("output_path");
   s["choices"] = section(choices);
