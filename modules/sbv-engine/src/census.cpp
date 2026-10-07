@@ -36,7 +36,8 @@ void validate(const Json &c) {
   need(native || provider_kind || c.at("kind") == "external",
        "unknown census kind");
   const auto &signals = c.at("signals"), &d = c.at("declaration");
-  need(signals.is_array() && (provider_kind || signals.size() <= 4096),
+  need(signals.is_array() &&
+           (native || provider_kind || signals.size() <= 4096),
        "census signal profile bound");
   if (native) {
     need(c.at("identity_domain") == "native_signals" &&
@@ -58,13 +59,16 @@ void validate(const Json &c) {
     need(criteria.at("rule") != "spaced_trades" || direction == "any",
          "invalid retained native direction");
     (void)u64(criteria.at("spacing_ns"));
-    const auto minimum = u64(criteria.at("min_trade_size")),
-               cap = u64(criteria.at("max_signals"));
-    need(minimum > 0 && minimum <= UINT32_MAX && cap >= 1 && cap <= 4096 &&
-             d.at("selection_cap") == criteria.at("max_signals") &&
-             signals.size() <= cap && !str(d.at("engine_version")).empty(),
+    const auto minimum = u64(criteria.at("min_trade_size"));
+    const auto &cap = criteria.at("max_signals");
+    need(minimum > 0 && minimum <= UINT32_MAX &&
+             (cap.is_null() || (u64(cap) >= 1 && signals.size() <= u64(cap))) &&
+             d.at("selection_cap") == cap &&
+             !str(d.at("engine_version")).empty(),
          "retained native selection mismatch");
-    (void)u64(d.at("additional_eligible_after_cap"));
+    const auto after_cap = u64(d.at("additional_eligible_after_cap"));
+    need(!cap.is_null() || after_cap == 0,
+         "uncapped census cannot have post-cap eligibility");
     need(e::sha256_hex(signals.dump()) == str(c.at("census_sha256")),
          "native census digest mismatch");
   } else if (provider_kind) {

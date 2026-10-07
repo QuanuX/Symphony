@@ -1,13 +1,17 @@
 #include "census.hpp"
+#include "exact_id_index.hpp"
+#include "partitioned_output.hpp"
 #include "provider.hpp"
+#include "stream_census.hpp"
 #include <symphony/sqav/databento/dbn.hpp>
+#include <variant>
 
 namespace symphony::sbv::detail {
-Json generate_census(const Json &p, std::int64_t end, const Dataset *resident) {
-  keys_optional(p, {"protocol", "provider", "output_path", "extensions"},
-                {"memory_budget_bytes", "dataset_limits", "source_path",
-                 "source_sha256", "dataset", "retained_source"});
-  need(p.at("extensions").is_object(), "extensions object required");
+namespace {
+using GeneratedBody = std::variant<Json, logical::Value>;
+GeneratedBody generate_body(const Json &p, std::int64_t end,
+                            const Dataset *resident,
+                            PartitionedOutput *output) {
   const auto &selection = p.at("provider");
   need(selection.at("role") == "strategy" &&
            selection.at("concurrency") == "serialized_instance",
@@ -19,36 +23,49 @@ Json generate_census(const Json &p, std::int64_t end, const Dataset *resident) {
   NativeProvider provider(selection, end);
   auto instance = provider.create(end);
   Json signals = Json::array();
-  std::set<std::string> ids;
+  auto spool = output ? output->spool("census-signals") : nullptr;
+  Json identity_resources;
+  std::uint64_t signal_count = 0;
   // Only invocation-scoped prefix readers enter strategy callbacks. The
   // trusted library shares this process; this is not memory or I/O isolation.
-  for (std::size_t ordinal = 0; ordinal < events.size(); ++ordinal) {
-    deadline(end);
-    auto reply = instance->event(events, ordinal, end);
-    need(reply.status == SBV_PROVIDER_OK,
-         ("strategy provider failed: " + reply.error.dump()).c_str());
-    if (reply.value.is_null())
-      continue;
-    need(reply.value.is_array(), "strategy candidate array required");
-    for (const auto &candidate : reply.value) {
+  {
+    ExactIdIndex ids({}, [end] { deadline(end); });
+    for (std::size_t ordinal = 0; ordinal < events.size(); ++ordinal) {
       deadline(end);
-      keys(candidate, {"signal_id", "anchor_price_nanos", "context_reference"});
-      const auto id = str(candidate.at("signal_id"));
-      need(!id.empty() && id.size() <= 256 && ids.insert(id).second,
-           "unique bounded provider signal identity required");
-      need(i64(candidate.at("anchor_price_nanos")) != INT64_MAX,
-           "provider signal anchor cannot be undefined");
-      (void)str(candidate.at("context_reference"));
-      need(ordinal < UINT64_MAX, "provider causal ordinal overflows");
-      signals.push_back(
-          {{"signal_id", id},
-           {"source_ordinal", dec(ordinal)},
-           {"available_ns", dec(events[ordinal].ts_recv)},
-           {"anchor_price_nanos", candidate.at("anchor_price_nanos")},
-           {"causal_end_ordinal_exclusive", dec(ordinal + 1)},
-           {"context_reference", candidate.at("context_reference")}});
+      auto reply = instance->event(events, ordinal, end);
+      need(reply.status == SBV_PROVIDER_OK,
+           ("strategy provider failed: " + reply.error.dump()).c_str());
+      if (reply.value.is_null())
+        continue;
+      need(reply.value.is_array(), "strategy candidate array required");
+      for (const auto &candidate : reply.value) {
+        deadline(end);
+        keys(candidate,
+             {"signal_id", "anchor_price_nanos", "context_reference"});
+        const auto id = str(candidate.at("signal_id"));
+        need(!id.empty() && id.size() <= 256 && ids.insert(id).inserted,
+             "unique bounded provider signal identity required");
+        need(i64(candidate.at("anchor_price_nanos")) != INT64_MAX,
+             "provider signal anchor cannot be undefined");
+        (void)str(candidate.at("context_reference"));
+        need(ordinal < UINT64_MAX, "provider causal ordinal overflows");
+        Json signal{{"signal_id", id},
+                    {"source_ordinal", dec(ordinal)},
+                    {"available_ns", dec(events[ordinal].ts_recv)},
+                    {"anchor_price_nanos", candidate.at("anchor_price_nanos")},
+                    {"causal_end_ordinal_exclusive", dec(ordinal + 1)},
+                    {"context_reference", candidate.at("context_reference")}};
+        if (spool)
+          spool->append(signal);
+        else
+          signals.push_back(std::move(signal));
+      }
     }
-  }
+    signal_count = ids.size();
+    if (output)
+      identity_resources = ids.evidence();
+  } // Release generation ID state before retained census admission builds its
+    // own.
   auto finished = instance->finish(end);
   need(finished.status == SBV_PROVIDER_OK,
        ("strategy completion failed: " + finished.error.dump()).c_str());
@@ -71,6 +88,12 @@ Json generate_census(const Json &p, std::int64_t end, const Dataset *resident) {
       {"version", descriptor.at("version")},
       {"artifact_sha256", selection.at("library").at("expected_sha256")},
       {"reproducibility", descriptor.at("reproducibility")}};
+  std::optional<result_store::ClosedRows> closed_rows;
+  if (spool) {
+    closed_rows.emplace(spool->close());
+    need(closed_rows->row_count == signal_count,
+         "provider row spool membership contradiction");
+  }
   Json declaration{{"protocol", "symphony.sbv.native-provider-census.v1"},
                    {"source_sha256", source.sha256},
                    {"dataset", source.dataset_name},
@@ -79,7 +102,15 @@ Json generate_census(const Json &p, std::int64_t end, const Dataset *resident) {
                    {"provider_evidence", provider.evidence()},
                    {"signals", signals},
                    {"completion", completion}};
-  const auto census_digest = e::sha256_hex(declaration.dump());
+  std::optional<logical::Value> streamed_declaration;
+  if (closed_rows)
+    streamed_declaration.emplace(
+        logical::Value(declaration)
+            .with("signals", logical::Value(closed_rows->rows)));
+  const auto census_digest =
+      streamed_declaration
+          ? streamed_declaration->sha256({}, [end] { deadline(end); })
+          : e::sha256_hex(declaration.dump());
   Json census{{"protocol", "symphony.sbv.census-evidence.v1"},
               {"kind", "native_provider"},
               {"identity_domain", "native_provider_declaration"},
@@ -91,11 +122,20 @@ Json generate_census(const Json &p, std::int64_t end, const Dataset *resident) {
               {"producer", author},
               {"signals", signals},
               {"declaration", declaration}};
-  validate_census_evidence(census);
+  std::optional<logical::Value> streamed_census;
+  if (closed_rows) {
+    streamed_census.emplace(
+        logical::Value(census)
+            .with("signals", logical::Value(closed_rows->rows))
+            .with("declaration", *streamed_declaration));
+    validate_stream_census(*streamed_census, end);
+  } else {
+    validate_census_evidence(census);
+  }
   auto result = base("native strategy provider closed-census generation");
   result["status"] = "partial";
   auto &s = result["sections"];
-  s["summary"] = section({{"signal_count", dec(signals.size())},
+  s["summary"] = section({{"signal_count", dec(signal_count)},
                           {"record_count", dec(events.size())},
                           {"closed_census", true},
                           {"census_sha256", census_digest},
@@ -114,6 +154,7 @@ Json generate_census(const Json &p, std::int64_t end, const Dataset *resident) {
                          "no study is selected by census generation");
   auto choices = p;
   choices.erase("output_path");
+  choices.erase("output");
   s["choices"] = section(choices);
   const auto &meta = source.metadata;
   s["provenance"] = section(
@@ -145,6 +186,18 @@ Json generate_census(const Json &p, std::int64_t end, const Dataset *resident) {
                {"event_calls", dec(events.size())},
                {"finish_calls", "1"},
                {"dataset_feed", source.evidence(resident != nullptr)}});
+  if (output)
+    s["resources"]["data"]["derived_resources"] = {
+        {"identity_index", identity_resources},
+        {"signal_rows",
+         {{"representation", "private_partitioned_row_spool"},
+          {"rows", dec(signal_count)},
+          {"workspace_retention", "caller_owned"},
+          {"aggregate_array_materialized", false}}},
+        {"accounting_scope",
+         "Identity state is O(signal_count); reported index bytes are logical "
+         "key/ordinal accounting, not allocator usage or process RSS. "
+         "Dataset raw/decoded admission remains a separate scope."}};
   s["diagnostics"] = section(Json::array(
       {"Strategy callbacks receive a checked prefix ending at the current "
        "event. No model callback runs during census generation.",
@@ -159,6 +212,33 @@ Json generate_census(const Json &p, std::int64_t end, const Dataset *resident) {
        "claims; original market completeness and book initialization "
        "unproven."}));
   s["user_extensions"] = section(p.at("extensions"));
-  return persist(std::move(result), p, "generate-census", end);
+  if (!closed_rows)
+    return result;
+  logical::Value streamed_result(std::move(result));
+  auto sections = streamed_result.at("sections");
+  sections = sections.with(
+      "signals",
+      sections.at("signals").with("data", logical::Value(closed_rows->rows)));
+  sections = sections.with(
+      "census", sections.at("census").with("data", *streamed_census));
+  return streamed_result.with("sections", std::move(sections));
+}
+} // namespace
+Json generate_census(const Json &p, std::int64_t end, const Dataset *resident) {
+  keys_optional(p, {"protocol", "provider", "extensions"},
+                {"output_path", "output", "memory_budget_bytes",
+                 "dataset_limits", "source_path", "source_sha256", "dataset",
+                 "retained_source"});
+  need(p.contains("output_path") != p.contains("output"),
+       "select exactly one census output form");
+  need(p.at("extensions").is_object(), "extensions object required");
+  if (p.contains("output"))
+    return partitioned_result(p, "generate-census", end,
+                              [&](PartitionedOutput &output) {
+                                return std::get<logical::Value>(
+                                    generate_body(p, end, resident, &output));
+                              });
+  return persist(std::get<Json>(generate_body(p, end, resident, nullptr)), p,
+                 "generate-census", end);
 }
 } // namespace symphony::sbv::detail

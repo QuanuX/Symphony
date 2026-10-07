@@ -10,28 +10,30 @@ import (
 // Read-only installed admission: never dispatches the selected mutation.
 func TestSBVInstalledResourceAdmission(t *testing.T) {
 	prefix, input := os.Getenv("SYMPHONY_SBV_RESOURCE_PREFIX"), os.Getenv("SYMPHONY_SBV_RESOURCE_INPUT")
-	if prefix == "" || input == "" {
+	if prefix == "" {
 		t.Skip("selected installed resource evidence not configured")
 	}
 	if _, err := InspectSBV(prefix, SBVAdministrationInterfaceVersion); err != nil {
 		t.Fatalf("installation admission: %v", err)
 	}
 	t.Log("receipt, entrypoint and owner-interface admission passed")
-	_, schema, err := SBVResource(prefix, SBVAdministrationInterfaceVersion, "bundle_import", false)
-	if err != nil {
-		t.Fatalf("owned schema catalogue selection: %v", err)
-	}
-	raw, err := os.ReadFile(input)
-	if err != nil {
-		t.Fatal(err)
-	}
-	request, err := sqavObject(raw, maxRequestBytes)
-	if err != nil {
-		t.Fatalf("request transport: %v", err)
-	}
-	shape, err := sqavObject(schema, maxRequestBytes)
-	if err != nil || !sbvInputShape(shape, request) {
-		t.Fatalf("selected input shape: %v", err)
+	if input != "" {
+		_, schema, err := SBVResource(prefix, SBVAdministrationInterfaceVersion, "bundle_import", false)
+		if err != nil {
+			t.Fatalf("owned schema catalogue selection: %v", err)
+		}
+		raw, err := os.ReadFile(input)
+		if err != nil {
+			t.Fatal(err)
+		}
+		request, err := sqavObject(raw, maxRequestBytes)
+		if err != nil {
+			t.Fatalf("request transport: %v", err)
+		}
+		shape, err := sqavObject(schema, maxRequestBytes)
+		if err != nil || !sbvInputShape(shape, request) {
+			t.Fatalf("selected input shape: %v", err)
+		}
 	}
 	for _, op := range SBVOperations {
 		for _, template := range []bool{false, true} {
@@ -47,7 +49,28 @@ func TestSBVInstalledResourceAdmission(t *testing.T) {
 			t.Fatalf("discoverable combined schema %s: %v", op, err)
 		}
 	}
-	t.Logf("all %d schemas and templates admitted within individual control bounds; no operation invoked", len(SBVOperations))
+	for _, op := range []string{"run", "generate_census", "evaluate", "economics", "compose_economics", "dataset_execute"} {
+		_, raw, err := SBVTemplateVariant(prefix, SBVAdministrationInterfaceVersion, op, "partitioned")
+		if err != nil {
+			t.Fatalf("partitioned template %s: %v", op, err)
+		}
+		p, err := sqavObject(raw, maxRequestBytes)
+		if err != nil || sbvPartitionedRequestPreflight(op, p) != nil {
+			t.Fatalf("partitioned template %s transport/preflight: %v", op, err)
+		}
+		_, schema, err := SBVResource(prefix, SBVAdministrationInterfaceVersion, op, false)
+		if err != nil {
+			t.Fatal(err)
+		}
+		shape, err := sqavObject(schema, maxRequestBytes)
+		if err != nil || !sbvInputShape(shape, p) {
+			t.Fatalf("partitioned template %s registered shape: %v", op, err)
+		}
+	}
+	if _, _, err := SBVTemplateVariant(prefix, SBVAdministrationInterfaceVersion, "book", "partitioned"); err == nil {
+		t.Fatal("unimplemented partitioned book template admitted")
+	}
+	t.Logf("all %d schemas/default templates and six partitioned variants admitted within individual control bounds; no operation invoked", len(SBVOperations))
 }
 
 func TestSBVOwnedCatalogueExceedsMessageCount(t *testing.T) {
@@ -58,7 +81,7 @@ func TestSBVOwnedCatalogueExceedsMessageCount(t *testing.T) {
 	if digestBytes(raw) != sbvAdministrationInterfaceResources["admin.schema.json"] {
 		t.Fatal("source catalogue differs from compiled exact resource pin")
 	}
-	if err := validateJSONObject(raw, maxRequestBytes); err == nil || !strings.Contains(err.Error(), "value count") {
+	if err := validateJSONObject(raw, maxRequestBytes); err == nil || (!strings.Contains(err.Error(), "value count") && !strings.Contains(err.Error(), "byte bound")) {
 		t.Fatalf("regression requires a catalogue larger than one process message: %v", err)
 	}
 	m, err := sbvDecodeOwnedResource(raw)

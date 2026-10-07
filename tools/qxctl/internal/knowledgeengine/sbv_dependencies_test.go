@@ -34,7 +34,7 @@ func TestSBVInstalledDependencies(t *testing.T) {
 		t.Fatal(err)
 	}
 	p["directory"] = journal
-	schema, err := SBVSchema(prefix, "0.22.0-dev", "experiment")
+	schema, err := SBVSchema(prefix, "0.23.0-dev", "experiment")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -49,7 +49,7 @@ func TestSBVInstalledDependencies(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		response, err := InvokeSBV(context.Background(), prefix, "0.22.0-dev", cwd, "experiment", payload)
+		response, err := InvokeSBV(context.Background(), prefix, "0.23.0-dev", cwd, "experiment", payload)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -86,7 +86,7 @@ func TestSBVInstalledDependencies(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		response, err = InvokeSBV(context.Background(), prefix, "0.22.0-dev", cwd, "result_query", qb)
+		response, err = InvokeSBV(context.Background(), prefix, "0.23.0-dev", cwd, "result_query", qb)
 		if err != nil {
 			t.Fatal(err)
 		}

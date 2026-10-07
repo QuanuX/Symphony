@@ -68,7 +68,7 @@ func TestSBVBulkCommandFormatBeforeDispatch(t *testing.T) {
 		command.SilenceUsage = true
 		command.SetOut(io.Discard)
 		command.SetErr(io.Discard)
-		command.SetArgs([]string{"bundle", "export", "--prefix", "/missing/installation", "--version", "0.22.0-dev", "--input", path, "--format", pair[1]})
+		command.SetArgs([]string{"bundle", "export", "--prefix", "/missing/installation", "--version", "0.23.0-dev", "--input", path, "--format", pair[1]})
 		_, err := command.ExecuteC()
 		if !errors.Is(err, errUsageOnly) || !strings.Contains(err.Error(), "before dispatch") {
 			t.Fatalf("format reached installation: %v", err)
@@ -198,5 +198,57 @@ func TestSBVBulkPipeWriteDeadline(t *testing.T) {
 	err = renderSBVBulk(command, ctx, x, "json")
 	if err == nil || time.Since(start) > time.Second {
 		t.Fatal("pipe write did not respect chosen deadline", err, time.Since(start))
+	}
+}
+
+func TestSBVPartitionedRecoveryTerminalFormats(t *testing.T) {
+	// Authored control fixtures. Native request/producer admission is qualified
+	// separately after registration; this tests exact typed evidence rendering.
+	output := map[string]any{"kind": "partitioned", "bundle_path": "/private/result", "workspace_path": "/private/workspace", "write_options": map[string]any{"page_bytes": "8192", "index_fanout": "3"}}
+	child := map[string]any{"protocol": "symphony.sbv.generate-census-input.v1", "output": output, "extensions": map[string]any{}}
+	hash := func(v any) string { b, _ := json.Marshal(v); h := sha256.Sum256(b); return hex.EncodeToString(h[:]) }
+	direct := map[string]any{"protocol": "symphony.sbv.generate-census.v1", "status": "recovery_required", "code": "sbv.partitioned_result_incomplete", "cause": map[string]any{"category": "contract", "code": "sbv.contract"}, "request_sha256": hash(child), "automatic_retry": false, "rollback_performed": false,
+		"recovery": map[string]any{"output": output, "phase": "produce", "workspace_created": true, "workspace_creation_durable": true, "automatic_cleanup": false, "final_storage": nil}}
+	parent := map[string]any{"protocol": "symphony.sbv.dataset-execute-input.v1", "directory": "/private/socket", "instance_id": strings.Repeat("1", 32), "operation": "generate_census", "request": map[string]any{"protocol": "symphony.sbv.generate-census-input.v1", "extensions": map[string]any{}}, "output": output}
+	nested := map[string]any{"protocol": "symphony.sbv.dataset-execute.v1", "status": "recovery_required", "code": "sbv.dataset_execution_incomplete", "request_sha256": hash(parent), "automatic_retry": false, "rollback_performed": false, "operation": "generate_census", "child_recovery": direct}
+	for _, fixture := range []struct {
+		op   string
+		p, m map[string]any
+	}{{"generate_census", child, direct}, {"dataset_execute", parent, nested}} {
+		raw, _ := json.Marshal(fixture.m)
+		if handled, err := knowledgeengine.ValidateSBVPartitionedResult(fixture.op, fixture.p, raw); !handled || err != nil {
+			t.Fatal("fixture not admitted", handled, err)
+		}
+		for _, format := range []string{"json", "text", "ndjson"} {
+			var want, got bytes.Buffer
+			if err := renderSBV(&want, raw, format); err != nil {
+				t.Fatal(err)
+			}
+			err := renderSBVInvocation(&got, raw, format)
+			var code *exactEvidenceExitError
+			if !errors.As(err, &code) || code.code != 5 || finishCommandError(nil, nil, nil, err) != 5 || !bytes.Equal(want.Bytes(), got.Bytes()) {
+				t.Fatal("recovery rendering/exit mismatch", fixture.op, format, err)
+			}
+			if !strings.Contains(got.String(), "workspace") || !strings.Contains(got.String(), fixture.m["request_sha256"].(string)) {
+				t.Fatal("recovery identity/path lost", fixture.op, format)
+			}
+		}
+	}
+}
+
+func TestSBVPartitionedTemplateVariantFlag(t *testing.T) {
+	template := newSBVLeaf("template", "template")
+	flag := template.Flags().Lookup("variant")
+	if flag == nil || flag.DefValue != "" || !strings.Contains(flag.Usage, "partitioned") {
+		t.Fatal("template must expose explicit variant while retaining legacy default")
+	}
+	if newSBVLeaf("schema", "schema").Flags().Lookup("variant") != nil {
+		t.Fatal("template variant leaked into unrelated schema command")
+	}
+	var help bytes.Buffer
+	template.SetOut(&help)
+	template.SetArgs([]string{"--help"})
+	if err := template.Execute(); err != nil || !strings.Contains(help.String(), "--variant") {
+		t.Fatal("template variant missing from discoverable route help", err)
 	}
 }

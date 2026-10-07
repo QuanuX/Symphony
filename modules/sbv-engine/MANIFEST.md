@@ -1,8 +1,40 @@
 # SBV engine manifest
 
-Module `sbv-engine`, engine `symphony-sbv`, vector `sbv`, release `0.22.0-dev`. Native executable with exact static source dependencies and versioned receipt-v2 ownership. Independent interop headers and the native C ABI/C++ calculation SDK with exact CMake targets are installed. Vendor model runtime adapters remain optional future work. Backtest artifacts are user-owned outputs outside the install receipt.
+Module `sbv-engine`, engine `symphony-sbv`, vector `sbv`, release `0.23.0-dev`. Native executable with exact static source dependencies and versioned receipt-v2 ownership. Independent interop headers and the native C ABI/C++ calculation SDK with exact CMake targets are installed. Vendor model runtime adapters remain optional future work. Backtest artifacts are user-owned outputs outside the install receipt.
 
 ## Canonical Surfaces
+
+- `modules/sbv-engine/src/row_spool.hpp`
+- `modules/sbv-engine/src/row_spool.cpp`
+- `modules/sbv-engine/src/exact_id_index.hpp`
+- `modules/sbv-engine/src/exact_id_index.cpp`
+- `modules/sbv-engine/src/reader_extensions.inc`
+- `modules/sbv-engine/src/logical_value.hpp`
+- `modules/sbv-engine/src/logical_value.cpp`
+- `modules/sbv-engine/src/stream_census.hpp`
+- `modules/sbv-engine/src/stream_census.cpp`
+- `modules/sbv-engine/src/partitioned_output.hpp`
+- `modules/sbv-engine/src/partitioned_output.cpp`
+- `modules/sbv-engine/src/stream_model.hpp`
+- `modules/sbv-engine/src/stream_model.cpp`
+- `modules/sbv-engine/src/evaluate_partitioned.cpp`
+- `modules/sbv-engine/src/economics_kernel.hpp`
+- `modules/sbv-engine/src/economics_partitioned.cpp`
+- `modules/sbv-engine/src/economic_census_stream.hpp`
+- `modules/sbv-engine/src/economic_census_stream.cpp`
+- `modules/sbv-engine/src/run_math.hpp`
+- `modules/sbv-engine/src/run_partitioned.cpp`
+- `modules/sbv-engine/tests/reader_extensions_test.cpp`
+- `modules/sbv-engine/tests/row_spool_test.cpp`
+- `modules/sbv-engine/tests/exact_id_index_test.cpp`
+- `modules/sbv-engine/tests/logical_value_test.cpp`
+- `modules/sbv-engine/tests/stream_census_test.cpp`
+- `modules/sbv-engine/tests/partitioned_output_test.cpp`
+- `modules/sbv-engine/tests/stream_model_test.cpp`
+- `modules/sbv-engine/tests/generate_partitioned_test.cpp`
+- `modules/sbv-engine/tests/evaluate_partitioned_test.cpp`
+- `modules/sbv-engine/tests/economics_partitioned_test.cpp`
+- `modules/sbv-engine/tests/run_partitioned_test.cpp`
 
 - `modules/sbv-engine/tests/result_store_test.cpp`
 

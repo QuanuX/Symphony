@@ -5246,7 +5246,7 @@
       "introduced_in": "0.1.0-dev",
       "deprecated_in": null,
       "replacement_ids": [],
-      "grammar": "qxctl sbv template [--format VALUE] [--json] [--operation VALUE] [--prefix VALUE] [--version VALUE]",
+      "grammar": "qxctl sbv template [--format VALUE] [--json] [--operation VALUE] [--prefix VALUE] [--variant VALUE] [--version VALUE]",
       "aliases": [],
       "visibility": "public",
       "feature_bindings": [
@@ -20696,5 +20696,5 @@
       "json_output": true
     }
   ],
-  "registry_digest": "sha256:0988505472d6f745dc6ca10e3f043f30b80eb83e16be5412423973e8e57827c1"
+  "registry_digest": "sha256:6f2336a964e1063ddf285a4828be7e1906a78a592789cc2c4052dd8d6a042c30"
 }

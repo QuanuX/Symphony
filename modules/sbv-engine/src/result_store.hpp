@@ -59,6 +59,59 @@ public:
   Json recovery;
 };
 
+// R3.2 EXTERNAL PROTOTYPE additions. Physical wire is unchanged. These
+// source-owned views/cursors extend reader lifetime; they share its checkpoint
+// and cache and remain single-caller. Use independent readers or owned rows for
+// concurrent workers. Callback views expire on callback return.
+struct ValueLimits {
+  std::optional<std::uint64_t> max_canonical_bytes;
+  std::optional<std::uint64_t> max_counted_nodes; // object keys plus values
+};
+struct ValueVisitor {
+  std::function<void()> begin_object, begin_array, end;
+  std::function<void(std::string_view)> key;
+  std::function<void(const Json &)> scalar;
+};
+class ChildCursor;
+class NodeHandle {
+public:
+  NodeHandle(const NodeHandle &) = default;
+  NodeHandle(NodeHandle &&) noexcept = default;
+  NodeHandle &operator=(const NodeHandle &) = default;
+  NodeHandle &operator=(NodeHandle &&) noexcept = default;
+  Json describe() const;
+  NodeHandle child(std::string_view key) const;
+  NodeHandle child(std::uint64_t index) const;
+  ChildCursor children(std::uint64_t first = 0,
+                       std::optional<std::uint64_t> count = {}) const;
+  Json read_value(ValueLimits = {}) const;
+  Json visit(const ValueVisitor &, ValueLimits = {}) const;
+  Json export_json(const Sink &, ValueLimits = {}) const;
+  Json hash(ValueLimits = {}) const;
+private:
+  struct Impl;
+  std::shared_ptr<Impl> p_;
+  explicit NodeHandle(std::shared_ptr<Impl>);
+  friend class ResultReader;
+  friend class ResultWriter;
+  friend class ChildCursor;
+};
+class ChildCursor {
+public:
+  ~ChildCursor();
+  ChildCursor(ChildCursor &&) noexcept;
+  ChildCursor &operator=(ChildCursor &&) noexcept;
+  ChildCursor(const ChildCursor &) = delete;
+  ChildCursor &operator=(const ChildCursor &) = delete;
+  std::optional<NodeHandle> next();
+  Json progress() const;
+private:
+  struct Impl;
+  std::unique_ptr<Impl> p_;
+  explicit ChildCursor(std::unique_ptr<Impl>);
+  friend class NodeHandle;
+};
+
 // One writer owns one new bundle directory. It never overwrites/resumes an
 // existing directory. A failed/abandoned bundle has no published manifest.
 // All input object keys must be in native Json::dump() order, strictly unique.
@@ -77,6 +130,9 @@ public:
   void end();
   Receipt finish(std::optional<std::string> expected_content_sha256 = {});
   Json recovery() const;
+  // Verified streaming re-encoding: destination owns all resulting pages.
+  // Root NodeHandle copies the full five-member logical result, not its body.
+  Json append_subtree(const NodeHandle &, ValueLimits = {});
 
 private:
   struct Impl;
@@ -91,6 +147,8 @@ public:
   ResultReader &operator=(const ResultReader &) = delete;
   // Root-only metadata; inventories are pointers/counts, never flat lists.
   Json inspect() const;
+  NodeHandle select(std::string_view pointer);
+  NodeHandle select_node(std::uint64_t node_id);
   // Immediate children, or the selected scalar itself. Containers are reported
   // as empty object/array plus child count. Offset is a logical child ordinal;
   // the external control layer binds any continuation to the full reference,

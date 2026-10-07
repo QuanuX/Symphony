@@ -1,5 +1,7 @@
 #include "census.hpp"
+#include "economics_kernel.hpp"
 #include "rational.hpp"
+#include "stream_model.hpp"
 #include <algorithm>
 #include <map>
 #include <symphony/knowledge/engine/limits.hpp>
@@ -53,6 +55,49 @@ struct Transform {
     need(!__builtin_sub_overflow(price, reference, &difference),
          "price difference exceeds selected int64 numeric profile");
     return r::times(r::times(r::reduce({difference, unit}), position), value);
+  }
+};
+// Source-only checks shared by legacy ordered arithmetic and paged admission.
+// Per-point validation stays interleaved with legacy arithmetic so failure
+// order does not change for existing requests.
+struct ModelDomain {
+  std::string measure, conditioning, status;
+  R total;
+  std::set<std::int64_t> prices;
+  explicit ModelDomain(const Json &m)
+      : measure(str(m.at("measure"))), conditioning(str(m.at("conditioning"))) {
+    need(measure == "probability" || measure == "scenario_weight" ||
+             measure == "signed_coefficient",
+         "unsupported measure domain");
+    need(conditioning == "execution" || conditioning == "scenario",
+         "unsupported source conditioning");
+    need(m.at("price_unit") == "price_nanos" && m.at("price_scale") == "1e-9",
+         "model price unit mismatch");
+    status = str(m.at("status"));
+    need(status == "available" || status == "unavailable",
+         "unsupported model status");
+    if (status == "unavailable")
+      need(!str(m.at("reason")).empty(), "unavailable model reason required");
+    const auto &support = m.at("support");
+    need(support.is_array() && support.size() <= 65 &&
+             (status == "available" ? !support.empty() : support.empty()),
+         "model support shape mismatch");
+  }
+  std::pair<std::int64_t, R> point(const Json &a) {
+    const auto price = i64(a.at("price_nanos"));
+    need(price != INT64_MAX && prices.insert(price).second,
+         "unique defined source prices required");
+    const auto weight = artifact_ratio(a.at("weight"));
+    need(measure == "signed_coefficient" || weight.n >= 0,
+         "measure cannot contain negative weight");
+    if (measure == "probability")
+      total = r::plus(total, weight);
+    return {price, weight};
+  }
+  void finish() const {
+    need(status != "available" || measure != "probability" ||
+             same(total, {1, 1}),
+         "source probabilities must sum to one");
   }
 };
 struct Atom {
@@ -169,7 +214,156 @@ Json study_result(const Json &choice, const std::string &signal,
 }
 } // namespace
 
+void validate_retained_external_outcome(const Json &model,
+                                        const StreamModel &input,
+                                        bool historical, std::int64_t end) {
+  // The external model's supplied support and likelihood are independent of
+  // the market frame. This frame supplies only its declared horizon and ID;
+  // none of its synthetic time/anchor/coverage fields are compared or retained.
+  const ModelFrame frame{str(model.at("signal_id")),
+                         0,
+                         0,
+                         input.horizon_ns(),
+                         0,
+                         false,
+                         false,
+                         {}};
+  const auto expected = input.evaluate(frame, end);
+  need(model.at("status") == expected.at("status") &&
+           model.at("support") == expected.at("support"),
+       "retained external support/status differs from supplied inputs");
+  need(historical || model.contains("evidence_reference"),
+       "retained external evidence reference required");
+  if (model.contains("evidence_reference"))
+    need(model.at("evidence_reference") == expected.at("evidence_reference"),
+         "retained external evidence reference differs from supplied input");
+  for (const auto *field : {"fill_probability", "no_fill_probability"}) {
+    const auto &actual = model.at(field), &wanted = expected.at(field);
+    if (historical && wanted.at("status") == "unavailable") {
+      keys(actual, {"status", "reason", "value"});
+      need(actual.at("status") == "unavailable" &&
+               actual.at("value").is_null() &&
+               !str(actual.at("reason")).empty(),
+           "retained external likelihood differs from supplied input");
+    } else
+      need(actual == wanted,
+           "retained external likelihood differs from supplied input");
+  }
+}
+void validate_economic_source_model(const Json &model) {
+  ModelDomain domain(model);
+  for (const auto &point : model.at("support"))
+    domain.point(point);
+  domain.finish();
+}
+Json economic_study_selections(const Json &studies) {
+  return study_selections(studies);
+}
+EconomicRow economic_row(const Json &choice, const Json &m, const Json &studies,
+                         bool reject, std::int64_t end) {
+  deadline(end);
+  Json rows = Json::array(), study_rows = Json::array();
+  std::uint64_t unavailable = 0, unavailable_studies = 0;
+  keys(choice, {"signal_id", "transform", "mode", "nonexecution_pnl"});
+  const auto id = str(choice.at("signal_id"));
+  Transform transform(choice.at("transform"));
+  const auto mode = str(choice.at("mode"));
+  need(mode == "support_only" || mode == "execution_mixture",
+       "unsupported outcome interpretation");
+  R no_fill_pnl;
+  if (mode == "support_only")
+    need(choice.at("nonexecution_pnl").is_null(),
+         "support-only does not consume nonexecution P&L");
+  else
+    no_fill_pnl = r::read_ratio(choice.at("nonexecution_pnl"));
+  ModelDomain domain(m);
+  const auto &measure = domain.measure, &conditioning = domain.conditioning;
+  const auto &status = domain.status;
+  std::string failure;
+  if (status == "unavailable")
+    failure = "source model unavailable: " + str(m.at("reason"));
+  const auto &support = m.at("support");
+  Json transformed = Json::array(), wire_atoms = Json::array();
+  std::vector<Atom> atoms;
+  for (const auto &a : support) {
+    const auto [price, weight] = domain.point(a);
+    const auto gross = transform.gross(price);
+    const auto net = r::plus(gross, negative(transform.cost));
+    const auto value = r::times(net, inverse(transform.basis));
+    transformed.push_back({{"price_nanos", dec(price)},
+                           {"weight", r::wire(weight)},
+                           {"gross_pnl", r::wire(gross)},
+                           {"cost", r::wire(transform.cost)},
+                           {"net_pnl", r::wire(net)},
+                           {"return", r::wire(value)}});
+    atoms.push_back({value, weight});
+  }
+  domain.finish();
+  if (failure.empty() && mode == "execution_mixture") {
+    if (measure != "probability" || conditioning != "execution")
+      failure = "execution mixture requires price probabilities conditional "
+                "on execution";
+    else if (m.at("fill_probability").at("status") == "unavailable")
+      failure = "execution mixture requires separately supplied execution "
+                "likelihood";
+    else {
+      need(m.at("fill_probability").at("status") == "external_assumption" &&
+               m.at("no_fill_probability").at("status") ==
+                   "external_assumption",
+           "unsupported likelihood evidence contract");
+      const auto fill = artifact_ratio(m.at("fill_probability").at("value"));
+      const auto no_fill =
+          artifact_ratio(m.at("no_fill_probability").at("value"));
+      need(fill.n >= 0 && no_fill.n >= 0 &&
+               same(r::plus(fill, no_fill), {1, 1}),
+           "likelihood complement mismatch");
+      for (auto &a : atoms)
+        a.weight = r::times(a.weight, fill);
+      atoms.push_back(
+          {r::times(no_fill_pnl, inverse(transform.basis)), no_fill});
+    }
+  }
+  need(!reject || failure.empty(),
+       "selected economic interpretation unavailable");
+  if (failure.empty()) {
+    for (std::size_t i = 0; i < atoms.size(); ++i)
+      wire_atoms.push_back(
+          {{"kind", i < support.size() ? "price_outcome" : "nonexecution"},
+           {"support_index", i < support.size() ? Json(dec(i)) : Json(nullptr)},
+           {"return", r::wire(atoms[i].value)},
+           {"weight", r::wire(atoms[i].weight)}});
+  } else {
+    ++unavailable;
+    atoms.clear();
+  }
+  const auto resolved_conditioning =
+      mode == "execution_mixture" ? "execution_and_nonexecution" : conditioning;
+  rows.push_back({{"protocol", "symphony.sbv.economic-outcome.v1"},
+                  {"signal_id", id},
+                  {"status", failure.empty() ? "available" : "unavailable"},
+                  {"reason", failure},
+                  {"measure", measure},
+                  {"conditioning", resolved_conditioning},
+                  {"mode", mode},
+                  {"transform", choice.at("transform")},
+                  {"transformed_support", transformed},
+                  {"nonexecution_pnl", choice.at("nonexecution_pnl")},
+                  {"atoms", wire_atoms},
+                  {"calibration", "not_verified"}});
+  for (const auto &study : studies) {
+    auto row = study_result(study, id, measure, resolved_conditioning, atoms,
+                            failure, reject);
+    if (row.at("status") == "unavailable")
+      ++unavailable_studies;
+    study_rows.push_back(std::move(row));
+  }
+  (void)unavailable;
+  return {std::move(rows.at(0)), std::move(study_rows), unavailable_studies};
+}
+
 Json economics(const Json &p, std::int64_t end) {
+  if (p.contains("output"))
+    return economics_partitioned(p, end);
   keys_optional(p,
                 {"protocol", "output_path", "selections", "studies",
                  "on_incompatible", "extensions"},
@@ -254,125 +448,14 @@ Json economics(const Json &p, std::int64_t end) {
     const auto id = str(choice.at("signal_id"));
     need(selected.insert(id).second && model_map.contains(id),
          "unique known selected signal required");
-    Transform transform(choice.at("transform"));
-    const auto mode = str(choice.at("mode"));
-    need(mode == "support_only" || mode == "execution_mixture",
-         "unsupported outcome interpretation");
-    R no_fill_pnl;
-    if (mode == "support_only")
-      need(choice.at("nonexecution_pnl").is_null(),
-           "support-only does not consume nonexecution P&L");
-    else
-      no_fill_pnl = r::read_ratio(choice.at("nonexecution_pnl"));
     const auto &m = *model_map.at(id);
-    const auto measure = str(m.at("measure")),
-               conditioning = str(m.at("conditioning"));
-    need(measure == "probability" || measure == "scenario_weight" ||
-             measure == "signed_coefficient",
-         "unsupported measure domain");
-    need(conditioning == "execution" || conditioning == "scenario",
-         "unsupported source conditioning");
-    need(m.at("price_unit") == "price_nanos" && m.at("price_scale") == "1e-9",
-         "model price unit mismatch");
-    const auto status = str(m.at("status"));
-    need(status == "available" || status == "unavailable",
-         "unsupported model status");
-    std::string failure;
-    if (status == "unavailable") {
-      need(!str(m.at("reason")).empty(), "unavailable model reason required");
-      failure = "source model unavailable: " + str(m.at("reason"));
-    }
-    const auto &support = m.at("support");
-    need(support.is_array() && support.size() <= 65 &&
-             (status == "available" ? !support.empty() : support.empty()),
-         "model support shape mismatch");
-    Json transformed = Json::array(), wire_atoms = Json::array();
-    std::vector<Atom> atoms;
-    R total;
-    std::set<std::int64_t> prices;
-    for (const auto &a : support) {
-      const auto price = i64(a.at("price_nanos"));
-      need(price != INT64_MAX && prices.insert(price).second,
-           "unique defined source prices required");
-      const auto weight = artifact_ratio(a.at("weight"));
-      need(measure == "signed_coefficient" || weight.n >= 0,
-           "measure cannot contain negative weight");
-      if (measure == "probability")
-        total = r::plus(total, weight);
-      const auto gross = transform.gross(price);
-      const auto net = r::plus(gross, negative(transform.cost));
-      const auto value = r::times(net, inverse(transform.basis));
-      transformed.push_back({{"price_nanos", dec(price)},
-                             {"weight", r::wire(weight)},
-                             {"gross_pnl", r::wire(gross)},
-                             {"cost", r::wire(transform.cost)},
-                             {"net_pnl", r::wire(net)},
-                             {"return", r::wire(value)}});
-      atoms.push_back({value, weight});
-    }
-    need(status != "available" || measure != "probability" ||
-             same(total, {1, 1}),
-         "source probabilities must sum to one");
-    if (failure.empty() && mode == "execution_mixture") {
-      if (measure != "probability" || conditioning != "execution")
-        failure = "execution mixture requires price probabilities conditional "
-                  "on execution";
-      else if (m.at("fill_probability").at("status") == "unavailable")
-        failure = "execution mixture requires separately supplied execution "
-                  "likelihood";
-      else {
-        need(m.at("fill_probability").at("status") == "external_assumption" &&
-                 m.at("no_fill_probability").at("status") ==
-                     "external_assumption",
-             "unsupported likelihood evidence contract");
-        const auto fill = artifact_ratio(m.at("fill_probability").at("value"));
-        const auto no_fill =
-            artifact_ratio(m.at("no_fill_probability").at("value"));
-        need(fill.n >= 0 && no_fill.n >= 0 &&
-                 same(r::plus(fill, no_fill), {1, 1}),
-             "likelihood complement mismatch");
-        for (auto &a : atoms)
-          a.weight = r::times(a.weight, fill);
-        atoms.push_back(
-            {r::times(no_fill_pnl, inverse(transform.basis)), no_fill});
-      }
-    }
-    need(!reject || failure.empty(),
-         "selected economic interpretation unavailable");
-    if (failure.empty()) {
-      for (std::size_t i = 0; i < atoms.size(); ++i)
-        wire_atoms.push_back(
-            {{"kind", i < support.size() ? "price_outcome" : "nonexecution"},
-             {"support_index",
-              i < support.size() ? Json(dec(i)) : Json(nullptr)},
-             {"return", r::wire(atoms[i].value)},
-             {"weight", r::wire(atoms[i].weight)}});
-    } else {
+    auto selected_row = economic_row(choice, m, studies, reject, end);
+    if (selected_row.outcome.at("status") == "unavailable")
       ++unavailable;
-      atoms.clear();
-    }
-    const auto resolved_conditioning = mode == "execution_mixture"
-                                           ? "execution_and_nonexecution"
-                                           : conditioning;
-    rows.push_back({{"protocol", "symphony.sbv.economic-outcome.v1"},
-                    {"signal_id", id},
-                    {"status", failure.empty() ? "available" : "unavailable"},
-                    {"reason", failure},
-                    {"measure", measure},
-                    {"conditioning", resolved_conditioning},
-                    {"mode", mode},
-                    {"transform", choice.at("transform")},
-                    {"transformed_support", transformed},
-                    {"nonexecution_pnl", choice.at("nonexecution_pnl")},
-                    {"atoms", wire_atoms},
-                    {"calibration", "not_verified"}});
-    for (const auto &study : studies) {
-      auto row = study_result(study, id, measure, resolved_conditioning, atoms,
-                              failure, reject);
-      if (row.at("status") == "unavailable")
-        ++unavailable_studies;
-      study_rows.push_back(std::move(row));
-    }
+    unavailable_studies += selected_row.unavailable_studies;
+    rows.push_back(std::move(selected_row.outcome));
+    for (auto &study : selected_row.studies)
+      study_rows.push_back(std::move(study));
     kept_models.push_back(m);
     kept_signals.push_back(*signal_map.at(id));
   }

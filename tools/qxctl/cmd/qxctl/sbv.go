@@ -53,7 +53,7 @@ func sbvSafeError(err error) error {
 	return fmt.Errorf("SBV command failed; verify the exact installation and input contract, and inspect a write destination before retrying")
 }
 func newSBVLeaf(op, leaf string) *cobra.Command {
-	var prefix, version, input, operation, path, digest, pointer, cursor, format string
+	var prefix, version, input, operation, path, digest, pointer, cursor, format, variant string
 	var timeout, absoluteDeadline string
 	var limit uint
 	var machine, receiptOnly bool
@@ -75,12 +75,16 @@ func newSBVLeaf(op, leaf string) *cobra.Command {
 			if op == "schema" {
 				raw, err = knowledgeengine.SBVSchema(prefix, version, operation)
 			} else {
-				_, raw, err = knowledgeengine.SBVResource(prefix, version, operation, true)
+				_, raw, err = knowledgeengine.SBVTemplateVariant(prefix, version, operation, variant)
 			}
 			if err != nil {
 				return sbvSafeError(err)
 			}
-			wrapper, err := json.Marshal(map[string]any{"protocol": "symphony.sbv." + op + ".v1", "operation": operation, op: json.RawMessage(raw)})
+			result := map[string]any{"protocol": "symphony.sbv." + op + ".v1", "operation": operation, op: json.RawMessage(raw)}
+			if variant != "" {
+				result["variant"] = variant
+			}
+			wrapper, err := json.Marshal(result)
 			if err != nil {
 				return err
 			}
@@ -168,6 +172,9 @@ func newSBVLeaf(op, leaf string) *cobra.Command {
 	}
 	if resource {
 		c.Flags().StringVar(&operation, "operation", "", "exact operation, e.g. run or result_query")
+		if op == "template" {
+			c.Flags().StringVar(&variant, "variant", "", "named request variant, e.g. partitioned; omitted preserves the legacy template")
+		}
 		_ = c.MarkFlagRequired("operation")
 	} else if read {
 		c.Flags().StringVar(&path, "path", "", "absolute result artifact path")

@@ -101,6 +101,8 @@ Json compose(const Json &, std::int64_t);
 Json compose_economics(const Json &, std::int64_t);
 Json compose_joint(const Json &, std::int64_t);
 Json evaluate(const Json &, std::int64_t, const Dataset * = nullptr);
+Json evaluate_partitioned(const Json &, std::int64_t,
+                          const Dataset * = nullptr);
 Json research_history(const Json &, std::int64_t);
 Json fit(const Json &, std::int64_t);
 Json predict(const Json &, std::int64_t);

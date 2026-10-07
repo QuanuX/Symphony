@@ -216,8 +216,9 @@ Json descriptor() {
   r["contract_versions"].push_back("symphony.sbv.source-delivery.v1");
   r["contract_versions"].push_back("symphony.sbv.source-binary-receipt.v1");
   r["contract_versions"].push_back("symphony.sbv.source-owner-profile.v1");
-  for (auto contract : {"symphony.sbv.partitioned-result.v1", "symphony.sbv.result-page.v1",
-                        "symphony.sbv.node-stream.v1", "symphony.sbv.bundle-cursor.v1"})
+  for (auto contract :
+       {"symphony.sbv.partitioned-result.v1", "symphony.sbv.result-page.v1",
+        "symphony.sbv.node-stream.v1", "symphony.sbv.bundle-cursor.v1"})
     r["contract_versions"].push_back(contract);
   r["descriptor_digest"] = e::tagged_sha256(r.dump());
   return r;
@@ -251,10 +252,16 @@ Json dispatch(const std::string &op, const Json &p, std::int64_t end) {
           {"partitioned", "symphony.sbv.partitioned-result.v1"},
           {"page", "symphony.sbv.result-page.v1"},
           {"stream", "symphony.sbv.node-stream.v1"},
-          {"max_bundle_bytes", nullptr}, {"max_bundle_nodes", nullptr},
+          {"max_bundle_bytes", nullptr},
+          {"max_bundle_nodes", nullptr},
           {"logical_identity", "canonical_result_body_sha256"},
           {"physical_identity", "exact_manifest_sha256"},
-          {"core_producers", "legacy_result_v1"}}},
+          {"core_producers", "explicit_legacy_or_partitioned"},
+          {"partitioned_producers",
+           Json::array({"run", "generate_census", "evaluate", "economics",
+                        "compose_economics"})},
+          {"partitioned_resident_operations",
+           Json::array({"run", "generate_census", "evaluate"})}}},
         {"source_owner_profile", d::source_owner_profile()},
         {"data_source_modes",
          Json::array({"file", "retained_source", "resident"})},
@@ -292,8 +299,9 @@ Json dispatch(const std::string &op, const Json &p, std::int64_t end) {
           {"default_deadline_unix_ms", nullptr},
           {"max_deadline_ahead_ms", nullptr},
           {"max_signals", "4096"},
-          {"max_signals_scope", "legacy run/imported census, model admission "
-                                "and economics; not native census generation"},
+          {"max_signals_scope",
+           "remaining legacy external census/model/consumer profiles only; "
+           "built-in run and partitioned producers use caller selections"},
           {"max_generated_census_signals", nullptr},
           {"max_artifact_bytes", d::dec(d::artifact_bytes)},
           {"max_composed_paths", "65536"},

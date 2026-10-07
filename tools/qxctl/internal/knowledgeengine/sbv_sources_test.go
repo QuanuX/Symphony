@@ -195,7 +195,7 @@ func TestSBVRetainedSourceInputChoices(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		value, err := sqavObject(raw, maxRequestBytes)
+		value, err := sbvDecodeOwnedResource(raw)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -282,7 +282,7 @@ func TestSBVOwnerRequestConstraints(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		v, err := sqavObject(b, maxRequestBytes)
+		v, err := sbvDecodeOwnedResource(b)
 		if err != nil {
 			t.Fatal(err)
 		}

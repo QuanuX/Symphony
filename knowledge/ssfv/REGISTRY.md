@@ -1297,7 +1297,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `modules/sbv-engine`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:platform`
-- record_digest: `sha256:f39d4ddb4d8c6e06944248c8ca84c377c3aa3abcffd0b059cd9647e556f838e7`
+- record_digest: `sha256:a2ccd3eba8bdeecd3d0f69918c10426f4ace6c9be8bbd56cfdfd361b515891e9`
 - notes: Experimental SBV first implementation; exact declared operations and portable retained evidence only.
 
 - feature_id: `ssfv:symphony:qxctl-sbv-administration`
@@ -1306,7 +1306,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `tools/qxctl`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:qxctl`
-- record_digest: `sha256:a8c1e16c4ee26e6ecd431106ddf6762067b28c9dea6a6ecf933690f53f300bfd`
+- record_digest: `sha256:49593410364cecda74f8d91a39e69799a92507f26db56e6c213bcd874d5796e5`
 - notes: Experimental SBV first implementation; exact declared operations and portable retained evidence only.
 
 ## Prohibited Entries

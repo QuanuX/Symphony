@@ -319,8 +319,11 @@ void control_shape(const std::string &op, const Json &p) {
          "resident worker budget 1..64");
     (void)u64(p.at("idle_timeout_ms"));
   } else if (op == "dataset_execute") {
-    keys(p, {"protocol", "directory", "instance_id", "operation", "request",
-             "output_path"});
+    keys_optional(
+        p, {"protocol", "directory", "instance_id", "operation", "request"},
+        {"output_path", "output"});
+    need(p.contains("output_path") != p.contains("output"),
+         "resident request selects exactly one output form");
     need(p.at("operation") == "run" || p.at("operation") == "evaluate" ||
              p.at("operation") == "book" ||
              p.at("operation") == "generate_census",
@@ -328,9 +331,12 @@ void control_shape(const std::string &op, const Json &p) {
     const auto &r = p.at("request");
     auto slug = str(p.at("operation"));
     std::replace(slug.begin(), slug.end(), '_', '-');
-    need(r.is_object() && !r.contains("output_path") &&
+    need(r.is_object() && !r.contains("output_path") && !r.contains("output") &&
              r.at("protocol") == "symphony.sbv." + slug + "-input.v1",
-         "resident child request must omit output_path and match operation");
+         "resident child request must omit both output forms and match "
+         "operation");
+    need(!p.contains("output") || p.at("operation") != "book",
+         "book partitioned output is not implemented");
   } else {
     need(op == "dataset_inspect" || op == "dataset_release",
          "unknown dataset operation");
@@ -530,7 +536,10 @@ int resident_worker() {
         }
         const auto inner_op = str(input.at("operation"));
         auto request = input.at("request");
-        request["output_path"] = input.at("output_path");
+        const auto output_field =
+            input.contains("output") ? "output" : "output_path";
+        request[output_field] = input.at(output_field);
+        const auto parent_request_sha = e::sha256_hex(input.dump());
         data->bind(request);
         const auto inner = (inner_op == "book" || inner_op == "generate_census")
                                ? 1
@@ -545,7 +554,7 @@ int resident_worker() {
         try {
           jobs.push_back(
               {done, std::jthread([&, fd = std::move(client), request, inner_op,
-                                   inner, end, done]() {
+                                   inner, end, done, parent_request_sha]() {
                  Json response;
                  bool ok = false;
                  try {
@@ -556,9 +565,21 @@ int resident_worker() {
                        : inner_op == "generate_census"
                            ? generate_census(request, end, data.get())
                            : book(request, end, data.get());
-                   receipt["protocol"] = "symphony.sbv.dataset-execute.v1";
+                   if (receipt.value("status", "") == "recovery_required") {
+                     receipt = {{"protocol", "symphony.sbv.dataset-execute.v1"},
+                                {"status", "recovery_required"},
+                                {"code", "sbv.dataset_execution_incomplete"},
+                                {"request_sha256", parent_request_sha},
+                                {"automatic_retry", false},
+                                {"rollback_performed", false},
+                                {"operation", inner_op},
+                                {"child_recovery", std::move(receipt)}};
+                     ok = false;
+                   } else {
+                     receipt["protocol"] = "symphony.sbv.dataset-execute.v1";
+                     ok = true;
+                   }
                    response = success(receipt);
-                   ok = true;
                  } catch (const e::Error &x) {
                    response = failure(x.code(), x.what());
                  } catch (...) {

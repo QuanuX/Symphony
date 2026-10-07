@@ -17,7 +17,7 @@ Independent programs may use the exact installed C ABI (`Symphony::SbvSdk`), opt
 Optional resident data: create a short caller-owned mode-0700 directory, obtain
 `sbv template --operation dataset_load`, select source identity, fresh instance
 id, RAM budget/residency, concurrency and idle policy, then call `sbv dataset
-load`. `dataset_execute` wraps run/evaluate/book input without its output_path;
+load`. `dataset_execute` wraps run/evaluate/book/generate_census input without either output form;
 the wrapper owns the destination. Use dataset inspect for counters and dataset
 release after jobs finish. Explicit file operations remain available. All
 commands support text, JSON and NDJSON; future GUIs use identical payloads.
@@ -36,3 +36,5 @@ replay references remain observed evidence separate from economic trajectories.
 For offline source retention, discover `source_retain` and `source_export` schemas/templates and capabilities.source_owner_profile. Supply actual declared capture/acquisition/access evidence and exact owner options; preserve them for exact reopen. Use one complete file source tuple or one retained_source selection. Acknowledge Dataset admission only when explicitly selected; this does not claim a completed backtest. Export original/capture/manifest bytes to new paths outside the selected store. On recovery_required, retain typed evidence and inspect/reconcile selected destinations before any caller-approved retry. SDK transport success is not publication success. This profile imposes no default deadline or general file/RAM dataset cap.
 
 For scalable derived results, select the explicit bundle operations and both logical/manifest digests. `qxctl sbv bundle import|inspect|query|verify|export` uses the same native SDK contract. `bundle export` streams every retained field; use `--receipt-only` for its complete receipt. Native JSON is required for CLI JSON/text, native NDJSON for CLI NDJSON. Inspect/query do not imply full closure availability; use verify/export for that finding. Preserve incomplete-publication recovery evidence and inspect the selected destination before any explicit retry. Legacy producer/consumer limits are separate from the bundle format.
+
+For native partitioned generation/run/evaluation/economics/composition, obtain `sbv template --operation OP --variant partitioned`. Select fresh disjoint bundle/workspace paths. The result receipt supplies exact `storage.reference`; use bundle query/export for all results and replay. A RAM-resident wrapper selects output itself. Scratch is intentionally retained, including on failure. Inspect parent/child recovery and cause before an explicit retry. `max_signals:null` selects an uncapped built-in census; deadlines and volume constraints remain caller choices. Bundle inputs verify complete outer closure before typed financial admission; captured ancestors are correspondence evidence, not authorship authentication.

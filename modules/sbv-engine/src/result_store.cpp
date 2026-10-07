@@ -1314,7 +1314,7 @@ Json Engine::traverse(const Sink &json_sink, const Sink &node_sink,
 
 struct ResultReader::Impl {
   Reference reference;
-  std::unique_ptr<Engine> engine;
+  std::shared_ptr<Engine> engine;
   Impl(Reference r, ReadOptions o, Checkpoint c) : reference(std::move(r)) {
     digest(reference.manifest_sha256);
     digest(reference.content_sha256);
@@ -1329,7 +1329,7 @@ struct ResultReader::Impl {
     need(m.at("content_sha256") == reference.content_sha256,
          "manifest logical digest selection mismatch");
     engine =
-        std::make_unique<Engine>(std::move(dir), std::move(m), o, std::move(c));
+        std::make_shared<Engine>(std::move(dir), std::move(m), o, std::move(c));
     engine->stats = stats;
   }
 };
@@ -1707,4 +1707,6 @@ Json export_file(ResultReader &reader, const std::string &output_path,
     throw StoreError("bundle.interrupted", e.what(), recovery);
   }
 }
+
+#include "reader_extensions.inc"
 } // namespace symphony::sbv::result_store

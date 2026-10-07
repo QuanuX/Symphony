@@ -254,6 +254,8 @@ int32_t finish(void *p, const sbv_call_context_v1 *, sbv_owned_bytes_v1 *out,
                sbv_owned_bytes_v1 *err) {
   return guarded(err, [&]() -> int32_t {
     const auto &i = *static_cast<Instance *>(p);
+    if (field(i.config, "finish_failure", "false") == "true")
+      return error(err, SBV_PROVIDER_FAILED, "selected completion failure");
     auto ext = "{\"events\":" + quote(std::to_string(i.calls));
     const auto add = [&](const char *name, auto value) {
       ext += ',' + quote(std::string("last_") + name) + ':' +

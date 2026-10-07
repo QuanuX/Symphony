@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "urn:symphony:sbv:result:v1",
-  "$comment": "The native validator also checks canonical content SHA256, depth 64, key/string 65536-byte limits and 4,000,000 key/value nodes. All financial quantities and nanosecond coordinates are strings; semantic units and provenance are retained within the owner sections. User extensions are attributed data, never native computation.",
+  "$comment": "All financial quantities and nanosecond coordinates are strings; semantic units and provenance are retained within owner sections. The native legacy file admission checks canonical content SHA256, a 128 MiB artifact profile and 4,000,000 key/value nodes. Partitioned storage preserves this logical result shape and canonical identity without aggregate byte/node limits. Both paths retain the depth-64 and 65536-byte key/string representation profile. User extensions are attributed data, never native computation.",
   "type": "object",
   "properties": {
     "protocol": {

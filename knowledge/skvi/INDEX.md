@@ -23608,3 +23608,493 @@ automatic nested fitting and cross-run holdout history remain unimplemented.
 - deferred_projections: Broad candidate qualification remains a separate gate.
 - notes: Catalogue decoding preserves bounded individual control messages and rejects malformed structure.
 - status: canonical
+
+### SBV native partitioned row_spool.hpp
+
+- path: `modules/sbv-engine/src/row_spool.hpp`
+- title: Native partitioned census and financial execution
+- surface_type: implementation contract or test
+- truth_role: Exact logical admission, shared arithmetic, incremental rows and portable evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.23 native census/financial producer and selected consumer migration.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, SDK and independent result consumers
+- deferred_projections: Remaining consumer/resource migration and candidate qualification remain separate gates.
+- notes: No aggregate census/result quota or default deadline; explicit representation and resource accounting.
+- status: canonical
+
+### SBV native partitioned row_spool.cpp
+
+- path: `modules/sbv-engine/src/row_spool.cpp`
+- title: Native partitioned census and financial execution
+- surface_type: implementation contract or test
+- truth_role: Exact logical admission, shared arithmetic, incremental rows and portable evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.23 native census/financial producer and selected consumer migration.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, SDK and independent result consumers
+- deferred_projections: Remaining consumer/resource migration and candidate qualification remain separate gates.
+- notes: No aggregate census/result quota or default deadline; explicit representation and resource accounting.
+- status: canonical
+
+### SBV native partitioned exact_id_index.hpp
+
+- path: `modules/sbv-engine/src/exact_id_index.hpp`
+- title: Native partitioned census and financial execution
+- surface_type: implementation contract or test
+- truth_role: Exact logical admission, shared arithmetic, incremental rows and portable evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.23 native census/financial producer and selected consumer migration.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, SDK and independent result consumers
+- deferred_projections: Remaining consumer/resource migration and candidate qualification remain separate gates.
+- notes: No aggregate census/result quota or default deadline; explicit representation and resource accounting.
+- status: canonical
+
+### SBV native partitioned exact_id_index.cpp
+
+- path: `modules/sbv-engine/src/exact_id_index.cpp`
+- title: Native partitioned census and financial execution
+- surface_type: implementation contract or test
+- truth_role: Exact logical admission, shared arithmetic, incremental rows and portable evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.23 native census/financial producer and selected consumer migration.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, SDK and independent result consumers
+- deferred_projections: Remaining consumer/resource migration and candidate qualification remain separate gates.
+- notes: No aggregate census/result quota or default deadline; explicit representation and resource accounting.
+- status: canonical
+
+### SBV native partitioned reader_extensions.inc
+
+- path: `modules/sbv-engine/src/reader_extensions.inc`
+- title: Native partitioned census and financial execution
+- surface_type: implementation contract or test
+- truth_role: Exact logical admission, shared arithmetic, incremental rows and portable evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.23 native census/financial producer and selected consumer migration.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, SDK and independent result consumers
+- deferred_projections: Remaining consumer/resource migration and candidate qualification remain separate gates.
+- notes: No aggregate census/result quota or default deadline; explicit representation and resource accounting.
+- status: canonical
+
+### SBV native partitioned logical_value.hpp
+
+- path: `modules/sbv-engine/src/logical_value.hpp`
+- title: Native partitioned census and financial execution
+- surface_type: implementation contract or test
+- truth_role: Exact logical admission, shared arithmetic, incremental rows and portable evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.23 native census/financial producer and selected consumer migration.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, SDK and independent result consumers
+- deferred_projections: Remaining consumer/resource migration and candidate qualification remain separate gates.
+- notes: No aggregate census/result quota or default deadline; explicit representation and resource accounting.
+- status: canonical
+
+### SBV native partitioned logical_value.cpp
+
+- path: `modules/sbv-engine/src/logical_value.cpp`
+- title: Native partitioned census and financial execution
+- surface_type: implementation contract or test
+- truth_role: Exact logical admission, shared arithmetic, incremental rows and portable evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.23 native census/financial producer and selected consumer migration.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, SDK and independent result consumers
+- deferred_projections: Remaining consumer/resource migration and candidate qualification remain separate gates.
+- notes: No aggregate census/result quota or default deadline; explicit representation and resource accounting.
+- status: canonical
+
+### SBV native partitioned stream_census.hpp
+
+- path: `modules/sbv-engine/src/stream_census.hpp`
+- title: Native partitioned census and financial execution
+- surface_type: implementation contract or test
+- truth_role: Exact logical admission, shared arithmetic, incremental rows and portable evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.23 native census/financial producer and selected consumer migration.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, SDK and independent result consumers
+- deferred_projections: Remaining consumer/resource migration and candidate qualification remain separate gates.
+- notes: No aggregate census/result quota or default deadline; explicit representation and resource accounting.
+- status: canonical
+
+### SBV native partitioned stream_census.cpp
+
+- path: `modules/sbv-engine/src/stream_census.cpp`
+- title: Native partitioned census and financial execution
+- surface_type: implementation contract or test
+- truth_role: Exact logical admission, shared arithmetic, incremental rows and portable evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.23 native census/financial producer and selected consumer migration.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, SDK and independent result consumers
+- deferred_projections: Remaining consumer/resource migration and candidate qualification remain separate gates.
+- notes: No aggregate census/result quota or default deadline; explicit representation and resource accounting.
+- status: canonical
+
+### SBV native partitioned partitioned_output.hpp
+
+- path: `modules/sbv-engine/src/partitioned_output.hpp`
+- title: Native partitioned census and financial execution
+- surface_type: implementation contract or test
+- truth_role: Exact logical admission, shared arithmetic, incremental rows and portable evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.23 native census/financial producer and selected consumer migration.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, SDK and independent result consumers
+- deferred_projections: Remaining consumer/resource migration and candidate qualification remain separate gates.
+- notes: No aggregate census/result quota or default deadline; explicit representation and resource accounting.
+- status: canonical
+
+### SBV native partitioned partitioned_output.cpp
+
+- path: `modules/sbv-engine/src/partitioned_output.cpp`
+- title: Native partitioned census and financial execution
+- surface_type: implementation contract or test
+- truth_role: Exact logical admission, shared arithmetic, incremental rows and portable evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.23 native census/financial producer and selected consumer migration.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, SDK and independent result consumers
+- deferred_projections: Remaining consumer/resource migration and candidate qualification remain separate gates.
+- notes: No aggregate census/result quota or default deadline; explicit representation and resource accounting.
+- status: canonical
+
+### SBV native partitioned stream_model.hpp
+
+- path: `modules/sbv-engine/src/stream_model.hpp`
+- title: Native partitioned census and financial execution
+- surface_type: implementation contract or test
+- truth_role: Exact logical admission, shared arithmetic, incremental rows and portable evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.23 native census/financial producer and selected consumer migration.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, SDK and independent result consumers
+- deferred_projections: Remaining consumer/resource migration and candidate qualification remain separate gates.
+- notes: No aggregate census/result quota or default deadline; explicit representation and resource accounting.
+- status: canonical
+
+### SBV native partitioned stream_model.cpp
+
+- path: `modules/sbv-engine/src/stream_model.cpp`
+- title: Native partitioned census and financial execution
+- surface_type: implementation contract or test
+- truth_role: Exact logical admission, shared arithmetic, incremental rows and portable evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.23 native census/financial producer and selected consumer migration.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, SDK and independent result consumers
+- deferred_projections: Remaining consumer/resource migration and candidate qualification remain separate gates.
+- notes: No aggregate census/result quota or default deadline; explicit representation and resource accounting.
+- status: canonical
+
+### SBV native partitioned evaluate_partitioned.cpp
+
+- path: `modules/sbv-engine/src/evaluate_partitioned.cpp`
+- title: Native partitioned census and financial execution
+- surface_type: implementation contract or test
+- truth_role: Exact logical admission, shared arithmetic, incremental rows and portable evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.23 native census/financial producer and selected consumer migration.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, SDK and independent result consumers
+- deferred_projections: Remaining consumer/resource migration and candidate qualification remain separate gates.
+- notes: No aggregate census/result quota or default deadline; explicit representation and resource accounting.
+- status: canonical
+
+### SBV native partitioned economics_kernel.hpp
+
+- path: `modules/sbv-engine/src/economics_kernel.hpp`
+- title: Native partitioned census and financial execution
+- surface_type: implementation contract or test
+- truth_role: Exact logical admission, shared arithmetic, incremental rows and portable evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.23 native census/financial producer and selected consumer migration.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, SDK and independent result consumers
+- deferred_projections: Remaining consumer/resource migration and candidate qualification remain separate gates.
+- notes: No aggregate census/result quota or default deadline; explicit representation and resource accounting.
+- status: canonical
+
+### SBV native partitioned economics_partitioned.cpp
+
+- path: `modules/sbv-engine/src/economics_partitioned.cpp`
+- title: Native partitioned census and financial execution
+- surface_type: implementation contract or test
+- truth_role: Exact logical admission, shared arithmetic, incremental rows and portable evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.23 native census/financial producer and selected consumer migration.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, SDK and independent result consumers
+- deferred_projections: Remaining consumer/resource migration and candidate qualification remain separate gates.
+- notes: No aggregate census/result quota or default deadline; explicit representation and resource accounting.
+- status: canonical
+
+### SBV native partitioned economic_census_stream.hpp
+
+- path: `modules/sbv-engine/src/economic_census_stream.hpp`
+- title: Native partitioned census and financial execution
+- surface_type: implementation contract or test
+- truth_role: Exact logical admission, shared arithmetic, incremental rows and portable evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.23 native census/financial producer and selected consumer migration.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, SDK and independent result consumers
+- deferred_projections: Remaining consumer/resource migration and candidate qualification remain separate gates.
+- notes: No aggregate census/result quota or default deadline; explicit representation and resource accounting.
+- status: canonical
+
+### SBV native partitioned economic_census_stream.cpp
+
+- path: `modules/sbv-engine/src/economic_census_stream.cpp`
+- title: Native partitioned census and financial execution
+- surface_type: implementation contract or test
+- truth_role: Exact logical admission, shared arithmetic, incremental rows and portable evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.23 native census/financial producer and selected consumer migration.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, SDK and independent result consumers
+- deferred_projections: Remaining consumer/resource migration and candidate qualification remain separate gates.
+- notes: No aggregate census/result quota or default deadline; explicit representation and resource accounting.
+- status: canonical
+
+### SBV native partitioned run_math.hpp
+
+- path: `modules/sbv-engine/src/run_math.hpp`
+- title: Native partitioned census and financial execution
+- surface_type: implementation contract or test
+- truth_role: Exact logical admission, shared arithmetic, incremental rows and portable evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.23 native census/financial producer and selected consumer migration.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, SDK and independent result consumers
+- deferred_projections: Remaining consumer/resource migration and candidate qualification remain separate gates.
+- notes: No aggregate census/result quota or default deadline; explicit representation and resource accounting.
+- status: canonical
+
+### SBV native partitioned run_partitioned.cpp
+
+- path: `modules/sbv-engine/src/run_partitioned.cpp`
+- title: Native partitioned census and financial execution
+- surface_type: implementation contract or test
+- truth_role: Exact logical admission, shared arithmetic, incremental rows and portable evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.23 native census/financial producer and selected consumer migration.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, SDK and independent result consumers
+- deferred_projections: Remaining consumer/resource migration and candidate qualification remain separate gates.
+- notes: No aggregate census/result quota or default deadline; explicit representation and resource accounting.
+- status: canonical
+
+### SBV native partitioned reader_extensions_test.cpp
+
+- path: `modules/sbv-engine/tests/reader_extensions_test.cpp`
+- title: Native partitioned census and financial execution
+- surface_type: implementation contract or test
+- truth_role: Exact logical admission, shared arithmetic, incremental rows and portable evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.23 native census/financial producer and selected consumer migration.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, SDK and independent result consumers
+- deferred_projections: Remaining consumer/resource migration and candidate qualification remain separate gates.
+- notes: No aggregate census/result quota or default deadline; explicit representation and resource accounting.
+- status: canonical
+
+### SBV native partitioned row_spool_test.cpp
+
+- path: `modules/sbv-engine/tests/row_spool_test.cpp`
+- title: Native partitioned census and financial execution
+- surface_type: implementation contract or test
+- truth_role: Exact logical admission, shared arithmetic, incremental rows and portable evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.23 native census/financial producer and selected consumer migration.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, SDK and independent result consumers
+- deferred_projections: Remaining consumer/resource migration and candidate qualification remain separate gates.
+- notes: No aggregate census/result quota or default deadline; explicit representation and resource accounting.
+- status: canonical
+
+### SBV native partitioned exact_id_index_test.cpp
+
+- path: `modules/sbv-engine/tests/exact_id_index_test.cpp`
+- title: Native partitioned census and financial execution
+- surface_type: implementation contract or test
+- truth_role: Exact logical admission, shared arithmetic, incremental rows and portable evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.23 native census/financial producer and selected consumer migration.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, SDK and independent result consumers
+- deferred_projections: Remaining consumer/resource migration and candidate qualification remain separate gates.
+- notes: No aggregate census/result quota or default deadline; explicit representation and resource accounting.
+- status: canonical
+
+### SBV native partitioned logical_value_test.cpp
+
+- path: `modules/sbv-engine/tests/logical_value_test.cpp`
+- title: Native partitioned census and financial execution
+- surface_type: implementation contract or test
+- truth_role: Exact logical admission, shared arithmetic, incremental rows and portable evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.23 native census/financial producer and selected consumer migration.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, SDK and independent result consumers
+- deferred_projections: Remaining consumer/resource migration and candidate qualification remain separate gates.
+- notes: No aggregate census/result quota or default deadline; explicit representation and resource accounting.
+- status: canonical
+
+### SBV native partitioned stream_census_test.cpp
+
+- path: `modules/sbv-engine/tests/stream_census_test.cpp`
+- title: Native partitioned census and financial execution
+- surface_type: implementation contract or test
+- truth_role: Exact logical admission, shared arithmetic, incremental rows and portable evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.23 native census/financial producer and selected consumer migration.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, SDK and independent result consumers
+- deferred_projections: Remaining consumer/resource migration and candidate qualification remain separate gates.
+- notes: No aggregate census/result quota or default deadline; explicit representation and resource accounting.
+- status: canonical
+
+### SBV native partitioned partitioned_output_test.cpp
+
+- path: `modules/sbv-engine/tests/partitioned_output_test.cpp`
+- title: Native partitioned census and financial execution
+- surface_type: implementation contract or test
+- truth_role: Exact logical admission, shared arithmetic, incremental rows and portable evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.23 native census/financial producer and selected consumer migration.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, SDK and independent result consumers
+- deferred_projections: Remaining consumer/resource migration and candidate qualification remain separate gates.
+- notes: No aggregate census/result quota or default deadline; explicit representation and resource accounting.
+- status: canonical
+
+### SBV native partitioned stream_model_test.cpp
+
+- path: `modules/sbv-engine/tests/stream_model_test.cpp`
+- title: Native partitioned census and financial execution
+- surface_type: implementation contract or test
+- truth_role: Exact logical admission, shared arithmetic, incremental rows and portable evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.23 native census/financial producer and selected consumer migration.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, SDK and independent result consumers
+- deferred_projections: Remaining consumer/resource migration and candidate qualification remain separate gates.
+- notes: No aggregate census/result quota or default deadline; explicit representation and resource accounting.
+- status: canonical
+
+### SBV native partitioned generate_partitioned_test.cpp
+
+- path: `modules/sbv-engine/tests/generate_partitioned_test.cpp`
+- title: Native partitioned census and financial execution
+- surface_type: implementation contract or test
+- truth_role: Exact logical admission, shared arithmetic, incremental rows and portable evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.23 native census/financial producer and selected consumer migration.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, SDK and independent result consumers
+- deferred_projections: Remaining consumer/resource migration and candidate qualification remain separate gates.
+- notes: No aggregate census/result quota or default deadline; explicit representation and resource accounting.
+- status: canonical
+
+### SBV native partitioned evaluate_partitioned_test.cpp
+
+- path: `modules/sbv-engine/tests/evaluate_partitioned_test.cpp`
+- title: Native partitioned census and financial execution
+- surface_type: implementation contract or test
+- truth_role: Exact logical admission, shared arithmetic, incremental rows and portable evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.23 native census/financial producer and selected consumer migration.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, SDK and independent result consumers
+- deferred_projections: Remaining consumer/resource migration and candidate qualification remain separate gates.
+- notes: No aggregate census/result quota or default deadline; explicit representation and resource accounting.
+- status: canonical
+
+### SBV native partitioned economics_partitioned_test.cpp
+
+- path: `modules/sbv-engine/tests/economics_partitioned_test.cpp`
+- title: Native partitioned census and financial execution
+- surface_type: implementation contract or test
+- truth_role: Exact logical admission, shared arithmetic, incremental rows and portable evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.23 native census/financial producer and selected consumer migration.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, SDK and independent result consumers
+- deferred_projections: Remaining consumer/resource migration and candidate qualification remain separate gates.
+- notes: No aggregate census/result quota or default deadline; explicit representation and resource accounting.
+- status: canonical
+
+### SBV native partitioned run_partitioned_test.cpp
+
+- path: `modules/sbv-engine/tests/run_partitioned_test.cpp`
+- title: Native partitioned census and financial execution
+- surface_type: implementation contract or test
+- truth_role: Exact logical admission, shared arithmetic, incremental rows and portable evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.23 native census/financial producer and selected consumer migration.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, SDK and independent result consumers
+- deferred_projections: Remaining consumer/resource migration and candidate qualification remain separate gates.
+- notes: No aggregate census/result quota or default deadline; explicit representation and resource accounting.
+- status: canonical
+
+### SBV partitioned administration sbv_partitioned.go
+
+- path: `tools/qxctl/internal/knowledgeengine/sbv_partitioned.go`
+- title: Exact SBV partitioned control admission
+- surface_type: implementation contract or test
+- truth_role: Exact receipt and control-plane validation without reimplementing native arithmetic
+- owner: qxctl maintainers
+- scope: Experimental SBV 0.23 terminal administration.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl and native SBV operators
+- deferred_projections: Future GUI projections reuse native portable results.
+- notes: Result volume is separate from small process control framing.
+- status: canonical
+
+### SBV partitioned administration sbv_partitioned_test.go
+
+- path: `tools/qxctl/internal/knowledgeengine/sbv_partitioned_test.go`
+- title: Exact SBV partitioned control admission
+- surface_type: implementation contract or test
+- truth_role: Exact receipt and control-plane validation without reimplementing native arithmetic
+- owner: qxctl maintainers
+- scope: Experimental SBV 0.23 terminal administration.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl and native SBV operators
+- deferred_projections: Future GUI projections reuse native portable results.
+- notes: Result volume is separate from small process control framing.
+- status: canonical
+
+### SBV partitioned administration sbv_partitioned_schema_test.go
+
+- path: `tools/qxctl/internal/knowledgeengine/sbv_partitioned_schema_test.go`
+- title: Exact SBV partitioned control admission
+- surface_type: implementation contract or test
+- truth_role: Exact receipt and control-plane validation without reimplementing native arithmetic
+- owner: qxctl maintainers
+- scope: Experimental SBV 0.23 terminal administration.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl and native SBV operators
+- deferred_projections: Future GUI projections reuse native portable results.
+- notes: Result volume is separate from small process control framing.
+- status: canonical
+
+### SBV partitioned administration sbv_partitioned_installed_test.go
+
+- path: `tools/qxctl/internal/knowledgeengine/sbv_partitioned_installed_test.go`
+- title: Exact SBV partitioned control admission
+- surface_type: implementation contract or test
+- truth_role: Exact receipt and control-plane validation without reimplementing native arithmetic
+- owner: qxctl maintainers
+- scope: Experimental SBV 0.23 terminal administration.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl and native SBV operators
+- deferred_projections: Future GUI projections reuse native portable results.
+- notes: Result volume is separate from small process control framing.
+- status: canonical

@@ -1167,5 +1167,372 @@
       "protocol": "symphony.sbv.bundle-export-input.v1",
       "extensions": {}
     }
+  },
+  "variants": {
+    "run": {
+      "partitioned": {
+        "protocol": "symphony.sbv.run-input.v1",
+        "source_path": "/absolute/private/ESZ6.dbn",
+        "source_sha256": "REPLACE_WITH_EXACT_FILE_SHA256",
+        "dataset": "GLBX.MDP3",
+        "criteria": {
+          "rule": "spaced_trades",
+          "spacing_ns": "1000000000",
+          "min_trade_size": "1",
+          "direction": "any",
+          "max_signals": null
+        },
+        "replay": {
+          "before_ns": "1000000000",
+          "after_ns": "2000000000",
+          "retain_events": true
+        },
+        "execution": {
+          "model": "touch_observation",
+          "horizon_ns": "2000000000",
+          "price_offsets_nanos": [
+            "-1000000000",
+            "1000000000"
+          ],
+          "probability_numerator": "0",
+          "probability_denominator": "1"
+        },
+        "studies": [
+          "signal_summary",
+          "forward_markout"
+        ],
+        "workers": "4",
+        "extensions": {},
+        "memory_budget_bytes": null,
+        "dataset_limits": {
+          "max_source_bytes": null,
+          "max_source_events": null,
+          "max_metadata_bytes": null
+        },
+        "output": {
+          "kind": "partitioned",
+          "bundle_path": "/absolute/private/run-bundle",
+          "workspace_path": "/absolute/private/run-workspace",
+          "write_options": {
+            "page_bytes": "1048576",
+            "index_fanout": "64"
+          }
+        }
+      }
+    },
+    "generate_census": {
+      "partitioned": {
+        "protocol": "symphony.sbv.generate-census-input.v1",
+        "source_path": "/absolute/private/source.dbn",
+        "source_sha256": "REPLACE_WITH_SOURCE_SHA256",
+        "dataset": "GLBX.MDP3",
+        "provider": {
+          "protocol": "symphony.sbv.native-provider-selection.v1",
+          "library": {
+            "path": "/absolute/trusted/provider.dylib",
+            "expected_sha256": "REPLACE_WITH_BINARY_SHA256"
+          },
+          "id": "caller-provider",
+          "version": "1",
+          "role": "strategy",
+          "input_profile": "symphony.sbv.provider-databento-mbo-event.v1",
+          "concurrency": "serialized_instance",
+          "parameters": {},
+          "dependencies": {
+            "capture": "uncaptured",
+            "description": "Caller-selected native library; dynamic dependencies are not captured",
+            "artifacts": []
+          },
+          "extensions": {}
+        },
+        "extensions": {},
+        "output": {
+          "kind": "partitioned",
+          "bundle_path": "/absolute/private/generate_census-bundle",
+          "workspace_path": "/absolute/private/generate_census-workspace",
+          "write_options": {
+            "page_bytes": "1048576",
+            "index_fanout": "64"
+          }
+        }
+      }
+    },
+    "evaluate": {
+      "partitioned": {
+        "protocol": "symphony.sbv.evaluate-input.v1",
+        "source_path": "/absolute/private/source.dbn",
+        "source_sha256": "REPLACE_WITH_EXACT_FILE_SHA256",
+        "dataset": "GLBX.MDP3",
+        "census": {
+          "kind": "bundle",
+          "reference": {
+            "manifest_path": "/absolute/private/input-bundle/manifest.json",
+            "manifest_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+            "content_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+          },
+          "selector": {
+            "kind": "node_id",
+            "node_id": "0"
+          },
+          "read_options": {
+            "max_page_bytes": null,
+            "cache_bytes": "8388608"
+          }
+        },
+        "model": {
+          "protocol": "symphony.sbv.model-selection.v1",
+          "id": "observed_trade_levels",
+          "version": "1",
+          "horizon_ns": "2000000000",
+          "parameters": {
+            "levels_per_side": "5",
+            "include_anchor": false,
+            "thin_support": "unavailable"
+          }
+        },
+        "replay": {
+          "before_ns": "1000000000",
+          "after_ns": "2000000000",
+          "retain_events": true
+        },
+        "studies": [
+          "signal_summary",
+          "model_summary",
+          "path_excursion"
+        ],
+        "workers": "4",
+        "extensions": {},
+        "memory_budget_bytes": null,
+        "dataset_limits": {
+          "max_source_bytes": null,
+          "max_source_events": null,
+          "max_metadata_bytes": null
+        },
+        "output": {
+          "kind": "partitioned",
+          "bundle_path": "/absolute/private/evaluate-bundle",
+          "workspace_path": "/absolute/private/evaluate-workspace",
+          "write_options": {
+            "page_bytes": "1048576",
+            "index_fanout": "64"
+          }
+        }
+      }
+    },
+    "economics": {
+      "partitioned": {
+        "protocol": "symphony.sbv.economics-input.v1",
+        "selections": {
+          "kind": "apply",
+          "signals": {
+            "kind": "all"
+          },
+          "economics": {
+            "transform": {
+              "id": "linear_price_pnl",
+              "version": "1",
+              "reference_price_nanos": "100000000000",
+              "price_unit_nanos": "1000000000",
+              "position_units": {
+                "numerator": "1",
+                "denominator": "1"
+              },
+              "value_per_price_unit": {
+                "numerator": "1",
+                "denominator": "1"
+              },
+              "cost_per_outcome": {
+                "numerator": "0",
+                "denominator": "1"
+              },
+              "return_basis": {
+                "numerator": "100",
+                "denominator": "1"
+              },
+              "pnl_unit": "user-defined account unit"
+            },
+            "mode": "support_only",
+            "nonexecution_pnl": null
+          }
+        },
+        "studies": [
+          {
+            "id": "return_moments",
+            "version": "1",
+            "parameters": {}
+          },
+          {
+            "id": "return_quantiles",
+            "version": "1",
+            "parameters": {
+              "levels": [
+                {
+                  "numerator": "1",
+                  "denominator": "20"
+                },
+                {
+                  "numerator": "1",
+                  "denominator": "2"
+                },
+                {
+                  "numerator": "19",
+                  "denominator": "20"
+                }
+              ]
+            }
+          }
+        ],
+        "on_incompatible": "unavailable",
+        "extensions": {},
+        "output": {
+          "kind": "partitioned",
+          "bundle_path": "/absolute/private/economics-bundle",
+          "workspace_path": "/absolute/private/economics-workspace",
+          "write_options": {
+            "page_bytes": "1048576",
+            "index_fanout": "64"
+          }
+        },
+        "source": {
+          "kind": "bundle",
+          "reference": {
+            "manifest_path": "/absolute/private/input-bundle/manifest.json",
+            "manifest_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+            "content_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+          },
+          "selector": {
+            "kind": "node_id",
+            "node_id": "0"
+          },
+          "read_options": {
+            "max_page_bytes": null,
+            "cache_bytes": "8388608"
+          }
+        }
+      }
+    },
+    "compose_economics": {
+      "partitioned": {
+        "protocol": "symphony.sbv.compose-economics-input.v1",
+        "components": [
+          {
+            "id": "step-1",
+            "source": {
+              "kind": "bundle",
+              "reference": {
+                "manifest_path": "/absolute/private/input-bundle/manifest.json",
+                "manifest_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+                "content_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+              },
+              "selector": {
+                "kind": "node_id",
+                "node_id": "0"
+              },
+              "read_options": {
+                "max_page_bytes": null,
+                "cache_bytes": "8388608"
+              }
+            },
+            "outcome_pointer": "/sections/economics/data/0",
+            "signal_id": "signal-1",
+            "conditioning": "execution",
+            "conversion": null,
+            "extensions": {}
+          }
+        ],
+        "dependence": {
+          "kind": "independent",
+          "marginal_policy": null,
+          "paths": [],
+          "description": "Caller-selected conditional independence."
+        },
+        "economics": {
+          "kind": "multiplicative_return",
+          "initial_state": {
+            "numerator": "1",
+            "denominator": "1"
+          },
+          "state_unit": "wealth-factor",
+          "state_domain": "signed",
+          "description": "Compound each source return under its retained declared basis."
+        },
+        "conditioning_description": "Conditional on each retained source economic assumption; not an unconditional fill forecast.",
+        "on_unavailable": "reject",
+        "retain_paths": true,
+        "retain_prefix_distributions": true,
+        "studies": [],
+        "limits": {
+          "max_paths": null,
+          "max_terminal_atoms": null
+        },
+        "extensions": {},
+        "output": {
+          "kind": "partitioned",
+          "bundle_path": "/absolute/private/compose_economics-bundle",
+          "workspace_path": "/absolute/private/compose_economics-workspace",
+          "write_options": {
+            "page_bytes": "1048576",
+            "index_fanout": "64"
+          }
+        }
+      }
+    },
+    "dataset_execute": {
+      "partitioned": {
+        "protocol": "symphony.sbv.dataset-execute-input.v1",
+        "directory": "/private/tmp/sbv-private",
+        "instance_id": "0123456789abcdef0123456789abcdef",
+        "operation": "run",
+        "request": {
+          "protocol": "symphony.sbv.run-input.v1",
+          "source_path": "/absolute/private/ESZ6.dbn",
+          "source_sha256": "REPLACE_WITH_EXACT_FILE_SHA256",
+          "dataset": "GLBX.MDP3",
+          "criteria": {
+            "rule": "spaced_trades",
+            "spacing_ns": "1000000000",
+            "min_trade_size": "1",
+            "direction": "any",
+            "max_signals": null
+          },
+          "replay": {
+            "before_ns": "1000000000",
+            "after_ns": "2000000000",
+            "retain_events": true
+          },
+          "execution": {
+            "model": "touch_observation",
+            "horizon_ns": "2000000000",
+            "price_offsets_nanos": [
+              "-1000000000",
+              "1000000000"
+            ],
+            "probability_numerator": "0",
+            "probability_denominator": "1"
+          },
+          "studies": [
+            "signal_summary",
+            "forward_markout"
+          ],
+          "workers": "4",
+          "extensions": {},
+          "memory_budget_bytes": null,
+          "dataset_limits": {
+            "max_source_bytes": null,
+            "max_source_events": null,
+            "max_metadata_bytes": null
+          }
+        },
+        "output": {
+          "kind": "partitioned",
+          "bundle_path": "/absolute/private/dataset_execute-bundle",
+          "workspace_path": "/absolute/private/dataset_execute-workspace",
+          "write_options": {
+            "page_bytes": "1048576",
+            "index_fanout": "64"
+          }
+        }
+      }
+    }
   }
 }

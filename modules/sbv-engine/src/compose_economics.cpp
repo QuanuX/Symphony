@@ -1,4 +1,7 @@
 #include "census.hpp"
+#include "economic_census_stream.hpp"
+#include "partitioned_output.hpp"
+#include "stream_census.hpp"
 #include "wide_rational.hpp"
 #include <algorithm>
 #include <limits>
@@ -9,6 +12,7 @@ namespace symphony::sbv::detail {
 namespace {
 namespace w = wide_rational;
 using R = w::R;
+using Value = logical::Value;
 void label(const Json &v) { need(!str(v).empty(), "nonempty label required"); }
 R minus(R a, R b) { return w::plus(a, {-b.n, b.d}); }
 struct Less {
@@ -16,10 +20,18 @@ struct Less {
 };
 using Distribution = std::map<R, R, Less>;
 struct Source {
-  Json result, reference, census;
+  Value result;
+  Json reference;
+  Value census;
 };
 Json economic_census(const Json &);
 Source load(const Json &ref, std::size_t &bytes_read, std::int64_t end) {
+  if (ref.contains("kind")) {
+    auto selected = select_logical_result(ref, end);
+    auto census = economic_stream_census(selected.value, end);
+    return {std::move(selected.value), std::move(selected.reference),
+            std::move(census)};
+  }
   keys(ref, {"path", "expected_sha256", "pointer"});
   auto bytes = read_file(str(ref.at("path")), end);
   need(bytes.size() <= std::numeric_limits<std::size_t>::max() - bytes_read,
@@ -31,26 +43,70 @@ Source load(const Json &ref, std::size_t &bytes_read, std::int64_t end) {
        "composition source digest mismatch");
   auto result = outer.at(Json::json_pointer(str(ref.at("pointer"))));
   validate_result(result);
-  return {result,
+  const auto &sections = result.at("sections");
+  const bool expanded_profile =
+      sections.at("summary").at("data").contains("selection_sha256") ||
+      sections.at("choices").at("data").at("selections").is_object() ||
+      (sections.at("source_context").at("data").contains("reference") &&
+       sections.at("source_context")
+           .at("data")
+           .at("reference")
+           .contains("kind"));
+  const auto census = expanded_profile
+                          ? economic_stream_census(Value(result), end)
+                          : Value(economic_census(result));
+  return {Value(result),
           {{"path", ref.at("path")},
            {"content_sha256", outer.at("content_sha256")},
            {"pointer", ref.at("pointer")},
            {"selected_sha256", result.at("content_sha256")},
            {"file_sha256", e::sha256_hex(bytes)},
            {"bytes", dec(bytes.size())}},
-          economic_census(result)};
+          census};
 }
-const Json &matching(const Json &rows, const std::string &id) {
-  need(rows.is_array(), "source row array required");
-  const Json *found = nullptr;
-  for (const auto &row : rows)
-    if (str(row.at("signal_id")) == id) {
+Json matching(const Value &rows, const std::string &id, std::int64_t end) {
+  need(rows.kind() == "array", "source row array required");
+  std::optional<Json> found;
+  auto cursor = rows.children();
+  while (auto row = cursor.next()) {
+    deadline(end);
+    if (str(row->value.at("signal_id").materialize()) == id) {
       need(!found, "duplicate selected source signal");
-      found = &row;
+      found = row->value.materialize({}, [end] { deadline(end); });
     }
-  need(found, "selected source signal missing");
-  return *found;
+  }
+  need(found.has_value(), "selected source signal missing");
+  return std::move(*found);
 }
+Value selected_pointer(Value value, const Json &pointer) {
+  const auto text = str(pointer);
+  (void)Json::json_pointer(text);
+  if (text.empty())
+    return value;
+  std::size_t first = 1;
+  while (true) {
+    const auto last = text.find('/', first);
+    const auto raw =
+        text.substr(first, last == std::string::npos ? last : last - first);
+    std::string key;
+    for (std::size_t i = 0; i < raw.size(); ++i) {
+      if (raw[i] != '~')
+        key.push_back(raw[i]);
+      else {
+        ++i;
+        need(i < raw.size() && (raw[i] == '0' || raw[i] == '1'),
+             "invalid pointer escape");
+        key.push_back(raw[i] == '0' ? '~' : '/');
+      }
+    }
+    value = value.kind() == "array" ? value.at(u64(Json(key))) : value.at(key);
+    if (last == std::string::npos)
+      break;
+    first = last + 1;
+  }
+  return value;
+}
+
 bool digest(const Json &v) {
   auto value = str(v);
   return value.size() == 64 &&
@@ -187,7 +243,7 @@ struct Atom {
   R value, weight, pnl;
 };
 struct Component {
-  Json retained;
+  Value retained{Json(nullptr)};
   std::vector<Atom> atoms;
   std::string failure, measure;
   R conversion{1, 1};
@@ -204,30 +260,45 @@ Component component(const Json &choice, const Source &source,
   label(choice.at("conditioning"));
   need(choice.at("extensions").is_object(), "component extensions required");
   const auto id = str(choice.at("signal_id"));
-  const auto &s = source.result.at("sections");
-  const auto &input = s.at("choices").at("data");
-  need(input.at("protocol") == "symphony.sbv.economics-input.v1",
+  const auto s = source.result.at("sections");
+  const auto input = s.at("choices").at("data");
+  need(input.at("protocol").materialize() == "symphony.sbv.economics-input.v1",
        "typed economics source required");
-  const auto &row =
-      source.result.at(Json::json_pointer(str(choice.at("outcome_pointer"))));
+  const auto selected_row =
+      selected_pointer(source.result, choice.at("outcome_pointer"));
+  need(selected_row.kind() == "object" && selected_row.size() == 12 &&
+           selected_row.contains("protocol") &&
+           selected_row.at("protocol").kind() == "scalar" &&
+           selected_row.at("protocol").materialize() ==
+               "symphony.sbv.economic-outcome.v1",
+       "selected source must be one typed economic outcome");
+  const auto row = selected_row.materialize({}, [end] { deadline(end); });
   keys(row, {"protocol", "signal_id", "status", "reason", "measure",
              "conditioning", "mode", "transform", "transformed_support",
              "nonexecution_pnl", "atoms", "calibration"});
   need(row.at("protocol") == "symphony.sbv.economic-outcome.v1" &&
            row.at("signal_id") == choice.at("signal_id") &&
            row.at("conditioning") == choice.at("conditioning") &&
-           row == matching(s.at("economics").at("data"), id),
+           row == matching(s.at("economics").at("data"), id, end),
        "selected economic identity or conditioning mismatch");
-  const auto &selected = matching(input.at("selections"), id);
+  const auto selected =
+      matching(s.contains("selections") ? s.at("selections").at("data")
+                                        : input.at("selections"),
+               id, end);
   need(selected.at("transform") == row.at("transform") &&
            selected.at("mode") == row.at("mode") &&
            selected.at("nonexecution_pnl") == row.at("nonexecution_pnl"),
        "economic row/selection mismatch");
-  const auto &signal = matching(s.at("signals").at("data"), id);
-  const auto &model = matching(s.at("execution").at("data"), id);
-  const auto &parent_model =
+  const auto &signal = matching(s.at("signals").at("data"), id, end);
+  const auto &model = matching(s.at("execution").at("data"), id, end);
+  const auto parent_model_value =
       s.at("source_context").at("data").at("choices").at("data").at("model");
-  need(signal == matching(source.census.at("signals"), id),
+  Json parent_model{
+      {"id", parent_model_value.at("id").materialize()},
+      {"version", parent_model_value.at("version").materialize()}};
+  if (parent_model.at("id") == "native_provider")
+    parent_model = parent_model_value.materialize({}, [end] { deadline(end); });
+  need(signal == matching(source.census.at("signals"), id, end),
        "selected economic signal differs from retained census");
   need(model.at("protocol") == "symphony.sbv.model-outcome.v1" &&
            model.at("measure") == row.at("measure") &&
@@ -362,10 +433,14 @@ Component component(const Json &choice, const Source &source,
   }
   auto reference = [&](const char *pointer) {
     auto ref = choice.at("source");
+    if (ref.contains("kind"))
+      return Json{{"kind", "relative_logical_selection"},
+                  {"source", source.reference},
+                  {"pointer", pointer}};
     ref["pointer"] = str(ref.at("pointer")) + pointer;
     return ref;
   };
-  c.retained = {
+  Json retained = {
       {"id", choice.at("id")},
       {"source", source.reference},
       {"outcome_pointer", choice.at("outcome_pointer")},
@@ -374,16 +449,18 @@ Component component(const Json &choice, const Source &source,
       {"model", model},
       {"economic_outcome", row},
       {"conversion", choice.at("conversion")},
-      {"source_summary", s.at("summary")},
-      {"source_provenance", s.at("provenance")},
-      {"census", source.census},
+      {"source_summary", s.at("summary").materialize()},
+      {"source_provenance", s.at("provenance").materialize()},
+      {"census", nullptr},
       {"census_context_reference", reference("/sections/source_context")},
       {"replay_reference", reference("/sections/replay")},
       {"extensions", choice.at("extensions")}};
   if (parent_model.at("id") == "native_provider") {
-    c.retained["model_selection"] = parent_model;
-    c.retained["provider"] = s.at("source_context").at("data").at("provider");
+    retained["model_selection"] = parent_model;
+    retained["provider"] =
+        s.at("source_context").at("data").at("provider").materialize();
   }
+  c.retained = Value(std::move(retained)).with("census", source.census);
   return c;
 }
 Json wire(const Distribution &distribution) {
@@ -489,10 +566,16 @@ void limit(const Json &v, std::size_t count, const char *message) {
 }
 } // namespace
 
-Json compose_economics(const Json &p, std::int64_t end) {
-  keys(p, {"protocol", "output_path", "components", "dependence", "economics",
-           "conditioning_description", "on_unavailable", "retain_paths",
-           "retain_prefix_distributions", "studies", "limits", "extensions"});
+Value compose_economics_body(const Json &p, std::int64_t end,
+                             PartitionedOutput *output) {
+  keys_optional(p,
+                {"protocol", "components", "dependence", "economics",
+                 "conditioning_description", "on_unavailable", "retain_paths",
+                 "retain_prefix_distributions", "studies", "limits",
+                 "extensions"},
+                {"output_path", "output"});
+  need(p.contains("output_path") != p.contains("output"),
+       "select one output representation");
   deadline(end);
   need(p.at("extensions").is_object() && p.at("components").is_array() &&
            p.at("retain_paths").is_boolean() &&
@@ -560,7 +643,8 @@ Json compose_economics(const Json &p, std::int64_t end) {
   std::vector<Component> components;
   std::size_t bytes_read = 0;
   std::set<std::string> component_ids;
-  Json retained = Json::array(), failures = Json::array();
+  std::vector<Value> retained;
+  Json failures = Json::array();
   for (const auto &choice : p.at("components")) {
     deadline(end);
     need(component_ids.insert(str(choice.at("id"))).second,
@@ -579,7 +663,14 @@ Json compose_economics(const Json &p, std::int64_t end) {
     if (!c.failure.empty())
       failures.push_back(
           {{"component_id", choice.at("id")}, {"reason", c.failure}});
-    retained.push_back(c.retained);
+    auto retained_component = c.retained;
+    if (output)
+      retained_component =
+          retained_component
+              .with("source_context",
+                    it->second.result.at("sections").at("source_context"))
+              .with("replay", it->second.result.at("sections").at("replay"));
+    retained.push_back(std::move(retained_component));
     components.push_back(std::move(c));
   }
   need(p.at("on_unavailable") != "reject" || failures.empty(),
@@ -590,6 +681,9 @@ Json compose_economics(const Json &p, std::int64_t end) {
                          "unavailable; inspect component findings";
   Json paths = Json::array(), prefixes = Json::array(),
        marginals = Json::array();
+  auto path_spool = output ? output->spool("composition-paths") : nullptr;
+  std::uint64_t retained_path_count = 0;
+  std::vector<Value> prefix_rows;
   Distribution terminal;
   std::size_t count = 0;
   if (failure.empty()) {
@@ -661,13 +755,18 @@ Json compose_economics(const Json &p, std::int64_t end) {
         limit(limits.at("max_terminal_atoms"), terminal.size(),
               "caller terminal-atom limit exceeded");
       it->second = w::plus(it->second, probability);
-      if (p.at("retain_paths").get<bool>())
-        paths.push_back(
-            {{"id",
-              independent ? Json(dec(i)) : dependence.at("paths")[i].at("id")},
-             {"atom_indices", index_wire},
-             {"probability", w::wire(probability)},
-             {"state", trajectory}});
+      if (p.at("retain_paths").get<bool>()) {
+        Json path{{"id", independent ? Json(dec(i))
+                                     : dependence.at("paths")[i].at("id")},
+                  {"atom_indices", index_wire},
+                  {"probability", w::wire(probability)},
+                  {"state", trajectory}};
+        if (path_spool)
+          path_spool->append(path);
+        else
+          paths.push_back(std::move(path));
+        ++retained_path_count;
+      }
     }
     for (std::size_t j = 0; j < components.size(); ++j) {
       Json weights = Json::array();
@@ -695,9 +794,21 @@ Json compose_economics(const Json &p, std::int64_t end) {
       total = w::plus(total, mass);
     }
     need(w::equal(total, {1, 1}), "terminal probability invariant");
-    for (std::size_t j = 0; j < prefix_values.size(); ++j)
-      prefixes.push_back({{"completed_components", dec(j)},
-                          {"atoms", wire(prefix_values[j])}});
+    for (std::size_t j = 0; j < prefix_values.size(); ++j) {
+      if (output) {
+        auto spool = output->spool("prefix-" + dec(j));
+        for (const auto &[value, mass] : prefix_values[j]) {
+          deadline(end);
+          spool->append(
+              Json{{"state", w::wire(value)}, {"probability", w::wire(mass)}});
+        }
+        prefix_rows.push_back(
+            Value::object({{"completed_components", Value(Json(dec(j)))},
+                           {"atoms", Value(spool->close().rows)}}));
+      } else
+        prefixes.push_back({{"completed_components", dec(j)},
+                            {"atoms", wire(prefix_values[j])}});
+    }
   }
   auto result = base(
       "native exact composition of immutable per-signal economic outcomes");
@@ -707,12 +818,12 @@ Json compose_economics(const Json &p, std::int64_t end) {
       {{"component_count", dec(components.size())},
        {"unavailable_components", dec(failures.size())},
        {"path_count", failure.empty() ? Json(dec(count)) : Json(nullptr)},
-       {"retained_path_count", dec(paths.size())},
+       {"retained_path_count", dec(retained_path_count)},
        {"terminal_atom_count",
         failure.empty() ? Json(dec(terminal.size())) : Json(nullptr)},
        {"probability_mass", failure.empty() ? w::wire({1, 1}) : Json(nullptr)},
        {"composition_status", failure.empty() ? "available" : "unavailable"}});
-  s["composition_sources"] = section(retained);
+  s["composition_sources"] = section(nullptr);
   s["composition_findings"] = section(failures);
   s["distributions"] = section(
       {{"protocol", "symphony.sbv.economic-composition.v1"},
@@ -723,7 +834,8 @@ Json compose_economics(const Json &p, std::int64_t end) {
        {"normalization", "none"},
        {"paths", paths},
        {"paths_retained", p.at("retain_paths")},
-       {"terminal_atoms", failure.empty() ? wire(terminal) : Json(nullptr)},
+       {"terminal_atoms",
+        failure.empty() && !output ? wire(terminal) : Json(nullptr)},
        {"prefix_distributions", prefixes},
        {"prefix_distributions_retained", p.at("retain_prefix_distributions")},
        {"marginals", marginals},
@@ -738,6 +850,7 @@ Json compose_economics(const Json &p, std::int64_t end) {
               selected_studies.empty() ? "zero studies selected" : failure);
   auto choices = p;
   choices.erase("output_path");
+  choices.erase("output");
   s["choices"] = section(choices);
   s["resources"] =
       section({{"backend", "cpu"},
@@ -746,6 +859,11 @@ Json compose_economics(const Json &p, std::int64_t end) {
                {"distinct_source_references", dec(cache.size())},
                {"method", "exact enumeration; no sampling or pruning"},
                {"limits", limits}});
+  if (std::any_of(cache.begin(), cache.end(), [](const auto &entry) {
+        return entry.second.reference.contains("kind");
+      }))
+    s["resources"]["data"]["source_bytes_read_scope"] =
+        "legacy file bytes only; bundle I/O not aggregated here";
   s["provenance"] = section(
       {{"engine_version", version},
        {"numeric_profile", "checked signed int128 reduced rationals; overflow "
@@ -769,7 +887,64 @@ Json compose_economics(const Json &p, std::int64_t end) {
        "No additional fixed path/step policy limit is imposed. Existing result "
        "artifact, host index/address-space and checked numeric representation "
        "bounds still apply."}));
+  if (output)
+    s["diagnostics"]["data"].back() =
+        "No aggregate result byte/node or path quota is imposed; caller "
+        "limits, host index/address-space and checked numeric representation "
+        "apply.";
   s["user_extensions"] = section(p.at("extensions"));
-  return persist(std::move(result), p, "compose-economics", end);
+  auto logical_result = Value(std::move(result));
+  auto sections = logical_result.at("sections");
+  sections = sections.with(
+      "composition_sources",
+      Value(section(nullptr)).with("data", Value::array(std::move(retained))));
+  if (output) {
+    auto distributions =
+        sections.at("distributions")
+            .at("data")
+            .with("paths", Value(path_spool->close().rows))
+            .with("prefix_distributions", Value::array(std::move(prefix_rows)));
+    if (failure.empty()) {
+      auto spool = output->spool("terminal-atoms");
+      for (const auto &[value, mass] : terminal) {
+        deadline(end);
+        spool->append(
+            Json{{"state", w::wire(value)}, {"probability", w::wire(mass)}});
+      }
+      distributions =
+          distributions.with("terminal_atoms", Value(spool->close().rows));
+    }
+    sections =
+        sections.with("distributions",
+                      sections.at("distributions").with("data", distributions));
+    auto resources =
+        sections.at("resources")
+            .at("data")
+            .with(
+                "derived_resources",
+                Value(Json{{"source_access",
+                            "verified logical selections; selected row scans"},
+                           {"source_bytes_read_scope",
+                            "legacy file bytes only; bundle reader I/O not "
+                            "aggregated here"},
+                           {"aggregate_state",
+                            "selected component supports, exact "
+                            "terminal/prefix maps and marginal accumulators in "
+                            "memory; paths and copied sources stored in pages"},
+                           {"storage", "self-contained partitioned result"}}));
+    sections = sections.with("resources",
+                             sections.at("resources").with("data", resources));
+  }
+  return logical_result.with("sections", sections);
+}
+Json compose_economics(const Json &p, std::int64_t end) {
+  if (p.contains("output"))
+    return partitioned_result(p, "compose-economics", end,
+                              [&](PartitionedOutput &output) {
+                                return compose_economics_body(p, end, &output);
+                              });
+  return persist(compose_economics_body(p, end, nullptr)
+                     .materialize({}, [end] { deadline(end); }),
+                 p, "compose-economics", end);
 }
 } // namespace symphony::sbv::detail

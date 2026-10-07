@@ -393,29 +393,7 @@ func sbvBundleRecovery(op string, request, m map[string]any) bool {
 		return false
 	}
 	if op == "bundle_import" {
-		published, p := r["manifest_published"].(bool)
-		if !p || !sbvRecoveryFields(r, "bundle_path", "manifest_path", "phase", "manifest_published", "durable", "page_files_created", "page_bytes_created", "reference") ||
-			!sbvRecoveryPath(r["bundle_path"]) || r["bundle_path"] != request["bundle_path"] ||
-			r["manifest_path"] != filepath.Join(r["bundle_path"].(string), "manifest.json") ||
-			(durable && (!published || r["phase"] != "sync_manifest")) || (published && r["reference"] == nil) {
-			return false
-		}
-		switch r["phase"] {
-		case "create_directory", "write_pages", "publish_manifest", "sync_manifest":
-		default:
-			return false
-		}
-		if (published && r["phase"] != "publish_manifest" && r["phase"] != "sync_manifest") ||
-			(r["phase"] == "sync_manifest" && !published) ||
-			((r["phase"] == "publish_manifest" || r["phase"] == "sync_manifest") && r["reference"] == nil) {
-			return false
-		}
-		for _, key := range []string{"page_files_created", "page_bytes_created"} {
-			if _, ok := sbvBundleUint(r[key]); !ok {
-				return false
-			}
-		}
-		return r["reference"] == nil || (sbvBundleReference(r["reference"]) && r["reference"].(map[string]any)["manifest_path"] == r["manifest_path"])
+		return sbvBundleWriterRecovery(r, request["bundle_path"])
 	}
 	published, p := r["published"].(bool)
 	if !p || !sbvRecoveryFields(r, "output_path", "stage_path", "phase", "published", "durable", "expected_binary") ||
@@ -444,4 +422,40 @@ func sbvBundleRecovery(op string, request, m map[string]any) bool {
 	return ok && sbvRecoveryFields(b, "reference", "format", "bytes", "file_sha256", "completion_suffix") &&
 		sbvBundleReference(b["reference"]) && reflect.DeepEqual(b["reference"], request["reference"]) && b["format"] == request["format"] &&
 		sbvRecoveryPositive(b["bytes"]) && sbvRecoverySHA(b["file_sha256"]) && sbvBundleSuffix(b["format"], b["completion_suffix"], b["reference"], nil)
+}
+
+// Shared exact writer recovery for import and partitioned producers.
+func sbvBundleWriterRecovery(value any, bundlePath any) bool {
+	r, ok := value.(map[string]any)
+	if !ok {
+		return false
+	}
+	durable, ok := r["durable"].(bool)
+	if !ok {
+		return false
+	}
+	published, p := r["manifest_published"].(bool)
+	if !p || !sbvRecoveryFields(r, "bundle_path", "manifest_path", "phase", "manifest_published", "durable", "page_files_created", "page_bytes_created", "reference") ||
+		!sbvRecoveryPath(r["bundle_path"]) || r["bundle_path"] != bundlePath ||
+		r["manifest_path"] != filepath.Join(r["bundle_path"].(string), "manifest.json") ||
+		(durable && (!published || r["phase"] != "sync_manifest")) || (published && r["reference"] == nil) {
+		return false
+	}
+	switch r["phase"] {
+	case "create_directory", "write_pages", "publish_manifest", "sync_manifest":
+	default:
+		return false
+	}
+	if (published && r["phase"] != "publish_manifest" && r["phase"] != "sync_manifest") ||
+		(r["phase"] == "sync_manifest" && !published) ||
+		((r["phase"] == "publish_manifest" || r["phase"] == "sync_manifest") && r["reference"] == nil) {
+		return false
+	}
+	for _, key := range []string{"page_files_created", "page_bytes_created"} {
+		if _, ok := sbvBundleUint(r[key]); !ok {
+			return false
+		}
+	}
+	return r["reference"] == nil || (sbvBundleReference(r["reference"]) && r["reference"].(map[string]any)["manifest_path"] == r["manifest_path"])
+
 }

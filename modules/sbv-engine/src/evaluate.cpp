@@ -12,6 +12,8 @@ namespace db = sqav::databento;
 Json event_json(const db::Mbo &, std::size_t);
 std::uint64_t end_at(std::uint64_t, std::uint64_t);
 Json evaluate(const Json &p, std::int64_t end, const Dataset *resident) {
+  if (p.contains("output"))
+    return evaluate_partitioned(p, end, resident);
   keys_optional(p,
                 {"protocol", "output_path", "census", "model", "replay",
                  "studies", "workers", "extensions"},

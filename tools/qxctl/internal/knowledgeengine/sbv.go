@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"math"
 	"path/filepath"
 	"reflect"
 	"regexp"
@@ -61,6 +62,32 @@ func SBVResource(prefix, version, operation string, templates bool) (Installatio
 	return inst, out, err
 }
 
+// SBVTemplateVariant selects an explicitly named complete request example;
+// an omitted name retains the existing legacy template exactly.
+func SBVTemplateVariant(prefix, version, operation, variant string) (Installation, json.RawMessage, error) {
+	if variant == "" {
+		return SBVResource(prefix, version, operation, true)
+	}
+	if !sbvAdministrationInterfaceAdmission[version][operation] {
+		return Installation{}, nil, fmt.Errorf("SBV operation is not admitted")
+	}
+	inst, err := InspectSBV(prefix, version)
+	if err != nil {
+		return inst, nil, err
+	}
+	m, err := sbvOwnedResourceObject(inst, "admin.templates.json")
+	if err != nil {
+		return inst, nil, err
+	}
+	variants, _ := m["variants"].(map[string]any)
+	selected, _ := variants[operation].(map[string]any)
+	if selected[variant] == nil {
+		return inst, nil, fmt.Errorf("SBV template variant unavailable")
+	}
+	out, err := sbvCanonicalControlResource(selected[variant])
+	return inst, out, err
+}
+
 func sbvCanonicalControlResource(value any) (json.RawMessage, error) {
 	out, err := SCVCanonical(value)
 	if err == nil {
@@ -78,16 +105,51 @@ func sbvOwnedResourceObject(inst Installation, name string) (map[string]any, err
 	if !ok || digest == "" {
 		return nil, fmt.Errorf("SBV resource is not in the exact interface")
 	}
-	raw, err := snvOwnedResource(inst, "share/symphony/schemas/sbv-engine/"+inst.Version+"/"+name, digest)
+	raw, err := sbvOwnedResourceBytes(inst, "share/symphony/schemas/sbv-engine/"+inst.Version+"/"+name, digest)
 	if err != nil {
 		return nil, err
 	}
 	return sbvDecodeOwnedResource(raw)
 }
 
+func sbvOwnedResourceBytes(inst Installation, path, expectedDigest string) ([]byte, error) {
+	receiptPath := "share/symphony/receipts/" + inst.ModuleID + "/" + inst.Version + "/install-receipt.json"
+	raw, err := readTrustedNoFollowRelative(inst.Prefix, receiptPath, maxReceiptBytes)
+	if err != nil {
+		return nil, err
+	}
+	var receipt receiptV2
+	if decodeExact(raw, &receipt) != nil || receipt.ReceiptDigest != inst.ReceiptDigest {
+		return nil, fmt.Errorf("SBV receipt changed")
+	}
+	for _, file := range receipt.Files {
+		if file.Path != path || file.Kind != "regular" {
+			continue
+		}
+		if file.Digest != expectedDigest || file.Size >= uint64(math.MaxInt64) {
+			return nil, fmt.Errorf("SBV resource pin or size representation mismatch")
+		}
+		// The exact owned receipt bounds this catalogue, not the process-frame
+		// byte profile. Its selected schema/template remains bounded separately.
+		data, err := readTrustedNoFollowRelative(inst.Prefix, path, int64(file.Size))
+		if err != nil {
+			return nil, err
+		}
+		if uint64(len(data)) != file.Size || digestBytes(data) != file.Digest {
+			return nil, fmt.Errorf("SBV resource differs from exact owned bytes")
+		}
+		after, err := readTrustedNoFollowRelative(inst.Prefix, receiptPath, maxReceiptBytes)
+		if err != nil || !bytes.Equal(after, raw) {
+			return nil, fmt.Errorf("SBV receipt changed during resource inspection")
+		}
+		return data, nil
+	}
+	return nil, fmt.Errorf("SBV resource is not an owned regular file")
+}
+
 // Only sbvOwnedResourceObject may supply production bytes to this decoder.
 func sbvDecodeOwnedResource(raw []byte) (map[string]any, error) {
-	if err := validateJSONObjectWithValueLimit(raw, maxRequestBytes, len(raw)); err != nil {
+	if err := validateJSONObjectWithValueLimit(raw, int64(len(raw)), len(raw)); err != nil {
 		return nil, err
 	}
 	if err := ValidateSCVBundleUnicode(raw); err != nil {
@@ -127,6 +189,9 @@ func InvokeSBV(ctx context.Context, prefix, version, cwd, operation string, payl
 	if err = sbvBundleControlPreflight(operation, p); err != nil {
 		return Response{}, err
 	}
+	if err = sbvPartitionedRequestPreflight(operation, p); err != nil {
+		return Response{}, err
+	}
 	inst, schema, err := SBVResource(prefix, version, operation, false)
 	if err != nil {
 		return Response{}, err
@@ -136,12 +201,9 @@ func InvokeSBV(ctx context.Context, prefix, version, cwd, operation string, payl
 		return Response{}, fmt.Errorf("SBV input shape rejected")
 	}
 	if operation == "dataset_execute" {
-		child, ok := p["request"].(map[string]any)
-		if !ok {
-			return Response{}, fmt.Errorf("SBV resident child request required")
-		}
-		if _, present := child["output_path"]; present {
-			return Response{}, fmt.Errorf("SBV resident child must omit output_path")
+		expanded, e := sbvExpandedResidentRequest(p)
+		if e != nil {
+			return Response{}, e
 		}
 		childOp, _ := p["operation"].(string)
 		_, childSchema, e := SBVResource(prefix, version, childOp, false)
@@ -152,11 +214,6 @@ func InvokeSBV(ctx context.Context, prefix, version, cwd, operation string, payl
 		if e != nil {
 			return Response{}, e
 		}
-		expanded := make(map[string]any, len(child)+1)
-		for k, v := range child {
-			expanded[k] = v
-		}
-		expanded["output_path"] = p["output_path"]
 		if !sbvInputShape(childShape, expanded) {
 			return Response{}, fmt.Errorf("SBV resident child shape rejected")
 		}
@@ -181,6 +238,9 @@ func InvokeSBV(ctx context.Context, prefix, version, cwd, operation string, payl
 func validateSBVResult(op string, p map[string]any, raw []byte) error {
 	if strings.HasPrefix(op, "bundle_") {
 		return ValidateSBVBundleResult(op, p, raw)
+	}
+	if handled, err := ValidateSBVPartitionedResult(op, p, raw); handled || err != nil {
+		return err
 	}
 	if handled, err := ValidateSBVRecovery(op, p, raw); handled || err != nil {
 		return err
@@ -288,7 +348,9 @@ func validateSBVResult(op string, p map[string]any, raw []byte) error {
 		}
 		storage := map[string]any{"legacy": "symphony.sbv.result.v1", "partitioned": "symphony.sbv.partitioned-result.v1",
 			"page": "symphony.sbv.result-page.v1", "stream": "symphony.sbv.node-stream.v1", "max_bundle_bytes": nil, "max_bundle_nodes": nil,
-			"logical_identity": "canonical_result_body_sha256", "physical_identity": "exact_manifest_sha256", "core_producers": "legacy_result_v1"}
+			"logical_identity": "canonical_result_body_sha256", "physical_identity": "exact_manifest_sha256", "core_producers": "explicit_legacy_or_partitioned",
+			"partitioned_producers":           []any{"run", "generate_census", "evaluate", "economics", "compose_economics"},
+			"partitioned_resident_operations": []any{"run", "generate_census", "evaluate"}}
 		if !reflect.DeepEqual(m["result_storage"], storage) {
 			return bad()
 		}
@@ -567,6 +629,9 @@ func sbvSchemaShape(schema, value any, depth int) bool {
 	for key, rule := range s {
 		base[key] = rule
 	}
+	// Examples describe complete selectable request variants. Like description,
+	// this standard annotation contributes no instance-validation constraint.
+	delete(base, "examples")
 	for _, kind := range []string{"allOf", "anyOf", "oneOf"} {
 		if raw, present := s[kind]; present {
 			terms, ok := raw.([]any)
@@ -671,6 +736,22 @@ func sbvSchemaShape(schema, value any, depth int) bool {
 		delete(base, "additionalProperties")
 	}
 	if rows, array := value.([]any); array {
+		if raw, present := s["uniqueItems"]; present {
+			unique, ok := raw.(bool)
+			if !ok {
+				return false
+			}
+			if unique {
+				seen := make(map[string]bool, len(rows))
+				for _, row := range rows {
+					encoded, err := SCVCanonical(row)
+					if err != nil || seen[string(encoded)] {
+						return false
+					}
+					seen[string(encoded)] = true
+				}
+			}
+		}
 		if rule, present := s["items"]; present {
 			for _, row := range rows {
 				if !sbvSchemaShape(rule, row, depth+1) {
@@ -687,6 +768,7 @@ func sbvSchemaShape(schema, value any, depth int) bool {
 		delete(base, "minItems")
 		delete(base, "maxItems")
 	}
+	delete(base, "uniqueItems")
 	if _, text := value.(string); text {
 		// Conjunctive constraints need not repeat a type declaration.
 		if _, present := base["type"]; !present {
