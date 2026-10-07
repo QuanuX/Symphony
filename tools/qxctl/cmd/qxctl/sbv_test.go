@@ -66,6 +66,39 @@ type brokenSBVWriter struct {
 	bytes.Buffer
 }
 
+func TestSBVRecoveryRenderingPreservesEvidenceAndExit(t *testing.T) {
+	// Rendering fixture only; closed contract admission is tested in the consumer.
+	raw := []byte(`{"protocol":"symphony.sbv.source-export.v1","status":"recovery_required","code":"sbv.source_export_unpublished","recovery":{"binary_publication_confirmed":true,"path":"/user/selected.dbn"}}`)
+	for _, format := range []string{"json", "text", "ndjson"} {
+		t.Run(format, func(t *testing.T) {
+			var got, want bytes.Buffer
+			if err := renderSBV(&want, raw, format); err != nil {
+				t.Fatal(err)
+			}
+			err := renderSBVInvocation(&got, raw, format)
+			var status *exactEvidenceExitError
+			if !errors.As(err, &status) || status.code != 5 {
+				t.Fatalf("lost recovery exit: %v", err)
+			}
+			if got.String() != want.String() {
+				t.Fatal("recovery evidence changed during rendering")
+			}
+			if exit := finishCommandError(nil, nil, nil, err); exit != 5 {
+				t.Fatalf("root changed exit to %d", exit)
+			}
+		})
+	}
+	w := &brokenSBVWriter{}
+	var status *exactEvidenceExitError
+	if err := renderSBVInvocation(w, raw, "json"); err == nil || errors.As(err, &status) {
+		t.Fatal("failed output claimed complete evidence")
+	}
+	var completed bytes.Buffer
+	if err := renderSBVInvocation(&completed, []byte(`{"status":"complete"}`), "json"); err != nil {
+		t.Fatal(err)
+	}
+}
+
 func (w *brokenSBVWriter) Write(p []byte) (int, error) {
 	if w.remaining == 0 {
 		return 0, errors.New("closed")

@@ -408,6 +408,9 @@ Json economics(const Json &p, std::int64_t end) {
                                  {"choices", sections.at("choices")},
                                  {"provenance", sections.at("provenance")},
                                  {"reference", reference}});
+  if (sections.at("resources").at("data").contains("dataset_feed"))
+    s["source_context"]["data"]["dataset_feed"] =
+        sections.at("resources").at("data").at("dataset_feed");
   if (native_provider_model)
     s["source_context"]["data"]["provider"] =
         sections.at("provider").at("data");

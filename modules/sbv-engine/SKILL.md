@@ -32,3 +32,5 @@ conditioning. Explicitly choose independent or joint dependence, marginal policy
 state arithmetic/domain, optional resource constraints and studies. Inspect
 unavailable distribution findings; never treat them as zero outcomes. Original
 replay references remain observed evidence separate from economic trajectories.
+
+For offline source retention, discover `source_retain` and `source_export` schemas/templates and capabilities.source_owner_profile. Supply actual declared capture/acquisition/access evidence and exact owner options; preserve them for exact reopen. Use one complete file source tuple or one retained_source selection. Acknowledge Dataset admission only when explicitly selected; this does not claim a completed backtest. Export original/capture/manifest bytes to new paths outside the selected store. On recovery_required, retain typed evidence and inspect/reconcile selected destinations before any caller-approved retry. SDK transport success is not publication success. This profile imposes no default deadline or general file/RAM dataset cap.

@@ -137,7 +137,7 @@ func TestSBVInstalledNativeProvider(t *testing.T) {
 		if !sqvTransportShape(defs["native_model_evidence"], data(result, "provider"), 0) {
 			t.Fatal("native model evidence schema mismatch")
 		}
-		if !sqvTransportShape(sbvBindOpenObjects(defs["native_provider_census"], data(result, "census").(map[string]any)["declaration"], 0), data(result, "census").(map[string]any)["declaration"], 0) {
+		if !sbvSchemaShape(defs["native_provider_census"], data(result, "census").(map[string]any)["declaration"], 0) {
 			t.Fatal("native provider declaration schema mismatch")
 		}
 		for _, row := range data(result, "execution").([]any) {

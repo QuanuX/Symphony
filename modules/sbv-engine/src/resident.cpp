@@ -301,11 +301,12 @@ Json launch(const Json &w) {
 void control_shape(const std::string &op, const Json &p) {
   if (op == "dataset_load") {
     keys_optional(p,
-                  {"protocol", "directory", "instance_id", "source_path",
-                   "source_sha256", "dataset", "memory_budget_bytes",
-                   "residency", "max_concurrent_jobs", "worker_budget",
-                   "idle_timeout_ms"},
-                  {"dataset_limits"});
+                  {"protocol", "directory", "instance_id",
+                   "memory_budget_bytes", "residency", "max_concurrent_jobs",
+                   "worker_budget", "idle_timeout_ms"},
+                  {"dataset_limits", "source_path", "source_sha256", "dataset",
+                   "retained_source"});
+    (void)dataset_source_selection(p);
     need(p.at("residency") == "pageable" || p.at("residency") == "locked",
          "residency must be pageable or locked");
     need(p.at("memory_budget_bytes").is_null() ||
@@ -425,7 +426,7 @@ int resident_worker() {
     auto status = [&](const std::string &op, const std::string &state) {
       auto slug = op;
       std::replace(slug.begin(), slug.end(), '_', '-');
-      return Json{
+      Json result{
           {"protocol", "symphony.sbv." + slug + ".v1"},
           {"engine_version", version},
           {"state", state},
@@ -449,6 +450,11 @@ int resident_worker() {
           {"max_concurrent_jobs", dec(max_jobs)},
           {"worker_budget", dec(budget)},
           {"idle_timeout_ms", dec(idle)}};
+      if (!data->source_delivery.is_null()) {
+        result["source_delivery"] = data->source_delivery;
+        result["load_buffer_scope"] = data->load_buffer_scope;
+      }
+      return result;
     };
     send(STDIN_FILENO, success(status("dataset_load", "ready")), startup_end);
     need(receive(STDIN_FILENO, startup_end) == Json{{"ready", true}},

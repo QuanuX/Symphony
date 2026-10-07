@@ -983,6 +983,117 @@
         "extensions": {}
       },
       "extensions": {}
+    },
+    "source_retain": {
+      "access_evidence": {
+        "evidence_ref": "retained source; no new authorization assertion",
+        "producer_ref": "caller:user-research"
+      },
+      "capture_description": {
+        "attempt_id": "caller-selected-attempt",
+        "attribution_ref": "caller:SBV-offline-tests",
+        "coverage": "partial",
+        "coverage_evidence_ref": "native test declaration",
+        "coverage_scope": "record-limited retained source; not a complete market interval",
+        "source": {
+          "access_scope": "private:user-research",
+          "adapter_ref": "caller-declaration",
+          "adapter_version": "caller-declaration",
+          "dataset_id": "GLBX.MDP3",
+          "dataset_revision": "provider-revision-unspecified",
+          "interface_ref": "retained-local-DBN-file",
+          "interface_version": "offline-import.v1",
+          "native_encoding_ref": "databento:dbn-v3-uncompressed",
+          "native_schema_ref": "databento:mbo",
+          "operation": "offline-file-admission",
+          "provider_ref": "databento",
+          "selection_ref": "caller-selected-source-evidence"
+        },
+        "source_position": "",
+        "source_record_count": null,
+        "times": [
+          {
+            "clock_ref": "caller-selected-clock",
+            "evidence_ref": "caller-selected-time-evidence; not inferred provider acquisition",
+            "format_ref": "ISO8601",
+            "precision_ref": "second",
+            "role": "acquisition",
+            "value": "caller-selected-offline-admission-time"
+          }
+        ]
+      },
+      "extensions": {},
+      "limits": {
+        "capture": {
+          "max_capture_bytes": "8388608",
+          "max_field_bytes": "4096",
+          "max_metadata_bytes": "16384"
+        },
+        "dbn": {
+          "max_file_bytes": "8388608",
+          "max_metadata_bytes": "1048576",
+          "max_records": "1048576"
+        },
+        "flow": {
+          "global_allocation_bytes": "67108864",
+          "max_descriptor_bytes": "4096",
+          "max_frame_bytes": "8396800",
+          "max_payload_bytes": "8388608",
+          "max_ports": "4"
+        },
+        "metadata": {
+          "max_evidence_refs": "128",
+          "max_field_bytes": "4096",
+          "max_manifest_bytes": "65536"
+        },
+        "store": {
+          "max_batches": "4",
+          "max_frame_bytes": "8396800",
+          "max_store_bytes": "33554432"
+        }
+      },
+      "output_path": "/absolute/user-results/source.json",
+      "owner_profile": "sqv-local-retained-capture.v1",
+      "protocol": "symphony.sbv.source-retain-input.v1",
+      "retention": {
+        "batch_sequence": "7",
+        "first_sequence": "7",
+        "mode": "create",
+        "partition": "selected-partition",
+        "producer_generation": "00000000000000000000000000000001",
+        "root": "/absolute/private-owner-store",
+        "store_generation": "00000000000000000000000000000002"
+      },
+      "source": {
+        "path": "/absolute/user-data/original.dbn",
+        "expected_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+        "dataset": "GLBX.MDP3"
+      }
+    },
+    "source_export": {
+      "protocol": "symphony.sbv.source-export-input.v1",
+      "retained_source": {
+        "reference": {
+          "path": "/absolute/user-results/source.json",
+          "expected_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+          "pointer": "/sections/source/data"
+        },
+        "delivery": {
+          "profile": "retained_before_delivery",
+          "view_id": "caller-selected-view",
+          "recipient_id": "caller-selected-recipient",
+          "recipient_interface": "symphony.sbv.source-export.v1",
+          "first_sequence": "7",
+          "outstanding_byte_credit": "8388608",
+          "max_unacknowledged_batches": "1",
+          "processed_ack": "none",
+          "checkpoint": null
+        }
+      },
+      "kind": "original",
+      "output_path": "/absolute/user-exports/original.dbn",
+      "receipt_path": "/absolute/user-results/source-export.json",
+      "extensions": {}
     }
   }
 }

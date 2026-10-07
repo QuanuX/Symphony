@@ -153,7 +153,9 @@
         "tools/qxctl/internal/knowledgeengine/sbv_models_test.go",
         "tools/qxctl/internal/knowledgeengine/sbv_planning_test.go",
         "tools/qxctl/internal/knowledgeengine/sbv_provider_test.go",
+        "tools/qxctl/internal/knowledgeengine/sbv_recovery_test.go",
         "tools/qxctl/internal/knowledgeengine/sbv_research_test.go",
+        "tools/qxctl/internal/knowledgeengine/sbv_sources_test.go",
         "tools/qxctl/internal/knowledgeengine/sbv_split_test.go",
         "tools/qxctl/internal/knowledgeengine/sbv_test.go"
       ],
@@ -167,7 +169,8 @@
       ],
       "implementation_paths": [
         "tools/qxctl/cmd/qxctl/sbv.go",
-        "tools/qxctl/internal/knowledgeengine/sbv.go"
+        "tools/qxctl/internal/knowledgeengine/sbv.go",
+        "tools/qxctl/internal/knowledgeengine/sbv_recovery.go"
       ],
       "kind": "subfeature",
       "non_claims": [
@@ -186,7 +189,7 @@
       "source_scope": "tools/qxctl",
       "status": "experimental",
       "title": "SBV terminal control and portable results",
-      "what": "Administer all implemented SBV operations and display/export every retained result field.",
+      "what": "Administer all implemented SBV operations and display/export every retained result field. Optional offline source ownership composes exact native SQAV/SQMV/SQFV/SQPV/SQDV interfaces, feeds file or retained originals into the same Dataset/RAM path, exports original/capture/manifest bytes, and carries explicit acknowledgement, release and publication-recovery evidence through terminal and SDK results.",
       "when": "Explicit bounded caller-selected invocation.",
       "where": "qxctl snv on the selected administrative Node, outside hot and warm execution paths.",
       "who": "Operators, agents, automation and other callers operating within effective host permissions.",

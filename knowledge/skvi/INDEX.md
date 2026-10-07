@@ -23286,3 +23286,115 @@ automatic nested fitting and cross-run holdout history remain unimplemented.
 - deferred_projections: Broader candidate acceptance remains a separate gate.
 - notes: Provider evidence and selected concurrency retain the same census.
 - status: canonical
+
+### SBV offline source ownership source_owners.hpp
+
+- path: `modules/sbv-engine/src/source_owners.hpp`
+- title: Optional retained original data and portable delivery evidence
+- surface_type: implementation contract or test
+- truth_role: Exact owner composition, dataset admission and recoverable publication
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.21 offline SQAV/SQMV/SQFV/SQPV/SQDV composition.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, SDK and independent result consumers
+- deferred_projections: Fresh acquisition, durable delivery checkpoints and unbounded owner profiles remain separate work.
+- notes: Selected route limits do not restrict ordinary file/RAM datasets. Publication uncertainty preserves typed evidence.
+- status: canonical
+
+### SBV offline source ownership source_owners.cpp
+
+- path: `modules/sbv-engine/src/source_owners.cpp`
+- title: Optional retained original data and portable delivery evidence
+- surface_type: implementation contract or test
+- truth_role: Exact owner composition, dataset admission and recoverable publication
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.21 offline SQAV/SQMV/SQFV/SQPV/SQDV composition.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, SDK and independent result consumers
+- deferred_projections: Fresh acquisition, durable delivery checkpoints and unbounded owner profiles remain separate work.
+- notes: Selected route limits do not restrict ordinary file/RAM datasets. Publication uncertainty preserves typed evidence.
+- status: canonical
+
+### SBV offline source ownership source_owners_test.cpp
+
+- path: `modules/sbv-engine/tests/source_owners_test.cpp`
+- title: Optional retained original data and portable delivery evidence
+- surface_type: implementation contract or test
+- truth_role: Exact owner composition, dataset admission and recoverable publication
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.21 offline SQAV/SQMV/SQFV/SQPV/SQDV composition.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, SDK and independent result consumers
+- deferred_projections: Fresh acquisition, durable delivery checkpoints and unbounded owner profiles remain separate work.
+- notes: Selected route limits do not restrict ordinary file/RAM datasets. Publication uncertainty preserves typed evidence.
+- status: canonical
+
+### SBV offline source ownership source_dataset_test.cpp
+
+- path: `modules/sbv-engine/tests/source_dataset_test.cpp`
+- title: Optional retained original data and portable delivery evidence
+- surface_type: implementation contract or test
+- truth_role: Exact owner composition, dataset admission and recoverable publication
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.21 offline SQAV/SQMV/SQFV/SQPV/SQDV composition.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, SDK and independent result consumers
+- deferred_projections: Fresh acquisition, durable delivery checkpoints and unbounded owner profiles remain separate work.
+- notes: Selected route limits do not restrict ordinary file/RAM datasets. Publication uncertainty preserves typed evidence.
+- status: canonical
+
+### SBV offline source ownership fixture_requests.hpp
+
+- path: `modules/sbv-engine/tests/fixture_requests.hpp`
+- title: Optional retained original data and portable delivery evidence
+- surface_type: implementation contract or test
+- truth_role: Exact owner composition, dataset admission and recoverable publication
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.21 offline SQAV/SQMV/SQFV/SQPV/SQDV composition.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, SDK and independent result consumers
+- deferred_projections: Fresh acquisition, durable delivery checkpoints and unbounded owner profiles remain separate work.
+- notes: Selected route limits do not restrict ordinary file/RAM datasets. Publication uncertainty preserves typed evidence.
+- status: canonical
+
+### SBV offline source ownership sbv_sources_test.go
+
+- path: `tools/qxctl/internal/knowledgeengine/sbv_sources_test.go`
+- title: Optional retained original data and portable delivery evidence
+- surface_type: implementation contract or test
+- truth_role: Exact owner composition, dataset admission and recoverable publication
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.21 offline SQAV/SQMV/SQFV/SQPV/SQDV composition.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, SDK and independent result consumers
+- deferred_projections: Fresh acquisition, durable delivery checkpoints and unbounded owner profiles remain separate work.
+- notes: Selected route limits do not restrict ordinary file/RAM datasets. Publication uncertainty preserves typed evidence.
+- status: canonical
+
+### SBV offline source ownership sbv_recovery.go
+
+- path: `tools/qxctl/internal/knowledgeengine/sbv_recovery.go`
+- title: Optional retained original data and portable delivery evidence
+- surface_type: implementation contract or test
+- truth_role: Exact owner composition, dataset admission and recoverable publication
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.21 offline SQAV/SQMV/SQFV/SQPV/SQDV composition.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, SDK and independent result consumers
+- deferred_projections: Fresh acquisition, durable delivery checkpoints and unbounded owner profiles remain separate work.
+- notes: Selected route limits do not restrict ordinary file/RAM datasets. Publication uncertainty preserves typed evidence.
+- status: canonical
+
+### SBV offline source ownership sbv_recovery_test.go
+
+- path: `tools/qxctl/internal/knowledgeengine/sbv_recovery_test.go`
+- title: Optional retained original data and portable delivery evidence
+- surface_type: implementation contract or test
+- truth_role: Exact owner composition, dataset admission and recoverable publication
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.21 offline SQAV/SQMV/SQFV/SQPV/SQDV composition.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, SDK and independent result consumers
+- deferred_projections: Fresh acquisition, durable delivery checkpoints and unbounded owner profiles remain separate work.
+- notes: Selected route limits do not restrict ordinary file/RAM datasets. Publication uncertainty preserves typed evidence.
+- status: canonical

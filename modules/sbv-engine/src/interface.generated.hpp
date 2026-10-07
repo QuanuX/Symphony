@@ -3,7 +3,7 @@
 #include "symphony/knowledge/engine/operation.hpp"
 namespace symphony::sbv::interface {
 namespace engine = symphony::knowledge::engine;
-inline constexpr auto version = "0.20.0-dev";
+inline constexpr auto version = "0.21.0-dev";
 inline std::vector<engine::OperationSpec> interface_operations() { return {
   {"engop:symphony:sbv.capabilities", "capabilities", "implemented", false, true, {"ssfv:symphony:sbv-engine"}, {"discover"}, "qxctl_required", "symphony.sbv.capabilities-input.v1", "symphony.sbv.capabilities.v1", "read_only", "idempotent", false, "none", "", "supported", "freezing"},
   {"engop:symphony:sbv.run", "run", "implemented", false, true, {"ssfv:symphony:sbv-engine"}, {"invoke"}, "qxctl_required", "symphony.sbv.run-input.v1", "symphony.sbv.run.v1", "permission_backed_mutation", "non_idempotent", false, "target_host_permission", "engop:symphony:sbv.result-inspect", "supported", "freezing"},
@@ -35,5 +35,7 @@ inline std::vector<engine::OperationSpec> interface_operations() { return {
   {"engop:symphony:sbv.compose-economics", "compose_economics", "implemented", false, true, {"ssfv:symphony:sbv-engine"}, {"invoke"}, "qxctl_required", "symphony.sbv.compose-economics-input.v1", "symphony.sbv.compose-economics.v1", "permission_backed_mutation", "non_idempotent", false, "target_host_permission", "engop:symphony:sbv.result-inspect", "supported", "freezing"},
   {"engop:symphony:sbv.generate-census", "generate_census", "implemented", false, true, {"ssfv:symphony:sbv-engine"}, {"invoke"}, "qxctl_required", "symphony.sbv.generate-census-input.v1", "symphony.sbv.generate-census.v1", "permission_backed_mutation", "non_idempotent", false, "target_host_permission", "engop:symphony:sbv.result-inspect", "supported", "freezing"},
   {"engop:symphony:sbv.provider-inspect", "provider_inspect", "implemented", false, true, {"ssfv:symphony:sbv-engine"}, {"discover"}, "qxctl_required", "symphony.sbv.provider-inspect-input.v1", "symphony.sbv.provider-inspect.v1", "read_only", "non_idempotent", false, "none", "", "supported", "freezing"},
+  {"engop:symphony:sbv.source-retain", "source_retain", "implemented", false, true, {"ssfv:symphony:sbv-engine"}, {"invoke"}, "qxctl_required", "symphony.sbv.source-retain-input.v1", "symphony.sbv.source-retain.v1", "permission_backed_mutation", "non_idempotent", false, "target_host_permission", "engop:symphony:sbv.result-inspect", "supported", "freezing"},
+  {"engop:symphony:sbv.source-export", "source_export", "implemented", false, true, {"ssfv:symphony:sbv-engine"}, {"invoke"}, "qxctl_required", "symphony.sbv.source-export-input.v1", "symphony.sbv.source-export.v1", "permission_backed_mutation", "non_idempotent", false, "target_host_permission", "engop:symphony:sbv.result-inspect", "supported", "freezing"},
 }; }
 }

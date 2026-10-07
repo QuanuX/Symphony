@@ -4,10 +4,9 @@
 
 namespace symphony::sbv::detail {
 Json generate_census(const Json &p, std::int64_t end, const Dataset *resident) {
-  keys_optional(p,
-                {"protocol", "source_path", "source_sha256", "dataset",
-                 "provider", "output_path", "extensions"},
-                {"memory_budget_bytes", "dataset_limits"});
+  keys_optional(p, {"protocol", "provider", "output_path", "extensions"},
+                {"memory_budget_bytes", "dataset_limits", "source_path",
+                 "source_sha256", "dataset", "retained_source"});
   need(p.at("extensions").is_object(), "extensions object required");
   const auto &selection = p.at("provider");
   need(selection.at("role") == "strategy" &&
@@ -120,7 +119,7 @@ Json generate_census(const Json &p, std::int64_t end, const Dataset *resident) {
   s["provenance"] = section(
       {{"engine_version", version},
        {"source_sha256", source.sha256},
-       {"source_path", p.at("source_path")},
+       {"source_path", source.path},
        {"dataset", source.dataset_name},
        {"adapter", sqav::databento::adapter_id},
        {"adapter_version", sqav::databento::adapter_version},

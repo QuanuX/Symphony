@@ -233,6 +233,8 @@ Json census_evidence(const Json &result) {
   } else
     c = external(choices.at("census"), p);
   validate(c);
+  const auto selected_source =
+      dataset_result_identity(choices, p, s.at("resources").at("data"));
   need(c.at("signals") == s.at("signals").at("data") &&
            summary.at("closed_census") == true &&
            u64(summary.at("signal_count")) == c.at("signals").size() &&
@@ -240,8 +242,8 @@ Json census_evidence(const Json &result) {
            c.at("source_sha256") == p.at("source_sha256") &&
            c.at("dataset") == p.at("dataset") &&
            c.at("instrument_id") == p.at("instrument_id") &&
-           c.at("source_sha256") == choices.at("source_sha256") &&
-           c.at("dataset") == choices.at("dataset"),
+           c.at("source_sha256") == selected_source.at("source_sha256") &&
+           c.at("dataset") == selected_source.at("dataset"),
        "result and census evidence disagree");
   if (p.contains("census_sha256"))
     need(p.at("census_sha256") == c.at("census_sha256"),

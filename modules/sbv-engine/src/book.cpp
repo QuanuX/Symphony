@@ -82,11 +82,11 @@ Json load_result(const Json &ref, std::int64_t end) {
 } // namespace
 Json book(const Json &p, std::int64_t end, const Dataset *resident) {
   keys_optional(p,
-                {"protocol", "source_path", "source_sha256", "dataset",
-                 "census_result", "signal_ids", "output_path", "initial_state",
-                 "on_anomaly", "replay", "frames", "emit_checkpoint",
-                 "extensions"},
-                {"memory_budget_bytes", "dataset_limits"});
+                {"protocol", "census_result", "signal_ids", "output_path",
+                 "initial_state", "on_anomaly", "replay", "frames",
+                 "emit_checkpoint", "extensions"},
+                {"memory_budget_bytes", "dataset_limits", "source_path",
+                 "source_sha256", "dataset", "retained_source"});
   need(p.at("extensions").is_object() && p.at("emit_checkpoint").is_boolean(),
        "invalid book choices");
   const auto policy = str(p.at("on_anomaly"));
@@ -117,8 +117,8 @@ Json book(const Json &p, std::int64_t end, const Dataset *resident) {
   const auto &ps = parent.at("sections"),
              &prov = ps.at("provenance").at("data"),
              &signals = admitted.at("signals");
-  need(prov.at("source_sha256") == p.at("source_sha256") &&
-           prov.at("dataset") == p.at("dataset") &&
+  need(prov.at("source_sha256") == source.sha256 &&
+           prov.at("dataset") == source.dataset_name &&
            prov.at("instrument_id") == dec(events[0].instrument_id) &&
            ps.at("summary").at("data").at("closed_census") == true &&
            signals.is_array(),
@@ -182,8 +182,8 @@ Json book(const Json &p, std::int64_t end, const Dataset *resident) {
   need(static_cast<std::uint64_t>(
            std::count(wanted.begin(), wanted.end(), true)) <= maximum,
        "frame limit exceeded; choose a smaller window or signals cadence");
-  const Json binding{{"source_sha256", p.at("source_sha256")},
-                     {"dataset", p.at("dataset")},
+  const Json binding{{"source_sha256", source.sha256},
+                     {"dataset", source.dataset_name},
                      {"publisher_id", dec(events[0].publisher_id)},
                      {"instrument_id", dec(events[0].instrument_id)},
                      {"channel_id", dec(events[0].channel_id)}};
@@ -412,7 +412,7 @@ Json book(const Json &p, std::int64_t end, const Dataset *resident) {
   s["provenance"] =
       section({{"engine_version", version},
                {"binding", binding},
-               {"source_path", p.at("source_path")},
+               {"source_path", source.path},
                {"adapter", db::adapter_id},
                {"adapter_version", db::adapter_version},
                {"dbn_version", dec(source.metadata.version)},

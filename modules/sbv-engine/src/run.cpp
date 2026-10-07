@@ -36,10 +36,10 @@ U end_at(U t, U delta) {
 }
 Json run(const Json &p, std::int64_t end, const Dataset *resident) {
   keys_optional(p,
-                {"protocol", "source_path", "source_sha256", "dataset",
-                 "output_path", "criteria", "replay", "execution", "studies",
-                 "workers", "extensions"},
-                {"memory_budget_bytes", "dataset_limits"});
+                {"protocol", "output_path", "criteria", "replay", "execution",
+                 "studies", "workers", "extensions"},
+                {"memory_budget_bytes", "dataset_limits", "source_path",
+                 "source_sha256", "dataset", "retained_source"});
   const auto &c = p.at("criteria");
   keys(c, {"rule", "spacing_ns", "min_trade_size", "direction", "max_signals"});
   auto rule = str(c.at("rule")), direction = str(c.at("direction"));
@@ -374,9 +374,9 @@ Json run(const Json &p, std::int64_t end, const Dataset *resident) {
   s["choices"] = section(choices);
   const auto &meta = source.metadata;
   s["provenance"] = section(
-      {{"source_path", p.at("source_path")},
-       {"source_sha256", p.at("source_sha256")},
-       {"dataset", p.at("dataset")},
+      {{"source_path", source.path},
+       {"source_sha256", source.sha256},
+       {"dataset", source.dataset_name},
        {"adapter", db::adapter_id},
        {"adapter_version", db::adapter_version},
        {"dbn_version", dec(meta.version)},

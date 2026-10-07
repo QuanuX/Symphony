@@ -212,6 +212,10 @@ Json descriptor() {
   r["contract_versions"].push_back("symphony.sbv.census-evidence.v1");
   r["contract_versions"].push_back("symphony.sbv.native-provider-census.v1");
   r["contract_versions"].push_back("symphony.sbv.native-provider-evidence.v1");
+  r["contract_versions"].push_back("symphony.sbv.retained-source.v1");
+  r["contract_versions"].push_back("symphony.sbv.source-delivery.v1");
+  r["contract_versions"].push_back("symphony.sbv.source-binary-receipt.v1");
+  r["contract_versions"].push_back("symphony.sbv.source-owner-profile.v1");
   r["descriptor_digest"] = e::tagged_sha256(r.dump());
   return r;
 }
@@ -239,6 +243,9 @@ Json dispatch(const std::string &op, const Json &p, std::int64_t end) {
           {"shared_library", true},
           {"bindings", Json::array({"c", "cpp"})},
           {"request_protocol", e::process_protocol_v2}}},
+        {"source_owner_profile", d::source_owner_profile()},
+        {"data_source_modes",
+         Json::array({"file", "retained_source", "resident"})},
         {"resident_data",
          {{"available", true},
           {"scope", "local immutable decoded DBN"},
@@ -290,6 +297,10 @@ Json dispatch(const std::string &op, const Json &p, std::int64_t end) {
     return d::compose(p, end);
   if (op == "compose_joint")
     return d::compose_joint(p, end);
+  if (op == "source_retain")
+    return d::source_retain(p, end);
+  if (op == "source_export")
+    return d::source_export(p, end);
   if (op == "provider_inspect")
     return d::provider_inspect(p, end);
   if (op == "generate_census")

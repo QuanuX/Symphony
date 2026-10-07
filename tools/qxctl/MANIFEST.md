@@ -2,6 +2,10 @@
 
 ## Canonical Surfaces
 
+- `tools/qxctl/internal/knowledgeengine/sbv_sources_test.go`
+- `tools/qxctl/internal/knowledgeengine/sbv_recovery.go`
+- `tools/qxctl/internal/knowledgeengine/sbv_recovery_test.go`
+
 - `tools/qxctl/internal/knowledgeengine/sbv_provider_test.go`
 
 - `tools/qxctl/internal/knowledgeengine/sbv_census_test.go`

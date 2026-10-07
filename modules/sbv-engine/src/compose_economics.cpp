@@ -106,10 +106,17 @@ Json economic_census(const Json &result) {
     validate_native_provider_model_context(parent_choices.at("model"),
                                            context.at("provider"),
                                            s.at("execution").at("data"));
+  // Re-admit the retained original identity from saved evidence only. Older
+  // economic contexts predate dataset_feed and keep their legacy file profile.
+  const auto parent_identity = dataset_result_identity(
+      parent_choices, parent_provenance,
+      context.contains("dataset_feed")
+          ? Json{{"dataset_feed", context.at("dataset_feed")}}
+          : Json(nullptr));
   need(c.at("census_sha256") == summary.at("source_census_sha256") &&
-           c.at("source_sha256") == parent_choices.at("source_sha256") &&
+           c.at("source_sha256") == parent_identity.at("source_sha256") &&
            c.at("source_sha256") == parent_provenance.at("source_sha256") &&
-           c.at("dataset") == parent_choices.at("dataset") &&
+           c.at("dataset") == parent_identity.at("dataset") &&
            c.at("dataset") == parent_provenance.at("dataset") &&
            c.at("instrument_id") == parent_provenance.at("instrument_id") &&
            c.at("census_sha256") == parent_provenance.at("census_sha256") &&

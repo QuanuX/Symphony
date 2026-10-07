@@ -985,6 +985,8 @@
             "qxcmd:symphony:sbv.resample",
             "qxcmd:symphony:sbv.research.history",
             "qxcmd:symphony:sbv.run",
+            "qxcmd:symphony:sbv.source.export",
+            "qxcmd:symphony:sbv.source.retain",
             "qxcmd:symphony:sbv.split"
           ],
           "delivery": "direct",
@@ -1011,6 +1013,8 @@
             "engop:symphony:sbv.resample",
             "engop:symphony:sbv.research-history",
             "engop:symphony:sbv.run",
+            "engop:symphony:sbv.source-export",
+            "engop:symphony:sbv.source-retain",
             "engop:symphony:sbv.split"
           ],
           "evidence": [
@@ -2926,6 +2930,8 @@
             "qxcmd:symphony:sbv.resample",
             "qxcmd:symphony:sbv.research.history",
             "qxcmd:symphony:sbv.run",
+            "qxcmd:symphony:sbv.source.export",
+            "qxcmd:symphony:sbv.source.retain",
             "qxcmd:symphony:sbv.split"
           ],
           "delivery": "direct",
@@ -2952,6 +2958,8 @@
             "engop:symphony:sbv.resample",
             "engop:symphony:sbv.research-history",
             "engop:symphony:sbv.run",
+            "engop:symphony:sbv.source-export",
+            "engop:symphony:sbv.source-retain",
             "engop:symphony:sbv.split"
           ],
           "evidence": [
@@ -9773,6 +9781,6 @@
   "profile_id": "symphony.registered-features.administration.v1",
   "protocol": "symphony.knowledge.feature-administration-profile.v1",
   "registered_feature_count": 141,
-  "ssfv_registry_digest": "sha256:bb93e64ea3b5706d83c3c33898e25ed65a86cee3804213ef6dbeca2ab7db64fa",
-  "profile_digest": "sha256:755cf4ef27438444494136343fbee65539ea26fe6ecd4a66b6a2afee29c6dc41"
+  "ssfv_registry_digest": "sha256:b19665eb0cfd9e6843df4538e0b4896e4088957aa3522740a6c2597e4d38727e",
+  "profile_digest": "sha256:221b31a755b989d91fb870754faa2699beed275ee6ffd77e59776d91fba06355"
 }

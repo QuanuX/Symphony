@@ -14,12 +14,20 @@ struct Dataset {
   Json limits_evidence() const;
   Json resident_identity = nullptr;
   bool book_compatible = true, locked = false;
+  Json source_selection = Json::object(), source_delivery = nullptr;
+  std::string load_buffer_scope;
   Dataset() = default;
   Dataset(const Dataset &) = delete;
   ~Dataset();
   void bind(const Json &) const;
   Json evidence(bool resident) const;
 };
+// Exactly one file identity tuple or retained_source, with no I/O.
+Json dataset_source_selection(const Json &);
+// Validate retained result choices/delivery against normalized provenance
+// without reopening any source, original path, store or provider.
+Json dataset_result_identity(const Json &choices, const Json &provenance,
+                             const Json &resources);
 std::unique_ptr<Dataset> load_dataset(const Json &, std::int64_t,
                                       bool lock = false);
 } // namespace symphony::sbv::detail

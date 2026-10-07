@@ -499,6 +499,14 @@ Json split(const Json &p, std::int64_t end) {
   s["source_context"] =
       section({{"choices", source.at("sections").at("choices")},
                {"provenance", source.at("sections").at("provenance")}});
+  const auto &parent = source.at("sections");
+  if (parent.at("resources").at("data").contains("dataset_feed"))
+    s["source_context"]["data"]["dataset_feed"] =
+        parent.at("resources").at("data").at("dataset_feed");
+  else if (parent.contains("source_context") &&
+           parent.at("source_context").at("data").contains("dataset_feed"))
+    s["source_context"]["data"]["dataset_feed"] =
+        parent.at("source_context").at("data").at("dataset_feed");
   s["user_extensions"] = section(p.at("extensions"));
   return persist(std::move(result), p, "split", end);
 }

@@ -11,7 +11,7 @@ import (
 	"strings"
 )
 
-var SBVOperations = []string{"capabilities", "run", "compose", "result_inspect", "result_query", "evaluate", "catalogue", "compose_joint", "economics", "book", "liquidity", "allocation_economics", "result_select", "backend_plan", "live_plan", "analyze", "compare", "resample", "experiment", "split", "fit", "predict", "generate_census", "provider_inspect", "compose_economics", "research_history", "dataset_load", "dataset_inspect", "dataset_execute", "dataset_release"}
+var SBVOperations = []string{"capabilities", "run", "compose", "result_inspect", "result_query", "evaluate", "catalogue", "compose_joint", "economics", "book", "liquidity", "allocation_economics", "result_select", "backend_plan", "live_plan", "analyze", "compare", "resample", "experiment", "split", "fit", "predict", "source_retain", "source_export", "generate_census", "provider_inspect", "compose_economics", "research_history", "dataset_load", "dataset_inspect", "dataset_execute", "dataset_release"}
 var sbvSHA = regexp.MustCompile(`^[0-9a-f]{64}$`)
 
 func sbvSpec() engineSpec {
@@ -120,6 +120,9 @@ func InvokeSBV(ctx context.Context, prefix, version, cwd, operation string, payl
 	return r, nil
 }
 func validateSBVResult(op string, p map[string]any, raw []byte) error {
+	if handled, err := ValidateSBVRecovery(op, p, raw); handled || err != nil {
+		return err
+	}
 	m, err := sqavObject(raw, maxResponseBytes)
 	if err != nil {
 		return err
@@ -176,6 +179,29 @@ func validateSBVResult(op string, p map[string]any, raw []byte) error {
 		if m["source_reads"] != "1" || m["decode_passes"] != "1" || (m["residency"] != "pageable" && m["residency"] != "locked") {
 			return bad()
 		}
+		if delivery, present := m["source_delivery"]; present {
+			identity, err := sbvRetainedDeliveryIdentity(delivery)
+			if err != nil {
+				return bad()
+			}
+			for _, k := range []string{"source_path", "source_sha256", "dataset"} {
+				if m[k] != identity[k] {
+					return bad()
+				}
+			}
+			if m["load_buffer_scope"] != "original byte span plus decoded event allocation; excludes owner capture/batch/store/delivery allocations" {
+				return bad()
+			}
+			if op == "dataset_load" {
+				selected, ok := p["retained_source"].(map[string]any)
+				captured := delivery.(map[string]any)
+				if !ok || !reflect.DeepEqual(selected["reference"], captured["reference"]) || !reflect.DeepEqual(selected["delivery"], captured["choices"]) {
+					return bad()
+				}
+			}
+		} else if _, selected := p["retained_source"]; selected || m["load_buffer_scope"] != nil {
+			return bad()
+		}
 		if op == "dataset_load" {
 			wantLimits, present := p["dataset_limits"]
 			if !present {
@@ -184,7 +210,11 @@ func validateSBVResult(op string, p map[string]any, raw []byte) error {
 			if !reflect.DeepEqual(m["dataset_limits"], wantLimits) {
 				return bad()
 			}
-			for _, k := range []string{"source_path", "source_sha256", "dataset", "memory_budget_bytes", "residency", "max_concurrent_jobs", "worker_budget", "idle_timeout_ms"} {
+			fields := []string{"memory_budget_bytes", "residency", "max_concurrent_jobs", "worker_budget", "idle_timeout_ms"}
+			if _, retained := p["retained_source"]; !retained {
+				fields = append(fields, "source_path", "source_sha256", "dataset")
+			}
+			for _, k := range fields {
 				if m[k] != p[k] {
 					return bad()
 				}
@@ -204,8 +234,11 @@ func validateSBVResult(op string, p map[string]any, raw []byte) error {
 				return bad()
 			}
 		}
-	case "run", "compose", "evaluate", "compose_joint", "economics", "book", "liquidity", "allocation_economics", "analyze", "compare", "resample", "experiment", "split", "fit", "predict", "generate_census", "compose_economics", "research_history", "dataset_execute", "result_inspect":
+	case "run", "compose", "evaluate", "compose_joint", "economics", "book", "liquidity", "allocation_economics", "analyze", "compare", "resample", "experiment", "split", "fit", "predict", "source_retain", "source_export", "generate_census", "compose_economics", "research_history", "dataset_execute", "result_inspect":
 		target := "output_path"
+		if op == "source_export" {
+			target = "receipt_path"
+		}
 		if op == "result_inspect" {
 			target = "path"
 		}
@@ -453,60 +486,151 @@ func ReadSBVExport(path string, inspection json.RawMessage) (json.RawMessage, er
 	return raw, nil
 }
 
-// The only open transport object is the explicitly named user extension.
-// Native validation still enforces portable strings/booleans/null/containers.
-func sbvInputShape(shape, p map[string]any) bool {
-	if ext, present := p["extensions"]; present {
-		if _, ok := ext.(map[string]any); !ok {
-			return false
-		}
-		props, ok := shape["properties"].(map[string]any)
-		if !ok {
-			return false
-		}
-		if _, ok = props["extensions"]; !ok {
-			return false
-		}
-		props["extensions"] = map[string]any{"const": ext}
-	}
-	return sqvTransportShape(sbvBindOpenObjects(shape, p, 0), p, 0)
-}
+// SBV owns these richer request schemas; other vectors retain their existing
+// transport subset. This checks shape only, not native owner side effects.
+func sbvInputShape(shape, p map[string]any) bool { return sbvSchemaShape(shape, p, 0) }
 
-// SBV permits provider-owned configuration objects. Bind explicitly open
-// object schemas to this request after checking their type; other owners keep
-// their closed transport-schema admission unchanged.
-func sbvBindOpenObjects(schema, value any, depth int) any {
+func sbvSchemaShape(schema, value any, depth int) bool {
 	s, ok := schema.(map[string]any)
 	if !ok || depth > 64 {
-		return schema
+		return false
 	}
-	if s["type"] == "object" && s["additionalProperties"] == true && len(s) == 2 {
-		if _, ok := value.(map[string]any); ok {
-			return map[string]any{"const": value}
-		}
-		return map[string]any{"enum": []any{}}
+	base := make(map[string]any, len(s))
+	for key, rule := range s {
+		base[key] = rule
 	}
-	out := make(map[string]any, len(s))
-	for k, v := range s {
-		out[k] = v
-	}
-	if alternatives, ok := s["anyOf"].([]any); ok {
-		bound := make([]any, len(alternatives))
-		for i, alternative := range alternatives {
-			bound[i] = sbvBindOpenObjects(alternative, value, depth+1)
-		}
-		out["anyOf"] = bound
-	}
-	if props, ok := s["properties"].(map[string]any); ok {
-		if values, ok := value.(map[string]any); ok {
-			bound := make(map[string]any, len(props))
-			for key, rule := range props {
-				bound[key] = sbvBindOpenObjects(rule, values[key], depth+1)
+	for _, kind := range []string{"allOf", "anyOf", "oneOf"} {
+		if raw, present := s[kind]; present {
+			terms, ok := raw.([]any)
+			if !ok || len(terms) == 0 {
+				return false
 			}
-			out["properties"] = bound
+			matched := 0
+			for _, term := range terms {
+				if sbvSchemaShape(term, value, depth+1) {
+					matched++
+				}
+			}
+			if (kind == "allOf" && matched != len(terms)) || (kind == "anyOf" && matched == 0) || (kind == "oneOf" && matched != 1) {
+				return false
+			}
+			delete(base, kind)
 		}
 	}
-	return out
+	if term, present := s["not"]; present {
+		if sbvSchemaShape(term, value, depth+1) {
+			return false
+		}
+		delete(base, "not")
+	}
+	if predicate, present := s["if"]; present {
+		branch := "else"
+		if sbvSchemaShape(predicate, value, depth+1) {
+			branch = "then"
+		}
+		if rule, present := s[branch]; present && !sbvSchemaShape(rule, value, depth+1) {
+			return false
+		}
+	}
+	for _, key := range []string{"if", "then", "else"} {
+		delete(base, key)
+	}
+	if contains, present := s["contains"]; present {
+		// JSON Schema applies contains only to arrays; an explicit type remains
+		// checked below. Each independent allOf condition keeps its own count.
+		if rows, array := value.([]any); array {
+			matched := int64(0)
+			for _, row := range rows {
+				if sbvSchemaShape(contains, row, depth+1) {
+					matched++
+				}
+			}
+			minimum, maximum := int64(1), int64(len(rows))
+			if raw, present := s["minContains"]; present {
+				var ok bool
+				minimum, ok = raw.(int64)
+				if !ok || minimum < 0 {
+					return false
+				}
+			}
+			if raw, present := s["maxContains"]; present {
+				var ok bool
+				maximum, ok = raw.(int64)
+				if !ok || maximum < 0 {
+					return false
+				}
+			}
+			if matched < minimum || matched > maximum {
+				return false
+			}
+		}
+	}
+	for _, key := range []string{"contains", "minContains", "maxContains"} {
+		delete(base, key)
+	}
+	if values, object := value.(map[string]any); object {
+		// Object keywords apply even without an explicit type (conditional schema).
+		props, _ := s["properties"].(map[string]any)
+		bound := make(map[string]any, len(values))
+		for key, item := range values {
+			if rule, present := props[key]; present {
+				if !sbvSchemaShape(rule, item, depth+1) {
+					return false
+				}
+			} else if additional, present := s["additionalProperties"]; present {
+				if permitted, boolean := additional.(bool); boolean {
+					if !permitted {
+						return false
+					}
+				} else if !sbvSchemaShape(additional, item, depth+1) {
+					return false
+				}
+			}
+			bound[key] = map[string]any{"const": item}
+		}
+		base["properties"] = bound
+		base["additionalProperties"] = false
+		if _, present := base["required"]; !present {
+			base["required"] = []any{}
+		}
+		if _, present := base["type"]; !present {
+			base["type"] = "object"
+		}
+	} else {
+		// These constraints are inapplicable to nonobjects; explicit type remains.
+		delete(base, "properties")
+		delete(base, "required")
+		delete(base, "additionalProperties")
+	}
+	if rows, array := value.([]any); array {
+		if rule, present := s["items"]; present {
+			for _, row := range rows {
+				if !sbvSchemaShape(rule, row, depth+1) {
+					return false
+				}
+			}
+		}
+		base["items"] = map[string]any{}
+		if _, present := base["type"]; !present {
+			base["type"] = "array"
+		}
+	} else {
+		delete(base, "items")
+		delete(base, "minItems")
+		delete(base, "maxItems")
+	}
+	if _, text := value.(string); text {
+		// Conjunctive constraints need not repeat a type declaration.
+		if _, present := base["type"]; !present {
+			base["type"] = "string"
+		}
+	} else {
+		delete(base, "minLength")
+		delete(base, "maxLength")
+		delete(base, "pattern")
+		delete(base, "format")
+	}
+	return sqvTransportShape(base, value, depth)
 }
 
 // SBVSchema exposes both sides of an operation and the exact recursive output
@@ -580,4 +704,43 @@ func sbvNativeCanonical(value any) ([]byte, error) {
 		i++
 	}
 	return out, nil
+}
+
+// Correspondence checks for the native load's captured delivery. The engine
+// validates the complete owner contract and bytes; Go does not reopen storage
+// or treat this retained evidence as producer authentication.
+func sbvRetainedDeliveryIdentity(value any) (map[string]any, error) {
+	bad := func() (map[string]any, error) {
+		return nil, fmt.Errorf("SBV retained delivery correspondence mismatch")
+	}
+	delivery, ok := value.(map[string]any)
+	if !ok || delivery["protocol"] != "symphony.sbv.source-delivery.v1" || delivery["origin"] != "retained" || delivery["exactly_once_claimed"] != false || delivery["destination_commit_claimed"] != false {
+		return bad()
+	}
+	reference, rok := delivery["reference"].(map[string]any)
+	choices, cok := delivery["choices"].(map[string]any)
+	source, sok := delivery["source"].(map[string]any)
+	if !rok || !cok || !sok || len(reference) != 3 || source["protocol"] != "symphony.sbv.retained-source.v1" || source["owner_profile"] != "sqv-local-retained-capture.v1" || choices["profile"] != "retained_before_delivery" || choices["checkpoint"] != nil || delivery["acknowledgement"] != choices["processed_ack"] {
+		return bad()
+	}
+	if delivery["acknowledgement"] != "none" && delivery["acknowledgement"] != "dataset_admitted" {
+		return bad()
+	}
+	expected, ok := reference["expected_sha256"].(string)
+	path, pok := reference["path"].(string)
+	_, ptrOK := reference["pointer"].(string)
+	if !ok || !sbvSHA.MatchString(expected) || !pok || !filepath.IsAbs(path) || !ptrOK {
+		return bad()
+	}
+	original, ok := source["original"].(map[string]any)
+	if !ok {
+		return bad()
+	}
+	hash, hok := original["source_sha256"].(string)
+	originalPath, pok := original["source_path"].(string)
+	dataset, dok := original["dataset"].(string)
+	if !hok || !sbvSHA.MatchString(hash) || !pok || !filepath.IsAbs(originalPath) || !dok || dataset == "" {
+		return bad()
+	}
+	return map[string]any{"source_path": originalPath, "source_sha256": hash, "dataset": dataset}, nil
 }

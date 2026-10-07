@@ -13,10 +13,10 @@ Json event_json(const db::Mbo &, std::size_t);
 std::uint64_t end_at(std::uint64_t, std::uint64_t);
 Json evaluate(const Json &p, std::int64_t end, const Dataset *resident) {
   keys_optional(p,
-                {"protocol", "source_path", "source_sha256", "dataset",
-                 "output_path", "census", "model", "replay", "studies",
-                 "workers", "extensions"},
-                {"memory_budget_bytes", "dataset_limits"});
+                {"protocol", "output_path", "census", "model", "replay",
+                 "studies", "workers", "extensions"},
+                {"memory_budget_bytes", "dataset_limits", "source_path",
+                 "source_sha256", "dataset", "retained_source"});
   const auto workers = u64(p.at("workers"));
   need(workers >= 1 && workers <= 64, "workers 1..64");
   need(p.at("extensions").is_object(), "extensions object required");
@@ -348,9 +348,9 @@ Json evaluate(const Json &p, std::int64_t end, const Dataset *resident) {
   const auto &meta = source.metadata;
   s["provenance"] = section(
       {{"engine_version", version},
-       {"source_sha256", p.at("source_sha256")},
-       {"source_path", p.at("source_path")},
-       {"dataset", p.at("dataset")},
+       {"source_sha256", source.sha256},
+       {"source_path", source.path},
+       {"dataset", source.dataset_name},
        {"adapter", db::adapter_id},
        {"adapter_version", db::adapter_version},
        {"dbn_version", dec(meta.version)},

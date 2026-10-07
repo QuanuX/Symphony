@@ -45,6 +45,8 @@
         "modules/sbv-engine/tests/sdk_consumer.c",
         "modules/sbv-engine/tests/sdk_consumer.cpp",
         "modules/sbv-engine/tests/sdk_test.cpp",
+        "modules/sbv-engine/tests/source_dataset_test.cpp",
+        "modules/sbv-engine/tests/source_owners_test.cpp",
         "modules/sbv-engine/tests/split_test.cpp"
       ],
       "feature_id": "ssfv:symphony:sbv-engine",
@@ -91,6 +93,8 @@
         "modules/sbv-engine/src/run.cpp",
         "modules/sbv-engine/src/sdk.cpp",
         "modules/sbv-engine/src/select.cpp",
+        "modules/sbv-engine/src/source_owners.cpp",
+        "modules/sbv-engine/src/source_owners.hpp",
         "modules/sbv-engine/src/split.cpp",
         "modules/sbv-engine/src/wide_rational.hpp",
         "modules/sbv-engine/tests/dataset_test.cpp"
@@ -112,7 +116,7 @@
       "source_scope": "modules/sbv-engine",
       "status": "experimental",
       "title": "Native historical experiments and portable results",
-      "what": "Native multipass backtesting, replay, exact economics, selectable studies and comparison, deterministic bootstrap and durable local native trial execution. Temporal interval partitions expose expanding/rolling/explicit schedules, optional purging, embargo and availability filtering. Optional user-constrained resident DBN preloads share decoded events across native jobs, experiments, qxctl and SDK calls with explicit memory and lifecycle controls. Dataset bytes, records, metadata and load memory have nullable user-selected limits, with no built-in dataset-volume cap. Process v2 exposes optional user deadlines without an engine-selected duration or resident handshake timeout. Combinatorial temporal partitions expose exact fold addressing, complementary groups, per-group embargo and selected-page reuse counts. Native exact linear fitting and prediction preserve explicit weights, penalties, column identities and training-overlap disclosure. Explicit local dependency graphs bind immutable results, preserve resolved claims and block unavailable prerequisites without duplicate execution. Supplied research history records observation reuse, duplicate-artifact choices and explicit comparison-backed selections without a holdout gate. Retained native/imported census references and source-bound economic composition connect selected models to explicit heterogeneous or joint distributions. Independently compiled trusted native strategies and models use a plain C ownership ABI with exact MBO access, selected concurrency and provider/configuration provenance.",
+      "what": "Native multipass backtesting, replay, exact economics, selectable studies and comparison, deterministic bootstrap and durable local native trial execution. Temporal interval partitions expose expanding/rolling/explicit schedules, optional purging, embargo and availability filtering. Optional user-constrained resident DBN preloads share decoded events across native jobs, experiments, qxctl and SDK calls with explicit memory and lifecycle controls. Dataset bytes, records, metadata and load memory have nullable user-selected limits, with no built-in dataset-volume cap. Process v2 exposes optional user deadlines without an engine-selected duration or resident handshake timeout. Combinatorial temporal partitions expose exact fold addressing, complementary groups, per-group embargo and selected-page reuse counts. Native exact linear fitting and prediction preserve explicit weights, penalties, column identities and training-overlap disclosure. Explicit local dependency graphs bind immutable results, preserve resolved claims and block unavailable prerequisites without duplicate execution. Supplied research history records observation reuse, duplicate-artifact choices and explicit comparison-backed selections without a holdout gate. Retained native/imported census references and source-bound economic composition connect selected models to explicit heterogeneous or joint distributions. Independently compiled trusted native strategies and models use a plain C ownership ABI with exact MBO access, selected concurrency and provider/configuration provenance. Optional offline source ownership composes exact native SQAV/SQMV/SQFV/SQPV/SQDV interfaces, feeds file or retained originals into the same Dataset/RAM path, exports original/capture/manifest bytes, and carries explicit acknowledgement, release and publication-recovery evidence through terminal and SDK results.",
       "when": "Explicit bounded caller-selected invocation.",
       "where": "Independently versioned and installed owner package.",
       "who": "Direct native consumers, operators and qxctl agents.",

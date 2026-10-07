@@ -421,6 +421,13 @@ Json analyze(const Json &p, std::int64_t end) {
   sections["source_context"] = section({{"choices", parent.at("choices")},
                                         {"provenance", parent.at("provenance")},
                                         {"pointer", p.at("pointer")}});
+  if (parent.at("resources").at("data").contains("dataset_feed"))
+    sections["source_context"]["data"]["dataset_feed"] =
+        parent.at("resources").at("data").at("dataset_feed");
+  else if (parent.contains("source_context") &&
+           parent.at("source_context").at("data").contains("dataset_feed"))
+    sections["source_context"]["data"]["dataset_feed"] =
+        parent.at("source_context").at("data").at("dataset_feed");
   auto choices = p;
   choices.erase("output_path");
   sections["choices"] = section(choices);

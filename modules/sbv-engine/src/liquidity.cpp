@@ -514,6 +514,9 @@ Json liquidity(const Json &p, std::int64_t end) {
   sections["source_context"] = section({{"signals", s.at("signals")},
                                         {"choices", s.at("choices")},
                                         {"provenance", s.at("provenance")}});
+  if (s.at("resources").at("data").contains("dataset_feed"))
+    sections["source_context"]["data"]["dataset_feed"] =
+        s.at("resources").at("data").at("dataset_feed");
   sections["resources"] = section(
       {{"backend", "cpu"},
        {"requested_workers", dec(workers)},

@@ -37,7 +37,7 @@ func TestSBVExactReleaseAndCapabilities(t *testing.T) {
 		t.Fatal("implicit release upgrade")
 	}
 	p := map[string]any{}
-	if validateSBVResult("capabilities", p, []byte(`{"protocol":"symphony.sbv.capabilities.v1","engine_version":"0.20.0-dev","cpu":{"available":true},"cuda":{"available":true},"tensor":{"available":false},"live":{"available":false}}`)) == nil {
+	if validateSBVResult("capabilities", p, []byte(`{"protocol":"symphony.sbv.capabilities.v1","engine_version":"0.21.0-dev","cpu":{"available":true},"cuda":{"available":true},"tensor":{"available":false},"live":{"available":false}}`)) == nil {
 		t.Fatal("unexpected accelerator capability accepted")
 	}
 }
