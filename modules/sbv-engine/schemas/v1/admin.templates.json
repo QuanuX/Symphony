@@ -888,6 +888,51 @@
       "ordering_description": "Caller-selected record order; no authenticated chronology inferred",
       "coverage_description": "Only explicitly listed artifacts; not a complete record of access",
       "extensions": {}
+    },
+    "compose_economics": {
+      "protocol": "symphony.sbv.compose-economics-input.v1",
+      "output_path": "/absolute/private/composition.json",
+      "components": [
+        {
+          "id": "step-1",
+          "source": {
+            "path": "/absolute/private/economics.json",
+            "expected_sha256": "REPLACE_WITH_CONTENT_SHA256",
+            "pointer": ""
+          },
+          "outcome_pointer": "/sections/economics/data/0",
+          "signal_id": "signal-1",
+          "conditioning": "execution",
+          "conversion": null,
+          "extensions": {}
+        }
+      ],
+      "dependence": {
+        "kind": "independent",
+        "marginal_policy": null,
+        "paths": [],
+        "description": "Caller-selected conditional independence."
+      },
+      "economics": {
+        "kind": "multiplicative_return",
+        "initial_state": {
+          "numerator": "1",
+          "denominator": "1"
+        },
+        "state_unit": "wealth-factor",
+        "state_domain": "signed",
+        "description": "Compound each source return under its retained declared basis."
+      },
+      "conditioning_description": "Conditional on each retained source economic assumption; not an unconditional fill forecast.",
+      "on_unavailable": "reject",
+      "retain_paths": true,
+      "retain_prefix_distributions": true,
+      "studies": [],
+      "limits": {
+        "max_paths": null,
+        "max_terminal_atoms": null
+      },
+      "extensions": {}
     }
   }
 }

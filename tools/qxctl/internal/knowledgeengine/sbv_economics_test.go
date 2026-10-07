@@ -35,7 +35,7 @@ func TestSBVInstalledEconomics(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		return InvokeSBV(context.Background(), prefix, "0.18.0-dev", cwd, op, b)
+		return InvokeSBV(context.Background(), prefix, "0.19.0-dev", cwd, op, b)
 	}
 	response, err := invoke("economics", request)
 	if err != nil {
@@ -53,7 +53,7 @@ func TestSBVInstalledEconomics(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	schema, err := SBVSchema(prefix, "0.18.0-dev", "economics")
+	schema, err := SBVSchema(prefix, "0.19.0-dev", "economics")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -108,7 +108,7 @@ func TestSBVInstalledEconomics(t *testing.T) {
 			t.Fatal("study descriptor mismatch")
 		}
 	}
-	if len(cat["transforms"].([]any)) != 2 || len(cat["studies"].([]any)) != 18 {
+	if len(cat["transforms"].([]any)) != 2 || len(cat["studies"].([]any)) != 21 {
 		t.Fatal("discovery incomplete")
 	}
 }

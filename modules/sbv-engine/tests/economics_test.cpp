@@ -83,9 +83,22 @@ int main() try {
       d::base("synthetic model arithmetic fixture; no market evidence");
   source["sections"]["signals"] = d::section(census.at("signals"));
   source["sections"]["execution"] = d::section(J::array({outcome}));
-  source["sections"]["choices"] = d::section({{"census", census}});
+  source["sections"]["choices"] =
+      d::section({{"protocol", "symphony.sbv.evaluate-input.v1"},
+                  {"census", census},
+                  {"source_sha256", std::string(64, 'a')},
+                  {"dataset", "SYNTHETIC"}});
   source["sections"]["summary"] =
-      d::section({{"census_sha256", e::sha256_hex(census.dump())}});
+      d::section({{"census_sha256", e::sha256_hex(census.dump())},
+                  {"closed_census", true},
+                  {"signal_count", "1"},
+                  {"causality", "causal_declared"}});
+  source["sections"]["provenance"] =
+      d::section({{"source_sha256", std::string(64, 'a')},
+                  {"dataset", "SYNTHETIC"},
+                  {"instrument_id", "1"},
+                  {"census_producer", producer},
+                  {"census_sha256", e::sha256_hex(census.dump())}});
   source["sections"]["replay"] =
       d::section({{"synthetic", true},
                   {"events", J::array({{{"ts_recv", "9007199254740993"}}})}});
@@ -169,8 +182,153 @@ int main() try {
         rat("9", "100"));
   check(result.at("sections").at("replay") ==
         source.at("sections").at("replay"));
-  check(result.at("sections").at("source_context").at("data").at("census") ==
-        census);
+  check(result.at("sections")
+            .at("source_context")
+            .at("data")
+            .at("census")
+            .at("declaration") == census);
+  // Reference-object inputs select an entire sealed evaluation, whether at
+  // the root or embedded in a parent result. Arithmetic and replay are the
+  // same as the legacy path/digest pair; both artifact identities survive.
+  const auto legacy_result = result;
+  auto referenced = p;
+  referenced.erase("path");
+  referenced.erase("expected_sha256");
+  referenced["source"] = {{"path", p.at("path")},
+                          {"expected_sha256", p.at("expected_sha256")},
+                          {"pointer", ""}};
+  auto reference_result = run(referenced);
+  for (auto key : {"summary", "economics", "studies", "signals", "execution",
+                   "replay", "census"})
+    check(reference_result.at("sections").at(key) ==
+          legacy_result.at("sections").at(key));
+  check(reference_result["sections"]["source_context"]["data"]["reference"] ==
+        legacy_result["sections"]["source_context"]["data"]["reference"]);
+  const auto selected_result = s::seal_result(source);
+  auto outer = d::base("embedded evaluation reference fixture");
+  outer["sections"]["user_extensions"] =
+      d::section({{"evaluation/~", selected_result}});
+  outer = s::seal_result(outer);
+  const auto outer_path = root + "/outer.json";
+  write(outer_path, outer);
+  referenced["source"] = {
+      {"path", outer_path},
+      {"expected_sha256", outer.at("content_sha256")},
+      {"pointer", "/sections/user_extensions/data/evaluation~1~0"}};
+  auto embedded_result = run(referenced);
+  for (auto key : {"summary", "economics", "studies", "signals", "execution",
+                   "replay", "census"})
+    check(embedded_result.at("sections").at(key) ==
+          legacy_result.at("sections").at(key));
+  const auto &embedded_provenance =
+      embedded_result["sections"]["provenance"]["data"];
+  check(embedded_provenance.at("source_path") == outer_path);
+  check(embedded_provenance.at("source_pointer") ==
+        referenced["source"]["pointer"]);
+  check(embedded_provenance.at("source_content_sha256") ==
+        selected_result.at("content_sha256"));
+  check(embedded_provenance.at("source_outer_content_sha256") ==
+        outer.at("content_sha256"));
+  check(embedded_provenance.at("source_file_sha256") ==
+        e::sha256_hex(outer.dump()));
+  const J expected_reference{
+      {"path", outer_path},
+      {"expected_sha256", outer.at("content_sha256")},
+      {"pointer", referenced["source"]["pointer"]},
+      {"file_sha256", e::sha256_hex(outer.dump())},
+      {"selected_content_sha256", selected_result.at("content_sha256")},
+      {"authorship", "not_verified"}};
+  check(embedded_result["sections"]["source_context"]["data"]["reference"] ==
+        expected_reference);
+  check(embedded_result["sections"]["source_context"]["data"]["choices"] ==
+        selected_result["sections"]["choices"]);
+  check(embedded_result["sections"]["source_context"]["data"]["provenance"] ==
+        selected_result["sections"]["provenance"]);
+  auto bad_reference = referenced;
+  bad_reference["path"] = p.at("path");
+  bad_reference["expected_sha256"] = p.at("expected_sha256");
+  rejects(bad_reference);
+  bad_reference = referenced;
+  bad_reference["path"] = outer_path;
+  rejects(bad_reference);
+  bad_reference = referenced;
+  bad_reference["expected_sha256"] = outer.at("content_sha256");
+  rejects(bad_reference);
+  bad_reference = p;
+  bad_reference.erase("path");
+  rejects(bad_reference);
+  bad_reference = p;
+  bad_reference.erase("expected_sha256");
+  rejects(bad_reference);
+  bad_reference.erase("path");
+  rejects(bad_reference);
+  for (const auto *bad_pointer :
+       {"/missing", "/sections/execution", "not-a-pointer", "/bad~escape"}) {
+    bad_reference = referenced;
+    bad_reference["source"]["pointer"] = bad_pointer;
+    rejects(bad_reference);
+  }
+  bad_reference = referenced;
+  bad_reference["source"]["expected_sha256"] =
+      selected_result.at("content_sha256");
+  rejects(bad_reference);
+  bad_reference = referenced;
+  bad_reference["source"].erase("pointer");
+  rejects(bad_reference);
+  bad_reference = referenced;
+  bad_reference["source"]["extra"] = true;
+  rejects(bad_reference);
+  bad_reference = referenced;
+  bad_reference["source"] = nullptr;
+  rejects(bad_reference);
+  auto alter_embedded = [&](auto edit, bool reseal_selected) {
+    auto changed = outer;
+    auto &inner =
+        changed["sections"]["user_extensions"]["data"]["evaluation/~"];
+    edit(inner);
+    if (reseal_selected)
+      inner = s::seal_result(inner);
+    changed = s::seal_result(changed);
+    write(outer_path, changed);
+    bad_reference = referenced;
+    bad_reference["source"]["expected_sha256"] = changed.at("content_sha256");
+  };
+  // Valid outer integrity cannot hide changed embedded bytes or contradictory
+  // census declarations, even when an external producer reseals the latter.
+  alter_embedded([](J &inner) { inner["origin"] = "changed"; }, false);
+  rejects(bad_reference);
+  alter_embedded(
+      [](J &inner) {
+        inner["sections"]["signals"]["data"][0]["source_ordinal"] = "1";
+      },
+      true);
+  rejects(bad_reference);
+  alter_embedded(
+      [](J &inner) {
+        inner["sections"]["choices"]["data"]["protocol"] =
+            "symphony.sbv.run-input.v1";
+      },
+      true);
+  rejects(bad_reference);
+  auto corrupt_outer = outer;
+  corrupt_outer["origin"] = "changed outer";
+  write(outer_path, corrupt_outer);
+  rejects(referenced);
+  // A partial evaluation is still a complete typed result; downstream
+  // economics preserves its explicit unavailable-outcome behavior.
+  alter_embedded(
+      [](J &inner) {
+        inner["status"] = "partial";
+        auto &m = inner["sections"]["execution"]["data"][0];
+        m["status"] = "unavailable";
+        m["reason"] = "retained unavailable model";
+        m["support"] = J::array();
+      },
+      true);
+  const auto partial_reference_result = run(bad_reference);
+  check(partial_reference_result.at("status") == "partial");
+  check(partial_reference_result["sections"]["economics"]["data"][0]["atoms"]
+            .empty());
   auto support = p;
   support["selections"][0]["mode"] = "support_only";
   support["selections"][0]["nonexecution_pnl"] = nullptr;
@@ -400,7 +558,21 @@ int main() try {
   const auto cat =
       call("catalogue", {{"protocol", "symphony.sbv.catalogue-input.v1"}});
   check(cat["transforms"][0]["id"] == "linear_price_pnl");
-  check(cat["studies"].size() == 18);
+  check(cat["studies"].size() == 21);
+  unsigned composition_cards = 0;
+  for (const auto &card : cat.at("studies")) {
+    if (card.at("id") != "terminal_moments" &&
+        card.at("id") != "terminal_quantiles")
+      continue;
+    ++composition_cards;
+    check(card.at("version") == "1" &&
+          card.at("operations") == J::array({"compose_economics"}));
+    check(card.at("descriptor").at("weighting_domains") ==
+          J::array({"probability"}));
+    check(card.at("descriptor").at("parameters").empty() ==
+          (card.at("id") == "terminal_moments"));
+  }
+  check(composition_cards == 2);
   std::cout << checks << " native economic assertions passed\n";
   return 0;
 } catch (const std::exception &ex) {

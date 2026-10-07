@@ -3,9 +3,9 @@
   "module_id": "sbv-engine",
   "engine_id": "symphony-sbv",
   "namespace": "symphony::sbv::interface",
-  "current_version": "0.18.0-dev",
+  "current_version": "0.19.0-dev",
   "releases": {
-    "0.18.0-dev": [
+    "0.19.0-dev": [
       "capabilities",
       "run",
       "compose",
@@ -32,7 +32,8 @@
       "dataset_release",
       "fit",
       "predict",
-      "research_history"
+      "research_history",
+      "compose_economics"
     ]
   },
   "contract_versions": [
@@ -92,7 +93,10 @@
     "symphony.sbv.predict.v1",
     "symphony.sbv.research-history-input.v1",
     "symphony.sbv.research-history.v1",
-    "symphony.sbv.linear-model.v1"
+    "symphony.sbv.compose-economics-input.v1",
+    "symphony.sbv.compose-economics.v1",
+    "symphony.sbv.linear-model.v1",
+    "symphony.sbv.census-evidence.v1"
   ],
   "operations": [
     {
@@ -661,6 +665,27 @@
       "mutability": "permission_backed_mutation",
       "operation_name": "research_history",
       "output_protocol": "symphony.sbv.research-history.v1",
+      "recovery_operation_id": "engop:symphony:sbv.result-inspect",
+      "thermal_path": "freezing"
+    },
+    {
+      "administration_disposition": "qxctl_required",
+      "administrative_interactions": [
+        "invoke"
+      ],
+      "authorization_requirement": "target_host_permission",
+      "availability": "implemented",
+      "direct_invocation": "supported",
+      "engine_operation_id": "engop:symphony:sbv.compose-economics",
+      "expected_state_required": false,
+      "feature_ids": [
+        "ssfv:symphony:sbv-engine"
+      ],
+      "idempotency": "non_idempotent",
+      "input_protocol": "symphony.sbv.compose-economics-input.v1",
+      "mutability": "permission_backed_mutation",
+      "operation_name": "compose_economics",
+      "output_protocol": "symphony.sbv.compose-economics.v1",
       "recovery_operation_id": "engop:symphony:sbv.result-inspect",
       "thermal_path": "freezing"
     }

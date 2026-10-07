@@ -1,4 +1,4 @@
-#include "dataset.hpp"
+#include "census.hpp"
 #include "detail.hpp"
 #include <algorithm>
 #include <atomic>
@@ -47,61 +47,14 @@ Json evaluate(const Json &p, std::int64_t end, const Dataset *resident) {
     if (x.action == 'T' && x.size > 0 && x.price != INT64_MAX)
       trades.push_back({i, x.ts_recv, x.price, x.size});
   }
-  const auto &c = p.at("census");
-  keys(c, {"protocol", "source_sha256", "mode", "producer", "signals"});
-  need(c.at("protocol") == "symphony.sbv.external-census.v1" &&
-           c.at("source_sha256") == p.at("source_sha256"),
-       "census source/protocol mismatch");
+  Json reference;
+  const auto c = admit_census(p.at("census"), source, reference, end);
+  const auto &signals = c.at("signals"), &producer = c.at("producer");
   const auto mode = str(c.at("mode"));
-  need(mode == "causal_declared" || mode == "retrospective",
-       "external causality declaration required");
-  const auto &producer = c.at("producer");
-  keys(producer, {"id", "version", "artifact_sha256", "reproducibility"});
-  for (const auto *key : {"id", "version"})
-    need(!str(producer.at(key)).empty() && str(producer.at(key)).size() <= 256,
-         "bounded producer identity required");
-  const auto ph = str(producer.at("artifact_sha256"));
-  need(ph.empty() ||
-           (ph.size() == 64 && std::all_of(ph.begin(), ph.end(),
-                                           [](char x) {
-                                             return (x >= '0' && x <= '9') ||
-                                                    (x >= 'a' && x <= 'f');
-                                           })),
-       "producer digest format");
-  const auto reproducibility = str(producer.at("reproducibility"));
-  need(reproducibility == "deterministic_declared" ||
-           reproducibility == "nondeterministic" ||
-           reproducibility == "uncaptured",
-       "reproducibility declaration required");
-  const auto &signals = c.at("signals");
-  need(signals.is_array() && signals.size() <= 4096, "external census bound");
+  const auto census_digest = str(c.at("census_sha256"));
   std::vector<std::string> ids;
-  std::set<std::string> unique;
-  std::uint64_t prior_ordinal = 0;
-  for (const auto &s : signals) {
-    keys(s,
-         {"signal_id", "source_ordinal", "available_ns", "anchor_price_nanos",
-          "causal_end_ordinal_exclusive", "context_reference"});
-    const auto id = str(s.at("signal_id"));
-    const auto ordinal = u64(s.at("source_ordinal")),
-               available = u64(s.at("available_ns")),
-               causal_end = u64(s.at("causal_end_ordinal_exclusive"));
-    need(!id.empty() && id.size() <= 256 && unique.insert(id).second &&
-             ordinal < events.size() && ordinal >= prior_ordinal &&
-             available == events[ordinal].ts_recv,
-         "census identity/order/availability mismatch");
-    need(causal_end <= events.size() &&
-             (mode != "causal_declared" || causal_end <= ordinal + 1),
-         "census causal prefix exceeds declared boundary");
-    need(i64(s.at("anchor_price_nanos")) != INT64_MAX,
-         "undefined price cannot be an anchor");
-    (void)str(s.at("context_reference"));
-    ids.push_back(id);
-    prior_ordinal = ordinal;
-  }
-  // Seal identity before model admission/follow-up; native code can validate
-  // references, but cannot prove how an external producer obtained a signal.
-  const auto census_digest = e::sha256_hex(c.dump());
+  for (const auto &signal : signals)
+    ids.push_back(str(signal.at("signal_id")));
   const AdmittedModel model(p.at("model"), ids);
   struct Row {
     Json outcome, window, excursion;
@@ -214,11 +167,15 @@ Json evaluate(const Json &p, std::int64_t end, const Dataset *resident) {
   }
   if (failure)
     std::rethrow_exception(failure);
-  auto result =
-      base("native follow-up of an externally supplied closed census");
+  auto result = base("native follow-up of an immutable admitted census");
   result["status"] = "partial";
   auto &s = result["sections"];
   s["signals"] = section(signals);
+  s["census"] = section(c);
+  s["census_reference"] =
+      reference.is_null()
+          ? section(nullptr, "not_selected", "inline external declaration")
+          : section(reference);
   s["summary"] = section({{"signal_count", dec(signals.size())},
                           {"record_count", dec(events.size())},
                           {"census_sha256", census_digest},
@@ -280,13 +237,13 @@ Json evaluate(const Json &p, std::int64_t end, const Dataset *resident) {
   s["resources"] = section({{"requested_workers", dec(workers)},
                             {"actual_workers", dec(applied)},
                             {"backend", "cpu"}});
-  s["diagnostics"] = section(
-      Json::array({"External causal/reproducibility declarations are "
-                   "preserved, not independently proven.",
-                   "Observed trade levels are retrospective support, not book "
-                   "liquidity or unconditional fill likelihood.",
-                   "No normalization or probability interpretation is imposed "
-                   "on a declared non-probability measure."}));
+  s["diagnostics"] = section(Json::array(
+      {"Census identity and source coordinates are checked; producer "
+       "authorship and external causal declarations are not authenticated.",
+       "Observed trade levels are retrospective support, not book "
+       "liquidity or unconditional fill likelihood.",
+       "No normalization or probability interpretation is imposed "
+       "on a declared non-probability measure."}));
   auto choices = p;
   choices.erase("output_path");
   s["choices"] = section(choices);

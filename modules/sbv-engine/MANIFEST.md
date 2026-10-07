@@ -1,8 +1,18 @@
 # SBV engine manifest
 
-Module `sbv-engine`, engine `symphony-sbv`, vector `sbv`, release `0.18.0-dev`. Native executable with exact static source dependencies and versioned receipt-v2 ownership. Independent interop headers and the native C ABI/C++ calculation SDK with exact CMake targets are installed. Vendor model runtime adapters remain optional future work. Backtest artifacts are user-owned outputs outside the install receipt.
+Module `sbv-engine`, engine `symphony-sbv`, vector `sbv`, release `0.19.0-dev`. Native executable with exact static source dependencies and versioned receipt-v2 ownership. Independent interop headers and the native C ABI/C++ calculation SDK with exact CMake targets are installed. Vendor model runtime adapters remain optional future work. Backtest artifacts are user-owned outputs outside the install receipt.
 
 ## Canonical Surfaces
+
+- `modules/sbv-engine/tests/compose_economics_test.cpp`
+
+- `modules/sbv-engine/tests/census_test.cpp`
+
+- `modules/sbv-engine/src/compose_economics.cpp`
+
+- `modules/sbv-engine/src/census.cpp`
+
+- `modules/sbv-engine/src/census.hpp`
 
 - `modules/sbv-engine/tests/history_test.cpp`
 

@@ -1,3 +1,4 @@
+#include "census.hpp"
 #include "rational.hpp"
 #include <algorithm>
 #include <map>
@@ -168,8 +169,20 @@ Json study_result(const Json &choice, const std::string &signal,
 } // namespace
 
 Json economics(const Json &p, std::int64_t end) {
-  keys(p, {"protocol", "path", "expected_sha256", "output_path", "selections",
-           "studies", "on_incompatible", "extensions"});
+  keys_optional(p,
+                {"protocol", "output_path", "selections", "studies",
+                 "on_incompatible", "extensions"},
+                {"path", "expected_sha256", "source"});
+  const bool referenced = p.contains("source");
+  need(referenced ? !p.contains("path") && !p.contains("expected_sha256")
+                  : p.contains("path") && p.contains("expected_sha256"),
+       "select exactly one economic source reference form");
+  const Json selection =
+      referenced ? p.at("source")
+                 : Json{{"path", p.at("path")},
+                        {"expected_sha256", p.at("expected_sha256")},
+                        {"pointer", ""}};
+  keys(selection, {"path", "expected_sha256", "pointer"});
   need(p.at("extensions").is_object(), "extensions object required");
   const auto policy = str(p.at("on_incompatible"));
   need(policy == "unavailable" || policy == "reject",
@@ -179,21 +192,29 @@ Json economics(const Json &p, std::int64_t end) {
   const auto &selections = p.at("selections");
   need(selections.is_array() && selections.size() <= 4096,
        "selection bound 0..4096");
-  const auto bytes = read_file(str(p.at("path")), end);
-  const auto source =
+  const auto bytes = read_file(str(selection.at("path")), end);
+  const auto outer =
       e::parse_bounded_json(bytes, artifact_bytes, artifact_values);
-  validate_result(source);
-  need(source.at("content_sha256") == p.at("expected_sha256"),
+  validate_result(outer);
+  need(outer.at("content_sha256") == selection.at("expected_sha256"),
        "source snapshot mismatch");
+  const Json::json_pointer pointer(str(selection.at("pointer")));
+  need(outer.contains(pointer), "economic source result pointer missing");
+  const auto &source = outer.at(pointer);
+  validate_result(source);
   const auto &sections = source.at("sections");
-  const auto &census = sections.at("choices").at("data").at("census");
-  const auto &signals = sections.at("signals").at("data");
+  need(sections.at("choices").at("data").at("protocol") ==
+           "symphony.sbv.evaluate-input.v1",
+       "economic source must be a complete evaluation result");
+  const Json reference{{"path", selection.at("path")},
+                       {"expected_sha256", selection.at("expected_sha256")},
+                       {"pointer", selection.at("pointer")},
+                       {"file_sha256", e::sha256_hex(bytes)},
+                       {"selected_content_sha256", source.at("content_sha256")},
+                       {"authorship", "not_verified"}};
+  const auto census = census_evidence(source);
+  const auto &signals = census.at("signals");
   const auto &models = sections.at("execution").at("data");
-  need(census.at("protocol") == "symphony.sbv.external-census.v1" &&
-           census.at("signals") == signals &&
-           e::sha256_hex(census.dump()) ==
-               str(sections.at("summary").at("data").at("census_sha256")),
-       "economic source requires an exact admitted external census");
   need(signals.is_array() && signals.size() <= 4096 && models.is_array() &&
            models.size() == signals.size(),
        "source signal/model correspondence required");
@@ -348,7 +369,7 @@ Json economics(const Json &p, std::int64_t end) {
   const bool partial = unavailable || unavailable_studies;
   result["status"] = partial ? "partial" : "completed";
   s["summary"] =
-      section({{"source_census_sha256", e::sha256_hex(census.dump())},
+      section({{"source_census_sha256", census.at("census_sha256")},
                {"source_signal_count", dec(signals.size())},
                {"selected_signal_count", dec(rows.size())},
                {"available_economic_outcomes", dec(rows.size() - unavailable)},
@@ -369,15 +390,19 @@ Json economics(const Json &p, std::int64_t end) {
   // Preserve the full source replay verbatim. It may include unselected
   // signals; it remains observed evidence, separate from the economic overlay.
   s["replay"] = sections.at("replay");
+  s["census"] = section(census);
   s["source_context"] = section({{"census", census},
                                  {"choices", sections.at("choices")},
-                                 {"provenance", sections.at("provenance")}});
+                                 {"provenance", sections.at("provenance")},
+                                 {"reference", reference}});
   auto choices = p;
   choices.erase("output_path");
   s["choices"] = section(choices);
   s["provenance"] = section(
       {{"engine_version", version},
-       {"source_path", p.at("path")},
+       {"source_path", selection.at("path")},
+       {"source_pointer", selection.at("pointer")},
+       {"source_outer_content_sha256", outer.at("content_sha256")},
        {"source_content_sha256", source.at("content_sha256")},
        {"source_file_sha256", e::sha256_hex(bytes)},
        {"source_authorship", "not_verified"},
@@ -446,6 +471,44 @@ Json economic_studies() {
            {"backend", "cpu"},
            {"maximum_atoms", "66"},
            {"output_schema", "economics/$defs/economic_study"}}}});
+  for (const auto *id : {"terminal_moments", "terminal_quantiles"}) {
+    const bool moments = std::string(id) == "terminal_moments";
+    cards.push_back(
+        {{"id", id},
+         {"version", "1"},
+         {"operations", Json::array({"compose_economics"})},
+         {"unit",
+          moments ? "caller state unit and its square" : "caller state unit"},
+         {"definition",
+          moments ? "exact probability mean and population variance of the "
+                    "selected terminal state distribution"
+                  : "inverse CDF on positive terminal probability; q=0 "
+                    "minimum; otherwise first cumulative probability >= q; "
+                    "modeled outcomes, not parameter confidence"},
+         {"descriptor",
+          {{"protocol", "symphony.sbv.study-descriptor.v1"},
+           {"required_inputs",
+            Json::array({"compose_economics terminal_atoms: exact state and "
+                         "probability"})},
+           {"weighting_domains", Json::array({"probability"})},
+           {"parameters",
+            moments ? Json::array()
+                    : Json::array({"levels: exact int128 ratios in [0,1]; "
+                                   "empty selection is valid"})},
+           {"grouping", "one selected composed terminal state distribution"},
+           {"missingness", "unavailable composition yields unavailable study; "
+                           "no exclusion or renormalization"},
+           {"method", moments ? "exact probability population moments"
+                              : "inverse_cdf_positive_probability"},
+           {"numeric_contract", "exact reduced int128 rationals; overflow "
+                                "rejects; no rounding or normalization"},
+           {"uncertainty", "modeled outcome distribution; no "
+                           "parameter-estimation confidence claim"},
+           {"backend", "cpu"},
+           {"maximum_atoms", nullptr},
+           {"output_schema",
+            "compose_economics/$defs/composed_economic_study"}}}});
+  }
   return cards;
 }
 } // namespace symphony::sbv::detail

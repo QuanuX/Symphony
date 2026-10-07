@@ -346,96 +346,120 @@
           "type": "string"
         },
         "census": {
-          "type": "object",
-          "properties": {
-            "protocol": {
-              "const": "symphony.sbv.external-census.v1"
-            },
-            "source_sha256": {
-              "type": "string"
-            },
-            "mode": {
-              "enum": [
-                "causal_declared",
-                "retrospective"
-              ]
-            },
-            "producer": {
+          "anyOf": [
+            {
               "type": "object",
               "properties": {
-                "id": {
+                "protocol": {
+                  "const": "symphony.sbv.external-census.v1"
+                },
+                "source_sha256": {
                   "type": "string"
                 },
-                "version": {
-                  "type": "string"
-                },
-                "artifact_sha256": {
-                  "type": "string"
-                },
-                "reproducibility": {
+                "mode": {
                   "enum": [
-                    "deterministic_declared",
-                    "nondeterministic",
-                    "uncaptured"
+                    "causal_declared",
+                    "retrospective"
                   ]
+                },
+                "producer": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "version": {
+                      "type": "string"
+                    },
+                    "artifact_sha256": {
+                      "type": "string"
+                    },
+                    "reproducibility": {
+                      "enum": [
+                        "deterministic_declared",
+                        "nondeterministic",
+                        "uncaptured"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "version",
+                    "artifact_sha256",
+                    "reproducibility"
+                  ],
+                  "additionalProperties": false
+                },
+                "signals": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "signal_id": {
+                        "type": "string"
+                      },
+                      "source_ordinal": {
+                        "type": "string",
+                        "pattern": "^(0|[1-9][0-9]*)$"
+                      },
+                      "available_ns": {
+                        "type": "string",
+                        "pattern": "^(0|[1-9][0-9]*)$"
+                      },
+                      "anchor_price_nanos": {
+                        "type": "string",
+                        "pattern": "^-?(0|[1-9][0-9]*)$"
+                      },
+                      "causal_end_ordinal_exclusive": {
+                        "type": "string",
+                        "pattern": "^(0|[1-9][0-9]*)$"
+                      },
+                      "context_reference": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "signal_id",
+                      "source_ordinal",
+                      "available_ns",
+                      "anchor_price_nanos",
+                      "causal_end_ordinal_exclusive",
+                      "context_reference"
+                    ],
+                    "additionalProperties": false
+                  }
                 }
               },
               "required": [
-                "id",
-                "version",
-                "artifact_sha256",
-                "reproducibility"
+                "protocol",
+                "source_sha256",
+                "mode",
+                "producer",
+                "signals"
               ],
               "additionalProperties": false
             },
-            "signals": {
-              "type": "array",
-              "items": {
-                "type": "object",
-                "properties": {
-                  "signal_id": {
-                    "type": "string"
-                  },
-                  "source_ordinal": {
-                    "type": "string",
-                    "pattern": "^(0|[1-9][0-9]*)$"
-                  },
-                  "available_ns": {
-                    "type": "string",
-                    "pattern": "^(0|[1-9][0-9]*)$"
-                  },
-                  "anchor_price_nanos": {
-                    "type": "string",
-                    "pattern": "^-?(0|[1-9][0-9]*)$"
-                  },
-                  "causal_end_ordinal_exclusive": {
-                    "type": "string",
-                    "pattern": "^(0|[1-9][0-9]*)$"
-                  },
-                  "context_reference": {
-                    "type": "string"
-                  }
+            {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": "string"
                 },
-                "required": [
-                  "signal_id",
-                  "source_ordinal",
-                  "available_ns",
-                  "anchor_price_nanos",
-                  "causal_end_ordinal_exclusive",
-                  "context_reference"
-                ],
-                "additionalProperties": false
-              }
+                "expected_sha256": {
+                  "type": "string"
+                },
+                "pointer": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "path",
+                "expected_sha256",
+                "pointer"
+              ],
+              "additionalProperties": false
             }
-          },
-          "required": [
-            "protocol",
-            "source_sha256",
-            "mode",
-            "producer",
-            "signals"
-          ],
-          "additionalProperties": false
+          ]
         },
         "model": {
           "anyOf": [
@@ -884,12 +908,6 @@
         "protocol": {
           "const": "symphony.sbv.economics-input.v1"
         },
-        "path": {
-          "type": "string"
-        },
-        "expected_sha256": {
-          "type": "string"
-        },
         "output_path": {
           "type": "string"
         },
@@ -1239,19 +1257,804 @@
         },
         "extensions": {
           "type": "object"
+        },
+        "source": {
+          "type": "object",
+          "properties": {
+            "path": {
+              "type": "string"
+            },
+            "expected_sha256": {
+              "type": "string"
+            },
+            "pointer": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "path",
+            "expected_sha256",
+            "pointer"
+          ],
+          "additionalProperties": false
+        },
+        "path": {
+          "type": "string"
+        },
+        "expected_sha256": {
+          "type": "string"
         }
       },
       "required": [
         "protocol",
-        "path",
-        "expected_sha256",
         "output_path",
         "selections",
         "studies",
         "on_incompatible",
         "extensions"
       ],
-      "additionalProperties": false
+      "additionalProperties": false,
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "protocol": {
+              "const": "symphony.sbv.economics-input.v1"
+            },
+            "path": {
+              "type": "string"
+            },
+            "expected_sha256": {
+              "type": "string"
+            },
+            "output_path": {
+              "type": "string"
+            },
+            "selections": {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "signal_id": {
+                        "type": "string"
+                      },
+                      "transform": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "const": "linear_price_pnl"
+                          },
+                          "version": {
+                            "const": "1"
+                          },
+                          "reference_price_nanos": {
+                            "type": "string"
+                          },
+                          "price_unit_nanos": {
+                            "type": "string"
+                          },
+                          "position_units": {
+                            "type": "object",
+                            "properties": {
+                              "numerator": {
+                                "type": "string"
+                              },
+                              "denominator": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "numerator",
+                              "denominator"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "value_per_price_unit": {
+                            "type": "object",
+                            "properties": {
+                              "numerator": {
+                                "type": "string"
+                              },
+                              "denominator": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "numerator",
+                              "denominator"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "cost_per_outcome": {
+                            "type": "object",
+                            "properties": {
+                              "numerator": {
+                                "type": "string"
+                              },
+                              "denominator": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "numerator",
+                              "denominator"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "return_basis": {
+                            "type": "object",
+                            "properties": {
+                              "numerator": {
+                                "type": "string"
+                              },
+                              "denominator": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "numerator",
+                              "denominator"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "pnl_unit": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "version",
+                          "reference_price_nanos",
+                          "price_unit_nanos",
+                          "position_units",
+                          "value_per_price_unit",
+                          "cost_per_outcome",
+                          "return_basis",
+                          "pnl_unit"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "mode": {
+                        "const": "support_only"
+                      },
+                      "nonexecution_pnl": {
+                        "type": "null"
+                      }
+                    },
+                    "required": [
+                      "signal_id",
+                      "transform",
+                      "mode",
+                      "nonexecution_pnl"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "signal_id": {
+                        "type": "string"
+                      },
+                      "transform": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "const": "linear_price_pnl"
+                          },
+                          "version": {
+                            "const": "1"
+                          },
+                          "reference_price_nanos": {
+                            "type": "string"
+                          },
+                          "price_unit_nanos": {
+                            "type": "string"
+                          },
+                          "position_units": {
+                            "type": "object",
+                            "properties": {
+                              "numerator": {
+                                "type": "string"
+                              },
+                              "denominator": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "numerator",
+                              "denominator"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "value_per_price_unit": {
+                            "type": "object",
+                            "properties": {
+                              "numerator": {
+                                "type": "string"
+                              },
+                              "denominator": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "numerator",
+                              "denominator"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "cost_per_outcome": {
+                            "type": "object",
+                            "properties": {
+                              "numerator": {
+                                "type": "string"
+                              },
+                              "denominator": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "numerator",
+                              "denominator"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "return_basis": {
+                            "type": "object",
+                            "properties": {
+                              "numerator": {
+                                "type": "string"
+                              },
+                              "denominator": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "numerator",
+                              "denominator"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "pnl_unit": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "version",
+                          "reference_price_nanos",
+                          "price_unit_nanos",
+                          "position_units",
+                          "value_per_price_unit",
+                          "cost_per_outcome",
+                          "return_basis",
+                          "pnl_unit"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "mode": {
+                        "const": "execution_mixture"
+                      },
+                      "nonexecution_pnl": {
+                        "type": "object",
+                        "properties": {
+                          "numerator": {
+                            "type": "string"
+                          },
+                          "denominator": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "numerator",
+                          "denominator"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "required": [
+                      "signal_id",
+                      "transform",
+                      "mode",
+                      "nonexecution_pnl"
+                    ],
+                    "additionalProperties": false
+                  }
+                ]
+              },
+              "minItems": 0,
+              "maxItems": 4096
+            },
+            "studies": {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "enum": [
+                          "weighted_return_sum",
+                          "return_moments"
+                        ]
+                      },
+                      "version": {
+                        "const": "1"
+                      },
+                      "parameters": {
+                        "type": "object",
+                        "properties": {},
+                        "required": [],
+                        "additionalProperties": false
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "version",
+                      "parameters"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "const": "return_quantiles"
+                      },
+                      "version": {
+                        "const": "1"
+                      },
+                      "parameters": {
+                        "type": "object",
+                        "properties": {
+                          "levels": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "numerator": {
+                                  "type": "string"
+                                },
+                                "denominator": {
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "numerator",
+                                "denominator"
+                              ],
+                              "additionalProperties": false
+                            },
+                            "minItems": 1,
+                            "maxItems": 32
+                          }
+                        },
+                        "required": [
+                          "levels"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "version",
+                      "parameters"
+                    ],
+                    "additionalProperties": false
+                  }
+                ]
+              },
+              "minItems": 0,
+              "maxItems": 3
+            },
+            "on_incompatible": {
+              "enum": [
+                "unavailable",
+                "reject"
+              ]
+            },
+            "extensions": {}
+          },
+          "required": [
+            "protocol",
+            "path",
+            "expected_sha256",
+            "output_path",
+            "selections",
+            "studies",
+            "on_incompatible",
+            "extensions"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "protocol": {
+              "const": "symphony.sbv.economics-input.v1"
+            },
+            "output_path": {
+              "type": "string"
+            },
+            "selections": {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "signal_id": {
+                        "type": "string"
+                      },
+                      "transform": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "const": "linear_price_pnl"
+                          },
+                          "version": {
+                            "const": "1"
+                          },
+                          "reference_price_nanos": {
+                            "type": "string"
+                          },
+                          "price_unit_nanos": {
+                            "type": "string"
+                          },
+                          "position_units": {
+                            "type": "object",
+                            "properties": {
+                              "numerator": {
+                                "type": "string"
+                              },
+                              "denominator": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "numerator",
+                              "denominator"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "value_per_price_unit": {
+                            "type": "object",
+                            "properties": {
+                              "numerator": {
+                                "type": "string"
+                              },
+                              "denominator": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "numerator",
+                              "denominator"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "cost_per_outcome": {
+                            "type": "object",
+                            "properties": {
+                              "numerator": {
+                                "type": "string"
+                              },
+                              "denominator": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "numerator",
+                              "denominator"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "return_basis": {
+                            "type": "object",
+                            "properties": {
+                              "numerator": {
+                                "type": "string"
+                              },
+                              "denominator": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "numerator",
+                              "denominator"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "pnl_unit": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "version",
+                          "reference_price_nanos",
+                          "price_unit_nanos",
+                          "position_units",
+                          "value_per_price_unit",
+                          "cost_per_outcome",
+                          "return_basis",
+                          "pnl_unit"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "mode": {
+                        "const": "support_only"
+                      },
+                      "nonexecution_pnl": {
+                        "type": "null"
+                      }
+                    },
+                    "required": [
+                      "signal_id",
+                      "transform",
+                      "mode",
+                      "nonexecution_pnl"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "signal_id": {
+                        "type": "string"
+                      },
+                      "transform": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "const": "linear_price_pnl"
+                          },
+                          "version": {
+                            "const": "1"
+                          },
+                          "reference_price_nanos": {
+                            "type": "string"
+                          },
+                          "price_unit_nanos": {
+                            "type": "string"
+                          },
+                          "position_units": {
+                            "type": "object",
+                            "properties": {
+                              "numerator": {
+                                "type": "string"
+                              },
+                              "denominator": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "numerator",
+                              "denominator"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "value_per_price_unit": {
+                            "type": "object",
+                            "properties": {
+                              "numerator": {
+                                "type": "string"
+                              },
+                              "denominator": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "numerator",
+                              "denominator"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "cost_per_outcome": {
+                            "type": "object",
+                            "properties": {
+                              "numerator": {
+                                "type": "string"
+                              },
+                              "denominator": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "numerator",
+                              "denominator"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "return_basis": {
+                            "type": "object",
+                            "properties": {
+                              "numerator": {
+                                "type": "string"
+                              },
+                              "denominator": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "numerator",
+                              "denominator"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "pnl_unit": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "version",
+                          "reference_price_nanos",
+                          "price_unit_nanos",
+                          "position_units",
+                          "value_per_price_unit",
+                          "cost_per_outcome",
+                          "return_basis",
+                          "pnl_unit"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "mode": {
+                        "const": "execution_mixture"
+                      },
+                      "nonexecution_pnl": {
+                        "type": "object",
+                        "properties": {
+                          "numerator": {
+                            "type": "string"
+                          },
+                          "denominator": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "numerator",
+                          "denominator"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "required": [
+                      "signal_id",
+                      "transform",
+                      "mode",
+                      "nonexecution_pnl"
+                    ],
+                    "additionalProperties": false
+                  }
+                ]
+              },
+              "minItems": 0,
+              "maxItems": 4096
+            },
+            "studies": {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "enum": [
+                          "weighted_return_sum",
+                          "return_moments"
+                        ]
+                      },
+                      "version": {
+                        "const": "1"
+                      },
+                      "parameters": {
+                        "type": "object",
+                        "properties": {},
+                        "required": [],
+                        "additionalProperties": false
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "version",
+                      "parameters"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "const": "return_quantiles"
+                      },
+                      "version": {
+                        "const": "1"
+                      },
+                      "parameters": {
+                        "type": "object",
+                        "properties": {
+                          "levels": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "numerator": {
+                                  "type": "string"
+                                },
+                                "denominator": {
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "numerator",
+                                "denominator"
+                              ],
+                              "additionalProperties": false
+                            },
+                            "minItems": 1,
+                            "maxItems": 32
+                          }
+                        },
+                        "required": [
+                          "levels"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "version",
+                      "parameters"
+                    ],
+                    "additionalProperties": false
+                  }
+                ]
+              },
+              "minItems": 0,
+              "maxItems": 3
+            },
+            "on_incompatible": {
+              "enum": [
+                "unavailable",
+                "reject"
+              ]
+            },
+            "extensions": {},
+            "source": {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": "string"
+                },
+                "expected_sha256": {
+                  "type": "string"
+                },
+                "pointer": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "path",
+                "expected_sha256",
+                "pointer"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "protocol",
+            "output_path",
+            "selections",
+            "studies",
+            "on_incompatible",
+            "extensions",
+            "source"
+          ],
+          "additionalProperties": false
+        }
+      ]
     },
     "book": {
       "type": "object",
@@ -3839,6 +4642,366 @@
         "extensions"
       ],
       "additionalProperties": false
+    },
+    "compose_economics": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.compose-economics-input.v1"
+        },
+        "output_path": {
+          "type": "string"
+        },
+        "components": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "source": {
+                "type": "object",
+                "properties": {
+                  "path": {
+                    "type": "string"
+                  },
+                  "expected_sha256": {
+                    "type": "string"
+                  },
+                  "pointer": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "path",
+                  "expected_sha256",
+                  "pointer"
+                ],
+                "additionalProperties": false
+              },
+              "outcome_pointer": {
+                "type": "string"
+              },
+              "signal_id": {
+                "type": "string"
+              },
+              "conditioning": {
+                "type": "string"
+              },
+              "conversion": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "factor": {
+                        "type": "object",
+                        "properties": {
+                          "numerator": {
+                            "type": "string"
+                          },
+                          "denominator": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "numerator",
+                          "denominator"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "output_unit": {
+                        "type": "string"
+                      },
+                      "description": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "factor",
+                      "output_unit",
+                      "description"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "extensions": {}
+            },
+            "required": [
+              "id",
+              "source",
+              "outcome_pointer",
+              "signal_id",
+              "conditioning",
+              "conversion",
+              "extensions"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "dependence": {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "enum": [
+                "independent",
+                "joint_indices"
+              ]
+            },
+            "marginal_policy": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "require_source_match",
+                    "support_only"
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "paths": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "atom_indices": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "probability": {
+                    "type": "object",
+                    "properties": {
+                      "numerator": {
+                        "type": "string"
+                      },
+                      "denominator": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "numerator",
+                      "denominator"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "required": [
+                  "id",
+                  "atom_indices",
+                  "probability"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "description": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "kind",
+            "marginal_policy",
+            "paths",
+            "description"
+          ],
+          "additionalProperties": false
+        },
+        "economics": {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "enum": [
+                "multiplicative_return",
+                "additive_pnl"
+              ]
+            },
+            "initial_state": {
+              "type": "object",
+              "properties": {
+                "numerator": {
+                  "type": "string"
+                },
+                "denominator": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "numerator",
+                "denominator"
+              ],
+              "additionalProperties": false
+            },
+            "state_unit": {
+              "type": "string"
+            },
+            "state_domain": {
+              "enum": [
+                "signed",
+                "nonnegative"
+              ]
+            },
+            "description": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "kind",
+            "initial_state",
+            "state_unit",
+            "state_domain",
+            "description"
+          ],
+          "additionalProperties": false
+        },
+        "conditioning_description": {
+          "type": "string"
+        },
+        "on_unavailable": {
+          "enum": [
+            "reject",
+            "unavailable"
+          ]
+        },
+        "retain_paths": {
+          "type": "boolean"
+        },
+        "retain_prefix_distributions": {
+          "type": "boolean"
+        },
+        "studies": {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "const": "terminal_moments"
+                  },
+                  "version": {
+                    "const": "1"
+                  },
+                  "parameters": {
+                    "type": "object",
+                    "properties": {},
+                    "required": [],
+                    "additionalProperties": false
+                  }
+                },
+                "required": [
+                  "id",
+                  "version",
+                  "parameters"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "const": "terminal_quantiles"
+                  },
+                  "version": {
+                    "const": "1"
+                  },
+                  "parameters": {
+                    "type": "object",
+                    "properties": {
+                      "levels": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "numerator": {
+                              "type": "string"
+                            },
+                            "denominator": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "numerator",
+                            "denominator"
+                          ],
+                          "additionalProperties": false
+                        }
+                      }
+                    },
+                    "required": [
+                      "levels"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "required": [
+                  "id",
+                  "version",
+                  "parameters"
+                ],
+                "additionalProperties": false
+              }
+            ]
+          }
+        },
+        "limits": {
+          "type": "object",
+          "properties": {
+            "max_paths": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "max_terminal_atoms": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "max_paths",
+            "max_terminal_atoms"
+          ],
+          "additionalProperties": false
+        },
+        "extensions": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "protocol",
+        "output_path",
+        "components",
+        "dependence",
+        "economics",
+        "conditioning_description",
+        "on_unavailable",
+        "retain_paths",
+        "retain_prefix_distributions",
+        "studies",
+        "limits",
+        "extensions"
+      ],
+      "additionalProperties": false
     }
   },
   "results": {
@@ -3849,7 +5012,7 @@
           "const": "symphony.sbv.capabilities.v1"
         },
         "engine_version": {
-          "const": "0.18.0-dev"
+          "const": "0.19.0-dev"
         },
         "cpu": {
           "type": "object",
@@ -4474,7 +5637,7 @@
           "const": "symphony.sbv.catalogue.v1"
         },
         "engine_version": {
-          "const": "0.18.0-dev"
+          "const": "0.19.0-dev"
         },
         "models": {
           "type": "array",
@@ -5065,7 +6228,7 @@
           "const": "symphony.sbv.backend-plan.v1"
         },
         "engine_version": {
-          "const": "0.18.0-dev"
+          "const": "0.19.0-dev"
         },
         "status": {
           "enum": [
@@ -5358,7 +6521,7 @@
           "const": "symphony.sbv.live-plan.v1"
         },
         "engine_version": {
-          "const": "0.18.0-dev"
+          "const": "0.19.0-dev"
         },
         "can_activate": {
           "const": false
@@ -6538,6 +7701,70 @@
       "properties": {
         "protocol": {
           "const": "symphony.sbv.research-history.v1"
+        },
+        "path": {
+          "type": "string"
+        },
+        "content_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "file_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "bytes": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$"
+        },
+        "status": {
+          "enum": [
+            "completed",
+            "partial"
+          ]
+        },
+        "summary": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "enum": [
+                "available",
+                "partial",
+                "unavailable",
+                "not_selected"
+              ]
+            },
+            "reason": {
+              "type": "string"
+            },
+            "data": {
+              "$ref": "#/$defs/node"
+            }
+          },
+          "required": [
+            "status",
+            "reason",
+            "data"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "protocol",
+        "path",
+        "content_sha256",
+        "file_sha256",
+        "bytes",
+        "status",
+        "summary"
+      ],
+      "additionalProperties": false
+    },
+    "compose_economics": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.compose-economics.v1"
         },
         "path": {
           "type": "string"
@@ -8631,9 +9858,22 @@
           "const": "cpu"
         },
         "maximum_atoms": {
-          "type": "string"
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "output_schema": {
+          "type": "string"
+        },
+        "numeric_contract": {
+          "type": "string"
+        },
+        "uncertainty": {
           "type": "string"
         }
       },
@@ -12199,6 +13439,1613 @@
         "methods",
         "weighted_order",
         "pareto_fronts",
+        "extensions"
+      ],
+      "additionalProperties": false
+    },
+    "census_evidence": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.census-evidence.v1"
+        },
+        "kind": {
+          "enum": [
+            "native",
+            "external"
+          ]
+        },
+        "identity_domain": {
+          "enum": [
+            "native_signals",
+            "external_declaration"
+          ]
+        },
+        "census_sha256": {
+          "type": "string"
+        },
+        "source_sha256": {
+          "type": "string"
+        },
+        "dataset": {
+          "type": "string"
+        },
+        "instrument_id": {
+          "type": "string"
+        },
+        "mode": {
+          "enum": [
+            "native_causal_prefix",
+            "causal_declared",
+            "retrospective"
+          ]
+        },
+        "producer": {},
+        "signals": {
+          "type": "array",
+          "items": {}
+        },
+        "declaration": {}
+      },
+      "required": [
+        "protocol",
+        "kind",
+        "identity_domain",
+        "census_sha256",
+        "source_sha256",
+        "dataset",
+        "instrument_id",
+        "mode",
+        "producer",
+        "signals",
+        "declaration"
+      ],
+      "additionalProperties": false
+    },
+    "census_reference": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string"
+        },
+        "expected_sha256": {
+          "type": "string"
+        },
+        "pointer": {
+          "type": "string"
+        },
+        "file_sha256": {
+          "type": "string"
+        },
+        "selected_content_sha256": {
+          "type": "string"
+        },
+        "authorship": {
+          "const": "not_verified"
+        }
+      },
+      "required": [
+        "path",
+        "expected_sha256",
+        "pointer",
+        "file_sha256",
+        "selected_content_sha256",
+        "authorship"
+      ],
+      "additionalProperties": false
+    },
+    "economic_composition": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.economic-composition.v1"
+        },
+        "dependence": {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "enum": [
+                "independent",
+                "joint_indices"
+              ]
+            },
+            "marginal_policy": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "require_source_match",
+                    "support_only"
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "paths": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "atom_indices": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "probability": {
+                    "type": "object",
+                    "properties": {
+                      "numerator": {
+                        "type": "string"
+                      },
+                      "denominator": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "numerator",
+                      "denominator"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "required": [
+                  "id",
+                  "atom_indices",
+                  "probability"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "description": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "kind",
+            "marginal_policy",
+            "paths",
+            "description"
+          ],
+          "additionalProperties": false
+        },
+        "economics": {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "enum": [
+                "multiplicative_return",
+                "additive_pnl"
+              ]
+            },
+            "initial_state": {
+              "type": "object",
+              "properties": {
+                "numerator": {
+                  "type": "string"
+                },
+                "denominator": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "numerator",
+                "denominator"
+              ],
+              "additionalProperties": false
+            },
+            "state_unit": {
+              "type": "string"
+            },
+            "state_domain": {
+              "enum": [
+                "signed",
+                "nonnegative"
+              ]
+            },
+            "description": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "kind",
+            "initial_state",
+            "state_unit",
+            "state_domain",
+            "description"
+          ],
+          "additionalProperties": false
+        },
+        "conditioning_description": {
+          "type": "string"
+        },
+        "measure": {
+          "const": "probability"
+        },
+        "normalization": {
+          "const": "none"
+        },
+        "paths": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "atom_indices": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^(0|[1-9][0-9]*)$"
+                }
+              },
+              "probability": {
+                "type": "object",
+                "properties": {
+                  "numerator": {
+                    "type": "string",
+                    "pattern": "^(0|-?[1-9][0-9]*)$"
+                  },
+                  "denominator": {
+                    "type": "string",
+                    "pattern": "^[1-9][0-9]*$"
+                  }
+                },
+                "required": [
+                  "numerator",
+                  "denominator"
+                ],
+                "additionalProperties": false
+              },
+              "state": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "numerator": {
+                      "type": "string",
+                      "pattern": "^(0|-?[1-9][0-9]*)$"
+                    },
+                    "denominator": {
+                      "type": "string",
+                      "pattern": "^[1-9][0-9]*$"
+                    }
+                  },
+                  "required": [
+                    "numerator",
+                    "denominator"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": [
+              "id",
+              "atom_indices",
+              "probability",
+              "state"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "paths_retained": {
+          "type": "boolean"
+        },
+        "terminal_atoms": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "state": {
+                    "type": "object",
+                    "properties": {
+                      "numerator": {
+                        "type": "string"
+                      },
+                      "denominator": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "numerator",
+                      "denominator"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "probability": {
+                    "type": "object",
+                    "properties": {
+                      "numerator": {
+                        "type": "string"
+                      },
+                      "denominator": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "numerator",
+                      "denominator"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "required": [
+                  "state",
+                  "probability"
+                ],
+                "additionalProperties": false
+              }
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "prefix_distributions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "completed_components": {
+                "type": "string"
+              },
+              "atoms": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "state": {
+                      "type": "object",
+                      "properties": {
+                        "numerator": {
+                          "type": "string"
+                        },
+                        "denominator": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "numerator",
+                        "denominator"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "probability": {
+                      "type": "object",
+                      "properties": {
+                        "numerator": {
+                          "type": "string"
+                        },
+                        "denominator": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "numerator",
+                        "denominator"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "required": [
+                    "state",
+                    "probability"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": [
+              "completed_components",
+              "atoms"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "prefix_distributions_retained": {
+          "type": "boolean"
+        },
+        "marginals": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "component_id": {
+                "type": "string"
+              },
+              "source_measure": {
+                "type": "string"
+              },
+              "weights_match": {
+                "type": "boolean"
+              },
+              "atoms": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "atom_index": {
+                      "type": "string"
+                    },
+                    "source_weight": {
+                      "type": "object",
+                      "properties": {
+                        "numerator": {
+                          "type": "string"
+                        },
+                        "denominator": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "numerator",
+                        "denominator"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "induced_probability": {
+                      "type": "object",
+                      "properties": {
+                        "numerator": {
+                          "type": "string"
+                        },
+                        "denominator": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "numerator",
+                        "denominator"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "required": [
+                    "atom_index",
+                    "source_weight",
+                    "induced_probability"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": [
+              "component_id",
+              "source_measure",
+              "weights_match",
+              "atoms"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "calibration": {
+          "const": "not_verified"
+        }
+      },
+      "required": [
+        "protocol",
+        "dependence",
+        "economics",
+        "conditioning_description",
+        "measure",
+        "normalization",
+        "paths",
+        "paths_retained",
+        "terminal_atoms",
+        "prefix_distributions",
+        "prefix_distributions_retained",
+        "marginals",
+        "calibration"
+      ],
+      "additionalProperties": false
+    },
+    "composition_study_selection": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "id": {
+              "const": "terminal_moments"
+            },
+            "version": {
+              "const": "1"
+            },
+            "parameters": {
+              "type": "object",
+              "properties": {},
+              "required": [],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "id",
+            "version",
+            "parameters"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "id": {
+              "const": "terminal_quantiles"
+            },
+            "version": {
+              "const": "1"
+            },
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "levels": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "numerator": {
+                        "type": "string"
+                      },
+                      "denominator": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "numerator",
+                      "denominator"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              },
+              "required": [
+                "levels"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "id",
+            "version",
+            "parameters"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "composed_economic_study": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "id": {
+              "const": "terminal_moments"
+            },
+            "version": {
+              "const": "1"
+            },
+            "parameters": {
+              "type": "object",
+              "properties": {},
+              "required": [],
+              "additionalProperties": false
+            },
+            "status": {
+              "const": "available"
+            },
+            "reason": {
+              "const": ""
+            },
+            "state_unit": {
+              "type": "string"
+            },
+            "input_pointer": {
+              "const": "/sections/distributions/data/terminal_atoms"
+            },
+            "uncertainty": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "const": "unavailable"
+                },
+                "reason": {
+                  "const": "no parameter-estimation uncertainty model selected"
+                },
+                "value": {
+                  "type": "null"
+                }
+              },
+              "required": [
+                "status",
+                "reason",
+                "value"
+              ],
+              "additionalProperties": false
+            },
+            "data": {
+              "type": "object",
+              "properties": {
+                "mean": {
+                  "type": "object",
+                  "properties": {
+                    "numerator": {
+                      "type": "string",
+                      "pattern": "^(0|-?[1-9][0-9]*)$"
+                    },
+                    "denominator": {
+                      "type": "string",
+                      "pattern": "^[1-9][0-9]*$"
+                    }
+                  },
+                  "required": [
+                    "numerator",
+                    "denominator"
+                  ],
+                  "additionalProperties": false
+                },
+                "population_variance": {
+                  "type": "object",
+                  "properties": {
+                    "numerator": {
+                      "type": "string",
+                      "pattern": "^(0|-?[1-9][0-9]*)$"
+                    },
+                    "denominator": {
+                      "type": "string",
+                      "pattern": "^[1-9][0-9]*$"
+                    }
+                  },
+                  "required": [
+                    "numerator",
+                    "denominator"
+                  ],
+                  "additionalProperties": false
+                },
+                "variance_unit": {
+                  "type": "string"
+                },
+                "probability_mass": {
+                  "type": "object",
+                  "properties": {
+                    "numerator": {
+                      "type": "string",
+                      "pattern": "^(0|-?[1-9][0-9]*)$"
+                    },
+                    "denominator": {
+                      "type": "string",
+                      "pattern": "^[1-9][0-9]*$"
+                    }
+                  },
+                  "required": [
+                    "numerator",
+                    "denominator"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "mean",
+                "population_variance",
+                "variance_unit",
+                "probability_mass"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "id",
+            "version",
+            "parameters",
+            "status",
+            "reason",
+            "state_unit",
+            "input_pointer",
+            "uncertainty",
+            "data"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "id": {
+              "const": "terminal_moments"
+            },
+            "version": {
+              "const": "1"
+            },
+            "parameters": {
+              "type": "object",
+              "properties": {},
+              "required": [],
+              "additionalProperties": false
+            },
+            "status": {
+              "const": "unavailable"
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1
+            },
+            "state_unit": {
+              "type": "string"
+            },
+            "input_pointer": {
+              "const": "/sections/distributions/data/terminal_atoms"
+            },
+            "uncertainty": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "const": "unavailable"
+                },
+                "reason": {
+                  "const": "no parameter-estimation uncertainty model selected"
+                },
+                "value": {
+                  "type": "null"
+                }
+              },
+              "required": [
+                "status",
+                "reason",
+                "value"
+              ],
+              "additionalProperties": false
+            },
+            "data": {
+              "type": "null"
+            }
+          },
+          "required": [
+            "id",
+            "version",
+            "parameters",
+            "status",
+            "reason",
+            "state_unit",
+            "input_pointer",
+            "uncertainty",
+            "data"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "id": {
+              "const": "terminal_quantiles"
+            },
+            "version": {
+              "const": "1"
+            },
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "levels": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "numerator": {
+                        "type": "string",
+                        "pattern": "^(0|-?[1-9][0-9]*)$"
+                      },
+                      "denominator": {
+                        "type": "string",
+                        "pattern": "^[1-9][0-9]*$"
+                      }
+                    },
+                    "required": [
+                      "numerator",
+                      "denominator"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              },
+              "required": [
+                "levels"
+              ],
+              "additionalProperties": false
+            },
+            "status": {
+              "const": "available"
+            },
+            "reason": {
+              "const": ""
+            },
+            "state_unit": {
+              "type": "string"
+            },
+            "input_pointer": {
+              "const": "/sections/distributions/data/terminal_atoms"
+            },
+            "uncertainty": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "const": "unavailable"
+                },
+                "reason": {
+                  "const": "no parameter-estimation uncertainty model selected"
+                },
+                "value": {
+                  "type": "null"
+                }
+              },
+              "required": [
+                "status",
+                "reason",
+                "value"
+              ],
+              "additionalProperties": false
+            },
+            "data": {
+              "type": "object",
+              "properties": {
+                "quantiles": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "level": {
+                        "type": "object",
+                        "properties": {
+                          "numerator": {
+                            "type": "string",
+                            "pattern": "^(0|-?[1-9][0-9]*)$"
+                          },
+                          "denominator": {
+                            "type": "string",
+                            "pattern": "^[1-9][0-9]*$"
+                          }
+                        },
+                        "required": [
+                          "numerator",
+                          "denominator"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "state": {
+                        "type": "object",
+                        "properties": {
+                          "numerator": {
+                            "type": "string",
+                            "pattern": "^(0|-?[1-9][0-9]*)$"
+                          },
+                          "denominator": {
+                            "type": "string",
+                            "pattern": "^[1-9][0-9]*$"
+                          }
+                        },
+                        "required": [
+                          "numerator",
+                          "denominator"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "required": [
+                      "level",
+                      "state"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "method": {
+                  "const": "inverse_cdf_positive_probability"
+                },
+                "interval_kind": {
+                  "const": "modeled outcome quantiles; not parameter confidence"
+                },
+                "boundary_rule": {
+                  "const": "q=0 selects minimum positive-mass state; otherwise first cumulative probability >= q"
+                }
+              },
+              "required": [
+                "quantiles",
+                "method",
+                "interval_kind",
+                "boundary_rule"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "id",
+            "version",
+            "parameters",
+            "status",
+            "reason",
+            "state_unit",
+            "input_pointer",
+            "uncertainty",
+            "data"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "id": {
+              "const": "terminal_quantiles"
+            },
+            "version": {
+              "const": "1"
+            },
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "levels": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "numerator": {
+                        "type": "string",
+                        "pattern": "^(0|-?[1-9][0-9]*)$"
+                      },
+                      "denominator": {
+                        "type": "string",
+                        "pattern": "^[1-9][0-9]*$"
+                      }
+                    },
+                    "required": [
+                      "numerator",
+                      "denominator"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              },
+              "required": [
+                "levels"
+              ],
+              "additionalProperties": false
+            },
+            "status": {
+              "const": "unavailable"
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1
+            },
+            "state_unit": {
+              "type": "string"
+            },
+            "input_pointer": {
+              "const": "/sections/distributions/data/terminal_atoms"
+            },
+            "uncertainty": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "const": "unavailable"
+                },
+                "reason": {
+                  "const": "no parameter-estimation uncertainty model selected"
+                },
+                "value": {
+                  "type": "null"
+                }
+              },
+              "required": [
+                "status",
+                "reason",
+                "value"
+              ],
+              "additionalProperties": false
+            },
+            "data": {
+              "type": "null"
+            }
+          },
+          "required": [
+            "id",
+            "version",
+            "parameters",
+            "status",
+            "reason",
+            "state_unit",
+            "input_pointer",
+            "uncertainty",
+            "data"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "composition_source": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "source": {
+          "type": "object",
+          "properties": {
+            "path": {
+              "type": "string"
+            },
+            "content_sha256": {
+              "type": "string"
+            },
+            "pointer": {
+              "type": "string"
+            },
+            "selected_sha256": {
+              "type": "string"
+            },
+            "file_sha256": {
+              "type": "string"
+            },
+            "bytes": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]*)$"
+            }
+          },
+          "required": [
+            "path",
+            "content_sha256",
+            "pointer",
+            "selected_sha256",
+            "file_sha256",
+            "bytes"
+          ],
+          "additionalProperties": false
+        },
+        "outcome_pointer": {
+          "type": "string"
+        },
+        "outcome_sha256": {
+          "type": "string"
+        },
+        "signal": {},
+        "model": {},
+        "economic_outcome": {
+          "type": "object",
+          "properties": {
+            "protocol": {
+              "const": "symphony.sbv.economic-outcome.v1"
+            },
+            "signal_id": {
+              "type": "string"
+            },
+            "status": {
+              "enum": [
+                "available",
+                "unavailable"
+              ]
+            },
+            "reason": {
+              "type": "string"
+            },
+            "measure": {
+              "enum": [
+                "probability",
+                "scenario_weight",
+                "signed_coefficient"
+              ]
+            },
+            "conditioning": {
+              "enum": [
+                "execution",
+                "scenario",
+                "execution_and_nonexecution"
+              ]
+            },
+            "mode": {
+              "enum": [
+                "support_only",
+                "execution_mixture"
+              ]
+            },
+            "transform": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "const": "linear_price_pnl"
+                },
+                "version": {
+                  "const": "1"
+                },
+                "reference_price_nanos": {
+                  "type": "string"
+                },
+                "price_unit_nanos": {
+                  "type": "string"
+                },
+                "position_units": {
+                  "type": "object",
+                  "properties": {
+                    "numerator": {
+                      "type": "string"
+                    },
+                    "denominator": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "numerator",
+                    "denominator"
+                  ],
+                  "additionalProperties": false
+                },
+                "value_per_price_unit": {
+                  "type": "object",
+                  "properties": {
+                    "numerator": {
+                      "type": "string"
+                    },
+                    "denominator": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "numerator",
+                    "denominator"
+                  ],
+                  "additionalProperties": false
+                },
+                "cost_per_outcome": {
+                  "type": "object",
+                  "properties": {
+                    "numerator": {
+                      "type": "string"
+                    },
+                    "denominator": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "numerator",
+                    "denominator"
+                  ],
+                  "additionalProperties": false
+                },
+                "return_basis": {
+                  "type": "object",
+                  "properties": {
+                    "numerator": {
+                      "type": "string"
+                    },
+                    "denominator": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "numerator",
+                    "denominator"
+                  ],
+                  "additionalProperties": false
+                },
+                "pnl_unit": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id",
+                "version",
+                "reference_price_nanos",
+                "price_unit_nanos",
+                "position_units",
+                "value_per_price_unit",
+                "cost_per_outcome",
+                "return_basis",
+                "pnl_unit"
+              ],
+              "additionalProperties": false
+            },
+            "transformed_support": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "price_nanos": {
+                    "type": "string"
+                  },
+                  "weight": {
+                    "type": "object",
+                    "properties": {
+                      "numerator": {
+                        "type": "string"
+                      },
+                      "denominator": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "numerator",
+                      "denominator"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "gross_pnl": {
+                    "type": "object",
+                    "properties": {
+                      "numerator": {
+                        "type": "string"
+                      },
+                      "denominator": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "numerator",
+                      "denominator"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "cost": {
+                    "type": "object",
+                    "properties": {
+                      "numerator": {
+                        "type": "string"
+                      },
+                      "denominator": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "numerator",
+                      "denominator"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "net_pnl": {
+                    "type": "object",
+                    "properties": {
+                      "numerator": {
+                        "type": "string"
+                      },
+                      "denominator": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "numerator",
+                      "denominator"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "return": {
+                    "type": "object",
+                    "properties": {
+                      "numerator": {
+                        "type": "string"
+                      },
+                      "denominator": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "numerator",
+                      "denominator"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "required": [
+                  "price_nanos",
+                  "weight",
+                  "gross_pnl",
+                  "cost",
+                  "net_pnl",
+                  "return"
+                ],
+                "additionalProperties": false
+              },
+              "minItems": 0,
+              "maxItems": 65
+            },
+            "nonexecution_pnl": {
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "numerator": {
+                      "type": "string"
+                    },
+                    "denominator": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "numerator",
+                    "denominator"
+                  ],
+                  "additionalProperties": false
+                }
+              ]
+            },
+            "atoms": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "enum": [
+                      "price_outcome",
+                      "nonexecution"
+                    ]
+                  },
+                  "support_index": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "return": {
+                    "type": "object",
+                    "properties": {
+                      "numerator": {
+                        "type": "string"
+                      },
+                      "denominator": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "numerator",
+                      "denominator"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "weight": {
+                    "type": "object",
+                    "properties": {
+                      "numerator": {
+                        "type": "string"
+                      },
+                      "denominator": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "numerator",
+                      "denominator"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "required": [
+                  "kind",
+                  "support_index",
+                  "return",
+                  "weight"
+                ],
+                "additionalProperties": false
+              },
+              "minItems": 0,
+              "maxItems": 66
+            },
+            "calibration": {
+              "const": "not_verified"
+            }
+          },
+          "required": [
+            "protocol",
+            "signal_id",
+            "status",
+            "reason",
+            "measure",
+            "conditioning",
+            "mode",
+            "transform",
+            "transformed_support",
+            "nonexecution_pnl",
+            "atoms",
+            "calibration"
+          ],
+          "additionalProperties": false
+        },
+        "conversion": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "factor": {
+                  "type": "object",
+                  "properties": {
+                    "numerator": {
+                      "type": "string",
+                      "pattern": "^(0|-?[1-9][0-9]*)$"
+                    },
+                    "denominator": {
+                      "type": "string",
+                      "pattern": "^[1-9][0-9]*$"
+                    }
+                  },
+                  "required": [
+                    "numerator",
+                    "denominator"
+                  ],
+                  "additionalProperties": false
+                },
+                "output_unit": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "factor",
+                "output_unit",
+                "description"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        },
+        "source_summary": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string"
+            },
+            "reason": {
+              "type": "string"
+            },
+            "data": {}
+          },
+          "required": [
+            "status",
+            "reason",
+            "data"
+          ],
+          "additionalProperties": false
+        },
+        "source_provenance": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string"
+            },
+            "reason": {
+              "type": "string"
+            },
+            "data": {}
+          },
+          "required": [
+            "status",
+            "reason",
+            "data"
+          ],
+          "additionalProperties": false
+        },
+        "census": {
+          "type": "object",
+          "properties": {
+            "protocol": {
+              "const": "symphony.sbv.census-evidence.v1"
+            },
+            "kind": {
+              "enum": [
+                "native",
+                "external"
+              ]
+            },
+            "identity_domain": {
+              "enum": [
+                "native_signals",
+                "external_declaration"
+              ]
+            },
+            "census_sha256": {
+              "type": "string"
+            },
+            "source_sha256": {
+              "type": "string"
+            },
+            "dataset": {
+              "type": "string"
+            },
+            "instrument_id": {
+              "type": "string"
+            },
+            "mode": {
+              "enum": [
+                "native_causal_prefix",
+                "causal_declared",
+                "retrospective"
+              ]
+            },
+            "producer": {},
+            "signals": {
+              "type": "array",
+              "items": {}
+            },
+            "declaration": {}
+          },
+          "required": [
+            "protocol",
+            "kind",
+            "identity_domain",
+            "census_sha256",
+            "source_sha256",
+            "dataset",
+            "instrument_id",
+            "mode",
+            "producer",
+            "signals",
+            "declaration"
+          ],
+          "additionalProperties": false
+        },
+        "census_context_reference": {
+          "type": "object",
+          "properties": {
+            "path": {
+              "type": "string"
+            },
+            "expected_sha256": {
+              "type": "string"
+            },
+            "pointer": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "path",
+            "expected_sha256",
+            "pointer"
+          ],
+          "additionalProperties": false
+        },
+        "replay_reference": {
+          "type": "object",
+          "properties": {
+            "path": {
+              "type": "string"
+            },
+            "expected_sha256": {
+              "type": "string"
+            },
+            "pointer": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "path",
+            "expected_sha256",
+            "pointer"
+          ],
+          "additionalProperties": false
+        },
+        "extensions": {}
+      },
+      "required": [
+        "id",
+        "source",
+        "outcome_pointer",
+        "outcome_sha256",
+        "signal",
+        "model",
+        "economic_outcome",
+        "conversion",
+        "source_summary",
+        "source_provenance",
+        "census",
+        "census_context_reference",
+        "replay_reference",
         "extensions"
       ],
       "additionalProperties": false

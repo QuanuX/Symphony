@@ -209,6 +209,7 @@ Json descriptor() {
     r["contract_versions"].push_back(*op.output_protocol);
   }
   r["contract_versions"].push_back("symphony.sbv.linear-model.v1");
+  r["contract_versions"].push_back("symphony.sbv.census-evidence.v1");
   r["descriptor_digest"] = e::tagged_sha256(r.dump());
   return r;
 }
@@ -285,6 +286,7 @@ Json dispatch(const std::string &op, const Json &p, std::int64_t end) {
     return d::compose(p, end);
   if (op == "compose_joint")
     return d::compose_joint(p, end);
+  if (op == "compose_economics") return d::compose_economics(p, end);
   if (op == "research_history") return d::research_history(p, end);
   if (op == "fit") return d::fit(p, end);
   if (op == "predict") return d::predict(p, end);

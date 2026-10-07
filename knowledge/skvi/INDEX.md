@@ -23062,3 +23062,87 @@ automatic nested fitting and cross-run holdout history remain unimplemented.
 - deferred_projections: complete access capture, automatic nested fitting and causal leakage inference
 - notes: Caller scope/order/namespaces and selections are explicit; no holdout prohibition or automatic promotion.
 - status: canonical
+
+### SBV census.hpp
+
+- path: `modules/sbv-engine/src/census.hpp`
+- title: Source-bound census and economic continuity
+- surface_type: implementation contract or test
+- truth_role: Retained census identity and explicit economic composition
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.19 native and installed calculation workflow.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, agents and external research pipelines
+- deferred_projections: executable strategy providers, scalable payload storage and remote ownership
+- notes: User-selected model, dependence, state domain and resource constraints remain explicit.
+- status: canonical
+
+### SBV census.cpp
+
+- path: `modules/sbv-engine/src/census.cpp`
+- title: Source-bound census and economic continuity
+- surface_type: implementation contract or test
+- truth_role: Retained census identity and explicit economic composition
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.19 native and installed calculation workflow.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, agents and external research pipelines
+- deferred_projections: executable strategy providers, scalable payload storage and remote ownership
+- notes: User-selected model, dependence, state domain and resource constraints remain explicit.
+- status: canonical
+
+### SBV compose_economics.cpp
+
+- path: `modules/sbv-engine/src/compose_economics.cpp`
+- title: Source-bound census and economic continuity
+- surface_type: implementation contract or test
+- truth_role: Retained census identity and explicit economic composition
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.19 native and installed calculation workflow.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, agents and external research pipelines
+- deferred_projections: executable strategy providers, scalable payload storage and remote ownership
+- notes: User-selected model, dependence, state domain and resource constraints remain explicit.
+- status: canonical
+
+### SBV census_test.cpp
+
+- path: `modules/sbv-engine/tests/census_test.cpp`
+- title: Source-bound census and economic continuity
+- surface_type: implementation contract or test
+- truth_role: Retained census identity and explicit economic composition
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.19 native and installed calculation workflow.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, agents and external research pipelines
+- deferred_projections: executable strategy providers, scalable payload storage and remote ownership
+- notes: User-selected model, dependence, state domain and resource constraints remain explicit.
+- status: canonical
+
+### SBV compose_economics_test.cpp
+
+- path: `modules/sbv-engine/tests/compose_economics_test.cpp`
+- title: Source-bound census and economic continuity
+- surface_type: implementation contract or test
+- truth_role: Retained census identity and explicit economic composition
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.19 native and installed calculation workflow.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, agents and external research pipelines
+- deferred_projections: executable strategy providers, scalable payload storage and remote ownership
+- notes: User-selected model, dependence, state domain and resource constraints remain explicit.
+- status: canonical
+
+### SBV installed census continuity
+
+- path: `tools/qxctl/internal/knowledgeengine/sbv_census_test.go`
+- title: Installed census continuity contract checks
+- surface_type: implementation test
+- truth_role: Installed reference admission and shared result schema evidence
+- owner: Symphony Backtesting Vector maintainers
+- scope: Exact 0.19 installed qxctl workflow.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl and implementation maintainers
+- deferred_projections: Broader release acceptance remains a separate gate.
+- notes: Preserves original native/imported identity through model reevaluation.
+- status: canonical

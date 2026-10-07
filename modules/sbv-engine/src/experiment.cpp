@@ -85,11 +85,23 @@ Json experiment(const Json &p, std::int64_t end) {
   std::map<std::string, std::size_t> indices;
   std::vector<Json> requests;
   std::uint64_t inner_max = 1;
-  const std::set<std::string> operations{
-      "run",       "evaluate", "compose",        "compose_joint",
-      "economics", "book",     "liquidity",      "allocation_economics",
-      "analyze",   "compare",  "resample",       "split",
-      "fit",       "predict",  "dataset_execute", "research_history"};
+  const std::set<std::string> operations{"run",
+                                         "evaluate",
+                                         "compose",
+                                         "compose_joint",
+                                         "economics",
+                                         "book",
+                                         "liquidity",
+                                         "allocation_economics",
+                                         "analyze",
+                                         "compare",
+                                         "resample",
+                                         "split",
+                                         "fit",
+                                         "predict",
+                                         "dataset_execute",
+                                         "research_history",
+                                         "compose_economics"};
   for (const auto &t : trials) {
     keys_optional(t,
                   {"id", "state", "operation", "request", "reason",

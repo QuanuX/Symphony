@@ -2,7 +2,7 @@
 
 ## Version and ownership
 
-Contract v1; package `sbv-engine` 0.18.0-dev; engine `symphony-sbv`; vector `sbv`. C++26 owns computations, result sealing and artifact queries. Go qxctl verifies the exact installation and projects native evidence. OWNER-INTERFACE.json is the exact operation declaration; generated C++/Go metadata must match it. This release is experimental.
+Contract v1; package `sbv-engine` 0.19.0-dev; engine `symphony-sbv`; vector `sbv`. C++26 owns computations, result sealing and artifact queries. Go qxctl verifies the exact installation and projects native evidence. OWNER-INTERFACE.json is the exact operation declaration; generated C++/Go metadata must match it. This release is experimental.
 
 The engine uses knowledge-vector-engine-cpp 0.2.0-dev and sqav-databento-dbn-cpp 0.5.0-dev, with that adapter's exact static dependencies. It performs no provider calls. Signal/replay semantics belong to SBV; acquisition remains SQAV, metadata SQMV, batch ownership SQFV, transformation SQTV, physical stores SQPV and recipient delivery SQDV. Its portable local JSON result is a derived artifact, not a new market-data persistence service. SQPV/SQDV integrations are not wired in this release.
 
@@ -707,3 +707,68 @@ same result is inspectable/queryable/exportable through qxctl and the installed
 SDK for future GUI and external research consumers. Automatic nested fitting,
 complete cross-run access capture and causal leakage inference remain separate
 unimplemented capabilities.
+
+## Retained census and source-bound economic continuity (0.19)
+
+`run` and `evaluate` now retain `sections.census.data` using
+`symphony.sbv.census-evidence.v1`. Native identity remains the digest of the exact
+native signal array, with criteria and selection context retained separately.
+External identity remains the digest of the complete original external census
+declaration, including producer, causal mode and original signal fields. Model
+selection cannot convert one identity domain into the other.
+
+`evaluate.census` accepts either the original inline external declaration or
+`{path, expected_sha256, pointer}` referencing an entire root or embedded sealed
+run/evaluate result. The outer and selected seals, duplicate declarations,
+source digest, dataset, instrument, source ordinals and timestamps are checked.
+Native anchors and previous observed trade prices must match the decoded source.
+The normalized evidence is self-contained: another evaluation can consume it
+without reopening the first result's ancestors. Legacy native run and inline
+external evaluate results without the new section have strict adapters; an
+invalid present census section never falls back to legacy interpretation.
+Hashes establish content identity, not authorship or proof of external causality.
+
+`economics` accepts its legacy `path` plus `expected_sha256`, or the alternative
+`source` reference triple. Mixing those forms rejects. Both select complete
+model evaluation results; legacy touch observations are not reinterpreted as
+price-support models. Original census evidence, selected model/signal rows and
+full source replay remain retained. Source references record both the enclosing
+file and the selected result identity. `book` shares census/source validation.
+
+`compose_economics` (`qxctl sbv compose-economics`) consumes immutable economics
+results. Each component selects a source result, economic row pointer, signal
+identity and conditioning; no numerical support needs to be copied into a new
+request. Admission checks the retained census, selected model and transform
+correspondence, and exact economic arithmetic. Original assumptions, replay
+references and separate content/file identities remain inspectable.
+
+The user chooses heterogeneous independent draws, or explicit joint paths with
+one source atom index per component and a probability for the whole path.
+Independent masses are products. Joint masses are used once, never multiplied
+again by source weights. `require_source_match` requires exact induced marginals;
+`support_only` explicitly selects a new joint probability measure while preserving
+original source measures and weights. No missing mass is normalized and no
+unavailable component is silently dropped. The user selects whole-distribution
+unavailability or rejection for unavailable/incompatible outcomes.
+
+Economic state evolves in declared component order by multiplicative returns or
+additive P&L with explicit unit conversions. Initial state, unit and signed versus
+nonnegative state domain are user choices. Terminal distributions are retained;
+full paths and prefix distributions are optional. Zero-probability paths and
+atoms remain present. Zero studies is valid; selected `terminal_moments` computes
+exact mean/population variance and `terminal_quantiles` selects inverse-CDF
+quantiles over positive mass. These describe outcome distributions, not parameter
+confidence or calibrated execution. Compounding does not establish shared
+liquidity, capital, reinvestment, FX correctness or feasible account execution.
+
+Checked signed int128 rationals reject unrepresentable intermediates without
+rounding. Optional `max_paths` and `max_terminal_atoms` are caller limits; null
+adds no policy limit. Host/address-space, numeric and existing result-artifact
+representation bounds remain explicit. This increment does not resolve the
+separate scalable-result work package. No default deadline is introduced.
+
+Experiment bindings can now connect run → evaluate → economics →
+compose_economics using retained references, with the existing digest-bound
+journal/resume contract. Installed schemas/templates, catalogue, complete
+terminal text/JSON/NDJSON and the calculation SDK expose the same data. This
+release connects the core workflow; milestone acceptance remains a separate gate.

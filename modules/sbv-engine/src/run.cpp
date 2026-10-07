@@ -1,4 +1,4 @@
-#include "dataset.hpp"
+#include "census.hpp"
 #include "detail.hpp"
 #include <algorithm>
 #include <atomic>
@@ -396,6 +396,7 @@ Json run(const Json &p, std::int64_t end, const Dataset *resident) {
   s["user_extensions"] = section(p.at("extensions"));
   result["sections"]["resources"]["data"]["dataset_feed"] =
       source.evidence(resident != nullptr);
+  s["census"] = section(census_evidence(result));
   return persist(std::move(result), p, "run", end);
 }
 } // namespace symphony::sbv::detail

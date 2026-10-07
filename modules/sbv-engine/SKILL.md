@@ -22,3 +22,13 @@ the wrapper owns the destination. Use dataset inspect for counters and dataset
 release after jobs finish. Explicit file operations remain available. All
 commands support text, JSON and NDJSON; future GUIs use identical payloads.
 A transport failure may follow a completed write; inspect its destination.
+
+For retained census reuse, pass an exact root or embedded run/evaluate result
+reference to `evaluate.census`. Preserve the original native/external identity;
+selecting another model does not regenerate membership. `economics.source` can
+reference an evaluation result directly, including an experiment binding.
+`compose_economics` selects economic rows by immutable source, signal and
+conditioning. Explicitly choose independent or joint dependence, marginal policy,
+state arithmetic/domain, optional resource constraints and studies. Inspect
+unavailable distribution findings; never treat them as zero outcomes. Original
+replay references remain observed evidence separate from economic trajectories.

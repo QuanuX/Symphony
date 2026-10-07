@@ -1,4 +1,4 @@
-#include "dataset.hpp"
+#include "census.hpp"
 #include "detail.hpp"
 #include <algorithm>
 #include <map>
@@ -112,9 +112,11 @@ Json book(const Json &p, std::int64_t end, const Dataset *resident) {
   need(source.book_compatible,
        "book requires one publisher/instrument/channel");
   const auto parent = load_result(p.at("census_result"), end);
+  const auto admitted = census_evidence(parent);
+  validate_census_source(admitted, source, end);
   const auto &ps = parent.at("sections"),
              &prov = ps.at("provenance").at("data"),
-             &signals = ps.at("signals").at("data");
+             &signals = admitted.at("signals");
   need(prov.at("source_sha256") == p.at("source_sha256") &&
            prov.at("dataset") == p.at("dataset") &&
            prov.at("instrument_id") == dec(events[0].instrument_id) &&

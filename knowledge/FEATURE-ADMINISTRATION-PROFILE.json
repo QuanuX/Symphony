@@ -967,6 +967,7 @@
             "qxcmd:symphony:sbv.book",
             "qxcmd:symphony:sbv.compare",
             "qxcmd:symphony:sbv.compose",
+            "qxcmd:symphony:sbv.compose.economics",
             "qxcmd:symphony:sbv.compose.joint",
             "qxcmd:symphony:sbv.dataset.execute",
             "qxcmd:symphony:sbv.dataset.load",
@@ -991,6 +992,7 @@
             "engop:symphony:sbv.book",
             "engop:symphony:sbv.compare",
             "engop:symphony:sbv.compose",
+            "engop:symphony:sbv.compose-economics",
             "engop:symphony:sbv.compose-joint",
             "engop:symphony:sbv.dataset-execute",
             "engop:symphony:sbv.dataset-load",
@@ -2902,6 +2904,7 @@
             "qxcmd:symphony:sbv.book",
             "qxcmd:symphony:sbv.compare",
             "qxcmd:symphony:sbv.compose",
+            "qxcmd:symphony:sbv.compose.economics",
             "qxcmd:symphony:sbv.compose.joint",
             "qxcmd:symphony:sbv.dataset.execute",
             "qxcmd:symphony:sbv.dataset.load",
@@ -2926,6 +2929,7 @@
             "engop:symphony:sbv.book",
             "engop:symphony:sbv.compare",
             "engop:symphony:sbv.compose",
+            "engop:symphony:sbv.compose-economics",
             "engop:symphony:sbv.compose-joint",
             "engop:symphony:sbv.dataset-execute",
             "engop:symphony:sbv.dataset-load",
@@ -9761,6 +9765,6 @@
   "profile_id": "symphony.registered-features.administration.v1",
   "protocol": "symphony.knowledge.feature-administration-profile.v1",
   "registered_feature_count": 141,
-  "ssfv_registry_digest": "sha256:5eaffa72cd701570bd22bdaf0aab335b815701a904d10fb6b5d5747bb099e25e",
-  "profile_digest": "sha256:78223512f26ec3aab37e68f6ebbad775b5c28dc5fc351f125c15d352ba21e8ae"
+  "ssfv_registry_digest": "sha256:f81f2335f2882ccf8045834771fd217e6100b2d7f42e9a02aac7d41366595993",
+  "profile_digest": "sha256:f2b6fc081dbaa26d9628b9f54c39cf518861104b81d1f55c34223b3ca2354f26"
 }

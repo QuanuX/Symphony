@@ -76,7 +76,8 @@ int main() try {
            {"source_ordinal", std::to_string(i)},
            {"available_ns", std::to_string(t + i * 100)},
            {"anchor_price_nanos", "100"},
-           {"causal_end_ordinal_exclusive", std::to_string(i + 1)}});
+           {"causal_end_ordinal_exclusive", std::to_string(i + 1)},
+           {"context_reference", "synthetic book fixture"}});
     }
     const std::string source(reinterpret_cast<const char *>(bytes.data()),
                              bytes.size());
@@ -85,12 +86,30 @@ int main() try {
     auto parent =
         d::base("synthetic mechanical test census, not market evidence");
     parent["sections"]["signals"] = d::section(signals);
+    J producer{{"id", "book-fixture"},
+               {"version", "1"},
+               {"artifact_sha256", ""},
+               {"reproducibility", "uncaptured"}};
+    J declared{{"protocol", "symphony.sbv.external-census.v1"},
+               {"source_sha256", sha},
+               {"mode", "causal_declared"},
+               {"producer", producer},
+               {"signals", signals}};
+    parent["sections"]["choices"] =
+        d::section({{"protocol", "symphony.sbv.evaluate-input.v1"},
+                    {"source_sha256", sha},
+                    {"dataset", "GLBX.MDP3"},
+                    {"census", declared}});
     parent["sections"]["summary"] =
         d::section({{"closed_census", true},
-                    {"census_sha256", e::sha256_hex(signals.dump())}});
-    parent["sections"]["provenance"] = d::section({{"source_sha256", sha},
-                                                   {"dataset", "GLBX.MDP3"},
-                                                   {"instrument_id", "5482"}});
+                    {"signal_count", std::to_string(signals.size())},
+                    {"causality", "causal_declared"},
+                    {"census_sha256", e::sha256_hex(declared.dump())}});
+    parent["sections"]["provenance"] =
+        d::section({{"source_sha256", sha},
+                    {"dataset", "GLBX.MDP3"},
+                    {"instrument_id", "5482"},
+                    {"census_producer", producer}});
     parent = s::seal_result(parent);
     write(root + "/" + suffix + "-census.json", parent.dump());
     return {{"protocol", "symphony.sbv.book-input.v1"},
@@ -338,8 +357,13 @@ int main() try {
       tied["source_sha256"];
   for (auto &row : tied_census["sections"]["signals"]["data"])
     row["available_ns"] = std::to_string(t);
+  tied_census["sections"]["choices"]["data"]["source_sha256"] =
+      tied["source_sha256"];
+  auto &tied_declaration = tied_census["sections"]["choices"]["data"]["census"];
+  tied_declaration["source_sha256"] = tied["source_sha256"];
+  tied_declaration["signals"] = tied_census["sections"]["signals"]["data"];
   tied_census["sections"]["summary"]["data"]["census_sha256"] =
-      e::sha256_hex(tied_census["sections"]["signals"]["data"].dump());
+      e::sha256_hex(tied_declaration.dump());
   tied_census = s::seal_result(tied_census);
   write(tied["census_result"]["path"].get<std::string>(), tied_census.dump());
   tied["census_result"]["expected_sha256"] = tied_census["content_sha256"];

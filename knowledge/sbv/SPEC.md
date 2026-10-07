@@ -23,3 +23,13 @@ Experimental 0.8 adds source-bound series analysis and supplied-trial comparison
 Experimental 0.9 adds deterministic uniform row/block bootstrap and private local native trial execution with immutable plans, claims, completions and explicit interruption ambiguity. Per-replica random streams preserve worker equivalence; local experiment reconciliation never silently retries an uncertain trial. Remote SOV operations and adaptive optimizer behavior remain separate.
 
 Experimental 0.10 provides a separately consumed installed C ABI and C++ ownership wrapper for the same native operation/result contracts. External language bindings can use it without introducing an interpreter into the native package. CUDA/tensor runtimes, hostile-pointer isolation, zero-copy exchange and remote dispatch remain separate capabilities.
+
+Experimental 0.19 connects retained native/imported census references to alternate
+model evaluations, economics and explicit source-bound composition. Census
+identity, original producer declarations and replay remain distinct from model
+and economic assumptions. Callers select heterogeneous independent distributions
+or explicit joint paths, signed/nonnegative state semantics, retention and optional
+studies. Native exact arithmetic and source correspondence checks own calculation;
+qxctl, the installed SDK and future GUIs expose the same portable evidence.
+The owner SPEC defines the reference and compatibility contracts. This delivered
+path does not itself close the broader implementation milestones.
