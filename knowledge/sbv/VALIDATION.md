@@ -1,5 +1,21 @@
 # SBV implementation validation
 
+## Experimental 0.23 — selected R3.2 qualification
+
+The existing native source at `295a2665f98da9ae9fdc1c9f71f6e24f849561ab` passed the selected R3.2 scientific and complete-access gates. The installed 65,537-signal mechanical chain completed run, two fixed-census models, two heterogeneous economics selections and a twelve-path composition. Independent raw-DBN/Fraction checks verified all selected scientific arrays and complete retained source/replay closure.
+
+The real run contains 148072366 logical body bytes and 6291737 exported value nodes. Complete qxctl JSON/text/NDJSON and SDK JSON exports match independent expected bytes; every NDJSON node is verified. A separately checked retained composition exposes 2,722,498 nodes after private ancestor deletion.
+
+Six retained Databento AAPL/ESZ6 chains pass across file, retained-owner and resident RAM feeds. All 25 scientific arrays per instrument match by row count and canonical hash across feeds. Resident jobs report zero source reads/decodes and explicit release succeeds. Provider copies are removed before downstream economics; fresh descendant readers pass after private ancestor deletion. Original samples remain unchanged.
+
+Existing focused native, sanitizer, installed resource/receipt and source checks remain the verification baseline; they were not broadly rerun. Interrupted and verifier-only failed attempts are preserved separately from named passing gates. External qualification packet: `implementation/sbv-scalable-census`. Its ARTIFACTS index SHA-256 is `d5488891ef0907a44204d7103cb282fc9d33d20e0499c45dc20745a7c1f2d227`; RESULTS index SHA-256 is `cf18ba6ee4f55fb691f858ba11638b20e134e62882c1be1b376e0f22c8020cc2`.
+
+Large native run took 913.98 seconds and its observed model 2382.14 seconds during concurrent local testing. This is a correctness qualification, not a performance ranking. R3.3 resource limits, remaining consumers and traversal/hash performance; R4 candidate acceptance; and historical SCLV reconciliation remain open. Full R3/M1 is not complete. No provider acquisition, live call or new spend occurred.
+
+Prior-packet audit: 5,403 indexed files match their original seals. One earlier design document, `sbv-scalable-results/PRODUCER_MIGRATION.md`, was edited after sealing; its original expected hash and current complete bytes are preserved in `evidence/prior-drift-reconciliation.json` and `evidence/producer-migration-postseal-copy.md`. This is an explicit archival discrepancy, not an unchanged-file claim; no other source, executable or result drift was found.
+
+## Earlier validation record
+
 Experimental 0.10 adds the installed C ABI and C++ ownership wrapper. Eleven native targets pass (1,294 assertions plus administration and 128 concurrent SDK calls). Four focused AddressSanitizer/UndefinedBehaviorSanitizer targets pass; Darwin leak detection was not enabled. Twelve installed/unit SBV Go tests pass. Separately compiled C/C++ consumers and an external standard-library Python consumer produce byte-identical artifacts with qxctl (21 consumer checks, 64 concurrent calls); the native repository/package remains Python-free. All 20 owned files pass lifecycle drift/removal checks. Local 100,000-record AAPL/ESZ6 workloads preserve all non-resource fields across 1/2/4/8 workers; descriptive timing is not a peer ranking. Source validator: 16,452 passes, zero violations, four historical warnings.
 
 
