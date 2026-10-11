@@ -30215,6 +30215,16 @@
                     "resample"
                   ]
                 }
+              },
+              "concurrency": {
+                "type": "array",
+                "items": {
+                  "enum": [
+                    "serialized_instance",
+                    "per_worker_instances",
+                    "shared_reentrant_instance"
+                  ]
+                }
               }
             },
             "required": [
@@ -30303,6 +30313,12 @@
                     "type": "string"
                   },
                   "output_schema": {
+                    "type": "string"
+                  },
+                  "numeric_contract": {
+                    "type": "string"
+                  },
+                  "uncertainty": {
                     "type": "string"
                   }
                 },
