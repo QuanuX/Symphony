@@ -35,7 +35,7 @@ func TestSBVPartitionedRegisteredShapes(t *testing.T) {
 			p := value.(map[string]any)["partitioned"].(map[string]any)
 			shape := requests[op].(map[string]any)
 			if !sbvInputShape(shape, p) || sbvPartitionedRequestPreflight(op, p) != nil {
-				t.Fatal("complete partitioned template rejected")
+				t.Fatalf("complete partitioned template rejected: schema=%v preflight=%v", sbvInputShape(shape, p), sbvPartitionedRequestPreflight(op, p))
 			}
 			old := recoveryClone(t, legacy[op].(map[string]any))
 			if op == "evaluate" {
@@ -105,7 +105,7 @@ func TestSBVPartitionedRegisteredShapes(t *testing.T) {
 	accept("dataset_execute", p, false)
 	p = get("dataset_execute")
 	p["operation"] = "book"
-	accept("dataset_execute", p, false)
+	accept("dataset_execute", p, true)
 	p = get("run")
 	delete(p, "output")
 	p["output_path"] = "/private/legacy.json"

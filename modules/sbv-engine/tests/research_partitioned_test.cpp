@@ -153,79 +153,86 @@ int main(int argc, char **argv) try {
         check(modern["sections"][name] == value);
   }
   if (large) {
-    constexpr std::uint64_t count = 65537;
-    auto big_source = d::partitioned_result(
-        {{"output", output("large-source")}}, "run", e::no_deadline,
-        [&](d::PartitionedOutput &context) {
-          auto spool = context.spool("source-rows");
-          for (std::uint64_t i = 0; i < count; ++i)
-            spool->append(row(i));
-          auto rows = spool->close();
-          return s::logical::Value(body).with(
-              "sections",
-              s::logical::Value(body["sections"])
-                  .with("values",
-                        d::consumer::section(s::logical::Value(rows.rows))));
-        });
-    check(big_source["status"] == "completed");
-    auto analysis = request("analyze");
-    analysis["source"] = tag(big_source);
-    auto result = run("analyze", analysis);
-    store::ResultReader reader(reference(result), {std::nullopt, 16777216});
-    check(reader.select("/sections/series/data").describe()["children"] ==
-          "65537");
-    auto studies = reader.select("/sections/studies/data");
-    check(studies.child(0).child("data").child("weighted_sum").read_value() ==
-          J({{"numerator", "1"}, {"denominator", "1"}}));
-    check(studies.child(1)
-              .child("data")
-              .child("variance")
-              .child("value")
-              .read_value() == J({{"numerator", "0"}, {"denominator", "1"}}));
-    check(
-        studies.child(3).child("data").child("curve").describe()["children"] ==
-        "65537");
-    auto bootstrap = request("resample");
-    bootstrap["replicates"] = "1025";
-    bootstrap["sample_size"] = "1025";
-    bootstrap["retain_indices"] = false;
-    result = run("resample", bootstrap);
-    store::ResultReader bootstrap_reader(reference(result),
-                                         {std::nullopt, 16777216});
-    check(bootstrap_reader.select("/sections/resamples/data")
-              .describe()["children"] == "1025");
-    check(bootstrap_reader.select("/sections/resources/data/sampled_values")
-              .read_value() == "1050625");
-    bootstrap["source"] = tag(big_source);
-    bootstrap["replicates"] = "1";
-    bootstrap["sample_size"] = "65537";
-    bootstrap["retain_indices"] = true;
-    result = run("resample", bootstrap);
-    store::ResultReader retained(reference(result), {std::nullopt, 16777216});
-    check(retained.select("/sections/resamples/data/0/source_indices")
-              .describe()["children"] == "65537");
-    check(retained.select("/sections/resamples/data/0/mean").read_value() ==
-          J({{"numerator", "1"}, {"denominator", "1"}}));
+    const bool wide_only = std::getenv("SYMPHONY_SBV_RESEARCH_WIDE_ONLY");
     auto split = request("split");
-    split["source"] = tag(big_source);
-    split["retain_rows"] = false;
     auto fold = split["plan"]["folds"][0];
-    for (unsigned i = 1; i < 3; ++i) {
-      fold["id"] = "fold-" + d::dec(i);
-      split["plan"]["folds"].push_back(fold);
+    if (!wide_only) {
+      constexpr std::uint64_t count = 65537;
+      auto big_source = d::partitioned_result(
+          {{"output", output("large-source")}}, "run", e::no_deadline,
+          [&](d::PartitionedOutput &context) {
+            auto spool = context.spool("source-rows");
+            for (std::uint64_t i = 0; i < count; ++i)
+              spool->append(row(i));
+            auto rows = spool->close();
+            return s::logical::Value(body).with(
+                "sections",
+                s::logical::Value(body["sections"])
+                    .with("values",
+                          d::consumer::section(s::logical::Value(rows.rows))));
+          });
+      check(big_source["status"] == "completed");
+      auto analysis = request("analyze");
+      analysis["source"] = tag(big_source);
+      auto result = run("analyze", analysis);
+      store::ResultReader reader(reference(result), {std::nullopt, 16777216});
+      check(reader.select("/sections/series/data").describe()["children"] ==
+            "65537");
+      auto studies = reader.select("/sections/studies/data");
+      check(studies.child(0).child("data").child("weighted_sum").read_value() ==
+            J({{"numerator", "1"}, {"denominator", "1"}}));
+      check(studies.child(1)
+                .child("data")
+                .child("variance")
+                .child("value")
+                .read_value() == J({{"numerator", "0"}, {"denominator", "1"}}));
+      check(studies.child(3)
+                .child("data")
+                .child("curve")
+                .describe()["children"] == "65537");
+      auto bootstrap = request("resample");
+      bootstrap["replicates"] = "1025";
+      bootstrap["sample_size"] = "1025";
+      bootstrap["retain_indices"] = false;
+      result = run("resample", bootstrap);
+      store::ResultReader bootstrap_reader(reference(result),
+                                           {std::nullopt, 16777216});
+      check(bootstrap_reader.select("/sections/resamples/data")
+                .describe()["children"] == "1025");
+      check(bootstrap_reader.select("/sections/resources/data/sampled_values")
+                .read_value() == "1050625");
+      bootstrap["source"] = tag(big_source);
+      bootstrap["replicates"] = "1";
+      bootstrap["sample_size"] = "65537";
+      bootstrap["retain_indices"] = true;
+      result = run("resample", bootstrap);
+      store::ResultReader retained(reference(result), {std::nullopt, 16777216});
+      check(retained.select("/sections/resamples/data/0/source_indices")
+                .describe()["children"] == "65537");
+      check(retained.select("/sections/resamples/data/0/mean").read_value() ==
+            J({{"numerator", "1"}, {"denominator", "1"}}));
+      split = request("split");
+      split["source"] = tag(big_source);
+      split["retain_rows"] = false;
+      fold = split["plan"]["folds"][0];
+      for (unsigned i = 1; i < 3; ++i) {
+        fold["id"] = "fold-" + d::dec(i);
+        split["plan"]["folds"].push_back(fold);
+      }
+      result = run("split", split);
+      store::ResultReader partitions(reference(result),
+                                     {std::nullopt, 16777216});
+      check(partitions.select("/sections/resources/data/row_fold_pairs")
+                .read_value() == "196611");
+      check(partitions.select("/sections/folds/data/2/test_indices")
+                .describe()["children"] == "65534");
     }
-    result = run("split", split);
-    store::ResultReader partitions(reference(result), {std::nullopt, 16777216});
-    check(partitions.select("/sections/resources/data/row_fold_pairs")
-              .read_value() == "196611");
-    check(partitions.select("/sections/folds/data/2/test_indices")
-              .describe()["children"] == "65534");
     auto wide = body;
     J wide_rows = small;
     for (auto &r : wide_rows) {
       r["padding"] = J::array();
-      for (unsigned i = 0; i < 8; ++i)
-        r["padding"].push_back(std::string(16384, 'x'));
+      for (unsigned i = 0; i < 32; ++i)
+        r["padding"].push_back(std::string(4096, 'x'));
     }
     wide["sections"]["values"] = d::section(wide_rows);
     auto wide_source = d::partitioned_result(
@@ -239,7 +246,7 @@ int main(int argc, char **argv) try {
       fold["id"] = "fold-" + d::dec(i);
       split["plan"]["folds"].push_back(fold);
     }
-    result = run("split", split);
+    auto result = run("split", split);
     store::ResultReader wide_reader(reference(result),
                                     {std::nullopt, 16777216});
     check(wide_reader.select("/sections/folds/data").describe()["children"] ==

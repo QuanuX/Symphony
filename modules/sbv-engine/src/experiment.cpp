@@ -134,7 +134,9 @@ Json experiment(const Json &p, std::int64_t end) {
                  operation == "economics" || operation == "compose_economics" ||
                  operation == "generate_census" ||
                  operation == "dataset_execute" || operation == "analyze" ||
-                 operation == "resample" || operation == "split",
+                 operation == "resample" || operation == "split" ||
+                 operation == "book" || operation == "liquidity" ||
+                 operation == "allocation_economics",
              "child operation lacks partitioned output");
         need(t.contains("result_read_options"),
              "partitioned trial needs explicit result read options");
@@ -239,7 +241,8 @@ Json experiment(const Json &p, std::int64_t end) {
       keys_optional(output,
                     {"kind", "bundle_path", "workspace_path", "write_options"},
                     {"scratch_read_options"});
-      if (output.contains("scratch_read_options")) trial::read_options(output.at("scratch_read_options"));
+      if (output.contains("scratch_read_options"))
+        trial::read_options(output.at("scratch_read_options"));
       need(output.at("kind") == "partitioned", "trial output kind unsupported");
       keys(output.at("write_options"), {"page_bytes", "index_fanout"});
       need(u64(output.at("write_options").at("page_bytes")) >= 512 &&

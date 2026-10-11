@@ -1,5 +1,7 @@
 #include "census.hpp"
+#include "consumer_source.hpp"
 #include "detail.hpp"
+#include "resource_admission.hpp"
 #include <algorithm>
 #include <map>
 #include <symphony/sqav/databento/dbn.hpp>
@@ -69,24 +71,16 @@ struct Book {
             {"market_state", market}};
   }
 };
-Json load_result(const Json &ref, std::int64_t end) {
-  keys(ref, {"path", "expected_sha256"});
-  auto result = e::parse_bounded_json(read_file(str(ref.at("path")), end),
-                                      artifact_bytes, artifact_values);
-  validate_result(result);
-  need(!str(ref.at("expected_sha256")).empty() &&
-           result.at("content_sha256") == ref.at("expected_sha256"),
-       "result identity mismatch");
-  return result;
-}
 } // namespace
-Json book(const Json &p, std::int64_t end, const Dataset *resident) {
-  keys_optional(p,
-                {"protocol", "census_result", "signal_ids", "output_path",
-                 "initial_state", "on_anomaly", "replay", "frames",
-                 "emit_checkpoint", "extensions"},
-                {"memory_budget_bytes", "dataset_limits", "source_path",
-                 "source_sha256", "dataset", "retained_source"});
+static logical::Value book_body(const Json &p, std::int64_t end,
+                                const Dataset *resident,
+                                PartitionedOutput *context) {
+  keys_optional(
+      p,
+      {"protocol", "census_result", "signal_ids", "initial_state", "on_anomaly",
+       "replay", "frames", "emit_checkpoint", "extensions"},
+      {"output_path", "output", "memory_budget_bytes", "dataset_limits",
+       "source_path", "source_sha256", "dataset", "retained_source"});
   need(p.at("extensions").is_object() && p.at("emit_checkpoint").is_boolean(),
        "invalid book choices");
   const auto policy = str(p.at("on_anomaly"));
@@ -98,10 +92,10 @@ Json book(const Json &p, std::int64_t end, const Dataset *resident) {
   const auto before = u64(replay.at("before_ns")),
              after = u64(replay.at("after_ns"));
   need(replay.at("retain_events").is_boolean(), "retention boolean required");
-  const auto depth = u64(frames.at("levels_per_side")),
-             maximum = u64(frames.at("maximum"));
+  const auto depth = u64(frames.at("levels_per_side"));
+  const auto maximum = resource::limit(frames.at("maximum"));
   const auto cadence = str(frames.at("cadence"));
-  need(depth >= 1 && depth <= 64 && maximum >= 1 && maximum <= 4096 &&
+  need(depth >= 1 && depth <= 64 &&
            (cadence == "signals" || cadence == "signals_and_event_ends"),
        "book frame bounds/cadence");
   const auto owned = resident ? nullptr : load_dataset(p, end);
@@ -111,77 +105,84 @@ Json book(const Json &p, std::int64_t end, const Dataset *resident) {
 
   need(source.book_compatible,
        "book requires one publisher/instrument/channel");
-  const auto parent = load_result(p.at("census_result"), end);
-  const auto admitted = census_evidence(parent);
-  validate_census_source(admitted, source, end);
-  const auto &ps = parent.at("sections"),
-             &prov = ps.at("provenance").at("data"),
-             &signals = admitted.at("signals");
-  need(prov.at("source_sha256") == source.sha256 &&
-           prov.at("dataset") == source.dataset_name &&
-           prov.at("instrument_id") == dec(events[0].instrument_id) &&
-           ps.at("summary").at("data").at("closed_census") == true &&
-           signals.is_array(),
+  const auto parent =
+      consumer::result_reference(p.at("census_result"), end).value;
+  const auto admitted = stream_census_evidence(parent, end);
+  validate_stream_census_source(admitted, source, end);
+  const auto ps = parent.at("sections"), prov = ps.at("provenance").at("data"),
+             signals = admitted.at("signals");
+  need(prov.at("source_sha256").materialize() == source.sha256 &&
+           prov.at("dataset").materialize() == source.dataset_name &&
+           prov.at("instrument_id").materialize() ==
+               dec(events[0].instrument_id) &&
+           ps.at("summary").at("data").at("closed_census").materialize() ==
+               true &&
+           signals.kind() == "array",
        "source-bound closed census required");
-  std::map<std::string, Json> census;
-  for (const auto &s : signals) {
-    const auto id = str(s.at("signal_id"));
-    const auto ordinal = u64(s.at("source_ordinal"));
-    need(census.emplace(id, s).second && ordinal < events.size() &&
-             u64(s.at("available_ns")) == events[ordinal].ts_recv &&
-             u64(s.at("causal_end_ordinal_exclusive")) <= events.size(),
+  std::map<std::string, logical::Value> census;
+  auto signal_rows = signals.children();
+  while (auto child = signal_rows.next()) {
+    deadline(end);
+    const auto row = child->value;
+    const auto id = str(row.at("signal_id").materialize());
+    const auto ordinal = row.at("source_ordinal").materialize();
+    need(census.emplace(id, row).second && u64(ordinal) < events.size() &&
+             u64(row.at("available_ns").materialize()) ==
+                 events[u64(ordinal)].ts_recv &&
+             u64(row.at("causal_end_ordinal_exclusive").materialize()) <=
+                 events.size(),
          "census coordinates invalid");
   }
-  need(p.at("signal_ids").is_array() && p.at("signal_ids").size() <= 4096,
-       "signal selection bound");
-  Json selected = Json::array(), windows = Json::array();
+  consumer::Rows selected(context, "signals"),
+      windows(context, "replay-windows");
   std::vector<bool> retained(events.size(), false),
       wanted(events.size(), false);
   std::map<std::size_t, Json> at_signal;
-  std::set<std::string> ids;
   std::size_t first_needed = events.size(), finish = 0;
-  for (const auto &idv : p.at("signal_ids")) {
-    const auto id = str(idv);
-    need(ids.insert(id).second && census.contains(id),
-         "unknown or duplicate signal");
-    const auto &s = census.at(id);
-    selected.push_back(s);
-    const auto ordinal = u64(s.at("source_ordinal")),
-               t = events[ordinal].ts_recv;
-    if (!at_signal.contains(ordinal))
-      at_signal[ordinal] = Json::array();
-    at_signal[ordinal].push_back(id);
-    wanted[ordinal] = true;
-    const auto start = t < before ? 0 : t - before, stop = end_at(t, after);
-    const auto a = static_cast<std::size_t>(
-        std::lower_bound(events.begin(), events.end(), start,
-                         [](const auto &x, auto n) { return x.ts_recv < n; }) -
-        events.begin());
-    const auto b = static_cast<std::size_t>(
-        std::upper_bound(events.begin(), events.end(), stop,
-                         [](auto n, const auto &x) { return n < x.ts_recv; }) -
-        events.begin());
-    first_needed = std::min(first_needed, a);
-    finish = std::max(finish, b);
-    std::fill(retained.begin() + a, retained.begin() + b, true);
-    windows.push_back(
-        {{"signal_id", id},
-         {"first_ordinal", dec(a)},
-         {"end_ordinal_exclusive", dec(b)},
-         {"requested_start_ns", dec(start)},
-         {"requested_end_ns_inclusive", dec(stop)},
-         {"start_clamped_at_epoch", t < before},
-         {"start_within_observed_span", start >= events.front().ts_recv},
-         {"end_within_observed_span", stop <= events.back().ts_recv},
-         {"completeness", "unproven"}});
-  }
+  auto selection_input = consumer::select_signals(
+      p.at("signal_ids"), signals, census,
+      [&](const std::string &id, const logical::Value &handle) {
+        const auto s = handle.materialize();
+        selected.append(s);
+        const auto ordinal = u64(s.at("source_ordinal")),
+                   t = events[ordinal].ts_recv;
+        if (!at_signal.contains(ordinal))
+          at_signal[ordinal] = Json::array();
+        at_signal[ordinal].push_back(id);
+        wanted[ordinal] = true;
+        const auto start = t < before ? 0 : t - before, stop = end_at(t, after);
+        const auto a = static_cast<std::size_t>(
+            std::lower_bound(
+                events.begin(), events.end(), start,
+                [](const auto &x, auto n) { return x.ts_recv < n; }) -
+            events.begin());
+        const auto b = static_cast<std::size_t>(
+            std::upper_bound(
+                events.begin(), events.end(), stop,
+                [](auto n, const auto &x) { return n < x.ts_recv; }) -
+            events.begin());
+        first_needed = std::min(first_needed, a);
+        finish = std::max(finish, b);
+        std::fill(retained.begin() + a, retained.begin() + b, true);
+        windows.append(
+            {{"signal_id", id},
+             {"first_ordinal", dec(a)},
+             {"end_ordinal_exclusive", dec(b)},
+             {"requested_start_ns", dec(start)},
+             {"requested_end_ns_inclusive", dec(stop)},
+             {"start_clamped_at_epoch", t < before},
+             {"start_within_observed_span", start >= events.front().ts_recv},
+             {"end_within_observed_span", stop <= events.back().ts_recv},
+             {"completeness", "unproven"}});
+      },
+      end);
   if (cadence == "signals_and_event_ends")
     for (std::size_t i = 0; i < events.size(); ++i)
       if (retained[i] && (events[i].flags & 128))
         wanted[i] = true;
-  need(static_cast<std::uint64_t>(
-           std::count(wanted.begin(), wanted.end(), true)) <= maximum,
-       "frame limit exceeded; choose a smaller window or signals cadence");
+  need(static_cast<std::uint64_t>(std::count(
+           wanted.begin(), wanted.end(), true)) <= maximum.value_or(UINT64_MAX),
+       "selected frame limit exceeded");
   const Json binding{{"source_sha256", source.sha256},
                      {"dataset", source.dataset_name},
                      {"publisher_id", dec(events[0].publisher_id)},
@@ -197,28 +198,35 @@ Json book(const Json &p, std::int64_t end, const Dataset *resident) {
   else {
     keys(initial, {"mode", "result"});
     need(initial.at("mode") == "checkpoint", "unknown initial state mode");
-    const auto prior = load_result(initial.at("result"), end);
-    const auto &section = prior.at("sections").at("book_checkpoint");
-    need(section.at("status") == "available", "checkpoint unavailable");
-    const auto &c = section.at("data");
-    keys(c, {"protocol", "profile", "binding", "next_ordinal",
-             "preceding_available_ns", "event_boundary", "initialization",
-             "orders"});
-    need(c.at("protocol") == "symphony.sbv.book-checkpoint.v1" &&
-             c.at("profile") == "databento_mbo_orders_strict_v1" &&
-             c.at("binding") == binding && c.at("event_boundary") == true,
+    const auto prior =
+        consumer::result_reference(initial.at("result"), end).value;
+    const auto section = prior.at("sections").at("book_checkpoint");
+    need(section.at("status").materialize() == "available",
+         "checkpoint unavailable");
+    const auto c = section.at("data");
+    consumer::fields(c, {"protocol", "profile", "binding", "next_ordinal",
+                         "preceding_available_ns", "event_boundary",
+                         "initialization", "orders"});
+    need(c.at("protocol").materialize() == "symphony.sbv.book-checkpoint.v1" &&
+             c.at("profile").materialize() ==
+                 "databento_mbo_orders_strict_v1" &&
+             c.at("binding").materialize() == binding &&
+             c.at("event_boundary").materialize() == true,
          "checkpoint scope/profile mismatch");
-    begin = u64(c.at("next_ordinal"));
+    begin = u64(c.at("next_ordinal").materialize());
     need(begin > 0 && begin <= events.size() && begin <= first_needed &&
              (selected.empty() || begin <= finish) &&
              (events[begin - 1].flags & 128) &&
-             u64(c.at("preceding_available_ns")) == events[begin - 1].ts_recv,
+             u64(c.at("preceding_available_ns").materialize()) ==
+                 events[begin - 1].ts_recv,
          "checkpoint cursor or requested window mismatch");
-    need(c.at("orders").is_array() && c.at("orders").size() <= 200000,
-         "checkpoint order bound");
+    need(c.at("orders").kind() == "array", "checkpoint orders array required");
     std::uint64_t previous = 0;
     bool first = true;
-    for (const auto &o : c.at("orders")) {
+    auto checkpoint_orders = c.at("orders").children();
+    while (auto row = checkpoint_orders.next()) {
+      deadline(end);
+      const auto o = row->value.materialize();
       keys(o, {"order_id", "price_nanos", "size", "side"});
       const auto id = u64(o.at("order_id")), size = u64(o.at("size"));
       const auto price = i64(o.at("price_nanos"));
@@ -235,18 +243,19 @@ Json book(const Json &p, std::int64_t end, const Dataset *resident) {
     state.reason = "";
     state.origin = "supplied checkpoint; integrity checked, authorship and "
                    "state truth unverified";
-    (void)str(c.at("initialization"));
+    (void)str(c.at("initialization").materialize());
   }
   if (selected.empty())
     finish = begin;
-  Json diagnostics = Json::array(), output = Json::array(), raw = Json::array();
+  consumer::Rows diagnostics(context, "diagnostics"),
+      output(context, "book-frames"), raw(context, "replay-events");
   std::uint64_t inaccurate = 0, unavailable = 0;
   auto anomaly = [&](std::size_t i, const char *reason) {
     if (policy == "reject")
       need(false, reason);
-    diagnostics.push_back({{"source_ordinal", dec(i)},
-                           {"kind", "invalidation"},
-                           {"reason", reason}});
+    diagnostics.append({{"source_ordinal", dec(i)},
+                        {"kind", "invalidation"},
+                        {"reason", reason}});
     state.clear();
     state.initialized = false;
     state.loading = false;
@@ -272,9 +281,9 @@ Json book(const Json &p, std::int64_t end, const Dataset *resident) {
       state.loading = (x.flags & 32) != 0;
       state.reason = "";
       state.origin = "source reset at ordinal " + dec(i);
-      diagnostics.push_back({{"source_ordinal", dec(i)},
-                             {"kind", "reset"},
-                             {"reason", state.origin}});
+      diagnostics.append({{"source_ordinal", dec(i)},
+                          {"kind", "reset"},
+                          {"reason", state.origin}});
     } else if ((x.flags & 32) && state.initialized && !state.loading)
       anomaly(i, "snapshot records without an opening reset");
     else if (x.action != 'A' && x.action != 'M' && x.action != 'C' &&
@@ -321,47 +330,46 @@ Json book(const Json &p, std::int64_t end, const Dataset *resident) {
       const auto reason = ready                ? ""
                           : !state.initialized ? state.reason
                                                : "event or snapshot incomplete";
-      output.push_back({{"protocol", "symphony.sbv.book-frame.v1"},
-                        {"source_ordinal", dec(i)},
-                        {"available_ns", dec(x.ts_recv)},
-                        {"signal_ids", at_signal.contains(i) ? at_signal.at(i)
-                                                             : Json::array()},
-                        {"status", ready ? "available" : "unavailable"},
-                        {"reason", reason},
-                        {"event_boundary", state.boundary},
-                        {"receive_time_flagged", (x.flags & 8) != 0},
-                        {"initialization", state.origin},
-                        {"layer", "reconstructed"},
-                        {"data", ready ? state.depth(depth) : Json(nullptr)}});
+      output.append({{"protocol", "symphony.sbv.book-frame.v1"},
+                     {"source_ordinal", dec(i)},
+                     {"available_ns", dec(x.ts_recv)},
+                     {"signal_ids",
+                      at_signal.contains(i) ? at_signal.at(i) : Json::array()},
+                     {"status", ready ? "available" : "unavailable"},
+                     {"reason", reason},
+                     {"event_boundary", state.boundary},
+                     {"receive_time_flagged", (x.flags & 8) != 0},
+                     {"initialization", state.origin},
+                     {"layer", "reconstructed"},
+                     {"data", ready ? state.depth(depth) : Json(nullptr)}});
     }
     if (retained[i] && replay.at("retain_events").get<bool>())
-      raw.push_back(event_json(x, i));
+      raw.append(event_json(x, i));
   }
   auto result = base("native source-bound order-book reconstruction");
   result["status"] = "partial";
   auto &s = result["sections"];
-  s["signals"] = section(selected);
+
   s["summary"] =
       section({{"signal_count", dec(selected.size())},
                {"frame_count", dec(output.size())},
                {"available_frames", dec(output.size() - unavailable)},
                {"unavailable_frames", dec(unavailable)},
                {"parent_census_sha256",
-                ps.at("summary").at("data").at("census_sha256")},
+                ps.at("summary").at("data").at("census_sha256").materialize()},
                {"closed_census", true}});
-  s["book_frames"] =
-      section(output, unavailable ? "partial" : "available",
-              unavailable ? "some frames lack usable initialized state" : "");
+
   s["book_checkpoint"] =
       section(nullptr, "not_selected", "checkpoint not selected");
+  std::optional<logical::Value> checkpoint_rows;
   if (p.at("emit_checkpoint").get<bool>()) {
     if (finish > begin && state.ready()) {
-      Json orders = Json::array();
+      consumer::Rows orders(context, "checkpoint-orders");
       for (const auto &[id, o] : state.orders)
-        orders.push_back({{"order_id", dec(id)},
-                          {"price_nanos", dec(o.price)},
-                          {"size", dec(o.size)},
-                          {"side", std::string(1, o.side)}});
+        orders.append({{"order_id", dec(id)},
+                       {"price_nanos", dec(o.price)},
+                       {"size", dec(o.size)},
+                       {"side", std::string(1, o.side)}});
       s["book_checkpoint"] =
           section({{"protocol", "symphony.sbv.book-checkpoint.v1"},
                    {"profile", "databento_mbo_orders_strict_v1"},
@@ -370,15 +378,16 @@ Json book(const Json &p, std::int64_t end, const Dataset *resident) {
                    {"preceding_available_ns", dec(events[finish - 1].ts_recv)},
                    {"event_boundary", true},
                    {"initialization", state.origin},
-                   {"orders", orders}});
+                   {"orders", nullptr}});
+      checkpoint_rows = orders.close();
     } else
       s["book_checkpoint"] =
           section(nullptr, "unavailable",
                   "no complete initialized state at selected end");
   }
   s["replay"] = section(
-      {{"windows", windows},
-       {"events", raw},
+      {{"windows", nullptr},
+       {"events", nullptr},
        {"retained_event_count", dec(raw.size())},
        {"retention_policy", replay},
        {"clock", "ts_recv with source ordinal tie-break"},
@@ -391,7 +400,7 @@ Json book(const Json &p, std::int64_t end, const Dataset *resident) {
                              "covers selected windows only"}},
       "partial", "source completeness and queue/fill feasibility unverified");
   s["diagnostics"] = section(
-      {{"events", diagnostics},
+      {{"events", nullptr},
        {"inaccurate_receive_timestamp_count", dec(inaccurate)},
        {"sequence_policy",
         "retained; no contiguous sequence inference on filtered instrument"},
@@ -403,28 +412,73 @@ Json book(const Json &p, std::int64_t end, const Dataset *resident) {
                {"state_workers", "1"},
                {"reason", "ordered book state is sequential; independent runs "
                           "can be scheduled concurrently"},
-               {"maximum_frames", dec(maximum)},
+               {"maximum_frames", frames.at("maximum")},
                {"display_levels_per_side", dec(depth)},
                {"full_state_order_count", dec(state.orders.size())}});
   auto choices = p;
   choices.erase("output_path");
+  choices.erase("output");
   s["choices"] = section(choices);
-  s["provenance"] =
-      section({{"engine_version", version},
-               {"binding", binding},
-               {"source_path", source.path},
-               {"adapter", db::adapter_id},
-               {"adapter_version", db::adapter_version},
-               {"dbn_version", dec(source.metadata.version)},
-               {"parent_result_sha256", parent.at("content_sha256")},
-               {"parent_census", ps.at("summary")},
-               {"parent_provenance", ps.at("provenance")},
-               {"profile", "databento_mbo_orders_strict_v1"},
-               {"provider_requests", "0"},
-               {"additional_spend_usd", "0"}});
+  s["provenance"] = section(
+      {{"engine_version", version},
+       {"binding", binding},
+       {"source_path", source.path},
+       {"adapter", db::adapter_id},
+       {"adapter_version", db::adapter_version},
+       {"dbn_version", dec(source.metadata.version)},
+       {"parent_result_sha256", parent.at("content_sha256").materialize()},
+       {"parent_census", nullptr},
+       {"parent_provenance", nullptr},
+       {"profile", "databento_mbo_orders_strict_v1"},
+       {"provider_requests", "0"},
+       {"additional_spend_usd", "0"}});
   s["user_extensions"] = section(p.at("extensions"));
   result["sections"]["resources"]["data"]["dataset_feed"] =
       source.evidence(resident != nullptr);
-  return persist(std::move(result), p, "book", end);
+  auto out =
+      logical::Value(s)
+          .with("signals", consumer::section(selected.close()))
+          .with("book_frames",
+                consumer::section(
+                    output.close(), unavailable ? "partial" : "available",
+                    unavailable ? "some frames lack usable initialized state"
+                                : ""));
+  out = out.with("replay", out.at("replay").with(
+                               "data", out.at("replay")
+                                           .at("data")
+                                           .with("events", raw.close())
+                                           .with("windows", windows.close())));
+  out = out.with("diagnostics",
+                 out.at("diagnostics")
+                     .with("data", out.at("diagnostics")
+                                       .at("data")
+                                       .with("events", diagnostics.close())));
+  out = out.with(
+      "provenance",
+      out.at("provenance")
+          .with("data", out.at("provenance")
+                            .at("data")
+                            .with("parent_census", ps.at("summary"))
+                            .with("parent_provenance", ps.at("provenance"))));
+  if (checkpoint_rows)
+    out = out.with("book_checkpoint",
+                   out.at("book_checkpoint")
+                       .with("data", out.at("book_checkpoint")
+                                         .at("data")
+                                         .with("orders", *checkpoint_rows)));
+  if (selection_input)
+    out = out.with("selection_input", consumer::section(*selection_input));
+  return logical::Value(result).with("sections", std::move(out));
+}
+Json book(const Json &p, std::int64_t end, const Dataset *resident) {
+  need(p.contains("output") != p.contains("output_path"),
+       "select exactly one book output");
+  if (p.contains("output"))
+    return partitioned_result(p, "book", end, [&](PartitionedOutput &context) {
+      return book_body(p, end, resident, &context);
+    });
+  return persist(book_body(p, end, resident, nullptr)
+                     .materialize({artifact_bytes, artifact_values}),
+                 p, "book", end);
 }
 } // namespace symphony::sbv::detail

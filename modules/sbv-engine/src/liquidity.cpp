@@ -1,5 +1,6 @@
-#include "resource_admission.hpp"
+#include "consumer_source.hpp"
 #include "rational.hpp"
+#include "resource_admission.hpp"
 #include <algorithm>
 #include <atomic>
 #include <map>
@@ -106,7 +107,8 @@ struct Order {
   r::R participation;
   std::optional<r::R> activation;
 };
-Order order(const Json &o, const std::map<std::string, Json> &signals) {
+Order order(const Json &o,
+            const std::map<std::string, logical::Value> &signals) {
   keys(o, {"order_id", "signal_id", "frame_source_ordinal", "side", "quantity",
            "limit_price_nanos", "time_in_force", "max_level_participation",
            "activation_probability"});
@@ -116,7 +118,8 @@ Order order(const Json &o, const std::map<std::string, Json> &signals) {
   const auto &s = signals.at(signal);
   const auto q = u64(o.at("quantity")),
              ordinal = u64(o.at("frame_source_ordinal"));
-  need(q >= 1 && q <= 1000000000 && ordinal >= u64(s.at("source_ordinal")),
+  need(q >= 1 && q <= 1000000000 &&
+           ordinal >= u64(s.at("source_ordinal").materialize()),
        "quantity bound or pre-signal frame");
   need(o.at("side") == "buy" || o.at("side") == "sell", "order side invalid");
   need(o.at("time_in_force") == "IOC" || o.at("time_in_force") == "FOK",
@@ -143,15 +146,15 @@ Order order(const Json &o, const std::map<std::string, Json> &signals) {
     need(p.at("status") == "unavailable" && !str(p.at("reason")).empty(),
          "activation status/reason required");
   }
-  const auto anchor = i64(s.at("anchor_price_nanos"));
+  const auto anchor = i64(s.at("anchor_price_nanos").materialize());
   need(anchor != INT64_MAX, "undefined anchor");
   return {o,
           id,
           signal,
           ordinal,
           q,
-          u64(s.at("source_ordinal")),
-          u64(s.at("available_ns")),
+          u64(s.at("source_ordinal").materialize()),
+          u64(s.at("available_ns").materialize()),
           anchor,
           o.at("side") == "buy",
           o.at("time_in_force") == "FOK",
@@ -306,11 +309,13 @@ Json simulate(const Order &o, Snapshot *snapshot, const Json &p,
   return result;
 }
 } // namespace
-Json liquidity(const Json &p, std::int64_t end) {
-  keys(p, {"protocol", "path", "expected_sha256", "output_path", "orders",
-           "liquidity_mode", "depth_policy", "market_state_policy",
-           "receive_time_policy", "on_unavailable", "studies", "workers",
-           "extensions"});
+static logical::Value liquidity_body(const Json &p, PartitionedOutput *context,
+                                     std::int64_t end) {
+  keys_optional(p,
+                {"protocol", "orders", "liquidity_mode", "depth_policy",
+                 "market_state_policy", "receive_time_policy", "on_unavailable",
+                 "studies", "workers", "extensions"},
+                {"path", "expected_sha256", "source", "output_path", "output"});
   const auto workers = u64(p.at("workers"));
   need(workers >= 1 && p.at("extensions").is_object(),
        "worker/extension bound");
@@ -338,38 +343,39 @@ Json liquidity(const Json &p, std::int64_t end) {
              studies.insert(id).second,
          "unknown/duplicate liquidity study");
   }
-  auto source = e::parse_bounded_json(read_file(str(p.at("path")), end),
-                                      artifact_bytes, artifact_values);
-  validate_result(source);
-  need(!str(p.at("expected_sha256")).empty() &&
-           source.at("content_sha256") == p.at("expected_sha256"),
-       "source result identity mismatch");
-  const auto &s = source.at("sections");
-  need(s.at("provenance").at("data").at("profile") ==
+  const auto source = consumer::source(p, end).value;
+  const auto s = source.at("sections");
+  need(s.at("provenance").at("data").at("profile").materialize() ==
                "databento_mbo_orders_strict_v1" &&
-           s.at("summary").at("data").at("closed_census") == true,
+           s.at("summary").at("data").at("closed_census").materialize() == true,
        "admitted source-bound book result required");
-  std::map<std::string, Json> signals;
-  const auto &signal_rows = s.at("signals").at("data");
-  need(signal_rows.is_array() && signal_rows.size() <= 4096,
-       "source census bound");
-  for (const auto &row : signal_rows)
-    need(signals.emplace(str(row.at("signal_id")), row).second,
+  std::map<std::string, logical::Value> signals;
+  const auto signal_rows = s.at("signals").at("data");
+  need(signal_rows.kind() == "array", "source census array required");
+  auto cursor = signal_rows.children();
+  while (auto child = cursor.next()) {
+    deadline(end);
+    const auto row = child->value;
+    need(signals.emplace(str(row.at("signal_id").materialize()), row).second,
          "duplicate source signal");
+  }
   std::map<std::uint64_t, Snapshot> snapshots;
-  const auto &frames = s.at("book_frames").at("data");
-  need(frames.is_array() && frames.size() <= 4096, "source frame bound");
-  for (const auto &f : frames) {
-    auto x = frame(f);
+  const auto frames = s.at("book_frames").at("data");
+  need(frames.kind() == "array", "source frame array required");
+  auto frame_rows = frames.children();
+  while (auto child = frame_rows.next()) {
+    deadline(end);
+    auto x = frame(child->value.materialize());
     need(snapshots.emplace(x.ordinal, std::move(x)).second,
          "duplicate source frame");
   }
-  need(p.at("orders").is_array() && p.at("orders").size() <= 4096,
-       "order bound");
+  auto input = consumer::input_rows(p.at("orders"), "liquidity_orders", end);
   std::vector<Order> orders;
   std::set<std::string> ids;
-  for (const auto &o : p.at("orders")) {
-    auto x = order(o, signals);
+  auto order_rows = input.value.children();
+  while (auto child = order_rows.next()) {
+    deadline(end);
+    auto x = order(child->value.materialize(), signals);
     need(ids.insert(x.id).second, "duplicate order ID");
     if (mode == "shared_snapshot")
       need(
@@ -379,111 +385,122 @@ Json liquidity(const Json &p, std::int64_t end) {
           "stochastic branch enumeration not implemented");
     orders.push_back(std::move(x));
   }
-  std::vector<Json> outcomes(orders.size());
-  std::size_t applied = 0;
-  if (mode == "shared_snapshot") {
-    applied = orders.empty() ? 0 : 1;
-    std::string dependency;
-    for (std::size_t i = 0; i < orders.size(); ++i) {
-      auto it = snapshots.find(orders[i].frame_ordinal);
-      outcomes[i] =
-          simulate(orders[i], it == snapshots.end() ? nullptr : &it->second, p,
-                   dependency, end);
-      if (outcomes[i].at("status") == "unavailable")
-        dependency =
-            "earlier shared order unresolved; remaining liquidity unknown";
-    }
-  } else {
-    applied = resource::effective(workers, orders.size());
-    std::atomic<std::size_t> next{0};
-    std::atomic<bool> failed{false};
-    std::exception_ptr error;
-    std::mutex mutex;
-    const auto worker = [&] {
-      try {
-        while (!failed) {
-          const auto i = next.fetch_add(1);
-          if (i >= orders.size())
-            break;
-          auto it = snapshots.find(orders[i].frame_ordinal);
-          std::optional<Snapshot> copy;
-          if (it != snapshots.end())
-            copy = it->second;
-          outcomes[i] =
-              simulate(orders[i], copy ? &*copy : nullptr, p, "", end);
+  const std::size_t applied = mode == "shared_snapshot"
+                                  ? (orders.empty() ? 0 : 1)
+                                  : resource::effective(workers, orders.size());
+  std::vector<std::optional<logical::Value>> outcomes(applied);
+  std::atomic<bool> failed{false};
+  std::exception_ptr error;
+  std::mutex mutex;
+  auto work = [&](std::size_t worker) {
+    try {
+      const auto base = orders.size() / applied,
+                 remainder = orders.size() % applied;
+      const auto first = base * worker + std::min(worker, remainder),
+                 count = base + (worker < remainder);
+      consumer::Rows emitted(context, "liquidity-worker-" + dec(worker));
+      std::string dependency;
+      for (std::size_t i = first; i < first + count && !failed; ++i) {
+        auto it = snapshots.find(orders[i].frame_ordinal);
+        std::optional<Snapshot> copy;
+        Snapshot *selected = it == snapshots.end() ? nullptr : &it->second;
+        if (mode != "shared_snapshot" && selected) {
+          copy = *selected;
+          selected = &*copy;
         }
-      } catch (...) {
-        failed = true;
-        std::lock_guard lock(mutex);
-        if (!error)
-          error = std::current_exception();
+        auto result = simulate(orders[i], selected, p, dependency, end);
+        if (mode == "shared_snapshot" && result.at("status") == "unavailable")
+          dependency =
+              "earlier shared order unresolved; remaining liquidity unknown";
+        emitted.append(result);
       }
-    };
-    resource::launch(applied, failed, [&](std::size_t) { worker(); });
-    if (error)
-      std::rethrow_exception(error);
-  }
-  Json execution = Json::array(), selected = Json::array(),
-       quality = Json::array();
+      if (failed)
+        return;
+      auto closed = emitted.close();
+      outcomes[worker] = context
+                             ? closed.independent_reader(
+                                   {context->read_options().max_page_bytes, 0},
+                                   context->checkpoint())
+                             : closed;
+    } catch (...) {
+      failed = true;
+      std::lock_guard guard(mutex);
+      if (!error)
+        error = std::current_exception();
+    }
+  };
+  resource::launch(applied, failed, work);
+  if (error)
+    std::rethrow_exception(error);
+  consumer::Rows execution(context, "execution"), selected(context, "signals"),
+      quality(context, "fill-quality");
   std::set<std::string> selected_ids;
   std::uint64_t available = 0, full = 0, partial = 0, none = 0;
-  for (std::size_t i = 0; i < orders.size(); ++i) {
-    deadline(end);
-    const auto &o = orders[i];
-    auto &row = outcomes[i];
-    if (selected_ids.insert(o.signal).second)
-      selected.push_back(signals.at(o.signal));
-    if (row.at("status") == "available") {
-      ++available;
-      const auto &data = row.at("data");
-      const auto q = u64(data.at("filled_quantity"));
-      if (q == o.quantity)
-        ++full;
-      else if (q)
-        ++partial;
-      else
-        ++none;
-    }
-    if (studies.contains("fill_quality")) {
-      Json metrics = nullptr;
-      std::string reason = str(row.at("reason"));
+  std::size_t i = 0;
+  for (auto &batch : outcomes) {
+    need(batch.has_value(), "liquidity worker did not complete");
+    auto rows = context ? batch->independent_reader(context->read_options(),
+                                                    context->checkpoint())
+                        : *batch;
+    auto cursor = rows.children();
+    while (auto child = cursor.next()) {
+      deadline(end);
+      need(i < orders.size(), "liquidity worker emitted excess rows");
+      const auto &o = orders[i++];
+      auto row = child->value.materialize();
+      if (selected_ids.insert(o.signal).second)
+        selected.append(signals.at(o.signal));
       if (row.at("status") == "available") {
-        const auto q = u64(row.at("data").at("filled_quantity"));
-        Wide total = 0;
-        for (const auto &f : row.at("data").at("fills"))
-          total += static_cast<Wide>(i64(f.at("price_nanos"))) *
-                   u64(f.at("quantity"));
-        metrics = {
-            {"fill_ratio", ratio(q, o.quantity)},
-            {"adverse_slippage_price_nanos",
-             q ? Json{{"status", "available"},
-                      {"value",
-                       ratio((o.buy ? 1 : -1) *
-                                 (total - static_cast<Wide>(o.anchor) * q),
-                             q)}}
-               : missing("no scenario fill")}};
+        ++available;
+        const auto &data = row.at("data");
+        const auto q = u64(data.at("filled_quantity"));
+        if (q == o.quantity)
+          ++full;
+        else if (q)
+          ++partial;
+        else
+          ++none;
       }
-      quality.push_back({{"order_id", o.id},
-                         {"status", row.at("status")},
-                         {"reason", reason},
-                         {"data", metrics}});
+      if (studies.contains("fill_quality")) {
+        Json metrics = nullptr;
+        std::string reason = str(row.at("reason"));
+        if (row.at("status") == "available") {
+          const auto q = u64(row.at("data").at("filled_quantity"));
+          Wide total = 0;
+          for (const auto &f : row.at("data").at("fills"))
+            total += static_cast<Wide>(i64(f.at("price_nanos"))) *
+                     u64(f.at("quantity"));
+          metrics = {
+              {"fill_ratio", ratio(q, o.quantity)},
+              {"adverse_slippage_price_nanos",
+               q ? Json{{"status", "available"},
+                        {"value",
+                         ratio((o.buy ? 1 : -1) *
+                                   (total - static_cast<Wide>(o.anchor) * q),
+                               q)}}
+                 : missing("no scenario fill")}};
+        }
+        quality.append({{"order_id", o.id},
+                        {"status", row.at("status")},
+                        {"reason", reason},
+                        {"data", metrics}});
+      }
+      execution.append(row);
     }
-    execution.push_back(std::move(row));
   }
+  need(i == orders.size(), "liquidity worker output incomplete");
   auto result = base("native displayed-depth execution scenarios");
   result["status"] = "partial";
   auto &sections = result["sections"];
-  sections["signals"] = section(selected);
-  sections["execution"] =
-      section(execution, available == orders.size() ? "available" : "partial",
-              "scenario evidence; calibration not verified");
-  sections["summary"] =
-      section({{"order_count", dec(orders.size())},
-               {"available", dec(available)},
-               {"unavailable", dec(orders.size() - available)},
-               {"source_census_sha256",
-                s.at("summary").at("data").at("parent_census_sha256")}});
+
+  sections["summary"] = section(
+      {{"order_count", dec(orders.size())},
+       {"available", dec(available)},
+       {"unavailable", dec(orders.size() - available)},
+       {"source_census_sha256",
+        s.at("summary").at("data").at("parent_census_sha256").materialize()}});
   Json computed = Json::array();
+  std::optional<std::size_t> quality_index;
   if (studies.contains("liquidity_summary"))
     computed.push_back(
         {{"study_id", "liquidity_summary"},
@@ -495,25 +512,19 @@ Json liquidity(const Json &p, std::int64_t end) {
          {"no_fill", dec(none)},
          {"interpretation", "conditional scenario counts, not "
                             "frequency-estimated probabilities"}});
-  if (studies.contains("fill_quality"))
+  if (studies.contains("fill_quality")) {
+    quality_index = computed.size();
     computed.push_back(
         {{"study_id", "fill_quality"},
          {"version", "1"},
-         {"results", quality},
+         {"results", nullptr},
          {"interpretation",
           "conditional filled/requested ratio and side-adjusted VWAP minus "
           "signal anchor; no fees, markout or account P&L"}});
+  }
   sections["studies"] =
       section(computed, studies.empty() ? "not_selected" : "available",
               studies.empty() ? "zero studies selected" : "");
-  for (const auto *name : {"replay", "book_frames", "book_checkpoint"})
-    sections[name] = s.at(name);
-  sections["source_context"] = section({{"signals", s.at("signals")},
-                                        {"choices", s.at("choices")},
-                                        {"provenance", s.at("provenance")}});
-  if (s.at("resources").at("data").contains("dataset_feed"))
-    sections["source_context"]["data"]["dataset_feed"] =
-        s.at("resources").at("data").at("dataset_feed");
   sections["resources"] = section(
       {{"backend", "cpu"},
        {"requested_workers", dec(workers)},
@@ -524,6 +535,7 @@ Json liquidity(const Json &p, std::int64_t end) {
             : "independent immutable snapshots; stable input order output"}});
   auto choices = p;
   choices.erase("output_path");
+  choices.erase("output");
   sections["choices"] = section(choices);
   sections["diagnostics"] = section(Json::array(
       {"Snapshot consumption is hypothetical; market response, hidden "
@@ -538,18 +550,56 @@ Json liquidity(const Json &p, std::int64_t end) {
        "Per-level participation is floor(original displayed size * selected "
        "fraction), capped by physical remainder. It is not a replenishment "
        "model."}));
-  sections["provenance"] =
-      section({{"engine_version", version},
-               {"source_result_sha256", source.at("content_sha256")},
-               {"source_census_sha256",
-                s.at("summary").at("data").at("parent_census_sha256")},
-               {"model_id", "displayed_depth_sweep"},
-               {"model_version", "1"},
-               {"numeric_profile", "exact signed 128-bit notional and reduced "
-                                   "rational VWAP; integer source quantities"},
-               {"provider_requests", "0"},
-               {"additional_spend_usd", "0"}});
+  sections["provenance"] = section(
+      {{"engine_version", version},
+       {"source_result_sha256", source.at("content_sha256").materialize()},
+       {"source_census_sha256",
+        s.at("summary").at("data").at("parent_census_sha256").materialize()},
+       {"model_id", "displayed_depth_sweep"},
+       {"model_version", "1"},
+       {"numeric_profile", "exact signed 128-bit notional and reduced "
+                           "rational VWAP; integer source quantities"},
+       {"provider_requests", "0"},
+       {"additional_spend_usd", "0"}});
   sections["user_extensions"] = section(p.at("extensions"));
-  return persist(std::move(result), p, "liquidity", end);
+  auto out = logical::Value(sections)
+                 .with("signals", consumer::section(selected.close()))
+                 .with("execution",
+                       consumer::section(
+                           execution.close(),
+                           available == orders.size() ? "available" : "partial",
+                           "scenario evidence; calibration not verified"))
+                 .with("order_choices", consumer::section(input.value))
+                 .with("source_context",
+                       consumer::section(consumer::source_context(s).with(
+                           "signals", s.at("signals"))));
+  for (const auto *name : {"replay", "book_frames", "book_checkpoint"})
+    out = out.with(name, s.at(name));
+  if (quality_index) {
+    std::vector<logical::Value> study_rows;
+    for (std::size_t j = 0; j < computed.size(); ++j) {
+      auto row = logical::Value(computed[j]);
+      if (j == *quality_index)
+        row = row.with("results", quality.close());
+      study_rows.push_back(std::move(row));
+    }
+    out = out.with("studies", consumer::section(logical::Value::array(
+                                  std::move(study_rows))));
+  }
+  if (input.evidence)
+    out = out.with("order_input", consumer::section(*input.evidence));
+  return logical::Value(result).with("sections", std::move(out));
+}
+Json liquidity(const Json &p, std::int64_t end) {
+  need(p.contains("output") != p.contains("output_path"),
+       "select exactly one liquidity output");
+  if (p.contains("output"))
+    return partitioned_result(p, "liquidity", end,
+                              [&](PartitionedOutput &context) {
+                                return liquidity_body(p, &context, end);
+                              });
+  return persist(liquidity_body(p, nullptr, end)
+                     .materialize({artifact_bytes, artifact_values}),
+                 p, "liquidity", end);
 }
 } // namespace symphony::sbv::detail

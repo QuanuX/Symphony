@@ -2009,6 +2009,190 @@
           }
         }
       }
+    },
+    "book": {
+      "partitioned": {
+        "protocol": "symphony.sbv.book-input.v1",
+        "source_path": "/absolute/private/source.dbn",
+        "source_sha256": "REPLACE_WITH_EXACT_FILE_SHA256",
+        "dataset": "XNAS.ITCH",
+        "census_result": {
+          "kind": "bundle",
+          "reference": {
+            "manifest_path": "/absolute/private/input-bundle/manifest.json",
+            "manifest_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+            "content_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+          },
+          "selector": {
+            "kind": "node_id",
+            "node_id": "0"
+          },
+          "read_options": {
+            "max_page_bytes": null,
+            "cache_bytes": "8388608"
+          }
+        },
+        "signal_ids": {
+          "kind": "all"
+        },
+        "initial_state": {
+          "mode": "uninitialized"
+        },
+        "on_anomaly": "invalidate_until_reset",
+        "replay": {
+          "before_ns": "1000000000",
+          "after_ns": "2000000000",
+          "retain_events": true
+        },
+        "frames": {
+          "cadence": "signals",
+          "levels_per_side": "10",
+          "maximum": null
+        },
+        "emit_checkpoint": true,
+        "extensions": {},
+        "memory_budget_bytes": null,
+        "dataset_limits": {
+          "max_source_bytes": null,
+          "max_source_events": null,
+          "max_metadata_bytes": null
+        },
+        "output": {
+          "kind": "partitioned",
+          "bundle_path": "/absolute/private/book-result",
+          "workspace_path": "/absolute/private/book-workspace",
+          "write_options": {
+            "page_bytes": "1048576",
+            "index_fanout": "64"
+          },
+          "scratch_read_options": {
+            "max_page_bytes": null,
+            "cache_bytes": "16777216"
+          }
+        }
+      }
+    },
+    "liquidity": {
+      "partitioned": {
+        "protocol": "symphony.sbv.liquidity-input.v1",
+        "orders": {
+          "kind": "referenced_rows",
+          "source": {
+            "kind": "bundle",
+            "reference": {
+              "manifest_path": "/absolute/private/input-bundle/manifest.json",
+              "manifest_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+              "content_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+            },
+            "selector": {
+              "kind": "pointer",
+              "pointer": "/sections/orders/data"
+            },
+            "read_options": {
+              "max_page_bytes": null,
+              "cache_bytes": "8388608"
+            }
+          }
+        },
+        "liquidity_mode": "independent",
+        "depth_policy": "require_sufficient",
+        "market_state_policy": "uncrossed_only",
+        "receive_time_policy": "unflagged_only",
+        "on_unavailable": "unavailable",
+        "studies": [
+          "liquidity_summary",
+          "fill_quality"
+        ],
+        "workers": "4",
+        "extensions": {},
+        "output": {
+          "kind": "partitioned",
+          "bundle_path": "/absolute/private/liquidity-result",
+          "workspace_path": "/absolute/private/liquidity-workspace",
+          "write_options": {
+            "page_bytes": "1048576",
+            "index_fanout": "64"
+          },
+          "scratch_read_options": {
+            "max_page_bytes": null,
+            "cache_bytes": "16777216"
+          }
+        },
+        "source": {
+          "kind": "bundle",
+          "reference": {
+            "manifest_path": "/absolute/private/input-bundle/manifest.json",
+            "manifest_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+            "content_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+          },
+          "selector": {
+            "kind": "node_id",
+            "node_id": "0"
+          },
+          "read_options": {
+            "max_page_bytes": null,
+            "cache_bytes": "8388608"
+          }
+        }
+      }
+    },
+    "allocation_economics": {
+      "partitioned": {
+        "protocol": "symphony.sbv.allocation-economics-input.v1",
+        "selections": {
+          "kind": "referenced_rows",
+          "source": {
+            "kind": "bundle",
+            "reference": {
+              "manifest_path": "/absolute/private/input-bundle/manifest.json",
+              "manifest_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+              "content_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+            },
+            "selector": {
+              "kind": "pointer",
+              "pointer": "/sections/selections/data"
+            },
+            "read_options": {
+              "max_page_bytes": null,
+              "cache_bytes": "8388608"
+            }
+          }
+        },
+        "studies": [
+          "allocation_costs"
+        ],
+        "on_unavailable": "unavailable",
+        "extensions": {},
+        "output": {
+          "kind": "partitioned",
+          "bundle_path": "/absolute/private/allocation_economics-result",
+          "workspace_path": "/absolute/private/allocation_economics-workspace",
+          "write_options": {
+            "page_bytes": "1048576",
+            "index_fanout": "64"
+          },
+          "scratch_read_options": {
+            "max_page_bytes": null,
+            "cache_bytes": "16777216"
+          }
+        },
+        "source": {
+          "kind": "bundle",
+          "reference": {
+            "manifest_path": "/absolute/private/input-bundle/manifest.json",
+            "manifest_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+            "content_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+          },
+          "selector": {
+            "kind": "node_id",
+            "node_id": "0"
+          },
+          "read_options": {
+            "max_page_bytes": null,
+            "cache_bytes": "8388608"
+          }
+        }
+      }
     }
   }
 }

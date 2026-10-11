@@ -11,7 +11,7 @@ import (
 
 func sbvPartitionedProducer(op string) bool {
 	switch op {
-	case "run", "generate_census", "evaluate", "economics", "compose_economics", "result_select", "analyze", "resample", "split":
+	case "run", "generate_census", "evaluate", "economics", "compose_economics", "result_select", "analyze", "resample", "split", "book", "liquidity", "allocation_economics":
 		return true
 	}
 	return false
@@ -131,7 +131,7 @@ func sbvPartitionedRequestPreflight(op string, p map[string]any) error {
 			return err
 		}
 		childOp, _ := p["operation"].(string)
-		if partitioned && childOp != "run" && childOp != "generate_census" && childOp != "evaluate" {
+		if partitioned && childOp != "run" && childOp != "generate_census" && childOp != "evaluate" && childOp != "book" {
 			return bad()
 		}
 		return sbvPartitionedRequestPreflight(childOp, child)
@@ -309,7 +309,7 @@ func sbvPartitionedRecovery(op string, p, m map[string]any) bool {
 			return false
 		}
 		childOp, ok := m["operation"].(string)
-		if !ok || (childOp != "run" && childOp != "generate_census" && childOp != "evaluate") {
+		if !ok || (childOp != "run" && childOp != "generate_census" && childOp != "evaluate" && childOp != "book") {
 			return false
 		}
 		child, err := sbvExpandedResidentRequest(p)

@@ -100,3 +100,120 @@ inline logical::Value source_context(const logical::Value &parent) {
   return context;
 }
 } // namespace symphony::sbv::detail::consumer
+
+namespace symphony::sbv::detail::consumer {
+inline LogicalSelection result_reference(Json reference, std::int64_t end) {
+  if (!reference.contains("kind")) {
+    keys_optional(reference, {"path", "expected_sha256"}, {"pointer"});
+    if (!reference.contains("pointer"))
+      reference["pointer"] = "";
+  }
+  return select_logical_result(reference, end);
+}
+inline void fields(const logical::Value &value,
+                   std::initializer_list<const char *> names) {
+  need(value.kind() == "object" && value.size() == names.size(),
+       "unexpected logical object fields");
+  for (auto name : names)
+    need(value.contains(name), "required logical field absent");
+}
+inline std::optional<logical::Value> select_signals(
+    const Json &selection, const logical::Value &signals,
+    const std::map<std::string, logical::Value> &index,
+    const std::function<void(const std::string &, const logical::Value &)>
+        &apply,
+    std::int64_t end) {
+  std::set<std::string> seen;
+  auto selected = [&](const std::string &id) {
+    deadline(end);
+    need(index.contains(id) && seen.insert(id).second,
+         "unknown or duplicate selected signal");
+    apply(id, index.at(id));
+  };
+  if (selection.is_array()) {
+    for (const auto &id : selection)
+      selected(str(id));
+    return {};
+  }
+  need(selection.is_object() && selection.contains("kind"),
+       "signal selection required");
+  if (selection.at("kind") == "all" || selection.at("kind") == "range") {
+    std::uint64_t first = 0, count = signals.size();
+    if (selection.at("kind") == "all")
+      keys(selection, {"kind"});
+    else {
+      keys(selection, {"kind", "first", "count"});
+      first = u64(selection.at("first"));
+      need(first <= signals.size(), "selected range outside census");
+      count = selection.at("count").is_null() ? signals.size() - first
+                                              : u64(selection.at("count"));
+      need(count <= signals.size() - first,
+           "selected range extends beyond census");
+    }
+    auto cursor = signals.children(first, count);
+    while (auto row = cursor.next())
+      selected(str(row->value.at("signal_id").materialize()));
+    return {};
+  }
+  std::optional<logical::Value> ids, evidence;
+  if (selection.at("kind") == "ids") {
+    keys(selection, {"kind", "ids", "order"});
+    ids.emplace(selection.at("ids"));
+  } else {
+    keys(selection, {"kind", "source", "order"});
+    need(selection.at("kind") == "referenced_ids",
+         "unknown signal selection kind");
+    auto admitted = select_bundle_value(selection.at("source"), end);
+    ids = admitted.value;
+    evidence = logical::Value::object(
+        {{"role", logical::Value(Json("signal_ids"))},
+         {"reference", logical::Value(admitted.reference)},
+         {"value", admitted.value}});
+  }
+  need(ids->kind() == "array", "selected IDs array required");
+  const auto order = str(selection.at("order"));
+  need(order == "supplied" || order == "census", "selected ID order required");
+  std::set<std::string> wanted;
+  auto cursor = ids->children();
+  while (auto child = cursor.next()) {
+    deadline(end);
+    auto id = str(child->value.materialize());
+    need(index.contains(id) && wanted.insert(id).second,
+         "unknown or duplicate selected ID");
+    if (order == "supplied")
+      selected(id);
+  }
+  if (order == "census") {
+    auto rows = signals.children();
+    while (auto row = rows.next()) {
+      auto id = str(row->value.at("signal_id").materialize());
+      if (wanted.contains(id))
+        selected(id);
+    }
+  }
+  return evidence;
+}
+} // namespace symphony::sbv::detail::consumer
+
+namespace symphony::sbv::detail::consumer {
+struct InputRows {
+  logical::Value value;
+  std::optional<logical::Value> evidence;
+};
+inline InputRows input_rows(const Json &selection, const std::string &role,
+                            std::int64_t end) {
+  if (selection.is_array())
+    return {logical::Value(selection), {}};
+  keys(selection, {"kind", "source"});
+  need(selection.at("kind") == "referenced_rows",
+       "inline or explicitly referenced rows required");
+  auto admitted = select_bundle_value(selection.at("source"), end);
+  need(admitted.value.kind() == "array",
+       "selected rows source must be an array");
+  return {
+      admitted.value,
+      logical::Value::object({{"role", logical::Value(role)},
+                              {"reference", logical::Value(admitted.reference)},
+                              {"value", admitted.value}})};
+}
+} // namespace symphony::sbv::detail::consumer

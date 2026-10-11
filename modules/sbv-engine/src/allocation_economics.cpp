@@ -1,3 +1,4 @@
+#include "consumer_source.hpp"
 #include "wide_rational.hpp"
 #include <map>
 #include <optional>
@@ -125,9 +126,11 @@ Allocation allocation(const Json &row, const std::string &mode) {
   return a;
 }
 } // namespace
-Json allocation_economics(const Json &p, std::int64_t end) {
-  keys(p, {"protocol", "path", "expected_sha256", "output_path", "selections",
-           "studies", "on_unavailable", "extensions"});
+static logical::Value allocation_body(const Json &p, PartitionedOutput *context,
+                                      std::int64_t end) {
+  keys_optional(
+      p, {"protocol", "selections", "studies", "on_unavailable", "extensions"},
+      {"path", "expected_sha256", "source", "output_path", "output"});
   need(p.at("extensions").is_object(), "extensions object required");
   need(p.at("on_unavailable") == "unavailable" ||
            p.at("on_unavailable") == "reject",
@@ -141,47 +144,77 @@ Json allocation_economics(const Json &p, std::int64_t end) {
              studies.insert(id).second,
          "unknown/duplicate allocation study");
   }
-  auto source = e::parse_bounded_json(read_file(str(p.at("path")), end),
-                                      artifact_bytes, artifact_values);
-  validate_result(source);
-  need(!str(p.at("expected_sha256")).empty() &&
-           source.at("content_sha256") == p.at("expected_sha256"),
-       "source result identity mismatch");
-  const auto &s = source.at("sections"),
-             &provenance = s.at("provenance").at("data"),
-             &choices = s.at("choices").at("data");
-  need(provenance.at("model_id") == "displayed_depth_sweep" &&
-           provenance.at("model_version") == "1" &&
-           choices.at("protocol") == "symphony.sbv.liquidity-input.v1",
+  const auto source = consumer::source(p, end).value;
+  const auto s = source.at("sections"),
+             provenance = s.at("provenance").at("data"),
+             choices = s.at("choices").at("data");
+  need(provenance.at("model_id").materialize() == "displayed_depth_sweep" &&
+           provenance.at("model_version").materialize() == "1" &&
+           choices.at("protocol").materialize() ==
+               "symphony.sbv.liquidity-input.v1",
        "admitted liquidity result required");
-  auto mode = str(choices.at("liquidity_mode"));
+  auto mode = str(choices.at("liquidity_mode").materialize());
   need(mode == "independent" || mode == "shared_snapshot",
        "source liquidity mode invalid");
-  const auto &rows = s.at("execution").at("data"),
-             &orders = choices.at("orders");
-  need(rows.is_array() && rows.size() <= 4096 && orders.is_array() &&
-           rows.size() == orders.size(),
-       "source allocation bound/choice mismatch");
-  std::map<std::string, std::pair<Json, Allocation>> allocations;
-  for (std::size_t i = 0; i < rows.size(); ++i) {
-    deadline(end);
-    const auto &row = rows[i];
-    need(row.at("order") == orders[i], "source order choice mismatch");
-    auto ordinal = u64(row.at("frame_source_ordinal"));
-    need(mode != "shared_snapshot" || i == 0 ||
-             ordinal == u64(rows[0].at("frame_source_ordinal")),
-         "shared source requires one snapshot");
-    auto a = allocation(row, mode);
-    need(allocations.emplace(str(row.at("order_id")), std::pair{row, a}).second,
-         "duplicate source order");
+  const auto rows = s.at("execution").at("data");
+  const auto declaration = choices.at("orders");
+  auto orders = declaration;
+  if (declaration.kind() != "array") {
+    const auto selected = declaration.materialize();
+    keys(selected, {"kind", "source"});
+    need(selected.at("kind") == "referenced_rows",
+         "source order declaration invalid");
+    const auto input = s.at("order_input").at("data");
+    consumer::fields(input, {"role", "reference", "value"});
+    need(input.at("role").materialize() == "liquidity_orders",
+         "source order evidence role mismatch");
+    const auto reference = input.at("reference").materialize();
+    validate_logical_reference_lineage(selected.at("source"), reference);
+    orders = input.at("value");
+    need(orders.sha256({}, [end] { deadline(end); }) ==
+             str(reference.at("selected_value_sha256")),
+         "retained order selection identity mismatch");
   }
-  need(p.at("selections").is_array() && p.at("selections").size() <= 4096,
-       "selection bound");
-  Json output = Json::array(), costs = Json::array(), moments = Json::array();
+  need(rows.kind() == "array" && orders.kind() == "array" &&
+           rows.size() == orders.size(),
+       "source allocation/choice count mismatch");
+  if (s.contains("order_choices"))
+    need(
+        s.at("order_choices").at("data").sha256({}, [end] { deadline(end); }) ==
+            orders.sha256({}, [end] { deadline(end); }),
+        "expanded source order choices differ");
+  std::map<std::string, std::pair<logical::Value, Allocation>> allocations;
+  auto row_cursor = rows.children(), order_cursor = orders.children();
+  std::optional<std::uint64_t> first_ordinal;
+  while (auto child = row_cursor.next()) {
+    deadline(end);
+    const auto row = child->value.materialize();
+    const auto expected = order_cursor.next();
+    need(expected.has_value() &&
+             row.at("order") == expected->value.materialize(),
+         "source order choice mismatch");
+    const auto ordinal = u64(row.at("frame_source_ordinal"));
+    need(mode != "shared_snapshot" || !first_ordinal ||
+             ordinal == *first_ordinal,
+         "shared source requires one snapshot");
+    if (!first_ordinal)
+      first_ordinal = ordinal;
+    auto a = allocation(row, mode);
+    need(
+        allocations.emplace(str(row.at("order_id")), std::pair{child->value, a})
+            .second,
+        "duplicate source order");
+  }
+  auto input =
+      consumer::input_rows(p.at("selections"), "allocation_economics", end);
+  consumer::Rows output(context, "economics"), costs(context, "costs"),
+      moments(context, "moments");
   std::set<std::string> selected;
   std::uint64_t available = 0, partial = 0;
-  for (const auto &choice : p.at("selections")) {
+  auto selection_cursor = input.value.children();
+  while (auto child = selection_cursor.next()) {
     deadline(end);
+    const auto choice = child->value.materialize();
     keys(choice, {"order_id", "valuation", "mode", "inactive_pnl"});
     auto id = str(choice.at("order_id"));
     need(allocations.contains(id) && selected.insert(id).second,
@@ -196,7 +229,8 @@ Json allocation_economics(const Json &p, std::int64_t end) {
     else
       need(choice.at("inactive_pnl").is_null(),
            "inactive P&L belongs to selected mixture");
-    const auto &[row, a] = allocations.at(id);
+    const auto &[handle, a] = allocations.at(id);
+    const auto row = handle.materialize();
     Json out{{"protocol", "symphony.sbv.allocation-economic-outcome.v1"},
              {"order_id", id},
              {"signal_id", row.at("signal_id")},
@@ -291,23 +325,18 @@ Json allocation_economics(const Json &p, std::int64_t end) {
         ++partial;
     }
     if (studies.contains("allocation_costs"))
-      costs.push_back({{"order_id", id},
-                       {"pnl_unit", choice.at("valuation").at("pnl_unit")},
-                       {"result", cost}});
+      costs.append({{"order_id", id},
+                    {"pnl_unit", choice.at("valuation").at("pnl_unit")},
+                    {"result", cost}});
     if (studies.contains("activation_moments"))
-      moments.push_back({{"order_id", id},
-                         {"pnl_unit", choice.at("valuation").at("pnl_unit")},
-                         {"result", moment}});
-    output.push_back(std::move(out));
+      moments.append({{"order_id", id},
+                      {"pnl_unit", choice.at("valuation").at("pnl_unit")},
+                      {"result", moment}});
+    output.append(std::move(out));
   }
   auto result = base("quantity-aware allocation economics");
   result["status"] = "partial";
   auto &sections = result["sections"];
-  sections["economics"] =
-      section(output, available == output.size() ? "available" : "partial",
-              available == output.size()
-                  ? ""
-                  : "one or more allocations or mixtures unavailable");
   sections["summary"] =
       section({{"selected_orders", dec(output.size())},
                {"available", dec(available)},
@@ -315,44 +344,35 @@ Json allocation_economics(const Json &p, std::int64_t end) {
                {"unavailable", dec(output.size() - available - partial)},
                {"aggregation",
                 "per order; no portfolio or joint distribution inferred"}});
-  Json computed = Json::array();
+  std::vector<logical::Value> computed;
   if (studies.contains("allocation_costs"))
-    computed.push_back({{"study_id", "allocation_costs"},
-                        {"version", "1"},
-                        {"results", costs}});
+    computed.push_back(
+        logical::Value(Json{{"study_id", "allocation_costs"}, {"version", "1"}})
+            .with("results", costs.close()));
   if (studies.contains("activation_moments"))
-    computed.push_back({{"study_id", "activation_moments"},
-                        {"version", "1"},
-                        {"results", moments}});
-  sections["studies"] =
-      section(computed, studies.empty() ? "not_selected" : "available",
-              studies.empty() ? "zero studies selected" : "");
-  for (const auto *name :
-       {"signals", "execution", "replay", "book_frames", "book_checkpoint"})
-    sections[name] = s.at(name);
-  sections["source_context"] =
-      section({{"choices", s.at("choices")},
-               {"provenance", s.at("provenance")},
-               {"summary", s.at("summary")},
-               {"parent_context", s.at("source_context")}});
+    computed.push_back(logical::Value(Json{{"study_id", "activation_moments"},
+                                           {"version", "1"}})
+                           .with("results", moments.close()));
   auto c = p;
   c.erase("output_path");
+  c.erase("output");
   sections["choices"] = section(c);
   sections["resources"] = section(
       {{"backend", "cpu"},
        {"actual_workers", output.empty() ? "0" : "1"},
        {"ordering", "stable selection order; immutable source allocations"}});
-  sections["provenance"] =
-      section({{"engine_version", version},
-               {"source_result_sha256", source.at("content_sha256")},
-               {"source_census_sha256", provenance.at("source_census_sha256")},
-               {"transform_id", "filled_quantity_markout"},
-               {"transform_version", "1"},
-               {"numeric_profile", "checked signed 128-bit reduced rational; "
-                                   "overflow rejects before persistence"},
-               {"mark_evidence", "caller supplied; not independently verified"},
-               {"provider_requests", "0"},
-               {"additional_spend_usd", "0"}});
+  sections["provenance"] = section(
+      {{"engine_version", version},
+       {"source_result_sha256", source.at("content_sha256").materialize()},
+       {"source_census_sha256",
+        provenance.at("source_census_sha256").materialize()},
+       {"transform_id", "filled_quantity_markout"},
+       {"transform_version", "1"},
+       {"numeric_profile", "checked signed 128-bit reduced rational; "
+                           "overflow rejects before persistence"},
+       {"mark_evidence", "caller supplied; not independently verified"},
+       {"provider_requests", "0"},
+       {"additional_spend_usd", "0"}});
   sections["diagnostics"] = section(Json::array(
       {"Only filled units contribute to gross markout; activation costs also "
        "apply to active zero-fill orders.",
@@ -366,6 +386,41 @@ Json allocation_economics(const Json &p, std::int64_t end) {
        "Source hashes verify content identity, not publisher authenticity. "
        "Replay and complete execution allocations remain portable."}));
   sections["user_extensions"] = section(p.at("extensions"));
-  return persist(std::move(result), p, "allocation-economics", end);
+  const auto status = available == output.size() ? "available" : "partial";
+  const auto reason = available == output.size()
+                          ? ""
+                          : "one or more allocations or mixtures unavailable";
+  auto out =
+      logical::Value(sections)
+          .with("economics", consumer::section(output.close(), status, reason))
+          .with("studies", consumer::section(
+                               logical::Value::array(std::move(computed)),
+                               studies.empty() ? "not_selected" : "available",
+                               studies.empty() ? "zero studies selected" : ""))
+          .with("source_context",
+                consumer::section(logical::Value::object(
+                    {{"choices", s.at("choices")},
+                     {"provenance", s.at("provenance")},
+                     {"summary", s.at("summary")},
+                     {"parent_context", s.at("source_context")},
+                     {"order_choices", orders}})));
+  for (const auto *name :
+       {"signals", "execution", "replay", "book_frames", "book_checkpoint"})
+    out = out.with(name, s.at(name));
+  if (input.evidence)
+    out = out.with("selection_input", consumer::section(*input.evidence));
+  return logical::Value(result).with("sections", std::move(out));
+}
+Json allocation_economics(const Json &p, std::int64_t end) {
+  need(p.contains("output") != p.contains("output_path"),
+       "select exactly one allocation output");
+  if (p.contains("output"))
+    return partitioned_result(p, "allocation-economics", end,
+                              [&](PartitionedOutput &context) {
+                                return allocation_body(p, &context, end);
+                              });
+  return persist(allocation_body(p, nullptr, end)
+                     .materialize({artifact_bytes, artifact_values}),
+                 p, "allocation-economics", end);
 }
 } // namespace symphony::sbv::detail

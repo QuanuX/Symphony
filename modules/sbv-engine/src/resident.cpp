@@ -333,8 +333,6 @@ void control_shape(const std::string &op, const Json &p) {
              r.at("protocol") == "symphony.sbv." + slug + "-input.v1",
          "resident child request must omit both output forms and match "
          "operation");
-    need(!p.contains("output") || p.at("operation") != "book",
-         "book partitioned output is not implemented");
   } else {
     need(op == "dataset_inspect" || op == "dataset_release",
          "unknown dataset operation");
