@@ -30310,7 +30310,14 @@
                     "const": "cpu"
                   },
                   "maximum_atoms": {
-                    "type": "string"
+                    "anyOf": [
+                      {
+                        "type": "null"
+                      },
+                      {
+                        "type": "string"
+                      }
+                    ]
                   },
                   "output_schema": {
                     "type": "string"
