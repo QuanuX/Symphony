@@ -30257,7 +30257,9 @@
                     "liquidity",
                     "allocation_economics",
                     "analyze",
-                    "resample"
+                    "resample",
+                    "compose_economics",
+                    "predict"
                   ]
                 }
               },

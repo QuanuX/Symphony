@@ -24,8 +24,8 @@ func TestCommandRegistryCobraParityAndStableIdentity(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(manifest.Commands) != 434 {
-		t.Fatalf("registered command count = %d, want 434", len(manifest.Commands))
+	if len(manifest.Commands) != 439 {
+		t.Fatalf("registered command count = %d, want 439", len(manifest.Commands))
 	}
 	seen := make(map[string]*string, len(manifest.Commands))
 	for _, command := range manifest.Commands {
@@ -42,6 +42,12 @@ func TestCommandRegistryCobraParityAndStableIdentity(t *testing.T) {
 	}
 	for _, required := range []string{
 		"qxcmd:symphony:commands.manifest",
+		"qxcmd:symphony:sbv.bundle.import",
+		"qxcmd:symphony:sbv.bundle.inspect",
+		"qxcmd:symphony:sbv.bundle.query",
+		"qxcmd:symphony:sbv.bundle.verify",
+		"qxcmd:symphony:sbv.bundle.export",
+
 		"qxcmd:symphony:shv.profile.inspect",
 		"qxcmd:symphony:shv.profile.compile",
 		"qxcmd:symphony:shv.profile.schema",

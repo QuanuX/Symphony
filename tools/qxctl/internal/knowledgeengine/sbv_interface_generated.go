@@ -48,7 +48,7 @@ var sbvAdministrationInterfaceAdmission = map[string]map[string]bool{
 }
 
 var sbvAdministrationInterfaceResources = map[string]string{
-	"admin.schema.json":              "sha256:ab8b8ed044b8971294f8390c41bdda29e1e972e8b14e7a0eb41ce1c44e1da1f2",
+	"admin.schema.json":              "sha256:fe2e9bf72d19a843606cf5d8c333c98fb57f38b6fcf9851373d6c30e4926c62a",
 	"admin.templates.json":           "sha256:da9808aa999ac01723f8b49298c2e423f1b15b7d4898c92e9e9549de2d502dc1",
 	"result.schema.json":             "sha256:5c9bd274d7de5318b19c5aa454d684911ca276414ed8a124a1fb6d3dad0164c0",
 	"pointer-stream.schema.json":     "sha256:5f904fc5723b6c0918517509081f8fff436f008496ce6c19c24ac548992a04f3",

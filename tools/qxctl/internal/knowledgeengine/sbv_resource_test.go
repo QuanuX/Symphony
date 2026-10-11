@@ -49,7 +49,8 @@ func TestSBVInstalledResourceAdmission(t *testing.T) {
 			t.Fatalf("discoverable combined schema %s: %v", op, err)
 		}
 	}
-	for _, op := range []string{"run", "generate_census", "evaluate", "economics", "compose_economics", "dataset_execute"} {
+	partitioned := []string{"run", "generate_census", "evaluate", "economics", "compose_economics", "dataset_execute", "experiment", "result_select", "analyze", "resample", "split", "book", "liquidity", "allocation_economics", "fit", "predict", "compare", "research_history"}
+	for _, op := range partitioned {
 		_, raw, err := SBVTemplateVariant(prefix, SBVAdministrationInterfaceVersion, op, "partitioned")
 		if err != nil {
 			t.Fatalf("partitioned template %s: %v", op, err)
@@ -67,10 +68,10 @@ func TestSBVInstalledResourceAdmission(t *testing.T) {
 			t.Fatalf("partitioned template %s registered shape: %v", op, err)
 		}
 	}
-	if _, _, err := SBVTemplateVariant(prefix, SBVAdministrationInterfaceVersion, "book", "partitioned"); err == nil {
-		t.Fatal("unimplemented partitioned book template admitted")
+	if _, _, err := SBVTemplateVariant(prefix, SBVAdministrationInterfaceVersion, "book", "unknown"); err == nil {
+		t.Fatal("unknown template variant admitted")
 	}
-	t.Logf("all %d schemas/default templates and six partitioned variants admitted within individual control bounds; no operation invoked", len(SBVOperations))
+	t.Logf("all %d schemas/default templates and %d partitioned variants admitted within individual control bounds; no operation invoked", len(SBVOperations), len(partitioned))
 }
 
 func TestSBVOwnedCatalogueExceedsMessageCount(t *testing.T) {

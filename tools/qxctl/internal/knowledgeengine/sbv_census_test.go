@@ -71,7 +71,7 @@ func TestSBVInstalledCensusContinuity(t *testing.T) {
 	}
 	defs := schema["$defs"].(map[string]any)
 	for name, definition := range map[string]string{"census": "census_evidence", "census_reference": "census_reference"} {
-		if !sqvTransportShape(defs[definition], section(first, name), 0) {
+		if !sbvSchemaShape(defs[definition], section(first, name), 0) {
 			t.Fatalf("undiscoverable %s schema", name)
 		}
 	}
