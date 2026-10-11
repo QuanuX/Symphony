@@ -1,5 +1,6 @@
 #include "detail.hpp"
 #include "interface.generated.hpp"
+#include "operation_profiles.hpp"
 #include <cerrno>
 #include <fcntl.h>
 #include <filesystem>
@@ -266,6 +267,7 @@ Json dispatch(const std::string &op, const Json &p, std::int64_t end) {
           {"partitioned_resident_operations",
            Json::array({"run", "generate_census", "evaluate", "book"})}}},
         {"source_owner_profile", d::source_owner_profile()},
+        {"operation_profiles", d::operation_profiles()},
         {"data_source_modes",
          Json::array({"file", "retained_source", "resident"})},
         {"resident_data",
@@ -313,8 +315,9 @@ Json dispatch(const std::string &op, const Json &p, std::int64_t end) {
            "policy quota"},
           {"max_composed_paths", "65536"},
           {"max_composed_paths_scope",
-           "legacy compose/compose_joint; compose_economics uses "
-           "caller-selected path pages"}}}};
+           "legacy compose enumeration only; compose_joint admits 4096 "
+           "explicit "
+           "paths; compose_economics uses caller-selected nullable limits"}}}};
   }
   if (op.starts_with("bundle_"))
     return d::bundle_control(op, p, end);

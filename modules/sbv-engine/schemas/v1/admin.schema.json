@@ -28272,6 +28272,277 @@
             "partitioned_resident_operations"
           ],
           "additionalProperties": false
+        },
+        "operation_profiles": {
+          "const": {
+            "protocol": "symphony.sbv.operation-profiles.v1",
+            "resource_authority": "user",
+            "default_deadline_unix_ms": null,
+            "aggregate_dataset_limit": null,
+            "aggregate_partitioned_result_limit": null,
+            "legacy_artifact": {
+              "bytes": "134217728",
+              "values": "4000000"
+            },
+            "control": {
+              "request_bytes": "1048576",
+              "response_bytes": "4194304",
+              "depth": "64",
+              "values": "32768",
+              "string_bytes": "65536"
+            },
+            "model_domains": {
+              "observed_trade_levels_per_side": "1..32",
+              "external_price_support": "1..64",
+              "economic_source_prices": "0..65",
+              "legacy_economic_quantiles": "0..32",
+              "book_depth": "1..64",
+              "liquidity_quantity": "1..1000000000",
+              "liquidity_fills": "0..64",
+              "numeric": "checked exact named integer/rational profiles; no rounding fallback"
+            },
+            "memory_scope": "Selected reader caches apply per active independent reader, not total RSS. Load-buffer accounting excludes derived indexes, provider state, owner allocations, allocator overhead and output scratch. No automatic disk spill, cluster placement, NUMA or accelerator runtime.",
+            "profiles": [
+              {
+                "operations": [
+                  "run",
+                  "generate_census"
+                ],
+                "profile": "source_execution",
+                "reads": "file / optional exact retained-source / resident decoded DBN",
+                "writes": "legacy or partitioned, independently selected",
+                "resident_working_state": "decoded events, census/ID and trade indexes, replay intervals, provider state; per-worker readers/spools",
+                "limits": "No aggregate dataset/census or worker policy maximum; caller limits, host/uint64 and selected format/model domains apply."
+              },
+              {
+                "operations": [
+                  "evaluate"
+                ],
+                "profile": "legacy_evaluation",
+                "reads": "inline census or legacy complete-result reference",
+                "writes": "legacy only in this profile",
+                "resident_working_state": "whole legacy artifact and model results",
+                "limits": "4096 external census rows; legacy artifact/control framing. Select partitioned output for bundle census/outcomes and uncapped aggregate census."
+              },
+              {
+                "operations": [
+                  "evaluate"
+                ],
+                "profile": "partitioned_evaluation",
+                "reads": "inline, legacy or bundle census; inline or bundle external outcomes",
+                "writes": "partitioned",
+                "resident_working_state": "trade/ID indexes, provider instances, worker readers/spools",
+                "limits": "No aggregate census maximum; each model retains its named support/numeric domain."
+              },
+              {
+                "operations": [
+                  "economics"
+                ],
+                "profile": "legacy_economics",
+                "reads": "legacy complete-result selection",
+                "writes": "legacy",
+                "resident_working_state": "whole artifact/results",
+                "limits": "4096 signals/selections; legacy artifact framing. Select partitioned output for scalable instructions and bundle sources."
+              },
+              {
+                "operations": [
+                  "economics"
+                ],
+                "profile": "partitioned_economics",
+                "reads": "legacy or bundle result; inline/apply/referenced selections",
+                "writes": "partitioned",
+                "resident_working_state": "census validation/ID indexes, one selected model/economic row plus reader cache",
+                "limits": "No aggregate signal/selection maximum; typed model support and exact numeric domains apply."
+              },
+              {
+                "operations": [
+                  "compose_economics"
+                ],
+                "profile": "economic_composition",
+                "reads": "legacy or bundle economic result selections",
+                "writes": "legacy or partitioned independently",
+                "resident_working_state": "selected supports, exact terminal/prefix maps and selected joint paths",
+                "limits": "Caller nullable max_paths/max_terminal_atoms; exact rational overflow rejects. Inline component/joint instructions use control framing."
+              },
+              {
+                "operations": [
+                  "book",
+                  "liquidity",
+                  "allocation_economics"
+                ],
+                "profile": "execution_chain",
+                "reads": "legacy or bundle result; inline or referenced signal/order/valuation choices",
+                "writes": "legacy or partitioned independently",
+                "resident_working_state": "book order/level state and window indexes; liquidity frame map and typed intents; allocation lineage/indexes",
+                "limits": "No aggregate census/frame/order/checkpoint maximum. Caller nullable frame maximum. Named book depth 1..64; displayed-depth quantity 1..1e9 and at most 64 fills."
+              },
+              {
+                "operations": [
+                  "analyze",
+                  "resample",
+                  "split"
+                ],
+                "profile": "research_rows",
+                "reads": "legacy or bundle row selection",
+                "writes": "legacy or partitioned independently",
+                "resident_working_state": "typed observations, exact sorts, bootstrap values, split intervals/ID indexes and plans",
+                "limits": "No aggregate observation/replicate/draw/fold/retained-row policy maximum. Exact arithmetic, caller parameters and host memory apply; no automatic spill."
+              },
+              {
+                "operations": [
+                  "fit",
+                  "predict"
+                ],
+                "profile": "exact_linear_models",
+                "reads": "legacy or bundle rows and model selections",
+                "writes": "legacy or partitioned independently",
+                "resident_working_state": "dense rows times features plus features squared; exact rational solver and ID sets",
+                "limits": "No row/feature policy maximum; numeric overflow/rank rules explicit, no automatic approximation/spill. Feature descriptors use control framing."
+              },
+              {
+                "operations": [
+                  "compare",
+                  "research_history"
+                ],
+                "profile": "research_ledger",
+                "reads": "inline or referenced candidates/objectives/history; legacy or bundle results",
+                "writes": "legacy or partitioned independently",
+                "resident_working_state": "candidate/objective vectors and worst-case quadratic dominance graph; observation occurrence index",
+                "limits": "No aggregate candidate/objective/source-byte/history maximum; typed IDs/units/pointers and exact numeric domains remain."
+              },
+              {
+                "operations": [
+                  "experiment"
+                ],
+                "profile": "local_experiment",
+                "reads": "inline trials or referenced bundle table copied to caller-selected owned plan store",
+                "writes": "legacy or partitioned aggregate independently",
+                "resident_working_state": "per-trial control requests, receipts, dependency graph and stable ready waves",
+                "limits": "No trial/worker policy maximum; optional worker budget. Inline plan and each child request/claim/receipt use bounded control/legacy journal formats. Local execution only."
+              },
+              {
+                "operations": [
+                  "result_select"
+                ],
+                "profile": "legacy_direct_selection",
+                "reads": "legacy array",
+                "writes": "control page",
+                "resident_working_state": "whole artifact, selected row indexes and sort",
+                "limits": "65536 source rows; 16 filters; 8 sort keys; 64 columns; page 1..256. Use saved_view profile for larger aggregate views."
+              },
+              {
+                "operations": [
+                  "result_select"
+                ],
+                "profile": "saved_view",
+                "reads": "legacy or bundle array for prepare; immutable bundle view for page",
+                "writes": "partitioned prepare; control page",
+                "resident_working_state": "ordered prepare uses caller-selected memory_index, optional max_index_rows; page reads selected range",
+                "limits": "No aggregate row/filter/order/column policy maximum beyond request framing; pointers <=4096 bytes. Page <=512000 bytes /16000 values; oversized rows remain accessible by bundle query/export."
+              },
+              {
+                "operations": [
+                  "compose"
+                ],
+                "profile": "legacy_direct_probability_composition",
+                "reads": "inline support/measure",
+                "writes": "legacy",
+                "resident_working_state": "exact enumerated paths/distributions",
+                "limits": "support <=64; steps 1..16; enumerated paths <=65536; exact int64 rationals. Broader economic composition is a separate selectable operation."
+              },
+              {
+                "operations": [
+                  "compose_joint"
+                ],
+                "profile": "legacy_direct_joint_composition",
+                "reads": "inline joint paths",
+                "writes": "legacy",
+                "resident_working_state": "exact supplied paths/distributions",
+                "limits": "paths 1..4096; steps 1..16; exact int64 rationals. These are named legacy operation profiles, not limits on compose_economics."
+              },
+              {
+                "operations": [
+                  "backend_plan"
+                ],
+                "profile": "capability_only_backend_tensor",
+                "reads": "inline explicit declarations",
+                "writes": "control result",
+                "resident_working_state": "descriptor metadata only",
+                "limits": "tensor rank <=16, nonnegative strides, exact dtype/extent/ready state. CPU worker request has no policy maximum; CUDA/tensor runtime unavailable, no silent fallback or reservation."
+              },
+              {
+                "operations": [
+                  "live_plan"
+                ],
+                "profile": "disconnected_live_fixture",
+                "reads": "inline synthetic fixture; no live connection",
+                "writes": "control result",
+                "resident_working_state": "selected ring and pending horizons",
+                "limits": "event_cap 1..65536; pending_cap 1..128; fixture <=512 events and <=128 signals; event bytes <=1e9; UINT64_MAX time sentinel excluded. Wider/live runtime deferred."
+              },
+              {
+                "operations": [
+                  "dataset_load",
+                  "dataset_inspect",
+                  "dataset_execute",
+                  "dataset_release"
+                ],
+                "profile": "resident_dataset",
+                "reads": "file or optional exact retained-source; local handle",
+                "writes": "control lifecycle receipts; execute child legacy or partitioned",
+                "resident_working_state": "original load bytes plus decoded allocation; admitted jobs and worker state",
+                "limits": "No dataset/job/worker policy maximum; nullable caller budgets and deadlines. Load-buffer budget is not total RSS; reject excess admission without implicit queue. Execute: run/generate_census/evaluate/book."
+              },
+              {
+                "operations": [
+                  "source_retain",
+                  "source_export"
+                ],
+                "profile": "sqv-local-retained-capture.v1",
+                "reads": "selected SQAV/SQMV/SQFV/SQPV/SQDV owner route",
+                "writes": "legacy source receipts/original byte export",
+                "resident_working_state": "owner capture/batch/store/delivery state, separately scoped from SBV load buffer",
+                "limits": "Exact source_owner_profile publishes owner limits, including 64 MiB DBN/capture and 1048576 records; ordinary file/RAM route has no such policy maximum."
+              },
+              {
+                "operations": [
+                  "bundle_import",
+                  "bundle_inspect",
+                  "bundle_query",
+                  "bundle_verify",
+                  "bundle_export"
+                ],
+                "profile": "partitioned_result_v1",
+                "reads": "canonical JSON import or pinned bundle",
+                "writes": "partitioned import; bounded query/receipt; streaming JSON/node NDJSON export",
+                "resident_working_state": "page readers/cache and bounded traversal; caller-selected page size/fanout",
+                "limits": "No aggregate bytes/nodes maximum; depth <=64, string/key <=65536 UTF-8 bytes; checked uint64/offset/hash representation. page_bytes>=512/fanout>=2; scalar must fit selected layout."
+              },
+              {
+                "operations": [
+                  "result_inspect",
+                  "result_query"
+                ],
+                "profile": "legacy_result_access",
+                "reads": "legacy artifact",
+                "writes": "control receipt/page",
+                "resident_working_state": "whole bounded legacy artifact",
+                "limits": "128 MiB and 4000000 JSON values; depth64/string65536. Bundle operations provide scalable independent access."
+              },
+              {
+                "operations": [
+                  "capabilities",
+                  "catalogue",
+                  "provider_inspect"
+                ],
+                "profile": "control_discovery",
+                "reads": "bounded request and optional exact provider selection",
+                "writes": "control result",
+                "resident_working_state": "catalogue or selected provider metadata",
+                "limits": "Process request 1 MiB / response 4 MiB; depth64/32768 values/string65536. Provider code is caller-selected native execution; no sandbox or guaranteed preemption."
+              }
+            ]
+          }
         }
       },
       "required": [
@@ -28289,7 +28560,8 @@
         "resident_data",
         "source_owner_profile",
         "data_source_modes",
-        "result_storage"
+        "result_storage",
+        "operation_profiles"
       ],
       "additionalProperties": false
     },

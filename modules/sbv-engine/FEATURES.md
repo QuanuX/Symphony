@@ -118,6 +118,7 @@
         "modules/sbv-engine/src/logical_value.cpp",
         "modules/sbv-engine/src/logical_value.hpp",
         "modules/sbv-engine/src/model.cpp",
+        "modules/sbv-engine/src/operation_profiles.hpp",
         "modules/sbv-engine/src/partitioned_output.cpp",
         "modules/sbv-engine/src/partitioned_output.hpp",
         "modules/sbv-engine/src/planning.cpp",
