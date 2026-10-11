@@ -1,3 +1,4 @@
+#include "resource_admission.hpp"
 #include "detail.hpp"
 #include "partitioned_output.hpp"
 #include "provider.hpp"
@@ -21,7 +22,7 @@ Json evaluate_partitioned(const Json &p, std::int64_t end,
                 {"memory_budget_bytes", "dataset_limits", "source_path",
                  "source_sha256", "dataset", "retained_source"});
   const auto workers = u64(p.at("workers"));
-  need(workers >= 1 && workers <= 64, "workers 1..64");
+  need(workers >= 1, "positive worker count required");
   need(p.at("extensions").is_object(), "extensions object required");
   const auto &replay = p.at("replay");
   keys(replay, {"before_ns", "after_ns", "retain_events"});
@@ -71,7 +72,7 @@ Json evaluate_partitioned(const Json &p, std::int64_t end,
         std::string concurrency = "immutable_native_model";
         auto applied = signals.size() == 0
                            ? std::size_t{0}
-                           : std::min<std::size_t>(workers, signals.size());
+                           : resource::effective(workers, signals.size());
         if (native_model) {
           const auto &selection = p.at("model").at("parameters").at("provider");
           need(selection.at("role") == "model", "model provider role required");
@@ -268,11 +269,7 @@ Json evaluate_partitioned(const Json &p, std::int64_t end,
               failure = std::current_exception();
           }
         };
-        {
-          std::vector<std::jthread> threads;
-          for (std::size_t i = 0; i < applied; ++i)
-            threads.emplace_back(worker, i);
-        }
+        resource::launch(applied, failed, worker);
         if (failure)
           std::rethrow_exception(failure);
         const auto instance_count = instances.size();

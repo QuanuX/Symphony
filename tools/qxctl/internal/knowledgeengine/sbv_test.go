@@ -37,7 +37,7 @@ func TestSBVExactReleaseAndCapabilities(t *testing.T) {
 		t.Fatal("implicit release upgrade")
 	}
 	p := map[string]any{}
-	if validateSBVResult("capabilities", p, []byte(`{"protocol":"symphony.sbv.capabilities.v1","engine_version":"0.23.0-dev","cpu":{"available":true},"cuda":{"available":true},"tensor":{"available":false},"live":{"available":false}}`)) == nil {
+	if validateSBVResult("capabilities", p, []byte(`{"protocol":"symphony.sbv.capabilities.v1","engine_version":"0.24.0-dev","cpu":{"available":true},"cuda":{"available":true},"tensor":{"available":false},"live":{"available":false}}`)) == nil {
 		t.Fatal("unexpected accelerator capability accepted")
 	}
 }
@@ -64,6 +64,20 @@ func TestSBVDatasetUserLimitEvidence(t *testing.T) {
 		}
 	}
 	verify(true)
+	for _, key := range []string{"max_concurrent_jobs", "worker_budget"} {
+		for _, value := range []any{nil, "65", "18446744073709551615"} {
+			p[key], r[key] = value, value
+			verify(true)
+		}
+		for _, value := range []any{"0", "01", "18446744073709551616", 123} {
+			p[key], r[key] = value, value
+			verify(false)
+		}
+		p[key], r[key] = nil, nil
+		delete(r, key)
+		verify(false)
+		r[key] = nil
+	}
 	limits["max_source_bytes"] = "1099511627776"
 	verify(false)
 	p["dataset_limits"] = map[string]any{"max_source_bytes": "1099511627776", "max_source_events": nil, "max_metadata_bytes": nil}

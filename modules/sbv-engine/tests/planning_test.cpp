@@ -61,7 +61,7 @@ int main() try {
   p["declared_limits"]["workers"] = "80";
   p["memory_bytes"] = "4096";
   r = call("backend_plan", p);
-  check(r["resolved"]["workers"] == "64");
+  check(r["resolved"]["workers"] == "80");
   check(r["resolved"]["memory_bytes"] == "2048");
   J buffer{{"dtype", "f32"},
            {"device", "cpu"},

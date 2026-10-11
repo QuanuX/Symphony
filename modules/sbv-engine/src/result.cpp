@@ -274,7 +274,8 @@ Json dispatch(const std::string &op, const Json &p, std::int64_t end) {
           {"implicit_file_fallback", false}}},
         {"cpu",
          {{"available", true},
-          {"max_workers", "64"},
+          {"max_workers", nullptr},
+          {"resource_authority", "user"},
           {"deterministic_output_order", true}}},
         {"cuda",
          {{"available", false},
@@ -304,6 +305,7 @@ Json dispatch(const std::string &op, const Json &p, std::int64_t end) {
            "built-in run and partitioned producers use caller selections"},
           {"max_generated_census_signals", nullptr},
           {"max_artifact_bytes", d::dec(d::artifact_bytes)},
+          {"max_artifact_bytes_scope", "legacy monolithic result profile; partitioned aggregate has no policy quota"},
           {"max_composed_paths", "65536"},
           {"max_composed_paths_scope",
            "legacy compose/compose_joint; compose_economics uses "

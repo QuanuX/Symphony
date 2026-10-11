@@ -1,3 +1,4 @@
+#include "resource_admission.hpp"
 #include "census.hpp"
 #include "detail.hpp"
 #include "run_math.hpp"
@@ -114,14 +115,8 @@ Json run(const Json &p, std::int64_t end, const Dataset *resident) {
         failure = std::current_exception();
     }
   };
-  {
-    std::vector<std::jthread> threads;
-    for (std::size_t i = 0;
-         i < std::min<std::size_t>(workers,
-                                   std::max<std::size_t>(1, census.size()));
-         ++i)
-      threads.emplace_back(worker);
-  }
+  resource::launch(resource::effective(workers, std::max<std::size_t>(1, census.size())),
+                   failed, [&](std::size_t) { worker(); });
   if (failure)
     std::rethrow_exception(failure);
   deadline(end);

@@ -1,3 +1,4 @@
+#include "resource_admission.hpp"
 #include "partitioned_output.hpp"
 #include "run_math.hpp"
 #include "stream_census.hpp"
@@ -135,11 +136,7 @@ Json run_partitioned(const Json &p, std::int64_t end, const Dataset *resident) {
           failure = std::current_exception();
       }
     };
-    {
-      std::vector<std::jthread> threads;
-      for (std::size_t i = 0; i < partitions.size(); ++i)
-        threads.emplace_back(worker, i);
-    }
+    resource::launch(partitions.size(), failed, worker);
     if (failure)
       std::rethrow_exception(failure);
     deadline(end);

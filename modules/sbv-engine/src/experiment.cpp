@@ -1,3 +1,4 @@
+#include "resource_admission.hpp"
 #include "detail.hpp"
 #include <algorithm>
 #include <atomic>
@@ -68,19 +69,19 @@ bool id_ok(const std::string &id) {
 }
 } // namespace
 Json experiment(const Json &p, std::int64_t end) {
-  keys(p, {"protocol", "output_path", "directory", "experiment_id", "trials",
-           "workers", "on_failure", "extensions"});
+  keys_optional(p, {"protocol", "output_path", "directory", "experiment_id", "trials",
+           "workers", "on_failure", "extensions"}, {"worker_budget"});
   need(p.at("extensions").is_object(), "experiment extensions required");
   const auto root = str(p.at("directory")), id = str(p.at("experiment_id"));
   need(id_ok(id), "bounded experiment id required");
   const auto workers = u64(p.at("workers"));
-  need(workers >= 1 && workers <= 16, "experiment workers 1..16");
+  need(workers >= 1, "positive experiment worker count required");
   need(p.at("on_failure") == "continue" || p.at("on_failure") == "stop",
        "experiment failure policy required");
   need(p.at("on_failure") != "stop" || workers == 1,
        "ordered stop-on-failure requires one worker");
   const auto &trials = p.at("trials");
-  need(trials.is_array() && trials.size() <= 64, "experiment trial bound 64");
+  need(trials.is_array(), "experiment trials array required");
   std::set<std::string> names;
   std::map<std::string, std::size_t> indices;
   std::vector<Json> requests;
@@ -129,7 +130,7 @@ Json experiment(const Json &p, std::int64_t end) {
                                        : request;
       if (worker_request.contains("workers")) {
         const auto inner = u64(worker_request.at("workers"));
-        need(inner >= 1 && inner <= 64, "child worker bound");
+        need(inner >= 1, "positive child worker count required");
         inner_max = std::max(inner_max, inner);
       }
     } else
@@ -196,9 +197,10 @@ Json experiment(const Json &p, std::int64_t end) {
     remaining -= wave.size();
     waves.push_back(std::move(wave));
   }
-  need(workers * inner_max <= 64,
-       "selected outer and inner worker product exceeds 64; choose explicit "
-       "resource allocation");
+  const auto worker_product = resource::product(workers, inner_max);
+  const auto worker_budget = resource::limit(p.value("worker_budget", Json(nullptr)));
+  need(resource::admits(worker_budget, 0, worker_product),
+       "selected outer and inner worker product exceeds caller budget");
   auto choices = p;
   choices.erase("output_path");
   auto plan = base("immutable local experiment plan");
@@ -247,7 +249,7 @@ Json experiment(const Json &p, std::int64_t end) {
   std::mutex errors;
   std::size_t actual = 0;
   for (const auto &wave : waves)
-    actual = std::max(actual, std::min<std::size_t>(workers, wave.size()));
+    actual = std::max(actual, resource::effective(workers, wave.size()));
   const std::vector<std::size_t> *active_wave = nullptr;
   auto work = [&] {
     try {
@@ -455,7 +457,7 @@ Json experiment(const Json &p, std::int64_t end) {
     cursor = 0;
     std::vector<std::jthread> pool;
     try {
-      for (std::size_t i = 0; i < std::min<std::size_t>(workers, wave.size());
+      for (std::size_t i = 0; i < resource::effective(workers, wave.size());
            ++i)
         pool.emplace_back(work);
     } catch (...) {
@@ -517,7 +519,8 @@ Json experiment(const Json &p, std::int64_t end) {
                {"requested_workers", dec(workers)},
                {"actual_outer_workers", dec(actual)},
                {"maximum_child_workers", dec(inner_max)},
-               {"selected_worker_product", dec(workers * inner_max)}});
+               {"selected_worker_product", dec(worker_product)},
+               {"worker_budget", p.value("worker_budget", Json(nullptr))}});
   s["provenance"] =
       section({{"engine_version", version},
                {"scope", "local private filesystem artifacts; no daemon, "

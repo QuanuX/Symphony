@@ -2,7 +2,7 @@
 
 ## Version and ownership
 
-Contract v1; package `sbv-engine` 0.23.0-dev; engine `symphony-sbv`; vector `sbv`. C++26 owns computations, result sealing and artifact queries. Go qxctl verifies the exact installation and projects native evidence. OWNER-INTERFACE.json is the exact operation declaration; generated C++/Go metadata must match it. This release is experimental.
+Contract v1; package `sbv-engine` 0.24.0-dev; engine `symphony-sbv`; vector `sbv`. C++26 owns computations, result sealing and artifact queries. Go qxctl verifies the exact installation and projects native evidence. OWNER-INTERFACE.json is the exact operation declaration; generated C++/Go metadata must match it. This release is experimental.
 
 The engine uses knowledge-vector-engine-cpp 0.2.0-dev and sqav-databento-dbn-cpp 0.5.0-dev, with that adapter's exact static dependencies. It performs no data-provider network calls. Signal/replay semantics belong to SBV; acquisition remains SQAV, metadata SQMV, batch ownership SQFV, transformation SQTV, physical stores SQPV and recipient delivery SQDV. Its portable local JSON result is a derived artifact, not a new market-data persistence service. An optional offline retained-source route composes SQAV capture 0.2.0-dev, SQMV 0.2.0-dev, SQFV 0.3.0-dev, SQPV 0.2.0-dev and SQDV 0.3.0-dev under the selected profile described below.
 
@@ -848,3 +848,15 @@ RAM loads retain the same admission evidence. Jobs bind either the exact retaine
 Source-retain/export can return a closed `status:recovery_required` payload when persistence is confirmed but result publication fails, or an owner outcome is uncertain. It contains the canonical request digest, exact destinations, fixed code/stage and typed reopen or expected-binary evidence. Confirmed retention includes the actual receipt; uncertainty never invents one. Binary confirmation distinguishes binary-publication from receipt-publication failure. `automatic_retry` and `rollback_performed` are always false. Native process/SDK success here means the evidence was returned; callers must inspect domain status. qxctl validates request correspondence, renders the entire payload in text/JSON/NDJSON and exits 5 without a second generic error. The caller controls reconciliation and any retry. Unknown/pre-mutation failures retain the existing generic error contract.
 
 Every operation and result is available through the same native dispatch, exact installed SDK and qxctl discovery/result projection. These changes do not perform HTTP/live acquisition, imply entitlement, calibrate fills, or qualify underlying owner crash/power-loss behavior. Full programme acceptance and large derived-result scalability remain separate gates.
+
+## Resource admission — experimental 0.24
+
+Worker requests are positive exact uint64 counts with no engine policy maximum. Applied workers depend on eligible tasks and the selected provider's topology; serialized state remains serialized. A request is not an instruction to allocate that many threads before task admission. Thread-launch failure stops scheduling, joins started workers and preserves the operation's existing failure/recovery semantics.
+
+Resident `max_concurrent_jobs` and `worker_budget` accept positive user limits or null. Null selects no policy ceiling; uint64 accounting and host allocation remain real constraints. Slots grow only when a job is admitted. Capacity is rejected without an implicit work queue; the Unix listen backlog is transport buffering, not a job limit. Resident worker accounting reserves requested job workers, not measured operating-system threads or total RSS. Dataset memory budgets cover declared load buffers, not all derived caches, indexes or process RSS.
+
+Experiment workers/trial count no longer have 16/64 policy maxima. Optional `worker_budget` limits the exact checked outer-request × maximum-inner-request product; null/absence has no selected policy ceiling. Plans still use the bounded inline control envelope and legacy journal/aggregate profile. Ordered stop-on-failure still requires one outer worker.
+
+Backend planning removes the hidden 64-worker clamp and accepts nullable declared worker/memory limits. The installed C++ `BackendRequest` layout remains unchanged; additive `BackendRequestV2` and `plan_backend_v2` express optional limits. Both entry points preserve selected reject/reduce policy and explicit serial dependency constraints. No reservation or CUDA/tensor execution is implied.
+
+This resource increment does not remove remaining legacy scientific-consumer limits. Those remain separately identified in the R3.3 operation/profile audit and are not global limits on partitioned SBV results.

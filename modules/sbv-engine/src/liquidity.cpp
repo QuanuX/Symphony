@@ -1,3 +1,4 @@
+#include "resource_admission.hpp"
 #include "rational.hpp"
 #include <algorithm>
 #include <atomic>
@@ -311,7 +312,7 @@ Json liquidity(const Json &p, std::int64_t end) {
            "receive_time_policy", "on_unavailable", "studies", "workers",
            "extensions"});
   const auto workers = u64(p.at("workers"));
-  need(workers >= 1 && workers <= 64 && p.at("extensions").is_object(),
+  need(workers >= 1 && p.at("extensions").is_object(),
        "worker/extension bound");
   const auto mode = str(p.at("liquidity_mode"));
   need(mode == "independent" || mode == "shared_snapshot",
@@ -393,7 +394,7 @@ Json liquidity(const Json &p, std::int64_t end) {
             "earlier shared order unresolved; remaining liquidity unknown";
     }
   } else {
-    applied = std::min<std::size_t>(workers, orders.size());
+    applied = resource::effective(workers, orders.size());
     std::atomic<std::size_t> next{0};
     std::atomic<bool> failed{false};
     std::exception_ptr error;
@@ -418,11 +419,7 @@ Json liquidity(const Json &p, std::int64_t end) {
           error = std::current_exception();
       }
     };
-    {
-      std::vector<std::jthread> threads;
-      for (std::size_t i = 0; i < applied; ++i)
-        threads.emplace_back(worker);
-    }
+    resource::launch(applied, failed, [&](std::size_t) { worker(); });
     if (error)
       std::rethrow_exception(error);
   }

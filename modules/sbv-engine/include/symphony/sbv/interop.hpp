@@ -5,6 +5,7 @@
 #include <cstdint>
 #include <limits>
 #include <memory>
+#include <optional>
 #include <stdexcept>
 #include <string>
 #include <vector>
@@ -104,7 +105,12 @@ struct BackendPlan {
   std::uint64_t workers{}, memory_bytes{};
   bool fallback_used{};
 };
-inline BackendPlan plan_backend(const BackendRequest &r) {
+struct BackendRequestV2 {
+  std::string backend, fallback, limit_policy, scheduling;
+  std::uint64_t workers{}, memory_bytes{};
+  std::optional<std::uint64_t> declared_worker_limit, declared_memory_limit;
+};
+inline BackendPlan plan_backend_v2(const BackendRequestV2 &r) {
   require(r.backend == "cpu" || r.backend == "cuda" || r.backend == "tensor",
           "unknown backend");
   require(r.fallback.empty() || r.fallback == "cpu",
@@ -113,8 +119,9 @@ inline BackendPlan plan_backend(const BackendRequest &r) {
           "invalid limit policy");
   require(r.scheduling == "independent" || r.scheduling == "serial_state",
           "invalid scheduling contract");
-  require(r.workers > 0 && r.memory_bytes > 0 && r.declared_worker_limit > 0 &&
-              r.declared_memory_limit > 0,
+  require(r.workers > 0 && r.memory_bytes > 0 &&
+              (!r.declared_worker_limit || *r.declared_worker_limit > 0) &&
+              (!r.declared_memory_limit || *r.declared_memory_limit > 0),
           "positive resource bounds required");
   if (r.backend != "cpu" && r.fallback.empty())
     return {"unavailable",
@@ -123,10 +130,12 @@ inline BackendPlan plan_backend(const BackendRequest &r) {
             0,
             0,
             false};
-  auto workers = std::min(
-      {r.workers, r.declared_worker_limit, std::uint64_t{64},
-       r.scheduling == "serial_state" ? std::uint64_t{1} : std::uint64_t{64}});
-  auto memory = std::min(r.memory_bytes, r.declared_memory_limit);
+  auto workers =
+      std::min(r.workers, r.declared_worker_limit.value_or(r.workers));
+  if (r.scheduling == "serial_state")
+    workers = 1;
+  auto memory = std::min(r.memory_bytes,
+                         r.declared_memory_limit.value_or(r.memory_bytes));
   if (r.limit_policy == "reject" &&
       (workers != r.workers || memory != r.memory_bytes))
     return {"unavailable",
@@ -138,5 +147,10 @@ inline BackendPlan plan_backend(const BackendRequest &r) {
             r.backend != "cpu"};
   return {"planned", "cpu",  "planning only; no reservation or execution",
           workers,   memory, r.backend != "cpu"};
+}
+inline BackendPlan plan_backend(const BackendRequest &r) {
+  return plan_backend_v2(BackendRequestV2{
+      r.backend, r.fallback, r.limit_policy, r.scheduling, r.workers,
+      r.memory_bytes, r.declared_worker_limit, r.declared_memory_limit});
 }
 } // namespace symphony::sbv::interop

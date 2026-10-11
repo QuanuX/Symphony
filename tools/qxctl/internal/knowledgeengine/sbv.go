@@ -271,9 +271,20 @@ func validateSBVResult(op string, p map[string]any, raw []byte) error {
 		if m["state"] != state {
 			return bad()
 		}
-		for _, k := range []string{"events", "decoded_bytes", "load_buffer_bytes", "source_reads", "decode_passes", "active_jobs", "active_workers", "completed_jobs", "failed_jobs", "max_concurrent_jobs", "worker_budget", "idle_timeout_ms"} {
+		for _, k := range []string{"events", "decoded_bytes", "load_buffer_bytes", "source_reads", "decode_passes", "active_jobs", "active_workers", "completed_jobs", "failed_jobs", "idle_timeout_ms"} {
 			if _, ok := number(k); !ok {
 				return bad()
+			}
+		}
+		for _, k := range []string{"max_concurrent_jobs", "worker_budget"} {
+			v, present := m[k]
+			if !present {
+				return bad()
+			}
+			if v != nil {
+				if n, ok := number(k); !ok || n == 0 {
+					return bad()
+				}
 			}
 		}
 		if m["memory_budget_bytes"] != nil {

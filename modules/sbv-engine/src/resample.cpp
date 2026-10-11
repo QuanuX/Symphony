@@ -51,8 +51,7 @@ Json resample(const Json &p, std::int64_t end) {
              block = u64(p.at("block_size")), seed = u64(p.at("seed")),
              workers = u64(p.at("workers"));
   need(count >= 1 && count <= 1024 && size >= 1 && size <= 65536 &&
-           count * size <= 1048576 && block >= 1 && workers >= 1 &&
-           workers <= 64,
+           count * size <= 1048576 && block >= 1 && workers >= 1,
        "bootstrap workload bounds");
   const bool retain = p.at("retain_indices").get<bool>();
   need(!retain || count * size <= 65536, "retained index bound 65536");

@@ -8475,10 +8475,26 @@
           "type": "object",
           "properties": {
             "workers": {
-              "type": "string"
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[1-9][0-9]*$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
             },
             "memory_bytes": {
-              "type": "string"
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[1-9][0-9]*$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
             }
           },
           "required": [
@@ -9222,8 +9238,7 @@
             ],
             "additionalProperties": false
           },
-          "minItems": 0,
-          "maxItems": 64
+          "minItems": 0
         },
         "workers": {
           "type": "string"
@@ -9236,6 +9251,17 @@
         },
         "extensions": {
           "type": "object"
+        },
+        "worker_budget": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[1-9][0-9]*$"
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "required": [
@@ -9543,10 +9569,26 @@
               ]
             },
             "max_concurrent_jobs": {
-              "type": "string"
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[1-9][0-9]*$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
             },
             "worker_budget": {
-              "type": "string"
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[1-9][0-9]*$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
             },
             "idle_timeout_ms": {
               "type": "string"
@@ -9642,10 +9684,26 @@
               ]
             },
             "max_concurrent_jobs": {
-              "type": "string"
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[1-9][0-9]*$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
             },
             "worker_budget": {
-              "type": "string"
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[1-9][0-9]*$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
             },
             "idle_timeout_ms": {
               "type": "string"
@@ -14146,7 +14204,7 @@
           "const": "symphony.sbv.capabilities.v1"
         },
         "engine_version": {
-          "const": "0.23.0-dev"
+          "const": "0.24.0-dev"
         },
         "cpu": {
           "type": "object",
@@ -14155,17 +14213,20 @@
               "const": true
             },
             "max_workers": {
-              "type": "string",
-              "pattern": "^(0|[1-9][0-9]*)$"
+              "type": "null"
             },
             "deterministic_output_order": {
               "const": true
+            },
+            "resource_authority": {
+              "const": "user"
             }
           },
           "required": [
             "available",
             "max_workers",
-            "deterministic_output_order"
+            "deterministic_output_order",
+            "resource_authority"
           ],
           "additionalProperties": false
         },
@@ -14270,6 +14331,9 @@
             },
             "max_composed_paths_scope": {
               "type": "string"
+            },
+            "max_artifact_bytes_scope": {
+              "type": "string"
             }
           },
           "required": [
@@ -14284,7 +14348,8 @@
             "max_deadline_ahead_ms",
             "max_signals_scope",
             "max_generated_census_signals",
-            "max_composed_paths_scope"
+            "max_composed_paths_scope",
+            "max_artifact_bytes_scope"
           ],
           "additionalProperties": false
         },
@@ -15677,7 +15742,7 @@
           "const": "symphony.sbv.catalogue.v1"
         },
         "engine_version": {
-          "const": "0.23.0-dev"
+          "const": "0.24.0-dev"
         },
         "models": {
           "type": "array",
@@ -16676,7 +16741,7 @@
           "const": "symphony.sbv.backend-plan.v1"
         },
         "engine_version": {
-          "const": "0.23.0-dev"
+          "const": "0.24.0-dev"
         },
         "status": {
           "enum": [
@@ -16969,7 +17034,7 @@
           "const": "symphony.sbv.live-plan.v1"
         },
         "engine_version": {
-          "const": "0.23.0-dev"
+          "const": "0.24.0-dev"
         },
         "can_activate": {
           "const": false
@@ -17571,10 +17636,26 @@
           "type": "string"
         },
         "max_concurrent_jobs": {
-          "type": "string"
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[1-9][0-9]*$"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "worker_budget": {
-          "type": "string"
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[1-9][0-9]*$"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "idle_timeout_ms": {
           "type": "string"
@@ -17726,10 +17807,26 @@
           "type": "string"
         },
         "max_concurrent_jobs": {
-          "type": "string"
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[1-9][0-9]*$"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "worker_budget": {
-          "type": "string"
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[1-9][0-9]*$"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "idle_timeout_ms": {
           "type": "string"
@@ -18943,10 +19040,26 @@
           "type": "string"
         },
         "max_concurrent_jobs": {
-          "type": "string"
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[1-9][0-9]*$"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "worker_budget": {
-          "type": "string"
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[1-9][0-9]*$"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "idle_timeout_ms": {
           "type": "string"
@@ -20175,7 +20288,7 @@
           "const": "symphony.sbv.provider-inspect.v1"
         },
         "engine_version": {
-          "const": "0.23.0-dev"
+          "const": "0.24.0-dev"
         },
         "provider": {
           "type": "object",

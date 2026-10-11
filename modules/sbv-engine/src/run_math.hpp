@@ -73,7 +73,7 @@ inline RunSettings run_settings(const Json &p) {
          "unsupported or duplicate study");
   }
   const auto workers = u64(p.at("workers"));
-  need(workers >= 1 && workers <= 64, "workers 1..64");
+  need(workers >= 1, "positive worker count required");
   need(p.at("extensions").is_object(), "extensions object required");
 
   return {direction,         model, spacing, minimum, before, after,

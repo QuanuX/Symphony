@@ -179,6 +179,32 @@ int main() try {
   rejects([&] { call("dataset_inspect", ref); });
   rejects([&] { call("dataset_execute", job); });
   save(root + "/sample.dbn", source);
+  // Capacity selections do not eagerly allocate slots and may exceed old caps.
+  for (unsigned mode = 0; mode < 3; ++mode) {
+    auto unlimited = load;
+    unlimited["instance_id"] = std::string(31, 'a') + char('a' + mode);
+    unlimited["max_concurrent_jobs"] = mode == 0 ? J("17") : mode == 1 ? J(nullptr) : J("18446744073709551615");
+    unlimited["worker_budget"] = mode == 0 ? J("65") : J(nullptr);
+    auto admitted = call("dataset_load", unlimited);
+    check(admitted["max_concurrent_jobs"] == unlimited["max_concurrent_jobs"]);
+    check(admitted["worker_budget"] == unlimited["worker_budget"]);
+    auto task = job;
+    task["instance_id"] = unlimited["instance_id"];
+    task["request"]["workers"] = mode == 1 ? "18446744073709551615" : "65";
+    task["output_path"] = root + "/unlimited-" + std::to_string(mode) + ".json";
+    call("dataset_execute", task);
+    auto actual = read(task["output_path"]);
+    check(actual["sections"]["resources"]["data"]["actual_workers"] == "4");
+    check(actual["sections"]["signals"] == scientific["sections"]["signals"]);
+    if (mode == 0) {
+      task["request"]["workers"] = "66";
+      task["output_path"] = root + "/rejected-budget.json";
+      rejects([&] { call("dataset_execute", task); });
+    }
+    auto done = release;
+    done["instance_id"] = unlimited["instance_id"];
+    check(call("dataset_release", done)["state"] == "released");
+  }
   rejects([&] { call("dataset_load", load); }); // incarnation never reused
   load["instance_id"] = "00000000000000000000000000000002";
   load["memory_budget_bytes"] = "1";

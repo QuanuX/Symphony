@@ -389,8 +389,8 @@
       "workers": "4",
       "memory_bytes": "67108864",
       "declared_limits": {
-        "workers": "4",
-        "memory_bytes": "67108864"
+        "workers": null,
+        "memory_bytes": null
       },
       "buffer": null,
       "extensions": {}
@@ -710,8 +710,8 @@
       "source_sha256": "REPLACE_WITH_FILE_SHA256",
       "dataset": "XNAS.ITCH",
       "memory_budget_bytes": null,
-      "max_concurrent_jobs": "4",
-      "worker_budget": "16",
+      "max_concurrent_jobs": null,
+      "worker_budget": null,
       "idle_timeout_ms": "0",
       "residency": "pageable",
       "dataset_limits": {

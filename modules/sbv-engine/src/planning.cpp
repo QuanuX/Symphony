@@ -1,4 +1,5 @@
 #include "detail.hpp"
+#include "resource_admission.hpp"
 #include <deque>
 #include <symphony/sbv/interop.hpp>
 namespace symphony::sbv::detail {
@@ -10,15 +11,15 @@ Json backend_plan(const Json &p, std::int64_t end) try {
   keys(p.at("declared_limits"), {"workers", "memory_bytes"});
   need(p.at("extensions").is_object(), "extensions object required");
   namespace i = interop;
-  i::BackendRequest r{str(p.at("backend")),
+  i::BackendRequestV2 r{str(p.at("backend")),
                       p.at("fallback").is_null() ? "" : str(p.at("fallback")),
                       str(p.at("limit_policy")),
                       str(p.at("scheduling")),
                       u64(p.at("workers")),
                       u64(p.at("memory_bytes")),
-                      u64(p.at("declared_limits").at("workers")),
-                      u64(p.at("declared_limits").at("memory_bytes"))};
-  auto plan = i::plan_backend(r);
+                      resource::limit(p.at("declared_limits").at("workers")),
+                      resource::limit(p.at("declared_limits").at("memory_bytes"))};
+  auto plan = i::plan_backend_v2(r);
   Json buffer = missing("no buffer selected");
   if (!p.at("buffer").is_null()) {
     const auto &b = p.at("buffer");

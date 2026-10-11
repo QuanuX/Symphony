@@ -280,10 +280,10 @@ int main(int argc, char **argv) try {
        {{"before_ns", "500"}, {"after_ns", "500"}, {"retain_events", true}}},
       {"studies",
        J::array({"signal_summary", "model_summary", "path_excursion"})},
-      {"workers", "3"},
+      {"workers", "65"},
       {"extensions", J::object()}};
   auto a = call("evaluate", evaluation);
-  check(data(a.result, "resources").at("requested_workers") == "3");
+  check(data(a.result, "resources").at("requested_workers") == "65");
   check(data(a.result, "resources").at("actual_workers") == "1");
   check(data(a.result, "resources").at("provider_instances") == "1");
   check(data(a.result, "resources").at("provider_concurrency") ==
@@ -309,9 +309,11 @@ int main(int argc, char **argv) try {
     auto q = evaluation;
     q["model"]["parameters"]["provider"]["concurrency"] = concurrency;
     auto parallel = call("evaluate", q);
-    check(data(parallel.result, "resources").at("actual_workers") == "3");
+    check(data(parallel.result, "resources").at("actual_workers") ==
+          std::to_string(std::min<std::size_t>(65, signals.size())));
     check(data(parallel.result, "resources").at("provider_instances") ==
-          (std::string(concurrency) == "per_worker_instances" ? "3" : "1"));
+          (std::string(concurrency) == "per_worker_instances"
+               ? std::to_string(std::min<std::size_t>(65, signals.size())) : "1"));
     for (const auto *name :
          {"signals", "census", "execution", "replay", "studies", "summary"})
       check(data(parallel.result, name) == data(a.result, name));

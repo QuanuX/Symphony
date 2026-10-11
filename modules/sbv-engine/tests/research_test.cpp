@@ -140,7 +140,7 @@ int main() try {
       q["block_size"] = "5";
     }
     if (i == 4)
-      q["workers"] = "65";
+      q["workers"] = "0";
     if (i == 5)
       q["sampling_measure"] = "inferred";
     if (i == 6)
@@ -203,6 +203,7 @@ int main() try {
   q = exp;
   q["workers"] = "16";
   q["trials"][0]["request"]["workers"] = "64";
+  q["worker_budget"] = "64";
   reject("experiment", q);
   q = exp;
   q["trials"][0]["operation"] = "experiment";

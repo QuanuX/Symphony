@@ -1,3 +1,4 @@
+#include "resource_admission.hpp"
 #include "dataset.hpp"
 #include <algorithm>
 #include <array>
@@ -312,11 +313,8 @@ void control_shape(const std::string &op, const Json &p) {
     need(p.at("memory_budget_bytes").is_null() ||
              u64(p.at("memory_budget_bytes")) > 0,
          "positive load buffer budget or null required");
-    need(u64(p.at("max_concurrent_jobs")) >= 1 &&
-             u64(p.at("max_concurrent_jobs")) <= 16,
-         "resident concurrent job bound 1..16");
-    need(u64(p.at("worker_budget")) >= 1 && u64(p.at("worker_budget")) <= 64,
-         "resident worker budget 1..64");
+    (void)resource::limit(p.at("max_concurrent_jobs"));
+    (void)resource::limit(p.at("worker_budget"));
     (void)u64(p.at("idle_timeout_ms"));
   } else if (op == "dataset_execute") {
     keys_optional(
@@ -423,9 +421,9 @@ int resident_worker() {
     data->resident_identity = {{"directory", p.at("directory")},
                                {"instance_id", p.at("instance_id")},
                                {"engine_version", version}};
-    const auto max_jobs = u64(p.at("max_concurrent_jobs")),
-               budget = u64(p.at("worker_budget")),
-               idle = u64(p.at("idle_timeout_ms"));
+    const auto max_jobs = resource::limit(p.at("max_concurrent_jobs")),
+               budget = resource::limit(p.at("worker_budget"));
+    const auto idle = u64(p.at("idle_timeout_ms"));
     std::mutex mutex;
     std::uint64_t active = 0, workers = 0, completed = 0, failed = 0;
     auto last = e::unix_time_ms();
@@ -453,8 +451,8 @@ int resident_worker() {
           {"active_workers", dec(workers)},
           {"completed_jobs", dec(completed)},
           {"failed_jobs", dec(failed)},
-          {"max_concurrent_jobs", dec(max_jobs)},
-          {"worker_budget", dec(budget)},
+          {"max_concurrent_jobs", p.at("max_concurrent_jobs")},
+          {"worker_budget", p.at("worker_budget")},
           {"idle_timeout_ms", dec(idle)}};
       if (!data->source_delivery.is_null()) {
         result["source_delivery"] = data->source_delivery;
@@ -472,7 +470,6 @@ int resident_worker() {
       std::jthread thread;
     };
     std::vector<Job> jobs;
-    jobs.reserve(max_jobs);
     for (;;) {
       std::erase_if(jobs, [](const Job &j) { return j.done->load(); });
       {
@@ -544,16 +541,21 @@ int resident_worker() {
         const auto inner = (inner_op == "book" || inner_op == "generate_census")
                                ? 1
                                : u64(request.at("workers"));
-        need(inner >= 1 && inner <= 64 && jobs.size() < max_jobs &&
-                 active < max_jobs && inner <= budget - workers,
+        need(inner >= 1 && resource::admits(max_jobs, active, 1) &&
+                 resource::admits(budget, workers, inner) &&
+                 completed <= UINT64_MAX - failed &&
+                 active < UINT64_MAX - (completed + failed),
              "resident job/worker capacity unavailable; select fewer workers "
              "or retry explicitly");
         auto done = std::make_shared<std::atomic<bool>>(false);
+        // Allocate the job slot before starting its thread. A failing vector
+        // growth must never join a live worker while holding its mutex.
+        jobs.emplace_back();
+        jobs.back().done = done;
         ++active;
         workers += inner;
         try {
-          jobs.push_back(
-              {done, std::jthread([&, fd = std::move(client), request, inner_op,
+          jobs.back().thread = std::jthread([&, fd = std::move(client), request, inner_op,
                                    inner, end, done, parent_request_sha]() {
                  Json response;
                  bool ok = false;
@@ -599,8 +601,9 @@ int resident_worker() {
                  } catch (...) {
                  }
                  done->store(true);
-               })});
+               });
         } catch (...) {
+          jobs.pop_back();
           --active;
           workers -= inner;
           throw;
