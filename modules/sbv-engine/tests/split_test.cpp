@@ -24,8 +24,11 @@ int main() try {
   std::filesystem::create_directories(root);
   unsigned seq = 0;
   auto path = [&](const std::string &x) { return (root / x).string(); };
+  // These are semantic/overlap fixtures, not deadline tests. Sanitizer and
+  // contended-host runs must not turn an arbitrary harness budget into a
+  // correctness failure. Explicit deadline behavior has its own tests.
   auto read = [&](const std::string &x) {
-    auto r = e::parse_bounded_json(d::read_file(x, e::unix_time_ms() + 30000),
+    auto r = e::parse_bounded_json(d::read_file(x, e::no_deadline),
                                    d::artifact_bytes, d::artifact_values);
     s::validate_result(r);
     return r;
@@ -35,7 +38,7 @@ int main() try {
     r["sections"]["observations"] = d::section(rows);
     r = s::seal_result(r);
     auto file = path("source-" + std::to_string(++seq) + ".json");
-    d::create_file(file, r.dump(), e::unix_time_ms() + 30000);
+    d::create_file(file, r.dump(), e::no_deadline);
     return J{{"path", file}, {"expected_sha256", r.at("content_sha256")}};
   };
   auto obs = [](const char *id, unsigned a, unsigned b, unsigned available) {
@@ -80,7 +83,7 @@ int main() try {
       {"extensions", {{"private-study", "\u202e\u001b"}}}};
   auto call = [&](J q) {
     q["output_path"] = path("result-" + std::to_string(++seq) + ".json");
-    auto receipt = s::dispatch("split", q, e::unix_time_ms() + 30000);
+    auto receipt = s::dispatch("split", q, e::no_deadline);
     auto r = read(q["output_path"]);
     check(r["content_sha256"] == receipt["content_sha256"]);
     return r;
@@ -89,7 +92,7 @@ int main() try {
     q["output_path"] = path("refused-" + std::to_string(++seq) + ".json");
     bool failed = false;
     try {
-      s::dispatch("split", q, e::unix_time_ms() + 30000);
+      s::dispatch("split", q, e::no_deadline);
     } catch (const std::exception &) {
       failed = true;
     }
@@ -359,7 +362,8 @@ int main() try {
   {
     auto retained_large = call(q);
     check(retained_large["sections"]["folds"]["data"].size() == 17);
-    check(d::u64(retained_large["sections"]["resources"]["data"]["retained_row_bytes"]) > (64U << 20));
+    check(d::u64(retained_large["sections"]["resources"]["data"]
+                               ["retained_row_bytes"]) > (64U << 20));
   }
   q["retain_rows"] = false;
   check(call(q)["sections"]["folds"]["data"].size() == 17);
@@ -375,7 +379,7 @@ int main() try {
   a["output_path"] = path("training-analysis.json");
   a["pointer"] = "/sections/folds/data/0/train_rows";
   a["value_type"] = "integer";
-  s::dispatch("analyze", a, e::unix_time_ms() + 30000);
+  s::dispatch("analyze", a, e::no_deadline);
   check(read(a["output_path"])["sections"]["series"]["data"].size() == 4);
   // Split is admitted to durable experiments; reuse verifies the exact
   // plan/result.
@@ -397,17 +401,16 @@ int main() try {
                               {"reason", ""},
                               {"parameters", J::object()},
                               {"lineage", J::object()}}})}};
-  s::dispatch("experiment", exp, e::unix_time_ms() + 30000);
+  s::dispatch("experiment", exp, e::no_deadline);
   check(read(exp["output_path"])["sections"]["search"]["data"]
                                 ["executed_this_invocation"] == "1");
   exp["output_path"] = path("reconciled.json");
-  s::dispatch("experiment", exp, e::unix_time_ms() + 30000);
+  s::dispatch("experiment", exp, e::no_deadline);
   check(read(exp["output_path"])["sections"]["search"]["data"]
                                 ["reused_receipts"] == "1");
   if (env) {
     p["output_path"] = path("terminal-split.json");
-    d::create_file(path("split-request.json"), p.dump(2),
-                   e::unix_time_ms() + 30000);
+    d::create_file(path("split-request.json"), p.dump(2), e::no_deadline);
   } else
     std::filesystem::remove_all(root);
   std::cout << checks << " temporal partition assertions passed\n";
