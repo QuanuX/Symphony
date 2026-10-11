@@ -259,7 +259,8 @@ Json dispatch(const std::string &op, const Json &p, std::int64_t end) {
           {"core_producers", "explicit_legacy_or_partitioned"},
           {"partitioned_producers",
            Json::array({"run", "generate_census", "evaluate", "economics",
-                        "compose_economics"})},
+                        "compose_economics", "result_select", "analyze",
+                        "resample", "split"})},
           {"partitioned_resident_operations",
            Json::array({"run", "generate_census", "evaluate"})}}},
         {"source_owner_profile", d::source_owner_profile()},
@@ -305,7 +306,9 @@ Json dispatch(const std::string &op, const Json &p, std::int64_t end) {
            "built-in run and partitioned producers use caller selections"},
           {"max_generated_census_signals", nullptr},
           {"max_artifact_bytes", d::dec(d::artifact_bytes)},
-          {"max_artifact_bytes_scope", "legacy monolithic result profile; partitioned aggregate has no policy quota"},
+          {"max_artifact_bytes_scope",
+           "legacy monolithic result profile; partitioned aggregate has no "
+           "policy quota"},
           {"max_composed_paths", "65536"},
           {"max_composed_paths_scope",
            "legacy compose/compose_joint; compose_economics uses "

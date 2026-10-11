@@ -1,3 +1,4 @@
+#include "consumer_source.hpp"
 #include "wide_rational.hpp"
 #include <algorithm>
 #include <bit>
@@ -45,29 +46,16 @@ double real(w::R r) {
   return static_cast<double>(r.n) / static_cast<double>(r.d);
 }
 } // namespace
-Json analyze(const Json &p, std::int64_t end) {
-  keys(p, {"protocol",
-           "path",
-           "expected_sha256",
-           "output_path",
-           "pointer",
-           "value_pointer",
-           "value_type",
-           "weighting",
-           "weight_pointer",
-           "series_role",
-           "unit",
-           "input_description",
-           "missing",
-           "studies",
-           "quantiles",
-           "variance_estimator",
-           "relative_drawdown",
-           "benchmark",
-           "periods_per_year",
-           "numeric_profile",
-           "on_incompatible",
-           "extensions"});
+static logical::Value analyze_body(const Json &p, PartitionedOutput *context,
+                                   std::int64_t end) {
+  keys_optional(p,
+                {"protocol", "pointer", "value_pointer", "value_type",
+                 "weighting", "weight_pointer", "series_role", "unit",
+                 "input_description", "missing", "studies", "quantiles",
+                 "variance_estimator", "relative_drawdown", "benchmark",
+                 "periods_per_year", "numeric_profile", "on_incompatible",
+                 "extensions"},
+                {"path", "expected_sha256", "source", "output_path", "output"});
   need(p.at("extensions").is_object(), "extensions object required");
   const auto role = str(p.at("series_role")), measure = str(p.at("weighting")),
              numeric = str(p.at("numeric_profile"));
@@ -116,7 +104,7 @@ Json analyze(const Json &p, std::int64_t end) {
              selected.insert(id).second,
          "unknown/duplicate series study");
   }
-  need(p.at("quantiles").is_array() && p.at("quantiles").size() <= 32 &&
+  need(p.at("quantiles").is_array() &&
            (selected.contains("series_quantiles") ? !p.at("quantiles").empty()
                                                   : p.at("quantiles").empty()),
        "quantile selection required only for selected study");
@@ -126,30 +114,29 @@ Json analyze(const Json &p, std::int64_t end) {
     need(r.n >= 0 && r.n <= r.d, "quantile outside [0,1]");
     quantiles.push_back(r);
   }
-  auto source = e::parse_bounded_json(read_file(str(p.at("path")), end),
-                                      artifact_bytes, artifact_values);
-  validate_result(source);
-  need(!str(p.at("expected_sha256")).empty() &&
-           source.at("content_sha256") == p.at("expected_sha256"),
-       "series source identity mismatch");
-  const auto *data = point(source, str(p.at("pointer")));
-  need(data && data->is_array() && data->size() <= 65536,
-       "bounded source series required");
+  auto admitted = consumer::source(p, end);
+  const auto source = admitted.value;
+  const auto data = consumer::pointer(source, str(p.at("pointer")));
+  need(data.kind() == "array", "source series array required");
   const auto value_pointer = str(p.at("value_pointer")),
              weight_pointer = equal ? "" : str(p.at("weight_pointer"));
   (void)point(Json::object(), value_pointer);
   if (!equal)
     (void)point(Json::object(), weight_pointer);
   std::vector<Sample> samples;
-  Json excluded = Json::array();
-  for (std::size_t idx = 0; idx < data->size(); ++idx) {
+  consumer::Rows excluded(context, "exclusions");
+  std::size_t idx = 0;
+  auto children = data.children();
+  while (auto child = children.next()) {
     deadline(end);
-    const auto *v = point((*data)[idx], value_pointer);
-    const auto *weight = equal ? nullptr : point((*data)[idx], weight_pointer);
+    const auto row = child->value.materialize();
+    const auto source_index = idx++;
+    const auto *v = point(row, value_pointer);
+    const auto *weight = equal ? nullptr : point(row, weight_pointer);
     if (!v || (!equal && !weight)) {
       need(p.at("missing") != "reject", "series value/weight field absent");
-      excluded.push_back(
-          {{"source_index", dec(idx)},
+      excluded.append(
+          {{"source_index", dec(source_index)},
            {"reason", "value or weight field absent; no imputation or "
                       "supplied-weight normalization"}});
       continue;
@@ -159,7 +146,7 @@ Json analyze(const Json &p, std::int64_t end) {
     auto mass = equal ? w::R{} : w::artifact(*weight);
     need(measure == "signed_coefficient" || mass.n >= 0,
          "negative probability/scenario weight");
-    samples.push_back({idx, value, mass});
+    samples.push_back({source_index, value, mass});
   }
   if (equal && !samples.empty())
     for (auto &sample : samples)
@@ -182,6 +169,8 @@ Json analyze(const Json &p, std::int64_t end) {
   const bool normalized =
       probability && !samples.empty() && w::equal(mass, {1, 1});
   Json studies = Json::array();
+  std::optional<logical::Value> drawdown_curve;
+  std::size_t drawdown_study_index = 0;
   auto add = [&](const std::string &id, Json data,
                  const std::string &reason = "") {
     need(reason.empty() || p.at("on_incompatible") != "reject", reason.c_str());
@@ -265,8 +254,11 @@ Json analyze(const Json &p, std::int64_t end) {
     else {
       auto sorted = samples;
       std::erase_if(sorted, [](const Sample &s) { return s.weight.n == 0; });
+      std::uint64_t comparisons = 0;
       std::stable_sort(sorted.begin(), sorted.end(),
-                       [](const Sample &a, const Sample &b) {
+                       [&](const Sample &a, const Sample &b) {
+                         if (++comparisons % 1024 == 0)
+                           deadline(end);
                          return w::compare(a.value, b.value) < 0;
                        });
       Json values = Json::array();
@@ -274,6 +266,7 @@ Json analyze(const Json &p, std::int64_t end) {
         w::R cumulative{};
         auto value = sorted.front().value;
         for (const auto &s : sorted) {
+          deadline(end);
           cumulative = w::plus(cumulative, s.weight);
           value = s.value;
           if (q.n == 0 || w::compare(cumulative, q) >= 0)
@@ -298,7 +291,7 @@ Json analyze(const Json &p, std::int64_t end) {
                   max_trough = peak_index;
       w::R peak_at_max = peak;
       std::optional<w::R> max_ratio;
-      Json curve = Json::array();
+      consumer::Rows curve(context, "drawdown-curve");
       for (const auto &s : samples) {
         deadline(end);
         if (w::compare(s.value, peak) > 0) {
@@ -321,13 +314,13 @@ Json analyze(const Json &p, std::int64_t end) {
           if (!max_ratio || w::compare(r, *max_ratio) > 0)
             max_ratio = r;
         }
-        curve.push_back({{"source_index", dec(s.index)},
-                         {"equity", w::wire(s.value)},
-                         {"peak", w::wire(peak)},
-                         {"peak_source_index", dec(peak_index)},
-                         {"absolute_drawdown", w::wire(dd)},
-                         {"relative_drawdown", ratio},
-                         {"underwater", dd.n > 0}});
+        curve.append({{"source_index", dec(s.index)},
+                      {"equity", w::wire(s.value)},
+                      {"peak", w::wire(peak)},
+                      {"peak_source_index", dec(peak_index)},
+                      {"absolute_drawdown", w::wire(dd)},
+                      {"relative_drawdown", ratio},
+                      {"underwater", dd.n > 0}});
       }
       Json recovery = missing("not recovered within retained series");
       for (const auto &s : samples)
@@ -335,6 +328,8 @@ Json analyze(const Json &p, std::int64_t end) {
           recovery = {{"status", "available"}, {"value", dec(s.index)}};
           break;
         }
+      drawdown_study_index = studies.size();
+      drawdown_curve = curve.close();
       add("equity_drawdown",
           {{"maximum_absolute_drawdown", w::wire(max_abs)},
            {"maximum_relative_drawdown",
@@ -343,7 +338,7 @@ Json analyze(const Json &p, std::int64_t end) {
            {"maximum_absolute_peak_index", dec(max_peak)},
            {"maximum_absolute_trough_index", dec(max_trough)},
            {"maximum_absolute_recovery_index", recovery},
-           {"curve", curve},
+           {"curve", nullptr},
            {"definition",
             "ordered supplied valuations; strictly higher values update peak; "
             "first equal maximum drawdown retained; no weighting, cashflow "
@@ -395,41 +390,26 @@ Json analyze(const Json &p, std::int64_t end) {
             "serial-independence or predictive claim"}});
     }
   }
-  Json series = Json::array();
+  consumer::Rows series(context, "series");
   for (const auto &s : samples)
-    series.push_back({{"source_index", dec(s.index)},
-                      {"value", w::wire(s.value)},
-                      {"weight", w::wire(s.weight)}});
+    series.append({{"source_index", dec(s.index)},
+                   {"value", w::wire(s.value)},
+                   {"weight", w::wire(s.weight)}});
   auto result = base("selected source-series analysis");
   auto &sections = result["sections"];
-  sections["summary"] = section({{"source_rows", dec(data->size())},
+  sections["summary"] = section({{"source_rows", dec(data.size())},
                                  {"retained_rows", dec(samples.size())},
                                  {"excluded_rows", dec(excluded.size())},
                                  {"unit", p.at("unit")},
                                  {"series_role", role},
                                  {"weighting", measure}});
-  sections["series"] = section(series);
-  sections["exclusions"] = section(excluded);
+
   sections["studies"] =
       section(studies, selected.empty() ? "not_selected" : "available",
               selected.empty() ? "zero studies selected" : "");
-  const auto &parent = source.at("sections");
-  for (const auto *key :
-       {"signals", "execution", "replay", "book_frames", "book_checkpoint"})
-    if (parent.contains(key))
-      sections[key] = parent.at(key);
-  sections["source_context"] = section({{"choices", parent.at("choices")},
-                                        {"provenance", parent.at("provenance")},
-                                        {"pointer", p.at("pointer")}});
-  if (parent.at("resources").at("data").contains("dataset_feed"))
-    sections["source_context"]["data"]["dataset_feed"] =
-        parent.at("resources").at("data").at("dataset_feed");
-  else if (parent.contains("source_context") &&
-           parent.at("source_context").at("data").contains("dataset_feed"))
-    sections["source_context"]["data"]["dataset_feed"] =
-        parent.at("source_context").at("data").at("dataset_feed");
   auto choices = p;
   choices.erase("output_path");
+  choices.erase("output");
   sections["choices"] = section(choices);
   sections["resources"] = section(
       {{"backend", "cpu"},
@@ -437,7 +417,7 @@ Json analyze(const Json &p, std::int64_t end) {
        {"ordering", "stable source order; exact user-selected weighting"}});
   sections["provenance"] = section(
       {{"engine_version", version},
-       {"source_result_sha256", source.at("content_sha256")},
+       {"source_result_sha256", source.at("content_sha256").materialize()},
        {"input_description", p.at("input_description")},
        {"input_claims",
         "caller attribution; no independent market/portfolio verification"},
@@ -456,6 +436,54 @@ Json analyze(const Json &p, std::int64_t end) {
        "Observed statistics, probability scenarios and predictive calibration "
        "remain distinct."}));
   sections["user_extensions"] = section(p.at("extensions"));
-  return persist(std::move(result), p, "analyze", end);
+  auto out = logical::Value(sections)
+                 .with("series", consumer::section(series.close()))
+                 .with("exclusions", consumer::section(excluded.close()));
+  if (drawdown_curve) {
+    std::vector<logical::Value> entries;
+    for (std::size_t i = 0; i < studies.size(); ++i) {
+      auto entry = logical::Value(studies[i]);
+      if (i == drawdown_study_index)
+        entry =
+            entry.with("data", entry.at("data").with("curve", *drawdown_curve));
+      entries.push_back(std::move(entry));
+    }
+    out =
+        out.with("studies",
+                 consumer::section(logical::Value::array(std::move(entries))));
+  }
+  const auto parent = source.at("sections");
+  for (const auto *key :
+       {"signals", "execution", "replay", "book_frames", "book_checkpoint"})
+    if (parent.contains(key))
+      out = out.with(key, parent.at(key));
+  out = out.with("source_context",
+                 consumer::section(consumer::source_context(parent).with(
+                     "pointer", logical::Value(p.at("pointer")))));
+  if (context)
+    out = out.with(
+        "resources",
+        out.at("resources")
+            .with("data",
+                  out.at("resources")
+                      .at("data")
+                      .with("memory_scope",
+                            logical::Value(
+                                "typed sample vector and optional sorted copy "
+                                "are O(retained rows); output curves/rows "
+                                "streamed; host allocation applies"))));
+  return logical::Value(result).with("sections", std::move(out));
+}
+Json analyze(const Json &p, std::int64_t end) {
+  need(p.contains("output") != p.contains("output_path"),
+       "select exactly one analysis output");
+  if (p.contains("output"))
+    return partitioned_result(p, "analyze", end,
+                              [&](PartitionedOutput &context) {
+                                return analyze_body(p, &context, end);
+                              });
+  return persist(analyze_body(p, nullptr, end)
+                     .materialize({artifact_bytes, artifact_values}),
+                 p, "analyze", end);
 }
 } // namespace symphony::sbv::detail

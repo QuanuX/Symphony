@@ -1773,6 +1773,242 @@
         "on_failure": "continue",
         "extensions": {}
       }
+    },
+    "result_select": {
+      "partitioned": {
+        "protocol": "symphony.sbv.result-select-input.v1",
+        "pointer": "/sections/signals/data",
+        "filters": [],
+        "order_by": [],
+        "columns": [],
+        "source": {
+          "kind": "bundle",
+          "reference": {
+            "manifest_path": "/absolute/private/input-bundle/manifest.json",
+            "manifest_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+            "content_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+          },
+          "selector": {
+            "kind": "node_id",
+            "node_id": "0"
+          },
+          "read_options": {
+            "max_page_bytes": null,
+            "cache_bytes": "8388608"
+          }
+        },
+        "ordering_storage": "memory_index",
+        "max_index_rows": null,
+        "output": {
+          "kind": "partitioned",
+          "bundle_path": "/absolute/private/selected-view",
+          "workspace_path": "/absolute/private/selected-view-workspace",
+          "write_options": {
+            "page_bytes": "1048576",
+            "index_fanout": "64"
+          },
+          "scratch_read_options": {
+            "max_page_bytes": null,
+            "cache_bytes": "16777216"
+          }
+        }
+      },
+      "view_page": {
+        "protocol": "symphony.sbv.result-select-input.v1",
+        "view": {
+          "manifest_path": "/absolute/private/input-bundle/manifest.json",
+          "manifest_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+          "content_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+        },
+        "read_options": {
+          "max_page_bytes": null,
+          "cache_bytes": "16777216"
+        },
+        "limit": "17",
+        "cursor": ""
+      }
+    },
+    "analyze": {
+      "partitioned": {
+        "protocol": "symphony.sbv.analyze-input.v1",
+        "pointer": "/sections/user_extensions/data/observations",
+        "value_pointer": "/value",
+        "value_type": "rational",
+        "weighting": "equal_probability",
+        "weight_pointer": null,
+        "series_role": "observations",
+        "unit": "caller_unit",
+        "input_description": "Caller-selected observations; define unit, ordering and sampling before use",
+        "missing": "reject",
+        "studies": [
+          "series_summary",
+          "series_moments"
+        ],
+        "quantiles": [],
+        "variance_estimator": "population",
+        "relative_drawdown": "positive_peak_only",
+        "benchmark": {
+          "numerator": "0",
+          "denominator": "1"
+        },
+        "periods_per_year": {
+          "numerator": "1",
+          "denominator": "1"
+        },
+        "numeric_profile": "exact_rational",
+        "on_incompatible": "unavailable",
+        "extensions": {},
+        "source": {
+          "kind": "bundle",
+          "reference": {
+            "manifest_path": "/absolute/private/input-bundle/manifest.json",
+            "manifest_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+            "content_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+          },
+          "selector": {
+            "kind": "node_id",
+            "node_id": "0"
+          },
+          "read_options": {
+            "max_page_bytes": null,
+            "cache_bytes": "8388608"
+          }
+        },
+        "output": {
+          "kind": "partitioned",
+          "bundle_path": "/absolute/private/analyze-result",
+          "workspace_path": "/absolute/private/analyze-workspace",
+          "write_options": {
+            "page_bytes": "1048576",
+            "index_fanout": "64"
+          },
+          "scratch_read_options": {
+            "max_page_bytes": null,
+            "cache_bytes": "16777216"
+          }
+        }
+      }
+    },
+    "resample": {
+      "partitioned": {
+        "protocol": "symphony.sbv.resample-input.v1",
+        "pointer": "/sections/series/data",
+        "value_pointer": "/value",
+        "value_type": "rational",
+        "sampling_measure": "uniform_rows",
+        "scheme": "iid",
+        "sample_size": "100",
+        "block_size": "1",
+        "replicates": "100",
+        "seed": "0",
+        "workers": "1",
+        "retain_indices": false,
+        "studies": [
+          "bootstrap_mean_distribution",
+          "bootstrap_mean_quantiles"
+        ],
+        "quantiles": [
+          {
+            "numerator": "1",
+            "denominator": "40"
+          },
+          {
+            "numerator": "39",
+            "denominator": "40"
+          }
+        ],
+        "unit": "caller_unit",
+        "input_description": "Declare observation role, sampling and dependence assumptions",
+        "extensions": {},
+        "source": {
+          "kind": "bundle",
+          "reference": {
+            "manifest_path": "/absolute/private/input-bundle/manifest.json",
+            "manifest_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+            "content_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+          },
+          "selector": {
+            "kind": "node_id",
+            "node_id": "0"
+          },
+          "read_options": {
+            "max_page_bytes": null,
+            "cache_bytes": "8388608"
+          }
+        },
+        "output": {
+          "kind": "partitioned",
+          "bundle_path": "/absolute/private/resample-result",
+          "workspace_path": "/absolute/private/resample-workspace",
+          "write_options": {
+            "page_bytes": "1048576",
+            "index_fanout": "64"
+          },
+          "scratch_read_options": {
+            "max_page_bytes": null,
+            "cache_bytes": "16777216"
+          }
+        }
+      }
+    },
+    "split": {
+      "partitioned": {
+        "protocol": "symphony.sbv.split-input.v1",
+        "pointer": "/sections/user_extensions/data/observations",
+        "id_pointer": "/id",
+        "start_pointer": "/start_ns",
+        "end_pointer": "/end_ns",
+        "available_pointer": "/available_ns",
+        "clock_domain": "caller_declared_nanosecond_clock",
+        "input_description": "Declare actual label intervals and availability of the whole training observation",
+        "plan": {
+          "kind": "expanding",
+          "train_start_ns": "0",
+          "first_train_end_ns": "100",
+          "first_fit_cutoff_ns": "100",
+          "gap_ns": "0",
+          "test_duration_ns": "20",
+          "step_ns": "20",
+          "fold_count": "3"
+        },
+        "chronology": "past_only",
+        "purge": "label_overlap",
+        "purge_before_ns": "0",
+        "purge_after_ns": "0",
+        "embargo_ns": "0",
+        "availability": "by_fit_cutoff",
+        "retain_rows": false,
+        "extensions": {},
+        "source": {
+          "kind": "bundle",
+          "reference": {
+            "manifest_path": "/absolute/private/input-bundle/manifest.json",
+            "manifest_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+            "content_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+          },
+          "selector": {
+            "kind": "node_id",
+            "node_id": "0"
+          },
+          "read_options": {
+            "max_page_bytes": null,
+            "cache_bytes": "8388608"
+          }
+        },
+        "output": {
+          "kind": "partitioned",
+          "bundle_path": "/absolute/private/split-result",
+          "workspace_path": "/absolute/private/split-workspace",
+          "write_options": {
+            "page_bytes": "1048576",
+            "index_fanout": "64"
+          },
+          "scratch_read_options": {
+            "max_page_bytes": null,
+            "cache_bytes": "16777216"
+          }
+        }
+      }
     }
   }
 }

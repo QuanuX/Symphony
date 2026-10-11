@@ -338,3 +338,45 @@ func TestSBVPartitionedReceiptControlHeadroom(t *testing.T) {
 	}
 	partitionedValidate(t, "generate_census", p, m, false)
 }
+
+func TestSBVPreparedViewPages(t *testing.T) {
+	p := map[string]any{"protocol": "symphony.sbv.result-select-input.v1", "view": map[string]any{"manifest_path": "/private/view/manifest.json", "manifest_sha256": strings.Repeat("a", 64), "content_sha256": strings.Repeat("b", 64)}, "read_options": map[string]any{"max_page_bytes": nil, "cache_bytes": "16777216"}, "limit": "17", "cursor": ""}
+	identity := recoveryClone(t, p)
+	delete(identity, "cursor")
+	encoded, err := sbvNativeCanonical(identity)
+	if err != nil {
+		t.Fatal(err)
+	}
+	hash := strings.TrimPrefix(digestBytes(encoded), "sha256:")
+	result := map[string]any{"protocol": "symphony.sbv.result-select.v1", "content_sha256": strings.Repeat("b", 64), "query_sha256": hash, "pointer": "/sections/values/data", "source_rows": "100000", "matched_rows": "2", "offset": "0", "rows": []any{map[string]any{"source_index": "99999", "pointer": "/sections/values/data/99999", "value": "one"}}, "complete": false, "next_cursor": hash + ":1", "columns": []any{}, "ordering": "immutable prepared view; stable original index for ties", "verification_extent": "pinned_manifest_and_selected_page_closure", "io_stats": map[string]any{"files_read": "4", "bytes_read": "10000", "cache_hits": "2", "maximum_file_bytes": "4096"}}
+	validate := func(p, m map[string]any, want bool) {
+		t.Helper()
+		raw, err := json.Marshal(m)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if got := validateSBVResult("result_select", p, raw); (got == nil) != want {
+			t.Fatalf("admitted=%v want=%v error=%v", got == nil, want, got)
+		}
+	}
+	validate(p, result, true)
+	for _, key := range []string{"content_sha256", "query_sha256", "next_cursor", "verification_extent"} {
+		bad := recoveryClone(t, result)
+		bad[key] = "changed"
+		validate(p, bad, false)
+	}
+	changed := recoveryClone(t, p)
+	changed["limit"] = "1"
+	validate(changed, result, false)
+	changed = recoveryClone(t, p)
+	changed["cursor"] = hash + ":1"
+	validate(changed, result, false)
+	bad := recoveryClone(t, result)
+	bad["io_stats"].(map[string]any)["files_read"] = "18446744073709551616"
+	validate(p, bad, false)
+	p["cursor"] = hash + ":1"
+	result["offset"] = "1"
+	result["complete"] = true
+	result["next_cursor"] = ""
+	validate(p, result, true)
+}

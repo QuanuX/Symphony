@@ -150,8 +150,8 @@ int main() try {
     if (i == 8)
       q["value_pointer"] = "/absent";
     if (i == 9) {
-      q["replicates"] = "1024";
-      q["sample_size"] = "1024";
+      q["replicates"] = "18446744073709551615";
+      q["sample_size"] = "2";
     }
     if (i == 10)
       q["quantiles"] = J::array({rat("-1")});

@@ -1,5 +1,7 @@
 #include "combinatorial.hpp"
+#include "consumer_source.hpp"
 #include "detail.hpp"
+#include "resource_admission.hpp"
 #include <algorithm>
 #include <limits>
 
@@ -119,12 +121,11 @@ GroupedPlan grouped_plan(const Json &plan, std::int64_t end) {
       {"ordering", "lexicographic input group indices"}};
   return out;
 }
-Json fold_plan(const Json &plan) {
+Json fold_plan(const Json &plan, std::int64_t deadline_ms) {
   const auto kind = str(plan.at("kind"));
   if (kind == "explicit") {
     keys(plan, {"kind", "folds"});
-    need(plan.at("folds").is_array() && plan.at("folds").size() <= 128,
-         "at most 128 explicit folds");
+    need(plan.at("folds").is_array(), "explicit folds array required");
     return plan.at("folds");
   }
   need(kind == "rolling" || kind == "expanding", "unknown split schedule");
@@ -137,11 +138,12 @@ Json fold_plan(const Json &plan) {
              gap = u64(plan.at("gap_ns")),
              duration = u64(plan.at("test_duration_ns")),
              step = u64(plan.at("step_ns")), count = u64(plan.at("fold_count"));
-  need(start < end && duration > 0 && step > 0 && count > 0 && count <= 128,
+  need(start < end && duration > 0 && step > 0 && count > 0,
        "invalid split schedule bounds");
   Json out = Json::array();
   U shift = 0;
   for (U i = 0; i < count; ++i) {
+    deadline(deadline_ms);
     auto train_end = add(end, shift), test_start = add(train_end, gap);
     out.push_back(
         {{"id", "fold-" + dec(i)},
@@ -157,17 +159,15 @@ Json fold_plan(const Json &plan) {
 }
 } // namespace
 
-Json split(const Json &p, std::int64_t end) {
-  keys(p, {"protocol",          "path",
-           "expected_sha256",   "output_path",
-           "pointer",           "id_pointer",
-           "start_pointer",     "end_pointer",
-           "available_pointer", "clock_domain",
-           "input_description", "plan",
-           "chronology",        "purge",
-           "purge_before_ns",   "purge_after_ns",
-           "embargo_ns",        "availability",
-           "retain_rows",       "extensions"});
+static logical::Value split_body(const Json &p, PartitionedOutput *context,
+                                 std::int64_t end) {
+  keys_optional(p,
+                {"protocol", "pointer", "id_pointer", "start_pointer",
+                 "end_pointer", "available_pointer", "clock_domain",
+                 "input_description", "plan", "chronology", "purge",
+                 "purge_before_ns", "purge_after_ns", "embargo_ns",
+                 "availability", "retain_rows", "extensions"},
+                {"path", "expected_sha256", "source", "output_path", "output"});
   need(p.at("extensions").is_object() && p.at("retain_rows").is_boolean(),
        "extensions and retention selection required");
   const auto chronology = str(p.at("chronology")), purge = str(p.at("purge")),
@@ -193,28 +193,18 @@ Json split(const Json &p, std::int64_t end) {
   if (has_available)
     need(str(p.at("available_pointer")).size() <= 4096,
          "availability pointer bound");
-  auto source = e::parse_bounded_json(read_file(str(p.at("path")), end),
-                                      artifact_bytes, artifact_values);
-  validate_result(source);
-  need(!str(p.at("expected_sha256")).empty() &&
-           source.at("content_sha256") == p.at("expected_sha256"),
-       "split source digest mismatch");
+  const auto admitted = consumer::source(p, end);
+  const auto source = admitted.value;
   const Json::json_pointer ptr(str(p.at("pointer"))),
       idp(str(p.at("id_pointer"))), sp(str(p.at("start_pointer"))),
       ep(str(p.at("end_pointer"))),
       ap(has_available ? str(p.at("available_pointer")) : "");
-  need(source.contains(ptr) && source.at(ptr).is_array() &&
-           source.at(ptr).size() <= 65536,
-       "bounded split source array required");
-  const auto &rows = source.at(ptr);
+  const auto rows = consumer::pointer(source, str(p.at("pointer")));
+  need(rows.kind() == "array", "split source array required");
   const bool grouped = str(p.at("plan").at("kind")) == "combinatorial";
   auto gp = grouped ? grouped_plan(p.at("plan"), end) : GroupedPlan{};
-  const auto plans = grouped ? gp.folds : fold_plan(p.at("plan"));
-  need(grouped || rows.size() * plans.size() <= 131072,
-       "legacy split row-fold workload bound 131072");
-  need(plans.empty() || rows.size() <= std::numeric_limits<std::size_t>::max() /
-                                           plans.size(),
-       "split row-fold size exceeds host representation");
+  const auto plans = grouped ? gp.folds : fold_plan(p.at("plan"), end);
+  const auto row_fold_pairs = resource::product(rows.size(), plans.size());
   std::vector<Interval> group_windows;
   for (const auto &g : gp.groups)
     group_windows.push_back({u64(g.at("start_ns")), u64(g.at("end_ns"))});
@@ -233,14 +223,20 @@ Json split(const Json &p, std::int64_t end) {
   };
   std::vector<Observation> observations;
   std::vector<std::size_t> row_groups;
-  Json table = Json::array();
+  consumer::Rows table(context, "observations");
   const bool retain = p.at("retain_rows").get<bool>();
   std::vector<std::size_t> row_bytes;
   std::size_t retained_bytes = 0;
   std::set<std::string> ids;
-  for (std::size_t i = 0; i < rows.size(); ++i) {
+  std::size_t ordinal = 0;
+  auto children = rows.children();
+  std::vector<logical::Value> retained_handles;
+  while (auto child = children.next()) {
     deadline(end);
-    const auto &row = rows[i];
+    const auto i = ordinal++;
+    const auto row = child->value.materialize();
+    if (retain)
+      retained_handles.push_back(child->value);
     need(row.contains(idp) && row.contains(sp) && row.contains(ep) &&
              (!has_available || row.contains(ap)),
          "split observation fields missing");
@@ -253,23 +249,23 @@ Json split(const Json &p, std::int64_t end) {
     observations.push_back({{a, b}, available});
     row_groups.push_back(group_at(a));
     row_bytes.push_back(retain ? row.dump().size() : 0);
-    table.push_back({{"source_index", dec(i)},
-                     {"id", id},
-                     {"start_ns", dec(a)},
-                     {"end_ns", dec(b)},
-                     {"available_ns",
-                      has_available ? Json(dec(available)) : Json(nullptr)}});
+    table.append({{"source_index", dec(i)},
+                  {"id", id},
+                  {"start_ns", dec(a)},
+                  {"end_ns", dec(b)},
+                  {"available_ns",
+                   has_available ? Json(dec(available)) : Json(nullptr)}});
   }
-  auto retain_row = [&](Json &target, std::size_t i) {
+  auto retain_row = [&](consumer::Rows &target, std::size_t i) {
     if (!retain)
       return;
-    need(row_bytes[i] <= (64U << 20) - retained_bytes,
-         "retained split row bytes exceed 64 MiB; select index-only output "
-         "explicitly");
+    need(row_bytes[i] <=
+             std::numeric_limits<std::size_t>::max() - retained_bytes,
+         "retained byte count exceeds host representation");
     retained_bytes += row_bytes[i];
-    target.push_back(rows[i]);
+    target.append(retained_handles[i]);
   };
-  Json folds = Json::array();
+  consumer::Rows folds(context, "folds");
   std::set<std::string> fold_ids;
   U ready = 0;
   for (const auto &f : plans) {
@@ -315,14 +311,18 @@ Json split(const Json &p, std::int64_t end) {
     std::vector<bool> populated(group_windows.size());
     std::vector<Interval> labels, padded;
     U last_label_end = 0;
-    Json train = Json::array(), test = Json::array(), excluded = Json::array(),
-         train_rows = Json::array(), test_rows = Json::array();
+    const auto prefix = "fold-" + dec(folds.size());
+    consumer::Rows train(context, prefix + "-train"),
+        test(context, prefix + "-test"),
+        excluded(context, prefix + "-excluded"),
+        train_rows(retain ? context : nullptr, prefix + "-train-rows"),
+        test_rows(retain ? context : nullptr, prefix + "-test-rows");
     for (std::size_t i = 0; i < observations.size(); ++i) {
       deadline(end);
       auto x = observations[i].label;
       if (!in_test(i))
         continue;
-      test.push_back(dec(i));
+      test.append(Json(dec(i)));
       retain_row(test_rows, i);
       labels.push_back(x);
       // Overflow/underflow rejects rather than silently clipping the user's
@@ -385,9 +385,9 @@ Json split(const Json &p, std::int64_t end) {
       if (availability == "by_fit_cutoff" && late)
         reasons.push_back("unavailable_at_fit_cutoff");
       if (!reasons.empty())
-        excluded.push_back({{"source_index", dec(i)}, {"reasons", reasons}});
+        excluded.append({{"source_index", dec(i)}, {"reasons", reasons}});
       else {
-        train.push_back(dec(i));
+        train.append(Json(dec(i)));
         retain_row(train_rows, i);
         retained_overlaps += overlap;
         retained_late += late;
@@ -395,33 +395,42 @@ Json split(const Json &p, std::int64_t end) {
     }
     const bool usable = !train.empty() && !test.empty();
     ready += usable;
-    folds.push_back(
-        {{"id", id},
-         {"windows", f},
-         {"status", usable ? "available" : "unavailable"},
-         {"reason", usable ? "" : "empty retained train or test selection"},
-         {"train_indices", train},
-         {"test_indices", test},
-         {"excluded", excluded},
-         {"train_rows", retain ? train_rows : Json(nullptr)},
-         {"test_rows", retain ? test_rows : Json(nullptr)},
-         {"test_label_union", intervals(labels)},
-         {"purge_union", intervals(padded)},
-         {"embargo_interval",
-          grouped || test.empty() || embargo == 0
-              ? Json(nullptr)
-              : Json{{"start_exclusive_ns", dec(last_label_end)},
-                     {"end_inclusive_ns", dec(embargo_end)}}},
-         {"diagnostics",
-          {{"train_candidates", dec(candidates)},
-           {"overlap_candidates", dec(overlap_count)},
-           {"late_candidates", dec(late_count)},
-           {"unknown_availability_candidates", dec(unknown_count)},
-           {"embargo_candidates", dec(embargo_count)},
-           {"retained_overlaps", dec(retained_overlaps)},
-           {"retained_late", dec(retained_late)}}}});
+    Json fold = {
+        {"id", id},
+        {"windows", f},
+        {"status", usable ? "available" : "unavailable"},
+        {"reason", usable ? "" : "empty retained train or test selection"},
+        {"train_indices", nullptr},
+        {"test_indices", nullptr},
+        {"excluded", nullptr},
+        {"train_rows", nullptr},
+        {"test_rows", nullptr},
+        {"test_label_union", intervals(labels)},
+        {"purge_union", intervals(padded)},
+        {"embargo_interval",
+         grouped || test.empty() || embargo == 0
+             ? Json(nullptr)
+             : Json{{"start_exclusive_ns", dec(last_label_end)},
+                    {"end_inclusive_ns", dec(embargo_end)}}},
+        {"diagnostics",
+         {{"train_candidates", dec(candidates)},
+          {"overlap_candidates", dec(overlap_count)},
+          {"late_candidates", dec(late_count)},
+          {"unknown_availability_candidates", dec(unknown_count)},
+          {"embargo_candidates", dec(embargo_count)},
+          {"retained_overlaps", dec(retained_overlaps)},
+          {"retained_late", dec(retained_late)}}}};
     if (grouped)
-      folds.back()["embargo_intervals"] = embargo_records;
+      fold["embargo_intervals"] = embargo_records;
+    folds.append(logical::Value(fold)
+                     .with("train_indices", train.close())
+                     .with("test_indices", test.close())
+                     .with("excluded", excluded.close())
+                     .with("train_rows", retain ? train_rows.close()
+                                                : logical::Value(Json(nullptr)))
+                     .with("test_rows", retain
+                                            ? test_rows.close()
+                                            : logical::Value(Json(nullptr))));
   }
   auto result = base(
       "user-selected temporal sample partitions; no model fitting executed");
@@ -430,37 +439,43 @@ Json split(const Json &p, std::int64_t end) {
                           {"folds", dec(folds.size())},
                           {"available_folds", dec(ready)},
                           {"clock_domain", p.at("clock_domain")}});
+  std::optional<logical::Value> groups_result;
   if (grouped) {
-    Json groups = gp.groups;
-    for (std::size_t g = 0; g < groups.size(); ++g) {
-      groups[g]["group_index"] = dec(g);
-      groups[g]["source_indices"] = Json::array();
-      groups[g]["selected_test_folds"] = dec(test_uses[g]);
-      groups[g]["selected_train_candidate_folds"] = dec(train_uses[g]);
-    }
+    std::vector<std::vector<std::size_t>> members(gp.groups.size());
     for (std::size_t i = 0; i < row_groups.size(); ++i)
-      if (row_groups[i] < groups.size())
-        groups[row_groups[i]]["source_indices"].push_back(dec(i));
-    s["groups"] = section(groups);
+      if (row_groups[i] < members.size())
+        members[row_groups[i]].push_back(i);
+    consumer::Rows groups(context, "groups");
+    for (std::size_t g = 0; g < gp.groups.size(); ++g) {
+      auto group = gp.groups[g];
+      group["group_index"] = dec(g);
+      group["selected_test_folds"] = dec(test_uses[g]);
+      group["selected_train_candidate_folds"] = dec(train_uses[g]);
+      consumer::Rows indices(context, "group-" + dec(g));
+      for (auto index : members[g])
+        indices.append(Json(dec(index)));
+      groups.append(
+          logical::Value(group).with("source_indices", indices.close()));
+    }
+    groups_result = groups.close();
     s["combination_selection"] = section(gp.selection);
   }
-  s["observations"] = section(table);
-  s["folds"] = section(folds);
   auto choices = p;
   choices.erase("output_path");
+  choices.erase("output");
   s["choices"] = section(choices);
-  s["provenance"] =
-      section({{"engine_version", version},
-               {"source_result_sha256", source.at("content_sha256")},
-               {"source_pointer", p.at("pointer")},
-               {"profile", grouped ? "combinatorial_intervals_v1"
-                                   : "temporal_intervals_v1"},
-               {"provider_requests", "0"},
-               {"additional_spend_usd", "0"}});
+  s["provenance"] = section(
+      {{"engine_version", version},
+       {"source_result_sha256", source.at("content_sha256").materialize()},
+       {"source_pointer", p.at("pointer")},
+       {"profile",
+        grouped ? "combinatorial_intervals_v1" : "temporal_intervals_v1"},
+       {"provider_requests", "0"},
+       {"additional_spend_usd", "0"}});
   s["resources"] =
       section({{"backend", "cpu"},
                {"actual_workers", "1"},
-               {"row_fold_pairs", dec(rows.size() * plans.size())},
+               {"row_fold_pairs", dec(row_fold_pairs)},
                {"retained_row_bytes", dec(retained_bytes)},
                {"interval_lookup", "merged union and binary search"}});
   s["diagnostics"] = section(Json::array(
@@ -496,18 +511,39 @@ Json split(const Json &p, std::int64_t end) {
         "share observations; no independent performance paths, fitted models, "
         "nested CV or untouched holdout are implied.");
   }
-  s["source_context"] =
-      section({{"choices", source.at("sections").at("choices")},
-               {"provenance", source.at("sections").at("provenance")}});
-  const auto &parent = source.at("sections");
-  if (parent.at("resources").at("data").contains("dataset_feed"))
-    s["source_context"]["data"]["dataset_feed"] =
-        parent.at("resources").at("data").at("dataset_feed");
-  else if (parent.contains("source_context") &&
-           parent.at("source_context").at("data").contains("dataset_feed"))
-    s["source_context"]["data"]["dataset_feed"] =
-        parent.at("source_context").at("data").at("dataset_feed");
   s["user_extensions"] = section(p.at("extensions"));
-  return persist(std::move(result), p, "split", end);
+  auto out = logical::Value(s)
+                 .with("observations", consumer::section(table.close()))
+                 .with("folds", consumer::section(folds.close()))
+                 .with("source_context",
+                       consumer::section(
+                           consumer::source_context(source.at("sections"))));
+  if (groups_result)
+    out = out.with("groups", consumer::section(*groups_result));
+  if (context)
+    out = out.with(
+        "resources",
+        out.at("resources")
+            .with("data",
+                  out.at("resources")
+                      .at("data")
+                      .with("memory_scope",
+                            logical::Value(
+                                "O(source interval/index metadata + selected "
+                                "fold plan); per-fold interval unions; output "
+                                "indices, exclusions and retained rows "
+                                "streamed; host allocation applies"))));
+  return logical::Value(result).with("sections", std::move(out));
+}
+Json split(const Json &p, std::int64_t end) {
+  need(p.contains("output") != p.contains("output_path"),
+       "select exactly one split output");
+  if (p.contains("output"))
+    return partitioned_result(p, "split", end, [&](PartitionedOutput &context) {
+      return split_body(p, &context, end);
+    });
+  return persist(split_body(p, nullptr, end)
+                     .materialize({artifact_bytes, artifact_values}),
+                 p, "split", end);
 }
 } // namespace symphony::sbv::detail

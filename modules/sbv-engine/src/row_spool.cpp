@@ -1,14 +1,15 @@
 #include "row_spool.hpp"
+#include "logical_value.hpp"
 #include <array>
 #include <limits>
 #include <utility>
 
 namespace symphony::sbv::result_store {
 namespace {
-constexpr std::array sections{
-    "choices", "comparisons", "diagnostics", "distributions", "execution",
-    "provenance", "replay", "resources", "search", "signals", "studies",
-    "summary"};
+constexpr std::array sections{"choices",       "comparisons", "diagnostics",
+                              "distributions", "execution",   "provenance",
+                              "replay",        "resources",   "search",
+                              "signals",       "studies",     "summary"};
 constexpr std::string_view row_pointer = "/sections/signals/data";
 Json unselected() {
   return {{"data", nullptr},
@@ -102,6 +103,9 @@ RowSpool::~RowSpool() = default;
 void RowSpool::append(const Json &row) {
   p_->append([&] { stream_value(p_->writer, row); });
 }
+void RowSpool::append_logical(const logical::Value &row) {
+  p_->append([&] { row.write(p_->writer); });
+}
 void RowSpool::append(const NodeHandle &row, ValueLimits limits) {
   p_->append([&] { (void)p_->writer.append_subtree(row, limits); });
 }
@@ -139,7 +143,8 @@ ClosedRows RowSpool::close() {
                        p_->writer.recovery());
     auto verification = rows.hash();
     p_->state = Impl::State::closed;
-    return {std::move(rows), std::move(receipt), std::move(verification), p_->rows};
+    return {std::move(rows), std::move(receipt), std::move(verification),
+            p_->rows};
   } catch (...) {
     p_->state = Impl::State::failed;
     throw;
@@ -149,10 +154,18 @@ std::uint64_t RowSpool::size() const { return p_->rows; }
 Json RowSpool::recovery() const {
   std::string state;
   switch (p_->state) {
-  case Impl::State::appending: state = "appending"; break;
-  case Impl::State::closing: state = "closing"; break;
-  case Impl::State::closed: state = "closed"; break;
-  case Impl::State::failed: state = "failed"; break;
+  case Impl::State::appending:
+    state = "appending";
+    break;
+  case Impl::State::closing:
+    state = "closing";
+    break;
+  case Impl::State::closed:
+    state = "closed";
+    break;
+  case Impl::State::failed:
+    state = "failed";
+    break;
   }
   return {{"purpose", "private_row_spool"},
           {"state", state},

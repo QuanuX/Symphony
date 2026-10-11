@@ -326,7 +326,7 @@ int main() try {
   reject(q);
   q = generated;
   q["plan"]["fold_count"] = "129";
-  reject(q);
+  check(call(q)["sections"]["folds"]["data"].size() == 129);
   q = generated;
   q["plan"]["step_ns"] = "18446744073709551615";
   reject(q);
@@ -356,7 +356,11 @@ int main() try {
     next["id"] = d::dec(i);
     q["plan"]["folds"].push_back(next);
   }
-  reject(q);
+  {
+    auto retained_large = call(q);
+    check(retained_large["sections"]["folds"]["data"].size() == 17);
+    check(d::u64(retained_large["sections"]["resources"]["data"]["retained_row_bytes"]) > (64U << 20));
+  }
   q["retain_rows"] = false;
   check(call(q)["sections"]["folds"]["data"].size() == 17);
   // Split output is directly consumable by native series analysis via retained

@@ -111,6 +111,7 @@ Json resample(const Json &, std::int64_t);
 Json experiment(const Json &, std::int64_t);
 Json analyze(const Json &, std::int64_t);
 Json compare(const Json &, std::int64_t);
+Json result_select_view(const Json &, std::int64_t);
 Json result_select(const Json &, std::int64_t);
 Json backend_plan(const Json &, std::int64_t);
 Json live_plan(const Json &, std::int64_t);

@@ -232,7 +232,17 @@ struct PartitionedOutput::Impl {
       : selection(request.at("output")), check([end] { deadline(end); }) {
     need(!request.contains("output_path"),
          "select only one result output form");
-    keys(selection, {"kind", "bundle_path", "workspace_path", "write_options"});
+    keys_optional(selection,
+                  {"kind", "bundle_path", "workspace_path", "write_options"},
+                  {"scratch_read_options"});
+    if (selection.contains("scratch_read_options")) {
+      const auto &options = selection.at("scratch_read_options");
+      keys(options, {"max_page_bytes", "cache_bytes"});
+      need(options.at("max_page_bytes").is_null() ||
+               u64(options.at("max_page_bytes")) > 0,
+           "positive scratch page limit or null required");
+      (void)u64(options.at("cache_bytes"));
+    }
     need(selection.at("kind") == "partitioned",
          "partitioned output kind required");
     bundle = safe_path(selection.at("bundle_path"));
@@ -314,7 +324,14 @@ store::WriteOptions PartitionedOutput::write_options() const {
   return p_->write;
 }
 store::ReadOptions PartitionedOutput::read_options() const {
-  return {std::nullopt, 0};
+  store::ReadOptions out{std::nullopt, 0};
+  if (p_->selection.contains("scratch_read_options")) {
+    const auto &options = p_->selection.at("scratch_read_options");
+    if (!options.at("max_page_bytes").is_null())
+      out.max_page_bytes = u64(options.at("max_page_bytes"));
+    out.cache_bytes = u64(options.at("cache_bytes"));
+  }
+  return out;
 }
 store::Checkpoint PartitionedOutput::checkpoint() const {
   return [check = p_->check] {

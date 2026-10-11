@@ -45,6 +45,7 @@ struct Ordering {
 };
 } // namespace
 Json result_select(const Json &p, std::int64_t end) {
+  if (p.contains("output") || p.contains("view")) return result_select_view(p, end);
   keys(p, {"protocol", "path", "expected_sha256", "pointer", "filters",
            "order_by", "columns", "limit", "cursor"});
   auto source = e::parse_bounded_json(read_file(str(p.at("path")), end),

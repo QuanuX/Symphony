@@ -360,7 +360,7 @@ func validateSBVResult(op string, p map[string]any, raw []byte) error {
 		storage := map[string]any{"legacy": "symphony.sbv.result.v1", "partitioned": "symphony.sbv.partitioned-result.v1",
 			"page": "symphony.sbv.result-page.v1", "stream": "symphony.sbv.node-stream.v1", "max_bundle_bytes": nil, "max_bundle_nodes": nil,
 			"logical_identity": "canonical_result_body_sha256", "physical_identity": "exact_manifest_sha256", "core_producers": "explicit_legacy_or_partitioned",
-			"partitioned_producers":           []any{"run", "generate_census", "evaluate", "economics", "compose_economics"},
+			"partitioned_producers":           []any{"run", "generate_census", "evaluate", "economics", "compose_economics", "result_select", "analyze", "resample", "split"},
 			"partitioned_resident_operations": []any{"run", "generate_census", "evaluate"}}
 		if !reflect.DeepEqual(m["result_storage"], storage) {
 			return bad()
@@ -495,7 +495,26 @@ func validateSBVResult(op string, p map[string]any, raw []byte) error {
 			return bad()
 		}
 	case "result_select":
-		if m["content_sha256"] != p["expected_sha256"] || m["pointer"] != p["pointer"] || !digest("query_sha256") {
+		expectedDigest, expectedPointer := p["expected_sha256"], p["pointer"]
+		if view, selected := p["view"].(map[string]any); selected {
+			if !sbvBundleReference(view) || m["verification_extent"] != "pinned_manifest_and_selected_page_closure" {
+				return bad()
+			}
+			expectedDigest, expectedPointer = view["content_sha256"], m["pointer"]
+			if _, ok := expectedPointer.(string); !ok {
+				return bad()
+			}
+			stats, ok := m["io_stats"].(map[string]any)
+			if !ok || !sbvRecoveryFields(stats, "files_read", "bytes_read", "cache_hits", "maximum_file_bytes") {
+				return bad()
+			}
+			for _, value := range stats {
+				if _, valid := sbvBundleUint(value); !valid {
+					return bad()
+				}
+			}
+		}
+		if m["content_sha256"] != expectedDigest || m["pointer"] != expectedPointer || !digest("query_sha256") {
 			return bad()
 		}
 		offset, a := number("offset")
@@ -544,7 +563,7 @@ func validateSBVResult(op string, p map[string]any, raw []byte) error {
 				return bad()
 			}
 			index, err := strconv.ParseUint(rawIndex, 10, 64)
-			if err != nil || strconv.FormatUint(index, 10) != rawIndex || index >= sourceRows || seen[index] || row["pointer"] != p["pointer"].(string)+"/"+rawIndex {
+			if err != nil || strconv.FormatUint(index, 10) != rawIndex || index >= sourceRows || seen[index] || row["pointer"] != expectedPointer.(string)+"/"+rawIndex {
 				return bad()
 			}
 			seen[index] = true

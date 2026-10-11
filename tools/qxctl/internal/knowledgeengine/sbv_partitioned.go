@@ -11,7 +11,7 @@ import (
 
 func sbvPartitionedProducer(op string) bool {
 	switch op {
-	case "run", "generate_census", "evaluate", "economics", "compose_economics":
+	case "run", "generate_census", "evaluate", "economics", "compose_economics", "result_select", "analyze", "resample", "split":
 		return true
 	}
 	return false
@@ -19,6 +19,27 @@ func sbvPartitionedProducer(op string) bool {
 
 func sbvPartitionedOutput(value any) bool {
 	m, ok := value.(map[string]any)
+	if ok {
+		if options, present := m["scratch_read_options"]; present {
+			read, valid := options.(map[string]any)
+			if !valid || !sbvRecoveryFields(read, "max_page_bytes", "cache_bytes") {
+				return false
+			}
+			if read["max_page_bytes"] != nil && !sbvRecoveryPositive(read["max_page_bytes"]) {
+				return false
+			}
+			if _, valid = sbvBundleUint(read["cache_bytes"]); !valid {
+				return false
+			}
+			clean := make(map[string]any, len(m))
+			for key, value := range m {
+				if key != "scratch_read_options" {
+					clean[key] = value
+				}
+			}
+			m = clean
+		}
+	}
 	if !ok || !sbvRecoveryFields(m, "kind", "bundle_path", "workspace_path", "write_options") || m["kind"] != "partitioned" ||
 		!sbvRecoveryPath(m["bundle_path"]) || !sbvRecoveryPath(m["workspace_path"]) || !sbvBundleWriteOptions(m["write_options"]) {
 		return false
@@ -88,6 +109,11 @@ func sbvSignalSelection(value any) bool {
 // physical paths, or a provider's claims. Native owns those admissions.
 func sbvPartitionedRequestPreflight(op string, p map[string]any) error {
 	bad := func() error { return fmt.Errorf("SBV partitioned control selection mismatch") }
+	if op == "result_select" {
+		if _, selected := p["output"]; !selected {
+			return nil
+		}
+	}
 	if !sbvPartitionedProducer(op) && op != "dataset_execute" {
 		return nil
 	}

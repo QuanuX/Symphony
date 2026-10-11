@@ -5,6 +5,10 @@
 #include <memory>
 #include <string>
 
+namespace symphony::sbv::logical {
+class Value;
+}
+
 namespace symphony::sbv::result_store {
 
 // Private internal row spool. The scratch bundle is a complete storage
@@ -22,8 +26,8 @@ struct ClosedRows {
 // chooses cleanup after all descendants have copied their required closure.
 class RowSpool {
 public:
-  RowSpool(std::string scratch_bundle_path, WriteOptions = {},
-           ReadOptions = {}, Checkpoint = {});
+  RowSpool(std::string scratch_bundle_path, WriteOptions = {}, ReadOptions = {},
+           Checkpoint = {});
   ~RowSpool();
   RowSpool(const RowSpool &) = delete;
   RowSpool &operator=(const RowSpool &) = delete;
@@ -31,7 +35,9 @@ public:
   // Json is consumed synchronously and never retained. This recursively streams
   // supplied structured rows, so an entire row need not fit one physical page.
   void append(const Json &);
-  // A source row stays owned by its handle and is verified/copied synchronously.
+  void append_logical(const logical::Value &);
+  // A source row stays owned by its handle and is verified/copied
+  // synchronously.
   void append(const NodeHandle &, ValueLimits = {});
   // Exactly once, after any provider completion/domain admission required by
   // the caller. Returns an owned handle, not a caller-editable page descriptor.

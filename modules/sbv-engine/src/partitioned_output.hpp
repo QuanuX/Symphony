@@ -24,7 +24,7 @@ public:
   const std::string &workspace_path() const;
   const std::string &bundle_path() const;
   result_store::WriteOptions write_options() const;
-  result_store::ReadOptions read_options() const; // unlimited pages; cache 0
+  result_store::ReadOptions read_options() const; // caller-selected per-reader scratch cache; absent = 0
   result_store::Checkpoint checkpoint() const;
   // Private path component: [a-z][a-z0-9_-]{0,63}. This bounds internal path
   // encoding, not the number of spools or amount of work.

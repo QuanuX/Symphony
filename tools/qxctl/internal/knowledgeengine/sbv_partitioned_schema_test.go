@@ -46,6 +46,9 @@ func TestSBVPartitionedRegisteredShapes(t *testing.T) {
 			if !sbvInputShape(shape, old) {
 				t.Fatal("legacy template changed")
 			}
+			if op == "experiment" {
+				return
+			} // The aggregate journal remains legacy; children select their own output.
 			for _, mutate := range []func(map[string]any){
 				func(m map[string]any) { m["output_path"] = "/private/legacy.json" },
 				func(m map[string]any) { delete(m["output"].(map[string]any), "workspace_path") },
