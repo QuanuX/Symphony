@@ -2,7 +2,7 @@
 package knowledgeengine
 
 const SBVAdministrationInterfaceVersion = "0.24.0-dev"
-const sbvAdministrationInterfaceDigest = "sha256:65ed7741a426bc474ee7ede9096e5561a77b3f82b9fc9129c9f4d76841db94ed"
+const sbvAdministrationInterfaceDigest = "sha256:c213ec3da953003f75d16ff0bfe9d98c5ef8aaf33e26d712bc224ec1742f82b0"
 
 var sbvAdministrationInterfaceOutputs = map[string]string{
 	"capabilities":         "symphony.sbv.capabilities.v1",
@@ -48,8 +48,8 @@ var sbvAdministrationInterfaceAdmission = map[string]map[string]bool{
 }
 
 var sbvAdministrationInterfaceResources = map[string]string{
-	"admin.schema.json":              "sha256:fdf869c45fd530cd1bfab3642cde47675a86e4ad79761b255e4f4772b75c4218",
-	"admin.templates.json":           "sha256:0d0cda93e07a608f7b81ec0d8c23b98d709fc4f0d674fd00b1eeb68e024137d5",
+	"admin.schema.json":              "sha256:ab8b8ed044b8971294f8390c41bdda29e1e972e8b14e7a0eb41ce1c44e1da1f2",
+	"admin.templates.json":           "sha256:da9808aa999ac01723f8b49298c2e423f1b15b7d4898c92e9e9549de2d502dc1",
 	"result.schema.json":             "sha256:5c9bd274d7de5318b19c5aa454d684911ca276414ed8a124a1fb6d3dad0164c0",
 	"pointer-stream.schema.json":     "sha256:5f904fc5723b6c0918517509081f8fff436f008496ce6c19c24ac548992a04f3",
 	"partitioned-result.schema.json": "sha256:f20e3476c2e5e46fa441aeef9ee7d7dfa522d706e92bf6121f2ae702553858b3",

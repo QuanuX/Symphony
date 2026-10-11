@@ -231,3 +231,28 @@ func TestSBVReferencedExperimentPlanShapes(t *testing.T) {
 		t.Fatal("referenced plan must independently admit legacy summary output")
 	}
 }
+
+func TestSBVPrivateFormulaStudyShapes(t *testing.T) {
+	catalogue := partitionedCatalogue(t, "admin.schema.json")
+	templates := partitionedCatalogue(t, "admin.templates.json")
+	p := templates["variants"].(map[string]any)["analyze"].(map[string]any)["formula"].(map[string]any)
+	shape := catalogue["requests"].(map[string]any)["analyze"].(map[string]any)
+	if !sbvInputShape(shape, p) || sbvPartitionedRequestPreflight("analyze", p) != nil {
+		t.Fatal("caller formula template not admitted")
+	}
+	p["studies"] = []any{"a-new-caller-study"}
+	definition := p["study_definitions"].([]any)[0].(map[string]any)
+	definition["id"] = "a-new-caller-study"
+	if !sbvInputShape(shape, p) {
+		t.Fatal("private identity requires CLI change")
+	}
+	definition["executable"] = "/not/an/execution/route"
+	if sbvInputShape(shape, p) {
+		t.Fatal("undeclared executable field admitted")
+	}
+	delete(definition, "executable")
+	definition["protocol"] = "unknown"
+	if sbvInputShape(shape, p) {
+		t.Fatal("unknown formula protocol admitted")
+	}
+}

@@ -221,6 +221,7 @@ Json descriptor() {
        {"symphony.sbv.partitioned-result.v1", "symphony.sbv.result-page.v1",
         "symphony.sbv.node-stream.v1", "symphony.sbv.bundle-cursor.v1"})
     r["contract_versions"].push_back(contract);
+  r["contract_versions"].push_back("symphony.sbv.exact-series-formula.v1");
   r["descriptor_digest"] = e::tagged_sha256(r.dump());
   return r;
 }

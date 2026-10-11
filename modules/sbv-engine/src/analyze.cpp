@@ -1,4 +1,5 @@
 #include "consumer_source.hpp"
+#include "study_formula.hpp"
 #include "wide_rational.hpp"
 #include <algorithm>
 #include <bit>
@@ -9,10 +10,7 @@
 namespace symphony::sbv::detail {
 namespace {
 namespace w = wide_rational;
-struct Sample {
-  std::size_t index;
-  w::R value, weight;
-};
+using Sample = formula::Sample;
 const Json *point(const Json &v, const std::string &p) {
   need(p.size() <= 4096 && (p.empty() || p.front() == '/'),
        "bounded series pointer required");
@@ -55,7 +53,8 @@ static logical::Value analyze_body(const Json &p, PartitionedOutput *context,
                  "variance_estimator", "relative_drawdown", "benchmark",
                  "periods_per_year", "numeric_profile", "on_incompatible",
                  "extensions"},
-                {"path", "expected_sha256", "source", "output_path", "output"});
+                {"path", "expected_sha256", "source", "output_path", "output",
+                 "study_definitions"});
   need(p.at("extensions").is_object(), "extensions object required");
   const auto role = str(p.at("series_role")), measure = str(p.at("weighting")),
              numeric = str(p.at("numeric_profile"));
@@ -93,14 +92,32 @@ static logical::Value analyze_body(const Json &p, PartitionedOutput *context,
   else
     need(p.at("weight_pointer").is_string(),
          "supplied weight pointer required");
+  const std::set<std::string> builtins{"series_summary", "series_moments",
+                                       "series_quantiles", "equity_drawdown",
+                                       "return_ratios"};
+  std::map<std::string, Json> definitions;
+  if (p.contains("study_definitions")) {
+    need(p.at("study_definitions").is_array(),
+         "study definitions array required");
+    for (const auto &definition : p.at("study_definitions")) {
+      keys(definition,
+           {"protocol", "id", "version", "unit", "description", "expression"});
+      need(definition.at("protocol") == "symphony.sbv.exact-series-formula.v1",
+           "unsupported study definition protocol");
+      for (auto key : {"id", "version", "unit", "description"})
+        need(!str(definition.at(key)).empty(),
+             "nonempty study descriptor text required");
+      const auto id = str(definition.at("id"));
+      need(!builtins.contains(id) && definitions.emplace(id, definition).second,
+           "duplicate or builtin study identity");
+      formula::validate(definition.at("expression"), false, end);
+    }
+  }
   std::set<std::string> selected;
-  need(p.at("studies").is_array() && p.at("studies").size() <= 5,
-       "series study bound");
+  need(p.at("studies").is_array(), "series study selection array required");
   for (const auto &v : p.at("studies")) {
     auto id = str(v);
-    need((id == "series_summary" || id == "series_moments" ||
-          id == "series_quantiles" || id == "equity_drawdown" ||
-          id == "return_ratios") &&
+    need((builtins.contains(id) || definitions.contains(id)) &&
              selected.insert(id).second,
          "unknown/duplicate series study");
   }
@@ -389,6 +406,31 @@ static logical::Value analyze_body(const Json &p, PartitionedOutput *context,
             "square-root time scaling is a caller convention, not a "
             "serial-independence or predictive claim"}});
     }
+  }
+  for (const auto &id : p.at("studies")) {
+    const auto found = definitions.find(str(id));
+    if (found == definitions.end())
+      continue;
+    const auto &definition = found->second;
+    const auto calculated =
+        formula::evaluate(definition.at("expression"), samples, nullptr, end);
+    need(calculated.value || p.at("on_incompatible") != "reject",
+         calculated.reason.c_str());
+    studies.push_back(
+        {{"study_id", id},
+         {"version", definition.at("version")},
+         {"status", calculated.value ? "available" : "unavailable"},
+         {"reason", calculated.reason},
+         {"descriptor", definition},
+         {"data", calculated.value
+                      ? Json{{"value", w::wire(*calculated.value)},
+                             {"unit", definition.at("unit")},
+                             {"numeric_profile", "checked_exact_rational_128"},
+                             {"input_rows", dec(samples.size())},
+                             {"weighting", measure},
+                             {"authorship",
+                              "caller-defined formula executed by native SBV"}}
+                      : Json(nullptr)}});
   }
   consumer::Rows series(context, "series");
   for (const auto &s : samples)

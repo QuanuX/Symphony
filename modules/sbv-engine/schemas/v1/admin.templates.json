@@ -1956,6 +1956,59 @@
             "cache_bytes": "16777216"
           }
         }
+      },
+      "formula": {
+        "protocol": "symphony.sbv.analyze-input.v1",
+        "path": "/absolute/private/result.json",
+        "expected_sha256": "REPLACE_WITH_CONTENT_SHA256",
+        "output_path": "/absolute/private/analysis.json",
+        "pointer": "/sections/user_extensions/data/observations",
+        "value_pointer": "/value",
+        "value_type": "rational",
+        "weighting": "equal_probability",
+        "weight_pointer": null,
+        "series_role": "observations",
+        "unit": "caller_unit",
+        "input_description": "Caller-selected observations; define unit, ordering and sampling before use",
+        "missing": "reject",
+        "studies": [
+          "caller_mean"
+        ],
+        "quantiles": [],
+        "variance_estimator": "population",
+        "relative_drawdown": "positive_peak_only",
+        "benchmark": {
+          "numerator": "0",
+          "denominator": "1"
+        },
+        "periods_per_year": {
+          "numerator": "1",
+          "denominator": "1"
+        },
+        "numeric_profile": "exact_rational",
+        "on_incompatible": "unavailable",
+        "extensions": {},
+        "study_definitions": [
+          {
+            "protocol": "symphony.sbv.exact-series-formula.v1",
+            "id": "caller_mean",
+            "version": "1",
+            "unit": "caller_unit",
+            "description": "Explicit unweighted arithmetic mean of retained observations",
+            "expression": {
+              "op": "divide",
+              "left": {
+                "op": "sum",
+                "value": {
+                  "op": "row_value"
+                }
+              },
+              "right": {
+                "op": "count"
+              }
+            }
+          }
+        ]
       }
     },
     "resample": {

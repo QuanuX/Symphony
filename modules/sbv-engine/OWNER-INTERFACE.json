@@ -133,7 +133,8 @@
     "symphony.sbv.partitioned-result.v1",
     "symphony.sbv.result-page.v1",
     "symphony.sbv.node-stream.v1",
-    "symphony.sbv.bundle-cursor.v1"
+    "symphony.sbv.bundle-cursor.v1",
+    "symphony.sbv.exact-series-formula.v1"
   ],
   "operations": [
     {

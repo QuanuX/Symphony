@@ -14968,16 +14968,8 @@
             "studies": {
               "type": "array",
               "items": {
-                "enum": [
-                  "series_summary",
-                  "series_moments",
-                  "series_quantiles",
-                  "equity_drawdown",
-                  "return_ratios"
-                ]
-              },
-              "minItems": 0,
-              "maxItems": 5
+                "type": "string"
+              }
             },
             "quantiles": {
               "type": "array",
@@ -15057,6 +15049,95 @@
             },
             "extensions": {
               "type": "object"
+            },
+            "study_definitions": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "protocol": {
+                    "const": "symphony.sbv.exact-series-formula.v1"
+                  },
+                  "id": {
+                    "type": "string"
+                  },
+                  "version": {
+                    "type": "string"
+                  },
+                  "unit": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "expression": {
+                    "type": "object",
+                    "properties": {
+                      "op": {
+                        "enum": [
+                          "constant",
+                          "row_value",
+                          "row_weight",
+                          "count",
+                          "sum",
+                          "minimum",
+                          "maximum",
+                          "negate",
+                          "absolute",
+                          "add",
+                          "subtract",
+                          "multiply",
+                          "divide",
+                          "min",
+                          "max"
+                        ]
+                      },
+                      "value": {
+                        "anyOf": [
+                          {
+                            "type": "object",
+                            "properties": {
+                              "numerator": {
+                                "type": "string"
+                              },
+                              "denominator": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "numerator",
+                              "denominator"
+                            ],
+                            "additionalProperties": false
+                          },
+                          {
+                            "type": "object"
+                          }
+                        ]
+                      },
+                      "left": {
+                        "type": "object"
+                      },
+                      "right": {
+                        "type": "object"
+                      }
+                    },
+                    "required": [
+                      "op"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "required": [
+                  "protocol",
+                  "id",
+                  "version",
+                  "unit",
+                  "description",
+                  "expression"
+                ],
+                "additionalProperties": false
+              }
             }
           },
           "required": [
@@ -15146,16 +15227,8 @@
             "studies": {
               "type": "array",
               "items": {
-                "enum": [
-                  "series_summary",
-                  "series_moments",
-                  "series_quantiles",
-                  "equity_drawdown",
-                  "return_ratios"
-                ]
-              },
-              "minItems": 0,
-              "maxItems": 5
+                "type": "string"
+              }
             },
             "quantiles": {
               "type": "array",
@@ -15371,6 +15444,95 @@
                   "additionalProperties": false
                 }
               ]
+            },
+            "study_definitions": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "protocol": {
+                    "const": "symphony.sbv.exact-series-formula.v1"
+                  },
+                  "id": {
+                    "type": "string"
+                  },
+                  "version": {
+                    "type": "string"
+                  },
+                  "unit": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "expression": {
+                    "type": "object",
+                    "properties": {
+                      "op": {
+                        "enum": [
+                          "constant",
+                          "row_value",
+                          "row_weight",
+                          "count",
+                          "sum",
+                          "minimum",
+                          "maximum",
+                          "negate",
+                          "absolute",
+                          "add",
+                          "subtract",
+                          "multiply",
+                          "divide",
+                          "min",
+                          "max"
+                        ]
+                      },
+                      "value": {
+                        "anyOf": [
+                          {
+                            "type": "object",
+                            "properties": {
+                              "numerator": {
+                                "type": "string"
+                              },
+                              "denominator": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "numerator",
+                              "denominator"
+                            ],
+                            "additionalProperties": false
+                          },
+                          {
+                            "type": "object"
+                          }
+                        ]
+                      },
+                      "left": {
+                        "type": "object"
+                      },
+                      "right": {
+                        "type": "object"
+                      }
+                    },
+                    "required": [
+                      "op"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "required": [
+                  "protocol",
+                  "id",
+                  "version",
+                  "unit",
+                  "description",
+                  "expression"
+                ],
+                "additionalProperties": false
+              }
             }
           },
           "required": [
@@ -15462,16 +15624,8 @@
             "studies": {
               "type": "array",
               "items": {
-                "enum": [
-                  "series_summary",
-                  "series_moments",
-                  "series_quantiles",
-                  "equity_drawdown",
-                  "return_ratios"
-                ]
-              },
-              "minItems": 0,
-              "maxItems": 5
+                "type": "string"
+              }
             },
             "quantiles": {
               "type": "array",
@@ -15631,6 +15785,95 @@
               ],
               "additionalProperties": false,
               "description": "Explicit partitioned output; new private workspace and final bundle must be disjoint. Scratch remains caller-owned on success/failure. No implicit fallback, cleanup, retry or default deadline."
+            },
+            "study_definitions": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "protocol": {
+                    "const": "symphony.sbv.exact-series-formula.v1"
+                  },
+                  "id": {
+                    "type": "string"
+                  },
+                  "version": {
+                    "type": "string"
+                  },
+                  "unit": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "expression": {
+                    "type": "object",
+                    "properties": {
+                      "op": {
+                        "enum": [
+                          "constant",
+                          "row_value",
+                          "row_weight",
+                          "count",
+                          "sum",
+                          "minimum",
+                          "maximum",
+                          "negate",
+                          "absolute",
+                          "add",
+                          "subtract",
+                          "multiply",
+                          "divide",
+                          "min",
+                          "max"
+                        ]
+                      },
+                      "value": {
+                        "anyOf": [
+                          {
+                            "type": "object",
+                            "properties": {
+                              "numerator": {
+                                "type": "string"
+                              },
+                              "denominator": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "numerator",
+                              "denominator"
+                            ],
+                            "additionalProperties": false
+                          },
+                          {
+                            "type": "object"
+                          }
+                        ]
+                      },
+                      "left": {
+                        "type": "object"
+                      },
+                      "right": {
+                        "type": "object"
+                      }
+                    },
+                    "required": [
+                      "op"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "required": [
+                  "protocol",
+                  "id",
+                  "version",
+                  "unit",
+                  "description",
+                  "expression"
+                ],
+                "additionalProperties": false
+              }
             }
           },
           "required": [
@@ -15717,16 +15960,8 @@
             "studies": {
               "type": "array",
               "items": {
-                "enum": [
-                  "series_summary",
-                  "series_moments",
-                  "series_quantiles",
-                  "equity_drawdown",
-                  "return_ratios"
-                ]
-              },
-              "minItems": 0,
-              "maxItems": 5
+                "type": "string"
+              }
             },
             "quantiles": {
               "type": "array",
@@ -16022,6 +16257,95 @@
               ],
               "additionalProperties": false,
               "description": "Explicit partitioned output; new private workspace and final bundle must be disjoint. Scratch remains caller-owned on success/failure. No implicit fallback, cleanup, retry or default deadline."
+            },
+            "study_definitions": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "protocol": {
+                    "const": "symphony.sbv.exact-series-formula.v1"
+                  },
+                  "id": {
+                    "type": "string"
+                  },
+                  "version": {
+                    "type": "string"
+                  },
+                  "unit": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "expression": {
+                    "type": "object",
+                    "properties": {
+                      "op": {
+                        "enum": [
+                          "constant",
+                          "row_value",
+                          "row_weight",
+                          "count",
+                          "sum",
+                          "minimum",
+                          "maximum",
+                          "negate",
+                          "absolute",
+                          "add",
+                          "subtract",
+                          "multiply",
+                          "divide",
+                          "min",
+                          "max"
+                        ]
+                      },
+                      "value": {
+                        "anyOf": [
+                          {
+                            "type": "object",
+                            "properties": {
+                              "numerator": {
+                                "type": "string"
+                              },
+                              "denominator": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "numerator",
+                              "denominator"
+                            ],
+                            "additionalProperties": false
+                          },
+                          {
+                            "type": "object"
+                          }
+                        ]
+                      },
+                      "left": {
+                        "type": "object"
+                      },
+                      "right": {
+                        "type": "object"
+                      }
+                    },
+                    "required": [
+                      "op"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "required": [
+                  "protocol",
+                  "id",
+                  "version",
+                  "unit",
+                  "description",
+                  "expression"
+                ],
+                "additionalProperties": false
+              }
             }
           },
           "required": [
@@ -28299,7 +28623,8 @@
               "book_depth": "1..64",
               "liquidity_quantity": "1..1000000000",
               "liquidity_fills": "0..64",
-              "numeric": "checked exact named integer/rational profiles; no rounding fallback"
+              "numeric": "checked exact named integer/rational profiles; no rounding fallback",
+              "private_study": "exact_series_formula_v1: scalar exact-rational expressions and single-level row reductions; caller-defined id/version/unit; no executable scripts or automatic normalization"
             },
             "memory_scope": "Selected reader caches apply per active independent reader, not total RSS. Load-buffer accounting excludes derived indexes, provider state, owner allocations, allocator overhead and output scratch. No automatic disk spill, cluster placement, NUMA or accelerator runtime.",
             "profiles": [
@@ -28386,7 +28711,7 @@
                 "reads": "legacy or bundle row selection",
                 "writes": "legacy or partitioned independently",
                 "resident_working_state": "typed observations, exact sorts, bootstrap values, split intervals/ID indexes and plans",
-                "limits": "No aggregate observation/replicate/draw/fold/retained-row policy maximum. Exact arithmetic, caller parameters and host memory apply; no automatic spill."
+                "limits": "No aggregate observation/replicate/draw/fold/retained-row policy maximum. Exact arithmetic, caller parameters and host memory apply; no automatic spill. Analyze admits caller-defined scalar study formulas, selected by identity; empty selection does not execute them."
               },
               {
                 "operations": [
@@ -46062,39 +46387,210 @@
       "additionalProperties": false
     },
     "series_study": {
-      "type": "object",
-      "properties": {
-        "study_id": {
-          "enum": [
-            "series_summary",
-            "series_moments",
-            "series_quantiles",
-            "equity_drawdown",
-            "return_ratios"
-          ]
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "study_id": {
+              "enum": [
+                "series_summary",
+                "series_moments",
+                "series_quantiles",
+                "equity_drawdown",
+                "return_ratios"
+              ]
+            },
+            "version": {
+              "const": "1"
+            },
+            "status": {
+              "enum": [
+                "available",
+                "unavailable"
+              ]
+            },
+            "reason": {
+              "type": "string"
+            },
+            "data": {}
+          },
+          "required": [
+            "study_id",
+            "version",
+            "status",
+            "reason",
+            "data"
+          ],
+          "additionalProperties": false
         },
-        "version": {
-          "const": "1"
-        },
-        "status": {
-          "enum": [
-            "available",
-            "unavailable"
-          ]
-        },
-        "reason": {
-          "type": "string"
-        },
-        "data": {}
-      },
-      "required": [
-        "study_id",
-        "version",
-        "status",
-        "reason",
-        "data"
-      ],
-      "additionalProperties": false
+        {
+          "type": "object",
+          "properties": {
+            "study_id": {
+              "type": "string"
+            },
+            "version": {
+              "type": "string"
+            },
+            "status": {
+              "enum": [
+                "available",
+                "unavailable"
+              ]
+            },
+            "reason": {
+              "type": "string"
+            },
+            "descriptor": {
+              "type": "object",
+              "properties": {
+                "protocol": {
+                  "const": "symphony.sbv.exact-series-formula.v1"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "version": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "expression": {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "enum": [
+                        "constant",
+                        "row_value",
+                        "row_weight",
+                        "count",
+                        "sum",
+                        "minimum",
+                        "maximum",
+                        "negate",
+                        "absolute",
+                        "add",
+                        "subtract",
+                        "multiply",
+                        "divide",
+                        "min",
+                        "max"
+                      ]
+                    },
+                    "value": {
+                      "anyOf": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "numerator": {
+                              "type": "string"
+                            },
+                            "denominator": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "numerator",
+                            "denominator"
+                          ],
+                          "additionalProperties": false
+                        },
+                        {
+                          "type": "object"
+                        }
+                      ]
+                    },
+                    "left": {
+                      "type": "object"
+                    },
+                    "right": {
+                      "type": "object"
+                    }
+                  },
+                  "required": [
+                    "op"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "protocol",
+                "id",
+                "version",
+                "unit",
+                "description",
+                "expression"
+              ],
+              "additionalProperties": false
+            },
+            "data": {
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "object",
+                      "properties": {
+                        "numerator": {
+                          "type": "string"
+                        },
+                        "denominator": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "numerator",
+                        "denominator"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "numeric_profile": {
+                      "const": "checked_exact_rational_128"
+                    },
+                    "input_rows": {
+                      "type": "string"
+                    },
+                    "weighting": {
+                      "type": "string"
+                    },
+                    "authorship": {
+                      "const": "caller-defined formula executed by native SBV"
+                    }
+                  },
+                  "required": [
+                    "value",
+                    "unit",
+                    "numeric_profile",
+                    "input_rows",
+                    "weighting",
+                    "authorship"
+                  ],
+                  "additionalProperties": false
+                }
+              ]
+            }
+          },
+          "required": [
+            "study_id",
+            "version",
+            "status",
+            "reason",
+            "descriptor",
+            "data"
+          ],
+          "additionalProperties": false
+        }
+      ]
     },
     "comparison_candidate": {
       "type": "object",
@@ -59292,6 +59788,136 @@
           "additionalProperties": false
         }
       ]
+    },
+    "formula_expression": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "op": {
+              "const": "constant"
+            },
+            "value": {
+              "type": "object",
+              "properties": {
+                "numerator": {
+                  "type": "string"
+                },
+                "denominator": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "numerator",
+                "denominator"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "op",
+            "value"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "op": {
+              "enum": [
+                "row_value",
+                "row_weight",
+                "count"
+              ]
+            }
+          },
+          "required": [
+            "op"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "op": {
+              "enum": [
+                "sum",
+                "minimum",
+                "maximum",
+                "negate",
+                "absolute"
+              ]
+            },
+            "value": {
+              "$ref": "#/$defs/formula_expression"
+            }
+          },
+          "required": [
+            "op",
+            "value"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "op": {
+              "enum": [
+                "add",
+                "subtract",
+                "multiply",
+                "divide",
+                "min",
+                "max"
+              ]
+            },
+            "left": {
+              "$ref": "#/$defs/formula_expression"
+            },
+            "right": {
+              "$ref": "#/$defs/formula_expression"
+            }
+          },
+          "required": [
+            "op",
+            "left",
+            "right"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "formula_study_definition": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.exact-series-formula.v1"
+        },
+        "id": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "unit": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "expression": {
+          "$ref": "#/$defs/formula_expression"
+        }
+      },
+      "required": [
+        "protocol",
+        "id",
+        "version",
+        "unit",
+        "description",
+        "expression"
+      ],
+      "additionalProperties": false
     }
   },
   "$schema": "https://json-schema.org/draft/2020-12/schema"

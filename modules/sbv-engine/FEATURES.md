@@ -64,7 +64,8 @@
         "modules/sbv-engine/tests/source_owners_test.cpp",
         "modules/sbv-engine/tests/split_test.cpp",
         "modules/sbv-engine/tests/stream_census_test.cpp",
-        "modules/sbv-engine/tests/stream_model_test.cpp"
+        "modules/sbv-engine/tests/stream_model_test.cpp",
+        "modules/sbv-engine/tests/study_formula_test.cpp"
       ],
       "feature_id": "ssfv:symphony:sbv-engine",
       "how": "C++26 computations behind exact native process and installed C ABI; optional C++ ownership wrapper; external language consumers reuse identical native results and explicit contracts.",
@@ -147,6 +148,7 @@
         "modules/sbv-engine/src/stream_model.cpp",
         "modules/sbv-engine/src/stream_model.hpp",
         "modules/sbv-engine/src/streaming_sha256.hpp",
+        "modules/sbv-engine/src/study_formula.hpp",
         "modules/sbv-engine/src/wide_rational.hpp",
         "modules/sbv-engine/tests/bundle_operations_test.cpp",
         "modules/sbv-engine/tests/dataset_test.cpp",
