@@ -9225,6 +9225,9 @@
                   ],
                   "additionalProperties": false
                 }
+              },
+              "result_read_options": {
+                "$ref": "#/$defs/bundle_read_options"
               }
             },
             "required": [
@@ -26691,7 +26694,8 @@
             "pruned",
             "ambiguous",
             "not_started",
-            "blocked"
+            "blocked",
+            "recovery_required"
           ]
         },
         "reason": {
@@ -26764,24 +26768,31 @@
                 "type": "string"
               },
               "reference": {
-                "type": "object",
-                "properties": {
-                  "path": {
-                    "type": "string"
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "path": {
+                        "type": "string"
+                      },
+                      "expected_sha256": {
+                        "type": "string"
+                      },
+                      "pointer": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "path",
+                      "expected_sha256",
+                      "pointer"
+                    ],
+                    "additionalProperties": false
                   },
-                  "expected_sha256": {
-                    "type": "string"
-                  },
-                  "pointer": {
-                    "type": "string"
+                  {
+                    "$ref": "#/$defs/bundle_value_source"
                   }
-                },
-                "required": [
-                  "path",
-                  "expected_sha256",
-                  "pointer"
-                ],
-                "additionalProperties": false
+                ]
               }
             },
             "required": [

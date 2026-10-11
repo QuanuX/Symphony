@@ -860,3 +860,13 @@ Experiment workers/trial count no longer have 16/64 policy maxima. Optional `wor
 Backend planning removes the hidden 64-worker clamp and accepts nullable declared worker/memory limits. The installed C++ `BackendRequest` layout remains unchanged; additive `BackendRequestV2` and `plan_backend_v2` express optional limits. Both entry points preserve selected reject/reduce policy and explicit serial dependency constraints. No reservation or CUDA/tensor execution is implied.
 
 This resource increment does not remove remaining legacy scientific-consumer limits. Those remain separately identified in the R3.3 operation/profile audit and are not global limits on partitioned SBV results.
+
+## Partitioned experiment children — experimental 0.24
+
+The current experiment contract accepts explicit partitioned outputs for run, generate_census, evaluate, economics, compose_economics and dataset_execute. Each such trial supplies `result_read_options` (`max_page_bytes` nullable, `cache_bytes` exact unsigned decimal). Legacy trials still omit output_path and use their deterministic journal filename. The partitioned template demonstrates forward-compatible result bindings through run → evaluate → economics.
+
+Before claims, destination parents must exist and pass no-follow traversal. Filesystem-resolved aliases, nested partitioned destinations and collisions with journal files are rejected. A private sibling probe checks not-yet-created case/Unicode aliases using the destination filesystem's actual rules; only that owned probe is removed. Cooperating callers must keep parent directories stable.
+
+Completed children are reused only after operation, requested output, exact file or manifest identity, complete logical closure, status and summary verification. Bindings retain logical selections and caller read options without loading aggregate arrays into control requests. Original market files, released RAM handles and model ancestors are unnecessary for completed-child reconciliation. Missing selections block dependents without a claim.
+
+A child recovery_required payload is retained verbatim and bound to its exact resolved request. Its trial state is recovery_required, the experiment is partial, and dependents remain unclaimed. Re-observation retains recovery without retry or adopting an appeared manifest. Claim-without-completion remains ambiguous. This increment retains the inline control-plan and legacy aggregate journal profile; removing trial/worker policy counts does not make that profile a streamed large-DAG planner.

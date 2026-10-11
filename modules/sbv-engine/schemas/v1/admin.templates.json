@@ -1533,6 +1533,246 @@
           }
         }
       }
+    },
+    "experiment": {
+      "partitioned": {
+        "protocol": "symphony.sbv.experiment-input.v1",
+        "output_path": "/absolute/private/experiment-summary.json",
+        "directory": "/absolute/private/existing-experiment-directory",
+        "experiment_id": "caller-experiment",
+        "trials": [
+          {
+            "id": "run",
+            "state": "ready",
+            "operation": "run",
+            "request": {
+              "protocol": "symphony.sbv.run-input.v1",
+              "source_path": "/absolute/private/ESZ6.dbn",
+              "source_sha256": "REPLACE_WITH_EXACT_FILE_SHA256",
+              "dataset": "GLBX.MDP3",
+              "criteria": {
+                "rule": "spaced_trades",
+                "spacing_ns": "1000000000",
+                "min_trade_size": "1",
+                "direction": "any",
+                "max_signals": null
+              },
+              "replay": {
+                "before_ns": "1000000000",
+                "after_ns": "2000000000",
+                "retain_events": true
+              },
+              "execution": {
+                "model": "touch_observation",
+                "horizon_ns": "2000000000",
+                "price_offsets_nanos": [
+                  "-1000000000",
+                  "1000000000"
+                ],
+                "probability_numerator": "0",
+                "probability_denominator": "1"
+              },
+              "studies": [
+                "signal_summary",
+                "forward_markout"
+              ],
+              "workers": "4",
+              "extensions": {},
+              "memory_budget_bytes": null,
+              "dataset_limits": {
+                "max_source_bytes": null,
+                "max_source_events": null,
+                "max_metadata_bytes": null
+              },
+              "output": {
+                "kind": "partitioned",
+                "bundle_path": "/absolute/private/run-bundle",
+                "workspace_path": "/absolute/private/run-workspace",
+                "write_options": {
+                  "page_bytes": "1048576",
+                  "index_fanout": "64"
+                }
+              }
+            },
+            "reason": "",
+            "parameters": {},
+            "lineage": {},
+            "depends_on": [],
+            "bindings": [],
+            "result_read_options": {
+              "max_page_bytes": null,
+              "cache_bytes": "16777216"
+            }
+          },
+          {
+            "id": "evaluate",
+            "state": "ready",
+            "operation": "evaluate",
+            "request": {
+              "protocol": "symphony.sbv.evaluate-input.v1",
+              "source_path": "/absolute/private/source.dbn",
+              "source_sha256": "REPLACE_WITH_EXACT_FILE_SHA256",
+              "dataset": "GLBX.MDP3",
+              "census": null,
+              "model": {
+                "protocol": "symphony.sbv.model-selection.v1",
+                "id": "observed_trade_levels",
+                "version": "1",
+                "horizon_ns": "2000000000",
+                "parameters": {
+                  "levels_per_side": "5",
+                  "include_anchor": false,
+                  "thin_support": "unavailable"
+                }
+              },
+              "replay": {
+                "before_ns": "1000000000",
+                "after_ns": "2000000000",
+                "retain_events": true
+              },
+              "studies": [
+                "signal_summary",
+                "model_summary",
+                "path_excursion"
+              ],
+              "workers": "4",
+              "extensions": {},
+              "memory_budget_bytes": null,
+              "dataset_limits": {
+                "max_source_bytes": null,
+                "max_source_events": null,
+                "max_metadata_bytes": null
+              },
+              "output": {
+                "kind": "partitioned",
+                "bundle_path": "/absolute/private/evaluate-bundle",
+                "workspace_path": "/absolute/private/evaluate-workspace",
+                "write_options": {
+                  "page_bytes": "1048576",
+                  "index_fanout": "64"
+                }
+              }
+            },
+            "reason": "",
+            "parameters": {},
+            "lineage": {},
+            "depends_on": [
+              "run"
+            ],
+            "bindings": [
+              {
+                "target_pointer": "/census",
+                "trial_id": "run",
+                "result_pointer": ""
+              }
+            ],
+            "result_read_options": {
+              "max_page_bytes": null,
+              "cache_bytes": "16777216"
+            }
+          },
+          {
+            "id": "economics",
+            "state": "ready",
+            "operation": "economics",
+            "request": {
+              "protocol": "symphony.sbv.economics-input.v1",
+              "selections": {
+                "kind": "apply",
+                "signals": {
+                  "kind": "all"
+                },
+                "economics": {
+                  "transform": {
+                    "id": "linear_price_pnl",
+                    "version": "1",
+                    "reference_price_nanos": "100000000000",
+                    "price_unit_nanos": "1000000000",
+                    "position_units": {
+                      "numerator": "1",
+                      "denominator": "1"
+                    },
+                    "value_per_price_unit": {
+                      "numerator": "1",
+                      "denominator": "1"
+                    },
+                    "cost_per_outcome": {
+                      "numerator": "0",
+                      "denominator": "1"
+                    },
+                    "return_basis": {
+                      "numerator": "100",
+                      "denominator": "1"
+                    },
+                    "pnl_unit": "user-defined account unit"
+                  },
+                  "mode": "support_only",
+                  "nonexecution_pnl": null
+                }
+              },
+              "studies": [
+                {
+                  "id": "return_moments",
+                  "version": "1",
+                  "parameters": {}
+                },
+                {
+                  "id": "return_quantiles",
+                  "version": "1",
+                  "parameters": {
+                    "levels": [
+                      {
+                        "numerator": "1",
+                        "denominator": "20"
+                      },
+                      {
+                        "numerator": "1",
+                        "denominator": "2"
+                      },
+                      {
+                        "numerator": "19",
+                        "denominator": "20"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "on_incompatible": "unavailable",
+              "extensions": {},
+              "output": {
+                "kind": "partitioned",
+                "bundle_path": "/absolute/private/economics-bundle",
+                "workspace_path": "/absolute/private/economics-workspace",
+                "write_options": {
+                  "page_bytes": "1048576",
+                  "index_fanout": "64"
+                }
+              },
+              "source": null
+            },
+            "reason": "",
+            "parameters": {},
+            "lineage": {},
+            "depends_on": [
+              "evaluate"
+            ],
+            "bindings": [
+              {
+                "target_pointer": "/source",
+                "trial_id": "evaluate",
+                "result_pointer": ""
+              }
+            ],
+            "result_read_options": {
+              "max_page_bytes": null,
+              "cache_bytes": "16777216"
+            }
+          }
+        ],
+        "workers": "1",
+        "on_failure": "continue",
+        "extensions": {}
+      }
     }
   }
 }

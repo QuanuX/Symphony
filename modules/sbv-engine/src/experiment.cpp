@@ -1,5 +1,7 @@
-#include "resource_admission.hpp"
 #include "detail.hpp"
+#include "experiment_paths.hpp"
+#include "experiment_result.hpp"
+#include "resource_admission.hpp"
 #include <algorithm>
 #include <atomic>
 #include <cerrno>
@@ -69,8 +71,10 @@ bool id_ok(const std::string &id) {
 }
 } // namespace
 Json experiment(const Json &p, std::int64_t end) {
-  keys_optional(p, {"protocol", "output_path", "directory", "experiment_id", "trials",
-           "workers", "on_failure", "extensions"}, {"worker_budget"});
+  keys_optional(p,
+                {"protocol", "output_path", "directory", "experiment_id",
+                 "trials", "workers", "on_failure", "extensions"},
+                {"worker_budget"});
   need(p.at("extensions").is_object(), "experiment extensions required");
   const auto root = str(p.at("directory")), id = str(p.at("experiment_id"));
   need(id_ok(id), "bounded experiment id required");
@@ -108,7 +112,7 @@ Json experiment(const Json &p, std::int64_t end) {
     keys_optional(t,
                   {"id", "state", "operation", "request", "reason",
                    "parameters", "lineage"},
-                  {"depends_on", "bindings"});
+                  {"depends_on", "bindings", "result_read_options"});
     auto name = str(t.at("id"));
     need(id_ok(name) && names.insert(name).second,
          "unique safe trial id required");
@@ -124,7 +128,21 @@ Json experiment(const Json &p, std::int64_t end) {
                !request.contains("output_path"),
            "trial operation must be a native SBV producer and request must "
            "omit output_path");
-      request["output_path"] = root + "/" + name + ".result.json";
+      if (trial::partitioned(request)) {
+        const auto operation = str(t.at("operation"));
+        need(operation == "run" || operation == "evaluate" ||
+                 operation == "economics" || operation == "compose_economics" ||
+                 operation == "generate_census" ||
+                 operation == "dataset_execute",
+             "child operation lacks partitioned output");
+        need(t.contains("result_read_options"),
+             "partitioned trial needs explicit result read options");
+        trial::read_options(t.at("result_read_options"));
+      } else {
+        need(!t.contains("result_read_options"),
+             "legacy trial has no partitioned reader");
+        request["output_path"] = root + "/" + name + ".result.json";
+      }
       const auto &worker_request = t.at("operation") == "dataset_execute"
                                        ? request.at("request")
                                        : request;
@@ -198,9 +216,36 @@ Json experiment(const Json &p, std::int64_t end) {
     waves.push_back(std::move(wave));
   }
   const auto worker_product = resource::product(workers, inner_max);
-  const auto worker_budget = resource::limit(p.value("worker_budget", Json(nullptr)));
+  const auto worker_budget =
+      resource::limit(p.value("worker_budget", Json(nullptr)));
   need(resource::admits(worker_budget, 0, worker_product),
        "selected outer and inner worker product exceeds caller budget");
+  std::vector<trial::Slot> destinations{{root, false},
+                                        {str(p.at("output_path")), false},
+                                        {root + "/experiment-plan.json", false},
+                                        {root + "/experiment.lock", false}};
+  for (std::size_t i = 0; i < trials.size(); ++i) {
+    const auto name = str(trials[i].at("id"));
+    for (const auto *suffix : {".claim.json", ".receipt.json", ".result.json"})
+      destinations.push_back({root + "/" + name + suffix, false});
+    if (trials[i].at("state") == "pruned") {
+      need(!trials[i].contains("result_read_options"),
+           "pruned trial cannot select a result reader");
+      continue;
+    }
+    if (trial::partitioned(requests[i])) {
+      const auto &output = requests[i].at("output");
+      keys(output, {"kind", "bundle_path", "workspace_path", "write_options"});
+      need(output.at("kind") == "partitioned", "trial output kind unsupported");
+      keys(output.at("write_options"), {"page_bytes", "index_fanout"});
+      need(u64(output.at("write_options").at("page_bytes")) >= 512 &&
+               u64(output.at("write_options").at("index_fanout")) >= 2,
+           "trial partitioned layout invalid");
+      destinations.push_back({str(output.at("bundle_path")), true});
+      destinations.push_back({str(output.at("workspace_path")), true});
+    }
+  }
+  trial::destinations(root, destinations, end);
   auto choices = p;
   choices.erase("output_path");
   auto plan = base("immutable local experiment plan");
@@ -240,6 +285,10 @@ Json experiment(const Json &p, std::int64_t end) {
            {".claim.json", ".receipt.json", ".result.json"})
         need(!exists(dir.fd, name + suffix),
              "unowned trial artifacts exist before plan");
+    for (std::size_t i = 0; i < trials.size(); ++i)
+      if (trials[i].at("state") == "ready")
+        need(!trial::appeared(requests[i]),
+             "new experiment has an existing child destination");
     save(plan_path, plan, end);
   }
   std::vector<Json> rows(trials.size());
@@ -290,37 +339,40 @@ Json experiment(const Json &p, std::int64_t end) {
         if (!blocked) {
           // Recheck referenced immutable bytes before binding their content
           // identity.
-          std::map<std::string, Json> sources;
+          std::map<std::string, logical::Value> sources;
           for (const auto &b : t.value("bindings", Json::array())) {
             const auto parent_id = str(b.at("trial_id"));
             const auto &receipt = rows[indices.at(parent_id)].at("result");
             if (!sources.contains(parent_id)) {
-              const auto bytes = read_file(str(receipt.at("path")), end);
-              auto result =
-                  e::parse_bounded_json(bytes, artifact_bytes, artifact_values);
-              validate_result(result);
-              need(result.at("content_sha256") ==
-                           receipt.at("content_sha256") &&
-                       e::sha256_hex(bytes) == str(receipt.at("file_sha256")) &&
-                       dec(bytes.size()) == str(receipt.at("bytes")),
-                   "dependency result changed before binding");
-              sources.emplace(parent_id, std::move(result));
+              const auto parent_index = indices.at(parent_id);
+              auto parent_claim =
+                  load(str(rows[parent_index].at("journal").at("claim")), end);
+              const auto &resolved_parent = parent_claim.at("sections")
+                                                .at("search")
+                                                .at("data")
+                                                .at("resolved_request");
+              need(e::sha256_hex(resolved_parent.dump()) ==
+                       str(rows[parent_index].at("request_sha256")),
+                   "parent claim resolved request changed");
+              sources.emplace(
+                  parent_id,
+                  trial::verify(receipt, resolved_parent,
+                                str(trials[parent_index].at("operation")),
+                                trials[parent_index].value(
+                                    "result_read_options", Json(nullptr)),
+                                end));
             }
-            const Json::json_pointer selection(str(b.at("result_pointer")));
-            bool selected = false;
-            try {
-              selected = sources.at(parent_id).contains(selection);
-            } catch (
-                const Json::exception &) { /* invalid index for this result */
-            }
-            if (!selected) {
+            if (!trial::selects(sources.at(parent_id),
+                                str(b.at("result_pointer")))) {
               blocked = true;
               row["reason"] = "dependency result pointer is absent";
               break;
             }
-            Json reference{{"path", receipt.at("path")},
-                           {"expected_sha256", receipt.at("content_sha256")},
-                           {"pointer", b.at("result_pointer")}};
+            Json reference =
+                trial::binding(receipt,
+                               trials[indices.at(parent_id)].value(
+                                   "result_read_options", Json(nullptr)),
+                               b.at("result_pointer"));
             request.at(Json::json_pointer(str(b.at("target_pointer")))) =
                 reference;
             row["bindings"].push_back(
@@ -336,6 +388,8 @@ Json experiment(const Json &p, std::int64_t end) {
                {".claim.json", ".receipt.json", ".result.json"})
             need(!exists(dir.fd, name + suffix),
                  "blocked trial has unexpected journal artifacts");
+          need(!trial::appeared(request),
+               "blocked trial has an unexpected child destination");
           row["state"] = "blocked";
           if (row.at("reason") == "")
             row["reason"] = "one or more dependencies did not complete";
@@ -376,24 +430,21 @@ Json experiment(const Json &p, std::int64_t end) {
                    record.at("request_sha256") == request_hash,
                "trial receipt identity mismatch");
           const auto state = str(record.at("state"));
-          need(state == "completed" || state == "failed",
+          need(state == "completed" || state == "failed" ||
+                   state == "recovery_required",
                "trial receipt state invalid");
           if (state == "completed") {
             const auto &receipt = record.at("result");
-            need(receipt.at("path") == request.at("output_path"),
-                 "trial result path mismatch");
-            auto bytes = read_file(str(receipt.at("path")), end);
-            auto result =
-                e::parse_bounded_json(bytes, artifact_bytes, artifact_values);
-            validate_result(result);
-            need(result.at("content_sha256") == receipt.at("content_sha256") &&
-                     e::sha256_hex(bytes) == str(receipt.at("file_sha256")) &&
-                     dec(bytes.size()) == str(receipt.at("bytes")),
-                 "completed trial result changed");
+            (void)trial::verify(receipt, request, str(t.at("operation")),
+                                t.value("result_read_options", Json(nullptr)),
+                                end);
             row["result"] = receipt;
+          } else if (state == "recovery_required") {
+            trial::recovery(record.at("result"), request,
+                            str(t.at("operation")));
+            row["result"] = record.at("result");
           } else {
-            need(record.at("result").is_null() &&
-                     !exists(dir.fd, name + ".result.json"),
+            need(record.at("result").is_null() && !trial::appeared(request),
                  "failed trial has unexpected result");
           }
           row["state"] = state;
@@ -404,6 +455,8 @@ Json experiment(const Json &p, std::int64_t end) {
           row["reason"] = "prior claim has no committed receipt; inspect "
                           "artifacts; no automatic retry or result adoption";
         } else {
+          need(!trial::appeared(request),
+               "unclaimed trial has an existing child destination");
           save(claim_path, claim, end);
           ++executed;
           Json record{{"plan_sha256", plan_hash},
@@ -415,18 +468,30 @@ Json experiment(const Json &p, std::int64_t end) {
           try {
             record["result"] =
                 symphony::sbv::dispatch(str(t.at("operation")), request, end);
+            if (record.at("result").value("status", "") ==
+                "recovery_required") {
+              trial::recovery(record.at("result"), request,
+                              str(t.at("operation")));
+              record["state"] = "recovery_required";
+              record["failure_code"] = record.at("result").at("code");
+            } else {
+              (void)trial::verify(
+                  record.at("result"), request, str(t.at("operation")),
+                  t.value("result_read_options", Json(nullptr)), end);
+            }
           } catch (const e::Error &error) {
             record["state"] = "failed";
+            record["result"] = nullptr;
             record["failure_code"] = error.code();
           } catch (const std::exception &) {
             record["state"] = "failed";
+            record["result"] = nullptr;
             record["failure_code"] = "sbv.trial_exception";
           }
           // A failed process can still have published its result before
           // reporting an uncertain filesystem outcome. Preserve the claim
           // without a receipt.
-          if (record.at("state") == "failed" &&
-              exists(dir.fd, name + ".result.json")) {
+          if (record.at("state") == "failed" && trial::appeared(request)) {
             row["state"] = "ambiguous";
             row["reason"] =
                 "child failed after result appeared; no automatic adoption";
@@ -473,8 +538,9 @@ Json experiment(const Json &p, std::int64_t end) {
   deadline(end);
   Json ledger = Json::array();
   std::map<std::string, std::size_t> counts{
-      {"completed", 0}, {"failed", 0},      {"pruned", 0},
-      {"ambiguous", 0}, {"not_started", 0}, {"blocked", 0}};
+      {"completed", 0},        {"failed", 0},      {"pruned", 0},
+      {"ambiguous", 0},        {"not_started", 0}, {"blocked", 0},
+      {"recovery_required", 0}};
   for (std::size_t i = 0; i < rows.size(); ++i) {
     if (rows[i].is_null())
       rows[i] = {{"id", trials[i].at("id")},
@@ -490,7 +556,7 @@ Json experiment(const Json &p, std::int64_t end) {
   }
   auto result = base("durable private local SBV experiment observation");
   if (counts["failed"] || counts["ambiguous"] || counts["not_started"] ||
-      counts["blocked"])
+      counts["blocked"] || counts["recovery_required"])
     result["status"] = "partial";
   auto &s = result["sections"];
   Json summary = Json::object();
