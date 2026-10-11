@@ -1537,7 +1537,6 @@
     "experiment": {
       "partitioned": {
         "protocol": "symphony.sbv.experiment-input.v1",
-        "output_path": "/absolute/private/experiment-summary.json",
         "directory": "/absolute/private/existing-experiment-directory",
         "experiment_id": "caller-experiment",
         "trials": [
@@ -1771,7 +1770,77 @@
         ],
         "workers": "1",
         "on_failure": "continue",
-        "extensions": {}
+        "extensions": {},
+        "output": {
+          "kind": "partitioned",
+          "bundle_path": "/absolute/private/experiment-results",
+          "workspace_path": "/absolute/private/experiment-workspace",
+          "write_options": {
+            "page_bytes": "1048576",
+            "index_fanout": "64"
+          },
+          "scratch_read_options": {
+            "max_page_bytes": null,
+            "cache_bytes": "16777216"
+          }
+        }
+      },
+      "referenced_plan": {
+        "protocol": "symphony.sbv.experiment-input.v1",
+        "directory": "/absolute/private/existing-experiment-directory",
+        "experiment_id": "caller-experiment",
+        "trials": {
+          "kind": "referenced_rows",
+          "source": {
+            "kind": "bundle",
+            "reference": {
+              "manifest_path": "/absolute/private/input-bundle/manifest.json",
+              "manifest_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+              "content_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+            },
+            "selector": {
+              "kind": "pointer",
+              "pointer": "/sections/trials/data"
+            },
+            "read_options": {
+              "max_page_bytes": null,
+              "cache_bytes": "8388608"
+            }
+          }
+        },
+        "workers": "1",
+        "on_failure": "continue",
+        "extensions": {},
+        "output": {
+          "kind": "partitioned",
+          "bundle_path": "/absolute/private/experiment-results",
+          "workspace_path": "/absolute/private/experiment-workspace",
+          "write_options": {
+            "page_bytes": "1048576",
+            "index_fanout": "64"
+          },
+          "scratch_read_options": {
+            "max_page_bytes": null,
+            "cache_bytes": "16777216"
+          }
+        },
+        "plan_output": {
+          "kind": "partitioned",
+          "bundle_path": "/absolute/private/experiment-plan",
+          "workspace_path": "/absolute/private/experiment-plan-workspace",
+          "write_options": {
+            "page_bytes": "1048576",
+            "index_fanout": "64"
+          },
+          "scratch_read_options": {
+            "max_page_bytes": null,
+            "cache_bytes": "16777216"
+          }
+        },
+        "plan_read_options": {
+          "max_page_bytes": null,
+          "cache_bytes": "0"
+        }
       }
     },
     "result_select": {

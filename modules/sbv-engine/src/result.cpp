@@ -262,7 +262,7 @@ Json dispatch(const std::string &op, const Json &p, std::int64_t end) {
                         "compose_economics", "result_select", "analyze",
                         "resample", "split", "book", "liquidity",
                         "allocation_economics", "fit", "predict", "compare",
-                        "research_history"})},
+                        "research_history", "experiment"})},
           {"partitioned_resident_operations",
            Json::array({"run", "generate_census", "evaluate", "book"})}}},
         {"source_owner_profile", d::source_owner_profile()},

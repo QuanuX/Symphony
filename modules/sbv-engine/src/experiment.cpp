@@ -1,4 +1,4 @@
-#include "detail.hpp"
+#include "consumer_source.hpp"
 #include "experiment_paths.hpp"
 #include "experiment_result.hpp"
 #include "resource_admission.hpp"
@@ -70,11 +70,13 @@ bool id_ok(const std::string &id) {
          });
 }
 } // namespace
-Json experiment(const Json &p, std::int64_t end) {
+static logical::Value experiment_body(const Json &p, PartitionedOutput *context,
+                                      std::int64_t end) {
   keys_optional(p,
-                {"protocol", "output_path", "directory", "experiment_id",
-                 "trials", "workers", "on_failure", "extensions"},
-                {"worker_budget"});
+                {"protocol", "directory", "experiment_id", "trials", "workers",
+                 "on_failure", "extensions"},
+                {"worker_budget", "output_path", "output", "plan_output",
+                 "plan_read_options"});
   need(p.at("extensions").is_object(), "experiment extensions required");
   const auto root = str(p.at("directory")), id = str(p.at("experiment_id"));
   need(id_ok(id), "bounded experiment id required");
@@ -84,8 +86,66 @@ Json experiment(const Json &p, std::int64_t end) {
        "experiment failure policy required");
   need(p.at("on_failure") != "stop" || workers == 1,
        "ordered stop-on-failure requires one worker");
-  const auto &trials = p.at("trials");
-  need(trials.is_array(), "experiment trials array required");
+  const bool referenced = !p.at("trials").is_array();
+  need(referenced
+           ? p.contains("plan_output") && p.contains("plan_read_options")
+           : !p.contains("plan_output") && !p.contains("plan_read_options"),
+       "referenced trials require explicit owned plan output/read options");
+  auto choices = p;
+  choices.erase("output_path");
+  choices.erase("output");
+  const auto plan_path = root + "/experiment-plan.json";
+  auto dir = directory(root);
+  need(!exists(dir.fd, "experiment-plan-recovery.json"),
+       "retained plan publication recovery requires caller reconciliation; no "
+       "automatic retry");
+  std::optional<Json> prior_plan, plan_receipt;
+  if (exists(dir.fd, "experiment-plan.json"))
+    prior_plan = load(plan_path, end);
+  auto owned_trials = [&](const Json &receipt) -> consumer::InputRows {
+    auto saved = trial::verify(receipt, Json{{"output", p.at("plan_output")}},
+                               "experiment", p.at("plan_read_options"), end);
+    const auto sections = saved.at("sections");
+    auto rows = sections.at("trials").at("data");
+    auto identity = sections.at("trial_input").at("data");
+    consumer::fields(identity, {"role", "reference"});
+    need(identity.at("role").materialize() == "experiment_trials",
+         "owned plan input role mismatch");
+    const auto reference = identity.at("reference").materialize();
+    validate_logical_reference_lineage(p.at("trials").at("source"), reference);
+    need(rows.kind() == "array" &&
+             rows.sha256({}, [end] { deadline(end); }) ==
+                 str(reference.at("selected_value_sha256")),
+         "owned plan trial identity mismatch");
+    return {rows, identity.with("value", rows)};
+  };
+  auto input = [&]() -> consumer::InputRows {
+    if (!referenced)
+      return {logical::Value(p.at("trials")), {}};
+    keys(p.at("trials"), {"kind", "source"});
+    need(p.at("trials").at("kind") == "referenced_rows",
+         "explicit referenced trial table required");
+    trial::read_options(p.at("plan_read_options"));
+    if (prior_plan) {
+      need(prior_plan->at("sections").at("choices").at("data") == choices &&
+               prior_plan->at("sections")
+                       .at("provenance")
+                       .at("data")
+                       .at("engine_version") == version,
+           "existing experiment identity/plan/version differs");
+      plan_receipt = prior_plan->at("sections").at("plan_storage").at("data");
+      return owned_trials(*plan_receipt);
+    }
+    return consumer::input_rows(p.at("trials"), "experiment_trials", end);
+  }();
+  // Scheduler metadata and per-child control requests are explicitly resident;
+  // source and retained plan/result arrays do not form an aggregate JSON frame.
+  std::vector<Json> trials;
+  auto trial_cursor = input.value.children();
+  while (auto row = trial_cursor.next()) {
+    deadline(end);
+    trials.push_back(row->value.materialize());
+  }
   std::set<std::string> names;
   std::map<std::string, std::size_t> indices;
   std::vector<Json> requests;
@@ -107,7 +167,8 @@ Json experiment(const Json &p, std::int64_t end) {
                                          "dataset_execute",
                                          "research_history",
                                          "compose_economics",
-                                         "generate_census"};
+                                         "generate_census",
+                                         "result_select"};
   for (const auto &t : trials) {
     keys_optional(t,
                   {"id", "state", "operation", "request", "reason",
@@ -138,12 +199,15 @@ Json experiment(const Json &p, std::int64_t end) {
                  operation == "book" || operation == "liquidity" ||
                  operation == "allocation_economics" || operation == "fit" ||
                  operation == "predict" || operation == "compare" ||
-                 operation == "research_history",
+                 operation == "research_history" ||
+                 operation == "result_select",
              "child operation lacks partitioned output");
         need(t.contains("result_read_options"),
              "partitioned trial needs explicit result read options");
         trial::read_options(t.at("result_read_options"));
       } else {
+        need(t.at("operation") != "result_select",
+             "experiment result_select requires saved-view output");
         need(!t.contains("result_read_options"),
              "legacy trial has no partitioned reader");
         request["output_path"] = root + "/" + name + ".result.json";
@@ -205,30 +269,62 @@ Json experiment(const Json &p, std::int64_t end) {
       }
     }
   }
-  std::vector<std::vector<std::size_t>> waves;
-  std::size_t remaining = trials.size();
-  while (remaining) {
-    std::vector<std::size_t> wave;
-    for (std::size_t i = 0; i < trials.size(); ++i)
-      if (levels[i] == trials.size() &&
-          std::all_of(dependencies[i].begin(), dependencies[i].end(),
-                      [&](auto dep) { return levels[dep] < waves.size(); }))
-        wave.push_back(i);
-    need(!wave.empty(), "experiment dependency cycle");
-    for (auto i : wave)
-      levels[i] = waves.size();
-    remaining -= wave.size();
-    waves.push_back(std::move(wave));
+  std::vector<std::vector<std::size_t>> waves, dependents(trials.size());
+  std::vector<std::size_t> unresolved(trials.size()), ready;
+  for (std::size_t i = 0; i < trials.size(); ++i) {
+    deadline(end);
+    unresolved[i] = dependencies[i].size();
+    if (unresolved[i] == 0)
+      ready.push_back(i);
+    for (auto dep : dependencies[i])
+      dependents[dep].push_back(i);
   }
+  std::size_t scheduled = 0;
+  while (!ready.empty()) {
+    deadline(end);
+    std::vector<std::size_t> next;
+    for (auto i : ready) {
+      levels[i] = waves.size();
+      ++scheduled;
+      for (auto child : dependents[i])
+        if (--unresolved[child] == 0)
+          next.push_back(child);
+    }
+    waves.push_back(std::move(ready));
+    std::sort(next.begin(), next.end());
+    ready = std::move(next);
+  }
+  need(scheduled == trials.size(), "experiment dependency cycle");
   const auto worker_product = resource::product(workers, inner_max);
   const auto worker_budget =
       resource::limit(p.value("worker_budget", Json(nullptr)));
   need(resource::admits(worker_budget, 0, worker_product),
        "selected outer and inner worker product exceeds caller budget");
-  std::vector<trial::Slot> destinations{{root, false},
-                                        {str(p.at("output_path")), false},
-                                        {root + "/experiment-plan.json", false},
-                                        {root + "/experiment.lock", false}};
+  std::vector<trial::Slot> destinations{
+      {root, false},
+      {plan_path, false},
+      {root + "/experiment.lock", false},
+      {root + "/experiment-plan-recovery.json", false}};
+  auto output_slots = [&](const Json &out) {
+    keys_optional(out,
+                  {"kind", "bundle_path", "workspace_path", "write_options"},
+                  {"scratch_read_options"});
+    need(out.at("kind") == "partitioned", "partitioned output required");
+    keys(out.at("write_options"), {"page_bytes", "index_fanout"});
+    need(u64(out.at("write_options").at("page_bytes")) >= 512 &&
+             u64(out.at("write_options").at("index_fanout")) >= 2,
+         "invalid output layout");
+    if (out.contains("scratch_read_options"))
+      trial::read_options(out.at("scratch_read_options"));
+    destinations.push_back({str(out.at("bundle_path")), true});
+    destinations.push_back({str(out.at("workspace_path")), true});
+  };
+  if (context)
+    output_slots(p.at("output"));
+  else
+    destinations.push_back({str(p.at("output_path")), false});
+  if (referenced)
+    output_slots(p.at("plan_output"));
   for (std::size_t i = 0; i < trials.size(); ++i) {
     const auto name = str(trials[i].at("id"));
     for (const auto *suffix : {".claim.json", ".receipt.json", ".result.json"})
@@ -255,26 +351,26 @@ Json experiment(const Json &p, std::int64_t end) {
     }
   }
   trial::destinations(root, destinations, end);
-  auto choices = p;
-  choices.erase("output_path");
   auto plan = base("immutable local experiment plan");
   plan["sections"]["choices"] = section(choices);
   plan["sections"]["provenance"] = section(
       {{"engine_version", version},
        {"scope", "private local SBV artifacts; no remote or SOV job claim"}});
+  if (plan_receipt)
+    plan["sections"]["plan_storage"] = section(*plan_receipt);
   plan = seal_result(plan);
   validate_result(plan);
-  const auto plan_hash = plan.at("content_sha256");
-  const auto plan_path = root + "/experiment-plan.json";
-  const auto output = str(p.at("output_path"));
-  need(output != plan_path && output != root + "/experiment.lock",
-       "summary cannot replace journal");
-  for (const auto &name : names)
-    for (const auto *suffix : {".claim.json", ".receipt.json", ".result.json"})
-      need(output != root + "/" + name + suffix,
-           "summary collides with trial artifact");
-  require_new_file(output);
-  auto dir = directory(root);
+  if (!context) {
+    const auto output = str(p.at("output_path"));
+    need(output != plan_path && output != root + "/experiment.lock",
+         "summary cannot replace journal");
+    for (const auto &name : names)
+      for (const auto *suffix :
+           {".claim.json", ".receipt.json", ".result.json"})
+        need(output != root + "/" + name + suffix,
+             "summary collides with trial artifact");
+    require_new_file(output);
+  }
   Handle lock(::openat(dir.fd, "experiment.lock",
                        O_RDWR | O_CREAT | O_NOFOLLOW | O_CLOEXEC, 0600));
   need(lock.fd >= 0, "experiment lock unavailable");
@@ -284,11 +380,14 @@ Json experiment(const Json &p, std::int64_t end) {
        "private experiment lock required");
   need(::flock(lock.fd, LOCK_EX | LOCK_NB) == 0,
        "experiment already active or lock unavailable");
-  if (exists(dir.fd, "experiment-plan.json"))
+  if (exists(dir.fd, "experiment-plan.json")) {
+    need(!referenced || prior_plan.has_value(),
+         "plan appeared during admission; explicit re-observation required");
     need(load(plan_path, end) == plan,
          "existing experiment identity/plan/version differs; select a separate "
          "directory");
-  else {
+  } else {
+    need(!prior_plan, "previously admitted plan disappeared");
     for (const auto &name : names)
       for (const auto *suffix :
            {".claim.json", ".receipt.json", ".result.json"})
@@ -298,8 +397,45 @@ Json experiment(const Json &p, std::int64_t end) {
       if (trials[i].at("state") == "ready")
         need(!trial::appeared(requests[i]),
              "new experiment has an existing child destination");
+    if (referenced) {
+      Json snapshot_request{
+          {"protocol", "symphony.sbv.experiment-plan-input.v1"},
+          {"engine_version", version},
+          {"trials", p.at("trials")},
+          {"output", p.at("plan_output")}};
+      need(!trial::appeared(snapshot_request),
+           "uncommitted plan destination exists; no automatic adoption");
+      auto snapshot = partitioned_result(
+          snapshot_request, "experiment", end, [&](PartitionedOutput &) {
+            auto body = base("owned immutable experiment trial table");
+            body["sections"]["summary"] =
+                section(Json{{"trial_count", dec(trials.size())}});
+            return logical::Value(body).with(
+                "sections",
+                logical::Value(body["sections"])
+                    .with("trials", consumer::section(input.value))
+                    .with("trial_input",
+                          consumer::section(input.evidence->without("value"))));
+          });
+      if (snapshot.at("status") == "recovery_required") {
+        auto recovery_record = base("retained experiment plan publication "
+                                    "recovery; no automatic retry");
+        recovery_record["status"] = "partial";
+        recovery_record["sections"]["choices"] = section(snapshot_request);
+        recovery_record["sections"]["search"] = section(snapshot);
+        save(root + "/experiment-plan-recovery.json", recovery_record, end);
+        need(false, "plan publication incomplete; inspect "
+                    "experiment-plan-recovery.json");
+      }
+      plan_receipt = snapshot;
+      input = owned_trials(snapshot);
+      plan["sections"]["plan_storage"] = section(snapshot);
+      plan = seal_result(plan);
+      validate_result(plan);
+    }
     save(plan_path, plan, end);
   }
+  const auto plan_hash = plan.at("content_sha256");
   std::vector<Json> rows(trials.size());
   std::atomic<std::size_t> cursor{0}, executed{0}, reused{0};
   std::atomic<bool> stop{false};
@@ -545,7 +681,7 @@ Json experiment(const Json &p, std::int64_t end) {
       std::rethrow_exception(failure);
   }
   deadline(end);
-  Json ledger = Json::array();
+  consumer::Rows ledger(context, "trial-ledger");
   std::map<std::string, std::size_t> counts{
       {"completed", 0},        {"failed", 0},      {"pruned", 0},
       {"ambiguous", 0},        {"not_started", 0}, {"blocked", 0},
@@ -561,7 +697,8 @@ Json experiment(const Json &p, std::int64_t end) {
                  {"dependencies", Json::array()},
                  {"bindings", Json::array()}};
     ++counts.at(str(rows[i].at("state")));
-    ledger.push_back(rows[i]);
+    deadline(end);
+    ledger.append(rows[i]);
   }
   auto result = base("durable private local SBV experiment observation");
   if (counts["failed"] || counts["ambiguous"] || counts["not_started"] ||
@@ -572,22 +709,24 @@ Json experiment(const Json &p, std::int64_t end) {
   for (const auto &[state, n] : counts)
     summary[state] = dec(n);
   s["summary"] = section(summary);
-  Json planned_waves = Json::array();
+  consumer::Rows planned_waves(context, "planned-waves");
   for (const auto &wave : waves) {
-    Json ids = Json::array();
-    for (auto i : wave)
-      ids.push_back(trials[i].at("id"));
-    planned_waves.push_back(std::move(ids));
+    consumer::Rows ids(context, "wave-" + dec(planned_waves.size()));
+    for (auto i : wave) {
+      deadline(end);
+      ids.append(trials[i].at("id"));
+    }
+    planned_waves.append(ids.close());
   }
   s["search"] = section({{"experiment_id", id},
                          {"plan_sha256", plan_hash},
                          {"plan_path", plan_path},
-                         {"trials", ledger},
+                         {"trials", nullptr},
                          {"executed_this_invocation", dec(executed.load())},
                          {"reused_receipts", dec(reused.load())},
                          {"schedule", "stable_topological_waves_v1"},
                          {"wave_count", dec(waves.size())},
-                         {"planned_waves", planned_waves}});
+                         {"planned_waves", nullptr}});
   s["choices"] = section(choices);
   s["resources"] =
       section({{"backend", "cpu"},
@@ -618,9 +757,34 @@ Json experiment(const Json &p, std::int64_t end) {
        "parents and absent selections block dependents without claiming them.",
        "Completed means producer execution committed; child result status and "
        "per-study availability remain visible and are not a quality gate.",
-       "This is bounded local native trial execution; optimizer proposals, "
+       "This is local native trial execution with a resident scheduler; "
+       "optimizer proposals, "
        "holdout history and pruning decisions remain user supplied."}));
   s["user_extensions"] = section(p.at("extensions"));
-  return persist(std::move(result), p, "experiment", end);
+  auto out = logical::Value(s).with(
+      "search",
+      logical::Value(s.at("search"))
+          .with("data", logical::Value(s.at("search").at("data"))
+                            .with("trials", ledger.close())
+                            .with("planned_waves", planned_waves.close())));
+  if (referenced)
+    out = out.with("trial_plan", consumer::section(input.value))
+              .with("trial_input",
+                    consumer::section(input.evidence->without("value")))
+              .with("plan_storage",
+                    consumer::section(logical::Value(*plan_receipt)));
+  return logical::Value(result).with("sections", out);
+}
+Json experiment(const Json &p, std::int64_t end) {
+  need(p.contains("output") != p.contains("output_path"),
+       "select exactly one experiment output");
+  if (p.contains("output"))
+    return partitioned_result(p, "experiment", end,
+                              [&](PartitionedOutput &context) {
+                                return experiment_body(p, &context, end);
+                              });
+  return persist(experiment_body(p, nullptr, end)
+                     .materialize({artifact_bytes, artifact_values}),
+                 p, "experiment", end);
 }
 } // namespace symphony::sbv::detail

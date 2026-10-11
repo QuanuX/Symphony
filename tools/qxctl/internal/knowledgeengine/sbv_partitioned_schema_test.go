@@ -46,9 +46,6 @@ func TestSBVPartitionedRegisteredShapes(t *testing.T) {
 			if !sbvInputShape(shape, old) {
 				t.Fatal("legacy template changed")
 			}
-			if op == "experiment" {
-				return
-			} // The aggregate journal remains legacy; children select their own output.
 			for _, mutate := range []func(map[string]any){
 				func(m map[string]any) { m["output_path"] = "/private/legacy.json" },
 				func(m map[string]any) { delete(m["output"].(map[string]any), "workspace_path") },
@@ -203,5 +200,34 @@ func TestSBVPartitionedOwnedResourceExactBytePin(t *testing.T) {
 	write(receiptPath, raw)
 	if _, err := sbvOwnedResourceBytes(inst, relative, digest); err == nil {
 		t.Fatal("changed receipt admitted")
+	}
+}
+
+func TestSBVReferencedExperimentPlanShapes(t *testing.T) {
+	catalogue := partitionedCatalogue(t, "admin.schema.json")
+	templates := partitionedCatalogue(t, "admin.templates.json")
+	shape := catalogue["requests"].(map[string]any)["experiment"].(map[string]any)
+	request := templates["variants"].(map[string]any)["experiment"].(map[string]any)["referenced_plan"].(map[string]any)
+	if !sbvInputShape(shape, request) || sbvPartitionedRequestPreflight("experiment", request) != nil {
+		t.Fatal("referenced plan rejected")
+	}
+	for _, change := range []func(map[string]any){
+		func(p map[string]any) { delete(p, "plan_output") },
+		func(p map[string]any) { delete(p, "plan_read_options") },
+		func(p map[string]any) { p["trials"] = []any{} },
+		func(p map[string]any) { p["output_path"] = "/private/second-output.json" },
+		func(p map[string]any) { p["plan_output"].(map[string]any)["automatic_cleanup"] = true },
+	} {
+		bad := recoveryClone(t, request)
+		change(bad)
+		if sbvInputShape(shape, bad) {
+			t.Fatal("invalid referenced plan admitted")
+		}
+	}
+	legacy := recoveryClone(t, request)
+	delete(legacy, "output")
+	legacy["output_path"] = "/private/legacy-summary.json"
+	if !sbvInputShape(shape, legacy) {
+		t.Fatal("referenced plan must independently admit legacy summary output")
 	}
 }

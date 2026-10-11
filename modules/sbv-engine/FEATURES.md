@@ -37,6 +37,7 @@
         "modules/sbv-engine/tests/exact_id_index_test.cpp",
         "modules/sbv-engine/tests/execution_partitioned_test.cpp",
         "modules/sbv-engine/tests/experiment_partitioned_test.cpp",
+        "modules/sbv-engine/tests/experiment_plan_test.cpp",
         "modules/sbv-engine/tests/fit_test.cpp",
         "modules/sbv-engine/tests/generate_partitioned_test.cpp",
         "modules/sbv-engine/tests/history_test.cpp",

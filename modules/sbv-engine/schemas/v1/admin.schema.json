@@ -18229,158 +18229,1044 @@
       ]
     },
     "experiment": {
-      "type": "object",
-      "properties": {
-        "protocol": {
-          "const": "symphony.sbv.experiment-input.v1"
-        },
-        "output_path": {
-          "type": "string"
-        },
-        "directory": {
-          "type": "string"
-        },
-        "experiment_id": {
-          "type": "string"
-        },
-        "trials": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "id": {
-                "type": "string"
-              },
-              "state": {
-                "enum": [
-                  "ready",
-                  "pruned"
-                ]
-              },
-              "operation": {
-                "anyOf": [
-                  {
-                    "type": "string"
-                  },
-                  {
-                    "type": "null"
-                  }
-                ]
-              },
-              "request": {},
-              "reason": {
-                "type": "string"
-              },
-              "parameters": {},
-              "lineage": {},
-              "depends_on": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                },
-                "description": "Each dependency must name a unique other trial; native graph admission validates uniqueness and acyclicity."
-              },
-              "bindings": {
-                "type": "array",
-                "items": {
-                  "type": "object",
-                  "properties": {
-                    "target_pointer": {
-                      "type": "string"
-                    },
-                    "trial_id": {
-                      "type": "string"
-                    },
-                    "result_pointer": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "target_pointer",
-                    "trial_id",
-                    "result_pointer"
-                  ],
-                  "additionalProperties": false
-                }
-              },
-              "result_read_options": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "protocol": {
+              "const": "symphony.sbv.experiment-input.v1"
+            },
+            "output_path": {
+              "type": "string"
+            },
+            "directory": {
+              "type": "string"
+            },
+            "experiment_id": {
+              "type": "string"
+            },
+            "trials": {
+              "type": "array",
+              "items": {
                 "type": "object",
                 "properties": {
-                  "max_page_bytes": {
-                    "oneOf": [
+                  "id": {
+                    "type": "string"
+                  },
+                  "state": {
+                    "enum": [
+                      "ready",
+                      "pruned"
+                    ]
+                  },
+                  "operation": {
+                    "anyOf": [
                       {
-                        "type": "string",
-                        "pattern": "^[1-9][0-9]*$",
-                        "maxLength": 20,
-                        "description": "Canonical positive uint64 decimal; checked range at native and control boundary."
+                        "type": "string"
                       },
                       {
                         "type": "null"
                       }
                     ]
                   },
-                  "cache_bytes": {
-                    "type": "string",
-                    "pattern": "^(0|[1-9][0-9]*)$",
-                    "maxLength": 20,
-                    "description": "Canonical uint64 decimal; checked range at native and control boundary."
+                  "request": {},
+                  "reason": {
+                    "type": "string"
+                  },
+                  "parameters": {},
+                  "lineage": {},
+                  "depends_on": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Each dependency must name a unique other trial; native graph admission validates uniqueness and acyclicity."
+                  },
+                  "bindings": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "target_pointer": {
+                          "type": "string"
+                        },
+                        "trial_id": {
+                          "type": "string"
+                        },
+                        "result_pointer": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "target_pointer",
+                        "trial_id",
+                        "result_pointer"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "result_read_options": {
+                    "type": "object",
+                    "properties": {
+                      "max_page_bytes": {
+                        "oneOf": [
+                          {
+                            "type": "string",
+                            "pattern": "^[1-9][0-9]*$",
+                            "maxLength": 20,
+                            "description": "Canonical positive uint64 decimal; checked range at native and control boundary."
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "cache_bytes": {
+                        "type": "string",
+                        "pattern": "^(0|[1-9][0-9]*)$",
+                        "maxLength": 20,
+                        "description": "Canonical uint64 decimal; checked range at native and control boundary."
+                      }
+                    },
+                    "required": [
+                      "max_page_bytes",
+                      "cache_bytes"
+                    ],
+                    "additionalProperties": false
                   }
                 },
                 "required": [
-                  "max_page_bytes",
-                  "cache_bytes"
+                  "id",
+                  "state",
+                  "operation",
+                  "request",
+                  "reason",
+                  "parameters",
+                  "lineage"
                 ],
                 "additionalProperties": false
-              }
+              },
+              "minItems": 0
             },
-            "required": [
-              "id",
-              "state",
-              "operation",
-              "request",
-              "reason",
-              "parameters",
-              "lineage"
-            ],
-            "additionalProperties": false
-          },
-          "minItems": 0
-        },
-        "workers": {
-          "type": "string"
-        },
-        "on_failure": {
-          "enum": [
-            "continue",
-            "stop"
-          ]
-        },
-        "extensions": {
-          "type": "object"
-        },
-        "worker_budget": {
-          "anyOf": [
-            {
-              "type": "string",
-              "pattern": "^[1-9][0-9]*$"
+            "workers": {
+              "type": "string"
             },
-            {
-              "type": "null"
+            "on_failure": {
+              "enum": [
+                "continue",
+                "stop"
+              ]
+            },
+            "extensions": {
+              "type": "object"
+            },
+            "worker_budget": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[1-9][0-9]*$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
             }
-          ]
+          },
+          "required": [
+            "protocol",
+            "output_path",
+            "directory",
+            "experiment_id",
+            "trials",
+            "workers",
+            "on_failure",
+            "extensions"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "protocol": {
+              "const": "symphony.sbv.experiment-input.v1"
+            },
+            "directory": {
+              "type": "string"
+            },
+            "experiment_id": {
+              "type": "string"
+            },
+            "trials": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "state": {
+                    "enum": [
+                      "ready",
+                      "pruned"
+                    ]
+                  },
+                  "operation": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "request": {},
+                  "reason": {
+                    "type": "string"
+                  },
+                  "parameters": {},
+                  "lineage": {},
+                  "depends_on": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Each dependency must name a unique other trial; native graph admission validates uniqueness and acyclicity."
+                  },
+                  "bindings": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "target_pointer": {
+                          "type": "string"
+                        },
+                        "trial_id": {
+                          "type": "string"
+                        },
+                        "result_pointer": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "target_pointer",
+                        "trial_id",
+                        "result_pointer"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "result_read_options": {
+                    "type": "object",
+                    "properties": {
+                      "max_page_bytes": {
+                        "oneOf": [
+                          {
+                            "type": "string",
+                            "pattern": "^[1-9][0-9]*$",
+                            "maxLength": 20,
+                            "description": "Canonical positive uint64 decimal; checked range at native and control boundary."
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "cache_bytes": {
+                        "type": "string",
+                        "pattern": "^(0|[1-9][0-9]*)$",
+                        "maxLength": 20,
+                        "description": "Canonical uint64 decimal; checked range at native and control boundary."
+                      }
+                    },
+                    "required": [
+                      "max_page_bytes",
+                      "cache_bytes"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "required": [
+                  "id",
+                  "state",
+                  "operation",
+                  "request",
+                  "reason",
+                  "parameters",
+                  "lineage"
+                ],
+                "additionalProperties": false
+              },
+              "minItems": 0
+            },
+            "workers": {
+              "type": "string"
+            },
+            "on_failure": {
+              "enum": [
+                "continue",
+                "stop"
+              ]
+            },
+            "extensions": {
+              "type": "object"
+            },
+            "worker_budget": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[1-9][0-9]*$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "output": {
+              "type": "object",
+              "properties": {
+                "kind": {
+                  "const": "partitioned"
+                },
+                "bundle_path": {
+                  "type": "string",
+                  "minLength": 2,
+                  "maxLength": 4096,
+                  "pattern": "^/",
+                  "description": "Absolute clean component-wise no-follow path; native validation rejects controls, symlinks and unsafe components."
+                },
+                "workspace_path": {
+                  "type": "string",
+                  "minLength": 2,
+                  "maxLength": 4096,
+                  "pattern": "^/",
+                  "description": "Absolute clean component-wise no-follow path; native validation rejects controls, symlinks and unsafe components."
+                },
+                "write_options": {
+                  "type": "object",
+                  "properties": {
+                    "page_bytes": {
+                      "type": "string",
+                      "pattern": "^[1-9][0-9]*$",
+                      "maxLength": 20,
+                      "description": "Canonical positive uint64 decimal; checked range at native and control boundary."
+                    },
+                    "index_fanout": {
+                      "type": "string",
+                      "pattern": "^([2-9]|[1-9][0-9]+)$",
+                      "maxLength": 20
+                    }
+                  },
+                  "required": [
+                    "page_bytes",
+                    "index_fanout"
+                  ],
+                  "additionalProperties": false
+                },
+                "scratch_read_options": {
+                  "type": "object",
+                  "properties": {
+                    "max_page_bytes": {
+                      "oneOf": [
+                        {
+                          "type": "string",
+                          "pattern": "^[1-9][0-9]*$",
+                          "maxLength": 20,
+                          "description": "Canonical positive uint64 decimal; checked range at native and control boundary."
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "cache_bytes": {
+                      "type": "string",
+                      "pattern": "^(0|[1-9][0-9]*)$",
+                      "maxLength": 20,
+                      "description": "Canonical uint64 decimal; checked range at native and control boundary."
+                    }
+                  },
+                  "required": [
+                    "max_page_bytes",
+                    "cache_bytes"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "kind",
+                "bundle_path",
+                "workspace_path",
+                "write_options"
+              ],
+              "additionalProperties": false,
+              "description": "Explicit partitioned output; new private workspace and final bundle must be disjoint. Scratch remains caller-owned on success/failure. No implicit fallback, cleanup, retry or default deadline."
+            }
+          },
+          "required": [
+            "protocol",
+            "directory",
+            "experiment_id",
+            "trials",
+            "workers",
+            "on_failure",
+            "extensions",
+            "output"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "protocol": {
+              "const": "symphony.sbv.experiment-input.v1"
+            },
+            "output_path": {
+              "type": "string"
+            },
+            "directory": {
+              "type": "string"
+            },
+            "experiment_id": {
+              "type": "string"
+            },
+            "trials": {
+              "type": "object",
+              "properties": {
+                "kind": {
+                  "const": "referenced_rows"
+                },
+                "source": {
+                  "type": "object",
+                  "properties": {
+                    "kind": {
+                      "const": "bundle"
+                    },
+                    "reference": {
+                      "type": "object",
+                      "properties": {
+                        "manifest_path": {
+                          "type": "string",
+                          "minLength": 2,
+                          "maxLength": 4096,
+                          "pattern": "^/",
+                          "description": "Absolute clean component-wise no-follow path; native validation rejects controls, symlinks and unsafe components."
+                        },
+                        "manifest_sha256": {
+                          "type": "string",
+                          "pattern": "^[0-9a-f]{64}$"
+                        },
+                        "content_sha256": {
+                          "type": "string",
+                          "pattern": "^[0-9a-f]{64}$"
+                        }
+                      },
+                      "required": [
+                        "manifest_path",
+                        "manifest_sha256",
+                        "content_sha256"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "selector": {
+                      "oneOf": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "kind": {
+                              "const": "node_id"
+                            },
+                            "node_id": {
+                              "type": "string",
+                              "pattern": "^(0|[1-9][0-9]*)$",
+                              "maxLength": 20,
+                              "description": "Canonical uint64 decimal; checked range at native and control boundary."
+                            }
+                          },
+                          "required": [
+                            "kind",
+                            "node_id"
+                          ],
+                          "additionalProperties": false
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "kind": {
+                              "const": "pointer"
+                            },
+                            "pointer": {
+                              "type": "string",
+                              "maxLength": 65536,
+                              "pattern": "^(?:/|$)",
+                              "description": "RFC6901 escaping validated natively; source-bound node IDs reach fields whose full pointer exceeds this convenience profile."
+                            }
+                          },
+                          "required": [
+                            "kind",
+                            "pointer"
+                          ],
+                          "additionalProperties": false
+                        }
+                      ]
+                    },
+                    "read_options": {
+                      "type": "object",
+                      "properties": {
+                        "max_page_bytes": {
+                          "oneOf": [
+                            {
+                              "type": "string",
+                              "pattern": "^[1-9][0-9]*$",
+                              "maxLength": 20,
+                              "description": "Canonical positive uint64 decimal; checked range at native and control boundary."
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "cache_bytes": {
+                          "type": "string",
+                          "pattern": "^(0|[1-9][0-9]*)$",
+                          "maxLength": 20,
+                          "description": "Canonical uint64 decimal; checked range at native and control boundary."
+                        }
+                      },
+                      "required": [
+                        "max_page_bytes",
+                        "cache_bytes"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "required": [
+                    "kind",
+                    "reference",
+                    "selector",
+                    "read_options"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "kind",
+                "source"
+              ],
+              "additionalProperties": false
+            },
+            "workers": {
+              "type": "string"
+            },
+            "on_failure": {
+              "enum": [
+                "continue",
+                "stop"
+              ]
+            },
+            "extensions": {
+              "type": "object"
+            },
+            "worker_budget": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[1-9][0-9]*$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "plan_output": {
+              "type": "object",
+              "properties": {
+                "kind": {
+                  "const": "partitioned"
+                },
+                "bundle_path": {
+                  "type": "string",
+                  "minLength": 2,
+                  "maxLength": 4096,
+                  "pattern": "^/",
+                  "description": "Absolute clean component-wise no-follow path; native validation rejects controls, symlinks and unsafe components."
+                },
+                "workspace_path": {
+                  "type": "string",
+                  "minLength": 2,
+                  "maxLength": 4096,
+                  "pattern": "^/",
+                  "description": "Absolute clean component-wise no-follow path; native validation rejects controls, symlinks and unsafe components."
+                },
+                "write_options": {
+                  "type": "object",
+                  "properties": {
+                    "page_bytes": {
+                      "type": "string",
+                      "pattern": "^[1-9][0-9]*$",
+                      "maxLength": 20,
+                      "description": "Canonical positive uint64 decimal; checked range at native and control boundary."
+                    },
+                    "index_fanout": {
+                      "type": "string",
+                      "pattern": "^([2-9]|[1-9][0-9]+)$",
+                      "maxLength": 20
+                    }
+                  },
+                  "required": [
+                    "page_bytes",
+                    "index_fanout"
+                  ],
+                  "additionalProperties": false
+                },
+                "scratch_read_options": {
+                  "type": "object",
+                  "properties": {
+                    "max_page_bytes": {
+                      "oneOf": [
+                        {
+                          "type": "string",
+                          "pattern": "^[1-9][0-9]*$",
+                          "maxLength": 20,
+                          "description": "Canonical positive uint64 decimal; checked range at native and control boundary."
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "cache_bytes": {
+                      "type": "string",
+                      "pattern": "^(0|[1-9][0-9]*)$",
+                      "maxLength": 20,
+                      "description": "Canonical uint64 decimal; checked range at native and control boundary."
+                    }
+                  },
+                  "required": [
+                    "max_page_bytes",
+                    "cache_bytes"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "kind",
+                "bundle_path",
+                "workspace_path",
+                "write_options"
+              ],
+              "additionalProperties": false,
+              "description": "Explicit partitioned output; new private workspace and final bundle must be disjoint. Scratch remains caller-owned on success/failure. No implicit fallback, cleanup, retry or default deadline."
+            },
+            "plan_read_options": {
+              "type": "object",
+              "properties": {
+                "max_page_bytes": {
+                  "oneOf": [
+                    {
+                      "type": "string",
+                      "pattern": "^[1-9][0-9]*$",
+                      "maxLength": 20,
+                      "description": "Canonical positive uint64 decimal; checked range at native and control boundary."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "cache_bytes": {
+                  "type": "string",
+                  "pattern": "^(0|[1-9][0-9]*)$",
+                  "maxLength": 20,
+                  "description": "Canonical uint64 decimal; checked range at native and control boundary."
+                }
+              },
+              "required": [
+                "max_page_bytes",
+                "cache_bytes"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "protocol",
+            "output_path",
+            "directory",
+            "experiment_id",
+            "trials",
+            "workers",
+            "on_failure",
+            "extensions",
+            "plan_output",
+            "plan_read_options"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "protocol": {
+              "const": "symphony.sbv.experiment-input.v1"
+            },
+            "directory": {
+              "type": "string"
+            },
+            "experiment_id": {
+              "type": "string"
+            },
+            "trials": {
+              "type": "object",
+              "properties": {
+                "kind": {
+                  "const": "referenced_rows"
+                },
+                "source": {
+                  "type": "object",
+                  "properties": {
+                    "kind": {
+                      "const": "bundle"
+                    },
+                    "reference": {
+                      "type": "object",
+                      "properties": {
+                        "manifest_path": {
+                          "type": "string",
+                          "minLength": 2,
+                          "maxLength": 4096,
+                          "pattern": "^/",
+                          "description": "Absolute clean component-wise no-follow path; native validation rejects controls, symlinks and unsafe components."
+                        },
+                        "manifest_sha256": {
+                          "type": "string",
+                          "pattern": "^[0-9a-f]{64}$"
+                        },
+                        "content_sha256": {
+                          "type": "string",
+                          "pattern": "^[0-9a-f]{64}$"
+                        }
+                      },
+                      "required": [
+                        "manifest_path",
+                        "manifest_sha256",
+                        "content_sha256"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "selector": {
+                      "oneOf": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "kind": {
+                              "const": "node_id"
+                            },
+                            "node_id": {
+                              "type": "string",
+                              "pattern": "^(0|[1-9][0-9]*)$",
+                              "maxLength": 20,
+                              "description": "Canonical uint64 decimal; checked range at native and control boundary."
+                            }
+                          },
+                          "required": [
+                            "kind",
+                            "node_id"
+                          ],
+                          "additionalProperties": false
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "kind": {
+                              "const": "pointer"
+                            },
+                            "pointer": {
+                              "type": "string",
+                              "maxLength": 65536,
+                              "pattern": "^(?:/|$)",
+                              "description": "RFC6901 escaping validated natively; source-bound node IDs reach fields whose full pointer exceeds this convenience profile."
+                            }
+                          },
+                          "required": [
+                            "kind",
+                            "pointer"
+                          ],
+                          "additionalProperties": false
+                        }
+                      ]
+                    },
+                    "read_options": {
+                      "type": "object",
+                      "properties": {
+                        "max_page_bytes": {
+                          "oneOf": [
+                            {
+                              "type": "string",
+                              "pattern": "^[1-9][0-9]*$",
+                              "maxLength": 20,
+                              "description": "Canonical positive uint64 decimal; checked range at native and control boundary."
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "cache_bytes": {
+                          "type": "string",
+                          "pattern": "^(0|[1-9][0-9]*)$",
+                          "maxLength": 20,
+                          "description": "Canonical uint64 decimal; checked range at native and control boundary."
+                        }
+                      },
+                      "required": [
+                        "max_page_bytes",
+                        "cache_bytes"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "required": [
+                    "kind",
+                    "reference",
+                    "selector",
+                    "read_options"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "kind",
+                "source"
+              ],
+              "additionalProperties": false
+            },
+            "workers": {
+              "type": "string"
+            },
+            "on_failure": {
+              "enum": [
+                "continue",
+                "stop"
+              ]
+            },
+            "extensions": {
+              "type": "object"
+            },
+            "worker_budget": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[1-9][0-9]*$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "plan_output": {
+              "type": "object",
+              "properties": {
+                "kind": {
+                  "const": "partitioned"
+                },
+                "bundle_path": {
+                  "type": "string",
+                  "minLength": 2,
+                  "maxLength": 4096,
+                  "pattern": "^/",
+                  "description": "Absolute clean component-wise no-follow path; native validation rejects controls, symlinks and unsafe components."
+                },
+                "workspace_path": {
+                  "type": "string",
+                  "minLength": 2,
+                  "maxLength": 4096,
+                  "pattern": "^/",
+                  "description": "Absolute clean component-wise no-follow path; native validation rejects controls, symlinks and unsafe components."
+                },
+                "write_options": {
+                  "type": "object",
+                  "properties": {
+                    "page_bytes": {
+                      "type": "string",
+                      "pattern": "^[1-9][0-9]*$",
+                      "maxLength": 20,
+                      "description": "Canonical positive uint64 decimal; checked range at native and control boundary."
+                    },
+                    "index_fanout": {
+                      "type": "string",
+                      "pattern": "^([2-9]|[1-9][0-9]+)$",
+                      "maxLength": 20
+                    }
+                  },
+                  "required": [
+                    "page_bytes",
+                    "index_fanout"
+                  ],
+                  "additionalProperties": false
+                },
+                "scratch_read_options": {
+                  "type": "object",
+                  "properties": {
+                    "max_page_bytes": {
+                      "oneOf": [
+                        {
+                          "type": "string",
+                          "pattern": "^[1-9][0-9]*$",
+                          "maxLength": 20,
+                          "description": "Canonical positive uint64 decimal; checked range at native and control boundary."
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "cache_bytes": {
+                      "type": "string",
+                      "pattern": "^(0|[1-9][0-9]*)$",
+                      "maxLength": 20,
+                      "description": "Canonical uint64 decimal; checked range at native and control boundary."
+                    }
+                  },
+                  "required": [
+                    "max_page_bytes",
+                    "cache_bytes"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "kind",
+                "bundle_path",
+                "workspace_path",
+                "write_options"
+              ],
+              "additionalProperties": false,
+              "description": "Explicit partitioned output; new private workspace and final bundle must be disjoint. Scratch remains caller-owned on success/failure. No implicit fallback, cleanup, retry or default deadline."
+            },
+            "plan_read_options": {
+              "type": "object",
+              "properties": {
+                "max_page_bytes": {
+                  "oneOf": [
+                    {
+                      "type": "string",
+                      "pattern": "^[1-9][0-9]*$",
+                      "maxLength": 20,
+                      "description": "Canonical positive uint64 decimal; checked range at native and control boundary."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "cache_bytes": {
+                  "type": "string",
+                  "pattern": "^(0|[1-9][0-9]*)$",
+                  "maxLength": 20,
+                  "description": "Canonical uint64 decimal; checked range at native and control boundary."
+                }
+              },
+              "required": [
+                "max_page_bytes",
+                "cache_bytes"
+              ],
+              "additionalProperties": false
+            },
+            "output": {
+              "type": "object",
+              "properties": {
+                "kind": {
+                  "const": "partitioned"
+                },
+                "bundle_path": {
+                  "type": "string",
+                  "minLength": 2,
+                  "maxLength": 4096,
+                  "pattern": "^/",
+                  "description": "Absolute clean component-wise no-follow path; native validation rejects controls, symlinks and unsafe components."
+                },
+                "workspace_path": {
+                  "type": "string",
+                  "minLength": 2,
+                  "maxLength": 4096,
+                  "pattern": "^/",
+                  "description": "Absolute clean component-wise no-follow path; native validation rejects controls, symlinks and unsafe components."
+                },
+                "write_options": {
+                  "type": "object",
+                  "properties": {
+                    "page_bytes": {
+                      "type": "string",
+                      "pattern": "^[1-9][0-9]*$",
+                      "maxLength": 20,
+                      "description": "Canonical positive uint64 decimal; checked range at native and control boundary."
+                    },
+                    "index_fanout": {
+                      "type": "string",
+                      "pattern": "^([2-9]|[1-9][0-9]+)$",
+                      "maxLength": 20
+                    }
+                  },
+                  "required": [
+                    "page_bytes",
+                    "index_fanout"
+                  ],
+                  "additionalProperties": false
+                },
+                "scratch_read_options": {
+                  "type": "object",
+                  "properties": {
+                    "max_page_bytes": {
+                      "oneOf": [
+                        {
+                          "type": "string",
+                          "pattern": "^[1-9][0-9]*$",
+                          "maxLength": 20,
+                          "description": "Canonical positive uint64 decimal; checked range at native and control boundary."
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "cache_bytes": {
+                      "type": "string",
+                      "pattern": "^(0|[1-9][0-9]*)$",
+                      "maxLength": 20,
+                      "description": "Canonical uint64 decimal; checked range at native and control boundary."
+                    }
+                  },
+                  "required": [
+                    "max_page_bytes",
+                    "cache_bytes"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "kind",
+                "bundle_path",
+                "workspace_path",
+                "write_options"
+              ],
+              "additionalProperties": false,
+              "description": "Explicit partitioned output; new private workspace and final bundle must be disjoint. Scratch remains caller-owned on success/failure. No implicit fallback, cleanup, retry or default deadline."
+            }
+          },
+          "required": [
+            "protocol",
+            "directory",
+            "experiment_id",
+            "trials",
+            "workers",
+            "on_failure",
+            "extensions",
+            "plan_output",
+            "plan_read_options",
+            "output"
+          ],
+          "additionalProperties": false
         }
-      },
-      "required": [
-        "protocol",
-        "output_path",
-        "directory",
-        "experiment_id",
-        "trials",
-        "workers",
-        "on_failure",
-        "extensions"
-      ],
-      "additionalProperties": false
+      ]
     },
     "split": {
       "anyOf": [
@@ -27359,7 +28245,8 @@
                 "fit",
                 "predict",
                 "compare",
-                "research_history"
+                "research_history",
+                "experiment"
               ]
             },
             "partitioned_resident_operations": {
@@ -33610,68 +34497,505 @@
       ]
     },
     "experiment": {
-      "type": "object",
-      "properties": {
-        "protocol": {
-          "const": "symphony.sbv.experiment.v1"
-        },
-        "path": {
-          "type": "string"
-        },
-        "content_sha256": {
-          "type": "string",
-          "pattern": "^[0-9a-f]{64}$"
-        },
-        "file_sha256": {
-          "type": "string",
-          "pattern": "^[0-9a-f]{64}$"
-        },
-        "bytes": {
-          "type": "string",
-          "pattern": "^(0|[1-9][0-9]*)$"
-        },
-        "status": {
-          "enum": [
-            "completed",
-            "partial"
-          ]
-        },
-        "summary": {
+      "anyOf": [
+        {
           "type": "object",
           "properties": {
-            "status": {
-              "enum": [
-                "available",
-                "partial",
-                "unavailable",
-                "not_selected"
-              ]
+            "protocol": {
+              "const": "symphony.sbv.experiment.v1"
             },
-            "reason": {
+            "path": {
               "type": "string"
             },
-            "data": {
-              "$ref": "#/$defs/node"
+            "content_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "file_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "bytes": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]*)$"
+            },
+            "status": {
+              "enum": [
+                "completed",
+                "partial"
+              ]
+            },
+            "summary": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "enum": [
+                    "available",
+                    "partial",
+                    "unavailable",
+                    "not_selected"
+                  ]
+                },
+                "reason": {
+                  "type": "string"
+                },
+                "data": {
+                  "$ref": "#/$defs/node"
+                }
+              },
+              "required": [
+                "status",
+                "reason",
+                "data"
+              ],
+              "additionalProperties": false
             }
           },
           "required": [
+            "protocol",
+            "path",
+            "content_sha256",
+            "file_sha256",
+            "bytes",
             "status",
-            "reason",
-            "data"
+            "summary"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "protocol": {
+              "const": "symphony.sbv.experiment.v1"
+            },
+            "status": {
+              "enum": [
+                "partial",
+                "completed"
+              ]
+            },
+            "content_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "storage": {
+              "type": "object",
+              "properties": {
+                "kind": {
+                  "const": "partitioned"
+                },
+                "reference": {
+                  "type": "object",
+                  "properties": {
+                    "manifest_path": {
+                      "type": "string",
+                      "minLength": 2,
+                      "maxLength": 4096,
+                      "pattern": "^/",
+                      "description": "Absolute clean component-wise no-follow path; native validation rejects controls, symlinks and unsafe components."
+                    },
+                    "manifest_sha256": {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{64}$"
+                    },
+                    "content_sha256": {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{64}$"
+                    }
+                  },
+                  "required": [
+                    "manifest_path",
+                    "manifest_sha256",
+                    "content_sha256"
+                  ],
+                  "additionalProperties": false
+                },
+                "workspace_path": {
+                  "type": "string",
+                  "minLength": 2,
+                  "maxLength": 4096,
+                  "pattern": "^/",
+                  "description": "Absolute clean component-wise no-follow path; native validation rejects controls, symlinks and unsafe components."
+                },
+                "workspace_retained": {
+                  "const": true
+                },
+                "manifest_bytes": {
+                  "type": "string",
+                  "pattern": "^[1-9][0-9]*$",
+                  "maxLength": 20,
+                  "description": "Canonical positive uint64 decimal; checked range at native and control boundary."
+                },
+                "logical_body_bytes": {
+                  "type": "string",
+                  "pattern": "^(0|[1-9][0-9]*)$",
+                  "maxLength": 20,
+                  "description": "Canonical uint64 decimal; checked range at native and control boundary."
+                },
+                "logical_body_nodes": {
+                  "type": "string",
+                  "pattern": "^(0|[1-9][0-9]*)$",
+                  "maxLength": 20,
+                  "description": "Canonical uint64 decimal; checked range at native and control boundary."
+                },
+                "logical_body_values": {
+                  "type": "string",
+                  "pattern": "^(0|[1-9][0-9]*)$",
+                  "maxLength": 20,
+                  "description": "Canonical uint64 decimal; checked range at native and control boundary."
+                },
+                "exported_value_nodes": {
+                  "type": "string",
+                  "pattern": "^(0|[1-9][0-9]*)$",
+                  "maxLength": 20,
+                  "description": "Canonical uint64 decimal; checked range at native and control boundary."
+                },
+                "page_files_created": {
+                  "type": "string",
+                  "pattern": "^(0|[1-9][0-9]*)$",
+                  "maxLength": 20,
+                  "description": "Canonical uint64 decimal; checked range at native and control boundary."
+                },
+                "page_bytes_created": {
+                  "type": "string",
+                  "pattern": "^(0|[1-9][0-9]*)$",
+                  "maxLength": 20,
+                  "description": "Canonical uint64 decimal; checked range at native and control boundary."
+                },
+                "write_options": {
+                  "type": "object",
+                  "properties": {
+                    "page_bytes": {
+                      "type": "string",
+                      "pattern": "^[1-9][0-9]*$",
+                      "maxLength": 20,
+                      "description": "Canonical positive uint64 decimal; checked range at native and control boundary."
+                    },
+                    "index_fanout": {
+                      "type": "string",
+                      "pattern": "^([2-9]|[1-9][0-9]+)$",
+                      "maxLength": 20
+                    }
+                  },
+                  "required": [
+                    "page_bytes",
+                    "index_fanout"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "kind",
+                "reference",
+                "workspace_path",
+                "workspace_retained",
+                "manifest_bytes",
+                "logical_body_bytes",
+                "logical_body_nodes",
+                "logical_body_values",
+                "exported_value_nodes",
+                "page_files_created",
+                "page_bytes_created",
+                "write_options"
+              ],
+              "additionalProperties": false
+            },
+            "summary": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "const": "available"
+                },
+                "reason": {
+                  "type": "string"
+                },
+                "data": {
+                  "type": "object"
+                }
+              },
+              "required": [
+                "status",
+                "reason",
+                "data"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "protocol",
+            "status",
+            "content_sha256",
+            "storage",
+            "summary"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "protocol": {
+              "const": "symphony.sbv.experiment.v1"
+            },
+            "status": {
+              "const": "recovery_required"
+            },
+            "code": {
+              "const": "sbv.partitioned_result_incomplete"
+            },
+            "cause": {
+              "type": "object",
+              "properties": {
+                "category": {
+                  "enum": [
+                    "contract",
+                    "storage",
+                    "deadline",
+                    "allocation",
+                    "unexpected"
+                  ]
+                },
+                "code": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9_.-]{0,127}$",
+                  "maxLength": 128
+                }
+              },
+              "required": [
+                "category",
+                "code"
+              ],
+              "additionalProperties": false
+            },
+            "request_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "automatic_retry": {
+              "const": false
+            },
+            "rollback_performed": {
+              "const": false
+            },
+            "recovery": {
+              "type": "object",
+              "properties": {
+                "output": {
+                  "type": "object",
+                  "properties": {
+                    "kind": {
+                      "const": "partitioned"
+                    },
+                    "bundle_path": {
+                      "type": "string",
+                      "minLength": 2,
+                      "maxLength": 4096,
+                      "pattern": "^/",
+                      "description": "Absolute clean component-wise no-follow path; native validation rejects controls, symlinks and unsafe components."
+                    },
+                    "workspace_path": {
+                      "type": "string",
+                      "minLength": 2,
+                      "maxLength": 4096,
+                      "pattern": "^/",
+                      "description": "Absolute clean component-wise no-follow path; native validation rejects controls, symlinks and unsafe components."
+                    },
+                    "write_options": {
+                      "type": "object",
+                      "properties": {
+                        "page_bytes": {
+                          "type": "string",
+                          "pattern": "^[1-9][0-9]*$",
+                          "maxLength": 20,
+                          "description": "Canonical positive uint64 decimal; checked range at native and control boundary."
+                        },
+                        "index_fanout": {
+                          "type": "string",
+                          "pattern": "^([2-9]|[1-9][0-9]+)$",
+                          "maxLength": 20
+                        }
+                      },
+                      "required": [
+                        "page_bytes",
+                        "index_fanout"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "scratch_read_options": {
+                      "type": "object",
+                      "properties": {
+                        "max_page_bytes": {
+                          "oneOf": [
+                            {
+                              "type": "string",
+                              "pattern": "^[1-9][0-9]*$",
+                              "maxLength": 20,
+                              "description": "Canonical positive uint64 decimal; checked range at native and control boundary."
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "cache_bytes": {
+                          "type": "string",
+                          "pattern": "^(0|[1-9][0-9]*)$",
+                          "maxLength": 20,
+                          "description": "Canonical uint64 decimal; checked range at native and control boundary."
+                        }
+                      },
+                      "required": [
+                        "max_page_bytes",
+                        "cache_bytes"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "required": [
+                    "kind",
+                    "bundle_path",
+                    "workspace_path",
+                    "write_options"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Explicit partitioned output; new private workspace and final bundle must be disjoint. Scratch remains caller-owned on success/failure. No implicit fallback, cleanup, retry or default deadline."
+                },
+                "phase": {
+                  "enum": [
+                    "create_workspace",
+                    "produce",
+                    "finalize_result"
+                  ]
+                },
+                "workspace_created": {
+                  "type": "boolean"
+                },
+                "workspace_creation_durable": {
+                  "type": "boolean"
+                },
+                "automatic_cleanup": {
+                  "const": false
+                },
+                "final_storage": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "bundle_path": {
+                          "type": "string",
+                          "minLength": 2,
+                          "maxLength": 4096,
+                          "pattern": "^/",
+                          "description": "Absolute clean component-wise no-follow path; native validation rejects controls, symlinks and unsafe components."
+                        },
+                        "manifest_path": {
+                          "type": "string",
+                          "minLength": 2,
+                          "maxLength": 4096,
+                          "pattern": "^/",
+                          "description": "Absolute clean component-wise no-follow path; native validation rejects controls, symlinks and unsafe components."
+                        },
+                        "phase": {
+                          "enum": [
+                            "create_directory",
+                            "write_pages",
+                            "publish_manifest",
+                            "sync_manifest"
+                          ]
+                        },
+                        "manifest_published": {
+                          "type": "boolean"
+                        },
+                        "durable": {
+                          "type": "boolean"
+                        },
+                        "page_files_created": {
+                          "type": "string",
+                          "pattern": "^(0|[1-9][0-9]*)$",
+                          "maxLength": 20,
+                          "description": "Canonical uint64 decimal; checked range at native and control boundary."
+                        },
+                        "page_bytes_created": {
+                          "type": "string",
+                          "pattern": "^(0|[1-9][0-9]*)$",
+                          "maxLength": 20,
+                          "description": "Canonical uint64 decimal; checked range at native and control boundary."
+                        },
+                        "reference": {
+                          "oneOf": [
+                            {
+                              "type": "object",
+                              "properties": {
+                                "manifest_path": {
+                                  "type": "string",
+                                  "minLength": 2,
+                                  "maxLength": 4096,
+                                  "pattern": "^/",
+                                  "description": "Absolute clean component-wise no-follow path; native validation rejects controls, symlinks and unsafe components."
+                                },
+                                "manifest_sha256": {
+                                  "type": "string",
+                                  "pattern": "^[0-9a-f]{64}$"
+                                },
+                                "content_sha256": {
+                                  "type": "string",
+                                  "pattern": "^[0-9a-f]{64}$"
+                                }
+                              },
+                              "required": [
+                                "manifest_path",
+                                "manifest_sha256",
+                                "content_sha256"
+                              ],
+                              "additionalProperties": false
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        }
+                      },
+                      "required": [
+                        "bundle_path",
+                        "manifest_path",
+                        "phase",
+                        "manifest_published",
+                        "durable",
+                        "page_files_created",
+                        "page_bytes_created",
+                        "reference"
+                      ],
+                      "additionalProperties": false
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "output",
+                "phase",
+                "workspace_created",
+                "workspace_creation_durable",
+                "automatic_cleanup",
+                "final_storage"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "protocol",
+            "status",
+            "code",
+            "cause",
+            "request_sha256",
+            "automatic_retry",
+            "rollback_performed",
+            "recovery"
           ],
           "additionalProperties": false
         }
-      },
-      "required": [
-        "protocol",
-        "path",
-        "content_sha256",
-        "file_sha256",
-        "bytes",
-        "status",
-        "summary"
-      ],
-      "additionalProperties": false
+      ]
     },
     "split": {
       "anyOf": [
