@@ -43,6 +43,7 @@
         "modules/sbv-engine/tests/interop_consumer.cpp",
         "modules/sbv-engine/tests/liquidity_test.cpp",
         "modules/sbv-engine/tests/logical_value_test.cpp",
+        "modules/sbv-engine/tests/model_partitioned_test.cpp",
         "modules/sbv-engine/tests/models_test.cpp",
         "modules/sbv-engine/tests/partitioned_output_test.cpp",
         "modules/sbv-engine/tests/planning_test.cpp",

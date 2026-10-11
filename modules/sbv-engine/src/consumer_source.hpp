@@ -217,3 +217,37 @@ inline InputRows input_rows(const Json &selection, const std::string &role,
                               {"value", admitted.value}})};
 }
 } // namespace symphony::sbv::detail::consumer
+
+namespace symphony::sbv::detail::consumer {
+// Arbitrary selected value, with complete outer-result admission. A node-ID
+// selection has no asserted convenience pointer; the exact selector is
+// retained.
+struct ValueSource {
+  logical::Value value;
+  Json reference, outer_digest, selected_pointer;
+};
+inline ValueSource value_source(const Json &selection, std::int64_t end) {
+  if (selection.contains("kind")) {
+    auto admitted = select_bundle_value(selection, end);
+    const auto &selector = selection.at("selector");
+    return {std::move(admitted.value), std::move(admitted.reference),
+            selection.at("reference").at("content_sha256"),
+            selector.at("kind") == "pointer" ? selector.at("pointer")
+                                             : Json(nullptr)};
+  }
+  keys(selection, {"path", "expected_sha256", "pointer"});
+  auto bytes = read_file(str(selection.at("path")), end);
+  auto result = e::parse_bounded_json(bytes, artifact_bytes, artifact_values);
+  validate_result(result);
+  need(result.at("content_sha256") == selection.at("expected_sha256"),
+       "selected value source digest mismatch");
+  Json::json_pointer selected(str(selection.at("pointer")));
+  need(result.contains(selected), "selected value absent");
+  auto value = result.at(selected);
+  Json reference = selection;
+  reference["file_sha256"] = e::sha256_hex(bytes);
+  reference["selected_value_sha256"] = e::sha256_hex(value.dump());
+  return {logical::Value(std::move(value)), std::move(reference),
+          result.at("content_sha256"), selection.at("pointer")};
+}
+} // namespace symphony::sbv::detail::consumer

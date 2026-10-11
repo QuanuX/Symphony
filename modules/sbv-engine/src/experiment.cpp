@@ -136,7 +136,9 @@ Json experiment(const Json &p, std::int64_t end) {
                  operation == "dataset_execute" || operation == "analyze" ||
                  operation == "resample" || operation == "split" ||
                  operation == "book" || operation == "liquidity" ||
-                 operation == "allocation_economics",
+                 operation == "allocation_economics" || operation == "fit" ||
+                 operation == "predict" || operation == "compare" ||
+                 operation == "research_history",
              "child operation lacks partitioned output");
         need(t.contains("result_read_options"),
              "partitioned trial needs explicit result read options");

@@ -360,7 +360,7 @@ func validateSBVResult(op string, p map[string]any, raw []byte) error {
 		storage := map[string]any{"legacy": "symphony.sbv.result.v1", "partitioned": "symphony.sbv.partitioned-result.v1",
 			"page": "symphony.sbv.result-page.v1", "stream": "symphony.sbv.node-stream.v1", "max_bundle_bytes": nil, "max_bundle_nodes": nil,
 			"logical_identity": "canonical_result_body_sha256", "physical_identity": "exact_manifest_sha256", "core_producers": "explicit_legacy_or_partitioned",
-			"partitioned_producers":           []any{"run", "generate_census", "evaluate", "economics", "compose_economics", "result_select", "analyze", "resample", "split", "book", "liquidity", "allocation_economics"},
+			"partitioned_producers":           []any{"run", "generate_census", "evaluate", "economics", "compose_economics", "result_select", "analyze", "resample", "split", "book", "liquidity", "allocation_economics", "fit", "predict", "compare", "research_history"},
 			"partitioned_resident_operations": []any{"run", "generate_census", "evaluate", "book"}}
 		if !reflect.DeepEqual(m["result_storage"], storage) {
 			return bad()

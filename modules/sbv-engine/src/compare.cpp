@@ -1,3 +1,4 @@
+#include "consumer_source.hpp"
 #include "wide_rational.hpp"
 #include <algorithm>
 #include <numeric>
@@ -9,25 +10,66 @@ struct Objective {
   w::R weight, scale;
 };
 struct Candidate {
+  std::string id;
+  std::optional<std::size_t> rank, front;
   bool eligible = false;
   std::vector<w::R> values;
   w::R utility;
 };
+std::optional<logical::Value> point(logical::Value value,
+                                    const std::string &path) {
+  (void)Json::json_pointer(path);
+  std::size_t at = 0;
+  while (at < path.size()) {
+    const auto next = path.find('/', at + 1);
+    const auto edge =
+        path.substr(at + 1, next == std::string::npos ? next : next - at - 1);
+    std::string decoded;
+    for (std::size_t i = 0; i < edge.size(); ++i) {
+      if (edge[i] == '~')
+        decoded += edge[++i] == '0' ? '~' : '/';
+      else
+        decoded += edge[i];
+    }
+    if (value.kind() == "array") {
+      std::uint64_t index = 0;
+      const auto parsed = std::from_chars(
+          decoded.data(), decoded.data() + decoded.size(), index);
+      if (decoded.empty() || (decoded.size() > 1 && decoded.front() == '0') ||
+          parsed.ec != std::errc{} ||
+          parsed.ptr != decoded.data() + decoded.size() ||
+          index >= value.size())
+        return {};
+      value = value.at(index);
+    } else {
+      if (value.kind() != "object" || !value.contains(decoded))
+        return {};
+      value = value.at(decoded);
+    }
+    if (next == std::string::npos)
+      break;
+    at = next;
+  }
+  return value;
+}
 } // namespace
-Json compare(const Json &p, std::int64_t end) {
-  keys(p, {"protocol", "output_path", "candidates", "objectives", "methods",
-           "missing", "comparison_description", "extensions"});
+static logical::Value compare_body(const Json &p, PartitionedOutput *context,
+                                   std::int64_t end) {
+  keys_optional(p,
+                {"protocol", "candidates", "objectives", "methods", "missing",
+                 "comparison_description", "extensions"},
+                {"output_path", "output"});
   need(p.at("extensions").is_object(), "extensions object required");
   need(p.at("missing") == "exclude_candidate" || p.at("missing") == "reject",
        "objective missing policy required");
   need(!str(p.at("comparison_description")).empty() &&
            str(p.at("comparison_description")).size() <= 4096,
        "bounded comparison description required");
-  need(p.at("candidates").is_array() && p.at("candidates").size() <= 128,
-       "candidate bound");
-  need(p.at("objectives").is_array() && !p.at("objectives").empty() &&
-           p.at("objectives").size() <= 16,
-       "objective bound 1..16");
+  auto candidate_input =
+      consumer::input_rows(p.at("candidates"), "comparison_candidates", end);
+  auto objective_input =
+      consumer::input_rows(p.at("objectives"), "comparison_objectives", end);
+  need(objective_input.value.size() > 0, "at least one objective required");
   need(p.at("methods").is_array() && p.at("methods").size() <= 2,
        "comparison method bound");
   std::set<std::string> methods;
@@ -38,7 +80,10 @@ Json compare(const Json &p, std::int64_t end) {
   }
   std::set<std::string> ids;
   std::vector<Objective> objectives;
-  for (const auto &o : p.at("objectives")) {
+  auto objective_cursor = objective_input.value.children();
+  while (auto child = objective_cursor.next()) {
+    deadline(end);
+    const auto o = child->value.materialize();
     keys(o, {"id", "pointer", "type", "direction", "weight", "scale", "unit"});
     auto id = str(o.at("id")), pointer = str(o.at("pointer"));
     need(!id.empty() && id.size() <= 128 && ids.insert(id).second,
@@ -60,12 +105,19 @@ Json compare(const Json &p, std::int64_t end) {
   }
   ids.clear();
   std::vector<Candidate> candidates;
-  Json rows = Json::array(), sources = Json::array();
+  consumer::Rows rows(context, "candidate-rows"), sources(context, "sources");
   std::size_t total_bytes = 0, eligible = 0;
-  for (const auto &c : p.at("candidates")) {
+  bool has_bundle_source = false;
+  auto candidate_cursor = candidate_input.value.children();
+  while (auto child = candidate_cursor.next()) {
     deadline(end);
-    keys(c, {"id", "state", "reason", "path", "expected_sha256", "parameters",
-             "lineage"});
+    const auto c = child->value.materialize();
+    keys_optional(c, {"id", "state", "reason", "parameters", "lineage"},
+                  {"path", "expected_sha256", "source"});
+    need(c.contains("source")
+             ? !c.contains("path") && !c.contains("expected_sha256")
+             : c.contains("path") && c.contains("expected_sha256"),
+         "exactly one candidate identity form required");
     auto id = str(c.at("id")), state = str(c.at("state"));
     need(!id.empty() && id.size() <= 128 && ids.insert(id).second,
          "unique bounded candidate id required");
@@ -75,6 +127,7 @@ Json compare(const Json &p, std::int64_t end) {
              c.at("lineage").is_object(),
          "candidate reason/parameters/lineage required");
     Candidate candidate;
+    candidate.id = id;
     Json values = Json::array();
     Json row{
         {"id", id},
@@ -90,28 +143,42 @@ Json compare(const Json &p, std::int64_t end) {
         {"weighted_rank", nullptr},
         {"pareto_front", nullptr}};
     if (state == "completed") {
-      need(c.at("path").is_string() && c.at("expected_sha256").is_string(),
-           "completed trial requires result identity");
-      auto bytes = read_file(str(c.at("path")), end);
-      need(bytes.size() <= 256U * 1024 * 1024 - total_bytes,
-           "aggregate comparison source-byte bound");
-      total_bytes += bytes.size();
-      auto source =
-          e::parse_bounded_json(bytes, artifact_bytes, artifact_values);
-      validate_result(source);
-      need(!str(c.at("expected_sha256")).empty() &&
-               source.at("content_sha256") == c.at("expected_sha256"),
-           "candidate result identity mismatch");
-      row["source"] = {{"path", c.at("path")},
-                       {"content_sha256", source.at("content_sha256")},
-                       {"result_status", source.at("status")},
-                       {"origin", source.at("origin")}};
-      sources.push_back(row.at("source"));
+      auto source = [&]() -> logical::Value {
+        if (c.contains("source")) {
+          has_bundle_source = true;
+          auto selected = consumer::result_reference(c.at("source"), end);
+          row["source"] = {
+              {"reference", selected.reference},
+              {"content_sha256",
+               selected.value.at("content_sha256").materialize()},
+              {"result_status", selected.value.at("status").materialize()},
+              {"origin", selected.value.at("origin").materialize()}};
+          return selected.value;
+        }
+        need(c.at("path").is_string() && c.at("expected_sha256").is_string(),
+             "completed trial requires result identity");
+        auto bytes = read_file(str(c.at("path")), end);
+        need(bytes.size() <=
+                 std::numeric_limits<std::size_t>::max() - total_bytes,
+             "comparison source byte accounting overflow");
+        total_bytes += bytes.size();
+        auto result =
+            e::parse_bounded_json(bytes, artifact_bytes, artifact_values);
+        validate_result(result);
+        need(result.at("content_sha256") == c.at("expected_sha256"),
+             "candidate result identity mismatch");
+        row["source"] = {{"path", c.at("path")},
+                         {"content_sha256", result.at("content_sha256")},
+                         {"result_status", result.at("status")},
+                         {"origin", result.at("origin")}};
+        return logical::Value(std::move(result));
+      }();
+      sources.append(row.at("source"));
       bool missing_field = false;
       for (const auto &o : objectives) {
         deadline(end);
-        Json::json_pointer ptr(o.pointer);
-        if (!source.contains(ptr)) {
+        const auto selected = point(source, o.pointer);
+        if (!selected) {
           need(p.at("missing") != "reject", "objective field absent");
           missing_field = true;
           values.push_back({{"id", o.id},
@@ -121,8 +188,9 @@ Json compare(const Json &p, std::int64_t end) {
           candidate.values.push_back({});
           continue;
         }
-        auto v = o.type == "integer" ? w::R{w::integer(source.at(ptr)), 1}
-                                     : w::artifact(source.at(ptr));
+        auto v = o.type == "integer"
+                     ? w::R{w::integer(selected->materialize()), 1}
+                     : w::artifact(selected->materialize());
         candidate.values.push_back(v);
         values.push_back({{"id", o.id},
                           {"status", "available"},
@@ -149,19 +217,24 @@ Json compare(const Json &p, std::int64_t end) {
         }
       }
     } else
-      need(c.at("path").is_null() && c.at("expected_sha256").is_null() &&
+      need((c.contains("source") ? c.at("source").is_null()
+                                 : c.at("path").is_null() &&
+                                       c.at("expected_sha256").is_null()) &&
                !str(c.at("reason")).empty(),
            "failed/pruned trial requires reason and null result identity");
-    rows.push_back(std::move(row));
+    rows.append(row);
     candidates.push_back(std::move(candidate));
   }
   std::vector<std::size_t> order;
   for (std::size_t i = 0; i < candidates.size(); ++i)
     if (candidates[i].eligible)
       order.push_back(i);
-  Json ranked = Json::array(), fronts = Json::array();
+  auto prepared_rows = rows.close();
+  consumer::Rows ranked(context, "weighted-order"),
+      fronts(context, "pareto-fronts");
   if (methods.contains("weighted_sum")) {
     std::stable_sort(order.begin(), order.end(), [&](auto a, auto b) {
+      deadline(end);
       return w::compare(candidates[a].utility, candidates[b].utility) > 0;
     });
     std::size_t rank = 1;
@@ -170,8 +243,8 @@ Json compare(const Json &p, std::int64_t end) {
       if (k && w::compare(candidates[idx].utility,
                           candidates[order[k - 1]].utility) != 0)
         rank = k + 1;
-      rows[idx]["weighted_rank"] = dec(rank);
-      ranked.push_back(rows[idx].at("id"));
+      candidates[idx].rank = rank;
+      ranked.append(Json(candidates[idx].id));
     }
   }
   if (methods.contains("pareto")) {
@@ -205,17 +278,19 @@ Json compare(const Json &p, std::int64_t end) {
         front.push_back(a);
     std::size_t level = 0, processed = 0;
     while (!front.empty()) {
-      Json members = Json::array();
+      consumer::Rows members(context, "pareto-members-" + dec(level));
       std::vector<std::size_t> next;
       for (auto a : front) {
-        rows[a]["pareto_front"] = dec(level);
-        members.push_back(rows[a].at("id"));
+        candidates[a].front = level;
+        members.append(Json(candidates[a].id));
         ++processed;
         for (auto b : dominated[a])
           if (--counts[b] == 0)
             next.push_back(b);
       }
-      fronts.push_back({{"front", dec(level++)}, {"candidate_ids", members}});
+      fronts.append(
+          logical::Value::object({{"front", logical::Value(Json(dec(level++)))},
+                                  {"candidate_ids", members.close()}}));
       std::sort(next.begin(), next.end());
       front = std::move(next);
     }
@@ -228,9 +303,9 @@ Json compare(const Json &p, std::int64_t end) {
                           {"excluded", dec(candidates.size() - eligible)},
                           {"methods", p.at("methods")}});
   s["comparisons"] = section(
-      {{"candidates", rows},
-       {"weighted_order", ranked},
-       {"pareto_fronts", fronts},
+      {{"candidates", nullptr},
+       {"weighted_order", nullptr},
+       {"pareto_fronts", nullptr},
        {"weighted_definition",
         "sum(direction_sign * exact_value / positive_scale * "
         "signed_user_weight); descending utility; competition ranks; stable "
@@ -241,19 +316,22 @@ Json compare(const Json &p, std::int64_t end) {
         "stable input order within each front"}});
   s["search"] = section(
       {{"executed_trials", "0"},
-       {"lineage", p.at("candidates")},
+       {"lineage", nullptr},
        {"scope", "caller-supplied trial ledger; completed artifacts verified, "
                  "failed/pruned states are caller declarations"}});
   auto choices = p;
   choices.erase("output_path");
+  choices.erase("output");
   s["choices"] = section(choices);
   s["provenance"] = section({{"engine_version", version},
-                             {"sources", sources},
+                             {"sources", nullptr},
                              {"provider_requests", "0"},
                              {"additional_spend_usd", "0"}});
-  s["resources"] = section({{"backend", "cpu"},
-                            {"actual_workers", candidates.empty() ? "0" : "1"},
-                            {"source_bytes_read", dec(total_bytes)}});
+  s["resources"] =
+      section({{"backend", "cpu"},
+               {"actual_workers", candidates.empty() ? "0" : "1"},
+               {"source_bytes_read",
+                has_bundle_source ? Json(nullptr) : Json(dec(total_bytes))}});
   s["diagnostics"] = section(Json::array(
       {"Ranking does not establish statistical significance, holdout "
        "independence or strategy execution feasibility.",
@@ -267,6 +345,60 @@ Json compare(const Json &p, std::int64_t end) {
        "This operation evaluates supplied trials; it does not run an optimizer "
        "or execute candidate strategies."}));
   s["user_extensions"] = section(p.at("extensions"));
-  return persist(std::move(result), p, "compare", end);
+  if (has_bundle_source) {
+    s["resources"]["data"]["legacy_source_bytes_read"] = dec(total_bytes);
+    s["resources"]["data"]["source_bytes_read_scope"] =
+        "aggregate referenced-source physical I/O not collected here; per-reader counters "
+        "available via bundle operations";
+  }
+  consumer::Rows final_rows(context, "ranked-candidates");
+  auto cursor = prepared_rows.children();
+  std::size_t index = 0;
+  while (auto child = cursor.next()) {
+    deadline(end);
+    const auto &c = candidates.at(index++);
+    final_rows.append(
+        child->value
+            .with("weighted_rank",
+                  logical::Value(c.rank ? Json(dec(*c.rank)) : Json(nullptr)))
+            .with("pareto_front", logical::Value(c.front ? Json(dec(*c.front))
+                                                         : Json(nullptr))));
+  }
+  auto out =
+      logical::Value(s)
+          .with("comparisons",
+                logical::Value(s.at("comparisons"))
+                    .with("data", logical::Value(s.at("comparisons").at("data"))
+                                      .with("candidates", final_rows.close())
+                                      .with("weighted_order", ranked.close())
+                                      .with("pareto_fronts", fronts.close())))
+          .with("search",
+                logical::Value(s.at("search"))
+                    .with("data", logical::Value(s.at("search").at("data"))
+                                      .with("lineage", candidate_input.value)))
+          .with("provenance",
+                logical::Value(s.at("provenance"))
+                    .with("data", logical::Value(s.at("provenance").at("data"))
+                                      .with("sources", sources.close())))
+          .with("objective_choices", consumer::section(objective_input.value));
+  if (candidate_input.evidence)
+    out = out.with("candidate_input",
+                   consumer::section(*candidate_input.evidence));
+  if (objective_input.evidence)
+    out = out.with("objective_input",
+                   consumer::section(*objective_input.evidence));
+  return logical::Value(result).with("sections", out);
+}
+Json compare(const Json &p, std::int64_t end) {
+  need(p.contains("output") != p.contains("output_path"),
+       "select exactly one comparison output");
+  if (p.contains("output"))
+    return partitioned_result(p, "compare", end,
+                              [&](PartitionedOutput &context) {
+                                return compare_body(p, &context, end);
+                              });
+  return persist(compare_body(p, nullptr, end)
+                     .materialize({artifact_bytes, artifact_values}),
+                 p, "compare", end);
 }
 } // namespace symphony::sbv::detail

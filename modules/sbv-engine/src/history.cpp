@@ -1,4 +1,4 @@
-#include "detail.hpp"
+#include "consumer_source.hpp"
 #include <algorithm>
 #include <limits>
 namespace symphony::sbv::detail {
@@ -15,15 +15,23 @@ void sha(const Json &v) {
                                      }),
        "history SHA256 required");
 }
-const Json &data(const Json &r, const char *name) {
-  const auto &s = r.at("sections").at(name);
-  need(s.at("status") == "available", "history source section unavailable");
+logical::Value data(const logical::Value &r, const char *name) {
+  const auto s = r.at("sections").at(name);
+  need(s.at("status").materialize() == "available",
+       "history source section unavailable");
   return s.at("data");
 }
 struct Source {
-  Json result, reference;
+  logical::Value result;
+  Json reference;
 };
-Source load(const Json &ref, std::size_t &total, std::int64_t end) {
+Source load(const Json &ref, std::size_t &total, bool &bundled,
+            std::int64_t end) {
+  if (ref.contains("kind")) {
+    bundled = true;
+    auto admitted = select_logical_result(ref, end);
+    return {admitted.value, admitted.reference};
+  }
   keys(ref, {"path", "expected_sha256", "pointer"});
   sha(ref.at("expected_sha256"));
   auto bytes = read_file(str(ref.at("path")), end);
@@ -37,7 +45,7 @@ Source load(const Json &ref, std::size_t &total, std::int64_t end) {
   const Json::json_pointer pointer(str(ref.at("pointer")));
   auto selected = outer.at(pointer);
   validate_result(selected);
-  return {selected,
+  return {logical::Value(selected),
           {{"path", ref.at("path")},
            {"content_sha256", outer.at("content_sha256")},
            {"pointer", ref.at("pointer")},
@@ -45,12 +53,15 @@ Source load(const Json &ref, std::size_t &total, std::int64_t end) {
            {"file_sha256", e::sha256_hex(bytes)},
            {"bytes", dec(bytes.size())}}};
 }
-std::vector<std::string> ids(const Json &values, std::int64_t end) {
-  need(values.is_array(), "history observation identities must be an array");
+std::vector<std::string> ids(const logical::Value &values, std::int64_t end) {
+  need(values.kind() == "array",
+       "history observation identities must be an array");
   std::set<std::string> unique;
   std::vector<std::string> out;
-  for (const auto &v : values) {
+  auto cursor = values.children();
+  while (auto child = cursor.next()) {
     deadline(end);
+    const auto v = child->value.materialize();
     text(v);
     auto id = str(v);
     need(unique.insert(id).second, "duplicate history observation identity");
@@ -66,13 +77,18 @@ struct Observation {
   std::vector<Use> uses;
 };
 } // namespace
-Json research_history(const Json &p, std::int64_t end) {
-  keys(p, {"protocol", "output_path", "entries", "selections",
-           "duplicate_artifacts", "on_unavailable", "retain_observations",
-           "ordering_description", "coverage_description", "extensions"});
-  need(p.at("entries").is_array() && p.at("selections").is_array() &&
-           p.at("extensions").is_object(),
-       "history arrays and extensions required");
+static logical::Value history_body(const Json &p, PartitionedOutput *context,
+                                   std::int64_t end) {
+  keys_optional(p,
+                {"protocol", "entries", "selections", "duplicate_artifacts",
+                 "on_unavailable", "retain_observations",
+                 "ordering_description", "coverage_description", "extensions"},
+                {"output_path", "output"});
+  need(p.at("extensions").is_object(), "history extensions required");
+  auto entry_input =
+      consumer::input_rows(p.at("entries"), "history_entries", end);
+  auto selection_input =
+      consumer::input_rows(p.at("selections"), "history_selections", end);
   need(p.at("duplicate_artifacts") == "collapse" ||
            p.at("duplicate_artifacts") == "count_entries",
        "history duplicate policy required");
@@ -86,12 +102,15 @@ Json research_history(const Json &p, std::int64_t end) {
   std::map<std::pair<std::string, std::string>, Observation> observations;
   std::map<std::string, std::string> artifacts;
   std::set<std::string> names;
-  Json entries = Json::array(), sources = Json::array(),
-       selections = Json::array();
+  consumer::Rows entries(context, "usage-entries"), sources(context, "sources"),
+      selections(context, "selection-history");
+  bool bundled = false;
   std::size_t total_bytes = 0, unresolved = 0, counted = 0, collapsed = 0,
               uses = 0;
-  for (const auto &entry : p.at("entries")) {
+  auto entry_cursor = entry_input.value.children();
+  while (auto child = entry_cursor.next()) {
     deadline(end);
+    const auto entry = child->value.materialize();
     keys(entry, {"id", "kind", "source", "role", "extensions"});
     text(entry.at("id"));
     text(entry.at("role"));
@@ -99,58 +118,80 @@ Json research_history(const Json &p, std::int64_t end) {
     need(names.insert(id).second && (kind == "fit" || kind == "predict") &&
              entry.at("extensions").is_object(),
          "unique history entry, fit/predict kind and extensions required");
-    auto source = load(entry.at("source"), total_bytes, end);
-    sources.push_back(source.reference);
-    const auto &r = source.result, &choices = data(r, "choices"),
-               &summary = data(r, "summary");
+    auto source = load(entry.at("source"), total_bytes, bundled, end);
+    sources.append(source.reference);
+    const auto r = source.result;
+    const auto choices = data(r, "choices").materialize(),
+               summary = data(r, "summary").materialize(),
+               provenance = data(r, "provenance").materialize();
     need(str(choices.at("protocol")) == "symphony.sbv." + kind + "-input.v1",
          "history kind does not match selected producer contract");
     text(choices.at("identity_namespace"));
     auto ns = str(choices.at("identity_namespace"));
-    sha(data(r, "provenance").at("source_result_sha256"));
-    auto source_pointer = str(data(r, "provenance").at("source_pointer"));
-    (void)Json::json_pointer(source_pointer);
-    need(str(data(r, "provenance").at("identity_namespace")) == ns,
+    sha(provenance.at("source_result_sha256"));
+    auto source_pointer = provenance.at("source_pointer");
+    if (!source_pointer.is_null())
+      (void)Json::json_pointer(str(source_pointer));
+    need(str(provenance.at("identity_namespace")) == ns,
          "history identity namespace mismatch");
-    need(choices.at("source").at("expected_sha256") ==
-                 data(r, "provenance").at("source_result_sha256") &&
-             str(choices.at("source").at("pointer")) == source_pointer,
-         "history input/provenance source mismatch");
+    if (choices.at("source").contains("kind")) {
+      const auto &declaration = choices.at("source"),
+                 &selector = declaration.at("selector");
+      const auto selected_pointer = selector.at("kind") == "pointer"
+                                        ? selector.at("pointer")
+                                        : Json(nullptr);
+      validate_logical_reference_lineage(
+          declaration, data(r, "source_selection").materialize());
+      need(declaration.at("reference").at("content_sha256") ==
+                   provenance.at("source_result_sha256") &&
+               selected_pointer == source_pointer,
+           "history bundle input/provenance source mismatch");
+    } else
+      need(choices.at("source").at("expected_sha256") ==
+                   provenance.at("source_result_sha256") &&
+               choices.at("source").at("pointer") == source_pointer,
+           "history input/provenance source mismatch");
     Json purpose = nullptr;
     if (kind == "predict") {
       text(choices.at("purpose"));
       purpose = choices.at("purpose");
     } else
       need(choices.at("target").is_object(), "fit target declaration required");
-    const auto digest = str(r.at("content_sha256"));
+    const auto digest = str(r.at("content_sha256").materialize());
     auto prior = artifacts.find(digest);
     Json duplicate =
         prior == artifacts.end() ? Json(nullptr) : Json(prior->second);
     if (prior == artifacts.end())
       artifacts.emplace(digest, id);
     bool known = true, targets = kind == "fit";
-    Json model_training = nullptr;
+    auto model_training = logical::Value(Json(nullptr));
     std::vector<std::string> selected_ids;
     if (kind == "fit") {
-      const auto &model = r.at("sections").at("model");
-      if (model.at("status") == "unavailable") {
-        need(model.at("data").is_null() &&
+      const auto model = r.at("sections").at("model");
+      if (model.at("status").materialize() == "unavailable") {
+        need(model.at("data").materialize().is_null() &&
                  summary.at("model_status") == "unavailable",
              "inconsistent unavailable fit");
         known = false;
       } else {
-        need(model.at("status") == "available" &&
+        need(model.at("status").materialize() == "available" &&
                  summary.at("model_status") == "available",
              "unsupported fit model status");
-        const auto &m = model.at("data");
-        need(m.at("protocol") == "symphony.sbv.linear-model.v1",
+        const auto m = model.at("data");
+        need(m.at("protocol").materialize() == "symphony.sbv.linear-model.v1",
              "unsupported history model profile");
         model_training = m.at("training");
-        need(str(model_training.at("identity_namespace")) == ns &&
-                 model_training.at("source_result_sha256") ==
-                     data(r, "provenance").at("source_result_sha256") &&
-                 str(model_training.at("source_pointer")) == source_pointer,
+        need(str(model_training.at("identity_namespace").materialize()) == ns &&
+                 model_training.at("source_result_sha256").materialize() ==
+                     provenance.at("source_result_sha256") &&
+                 model_training.at("source_pointer").materialize() ==
+                     source_pointer,
              "inconsistent training provenance");
+        if (choices.at("source").contains("kind"))
+          need(model_training.contains("source_selection") &&
+                   model_training.at("source_selection").materialize() ==
+                       data(r, "source_selection").materialize(),
+               "model training selection differs from fit source");
         selected_ids = ids(model_training.at("observation_ids"), end);
         need(u64(summary.at("training_rows")) == selected_ids.size(),
              "training identity count mismatch");
@@ -161,15 +202,20 @@ Json research_history(const Json &p, std::int64_t end) {
       targets = summary.at("target_supplied").get<bool>();
       need(targets == !choices.at("target").is_null(),
            "prediction target availability mismatch");
-      Json values = Json::array();
-      const auto &predictions = data(r, "predictions");
-      need(predictions.is_array(), "prediction observations required");
-      for (const auto &row : predictions) {
-        values.push_back(row.at("id"));
-        need(targets == !row.at("target").is_null(),
+      const auto predictions = data(r, "predictions");
+      need(predictions.kind() == "array", "prediction observations required");
+      std::set<std::string> unique;
+      auto predicted = predictions.children();
+      while (auto row = predicted.next()) {
+        deadline(end);
+        const auto value = row->value.at("id").materialize();
+        text(value);
+        need(unique.insert(str(value)).second,
+             "duplicate history observation identity");
+        selected_ids.push_back(str(value));
+        need(targets != row->value.at("target").materialize().is_null(),
              "prediction target row mismatch");
       }
-      selected_ids = ids(values, end);
       need(u64(summary.at("predicted_rows")) == selected_ids.size(),
            "prediction identity count mismatch");
       model_training = data(r, "model_reference").at("training");
@@ -184,7 +230,7 @@ Json research_history(const Json &p, std::int64_t end) {
         (duplicate.is_null() || p.at("duplicate_artifacts") == "count_entries");
     if (known && !include)
       ++collapsed;
-    Json reused = Json::array();
+    consumer::Rows reused(context, "entry-reuse-" + dec(entries.size()));
     std::set<std::string> previous_entries;
     std::size_t repeated = 0, prior_fit = 0, prior_predict = 0,
                 prior_targets = 0;
@@ -206,7 +252,7 @@ Json research_history(const Json &p, std::int64_t end) {
         if (!record.uses.empty()) {
           ++repeated;
           if (retain)
-            reused.push_back({{"id", obs_id}, {"prior_entry_ids", prior_ids}});
+            reused.append({{"id", obs_id}, {"prior_entry_ids", prior_ids}});
         }
         prior_fit += fitted;
         prior_predict += predicted;
@@ -215,45 +261,52 @@ Json research_history(const Json &p, std::int64_t end) {
         ++uses;
       }
     }
-    entries.push_back(
-        {{"id", id},
-         {"ordinal", dec(entries.size())},
-         {"kind", kind},
-         {"role", entry.at("role")},
-         {"source", source.reference},
-         {"identity_namespace", ns},
-         {"source_purpose", purpose},
-         {"observation_source",
-          {{"content_sha256", data(r, "provenance").at("source_result_sha256")},
-           {"pointer", source_pointer}}},
-         {"identities_available", known},
-         {"observation_count",
-          known ? Json(dec(selected_ids.size())) : Json(nullptr)},
-         {"counted", include},
-         {"duplicate_of", duplicate},
-         {"targets_supplied", targets},
-         {"prior_entry_count",
-          include ? Json(dec(previous_entries.size())) : Json(nullptr)},
-         {"reused_observation_count",
-          include ? Json(dec(repeated)) : Json(nullptr)},
-         {"previously_fitted_observation_count",
-          include ? Json(dec(prior_fit)) : Json(nullptr)},
-         {"previously_predicted_observation_count",
-          include ? Json(dec(prior_predict)) : Json(nullptr)},
-         {"previously_targeted_observation_count",
-          include ? Json(dec(prior_targets)) : Json(nullptr)},
-         {"reused_observations", retain && include ? reused : Json(nullptr)},
-         {"model_training_reference", model_training},
-         {"reason",
-          !known
-              ? "fit retained no model observation identities; usage is unknown"
-          : !include ? "duplicate artifact collapsed by selection"
-                     : ""},
-         {"extensions", entry.at("extensions")}});
+    Json retained_entry{
+        {"id", id},
+        {"ordinal", dec(entries.size())},
+        {"kind", kind},
+        {"role", entry.at("role")},
+        {"source", source.reference},
+        {"identity_namespace", ns},
+        {"source_purpose", purpose},
+        {"observation_source",
+         {{"content_sha256", provenance.at("source_result_sha256")},
+          {"pointer", source_pointer}}},
+        {"identities_available", known},
+        {"observation_count",
+         known ? Json(dec(selected_ids.size())) : Json(nullptr)},
+        {"counted", include},
+        {"duplicate_of", duplicate},
+        {"targets_supplied", targets},
+        {"prior_entry_count",
+         include ? Json(dec(previous_entries.size())) : Json(nullptr)},
+        {"reused_observation_count",
+         include ? Json(dec(repeated)) : Json(nullptr)},
+        {"previously_fitted_observation_count",
+         include ? Json(dec(prior_fit)) : Json(nullptr)},
+        {"previously_predicted_observation_count",
+         include ? Json(dec(prior_predict)) : Json(nullptr)},
+        {"previously_targeted_observation_count",
+         include ? Json(dec(prior_targets)) : Json(nullptr)},
+        {"reused_observations", nullptr},
+        {"model_training_reference", nullptr},
+        {"reason",
+         !known
+             ? "fit retained no model observation identities; usage is unknown"
+         : !include ? "duplicate artifact collapsed by selection"
+                    : ""},
+        {"extensions", entry.at("extensions")}};
+    entries.append(logical::Value(retained_entry)
+                       .with("reused_observations",
+                             retain && include ? reused.close()
+                                               : logical::Value(Json(nullptr)))
+                       .with("model_training_reference", model_training));
   }
   std::set<std::string> selection_names;
-  for (const auto &selection : p.at("selections")) {
+  auto selection_cursor = selection_input.value.children();
+  while (auto child = selection_cursor.next()) {
     deadline(end);
+    const auto selection = child->value.materialize();
     keys(selection,
          {"id", "source", "chosen_candidate_ids", "reason", "extensions"});
     text(selection.at("id"));
@@ -261,40 +314,54 @@ Json research_history(const Json &p, std::int64_t end) {
     need(selection_names.insert(str(selection.at("id"))).second &&
              selection.at("extensions").is_object(),
          "unique selection identity and extensions required");
-    auto source = load(selection.at("source"), total_bytes, end);
-    sources.push_back(source.reference);
-    const auto &r = source.result, &choices = data(r, "choices"),
-               &comparison = data(r, "comparisons");
-    need(choices.at("protocol") == "symphony.sbv.compare-input.v1",
+    auto source = load(selection.at("source"), total_bytes, bundled, end);
+    sources.append(source.reference);
+    const auto r = source.result, choices = data(r, "choices"),
+               comparison = data(r, "comparisons");
+    need(choices.at("protocol").materialize() ==
+             "symphony.sbv.compare-input.v1",
          "selection requires a supplied comparison artifact");
-    const auto &candidates = comparison.at("candidates");
-    need(candidates.is_array(), "comparison candidates required");
-    std::map<std::string, Json> by_id;
-    for (const auto &c : candidates) {
-      text(c.at("id"));
-      need(by_id.emplace(str(c.at("id")), c).second,
-           "duplicate comparison candidate");
+    const auto candidates = comparison.at("candidates");
+    need(candidates.kind() == "array", "comparison candidates required");
+    std::map<std::string, logical::Value> by_id;
+    auto candidate_cursor = candidates.children();
+    while (auto child = candidate_cursor.next()) {
+      auto c = child->value;
+      auto id = c.at("id").materialize();
+      text(id);
+      need(by_id.emplace(str(id), c).second, "duplicate comparison candidate");
     }
-    Json selected = Json::array();
-    for (const auto &id : ids(selection.at("chosen_candidate_ids"), end)) {
+    consumer::Rows selected(context,
+                            "selected-candidates-" + dec(selections.size()));
+    for (const auto &id :
+         ids(logical::Value(selection.at("chosen_candidate_ids")), end)) {
       need(by_id.contains(id), "selected candidate absent from comparison");
-      selected.push_back(by_id.at(id));
+      selected.append(by_id.at(id));
     }
-    selections.push_back(
-        {{"id", selection.at("id")},
-         {"ordinal", dec(selections.size())},
-         {"source", source.reference},
-         {"chosen_candidate_ids", selection.at("chosen_candidate_ids")},
-         {"chosen_candidates", selected},
-         {"reason", selection.at("reason")},
-         {"candidates", candidates},
-         {"objectives", choices.at("objectives")},
-         {"methods", choices.at("methods")},
-         {"weighted_order", comparison.at("weighted_order")},
-         {"pareto_fronts", comparison.at("pareto_fronts")},
-         {"extensions", selection.at("extensions")}});
+    auto retained_selection =
+        logical::Value(
+            Json{{"id", selection.at("id")},
+                 {"ordinal", dec(selections.size())},
+                 {"source", source.reference},
+                 {"chosen_candidate_ids", selection.at("chosen_candidate_ids")},
+                 {"chosen_candidates", nullptr},
+                 {"reason", selection.at("reason")},
+                 {"candidates", nullptr},
+                 {"objectives", nullptr},
+                 {"methods", choices.at("methods").materialize()},
+                 {"weighted_order", nullptr},
+                 {"pareto_fronts", nullptr},
+                 {"extensions", selection.at("extensions")}})
+            .with("chosen_candidates", selected.close())
+            .with("candidates", candidates)
+            .with("objectives", r.at("sections").contains("objective_choices")
+                                    ? data(r, "objective_choices")
+                                    : choices.at("objectives"))
+            .with("weighted_order", comparison.at("weighted_order"))
+            .with("pareto_fronts", comparison.at("pareto_fronts"));
+    selections.append(retained_selection);
   }
-  Json identity_rows = Json::array();
+  consumer::Rows identity_rows(context, "observation-usage");
   std::size_t repeated = 0;
   std::set<std::string> namespaces;
   for (const auto &[key, record] : observations) {
@@ -307,10 +374,10 @@ Json research_history(const Json &p, std::int64_t end) {
         listed.push_back({{"entry_id", use.entry_id},
                           {"kind", use.kind},
                           {"targets_supplied", use.targets}});
-      identity_rows.push_back({{"identity_namespace", key.first},
-                               {"id", key.second},
-                               {"occurrence_count", dec(record.uses.size())},
-                               {"occurrences", listed}});
+      identity_rows.append({{"identity_namespace", key.first},
+                            {"id", key.second},
+                            {"occurrence_count", dec(record.uses.size())},
+                            {"occurrences", listed}});
     }
   }
   auto result = base("supplied research usage and selection history");
@@ -327,22 +394,21 @@ Json research_history(const Json &p, std::int64_t end) {
                {"reused_namespaced_observations", dec(repeated)},
                {"counted_namespaces", dec(namespaces.size())},
                {"selection_records", dec(selections.size())}});
-  s["research_usage"] = section(entries);
-  s["selection_history"] = section(selections);
-  s["observation_usage"] =
-      retain ? section(identity_rows)
-             : section(nullptr, "not_selected",
-                       "per-observation occurrence retention not selected");
+
   auto choices = p;
   choices.erase("output_path");
+  choices.erase("output");
   s["choices"] = section(choices);
-  s["resources"] = section(
-      {{"backend", "cpu"},
-       {"actual_workers",
-        p.at("entries").empty() && p.at("selections").empty() ? "0" : "1"},
-       {"source_bytes_read", dec(total_bytes)}});
+  s["resources"] =
+      section({{"backend", "cpu"},
+               {"actual_workers", entry_input.value.size() == 0 &&
+                                          selection_input.value.size() == 0
+                                      ? "0"
+                                      : "1"},
+               {"source_bytes_read",
+                bundled ? Json(nullptr) : Json(dec(total_bytes))}});
   s["provenance"] = section({{"engine_version", version},
-                             {"sources", sources},
+                             {"sources", nullptr},
                              {"provider_requests", "0"},
                              {"additional_spend_usd", "0"}});
   s["diagnostics"] = section(Json::array(
@@ -365,6 +431,43 @@ Json research_history(const Json &p, std::int64_t end) {
        "completeness. This operation does not recompute source estimates or "
        "infer missing history."}));
   s["user_extensions"] = section(p.at("extensions"));
-  return persist(std::move(result), p, "research-history", end);
+  if (bundled) {
+    s["resources"]["data"]["legacy_source_bytes_read"] = dec(total_bytes);
+    s["resources"]["data"]["source_bytes_read_scope"] =
+        "aggregate bundle physical I/O not collected here; per-reader counters "
+        "available via bundle operations";
+  }
+  auto out =
+      logical::Value(s)
+          .with("research_usage", consumer::section(entries.close()))
+          .with("selection_history", consumer::section(selections.close()))
+          .with("observation_usage",
+                retain
+                    ? consumer::section(identity_rows.close())
+                    : consumer::section(
+                          logical::Value(Json(nullptr)), "not_selected",
+                          "per-observation occurrence retention not selected"))
+          .with("provenance",
+                logical::Value(s.at("provenance"))
+                    .with("data", logical::Value(s.at("provenance").at("data"))
+                                      .with("sources", sources.close())));
+  if (entry_input.evidence)
+    out = out.with("entry_input", consumer::section(*entry_input.evidence));
+  if (selection_input.evidence)
+    out = out.with("selection_input",
+                   consumer::section(*selection_input.evidence));
+  return logical::Value(result).with("sections", out);
+}
+Json research_history(const Json &p, std::int64_t end) {
+  need(p.contains("output") != p.contains("output_path"),
+       "select exactly one history output");
+  if (p.contains("output"))
+    return partitioned_result(p, "research-history", end,
+                              [&](PartitionedOutput &context) {
+                                return history_body(p, &context, end);
+                              });
+  return persist(history_body(p, nullptr, end)
+                     .materialize({artifact_bytes, artifact_values}),
+                 p, "research-history", end);
 }
 } // namespace symphony::sbv::detail

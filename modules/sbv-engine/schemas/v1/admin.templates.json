@@ -2193,6 +2193,280 @@
           }
         }
       }
+    },
+    "fit": {
+      "partitioned": {
+        "protocol": "symphony.sbv.fit-input.v1",
+        "source": {
+          "kind": "bundle",
+          "reference": {
+            "manifest_path": "/absolute/private/input-bundle/manifest.json",
+            "manifest_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+            "content_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+          },
+          "selector": {
+            "kind": "pointer",
+            "pointer": "/sections/user_extensions/data/observations"
+          },
+          "read_options": {
+            "max_page_bytes": null,
+            "cache_bytes": "8388608"
+          }
+        },
+        "features": [
+          {
+            "id": "x",
+            "pointer": "/x",
+            "value_type": "integer",
+            "unit": "caller_feature_unit"
+          }
+        ],
+        "target": {
+          "pointer": "/y",
+          "value_type": "integer",
+          "unit": "caller_target_unit"
+        },
+        "id_pointer": "/id",
+        "identity_namespace": "caller_observation_namespace",
+        "input_description": "Caller-supplied feature and target meaning; no causal lineage inferred",
+        "weights": {
+          "kind": "uniform",
+          "pointer": null,
+          "domain": "nonnegative"
+        },
+        "missing": "reject",
+        "extensions": {},
+        "intercept": true,
+        "regularization": {
+          "feature_penalties": [
+            {
+              "numerator": "0",
+              "denominator": "1"
+            }
+          ],
+          "intercept_penalty": {
+            "numerator": "0",
+            "denominator": "1"
+          }
+        },
+        "on_unsolved": "unavailable",
+        "retain_training_predictions": true,
+        "output": {
+          "kind": "partitioned",
+          "bundle_path": "/absolute/private/fit-result",
+          "workspace_path": "/absolute/private/fit-workspace",
+          "write_options": {
+            "page_bytes": "1048576",
+            "index_fanout": "64"
+          },
+          "scratch_read_options": {
+            "max_page_bytes": null,
+            "cache_bytes": "16777216"
+          }
+        }
+      }
+    },
+    "predict": {
+      "partitioned": {
+        "protocol": "symphony.sbv.predict-input.v1",
+        "source": {
+          "kind": "bundle",
+          "reference": {
+            "manifest_path": "/absolute/private/input-bundle/manifest.json",
+            "manifest_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+            "content_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+          },
+          "selector": {
+            "kind": "pointer",
+            "pointer": "/sections/user_extensions/data/observations"
+          },
+          "read_options": {
+            "max_page_bytes": null,
+            "cache_bytes": "8388608"
+          }
+        },
+        "features": [
+          {
+            "id": "x",
+            "pointer": "/x",
+            "value_type": "integer",
+            "unit": "caller_feature_unit"
+          }
+        ],
+        "target": {
+          "pointer": "/y",
+          "value_type": "integer",
+          "unit": "caller_target_unit"
+        },
+        "id_pointer": "/id",
+        "identity_namespace": "caller_observation_namespace",
+        "input_description": "Caller-supplied feature and target meaning; no causal lineage inferred",
+        "weights": {
+          "kind": "uniform",
+          "pointer": null,
+          "domain": "nonnegative"
+        },
+        "missing": "reject",
+        "extensions": {},
+        "model": {
+          "kind": "bundle",
+          "reference": {
+            "manifest_path": "/absolute/private/input-bundle/manifest.json",
+            "manifest_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+            "content_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+          },
+          "selector": {
+            "kind": "pointer",
+            "pointer": "/sections/model/data"
+          },
+          "read_options": {
+            "max_page_bytes": null,
+            "cache_bytes": "8388608"
+          }
+        },
+        "purpose": "exploratory",
+        "studies": [
+          "regression_errors"
+        ],
+        "output": {
+          "kind": "partitioned",
+          "bundle_path": "/absolute/private/predict-result",
+          "workspace_path": "/absolute/private/predict-workspace",
+          "write_options": {
+            "page_bytes": "1048576",
+            "index_fanout": "64"
+          },
+          "scratch_read_options": {
+            "max_page_bytes": null,
+            "cache_bytes": "16777216"
+          }
+        }
+      }
+    },
+    "compare": {
+      "partitioned": {
+        "protocol": "symphony.sbv.compare-input.v1",
+        "candidates": {
+          "kind": "referenced_rows",
+          "source": {
+            "kind": "bundle",
+            "reference": {
+              "manifest_path": "/absolute/private/input-bundle/manifest.json",
+              "manifest_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+              "content_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+            },
+            "selector": {
+              "kind": "pointer",
+              "pointer": "/sections/candidates/data"
+            },
+            "read_options": {
+              "max_page_bytes": null,
+              "cache_bytes": "8388608"
+            }
+          }
+        },
+        "objectives": {
+          "kind": "referenced_rows",
+          "source": {
+            "kind": "bundle",
+            "reference": {
+              "manifest_path": "/absolute/private/input-bundle/manifest.json",
+              "manifest_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+              "content_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+            },
+            "selector": {
+              "kind": "pointer",
+              "pointer": "/sections/objectives/data"
+            },
+            "read_options": {
+              "max_page_bytes": null,
+              "cache_bytes": "8388608"
+            }
+          }
+        },
+        "methods": [
+          "weighted_sum",
+          "pareto"
+        ],
+        "missing": "exclude_candidate",
+        "comparison_description": "Compare exact source values under explicit caller objectives and units",
+        "extensions": {},
+        "output": {
+          "kind": "partitioned",
+          "bundle_path": "/absolute/private/compare-result",
+          "workspace_path": "/absolute/private/compare-workspace",
+          "write_options": {
+            "page_bytes": "1048576",
+            "index_fanout": "64"
+          },
+          "scratch_read_options": {
+            "max_page_bytes": null,
+            "cache_bytes": "16777216"
+          }
+        }
+      }
+    },
+    "research_history": {
+      "partitioned": {
+        "protocol": "symphony.sbv.research-history-input.v1",
+        "entries": {
+          "kind": "referenced_rows",
+          "source": {
+            "kind": "bundle",
+            "reference": {
+              "manifest_path": "/absolute/private/input-bundle/manifest.json",
+              "manifest_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+              "content_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+            },
+            "selector": {
+              "kind": "pointer",
+              "pointer": "/sections/entries/data"
+            },
+            "read_options": {
+              "max_page_bytes": null,
+              "cache_bytes": "8388608"
+            }
+          }
+        },
+        "selections": {
+          "kind": "referenced_rows",
+          "source": {
+            "kind": "bundle",
+            "reference": {
+              "manifest_path": "/absolute/private/input-bundle/manifest.json",
+              "manifest_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+              "content_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+            },
+            "selector": {
+              "kind": "pointer",
+              "pointer": "/sections/selections/data"
+            },
+            "read_options": {
+              "max_page_bytes": null,
+              "cache_bytes": "8388608"
+            }
+          }
+        },
+        "duplicate_artifacts": "collapse",
+        "on_unavailable": "retain",
+        "retain_observations": true,
+        "ordering_description": "Caller-selected record order; no authenticated chronology inferred",
+        "coverage_description": "Only explicitly listed artifacts; not a complete record of access",
+        "extensions": {},
+        "output": {
+          "kind": "partitioned",
+          "bundle_path": "/absolute/private/research_history-result",
+          "workspace_path": "/absolute/private/research_history-workspace",
+          "write_options": {
+            "page_bytes": "1048576",
+            "index_fanout": "64"
+          },
+          "scratch_read_options": {
+            "max_page_bytes": null,
+            "cache_bytes": "16777216"
+          }
+        }
+      }
     }
   }
 }

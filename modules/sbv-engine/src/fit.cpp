@@ -1,4 +1,4 @@
-#include "detail.hpp"
+#include "consumer_source.hpp"
 #include "wide_rational.hpp"
 #include <algorithm>
 #include <limits>
@@ -64,15 +64,6 @@ void model_metadata(const Json &m) {
   need(cp.n >= 0 && (m.at("intercept").get<bool>() || cp.n == 0),
        "invalid model intercept penalty");
 }
-Json load(const Json &p, std::int64_t end) {
-  keys(p, {"path", "expected_sha256", "pointer"});
-  auto r = e::parse_bounded_json(read_file(str(p.at("path")), end),
-                                 artifact_bytes, artifact_values);
-  validate_result(r);
-  need(r.at("content_sha256") == p.at("expected_sha256"),
-       "model source digest mismatch");
-  return r;
-}
 struct Sample {
   std::size_t index;
   std::string id;
@@ -80,11 +71,14 @@ struct Sample {
   R y, weight;
 };
 struct Data {
-  Json source, excluded = Json::array();
+  std::optional<consumer::ValueSource> source;
+  consumer::Rows excluded;
+  explicit Data(PartitionedOutput *context) : excluded(context, "exclusions") {}
   std::vector<Sample> samples;
   std::size_t input_rows = 0;
 };
-Data data(const Json &p, const Json &fs, const Json &target, std::int64_t end) {
+Data data(const Json &p, const Json &fs, const Json &target,
+          PartitionedOutput *context, std::int64_t end) {
   text_field(p.at("identity_namespace"));
   text_field(p.at("input_description"));
   need(p.at("missing") == "reject" || p.at("missing") == "exclude",
@@ -103,15 +97,18 @@ Data data(const Json &p, const Json &fs, const Json &target, std::int64_t end) {
   const auto wp = uniform ? std::string{} : str(weight.at("pointer"));
   if (!uniform)
     (void)point(Json::object(), wp);
-  Data out;
-  out.source = load(p.at("source"), end);
-  const auto *rows = point(out.source, str(p.at("source").at("pointer")));
-  need(rows && rows->is_array(), "model source array required");
-  out.input_rows = rows->size();
+  Data out(context);
+  out.source = consumer::value_source(p.at("source"), end);
+  const auto rows = out.source->value;
+  need(rows.kind() == "array", "model source array required");
+  out.input_rows = rows.size();
   std::set<std::string> ids;
-  for (std::size_t i = 0; i < rows->size(); ++i) {
+  auto cursor = rows.children();
+  std::size_t index = 0;
+  while (auto child = cursor.next()) {
     deadline(end);
-    const auto &row = (*rows)[i];
+    const auto i = index++;
+    const auto row = child->value.materialize();
     const auto *id = point(row, ip);
     need(id != nullptr, "observation id missing");
     text_field(*id, 256);
@@ -140,7 +137,7 @@ Data data(const Json &p, const Json &fs, const Json &target, std::int64_t end) {
     if (missing) {
       need(p.at("missing") != "reject",
            "feature, target or weight field absent");
-      out.excluded.push_back(
+      out.excluded.append(
           {{"source_index", dec(i)},
            {"id", sample.id},
            {"reason",
@@ -186,13 +183,15 @@ Json loss(const std::vector<Sample> &samples, const std::vector<R> &beta,
           {"mean_absolute_error", mean(abs)},
           {"mean_squared_error", mean(squares)}};
 }
-Json predictions(const std::vector<Sample> &samples, const std::vector<R> &beta,
-                 bool intercept, bool has_target, std::int64_t end) {
-  Json out = Json::array();
+logical::Value predictions(const std::vector<Sample> &samples,
+                           const std::vector<R> &beta, bool intercept,
+                           bool has_target, PartitionedOutput *context,
+                           std::int64_t end) {
+  consumer::Rows out(context, "predictions");
   for (const auto &s : samples) {
     deadline(end);
     const auto y = predict_one(s, beta, intercept);
-    out.push_back(
+    out.append(
         {{"source_index", dec(s.index)},
          {"id", s.id},
          {"prediction", w::wire(y)},
@@ -200,26 +199,28 @@ Json predictions(const std::vector<Sample> &samples, const std::vector<R> &beta,
          {"residual", has_target ? w::wire(minus(y, s.y)) : Json(nullptr)},
          {"weight", w::wire(s.weight)}});
   }
-  return out;
+  return out.close();
 }
 Json choices(const Json &p) {
   auto c = p;
   c.erase("output_path");
+  c.erase("output");
   return c;
 }
 void common(Json &r, const Json &p, const Data &d) {
   auto &s = r["sections"];
   s["choices"] = section(choices(p));
-  s["exclusions"] = section(d.excluded);
+  s["exclusions"] = section(nullptr);
   s["user_extensions"] = section(p.at("extensions"));
-  s["provenance"] =
-      section({{"engine_version", version},
-               {"numeric_profile", "checked_exact_rational_128"},
-               {"source_result_sha256", d.source.at("content_sha256")},
-               {"source_pointer", p.at("source").at("pointer")},
-               {"identity_namespace", p.at("identity_namespace")},
-               {"provider_requests", "0"},
-               {"additional_spend_usd", "0"}});
+  s["provenance"] = section({{"engine_version", version},
+                             {"numeric_profile", "checked_exact_rational_128"},
+                             {"source_result_sha256", d.source->outer_digest},
+                             {"source_pointer", d.source->selected_pointer},
+                             {"identity_namespace", p.at("identity_namespace")},
+                             {"provider_requests", "0"},
+                             {"additional_spend_usd", "0"}});
+  if (p.at("source").contains("kind"))
+    s["source_selection"] = section(d.source->reference);
   s["resources"] = section({{"backend", "cpu"}, {"actual_workers", "1"}});
   s["diagnostics"] = section(Json::array(
       {"Features, targets, units, observation identity and weights are caller "
@@ -232,11 +233,14 @@ void common(Json &r, const Json &p, const Data &d) {
        "authorship or external causal claims."}));
 }
 } // namespace
-Json fit(const Json &p, std::int64_t end) {
-  keys(p, {"protocol", "source", "output_path", "features", "target",
-           "id_pointer", "identity_namespace", "input_description", "weights",
-           "intercept", "regularization", "missing", "on_unsolved",
-           "retain_training_predictions", "extensions"});
+static logical::Value fit_body(const Json &p, PartitionedOutput *context,
+                               std::int64_t end) {
+  keys_optional(p,
+                {"protocol", "source", "features", "target", "id_pointer",
+                 "identity_namespace", "input_description", "weights",
+                 "intercept", "regularization", "missing", "on_unsolved",
+                 "retain_training_predictions", "extensions"},
+                {"output_path", "output"});
   features(p.at("features"));
   column(p.at("target"), false);
   need(p.at("intercept").is_boolean() &&
@@ -267,7 +271,7 @@ Json fit(const Json &p, std::int64_t end) {
     need(v.n >= 0, "negative quadratic penalty");
     penalties.push_back(v);
   }
-  auto d = data(p, p.at("features"), p.at("target"), end);
+  auto d = data(p, p.at("features"), p.at("target"), context, end);
   std::vector<std::vector<R>> system(dim, std::vector<R>(dim + 1));
   for (const auto &s : d.samples) {
     deadline(end);
@@ -333,30 +337,32 @@ Json fit(const Json &p, std::int64_t end) {
   if (!reason.empty()) {
     s["model"] = section(nullptr, "unavailable", reason);
     s["training_predictions"] = section(nullptr, "unavailable", reason);
-    return persist(std::move(r), p, "fit", end);
+    return logical::Value(r).with(
+        "sections", logical::Value(s).with(
+                        "exclusions", consumer::section(d.excluded.close())));
   }
   std::vector<R> beta(dim);
   for (std::size_t i = 0; i < dim; ++i)
     beta[pivots[i]] = system[i][dim];
-  Json coefficients = Json::array(), ids = Json::array();
+  Json coefficients = Json::array();
+  consumer::Rows ids(context, "training-identities");
   for (auto v : beta)
     coefficients.push_back(w::wire(v));
   for (const auto &row : d.samples)
-    ids.push_back(row.id);
-  s["model"] =
-      section({{"protocol", "symphony.sbv.linear-model.v1"},
-               {"method", "penalized_linear_normal_equations_v1"},
-               {"features", p.at("features")},
-               {"target", p.at("target")},
-               {"intercept", intercept},
-               {"coefficients", coefficients},
-               {"regularization", reg},
-               {"weights", p.at("weights")},
-               {"training",
-                {{"source_result_sha256", d.source.at("content_sha256")},
-                 {"source_pointer", p.at("source").at("pointer")},
-                 {"identity_namespace", p.at("identity_namespace")},
-                 {"observation_ids", ids}}}});
+    ids.append(Json(row.id));
+  s["model"] = section({{"protocol", "symphony.sbv.linear-model.v1"},
+                        {"method", "penalized_linear_normal_equations_v1"},
+                        {"features", p.at("features")},
+                        {"target", p.at("target")},
+                        {"intercept", intercept},
+                        {"coefficients", coefficients},
+                        {"regularization", reg},
+                        {"weights", p.at("weights")},
+                        {"training",
+                         {{"source_result_sha256", d.source->outer_digest},
+                          {"source_pointer", d.source->selected_pointer},
+                          {"identity_namespace", p.at("identity_namespace")},
+                          {"observation_ids", nullptr}}}});
   auto errors = loss(d.samples, beta, intercept, end);
   R penalty{};
   for (std::size_t i = 0; i < dim; ++i)
@@ -366,17 +372,33 @@ Json fit(const Json &p, std::int64_t end) {
   errors["objective_value"] = w::wire(
       w::plus(w::artifact(errors.at("weighted_squared_error_sum")), penalty));
   s["fit_diagnostics"] = section(errors);
-  s["training_predictions"] =
+  auto model = logical::Value(s.at("model"));
+  auto training =
+      model.at("data").at("training").with("observation_ids", ids.close());
+  if (p.at("source").contains("kind"))
+    training =
+        training.with("source_selection", logical::Value(d.source->reference));
+  model = model.with("data", model.at("data").with("training", training));
+  const auto prediction_rows =
       p.at("retain_training_predictions").get<bool>()
-          ? section(predictions(d.samples, beta, intercept, true, end))
-          : section(nullptr, "not_selected",
-                    "training predictions not selected");
-  return persist(std::move(r), p, "fit", end);
+          ? consumer::section(
+                predictions(d.samples, beta, intercept, true, context, end))
+          : consumer::section(logical::Value(Json(nullptr)), "not_selected",
+                              "training predictions not selected");
+  return logical::Value(r).with(
+      "sections",
+      logical::Value(s)
+          .with("model", model)
+          .with("training_predictions", prediction_rows)
+          .with("exclusions", consumer::section(d.excluded.close())));
 }
-Json predict(const Json &p, std::int64_t end) {
-  keys(p, {"protocol", "model", "source", "output_path", "features", "target",
-           "id_pointer", "identity_namespace", "input_description", "weights",
-           "missing", "purpose", "studies", "extensions"});
+static logical::Value predict_body(const Json &p, PartitionedOutput *context,
+                                   std::int64_t end) {
+  keys_optional(p,
+                {"protocol", "model", "source", "features", "target",
+                 "id_pointer", "identity_namespace", "input_description",
+                 "weights", "missing", "purpose", "studies", "extensions"},
+                {"output_path", "output"});
   features(p.at("features"));
   if (!p.at("target").is_null())
     column(p.at("target"), false);
@@ -386,9 +408,15 @@ Json predict(const Json &p, std::int64_t end) {
        "prediction study selection required");
   for (const auto &x : p.at("studies"))
     need(x == "regression_errors", "unknown prediction study");
-  auto model_source = load(p.at("model"), end);
-  const auto *m = point(model_source, str(p.at("model").at("pointer")));
-  need(m != nullptr, "model pointer missing");
+  auto model_source = consumer::value_source(p.at("model"), end);
+  const auto model_value = model_source.value;
+  const auto training_value = model_value.at("training");
+  const auto model_metadata_value =
+      model_value
+          .with("training", training_value.with("observation_ids",
+                                                logical::Value(Json(nullptr))))
+          .materialize();
+  const auto *m = &model_metadata_value;
   keys(*m, {"protocol", "method", "features", "target", "intercept",
             "coefficients", "regularization", "weights", "training"});
   need(m->at("protocol") == "symphony.sbv.linear-model.v1" &&
@@ -399,8 +427,10 @@ Json predict(const Json &p, std::int64_t end) {
   column(m->at("target"), false);
   model_metadata(*m);
   const auto &train = m->at("training");
-  keys(train, {"source_result_sha256", "source_pointer", "identity_namespace",
-               "observation_ids"});
+  keys_optional(train,
+                {"source_result_sha256", "source_pointer", "identity_namespace",
+                 "observation_ids"},
+                {"source_selection"});
   text_field(train.at("identity_namespace"));
   const auto digest = str(train.at("source_result_sha256"));
   need(digest.size() == 64 && std::all_of(digest.begin(), digest.end(),
@@ -409,10 +439,35 @@ Json predict(const Json &p, std::int64_t end) {
                                                    (c >= 'a' && c <= 'f');
                                           }),
        "invalid model training digest");
-  (void)point(Json::object(), str(train.at("source_pointer")));
-  need(train.at("observation_ids").is_array(), "training identities required");
+  if (!train.at("source_pointer").is_null())
+    (void)Json::json_pointer(str(train.at("source_pointer")));
+  else
+    need(train.contains("source_selection"),
+         "node-selected training source requires exact selection");
+  if (train.contains("source_selection")) {
+    const auto &reference = train.at("source_selection");
+    auto selection = reference;
+    for (auto key :
+         {"selected_node_id", "selected_value_sha256",
+          "selected_content_sha256", "verification_extent", "authorship"})
+      selection.erase(key);
+    validate_logical_reference_lineage(selection, reference);
+    const auto &selector = selection.at("selector");
+    const auto pointer = selector.at("kind") == "pointer"
+                             ? selector.at("pointer")
+                             : Json(nullptr);
+    need(selection.at("reference").at("content_sha256") ==
+                 train.at("source_result_sha256") &&
+             pointer == train.at("source_pointer"),
+         "model training selection identity mismatch");
+  }
+  need(training_value.at("observation_ids").kind() == "array",
+       "training identities required");
   std::set<std::string> trained;
-  for (const auto &id : train.at("observation_ids")) {
+  auto training_ids = training_value.at("observation_ids").children();
+  while (auto row = training_ids.next()) {
+    deadline(end);
+    const auto id = row->value.materialize();
     text_field(id, 256);
     need(trained.insert(str(id)).second, "duplicate training identity");
   }
@@ -440,23 +495,22 @@ Json predict(const Json &p, std::int64_t end) {
   if (target)
     need(p.at("target").at("unit") == m->at("target").at("unit"),
          "prediction target unit mismatch");
-  auto d = data(p, fs, p.at("target"), end);
+  auto d = data(p, fs, p.at("target"), context, end);
   auto r = base("native linear-model prediction");
   common(r, p, d);
   auto &s = r["sections"];
-  s["predictions"] =
-      section(predictions(d.samples, beta, intercept, target, end));
+  auto predicted =
+      predictions(d.samples, beta, intercept, target, context, end);
   const bool comparable =
       train.at("identity_namespace") == p.at("identity_namespace");
-  Json reused = Json::array();
+  consumer::Rows reused(context, "training-overlap");
   if (comparable)
     for (const auto &sample : d.samples)
       if (trained.contains(sample.id))
-        reused.push_back(
-            {{"source_index", dec(sample.index)}, {"id", sample.id}});
+        reused.append({{"source_index", dec(sample.index)}, {"id", sample.id}});
   s["training_overlap"] = section(
       {{"identity_comparable", comparable},
-       {"reused_observations", comparable ? reused : Json(nullptr)},
+       {"reused_observations", nullptr},
        {"reused_count", comparable ? Json(dec(reused.size())) : Json(nullptr)},
        {"scope", "caller-defined identity namespace; not complete "
                  "feature/label overlap or cross-run access history"}});
@@ -467,9 +521,9 @@ Json predict(const Json &p, std::int64_t end) {
                           {"purpose", p.at("purpose")},
                           {"prediction_unit", m->at("target").at("unit")}});
   s["model_reference"] =
-      section({{"result_sha256", model_source.at("content_sha256")},
-               {"pointer", p.at("model").at("pointer")},
-               {"training", train},
+      section({{"result_sha256", model_source.outer_digest},
+               {"pointer", model_source.selected_pointer},
+               {"training", nullptr},
                {"resolved_feature_mapping", fs},
                {"authorship", "supplied artifact; fitting provenance not "
                               "authenticated or recomputed"}});
@@ -485,6 +539,51 @@ Json predict(const Json &p, std::int64_t end) {
       "Purpose is a user label, not a claim of untouched holdout data. Reused "
       "IDs are disclosed without refusing exploratory reuse; different "
       "namespaces make overlap unknown.");
-  return persist(std::move(r), p, "predict", end);
+  auto model_reference =
+      logical::Value(s.at("model_reference"))
+          .with("data", logical::Value(s.at("model_reference").at("data"))
+                            .with("training", training_value));
+  if (p.at("model").contains("kind"))
+    model_reference = model_reference.with(
+        "data",
+        model_reference.at("data").with(
+            "source_selection", logical::Value(model_source.reference)));
+  return logical::Value(r).with(
+      "sections",
+      logical::Value(s)
+          .with("predictions", consumer::section(predicted))
+          .with("exclusions", consumer::section(d.excluded.close()))
+          .with("model_reference", model_reference)
+          .with("training_overlap",
+                logical::Value(s.at("training_overlap"))
+                    .with("data",
+                          logical::Value(s.at("training_overlap").at("data"))
+                              .with("reused_observations",
+                                    comparable
+                                        ? reused.close()
+                                        : logical::Value(Json(nullptr))))));
+}
+Json fit(const Json &p, std::int64_t end) {
+  need(p.contains("output") != p.contains("output_path"),
+       "select exactly one fit output");
+  if (p.contains("output"))
+    return partitioned_result(p, "fit", end, [&](PartitionedOutput &context) {
+      return fit_body(p, &context, end);
+    });
+  return persist(
+      fit_body(p, nullptr, end).materialize({artifact_bytes, artifact_values}),
+      p, "fit", end);
+}
+Json predict(const Json &p, std::int64_t end) {
+  need(p.contains("output") != p.contains("output_path"),
+       "select exactly one predict output");
+  if (p.contains("output"))
+    return partitioned_result(p, "predict", end,
+                              [&](PartitionedOutput &context) {
+                                return predict_body(p, &context, end);
+                              });
+  return persist(predict_body(p, nullptr, end)
+                     .materialize({artifact_bytes, artifact_values}),
+                 p, "predict", end);
 }
 } // namespace symphony::sbv::detail
