@@ -1,5 +1,75 @@
 # SBV implementation validation
 
+## Experimental 0.24 — R3.3 closure and selected R4 candidate acceptance
+
+R3.3's eighteen resource/consumer exits and all required selected R4 gates pass.
+M1 is accepted within the original local native candidate scope: WP01–WP09,
+the CPU/resource baseline of WP10 and capability-only WP11, extended by the
+selected scalable-result work. Every already shipped research operation remains
+in regression scope. Of the 96 original cases, 91 pass within their recorded
+profiles and five positive advanced capabilities remain explicitly deferred;
+all ten supplemental cases pass. Full M2/M3 completion is not claimed.
+
+Caller-owned concurrency, optional RAM admission and no default deadline remain
+available without an engine-imposed dataset capacity ceiling. R3.3 adds
+partitioned experiment children and referenced plans, immutable prepared views,
+larger book/research/model/history consumers, and native private exact scalar
+study formulas. Named legacy/control/numerical profiles remain explicit rather
+than silently becoming global limits. qxctl exposes all 37 native operations
+through 40 SBV leaves, with matching portable headless SDK result access.
+
+All 45 Release CTest entries pass. Selected ASan/UBSan checks pass after a
+test-only incidental deadline repair; the original failure remains retained.
+Leak detection was disabled. Every SBV Go test and registry check passes, with
+zero SBV skips; 62 unrelated environment/fixture skips remain disclosed in the
+joined suite outcomes. Installed C11 provider/C/C++ SDK/interop consumers, shared
+process and SQAV decoder boundaries, lifecycle/version isolation, actual killed
+child reconciliation and interrupted export checks pass.
+
+The independent 65,537-signal mechanical chain verifies all 25 selected
+scientific arrays through run, two models, two economics results and composition,
+with complete retained source/replay closure. Its run contains
+148072342 logical body bytes and
+6291737 exported value nodes. Complete qxctl
+JSON/text/NDJSON and SDK exports match independent expected bytes and every
+exported node. Six retained Databento AAPL/ESZ6 chains have matching scientific
+counts and hashes across file, retained-owner and RAM feeds. Original samples
+are unchanged and their partial book initialization remains explicit.
+
+Private exact formulas include a qualified profit-factor recipe: 7/1 for the
+selected P&L series, with caller-selected unavailable or rejection behavior for
+zero losses. Sixty-five actual trials and a mixed six-trial dependency graph
+complete and reuse their immutable receipts without re-execution. Forty-eight
+equal-science performance runs cover 102 calls, including preload, complete
+production/export and release; RAM jobs perform zero additional source reads or
+decodes. Measurements on the contended 16 GiB host do not establish isolated
+scaling, terabyte/cluster capacity, device execution or peer speed rankings.
+
+Native compilation used `f0d2f8de9658f18fd5a13ea2591219104764263e`.
+The final schema/client identity is `d077d5c9406258a7528d6440c27db1331b512c16`;
+`3e30235dc8c62f7b9539533dc0c1aeb0d1ef04fa` adds source-ledger reconciliation and
+the semantic-test repair. Unchanged production native bytes are carried across
+fresh installation/client refinements with explicit identities. The source
+validator at that implementation closure reports 17,004 passes, four historical
+warnings and zero violations. This later note is a documentation-only carrier.
+
+The external `implementation/sbv-candidate-qualification` packet contains the
+original-case adjudication, current 18-package assessment, exact build/test
+identities, failures and superseding evidence, measurements and milestone
+decision. Its ARTIFACTS index SHA-256 is `673faafa34821c96c7271bd577d5ec994c544b7018ccea3b753e9290c7beb957`;
+RESULTS index SHA-256 is `6951b59a4e1f9fd929e74f71db2f97153432301d682c49ef7083d5f89025e462`. R3.3 has its separate
+verified seal in `implementation/sbv-resource-continuity`. Prior preservation
+checks cover 9,122 records with zero new discrepancies; the previously disclosed
+post-seal PRODUCER_MIGRATION.md drift remains recorded, not rewritten.
+
+Remaining work is explicitly tracked as user-selected R5/M2 research/model and
+performance breadth, then R6/M3 stateful/remote scope. The five deferred positive
+cases concern general feedback, economic-vintage integration, protected export,
+new-acquisition budget enforcement and controlled peer comparison. Calibration,
+device/live integration and broader platform lanes retain their actual owner
+dependencies. No new provider acquisition, live call, spending, push or merge
+occurred during this campaign.
+
 ## Experimental 0.23 — selected R3.2 qualification
 
 The existing native source at `295a2665f98da9ae9fdc1c9f71f6e24f849561ab` passed the selected R3.2 scientific and complete-access gates. The installed 65,537-signal mechanical chain completed run, two fixed-census models, two heterogeneous economics selections and a twelve-path composition. Independent raw-DBN/Fraction checks verified all selected scientific arrays and complete retained source/replay closure.
