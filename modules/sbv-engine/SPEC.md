@@ -2,7 +2,7 @@
 
 ## Version and ownership
 
-Contract v1; package `sbv-engine` 0.25.0-dev; engine `symphony-sbv`; vector `sbv`. C++26 owns computations, result sealing and artifact queries. Go qxctl verifies the exact installation and projects native evidence. OWNER-INTERFACE.json is the exact operation declaration; generated C++/Go metadata must match it. This release is experimental.
+Contract v1; package `sbv-engine` 0.26.0-dev; engine `symphony-sbv`; vector `sbv`. C++26 owns computations, result sealing and artifact queries. Go qxctl verifies the exact installation and projects native evidence. OWNER-INTERFACE.json is the exact operation declaration; generated C++/Go metadata must match it. This release is experimental.
 
 The engine uses knowledge-vector-engine-cpp 0.2.0-dev and sqav-databento-dbn-cpp 0.5.0-dev, with that adapter's exact static dependencies. It performs no data-provider network calls. Signal/replay semantics belong to SBV; acquisition remains SQAV, metadata SQMV, batch ownership SQFV, transformation SQTV, physical stores SQPV and recipient delivery SQDV. Its portable local JSON result is a derived artifact, not a new market-data persistence service. An optional offline retained-source route composes SQAV capture 0.2.0-dev, SQMV 0.2.0-dev, SQFV 0.3.0-dev, SQPV 0.2.0-dev and SQDV 0.3.0-dev under the selected profile described below.
 
@@ -1003,3 +1003,81 @@ under caller-selected unbounded use. qxctl SIGINT/SIGTERM cancels its foreground
 native process group; resident work has the explicit separate controls above.
 All four operations, exact schemas/templates and complete JSON/NDJSON/text
 results are available through qxctl and the same native SDK dispatch.
+
+## Queue replay scenarios (0.26, R5.1)
+
+`queue_scenarios` / `qxctl sbv queue-scenarios` consumes an exact admitted
+`databento_mbo_orders_strict_v1` book result. It preserves the source census,
+book frames and replay and produces independent hypothetical passive orders.
+It does not change the strategy census or historically observed quantities.
+Every request field is exposed in the installed schema/template and the same
+native SDK operation. Inline or bundle-referenced orders, latency atoms and
+execution labels are supported; legacy and partitioned output are independent
+choices. Completed artifacts are immutable; changing assumptions creates a new
+artifact with the original source identity retained.
+
+Each order chooses side, integer limit price/quantity, horizon measured from
+signal availability, explicit queue-ahead quantity or the displayed arrival
+queue, and activation probability. Exact finite latency atoms carry unique IDs,
+nonnegative delays and probabilities summing to one. There is no normalization,
+random sampling or hidden seed. Alternative externally generated latency tapes
+use this same interface. Existing native-provider and external-outcome contracts
+remain alternate model-authoring routes; this built-in queue profile is not a
+universal contract for those providers.
+
+Arrival occurs after every retained event at the same `ts_recv`, and requires
+an initialized complete frame at the last such source ordinal. Passive orders
+that cross the arrival book are unavailable in this profile; the separately
+selectable sweep model handles aggressive snapshot orders. A missing queue
+level beyond retained depth is unavailable unless explicit queue-ahead quantity
+is supplied. Contiguous replay from the signal through the horizon (including
+the next retained event when present) is required. An initialized frame is still
+an interpretation of its source, not proof of live-market completeness.
+
+Exactly one service action (`T` or `F`) and an explicit same/opposite/any side
+rule determine which exact-price events provide hypothetical service volume.
+FIFO serves the queue ahead before the order. Pro-rata gives the order
+`min(remaining, floor(service * remaining / (ahead + remaining)))`; the
+remainder serves queue ahead up to its remaining size. Unused service is
+retained. Fractional C advancement and A replenishment are floored per event.
+These are user assumptions: a nonzero C advancement can overlap trade-related
+cancellations; the engine does not infer a venue's priority or cancellation
+attribution. Modifications are either explicitly ignored or make the scenario
+unavailable. Reset either makes the scenario unavailable or cancels the
+remaining hypothetical order while preserving prior modeled fills. Gap,
+snapshot and unsupported flags produce unavailable evidence; receive-time
+flags follow the selected policy.
+
+The scenario table retains latency mass, arrival/horizon, frame coordinate,
+first/last fill time, individual fills and queue/service conservation terms.
+Each row is conditional on the selected order being active. The execution table
+combines exact latency mass with the selected activation probability into
+any/full/no-fill probabilities and expected filled quantity. Any nonzero
+unavailable latency mass makes these summaries unavailable, without dropping
+or renormalizing it. No-fill after a selected horizon or arrival after horizon
+is distinct from missing evidence. Zero-weight rows remain inspectable.
+
+`execution_labels` is optional. Caller-declared provenance, domain, permission,
+training identities, partition, filled quantity and horizon accompany every
+selected label table. An exact Brier score for any-fill is computed only for
+selected held-out observations with matching domains/horizons, valid quantities,
+available predictions and no declared training overlap (label/order/signal
+identity). Training rows are indexed before scoring so row order cannot hide
+reuse. Invalid evidence follows the caller's reject/unavailable choice. Synthetic
+labels remain synthetic; external permission, authenticity and completeness of
+training history remain declarations. Neither admission nor a Brier score
+establishes learned calibration, independence or deployment applicability.
+
+Orders run independently across selected CPU workers and merge in order/tape
+order. No aggregate order/latency/dataset policy ceiling or default deadline is
+added. Quantities/times use checked uint64 representation; probabilities and
+moments use checked signed 128-bit exact rationals. Representation overflow
+fails explicitly. The retained replay/frame/census indexes and order/latency
+vectors reside in memory; each scenario's fill trace is materialized before
+spooling. This is not a bounded-RSS or terabyte/cluster qualification claim.
+
+This increment does not extend the snapshot-specific `allocation_economics`
+consumer to queue distributions. Portfolio/shared-capital and queue economics
+remain a named integration for the stateful/account lane; exported typed fills
+and exact masses are available to external consumers immediately. M2/M3 remain
+open under `M2-M3-READINESS.json`.

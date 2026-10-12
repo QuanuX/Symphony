@@ -157,6 +157,7 @@ static logical::Value experiment_body(const Json &p, PartitionedOutput *context,
                                          "economics",
                                          "book",
                                          "liquidity",
+                                         "queue_scenarios",
                                          "allocation_economics",
                                          "analyze",
                                          "compare",
@@ -197,6 +198,7 @@ static logical::Value experiment_body(const Json &p, PartitionedOutput *context,
                  operation == "dataset_execute" || operation == "analyze" ||
                  operation == "resample" || operation == "split" ||
                  operation == "book" || operation == "liquidity" ||
+                 operation == "queue_scenarios" ||
                  operation == "allocation_economics" || operation == "fit" ||
                  operation == "predict" || operation == "compare" ||
                  operation == "research_history" ||

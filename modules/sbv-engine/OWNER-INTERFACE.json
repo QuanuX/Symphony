@@ -3,9 +3,9 @@
   "module_id": "sbv-engine",
   "engine_id": "symphony-sbv",
   "namespace": "symphony::sbv::interface",
-  "current_version": "0.25.0-dev",
+  "current_version": "0.26.0-dev",
   "releases": {
-    "0.25.0-dev": [
+    "0.26.0-dev": [
       "capabilities",
       "run",
       "compose",
@@ -46,7 +46,8 @@
       "dataset_jobs",
       "dataset_cancel",
       "dataset_configure",
-      "dataset_stop"
+      "dataset_stop",
+      "queue_scenarios"
     ]
   },
   "contract_versions": [
@@ -134,6 +135,8 @@
     "symphony.sbv.dataset-configure.v1",
     "symphony.sbv.dataset-stop-input.v1",
     "symphony.sbv.dataset-stop.v1",
+    "symphony.sbv.queue-scenarios-input.v1",
+    "symphony.sbv.queue-scenarios.v1",
     "symphony.sbv.linear-model.v1",
     "symphony.sbv.census-evidence.v1",
     "symphony.sbv.native-provider-census.v1",
@@ -1013,6 +1016,27 @@
       "operation_name": "dataset_stop",
       "output_protocol": "symphony.sbv.dataset-stop.v1",
       "recovery_operation_id": "engop:symphony:sbv.dataset-inspect",
+      "thermal_path": "freezing"
+    },
+    {
+      "administration_disposition": "qxctl_required",
+      "administrative_interactions": [
+        "invoke"
+      ],
+      "authorization_requirement": "target_host_permission",
+      "availability": "implemented",
+      "direct_invocation": "supported",
+      "engine_operation_id": "engop:symphony:sbv.queue-scenarios",
+      "expected_state_required": false,
+      "feature_ids": [
+        "ssfv:symphony:sbv-engine"
+      ],
+      "idempotency": "non_idempotent",
+      "input_protocol": "symphony.sbv.queue-scenarios-input.v1",
+      "mutability": "permission_backed_mutation",
+      "operation_name": "queue_scenarios",
+      "output_protocol": "symphony.sbv.queue-scenarios.v1",
+      "recovery_operation_id": "engop:symphony:sbv.result-inspect",
       "thermal_path": "freezing"
     }
   ],

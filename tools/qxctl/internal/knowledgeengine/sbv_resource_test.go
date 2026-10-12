@@ -49,7 +49,7 @@ func TestSBVInstalledResourceAdmission(t *testing.T) {
 			t.Fatalf("discoverable combined schema %s: %v", op, err)
 		}
 	}
-	partitioned := []string{"run", "generate_census", "evaluate", "economics", "compose_economics", "dataset_execute", "experiment", "result_select", "analyze", "resample", "split", "book", "liquidity", "allocation_economics", "fit", "predict", "compare", "research_history"}
+	partitioned := []string{"run", "generate_census", "evaluate", "economics", "compose_economics", "dataset_execute", "experiment", "result_select", "analyze", "resample", "split", "book", "liquidity", "queue_scenarios", "allocation_economics", "fit", "predict", "compare", "research_history"}
 	for _, op := range partitioned {
 		_, raw, err := SBVTemplateVariant(prefix, SBVAdministrationInterfaceVersion, op, "partitioned")
 		if err != nil {

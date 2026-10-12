@@ -4971,6 +4971,45 @@
       "json_output": true
     },
     {
+      "command_id": "qxcmd:symphony:sbv.queue.scenarios",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl sbv queue-scenarios [--deadline-unix-ms VALUE] [--format VALUE] [--input VALUE] [--json] [--prefix VALUE] [--timeout VALUE] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl-sbv-administration",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:sbv-engine",
+          "interaction": "invoke"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:sbv.queue-scenarios"
+      ],
+      "mutability": "read_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.sbv.queue-scenarios-input.v1"
+      ],
+      "output_protocols": [
+        "symphony.sbv.queue-scenarios.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.sbv.queue-scenarios.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
       "command_id": "qxcmd:symphony:sbv.resample",
       "status": "experimental",
       "introduced_in": "0.1.0-dev",
@@ -20860,5 +20899,5 @@
       "json_output": true
     }
   ],
-  "registry_digest": "sha256:26e630af406a727c0c00c10ef3002b9977ab1603a4374a1aa5c1bd565d3d33e8"
+  "registry_digest": "sha256:d63227f250f6c6990413956e0e56492db0e48416529b221acd60562e3d7af94e"
 }

@@ -1488,3 +1488,8 @@
 SCV index transfer adds exact-plan execution, journal-only inspection and recoverable replay under `knowledge/scv/INDEX-TRANSFER.md`. Native C++ prepare/commit owners remain unchanged; qxctl retains only durable copy progress and independently checks target evidence.
 
 `scv graph-index schema` lists or returns exact native receipt-owned and separately embedded qxctl orchestration definitions. Discovery labels ownership and file digests and never substitutes a newer connector profile.
+
+`qxctl sbv queue-scenarios` selects the native 0.26 latency/queue model, all
+scientific/evidence/resource choices, and legacy or partitioned output through
+the exact installed request contract. Its schema/template and complete
+text/JSON/NDJSON results share the existing native result access paths.

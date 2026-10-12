@@ -995,6 +995,7 @@
             "qxcmd:symphony:sbv.liquidity",
             "qxcmd:symphony:sbv.live.plan",
             "qxcmd:symphony:sbv.predict",
+            "qxcmd:symphony:sbv.queue.scenarios",
             "qxcmd:symphony:sbv.resample",
             "qxcmd:symphony:sbv.research.history",
             "qxcmd:symphony:sbv.run",
@@ -1028,6 +1029,7 @@
             "engop:symphony:sbv.liquidity",
             "engop:symphony:sbv.live-plan",
             "engop:symphony:sbv.predict",
+            "engop:symphony:sbv.queue-scenarios",
             "engop:symphony:sbv.resample",
             "engop:symphony:sbv.research-history",
             "engop:symphony:sbv.run",
@@ -2964,6 +2966,7 @@
             "qxcmd:symphony:sbv.liquidity",
             "qxcmd:symphony:sbv.live.plan",
             "qxcmd:symphony:sbv.predict",
+            "qxcmd:symphony:sbv.queue.scenarios",
             "qxcmd:symphony:sbv.resample",
             "qxcmd:symphony:sbv.research.history",
             "qxcmd:symphony:sbv.run",
@@ -2997,6 +3000,7 @@
             "engop:symphony:sbv.liquidity",
             "engop:symphony:sbv.live-plan",
             "engop:symphony:sbv.predict",
+            "engop:symphony:sbv.queue-scenarios",
             "engop:symphony:sbv.resample",
             "engop:symphony:sbv.research-history",
             "engop:symphony:sbv.run",
@@ -9830,5 +9834,5 @@
   "protocol": "symphony.knowledge.feature-administration-profile.v1",
   "registered_feature_count": 141,
   "ssfv_registry_digest": "sha256:0fc3b44c4ecab65e728ed505bce3e41499c348fcebd07a72eb001393a1b86e2b",
-  "profile_digest": "sha256:c1f697894443f01993e9ce4437bd69b9394c3401c2cc81bcb05eddf640d700df"
+  "profile_digest": "sha256:2dc08fff79e74ad5b1e0c945a6013100b3a136b8a3c26dd0fc0be3bddcee01f3"
 }

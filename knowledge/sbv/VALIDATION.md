@@ -106,3 +106,29 @@ Eight installed SBV tests and focused CLI registry/parity/feature-binding/render
 Five final samples retain original signals, execution arrays, raw replay, reconstructed frames/checkpoints and nested source choices/provenance. Independent readers match all 16,308 exported nodes. Mechanical DBN-derived independent/shared/FOK cases produce net markouts [90,90], [90,28], [-1,90] under declared hypothetical marks and costs. Actual Databento AAPL/ESZ6 fragments remain unavailable without initialization and preserve their 340/122 replay events. These are scoped correctness checks, not calibration or comparative benchmarks.
 
 Fourteen receipt-owned files pass independent install/uninstall lifecycle checks. Five prior implementation packets, their source overlays/binaries/results, and original research/handoff remain preserved. Source consistency has zero violations; formal M1/source-ledger release closure remains open. Current source is local/uncommitted, main unchanged, no publication, no provider/live calls and no new historical spend.
+
+### R5.1 / 0.26 local focused gate (12 October 2026)
+
+The new native queue suite and affected book, snapshot-liquidity, partitioned
+execution/experiment and administration suites pass. ASan/UBSan queue checks
+pass (leak detection disabled). Twenty-seven focused Go/command-registry checks
+pass without skips. Installed qxctl and independent SDK agree; JSON/text/NDJSON
+preserve all 430 nodes of the mechanical comparison artifact. Legacy/bundle
+sources, referenced input rows and partitioned output preserve scientific rows.
+A three-trial queue experiment (including partitioned output) resumes by reusing
+all receipts with zero repeated execution.
+
+Independent arithmetic checks conditional fill quantities, queue/service mass,
+arrival/horizon ordering, activation probabilities, and a synthetic held-out
+any-fill Brier score. An actual mechanical DBN book reconstruction validates
+flagged-time policy selection and three F-service units without counting T
+again. Retained AAPL/ESZ6 originals are digest-verified and remain unavailable
+for initialized-queue claims. No provider request or spend occurs. All 183
+previous 0.25 packet files match their seal.
+
+Evidence: workspace `implementation/sbv-queue-scenarios/CHECKS.json`,
+`BUILD_IDENTITY.json`, `installed-checks-11/report.json` and source closure.
+Earlier broad qualification remains scoped to its recorded source. R5.4 retains
+the full M2 campaign; R5.2 is next. Actual execution calibration, shared
+liquidity/account economics, remote/device runtime and full M2/M3 acceptance
+remain open.

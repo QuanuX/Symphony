@@ -1,8 +1,8 @@
 {
   "protocol": "symphony.sbv.milestone-readiness.v1",
-  "date": "2026-10-11",
-  "status": "prepared_sequence_not_completed_implementation",
-  "authority": "User requested fixes to the pre-M2/M3 code review and preparation to begin M2–M3. This record proposes the next implementation sequence; it does not close those milestones.",
+  "date": "2026-10-12",
+  "status": "sequence_in_progress",
+  "authority": "User requested proceeding with M2-M3 implementation after publication of 167858c; R5.1 selected scenario and label-admission scope is verified locally. This does not close M2 or M3.",
   "baseline": {
     "selected_M1": "R3.3/R4 0.24 local candidate accepted at 50cedde31cb8c78dcc61845bfe067a1d84eb6026",
     "hardening_release": "0.25.0-dev",
@@ -28,7 +28,7 @@
       "verification": "Stale generation refusal, reject/drain below active demand, unlimited/uint64 selections, reads/decodes unchanged after source deletion."
     }
   ],
-  "next_increment": "R5.1",
+  "next_increment": "R5.2",
   "sequence": [
     {
       "id": "R5.1",
@@ -65,7 +65,11 @@
         "A024",
         "A025",
         "A095"
-      ]
+      ],
+      "status": "verified_selected_scope",
+      "implementation_release": "0.26.0-dev",
+      "evidence": "workspace:implementation/sbv-queue-scenarios/CHECKS.json",
+      "qualification": "Exact latency tapes, FIFO/pro-rata passive queue scenarios, execution-label declarations and held-out any-fill score. No learned calibration, shared liquidity or account/economic integration of queue distributions is claimed."
     },
     {
       "id": "R5.2",
@@ -100,7 +104,8 @@
         "A055",
         "A090",
         "A095"
-      ]
+      ],
+      "status": "prepared_not_started"
     },
     {
       "id": "R5.3",
@@ -139,7 +144,8 @@
         "A084",
         "A092",
         "A095"
-      ]
+      ],
+      "status": "prepared_not_started"
     },
     {
       "id": "R5.4",
@@ -174,7 +180,8 @@
         "A065",
         "A066",
         "A095"
-      ]
+      ],
+      "status": "prepared_not_started"
     },
     {
       "id": "R6.1",
@@ -209,7 +216,8 @@
         "A084",
         "A090",
         "A095"
-      ]
+      ],
+      "status": "prepared_not_started"
     },
     {
       "id": "R6.2",
@@ -241,7 +249,8 @@
         "A084",
         "A094",
         "A095"
-      ]
+      ],
+      "status": "prepared_not_started"
     },
     {
       "id": "R6.3",
@@ -274,7 +283,8 @@
         "A090",
         "A094",
         "A095"
-      ]
+      ],
+      "status": "prepared_not_started"
     }
   ],
   "every_increment_protocol": [

@@ -262,7 +262,7 @@ Json dispatch(const std::string &op, const Json &p, std::int64_t end) {
           {"partitioned_producers",
            Json::array({"run", "generate_census", "evaluate", "economics",
                         "compose_economics", "result_select", "analyze",
-                        "resample", "split", "book", "liquidity",
+                        "resample", "split", "book", "liquidity", "queue_scenarios",
                         "allocation_economics", "fit", "predict", "compare",
                         "research_history", "experiment"})},
           {"partitioned_resident_operations",
@@ -364,6 +364,8 @@ Json dispatch(const std::string &op, const Json &p, std::int64_t end) {
     return d::live_plan(p, end);
   if (op == "allocation_economics")
     return d::allocation_economics(p, end);
+  if (op == "queue_scenarios")
+    return d::queue_scenarios(p, end);
   if (op == "liquidity")
     return d::liquidity(p, end);
   if (op == "book")

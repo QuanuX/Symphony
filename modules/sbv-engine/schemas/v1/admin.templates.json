@@ -1195,6 +1195,59 @@
       "protocol": "symphony.sbv.dataset-stop-input.v1",
       "directory": "/private/tmp/sbv-private",
       "instance_id": "0123456789abcdef0123456789abcdef"
+    },
+    "queue_scenarios": {
+      "protocol": "symphony.sbv.queue-scenarios-input.v1",
+      "path": "/absolute/private/book.json",
+      "expected_sha256": "REPLACE_WITH_CONTENT_SHA256",
+      "output_path": "/absolute/private/new-queue.json",
+      "orders": [
+        {
+          "order_id": "order-0",
+          "signal_id": "signal-0",
+          "side": "buy",
+          "price_nanos": "100000000000",
+          "quantity": "10",
+          "horizon_ns": "1000000000",
+          "initial_queue_ahead": null,
+          "activation_probability": {
+            "numerator": "1",
+            "denominator": "1"
+          }
+        }
+      ],
+      "on_unavailable": "unavailable",
+      "workers": "4",
+      "extensions": {},
+      "latency_atoms": [
+        {
+          "id": "zero-delay",
+          "delay_ns": "0",
+          "weight": {
+            "numerator": "1",
+            "denominator": "1"
+          }
+        }
+      ],
+      "model": {
+        "id": "queue_replay",
+        "version": "1",
+        "priority": "fifo",
+        "service_action": "T",
+        "service_side": "any",
+        "cancel_ahead_fraction": {
+          "numerator": "0",
+          "denominator": "1"
+        },
+        "replenish_ahead_fraction": {
+          "numerator": "0",
+          "denominator": "1"
+        },
+        "on_modify": "unavailable",
+        "on_reset": "unavailable",
+        "receive_time_policy": "unflagged_only"
+      },
+      "execution_labels": null
     }
   },
   "variants": {
@@ -2608,6 +2661,87 @@
           "kind": "partitioned",
           "bundle_path": "/absolute/private/research_history-result",
           "workspace_path": "/absolute/private/research_history-workspace",
+          "write_options": {
+            "page_bytes": "1048576",
+            "index_fanout": "64"
+          },
+          "scratch_read_options": {
+            "max_page_bytes": null,
+            "cache_bytes": "16777216"
+          }
+        }
+      }
+    },
+    "queue_scenarios": {
+      "partitioned": {
+        "protocol": "symphony.sbv.queue-scenarios-input.v1",
+        "orders": [
+          {
+            "order_id": "order-0",
+            "signal_id": "signal-0",
+            "side": "buy",
+            "price_nanos": "100000000000",
+            "quantity": "10",
+            "horizon_ns": "1000000000",
+            "initial_queue_ahead": null,
+            "activation_probability": {
+              "numerator": "1",
+              "denominator": "1"
+            }
+          }
+        ],
+        "on_unavailable": "unavailable",
+        "workers": "4",
+        "extensions": {},
+        "latency_atoms": [
+          {
+            "id": "zero-delay",
+            "delay_ns": "0",
+            "weight": {
+              "numerator": "1",
+              "denominator": "1"
+            }
+          }
+        ],
+        "model": {
+          "id": "queue_replay",
+          "version": "1",
+          "priority": "fifo",
+          "service_action": "T",
+          "service_side": "any",
+          "cancel_ahead_fraction": {
+            "numerator": "0",
+            "denominator": "1"
+          },
+          "replenish_ahead_fraction": {
+            "numerator": "0",
+            "denominator": "1"
+          },
+          "on_modify": "unavailable",
+          "on_reset": "unavailable",
+          "receive_time_policy": "unflagged_only"
+        },
+        "execution_labels": null,
+        "source": {
+          "kind": "bundle",
+          "reference": {
+            "manifest_path": "/absolute/private/input-bundle/manifest.json",
+            "manifest_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+            "content_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+          },
+          "selector": {
+            "kind": "node_id",
+            "node_id": "0"
+          },
+          "read_options": {
+            "max_page_bytes": null,
+            "cache_bytes": "8388608"
+          }
+        },
+        "output": {
+          "kind": "partitioned",
+          "bundle_path": "/absolute/private/liquidity-result",
+          "workspace_path": "/absolute/private/liquidity-workspace",
           "write_options": {
             "page_bytes": "1048576",
             "index_fanout": "64"

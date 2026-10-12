@@ -13,7 +13,7 @@ import (
 	"strings"
 )
 
-var SBVOperations = []string{"capabilities", "run", "compose", "result_inspect", "result_query", "evaluate", "catalogue", "compose_joint", "economics", "book", "liquidity", "allocation_economics", "result_select", "backend_plan", "live_plan", "analyze", "compare", "resample", "experiment", "split", "fit", "predict", "source_retain", "source_export", "generate_census", "provider_inspect", "compose_economics", "research_history", "dataset_load", "dataset_inspect", "dataset_execute", "dataset_release", "dataset_jobs", "dataset_cancel", "dataset_configure", "dataset_stop", "bundle_import", "bundle_inspect", "bundle_query", "bundle_verify", "bundle_export"}
+var SBVOperations = []string{"capabilities", "run", "compose", "result_inspect", "result_query", "evaluate", "catalogue", "compose_joint", "economics", "book", "liquidity", "queue_scenarios", "allocation_economics", "result_select", "backend_plan", "live_plan", "analyze", "compare", "resample", "experiment", "split", "fit", "predict", "source_retain", "source_export", "generate_census", "provider_inspect", "compose_economics", "research_history", "dataset_load", "dataset_inspect", "dataset_execute", "dataset_release", "dataset_jobs", "dataset_cancel", "dataset_configure", "dataset_stop", "bundle_import", "bundle_inspect", "bundle_query", "bundle_verify", "bundle_export"}
 var sbvSHA = regexp.MustCompile(`^[0-9a-f]{64}$`)
 
 func sbvSpec() engineSpec {
@@ -377,7 +377,7 @@ func validateSBVResult(op string, p map[string]any, raw []byte) error {
 		storage := map[string]any{"legacy": "symphony.sbv.result.v1", "partitioned": "symphony.sbv.partitioned-result.v1",
 			"page": "symphony.sbv.result-page.v1", "stream": "symphony.sbv.node-stream.v1", "max_bundle_bytes": nil, "max_bundle_nodes": nil,
 			"logical_identity": "canonical_result_body_sha256", "physical_identity": "exact_manifest_sha256", "core_producers": "explicit_legacy_or_partitioned",
-			"partitioned_producers":           []any{"run", "generate_census", "evaluate", "economics", "compose_economics", "result_select", "analyze", "resample", "split", "book", "liquidity", "allocation_economics", "fit", "predict", "compare", "research_history", "experiment"},
+			"partitioned_producers":           []any{"run", "generate_census", "evaluate", "economics", "compose_economics", "result_select", "analyze", "resample", "split", "book", "liquidity", "queue_scenarios", "allocation_economics", "fit", "predict", "compare", "research_history", "experiment"},
 			"partitioned_resident_operations": []any{"run", "generate_census", "evaluate", "book"}}
 		if !reflect.DeepEqual(m["result_storage"], storage) {
 			return bad()
@@ -392,7 +392,7 @@ func validateSBVResult(op string, p map[string]any, raw []byte) error {
 				return bad()
 			}
 		}
-	case "run", "compose", "evaluate", "compose_joint", "economics", "book", "liquidity", "allocation_economics", "analyze", "compare", "resample", "experiment", "split", "fit", "predict", "source_retain", "source_export", "generate_census", "compose_economics", "research_history", "dataset_execute", "result_inspect":
+	case "run", "compose", "evaluate", "compose_joint", "economics", "book", "liquidity", "queue_scenarios", "allocation_economics", "analyze", "compare", "resample", "experiment", "split", "fit", "predict", "source_retain", "source_export", "generate_census", "compose_economics", "research_history", "dataset_execute", "result_inspect":
 		target := "output_path"
 		if op == "source_export" {
 			target = "receipt_path"

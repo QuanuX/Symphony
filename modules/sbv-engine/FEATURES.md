@@ -197,3 +197,9 @@
 <!-- symphony:ssfv:feature-file:v1:end -->
 
 Experimental 0.17 adds explicit local experiment dependencies and immutable result-reference bindings for split/fit/predict graphs. Resolved claims, parent receipts, blocked states and stable wave order are terminal-queryable; exact-plan reconciliation reuses completed trials. See SPEC.md for scope and remaining orchestration work.
+
+Experimental 0.26 adds `queue_scenarios`: fixed-census exact latency tapes,
+FIFO/pro-rata passive queue scenarios, partial/no fills, explicit C/A/M/reset
+assumptions and optional declared execution-label/held-out Brier assessment.
+All choices and retained results are native SDK/qxctl accessible; no calibrated
+market, shared-capital or complete M2/M3 claim is made.
