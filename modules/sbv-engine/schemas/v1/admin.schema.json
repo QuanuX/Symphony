@@ -21431,6 +21431,10 @@
             "request": {},
             "output_path": {
               "type": "string"
+            },
+            "job_id": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_.-]{1,128}$"
             }
           },
           "required": [
@@ -21561,6 +21565,10 @@
               ],
               "additionalProperties": false,
               "description": "Explicit partitioned output; new private workspace and final bundle must be disjoint. Scratch remains caller-owned on success/failure. No implicit fallback, cleanup, retry or default deadline."
+            },
+            "job_id": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_.-]{1,128}$"
             }
           },
           "required": [
@@ -28280,6 +28288,158 @@
         "extensions"
       ],
       "additionalProperties": false
+    },
+    "dataset_jobs": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.dataset-jobs-input.v1"
+        },
+        "directory": {
+          "type": "string"
+        },
+        "instance_id": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{32}$"
+        },
+        "job_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_.-]{1,128}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "after_sequence": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$"
+        },
+        "limit": {
+          "type": "string",
+          "pattern": "^[1-9][0-9]*$"
+        }
+      },
+      "required": [
+        "protocol",
+        "directory",
+        "instance_id",
+        "job_id",
+        "after_sequence",
+        "limit"
+      ],
+      "additionalProperties": false
+    },
+    "dataset_cancel": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.dataset-cancel-input.v1"
+        },
+        "directory": {
+          "type": "string"
+        },
+        "instance_id": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{32}$"
+        },
+        "job_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_.-]{1,128}$"
+        }
+      },
+      "required": [
+        "protocol",
+        "directory",
+        "instance_id",
+        "job_id"
+      ],
+      "additionalProperties": false
+    },
+    "dataset_configure": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.dataset-configure-input.v1"
+        },
+        "directory": {
+          "type": "string"
+        },
+        "instance_id": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{32}$"
+        },
+        "expected_generation": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$"
+        },
+        "max_concurrent_jobs": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[1-9][0-9]*$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "worker_budget": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[1-9][0-9]*$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "idle_timeout_ms": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$"
+        },
+        "on_active_over_limit": {
+          "enum": [
+            "reject",
+            "drain"
+          ]
+        }
+      },
+      "required": [
+        "protocol",
+        "directory",
+        "instance_id",
+        "expected_generation",
+        "max_concurrent_jobs",
+        "worker_budget",
+        "idle_timeout_ms",
+        "on_active_over_limit"
+      ],
+      "additionalProperties": false
+    },
+    "dataset_stop": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.dataset-stop-input.v1"
+        },
+        "directory": {
+          "type": "string"
+        },
+        "instance_id": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{32}$"
+        }
+      },
+      "required": [
+        "protocol",
+        "directory",
+        "instance_id"
+      ],
+      "additionalProperties": false
     }
   },
   "results": {
@@ -28290,7 +28450,7 @@
           "const": "symphony.sbv.capabilities.v1"
         },
         "engine_version": {
-          "const": "0.24.0-dev"
+          "const": "0.25.0-dev"
         },
         "cpu": {
           "type": "object",
@@ -28599,97 +28759,96 @@
         },
         "operation_profiles": {
           "const": {
-            "protocol": "symphony.sbv.operation-profiles.v1",
-            "resource_authority": "user",
-            "default_deadline_unix_ms": null,
             "aggregate_dataset_limit": null,
             "aggregate_partitioned_result_limit": null,
+            "control": {
+              "depth": "64",
+              "request_bytes": "1048576",
+              "response_bytes": "4194304",
+              "string_bytes": "65536",
+              "values": "32768"
+            },
+            "default_deadline_unix_ms": null,
             "legacy_artifact": {
               "bytes": "134217728",
               "values": "4000000"
             },
-            "control": {
-              "request_bytes": "1048576",
-              "response_bytes": "4194304",
-              "depth": "64",
-              "values": "32768",
-              "string_bytes": "65536"
-            },
+            "memory_scope": "Selected reader caches apply per active independent reader, not total RSS. Load-buffer accounting excludes derived indexes, provider state, owner allocations, allocator overhead and output scratch. No automatic disk spill, cluster placement, NUMA or accelerator runtime.",
             "model_domains": {
-              "observed_trade_levels_per_side": "1..32",
-              "external_price_support": "1..64",
-              "economic_source_prices": "0..65",
-              "legacy_economic_quantiles": "0..32",
               "book_depth": "1..64",
-              "liquidity_quantity": "1..1000000000",
+              "economic_source_prices": "0..65",
+              "external_price_support": "1..64",
+              "legacy_economic_quantiles": "0..32",
               "liquidity_fills": "0..64",
+              "liquidity_quantity": "1..1000000000",
               "numeric": "checked exact named integer/rational profiles; no rounding fallback",
+              "observed_trade_levels_per_side": "1..32",
               "private_study": "exact_series_formula_v1: scalar exact-rational expressions and single-level row reductions; caller-defined id/version/unit; no executable scripts or automatic normalization"
             },
-            "memory_scope": "Selected reader caches apply per active independent reader, not total RSS. Load-buffer accounting excludes derived indexes, provider state, owner allocations, allocator overhead and output scratch. No automatic disk spill, cluster placement, NUMA or accelerator runtime.",
             "profiles": [
               {
+                "limits": "No aggregate dataset/census or worker policy maximum; caller limits, host/uint64 and selected format/model domains apply.",
                 "operations": [
                   "run",
                   "generate_census"
                 ],
                 "profile": "source_execution",
                 "reads": "file / optional exact retained-source / resident decoded DBN",
-                "writes": "legacy or partitioned, independently selected",
                 "resident_working_state": "decoded events, census/ID and trade indexes, replay intervals, provider state; per-worker readers/spools",
-                "limits": "No aggregate dataset/census or worker policy maximum; caller limits, host/uint64 and selected format/model domains apply."
+                "writes": "legacy or partitioned, independently selected"
               },
               {
+                "limits": "4096 external census rows; legacy artifact/control framing. Select partitioned output for bundle census/outcomes and uncapped aggregate census.",
                 "operations": [
                   "evaluate"
                 ],
                 "profile": "legacy_evaluation",
                 "reads": "inline census or legacy complete-result reference",
-                "writes": "legacy only in this profile",
                 "resident_working_state": "whole legacy artifact and model results",
-                "limits": "4096 external census rows; legacy artifact/control framing. Select partitioned output for bundle census/outcomes and uncapped aggregate census."
+                "writes": "legacy only in this profile"
               },
               {
+                "limits": "No aggregate census maximum; each model retains its named support/numeric domain.",
                 "operations": [
                   "evaluate"
                 ],
                 "profile": "partitioned_evaluation",
                 "reads": "inline, legacy or bundle census; inline or bundle external outcomes",
-                "writes": "partitioned",
                 "resident_working_state": "trade/ID indexes, provider instances, worker readers/spools",
-                "limits": "No aggregate census maximum; each model retains its named support/numeric domain."
+                "writes": "partitioned"
               },
               {
+                "limits": "4096 signals/selections; legacy artifact framing. Select partitioned output for scalable instructions and bundle sources.",
                 "operations": [
                   "economics"
                 ],
                 "profile": "legacy_economics",
                 "reads": "legacy complete-result selection",
-                "writes": "legacy",
                 "resident_working_state": "whole artifact/results",
-                "limits": "4096 signals/selections; legacy artifact framing. Select partitioned output for scalable instructions and bundle sources."
+                "writes": "legacy"
               },
               {
+                "limits": "No aggregate signal/selection maximum; typed model support and exact numeric domains apply.",
                 "operations": [
                   "economics"
                 ],
                 "profile": "partitioned_economics",
                 "reads": "legacy or bundle result; inline/apply/referenced selections",
-                "writes": "partitioned",
                 "resident_working_state": "census validation/ID indexes, one selected model/economic row plus reader cache",
-                "limits": "No aggregate signal/selection maximum; typed model support and exact numeric domains apply."
+                "writes": "partitioned"
               },
               {
+                "limits": "Caller nullable max_paths/max_terminal_atoms; exact rational overflow rejects. Inline component/joint instructions use control framing.",
                 "operations": [
                   "compose_economics"
                 ],
                 "profile": "economic_composition",
                 "reads": "legacy or bundle economic result selections",
-                "writes": "legacy or partitioned independently",
                 "resident_working_state": "selected supports, exact terminal/prefix maps and selected joint paths",
-                "limits": "Caller nullable max_paths/max_terminal_atoms; exact rational overflow rejects. Inline component/joint instructions use control framing."
+                "writes": "legacy or partitioned independently"
               },
               {
+                "limits": "No aggregate census/frame/order/checkpoint maximum. Caller nullable frame maximum. Named book depth 1..64; displayed-depth quantity 1..1e9 and at most 64 fills.",
                 "operations": [
                   "book",
                   "liquidity",
@@ -28697,11 +28856,11 @@
                 ],
                 "profile": "execution_chain",
                 "reads": "legacy or bundle result; inline or referenced signal/order/valuation choices",
-                "writes": "legacy or partitioned independently",
                 "resident_working_state": "book order/level state and window indexes; liquidity frame map and typed intents; allocation lineage/indexes",
-                "limits": "No aggregate census/frame/order/checkpoint maximum. Caller nullable frame maximum. Named book depth 1..64; displayed-depth quantity 1..1e9 and at most 64 fills."
+                "writes": "legacy or partitioned independently"
               },
               {
+                "limits": "No aggregate observation/replicate/draw/fold/retained-row policy maximum. Exact arithmetic, caller parameters and host memory apply; no automatic spill. Analyze admits caller-defined scalar study formulas, selected by identity; empty selection does not execute them.",
                 "operations": [
                   "analyze",
                   "resample",
@@ -28709,127 +28868,131 @@
                 ],
                 "profile": "research_rows",
                 "reads": "legacy or bundle row selection",
-                "writes": "legacy or partitioned independently",
                 "resident_working_state": "typed observations, exact sorts, bootstrap values, split intervals/ID indexes and plans",
-                "limits": "No aggregate observation/replicate/draw/fold/retained-row policy maximum. Exact arithmetic, caller parameters and host memory apply; no automatic spill. Analyze admits caller-defined scalar study formulas, selected by identity; empty selection does not execute them."
+                "writes": "legacy or partitioned independently"
               },
               {
+                "limits": "No row/feature policy maximum; numeric overflow/rank rules explicit, no automatic approximation/spill. Feature descriptors use control framing.",
                 "operations": [
                   "fit",
                   "predict"
                 ],
                 "profile": "exact_linear_models",
                 "reads": "legacy or bundle rows and model selections",
-                "writes": "legacy or partitioned independently",
                 "resident_working_state": "dense rows times features plus features squared; exact rational solver and ID sets",
-                "limits": "No row/feature policy maximum; numeric overflow/rank rules explicit, no automatic approximation/spill. Feature descriptors use control framing."
+                "writes": "legacy or partitioned independently"
               },
               {
+                "limits": "No aggregate candidate/objective/source-byte/history maximum; typed IDs/units/pointers and exact numeric domains remain.",
                 "operations": [
                   "compare",
                   "research_history"
                 ],
                 "profile": "research_ledger",
                 "reads": "inline or referenced candidates/objectives/history; legacy or bundle results",
-                "writes": "legacy or partitioned independently",
                 "resident_working_state": "candidate/objective vectors and worst-case quadratic dominance graph; observation occurrence index",
-                "limits": "No aggregate candidate/objective/source-byte/history maximum; typed IDs/units/pointers and exact numeric domains remain."
+                "writes": "legacy or partitioned independently"
               },
               {
+                "limits": "No trial/worker policy maximum; optional worker budget. Inline plan and each child request/claim/receipt use bounded control/legacy journal formats. Local execution only.",
                 "operations": [
                   "experiment"
                 ],
                 "profile": "local_experiment",
                 "reads": "inline trials or referenced bundle table copied to caller-selected owned plan store",
-                "writes": "legacy or partitioned aggregate independently",
                 "resident_working_state": "per-trial control requests, receipts, dependency graph and stable ready waves",
-                "limits": "No trial/worker policy maximum; optional worker budget. Inline plan and each child request/claim/receipt use bounded control/legacy journal formats. Local execution only."
+                "writes": "legacy or partitioned aggregate independently"
               },
               {
+                "limits": "65536 source rows; 16 filters; 8 sort keys; 64 columns; page 1..256. Use saved_view profile for larger aggregate views.",
                 "operations": [
                   "result_select"
                 ],
                 "profile": "legacy_direct_selection",
                 "reads": "legacy array",
-                "writes": "control page",
                 "resident_working_state": "whole artifact, selected row indexes and sort",
-                "limits": "65536 source rows; 16 filters; 8 sort keys; 64 columns; page 1..256. Use saved_view profile for larger aggregate views."
+                "writes": "control page"
               },
               {
+                "limits": "No aggregate row/filter/order/column policy maximum beyond request framing; pointers <=4096 bytes. Page <=512000 bytes /16000 values; oversized rows remain accessible by bundle query/export.",
                 "operations": [
                   "result_select"
                 ],
                 "profile": "saved_view",
                 "reads": "legacy or bundle array for prepare; immutable bundle view for page",
-                "writes": "partitioned prepare; control page",
                 "resident_working_state": "ordered prepare uses caller-selected memory_index, optional max_index_rows; page reads selected range",
-                "limits": "No aggregate row/filter/order/column policy maximum beyond request framing; pointers <=4096 bytes. Page <=512000 bytes /16000 values; oversized rows remain accessible by bundle query/export."
+                "writes": "partitioned prepare; control page"
               },
               {
+                "limits": "support <=64; steps 1..16; enumerated paths <=65536; exact int64 rationals. Broader economic composition is a separate selectable operation.",
                 "operations": [
                   "compose"
                 ],
                 "profile": "legacy_direct_probability_composition",
                 "reads": "inline support/measure",
-                "writes": "legacy",
                 "resident_working_state": "exact enumerated paths/distributions",
-                "limits": "support <=64; steps 1..16; enumerated paths <=65536; exact int64 rationals. Broader economic composition is a separate selectable operation."
+                "writes": "legacy"
               },
               {
+                "limits": "paths 1..4096; steps 1..16; exact int64 rationals. These are named legacy operation profiles, not limits on compose_economics.",
                 "operations": [
                   "compose_joint"
                 ],
                 "profile": "legacy_direct_joint_composition",
                 "reads": "inline joint paths",
-                "writes": "legacy",
                 "resident_working_state": "exact supplied paths/distributions",
-                "limits": "paths 1..4096; steps 1..16; exact int64 rationals. These are named legacy operation profiles, not limits on compose_economics."
+                "writes": "legacy"
               },
               {
+                "limits": "tensor rank <=16, nonnegative strides, exact dtype/extent/ready state. CPU worker request has no policy maximum; CUDA/tensor runtime unavailable, no silent fallback or reservation.",
                 "operations": [
                   "backend_plan"
                 ],
                 "profile": "capability_only_backend_tensor",
                 "reads": "inline explicit declarations",
-                "writes": "control result",
                 "resident_working_state": "descriptor metadata only",
-                "limits": "tensor rank <=16, nonnegative strides, exact dtype/extent/ready state. CPU worker request has no policy maximum; CUDA/tensor runtime unavailable, no silent fallback or reservation."
+                "writes": "control result"
               },
               {
+                "limits": "event_cap 1..65536; pending_cap 1..128; fixture <=512 events and <=128 signals; event bytes <=1e9; UINT64_MAX time sentinel excluded. Wider/live runtime deferred.",
                 "operations": [
                   "live_plan"
                 ],
                 "profile": "disconnected_live_fixture",
                 "reads": "inline synthetic fixture; no live connection",
-                "writes": "control result",
                 "resident_working_state": "selected ring and pending horizons",
-                "limits": "event_cap 1..65536; pending_cap 1..128; fixture <=512 events and <=128 signals; event bytes <=1e9; UINT64_MAX time sentinel excluded. Wider/live runtime deferred."
+                "writes": "control result"
               },
               {
+                "limits": "No total dataset, job or worker policy ceiling. Control pages obey frame byte/value budgets. Cancellation is cooperative; explicit stop terminates the whole host and may leave incomplete outputs.",
                 "operations": [
                   "dataset_load",
                   "dataset_inspect",
                   "dataset_execute",
-                  "dataset_release"
+                  "dataset_release",
+                  "dataset_jobs",
+                  "dataset_cancel",
+                  "dataset_configure",
+                  "dataset_stop"
                 ],
                 "profile": "resident_dataset",
-                "reads": "file or optional exact retained-source; local handle",
-                "writes": "control lifecycle receipts; execute child legacy or partitioned",
-                "resident_working_state": "original load bytes plus decoded allocation; admitted jobs and worker state",
-                "limits": "No dataset/job/worker policy maximum; nullable caller budgets and deadlines. Load-buffer budget is not total RSS; reject excess admission without implicit queue. Execute: run/generate_census/evaluate/book."
+                "reads": "authenticated exact resident incarnation and caller requests",
+                "resident_working_state": "one decoded dataset, per-admitted-job metadata and active connection/worker threads",
+                "writes": "control status, paginated job metadata, explicit cancellation/configuration/termination; selected child output for execute"
               },
               {
+                "limits": "Exact source_owner_profile publishes owner limits, including 64 MiB DBN/capture and 1048576 records; ordinary file/RAM route has no such policy maximum.",
                 "operations": [
                   "source_retain",
                   "source_export"
                 ],
                 "profile": "sqv-local-retained-capture.v1",
                 "reads": "selected SQAV/SQMV/SQFV/SQPV/SQDV owner route",
-                "writes": "legacy source receipts/original byte export",
                 "resident_working_state": "owner capture/batch/store/delivery state, separately scoped from SBV load buffer",
-                "limits": "Exact source_owner_profile publishes owner limits, including 64 MiB DBN/capture and 1048576 records; ordinary file/RAM route has no such policy maximum."
+                "writes": "legacy source receipts/original byte export"
               },
               {
+                "limits": "No aggregate bytes/nodes maximum; depth <=64, string/key <=65536 UTF-8 bytes; checked uint64/offset/hash representation. page_bytes>=512/fanout>=2; scalar must fit selected layout.",
                 "operations": [
                   "bundle_import",
                   "bundle_inspect",
@@ -28839,22 +29002,22 @@
                 ],
                 "profile": "partitioned_result_v1",
                 "reads": "canonical JSON import or pinned bundle",
-                "writes": "partitioned import; bounded query/receipt; streaming JSON/node NDJSON export",
                 "resident_working_state": "page readers/cache and bounded traversal; caller-selected page size/fanout",
-                "limits": "No aggregate bytes/nodes maximum; depth <=64, string/key <=65536 UTF-8 bytes; checked uint64/offset/hash representation. page_bytes>=512/fanout>=2; scalar must fit selected layout."
+                "writes": "partitioned import; bounded query/receipt; streaming JSON/node NDJSON export"
               },
               {
+                "limits": "128 MiB and 4000000 JSON values; depth64/string65536. Bundle operations provide scalable independent access.",
                 "operations": [
                   "result_inspect",
                   "result_query"
                 ],
                 "profile": "legacy_result_access",
                 "reads": "legacy artifact",
-                "writes": "control receipt/page",
                 "resident_working_state": "whole bounded legacy artifact",
-                "limits": "128 MiB and 4000000 JSON values; depth64/string65536. Bundle operations provide scalable independent access."
+                "writes": "control receipt/page"
               },
               {
+                "limits": "Process request 1 MiB / response 4 MiB; depth64/32768 values/string65536. Provider code is caller-selected native execution; no sandbox or guaranteed preemption.",
                 "operations": [
                   "capabilities",
                   "catalogue",
@@ -28862,11 +29025,12 @@
                 ],
                 "profile": "control_discovery",
                 "reads": "bounded request and optional exact provider selection",
-                "writes": "control result",
                 "resident_working_state": "catalogue or selected provider metadata",
-                "limits": "Process request 1 MiB / response 4 MiB; depth64/32768 values/string65536. Provider code is caller-selected native execution; no sandbox or guaranteed preemption."
+                "writes": "control result"
               }
-            ]
+            ],
+            "protocol": "symphony.sbv.operation-profiles.v1",
+            "resource_authority": "user"
           }
         }
       },
@@ -30172,7 +30336,7 @@
           "const": "symphony.sbv.catalogue.v1"
         },
         "engine_version": {
-          "const": "0.24.0-dev"
+          "const": "0.25.0-dev"
         },
         "models": {
           "type": "array",
@@ -33106,7 +33270,7 @@
           "const": "symphony.sbv.backend-plan.v1"
         },
         "engine_version": {
-          "const": "0.24.0-dev"
+          "const": "0.25.0-dev"
         },
         "status": {
           "enum": [
@@ -33399,7 +33563,7 @@
           "const": "symphony.sbv.live-plan.v1"
         },
         "engine_version": {
-          "const": "0.24.0-dev"
+          "const": "0.25.0-dev"
         },
         "can_activate": {
           "const": false
@@ -36262,6 +36426,10 @@
         },
         "load_buffer_scope": {
           "type": "string"
+        },
+        "configuration_generation": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$"
         }
       },
       "required": [
@@ -36287,7 +36455,8 @@
         "worker_budget",
         "idle_timeout_ms",
         "protocol",
-        "dataset_limits"
+        "dataset_limits",
+        "configuration_generation"
       ],
       "additionalProperties": false
     },
@@ -36433,6 +36602,10 @@
         },
         "load_buffer_scope": {
           "type": "string"
+        },
+        "configuration_generation": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$"
         }
       },
       "required": [
@@ -36458,7 +36631,8 @@
         "worker_budget",
         "idle_timeout_ms",
         "protocol",
-        "dataset_limits"
+        "dataset_limits",
+        "configuration_generation"
       ],
       "additionalProperties": false
     },
@@ -37753,6 +37927,10 @@
         },
         "load_buffer_scope": {
           "type": "string"
+        },
+        "configuration_generation": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$"
         }
       },
       "required": [
@@ -37778,7 +37956,8 @@
         "worker_budget",
         "idle_timeout_ms",
         "protocol",
-        "dataset_limits"
+        "dataset_limits",
+        "configuration_generation"
       ],
       "additionalProperties": false
     },
@@ -40294,7 +40473,7 @@
           "const": "symphony.sbv.provider-inspect.v1"
         },
         "engine_version": {
-          "const": "0.24.0-dev"
+          "const": "0.25.0-dev"
         },
         "provider": {
           "type": "object",
@@ -41879,6 +42058,308 @@
           "additionalProperties": false
         }
       ]
+    },
+    "dataset_configure": {
+      "type": "object",
+      "properties": {
+        "engine_version": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string"
+        },
+        "directory": {
+          "type": "string"
+        },
+        "instance_id": {
+          "type": "string"
+        },
+        "source_path": {
+          "type": "string"
+        },
+        "source_sha256": {
+          "type": "string"
+        },
+        "dataset": {
+          "type": "string"
+        },
+        "events": {
+          "type": "string"
+        },
+        "decoded_bytes": {
+          "type": "string"
+        },
+        "load_buffer_bytes": {
+          "type": "string"
+        },
+        "memory_budget_bytes": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[1-9][0-9]*$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "residency": {
+          "type": "string"
+        },
+        "source_reads": {
+          "type": "string"
+        },
+        "decode_passes": {
+          "type": "string"
+        },
+        "active_jobs": {
+          "type": "string"
+        },
+        "active_workers": {
+          "type": "string"
+        },
+        "completed_jobs": {
+          "type": "string"
+        },
+        "failed_jobs": {
+          "type": "string"
+        },
+        "max_concurrent_jobs": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[1-9][0-9]*$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "worker_budget": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[1-9][0-9]*$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "idle_timeout_ms": {
+          "type": "string"
+        },
+        "protocol": {
+          "const": "symphony.sbv.dataset-configure.v1"
+        },
+        "dataset_limits": {
+          "type": "object",
+          "properties": {
+            "max_source_bytes": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[1-9][0-9]*$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "max_source_events": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[1-9][0-9]*$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "max_metadata_bytes": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[1-9][0-9]*$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "max_source_bytes",
+            "max_source_events",
+            "max_metadata_bytes"
+          ],
+          "additionalProperties": false
+        },
+        "source_delivery": {
+          "$ref": "#/$defs/source_delivery_evidence"
+        },
+        "load_buffer_scope": {
+          "type": "string"
+        },
+        "configuration_generation": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$"
+        }
+      },
+      "required": [
+        "engine_version",
+        "state",
+        "directory",
+        "instance_id",
+        "source_path",
+        "source_sha256",
+        "dataset",
+        "events",
+        "decoded_bytes",
+        "load_buffer_bytes",
+        "memory_budget_bytes",
+        "residency",
+        "source_reads",
+        "decode_passes",
+        "active_jobs",
+        "active_workers",
+        "completed_jobs",
+        "failed_jobs",
+        "max_concurrent_jobs",
+        "worker_budget",
+        "idle_timeout_ms",
+        "protocol",
+        "dataset_limits",
+        "configuration_generation"
+      ],
+      "additionalProperties": false
+    },
+    "dataset_jobs": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.dataset-jobs.v1"
+        },
+        "engine_version": {
+          "const": "0.25.0-dev"
+        },
+        "directory": {
+          "type": "string"
+        },
+        "instance_id": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{32}$"
+        },
+        "jobs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/resident_job"
+          }
+        },
+        "next_after_sequence": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$"
+        },
+        "highest_sequence": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$"
+        },
+        "more": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "protocol",
+        "engine_version",
+        "directory",
+        "instance_id",
+        "jobs",
+        "next_after_sequence",
+        "highest_sequence",
+        "more"
+      ],
+      "additionalProperties": false
+    },
+    "dataset_cancel": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.dataset-cancel.v1"
+        },
+        "engine_version": {
+          "const": "0.25.0-dev"
+        },
+        "directory": {
+          "type": "string"
+        },
+        "instance_id": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{32}$"
+        },
+        "job": {
+          "$ref": "#/$defs/resident_job"
+        }
+      },
+      "required": [
+        "protocol",
+        "engine_version",
+        "directory",
+        "instance_id",
+        "job"
+      ],
+      "additionalProperties": false
+    },
+    "dataset_stop": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.dataset-stop.v1"
+        },
+        "engine_version": {
+          "const": "0.25.0-dev"
+        },
+        "directory": {
+          "type": "string"
+        },
+        "instance_id": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{32}$"
+        },
+        "state": {
+          "const": "termination_requested"
+        },
+        "active_jobs": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$"
+        },
+        "active_workers": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$"
+        },
+        "results_may_be_incomplete": {
+          "const": true
+        },
+        "automatic_retry": {
+          "const": false
+        },
+        "rollback_performed": {
+          "const": false
+        }
+      },
+      "required": [
+        "protocol",
+        "engine_version",
+        "directory",
+        "instance_id",
+        "state",
+        "active_jobs",
+        "active_workers",
+        "results_may_be_incomplete",
+        "automatic_retry",
+        "rollback_performed"
+      ],
+      "additionalProperties": false
     }
   },
   "$defs": {
@@ -59941,6 +60422,167 @@
         "unit",
         "description",
         "expression"
+      ],
+      "additionalProperties": false
+    },
+    "resident_job": {
+      "type": "object",
+      "properties": {
+        "job_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_.-]{1,128}$"
+        },
+        "sequence": {
+          "type": "string",
+          "pattern": "^[1-9][0-9]*$"
+        },
+        "request_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "operation": {
+          "enum": [
+            "run",
+            "evaluate",
+            "book",
+            "generate_census"
+          ]
+        },
+        "state": {
+          "enum": [
+            "running",
+            "completed",
+            "failed",
+            "cancelled",
+            "recovery_required"
+          ]
+        },
+        "requested_workers": {
+          "type": "string",
+          "pattern": "^[1-9][0-9]*$"
+        },
+        "cancellation_requested": {
+          "type": "boolean"
+        },
+        "error_code": {
+          "type": "string"
+        },
+        "output": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "output_path": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "output_path"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "output": {
+                  "type": "object",
+                  "properties": {
+                    "kind": {
+                      "const": "partitioned"
+                    },
+                    "bundle_path": {
+                      "type": "string",
+                      "minLength": 2,
+                      "maxLength": 4096,
+                      "pattern": "^/",
+                      "description": "Absolute clean component-wise no-follow path; native validation rejects controls, symlinks and unsafe components."
+                    },
+                    "workspace_path": {
+                      "type": "string",
+                      "minLength": 2,
+                      "maxLength": 4096,
+                      "pattern": "^/",
+                      "description": "Absolute clean component-wise no-follow path; native validation rejects controls, symlinks and unsafe components."
+                    },
+                    "write_options": {
+                      "type": "object",
+                      "properties": {
+                        "page_bytes": {
+                          "type": "string",
+                          "pattern": "^[1-9][0-9]*$",
+                          "maxLength": 20,
+                          "description": "Canonical positive uint64 decimal; checked range at native and control boundary."
+                        },
+                        "index_fanout": {
+                          "type": "string",
+                          "pattern": "^([2-9]|[1-9][0-9]+)$",
+                          "maxLength": 20
+                        }
+                      },
+                      "required": [
+                        "page_bytes",
+                        "index_fanout"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "scratch_read_options": {
+                      "type": "object",
+                      "properties": {
+                        "max_page_bytes": {
+                          "oneOf": [
+                            {
+                              "type": "string",
+                              "pattern": "^[1-9][0-9]*$",
+                              "maxLength": 20,
+                              "description": "Canonical positive uint64 decimal; checked range at native and control boundary."
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "cache_bytes": {
+                          "type": "string",
+                          "pattern": "^(0|[1-9][0-9]*)$",
+                          "maxLength": 20,
+                          "description": "Canonical uint64 decimal; checked range at native and control boundary."
+                        }
+                      },
+                      "required": [
+                        "max_page_bytes",
+                        "cache_bytes"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "required": [
+                    "kind",
+                    "bundle_path",
+                    "workspace_path",
+                    "write_options"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Explicit partitioned output; new private workspace and final bundle must be disjoint. Scratch remains caller-owned on success/failure. No implicit fallback, cleanup, retry or default deadline."
+                }
+              },
+              "required": [
+                "output"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        }
+      },
+      "required": [
+        "job_id",
+        "sequence",
+        "request_sha256",
+        "operation",
+        "state",
+        "requested_workers",
+        "cancellation_requested",
+        "error_code",
+        "output"
       ],
       "additionalProperties": false
     }

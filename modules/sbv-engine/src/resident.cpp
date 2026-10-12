@@ -9,6 +9,7 @@
 #include <fcntl.h>
 #include <filesystem>
 #include <mutex>
+#include <map>
 #include <poll.h>
 #include <spawn.h>
 #include <symphony/knowledge/engine/limits.hpp>
@@ -41,6 +42,7 @@ void io_fail() {
 }
 void ready(int fd, short events, std::int64_t end) {
   for (;;) {
+    deadline(end);
     const auto left = end - e::unix_time_ms();
     if (left <= 0)
       io_fail();
@@ -92,6 +94,42 @@ void send(int fd, const Json &j, std::int64_t end) {
     h[i] = static_cast<char>(bytes.size() >> (24 - 8 * i));
   transfer(fd, h.data(), h.size(), true, end);
   transfer(fd, bytes.data(), bytes.size(), true, end);
+}
+// A stop acknowledgement must never wait for the peer to read. A lost or
+// partial receipt is an uncertain transport outcome, never permission to retry.
+void final_send(int fd, const Json &j) noexcept {
+  try {
+    const auto bytes = j.dump();
+    std::string frame(4, '\0');
+    for (unsigned i = 0; i < 4; ++i)
+      frame[i] = static_cast<char>(bytes.size() >> (24 - 8 * i));
+    frame += bytes;
+    constexpr int flags =
+#ifdef MSG_NOSIGNAL
+        MSG_NOSIGNAL;
+#else
+        0;
+#endif
+    (void)::send(fd, frame.data(), frame.size(), flags);
+  } catch (...) {
+  }
+}
+std::size_t control_nodes(const Json &j) {
+  std::size_t count = 1;
+  if (j.is_structured()) {
+    if (j.is_object()) count += j.size();
+    for (const auto &child : j) count += control_nodes(child);
+  }
+  return count;
+}
+bool job_identifier(const Json &j) {
+  if (!j.is_string()) return false;
+  const auto &s = j.get_ref<const std::string &>();
+  return !s.empty() && s.size() <= 128 &&
+         std::all_of(s.begin(), s.end(), [](unsigned char c) {
+           return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') ||
+                  (c >= '0' && c <= '9') || c == '_' || c == '-' || c == '.';
+         });
 }
 Json receive(int fd, std::int64_t end) {
   std::array<char, 4> h{};
@@ -299,6 +337,33 @@ Json launch(const Json &w) {
   send(parent.n, {{"ready", true}}, end);
   return result;
 }
+void output_shape(const Json &p) {
+  const auto path = [](const Json &v) {
+    const auto s = str(v);
+    need(s.size() > 1 && s.size() <= 4096 && s.front() == '/' &&
+             s.back() != '/' && e::is_safe_relative_path(s.substr(1)),
+         "absolute safe output path required");
+    return s;
+  };
+  if (p.contains("output_path")) { (void)path(p.at("output_path")); return; }
+  const auto &o = p.at("output");
+  keys_optional(o, {"kind", "bundle_path", "workspace_path", "write_options"}, {"scratch_read_options"});
+  need(o.at("kind") == "partitioned", "partitioned output required");
+  const auto bundle = path(o.at("bundle_path")), work = path(o.at("workspace_path"));
+  need(bundle != work && !bundle.starts_with(work + "/") && !work.starts_with(bundle + "/"),
+       "workspace and output bundle must be disjoint");
+  const auto &w = o.at("write_options");
+  keys(w, {"page_bytes", "index_fanout"});
+  need(u64(w.at("page_bytes")) >= 512 && u64(w.at("index_fanout")) >= 2,
+       "invalid output page layout");
+  if (o.contains("scratch_read_options")) {
+    const auto &r = o.at("scratch_read_options");
+    keys(r, {"max_page_bytes", "cache_bytes"});
+    need(r.at("max_page_bytes").is_null() || u64(r.at("max_page_bytes")) > 0,
+         "positive scratch page limit or null required");
+    (void)u64(r.at("cache_bytes"));
+  }
+}
 void control_shape(const std::string &op, const Json &p) {
   if (op == "dataset_load") {
     keys_optional(p,
@@ -319,9 +384,12 @@ void control_shape(const std::string &op, const Json &p) {
   } else if (op == "dataset_execute") {
     keys_optional(
         p, {"protocol", "directory", "instance_id", "operation", "request"},
-        {"output_path", "output"});
+        {"output_path", "output", "job_id"});
+    need(!p.contains("job_id") || job_identifier(p.at("job_id")),
+         "job_id must contain 1..128 ASCII letters, digits, dot, dash or underscore");
     need(p.contains("output_path") != p.contains("output"),
          "resident request selects exactly one output form");
+    output_shape(p);
     need(p.at("operation") == "run" || p.at("operation") == "evaluate" ||
              p.at("operation") == "book" ||
              p.at("operation") == "generate_census",
@@ -333,8 +401,29 @@ void control_shape(const std::string &op, const Json &p) {
              r.at("protocol") == "symphony.sbv." + slug + "-input.v1",
          "resident child request must omit both output forms and match "
          "operation");
+  } else if (op == "dataset_configure") {
+    keys(p, {"protocol", "directory", "instance_id", "expected_generation",
+             "max_concurrent_jobs", "worker_budget", "idle_timeout_ms",
+             "on_active_over_limit"});
+    (void)u64(p.at("expected_generation"));
+    (void)resource::limit(p.at("max_concurrent_jobs"));
+    (void)resource::limit(p.at("worker_budget"));
+    (void)u64(p.at("idle_timeout_ms"));
+    need(p.at("on_active_over_limit") == "reject" ||
+             p.at("on_active_over_limit") == "drain", "select reject or drain");
+  } else if (op == "dataset_jobs") {
+    keys(p, {"protocol", "directory", "instance_id", "job_id", "after_sequence", "limit"});
+    need(p.at("job_id").is_null() || job_identifier(p.at("job_id")), "invalid job_id");
+    (void)u64(p.at("after_sequence"));
+    need(u64(p.at("limit")) > 0, "positive job page limit required");
+    need(p.at("job_id").is_null() ||
+             (p.at("after_sequence") == "0" && p.at("limit") == "1"),
+         "single job lookup requires after_sequence 0 and limit 1");
+  } else if (op == "dataset_cancel") {
+    keys(p, {"protocol", "directory", "instance_id", "job_id"});
+    need(job_identifier(p.at("job_id")), "invalid job_id");
   } else {
-    need(op == "dataset_inspect" || op == "dataset_release",
+    need(op == "dataset_inspect" || op == "dataset_release" || op == "dataset_stop",
          "unknown dataset operation");
     keys(p, {"protocol", "directory", "instance_id"});
   }
@@ -419,9 +508,10 @@ int resident_worker() {
     data->resident_identity = {{"directory", p.at("directory")},
                                {"instance_id", p.at("instance_id")},
                                {"engine_version", version}};
-    const auto max_jobs = resource::limit(p.at("max_concurrent_jobs")),
+    auto max_jobs = resource::limit(p.at("max_concurrent_jobs")),
                budget = resource::limit(p.at("worker_budget"));
-    const auto idle = u64(p.at("idle_timeout_ms"));
+    auto idle = u64(p.at("idle_timeout_ms"));
+    std::uint64_t generation = 0;
     std::mutex mutex;
     std::uint64_t active = 0, workers = 0, completed = 0, failed = 0;
     auto last = e::unix_time_ms();
@@ -449,8 +539,9 @@ int resident_worker() {
           {"active_workers", dec(workers)},
           {"completed_jobs", dec(completed)},
           {"failed_jobs", dec(failed)},
-          {"max_concurrent_jobs", p.at("max_concurrent_jobs")},
-          {"worker_budget", p.at("worker_budget")},
+          {"max_concurrent_jobs", max_jobs ? Json(dec(*max_jobs)) : Json(nullptr)},
+          {"worker_budget", budget ? Json(dec(*budget)) : Json(nullptr)},
+          {"configuration_generation", dec(generation)},
           {"idle_timeout_ms", dec(idle)}};
       if (!data->source_delivery.is_null()) {
         result["source_delivery"] = data->source_delivery;
@@ -463,163 +554,250 @@ int resident_worker() {
          "resident startup acknowledgement missing");
     ::close(STDIN_FILENO);
     ::close(STDOUT_FILENO);
-    struct Job {
-      std::shared_ptr<std::atomic<bool>> done;
-      std::jthread thread;
+    struct Record {
+      std::atomic_bool cancelled{false};
+      Json view;
     };
-    std::vector<Job> jobs;
-    for (;;) {
-      std::erase_if(jobs, [](const Job &j) { return j.done->load(); });
-      {
-        std::lock_guard lock(mutex);
-        if (idle && active == 0 &&
-            static_cast<std::uint64_t>(
-                std::max<std::int64_t>(0, e::unix_time_ms() - last)) >= idle)
-          break;
-      }
-      pollfd poller{listener.n, POLLIN, 0};
-      int n = ::poll(&poller, 1, 100);
-      if (n <= 0) {
-        if (n < 0 && errno != EINTR)
-          break;
-        continue;
-      }
-      FD client(::accept(listener.n, nullptr, nullptr));
-      if (client.n < 0)
-        continue;
+    std::map<std::string, std::shared_ptr<Record>> by_id;
+    std::map<std::uint64_t, std::shared_ptr<Record>> records;
+    std::uint64_t sequence = 0;
+    std::atomic_bool stopping{false};
+    auto identity = [&](const std::string &op) {
+      auto slug = op;
+      std::replace(slug.begin(), slug.end(), '_', '-');
+      return Json{{"protocol", "symphony.sbv." + slug + ".v1"},
+                  {"engine_version", version}, {"directory", p.at("directory")},
+                  {"instance_id", p.at("instance_id")}};
+    };
+    // All record views and host accounting are protected by mutex. Network I/O
+    // and computation never hold it; incomplete clients cannot monopolize control.
+    auto handle = [&](FD client) {
+      CancellationScope connection_cancel(&stopping);
       auto end = e::no_deadline;
       try {
         configure(client.n);
         peer(client.n);
-        send(client.n,
-             {{"ready", true},
-              {"engine_version", version},
-              {"instance_id", p.at("instance_id")}},
-             end);
+        send(client.n, {{"ready", true}, {"engine_version", version},
+                       {"instance_id", p.at("instance_id")}}, end);
         auto q = receive(client.n, end);
         validate_wire(q);
         end = wire_deadline(q);
+        deadline(end);
         const auto op = str(q.at("operation"));
         const auto input = q.at("input");
         control_shape(op, input);
-        need(op != "dataset_load" &&
-                 input.at("directory") == p.at("directory") &&
-                 input.at("instance_id") == p.at("instance_id"),
-             "resident instance mismatch");
+        need(op != "dataset_load" && input.at("directory") == p.at("directory") &&
+                 input.at("instance_id") == p.at("instance_id"), "resident instance mismatch");
         std::unique_lock lock(mutex);
+        need(!stopping.load(), "resident host is stopping");
         last = e::unix_time_ms();
-        if (op == "dataset_inspect") {
-          send(client.n, success(status(op, "ready")), end);
-          continue;
-        }
-        if (op == "dataset_release") {
-          need(active == 0,
-               "resident dataset busy; release refused while jobs are active");
-          // Stop admission and free the payload before acknowledging release.
-          auto result = status(op, "released");
-          ::close(listener.n);
-          listener.n = -1;
-          data.reset();
-          endpoint.remove();
-          // A disconnected peer fails immediately; acknowledgement follows the
-          // user deadline.
-          try {
-            send(client.n, success(result), end);
-          } catch (...) {
+        if (op == "dataset_inspect" || op == "dataset_configure") {
+          if (op == "dataset_configure") {
+            need(u64(input.at("expected_generation")) == generation && generation < UINT64_MAX,
+                 "resident configuration generation mismatch or exhausted");
+            const auto next_jobs = resource::limit(input.at("max_concurrent_jobs"));
+            const auto next_budget = resource::limit(input.at("worker_budget"));
+            need(input.at("on_active_over_limit") == "drain" ||
+                     ((!next_jobs || active <= *next_jobs) && (!next_budget || workers <= *next_budget)),
+                 "active jobs exceed selected policy; select drain or retry after completion");
+            max_jobs = next_jobs;
+            budget = next_budget;
+            idle = u64(input.at("idle_timeout_ms"));
+            ++generation;
           }
-          break;
+          auto result = status(op, "ready");
+          lock.unlock();
+          send(client.n, success(result), end);
+          return;
+        }
+        if (op == "dataset_jobs" || op == "dataset_cancel") {
+          auto result = identity(op);
+          if (op == "dataset_cancel") {
+            const auto it = by_id.find(str(input.at("job_id")));
+            need(it != by_id.end(), "unknown resident job_id");
+            if (it->second->view.at("state") == "running") {
+              it->second->cancelled.store(true);
+              it->second->view["cancellation_requested"] = true;
+            }
+            result["job"] = it->second->view;
+          } else {
+            Json page = Json::array();
+            auto after = u64(input.at("after_sequence"));
+            bool more = false;
+            if (!input.at("job_id").is_null()) {
+              const auto it = by_id.find(str(input.at("job_id")));
+              need(it != by_id.end(), "unknown resident job_id");
+              page.push_back(it->second->view);
+              after = u64(it->second->view.at("sequence"));
+            } else {
+              std::size_t page_bytes = 0, page_nodes = 128;
+              for (auto it = records.upper_bound(after); it != records.end(); ++it) {
+                const auto bytes = it->second->view.dump().size();
+                const auto nodes = control_nodes(it->second->view);
+                if (page.size() >= u64(input.at("limit")) ||
+                    (!page.empty() && (page_bytes + bytes > wire_limit / 2 ||
+                                      page_nodes + nodes > e::Limits::max_json_values - 256))) {
+                  more = true;
+                  break;
+                }
+                page.push_back(it->second->view);
+                page_bytes += bytes;
+                page_nodes += nodes;
+                after = it->first;
+              }
+            }
+            result["jobs"] = std::move(page);
+            result["next_after_sequence"] = dec(after);
+            result["highest_sequence"] = dec(sequence);
+            result["more"] = more;
+          }
+          lock.unlock();
+          send(client.n, success(result), end);
+          return;
+        }
+        if (op == "dataset_release" || op == "dataset_stop") {
+          need(op == "dataset_stop" || active == 0,
+               "resident dataset busy; release refused while jobs are active");
+          Json result;
+          if (op == "dataset_stop") {
+            result = identity(op);
+            result.update({{"state", "termination_requested"}, {"active_jobs", dec(active)},
+                           {"active_workers", dec(workers)}, {"results_may_be_incomplete", true},
+                           {"automatic_retry", false}, {"rollback_performed", false}});
+          } else {
+            result = status(op, "released");
+            data.reset();
+          }
+          stopping.store(true);
+          endpoint.remove();
+          lock.unlock();
+          final_send(client.n, success(result));
+          if (op == "dataset_stop") ::_exit(0); // explicit whole-host termination
+          return;
         }
         const auto inner_op = str(input.at("operation"));
         auto request = input.at("request");
-        const auto output_field =
-            input.contains("output") ? "output" : "output_path";
+        const auto output_field = input.contains("output") ? "output" : "output_path";
         request[output_field] = input.at(output_field);
         const auto parent_request_sha = e::sha256_hex(input.dump());
+        const auto id = input.value("job_id", parent_request_sha);
+        need(!by_id.contains(id), "resident job_id already admitted; inspect it before selecting a new id");
         data->bind(request);
         const auto inner = (inner_op == "book" || inner_op == "generate_census")
-                               ? 1
-                               : u64(request.at("workers"));
+                               ? 1 : u64(request.at("workers"));
         need(inner >= 1 && resource::admits(max_jobs, active, 1) &&
-                 resource::admits(budget, workers, inner) &&
-                 completed <= UINT64_MAX - failed &&
-                 active < UINT64_MAX - (completed + failed),
-             "resident job/worker capacity unavailable; select fewer workers "
-             "or retry explicitly");
-        auto done = std::make_shared<std::atomic<bool>>(false);
-        // Allocate the job slot before starting its thread. A failing vector
-        // growth must never join a live worker while holding its mutex.
-        jobs.emplace_back();
-        jobs.back().done = done;
+                 resource::admits(budget, workers, inner) && sequence < UINT64_MAX &&
+                 completed <= UINT64_MAX - failed && active < UINT64_MAX - (completed + failed),
+             "resident job/worker capacity unavailable; select fewer workers or retry explicitly");
+        auto record = std::make_shared<Record>();
+        record->view = {{"job_id", id}, {"sequence", dec(sequence + 1)},
+                        {"request_sha256", parent_request_sha}, {"operation", inner_op},
+                        {"state", "running"}, {"requested_workers", dec(inner)},
+                        {"cancellation_requested", false}, {"error_code", ""},
+                        {"output", Json{{output_field, input.at(output_field)}}}};
+        need(record->view.dump().size() < wire_limit / 2 &&
+                 control_nodes(record->view) < e::Limits::max_json_values / 2,
+             "resident job control reference exceeds frame budget");
+        records.emplace(sequence + 1, record);
+        try { by_id.emplace(id, record); }
+        catch (...) { records.erase(sequence + 1); throw; }
+        ++sequence;
         ++active;
         workers += inner;
+        lock.unlock();
+        Json response;
+        std::string state = "failed", error_code;
         try {
-          jobs.back().thread = std::jthread([&, fd = std::move(client), request, inner_op,
-                                   inner, end, done, parent_request_sha]() {
-                 Json response;
-                 bool ok = false;
-                 try {
-                   auto receipt =
-                       inner_op == "run" ? run(request, end, data.get())
-                       : inner_op == "evaluate"
-                           ? evaluate(request, end, data.get())
-                       : inner_op == "generate_census"
-                           ? generate_census(request, end, data.get())
-                           : book(request, end, data.get());
-                   if (receipt.value("status", "") == "recovery_required") {
-                     receipt = {{"protocol", "symphony.sbv.dataset-execute.v1"},
-                                {"status", "recovery_required"},
-                                {"code", "sbv.dataset_execution_incomplete"},
-                                {"request_sha256", parent_request_sha},
-                                {"automatic_retry", false},
-                                {"rollback_performed", false},
-                                {"operation", inner_op},
-                                {"child_recovery", std::move(receipt)}};
-                     ok = false;
-                   } else {
-                     receipt["protocol"] = "symphony.sbv.dataset-execute.v1";
-                     ok = true;
-                   }
-                   response = success(receipt);
-                 } catch (const e::Error &x) {
-                   response = failure(x.code(), x.what());
-                 } catch (...) {
-                   response =
-                       failure("sbv.failure", "resident job failed; inspect "
-                                              "destination before retrying");
-                 }
-                 {
-                   std::lock_guard guard(mutex);
-                   --active;
-                   workers -= inner;
-                   (ok ? completed : failed)++;
-                   last = e::unix_time_ms();
-                 }
-                 try {
-                   send(fd.n, response, end);
-                 } catch (...) {
-                 }
-                 done->store(true);
-               });
+          CancellationScope job_cancel(&record->cancelled);
+          deadline(end);
+          auto receipt = inner_op == "run" ? run(request, end, data.get())
+              : inner_op == "evaluate" ? evaluate(request, end, data.get())
+              : inner_op == "generate_census" ? generate_census(request, end, data.get())
+              : book(request, end, data.get());
+          if (receipt.value("status", "") == "recovery_required") {
+            receipt = {{"protocol", "symphony.sbv.dataset-execute.v1"},
+                       {"status", "recovery_required"}, {"code", "sbv.dataset_execution_incomplete"},
+                       {"request_sha256", parent_request_sha}, {"automatic_retry", false},
+                       {"rollback_performed", false}, {"operation", inner_op},
+                       {"child_recovery", std::move(receipt)}};
+            state = "recovery_required";
+            error_code = "sbv.dataset_execution_incomplete";
+          } else {
+            receipt["protocol"] = "symphony.sbv.dataset-execute.v1";
+            state = "completed";
+          }
+          response = success(receipt);
+        } catch (const e::Error &x) {
+          error_code = x.code();
+          if (error_code == "sbv.cancelled") state = "cancelled";
+          response = failure(x.code(), x.what());
         } catch (...) {
-          jobs.pop_back();
+          error_code = "sbv.failure";
+          response = failure(error_code, "resident job failed; inspect destination before retrying");
+        }
+        {
+          std::lock_guard guard(mutex);
+          record->view["state"] = state;
+          record->view["error_code"] = error_code;
           --active;
           workers -= inner;
-          throw;
+          (state == "completed" ? completed : failed)++;
+          last = e::unix_time_ms();
         }
+        send(client.n, response, end);
       } catch (const e::Error &x) {
-        try {
-          send(client.n, failure(x.code(), x.what()), end);
-        } catch (...) {
-        }
+        try { send(client.n, failure(x.code(), x.what()), end); } catch (...) {}
       } catch (...) {
-        try {
-          send(client.n,
-               failure("sbv.failure", "resident request failed; inspect "
-                                      "destination before retrying"),
-               end);
-        } catch (...) {
-        }
+        try { send(client.n, failure("sbv.failure", "resident request failed; inspect destination before retrying"), end); }
+        catch (...) {}
       }
+    };
+    struct Connection {
+      std::shared_ptr<std::atomic_bool> done;
+      std::jthread thread;
+    };
+    std::vector<Connection> connections;
+    // Declared after connections: cancel stalled framing and cooperative work
+    // before any joining destructor, including exceptional exits.
+    struct Shutdown {
+      std::atomic_bool &stopping;
+      std::mutex &mutex;
+      decltype(records) &jobs;
+      ~Shutdown() {
+        stopping.store(true);
+        std::lock_guard lock(mutex);
+        for (const auto &[_, job] : jobs) job->cancelled.store(true);
+      }
+    } shutdown{stopping, mutex, records};
+    while (!stopping.load()) {
+      std::erase_if(connections, [](const Connection &c) { return c.done->load(); });
+      {
+        std::lock_guard lock(mutex);
+        if (idle && active == 0 && static_cast<std::uint64_t>(
+              std::max<std::int64_t>(0, e::unix_time_ms() - last)) >= idle)
+          break;
+      }
+      pollfd poller{listener.n, POLLIN, 0};
+      const int n = ::poll(&poller, 1, 100);
+      if (n <= 0) {
+        if (n < 0 && errno != EINTR) break;
+        continue;
+      }
+      FD client(::accept(listener.n, nullptr, nullptr));
+      if (client.n < 0) continue;
+      // Allocate bookkeeping before the thread starts. Failure closes just this
+      // connection, leaving the resident host and accepted work available.
+      try {
+        auto done = std::make_shared<std::atomic_bool>(false);
+        connections.emplace_back();
+        connections.back().done = done;
+        try {
+          connections.back().thread = std::jthread([&, fd = std::move(client), done]() mutable {
+            handle(std::move(fd));
+            done->store(true);
+          });
+        } catch (...) { connections.pop_back(); }
+      } catch (...) {}
     }
     return 0;
   } catch (const e::Error &x) {

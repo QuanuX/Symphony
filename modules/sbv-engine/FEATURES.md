@@ -68,7 +68,7 @@
         "modules/sbv-engine/tests/study_formula_test.cpp"
       ],
       "feature_id": "ssfv:symphony:sbv-engine",
-      "how": "C++26 computations behind exact native process and installed C ABI; optional C++ ownership wrapper; external language consumers reuse identical native results and explicit contracts.",
+      "how": "C++26 computations behind exact native process and installed C ABI; optional C++ ownership wrapper; external language consumers reuse identical native results and explicit contracts. Resident controls expose addressable job inspection and cooperative cancellation, exact-incarnation force stop, and generation-checked admission/idle configuration without reloading RAM. SIGTERM and SIGINT propagate foreground qxctl cancellation.",
       "implementation_languages": [
         {
           "language": "C++26",
@@ -159,6 +159,7 @@
         "modules/sbv-engine/tests/logical_value_test.cpp",
         "modules/sbv-engine/tests/partitioned_output_test.cpp",
         "modules/sbv-engine/tests/reader_extensions_test.cpp",
+        "modules/sbv-engine/tests/resident_control_test.cpp",
         "modules/sbv-engine/tests/resource_admission_test.cpp",
         "modules/sbv-engine/tests/result_store_test.cpp",
         "modules/sbv-engine/tests/row_spool_test.cpp",

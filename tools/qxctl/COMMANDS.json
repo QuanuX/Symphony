@@ -4292,6 +4292,84 @@
       "json_output": true
     },
     {
+      "command_id": "qxcmd:symphony:sbv.dataset.cancel",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl sbv dataset cancel [--deadline-unix-ms VALUE] [--format VALUE] [--input VALUE] [--json] [--prefix VALUE] [--timeout VALUE] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl-sbv-administration",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:sbv-engine",
+          "interaction": "invoke"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:sbv.dataset-cancel"
+      ],
+      "mutability": "permission_backed_mutation",
+      "authority_mode": "target_host_permission",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.sbv.dataset-cancel-input.v1"
+      ],
+      "output_protocols": [
+        "symphony.sbv.dataset-cancel.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.sbv.dataset-cancel.v1"
+      ],
+      "recovery_command_id": "qxcmd:symphony:sbv.dataset.jobs",
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:sbv.dataset.configure",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl sbv dataset configure [--deadline-unix-ms VALUE] [--format VALUE] [--input VALUE] [--json] [--prefix VALUE] [--timeout VALUE] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl-sbv-administration",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:sbv-engine",
+          "interaction": "invoke"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:sbv.dataset-configure"
+      ],
+      "mutability": "permission_backed_mutation",
+      "authority_mode": "target_host_permission",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.sbv.dataset-configure-input.v1"
+      ],
+      "output_protocols": [
+        "symphony.sbv.dataset-configure.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.sbv.dataset-configure.v1"
+      ],
+      "recovery_command_id": "qxcmd:symphony:sbv.dataset.inspect",
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
       "command_id": "qxcmd:symphony:sbv.dataset.execute",
       "status": "experimental",
       "introduced_in": "0.1.0-dev",
@@ -4378,6 +4456,53 @@
       "json_output": true
     },
     {
+      "command_id": "qxcmd:symphony:sbv.dataset.jobs",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl sbv dataset jobs [--deadline-unix-ms VALUE] [--format VALUE] [--input VALUE] [--json] [--prefix VALUE] [--timeout VALUE] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl-sbv-administration",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:qxctl-sbv-administration",
+          "interaction": "recover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sbv-engine",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:sbv-engine",
+          "interaction": "recover"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:sbv.dataset-jobs"
+      ],
+      "mutability": "read_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.sbv.dataset-jobs-input.v1"
+      ],
+      "output_protocols": [
+        "symphony.sbv.dataset-jobs.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.sbv.dataset-jobs.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
       "command_id": "qxcmd:symphony:sbv.dataset.load",
       "status": "experimental",
       "introduced_in": "0.1.0-dev",
@@ -4450,6 +4575,45 @@
       ],
       "result_validation_protocols": [
         "symphony.sbv.dataset-release.v1"
+      ],
+      "recovery_command_id": "qxcmd:symphony:sbv.dataset.inspect",
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:sbv.dataset.stop",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl sbv dataset stop [--deadline-unix-ms VALUE] [--format VALUE] [--input VALUE] [--json] [--prefix VALUE] [--timeout VALUE] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl-sbv-administration",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:sbv-engine",
+          "interaction": "invoke"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:sbv.dataset-stop"
+      ],
+      "mutability": "permission_backed_mutation",
+      "authority_mode": "target_host_permission",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.sbv.dataset-stop-input.v1"
+      ],
+      "output_protocols": [
+        "symphony.sbv.dataset-stop.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.sbv.dataset-stop.v1"
       ],
       "recovery_command_id": "qxcmd:symphony:sbv.dataset.inspect",
       "noninteractive": true,
@@ -20696,5 +20860,5 @@
       "json_output": true
     }
   ],
-  "registry_digest": "sha256:6f2336a964e1063ddf285a4828be7e1906a78a592789cc2c4052dd8d6a042c30"
+  "registry_digest": "sha256:26e630af406a727c0c00c10ef3002b9977ab1603a4374a1aa5c1bd565d3d33e8"
 }

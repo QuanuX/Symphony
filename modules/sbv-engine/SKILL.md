@@ -19,7 +19,13 @@ Optional resident data: create a short caller-owned mode-0700 directory, obtain
 id, RAM budget/residency, concurrency and idle policy, then call `sbv dataset
 load`. `dataset_execute` wraps run/evaluate/book/generate_census input without either output form;
 the wrapper owns the destination. Use dataset inspect for counters and dataset
-release after jobs finish. Explicit file operations remain available. All
+release after jobs finish. Select a job_id before execution to reconcile disconnects
+with `dataset jobs`; `dataset cancel` requests cooperative cancellation.
+`dataset configure` changes admission/idle settings using the inspected
+configuration_generation, without reloading RAM. `dataset stop` explicitly
+terminates the whole incarnation, including noncooperative providers; outputs
+may be incomplete and are never automatically rolled back or retried.
+Explicit file operations remain available. All
 commands support text, JSON and NDJSON; future GUIs use identical payloads.
 A transport failure may follow a completed write; inspect its destination.
 

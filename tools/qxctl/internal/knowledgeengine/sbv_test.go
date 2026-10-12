@@ -37,7 +37,7 @@ func TestSBVExactReleaseAndCapabilities(t *testing.T) {
 		t.Fatal("implicit release upgrade")
 	}
 	p := map[string]any{}
-	if validateSBVResult("capabilities", p, []byte(`{"protocol":"symphony.sbv.capabilities.v1","engine_version":"0.24.0-dev","cpu":{"available":true},"cuda":{"available":true},"tensor":{"available":false},"live":{"available":false}}`)) == nil {
+	if validateSBVResult("capabilities", p, []byte(`{"protocol":"symphony.sbv.capabilities.v1","engine_version":"0.25.0-dev","cpu":{"available":true},"cuda":{"available":true},"tensor":{"available":false},"live":{"available":false}}`)) == nil {
 		t.Fatal("unexpected accelerator capability accepted")
 	}
 }
@@ -51,6 +51,7 @@ func TestSBVDatasetUserLimitEvidence(t *testing.T) {
 	r["protocol"] = "symphony.sbv.dataset-load.v1"
 	r["engine_version"] = SBVAdministrationInterfaceVersion
 	r["state"] = "ready"
+	r["configuration_generation"] = "0"
 	for _, k := range []string{"events", "decoded_bytes", "load_buffer_bytes", "source_reads", "decode_passes", "active_jobs", "active_workers", "completed_jobs", "failed_jobs"} {
 		r[k] = "1"
 	}

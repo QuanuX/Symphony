@@ -1,0 +1,302 @@
+{
+  "protocol": "symphony.sbv.milestone-readiness.v1",
+  "date": "2026-10-11",
+  "status": "prepared_sequence_not_completed_implementation",
+  "authority": "User requested fixes to the pre-M2/M3 code review and preparation to begin M2–M3. This record proposes the next implementation sequence; it does not close those milestones.",
+  "baseline": {
+    "selected_M1": "R3.3/R4 0.24 local candidate accepted at 50cedde31cb8c78dcc61845bfe067a1d84eb6026",
+    "hardening_release": "0.25.0-dev",
+    "evidence_packet": "workspace:implementation/sbv-control-hardening",
+    "original_plan": "workspace:context/handoffs/2026-10-05-sbv/IMPLEMENTATION_PLAN.md",
+    "current_work_packages": "workspace:implementation/sbv-candidate-qualification/PROGRAMME_STATUS.json",
+    "remaining_lanes": "workspace:implementation/sbv-candidate-qualification/PENDING_LANES.md"
+  },
+  "review_fixes": [
+    {
+      "id": "H1",
+      "scope": "SIGTERM/SIGINT cancellation of the foreground qxctl/native process group",
+      "verification": "Subprocess signal test plus real installed CLI interruption inside a noncooperative provider callback."
+    },
+    {
+      "id": "H2",
+      "scope": "Addressable resident jobs, per-job cooperative cancellation, exact-incarnation force-stop and independent control connections",
+      "verification": "Native four-worker provider cancellation, busy-release refusal, stalled client, terminal reconciliation, noncooperative host stop, installed CLI/SDK parity."
+    },
+    {
+      "id": "H3",
+      "scope": "Compare-and-set runtime concurrency/worker/idle configuration without reloading source data",
+      "verification": "Stale generation refusal, reject/drain below active demand, unlimited/uint64 selections, reads/decodes unchanged after source deletion."
+    }
+  ],
+  "next_increment": "R5.1",
+  "sequence": [
+    {
+      "id": "R5.1",
+      "milestone": "M2",
+      "work_packages": [
+        "WP05",
+        "WP13",
+        "WP09"
+      ],
+      "deliverable": "Selectable native latency, queue-priority and partial-fill scenario model with explicit assumptions and execution-label admission contract.",
+      "depends_on": [
+        "0.25 control hardening"
+      ],
+      "user_controls": [
+        "Model/version/provider selection",
+        "Latency distribution and seed/tape",
+        "Queue position, priority, cancellation/replenishment assumptions",
+        "Partial/no-fill quantities and horizons",
+        "Calibration label source/domain and unavailable-evidence policy",
+        "Resource limits or none"
+      ],
+      "exit": [
+        "Mechanical initialized-book/reset/gap fixtures distinguish observation, scenario and calibration.",
+        "Mass, quantity and time conservation; independent hand calculations for latency/queue/partial fills.",
+        "Changing model assumptions preserves a fixed census and source/replay identity.",
+        "No calibrated market claim without permitted execution labels and a held-out domain assessment.",
+        "All selection/schema/template/result paths pass qxctl and independent SDK parity."
+      ],
+      "cases": [
+        "A019",
+        "A020",
+        "A021",
+        "A022",
+        "A024",
+        "A025",
+        "A095"
+      ]
+    },
+    {
+      "id": "R5.2",
+      "milestone": "M2",
+      "work_packages": [
+        "WP12",
+        "WP14",
+        "WP09"
+      ],
+      "deliverable": "Separately packaged first language/data adapter with streamed replay/results and external model/optimizer round-trip.",
+      "depends_on": [
+        "Existing native SDK/provider/replay contracts"
+      ],
+      "user_controls": [
+        "Adapter and exact dependency versions",
+        "Selected columns/window/source projection",
+        "Copy versus borrowed ownership and release/fence policy",
+        "Precision/dtype/schema and model provenance",
+        "External tool and deployment choice"
+      ],
+      "exit": [
+        "Install/uninstall adapter independently while native SBV remains usable.",
+        "Independent consumer reconstructs selected replay and result identities without implementing C++ calculations again.",
+        "Wrong shape/precision/lifetime returns typed findings.",
+        "No Arrow/DLPack zero-copy claim until actual ownership and lifetime tests pass."
+      ],
+      "cases": [
+        "A050",
+        "A052",
+        "A053",
+        "A054",
+        "A055",
+        "A090",
+        "A095"
+      ]
+    },
+    {
+      "id": "R5.3",
+      "milestone": "M2",
+      "work_packages": [
+        "WP07",
+        "WP14",
+        "WP09"
+      ],
+      "deliverable": "Nested validation and adaptive proposal orchestration with a selectable additional study family and complete proposal/trial lineage.",
+      "depends_on": [
+        "Existing split/fit/predict/experiment/history operations",
+        "R5.2 external proposal contract where used"
+      ],
+      "user_controls": [
+        "Study IDs or empty selection",
+        "Formula, weighting, annualization, fee and denominator conventions",
+        "Train/validation/test partitions, label intervals and holdout reuse",
+        "Objectives, constraints, scalar/Pareto ranking",
+        "Proposal algorithm/provider, random seed, pruning/continuation policy",
+        "Trial/worker/budget/deadline selections or none"
+      ],
+      "exit": [
+        "Independent nested-fold and information-interval fixtures; display-only replay overlap does not force purging.",
+        "Proposal, rejected/failed/pruned/running/completed records survive agent replacement without duplicate admitted trials.",
+        "Unknown trial history produces limited claims rather than fabricated overfitting confidence.",
+        "Users may override fitting/weighting/holdout choices; evidence records the choice without an imposed promotion gate."
+      ],
+      "cases": [
+        "A032",
+        "A033",
+        "A034",
+        "A035",
+        "A036",
+        "A037",
+        "A084",
+        "A092",
+        "A095"
+      ]
+    },
+    {
+      "id": "R5.4",
+      "milestone": "M2 gate",
+      "work_packages": [
+        "WP10",
+        "WP11",
+        "WP18"
+      ],
+      "deliverable": "Complete-work CPU/RAM performance and reproducibility qualification for the selected M2 models/adapters/studies.",
+      "depends_on": [
+        "R5.1",
+        "R5.2",
+        "R5.3"
+      ],
+      "user_controls": [
+        "Worker topology/affinity if implemented",
+        "File/retained/RAM feed and residency choice",
+        "Reader caches, scratch/page layout and user budgets",
+        "Backend capability/fallback choice",
+        "Repeat/warmup/cache protocol and numerical tolerance"
+      ],
+      "exit": [
+        "Equal science across selected worker/feed profiles, with loading/decoding/compute/publication/export times separated and total reported.",
+        "Resource accounting states excluded allocations; no terabyte/NUMA/cluster proof without actual hardware and tests.",
+        "CUDA/tensor interfaces remain capability-only unless separately selected and verified.",
+        "Run broad native, installed, owner-contract and independent consumer gates once for this milestone."
+      ],
+      "cases": [
+        "A050",
+        "A055",
+        "A065",
+        "A066",
+        "A095"
+      ]
+    },
+    {
+      "id": "R6.1",
+      "milestone": "M3",
+      "work_packages": [
+        "WP06",
+        "WP15",
+        "WP09"
+      ],
+      "deliverable": "Explicit stateful feedback mode, multi-instrument scheduling and shared-capital/account ledger.",
+      "depends_on": [
+        "R5.1 scenario semantics",
+        "R5.4 qualified baseline"
+      ],
+      "user_controls": [
+        "Fixed-census versus feedback mode",
+        "Account/capital/risk/fee/funding/FX models",
+        "Instrument/venue/session ordering and tie-break rules",
+        "Competing order and multileg policies",
+        "State snapshots/branches and replay retention"
+      ],
+      "exit": [
+        "Feedback changes census/mode lineage and cannot rewrite fixed-census output.",
+        "Independent ledger conservation, competing-order/shared-liquidity and cross-source ordering fixtures.",
+        "Selected instrument/corporate-action/FX behavior has explicit unavailable/unsupported states.",
+        "Branch/replay artifacts remain portable and completely queryable through qxctl."
+      ],
+      "cases": [
+        "A012",
+        "A023",
+        "A024",
+        "A084",
+        "A090",
+        "A095"
+      ]
+    },
+    {
+      "id": "R6.2",
+      "milestone": "M3",
+      "work_packages": [
+        "WP10",
+        "WP16",
+        "WP09"
+      ],
+      "deliverable": "Selected SOV-owned remote transport and durable job reconciliation, with caller-selected cluster placement/resources.",
+      "depends_on": [
+        "Refresh actual SOV/SSIAG contracts and deployed authority before assigning integration",
+        "R6.1 checkpoint eligibility where feedback jobs are selected"
+      ],
+      "user_controls": [
+        "Host/cluster/worker placement",
+        "Admission/reservation/spill/NUMA policy where implemented",
+        "Job IDs, deadlines or none, retry/cancel/terminate choices",
+        "Checkpoint eligibility and retention",
+        "Access projection and caller authority"
+      ],
+      "exit": [
+        "Killed agent/worker, lost response and repeated submission reconcile without duplicate admitted side effects.",
+        "Remote cancellation distinguishes requested, observed cancellation, completed publication and unknown outcome.",
+        "Do not treat the current ephemeral resident job table as durable/distributed execution.",
+        "Every remote capability is discoverable, mutable and observable through qxctl with matching portable results."
+      ],
+      "cases": [
+        "A084",
+        "A094",
+        "A095"
+      ]
+    },
+    {
+      "id": "R6.3",
+      "milestone": "M3 gate",
+      "work_packages": [
+        "WP13",
+        "WP18"
+      ],
+      "deliverable": "Advanced selected-model validation and refreshed competitor capability/performance acceptance.",
+      "depends_on": [
+        "R6.1",
+        "R6.2",
+        "Appropriate licensed evidence for every calibrated-model claim"
+      ],
+      "user_controls": [
+        "Comparable workload/fidelity and model assumptions",
+        "Peer version/hardware selection",
+        "Correctness tolerance, run protocol and retained evidence"
+      ],
+      "exit": [
+        "Refresh primary competitor documentation at implementation time; date and pin versions/editions.",
+        "Report supported/unsupported/unselected capabilities separately; no exhaustive parity from a feature list.",
+        "Verify equal outputs/fidelity before ranking speed, including end-to-end loading and terminal/export cost.",
+        "Broad M3 candidate gate and independent audit precede milestone acceptance/publication."
+      ],
+      "cases": [
+        "A025",
+        "A065",
+        "A066",
+        "A090",
+        "A094",
+        "A095"
+      ]
+    }
+  ],
+  "every_increment_protocol": [
+    "Name capability, WP/case and prerequisite before coding.",
+    "Extend exact owner/schema/template/native/SDK and qxctl registry contracts together.",
+    "Expose every mutable scientific/resource choice through typed input; retain immutable completed artifacts with new versions/forks for revisions.",
+    "Use the smallest meaningful new/affected tests, then full selected gates at M2/M3 closure.",
+    "Record exact source/build/install/evidence identities and known gaps.",
+    "Update workspace current status; never substitute command counts or refusal tests for positive capability acceptance."
+  ],
+  "data_and_authority": {
+    "default_data": "Existing retained Databento samples at zero new spend; mechanical fixtures for initialized queue/account cases.",
+    "fresh_acquisition": "Requires operational selected SQAV/SSIAG provider bridge and explicit cost/unknown-outcome accounting within the existing aggregate $10 authorization. Not an implicit new spend.",
+    "calibration": "Existing capped AAPL/ESZ6 fragments do not establish full initial book or execution-label truth.",
+    "live": "Conceptual scaffold only; no live connection/test.",
+    "publication": "Local commits only for this increment; no new push/merge instruction.",
+    "limits": "Users select constraints or none. Framing/representation contracts and actual host capacity are disclosed, not described as universal dataset ceilings."
+  },
+  "tracked_corrections": [
+    {
+      "source": "sealed 0.24 PROGRAMME_STATUS WP03 remaining text",
+      "correction": "The generic recommendation to replace the 4096-signal profile is historical/stale for already-shipped partitioned core producers; 0.24 qualified 65,537 signals. Residual legacy external/model/consumer domains remain profile-specific. Preserve the sealed original and use operation_profiles for current limits."
+    }
+  ]
+}

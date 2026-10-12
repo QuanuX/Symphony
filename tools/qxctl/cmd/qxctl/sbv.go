@@ -9,7 +9,6 @@ import (
 	"io"
 	"math"
 	"os"
-	"os/signal"
 	"sort"
 	"strconv"
 	"strings"
@@ -90,7 +89,7 @@ func newSBVLeaf(op, leaf string) *cobra.Command {
 			}
 			return renderSBV(c.OutOrStdout(), wrapper, format)
 		}
-		caller, stop := signal.NotifyContext(c.Context(), os.Interrupt)
+		caller, stop := sbvSignalContext(c.Context())
 		defer stop()
 		ctx, cancel, err := sbvDeadlineContext(caller, timeout, absoluteDeadline, c.Flags().Changed("timeout"))
 		if err != nil {
@@ -203,17 +202,17 @@ func newSBVLeaf(op, leaf string) *cobra.Command {
 	interaction := "invoke"
 	if resource || op == "capabilities" || op == "catalogue" || op == "provider_inspect" {
 		interaction = "discover"
-	} else if read || op == "result_select" || op == "dataset_inspect" || op == "bundle_inspect" || op == "bundle_query" || op == "bundle_verify" {
+	} else if read || op == "result_select" || op == "dataset_inspect" || op == "dataset_jobs" || op == "bundle_inspect" || op == "bundle_query" || op == "bundle_verify" {
 		interaction = "inspect"
 	}
 	spec := commandSpec(key, featureSBVAdministration, interaction)
 	spec.FeatureBindings = append(spec.FeatureBindings, commandregistry.FeatureBinding{FeatureID: "ssfv:symphony:sbv-engine", Interaction: interaction})
-	if op == "run" || op == "compose" || op == "evaluate" || op == "compose_joint" || op == "economics" || op == "book" || op == "liquidity" || op == "allocation_economics" || op == "analyze" || op == "compare" || op == "resample" || op == "experiment" || op == "split" || op == "research_history" || op == "source_retain" || op == "source_export" || op == "generate_census" || op == "compose_economics" || op == "fit" || op == "predict" || op == "dataset_load" || op == "dataset_release" || op == "dataset_execute" {
+	if op == "run" || op == "compose" || op == "evaluate" || op == "compose_joint" || op == "economics" || op == "book" || op == "liquidity" || op == "allocation_economics" || op == "analyze" || op == "compare" || op == "resample" || op == "experiment" || op == "split" || op == "research_history" || op == "source_retain" || op == "source_export" || op == "generate_census" || op == "compose_economics" || op == "fit" || op == "predict" || op == "dataset_load" || op == "dataset_release" || op == "dataset_execute" || op == "dataset_cancel" || op == "dataset_configure" || op == "dataset_stop" {
 		spec.Mutability = "permission_backed_mutation"
 		spec.AuthorityMode = "target_host_permission"
 		spec.RecoveryCommandID = stringPointer("qxcmd:symphony:sbv.result.inspect")
 	}
-	if op == "dataset_load" || op == "dataset_release" {
+	if op == "dataset_load" || op == "dataset_release" || op == "dataset_configure" || op == "dataset_stop" {
 		spec.RecoveryCommandID = stringPointer("qxcmd:symphony:sbv.dataset.inspect")
 	}
 	if op == "bundle_import" || op == "bundle_export" {
@@ -224,7 +223,10 @@ func newSBVLeaf(op, leaf string) *cobra.Command {
 	if op == "bundle_inspect" || op == "bundle_verify" {
 		spec.FeatureBindings = append(spec.FeatureBindings, commandregistry.FeatureBinding{FeatureID: "ssfv:symphony:sbv-engine", Interaction: "recover"}, commandregistry.FeatureBinding{FeatureID: featureSBVAdministration, Interaction: "recover"})
 	}
-	if op == "result_inspect" || op == "dataset_inspect" {
+	if op == "dataset_cancel" {
+		spec.RecoveryCommandID = stringPointer("qxcmd:symphony:sbv.dataset.jobs")
+	}
+	if op == "result_inspect" || op == "dataset_inspect" || op == "dataset_jobs" {
 		spec.FeatureBindings = append(spec.FeatureBindings, commandregistry.FeatureBinding{FeatureID: "ssfv:symphony:sbv-engine", Interaction: "recover"}, commandregistry.FeatureBinding{FeatureID: featureSBVAdministration, Interaction: "recover"})
 	}
 	nativeOp := op

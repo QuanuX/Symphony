@@ -1166,6 +1166,35 @@
       "format": "json",
       "protocol": "symphony.sbv.bundle-export-input.v1",
       "extensions": {}
+    },
+    "dataset_jobs": {
+      "protocol": "symphony.sbv.dataset-jobs-input.v1",
+      "directory": "/private/tmp/sbv-private",
+      "instance_id": "0123456789abcdef0123456789abcdef",
+      "job_id": null,
+      "after_sequence": "0",
+      "limit": "100"
+    },
+    "dataset_cancel": {
+      "protocol": "symphony.sbv.dataset-cancel-input.v1",
+      "directory": "/private/tmp/sbv-private",
+      "instance_id": "0123456789abcdef0123456789abcdef",
+      "job_id": "user-selected-job"
+    },
+    "dataset_configure": {
+      "protocol": "symphony.sbv.dataset-configure-input.v1",
+      "directory": "/private/tmp/sbv-private",
+      "instance_id": "0123456789abcdef0123456789abcdef",
+      "expected_generation": "0",
+      "max_concurrent_jobs": null,
+      "worker_budget": null,
+      "idle_timeout_ms": "0",
+      "on_active_over_limit": "reject"
+    },
+    "dataset_stop": {
+      "protocol": "symphony.sbv.dataset-stop-input.v1",
+      "directory": "/private/tmp/sbv-private",
+      "instance_id": "0123456789abcdef0123456789abcdef"
     }
   },
   "variants": {

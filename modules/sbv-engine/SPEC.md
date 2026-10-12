@@ -2,11 +2,11 @@
 
 ## Version and ownership
 
-Contract v1; package `sbv-engine` 0.24.0-dev; engine `symphony-sbv`; vector `sbv`. C++26 owns computations, result sealing and artifact queries. Go qxctl verifies the exact installation and projects native evidence. OWNER-INTERFACE.json is the exact operation declaration; generated C++/Go metadata must match it. This release is experimental.
+Contract v1; package `sbv-engine` 0.25.0-dev; engine `symphony-sbv`; vector `sbv`. C++26 owns computations, result sealing and artifact queries. Go qxctl verifies the exact installation and projects native evidence. OWNER-INTERFACE.json is the exact operation declaration; generated C++/Go metadata must match it. This release is experimental.
 
 The engine uses knowledge-vector-engine-cpp 0.2.0-dev and sqav-databento-dbn-cpp 0.5.0-dev, with that adapter's exact static dependencies. It performs no data-provider network calls. Signal/replay semantics belong to SBV; acquisition remains SQAV, metadata SQMV, batch ownership SQFV, transformation SQTV, physical stores SQPV and recipient delivery SQDV. Its portable local JSON result is a derived artifact, not a new market-data persistence service. An optional offline retained-source route composes SQAV capture 0.2.0-dev, SQMV 0.2.0-dev, SQFV 0.3.0-dev, SQPV 0.2.0-dev and SQDV 0.3.0-dev under the selected profile described below.
 
-## Current operation/profile matrix (0.24)
+## Current operation/profile matrix (0.25)
 
 `qxctl sbv capabilities` and the identical native/SDK operation expose `operation_profiles`: independent read/write support, working-memory scope and retained domain/format limits for every declared operation. Nullable dataset/resource/deadline choices belong to the user. No worker, job, aggregate dataset or partitioned-result policy ceiling is imposed. Host allocation, exact arithmetic and explicitly selected formats remain finite. The matrix below supersedes historical incremental scope wording in this document; it does not confer a cluster/GPU runtime or a competitive speed claim.
 
@@ -29,7 +29,7 @@ The engine uses knowledge-vector-engine-cpp 0.2.0-dev and sqav-databento-dbn-cpp
 | `compose_joint` / legacy_direct_joint_composition | inline joint paths | legacy | exact supplied paths/distributions. paths 1..4096; steps 1..16; exact int64 rationals. These are named legacy operation profiles, not limits on compose_economics. |
 | `backend_plan` / capability_only_backend_tensor | inline explicit declarations | control result | descriptor metadata only. tensor rank <=16, nonnegative strides, exact dtype/extent/ready state. CPU worker request has no policy maximum; CUDA/tensor runtime unavailable, no silent fallback or reservation. |
 | `live_plan` / disconnected_live_fixture | inline synthetic fixture; no live connection | control result | selected ring and pending horizons. event_cap 1..65536; pending_cap 1..128; fixture <=512 events and <=128 signals; event bytes <=1e9; UINT64_MAX time sentinel excluded. Wider/live runtime deferred. |
-| `dataset_load`, `dataset_inspect`, `dataset_execute`, `dataset_release` / resident_dataset | file or optional exact retained-source; local handle | control lifecycle receipts; execute child legacy or partitioned | original load bytes plus decoded allocation; admitted jobs and worker state. No dataset/job/worker policy maximum; nullable caller budgets and deadlines. Load-buffer budget is not total RSS; reject excess admission without implicit queue. Execute: run/generate_census/evaluate/book. |
+| `dataset_load`, `dataset_inspect`, `dataset_execute`, `dataset_release`, `dataset_jobs`, `dataset_cancel`, `dataset_configure`, `dataset_stop` / resident_dataset | file or optional exact retained-source; local handle | control lifecycle receipts; execute child legacy or partitioned | original load bytes plus decoded allocation; admitted jobs and worker state. No dataset/job/worker policy maximum; nullable caller budgets and deadlines. Load-buffer budget is not total RSS; reject excess admission without implicit queue. Execute: run/generate_census/evaluate/book. |
 | `source_retain`, `source_export` / sqv-local-retained-capture.v1 | selected SQAV/SQMV/SQFV/SQPV/SQDV owner route | legacy source receipts/original byte export | owner capture/batch/store/delivery state, separately scoped from SBV load buffer. Exact source_owner_profile publishes owner limits, including 64 MiB DBN/capture and 1048576 records; ordinary file/RAM route has no such policy maximum. |
 | `bundle_import`, `bundle_inspect`, `bundle_query`, `bundle_verify`, `bundle_export` / partitioned_result_v1 | canonical JSON import or pinned bundle | partitioned import; bounded query/receipt; streaming JSON/node NDJSON export | page readers/cache and bounded traversal; caller-selected page size/fanout. No aggregate bytes/nodes maximum; depth <=64, string/key <=65536 UTF-8 bytes; checked uint64/offset/hash representation. page_bytes>=512/fanout>=2; scalar must fit selected layout. |
 | `result_inspect`, `result_query` / legacy_result_access | legacy artifact | control receipt/page | whole bounded legacy artifact. 128 MiB and 4000000 JSON values; depth64/string65536. Bundle operations provide scalable independent access. |
@@ -912,7 +912,7 @@ Analysis retains a typed sample vector and, when selected, a sorted quantile cop
 
 Partitioned outputs optionally accept `scratch_read_options:{max_page_bytes,cache_bytes}`. Omission preserves unlimited additional page size and cache zero. This is the maximum canonical-page-byte cache **per active independent scratch reader**, not total RSS; parsed JSON, typed indexes and allocator overhead are separate. Multiple simultaneously retained arrays/workers can each own a reader. Caller-supplied source read options remain independent. Cache selection does not weaken page hashes, full-closure admission, immutable publication or recovery evidence.
 
-The current matrix covers all implemented 0.24 read/write profiles. Typed view preparation writes partitioned results and its page form is a selected-range reader. Experiments support producer children, referenced plans and partitioned aggregate ledgers. The following sections describe execution, model and experiment consumer details. This inventory does not close R3.3 or R4 and does not make a cluster/GPU or comparative fastest-engine claim.
+The current matrix covers the implemented 0.25 read/write profiles. Typed view preparation writes partitioned results and its page form is a selected-range reader. Experiments support producer children, referenced plans and partitioned aggregate ledgers. The following sections describe execution, model and experiment consumer details. Selected R3.3/R4 acceptance belongs to the sealed 0.24 qualification packet. The separate 0.25 control-hardening checks do not confer a cluster/GPU runtime or comparative fastest-engine claim.
 
 ### 0.24 execution-chain transport increment
 
@@ -947,3 +947,59 @@ An incomplete owned-plan publication is retained in `experiment-plan-recovery.js
 The C++26 interpreter supports exact rational `constant`, aggregate `count`, row `row_value`/`row_weight`, reductions `sum`/`minimum`/`maximum`, unary `negate`/`absolute`, and binary `add`/`subtract`/`multiply`/`divide`/`min`/`max`. Binary nodes name `left` and `right`; unary/reduction nodes name `value`; constants carry an exact rational `value`. Rows are the admitted retained sample vector after explicit missingness/weight selection. Row variables are legal inside one reduction; nested reductions and aggregate count inside a reduction are outside this named profile. The published recursive expression schema and native validator define exact operator fields; qxctl performs bounded structural preflight before native semantic admission. No expression text is executed as code.
 
 Supplied weights are used only when the formula selects them. An empty sum is exactly zero; empty extrema and division by zero are unavailable or reject according to `on_incompatible`. No finite stand-in or hidden normalization is used. Thus users can explicitly define profit factor, weighted sums, centered moments or other compatible formulas without adopting a mandatory metric catalogue. Units and economic interpretation are caller declarations, not dimensional inference or portfolio validation. Arithmetic uses checked signed-128-bit rationals; overflow rejects, never changes methods. Formula traversal checks the user's deadline. Current control/result depth and scalar representation apply; there is no additional study-count or operation-time policy ceiling. This scalar formula profile does not claim arbitrary Python execution, native study-plugin ABI or a tensor runtime.
+
+
+## Resident control hardening (0.25)
+
+`dataset_execute` accepts an optional `job_id` (1–128 ASCII letters, digits,
+dot, dash, underscore). Omission uses SHA256 of the canonical outer request.
+An admitted ID is never reused in that resident incarnation, including after
+failure. Admission failures do not consume an ID. A disconnected caller does
+not cancel accepted work. Preserve the selected ID before submission and use
+`dataset_jobs` to reconcile an uncertain response; never infer non-execution
+from a disconnected or terminated qxctl process.
+
+`dataset_jobs` lists admission-ordered job records with `after_sequence` and a
+caller-selected positive `limit`; control frame byte/value budgets may shorten
+a page, with `more` and `next_after_sequence` exposing continuation. A selected
+`job_id` requires `after_sequence: "0"` and `limit: "1"`. Records expose request
+hash, operation, requested workers, output selection, cancellation flag and
+state (`running`, `completed`, `failed`, `cancelled`, `recovery_required`).
+They describe live observations, not an immutable cross-page snapshot. Records
+remain in host memory for that incarnation; they are not durable job storage.
+No total job count policy cap is imposed. Output selection is a requested
+location, not proof that a complete artifact exists there.
+
+`dataset_cancel` requests cooperative cancellation of one admitted job. Native
+worker threads and provider cancellation contexts inherit it. Repeating the
+request is safe; a terminal job keeps its outcome. A concurrent publication
+may complete or require recovery. Cancellation does not roll back files or
+claims. `failed_jobs` includes failed, cancelled and recovery-required jobs.
+A provider that does not cooperate requires explicit whole-host stop.
+
+`dataset_configure` uses `expected_generation` (initially `"0"`) to atomically
+replace `max_concurrent_jobs`, `worker_budget`, and `idle_timeout_ms` without
+reloading source bytes. Null concurrency/worker limits remain unbounded by
+policy; idle timeout `"0"` disables expiry. `on_active_over_limit: "reject"`
+refuses settings below active use, while `"drain"` admits them and preserves
+running work; new admissions wait for capacity by explicit caller retry.
+The returned generation increments exactly once. Source identity, memory mode
+and already-admitted data are immutable for that incarnation; selecting a new
+load creates a new incarnation. Completed research artifacts remain immutable;
+users revise their inputs and produce new artifacts.
+
+`dataset_release` still refuses active work. `dataset_stop` explicitly stops
+that exact authenticated resident incarnation, including noncooperative native
+providers. Its best-effort receipt says `termination_requested`, with active
+counts and `results_may_be_incomplete: true`; it does not claim rollback,
+completed publication or durable job recovery. Lost acknowledgements are
+uncertain outcomes. The process exits without native destructor cleanup and
+the OS reclaims its RAM. Inspect output destinations before further work.
+
+Control connections are independent; a stalled frame does not block inspection,
+configuration, cancellation or stop. There is no imposed connection/job deadline
+or connection-count policy cap. Host memory/thread exhaustion remains possible
+under caller-selected unbounded use. qxctl SIGINT/SIGTERM cancels its foreground
+native process group; resident work has the explicit separate controls above.
+All four operations, exact schemas/templates and complete JSON/NDJSON/text
+results are available through qxctl and the same native SDK dispatch.

@@ -1,4 +1,5 @@
 #pragma once
+#include <atomic>
 #include <charconv>
 #include <set>
 #include <symphony/knowledge/engine/digest.hpp>
@@ -13,7 +14,21 @@ inline void need(bool b, const char *message) {
   if (!b)
     throw e::Error("sbv.contract", message, 2);
 }
+// Borrowed only while its owning job and all joined workers remain alive.
+inline thread_local const std::atomic_bool *caller_cancellation = nullptr;
+struct CancellationScope {
+  const std::atomic_bool *previous;
+  explicit CancellationScope(const std::atomic_bool *flag)
+      : previous(caller_cancellation) { caller_cancellation = flag; }
+  ~CancellationScope() { caller_cancellation = previous; }
+  CancellationScope(const CancellationScope &) = delete;
+};
+inline bool cancellation_requested() {
+  return caller_cancellation && caller_cancellation->load();
+}
 inline void deadline(std::int64_t d) {
+  if (cancellation_requested())
+    throw e::Error("sbv.cancelled", "SBV job cancelled by caller", 3);
   if (d != e::no_deadline && e::unix_time_ms() >= d)
     throw e::Error("deadline.exceeded", "SBV deadline exceeded", 3);
 }

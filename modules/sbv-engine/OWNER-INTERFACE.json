@@ -3,9 +3,9 @@
   "module_id": "sbv-engine",
   "engine_id": "symphony-sbv",
   "namespace": "symphony::sbv::interface",
-  "current_version": "0.24.0-dev",
+  "current_version": "0.25.0-dev",
   "releases": {
-    "0.24.0-dev": [
+    "0.25.0-dev": [
       "capabilities",
       "run",
       "compose",
@@ -42,7 +42,11 @@
       "bundle_inspect",
       "bundle_query",
       "bundle_verify",
-      "bundle_export"
+      "bundle_export",
+      "dataset_jobs",
+      "dataset_cancel",
+      "dataset_configure",
+      "dataset_stop"
     ]
   },
   "contract_versions": [
@@ -122,6 +126,14 @@
     "symphony.sbv.bundle-verify.v1",
     "symphony.sbv.bundle-export-input.v1",
     "symphony.sbv.bundle-export.v1",
+    "symphony.sbv.dataset-jobs-input.v1",
+    "symphony.sbv.dataset-jobs.v1",
+    "symphony.sbv.dataset-cancel-input.v1",
+    "symphony.sbv.dataset-cancel.v1",
+    "symphony.sbv.dataset-configure-input.v1",
+    "symphony.sbv.dataset-configure.v1",
+    "symphony.sbv.dataset-stop-input.v1",
+    "symphony.sbv.dataset-stop.v1",
     "symphony.sbv.linear-model.v1",
     "symphony.sbv.census-evidence.v1",
     "symphony.sbv.native-provider-census.v1",
@@ -916,6 +928,91 @@
       "operation_name": "bundle_export",
       "output_protocol": "symphony.sbv.bundle-export.v1",
       "recovery_operation_id": "engop:symphony:sbv.bundle-inspect",
+      "thermal_path": "freezing"
+    },
+    {
+      "administration_disposition": "qxctl_required",
+      "administrative_interactions": [
+        "inspect",
+        "recover"
+      ],
+      "authorization_requirement": "none",
+      "availability": "implemented",
+      "direct_invocation": "supported",
+      "engine_operation_id": "engop:symphony:sbv.dataset-jobs",
+      "expected_state_required": false,
+      "feature_ids": [
+        "ssfv:symphony:sbv-engine"
+      ],
+      "idempotency": "idempotent",
+      "input_protocol": "symphony.sbv.dataset-jobs-input.v1",
+      "mutability": "read_only",
+      "operation_name": "dataset_jobs",
+      "output_protocol": "symphony.sbv.dataset-jobs.v1",
+      "recovery_operation_id": null,
+      "thermal_path": "freezing"
+    },
+    {
+      "administration_disposition": "qxctl_required",
+      "administrative_interactions": [
+        "invoke"
+      ],
+      "authorization_requirement": "target_host_permission",
+      "availability": "implemented",
+      "direct_invocation": "supported",
+      "engine_operation_id": "engop:symphony:sbv.dataset-cancel",
+      "expected_state_required": false,
+      "feature_ids": [
+        "ssfv:symphony:sbv-engine"
+      ],
+      "idempotency": "idempotent",
+      "input_protocol": "symphony.sbv.dataset-cancel-input.v1",
+      "mutability": "permission_backed_mutation",
+      "operation_name": "dataset_cancel",
+      "output_protocol": "symphony.sbv.dataset-cancel.v1",
+      "recovery_operation_id": "engop:symphony:sbv.dataset-jobs",
+      "thermal_path": "freezing"
+    },
+    {
+      "administration_disposition": "qxctl_required",
+      "administrative_interactions": [
+        "invoke"
+      ],
+      "authorization_requirement": "target_host_permission",
+      "availability": "implemented",
+      "direct_invocation": "supported",
+      "engine_operation_id": "engop:symphony:sbv.dataset-configure",
+      "expected_state_required": true,
+      "feature_ids": [
+        "ssfv:symphony:sbv-engine"
+      ],
+      "idempotency": "non_idempotent",
+      "input_protocol": "symphony.sbv.dataset-configure-input.v1",
+      "mutability": "permission_backed_mutation",
+      "operation_name": "dataset_configure",
+      "output_protocol": "symphony.sbv.dataset-configure.v1",
+      "recovery_operation_id": "engop:symphony:sbv.dataset-inspect",
+      "thermal_path": "freezing"
+    },
+    {
+      "administration_disposition": "qxctl_required",
+      "administrative_interactions": [
+        "invoke"
+      ],
+      "authorization_requirement": "target_host_permission",
+      "availability": "implemented",
+      "direct_invocation": "supported",
+      "engine_operation_id": "engop:symphony:sbv.dataset-stop",
+      "expected_state_required": false,
+      "feature_ids": [
+        "ssfv:symphony:sbv-engine"
+      ],
+      "idempotency": "non_idempotent",
+      "input_protocol": "symphony.sbv.dataset-stop-input.v1",
+      "mutability": "permission_backed_mutation",
+      "operation_name": "dataset_stop",
+      "output_protocol": "symphony.sbv.dataset-stop.v1",
+      "recovery_operation_id": "engop:symphony:sbv.dataset-inspect",
       "thermal_path": "freezing"
     }
   ],

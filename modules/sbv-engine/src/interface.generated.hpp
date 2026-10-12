@@ -3,7 +3,7 @@
 #include "symphony/knowledge/engine/operation.hpp"
 namespace symphony::sbv::interface {
 namespace engine = symphony::knowledge::engine;
-inline constexpr auto version = "0.24.0-dev";
+inline constexpr auto version = "0.25.0-dev";
 inline std::vector<engine::OperationSpec> interface_operations() { return {
   {"engop:symphony:sbv.capabilities", "capabilities", "implemented", false, true, {"ssfv:symphony:sbv-engine"}, {"discover"}, "qxctl_required", "symphony.sbv.capabilities-input.v1", "symphony.sbv.capabilities.v1", "read_only", "idempotent", false, "none", "", "supported", "freezing"},
   {"engop:symphony:sbv.run", "run", "implemented", false, true, {"ssfv:symphony:sbv-engine"}, {"invoke"}, "qxctl_required", "symphony.sbv.run-input.v1", "symphony.sbv.run.v1", "permission_backed_mutation", "non_idempotent", false, "target_host_permission", "engop:symphony:sbv.result-inspect", "supported", "freezing"},
@@ -42,5 +42,9 @@ inline std::vector<engine::OperationSpec> interface_operations() { return {
   {"engop:symphony:sbv.bundle-query", "bundle_query", "implemented", false, true, {"ssfv:symphony:sbv-engine"}, {"inspect"}, "qxctl_required", "symphony.sbv.bundle-query-input.v1", "symphony.sbv.bundle-query.v1", "read_only", "idempotent", false, "none", "", "supported", "freezing"},
   {"engop:symphony:sbv.bundle-verify", "bundle_verify", "implemented", false, true, {"ssfv:symphony:sbv-engine"}, {"inspect","recover"}, "qxctl_required", "symphony.sbv.bundle-verify-input.v1", "symphony.sbv.bundle-verify.v1", "read_only", "idempotent", false, "none", "", "supported", "freezing"},
   {"engop:symphony:sbv.bundle-export", "bundle_export", "implemented", false, true, {"ssfv:symphony:sbv-engine"}, {"invoke"}, "qxctl_required", "symphony.sbv.bundle-export-input.v1", "symphony.sbv.bundle-export.v1", "permission_backed_mutation", "non_idempotent", false, "target_host_permission", "engop:symphony:sbv.bundle-inspect", "supported", "freezing"},
+  {"engop:symphony:sbv.dataset-jobs", "dataset_jobs", "implemented", false, true, {"ssfv:symphony:sbv-engine"}, {"inspect","recover"}, "qxctl_required", "symphony.sbv.dataset-jobs-input.v1", "symphony.sbv.dataset-jobs.v1", "read_only", "idempotent", false, "none", "", "supported", "freezing"},
+  {"engop:symphony:sbv.dataset-cancel", "dataset_cancel", "implemented", false, true, {"ssfv:symphony:sbv-engine"}, {"invoke"}, "qxctl_required", "symphony.sbv.dataset-cancel-input.v1", "symphony.sbv.dataset-cancel.v1", "permission_backed_mutation", "idempotent", false, "target_host_permission", "engop:symphony:sbv.dataset-jobs", "supported", "freezing"},
+  {"engop:symphony:sbv.dataset-configure", "dataset_configure", "implemented", false, true, {"ssfv:symphony:sbv-engine"}, {"invoke"}, "qxctl_required", "symphony.sbv.dataset-configure-input.v1", "symphony.sbv.dataset-configure.v1", "permission_backed_mutation", "non_idempotent", true, "target_host_permission", "engop:symphony:sbv.dataset-inspect", "supported", "freezing"},
+  {"engop:symphony:sbv.dataset-stop", "dataset_stop", "implemented", false, true, {"ssfv:symphony:sbv-engine"}, {"invoke"}, "qxctl_required", "symphony.sbv.dataset-stop-input.v1", "symphony.sbv.dataset-stop.v1", "permission_backed_mutation", "non_idempotent", false, "target_host_permission", "engop:symphony:sbv.dataset-inspect", "supported", "freezing"},
 }; }
 }

@@ -119,7 +119,7 @@ struct Scope {
     const auto &s = *static_cast<Scope *>(p);
     if (std::this_thread::get_id() != s.thread || !s.active)
       return SBV_CALL_CANCEL_REQUESTED;
-    if (s.cancelled && s.cancelled->load())
+    if (cancellation_requested() || (s.cancelled && s.cancelled->load()))
       return SBV_CALL_CANCEL_REQUESTED;
     if (s.end != e::no_deadline && e::unix_time_ms() >= s.end)
       return SBV_CALL_DEADLINE_EXCEEDED;

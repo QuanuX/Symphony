@@ -1,6 +1,7 @@
 #include <atomic>
 #include <chrono>
 #include <cstdlib>
+#include <fstream>
 #include <cstring>
 #include <limits>
 #include <stdexcept>
@@ -162,6 +163,11 @@ int32_t selected_failure(const Instance &i, const sbv_call_context_v1 *ctx,
     return error(err, SBV_PROVIDER_FAILED, "selected provider failure");
   if (mode == "unavailable")
     return error(err, SBV_PROVIDER_UNAVAILABLE, "selected model unavailable");
+  if (mode == "ignore_cancel") {
+    const auto marker = field(i.config, "entered_file", "");
+    if (!marker.empty()) { std::ofstream f(marker); f << "entered"; }
+    for (;;) std::this_thread::sleep_for(std::chrono::milliseconds(10));
+  }
   if (mode == "cancel_poll") {
     while (ctx->cancel_state(ctx->token) == SBV_CALL_RUNNING)
       std::this_thread::yield();

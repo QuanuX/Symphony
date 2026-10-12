@@ -160,7 +160,7 @@
         "tools/qxctl/internal/knowledgeengine/sbv_test.go"
       ],
       "feature_id": "ssfv:symphony:qxctl-sbv-administration",
-      "how": "Exact receipt/interface admission, owner schema resources, bounded native queries and lossless complete exports.",
+      "how": "Exact receipt/interface admission, owner schema resources, bounded native queries and lossless complete exports. Resident controls expose addressable job inspection and cooperative cancellation, exact-incarnation force stop, and generation-checked admission/idle configuration without reloading RAM. SIGTERM and SIGINT propagate foreground qxctl cancellation.",
       "implementation_languages": [
         {
           "language": "Go",
@@ -169,6 +169,9 @@
       ],
       "implementation_paths": [
         "tools/qxctl/cmd/qxctl/sbv.go",
+        "tools/qxctl/cmd/qxctl/sbv_signal_other.go",
+        "tools/qxctl/cmd/qxctl/sbv_signal_unix.go",
+        "tools/qxctl/cmd/qxctl/sbv_signal_unix_test.go",
         "tools/qxctl/internal/knowledgeengine/sbv.go",
         "tools/qxctl/internal/knowledgeengine/sbv_bulk_stream.go",
         "tools/qxctl/internal/knowledgeengine/sbv_bundle.go",
@@ -176,7 +179,9 @@
         "tools/qxctl/internal/knowledgeengine/sbv_partitioned_installed_test.go",
         "tools/qxctl/internal/knowledgeengine/sbv_partitioned_schema_test.go",
         "tools/qxctl/internal/knowledgeengine/sbv_partitioned_test.go",
-        "tools/qxctl/internal/knowledgeengine/sbv_recovery.go"
+        "tools/qxctl/internal/knowledgeengine/sbv_recovery.go",
+        "tools/qxctl/internal/knowledgeengine/sbv_resident.go",
+        "tools/qxctl/internal/knowledgeengine/sbv_resident_test.go"
       ],
       "kind": "subfeature",
       "non_claims": [

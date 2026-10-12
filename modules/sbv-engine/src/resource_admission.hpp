@@ -33,10 +33,14 @@ template <class Worker, class Launcher>
 void launch(std::size_t count, std::atomic<bool> &stop, Worker worker,
             Launcher launcher) {
   std::vector<std::jthread> threads;
+  const auto cancellation = caller_cancellation;
   try {
     threads.reserve(count);
     for (std::size_t i = 0; i < count && !stop; ++i)
-      threads.push_back(launcher([&, i] { worker(i); }));
+      threads.push_back(launcher([&, i, cancellation] {
+        CancellationScope scope(cancellation);
+        worker(i);
+      }));
   } catch (...) {
     stop = true;
     threads.clear();

@@ -13,7 +13,7 @@ import (
 	"strings"
 )
 
-var SBVOperations = []string{"capabilities", "run", "compose", "result_inspect", "result_query", "evaluate", "catalogue", "compose_joint", "economics", "book", "liquidity", "allocation_economics", "result_select", "backend_plan", "live_plan", "analyze", "compare", "resample", "experiment", "split", "fit", "predict", "source_retain", "source_export", "generate_census", "provider_inspect", "compose_economics", "research_history", "dataset_load", "dataset_inspect", "dataset_execute", "dataset_release", "bundle_import", "bundle_inspect", "bundle_query", "bundle_verify", "bundle_export"}
+var SBVOperations = []string{"capabilities", "run", "compose", "result_inspect", "result_query", "evaluate", "catalogue", "compose_joint", "economics", "book", "liquidity", "allocation_economics", "result_select", "backend_plan", "live_plan", "analyze", "compare", "resample", "experiment", "split", "fit", "predict", "source_retain", "source_export", "generate_census", "provider_inspect", "compose_economics", "research_history", "dataset_load", "dataset_inspect", "dataset_execute", "dataset_release", "dataset_jobs", "dataset_cancel", "dataset_configure", "dataset_stop", "bundle_import", "bundle_inspect", "bundle_query", "bundle_verify", "bundle_export"}
 var sbvSHA = regexp.MustCompile(`^[0-9a-f]{64}$`)
 
 func sbvSpec() engineSpec {
@@ -260,7 +260,9 @@ func validateSBVResult(op string, p map[string]any, raw []byte) error {
 		return n, ok && e == nil && strconv.FormatUint(n, 10) == s
 	}
 	switch op {
-	case "dataset_load", "dataset_inspect", "dataset_release":
+	case "dataset_jobs", "dataset_cancel", "dataset_stop":
+		return sbvResidentControlResult(op, p, m)
+	case "dataset_load", "dataset_inspect", "dataset_release", "dataset_configure":
 		if m["engine_version"] != SBVAdministrationInterfaceVersion || m["directory"] != p["directory"] || m["instance_id"] != p["instance_id"] || !digest("source_sha256") {
 			return bad()
 		}
@@ -271,7 +273,7 @@ func validateSBVResult(op string, p map[string]any, raw []byte) error {
 		if m["state"] != state {
 			return bad()
 		}
-		for _, k := range []string{"events", "decoded_bytes", "load_buffer_bytes", "source_reads", "decode_passes", "active_jobs", "active_workers", "completed_jobs", "failed_jobs", "idle_timeout_ms"} {
+		for _, k := range []string{"events", "decoded_bytes", "load_buffer_bytes", "source_reads", "decode_passes", "active_jobs", "active_workers", "completed_jobs", "failed_jobs", "idle_timeout_ms", "configuration_generation"} {
 			if _, ok := number(k); !ok {
 				return bad()
 			}
@@ -349,6 +351,21 @@ func validateSBVResult(op string, p map[string]any, raw []byte) error {
 			}
 			for _, k := range fields {
 				if m[k] != p[k] {
+					return bad()
+				}
+			}
+		}
+		if op == "dataset_load" && m["configuration_generation"] != "0" {
+			return bad()
+		}
+		if op == "dataset_configure" {
+			previous, ok := sbvResidentUint(p["expected_generation"])
+			actual, valid := number("configuration_generation")
+			if !ok || !valid || previous == ^uint64(0) || actual != previous+1 {
+				return bad()
+			}
+			for _, k := range []string{"max_concurrent_jobs", "worker_budget", "idle_timeout_ms"} {
+				if !reflect.DeepEqual(m[k], p[k]) {
 					return bad()
 				}
 			}
