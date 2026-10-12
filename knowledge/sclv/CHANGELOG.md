@@ -15024,3 +15024,104 @@ This PR authorizes none of the following:
   - `No remote publication, live/provider call, purchase, calibrated-market claim, borrowed/device integration or full M2-M3 acceptance.`
 - notes: |
     Timestamps identify observed implementation commits, not an invented work-session interval. Post_merge denotes local committed source closure consistent with prior admitted records; no remote/main merge occurred. All prior ledger bytes and all 4425 sealed R5.1 files remain unchanged. Earlier broad native qualification is not relabeled as a fresh M2 gate.
+
+
+- record_id: `SCLV-CHG-sbv-r53a-nested-partitions-local`
+- record_version: `3`
+- title: `SBV R5.3a qxctl-first nested temporal partitions`
+- status: `canonical`
+- date: `2026-10-12`
+- change_started_at: `2026-10-12T17:25:31Z`
+- change_completed_at: `2026-10-12T17:25:31Z`
+- recorded_at: `2026-10-12T17:26:32Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `implementation_change`
+- change_request_state: `not_applicable`
+- change_request_provider: `not_applicable`
+- change_request_id: `not_applicable`
+- change_request_reference: `not_applicable`
+- change_request_absence_reason: `Directly authorized local branch implementation; no pull request or remote publication is invented.`
+- revision_scheme: `git-sha1`
+- revision_value: `dc806395484f0dea78bb4e55ae2553645848ee81`
+- tree_digest: `sha256:207eeb9081581283567fb1fe0cd6a5981632a9ab0a60a178388bdee51c3ddd9f`
+- ratification_subject: `Duncan (Architect)`
+- ratification_permission: `authorize_local_implementation_and_source_closure`
+- ratification_method: `explicit-user-instruction`
+- ratification_evidence_reference: `../sbv-nested-validation/RATIFICATION.json`
+- ratification_evidence_digest: `sha256:7497be226619d74cadfc72e02cd7701b48641a247a46ea6783a4503759df0635`
+- affected_surfaces:
+  - `cmake/SbvInterface.generated.cmake`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.json`
+  - `knowledge/sbv/VALIDATION.md`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `libraries/sbv-go/IMPLEMENTATION.md`
+  - `libraries/sbv-go/MANIFEST.md`
+  - `libraries/sbv-go/README.md`
+  - `libraries/sbv-go/client.go`
+  - `modules/sbv-engine/CMakeLists.txt`
+  - `modules/sbv-engine/FEATURES.md`
+  - `modules/sbv-engine/INSTALL.md`
+  - `modules/sbv-engine/M2-M3-READINESS.json`
+  - `modules/sbv-engine/MANIFEST.md`
+  - `modules/sbv-engine/OWNER-INTERFACE.json`
+  - `modules/sbv-engine/SKILL.md`
+  - `modules/sbv-engine/SPEC.md`
+  - `modules/sbv-engine/include/symphony/sbv/sbv.hpp`
+  - `modules/sbv-engine/schemas/v1/admin.schema.json`
+  - `modules/sbv-engine/schemas/v1/admin.templates.json`
+  - `modules/sbv-engine/src/interface.generated.hpp`
+  - `modules/sbv-engine/src/split.cpp`
+  - `modules/sbv-engine/tests/nested_split_test.cpp`
+  - `tools/qxctl/FEATURES.md`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/qxctl/cmd/qxctl/sbv_bulk_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_allocation_economics_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_analysis_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_book_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_census_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_dependencies_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_economics_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_history_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_installed_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_interface_generated.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_liquidity_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_models_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_nested_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_planning_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_research_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_split_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_test.go`
+- skvi_references:
+  - `knowledge/sbv/MANIFEST.md`
+  - `modules/sbv-engine/M2-M3-READINESS.json`
+  - `modules/sbv-engine/tests/nested_split_test.cpp`
+  - `tools/qxctl/internal/knowledgeengine/sbv_nested_test.go`
+  - `knowledge/skvi/INDEX.md`
+- change_summary: |
+    Native 0.27 adds nested temporal partitions with explicit inner populations and policies, original-source index lineage and ordinary experiment/fit/predict integration. Selected R5.3a is verified; adaptive proposal lifecycle, automatic nested model selection/refitting and the additional study family remain open. Full R5.3/M2/M3 are not closed.
+- relationship_changes: |
+    Existing split owns partition calculations; fit/predict and durable experiment dependencies retain their own contracts. All 42 operations remain qxctl-first with full legacy/partitioned terminal and native SDK access. Optional Go transport 0.1.1 selects exact native 0.27; no new scientific owner or service is added.
+- doctrine_changes: |
+    Users choose isolated outer_train membership or explicit source-wide reuse, with independently selected inner chronology, purging, padding, embargo and availability policies. Display-only replay is not training information. Unknown history stays unknown; no automatic holdout gate, dataset/fold ceiling, deadline, reweighting or promotion rule is added.
+- compatibility_consequences: |
+    Select exact native 0.27 and optional Go 0.1.1. Existing temporal/combinatorial requests remain supported. Nested plans accept explicit/rolling/expanding schedules; combinatorial/recursive nesting is outside this named profile. The SDK ABI is unchanged. Prior installed 0.26 and sealed R5.2 evidence remain unchanged.
+- publication_consequences: |
+    Local implementation and append-only source closure only. No push, main merge, tag, module publication, provider/live call, deployment or spend occurred.
+- projection_consequences: |
+    Five focused native suites, two ASan/UBSan suites, 24 schema/installed qxctl checks, 21 registry checks, 25 adapter race checks and vet pass. Eleven explicit synthetic split/fit/predict trials resume with zero executions. Retained AAPL/ESZ6 point-interval fixtures match CLI/SDK results and legacy/partitioned folds; complete exports verify 2842 nodes. No predictive-quality, scale or performance-superiority claim is made.
+- evidence:
+  - `../sbv-nested-validation/RATIFICATION.json`
+  - `../sbv-nested-validation/evidence/SCLV_SOURCE_BINDING.json`
+  - `../sbv-nested-validation/BUILD_IDENTITY.json`
+  - `../sbv-nested-validation/CHECKS.json`
+  - `../sbv-nested-validation/REVIEW.json`
+  - `../sbv-nested-validation/CASE_EVIDENCE.json`
+  - `../sbv-nested-validation/installed-checks-final/AAPL-report.json`
+  - `../sbv-nested-validation/installed-checks-final/ESZ6-report.json`
+  - `../sbv-nested-validation/evidence/prior-seal.json`
+- non_authorizations:
+  - `No remote publication, live/provider activity, purchase, calibrated-market claim, automatic adaptive search or full M2-M3 acceptance.`
+- notes: |
+    Timestamps identify the observed implementation commit, not an invented session interval. Post_merge denotes local committed source closure, not a remote/main merge. All prior ledger bytes and all 937 sealed R5.2 files remain unchanged. R5.4 remains the broad M2 gate.
