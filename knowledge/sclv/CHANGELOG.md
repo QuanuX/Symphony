@@ -14737,3 +14737,108 @@ This PR authorizes none of the following:
   - `No new remote publication, live/provider activity, purchase, calibrated fill claim, GPU runtime, distributed execution or full M1-M3 acceptance.`
 - notes: |
     The start timestamp is the first observed implementation commit in the recorded range, not an invented wall-clock task start. Completion is the exact selected local commit time. Post_merge here denotes ordinary local committed closure, consistent with existing admitted records, not a main/remote merge. Prior ledger bytes remain unchanged. Later qualification and closure-carrier commits are separate evidence.
+
+
+- record_id: `SCLV-CHG-sbv-resident-control-local`
+- record_version: `3`
+- title: `SBV resident job control, mutable admission and qxctl signal cleanup`
+- status: `canonical`
+- date: `2026-10-12`
+- change_started_at: `2026-10-12T02:00:41Z`
+- change_completed_at: `2026-10-12T02:00:41Z`
+- recorded_at: `2026-10-12T02:02:04Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `implementation_change`
+- change_request_state: `not_applicable`
+- change_request_provider: `not_applicable`
+- change_request_id: `not_applicable`
+- change_request_reference: `not_applicable`
+- change_request_absence_reason: `Directly authorized local branch implementation; this cumulative record does not invent a pull request or attach publication to the current local pass.`
+- revision_scheme: `git-sha1`
+- revision_value: `76e22e55831af17f424c25bf491b506016fa9fb6`
+- tree_digest: `sha256:714b1544165629d38b5b266cfe45c9a315c7f6a4cc33ebc3432923d93c083636`
+- ratification_subject: `Duncan (Architect)`
+- ratification_permission: `authorize_local_implementation_and_source_closure`
+- ratification_method: `explicit-user-instruction`
+- ratification_evidence_reference: `../sbv-control-hardening/RATIFICATION.json`
+- ratification_evidence_digest: `sha256:086f0e40eccf97944942cdc818c01541f36ec4ecbdbf4eed61a406e4b1e8d8a9`
+- affected_surfaces:
+  - `README.md`
+  - `cmake/SbvInterface.generated.cmake`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.json`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `modules/sbv-engine/CMakeLists.txt`
+  - `modules/sbv-engine/FEATURES.md`
+  - `modules/sbv-engine/INSTALL.md`
+  - `modules/sbv-engine/M2-M3-READINESS.json`
+  - `modules/sbv-engine/MANIFEST.md`
+  - `modules/sbv-engine/OWNER-INTERFACE.json`
+  - `modules/sbv-engine/SKILL.md`
+  - `modules/sbv-engine/SPEC.md`
+  - `modules/sbv-engine/include/symphony/sbv/sbv.hpp`
+  - `modules/sbv-engine/schemas/v1/admin.schema.json`
+  - `modules/sbv-engine/schemas/v1/admin.templates.json`
+  - `modules/sbv-engine/src/detail.hpp`
+  - `modules/sbv-engine/src/interface.generated.hpp`
+  - `modules/sbv-engine/src/operation_profiles.hpp`
+  - `modules/sbv-engine/src/provider.cpp`
+  - `modules/sbv-engine/src/resident.cpp`
+  - `modules/sbv-engine/src/resource_admission.hpp`
+  - `modules/sbv-engine/tests/provider_fixture.cpp`
+  - `modules/sbv-engine/tests/resident_control_test.cpp`
+  - `tools/qxctl/COMMANDS.json`
+  - `tools/qxctl/FEATURES.md`
+  - `tools/qxctl/cmd/qxctl/command_manifest_test.go`
+  - `tools/qxctl/cmd/qxctl/sbv.go`
+  - `tools/qxctl/cmd/qxctl/sbv_bulk_test.go`
+  - `tools/qxctl/cmd/qxctl/sbv_signal_other.go`
+  - `tools/qxctl/cmd/qxctl/sbv_signal_unix.go`
+  - `tools/qxctl/cmd/qxctl/sbv_signal_unix_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_allocation_economics_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_analysis_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_book_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_census_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_dependencies_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_economics_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_history_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_installed_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_interface_generated.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_liquidity_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_models_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_planning_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_research_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_resident.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_resident_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_split_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_test.go`
+- skvi_references:
+  - `knowledge/sbv/MANIFEST.md`
+  - `modules/sbv-engine/MANIFEST.md`
+  - `modules/sbv-engine/OWNER-INTERFACE.json`
+  - `tools/qxctl/COMMANDS.json`
+  - `knowledge/skvi/INDEX.md`
+- change_summary: |
+    Experimental 0.25 closes the reviewed foreground SIGTERM cleanup, addressable resident inspection/cancellation/stop, independent control connections and generation-checked runtime resource configuration. Immutable dataset identity is retained while admission/idle choices change. Prepare a concrete M2/M3 sequence without claiming implementation or acceptance of those milestones.
+- relationship_changes: |
+    The same native SDK and qxctl contracts expose all resident controls. Native worker/provider callbacks inherit cooperative cancellation; explicit authenticated host stop handles noncooperative callbacks with incomplete-output disclosure. This is local ephemeral resident control, not distributed durable execution.
+- doctrine_changes: |
+    User-owned criteria, studies, weighting, resources, deadlines and private extensions persist. No implicit dataset, total job/worker or connection-count policy ceiling is added. Completed scientific artifacts are immutable; users revise requests and produce new artifacts. Control framing and representation limits remain explicit.
+- compatibility_consequences: |
+    Select exact 0.25 installation, schema and receipt. Status adds configuration_generation and four resident operations; old installations are not silently upgraded. Existing execute receipt meaning remains unchanged; optional job_id names admitted work.
+- publication_consequences: |
+    Local source commit only; no push, main merge, tag, deployment or public release.
+- projection_consequences: |
+    Owner protocols, schemas/templates, generated native/Go metadata, 44 SBV leaves, 443 total commands and feature-administration bindings are synchronized. Native/installed terminal/SDK checks verify the changed surfaces. Full M2/M3, remote runtime and device execution remain open.
+- evidence:
+  - `../sbv-control-hardening/RATIFICATION.json`
+  - `../sbv-control-hardening/evidence/SCLV_SOURCE_BINDING.json`
+  - `../sbv-control-hardening/BUILD_IDENTITY.json`
+  - `../sbv-control-hardening/CHECKS.json`
+  - `../sbv-control-hardening/installed-controls/report.json`
+  - `../sbv-control-hardening/evidence/prior-seals.json`
+- non_authorizations:
+  - `No new remote publication, live/provider activity, purchase, calibrated fill claim, GPU runtime, distributed execution or full M2-M3 acceptance.`
+- notes: |
+    Start/completion timestamps identify the first and only observed implementation commit in this increment, not an invented wall-clock task start. Post_merge denotes local committed closure, consistent with existing admitted records, not a main/remote merge. All prior ledger bytes and sealed R3.3/R4 evidence remain unchanged. Broad prior campaign results are not relabeled as current 0.25 qualification.
