@@ -204,3 +204,27 @@ not counted. The partitioned resident test passed after its sandbox-blocked loca
 Unix socket was permitted. Both Databento fixtures execute eight initial trials,
 one new follow-up and then zero on replacement, reusing nine receipts. Complete
 exports verify 4,442 nodes. All 1,158 prior R5.3a sealed files are unchanged.
+
+
+## R5.3c binary predictive-quality studies — 12 October 2026
+
+Native 0.29 / optional Go 0.1.3 adds three selectable analyze studies: exact
+threshold confusion metrics, binary Brier/reliability bins, and tied-score
+ROC AUC/concordance/average precision. Users choose labels, thresholds/equality,
+weights/normalization, bins, tie credit and retention; undefined metrics remain
+unavailable. Empty and mixed study selections retain their existing semantics.
+
+Five native suites (76 new binary assertions), two ASan/UBSan suites with leak
+detection disabled, 65 Go checks/subtests and qxctl/adapter vet pass. Both legacy
+and partitioned sources/results agree. Retained AAPL/ESZ6 examples supply 22 labels,
+match independent rational Brier/AUC calculations, resume with zero duplicate
+child work, and export 11,872 verified nodes. The original capped source runs stay
+partial. Forecasts are arbitrary and labels are next-retained-signal price direction;
+this verifies mechanics, not execution calibration or market validity. No provider
+or live requests or new spend. Both earlier R5.3 packets remain unchanged.
+
+The new `workspace:implementation/sbv-predictive-studies/CASE_EVIDENCE.json`
+quotes original requirements and corrects ID associations in earlier sealed case
+notes without editing those notes. R5.3's selected local scope is complete;
+R5.4 remains the broad M2 CPU/RAM/performance/reproducibility gate. M2 and M3 remain
+open. No cluster/terabyte, broad competitor or speed-superiority claim is made.

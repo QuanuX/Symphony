@@ -442,6 +442,9 @@ Json model_catalogue() {
         "Exact weighted residual, absolute and squared error sums and "
         "algebraic weight-normalized means. Signed weights do not define "
         "probability; zero total weight leaves means unavailable."}});
+  for (const auto &card : Json::parse(
+      R"BINARY([{"id":"binary_confusion","version":"1","unit":"caller weight and ratio","definition":"Exact weighted confusion masses and rates under caller thresholds and equality","operations":["analyze"]},{"id":"binary_probability","version":"1","unit":"dimensionless squared error and probability gap","definition":"Exact binary Brier error and caller-binned empirical reliability; no calibration claim","operations":["analyze"]},{"id":"binary_ranking","version":"1","unit":"dimensionless ratio","definition":"Exact tied-score ROC AUC, caller tie-credit concordance and noninterpolated average precision","operations":["analyze"]}])BINARY"))
+    result["studies"].push_back(card);
   result["book_profiles"] = Json::parse(
       R"BOOK([{"id":"databento_mbo_orders_strict_v1","version":"1","operations":["book"],"initialization":"source reset or exact source-bound supplied checkpoint","anomalies":"reject or invalidate_until_reset","scope":"one publisher/instrument/channel; A/M/C/R updates; T/F/N informational; no queue priority or fill prediction","input_schema":"symphony.sbv.book-input.v1","output_schemas":["symphony.sbv.book-frame.v1","symphony.sbv.book-checkpoint.v1"]}])BOOK");
   return result;

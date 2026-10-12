@@ -2,7 +2,7 @@
 
 ## Version and ownership
 
-Contract v1; package `sbv-engine` 0.28.0-dev; engine `symphony-sbv`; vector `sbv`. C++26 owns computations, result sealing and artifact queries. Go qxctl verifies the exact installation and projects native evidence. OWNER-INTERFACE.json is the exact operation declaration; generated C++/Go metadata must match it. This release is experimental.
+Contract v1; package `sbv-engine` 0.29.0-dev; engine `symphony-sbv`; vector `sbv`. C++26 owns computations, result sealing and artifact queries. Go qxctl verifies the exact installation and projects native evidence. OWNER-INTERFACE.json is the exact operation declaration; generated C++/Go metadata must match it. This release is experimental.
 
 The engine uses knowledge-vector-engine-cpp 0.2.0-dev and sqav-databento-dbn-cpp 0.5.0-dev, with that adapter's exact static dependencies. It performs no data-provider network calls. Signal/replay semantics belong to SBV; acquisition remains SQAV, metadata SQMV, batch ownership SQFV, transformation SQTV, physical stores SQPV and recipient delivery SQDV. Its portable local JSON result is a derived artifact, not a new market-data persistence service. An optional offline retained-source route composes SQAV capture 0.2.0-dev, SQMV 0.2.0-dev, SQFV 0.3.0-dev, SQPV 0.2.0-dev and SQDV 0.3.0-dev under the selected profile described below.
 
@@ -1224,3 +1224,70 @@ retained fields to qxctl text/JSON/NDJSON and future GUI/ML consumers. The C ABI
 and portable result protocol remain unchanged; older installed engine/client
 pairs and sealed evidence remain separate. R5.3c and the broad R5.4 M2 gate
 remain open.
+
+
+## Binary predictive-quality studies (0.29)
+
+`qxctl sbv analyze` exposes `binary` and `binary_partitioned` template variants.
+Select any subset of `binary_confusion`, `binary_probability`, `binary_ranking`,
+combine them with other series/formula studies, or select no studies. Numeric
+work remains native C++26. Existing result inspect/query/select/export surfaces
+retain every field for terminal, GUI and external ML consumers. Native 0.29 and
+optional Go transport 0.1.3 retain the same 42 operations and SDK ABI.
+
+The optional `binary` object is required exactly when at least one binary study
+is selected. Its fields are explicit: `label_pointer`, `label_type` (integer or
+rational), distinct `positive_label`/`negative_label` rationals, `unknown_label`
+(exclude/reject), `weight_normalization` (by_total/require_unit_mass), `thresholds`,
+`bin_edges`, `tie_credit`, `retain_rows` and nonempty `label_description`. Existing
+`value_pointer`/`value_type` select the score, and weighting/weight_pointer select
+weights. Larger scores indicate the selected positive class. Label mapping and
+meaning are caller declarations, not inferred execution truth. Missing labels
+follow the existing missing policy. Unknown labels follow the explicit binary
+policy; malformed numeric labels reject. Binary label exclusions do not remove
+observations from separately selected nonbinary studies.
+
+`binary_input` retains source indices, selected mapping, exclusions, positive
+and negative weight totals and optional labeled rows. Input weights stay intact.
+`by_total` explicitly divides metric sums by retained binary weight; require_unit_mass
+requires that retained mass equal one. Signed-coefficient weighting is unavailable
+(or rejects under on_incompatible), including when its current values happen to
+be nonnegative. Empty or zero-weight populations are unavailable. Zero denominators
+within otherwise available studies retain status/reason/null rather than a finite
+substitute. Unknown prior selection history is explicit; no overfitting or calibrated
+execution-likelihood claim follows from these descriptive statistics.
+
+Confusion thresholds are a nonempty array of `{value, positive_when}` with ge or
+gt equality. Each retains weighted TP/FP/TN/FN, precision, recall, specificity,
+false-positive rate, accuracy, F1 and balanced accuracy. Bin edges must be strictly
+increasing and cover exactly [0,1]. Bins are left closed/right open, except the
+final upper endpoint is included. Probability studies retain binary Brier mean
+squared error, its weighted sum, expected/maximum empirical bin gap, bin counts,
+masses, means and observed positive fractions. Empty weighted bins stay visible
+and unavailable. Every retained score must lie in [0,1], including zero-weight
+rows; no clipping occurs. Out-of-range scores invalidate this probability study
+only and remain usable for classification/ranking.
+
+Ranking groups exactly equal scores, descends by score, skips zero-mass groups,
+and retains the full ROC/precision-recall curve. ROC AUC is weighted pair
+concordance with one-half tie credit. Separately named pairwise_concordance uses
+the caller's tie_credit in [0,1]. Average precision is the sum of recall increment
+times precision at each tied group, not trapezoidal PR area. One-class populations
+retain undefined rates; AP requires positive-class mass, while ROC AUC requires
+both classes. Thresholds/bin_edges must be empty when their study is unselected,
+and tie_credit must be null without ranking. Inputs, thresholds and bins have no
+additional policy count ceiling; selected control-frame formats still apply.
+
+Exact checked signed-128-bit rational arithmetic rejects unrepresentable values
+before result publication. No floating conversion is used for these studies even
+when other selected studies request binary64 estimates. The per-study descriptor
+records the exact profile. Typed observations and sorted groups use O(n) resident
+memory, sorting O(n log n); bins and thresholds add their selected storage. Output
+rows/curves stream into partitioned storage. Labels require an additional indexed
+source pass. This is not out-of-core sorting, a cluster/RAM scale qualification or
+a speed-superiority claim. User deadlines and host allocations remain authoritative.
+
+Log loss, multiclass studies, calibration fitting, distribution shift, uncertainty
+intervals and further catalogue proposals remain separate selectable extensions.
+This increment qualifies the named binary subset only. R5.3 acceptance is reconciled
+against original case wording in the accompanying packet; the broad M2 gate is R5.4.

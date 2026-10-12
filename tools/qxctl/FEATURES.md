@@ -146,6 +146,7 @@
         "tools/qxctl/internal/knowledgeengine/sbv_adaptive_test.go",
         "tools/qxctl/internal/knowledgeengine/sbv_allocation_economics_test.go",
         "tools/qxctl/internal/knowledgeengine/sbv_analysis_test.go",
+        "tools/qxctl/internal/knowledgeengine/sbv_binary_test.go",
         "tools/qxctl/internal/knowledgeengine/sbv_book_test.go",
         "tools/qxctl/internal/knowledgeengine/sbv_census_test.go",
         "tools/qxctl/internal/knowledgeengine/sbv_economics_test.go",

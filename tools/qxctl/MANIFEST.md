@@ -413,3 +413,5 @@ Seven native-owner operations extend the existing shared schema/template and dis
 - `tools/qxctl/internal/knowledgeengine/sbv_nested_test.go`
 
 - `tools/qxctl/internal/knowledgeengine/sbv_adaptive_test.go`
+
+- `tools/qxctl/internal/knowledgeengine/sbv_binary_test.go`

@@ -24350,3 +24350,45 @@ automatic nested fitting and cross-run holdout history remain unimplemented.
 - deferred_projections: built-in optimizers, remote dispatch and untouched holdout proofs
 - notes: Explicit user-selected proposals, objectives, ties and continuation.
 - status: canonical
+
+### SBV binary_studies.hpp
+
+- path: `modules/sbv-engine/src/binary_studies.hpp`
+- title: SBV binary_studies.hpp
+- surface_type: implementation contract or test
+- truth_role: Native binary study definitions and independent contract verification
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.29 selected binary predictive-quality studies
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, agents and external fitting pipelines
+- deferred_projections: calibration fitting, additional study families and broad M2 qualification
+- notes: Caller-selected numeric labels, weights, thresholds, bins and ties.
+- status: canonical
+
+### SBV binary_studies_test.cpp
+
+- path: `modules/sbv-engine/tests/binary_studies_test.cpp`
+- title: SBV binary_studies_test.cpp
+- surface_type: implementation contract or test
+- truth_role: Native binary study definitions and independent contract verification
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.29 selected binary predictive-quality studies
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, agents and external fitting pipelines
+- deferred_projections: calibration fitting, additional study families and broad M2 qualification
+- notes: Caller-selected numeric labels, weights, thresholds, bins and ties.
+- status: canonical
+
+### SBV sbv_binary_test.go
+
+- path: `tools/qxctl/internal/knowledgeengine/sbv_binary_test.go`
+- title: SBV sbv_binary_test.go
+- surface_type: implementation contract or test
+- truth_role: Native binary study definitions and independent contract verification
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.29 selected binary predictive-quality studies
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, agents and external fitting pipelines
+- deferred_projections: calibration fitting, additional study families and broad M2 qualification
+- notes: Caller-selected numeric labels, weights, thresholds, bins and ties.
+- status: canonical

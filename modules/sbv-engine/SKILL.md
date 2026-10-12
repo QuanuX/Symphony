@@ -66,3 +66,12 @@ bind `/sections/selection/data/parameters/...` with `mode: value` into a refit
 request. Missing/ambiguous winners block dependents before claim. Reference mode
 remains appropriate for dataset/model arrays. Users own graph structure,
 proposals, constraints and continuation; no automatic quality gate is implied.
+
+
+Use analyze's `binary`/`binary_partitioned` templates for supplied binary scores
+and labels. Select studies, numeric label mapping, thresholds/equality, bins,
+weights/normalization and tie credit explicitly. Inspect `binary_input`, study
+statuses and full result exports. Excluded labels and undefined denominators
+remain visible. A Brier score or empirical reliability table is not proof of
+calibration, execution feasibility or untouched holdout history. Compare/experiment
+can consume the resulting exact metrics without changing the user's objective.

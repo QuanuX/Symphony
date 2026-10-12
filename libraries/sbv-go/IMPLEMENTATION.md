@@ -1,7 +1,7 @@
 # SBV Go transport and data contract
 
-Contract: `symphony.sbv.go-adapter.v1`. Module version `v0.1.2-dev`; native owner
-release `0.28.0-dev`; dependency Go 1.26.5 standard library only. Native source
+Contract: `symphony.sbv.go-adapter.v1`. Module version `v0.1.3-dev`; native owner
+release `0.29.0-dev`; dependency Go 1.26.5 standard library only. Native source
 contracts and receipt-owned schemas outrank this convenience API. The adapter
 introduces no scientific protocol, administration state or registry authority.
 
@@ -72,3 +72,8 @@ integer/address/framing limits still exist; no total dataset/row count ceiling i
 introduced. A blocked custom `io.Reader` or callback requires caller cooperation;
 context cancellation is checked between reads, never claimed as a completion
 fence for foreign asynchronous buffers. No borrowed/device memory is admitted.
+
+
+Native 0.29 adds selectable binary classification, probability reliability and
+ranking studies to analyze. This 0.1.3 adapter transports the full `binary` choices
+and exact results unchanged; it does not select thresholds, labels or objectives.

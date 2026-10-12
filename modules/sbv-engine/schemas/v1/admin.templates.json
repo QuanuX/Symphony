@@ -2263,6 +2263,172 @@
             }
           }
         ]
+      },
+      "binary": {
+        "protocol": "symphony.sbv.analyze-input.v1",
+        "path": "/absolute/private/result.json",
+        "expected_sha256": "REPLACE_WITH_CONTENT_SHA256",
+        "output_path": "/absolute/private/analysis.json",
+        "pointer": "/sections/user_extensions/data/observations",
+        "value_pointer": "/score",
+        "value_type": "rational",
+        "weighting": "equal_probability",
+        "weight_pointer": null,
+        "series_role": "observations",
+        "unit": "positive_event_score",
+        "input_description": "Caller-supplied binary predictions and labels; define population, chronology and history before inference",
+        "missing": "reject",
+        "studies": [
+          "binary_confusion",
+          "binary_probability",
+          "binary_ranking"
+        ],
+        "quantiles": [],
+        "variance_estimator": "population",
+        "relative_drawdown": "positive_peak_only",
+        "benchmark": {
+          "numerator": "0",
+          "denominator": "1"
+        },
+        "periods_per_year": {
+          "numerator": "1",
+          "denominator": "1"
+        },
+        "numeric_profile": "exact_rational",
+        "on_incompatible": "unavailable",
+        "extensions": {},
+        "binary": {
+          "label_pointer": "/label",
+          "label_type": "integer",
+          "positive_label": {
+            "numerator": "1",
+            "denominator": "1"
+          },
+          "negative_label": {
+            "numerator": "0",
+            "denominator": "1"
+          },
+          "unknown_label": "reject",
+          "weight_normalization": "by_total",
+          "thresholds": [
+            {
+              "value": {
+                "numerator": "1",
+                "denominator": "2"
+              },
+              "positive_when": "ge"
+            }
+          ],
+          "bin_edges": [
+            {
+              "numerator": "0",
+              "denominator": "1"
+            },
+            {
+              "numerator": "1",
+              "denominator": "2"
+            },
+            {
+              "numerator": "1",
+              "denominator": "1"
+            }
+          ],
+          "tie_credit": {
+            "numerator": "1",
+            "denominator": "2"
+          },
+          "retain_rows": true,
+          "label_description": "Caller-declared positive event; no execution-calibration claim"
+        }
+      },
+      "binary_partitioned": {
+        "protocol": "symphony.sbv.analyze-input.v1",
+        "path": "/absolute/private/result.json",
+        "expected_sha256": "REPLACE_WITH_CONTENT_SHA256",
+        "pointer": "/sections/user_extensions/data/observations",
+        "value_pointer": "/score",
+        "value_type": "rational",
+        "weighting": "equal_probability",
+        "weight_pointer": null,
+        "series_role": "observations",
+        "unit": "positive_event_score",
+        "input_description": "Caller-supplied binary predictions and labels; define population, chronology and history before inference",
+        "missing": "reject",
+        "studies": [
+          "binary_confusion",
+          "binary_probability",
+          "binary_ranking"
+        ],
+        "quantiles": [],
+        "variance_estimator": "population",
+        "relative_drawdown": "positive_peak_only",
+        "benchmark": {
+          "numerator": "0",
+          "denominator": "1"
+        },
+        "periods_per_year": {
+          "numerator": "1",
+          "denominator": "1"
+        },
+        "numeric_profile": "exact_rational",
+        "on_incompatible": "unavailable",
+        "extensions": {},
+        "binary": {
+          "label_pointer": "/label",
+          "label_type": "integer",
+          "positive_label": {
+            "numerator": "1",
+            "denominator": "1"
+          },
+          "negative_label": {
+            "numerator": "0",
+            "denominator": "1"
+          },
+          "unknown_label": "reject",
+          "weight_normalization": "by_total",
+          "thresholds": [
+            {
+              "value": {
+                "numerator": "1",
+                "denominator": "2"
+              },
+              "positive_when": "ge"
+            }
+          ],
+          "bin_edges": [
+            {
+              "numerator": "0",
+              "denominator": "1"
+            },
+            {
+              "numerator": "1",
+              "denominator": "2"
+            },
+            {
+              "numerator": "1",
+              "denominator": "1"
+            }
+          ],
+          "tie_credit": {
+            "numerator": "1",
+            "denominator": "2"
+          },
+          "retain_rows": true,
+          "label_description": "Caller-declared positive event; no execution-calibration claim"
+        },
+        "output": {
+          "kind": "partitioned",
+          "bundle_path": "/absolute/private/analyze-result",
+          "workspace_path": "/absolute/private/analyze-workspace",
+          "write_options": {
+            "page_bytes": "1048576",
+            "index_fanout": "64"
+          },
+          "scratch_read_options": {
+            "max_page_bytes": null,
+            "cache_bytes": "16777216"
+          }
+        }
       }
     },
     "resample": {

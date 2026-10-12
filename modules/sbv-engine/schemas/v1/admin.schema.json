@@ -15138,6 +15138,164 @@
                 ],
                 "additionalProperties": false
               }
+            },
+            "binary": {
+              "type": "object",
+              "properties": {
+                "label_pointer": {
+                  "type": "string",
+                  "maxLength": 4096
+                },
+                "label_type": {
+                  "enum": [
+                    "integer",
+                    "rational"
+                  ]
+                },
+                "positive_label": {
+                  "type": "object",
+                  "properties": {
+                    "numerator": {
+                      "type": "string"
+                    },
+                    "denominator": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "numerator",
+                    "denominator"
+                  ],
+                  "additionalProperties": false
+                },
+                "negative_label": {
+                  "type": "object",
+                  "properties": {
+                    "numerator": {
+                      "type": "string"
+                    },
+                    "denominator": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "numerator",
+                    "denominator"
+                  ],
+                  "additionalProperties": false
+                },
+                "unknown_label": {
+                  "enum": [
+                    "exclude",
+                    "reject"
+                  ]
+                },
+                "weight_normalization": {
+                  "enum": [
+                    "by_total",
+                    "require_unit_mass"
+                  ]
+                },
+                "thresholds": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "value": {
+                        "type": "object",
+                        "properties": {
+                          "numerator": {
+                            "type": "string"
+                          },
+                          "denominator": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "numerator",
+                          "denominator"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "positive_when": {
+                        "enum": [
+                          "ge",
+                          "gt"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "value",
+                      "positive_when"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "bin_edges": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "numerator": {
+                        "type": "string"
+                      },
+                      "denominator": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "numerator",
+                      "denominator"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "tie_credit": {
+                  "anyOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "numerator": {
+                          "type": "string"
+                        },
+                        "denominator": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "numerator",
+                        "denominator"
+                      ],
+                      "additionalProperties": false
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "retain_rows": {
+                  "type": "boolean"
+                },
+                "label_description": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 4096
+                }
+              },
+              "required": [
+                "label_pointer",
+                "label_type",
+                "positive_label",
+                "negative_label",
+                "unknown_label",
+                "weight_normalization",
+                "thresholds",
+                "bin_edges",
+                "tie_credit",
+                "retain_rows",
+                "label_description"
+              ],
+              "additionalProperties": false
             }
           },
           "required": [
@@ -15533,6 +15691,164 @@
                 ],
                 "additionalProperties": false
               }
+            },
+            "binary": {
+              "type": "object",
+              "properties": {
+                "label_pointer": {
+                  "type": "string",
+                  "maxLength": 4096
+                },
+                "label_type": {
+                  "enum": [
+                    "integer",
+                    "rational"
+                  ]
+                },
+                "positive_label": {
+                  "type": "object",
+                  "properties": {
+                    "numerator": {
+                      "type": "string"
+                    },
+                    "denominator": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "numerator",
+                    "denominator"
+                  ],
+                  "additionalProperties": false
+                },
+                "negative_label": {
+                  "type": "object",
+                  "properties": {
+                    "numerator": {
+                      "type": "string"
+                    },
+                    "denominator": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "numerator",
+                    "denominator"
+                  ],
+                  "additionalProperties": false
+                },
+                "unknown_label": {
+                  "enum": [
+                    "exclude",
+                    "reject"
+                  ]
+                },
+                "weight_normalization": {
+                  "enum": [
+                    "by_total",
+                    "require_unit_mass"
+                  ]
+                },
+                "thresholds": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "value": {
+                        "type": "object",
+                        "properties": {
+                          "numerator": {
+                            "type": "string"
+                          },
+                          "denominator": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "numerator",
+                          "denominator"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "positive_when": {
+                        "enum": [
+                          "ge",
+                          "gt"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "value",
+                      "positive_when"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "bin_edges": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "numerator": {
+                        "type": "string"
+                      },
+                      "denominator": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "numerator",
+                      "denominator"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "tie_credit": {
+                  "anyOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "numerator": {
+                          "type": "string"
+                        },
+                        "denominator": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "numerator",
+                        "denominator"
+                      ],
+                      "additionalProperties": false
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "retain_rows": {
+                  "type": "boolean"
+                },
+                "label_description": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 4096
+                }
+              },
+              "required": [
+                "label_pointer",
+                "label_type",
+                "positive_label",
+                "negative_label",
+                "unknown_label",
+                "weight_normalization",
+                "thresholds",
+                "bin_edges",
+                "tie_credit",
+                "retain_rows",
+                "label_description"
+              ],
+              "additionalProperties": false
             }
           },
           "required": [
@@ -15874,6 +16190,164 @@
                 ],
                 "additionalProperties": false
               }
+            },
+            "binary": {
+              "type": "object",
+              "properties": {
+                "label_pointer": {
+                  "type": "string",
+                  "maxLength": 4096
+                },
+                "label_type": {
+                  "enum": [
+                    "integer",
+                    "rational"
+                  ]
+                },
+                "positive_label": {
+                  "type": "object",
+                  "properties": {
+                    "numerator": {
+                      "type": "string"
+                    },
+                    "denominator": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "numerator",
+                    "denominator"
+                  ],
+                  "additionalProperties": false
+                },
+                "negative_label": {
+                  "type": "object",
+                  "properties": {
+                    "numerator": {
+                      "type": "string"
+                    },
+                    "denominator": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "numerator",
+                    "denominator"
+                  ],
+                  "additionalProperties": false
+                },
+                "unknown_label": {
+                  "enum": [
+                    "exclude",
+                    "reject"
+                  ]
+                },
+                "weight_normalization": {
+                  "enum": [
+                    "by_total",
+                    "require_unit_mass"
+                  ]
+                },
+                "thresholds": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "value": {
+                        "type": "object",
+                        "properties": {
+                          "numerator": {
+                            "type": "string"
+                          },
+                          "denominator": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "numerator",
+                          "denominator"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "positive_when": {
+                        "enum": [
+                          "ge",
+                          "gt"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "value",
+                      "positive_when"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "bin_edges": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "numerator": {
+                        "type": "string"
+                      },
+                      "denominator": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "numerator",
+                      "denominator"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "tie_credit": {
+                  "anyOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "numerator": {
+                          "type": "string"
+                        },
+                        "denominator": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "numerator",
+                        "denominator"
+                      ],
+                      "additionalProperties": false
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "retain_rows": {
+                  "type": "boolean"
+                },
+                "label_description": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 4096
+                }
+              },
+              "required": [
+                "label_pointer",
+                "label_type",
+                "positive_label",
+                "negative_label",
+                "unknown_label",
+                "weight_normalization",
+                "thresholds",
+                "bin_edges",
+                "tie_credit",
+                "retain_rows",
+                "label_description"
+              ],
+              "additionalProperties": false
             }
           },
           "required": [
@@ -16346,6 +16820,164 @@
                 ],
                 "additionalProperties": false
               }
+            },
+            "binary": {
+              "type": "object",
+              "properties": {
+                "label_pointer": {
+                  "type": "string",
+                  "maxLength": 4096
+                },
+                "label_type": {
+                  "enum": [
+                    "integer",
+                    "rational"
+                  ]
+                },
+                "positive_label": {
+                  "type": "object",
+                  "properties": {
+                    "numerator": {
+                      "type": "string"
+                    },
+                    "denominator": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "numerator",
+                    "denominator"
+                  ],
+                  "additionalProperties": false
+                },
+                "negative_label": {
+                  "type": "object",
+                  "properties": {
+                    "numerator": {
+                      "type": "string"
+                    },
+                    "denominator": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "numerator",
+                    "denominator"
+                  ],
+                  "additionalProperties": false
+                },
+                "unknown_label": {
+                  "enum": [
+                    "exclude",
+                    "reject"
+                  ]
+                },
+                "weight_normalization": {
+                  "enum": [
+                    "by_total",
+                    "require_unit_mass"
+                  ]
+                },
+                "thresholds": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "value": {
+                        "type": "object",
+                        "properties": {
+                          "numerator": {
+                            "type": "string"
+                          },
+                          "denominator": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "numerator",
+                          "denominator"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "positive_when": {
+                        "enum": [
+                          "ge",
+                          "gt"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "value",
+                      "positive_when"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "bin_edges": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "numerator": {
+                        "type": "string"
+                      },
+                      "denominator": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "numerator",
+                      "denominator"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "tie_credit": {
+                  "anyOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "numerator": {
+                          "type": "string"
+                        },
+                        "denominator": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "numerator",
+                        "denominator"
+                      ],
+                      "additionalProperties": false
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "retain_rows": {
+                  "type": "boolean"
+                },
+                "label_description": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 4096
+                }
+              },
+              "required": [
+                "label_pointer",
+                "label_type",
+                "positive_label",
+                "negative_label",
+                "unknown_label",
+                "weight_normalization",
+                "thresholds",
+                "bin_edges",
+                "tie_credit",
+                "retain_rows",
+                "label_description"
+              ],
+              "additionalProperties": false
             }
           },
           "required": [
@@ -52361,6 +52993,1626 @@
                     "authorship"
                   ],
                   "additionalProperties": false
+                }
+              ]
+            }
+          },
+          "required": [
+            "study_id",
+            "version",
+            "status",
+            "reason",
+            "descriptor",
+            "data"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "study_id": {
+              "const": "binary_confusion"
+            },
+            "version": {
+              "const": "1"
+            },
+            "status": {
+              "enum": [
+                "available",
+                "unavailable"
+              ]
+            },
+            "reason": {
+              "type": "string"
+            },
+            "descriptor": {
+              "type": "object",
+              "properties": {
+                "numeric_profile": {
+                  "const": "checked_exact_rational_128"
+                },
+                "weight_normalization": {
+                  "enum": [
+                    "by_total",
+                    "require_unit_mass"
+                  ]
+                },
+                "label_description": {
+                  "type": "string"
+                },
+                "label_mapping": {
+                  "type": "object",
+                  "properties": {
+                    "positive": {
+                      "type": "object",
+                      "properties": {
+                        "numerator": {
+                          "type": "string"
+                        },
+                        "denominator": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "numerator",
+                        "denominator"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "negative": {
+                      "type": "object",
+                      "properties": {
+                        "numerator": {
+                          "type": "string"
+                        },
+                        "denominator": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "numerator",
+                        "denominator"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "required": [
+                    "positive",
+                    "negative"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "numeric_profile",
+                "weight_normalization",
+                "label_description",
+                "label_mapping"
+              ],
+              "additionalProperties": false
+            },
+            "data": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "weight_total": {
+                      "type": "object",
+                      "properties": {
+                        "numerator": {
+                          "type": "string"
+                        },
+                        "denominator": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "numerator",
+                        "denominator"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "definition": {
+                      "type": "string"
+                    },
+                    "thresholds": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "threshold": {
+                            "type": "object",
+                            "properties": {
+                              "value": {
+                                "type": "object",
+                                "properties": {
+                                  "numerator": {
+                                    "type": "string"
+                                  },
+                                  "denominator": {
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "numerator",
+                                  "denominator"
+                                ],
+                                "additionalProperties": false
+                              },
+                              "positive_when": {
+                                "enum": [
+                                  "ge",
+                                  "gt"
+                                ]
+                              }
+                            },
+                            "required": [
+                              "value",
+                              "positive_when"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "true_positive": {
+                            "type": "object",
+                            "properties": {
+                              "numerator": {
+                                "type": "string"
+                              },
+                              "denominator": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "numerator",
+                              "denominator"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "false_positive": {
+                            "type": "object",
+                            "properties": {
+                              "numerator": {
+                                "type": "string"
+                              },
+                              "denominator": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "numerator",
+                              "denominator"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "true_negative": {
+                            "type": "object",
+                            "properties": {
+                              "numerator": {
+                                "type": "string"
+                              },
+                              "denominator": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "numerator",
+                              "denominator"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "false_negative": {
+                            "type": "object",
+                            "properties": {
+                              "numerator": {
+                                "type": "string"
+                              },
+                              "denominator": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "numerator",
+                              "denominator"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "precision": {
+                            "anyOf": [
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "status": {
+                                    "const": "available"
+                                  },
+                                  "value": {
+                                    "type": "object",
+                                    "properties": {
+                                      "numerator": {
+                                        "type": "string"
+                                      },
+                                      "denominator": {
+                                        "type": "string"
+                                      }
+                                    },
+                                    "required": [
+                                      "numerator",
+                                      "denominator"
+                                    ],
+                                    "additionalProperties": false
+                                  }
+                                },
+                                "required": [
+                                  "status",
+                                  "value"
+                                ],
+                                "additionalProperties": false
+                              },
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "status": {
+                                    "const": "unavailable"
+                                  },
+                                  "reason": {
+                                    "type": "string"
+                                  },
+                                  "value": {
+                                    "type": "null"
+                                  }
+                                },
+                                "required": [
+                                  "status",
+                                  "reason",
+                                  "value"
+                                ],
+                                "additionalProperties": false
+                              }
+                            ]
+                          },
+                          "recall": {
+                            "anyOf": [
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "status": {
+                                    "const": "available"
+                                  },
+                                  "value": {
+                                    "type": "object",
+                                    "properties": {
+                                      "numerator": {
+                                        "type": "string"
+                                      },
+                                      "denominator": {
+                                        "type": "string"
+                                      }
+                                    },
+                                    "required": [
+                                      "numerator",
+                                      "denominator"
+                                    ],
+                                    "additionalProperties": false
+                                  }
+                                },
+                                "required": [
+                                  "status",
+                                  "value"
+                                ],
+                                "additionalProperties": false
+                              },
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "status": {
+                                    "const": "unavailable"
+                                  },
+                                  "reason": {
+                                    "type": "string"
+                                  },
+                                  "value": {
+                                    "type": "null"
+                                  }
+                                },
+                                "required": [
+                                  "status",
+                                  "reason",
+                                  "value"
+                                ],
+                                "additionalProperties": false
+                              }
+                            ]
+                          },
+                          "specificity": {
+                            "anyOf": [
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "status": {
+                                    "const": "available"
+                                  },
+                                  "value": {
+                                    "type": "object",
+                                    "properties": {
+                                      "numerator": {
+                                        "type": "string"
+                                      },
+                                      "denominator": {
+                                        "type": "string"
+                                      }
+                                    },
+                                    "required": [
+                                      "numerator",
+                                      "denominator"
+                                    ],
+                                    "additionalProperties": false
+                                  }
+                                },
+                                "required": [
+                                  "status",
+                                  "value"
+                                ],
+                                "additionalProperties": false
+                              },
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "status": {
+                                    "const": "unavailable"
+                                  },
+                                  "reason": {
+                                    "type": "string"
+                                  },
+                                  "value": {
+                                    "type": "null"
+                                  }
+                                },
+                                "required": [
+                                  "status",
+                                  "reason",
+                                  "value"
+                                ],
+                                "additionalProperties": false
+                              }
+                            ]
+                          },
+                          "false_positive_rate": {
+                            "anyOf": [
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "status": {
+                                    "const": "available"
+                                  },
+                                  "value": {
+                                    "type": "object",
+                                    "properties": {
+                                      "numerator": {
+                                        "type": "string"
+                                      },
+                                      "denominator": {
+                                        "type": "string"
+                                      }
+                                    },
+                                    "required": [
+                                      "numerator",
+                                      "denominator"
+                                    ],
+                                    "additionalProperties": false
+                                  }
+                                },
+                                "required": [
+                                  "status",
+                                  "value"
+                                ],
+                                "additionalProperties": false
+                              },
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "status": {
+                                    "const": "unavailable"
+                                  },
+                                  "reason": {
+                                    "type": "string"
+                                  },
+                                  "value": {
+                                    "type": "null"
+                                  }
+                                },
+                                "required": [
+                                  "status",
+                                  "reason",
+                                  "value"
+                                ],
+                                "additionalProperties": false
+                              }
+                            ]
+                          },
+                          "accuracy": {
+                            "anyOf": [
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "status": {
+                                    "const": "available"
+                                  },
+                                  "value": {
+                                    "type": "object",
+                                    "properties": {
+                                      "numerator": {
+                                        "type": "string"
+                                      },
+                                      "denominator": {
+                                        "type": "string"
+                                      }
+                                    },
+                                    "required": [
+                                      "numerator",
+                                      "denominator"
+                                    ],
+                                    "additionalProperties": false
+                                  }
+                                },
+                                "required": [
+                                  "status",
+                                  "value"
+                                ],
+                                "additionalProperties": false
+                              },
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "status": {
+                                    "const": "unavailable"
+                                  },
+                                  "reason": {
+                                    "type": "string"
+                                  },
+                                  "value": {
+                                    "type": "null"
+                                  }
+                                },
+                                "required": [
+                                  "status",
+                                  "reason",
+                                  "value"
+                                ],
+                                "additionalProperties": false
+                              }
+                            ]
+                          },
+                          "f1": {
+                            "anyOf": [
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "status": {
+                                    "const": "available"
+                                  },
+                                  "value": {
+                                    "type": "object",
+                                    "properties": {
+                                      "numerator": {
+                                        "type": "string"
+                                      },
+                                      "denominator": {
+                                        "type": "string"
+                                      }
+                                    },
+                                    "required": [
+                                      "numerator",
+                                      "denominator"
+                                    ],
+                                    "additionalProperties": false
+                                  }
+                                },
+                                "required": [
+                                  "status",
+                                  "value"
+                                ],
+                                "additionalProperties": false
+                              },
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "status": {
+                                    "const": "unavailable"
+                                  },
+                                  "reason": {
+                                    "type": "string"
+                                  },
+                                  "value": {
+                                    "type": "null"
+                                  }
+                                },
+                                "required": [
+                                  "status",
+                                  "reason",
+                                  "value"
+                                ],
+                                "additionalProperties": false
+                              }
+                            ]
+                          },
+                          "balanced_accuracy": {
+                            "anyOf": [
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "status": {
+                                    "const": "available"
+                                  },
+                                  "value": {
+                                    "type": "object",
+                                    "properties": {
+                                      "numerator": {
+                                        "type": "string"
+                                      },
+                                      "denominator": {
+                                        "type": "string"
+                                      }
+                                    },
+                                    "required": [
+                                      "numerator",
+                                      "denominator"
+                                    ],
+                                    "additionalProperties": false
+                                  }
+                                },
+                                "required": [
+                                  "status",
+                                  "value"
+                                ],
+                                "additionalProperties": false
+                              },
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "status": {
+                                    "const": "unavailable"
+                                  },
+                                  "reason": {
+                                    "type": "string"
+                                  },
+                                  "value": {
+                                    "type": "null"
+                                  }
+                                },
+                                "required": [
+                                  "status",
+                                  "reason",
+                                  "value"
+                                ],
+                                "additionalProperties": false
+                              }
+                            ]
+                          }
+                        },
+                        "required": [
+                          "threshold",
+                          "true_positive",
+                          "false_positive",
+                          "true_negative",
+                          "false_negative",
+                          "precision",
+                          "recall",
+                          "specificity",
+                          "false_positive_rate",
+                          "accuracy",
+                          "f1",
+                          "balanced_accuracy"
+                        ],
+                        "additionalProperties": false
+                      }
+                    }
+                  },
+                  "required": [
+                    "weight_total",
+                    "definition",
+                    "thresholds"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "study_id",
+            "version",
+            "status",
+            "reason",
+            "descriptor",
+            "data"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "study_id": {
+              "const": "binary_probability"
+            },
+            "version": {
+              "const": "1"
+            },
+            "status": {
+              "enum": [
+                "available",
+                "unavailable"
+              ]
+            },
+            "reason": {
+              "type": "string"
+            },
+            "descriptor": {
+              "type": "object",
+              "properties": {
+                "numeric_profile": {
+                  "const": "checked_exact_rational_128"
+                },
+                "weight_normalization": {
+                  "enum": [
+                    "by_total",
+                    "require_unit_mass"
+                  ]
+                },
+                "label_description": {
+                  "type": "string"
+                },
+                "label_mapping": {
+                  "type": "object",
+                  "properties": {
+                    "positive": {
+                      "type": "object",
+                      "properties": {
+                        "numerator": {
+                          "type": "string"
+                        },
+                        "denominator": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "numerator",
+                        "denominator"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "negative": {
+                      "type": "object",
+                      "properties": {
+                        "numerator": {
+                          "type": "string"
+                        },
+                        "denominator": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "numerator",
+                        "denominator"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "required": [
+                    "positive",
+                    "negative"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "numeric_profile",
+                "weight_normalization",
+                "label_description",
+                "label_mapping"
+              ],
+              "additionalProperties": false
+            },
+            "data": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "brier_score": {
+                      "type": "object",
+                      "properties": {
+                        "numerator": {
+                          "type": "string"
+                        },
+                        "denominator": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "numerator",
+                        "denominator"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "weighted_squared_error_sum": {
+                      "type": "object",
+                      "properties": {
+                        "numerator": {
+                          "type": "string"
+                        },
+                        "denominator": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "numerator",
+                        "denominator"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "weight_total": {
+                      "type": "object",
+                      "properties": {
+                        "numerator": {
+                          "type": "string"
+                        },
+                        "denominator": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "numerator",
+                        "denominator"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "expected_calibration_error": {
+                      "type": "object",
+                      "properties": {
+                        "numerator": {
+                          "type": "string"
+                        },
+                        "denominator": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "numerator",
+                        "denominator"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "maximum_calibration_error": {
+                      "type": "object",
+                      "properties": {
+                        "numerator": {
+                          "type": "string"
+                        },
+                        "denominator": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "numerator",
+                        "denominator"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "definition": {
+                      "type": "string"
+                    },
+                    "bins": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "lower": {
+                            "type": "object",
+                            "properties": {
+                              "numerator": {
+                                "type": "string"
+                              },
+                              "denominator": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "numerator",
+                              "denominator"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "upper": {
+                            "type": "object",
+                            "properties": {
+                              "numerator": {
+                                "type": "string"
+                              },
+                              "denominator": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "numerator",
+                              "denominator"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "upper_inclusive": {
+                            "type": "boolean"
+                          },
+                          "rows": {
+                            "type": "string"
+                          },
+                          "weight": {
+                            "type": "object",
+                            "properties": {
+                              "numerator": {
+                                "type": "string"
+                              },
+                              "denominator": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "numerator",
+                              "denominator"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "mean_prediction": {
+                            "anyOf": [
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "status": {
+                                    "const": "available"
+                                  },
+                                  "value": {
+                                    "type": "object",
+                                    "properties": {
+                                      "numerator": {
+                                        "type": "string"
+                                      },
+                                      "denominator": {
+                                        "type": "string"
+                                      }
+                                    },
+                                    "required": [
+                                      "numerator",
+                                      "denominator"
+                                    ],
+                                    "additionalProperties": false
+                                  }
+                                },
+                                "required": [
+                                  "status",
+                                  "value"
+                                ],
+                                "additionalProperties": false
+                              },
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "status": {
+                                    "const": "unavailable"
+                                  },
+                                  "reason": {
+                                    "type": "string"
+                                  },
+                                  "value": {
+                                    "type": "null"
+                                  }
+                                },
+                                "required": [
+                                  "status",
+                                  "reason",
+                                  "value"
+                                ],
+                                "additionalProperties": false
+                              }
+                            ]
+                          },
+                          "positive_rate": {
+                            "anyOf": [
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "status": {
+                                    "const": "available"
+                                  },
+                                  "value": {
+                                    "type": "object",
+                                    "properties": {
+                                      "numerator": {
+                                        "type": "string"
+                                      },
+                                      "denominator": {
+                                        "type": "string"
+                                      }
+                                    },
+                                    "required": [
+                                      "numerator",
+                                      "denominator"
+                                    ],
+                                    "additionalProperties": false
+                                  }
+                                },
+                                "required": [
+                                  "status",
+                                  "value"
+                                ],
+                                "additionalProperties": false
+                              },
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "status": {
+                                    "const": "unavailable"
+                                  },
+                                  "reason": {
+                                    "type": "string"
+                                  },
+                                  "value": {
+                                    "type": "null"
+                                  }
+                                },
+                                "required": [
+                                  "status",
+                                  "reason",
+                                  "value"
+                                ],
+                                "additionalProperties": false
+                              }
+                            ]
+                          },
+                          "absolute_gap": {
+                            "anyOf": [
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "status": {
+                                    "const": "available"
+                                  },
+                                  "value": {
+                                    "type": "object",
+                                    "properties": {
+                                      "numerator": {
+                                        "type": "string"
+                                      },
+                                      "denominator": {
+                                        "type": "string"
+                                      }
+                                    },
+                                    "required": [
+                                      "numerator",
+                                      "denominator"
+                                    ],
+                                    "additionalProperties": false
+                                  }
+                                },
+                                "required": [
+                                  "status",
+                                  "value"
+                                ],
+                                "additionalProperties": false
+                              },
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "status": {
+                                    "const": "unavailable"
+                                  },
+                                  "reason": {
+                                    "type": "string"
+                                  },
+                                  "value": {
+                                    "type": "null"
+                                  }
+                                },
+                                "required": [
+                                  "status",
+                                  "reason",
+                                  "value"
+                                ],
+                                "additionalProperties": false
+                              }
+                            ]
+                          }
+                        },
+                        "required": [
+                          "lower",
+                          "upper",
+                          "upper_inclusive",
+                          "rows",
+                          "weight",
+                          "mean_prediction",
+                          "positive_rate",
+                          "absolute_gap"
+                        ],
+                        "additionalProperties": false
+                      }
+                    }
+                  },
+                  "required": [
+                    "brier_score",
+                    "weighted_squared_error_sum",
+                    "weight_total",
+                    "expected_calibration_error",
+                    "maximum_calibration_error",
+                    "definition",
+                    "bins"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "study_id",
+            "version",
+            "status",
+            "reason",
+            "descriptor",
+            "data"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "study_id": {
+              "const": "binary_ranking"
+            },
+            "version": {
+              "const": "1"
+            },
+            "status": {
+              "enum": [
+                "available",
+                "unavailable"
+              ]
+            },
+            "reason": {
+              "type": "string"
+            },
+            "descriptor": {
+              "type": "object",
+              "properties": {
+                "numeric_profile": {
+                  "const": "checked_exact_rational_128"
+                },
+                "weight_normalization": {
+                  "enum": [
+                    "by_total",
+                    "require_unit_mass"
+                  ]
+                },
+                "label_description": {
+                  "type": "string"
+                },
+                "label_mapping": {
+                  "type": "object",
+                  "properties": {
+                    "positive": {
+                      "type": "object",
+                      "properties": {
+                        "numerator": {
+                          "type": "string"
+                        },
+                        "denominator": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "numerator",
+                        "denominator"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "negative": {
+                      "type": "object",
+                      "properties": {
+                        "numerator": {
+                          "type": "string"
+                        },
+                        "denominator": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "numerator",
+                        "denominator"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "required": [
+                    "positive",
+                    "negative"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "numeric_profile",
+                "weight_normalization",
+                "label_description",
+                "label_mapping"
+              ],
+              "additionalProperties": false
+            },
+            "data": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "roc_auc": {
+                      "anyOf": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "status": {
+                              "const": "available"
+                            },
+                            "value": {
+                              "type": "object",
+                              "properties": {
+                                "numerator": {
+                                  "type": "string"
+                                },
+                                "denominator": {
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "numerator",
+                                "denominator"
+                              ],
+                              "additionalProperties": false
+                            }
+                          },
+                          "required": [
+                            "status",
+                            "value"
+                          ],
+                          "additionalProperties": false
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "status": {
+                              "const": "unavailable"
+                            },
+                            "reason": {
+                              "type": "string"
+                            },
+                            "value": {
+                              "type": "null"
+                            }
+                          },
+                          "required": [
+                            "status",
+                            "reason",
+                            "value"
+                          ],
+                          "additionalProperties": false
+                        }
+                      ]
+                    },
+                    "pairwise_concordance": {
+                      "anyOf": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "status": {
+                              "const": "available"
+                            },
+                            "value": {
+                              "type": "object",
+                              "properties": {
+                                "numerator": {
+                                  "type": "string"
+                                },
+                                "denominator": {
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "numerator",
+                                "denominator"
+                              ],
+                              "additionalProperties": false
+                            }
+                          },
+                          "required": [
+                            "status",
+                            "value"
+                          ],
+                          "additionalProperties": false
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "status": {
+                              "const": "unavailable"
+                            },
+                            "reason": {
+                              "type": "string"
+                            },
+                            "value": {
+                              "type": "null"
+                            }
+                          },
+                          "required": [
+                            "status",
+                            "reason",
+                            "value"
+                          ],
+                          "additionalProperties": false
+                        }
+                      ]
+                    },
+                    "average_precision": {
+                      "anyOf": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "status": {
+                              "const": "available"
+                            },
+                            "value": {
+                              "type": "object",
+                              "properties": {
+                                "numerator": {
+                                  "type": "string"
+                                },
+                                "denominator": {
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "numerator",
+                                "denominator"
+                              ],
+                              "additionalProperties": false
+                            }
+                          },
+                          "required": [
+                            "status",
+                            "value"
+                          ],
+                          "additionalProperties": false
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "status": {
+                              "const": "unavailable"
+                            },
+                            "reason": {
+                              "type": "string"
+                            },
+                            "value": {
+                              "type": "null"
+                            }
+                          },
+                          "required": [
+                            "status",
+                            "reason",
+                            "value"
+                          ],
+                          "additionalProperties": false
+                        }
+                      ]
+                    },
+                    "tie_credit": {
+                      "type": "object",
+                      "properties": {
+                        "numerator": {
+                          "type": "string"
+                        },
+                        "denominator": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "numerator",
+                        "denominator"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "tied_pair_weight": {
+                      "type": "object",
+                      "properties": {
+                        "numerator": {
+                          "type": "string"
+                        },
+                        "denominator": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "numerator",
+                        "denominator"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "positive_negative_pair_weight": {
+                      "type": "object",
+                      "properties": {
+                        "numerator": {
+                          "type": "string"
+                        },
+                        "denominator": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "numerator",
+                        "denominator"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "definition": {
+                      "type": "string"
+                    },
+                    "curve": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "threshold": {
+                            "anyOf": [
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "numerator": {
+                                    "type": "string"
+                                  },
+                                  "denominator": {
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "numerator",
+                                  "denominator"
+                                ],
+                                "additionalProperties": false
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "positive_when": {
+                            "enum": [
+                              "none",
+                              "ge"
+                            ]
+                          },
+                          "true_positive": {
+                            "type": "object",
+                            "properties": {
+                              "numerator": {
+                                "type": "string"
+                              },
+                              "denominator": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "numerator",
+                              "denominator"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "false_positive": {
+                            "type": "object",
+                            "properties": {
+                              "numerator": {
+                                "type": "string"
+                              },
+                              "denominator": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "numerator",
+                              "denominator"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "recall": {
+                            "anyOf": [
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "status": {
+                                    "const": "available"
+                                  },
+                                  "value": {
+                                    "type": "object",
+                                    "properties": {
+                                      "numerator": {
+                                        "type": "string"
+                                      },
+                                      "denominator": {
+                                        "type": "string"
+                                      }
+                                    },
+                                    "required": [
+                                      "numerator",
+                                      "denominator"
+                                    ],
+                                    "additionalProperties": false
+                                  }
+                                },
+                                "required": [
+                                  "status",
+                                  "value"
+                                ],
+                                "additionalProperties": false
+                              },
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "status": {
+                                    "const": "unavailable"
+                                  },
+                                  "reason": {
+                                    "type": "string"
+                                  },
+                                  "value": {
+                                    "type": "null"
+                                  }
+                                },
+                                "required": [
+                                  "status",
+                                  "reason",
+                                  "value"
+                                ],
+                                "additionalProperties": false
+                              }
+                            ]
+                          },
+                          "false_positive_rate": {
+                            "anyOf": [
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "status": {
+                                    "const": "available"
+                                  },
+                                  "value": {
+                                    "type": "object",
+                                    "properties": {
+                                      "numerator": {
+                                        "type": "string"
+                                      },
+                                      "denominator": {
+                                        "type": "string"
+                                      }
+                                    },
+                                    "required": [
+                                      "numerator",
+                                      "denominator"
+                                    ],
+                                    "additionalProperties": false
+                                  }
+                                },
+                                "required": [
+                                  "status",
+                                  "value"
+                                ],
+                                "additionalProperties": false
+                              },
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "status": {
+                                    "const": "unavailable"
+                                  },
+                                  "reason": {
+                                    "type": "string"
+                                  },
+                                  "value": {
+                                    "type": "null"
+                                  }
+                                },
+                                "required": [
+                                  "status",
+                                  "reason",
+                                  "value"
+                                ],
+                                "additionalProperties": false
+                              }
+                            ]
+                          },
+                          "precision": {
+                            "anyOf": [
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "status": {
+                                    "const": "available"
+                                  },
+                                  "value": {
+                                    "type": "object",
+                                    "properties": {
+                                      "numerator": {
+                                        "type": "string"
+                                      },
+                                      "denominator": {
+                                        "type": "string"
+                                      }
+                                    },
+                                    "required": [
+                                      "numerator",
+                                      "denominator"
+                                    ],
+                                    "additionalProperties": false
+                                  }
+                                },
+                                "required": [
+                                  "status",
+                                  "value"
+                                ],
+                                "additionalProperties": false
+                              },
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "status": {
+                                    "const": "unavailable"
+                                  },
+                                  "reason": {
+                                    "type": "string"
+                                  },
+                                  "value": {
+                                    "type": "null"
+                                  }
+                                },
+                                "required": [
+                                  "status",
+                                  "reason",
+                                  "value"
+                                ],
+                                "additionalProperties": false
+                              }
+                            ]
+                          }
+                        },
+                        "required": [
+                          "threshold",
+                          "positive_when",
+                          "true_positive",
+                          "false_positive",
+                          "recall",
+                          "false_positive_rate",
+                          "precision"
+                        ],
+                        "additionalProperties": false
+                      }
+                    }
+                  },
+                  "required": [
+                    "roc_auc",
+                    "pairwise_concordance",
+                    "average_precision",
+                    "tie_credit",
+                    "tied_pair_weight",
+                    "positive_negative_pair_weight",
+                    "definition",
+                    "curve"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "null"
                 }
               ]
             }

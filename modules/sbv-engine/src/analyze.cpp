@@ -1,3 +1,4 @@
+#include "binary_studies.hpp"
 #include "consumer_source.hpp"
 #include "study_formula.hpp"
 #include "wide_rational.hpp"
@@ -54,7 +55,7 @@ static logical::Value analyze_body(const Json &p, PartitionedOutput *context,
                  "periods_per_year", "numeric_profile", "on_incompatible",
                  "extensions"},
                 {"path", "expected_sha256", "source", "output_path", "output",
-                 "study_definitions"});
+                 "study_definitions", "binary"});
   need(p.at("extensions").is_object(), "extensions object required");
   const auto role = str(p.at("series_role")), measure = str(p.at("weighting")),
              numeric = str(p.at("numeric_profile"));
@@ -92,9 +93,10 @@ static logical::Value analyze_body(const Json &p, PartitionedOutput *context,
   else
     need(p.at("weight_pointer").is_string(),
          "supplied weight pointer required");
-  const std::set<std::string> builtins{"series_summary", "series_moments",
-                                       "series_quantiles", "equity_drawdown",
-                                       "return_ratios"};
+  const std::set<std::string> builtins{"series_summary",     "series_moments",
+                                       "series_quantiles",   "equity_drawdown",
+                                       "return_ratios",      "binary_confusion",
+                                       "binary_probability", "binary_ranking"};
   std::map<std::string, Json> definitions;
   if (p.contains("study_definitions")) {
     need(p.at("study_definitions").is_array(),
@@ -121,6 +123,10 @@ static logical::Value analyze_body(const Json &p, PartitionedOutput *context,
              selected.insert(id).second,
          "unknown/duplicate series study");
   }
+  const bool binary_selected =
+      std::any_of(selected.begin(), selected.end(), binary::study);
+  need(p.contains("binary") == binary_selected,
+       "binary choices required only when a binary study is selected");
   need(p.at("quantiles").is_array() &&
            (selected.contains("series_quantiles") ? !p.at("quantiles").empty()
                                                   : p.at("quantiles").empty()),
@@ -469,8 +475,9 @@ static logical::Value analyze_body(const Json &p, PartitionedOutput *context,
   sections["diagnostics"] = section(Json::array(
       {"Source series role, unit and ordering are caller selections, not "
        "inferred portfolio feasibility.",
-       "Missing observations follow the selected policy; supplied weights are "
-       "never normalized.",
+       "Missing observations follow the selected policy; supplied input "
+       "weights "
+       "are retained. Normalization requires an explicit study convention.",
        "Exact intermediates use checked signed 128-bit rationals; "
        "unrepresentable arithmetic rejects before persistence.",
        "Binary64 estimates retain round-trip decimal and bit identity and "
@@ -481,14 +488,22 @@ static logical::Value analyze_body(const Json &p, PartitionedOutput *context,
   auto out = logical::Value(sections)
                  .with("series", consumer::section(series.close()))
                  .with("exclusions", consumer::section(excluded.close()));
-  if (drawdown_curve) {
+  if (drawdown_curve || binary_selected) {
     std::vector<logical::Value> entries;
     for (std::size_t i = 0; i < studies.size(); ++i) {
       auto entry = logical::Value(studies[i]);
-      if (i == drawdown_study_index)
+      if (drawdown_curve && i == drawdown_study_index)
         entry =
             entry.with("data", entry.at("data").with("curve", *drawdown_curve));
       entries.push_back(std::move(entry));
+    }
+    if (binary_selected) {
+      auto report = binary::calculate(
+          p.at("binary"), selected, samples, data, measure,
+          str(p.at("missing")), str(p.at("on_incompatible")), context, end);
+      for (auto &entry : report.studies)
+        entries.push_back(std::move(entry));
+      out = out.with("binary_input", consumer::section(report.input));
     }
     out =
         out.with("studies",
