@@ -15228,3 +15228,107 @@ This PR authorizes none of the following:
   - `No remote publication, provider/live activity, purchase, calibrated-market claim, built-in autonomous optimizer or full M2-M3 acceptance.`
 - notes: |
     Timestamps identify the observed implementation commit rather than an invented session interval. Post_merge denotes local committed source closure, not a remote/main merge. Prior ledger bytes and all 1158 sealed R5.3a files remain unchanged. R5.3c is next and R5.4 remains the broad M2 gate.
+
+
+- record_id: `SCLV-CHG-sbv-r53c-binary-studies-local`
+- record_version: `3`
+- title: `SBV R5.3c selectable binary predictive-quality studies and acceptance reconciliation`
+- status: `canonical`
+- date: `2026-10-12`
+- change_started_at: `2026-10-12T18:37:05Z`
+- change_completed_at: `2026-10-12T18:37:05Z`
+- recorded_at: `2026-10-12T18:37:54Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `implementation_change`
+- change_request_state: `not_applicable`
+- change_request_provider: `not_applicable`
+- change_request_id: `not_applicable`
+- change_request_reference: `not_applicable`
+- change_request_absence_reason: `Directly authorized local branch implementation; no pull request or remote publication is invented.`
+- revision_scheme: `git-sha1`
+- revision_value: `91f022ed456a070f0282f8618ab44569e7ba0071`
+- tree_digest: `sha256:dccaa2865df4ea882973d3189e130e5e064d271dde5cca03cae5d6282c4afde1`
+- ratification_subject: `Duncan (Architect)`
+- ratification_permission: `authorize_local_implementation_and_source_closure`
+- ratification_method: `explicit-user-instruction`
+- ratification_evidence_reference: `../sbv-predictive-studies/RATIFICATION.json`
+- ratification_evidence_digest: `sha256:85815f9138f101b86a3d17adee9da0553452a59bdd7c3af5ba6b938ef437b2e9`
+- affected_surfaces:
+  - `cmake/SbvInterface.generated.cmake`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.json`
+  - `knowledge/sbv/VALIDATION.md`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `libraries/sbv-go/IMPLEMENTATION.md`
+  - `libraries/sbv-go/MANIFEST.md`
+  - `libraries/sbv-go/README.md`
+  - `libraries/sbv-go/client.go`
+  - `modules/sbv-engine/CMakeLists.txt`
+  - `modules/sbv-engine/FEATURES.md`
+  - `modules/sbv-engine/INSTALL.md`
+  - `modules/sbv-engine/M2-M3-READINESS.json`
+  - `modules/sbv-engine/MANIFEST.md`
+  - `modules/sbv-engine/OWNER-INTERFACE.json`
+  - `modules/sbv-engine/SKILL.md`
+  - `modules/sbv-engine/SPEC.md`
+  - `modules/sbv-engine/include/symphony/sbv/sbv.hpp`
+  - `modules/sbv-engine/schemas/v1/admin.schema.json`
+  - `modules/sbv-engine/schemas/v1/admin.templates.json`
+  - `modules/sbv-engine/src/analyze.cpp`
+  - `modules/sbv-engine/src/binary_studies.hpp`
+  - `modules/sbv-engine/src/interface.generated.hpp`
+  - `modules/sbv-engine/src/model.cpp`
+  - `modules/sbv-engine/tests/binary_studies_test.cpp`
+  - `tools/qxctl/FEATURES.md`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/qxctl/cmd/qxctl/sbv_bulk_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_allocation_economics_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_analysis_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_binary_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_book_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_census_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_dependencies_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_economics_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_history_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_installed_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_interface_generated.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_liquidity_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_models_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_planning_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_research_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_split_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_test.go`
+- skvi_references:
+  - `knowledge/sbv/MANIFEST.md`
+  - `modules/sbv-engine/M2-M3-READINESS.json`
+  - `modules/sbv-engine/src/binary_studies.hpp`
+  - `modules/sbv-engine/tests/binary_studies_test.cpp`
+  - `tools/qxctl/internal/knowledgeengine/sbv_binary_test.go`
+  - `knowledge/skvi/INDEX.md`
+- change_summary: |
+    Native 0.29 adds selected binary classification, probability reliability and ranking studies through analyze. Exact rational computations retain caller thresholds, labels, weights, bins, ties and undefined values. Original R5.3 requirements are reconciled without rewriting prior sealed evidence. Selected local R5.3 scope is complete; broad R5.4 M2 qualification and M3 remain open.
+- relationship_changes: |
+    Existing native analyze owns scientific computation and admission. All 42 operations and 45 qxctl leaves remain exposed with typed templates/schema, complete result access, comparison and durable experiment composition. Optional Go transport 0.1.3 selects exact native 0.29. No remote dispatch authority or calibration service is assigned.
+- doctrine_changes: |
+    Users choose labels, forecasts, population, normalization, thresholds/equality, bins, tie treatment and row retention. Empty/subset studies are supported. Unknown prior history and undefined denominators remain explicit. No imposed fitting/holdout gate, policy dataset ceiling, deadline or statistical confidence claim is introduced.
+- compatibility_consequences: |
+    Select exact native 0.29 and optional Go 0.1.3. Existing studies/formulas and portable artifact/SDK ABI remain supported. Binary choices are required exactly when a binary study is selected; unselected study-specific arrays must be empty and tie credit null. Older installations and sealed evidence remain separate.
+- publication_consequences: |
+    Local implementation and append-only source closure only. No push, merge, tag, module publication, deployment, provider/live call or new spend occurred.
+- projection_consequences: |
+    Five native suites including 76 new assertions, two ASan/UBSan suites with leak detection disabled, 65 Go checks/subtests and qxctl/adapter vet pass. Retained AAPL/ESZ6 examples use 22 next-retained-signal direction labels and arbitrary forecasts; exact Brier/AUC checks, native comparison and zero-duplicate experiment resumption pass. Complete exports verify 11872 nodes. These test mechanics, not calibrated execution or predictive validity. Both earlier R5.3 packets retain all 1875 sealed files unchanged.
+- evidence:
+  - `../sbv-predictive-studies/RATIFICATION.json`
+  - `../sbv-predictive-studies/evidence/SCLV_SOURCE_BINDING.json`
+  - `../sbv-predictive-studies/BUILD_IDENTITY.json`
+  - `../sbv-predictive-studies/CHECKS.json`
+  - `../sbv-predictive-studies/REVIEW.json`
+  - `../sbv-predictive-studies/CASE_EVIDENCE.json`
+  - `../sbv-predictive-studies/installed-checks-02/AAPL-report.json`
+  - `../sbv-predictive-studies/installed-checks-02/ESZ6-report.json`
+  - `../sbv-predictive-studies/evidence/prior-seals.json`
+- non_authorizations:
+  - `No remote publication, provider/live activity, purchase, calibrated-market claim, performance superiority or full M2-M3 acceptance.`
+- notes: |
+    Timestamps identify the observed implementation commit rather than an invented session interval. Post_merge denotes local committed source closure, not a remote/main merge. Earlier case-note IDs are reconciled to verbatim original requirements in the new packet; sealed originals remain unchanged. R5.4 is next.
