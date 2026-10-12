@@ -14842,3 +14842,104 @@ This PR authorizes none of the following:
   - `No new remote publication, live/provider activity, purchase, calibrated fill claim, GPU runtime, distributed execution or full M2-M3 acceptance.`
 - notes: |
     Start/completion timestamps identify the first and only observed implementation commit in this increment, not an invented wall-clock task start. Post_merge denotes local committed closure, consistent with existing admitted records, not a main/remote merge. All prior ledger bytes and sealed R3.3/R4 evidence remain unchanged. Broad prior campaign results are not relabeled as current 0.25 qualification.
+
+
+- record_id: `SCLV-CHG-sbv-r51-queue-local`
+- record_version: `3`
+- title: `SBV R5.1 latency and queue scenarios with qxctl-first evidence`
+- status: `canonical`
+- date: `2026-10-12`
+- change_started_at: `2026-10-12T13:36:02Z`
+- change_completed_at: `2026-10-12T13:36:02Z`
+- recorded_at: `2026-10-12T13:37:02Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `implementation_change`
+- change_request_state: `not_applicable`
+- change_request_provider: `not_applicable`
+- change_request_id: `not_applicable`
+- change_request_reference: `not_applicable`
+- change_request_absence_reason: `Directly authorized local branch implementation; this cumulative record does not invent a pull request or attach publication to the current local pass.`
+- revision_scheme: `git-sha1`
+- revision_value: `67559a6fd5b6396212b1a000b6abe444ae9cdbcd`
+- tree_digest: `sha256:6c4206748cf551b761fe7654d27388343dd62685cf214e83575eccfbfb205a7f`
+- ratification_subject: `Duncan (Architect)`
+- ratification_permission: `authorize_local_implementation_and_source_closure`
+- ratification_method: `explicit-user-instruction`
+- ratification_evidence_reference: `../sbv-queue-scenarios/RATIFICATION.json`
+- ratification_evidence_digest: `sha256:128015eaefc77fdcfe4af3f0c7f18e24100b2b9e7d53aa10903cb5561382d731`
+- affected_surfaces:
+  - `README.md`
+  - `cmake/SbvInterface.generated.cmake`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.json`
+  - `knowledge/sbv/VALIDATION.md`
+  - `modules/sbv-engine/CMakeLists.txt`
+  - `modules/sbv-engine/FEATURES.md`
+  - `modules/sbv-engine/INSTALL.md`
+  - `modules/sbv-engine/M2-M3-READINESS.json`
+  - `modules/sbv-engine/MANIFEST.md`
+  - `modules/sbv-engine/OWNER-INTERFACE.json`
+  - `modules/sbv-engine/SPEC.md`
+  - `modules/sbv-engine/include/symphony/sbv/sbv.hpp`
+  - `modules/sbv-engine/schemas/v1/admin.schema.json`
+  - `modules/sbv-engine/schemas/v1/admin.templates.json`
+  - `modules/sbv-engine/src/detail.hpp`
+  - `modules/sbv-engine/src/experiment.cpp`
+  - `modules/sbv-engine/src/interface.generated.hpp`
+  - `modules/sbv-engine/src/model.cpp`
+  - `modules/sbv-engine/src/operation_profiles.hpp`
+  - `modules/sbv-engine/src/queue_scenarios.cpp`
+  - `modules/sbv-engine/src/result.cpp`
+  - `modules/sbv-engine/tests/queue_test.cpp`
+  - `tools/qxctl/COMMANDS.json`
+  - `tools/qxctl/FEATURES.md`
+  - `tools/qxctl/cmd/qxctl/command_manifest_test.go`
+  - `tools/qxctl/cmd/qxctl/sbv_bulk_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_allocation_economics_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_analysis_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_book_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_census_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_dependencies_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_economics_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_history_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_installed_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_interface_generated.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_liquidity_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_models_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_partitioned.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_planning_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_queue_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_research_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_resource_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_split_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_test.go`
+- skvi_references:
+  - `knowledge/sbv/MANIFEST.md`
+  - `modules/sbv-engine/MANIFEST.md`
+  - `modules/sbv-engine/OWNER-INTERFACE.json`
+  - `tools/qxctl/COMMANDS.json`
+  - `knowledge/skvi/INDEX.md`
+- change_summary: |
+    Experimental 0.26 implements R5.1's selected native finite latency tapes, FIFO/pro-rata passive queue replay, partial/no fills, activation mass and declared execution-label admission/held-out Brier scoring. Source census/replay remain immutable; assumptions and invalidations remain explicit. R5.2 is next; M2/M3 remain open.
+- relationship_changes: |
+    queue_scenarios consumes source-bound reconstructed books and retained replay; inline/bundle orders, latency atoms and labels share native admission. Existing experiment execution now admits legacy and partitioned queue trials and reuses completed receipts. SDK and qxctl share the same engine and portable results. Snapshot allocation_economics is not relabeled as a queue-distribution/account consumer.
+- doctrine_changes: |
+    Users select latency/priority/side/service/cancellation/replenishment/reset/modify assumptions, evidence policy, quantities/horizons, workers and deadlines. No aggregate dataset/order/latency policy ceiling or automatic calibrated-market interpretation is added. Representation, format and working-memory profiles are explicit; custom providers remain alternate model-authoring paths.
+- compatibility_consequences: |
+    Select exact 0.26 installation/schema/receipt. One new operation and typed scenario/input definitions extend the current interface; previous installations remain separately selectable. Original request/result semantics remain unchanged except experiment admission of the new producer. A source invalidation makes an affected scenario unavailable; declared training reuse cannot acquire a held-out score by reordering label rows.
+- publication_consequences: |
+    Local implementation and source closure commits only. No push, main merge, tag, deployment or public release is authorized by this increment.
+- projection_consequences: |
+    Owner/native/Go interface projections, installed schemas/templates, 45 SBV leaves, 444 total stable commands and feature-administration bindings are synchronized. Focused native, sanitizer, installed/SDK, terminal-node, experiment-resume and retained Databento checks pass. No learned calibration, shared-account, cluster/device or full M2/M3 acceptance claim.
+- evidence:
+  - `../sbv-queue-scenarios/RATIFICATION.json`
+  - `../sbv-queue-scenarios/evidence/SCLV_SOURCE_BINDING.json`
+  - `../sbv-queue-scenarios/BUILD_IDENTITY.json`
+  - `../sbv-queue-scenarios/CHECKS.json`
+  - `../sbv-queue-scenarios/installed-checks-11/report.json`
+  - `../sbv-queue-scenarios/evidence/prior-seal.json`
+- non_authorizations:
+  - `No new remote publication, live/provider activity, purchase, calibrated-market claim, GPU runtime, distributed execution or full M2-M3 acceptance.`
+- notes: |
+    Start/completion timestamps identify the observed implementation commit, not an invented work-session interval. Post_merge denotes local committed source closure, consistent with prior admitted records; it is not a remote/main merge. All earlier ledger bytes are preserved. The previous 183-file control-hardening packet matches its exact seal. Older broad qualifications retain their recorded revisions and scope.
