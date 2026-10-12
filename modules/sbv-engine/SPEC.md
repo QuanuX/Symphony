@@ -1081,3 +1081,20 @@ consumer to queue distributions. Portfolio/shared-capital and queue economics
 remain a named integration for the stateful/account lane; exported typed fills
 and exact masses are available to external consumers immediately. M2/M3 remain
 open under `M2-M3-READINESS.json`.
+
+
+## Independent Go adapter (R5.2, source module v0.1.0-dev)
+
+`libraries/sbv-go` is a separately consumable Go 1.26.5 standard-library module
+that delegates the complete current 42-operation surface to an exact selected
+qxctl/native 0.26 installation. Its copied streaming and row interfaces preserve
+integer/rational strings, source identity, feature order and unavailable/null
+evidence; completion requires source-bound full export and a matching logical
+hash. Native result_select owns time/column filtering; external outcomes and
+experiment requests retain native admission and provenance. Every mutation uses
+the existing qxctl surface. The adapter owns no native installation or service.
+Its [contract](../../libraries/sbv-go/IMPLEMENTATION.md) states memory, lifetime,
+cancellation and trust boundaries. Native runtime/schema/ABI bytes are unchanged
+by this adapter release. The previous external Python verification consumer
+remains a historical isolated example, not a first-party dependency. Arrow,
+DLPack, borrowed memory, vendor runtimes and adaptive search are not claimed.

@@ -128,8 +128,8 @@ The emerging SOV remote-operation and deployment contracts do not make provider 
 
 This bounded summary is derived from canonical SSFV coverage and routing, the feature-administration profile, the qxctl command registry, and completed SODV publication records. Edit its source contracts, then regenerate; do not hand-edit the values below.
 
-- SSFV catalog state: `partial`; registered features: **141**; registered owner scopes: **63**; ratified nested features: **78**.
-- Feature-administration expectations: **381** reviewed surfaces; **370** required, **28** evidence-backed exemptions, **9** prohibitions, **0** unreviewed.
+- SSFV catalog state: `partial`; registered features: **142**; registered owner scopes: **64**; ratified nested features: **78**.
+- Feature-administration expectations: **382** reviewed surfaces; **371** required, **29** evidence-backed exemptions, **9** prohibitions, **0** unreviewed.
 - qxctl stable command identities: **444**.
 - Registered owner capabilities:
   - `ssfv:symphony:accordare-stav-producer`
@@ -142,6 +142,7 @@ This bounded summary is derived from canonical SSFV coverage and routing, the fe
   - `ssfv:symphony:sacv-engine`
   - `ssfv:symphony:sav-engine`
   - `ssfv:symphony:sbv-engine`
+  - `ssfv:symphony:sbv-go-adapter`
   - `ssfv:symphony:scabv-ibkr-client-portal-cpp`
   - `ssfv:symphony:scabv-ibkr-tws-cpp`
   - `ssfv:symphony:scev-cf-engine`
@@ -199,7 +200,7 @@ This bounded summary is derived from canonical SSFV coverage and routing, the fe
   - `github.com/QuanuX/Symphony/libraries/stav-protocol-go` `v0.2.0` (tag `libraries/stav-protocol-go/v0.2.0`, source `55f8faf26f4f85213ac23cc1de7ba897b2129a4c`)
   - `github.com/QuanuX/Symphony/modules/stav-append-authority` `v0.1.0` (tag `modules/stav-append-authority/v0.1.0`, source `55f8faf26f4f85213ac23cc1de7ba897b2129a4c`)
   - `github.com/QuanuX/Symphony/modules/stav-append-authority` `v0.2.0` (tag `modules/stav-append-authority/v0.2.0`, source `ed7484d70607aa96e64916dd4e59d3972a61980b`)
-- Snapshot digest: `sha256:47c8856346c9a818cc3e6fc660b265cf13b011d258339677646fb9da2b728678`
+- Snapshot digest: `sha256:e7b9567c2e7bcc9fdfd71e577487824863ea60d8411cb8b3d08afa796faf5c0e`
 <!-- symphony:root-summary:v1:end -->
 
 ## Releases and Documentation
@@ -223,6 +224,8 @@ The SKV evolution framework allows Symphony to add, change, supersede, deprecate
 - Names are recorded under their owning scope; SNV and SCNV do not dictate them, and root NAMESPACES remains broader than SNV.
 - A caller's classification as human, AI, agent, service, or workload does not grant or remove authority. Target-host ownership, explicit permission, expected state, and owner-configured safeguards govern supported actions.
 - Current contracts describe current truth. Immutable SCLV/SODV records preserve what was known, changed, authorized, or completed at their recorded point in history.
+
+The optional [SBV Go adapter](libraries/sbv-go/) is an independently consumable standard-library module for exact qxctl control, streamed replay/results and external model/proposal pipelines. It adds no scientific engine or vendor runtime dependency.
 
 ## Python Doctrine
 

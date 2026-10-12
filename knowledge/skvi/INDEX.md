@@ -24098,3 +24098,185 @@ automatic nested fitting and cross-run holdout history remain unimplemented.
 - deferred_projections: Future GUI projections reuse native portable results.
 - notes: Result volume is separate from small process control framing.
 - status: canonical
+
+### SBV Go adapter FEATURES.md
+
+- path: `libraries/sbv-go/FEATURES.md`
+- title: SBV Go adapter FEATURES.md
+- surface_type: markdown
+- truth_role: selected independent SBV language/data adapter contract or implementation
+- owner: Symphony Backtesting Vector maintainers
+- scope: Exact qxctl transport, copied streaming data and independent external consumer composition.
+- relationships: depends_on -> `knowledge/sbv/SPEC.md`
+- consumers: Go programs, agents, research/model/optimizer pipelines and future GUI adapters
+- deferred_projections: other language adapters, borrowed Arrow/DLPack and device runtimes
+- notes: No scientific calculation ownership, calibration claim or independent service.
+- status: canonical
+
+### SBV Go adapter IMPLEMENTATION.md
+
+- path: `libraries/sbv-go/IMPLEMENTATION.md`
+- title: SBV Go adapter IMPLEMENTATION.md
+- surface_type: markdown
+- truth_role: selected independent SBV language/data adapter contract or implementation
+- owner: Symphony Backtesting Vector maintainers
+- scope: Exact qxctl transport, copied streaming data and independent external consumer composition.
+- relationships: depends_on -> `knowledge/sbv/SPEC.md`
+- consumers: Go programs, agents, research/model/optimizer pipelines and future GUI adapters
+- deferred_projections: other language adapters, borrowed Arrow/DLPack and device runtimes
+- notes: No scientific calculation ownership, calibration claim or independent service.
+- status: canonical
+
+### SBV Go adapter INTENT.md
+
+- path: `libraries/sbv-go/INTENT.md`
+- title: SBV Go adapter INTENT.md
+- surface_type: markdown
+- truth_role: selected independent SBV language/data adapter contract or implementation
+- owner: Symphony Backtesting Vector maintainers
+- scope: Exact qxctl transport, copied streaming data and independent external consumer composition.
+- relationships: depends_on -> `knowledge/sbv/SPEC.md`
+- consumers: Go programs, agents, research/model/optimizer pipelines and future GUI adapters
+- deferred_projections: other language adapters, borrowed Arrow/DLPack and device runtimes
+- notes: No scientific calculation ownership, calibration claim or independent service.
+- status: canonical
+
+### SBV Go adapter MANIFEST.md
+
+- path: `libraries/sbv-go/MANIFEST.md`
+- title: SBV Go adapter MANIFEST.md
+- surface_type: markdown
+- truth_role: selected independent SBV language/data adapter contract or implementation
+- owner: Symphony Backtesting Vector maintainers
+- scope: Exact qxctl transport, copied streaming data and independent external consumer composition.
+- relationships: depends_on -> `knowledge/sbv/SPEC.md`
+- consumers: Go programs, agents, research/model/optimizer pipelines and future GUI adapters
+- deferred_projections: other language adapters, borrowed Arrow/DLPack and device runtimes
+- notes: No scientific calculation ownership, calibration claim or independent service.
+- status: canonical
+
+### SBV Go adapter README.md
+
+- path: `libraries/sbv-go/README.md`
+- title: SBV Go adapter README.md
+- surface_type: markdown
+- truth_role: selected independent SBV language/data adapter contract or implementation
+- owner: Symphony Backtesting Vector maintainers
+- scope: Exact qxctl transport, copied streaming data and independent external consumer composition.
+- relationships: depends_on -> `knowledge/sbv/SPEC.md`
+- consumers: Go programs, agents, research/model/optimizer pipelines and future GUI adapters
+- deferred_projections: other language adapters, borrowed Arrow/DLPack and device runtimes
+- notes: No scientific calculation ownership, calibration claim or independent service.
+- status: canonical
+
+### SBV Go adapter SKILL.md
+
+- path: `libraries/sbv-go/SKILL.md`
+- title: SBV Go adapter SKILL.md
+- surface_type: markdown
+- truth_role: selected independent SBV language/data adapter contract or implementation
+- owner: Symphony Backtesting Vector maintainers
+- scope: Exact qxctl transport, copied streaming data and independent external consumer composition.
+- relationships: depends_on -> `knowledge/sbv/SPEC.md`
+- consumers: Go programs, agents, research/model/optimizer pipelines and future GUI adapters
+- deferred_projections: other language adapters, borrowed Arrow/DLPack and device runtimes
+- notes: No scientific calculation ownership, calibration claim or independent service.
+- status: canonical
+
+### SBV Go adapter client.go
+
+- path: `libraries/sbv-go/client.go`
+- title: SBV Go adapter client.go
+- surface_type: implementation source
+- truth_role: selected independent SBV language/data adapter contract or implementation
+- owner: Symphony Backtesting Vector maintainers
+- scope: Exact qxctl transport, copied streaming data and independent external consumer composition.
+- relationships: depends_on -> `knowledge/sbv/SPEC.md`
+- consumers: Go programs, agents, research/model/optimizer pipelines and future GUI adapters
+- deferred_projections: other language adapters, borrowed Arrow/DLPack and device runtimes
+- notes: No scientific calculation ownership, calibration claim or independent service.
+- status: canonical
+
+### SBV Go adapter client_test.go
+
+- path: `libraries/sbv-go/client_test.go`
+- title: SBV Go adapter client_test.go
+- surface_type: implementation source
+- truth_role: selected independent SBV language/data adapter contract or implementation
+- owner: Symphony Backtesting Vector maintainers
+- scope: Exact qxctl transport, copied streaming data and independent external consumer composition.
+- relationships: depends_on -> `knowledge/sbv/SPEC.md`
+- consumers: Go programs, agents, research/model/optimizer pipelines and future GUI adapters
+- deferred_projections: other language adapters, borrowed Arrow/DLPack and device runtimes
+- notes: No scientific calculation ownership, calibration claim or independent service.
+- status: canonical
+
+### SBV Go adapter examples/roundtrip/main.go
+
+- path: `libraries/sbv-go/examples/roundtrip/main.go`
+- title: SBV Go adapter examples/roundtrip/main.go
+- surface_type: implementation source
+- truth_role: selected independent SBV language/data adapter contract or implementation
+- owner: Symphony Backtesting Vector maintainers
+- scope: Exact qxctl transport, copied streaming data and independent external consumer composition.
+- relationships: depends_on -> `knowledge/sbv/SPEC.md`
+- consumers: Go programs, agents, research/model/optimizer pipelines and future GUI adapters
+- deferred_projections: other language adapters, borrowed Arrow/DLPack and device runtimes
+- notes: No scientific calculation ownership, calibration claim or independent service.
+- status: canonical
+
+### SBV Go adapter go.mod
+
+- path: `libraries/sbv-go/go.mod`
+- title: SBV Go adapter go.mod
+- surface_type: implementation source
+- truth_role: selected independent SBV language/data adapter contract or implementation
+- owner: Symphony Backtesting Vector maintainers
+- scope: Exact qxctl transport, copied streaming data and independent external consumer composition.
+- relationships: depends_on -> `knowledge/sbv/SPEC.md`
+- consumers: Go programs, agents, research/model/optimizer pipelines and future GUI adapters
+- deferred_projections: other language adapters, borrowed Arrow/DLPack and device runtimes
+- notes: No scientific calculation ownership, calibration claim or independent service.
+- status: canonical
+
+### SBV Go adapter rows.go
+
+- path: `libraries/sbv-go/rows.go`
+- title: SBV Go adapter rows.go
+- surface_type: implementation source
+- truth_role: selected independent SBV language/data adapter contract or implementation
+- owner: Symphony Backtesting Vector maintainers
+- scope: Exact qxctl transport, copied streaming data and independent external consumer composition.
+- relationships: depends_on -> `knowledge/sbv/SPEC.md`
+- consumers: Go programs, agents, research/model/optimizer pipelines and future GUI adapters
+- deferred_projections: other language adapters, borrowed Arrow/DLPack and device runtimes
+- notes: No scientific calculation ownership, calibration claim or independent service.
+- status: canonical
+
+### SBV Go adapter stream.go
+
+- path: `libraries/sbv-go/stream.go`
+- title: SBV Go adapter stream.go
+- surface_type: implementation source
+- truth_role: selected independent SBV language/data adapter contract or implementation
+- owner: Symphony Backtesting Vector maintainers
+- scope: Exact qxctl transport, copied streaming data and independent external consumer composition.
+- relationships: depends_on -> `knowledge/sbv/SPEC.md`
+- consumers: Go programs, agents, research/model/optimizer pipelines and future GUI adapters
+- deferred_projections: other language adapters, borrowed Arrow/DLPack and device runtimes
+- notes: No scientific calculation ownership, calibration claim or independent service.
+- status: canonical
+
+### SBV Go adapter stream_test.go
+
+- path: `libraries/sbv-go/stream_test.go`
+- title: SBV Go adapter stream_test.go
+- surface_type: implementation source
+- truth_role: selected independent SBV language/data adapter contract or implementation
+- owner: Symphony Backtesting Vector maintainers
+- scope: Exact qxctl transport, copied streaming data and independent external consumer composition.
+- relationships: depends_on -> `knowledge/sbv/SPEC.md`
+- consumers: Go programs, agents, research/model/optimizer pipelines and future GUI adapters
+- deferred_projections: other language adapters, borrowed Arrow/DLPack and device runtimes
+- notes: No scientific calculation ownership, calibration claim or independent service.
+- status: canonical

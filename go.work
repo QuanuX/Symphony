@@ -1,6 +1,7 @@
 go 1.26.5
 
 use (
+	./libraries/sbv-go
 	./libraries/stav-protocol-go
 	./modules/accordare-stav-producer
 	./modules/secure-identity-access-governance

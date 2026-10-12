@@ -44,3 +44,8 @@ Experimental 0.21 adds `qxctl sbv source-retain` and `source-export`, with the s
 The 0.22 receipt additionally owns the partitioned root, page and node-stream schemas. New `qxctl sbv bundle` operations use this exact installation; the C/C++ SDK process ABI remains version 1 over process-v2. Backtest bundles, staged recovery data and exported result files are user-owned outputs outside the installation receipt.
 
 The 0.23 core producer alternative selects a new bundle and separate private workspace explicitly. Obtain complete requests with `qxctl sbv template --operation run --variant partitioned` (also generation, evaluation, economics, composition and resident execution). Core receipts identify exact portable bundle references; bundle query/export exposes all retained data. Workspace and result cleanup belongs to the caller and is separate from package uninstall.
+
+The optional [Go adapter](../../libraries/sbv-go/README.md) v0.1.0-dev is installed
+and removed as an independent source-module dependency. It selects the exact
+qxctl executable and native 0.26.0-dev prefix; no adapter file is added to this
+native receipt and no native installation is removed with the adapter.

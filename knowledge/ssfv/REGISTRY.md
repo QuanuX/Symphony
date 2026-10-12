@@ -2,7 +2,7 @@
 
 ## Status
 
-Canonical SSFV feature-routing registry. The partial catalog routes 141 experimental records across the platform governance scope and 63 owner scopes enumerated by `COVERAGE.md`.
+Canonical SSFV feature-routing registry. The partial catalog routes 142 experimental records across the platform governance scope and 64 owner scopes enumerated by `COVERAGE.md`.
 
 ## Purpose
 
@@ -1324,3 +1324,12 @@ Do not register:
 ## Non-Authorization Statement
 
 This 138-record registry is an explicitly partial catalog governed by `COVERAGE.md`. It does not authorize an unratified feature record, an unregistered distributed file, repository-wide or installed-host completeness, complete legacy-invariant coverage, engine-decided feature-worthiness, or canonical mutation.
+
+- feature_id: `ssfv:symphony:sbv-go-adapter`
+- feature_file: `libraries/sbv-go/FEATURES.md`
+- owner_contract: `libraries/sbv-go/MANIFEST.md`
+- source_scope: `libraries/sbv-go`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:platform`
+- record_digest: `sha256:710dfa0414c777be5a83b3c01b3bc8eae3742b5e0e39bd3fd334e59549e9af57`
+- notes: Selected R5.2 independent Go adapter; native scientific and qxctl administrative ownership remain unchanged.

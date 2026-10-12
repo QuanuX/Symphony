@@ -3048,6 +3048,25 @@
       "feature_id": "ssfv:symphony:sbv-engine"
     },
     {
+      "feature_id": "ssfv:symphony:sbv-go-adapter",
+      "expectations": [
+        {
+          "interaction": "invoke",
+          "requirement": "required",
+          "delivery": "runtime_only",
+          "command_ids": [],
+          "engine_operation_ids": [],
+          "inherited_from_feature_id": null,
+          "evidence": [
+            "libraries/sbv-go/IMPLEMENTATION.md",
+            "libraries/sbv-go/FEATURES.md",
+            "tools/qxctl/cmd/qxctl/sbv.go"
+          ],
+          "rationale": "Linked consumer adapter has no independent administrative state; every native capability, model/proposal selection and mutation is delegated to existing exact qxctl SBV leaves. Stream/row decoding only projects the same portable evidence."
+        }
+      ]
+    },
+    {
       "expectations": [
         {
           "command_ids": [
@@ -9832,7 +9851,7 @@
   "forward_gate": "enforce_new_records",
   "profile_id": "symphony.registered-features.administration.v1",
   "protocol": "symphony.knowledge.feature-administration-profile.v1",
-  "registered_feature_count": 141,
-  "ssfv_registry_digest": "sha256:0fc3b44c4ecab65e728ed505bce3e41499c348fcebd07a72eb001393a1b86e2b",
-  "profile_digest": "sha256:2dc08fff79e74ad5b1e0c945a6013100b3a136b8a3c26dd0fc0be3bddcee01f3"
+  "registered_feature_count": 142,
+  "ssfv_registry_digest": "sha256:131acf388006d6db7dc73f356da829d29c31b4ec6b988ad5f2c5693a9b6cd704",
+  "profile_digest": "sha256:61d63de2e3f3907821145990e724614cc70bb5c4512faced266e7566e2ea4ee5"
 }

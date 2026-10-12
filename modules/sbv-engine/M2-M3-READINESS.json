@@ -2,7 +2,7 @@
   "protocol": "symphony.sbv.milestone-readiness.v1",
   "date": "2026-10-12",
   "status": "sequence_in_progress",
-  "authority": "User requested proceeding with M2-M3 implementation after publication of 167858c; R5.1 selected scenario and label-admission scope is verified locally. This does not close M2 or M3.",
+  "authority": "User requested continuing M2-M3 implementation; R5.1 and selected R5.2 Go-adapter scope are verified locally. This does not close M2 or M3.",
   "baseline": {
     "selected_M1": "R3.3/R4 0.24 local candidate accepted at 50cedde31cb8c78dcc61845bfe067a1d84eb6026",
     "hardening_release": "0.25.0-dev",
@@ -28,7 +28,7 @@
       "verification": "Stale generation refusal, reject/drain below active demand, unlimited/uint64 selections, reads/decodes unchanged after source deletion."
     }
   ],
-  "next_increment": "R5.2",
+  "next_increment": "R5.3",
   "sequence": [
     {
       "id": "R5.1",
@@ -105,7 +105,10 @@
         "A090",
         "A095"
       ],
-      "status": "prepared_not_started"
+      "status": "verified_selected_scope",
+      "implementation_release": "sbv-go 0.1.0-dev; native 0.26.0-dev unchanged",
+      "evidence": "workspace:implementation/sbv-language-adapter/CHECKS.json",
+      "qualification": "Independently installed/removed Go source adapter, exact copied legacy/partitioned streams and rows, native-selected time/columns, external synthetic models and proposal/comparison feedback. No vendor runtime, borrowed/device buffer, calibrated model or adaptive optimizer claim."
     },
     {
       "id": "R5.3",

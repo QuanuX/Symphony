@@ -132,3 +132,19 @@ Earlier broad qualification remains scoped to its recorded source. R5.4 retains
 the full M2 campaign; R5.2 is next. Actual execution calibration, shared
 liquidity/account economics, remote/device runtime and full M2/M3 acceptance
 remain open.
+
+
+## R5.2 independent Go adapter (12 October 2026)
+
+Source module `libraries/sbv-go` 0.1.0-dev composes the unchanged native 0.26
+installation through pinned qxctl. Twenty-four focused Go checks including race
+detection and 21 existing qxctl registry checks pass. Independent installation
+and removal preserve all 25 native receipt-owned files and native capabilities.
+AAPL/ESZ6 retained-data consumers verify 10,050 source value nodes, 70 replay
+rows and legacy/partitioned equality. Four synthetic external model trials retain
+the census, compare under declared objectives and resume with zero executions.
+Cancellation remains incomplete; copied values survive their stream lifetime.
+The 4,425-file R5.1 evidence seal remains unchanged. Workspace evidence is
+`implementation/sbv-language-adapter/CHECKS.json`. No new provider/live call or
+spend, calibrated market model, borrowed/device buffer or broad M2 gate is claimed.
+M2/M3 remain open; the next selected increment is R5.3 nested/adaptive research.
