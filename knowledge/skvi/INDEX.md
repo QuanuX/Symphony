@@ -24280,3 +24280,17 @@ automatic nested fitting and cross-run holdout history remain unimplemented.
 - deferred_projections: other language adapters, borrowed Arrow/DLPack and device runtimes
 - notes: No scientific calculation ownership, calibration claim or independent service.
 - status: canonical
+
+### SBV M2-M3 readiness and selected increment sequence
+
+- path: `modules/sbv-engine/M2-M3-READINESS.json`
+- title: SBV M2-M3 readiness and selected increment sequence
+- surface_type: implementation source
+- truth_role: explicit implementation sequence with scoped verification and remaining gates
+- owner: Symphony Backtesting Vector maintainers
+- scope: Selected M2-M3 increments, user controls, dependencies, acceptance exits and honest pending scope.
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: SBV implementers, reviewers, qxctl and independent consumer authors
+- deferred_projections: unimplemented increments remain prepared plans, not runtime capability claims
+- notes: Source-controlled status does not replace exact implementation and verification evidence.
+- status: canonical
