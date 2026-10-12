@@ -14943,3 +14943,84 @@ This PR authorizes none of the following:
   - `No new remote publication, live/provider activity, purchase, calibrated-market claim, GPU runtime, distributed execution or full M2-M3 acceptance.`
 - notes: |
     Start/completion timestamps identify the observed implementation commit, not an invented work-session interval. Post_merge denotes local committed source closure, consistent with prior admitted records; it is not a remote/main merge. All earlier ledger bytes are preserved. The previous 183-file control-hardening packet matches its exact seal. Older broad qualifications retain their recorded revisions and scope.
+
+
+- record_id: `SCLV-CHG-sbv-r52-go-adapter-local`
+- record_version: `3`
+- title: `SBV R5.2 independent qxctl-first Go adapter and external consumer round-trip`
+- status: `canonical`
+- date: `2026-10-12`
+- change_started_at: `2026-10-12T14:59:18Z`
+- change_completed_at: `2026-10-12T15:05:06Z`
+- recorded_at: `2026-10-12T15:06:29Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `implementation_change`
+- change_request_state: `not_applicable`
+- change_request_provider: `not_applicable`
+- change_request_id: `not_applicable`
+- change_request_reference: `not_applicable`
+- change_request_absence_reason: `Directly authorized local branch implementation; this cumulative record does not invent a pull request or attach publication to the current local pass.`
+- revision_scheme: `git-sha1`
+- revision_value: `d4e273e8f4987cf8fafbe0ebb722e408c2c435cf`
+- tree_digest: `sha256:8c1036a5b46340c49629ce31b96e1c138c46172d4822a4381bd2047421945a7a`
+- ratification_subject: `Duncan (Architect)`
+- ratification_permission: `authorize_local_implementation_and_source_closure`
+- ratification_method: `explicit-user-instruction`
+- ratification_evidence_reference: `../sbv-language-adapter/RATIFICATION.json`
+- ratification_evidence_digest: `sha256:1aa361f42e20a674c1258657b0a9bf512401e593b1e08cc6669fde43696a1850`
+- affected_surfaces:
+  - `README.md`
+  - `go.work`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.json`
+  - `knowledge/sbv/VALIDATION.md`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/ssfv/COVERAGE.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `libraries/sbv-go/FEATURES.md`
+  - `libraries/sbv-go/IMPLEMENTATION.md`
+  - `libraries/sbv-go/INTENT.md`
+  - `libraries/sbv-go/MANIFEST.md`
+  - `libraries/sbv-go/README.md`
+  - `libraries/sbv-go/SKILL.md`
+  - `libraries/sbv-go/client.go`
+  - `libraries/sbv-go/client_test.go`
+  - `libraries/sbv-go/examples/roundtrip/main.go`
+  - `libraries/sbv-go/go.mod`
+  - `libraries/sbv-go/rows.go`
+  - `libraries/sbv-go/stream.go`
+  - `libraries/sbv-go/stream_test.go`
+  - `modules/sbv-engine/INSTALL.md`
+  - `modules/sbv-engine/M2-M3-READINESS.json`
+  - `modules/sbv-engine/SPEC.md`
+- skvi_references:
+  - `knowledge/sbv/MANIFEST.md`
+  - `libraries/sbv-go/MANIFEST.md`
+  - `libraries/sbv-go/IMPLEMENTATION.md`
+  - `modules/sbv-engine/M2-M3-READINESS.json`
+  - `knowledge/skvi/INDEX.md`
+- change_summary: |
+    Optional source module sbv-go 0.1.0-dev transports exact qxctl/native 0.26 requests and copied streamed results/replay. Selected R5.2 passes independent install/remove, external synthetic model/proposal and native comparison feedback, exact consumer shapes and zero-work experiment resume. R5.3 is next; M2/M3 remain open.
+- relationship_changes: |
+    All 42 native operations and schema/template/export access retain qxctl-first control. Go owns transport and consumer decoding; C++ owns science and native admission. A new independent library owner is registered in SSFV/SKVI without a separate service or native-installation authority. External model/proposal lineage remains declared evidence.
+- doctrine_changes: |
+    User-selected criteria, models, objectives, field/time projections, feature order, dtype, nullability, resources and deadlines remain explicit. No implicit float conversion, default deadline, dataset-volume ceiling, automatic retry or vendor dependency is added. Callback values remain provisional until complete verified export. Copied values survive stream/process lifetime; borrowed/device fences are separate capabilities.
+- compatibility_consequences: |
+    Select Go 1.26.5, native 0.26.0-dev and caller-pinned qxctl bytes. Native runtime/schema/ABI are unchanged. Independent adapter removal preserves all 25 native receipt-owned files and native capabilities. Consumer failure identity remains distinct from cleanup cancellation. Full ancestor-address and whole-row memory costs are disclosed; no Windows/remote/vendor-runtime qualification is implied.
+- publication_consequences: |
+    Local implementation, focused correction and append-only closure commits only. No push, main merge, tag, module publication, deployment, provider/live call or spend occurred.
+- projection_consequences: |
+    SSFV coverage/routing, feature-administration, root summary, SKVI and readiness are synchronized. Twenty-five adapter checks with race detection and 21 qxctl registry checks pass. Independent AAPL/ESZ6 consumers match 10050 source value nodes and 70 replay rows across legacy/partitioned formats. Four synthetic external trials and native comparison choices are retained; resumes execute zero trials. No calibrated market or performance-superiority claim.
+- evidence:
+  - `../sbv-language-adapter/RATIFICATION.json`
+  - `../sbv-language-adapter/evidence/SCLV_SOURCE_BINDING.json`
+  - `../sbv-language-adapter/BUILD_IDENTITY.json`
+  - `../sbv-language-adapter/CHECKS.json`
+  - `../sbv-language-adapter/INSTALLATION.json`
+  - `../sbv-language-adapter/AAPL-final/report.json`
+  - `../sbv-language-adapter/ESZ6-final/report.json`
+  - `../sbv-language-adapter/evidence/prior-seal.json`
+- non_authorizations:
+  - `No remote publication, live/provider call, purchase, calibrated-market claim, borrowed/device integration or full M2-M3 acceptance.`
+- notes: |
+    Timestamps identify observed implementation commits, not an invented work-session interval. Post_merge denotes local committed source closure consistent with prior admitted records; no remote/main merge occurred. All prior ledger bytes and all 4425 sealed R5.1 files remain unchanged. Earlier broad native qualification is not relabeled as a fresh M2 gate.
