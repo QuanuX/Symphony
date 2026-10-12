@@ -151,6 +151,7 @@
         "tools/qxctl/internal/knowledgeengine/sbv_installed_test.go",
         "tools/qxctl/internal/knowledgeengine/sbv_liquidity_test.go",
         "tools/qxctl/internal/knowledgeengine/sbv_models_test.go",
+        "tools/qxctl/internal/knowledgeengine/sbv_nested_test.go",
         "tools/qxctl/internal/knowledgeengine/sbv_planning_test.go",
         "tools/qxctl/internal/knowledgeengine/sbv_provider_test.go",
         "tools/qxctl/internal/knowledgeengine/sbv_recovery_test.go",

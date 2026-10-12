@@ -2212,6 +2212,134 @@
             "cache_bytes": "16777216"
           }
         }
+      },
+      "nested": {
+        "protocol": "symphony.sbv.split-input.v1",
+        "path": "/absolute/private/source.json",
+        "expected_sha256": "REPLACE_WITH_CONTENT_SHA256",
+        "output_path": "/absolute/private/splits.json",
+        "pointer": "/sections/user_extensions/data/observations",
+        "id_pointer": "/id",
+        "start_pointer": "/start_ns",
+        "end_pointer": "/end_ns",
+        "available_pointer": "/available_ns",
+        "clock_domain": "caller_declared_nanosecond_clock",
+        "input_description": "Declare actual label intervals and availability of the whole training observation",
+        "plan": {
+          "kind": "nested",
+          "outer": {
+            "kind": "expanding",
+            "train_start_ns": "0",
+            "first_train_end_ns": "100",
+            "first_fit_cutoff_ns": "100",
+            "gap_ns": "0",
+            "test_duration_ns": "20",
+            "step_ns": "20",
+            "fold_count": "1"
+          },
+          "inner": [
+            {
+              "outer_fold_id": "fold-0",
+              "plan": {
+                "kind": "expanding",
+                "train_start_ns": "0",
+                "first_train_end_ns": "40",
+                "first_fit_cutoff_ns": "40",
+                "gap_ns": "0",
+                "test_duration_ns": "20",
+                "step_ns": "20",
+                "fold_count": "3"
+              },
+              "population": "outer_train",
+              "policies": {
+                "chronology": "past_only",
+                "purge": "label_overlap",
+                "availability": "by_fit_cutoff",
+                "purge_before_ns": "0",
+                "purge_after_ns": "0",
+                "embargo_ns": "0"
+              }
+            }
+          ]
+        },
+        "chronology": "past_only",
+        "purge": "label_overlap",
+        "purge_before_ns": "0",
+        "purge_after_ns": "0",
+        "embargo_ns": "0",
+        "availability": "by_fit_cutoff",
+        "retain_rows": true,
+        "extensions": {}
+      },
+      "nested_partitioned": {
+        "protocol": "symphony.sbv.split-input.v1",
+        "path": "/absolute/private/source.json",
+        "expected_sha256": "REPLACE_WITH_CONTENT_SHA256",
+        "pointer": "/sections/user_extensions/data/observations",
+        "id_pointer": "/id",
+        "start_pointer": "/start_ns",
+        "end_pointer": "/end_ns",
+        "available_pointer": "/available_ns",
+        "clock_domain": "caller_declared_nanosecond_clock",
+        "input_description": "Declare actual label intervals and availability of the whole training observation",
+        "plan": {
+          "kind": "nested",
+          "outer": {
+            "kind": "expanding",
+            "train_start_ns": "0",
+            "first_train_end_ns": "100",
+            "first_fit_cutoff_ns": "100",
+            "gap_ns": "0",
+            "test_duration_ns": "20",
+            "step_ns": "20",
+            "fold_count": "1"
+          },
+          "inner": [
+            {
+              "outer_fold_id": "fold-0",
+              "plan": {
+                "kind": "expanding",
+                "train_start_ns": "0",
+                "first_train_end_ns": "40",
+                "first_fit_cutoff_ns": "40",
+                "gap_ns": "0",
+                "test_duration_ns": "20",
+                "step_ns": "20",
+                "fold_count": "3"
+              },
+              "population": "outer_train",
+              "policies": {
+                "chronology": "past_only",
+                "purge": "label_overlap",
+                "availability": "by_fit_cutoff",
+                "purge_before_ns": "0",
+                "purge_after_ns": "0",
+                "embargo_ns": "0"
+              }
+            }
+          ]
+        },
+        "chronology": "past_only",
+        "purge": "label_overlap",
+        "purge_before_ns": "0",
+        "purge_after_ns": "0",
+        "embargo_ns": "0",
+        "availability": "by_fit_cutoff",
+        "retain_rows": true,
+        "extensions": {},
+        "output": {
+          "kind": "partitioned",
+          "bundle_path": "/absolute/private/split-result",
+          "workspace_path": "/absolute/private/split-workspace",
+          "write_options": {
+            "page_bytes": "1048576",
+            "index_fanout": "64"
+          },
+          "scratch_read_options": {
+            "max_page_bytes": null,
+            "cache_bytes": "16777216"
+          }
+        }
       }
     },
     "book": {

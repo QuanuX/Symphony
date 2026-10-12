@@ -148,3 +148,31 @@ The 4,425-file R5.1 evidence seal remains unchanged. Workspace evidence is
 `implementation/sbv-language-adapter/CHECKS.json`. No new provider/live call or
 spend, calibrated market model, borrowed/device buffer or broad M2 gate is claimed.
 M2/M3 remain open; the next selected increment is R5.3 nested/adaptive research.
+
+
+## R5.3a nested temporal partitions (12 October 2026)
+
+Experimental native 0.27 / optional Go adapter 0.1.1 adds nested temporal
+`split` plans through existing qxctl/native SDK contracts. Both inner populations
+use original-source indices; `outer_train` uses only the retained parent training
+set, while explicit `source` reuse reports parent-test and excluded-population
+counts. Inner chronology/purging/availability policies remain caller-selected.
+Display replay windows do not enter purging. Empty selections and unavailable
+folds remain visible; unknown prior history confers no overfitting confidence.
+
+Five focused native suites pass, including 76 new assertions and an explicit
+11-trial split/fit/predict graph with zero-work resume. Two ASan/UBSan suites pass
+(leak detection disabled). Twenty-three schema checks, one installed qxctl check,
+21 registry checks, 25 adapter tests/subtests with race detection and adapter vet
+pass without skips. Independently compiled C++ SDK and Go/qxctl consumers on the
+retained AAPL/ESZ6 artifacts agree exactly; legacy/partitioned folds agree and
+complete terminal streams verify 1,410 legacy plus 1,432 partitioned value nodes.
+These use declared signal availability points, not market outcome labels. All
+937 sealed R5.2 files remain unchanged. New provider/live calls and spend: zero.
+
+Evidence: workspace `implementation/sbv-nested-validation/CHECKS.json`,
+`REVIEW.json`, `BUILD_IDENTITY.json` and installed-checks-final reports.
+**R5.3 remains open** for adaptive proposal lifecycle, automatic nested model
+selection/refitting and an additional study family. R5.4 broad M2 and M3 remain
+open. This focused increment does not relabel earlier broad qualification as
+current performance or full milestone acceptance.

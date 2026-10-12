@@ -2,7 +2,7 @@
   "protocol": "symphony.sbv.milestone-readiness.v1",
   "date": "2026-10-12",
   "status": "sequence_in_progress",
-  "authority": "User requested continuing M2-M3 implementation; R5.1 and selected R5.2 Go-adapter scope are verified locally. This does not close M2 or M3.",
+  "authority": "User requested continuing M2-M3 implementation; R5.1, R5.2 and R5.3a nested temporal partitions are verified locally. R5.3 and M2/M3 remain open.",
   "baseline": {
     "selected_M1": "R3.3/R4 0.24 local candidate accepted at 50cedde31cb8c78dcc61845bfe067a1d84eb6026",
     "hardening_release": "0.25.0-dev",
@@ -148,7 +148,26 @@
         "A092",
         "A095"
       ],
-      "status": "prepared_not_started"
+      "status": "in_progress",
+      "steps": [
+        {
+          "id": "R5.3a",
+          "status": "verified_selected_scope",
+          "scope": "Nested temporal partitions, per-inner policies/populations and explicit experiment/fit/predict integration.",
+          "evidence": "workspace:implementation/sbv-nested-validation/CHECKS.json",
+          "release": "0.27.0-dev"
+        },
+        {
+          "id": "R5.3b",
+          "status": "pending",
+          "scope": "Adaptive proposal lifecycle and automatic nested selection/refit orchestration."
+        },
+        {
+          "id": "R5.3c",
+          "status": "pending",
+          "scope": "Additional selectable study family and remaining R5.3 closure."
+        }
+      ]
     },
     {
       "id": "R5.4",
@@ -311,5 +330,6 @@
       "source": "sealed 0.24 PROGRAMME_STATUS WP03 remaining text",
       "correction": "The generic recommendation to replace the 4096-signal profile is historical/stale for already-shipped partitioned core producers; 0.24 qualified 65,537 signals. Residual legacy external/model/consumer domains remain profile-specific. Preserve the sealed original and use operation_profiles for current limits."
     }
-  ]
+  ],
+  "next_step": "R5.3b"
 }

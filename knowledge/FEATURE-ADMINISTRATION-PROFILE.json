@@ -9852,6 +9852,6 @@
   "profile_id": "symphony.registered-features.administration.v1",
   "protocol": "symphony.knowledge.feature-administration-profile.v1",
   "registered_feature_count": 142,
-  "ssfv_registry_digest": "sha256:131acf388006d6db7dc73f356da829d29c31b4ec6b988ad5f2c5693a9b6cd704",
-  "profile_digest": "sha256:61d63de2e3f3907821145990e724614cc70bb5c4512faced266e7566e2ea4ee5"
+  "ssfv_registry_digest": "sha256:c240ac3019f0c722a6aa0f4aa8e33253333676afd091c96cbdb8cdafe1be6c05",
+  "profile_digest": "sha256:b040d09f45edb47577757476fee0497c1d23b5a974a83974e3649a6b55ef8ef9"
 }

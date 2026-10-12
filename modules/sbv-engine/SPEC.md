@@ -2,7 +2,7 @@
 
 ## Version and ownership
 
-Contract v1; package `sbv-engine` 0.26.0-dev; engine `symphony-sbv`; vector `sbv`. C++26 owns computations, result sealing and artifact queries. Go qxctl verifies the exact installation and projects native evidence. OWNER-INTERFACE.json is the exact operation declaration; generated C++/Go metadata must match it. This release is experimental.
+Contract v1; package `sbv-engine` 0.27.0-dev; engine `symphony-sbv`; vector `sbv`. C++26 owns computations, result sealing and artifact queries. Go qxctl verifies the exact installation and projects native evidence. OWNER-INTERFACE.json is the exact operation declaration; generated C++/Go metadata must match it. This release is experimental.
 
 The engine uses knowledge-vector-engine-cpp 0.2.0-dev and sqav-databento-dbn-cpp 0.5.0-dev, with that adapter's exact static dependencies. It performs no data-provider network calls. Signal/replay semantics belong to SBV; acquisition remains SQAV, metadata SQMV, batch ownership SQFV, transformation SQTV, physical stores SQPV and recipient delivery SQDV. Its portable local JSON result is a derived artifact, not a new market-data persistence service. An optional offline retained-source route composes SQAV capture 0.2.0-dev, SQMV 0.2.0-dev, SQFV 0.3.0-dev, SQPV 0.2.0-dev and SQDV 0.3.0-dev under the selected profile described below.
 
@@ -1098,3 +1098,51 @@ cancellation and trust boundaries. Native runtime/schema/ABI bytes are unchanged
 by this adapter release. The previous external Python verification consumer
 remains a historical isolated example, not a first-party dependency. Arrow,
 DLPack, borrowed memory, vendor runtimes and adaptive search are not claimed.
+
+
+## Nested temporal partitions (0.27)
+
+`qxctl sbv split` adds `plan.kind: nested`, discoverable with the `nested`
+and `nested_partitioned` template variants. `outer` is an explicit, rolling
+or expanding temporal plan. `inner` contains exactly one selection for each
+outer declared fold ID: `outer_fold_id`, a temporal `plan`, explicit `population`
+and explicit `policies`. Empty inner plans and an empty outer plan are valid.
+Combinatorial nesting and recursively nested plans are outside this named
+profile; the existing combinatorial splitter remains independently available.
+
+Outer folds use the request's chronology, purge, padding, embargo and
+availability choices. Each inner selection supplies its own six policy fields
+with the same exact semantics. `population: outer_train` restricts both inner
+training and validation to **retained** parent training indices, after outer
+exclusions. `population: source` explicitly permits source-wide exploration.
+It may reuse parent holdouts or reintroduce excluded rows, and does not require
+an approval or promotion gate. Inputs are not reweighted. Label/availability
+pointers remain caller-selected; visual replay windows are never implicitly
+used for purging. Unknown prior selection history remains unknown.
+
+Results flatten each outer fold followed by its inner folds. Stable IDs are
+`outer-I` and `outer-I/inner-J`; `windows.id` and `nesting.declared_id` preserve
+caller names. Names must be unique within their sibling plan, and may repeat
+across different outer folds. `nesting` records role, parent, population,
+resolved policies, eligible row count, retained train/test rows outside the
+parent training population, and retained train/test rows in the parent test
+set. Outer-only counts that have no parent are null. Indices always refer to
+the original selected source array, never to a renumbered inner population.
+Empty folds remain unavailable with retained reasons.
+
+Legacy and partitioned results expose every field through ordinary query/export
+and SDK contracts. With `retain_rows`, existing `experiment` dependency bindings
+can feed each fold into native `fit` and `predict`; the caller chooses the
+graph, target, study list and purpose. This splitter does not choose a winning
+model, refit it automatically, estimate overfitting confidence, or claim an
+untouched holdout. Adaptive proposal journaling and automatic model-selection
+orchestration remain R5.3 work.
+
+The CPU implementation retains interval/index metadata, the scheduled folds
+and one parent membership mask. It streams partitioned result arrays and
+reuses that mask after each parent's inner folds. There is no policy maximum
+on observations or fold counts and no default deadline. Host addressability,
+exact uint64 timestamp arithmetic, and selected legacy/control framing still
+apply. Explicit schema fold/row count annotations inherited from earlier
+split releases are removed from the active split-plan and temporal-fold
+contracts; they are not user resource policies.

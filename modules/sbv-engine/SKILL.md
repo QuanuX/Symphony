@@ -44,3 +44,12 @@ For offline source retention, discover `source_retain` and `source_export` schem
 For scalable derived results, select the explicit bundle operations and both logical/manifest digests. `qxctl sbv bundle import|inspect|query|verify|export` uses the same native SDK contract. `bundle export` streams every retained field; use `--receipt-only` for its complete receipt. Native JSON is required for CLI JSON/text, native NDJSON for CLI NDJSON. Inspect/query do not imply full closure availability; use verify/export for that finding. Preserve incomplete-publication recovery evidence and inspect the selected destination before any explicit retry. Legacy producer/consumer limits are separate from the bundle format.
 
 For native partitioned generation/run/evaluation/economics/composition, obtain `sbv template --operation OP --variant partitioned`. Select fresh disjoint bundle/workspace paths. The result receipt supplies exact `storage.reference`; use bundle query/export for all results and replay. A RAM-resident wrapper selects output itself. Scratch is intentionally retained, including on failure. Inspect parent/child recovery and cause before an explicit retry. `max_signals:null` selects an uncapped built-in census; deadlines and volume constraints remain caller choices. Bundle inputs verify complete outer closure before typed financial admission; captured ancestors are correspondence evidence, not authorship authentication.
+
+
+For nested temporal validation, select `split` template variant `nested` or
+`nested_partitioned`. Supply an inner plan for every outer fold and explicitly
+choose `outer_train` isolation or `source` reuse plus its own interval policies.
+Inspect `nesting` counts and original-source indices. Bind retained rows through
+ordinary experiment/fit/predict requests; split performs no automatic winner
+selection. Adaptive proposal journaling remains separate work. No untouched
+holdout or overfitting claim follows from zero matching indices alone.

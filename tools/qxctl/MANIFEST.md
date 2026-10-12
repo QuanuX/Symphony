@@ -409,3 +409,5 @@ Seven native-owner operations extend the existing shared schema/template and dis
 - `tools/qxctl/internal/knowledgeengine/sbv_partitioned_schema_test.go`
 
 - `tools/qxctl/internal/knowledgeengine/sbv_partitioned_installed_test.go`
+
+- `tools/qxctl/internal/knowledgeengine/sbv_nested_test.go`

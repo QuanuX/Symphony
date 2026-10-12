@@ -24294,3 +24294,31 @@ automatic nested fitting and cross-run holdout history remain unimplemented.
 - deferred_projections: unimplemented increments remain prepared plans, not runtime capability claims
 - notes: Source-controlled status does not replace exact implementation and verification evidence.
 - status: canonical
+
+### SBV nested_split_test.cpp
+
+- path: `modules/sbv-engine/tests/nested_split_test.cpp`
+- title: SBV nested_split_test.cpp
+- surface_type: implementation contract or test
+- truth_role: Nested temporal population and complete qxctl contract verification
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.27 nested temporal partitions
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, agents and external fitting pipelines
+- deferred_projections: automatic model selection, adaptive proposals and untouched holdout proofs
+- notes: User-selected isolation or explicit reuse, with original-source indices and policies.
+- status: canonical
+
+### SBV sbv_nested_test.go
+
+- path: `tools/qxctl/internal/knowledgeengine/sbv_nested_test.go`
+- title: SBV sbv_nested_test.go
+- surface_type: implementation contract or test
+- truth_role: Nested temporal population and complete qxctl contract verification
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.27 nested temporal partitions
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, agents and external fitting pipelines
+- deferred_projections: automatic model selection, adaptive proposals and untouched holdout proofs
+- notes: User-selected isolation or explicit reuse, with original-source indices and policies.
+- status: canonical

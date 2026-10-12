@@ -1,7 +1,7 @@
 # SBV Go transport and data contract
 
-Contract: `symphony.sbv.go-adapter.v1`. Module version `v0.1.0-dev`; native owner
-release `0.26.0-dev`; dependency Go 1.26.5 standard library only. Native source
+Contract: `symphony.sbv.go-adapter.v1`. Module version `v0.1.1-dev`; native owner
+release `0.27.0-dev`; dependency Go 1.26.5 standard library only. Native source
 contracts and receipt-owned schemas outrank this convenience API. The adapter
 introduces no scientific protocol, administration state or registry authority.
 

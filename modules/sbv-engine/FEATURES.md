@@ -46,6 +46,7 @@
         "modules/sbv-engine/tests/logical_value_test.cpp",
         "modules/sbv-engine/tests/model_partitioned_test.cpp",
         "modules/sbv-engine/tests/models_test.cpp",
+        "modules/sbv-engine/tests/nested_split_test.cpp",
         "modules/sbv-engine/tests/partitioned_output_test.cpp",
         "modules/sbv-engine/tests/planning_test.cpp",
         "modules/sbv-engine/tests/provider_integration_test.cpp",
@@ -203,3 +204,8 @@ FIFO/pro-rata passive queue scenarios, partial/no fills, explicit C/A/M/reset
 assumptions and optional declared execution-label/held-out Brier assessment.
 All choices and retained results are native SDK/qxctl accessible; no calibrated
 market, shared-capital or complete M2/M3 claim is made.
+
+Experimental 0.27 adds nested temporal split plans, explicit inner populations and
+per-inner interval policies. Existing fit/predict experiments consume original-source
+indices and retained rows. Automatic winner/refit orchestration, adaptive proposal
+journaling and the additional R5.3 study family remain open.

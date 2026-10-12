@@ -157,6 +157,85 @@ Json fold_plan(const Json &plan, std::int64_t deadline_ms) {
   }
   return out;
 }
+
+struct Policy {
+  Json wire;
+  std::string chronology, purge, availability;
+  U before, after, embargo;
+  explicit Policy(const Json &p)
+      : chronology(str(p.at("chronology"))), purge(str(p.at("purge"))),
+        availability(str(p.at("availability"))),
+        before(u64(p.at("purge_before_ns"))),
+        after(u64(p.at("purge_after_ns"))), embargo(u64(p.at("embargo_ns"))) {
+    need(chronology == "past_only" || chronology == "unrestricted",
+         "unknown chronology");
+    need(purge == "label_overlap" || purge == "none", "unknown purging policy");
+    need(availability == "by_fit_cutoff" || availability == "ignore",
+         "unknown availability policy");
+    need(purge != "none" || (before == 0 && after == 0),
+         "purge padding requires label_overlap");
+    for (auto key : {"chronology", "purge", "availability", "purge_before_ns",
+                     "purge_after_ns", "embargo_ns"})
+      wire[key] = p.at(key);
+  }
+};
+struct ScheduledFold {
+  Json window;
+  Policy policy;
+  std::string id, parent, population;
+  bool inner = false;
+};
+std::vector<ScheduledFold> nested_plan(const Json &plan, const Policy &outer,
+                                       bool has_available, std::int64_t end) {
+  keys(plan, {"kind", "outer", "inner"});
+  auto folds = fold_plan(plan.at("outer"), end);
+  need(plan.at("inner").is_array(), "nested inner selections array required");
+  std::map<std::string, Json> selections;
+  for (const auto &selection : plan.at("inner")) {
+    deadline(end);
+    keys(selection, {"outer_fold_id", "plan", "population", "policies"});
+    need(selections.emplace(str(selection.at("outer_fold_id")), selection)
+             .second,
+         "duplicate nested outer selection");
+    keys(selection.at("policies"),
+         {"chronology", "purge", "availability", "purge_before_ns",
+          "purge_after_ns", "embargo_ns"});
+    Policy policy(selection.at("policies"));
+    need(policy.availability != "by_fit_cutoff" || has_available,
+         "inner availability evidence pointer required");
+    need(selection.at("population") == "outer_train" ||
+             selection.at("population") == "source",
+         "explicit inner population required");
+  }
+  need(selections.size() == folds.size(),
+       "select an inner plan for every outer fold, including empty plans");
+  std::vector<ScheduledFold> schedule;
+  std::set<std::string> names;
+  for (const auto &f : folds) {
+    deadline(end);
+    auto declared = str(f.at("id"));
+    need(!declared.empty() && declared.size() <= 256 &&
+             names.insert(declared).second && selections.contains(declared),
+         "unique declared outer fold id with matching inner plan required");
+    auto id = "outer-" + dec(names.size() - 1);
+    schedule.push_back({f, outer, id, "", "source", false});
+    const auto &selection = selections.at(declared);
+    Policy policy(selection.at("policies"));
+    auto inner = fold_plan(selection.at("plan"), end);
+    std::set<std::string> inner_names;
+    for (const auto &g : inner) {
+      deadline(end);
+      auto name = str(g.at("id"));
+      need(!name.empty() && name.size() <= 256 &&
+               inner_names.insert(name).second,
+           "unique declared inner fold id required within each outer fold");
+      schedule.push_back({g, policy,
+                          id + "/inner-" + dec(inner_names.size() - 1), id,
+                          str(selection.at("population")), true});
+    }
+  }
+  return schedule;
+}
 } // namespace
 
 static logical::Value split_body(const Json &p, PartitionedOutput *context,
@@ -170,25 +249,14 @@ static logical::Value split_body(const Json &p, PartitionedOutput *context,
                 {"path", "expected_sha256", "source", "output_path", "output"});
   need(p.at("extensions").is_object() && p.at("retain_rows").is_boolean(),
        "extensions and retention selection required");
-  const auto chronology = str(p.at("chronology")), purge = str(p.at("purge")),
-             availability = str(p.at("availability"));
-  need(chronology == "past_only" || chronology == "unrestricted",
-       "unknown chronology");
-  need(purge == "label_overlap" || purge == "none", "unknown purging policy");
-  need(availability == "by_fit_cutoff" || availability == "ignore",
-       "unknown availability policy");
-  const auto before = u64(p.at("purge_before_ns")),
-             after = u64(p.at("purge_after_ns")),
-             embargo = u64(p.at("embargo_ns"));
-  need(purge != "none" || (before == 0 && after == 0),
-       "purge padding requires label_overlap");
+  const Policy outer_policy(p);
   for (auto name : {"clock_domain", "input_description"})
     need(!str(p.at(name)).empty() && str(p.at(name)).size() <= 4096,
          "bounded clock and description required");
   for (auto name : {"pointer", "id_pointer", "start_pointer", "end_pointer"})
     need(str(p.at(name)).size() <= 4096, "split pointer bound");
   const bool has_available = !p.at("available_pointer").is_null();
-  need(availability != "by_fit_cutoff" || has_available,
+  need(outer_policy.availability != "by_fit_cutoff" || has_available,
        "availability evidence pointer required");
   if (has_available)
     need(str(p.at("available_pointer")).size() <= 4096,
@@ -202,9 +270,18 @@ static logical::Value split_body(const Json &p, PartitionedOutput *context,
   const auto rows = consumer::pointer(source, str(p.at("pointer")));
   need(rows.kind() == "array", "split source array required");
   const bool grouped = str(p.at("plan").at("kind")) == "combinatorial";
+  const bool nested = str(p.at("plan").at("kind")) == "nested";
   auto gp = grouped ? grouped_plan(p.at("plan"), end) : GroupedPlan{};
-  const auto plans = grouped ? gp.folds : fold_plan(p.at("plan"), end);
-  const auto row_fold_pairs = resource::product(rows.size(), plans.size());
+  std::vector<ScheduledFold> schedule;
+  if (nested)
+    schedule = nested_plan(p.at("plan"), outer_policy, has_available, end);
+  else {
+    auto plans = grouped ? gp.folds : fold_plan(p.at("plan"), end);
+    for (const auto &f : plans)
+      schedule.push_back(
+          {f, outer_policy, str(f.at("id")), "", "source", false});
+  }
+  const auto row_fold_pairs = resource::product(rows.size(), schedule.size());
   std::vector<Interval> group_windows;
   for (const auto &g : gp.groups)
     group_windows.push_back({u64(g.at("start_ns")), u64(g.at("end_ns"))});
@@ -268,9 +345,35 @@ static logical::Value split_body(const Json &p, PartitionedOutput *context,
   consumer::Rows folds(context, "folds");
   std::set<std::string> fold_ids;
   U ready = 0;
-  for (const auto &f : plans) {
+  std::vector<bool> outer_train(nested ? observations.size() : 0),
+      outer_test(nested ? observations.size() : 0);
+  U outer_count = 0, inner_count = 0, parent_train_count = 0;
+  for (const auto &scheduled : schedule) {
     deadline(end);
-    const auto id = str(f.at("id"));
+    const auto &f = scheduled.window;
+    const auto &policy = scheduled.policy;
+    const auto &chronology = policy.chronology, &purge = policy.purge,
+               &availability = policy.availability;
+    const auto before = policy.before, after = policy.after,
+               embargo = policy.embargo;
+    const auto &id = scheduled.id;
+    if (nested && !scheduled.inner) {
+      std::fill(outer_train.begin(), outer_train.end(), false);
+      std::fill(outer_test.begin(), outer_test.end(), false);
+      ++outer_count;
+      parent_train_count = 0;
+    } else if (scheduled.inner)
+      ++inner_count;
+    auto eligible = [&](std::size_t i) {
+      return !scheduled.inner || scheduled.population == "source" ||
+             outer_train[i];
+    };
+    const auto eligible_rows =
+        scheduled.inner && scheduled.population == "outer_train"
+            ? parent_train_count
+            : observations.size();
+    U train_outside = 0, test_outside = 0, train_outer_test = 0,
+      test_outer_test = 0;
     need(!id.empty() && (grouped || id.size() <= 256) &&
              fold_ids.insert(id).second,
          "unique fold id required");
@@ -302,6 +405,8 @@ static logical::Value split_body(const Json &p, PartitionedOutput *context,
          "past_only requires all train windows and fit cutoff no later than "
          "first test start");
     auto in_test = [&](std::size_t i) {
+      if (!eligible(i))
+        return false;
       auto g = row_groups[i];
       return grouped ? g < held_out.size() && held_out[g]
                      : observations[i].label.start >= test_start &&
@@ -324,6 +429,12 @@ static logical::Value split_body(const Json &p, PartitionedOutput *context,
         continue;
       test.append(Json(dec(i)));
       retain_row(test_rows, i);
+      if (nested && !scheduled.inner)
+        outer_test[i] = true;
+      else if (scheduled.inner) {
+        test_outside += !outer_train[i];
+        test_outer_test += outer_test[i];
+      }
       labels.push_back(x);
       // Overflow/underflow rejects rather than silently clipping the user's
       // interval.
@@ -360,6 +471,8 @@ static logical::Value split_body(const Json &p, PartitionedOutput *context,
     for (std::size_t i = 0; i < observations.size(); ++i) {
       deadline(end);
       const auto x = observations[i];
+      if (!eligible(i))
+        continue;
       if (grouped ? row_groups[i] >= held_out.size() || held_out[row_groups[i]]
                   : x.label.start < train_start || x.label.start >= train_end)
         continue;
@@ -389,6 +502,13 @@ static logical::Value split_body(const Json &p, PartitionedOutput *context,
       else {
         train.append(Json(dec(i)));
         retain_row(train_rows, i);
+        if (nested && !scheduled.inner) {
+          outer_train[i] = true;
+          ++parent_train_count;
+        } else if (scheduled.inner) {
+          train_outside += !outer_train[i];
+          train_outer_test += outer_test[i];
+        }
         retained_overlaps += overlap;
         retained_late += late;
       }
@@ -420,6 +540,23 @@ static logical::Value split_body(const Json &p, PartitionedOutput *context,
           {"embargo_candidates", dec(embargo_count)},
           {"retained_overlaps", dec(retained_overlaps)},
           {"retained_late", dec(retained_late)}}}};
+    if (nested)
+      fold["nesting"] = {
+          {"role", scheduled.inner ? "inner" : "outer"},
+          {"declared_id", f.at("id")},
+          {"parent_fold_id",
+           scheduled.inner ? Json(scheduled.parent) : Json(nullptr)},
+          {"population", scheduled.population},
+          {"eligible_rows", dec(eligible_rows)},
+          {"train_outside_outer_train",
+           scheduled.inner ? Json(dec(train_outside)) : Json(nullptr)},
+          {"test_outside_outer_train",
+           scheduled.inner ? Json(dec(test_outside)) : Json(nullptr)},
+          {"outer_test_in_train",
+           scheduled.inner ? Json(dec(train_outer_test)) : Json(nullptr)},
+          {"outer_test_in_test",
+           scheduled.inner ? Json(dec(test_outer_test)) : Json(nullptr)},
+          {"policies", policy.wire}};
     if (grouped)
       fold["embargo_intervals"] = embargo_records;
     folds.append(logical::Value(fold)
@@ -439,6 +576,13 @@ static logical::Value split_body(const Json &p, PartitionedOutput *context,
                           {"folds", dec(folds.size())},
                           {"available_folds", dec(ready)},
                           {"clock_domain", p.at("clock_domain")}});
+  if (nested)
+    s["nesting"] = section(
+        {{"outer_folds", dec(outer_count)},
+         {"inner_folds", dec(inner_count)},
+         {"ordering", "outer then its inner folds, in declared plan order"},
+         {"automatic_model_selection", false},
+         {"prior_selection_history", "unknown"}});
   std::optional<logical::Value> groups_result;
   if (grouped) {
     std::vector<std::vector<std::size_t>> members(gp.groups.size());
@@ -468,8 +612,9 @@ static logical::Value split_body(const Json &p, PartitionedOutput *context,
       {{"engine_version", version},
        {"source_result_sha256", source.at("content_sha256").materialize()},
        {"source_pointer", p.at("pointer")},
-       {"profile",
-        grouped ? "combinatorial_intervals_v1" : "temporal_intervals_v1"},
+       {"profile", nested    ? "nested_temporal_intervals_v1"
+                   : grouped ? "combinatorial_intervals_v1"
+                             : "temporal_intervals_v1"},
        {"provider_requests", "0"},
        {"additional_spend_usd", "0"}});
   s["resources"] =
@@ -511,6 +656,18 @@ static logical::Value split_body(const Json &p, PartitionedOutput *context,
         "share observations; no independent performance paths, fitted models, "
         "nested CV or untouched holdout are implied.");
   }
+  if (nested)
+    s["diagnostics"]["data"].push_back(
+        "Inner outer_train membership is restricted to the retained parent "
+        "training indices. "
+        "Source-wide reuse is explicitly selectable and reports retained "
+        "indices outside that "
+        "population and in the parent test set. Display-only replay windows "
+        "are not read. "
+        "Partition isolation does not establish untouched holdouts or "
+        "overfitting confidence. "
+        "No automatic model selection, refitting or scoring is performed by "
+        "split.");
   s["user_extensions"] = section(p.at("extensions"));
   auto out = logical::Value(s)
                  .with("observations", consumer::section(table.close()))
@@ -530,7 +687,8 @@ static logical::Value split_body(const Json &p, PartitionedOutput *context,
                       .with("memory_scope",
                             logical::Value(
                                 "O(source interval/index metadata + selected "
-                                "fold plan); per-fold interval unions; output "
+                                "fold plan + one parent membership mask); "
+                                "per-fold interval unions; output "
                                 "indices, exclusions and retained rows "
                                 "streamed; host allocation applies"))));
   return logical::Value(result).with("sections", std::move(out));
