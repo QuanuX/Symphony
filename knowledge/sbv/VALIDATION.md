@@ -137,7 +137,7 @@ remain open.
 ## R5.2 independent Go adapter (12 October 2026)
 
 Source module `libraries/sbv-go` 0.1.0-dev composes the unchanged native 0.26
-installation through pinned qxctl. Twenty-four focused Go checks including race
+installation through pinned qxctl. Twenty-five focused Go checks including race
 detection and 21 existing qxctl registry checks pass. Independent installation
 and removal preserve all 25 native receipt-owned files and native capabilities.
 AAPL/ESZ6 retained-data consumers verify 10,050 source value nodes, 70 replay

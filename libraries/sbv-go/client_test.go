@@ -18,6 +18,11 @@ import (
 
 func TestMain(m *testing.M) {
 	if len(os.Args) > 1 && os.Args[1] == "sbv" && os.Getenv("SBV_ADAPTER_HELPER") == "1" {
+		if os.Getenv("SBV_ADAPTER_STREAM_HELPER") == "1" {
+			raw, _ := fixture(false)
+			_, _ = os.Stdout.Write(raw)
+			os.Exit(0)
+		}
 		var input map[string]json.RawMessage
 		for i, a := range os.Args {
 			if a == "--input" {
@@ -45,6 +50,18 @@ func TestMain(m *testing.M) {
 		}
 	}
 	os.Exit(m.Run())
+}
+
+func TestClientStreamPreservesConsumerFailure(t *testing.T) {
+	c := testClient(t)
+	t.Setenv("SBV_ADAPTER_STREAM_HELPER", "1")
+	_, ref := fixture(false)
+	request, _ := json.Marshal(map[string]string{"protocol": "symphony.sbv.result-inspect-input.v1", "path": "/caller/result", "expected_sha256": ref.ContentSHA256})
+	stop := errors.New("consumer stopped")
+	done, err := c.Stream(context.Background(), "result_export", request, StreamOptions{}, func(Node) error { return stop })
+	if done.Complete || !errors.Is(err, stop) || errors.Is(err, context.Canceled) {
+		t.Fatalf("cleanup cancellation must not replace the consumer failure: %+v %v", done, err)
+	}
 }
 func testClient(t *testing.T) *Client {
 	t.Helper()

@@ -239,6 +239,7 @@ func (c *Client) Stream(ctx context.Context, op string, request json.RawMessage,
 	if !validSHA(options.Reference.ContentSHA256) {
 		return Completion{}, fail("identity", "exact content SHA256 required")
 	}
+	caller := ctx
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
 	args, cleanup, err := c.input(op, request)
@@ -263,9 +264,15 @@ func (c *Client) Stream(ctx context.Context, op string, request json.RawMessage,
 		_ = pipe.Close()
 	}
 	waitErr := cmd.Wait()
+	// CommandContext may report its internally cancelled context even after a
+	// successful child exit. Cleanup of a parse/callback failure is not evidence
+	// that the caller cancelled its operation.
+	if parseErr != nil && caller.Err() == nil && errors.Is(waitErr, context.Canceled) {
+		waitErr = nil
+	}
 	if parseErr != nil || waitErr != nil {
 		completion.Complete = false
-		return completion, &Error{Code: "stream", Detail: "export incomplete; emitted values are provisional", Cause: errors.Join(parseErr, waitErr, ctx.Err())}
+		return completion, &Error{Code: "stream", Detail: "export incomplete; emitted values are provisional", Cause: errors.Join(parseErr, waitErr, caller.Err())}
 	}
 	return completion, nil
 }
