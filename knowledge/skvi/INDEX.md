@@ -24322,3 +24322,31 @@ automatic nested fitting and cross-run holdout history remain unimplemented.
 - deferred_projections: automatic model selection, adaptive proposals and untouched holdout proofs
 - notes: User-selected isolation or explicit reuse, with original-source indices and policies.
 - status: canonical
+
+### SBV adaptive_test.cpp
+
+- path: `modules/sbv-engine/tests/adaptive_test.cpp`
+- title: SBV adaptive_test.cpp
+- surface_type: implementation contract or test
+- truth_role: Adaptive experiment lifecycle and automatic selection/refit verification
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.28 local adaptive experiments
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, agents and external fitting pipelines
+- deferred_projections: built-in optimizers, remote dispatch and untouched holdout proofs
+- notes: Explicit user-selected proposals, objectives, ties and continuation.
+- status: canonical
+
+### SBV sbv_adaptive_test.go
+
+- path: `tools/qxctl/internal/knowledgeengine/sbv_adaptive_test.go`
+- title: SBV sbv_adaptive_test.go
+- surface_type: implementation contract or test
+- truth_role: Adaptive experiment lifecycle and automatic selection/refit verification
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.28 local adaptive experiments
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, agents and external fitting pipelines
+- deferred_projections: built-in optimizers, remote dispatch and untouched holdout proofs
+- notes: Explicit user-selected proposals, objectives, ties and continuation.
+- status: canonical

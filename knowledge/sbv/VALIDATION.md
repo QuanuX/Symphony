@@ -176,3 +176,31 @@ Evidence: workspace `implementation/sbv-nested-validation/CHECKS.json`,
 selection/refitting and an additional study family. R5.4 broad M2 and M3 remain
 open. This focused increment does not relabel earlier broad qualification as
 current performance or full milestone acceptance.
+
+
+## R5.3b adaptive experiments — 12 October 2026
+
+Native 0.28 / Go transport 0.1.2 add cumulative immutable experiment revisions,
+proposal-event lineage, explicit comparison winner selection and exact value
+bindings for automatic caller-authored nested selection/refit graphs. Source
+closure and exact evidence are in workspace `implementation/sbv-adaptive-research/`.
+The selected native fixtures cover successful continuation, failed/pruned and
+ambiguous outcomes, original claim identity, stale/duplicate rejection, explicit
+ties and deliberately inverted objectives, reference/value bindings and owned
+referenced plans with bundle children. qxctl checks installed input/output shapes
+and complete results. AAPL/ESZ6 identity-regression fixtures use retained signal
+ordinals and availability points; they do not establish market labels or model
+quality. Completed work is reused after an agent replacement; uncertain claims
+remain visible without automatic retry. No new provider/live call or spend.
+R5.3c and R5.4 remain open, as do the M3 lanes. Broad M2 acceptance is deferred
+to its planned gate; this increment does not assert general optimizer coverage,
+terabyte scale, cluster execution or performance superiority.
+
+Selected checks: five native suites (80 new adaptive assertions), two ASan/UBSan
+suites with leak detection disabled, 29 schema/installed qxctl checks/subtests,
+30 command-registry checks/subtests and 25 Go adapter race checks/subtests plus
+vet pass. One unrelated installed owner-source fixture check was skipped and is
+not counted. The partitioned resident test passed after its sandbox-blocked local
+Unix socket was permitted. Both Databento fixtures execute eight initial trials,
+one new follow-up and then zero on replacement, reusing nine receipts. Complete
+exports verify 4,442 nodes. All 1,158 prior R5.3a sealed files are unchanged.

@@ -23,6 +23,7 @@
       ],
       "distinctions": [],
       "evidence": [
+        "modules/sbv-engine/tests/adaptive_test.cpp",
         "modules/sbv-engine/tests/allocation_economics_test.cpp",
         "modules/sbv-engine/tests/analysis_test.cpp",
         "modules/sbv-engine/tests/book_test.cpp",

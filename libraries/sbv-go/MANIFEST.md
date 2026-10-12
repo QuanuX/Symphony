@@ -1,9 +1,9 @@
 # SBV Go adapter manifest
 
 - Module: `github.com/QuanuX/Symphony/libraries/sbv-go`
-- Source release: `v0.1.1-dev` (local; unpublished)
+- Source release: `v0.1.2-dev` (local; unpublished)
 - Package: `sbv`
-- Native compatibility: `sbv-engine` `0.27.0-dev` through selected qxctl
+- Native compatibility: `sbv-engine` `0.28.0-dev` through selected qxctl
 - Dependencies: Go 1.26.5 standard library; no cgo, Python or vendor runtime
 - Canonical owner: `knowledge/sbv/SPEC.md`
 - Implementation contract: `libraries/sbv-go/IMPLEMENTATION.md`

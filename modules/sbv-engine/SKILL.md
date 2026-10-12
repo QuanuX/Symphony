@@ -10,7 +10,7 @@ For `allocation_economics`, select exact liquidity allocations and explicit mark
 
 For source-series statistics, select `analyze` with explicit source role, unit, weighting, study list, variance/quantile/drawdown conventions and numerical profile. Do not infer returns from prices or equity from arbitrary row order. Inspect each study's status even when the operation completed. For supplied trial scoring, use `compare`; failed/pruned trial records and Pareto versus scalar weighting remain visible. Neither command executes a strategy search. Obtain exact templates with qxctl and preserve all source/result identities.
 
-For reproducible sensitivity studies, `resample` requires an explicit uniform-row scheme, seed, block/sample lengths and worker count. Preserve index tapes where selected; empirical percentiles are not automatically confidence intervals. `experiment` executes only native local SBV producers from caller-supplied trial requests. Use a private existing directory and new summary destination on reconciliation. Preserve ambiguous claims and never claim that a missing completion means no child result was published. Inspect every trial and its exact artifact identity through qxctl. Remote dispatch and adaptive optimizer proposals remain separate integrations.
+For reproducible sensitivity studies, `resample` requires an explicit uniform-row scheme, seed, block/sample lengths and worker count. Preserve index tapes where selected; empirical percentiles are not automatically confidence intervals. `experiment` executes only native local SBV producers from caller-supplied trial requests. Use a private existing directory and new summary destination on reconciliation. Preserve ambiguous claims and never claim that a missing completion means no child result was published. Inspect every trial and its exact artifact identity through qxctl. Remote dispatch and proposal algorithms remain separate integrations; local adaptive revisions are described below.
 
 Independent programs may use the exact installed C ABI (`Symphony::SbvSdk`), optional C++ RAII wrapper or a separately supplied external language bridge. Native C++ owns the calculations; these bindings carry the same process envelope and typed result. Release response allocations with the originating SDK, retain exact release selection and inspect output artifacts after uncertain failures. A successful byte transfer does not establish a vendor tensor, zero-copy or CUDA integration.
 
@@ -51,5 +51,18 @@ For nested temporal validation, select `split` template variant `nested` or
 choose `outer_train` isolation or `source` reuse plus its own interval policies.
 Inspect `nesting` counts and original-source indices. Bind retained rows through
 ordinary experiment/fit/predict requests; split performs no automatic winner
-selection. Adaptive proposal journaling remains separate work. No untouched
+selection. Use adaptive experiment revisions below for proposal journaling. No untouched
 holdout or overfitting claim follows from zero matching indices alone.
+
+
+For adaptive local experiments, select the `adaptive` experiment template.
+Append a contiguous revision with the exact predecessor plan hash, preserve the
+cumulative trial/event prefix, and select fresh output and owned-plan paths.
+Inspect `proposal_states`, original admission hashes and every trial receipt.
+An ambiguous claim is never proof that work did not happen; an explicit new
+trial identity can record a caller-directed retry without erasing the original.
+Use compare's `selection` template to choose objectives and tie handling, then
+bind `/sections/selection/data/parameters/...` with `mode: value` into a refit
+request. Missing/ambiguous winners block dependents before claim. Reference mode
+remains appropriate for dataset/model arrays. Users own graph structure,
+proposals, constraints and continuation; no automatic quality gate is implied.

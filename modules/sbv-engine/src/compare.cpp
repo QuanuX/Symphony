@@ -58,7 +58,7 @@ static logical::Value compare_body(const Json &p, PartitionedOutput *context,
   keys_optional(p,
                 {"protocol", "candidates", "objectives", "methods", "missing",
                  "comparison_description", "extensions"},
-                {"output_path", "output"});
+                {"output_path", "output", "selection"});
   need(p.at("extensions").is_object(), "extensions object required");
   need(p.at("missing") == "exclude_candidate" || p.at("missing") == "reject",
        "objective missing policy required");
@@ -77,6 +77,16 @@ static logical::Value compare_body(const Json &p, PartitionedOutput *context,
     auto id = str(m);
     need((id == "weighted_sum" || id == "pareto") && methods.insert(id).second,
          "unknown/duplicate comparison method");
+  }
+  if (p.contains("selection")) {
+    const auto &selection = p.at("selection");
+    keys(selection, {"method", "tie_break"});
+    need(methods.contains(str(selection.at("method"))),
+         "selection method must be a selected comparison method");
+    need(selection.at("tie_break") == "input_order" ||
+             selection.at("tie_break") == "candidate_id" ||
+             selection.at("tie_break") == "require_unique",
+         "explicit comparison tie policy required");
   }
   std::set<std::string> ids;
   std::vector<Objective> objectives;
@@ -298,6 +308,41 @@ static logical::Value compare_body(const Json &p, PartitionedOutput *context,
   }
   auto result = base("comparison of supplied candidate result artifacts");
   auto &s = result["sections"];
+  if (p.contains("selection")) {
+    const auto &selection = p.at("selection");
+    std::optional<std::size_t> chosen;
+    std::size_t tied = 0;
+    for (std::size_t i = 0; i < candidates.size(); ++i) {
+      deadline(end);
+      const auto &candidate = candidates[i];
+      const bool best = selection.at("method") == "weighted_sum"
+                            ? candidate.rank == 1
+                            : candidate.front == 0;
+      if (best) {
+        ++tied;
+        if (!chosen || (selection.at("tie_break") == "candidate_id" &&
+                        candidate.id < candidates[*chosen].id))
+          chosen = i;
+      }
+    }
+    Json decision{
+        {"status", "unavailable"},
+        {"reason", tied ? "best set is not unique" : "no eligible candidate"},
+        {"policy", selection},
+        {"best_set_size", dec(tied)}};
+    if (chosen &&
+        (tied == 1 || selection.at("tie_break") != "require_unique")) {
+      const auto input = candidate_input.value.at(*chosen).materialize();
+      decision["status"] = "selected";
+      decision["reason"] = "";
+      decision["candidate_id"] = candidates[*chosen].id;
+      decision["parameters"] = input.at("parameters");
+      decision["lineage"] = input.at("lineage");
+      decision["candidate_index"] = dec(*chosen);
+      decision["source"] = prepared_rows.at(*chosen).at("source").materialize();
+    }
+    s["selection"] = section(decision);
+  }
   s["summary"] = section({{"candidates", dec(candidates.size())},
                           {"eligible", dec(eligible)},
                           {"excluded", dec(candidates.size() - eligible)},
@@ -348,7 +393,8 @@ static logical::Value compare_body(const Json &p, PartitionedOutput *context,
   if (has_bundle_source) {
     s["resources"]["data"]["legacy_source_bytes_read"] = dec(total_bytes);
     s["resources"]["data"]["source_bytes_read_scope"] =
-        "aggregate referenced-source physical I/O not collected here; per-reader counters "
+        "aggregate referenced-source physical I/O not collected here; "
+        "per-reader counters "
         "available via bundle operations";
   }
   consumer::Rows final_rows(context, "ranked-candidates");

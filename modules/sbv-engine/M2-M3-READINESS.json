@@ -2,7 +2,7 @@
   "protocol": "symphony.sbv.milestone-readiness.v1",
   "date": "2026-10-12",
   "status": "sequence_in_progress",
-  "authority": "User requested continuing M2-M3 implementation; R5.1, R5.2 and R5.3a nested temporal partitions are verified locally. R5.3 and M2/M3 remain open.",
+  "authority": "User requested continuing M2-M3 implementation; R5.1, R5.2, R5.3a nested partitions and R5.3b local adaptive selection/refit are verified. R5.3c and M2/M3 gates remain open.",
   "baseline": {
     "selected_M1": "R3.3/R4 0.24 local candidate accepted at 50cedde31cb8c78dcc61845bfe067a1d84eb6026",
     "hardening_release": "0.25.0-dev",
@@ -159,8 +159,11 @@
         },
         {
           "id": "R5.3b",
-          "status": "pending",
-          "scope": "Adaptive proposal lifecycle and automatic nested selection/refit orchestration."
+          "status": "verified_selected_scope",
+          "scope": "Adaptive proposal lifecycle and automatic nested selection/refit orchestration.",
+          "release": "0.28.0-dev",
+          "evidence": "workspace:implementation/sbv-adaptive-research/CHECKS.json",
+          "qualification": "Append-only local revisions/proposal events and native comparison selection plus value bindings execute caller-authored nested refit graphs. Proposal algorithms and aggregation remain caller-selected; no remote or untouched-holdout claim."
         },
         {
           "id": "R5.3c",
@@ -331,5 +334,5 @@
       "correction": "The generic recommendation to replace the 4096-signal profile is historical/stale for already-shipped partitioned core producers; 0.24 qualified 65,537 signals. Residual legacy external/model/consumer domains remain profile-specific. Preserve the sealed original and use operation_profiles for current limits."
     }
   ],
-  "next_step": "R5.3b"
+  "next_step": "R5.3c"
 }

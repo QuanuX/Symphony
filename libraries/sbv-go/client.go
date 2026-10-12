@@ -19,8 +19,8 @@ import (
 	"syscall"
 )
 
-const Version = "0.1.1-dev"
-const NativeVersion = "0.27.0-dev"
+const Version = "0.1.2-dev"
+const NativeVersion = "0.28.0-dev"
 
 // Error preserves a typed boundary and the original qxctl machine failure.
 // A failure never proves that a requested write had no effect. No retry occurs.

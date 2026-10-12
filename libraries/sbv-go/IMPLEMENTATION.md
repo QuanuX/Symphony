@@ -1,7 +1,7 @@
 # SBV Go transport and data contract
 
-Contract: `symphony.sbv.go-adapter.v1`. Module version `v0.1.1-dev`; native owner
-release `0.27.0-dev`; dependency Go 1.26.5 standard library only. Native source
+Contract: `symphony.sbv.go-adapter.v1`. Module version `v0.1.2-dev`; native owner
+release `0.28.0-dev`; dependency Go 1.26.5 standard library only. Native source
 contracts and receipt-owned schemas outrank this convenience API. The adapter
 introduces no scientific protocol, administration state or registry authority.
 
@@ -52,8 +52,8 @@ in successfully transported replies. Calls do not execute external scripts,
 authorize endpoints, create services or contact model providers. An external
 program supplies native `external_outcomes` or `experiment.trials` with its own
 model/proposal provenance. Native code decides contract admissibility; calibration
-and producer declarations remain scoped evidence. R5.3 owns future adaptive and
-nested proposal orchestration.
+and producer declarations remain scoped evidence. Native 0.28 owns adaptive revisions, proposal events and automatic selection/refit
+for caller-authored graphs; the adapter transports them without selecting policy.
 
 Host selection is explicit. SHA256 pins qxctl bytes; qxctl validates native
 receipt ownership. These are integrity checks under a trusted local host, not

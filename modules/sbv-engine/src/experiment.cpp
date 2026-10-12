@@ -76,7 +76,7 @@ static logical::Value experiment_body(const Json &p, PartitionedOutput *context,
                 {"protocol", "directory", "experiment_id", "trials", "workers",
                  "on_failure", "extensions"},
                 {"worker_budget", "output_path", "output", "plan_output",
-                 "plan_read_options"});
+                 "plan_read_options", "revision", "proposal_events"});
   need(p.at("extensions").is_object(), "experiment extensions required");
   const auto root = str(p.at("directory")), id = str(p.at("experiment_id"));
   need(id_ok(id), "bounded experiment id required");
@@ -94,17 +94,49 @@ static logical::Value experiment_body(const Json &p, PartitionedOutput *context,
   auto choices = p;
   choices.erase("output_path");
   choices.erase("output");
-  const auto plan_path = root + "/experiment-plan.json";
+  const bool evolving = p.contains("revision");
+  std::uint64_t revision = 0;
+  if (evolving) {
+    keys(p.at("revision"), {"index", "previous_plan_sha256"});
+    revision = u64(p.at("revision").at("index"));
+    need(
+        revision == 0 ? p.at("revision").at("previous_plan_sha256").is_null()
+                      : p.at("revision").at("previous_plan_sha256").is_string(),
+        "revision zero has no predecessor; later revisions require its digest");
+  }
+  const auto stem =
+      evolving ? "experiment-plan-" + dec(revision) : "experiment-plan";
+  const auto plan_name = stem + ".json",
+             recovery_name = stem + "-recovery.json";
+  const auto plan_path = root + "/" + plan_name;
   auto dir = directory(root);
-  need(!exists(dir.fd, "experiment-plan-recovery.json"),
+  need(!exists(dir.fd, recovery_name),
        "retained plan publication recovery requires caller reconciliation; no "
        "automatic retry");
-  std::optional<Json> prior_plan, plan_receipt;
-  if (exists(dir.fd, "experiment-plan.json"))
+  std::optional<Json> prior_plan, plan_receipt, predecessor;
+  if (exists(dir.fd, plan_name))
     prior_plan = load(plan_path, end);
-  auto owned_trials = [&](const Json &receipt) -> consumer::InputRows {
-    auto saved = trial::verify(receipt, Json{{"output", p.at("plan_output")}},
-                               "experiment", p.at("plan_read_options"), end);
+  if (evolving && revision > 0) {
+    predecessor =
+        load(root + "/experiment-plan-" + dec(revision - 1) + ".json", end);
+    need(predecessor->at("content_sha256") ==
+                 p.at("revision").at("previous_plan_sha256") &&
+             predecessor->at("sections")
+                     .at("provenance")
+                     .at("data")
+                     .at("engine_version") == version,
+         "predecessor plan identity/version mismatch");
+    const auto &previous = predecessor->at("sections").at("choices").at("data");
+    need(previous.at("directory") == root &&
+             previous.at("experiment_id") == id &&
+             u64(previous.at("revision").at("index")) == revision - 1,
+         "predecessor experiment/revision mismatch");
+  }
+  auto owned_trials = [&](const Json &receipt,
+                          const Json &selection) -> consumer::InputRows {
+    auto saved =
+        trial::verify(receipt, Json{{"output", selection.at("plan_output")}},
+                      "experiment", selection.at("plan_read_options"), end);
     const auto sections = saved.at("sections");
     auto rows = sections.at("trials").at("data");
     auto identity = sections.at("trial_input").at("data");
@@ -112,7 +144,8 @@ static logical::Value experiment_body(const Json &p, PartitionedOutput *context,
     need(identity.at("role").materialize() == "experiment_trials",
          "owned plan input role mismatch");
     const auto reference = identity.at("reference").materialize();
-    validate_logical_reference_lineage(p.at("trials").at("source"), reference);
+    validate_logical_reference_lineage(selection.at("trials").at("source"),
+                                       reference);
     need(rows.kind() == "array" &&
              rows.sha256({}, [end] { deadline(end); }) ==
                  str(reference.at("selected_value_sha256")),
@@ -134,7 +167,7 @@ static logical::Value experiment_body(const Json &p, PartitionedOutput *context,
                        .at("engine_version") == version,
            "existing experiment identity/plan/version differs");
       plan_receipt = prior_plan->at("sections").at("plan_storage").at("data");
-      return owned_trials(*plan_receipt);
+      return owned_trials(*plan_receipt, p);
     }
     return consumer::input_rows(p.at("trials"), "experiment_trials", end);
   }();
@@ -145,6 +178,37 @@ static logical::Value experiment_body(const Json &p, PartitionedOutput *context,
   while (auto row = trial_cursor.next()) {
     deadline(end);
     trials.push_back(row->value.materialize());
+  }
+  Json inherited = Json::object();
+  if (predecessor) {
+    const auto &previous = predecessor->at("sections").at("choices").at("data");
+    const auto old_trials =
+        previous.at("trials").is_array()
+            ? logical::Value(previous.at("trials"))
+            : owned_trials(
+                  predecessor->at("sections").at("plan_storage").at("data"),
+                  previous)
+                  .value;
+    need(old_trials.size() <= trials.size(),
+         "revision cannot remove admitted trials");
+    auto cursor = old_trials.children();
+    std::size_t i = 0;
+    const auto &origins =
+        predecessor->at("sections").at("admission_origins").at("data");
+    while (auto old = cursor.next()) {
+      deadline(end);
+      need(old->value.materialize() == trials.at(i),
+           "revision must preserve exact trial prefix");
+      const auto name = str(trials.at(i++).at("id"));
+      inherited[name] = origins.value(name, predecessor->at("content_sha256"));
+    }
+    const auto old_events = previous.value("proposal_events", Json::array());
+    const auto events = p.value("proposal_events", Json::array());
+    need(events.is_array() && old_events.size() <= events.size(),
+         "proposal history cannot shrink");
+    for (std::size_t n = 0; n < old_events.size(); ++n)
+      need(old_events[n] == events[n],
+           "proposal history must retain exact event prefix");
   }
   std::set<std::string> names;
   std::map<std::string, std::size_t> indices;
@@ -229,6 +293,43 @@ static logical::Value experiment_body(const Json &p, PartitionedOutput *context,
     requests.push_back(request);
   }
   // Admit the entire graph and destination slots before creating the journal.
+  const auto events = p.value("proposal_events", Json::array());
+  need(events.is_array(), "proposal event array required");
+  std::set<std::string> event_ids, admitted_trials;
+  std::map<std::string, std::string> proposal_states;
+  for (const auto &event : events) {
+    deadline(end);
+    keys(event, {"event_id", "proposal_id", "state", "trial_id", "reason",
+                 "parameters", "lineage"});
+    const auto eid = str(event.at("event_id")),
+               pid = str(event.at("proposal_id")),
+               state = str(event.at("state"));
+    need(id_ok(eid) && id_ok(pid) && event_ids.insert(eid).second &&
+             event.at("parameters").is_object() &&
+             event.at("lineage").is_object() &&
+             str(event.at("reason")).size() <= 4096,
+         "unique proposal event identity and metadata required");
+    if (state == "proposed")
+      need(!proposal_states.contains(pid) && event.at("trial_id").is_null(),
+           "proposal must begin exactly once without a trial");
+    else {
+      need(
+          proposal_states.contains(pid) &&
+              proposal_states.at(pid) == "proposed" &&
+              (state == "admitted" || state == "rejected" || state == "pruned"),
+          "proposal requires one explicit terminal decision after proposed");
+      if (state == "admitted") {
+        const auto tid = str(event.at("trial_id"));
+        need(indices.contains(tid) &&
+                 trials.at(indices.at(tid)).at("state") == "ready" &&
+                 admitted_trials.insert(tid).second,
+             "admitted proposal must identify one unique ready trial");
+      } else
+        need(event.at("trial_id").is_null() && !str(event.at("reason")).empty(),
+             "rejected/pruned proposal requires reason and no admitted trial");
+    }
+    proposal_states[pid] = state;
+  }
   // Dependencies can point forward in the caller's list; results retain that
   // list order.
   std::vector<std::vector<std::size_t>> dependencies(trials.size());
@@ -251,7 +352,11 @@ static logical::Value experiment_body(const Json &p, PartitionedOutput *context,
          "pruned trials have no dependencies or bindings");
     auto slots = requests[i];
     for (const auto &b : bindings) {
-      keys(b, {"target_pointer", "trial_id", "result_pointer"});
+      keys_optional(b, {"target_pointer", "trial_id", "result_pointer"},
+                    {"mode"});
+      need(b.value("mode", "reference") == "reference" ||
+               b.value("mode", "reference") == "value",
+           "binding mode must be reference or value");
       need(unique.contains(str(b.at("trial_id"))),
            "binding trial must be an explicit dependency");
       const auto target = str(b.at("target_pointer")),
@@ -262,6 +367,20 @@ static logical::Value experiment_body(const Json &p, PartitionedOutput *context,
            "replaced");
       try {
         Json::json_pointer destination(target), selection(source);
+        for (const auto *control :
+             {"/protocol", "/output", "/output_path", "/workers", "/request"})
+          need(target != control &&
+                   !(std::string(control) != "/request" &&
+                     target.starts_with(std::string(control) + "/")),
+               "bindings cannot change admitted control destinations or "
+               "workers");
+        if (t.at("operation") == "dataset_execute")
+          for (const auto *control :
+               {"/request/protocol", "/request/output", "/request/output_path",
+                "/request/workers"})
+            need(target != control &&
+                     !target.starts_with(std::string(control) + "/"),
+                 "bindings cannot change resident child controls");
         (void)selection;
         need(slots.at(destination).is_null(),
              "binding target must be a unique existing null slot");
@@ -302,11 +421,10 @@ static logical::Value experiment_body(const Json &p, PartitionedOutput *context,
       resource::limit(p.value("worker_budget", Json(nullptr)));
   need(resource::admits(worker_budget, 0, worker_product),
        "selected outer and inner worker product exceeds caller budget");
-  std::vector<trial::Slot> destinations{
-      {root, false},
-      {plan_path, false},
-      {root + "/experiment.lock", false},
-      {root + "/experiment-plan-recovery.json", false}};
+  std::vector<trial::Slot> destinations{{root, false},
+                                        {plan_path, false},
+                                        {root + "/experiment.lock", false},
+                                        {root + "/" + recovery_name, false}};
   auto output_slots = [&](const Json &out) {
     keys_optional(out,
                   {"kind", "bundle_path", "workspace_path", "write_options"},
@@ -355,6 +473,8 @@ static logical::Value experiment_body(const Json &p, PartitionedOutput *context,
   trial::destinations(root, destinations, end);
   auto plan = base("immutable local experiment plan");
   plan["sections"]["choices"] = section(choices);
+  if (evolving)
+    plan["sections"]["admission_origins"] = section(inherited);
   plan["sections"]["provenance"] = section(
       {{"engine_version", version},
        {"scope", "private local SBV artifacts; no remote or SOV job claim"}});
@@ -382,7 +502,19 @@ static logical::Value experiment_body(const Json &p, PartitionedOutput *context,
        "private experiment lock required");
   need(::flock(lock.fd, LOCK_EX | LOCK_NB) == 0,
        "experiment already active or lock unavailable");
-  if (exists(dir.fd, "experiment-plan.json")) {
+  need(!exists(dir.fd,
+               evolving ? "experiment-plan.json" : "experiment-plan-0.json"),
+       "fixed and evolving plans require separate experiment directories");
+  if (evolving) {
+    if (revision < std::numeric_limits<std::uint64_t>::max())
+      need(!exists(dir.fd, "experiment-plan-" + dec(revision + 1) + ".json"),
+           "revision is superseded; observe and resume the latest plan");
+    if (predecessor)
+      need(load(root + "/experiment-plan-" + dec(revision - 1) + ".json",
+                end) == *predecessor,
+           "predecessor changed during admission");
+  }
+  if (exists(dir.fd, plan_name)) {
     need(!referenced || prior_plan.has_value(),
          "plan appeared during admission; explicit re-observation required");
     need(load(plan_path, end) == plan,
@@ -391,12 +523,14 @@ static logical::Value experiment_body(const Json &p, PartitionedOutput *context,
   } else {
     need(!prior_plan, "previously admitted plan disappeared");
     for (const auto &name : names)
-      for (const auto *suffix :
-           {".claim.json", ".receipt.json", ".result.json"})
-        need(!exists(dir.fd, name + suffix),
-             "unowned trial artifacts exist before plan");
+      if (!inherited.contains(name))
+        for (const auto *suffix :
+             {".claim.json", ".receipt.json", ".result.json"})
+          need(!exists(dir.fd, name + suffix),
+               "unowned trial artifacts exist before plan");
     for (std::size_t i = 0; i < trials.size(); ++i)
-      if (trials[i].at("state") == "ready")
+      if (trials[i].at("state") == "ready" &&
+          !inherited.contains(str(trials[i].at("id"))))
         need(!trial::appeared(requests[i]),
              "new experiment has an existing child destination");
     if (referenced) {
@@ -425,12 +559,12 @@ static logical::Value experiment_body(const Json &p, PartitionedOutput *context,
         recovery_record["status"] = "partial";
         recovery_record["sections"]["choices"] = section(snapshot_request);
         recovery_record["sections"]["search"] = section(snapshot);
-        save(root + "/experiment-plan-recovery.json", recovery_record, end);
-        need(false, "plan publication incomplete; inspect "
-                    "experiment-plan-recovery.json");
+        save(root + "/" + recovery_name, recovery_record, end);
+        need(false,
+             ("plan publication incomplete; inspect " + recovery_name).c_str());
       }
       plan_receipt = snapshot;
-      input = owned_trials(snapshot);
+      input = owned_trials(snapshot, p);
       plan["sections"]["plan_storage"] = section(snapshot);
       plan = seal_result(plan);
       validate_result(plan);
@@ -459,6 +593,7 @@ static logical::Value experiment_body(const Json &p, PartitionedOutput *context,
         deadline(end);
         const auto &t = trials[i];
         auto name = str(t.at("id"));
+        const auto admission_hash = inherited.value(name, plan_hash);
         Json row{{"id", name},
                  {"state", "not_started"},
                  {"reason", ""},
@@ -520,12 +655,19 @@ static logical::Value experiment_body(const Json &p, PartitionedOutput *context,
                                trials[indices.at(parent_id)].value(
                                    "result_read_options", Json(nullptr)),
                                b.at("result_pointer"));
-            request.at(Json::json_pointer(str(b.at("target_pointer")))) =
-                reference;
-            row["bindings"].push_back(
-                {{"target_pointer", b.at("target_pointer")},
-                 {"trial_id", parent_id},
-                 {"reference", reference}});
+            Json evidence{{"target_pointer", b.at("target_pointer")},
+                          {"trial_id", parent_id},
+                          {"reference", reference}};
+            Json value = reference;
+            if (b.value("mode", "reference") == "value") {
+              value = trial::selection(sources.at(parent_id),
+                                       str(b.at("result_pointer")))
+                          ->materialize({artifact_bytes, artifact_values});
+              evidence["mode"] = "value";
+              evidence["value_sha256"] = e::sha256_hex(value.dump());
+            }
+            request.at(Json::json_pointer(str(b.at("target_pointer")))) = value;
+            row["bindings"].push_back(evidence);
           }
         }
         if (blocked) {
@@ -549,7 +691,7 @@ static logical::Value experiment_body(const Json &p, PartitionedOutput *context,
         row["request_sha256"] = request_hash;
         auto claim = base("local experiment trial claim");
         claim["sections"]["search"] =
-            section({{"plan_sha256", plan_hash},
+            section({{"plan_sha256", admission_hash},
                      {"trial_id", name},
                      {"request_sha256", request_hash},
                      {"state", "claimed"},
@@ -572,7 +714,7 @@ static logical::Value experiment_body(const Json &p, PartitionedOutput *context,
           const auto &record = stored.at("sections").at("search").at("data");
           keys(record, {"plan_sha256", "trial_id", "request_sha256", "state",
                         "failure_code", "result"});
-          need(record.at("plan_sha256") == plan_hash &&
+          need(record.at("plan_sha256") == admission_hash &&
                    record.at("trial_id") == name &&
                    record.at("request_sha256") == request_hash,
                "trial receipt identity mismatch");
@@ -606,7 +748,7 @@ static logical::Value experiment_body(const Json &p, PartitionedOutput *context,
                "unclaimed trial has an existing child destination");
           save(claim_path, claim, end);
           ++executed;
-          Json record{{"plan_sha256", plan_hash},
+          Json record{{"plan_sha256", admission_hash},
                       {"trial_id", name},
                       {"request_sha256", request_hash},
                       {"state", "completed"},
@@ -730,6 +872,10 @@ static logical::Value experiment_body(const Json &p, PartitionedOutput *context,
                          {"wave_count", dec(waves.size())},
                          {"planned_waves", nullptr}});
   s["choices"] = section(choices);
+  if (evolving)
+    s["admission_origins"] = section(inherited);
+  if (p.contains("proposal_events"))
+    s["proposal_states"] = section(proposal_states);
   s["resources"] =
       section({{"backend", "cpu"},
                {"requested_workers", dec(workers)},

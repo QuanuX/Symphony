@@ -2,7 +2,7 @@
 
 ## Version and ownership
 
-Contract v1; package `sbv-engine` 0.27.0-dev; engine `symphony-sbv`; vector `sbv`. C++26 owns computations, result sealing and artifact queries. Go qxctl verifies the exact installation and projects native evidence. OWNER-INTERFACE.json is the exact operation declaration; generated C++/Go metadata must match it. This release is experimental.
+Contract v1; package `sbv-engine` 0.28.0-dev; engine `symphony-sbv`; vector `sbv`. C++26 owns computations, result sealing and artifact queries. Go qxctl verifies the exact installation and projects native evidence. OWNER-INTERFACE.json is the exact operation declaration; generated C++/Go metadata must match it. This release is experimental.
 
 The engine uses knowledge-vector-engine-cpp 0.2.0-dev and sqav-databento-dbn-cpp 0.5.0-dev, with that adapter's exact static dependencies. It performs no data-provider network calls. Signal/replay semantics belong to SBV; acquisition remains SQAV, metadata SQMV, batch ownership SQFV, transformation SQTV, physical stores SQPV and recipient delivery SQDV. Its portable local JSON result is a derived artifact, not a new market-data persistence service. An optional offline retained-source route composes SQAV capture 0.2.0-dev, SQMV 0.2.0-dev, SQFV 0.3.0-dev, SQPV 0.2.0-dev and SQDV 0.3.0-dev under the selected profile described below.
 
@@ -1146,3 +1146,81 @@ exact uint64 timestamp arithmetic, and selected legacy/control framing still
 apply. Explicit schema fold/row count annotations inherited from earlier
 split releases are removed from the active split-plan and temporal-fold
 contracts; they are not user resource policies.
+
+
+## Adaptive revisions and automatic selection/refit (0.28)
+
+`qxctl sbv experiment` template variant `adaptive` opts into append-only local
+revisions. `revision.index` is a canonical uint64 decimal, beginning at `0`;
+`previous_plan_sha256` is null at zero and the exact preceding plan content
+hash thereafter. Each revision has its own `experiment-plan-N.json` and plan
+publication recovery record. Fixed plans retain their existing filenames and
+must use a different directory. A superseded revision cannot execute; observe
+the latest plan through ordinary result inspection/query/export. An exact retry
+of the current revision uses a fresh summary destination and reuses verified
+receipts. A conflicting same-index plan, stale predecessor or noncontiguous
+revision rejects before child work. The directory lock serializes publication
+and execution; it is not distributed coordination.
+
+Every revision supplies the cumulative trial table, inline or referenced.
+Earlier rows must remain an exact prefix. Each inherited trial retains its
+original admission plan hash in `admission_origins`; claims, resolved requests,
+bindings, receipts and result identities are checked against that origin.
+New trials have new unique IDs. Referenced tables are copied into a separate
+caller-selected owned plan store for each revision; resumption does not require
+the original external table. Worker count, failure policy, caller worker budget
+and descriptive extensions can change in a new revision. Existing claims and
+scientific requests cannot be rewritten. A failed or ambiguous trial is not
+automatically retried; users can append a separately identified retry with
+explicit lineage. Prior outcomes remain visible.
+
+Optional cumulative `proposal_events` retain immutable `event_id`, `proposal_id`,
+`state`, nullable `trial_id`, `reason`, `parameters` and `lineage`. A proposal
+starts once as `proposed`, followed by at most one `admitted`, `rejected` or
+`pruned` decision. Admitted events identify a unique ready trial. Rejected and
+pruned decisions require a reason and no trial. Pending proposals may remain
+pending across revisions. Trial states and claims remain the execution evidence;
+a claim establishes admission/running intent, not current process liveness.
+Proposal metadata is caller-declared, including any retrospective association.
+`proposal_states` projects decisions; all events and rejected choices remain
+in the durable plan. The engine does not infer an optimizer, approval authority,
+search budget or statistical confidence from these records.
+
+`qxctl sbv compare` template variant `selection` adds an optional explicit
+`selection` policy. Choose an already selected `method` (`weighted_sum` or
+`pareto`) and `tie_break`: `input_order`, lexicographic `candidate_id`, or
+`require_unique`. The best set is weighted competition rank one or Pareto front
+zero. Empty eligibility or a nonunique set under `require_unique` returns
+`selection.status: unavailable` with the reason and best-set size, without
+candidate parameters. A selected decision retains candidate ID, original input
+index, parameters, lineage, source evidence and policy. Objective directions,
+exact weights/scales and units remain caller-owned. No selection is performed
+when this optional field is absent.
+
+Experiment bindings optionally set `mode: value`; omitted mode remains
+`reference`. Value mode copies the exact selected JSON into the existing null
+request slot and records both an immutable source reference and the copied
+value's SHA256 in the claim. It does not coerce rationals or integers. Missing
+selections block the dependent before claiming it. Protocol, worker and output
+controls cannot be rebound after admission. Per-child native validation still
+applies. Copied values use the child control/claim representation limits; large
+data should remain reference-bound.
+
+A caller-authored DAG can therefore split nested populations, fit candidates on
+inner training rows, predict inner validation rows, compare chosen objectives,
+copy selected regularization or other parameters into an outer refit, then
+predict the outer holdout automatically. The engine executes that entire graph
+without an external winner-selection step. Users choose candidate generation,
+fold aggregation, objectives, pruning, tie rules, holdout reuse and whether to
+append another revision. No hidden fitting, promotion, holdout gate, default
+deadline or trial quota is added. Scheduler metadata, proposal events and
+admission-origin maps are resident; plan/claim control formats remain bounded.
+Partitioned result/table arrays do not become an aggregate administrative frame.
+This profile does not implement a built-in adaptive proposal algorithm, recursive
+optimizer, arbitrary external-code dispatch or remote SOV execution.
+
+Native 0.28 and optional Go transport 0.1.2 expose the same 42 operations and all
+retained fields to qxctl text/JSON/NDJSON and future GUI/ML consumers. The C ABI
+and portable result protocol remain unchanged; older installed engine/client
+pairs and sealed evidence remain separate. R5.3c and the broad R5.4 M2 gate
+remain open.

@@ -74,7 +74,8 @@ inline Json binding(const Json &receipt, const Json &options,
     out["pointer"] = pointer;
   return out;
 }
-inline bool selects(const logical::Value &root, const std::string &pointer) {
+inline std::optional<logical::Value> selection(const logical::Value &root,
+                                               const std::string &pointer) {
   (void)Json::json_pointer(pointer);
   auto value = root;
   std::size_t at = 0;
@@ -91,7 +92,7 @@ inline bool selects(const logical::Value &root, const std::string &pointer) {
     }
     if (value.kind() == "object") {
       if (!value.contains(decoded))
-        return false;
+        return {};
       value = value.at(decoded);
     } else if (value.kind() == "array") {
       std::uint64_t index{};
@@ -100,15 +101,18 @@ inline bool selects(const logical::Value &root, const std::string &pointer) {
       if (decoded.empty() || (decoded.size() > 1 && decoded[0] == '0') ||
           error != std::errc{} || last != decoded.data() + decoded.size() ||
           index >= value.size())
-        return false;
+        return {};
       value = value.at(index);
     } else
-      return false;
+      return {};
     if (next == std::string::npos)
       break;
     at = next;
   }
-  return true;
+  return value;
+}
+inline bool selects(const logical::Value &root, const std::string &pointer) {
+  return selection(root, pointer).has_value();
 }
 inline void recovery(const Json &receipt, const Json &request,
                      const std::string &op) {

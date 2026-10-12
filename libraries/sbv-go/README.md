@@ -1,7 +1,7 @@
 # SBV Go adapter
 
 Experimental source module `github.com/QuanuX/Symphony/libraries/sbv-go`, version
-`v0.1.1-dev`, targeting Go 1.26.5 and native SBV `0.27.0-dev`. It uses only the Go
+`v0.1.2-dev`, targeting Go 1.26.5 and native SBV `0.28.0-dev`. It uses only the Go
 standard library. This is a local source release; no published module/tag is
 claimed. C++ owns every scientific calculation and admission.
 
@@ -72,6 +72,6 @@ trust, precision and lifetime details.
 Verification: `GOWORK=off go test -race ./...` with Go 1.26.5. Installed evidence
 is recorded separately in the workspace R5.2 packet; tests do not contact a data
 provider or connect live services. Arrow, DLPack, borrowed buffers, CUDA/tensor
-runtimes, authentication of producer claims, adaptive search and other language
+runtimes, authentication of producer claims, built-in proposal algorithms and other language
 adapters remain separate capabilities. This adapter neither requires them nor
 prevents an independently selected implementation.

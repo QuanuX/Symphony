@@ -16963,6 +16963,29 @@
             },
             "extensions": {
               "type": "object"
+            },
+            "selection": {
+              "type": "object",
+              "properties": {
+                "method": {
+                  "enum": [
+                    "weighted_sum",
+                    "pareto"
+                  ]
+                },
+                "tie_break": {
+                  "enum": [
+                    "input_order",
+                    "candidate_id",
+                    "require_unique"
+                  ]
+                }
+              },
+              "required": [
+                "method",
+                "tie_break"
+              ],
+              "additionalProperties": false
             }
           },
           "required": [
@@ -17640,6 +17663,29 @@
               ],
               "additionalProperties": false,
               "description": "Explicit partitioned output; new private workspace and final bundle must be disjoint. Scratch remains caller-owned on success/failure. No implicit fallback, cleanup, retry or default deadline."
+            },
+            "selection": {
+              "type": "object",
+              "properties": {
+                "method": {
+                  "enum": [
+                    "weighted_sum",
+                    "pareto"
+                  ]
+                },
+                "tie_break": {
+                  "enum": [
+                    "input_order",
+                    "candidate_id",
+                    "require_unique"
+                  ]
+                }
+              },
+              "required": [
+                "method",
+                "tie_break"
+              ],
+              "additionalProperties": false
             }
           },
           "required": [
@@ -18619,6 +18665,12 @@
                         },
                         "result_pointer": {
                           "type": "string"
+                        },
+                        "mode": {
+                          "enum": [
+                            "reference",
+                            "value"
+                          ]
                         }
                       },
                       "required": [
@@ -18694,6 +18746,83 @@
                   "type": "null"
                 }
               ]
+            },
+            "revision": {
+              "type": "object",
+              "properties": {
+                "index": {
+                  "type": "string",
+                  "pattern": "^(0|[1-9][0-9]*)$",
+                  "maxLength": 20
+                },
+                "previous_plan_sha256": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "pattern": "^[a-f0-9]{64}$"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "index",
+                "previous_plan_sha256"
+              ],
+              "additionalProperties": false
+            },
+            "proposal_events": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "event_id": {
+                    "type": "string"
+                  },
+                  "proposal_id": {
+                    "type": "string"
+                  },
+                  "reason": {
+                    "type": "string"
+                  },
+                  "state": {
+                    "enum": [
+                      "proposed",
+                      "admitted",
+                      "rejected",
+                      "pruned"
+                    ]
+                  },
+                  "trial_id": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "parameters": {
+                    "type": "object"
+                  },
+                  "lineage": {
+                    "type": "object"
+                  }
+                },
+                "required": [
+                  "event_id",
+                  "proposal_id",
+                  "reason",
+                  "state",
+                  "trial_id",
+                  "parameters",
+                  "lineage"
+                ],
+                "additionalProperties": false
+              }
             }
           },
           "required": [
@@ -18770,6 +18899,12 @@
                         },
                         "result_pointer": {
                           "type": "string"
+                        },
+                        "mode": {
+                          "enum": [
+                            "reference",
+                            "value"
+                          ]
                         }
                       },
                       "required": [
@@ -18925,6 +19060,83 @@
               ],
               "additionalProperties": false,
               "description": "Explicit partitioned output; new private workspace and final bundle must be disjoint. Scratch remains caller-owned on success/failure. No implicit fallback, cleanup, retry or default deadline."
+            },
+            "revision": {
+              "type": "object",
+              "properties": {
+                "index": {
+                  "type": "string",
+                  "pattern": "^(0|[1-9][0-9]*)$",
+                  "maxLength": 20
+                },
+                "previous_plan_sha256": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "pattern": "^[a-f0-9]{64}$"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "index",
+                "previous_plan_sha256"
+              ],
+              "additionalProperties": false
+            },
+            "proposal_events": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "event_id": {
+                    "type": "string"
+                  },
+                  "proposal_id": {
+                    "type": "string"
+                  },
+                  "reason": {
+                    "type": "string"
+                  },
+                  "state": {
+                    "enum": [
+                      "proposed",
+                      "admitted",
+                      "rejected",
+                      "pruned"
+                    ]
+                  },
+                  "trial_id": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "parameters": {
+                    "type": "object"
+                  },
+                  "lineage": {
+                    "type": "object"
+                  }
+                },
+                "required": [
+                  "event_id",
+                  "proposal_id",
+                  "reason",
+                  "state",
+                  "trial_id",
+                  "parameters",
+                  "lineage"
+                ],
+                "additionalProperties": false
+              }
             }
           },
           "required": [
@@ -19210,6 +19422,83 @@
                 "cache_bytes"
               ],
               "additionalProperties": false
+            },
+            "revision": {
+              "type": "object",
+              "properties": {
+                "index": {
+                  "type": "string",
+                  "pattern": "^(0|[1-9][0-9]*)$",
+                  "maxLength": 20
+                },
+                "previous_plan_sha256": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "pattern": "^[a-f0-9]{64}$"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "index",
+                "previous_plan_sha256"
+              ],
+              "additionalProperties": false
+            },
+            "proposal_events": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "event_id": {
+                    "type": "string"
+                  },
+                  "proposal_id": {
+                    "type": "string"
+                  },
+                  "reason": {
+                    "type": "string"
+                  },
+                  "state": {
+                    "enum": [
+                      "proposed",
+                      "admitted",
+                      "rejected",
+                      "pruned"
+                    ]
+                  },
+                  "trial_id": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "parameters": {
+                    "type": "object"
+                  },
+                  "lineage": {
+                    "type": "object"
+                  }
+                },
+                "required": [
+                  "event_id",
+                  "proposal_id",
+                  "reason",
+                  "state",
+                  "trial_id",
+                  "parameters",
+                  "lineage"
+                ],
+                "additionalProperties": false
+              }
             }
           },
           "required": [
@@ -19574,6 +19863,83 @@
               ],
               "additionalProperties": false,
               "description": "Explicit partitioned output; new private workspace and final bundle must be disjoint. Scratch remains caller-owned on success/failure. No implicit fallback, cleanup, retry or default deadline."
+            },
+            "revision": {
+              "type": "object",
+              "properties": {
+                "index": {
+                  "type": "string",
+                  "pattern": "^(0|[1-9][0-9]*)$",
+                  "maxLength": 20
+                },
+                "previous_plan_sha256": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "pattern": "^[a-f0-9]{64}$"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "index",
+                "previous_plan_sha256"
+              ],
+              "additionalProperties": false
+            },
+            "proposal_events": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "event_id": {
+                    "type": "string"
+                  },
+                  "proposal_id": {
+                    "type": "string"
+                  },
+                  "reason": {
+                    "type": "string"
+                  },
+                  "state": {
+                    "enum": [
+                      "proposed",
+                      "admitted",
+                      "rejected",
+                      "pruned"
+                    ]
+                  },
+                  "trial_id": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "parameters": {
+                    "type": "object"
+                  },
+                  "lineage": {
+                    "type": "object"
+                  }
+                },
+                "required": [
+                  "event_id",
+                  "proposal_id",
+                  "reason",
+                  "state",
+                  "trial_id",
+                  "parameters",
+                  "lineage"
+                ],
+                "additionalProperties": false
+              }
             }
           },
           "required": [
@@ -52326,48 +52692,105 @@
         "bindings": {
           "type": "array",
           "items": {
-            "type": "object",
-            "properties": {
-              "target_pointer": {
-                "type": "string"
-              },
-              "trial_id": {
-                "type": "string"
-              },
-              "reference": {
-                "anyOf": [
-                  {
-                    "type": "object",
-                    "properties": {
-                      "path": {
-                        "type": "string"
-                      },
-                      "expected_sha256": {
-                        "type": "string"
-                      },
-                      "pointer": {
-                        "type": "string"
-                      }
-                    },
-                    "required": [
-                      "path",
-                      "expected_sha256",
-                      "pointer"
-                    ],
-                    "additionalProperties": false
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "target_pointer": {
+                    "type": "string"
                   },
-                  {
-                    "$ref": "#/$defs/bundle_value_source"
+                  "trial_id": {
+                    "type": "string"
+                  },
+                  "reference": {
+                    "anyOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "path": {
+                            "type": "string"
+                          },
+                          "expected_sha256": {
+                            "type": "string"
+                          },
+                          "pointer": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "path",
+                          "expected_sha256",
+                          "pointer"
+                        ],
+                        "additionalProperties": false
+                      },
+                      {
+                        "$ref": "#/$defs/bundle_value_source"
+                      }
+                    ]
                   }
-                ]
+                },
+                "required": [
+                  "target_pointer",
+                  "trial_id",
+                  "reference"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "target_pointer": {
+                    "type": "string"
+                  },
+                  "trial_id": {
+                    "type": "string"
+                  },
+                  "reference": {
+                    "anyOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "path": {
+                            "type": "string"
+                          },
+                          "expected_sha256": {
+                            "type": "string"
+                          },
+                          "pointer": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "path",
+                          "expected_sha256",
+                          "pointer"
+                        ],
+                        "additionalProperties": false
+                      },
+                      {
+                        "$ref": "#/$defs/bundle_value_source"
+                      }
+                    ]
+                  },
+                  "mode": {
+                    "const": "value"
+                  },
+                  "value_sha256": {
+                    "type": "string",
+                    "pattern": "^[a-f0-9]{64}$"
+                  }
+                },
+                "required": [
+                  "target_pointer",
+                  "trial_id",
+                  "reference",
+                  "mode",
+                  "value_sha256"
+                ],
+                "additionalProperties": false
               }
-            },
-            "required": [
-              "target_pointer",
-              "trial_id",
-              "reference"
-            ],
-            "additionalProperties": false
+            ]
           }
         }
       },
