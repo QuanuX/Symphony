@@ -226,6 +226,7 @@ Json descriptor() {
   r["contract_versions"].push_back("symphony.sbv.exact-series-formula.v1");
   r["contract_versions"].push_back("symphony.sbv.account-state.v1");
   r["contract_versions"].push_back("symphony.sbv.account-intent.v1");
+  r["contract_versions"].push_back("symphony.sbv.account-state.v2");
   r["descriptor_digest"] = e::tagged_sha256(r.dump());
   return r;
 }

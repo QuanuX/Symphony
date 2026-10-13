@@ -1,4 +1,5 @@
 #include "consumer_source.hpp"
+#include "depth_sweep.hpp"
 #include "rational.hpp"
 #include "resource_admission.hpp"
 #include <algorithm>
@@ -8,7 +9,7 @@
 #include <optional>
 #include <thread>
 namespace symphony::sbv::detail {
-namespace {
+namespace depth_sweep {
 namespace r = rational;
 using Wide = __int128_t;
 std::string wide(Wide n) {
@@ -31,17 +32,6 @@ Json ratio(Wide n, std::uint64_t d) {
   const auto g = std::gcd(remainder, d);
   return {{"numerator", wide(n / g)}, {"denominator", dec(d / g)}};
 }
-struct Level {
-  std::int64_t price;
-  std::uint64_t original, remaining;
-};
-struct Snapshot {
-  std::uint64_t ordinal{}, time{};
-  bool available{}, flagged{};
-  std::string reason, market;
-  std::vector<Level> bids, asks;
-  std::uint64_t bid_count{}, ask_count{};
-};
 Snapshot frame(const Json &f) {
   need(f.at("protocol") == "symphony.sbv.book-frame.v1" &&
            f.at("layer") == "reconstructed",
@@ -97,16 +87,6 @@ Snapshot frame(const Json &f) {
        "market state classification mismatch");
   return x;
 }
-struct Order {
-  Json choice;
-  std::string id, signal;
-  std::uint64_t frame_ordinal, quantity, signal_ordinal, signal_time;
-  std::int64_t anchor;
-  bool buy, fok;
-  std::optional<std::int64_t> limit;
-  r::R participation;
-  std::optional<r::R> activation;
-};
 Order order(const Json &o,
             const std::map<std::string, logical::Value> &signals) {
   keys(o, {"order_id", "signal_id", "frame_source_ordinal", "side", "quantity",
@@ -308,7 +288,8 @@ Json simulate(const Order &o, Snapshot *snapshot, const Json &p,
   }
   return result;
 }
-} // namespace
+} // namespace depth_sweep
+using namespace depth_sweep;
 static logical::Value liquidity_body(const Json &p, PartitionedOutput *context,
                                      std::int64_t end) {
   keys_optional(p,

@@ -84,3 +84,11 @@ conditional scenarios, not matching evidence. Select snapshots when needed; star
 a new branch from an exact snapshot reference and a caller-owned continuation tape.
 Inspect dispositions and unavailable marks before interpreting terminal equity.
 All controls and results use qxctl; independent experiments may execute concurrently.
+
+
+For account-coupled depth sweeps, select `liquidity_pools` from exact retained
+book-frame references and use `liquidity_order` at frame availability time.
+Inspect `execution_outcome.committed` and account disposition before counting fills.
+Select fixed quantities or stateful target_position rules and explicit fees/policies.
+Pool-aware branches use v2 snapshots; unavailable skip_event results remain partial.
+Use position_split only with explicit adjusted-unit evidence and no stale pool.

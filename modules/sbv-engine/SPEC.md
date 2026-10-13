@@ -2,7 +2,7 @@
 
 ## Version and ownership
 
-Contract v1; package `sbv-engine` 0.30.0-dev; engine `symphony-sbv`; vector `sbv`. C++26 owns computations, result sealing and artifact queries. Go qxctl verifies the exact installation and projects native evidence. OWNER-INTERFACE.json is the exact operation declaration; generated C++/Go metadata must match it. This release is experimental.
+Contract v1; package `sbv-engine` 0.31.0-dev; engine `symphony-sbv`; vector `sbv`. C++26 owns computations, result sealing and artifact queries. Go qxctl verifies the exact installation and projects native evidence. OWNER-INTERFACE.json is the exact operation declaration; generated C++/Go metadata must match it. This release is experimental.
 
 The engine uses knowledge-vector-engine-cpp 0.2.0-dev and sqav-databento-dbn-cpp 0.5.0-dev, with that adapter's exact static dependencies. It performs no data-provider network calls. Signal/replay semantics belong to SBV; acquisition remains SQAV, metadata SQMV, batch ownership SQFV, transformation SQTV, physical stores SQPV and recipient delivery SQDV. Its portable local JSON result is a derived artifact, not a new market-data persistence service. An optional offline retained-source route composes SQAV capture 0.2.0-dev, SQMV 0.2.0-dev, SQFV 0.3.0-dev, SQPV 0.2.0-dev and SQDV 0.3.0-dev under the selected profile described below.
 
@@ -1409,3 +1409,81 @@ liquidity, richer feedback providers and selected instrument economics. Futures
 margin, option exercise, multileg atomicity and automatic corporate-action/FX
 interpretation are not implied by cash-notional accounting. Explicit supplied
 cashflows remain available for caller-authored scenarios with disclosed semantics.
+
+
+## Account-coupled depth execution and target feedback (0.31, R6.1b)
+
+`account_simulate` optionally accepts `liquidity_pools`. Each names a pool,
+account instrument and exact legacy/bundle value selection of a retained
+`symphony.sbv.book-frame.v1` reconstructed frame. This may be selected from book,
+liquidity or another result retaining the exact frame. Original source/reference,
+frame status, availability, depth and caller instrument mapping are retained.
+Mapping is caller attribution, not authenticated instrument/exchange identity.
+Two pool IDs cannot alias the same selected frame in the same outer result;
+different source objects are not automatically reconciled into one global market.
+Users assign competing orders to the same pool. Each pool starts once from its
+selected displayed depth and never implicitly replenishes.
+
+A `liquidity_order` executes the existing native `displayed_depth_sweep` v1 model
+against the pool remaining after prior committed account events. Event time must
+equal that snapshot's availability; this specific model is an ordered, single-frame
+scenario, not a multi-time exchange simulator. Tied orders follow caller stream
+order and source ordinal. The caller selects IOC/FOK, limit price in source nanos,
+per-level participation, insufficient-depth/market-state/receive-flag policies,
+fees, quantity rule, guards and unavailable behavior. The existing bounded retained
+frame format and numeric representations remain named contracts, not dataset caps.
+An order quantity is an exact signed integer with uint64 magnitude. This account
+path does not impose the standalone legacy liquidity request's 1e9 quantity bound.
+Buy is positive; sell is negative. Nanos convert to cash-unit price exactly by
+1e9, then the instrument multiplier applies. Fees are `fee_fixed + abs(filled) *
+fee_per_unit`, in the instrument cash unit, assessed only when quantity fills;
+negative fees represent rebates. No-fill and FOK cancellation charge zero here.
+Other fee conventions remain explicit supplied events or future model choices.
+
+The tentative execution and cash/position transition are one atomic account event.
+A capital/position rejection rolls back consumed depth as well as balances. Its
+retained candidate outcome has `committed:false` and the account disposition;
+candidate fills must not be counted as committed fills. FOK failure and guard
+suppression consume no depth. `on_unavailable:abort` rejects the calculation;
+`skip_event` retains an unavailable outcome, applies nothing, continues with the
+known prior state and marks the result partial. Skipping unknown execution is a
+caller-selected scenario assumption, not proof of a no-fill. Conditional sweep
+probabilities remain assumptions, never calibrated execution likelihood.
+
+`quantity_rule` chooses a signed `fixed` quantity, or `target_position` in
+`stateful_feedback` mode. A target resolves to target minus prior simulated
+position after earlier accepted events. An already-reached target emits no signal
+and retains `target_reached`; failed guards retain `guard_false`. Fixed mode
+cannot use target rules or nonempty feedback guards. Emitted signals keep their
+own mode and input occurrence identity; original market censuses remain immutable.
+The rule is a shipped declarative feedback model. Arbitrary runtime strategy or
+ML-provider callbacks are not claimed by this release.
+
+With pools, snapshots use `symphony.sbv.account-state.v2`, preserving exact
+remaining bid/ask quantities per level. Pool-free snapshots remain v1. An explicit
+branch uses the same instrument/pool model and restores remaining capacity,
+including exhausted levels. It cannot silently start a fresh pool on resume.
+Initial inline account state initializes fresh pools; choosing that is a new
+scenario. Model mismatches, missing pool keys, excess capacity and inconsistent
+depth reject. Branches are still explicit initial-state runs, not automatic event
+deduplication. Remaining capacity, source frames, candidate execution, commitment,
+resolved quantities, dispositions and all other values use existing qxctl
+query/export and shared SDK result surfaces. `shared_liquidity`, `target_position`
+and `position_split` templates expose the controls; references must be replaced
+with caller-owned artifacts. Native 0.31 and optional Go 0.1.5 are exact selections.
+
+`position_split` is an explicit positive ratio supplied at the chosen event time.
+It multiplies the position and divides an existing mark, preserving exact marked
+notional with no rounding, cash-in-lieu, tax or automatic data action. Caller bounds
+apply atomically. A split on an instrument with a retained pool is unsupported in
+this model because unchanged source units would be invalid; select a new branch
+with explicitly adjusted pool evidence instead. Cash-notional settlement remains
+the shipped instrument model; futures margin, option exercise and atomic multileg
+settlement are not supplied by this operation.
+
+Accounts remain serial; independent experiments may run concurrently. Pool state
+is retained in memory and copied with tentative account state; snapshot retention
+includes that depth state. No hidden spill, automatic parallelism across dependent
+orders, global dataset cap, deadline, device runtime or speed claim is introduced.
+This release verifies selected account/shared-snapshot execution. Parent R6.1 and
+M3 remain open for richer provider/instrument selection and subsequent gates.

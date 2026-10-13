@@ -9,11 +9,11 @@ ctest --test-dir build/sbv --output-on-failure
 cmake --install build/sbv
 ```
 
-The independently installable executable is `libexec/symphony/sbv-engine/0.30.0-dev/symphony-sbv`. Receipt, contracts, schemas and licenses are versioned and owned by its v2 install receipt. Static dependencies are embedded in this executable; it does not require a running bus, provider connection, another engine process or a GPU. The static `Symphony::Sbv` target is available to in-tree builds; the shared `Symphony::SbvSdk` target supplies the installed C ABI/C++ wrapper.
+The independently installable executable is `libexec/symphony/sbv-engine/0.31.0-dev/symphony-sbv`. Receipt, contracts, schemas and licenses are versioned and owned by its v2 install receipt. Static dependencies are embedded in this executable; it does not require a running bus, provider connection, another engine process or a GPU. The static `Symphony::Sbv` target is available to in-tree builds; the shared `Symphony::SbvSdk` target supplies the installed C ABI/C++ wrapper.
 
 The generated `uninstall-sbv-engine` target verifies the exact receipt-owned paths and refuses changed files or shared-root lifecycle ownership; it never removes backtest results. Configure a separate prefix when evaluating this experimental release.
 
-The receipt also installs the independent header-only interop contract. Configure a separate consumer with `-DSymphonySbvInterop_DIR=<prefix>/lib/cmake/SymphonySbvInterop/0.30.0-dev`, call `find_package(SymphonySbvInterop CONFIG REQUIRED)` and link `Symphony::SbvInterop`. No engine library or vendor SDK is needed for these capability/ownership types. The separate calculation SDK below shares the receipt; neither target supplies a CUDA/tensor runtime.
+The receipt also installs the independent header-only interop contract. Configure a separate consumer with `-DSymphonySbvInterop_DIR=<prefix>/lib/cmake/SymphonySbvInterop/0.31.0-dev`, call `find_package(SymphonySbvInterop CONFIG REQUIRED)` and link `Symphony::SbvInterop`. No engine library or vendor SDK is needed for these capability/ownership types. The separate calculation SDK below shares the receipt; neither target supplies a CUDA/tensor runtime.
 
 The exact prefix also owns the native shared SDK under `lib/symphony/sbv-engine/<release>/`, C/C++ headers, `lib/cmake/SymphonySbvSdk/<release>/SymphonySbvSdkConfig.cmake`. Select that CMake config directory explicitly; consumers link `Symphony::SbvSdk`. External language bindings may load this exact native ABI. No package manager or interpreter is required by the native engine. The receipt enumerates every owned installation file; user result and experiment files remain separate.
 
@@ -30,7 +30,7 @@ preserves every retained field for terminal, GUI and external research consumers
 
 Experimental 0.20 installs `symphony/sbv/provider.h` and the interface-only
 `Symphony::SbvProvider` target. A standalone provider uses
-`-DSymphonySbvProvider_DIR=<prefix>/lib/cmake/SymphonySbvProvider/0.30.0-dev`,
+`-DSymphonySbvProvider_DIR=<prefix>/lib/cmake/SymphonySbvProvider/0.31.0-dev`,
 `find_package(SymphonySbvProvider CONFIG REQUIRED)`, and links that interface
 target. It exports `symphony_sbv_provider_api_v1` and needs no SBV library.
 Select its exact binary path/digest in `qxctl sbv provider-inspect`,
@@ -47,5 +47,5 @@ The 0.23 core producer alternative selects a new bundle and separate private wor
 
 The optional [Go adapter](../../libraries/sbv-go/README.md) v0.1.0-dev is installed
 and removed as an independent source-module dependency. It selects the exact
-qxctl executable and native 0.30.0-dev prefix; no adapter file is added to this
+qxctl executable and native 0.31.0-dev prefix; no adapter file is added to this
 native receipt and no native installation is removed with the adapter.

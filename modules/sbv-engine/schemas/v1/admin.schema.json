@@ -34599,6 +34599,266 @@
                                 "to_amount"
                               ],
                               "additionalProperties": false
+                            },
+                            {
+                              "type": "object",
+                              "properties": {
+                                "event_id": {
+                                  "type": "string",
+                                  "minLength": 1,
+                                  "maxLength": 256
+                                },
+                                "time_ns": {
+                                  "type": "string",
+                                  "pattern": "^(0|[1-9][0-9]*)$",
+                                  "maxLength": 20
+                                },
+                                "kind": {
+                                  "const": "liquidity_order"
+                                },
+                                "pool_id": {
+                                  "type": "string",
+                                  "minLength": 1,
+                                  "maxLength": 256
+                                },
+                                "quantity_rule": {
+                                  "type": "object",
+                                  "properties": {
+                                    "kind": {
+                                      "enum": [
+                                        "fixed",
+                                        "target_position"
+                                      ]
+                                    },
+                                    "value": {
+                                      "type": "object",
+                                      "properties": {
+                                        "numerator": {
+                                          "type": "string"
+                                        },
+                                        "denominator": {
+                                          "type": "string"
+                                        }
+                                      },
+                                      "required": [
+                                        "numerator",
+                                        "denominator"
+                                      ],
+                                      "additionalProperties": false
+                                    }
+                                  },
+                                  "required": [
+                                    "kind",
+                                    "value"
+                                  ],
+                                  "additionalProperties": false
+                                },
+                                "limit_price_nanos": {
+                                  "anyOf": [
+                                    {
+                                      "type": "string"
+                                    },
+                                    {
+                                      "type": "null"
+                                    }
+                                  ]
+                                },
+                                "time_in_force": {
+                                  "enum": [
+                                    "IOC",
+                                    "FOK"
+                                  ]
+                                },
+                                "max_level_participation": {
+                                  "type": "object",
+                                  "properties": {
+                                    "numerator": {
+                                      "type": "string"
+                                    },
+                                    "denominator": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "required": [
+                                    "numerator",
+                                    "denominator"
+                                  ],
+                                  "additionalProperties": false
+                                },
+                                "fee_fixed": {
+                                  "type": "object",
+                                  "properties": {
+                                    "numerator": {
+                                      "type": "string"
+                                    },
+                                    "denominator": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "required": [
+                                    "numerator",
+                                    "denominator"
+                                  ],
+                                  "additionalProperties": false
+                                },
+                                "fee_per_unit": {
+                                  "type": "object",
+                                  "properties": {
+                                    "numerator": {
+                                      "type": "string"
+                                    },
+                                    "denominator": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "required": [
+                                    "numerator",
+                                    "denominator"
+                                  ],
+                                  "additionalProperties": false
+                                },
+                                "guards": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "object",
+                                    "properties": {
+                                      "balance": {
+                                        "enum": [
+                                          "cash",
+                                          "position"
+                                        ]
+                                      },
+                                      "key": {
+                                        "type": "string",
+                                        "minLength": 1,
+                                        "maxLength": 256
+                                      },
+                                      "comparison": {
+                                        "enum": [
+                                          "lt",
+                                          "le",
+                                          "eq",
+                                          "ne",
+                                          "ge",
+                                          "gt"
+                                        ]
+                                      },
+                                      "value": {
+                                        "type": "object",
+                                        "properties": {
+                                          "numerator": {
+                                            "type": "string"
+                                          },
+                                          "denominator": {
+                                            "type": "string"
+                                          }
+                                        },
+                                        "required": [
+                                          "numerator",
+                                          "denominator"
+                                        ],
+                                        "additionalProperties": false
+                                      }
+                                    },
+                                    "required": [
+                                      "balance",
+                                      "key",
+                                      "comparison",
+                                      "value"
+                                    ],
+                                    "additionalProperties": false
+                                  }
+                                },
+                                "depth_policy": {
+                                  "enum": [
+                                    "require_sufficient",
+                                    "visible_only"
+                                  ]
+                                },
+                                "market_state_policy": {
+                                  "enum": [
+                                    "uncrossed_only",
+                                    "allow_locked_crossed"
+                                  ]
+                                },
+                                "receive_time_policy": {
+                                  "enum": [
+                                    "unflagged_only",
+                                    "allow_flagged"
+                                  ]
+                                },
+                                "on_unavailable": {
+                                  "enum": [
+                                    "abort",
+                                    "skip_event"
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "event_id",
+                                "time_ns",
+                                "kind",
+                                "pool_id",
+                                "quantity_rule",
+                                "limit_price_nanos",
+                                "time_in_force",
+                                "max_level_participation",
+                                "fee_fixed",
+                                "fee_per_unit",
+                                "guards",
+                                "depth_policy",
+                                "market_state_policy",
+                                "receive_time_policy",
+                                "on_unavailable"
+                              ],
+                              "additionalProperties": false
+                            },
+                            {
+                              "type": "object",
+                              "properties": {
+                                "event_id": {
+                                  "type": "string",
+                                  "minLength": 1,
+                                  "maxLength": 256
+                                },
+                                "time_ns": {
+                                  "type": "string",
+                                  "pattern": "^(0|[1-9][0-9]*)$",
+                                  "maxLength": 20
+                                },
+                                "kind": {
+                                  "const": "position_split"
+                                },
+                                "instrument_id": {
+                                  "type": "string",
+                                  "minLength": 1,
+                                  "maxLength": 256
+                                },
+                                "factor": {
+                                  "type": "object",
+                                  "properties": {
+                                    "numerator": {
+                                      "type": "string"
+                                    },
+                                    "denominator": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "required": [
+                                    "numerator",
+                                    "denominator"
+                                  ],
+                                  "additionalProperties": false
+                                }
+                              },
+                              "required": [
+                                "event_id",
+                                "time_ns",
+                                "kind",
+                                "instrument_id",
+                                "factor"
+                              ],
+                              "additionalProperties": false
                             }
                           ]
                         }
@@ -34749,6 +35009,167 @@
             },
             "output_path": {
               "type": "string"
+            },
+            "liquidity_pools": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "pool_id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 256
+                  },
+                  "instrument_id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 256
+                  },
+                  "source": {
+                    "anyOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "path": {
+                            "type": "string"
+                          },
+                          "expected_sha256": {
+                            "type": "string",
+                            "pattern": "^[0-9a-f]{64}$"
+                          },
+                          "pointer": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "path",
+                          "expected_sha256",
+                          "pointer"
+                        ],
+                        "additionalProperties": false
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "kind": {
+                            "const": "bundle"
+                          },
+                          "reference": {
+                            "type": "object",
+                            "properties": {
+                              "manifest_path": {
+                                "type": "string",
+                                "minLength": 2,
+                                "maxLength": 4096,
+                                "pattern": "^/",
+                                "description": "Absolute clean component-wise no-follow path; native validation rejects controls, symlinks and unsafe components."
+                              },
+                              "manifest_sha256": {
+                                "type": "string",
+                                "pattern": "^[0-9a-f]{64}$"
+                              },
+                              "content_sha256": {
+                                "type": "string",
+                                "pattern": "^[0-9a-f]{64}$"
+                              }
+                            },
+                            "required": [
+                              "manifest_path",
+                              "manifest_sha256",
+                              "content_sha256"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "selector": {
+                            "oneOf": [
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "kind": {
+                                    "const": "node_id"
+                                  },
+                                  "node_id": {
+                                    "type": "string",
+                                    "pattern": "^(0|[1-9][0-9]*)$",
+                                    "maxLength": 20,
+                                    "description": "Canonical uint64 decimal; checked range at native and control boundary."
+                                  }
+                                },
+                                "required": [
+                                  "kind",
+                                  "node_id"
+                                ],
+                                "additionalProperties": false
+                              },
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "kind": {
+                                    "const": "pointer"
+                                  },
+                                  "pointer": {
+                                    "type": "string",
+                                    "maxLength": 65536,
+                                    "pattern": "^(?:/|$)",
+                                    "description": "RFC6901 escaping validated natively; source-bound node IDs reach fields whose full pointer exceeds this convenience profile."
+                                  }
+                                },
+                                "required": [
+                                  "kind",
+                                  "pointer"
+                                ],
+                                "additionalProperties": false
+                              }
+                            ]
+                          },
+                          "read_options": {
+                            "type": "object",
+                            "properties": {
+                              "max_page_bytes": {
+                                "oneOf": [
+                                  {
+                                    "type": "string",
+                                    "pattern": "^[1-9][0-9]*$",
+                                    "maxLength": 20,
+                                    "description": "Canonical positive uint64 decimal; checked range at native and control boundary."
+                                  },
+                                  {
+                                    "type": "null"
+                                  }
+                                ]
+                              },
+                              "cache_bytes": {
+                                "type": "string",
+                                "pattern": "^(0|[1-9][0-9]*)$",
+                                "maxLength": 20,
+                                "description": "Canonical uint64 decimal; checked range at native and control boundary."
+                              }
+                            },
+                            "required": [
+                              "max_page_bytes",
+                              "cache_bytes"
+                            ],
+                            "additionalProperties": false
+                          }
+                        },
+                        "required": [
+                          "kind",
+                          "reference",
+                          "selector",
+                          "read_options"
+                        ],
+                        "additionalProperties": false
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "pool_id",
+                  "instrument_id",
+                  "source"
+                ],
+                "additionalProperties": false
+              }
             }
           },
           "required": [
@@ -35513,6 +35934,266 @@
                                 "to_amount"
                               ],
                               "additionalProperties": false
+                            },
+                            {
+                              "type": "object",
+                              "properties": {
+                                "event_id": {
+                                  "type": "string",
+                                  "minLength": 1,
+                                  "maxLength": 256
+                                },
+                                "time_ns": {
+                                  "type": "string",
+                                  "pattern": "^(0|[1-9][0-9]*)$",
+                                  "maxLength": 20
+                                },
+                                "kind": {
+                                  "const": "liquidity_order"
+                                },
+                                "pool_id": {
+                                  "type": "string",
+                                  "minLength": 1,
+                                  "maxLength": 256
+                                },
+                                "quantity_rule": {
+                                  "type": "object",
+                                  "properties": {
+                                    "kind": {
+                                      "enum": [
+                                        "fixed",
+                                        "target_position"
+                                      ]
+                                    },
+                                    "value": {
+                                      "type": "object",
+                                      "properties": {
+                                        "numerator": {
+                                          "type": "string"
+                                        },
+                                        "denominator": {
+                                          "type": "string"
+                                        }
+                                      },
+                                      "required": [
+                                        "numerator",
+                                        "denominator"
+                                      ],
+                                      "additionalProperties": false
+                                    }
+                                  },
+                                  "required": [
+                                    "kind",
+                                    "value"
+                                  ],
+                                  "additionalProperties": false
+                                },
+                                "limit_price_nanos": {
+                                  "anyOf": [
+                                    {
+                                      "type": "string"
+                                    },
+                                    {
+                                      "type": "null"
+                                    }
+                                  ]
+                                },
+                                "time_in_force": {
+                                  "enum": [
+                                    "IOC",
+                                    "FOK"
+                                  ]
+                                },
+                                "max_level_participation": {
+                                  "type": "object",
+                                  "properties": {
+                                    "numerator": {
+                                      "type": "string"
+                                    },
+                                    "denominator": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "required": [
+                                    "numerator",
+                                    "denominator"
+                                  ],
+                                  "additionalProperties": false
+                                },
+                                "fee_fixed": {
+                                  "type": "object",
+                                  "properties": {
+                                    "numerator": {
+                                      "type": "string"
+                                    },
+                                    "denominator": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "required": [
+                                    "numerator",
+                                    "denominator"
+                                  ],
+                                  "additionalProperties": false
+                                },
+                                "fee_per_unit": {
+                                  "type": "object",
+                                  "properties": {
+                                    "numerator": {
+                                      "type": "string"
+                                    },
+                                    "denominator": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "required": [
+                                    "numerator",
+                                    "denominator"
+                                  ],
+                                  "additionalProperties": false
+                                },
+                                "guards": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "object",
+                                    "properties": {
+                                      "balance": {
+                                        "enum": [
+                                          "cash",
+                                          "position"
+                                        ]
+                                      },
+                                      "key": {
+                                        "type": "string",
+                                        "minLength": 1,
+                                        "maxLength": 256
+                                      },
+                                      "comparison": {
+                                        "enum": [
+                                          "lt",
+                                          "le",
+                                          "eq",
+                                          "ne",
+                                          "ge",
+                                          "gt"
+                                        ]
+                                      },
+                                      "value": {
+                                        "type": "object",
+                                        "properties": {
+                                          "numerator": {
+                                            "type": "string"
+                                          },
+                                          "denominator": {
+                                            "type": "string"
+                                          }
+                                        },
+                                        "required": [
+                                          "numerator",
+                                          "denominator"
+                                        ],
+                                        "additionalProperties": false
+                                      }
+                                    },
+                                    "required": [
+                                      "balance",
+                                      "key",
+                                      "comparison",
+                                      "value"
+                                    ],
+                                    "additionalProperties": false
+                                  }
+                                },
+                                "depth_policy": {
+                                  "enum": [
+                                    "require_sufficient",
+                                    "visible_only"
+                                  ]
+                                },
+                                "market_state_policy": {
+                                  "enum": [
+                                    "uncrossed_only",
+                                    "allow_locked_crossed"
+                                  ]
+                                },
+                                "receive_time_policy": {
+                                  "enum": [
+                                    "unflagged_only",
+                                    "allow_flagged"
+                                  ]
+                                },
+                                "on_unavailable": {
+                                  "enum": [
+                                    "abort",
+                                    "skip_event"
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "event_id",
+                                "time_ns",
+                                "kind",
+                                "pool_id",
+                                "quantity_rule",
+                                "limit_price_nanos",
+                                "time_in_force",
+                                "max_level_participation",
+                                "fee_fixed",
+                                "fee_per_unit",
+                                "guards",
+                                "depth_policy",
+                                "market_state_policy",
+                                "receive_time_policy",
+                                "on_unavailable"
+                              ],
+                              "additionalProperties": false
+                            },
+                            {
+                              "type": "object",
+                              "properties": {
+                                "event_id": {
+                                  "type": "string",
+                                  "minLength": 1,
+                                  "maxLength": 256
+                                },
+                                "time_ns": {
+                                  "type": "string",
+                                  "pattern": "^(0|[1-9][0-9]*)$",
+                                  "maxLength": 20
+                                },
+                                "kind": {
+                                  "const": "position_split"
+                                },
+                                "instrument_id": {
+                                  "type": "string",
+                                  "minLength": 1,
+                                  "maxLength": 256
+                                },
+                                "factor": {
+                                  "type": "object",
+                                  "properties": {
+                                    "numerator": {
+                                      "type": "string"
+                                    },
+                                    "denominator": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "required": [
+                                    "numerator",
+                                    "denominator"
+                                  ],
+                                  "additionalProperties": false
+                                }
+                              },
+                              "required": [
+                                "event_id",
+                                "time_ns",
+                                "kind",
+                                "instrument_id",
+                                "factor"
+                              ],
+                              "additionalProperties": false
                             }
                           ]
                         }
@@ -35740,6 +36421,167 @@
               ],
               "additionalProperties": false,
               "description": "Explicit partitioned output; new private workspace and final bundle must be disjoint. Scratch remains caller-owned on success/failure. No implicit fallback, cleanup, retry or default deadline."
+            },
+            "liquidity_pools": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "pool_id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 256
+                  },
+                  "instrument_id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 256
+                  },
+                  "source": {
+                    "anyOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "path": {
+                            "type": "string"
+                          },
+                          "expected_sha256": {
+                            "type": "string",
+                            "pattern": "^[0-9a-f]{64}$"
+                          },
+                          "pointer": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "path",
+                          "expected_sha256",
+                          "pointer"
+                        ],
+                        "additionalProperties": false
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "kind": {
+                            "const": "bundle"
+                          },
+                          "reference": {
+                            "type": "object",
+                            "properties": {
+                              "manifest_path": {
+                                "type": "string",
+                                "minLength": 2,
+                                "maxLength": 4096,
+                                "pattern": "^/",
+                                "description": "Absolute clean component-wise no-follow path; native validation rejects controls, symlinks and unsafe components."
+                              },
+                              "manifest_sha256": {
+                                "type": "string",
+                                "pattern": "^[0-9a-f]{64}$"
+                              },
+                              "content_sha256": {
+                                "type": "string",
+                                "pattern": "^[0-9a-f]{64}$"
+                              }
+                            },
+                            "required": [
+                              "manifest_path",
+                              "manifest_sha256",
+                              "content_sha256"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "selector": {
+                            "oneOf": [
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "kind": {
+                                    "const": "node_id"
+                                  },
+                                  "node_id": {
+                                    "type": "string",
+                                    "pattern": "^(0|[1-9][0-9]*)$",
+                                    "maxLength": 20,
+                                    "description": "Canonical uint64 decimal; checked range at native and control boundary."
+                                  }
+                                },
+                                "required": [
+                                  "kind",
+                                  "node_id"
+                                ],
+                                "additionalProperties": false
+                              },
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "kind": {
+                                    "const": "pointer"
+                                  },
+                                  "pointer": {
+                                    "type": "string",
+                                    "maxLength": 65536,
+                                    "pattern": "^(?:/|$)",
+                                    "description": "RFC6901 escaping validated natively; source-bound node IDs reach fields whose full pointer exceeds this convenience profile."
+                                  }
+                                },
+                                "required": [
+                                  "kind",
+                                  "pointer"
+                                ],
+                                "additionalProperties": false
+                              }
+                            ]
+                          },
+                          "read_options": {
+                            "type": "object",
+                            "properties": {
+                              "max_page_bytes": {
+                                "oneOf": [
+                                  {
+                                    "type": "string",
+                                    "pattern": "^[1-9][0-9]*$",
+                                    "maxLength": 20,
+                                    "description": "Canonical positive uint64 decimal; checked range at native and control boundary."
+                                  },
+                                  {
+                                    "type": "null"
+                                  }
+                                ]
+                              },
+                              "cache_bytes": {
+                                "type": "string",
+                                "pattern": "^(0|[1-9][0-9]*)$",
+                                "maxLength": 20,
+                                "description": "Canonical uint64 decimal; checked range at native and control boundary."
+                              }
+                            },
+                            "required": [
+                              "max_page_bytes",
+                              "cache_bytes"
+                            ],
+                            "additionalProperties": false
+                          }
+                        },
+                        "required": [
+                          "kind",
+                          "reference",
+                          "selector",
+                          "read_options"
+                        ],
+                        "additionalProperties": false
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "pool_id",
+                  "instrument_id",
+                  "source"
+                ],
+                "additionalProperties": false
+              }
             }
           },
           "required": [
@@ -35769,7 +36611,7 @@
           "const": "symphony.sbv.capabilities.v1"
         },
         "engine_version": {
-          "const": "0.30.0-dev"
+          "const": "0.31.0-dev"
         },
         "cpu": {
           "type": "object",
@@ -37655,7 +38497,7 @@
           "const": "symphony.sbv.catalogue.v1"
         },
         "engine_version": {
-          "const": "0.30.0-dev"
+          "const": "0.31.0-dev"
         },
         "models": {
           "type": "array",
@@ -40591,7 +41433,7 @@
           "const": "symphony.sbv.backend-plan.v1"
         },
         "engine_version": {
-          "const": "0.30.0-dev"
+          "const": "0.31.0-dev"
         },
         "status": {
           "enum": [
@@ -40884,7 +41726,7 @@
           "const": "symphony.sbv.live-plan.v1"
         },
         "engine_version": {
-          "const": "0.30.0-dev"
+          "const": "0.31.0-dev"
         },
         "can_activate": {
           "const": false
@@ -47794,7 +48636,7 @@
           "const": "symphony.sbv.provider-inspect.v1"
         },
         "engine_version": {
-          "const": "0.30.0-dev"
+          "const": "0.31.0-dev"
         },
         "provider": {
           "type": "object",
@@ -49563,7 +50405,7 @@
           "const": "symphony.sbv.dataset-jobs.v1"
         },
         "engine_version": {
-          "const": "0.30.0-dev"
+          "const": "0.31.0-dev"
         },
         "directory": {
           "type": "string"
@@ -49609,7 +50451,7 @@
           "const": "symphony.sbv.dataset-cancel.v1"
         },
         "engine_version": {
-          "const": "0.30.0-dev"
+          "const": "0.31.0-dev"
         },
         "directory": {
           "type": "string"
@@ -49638,7 +50480,7 @@
           "const": "symphony.sbv.dataset-stop.v1"
         },
         "engine_version": {
-          "const": "0.30.0-dev"
+          "const": "0.31.0-dev"
         },
         "directory": {
           "type": "string"
@@ -71660,6 +72502,266 @@
             "to_amount"
           ],
           "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "event_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "time_ns": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]*)$",
+              "maxLength": 20
+            },
+            "kind": {
+              "const": "liquidity_order"
+            },
+            "pool_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "quantity_rule": {
+              "type": "object",
+              "properties": {
+                "kind": {
+                  "enum": [
+                    "fixed",
+                    "target_position"
+                  ]
+                },
+                "value": {
+                  "type": "object",
+                  "properties": {
+                    "numerator": {
+                      "type": "string"
+                    },
+                    "denominator": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "numerator",
+                    "denominator"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "kind",
+                "value"
+              ],
+              "additionalProperties": false
+            },
+            "limit_price_nanos": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "time_in_force": {
+              "enum": [
+                "IOC",
+                "FOK"
+              ]
+            },
+            "max_level_participation": {
+              "type": "object",
+              "properties": {
+                "numerator": {
+                  "type": "string"
+                },
+                "denominator": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "numerator",
+                "denominator"
+              ],
+              "additionalProperties": false
+            },
+            "fee_fixed": {
+              "type": "object",
+              "properties": {
+                "numerator": {
+                  "type": "string"
+                },
+                "denominator": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "numerator",
+                "denominator"
+              ],
+              "additionalProperties": false
+            },
+            "fee_per_unit": {
+              "type": "object",
+              "properties": {
+                "numerator": {
+                  "type": "string"
+                },
+                "denominator": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "numerator",
+                "denominator"
+              ],
+              "additionalProperties": false
+            },
+            "guards": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "balance": {
+                    "enum": [
+                      "cash",
+                      "position"
+                    ]
+                  },
+                  "key": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 256
+                  },
+                  "comparison": {
+                    "enum": [
+                      "lt",
+                      "le",
+                      "eq",
+                      "ne",
+                      "ge",
+                      "gt"
+                    ]
+                  },
+                  "value": {
+                    "type": "object",
+                    "properties": {
+                      "numerator": {
+                        "type": "string"
+                      },
+                      "denominator": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "numerator",
+                      "denominator"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "required": [
+                  "balance",
+                  "key",
+                  "comparison",
+                  "value"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "depth_policy": {
+              "enum": [
+                "require_sufficient",
+                "visible_only"
+              ]
+            },
+            "market_state_policy": {
+              "enum": [
+                "uncrossed_only",
+                "allow_locked_crossed"
+              ]
+            },
+            "receive_time_policy": {
+              "enum": [
+                "unflagged_only",
+                "allow_flagged"
+              ]
+            },
+            "on_unavailable": {
+              "enum": [
+                "abort",
+                "skip_event"
+              ]
+            }
+          },
+          "required": [
+            "event_id",
+            "time_ns",
+            "kind",
+            "pool_id",
+            "quantity_rule",
+            "limit_price_nanos",
+            "time_in_force",
+            "max_level_participation",
+            "fee_fixed",
+            "fee_per_unit",
+            "guards",
+            "depth_policy",
+            "market_state_policy",
+            "receive_time_policy",
+            "on_unavailable"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "event_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "time_ns": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]*)$",
+              "maxLength": 20
+            },
+            "kind": {
+              "const": "position_split"
+            },
+            "instrument_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "factor": {
+              "type": "object",
+              "properties": {
+                "numerator": {
+                  "type": "string"
+                },
+                "denominator": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "numerator",
+                "denominator"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "event_id",
+            "time_ns",
+            "kind",
+            "instrument_id",
+            "factor"
+          ],
+          "additionalProperties": false
         }
       ]
     },
@@ -71713,94 +72815,218 @@
       "additionalProperties": false
     },
     "account_state": {
-      "type": "object",
-      "properties": {
-        "protocol": {
-          "const": "symphony.sbv.account-state.v1"
-        },
-        "model_sha256": {
-          "type": "string",
-          "pattern": "^[0-9a-f]{64}$"
-        },
-        "cash": {
+      "anyOf": [
+        {
           "type": "object",
-          "additionalProperties": {
-            "type": "object",
-            "properties": {
-              "numerator": {
-                "type": "string"
-              },
-              "denominator": {
-                "type": "string"
-              }
+          "properties": {
+            "protocol": {
+              "const": "symphony.sbv.account-state.v1"
             },
-            "required": [
-              "numerator",
-              "denominator"
-            ],
-            "additionalProperties": false
-          }
-        },
-        "positions": {
-          "type": "object",
-          "additionalProperties": {
-            "type": "object",
-            "properties": {
-              "numerator": {
-                "type": "string"
-              },
-              "denominator": {
-                "type": "string"
-              }
-            },
-            "required": [
-              "numerator",
-              "denominator"
-            ],
-            "additionalProperties": false
-          }
-        },
-        "marks": {
-          "type": "object",
-          "additionalProperties": {
-            "type": "object",
-            "properties": {
-              "numerator": {
-                "type": "string"
-              },
-              "denominator": {
-                "type": "string"
-              }
-            },
-            "required": [
-              "numerator",
-              "denominator"
-            ],
-            "additionalProperties": false
-          }
-        },
-        "time_ns": {
-          "anyOf": [
-            {
+            "model_sha256": {
               "type": "string",
-              "pattern": "^(0|[1-9][0-9]*)$",
-              "maxLength": 20
+              "pattern": "^[0-9a-f]{64}$"
             },
-            {
-              "type": "null"
+            "cash": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "object",
+                "properties": {
+                  "numerator": {
+                    "type": "string"
+                  },
+                  "denominator": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "numerator",
+                  "denominator"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "positions": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "object",
+                "properties": {
+                  "numerator": {
+                    "type": "string"
+                  },
+                  "denominator": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "numerator",
+                  "denominator"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "marks": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "object",
+                "properties": {
+                  "numerator": {
+                    "type": "string"
+                  },
+                  "denominator": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "numerator",
+                  "denominator"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "time_ns": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^(0|[1-9][0-9]*)$",
+                  "maxLength": 20
+                },
+                {
+                  "type": "null"
+                }
+              ]
             }
-          ]
+          },
+          "required": [
+            "protocol",
+            "model_sha256",
+            "cash",
+            "positions",
+            "marks",
+            "time_ns"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "protocol": {
+              "const": "symphony.sbv.account-state.v2"
+            },
+            "model_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "cash": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "object",
+                "properties": {
+                  "numerator": {
+                    "type": "string"
+                  },
+                  "denominator": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "numerator",
+                  "denominator"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "positions": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "object",
+                "properties": {
+                  "numerator": {
+                    "type": "string"
+                  },
+                  "denominator": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "numerator",
+                  "denominator"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "marks": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "object",
+                "properties": {
+                  "numerator": {
+                    "type": "string"
+                  },
+                  "denominator": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "numerator",
+                  "denominator"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "time_ns": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^(0|[1-9][0-9]*)$",
+                  "maxLength": 20
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "liquidity_remaining": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "object",
+                "properties": {
+                  "bids": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "pattern": "^(0|[1-9][0-9]*)$",
+                      "maxLength": 20
+                    }
+                  },
+                  "asks": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "pattern": "^(0|[1-9][0-9]*)$",
+                      "maxLength": 20
+                    }
+                  }
+                },
+                "required": [
+                  "bids",
+                  "asks"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": [
+            "protocol",
+            "model_sha256",
+            "cash",
+            "positions",
+            "marks",
+            "time_ns",
+            "liquidity_remaining"
+          ],
+          "additionalProperties": false
         }
-      },
-      "required": [
-        "protocol",
-        "model_sha256",
-        "cash",
-        "positions",
-        "marks",
-        "time_ns"
-      ],
-      "additionalProperties": false
+      ]
     }
   },
   "$schema": "https://json-schema.org/draft/2020-12/schema"

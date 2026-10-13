@@ -3787,6 +3787,347 @@
         ],
         "extensions": {},
         "output_path": "/absolute/private/account.json"
+      },
+      "shared_liquidity": {
+        "protocol": "symphony.sbv.account-simulate-input.v1",
+        "mode": "fixed_intents",
+        "cash_units": [
+          "USD"
+        ],
+        "instruments": [
+          {
+            "instrument_id": "A",
+            "cash_unit": "USD",
+            "settlement": "cash_notional",
+            "price_multiplier": {
+              "numerator": "1",
+              "denominator": "1"
+            }
+          },
+          {
+            "instrument_id": "B",
+            "cash_unit": "USD",
+            "settlement": "cash_notional",
+            "price_multiplier": {
+              "numerator": "1",
+              "denominator": "1"
+            }
+          }
+        ],
+        "initial_state": {
+          "cash": {
+            "USD": {
+              "numerator": "100",
+              "denominator": "1"
+            }
+          },
+          "positions": {
+            "A": {
+              "numerator": "0",
+              "denominator": "1"
+            },
+            "B": {
+              "numerator": "0",
+              "denominator": "1"
+            }
+          },
+          "marks": {},
+          "time_ns": null
+        },
+        "constraints": {
+          "cash": {
+            "USD": {
+              "minimum": {
+                "numerator": "0",
+                "denominator": "1"
+              },
+              "maximum": null
+            }
+          },
+          "positions": {
+            "A": {
+              "minimum": null,
+              "maximum": null
+            },
+            "B": {
+              "minimum": null,
+              "maximum": null
+            }
+          }
+        },
+        "on_constraint": "reject_event",
+        "ordering": "time_stream_order",
+        "retain_snapshots": true,
+        "streams": [
+          {
+            "stream_id": "first",
+            "events": [
+              {
+                "event_id": "sweep",
+                "time_ns": "100",
+                "kind": "liquidity_order",
+                "pool_id": "A-depth",
+                "quantity_rule": {
+                  "kind": "fixed",
+                  "value": {
+                    "numerator": "2",
+                    "denominator": "1"
+                  }
+                },
+                "limit_price_nanos": null,
+                "time_in_force": "IOC",
+                "max_level_participation": {
+                  "numerator": "1",
+                  "denominator": "1"
+                },
+                "fee_fixed": {
+                  "numerator": "0",
+                  "denominator": "1"
+                },
+                "fee_per_unit": {
+                  "numerator": "0",
+                  "denominator": "1"
+                },
+                "guards": [],
+                "depth_policy": "require_sufficient",
+                "market_state_policy": "uncrossed_only",
+                "receive_time_policy": "unflagged_only",
+                "on_unavailable": "abort"
+              }
+            ]
+          }
+        ],
+        "extensions": {},
+        "output_path": "/absolute/private/account.json",
+        "liquidity_pools": [
+          {
+            "pool_id": "A-depth",
+            "instrument_id": "A",
+            "source": {
+              "path": "/absolute/retained/book-or-liquidity-result.json",
+              "expected_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+              "pointer": "/sections/book_frames/data/0"
+            }
+          }
+        ]
+      },
+      "target_position": {
+        "protocol": "symphony.sbv.account-simulate-input.v1",
+        "mode": "stateful_feedback",
+        "cash_units": [
+          "USD"
+        ],
+        "instruments": [
+          {
+            "instrument_id": "A",
+            "cash_unit": "USD",
+            "settlement": "cash_notional",
+            "price_multiplier": {
+              "numerator": "1",
+              "denominator": "1"
+            }
+          },
+          {
+            "instrument_id": "B",
+            "cash_unit": "USD",
+            "settlement": "cash_notional",
+            "price_multiplier": {
+              "numerator": "1",
+              "denominator": "1"
+            }
+          }
+        ],
+        "initial_state": {
+          "cash": {
+            "USD": {
+              "numerator": "100",
+              "denominator": "1"
+            }
+          },
+          "positions": {
+            "A": {
+              "numerator": "0",
+              "denominator": "1"
+            },
+            "B": {
+              "numerator": "0",
+              "denominator": "1"
+            }
+          },
+          "marks": {},
+          "time_ns": null
+        },
+        "constraints": {
+          "cash": {
+            "USD": {
+              "minimum": {
+                "numerator": "0",
+                "denominator": "1"
+              },
+              "maximum": null
+            }
+          },
+          "positions": {
+            "A": {
+              "minimum": null,
+              "maximum": null
+            },
+            "B": {
+              "minimum": null,
+              "maximum": null
+            }
+          }
+        },
+        "on_constraint": "reject_event",
+        "ordering": "time_stream_order",
+        "retain_snapshots": true,
+        "streams": [
+          {
+            "stream_id": "first",
+            "events": [
+              {
+                "event_id": "sweep",
+                "time_ns": "100",
+                "kind": "liquidity_order",
+                "pool_id": "A-depth",
+                "quantity_rule": {
+                  "kind": "target_position",
+                  "value": {
+                    "numerator": "2",
+                    "denominator": "1"
+                  }
+                },
+                "limit_price_nanos": null,
+                "time_in_force": "IOC",
+                "max_level_participation": {
+                  "numerator": "1",
+                  "denominator": "1"
+                },
+                "fee_fixed": {
+                  "numerator": "0",
+                  "denominator": "1"
+                },
+                "fee_per_unit": {
+                  "numerator": "0",
+                  "denominator": "1"
+                },
+                "guards": [],
+                "depth_policy": "require_sufficient",
+                "market_state_policy": "uncrossed_only",
+                "receive_time_policy": "unflagged_only",
+                "on_unavailable": "abort"
+              }
+            ]
+          }
+        ],
+        "extensions": {},
+        "output_path": "/absolute/private/account.json",
+        "liquidity_pools": [
+          {
+            "pool_id": "A-depth",
+            "instrument_id": "A",
+            "source": {
+              "path": "/absolute/retained/book-or-liquidity-result.json",
+              "expected_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+              "pointer": "/sections/book_frames/data/0"
+            }
+          }
+        ]
+      },
+      "position_split": {
+        "protocol": "symphony.sbv.account-simulate-input.v1",
+        "mode": "fixed_intents",
+        "cash_units": [
+          "USD"
+        ],
+        "instruments": [
+          {
+            "instrument_id": "A",
+            "cash_unit": "USD",
+            "settlement": "cash_notional",
+            "price_multiplier": {
+              "numerator": "1",
+              "denominator": "1"
+            }
+          },
+          {
+            "instrument_id": "B",
+            "cash_unit": "USD",
+            "settlement": "cash_notional",
+            "price_multiplier": {
+              "numerator": "1",
+              "denominator": "1"
+            }
+          }
+        ],
+        "initial_state": {
+          "cash": {
+            "USD": {
+              "numerator": "100",
+              "denominator": "1"
+            }
+          },
+          "positions": {
+            "A": {
+              "numerator": "3",
+              "denominator": "1"
+            },
+            "B": {
+              "numerator": "0",
+              "denominator": "1"
+            }
+          },
+          "marks": {
+            "A": {
+              "numerator": "10",
+              "denominator": "1"
+            }
+          },
+          "time_ns": null
+        },
+        "constraints": {
+          "cash": {
+            "USD": {
+              "minimum": {
+                "numerator": "0",
+                "denominator": "1"
+              },
+              "maximum": null
+            }
+          },
+          "positions": {
+            "A": {
+              "minimum": null,
+              "maximum": null
+            },
+            "B": {
+              "minimum": null,
+              "maximum": null
+            }
+          }
+        },
+        "on_constraint": "reject_event",
+        "ordering": "time_stream_order",
+        "retain_snapshots": true,
+        "streams": [
+          {
+            "stream_id": "split",
+            "events": [
+              {
+                "event_id": "split",
+                "time_ns": "1",
+                "kind": "position_split",
+                "instrument_id": "A",
+                "factor": {
+                  "numerator": "2",
+                  "denominator": "1"
+                }
+              }
+            ]
+          }
+        ],
+        "extensions": {},
+        "output_path": "/absolute/private/account.json"
       }
     }
   }

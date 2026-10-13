@@ -3,9 +3,9 @@
   "module_id": "sbv-engine",
   "engine_id": "symphony-sbv",
   "namespace": "symphony::sbv::interface",
-  "current_version": "0.30.0-dev",
+  "current_version": "0.31.0-dev",
   "releases": {
-    "0.30.0-dev": [
+    "0.31.0-dev": [
       "capabilities",
       "run",
       "compose",
@@ -154,7 +154,8 @@
     "symphony.sbv.bundle-cursor.v1",
     "symphony.sbv.exact-series-formula.v1",
     "symphony.sbv.account-state.v1",
-    "symphony.sbv.account-intent.v1"
+    "symphony.sbv.account-intent.v1",
+    "symphony.sbv.account-state.v2"
   ],
   "operations": [
     {

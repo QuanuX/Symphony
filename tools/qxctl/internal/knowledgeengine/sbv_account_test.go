@@ -79,7 +79,7 @@ func TestSBVInstalledAccountSimulation(t *testing.T) {
 	if !sbvSchemaShape(defs["account_state"], gs["terminal_state"].(map[string]any)["data"], 0) {
 		t.Fatal("typed account state schema")
 	}
-	for _, variant := range []string{"", "feedback", "partitioned"} {
+	for _, variant := range []string{"", "feedback", "partitioned", "shared_liquidity", "target_position", "position_split"} {
 		if _, _, err := SBVTemplateVariant(prefix, SBVAdministrationInterfaceVersion, "account_simulate", variant); err != nil {
 			t.Fatal(err)
 		}

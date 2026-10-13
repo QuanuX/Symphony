@@ -24462,3 +24462,31 @@ automatic nested fitting and cross-run holdout history remain unimplemented.
 - deferred_projections: exchange matching, richer feedback providers and broader instrument economics
 - notes: Explicit user constraints, guards, ordering and branch state; no calibrated fill claim.
 - status: canonical
+
+### SBV depth_sweep.hpp
+
+- path: `modules/sbv-engine/src/depth_sweep.hpp`
+- title: SBV depth_sweep.hpp
+- surface_type: implementation contract or test
+- truth_role: Shared native depth sweep and account coupling verification
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.31 R6.1b shared snapshot account execution
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, SDKs, agents and portable result consumers
+- deferred_projections: arbitrary runtime feedback providers and broader settlement models
+- notes: Explicit user policies and atomic capital/liquidity admission; no calibration claim.
+- status: canonical
+
+### SBV account_execution_test.cpp
+
+- path: `modules/sbv-engine/tests/account_execution_test.cpp`
+- title: SBV account_execution_test.cpp
+- surface_type: implementation contract or test
+- truth_role: Shared native depth sweep and account coupling verification
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.31 R6.1b shared snapshot account execution
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, SDKs, agents and portable result consumers
+- deferred_projections: arbitrary runtime feedback providers and broader settlement models
+- notes: Explicit user policies and atomic capital/liquidity admission; no calibration claim.
+- status: canonical

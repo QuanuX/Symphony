@@ -259,8 +259,17 @@
         },
         {
           "id": "R6.1b",
+          "status": "verified_selected_scope",
+          "scope": "Atomic account/native displayed-depth coupling, shared capacity snapshots/branches, target-position feedback and explicit splits.",
+          "release": "0.31.0-dev",
+          "evidence": "workspace:implementation/sbv-account-execution/CHECKS.json",
+          "qualification": "Shared snapshot competition and capital admission are coupled through the same native sweep. Arbitrary runtime feedback providers and additional settlement models remain explicitly open."
+        },
+        {
+          "id": "R6.1c",
           "status": "prepared_not_started",
-          "scope": "Execution-result/shared-liquidity coupling, richer feedback providers and selected additional instrument economics."
+          "scope": "Native runtime feedback-provider seam and selected additional settlement economics; final R6.1 contract/case reconciliation.",
+          "scope_origin": "Explicit remainder of the originally broader R6.1b provider/instrument scope after the independently verified atomic shared-snapshot increment."
         }
       ]
     },
@@ -354,5 +363,5 @@
       "correction": "The generic recommendation to replace the 4096-signal profile is historical/stale for already-shipped partitioned core producers; 0.24 qualified 65,537 signals. Residual legacy external/model/consumer domains remain profile-specific. Preserve the sealed original and use operation_profiles for current limits."
     }
   ],
-  "next_step": "R6.1b"
+  "next_step": "R6.1c"
 }

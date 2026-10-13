@@ -1297,7 +1297,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `modules/sbv-engine`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:platform`
-- record_digest: `sha256:d50f36e7704ee745acf0543015c1f9543e3ed59c34333179a79e665e7ff71bfe`
+- record_digest: `sha256:3d623245cdfbb89a3d4d8ed1b1fb39a306ef083ad963806b7bb74968cd419503`
 - notes: Experimental SBV first implementation; exact declared operations and portable retained evidence only.
 
 - feature_id: `ssfv:symphony:qxctl-sbv-administration`

@@ -68,7 +68,7 @@ func TestSBVBulkCommandFormatBeforeDispatch(t *testing.T) {
 		command.SilenceUsage = true
 		command.SetOut(io.Discard)
 		command.SetErr(io.Discard)
-		command.SetArgs([]string{"bundle", "export", "--prefix", "/missing/installation", "--version", "0.30.0-dev", "--input", path, "--format", pair[1]})
+		command.SetArgs([]string{"bundle", "export", "--prefix", "/missing/installation", "--version", "0.31.0-dev", "--input", path, "--format", pair[1]})
 		_, err := command.ExecuteC()
 		if !errors.Is(err, errUsageOnly) || !strings.Contains(err.Error(), "before dispatch") {
 			t.Fatalf("format reached installation: %v", err)
