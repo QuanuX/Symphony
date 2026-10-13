@@ -1,8 +1,8 @@
 {
   "protocol": "symphony.sbv.milestone-readiness.v1",
   "date": "2026-10-13",
-  "status": "selected_local_M2_M3_gate_accepted",
-  "authority": "User authorized R6.3 completion, focused independent audit, then commit/push and remote Codex testing. Selected local gate preserves all broader original-case limitations.",
+  "status": "selected_M2_M3_release_gate_accepted",
+  "authority": "User directed completion through M3, with prior remote-testing and focused independent-review authorization. Selected Mac-to-Linux guest/user-scope authority profile qualified; broader optional domains remain explicit.",
   "baseline": {
     "selected_M1": "R3.3/R4 0.24 local candidate accepted at 50cedde31cb8c78dcc61845bfe067a1d84eb6026",
     "hardening_release": "0.25.0-dev",
@@ -28,7 +28,7 @@
       "verification": "Stale generation refusal, reject/drain below active demand, unlimited/uint64 selections, reads/decodes unchanged after source deletion."
     }
   ],
-  "next_increment": "Remote deployment qualification",
+  "next_increment": "User review/publication decision; optional additional deployment or capability profile",
   "sequence": [
     {
       "id": "R5.1",
@@ -277,7 +277,7 @@
       ],
       "implementation_release": "0.32.0-dev",
       "evidence": "workspace:implementation/sbv-feedback-settlement/CHECKS.json",
-      "qualification": "R6.1a-c verify the selected local account scope: multiple ordered instruments/shared capital, atomic single-frame liquidity, caller feedback providers with explicit memory, cash-notional and linear variation economics, explicit FX/cashflows/splits, portable branches and full qxctl/SDK results. Full exchange matching, margin/liquidation, nonlinear derivatives and multi-event transactional multileg models remain unsupported or future selections. Original case partial/deferred scope remains explicit; M3 is open for R6.2/R6.3."
+      "qualification": "R6.1a-c verify the selected local account scope: multiple ordered instruments/shared capital, atomic single-frame liquidity, caller feedback providers with explicit memory, cash-notional and linear variation economics, explicit FX/cashflows/splits, portable branches and full qxctl/SDK results. Full exchange matching, margin/liquidation, nonlinear derivatives and multi-event transactional multileg models remain unsupported or future selections. Original case partial/deferred scope remains explicit; R6.2/R6.3 subsequently close the selected M3 release; additional models remain optional."
     },
     {
       "id": "R6.2",
@@ -310,7 +310,7 @@
         "A094",
         "A095"
       ],
-      "status": "selected_local_transport_and_durable_scope_verified_remote_deployment_open",
+      "status": "selected_durable_and_cross_OS_guest_transport_qualified",
       "increments": [
         {
           "id": "R6.2a",
@@ -323,9 +323,10 @@
         },
         {
           "id": "R6.2b",
-          "status": "local_executable_profile_verified_remote_deployment_open",
-          "deliverable": "Exact local process adapter and target-owned authority with full loss/cancel/reconciliation/result projection; real remote deployment and resource brokerage remain open.",
-          "evidence": "workspace:implementation/sbv-remote-execution"
+          "status": "selected_process_and_guest_SSH_profiles_qualified",
+          "deliverable": "Optional authenticated carrier, target-local user-scope SSIAG/STAV, full cancellation/loss/reconciliation and portable result access; provisioning/target data placement remain explicit owner choices.",
+          "evidence": "workspace:implementation/sbv-m3-remote-final",
+          "remaining": "Physical-host/WAN and cluster placement/shared storage/checkpoint or distinct-principal authority remain separate profiles."
         }
       ]
     },
@@ -361,9 +362,9 @@
         "A094",
         "A095"
       ],
-      "status": "accepted_selected_local_profile",
-      "evidence": "workspace:implementation/sbv-m3-qualification",
-      "qualification": "55 resolved native suites,4 sanitizer suites,installed Go/command/race gates,full independent results,64 scientific-equivalent CPU/RAM measurements,terminal exports,primary competitor refresh. No full remote/peer acceptance."
+      "status": "accepted_selected_M3_release",
+      "evidence": "workspace:implementation/sbv-m3-remote-final",
+      "qualification": "Prior55native/4sanitizer/installed/race and64CPU-RAM comparisons retained. Actual Mac-to-Linux guest SSH, real target user authority, all9operations, complete typed899account/374replay nodes, independent correctness comparison, loss/recovery and final review pass. No peer speed ranking or broader platform claim."
     }
   ],
   "every_increment_protocol": [
@@ -379,7 +380,7 @@
     "fresh_acquisition": "Requires operational selected SQAV/SSIAG provider bridge and explicit cost/unknown-outcome accounting within the existing aggregate $10 authorization. Not an implicit new spend.",
     "calibration": "Existing capped AAPL/ESZ6 fragments do not establish full initial book or execution-label truth.",
     "live": "Conceptual scaffold only; no live connection/test.",
-    "publication": "Commit and push when selected gate passes, then remote Codex testing; no new main merge requested.",
+    "publication": "This increment is local qualification and commit only. Earlier branch pushes retain their historical authorization; no new push or merge.",
     "limits": "Users select constraints or none. Framing/representation contracts and actual host capacity are disclosed, not described as universal dataset ceilings."
   },
   "tracked_corrections": [
@@ -388,20 +389,29 @@
       "correction": "The generic recommendation to replace the 4096-signal profile is historical/stale for already-shipped partitioned core producers; 0.24 qualified 65,537 signals. Residual legacy external/model/consumer domains remain profile-specific. Preserve the sealed original and use operation_profiles for current limits."
     }
   ],
-  "next_step": "After passing local M3 gate and branch push, create supported Codex remote test environment; full cross-host SOV and deployed authority remain explicitly unqualified.",
+  "next_step": "Selected M3 release complete. No push/merge inferred. Physical-host/WAN/cluster/device/peer and other optional domains retain explicit qualification requirements.",
   "R6_2b_local_contract": {
     "id": "R6.2b1",
     "status": "verified_selected_local_scope",
     "owner": "knowledge/sov/REMOTE-HANDOFF.md",
     "evidence": "workspace:implementation/sbv-remote-contract",
     "scope": "Read-only qxctl planning and supplied-observation assessment only. No host available; actual adapter/target authority/deployment remain R6.2b2.",
-    "next": "Executable local process profile now verified under PROCESS-EXECUTION.md; real deployment qualification remains open."
+    "next": "Executable local process and optional authenticated cross-OS guest SSH profiles now verified; see current remote qualification."
   },
   "R6_2b_execution": {
     "id": "R6.2b2",
     "status": "selected_local_process_profile_verified",
     "contract": "knowledge/sov/PROCESS-EXECUTION.md",
     "evidence": "workspace:implementation/sbv-remote-execution",
-    "remote_deployment": "unqualified"
+    "remote_deployment": "optional_authenticated_Mac_to_Linux_guest_SSH_qualified"
+  },
+  "current_remote_qualification": {
+    "source": "af4cd24d05b9881aa1496abe805b2b109d33d508",
+    "evidence": "workspace:implementation/sbv-m3-remote-final/MILESTONE_DECISION.json",
+    "scope": "Distinct Linux guest kernel on same physical Mac, pinned TCP SSH, real same-UID user-scope SSIAG/STAV. No WAN/independent physical host/distinct-principal system-scope claim.",
+    "all9operations": true,
+    "complete_typed_account_and_replay": true,
+    "interruption_and_reconciliation_without_duplicate": true,
+    "independent_final_review": "no actionable findings"
   }
 }

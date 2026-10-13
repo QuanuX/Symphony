@@ -24872,14 +24872,14 @@ automatic nested fitting and cross-run holdout history remain unimplemented.
 ### SBV M3 qualification and remote reproduction
 
 - path: `modules/sbv-engine/M3-QUALIFICATION.md`
-- title: Selected local M3 gate and remote qualification
+- title: Selected M3 release and cross-OS guest qualification
 - surface_type: qualification guidance
 - truth_role: Recorded selected gate and explicit remaining evidence requirements
 - owner: Symphony Backtesting Vector maintainers
-- scope: Native 0.33 local M3 and subsequent selected host qualification
+- scope: Native0.33 selected M3 release, Linux portability and optional authenticated Mac-to-Linux guest qualification
 - relationships: depends_on -> `modules/sbv-engine/M2-M3-READINESS.json`; depends_on -> `knowledge/sov/PROCESS-EXECUTION.md`
 - consumers: qxctl operators, independent consumers and qualification agents
-- deferred_projections: Actual cross-host authority and transport, cluster and peer measurements
+- deferred_projections: Physical-host/WAN and distinct-principal authority profiles, cluster/device and peer measurements
 - notes: Private data and local evidence are not portable deployment credentials.
 - status: canonical
 

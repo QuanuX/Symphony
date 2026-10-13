@@ -115,8 +115,19 @@ options, parser boundaries, lost/mismatched responses, cancellation and complete
 qxctl presentation. Real OpenSSH loopback tests, when recorded, establish only
 that host/client/runtime profile. Two-host connectivity, deployed SSIAG/STAV
 allow/expiry/revocation, remote access/hydration and network fault qualification
-remain separate positive gates. Cluster/NUMA/terabyte, shared-storage/power-loss,
+require separate positive gates. Cluster/NUMA/terabyte, shared-storage/power-loss,
 checkpoint resume and peer-performance claims remain open.
+
+The 13 October 2026 selected gate now supplies those positive carrier and authority
+checks for macOS to an Ubuntu Linux guest with a distinct LinuxKit kernel on the
+same physical Mac. Real same-UID user-scope SSIAG/STAV, all nine operations, complete
+typed account/Databento replay access, cooperative cancellation, killed worker,
+controller/SSH loss and response loss after completion pass without duplicate
+execution. Real expiry/policy/audit checks use the macOS service profile; Linux
+verifies fresh grants, denial and revocation. See the exact scope, retained failed
+fixtures and exclusions in [M3 qualification](../../modules/sbv-engine/M3-QUALIFICATION.md).
+The temporary SSH port was bound only to loopback. This does not qualify WAN,
+separate physical hosts or distinct-principal system-scope authority.
 
 OpenSSH option semantics were checked against its primary
 [ssh manual](https://man.openbsd.org/ssh) and

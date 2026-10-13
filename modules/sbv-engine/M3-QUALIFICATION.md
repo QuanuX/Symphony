@@ -1,4 +1,10 @@
-# SBV selected local M3 gate and remote qualification
+# SBV selected M3 release qualification
+
+**Current decision — 13 October 2026:** the selected M3 release gate is complete,
+including the optional authenticated macOS-to-Linux guest SSH profile described
+below. Earlier local-only and remote-pending entries remain dated evidence. This
+decision qualifies the selected R6 implementation; it does not claim that every
+optional capability in the original 96-case register is implemented.
 
 The selected local R6 profile is qualified on macOS with native 0.33.0-dev,
 the optional Go adapter 0.1.7-dev, and the SOV process adapter 0.1.0-dev.
@@ -121,3 +127,65 @@ The final administration rerun uses the unchanged native test executable and a n
 follow-up evidence directory; the earlier cloud archive remains sealed. This is
 selected second-host qualification. It does not close the remaining original M3
 carrier, deployed authority, cluster, device, durability or peer-performance lanes.
+
+## Selected cross-OS SSH and authority gate — 13 October 2026
+
+Runtime source `af4cd24d05b9881aa1496abe805b2b109d33d508` qualifies the optional
+SOV SSH carrier from macOS into an isolated Ubuntu 26.04 Linux guest. Linux uses
+Clang 19/C++26, Go 1.26.5 and exact libcurl 8.7.1. The guest has a separate
+LinuxKit kernel but shares physical hardware with the Mac; TCP reaches its sshd
+through a loopback-only Docker port mapping. Docker provisions fixtures and
+injects faults. Every claimed remote job/result operation traverses pinned SSH
+and target qxctl. This establishes the selected virtualized cross-OS deployment,
+not a separate physical machine, WAN, private cloud route or cluster.
+
+Real target-local SSIAG and STAV services qualify same-UID, user-scope authority.
+The Linux guest uses its isolated root account; this is not system-scope or
+distinct-principal service isolation. macOS tests cover real-service grant,
+wrong-resource/default denial, exact policy pinning, revocation, audit outage
+and expired decisions. Expiry is deterministic: a test-only Unix-socket relay
+delays a genuine SSIAG allow response beyond its actual expiry. Linux verifies
+fresh grants, default denial and revocation over the selected SSH route.
+
+All nine selected lifecycle/result/bundle operations pass. qxctl authors jobs,
+target configuration and SSIAG policy; remote qxctl retrieves all 899 account
+nodes and all 374 nodes of a retained Databento replay with exact JSON types.
+An independent Python reader checks every value, child count and pointer. The
+macOS account output is identical to Linux. The Databento outputs differ only
+in two declared source paths and the content digest binding those paths; all
+scientific, signal, execution and replay values agree. A caller-selected one-signal
+cap correctly produces `completed_partial`, with the omitted population visible.
+The replay includes observed DBN events and explicit unavailable execution fields;
+it is not a calibrated fill-probability claim.
+
+Queued and running cancellation, stale generations/cursors, removed or missing
+artifacts, killed native worker, killed controller, killed SSH connection and
+response loss after target completion are covered. Re-observation preserves the
+original claim/result identity and never automatically re-executes admitted work.
+Controller loss and connection loss remain distinct tests. An unknown job outcome
+is not checkpoint/resume, and disconnection does not imply remote termination.
+
+The resolved gate combines passing focused follow-ups with retained earlier
+attempts: initial fixtures mishandled sshd environment, a timing-only expiry test,
+and the expected partial status of capped data. These were harness corrections;
+no production runtime fix was required. The earlier 55-suite native gates,
+four sanitizer suites and carrier/installed checks remain attributed to their
+exact source. Unchanged broad suites were not rerun. Independent final review
+found no actionable issue in this selected profile.
+
+Private evidence: `workspace:implementation/sbv-m3-remote-final/`, particularly
+`CHECKS.json`, `CROSS_OS_PARITY.json`, `FINAL_REVIEW.json`, `MILESTONE_DECISION.json`
+and the sealed command/output and native-job journals. The temporary container,
+services and private keys were removed; exact Linux installed binaries were
+retained locally. No provider/live request or new historical-data spend occurred.
+
+R6.1, R6.2 and R6.3 are complete within this selected M3 release. Physical-host/WAN
+deployment, distinct-principal authority, cluster placement, shared-storage/power-loss,
+NUMA/terabyte and GPU execution, checkpoint recovery and equal-fidelity installed
+peer benchmarks remain explicit follow-on qualification or implementation work.
+Existing CPU/RAM measurements and cross-OS comparisons support their stated
+profiles only; no fastest-engine or competitor-speed ranking is asserted.
+Source/data placement remains an owner-selected prerequisite managed through
+target qxctl and the chosen provisioning route. No aggregate dataset/RAM limit
+or mandatory job deadline has been added. This closes the selected release gate;
+it does not close the platform's evolving capability backlog.
