@@ -16,10 +16,11 @@ SOV is the semantic owner of supported provisioning, conditioning, delivery, rem
 - `knowledge/sov/SKILL.md`
 - `knowledge/sov/PRIMA-PARTE.md`
 - `knowledge/sov/REMOTE-QXCTL.md`
+- `knowledge/sov/REMOTE-HANDOFF.md`
 
 ## Implementation Status
 
-Canonical architecture contract. No SOV engine, provider mutation, Terraform execution, remote command receiver, bus adapter, Habitat builder, or Nest deployment command is claimed implemented by this Contract Quad.
+Canonical architecture contract with read-only local `qxctl sov remote plan|assess|schema|template` under `REMOTE-HANDOFF.md`. No SOV engine, provider mutation, Terraform execution, remote command receiver, transport adapter, Habitat builder, or Nest deployment command is claimed implemented by this Contract Quad.
 
 ## Language and Packaging
 

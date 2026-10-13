@@ -38,3 +38,7 @@ IPC is preferred where it can satisfy the selected remote topology. A scoped rem
 ## Output
 
 Research produces evidence, compatibility findings, and candidate contracts. It does not make a transport operational or grant remote execution authority.
+
+The read-only R6.2b1 handoff planner and supplied-observation assessment are now
+specified in `REMOTE-HANDOFF.md`. They preserve the arrangements above without
+selecting an executable adapter or proving remote authority/deployment.

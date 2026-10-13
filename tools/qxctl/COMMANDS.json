@@ -18197,6 +18197,134 @@
       "json_output": true
     },
     {
+      "command_id": "qxcmd:symphony:sov.remote.assess",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl sov remote assess [--format VALUE] [--input VALUE] [--json]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl-sov-remote-planning",
+          "interaction": "validate"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [],
+      "mutability": "read_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.sov.remote-assess-input.v1"
+      ],
+      "output_protocols": [
+        "symphony.sov.remote-assess.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.sov.remote-assess.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:sov.remote.plan",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl sov remote plan [--format VALUE] [--input VALUE] [--json]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl-sov-remote-planning",
+          "interaction": "validate"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [],
+      "mutability": "read_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.sov.remote-plan-input.v1"
+      ],
+      "output_protocols": [
+        "symphony.sov.remote-plan.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.sov.remote-plan.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:sov.remote.schema",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl sov remote schema [--format VALUE] [--json] [--operation VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl-sov-remote-planning",
+          "interaction": "discover"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [],
+      "mutability": "read_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [],
+      "output_protocols": [
+        "symphony.sov.remote-schema.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.sov.remote-schema.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:sov.remote.template",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl sov remote template [--format VALUE] [--json] [--operation VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl-sov-remote-planning",
+          "interaction": "discover"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [],
+      "mutability": "read_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [],
+      "output_protocols": [
+        "symphony.sov.remote-template.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.sov.remote-template.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
       "command_id": "qxcmd:symphony:sqv.acquisition.attempts",
       "status": "experimental",
       "introduced_in": "0.1.0-dev",
@@ -21149,5 +21277,5 @@
       "json_output": true
     }
   ],
-  "registry_digest": "sha256:c5729fc5b4b58cdb3570122c9d70342bc64c706862c2da89cea7a380bfdad74a"
+  "registry_digest": "sha256:89acc32426ffa68218f3f8ae069590a6b3db1f9a6372789808002daa2a49931a"
 }

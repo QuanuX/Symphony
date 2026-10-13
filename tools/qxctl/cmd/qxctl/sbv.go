@@ -371,6 +371,11 @@ func sbvDeadlineContext(parent context.Context, timeout, absolute string, timeou
 // The frontend renders only the owner payload. A later GUI can use the same
 // result file and queries without reinterpreting native financial calculations.
 func renderSBV(out io.Writer, raw []byte, format string) error {
+	return renderCompleteData(out, raw, format, "SBV")
+}
+
+// The text/JSON presentation is shared; only SBV callers select its NDJSON wire protocol.
+func renderCompleteData(out io.Writer, raw []byte, format, title string) error {
 	if format == "json" {
 		var b bytes.Buffer
 		if err := json.Indent(&b, raw, "", "  "); err != nil {
@@ -392,7 +397,7 @@ func renderSBV(out io.Writer, raw []byte, format string) error {
 			return err
 		}
 		var safe strings.Builder
-		safe.WriteString("SBV — complete selected data\n")
+		safe.WriteString(title + " — complete selected data\n")
 		for _, r := range string(b) {
 			if r >= 127 {
 				if r > 65535 {

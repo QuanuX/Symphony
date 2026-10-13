@@ -6,6 +6,12 @@ import (
 	"strings"
 )
 
+// ValidateSBVJobObservation checks the native job-inspect contract and immutable
+// job binding. It does not authenticate a remote origin or prove freshness.
+func ValidateSBVJobObservation(raw []byte, directory, jobID, planSHA256 string) error {
+	return validateSBVJobResult("job_inspect", map[string]any{"directory": directory, "job_id": jobID, "expected_plan_sha256": planSHA256}, raw)
+}
+
 // Journal references are immutable native result snapshots. The job plan binds
 // the full child selection; a status receipt does not assert remote authority.
 func validateSBVJobResult(op string, p map[string]any, raw []byte) error {

@@ -428,3 +428,9 @@ owner operations; no remote host or placement is inferred.
 - `tools/qxctl/internal/knowledgeengine/sbv_jobs.go`
 
 - `tools/qxctl/internal/knowledgeengine/sbv_jobs_test.go`
+
+
+SOV R6.2b1 adds local read-only `sov remote plan|assess|schema|template` under
+`knowledge/sov/REMOTE-HANDOFF.md`. All caller selections and complete results use
+text/JSON; observations remain supplied and unauthenticated. No transport adapter,
+remote dispatch, resource reservation or deployed SSIAG authority is implied.

@@ -28,7 +28,7 @@
       "verification": "Stale generation refusal, reject/drain below active demand, unlimited/uint64 selections, reads/decodes unchanged after source deletion."
     }
   ],
-  "next_increment": "R6.2b",
+  "next_increment": "R6.2b2",
   "sequence": [
     {
       "id": "R5.1",
@@ -385,5 +385,13 @@
       "correction": "The generic recommendation to replace the 4096-signal profile is historical/stale for already-shipped partitioned core producers; 0.24 qualified 65,537 signals. Residual legacy external/model/consumer domains remain profile-specific. Preserve the sealed original and use operation_profiles for current limits."
     }
   ],
-  "next_step": "R6.2b: actual SOV transport and deployed SSIAG authority selection/implementation; R6.2 and M3 remain open"
+  "next_step": "R6.2b: actual SOV transport and deployed SSIAG authority selection/implementation; R6.2 and M3 remain open",
+  "R6_2b_local_contract": {
+    "id": "R6.2b1",
+    "status": "verified_selected_local_scope",
+    "owner": "knowledge/sov/REMOTE-HANDOFF.md",
+    "evidence": "workspace:implementation/sbv-remote-contract",
+    "scope": "Read-only qxctl planning and supplied-observation assessment only. No host available; actual adapter/target authority/deployment remain R6.2b2.",
+    "next": "R6.2b2 actual transport/target authority, then selected deployment qualification and R6.3"
+  }
 }

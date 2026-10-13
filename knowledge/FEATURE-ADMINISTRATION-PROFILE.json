@@ -1244,6 +1244,45 @@
       "feature_id": "ssfv:symphony:qxctl-snv-administration"
     },
     {
+      "feature_id": "ssfv:symphony:qxctl-sov-remote-planning",
+      "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:sov.remote.schema",
+            "qxcmd:symphony:sov.remote.template"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [],
+          "evidence": [
+            "knowledge/sov/REMOTE-HANDOFF.md",
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/cmd/qxctl/sov_test.go"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "discover",
+          "rationale": "Every selection and result field is discoverable without an installed remote target.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:sov.remote.plan",
+            "qxcmd:symphony:sov.remote.assess"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [],
+          "evidence": [
+            "knowledge/sov/REMOTE-HANDOFF.md",
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/cmd/qxctl/sov_test.go"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "validate",
+          "rationale": "Exact local planning and supplied-observation assessment expose every implemented control and result. No remote mutation is claimed.",
+          "requirement": "required"
+        }
+      ]
+    },
+    {
       "expectations": [
         {
           "command_ids": [
@@ -9883,7 +9922,7 @@
   "forward_gate": "enforce_new_records",
   "profile_id": "symphony.registered-features.administration.v1",
   "protocol": "symphony.knowledge.feature-administration-profile.v1",
-  "registered_feature_count": 142,
-  "ssfv_registry_digest": "sha256:7798806710fe46b8ab45c695abbb9114880bf4572098790c710999f401951e8f",
-  "profile_digest": "sha256:fe38e898768b206cf3005a4389ead5bb646cdfed0b33a03cb90120e2e2d4caf8"
+  "registered_feature_count": 143,
+  "ssfv_registry_digest": "sha256:2ea72d3cdbf3528cce72036e81026cec4a5aa7fe347cc961919f881175b0c869",
+  "profile_digest": "sha256:0c388a281a1dfaf630341dfdb3d66dcb822f6f38207621607391631e79cc5c47"
 }

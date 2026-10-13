@@ -1318,6 +1318,15 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - record_digest: `sha256:c03257a07372e23088fb404fbf536db43260514ed28619812d1426d850eb4c53`
 - notes: Selected R5.2 independent Go adapter; native scientific and qxctl administrative ownership remain unchanged.
 
+- feature_id: `ssfv:symphony:qxctl-sov-remote-planning`
+- feature_file: `tools/qxctl/FEATURES.md`
+- owner_contract: `tools/qxctl/MANIFEST.md`
+- source_scope: `tools/qxctl`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:qxctl`
+- record_digest: `sha256:f13c79dc05324b85ab41670674866541df20ee719033ac7402ed9eea66041860`
+- notes: Read-only local plan and supplied-observation assessment; remote execution and deployment remain open.
+
 ## Prohibited Entries
 
 Do not register:
@@ -1332,4 +1341,4 @@ Do not register:
 
 ## Non-Authorization Statement
 
-This 142-record registry is an explicitly partial catalog governed by `COVERAGE.md`. It does not authorize an unratified feature record, an unregistered distributed file, repository-wide or installed-host completeness, complete legacy-invariant coverage, engine-decided feature-worthiness, or canonical mutation.
+This 143-record registry is an explicitly partial catalog governed by `COVERAGE.md`. It does not authorize an unratified feature record, an unregistered distributed file, repository-wide or installed-host completeness, complete legacy-invariant coverage, engine-decided feature-worthiness, or canonical mutation.

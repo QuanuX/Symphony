@@ -160,7 +160,7 @@ func snvEngineErrorExit(code string) int {
 // us which flags consume the next token, including a value spelled "--json".
 // This does not make misplaced/unknown flags valid or change Cobra's grammar.
 func scvJSONRequested(root *cobra.Command, args []string) bool {
-	if len(args) == 0 || (args[0] != "scv" && args[0] != "shv" && args[0] != "sqv" && args[0] != "snv" && args[0] != "sbv") {
+	if len(args) == 0 || (args[0] != "scv" && args[0] != "shv" && args[0] != "sqv" && args[0] != "snv" && args[0] != "sbv" && args[0] != "sov") {
 		return false
 	}
 	consumesValue := map[string]bool{}
@@ -189,7 +189,7 @@ func scvJSONRequested(root *cobra.Command, args []string) bool {
 		if arg == "--" {
 			break
 		}
-		if args[0] == "sbv" && ((arg == "--format" && index+1 < len(args) && (args[index+1] == "json" || args[index+1] == "ndjson")) || arg == "--format=json" || arg == "--format=ndjson") {
+		if (args[0] == "sbv" || args[0] == "sov") && ((arg == "--format" && index+1 < len(args) && (args[index+1] == "json" || args[index+1] == "ndjson")) || arg == "--format=json" || arg == "--format=ndjson") {
 			requested = true
 		} else if arg == "--json" {
 			requested = true

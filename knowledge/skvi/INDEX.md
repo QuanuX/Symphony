@@ -24588,3 +24588,87 @@ automatic nested fitting and cross-run holdout history remain unimplemented.
 - deferred_projections: SOV remote transport and cluster qualification
 - notes: Explicit caller limits and no automatic retry of admitted attempts.
 - status: canonical
+
+### SOV remote handoff REMOTE-HANDOFF.md
+
+- path: `knowledge/sov/REMOTE-HANDOFF.md`
+- title: SOV remote handoff REMOTE-HANDOFF.md
+- surface_type: contract, implementation or test
+- truth_role: Read-only local handoff planning and supplied-observation assessment
+- owner: Symphony Ops Vector maintainers
+- scope: R6.2b1 exact local planning contract
+- relationships: depends_on -> `knowledge/sov/REMOTE-HANDOFF.md`
+- consumers: qxctl, agents and independent portable consumers
+- deferred_projections: Executable remote adapter, target authority and deployment qualification
+- notes: Caller resources or none; no dispatch or automatic retry.
+- status: canonical
+
+### SOV remote handoff sov.go
+
+- path: `tools/qxctl/cmd/qxctl/sov.go`
+- title: SOV remote handoff sov.go
+- surface_type: contract, implementation or test
+- truth_role: Read-only local handoff planning and supplied-observation assessment
+- owner: Symphony Ops Vector maintainers
+- scope: R6.2b1 exact local planning contract
+- relationships: depends_on -> `knowledge/sov/REMOTE-HANDOFF.md`
+- consumers: qxctl, agents and independent portable consumers
+- deferred_projections: Executable remote adapter, target authority and deployment qualification
+- notes: Caller resources or none; no dispatch or automatic retry.
+- status: canonical
+
+### SOV remote handoff sov_test.go
+
+- path: `tools/qxctl/cmd/qxctl/sov_test.go`
+- title: SOV remote handoff sov_test.go
+- surface_type: contract, implementation or test
+- truth_role: Read-only local handoff planning and supplied-observation assessment
+- owner: Symphony Ops Vector maintainers
+- scope: R6.2b1 exact local planning contract
+- relationships: depends_on -> `knowledge/sov/REMOTE-HANDOFF.md`
+- consumers: qxctl, agents and independent portable consumers
+- deferred_projections: Executable remote adapter, target authority and deployment qualification
+- notes: Caller resources or none; no dispatch or automatic retry.
+- status: canonical
+
+### SOV remote handoff plan.go
+
+- path: `tools/qxctl/internal/sovremote/plan.go`
+- title: SOV remote handoff plan.go
+- surface_type: contract, implementation or test
+- truth_role: Read-only local handoff planning and supplied-observation assessment
+- owner: Symphony Ops Vector maintainers
+- scope: R6.2b1 exact local planning contract
+- relationships: depends_on -> `knowledge/sov/REMOTE-HANDOFF.md`
+- consumers: qxctl, agents and independent portable consumers
+- deferred_projections: Executable remote adapter, target authority and deployment qualification
+- notes: Caller resources or none; no dispatch or automatic retry.
+- status: canonical
+
+### SOV remote handoff plan_test.go
+
+- path: `tools/qxctl/internal/sovremote/plan_test.go`
+- title: SOV remote handoff plan_test.go
+- surface_type: contract, implementation or test
+- truth_role: Read-only local handoff planning and supplied-observation assessment
+- owner: Symphony Ops Vector maintainers
+- scope: R6.2b1 exact local planning contract
+- relationships: depends_on -> `knowledge/sov/REMOTE-HANDOFF.md`
+- consumers: qxctl, agents and independent portable consumers
+- deferred_projections: Executable remote adapter, target authority and deployment qualification
+- notes: Caller resources or none; no dispatch or automatic retry.
+- status: canonical
+
+### SOV remote handoff resources.go
+
+- path: `tools/qxctl/internal/sovremote/resources.go`
+- title: SOV remote handoff resources.go
+- surface_type: contract, implementation or test
+- truth_role: Read-only local handoff planning and supplied-observation assessment
+- owner: Symphony Ops Vector maintainers
+- scope: R6.2b1 exact local planning contract
+- relationships: depends_on -> `knowledge/sov/REMOTE-HANDOFF.md`
+- consumers: qxctl, agents and independent portable consumers
+- deferred_projections: Executable remote adapter, target authority and deployment qualification
+- notes: Caller resources or none; no dispatch or automatic retry.
+- status: canonical
