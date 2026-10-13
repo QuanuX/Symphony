@@ -1,3 +1,4 @@
+#include <private_temp.hpp>
 #include "economic_census_stream.hpp"
 #include "economics_kernel.hpp"
 #include "partitioned_output.hpp"
@@ -235,12 +236,8 @@ void rejects(J p) {
 int main(int argc, char **argv) try {
   check(argc == 1 || (argc == 2 && std::string(argv[1]) == "--small-only"));
   const bool large_executed = argc == 1;
-#ifdef __APPLE__
-  char pattern[] = "/private/tmp/sbv-economics-partitioned-XXXXXX";
-#else
-  char pattern[] = "/tmp/sbv-economics-partitioned-XXXXXX";
-#endif
-  auto made = ::mkdtemp(pattern);
+  auto pattern = symphony::testing::temporary_pattern("sbv-economics-partitioned-XXXXXX");
+  auto made = ::mkdtemp(pattern.data());
   check(made);
   const std::string root = made;
   auto small = fixture(root + "/small-spools", 3);

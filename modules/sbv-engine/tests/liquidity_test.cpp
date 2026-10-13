@@ -1,3 +1,4 @@
+#include <private_temp.hpp>
 #include "../src/detail.hpp"
 #include <cstdlib>
 #include <filesystem>
@@ -35,8 +36,8 @@ J level(const char *p, const char *q) {
   return {{"price_nanos", p}, {"size", q}, {"order_count", "1"}};
 }
 int main() try {
-  char tmp[] = "/private/tmp/sbv-liquidity-XXXXXX";
-  check(::mkdtemp(tmp) != nullptr);
+  auto tmp = symphony::testing::temporary_pattern("sbv-liquidity-XXXXXX");
+  check(::mkdtemp(tmp.data()) != nullptr);
   const std::string root = tmp;
   struct Cleanup {
     std::string root;

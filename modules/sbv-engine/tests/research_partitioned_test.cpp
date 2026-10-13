@@ -1,3 +1,4 @@
+#include <private_temp.hpp>
 #include "../src/consumer_source.hpp"
 #include <cstdlib>
 #include <filesystem>
@@ -32,8 +33,8 @@ int main(int argc, char **argv) try {
   check(argc == 2);
   const auto templates = read(argv[1]).at("templates");
   const bool large = std::getenv("SYMPHONY_SBV_RESEARCH_LARGE");
-  char temporary[] = "/private/tmp/sbv-research-partitioned-XXXXXX";
-  check(::mkdtemp(temporary));
+  auto temporary = symphony::testing::temporary_pattern("sbv-research-partitioned-XXXXXX");
+  check(::mkdtemp(temporary.data()));
   const std::string root = temporary;
   struct Cleanup {
     std::string path;

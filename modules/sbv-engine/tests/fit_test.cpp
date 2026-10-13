@@ -1,3 +1,4 @@
+#include <private_temp.hpp>
 #include "../src/detail.hpp"
 #include "../src/wide_rational.hpp"
 #include <cstdlib>
@@ -19,9 +20,9 @@ void check(bool b, std::source_location l = std::source_location::current()) {
 }
 J ratio(long long n, long long d = 1) { return w::wire({n, d}); }
 int main() try {
-  char tmp[] = "/private/tmp/sbv-fit-XXXXXX";
+  auto tmp = symphony::testing::temporary_pattern("sbv-fit-XXXXXX");
   const auto *env = std::getenv("SYMPHONY_SBV_FIT_FIXTURES");
-  const auto *created = env ? env : mkdtemp(tmp);
+  const auto *created = env ? env : mkdtemp(tmp.data());
   check(created);
   std::filesystem::path root(created);
   std::filesystem::create_directories(root);

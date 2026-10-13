@@ -1,3 +1,4 @@
+#include <private_temp.hpp>
 #include "../../sqav-databento-dbn-cpp/tests/public_fixture.hpp"
 #include "../src/dataset.hpp"
 #include "../src/stream_census.hpp"
@@ -88,12 +89,8 @@ J bundle_source(const J &receipt) {
 }
 int main(int argc, char **argv) try {
   check(argc == 2);
-#if defined(__APPLE__)
-  char temp[] = "/private/tmp/sbv-generate-partitioned-XXXXXX";
-#else
-  char temp[] = "/tmp/sbv-generate-partitioned-XXXXXX";
-#endif
-  check(::mkdtemp(temp));
+  auto temp = symphony::testing::temporary_pattern("sbv-generate-partitioned-XXXXXX");
+  check(::mkdtemp(temp.data()));
   const std::string root = temp;
   const auto library = std::filesystem::absolute(argv[1]).string();
   auto make = [&](const std::string &name, std::uint64_t count) {

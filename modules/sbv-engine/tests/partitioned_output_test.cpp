@@ -1,3 +1,4 @@
+#include <private_temp.hpp>
 #include "partitioned_output.hpp"
 #include <filesystem>
 #include <iostream>
@@ -82,11 +83,7 @@ l::Value produce_rows(d::PartitionedOutput &context) {
 
 int main() {
   try {
-#if defined(__APPLE__)
-    const std::string tmp = "/private/tmp";
-#else
-    const std::string tmp = "/tmp";
-#endif
+    const auto tmp = symphony::testing::temporary_root();
     const auto base =
         tmp + "/sbv-partitioned-output-" + std::to_string(::getpid());
     require(std::filesystem::create_directory(base),

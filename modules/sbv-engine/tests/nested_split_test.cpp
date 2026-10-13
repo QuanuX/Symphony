@@ -1,3 +1,4 @@
+#include <private_temp.hpp>
 #include "../src/consumer_source.hpp"
 #include <cstdlib>
 #include <filesystem>
@@ -29,9 +30,9 @@ J read(const std::string &path) {
 int main(int argc, char **argv) try {
   check(argc == 2);
   auto templates = read(argv[1]).at("templates");
-  char tmp[] = "/private/tmp/sbv-nested-XXXXXX";
+  auto tmp = symphony::testing::temporary_pattern("sbv-nested-XXXXXX");
   const auto *env = std::getenv("SYMPHONY_SBV_NESTED_FIXTURES");
-  const auto *created = env ? env : mkdtemp(tmp);
+  const auto *created = env ? env : mkdtemp(tmp.data());
   check(created);
   const std::filesystem::path root(created);
   std::filesystem::create_directories(root);

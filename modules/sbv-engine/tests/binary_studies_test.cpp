@@ -1,3 +1,4 @@
+#include <private_temp.hpp>
 #include "../src/consumer_source.hpp"
 #include <cstdlib>
 #include <filesystem>
@@ -32,9 +33,9 @@ J data(const J &r, const char *id) {
 }
 int main(int argc, char **argv) try {
   check(argc == 2);
-  char temp[] = "/private/tmp/sbv-binary-XXXXXX";
+  auto temp = symphony::testing::temporary_pattern("sbv-binary-XXXXXX");
   const char *owned = std::getenv("SYMPHONY_SBV_BINARY_FIXTURES");
-  const std::string root = owned ? owned : mkdtemp(temp);
+  const std::string root = owned ? owned : mkdtemp(temp.data());
   std::filesystem::create_directories(root);
   auto catalogue = s::dispatch(
       "catalogue", {{"protocol", "symphony.sbv.catalogue-input.v1"}},

@@ -1,3 +1,4 @@
+#include <private_temp.hpp>
 #include "../src/detail.hpp"
 #include <cstdlib>
 #include <filesystem>
@@ -208,8 +209,8 @@ int main() try {
   q["events"] = J::array();
   check(call("live_plan", q)["windows"].empty());
   // Typed stable selection over exact source values, including private studies.
-  char tmp[] = "/private/tmp/sbv-selection-XXXXXX";
-  check(::mkdtemp(tmp) != nullptr);
+  auto tmp = symphony::testing::temporary_pattern("sbv-selection-XXXXXX");
+  check(::mkdtemp(tmp.data()) != nullptr);
   std::string root = tmp;
   struct Cleanup {
     std::string p;

@@ -1,3 +1,4 @@
+#include <private_temp.hpp>
 #include "../src/detail.hpp"
 #include <cstdlib>
 #include <filesystem>
@@ -25,9 +26,9 @@ int main(int argc, char **argv) try {
       e::parse_bounded_json(d::read_file(argv[1], e::no_deadline),
                             d::artifact_bytes, d::artifact_values)
           .at("templates");
-  char tmp[] = "/private/tmp/sbv-dependencies-XXXXXX";
+  auto tmp = symphony::testing::temporary_pattern("sbv-dependencies-XXXXXX");
   const auto *env = std::getenv("SYMPHONY_SBV_DEPENDENCIES_FIXTURES");
-  const auto *created = env ? env : mkdtemp(tmp);
+  const auto *created = env ? env : mkdtemp(tmp.data());
   check(created);
   std::filesystem::path root(created);
   std::filesystem::create_directories(root);

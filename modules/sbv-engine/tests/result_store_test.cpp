@@ -1,3 +1,4 @@
+#include <private_temp.hpp>
 #include "../src/result_store.hpp"
 #include "../src/streaming_sha256.hpp"
 #include <algorithm>
@@ -141,7 +142,7 @@ int main(int argc, char **argv) {
                 << '\n';
       return 0;
     }
-    const auto base = std::string("/private/tmp/sbv-result-kernel-") +
+    const auto base = (symphony::testing::temporary_root() + "/sbv-result-kernel-") +
                       std::to_string(::getpid());
     std::filesystem::create_directory(base);
     for (const auto &text : {std::string{}, std::string("abc"),

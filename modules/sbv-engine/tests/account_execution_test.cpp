@@ -1,3 +1,4 @@
+#include <private_temp.hpp>
 #include "../src/consumer_source.hpp"
 #include <filesystem>
 #include <fstream>
@@ -34,8 +35,8 @@ J level(const char *p, const char *n) {
 }
 int main(int argc, char **argv) try {
   check(argc == 2);
-  char temp[] = "/private/tmp/sbv-account-execution-XXXXXX";
-  check(mkdtemp(temp) != nullptr);
+  auto temp = symphony::testing::temporary_pattern("sbv-account-execution-XXXXXX");
+  check(mkdtemp(temp.data()) != nullptr);
   std::string root = temp;
   struct Cleanup {
     std::string path;

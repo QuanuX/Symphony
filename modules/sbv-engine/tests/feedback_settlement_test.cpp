@@ -1,3 +1,4 @@
+#include <private_temp.hpp>
 #include "../src/provider.hpp"
 #include <filesystem>
 #include <fstream>
@@ -48,8 +49,8 @@ J trigger(const char *id, const char *time, const J &context = J::object()) {
 }
 int main(int argc, char **argv) try {
   check(argc == 4);
-  char temp[] = "/private/tmp/sbv-feedback-XXXXXX";
-  check(mkdtemp(temp));
+  auto temp = symphony::testing::temporary_pattern("sbv-feedback-XXXXXX");
+  check(mkdtemp(temp.data()));
   std::string root = temp;
   struct Cleanup {
     std::string path;

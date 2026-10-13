@@ -19,13 +19,27 @@ references, without an invented equality to SQMV evidence references.
 
 ## Platform and authority
 
-The initial admitted target is macOS with local APFS. Runtime filesystem checks
-reject nonlocal and non-APFS roots. The root must already exist, be owned by the
+On macOS the admitted target remains local APFS; runtime checks reject
+nonlocal and non-APFS roots. On Linux the caller selects the filesystem at the
+exact supplied root. It must provide coherent inode identity and flock ownership,
+atomic renameat2(RENAME_NOREPLACE), atomic head replacement, and successful file
+and directory fsync. The library uses the real no-replace syscall without an
+overwrite fallback; unsupported calls fail, retaining uncertainty after mutation.
+There is no Linux filesystem-name allowlist: the caller owns deployment choice.
+Successful syscalls do not certify underlying topology or durability. In
+particular, overlayfs does not prove its upper storage is local/persistent, and
+tmpfs does not survive host restart. Network/shared/distributed storage, volatile
+mounts, host failure and physical power loss need independent deployment evidence.
+The qualified guarantee remains process interruption/reopen on the observed host.
+
+The root must already exist, be owned by the
 effective user and have mode 0700. Path components are opened relative to held
 directory descriptors with no symbolic-link following. Ancestors must be owned
 by this user or root and exclude group/other writes, except root-owned sticky
 temporary directories. Relative paths, traversal and `/tmp` symlink aliases are
-rejected; use the exact `/private/tmp` path for a disposable temporary store.
+rejected. Use the physical absolute path (for example `/private/tmp` on macOS
+or `/tmp` on Linux), not a symbolic-link alias. The test fixtures resolve only
+their own scratch root and never relax production path admission.
 
 Files must be owned regular mode-0600 files with one link. Nonblocking opens allow
 special files to be rejected before a read can block. Roots and files are private
@@ -212,3 +226,20 @@ RAM admission is not journaled. After a process crash, open reconstructs only
 the Store's actual committed prefix/staging evidence. The caller must reacquire
 any unconfirmed tail or record its loss. There is no automatic provider backfill,
 universal exactly-once guarantee, power-loss certification or silent eviction.
+
+## Linux portability revision
+
+The public API, SQPS/SQPC/SQPH format and 0.2.0-dev package identity are unchanged.
+Qualification selects the exact source revision and installation receipt, in a
+fresh prefix; an occupied same-version receipt cannot be overwritten. Immutable
+publication uses Linux [renameat2 with RENAME_NOREPLACE](https://man7.org/linux/man-pages/man2/rename.2.html).
+The existing file/directory synchronization and poisoned-handle reconciliation
+remain mandatory. No link/unlink emulation or overwritten history is accepted.
+See the [kernel overlayfs description](https://www.kernel.org/doc/html/latest/filesystems/overlayfs.html)
+for why an overlay mount alone does not establish underlying persistence.
+
+Owner tests also pause after staging and inject an occupied publication target: the
+destination and caller receipt must stay unchanged, no commit may appear, and the
+handle must report uncertainty and close. Native fixtures use a canonical short
+`/tmp` root or an explicit existing `SYMPHONY_TEST_TMPDIR`. No proot or preload
+adaptation is part of the implementation.

@@ -10000,6 +10000,6 @@
   "profile_id": "symphony.registered-features.administration.v1",
   "protocol": "symphony.knowledge.feature-administration-profile.v1",
   "registered_feature_count": 145,
-  "ssfv_registry_digest": "sha256:3f140bd764ff41ac983c5077187e54ff7c48b617b8234a08d81b2ed59fe70052",
-  "profile_digest": "sha256:569987fa5c7897be08f1e8e2eda7125ee50978f9a127296602a20bb4a76b16c3"
+  "ssfv_registry_digest": "sha256:046aa4477687992079c14f0f28b83b54f88d2c0bb127d87d59faeae9e4e31f8e",
+  "profile_digest": "sha256:b45c4d05d04a87b6a678d7b9a21dfd911b84edc5f354ccda9380bb847f770f4b"
 }

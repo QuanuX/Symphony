@@ -1,3 +1,4 @@
+#include <private_temp.hpp>
 #include "../src/detail.hpp"
 #include <filesystem>
 #include <fstream>
@@ -31,8 +32,8 @@ J rat(const char *n, const char *den = "1") {
 }
 int main(int argc, char **argv) try {
   check(argc == 2);
-  char temp[] = "/private/tmp/sbv-queue-XXXXXX";
-  check(mkdtemp(temp) != nullptr);
+  auto temp = symphony::testing::temporary_pattern("sbv-queue-XXXXXX");
+  check(mkdtemp(temp.data()) != nullptr);
   std::string root = temp;
   struct Cleanup {
     std::string path;

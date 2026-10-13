@@ -1,3 +1,4 @@
+#include <private_temp.hpp>
 #include "detail.hpp"
 #include "row_spool.hpp"
 #include "stream_census.hpp"
@@ -102,12 +103,8 @@ l::Value section(l::Value data) {
 }
 
 int main() try {
-#ifdef __APPLE__
-  char pattern[] = "/private/tmp/sbv-stream-model-XXXXXX";
-#else
-  char pattern[] = "/tmp/sbv-stream-model-XXXXXX";
-#endif
-  auto made = ::mkdtemp(pattern);
+  auto pattern = symphony::testing::temporary_pattern("sbv-stream-model-XXXXXX");
+  auto made = ::mkdtemp(pattern.data());
   check(made);
   const std::string root = made;
   const J signals = J::array({signal(0), signal(1), signal(2)});

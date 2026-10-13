@@ -1,3 +1,4 @@
+#include <private_temp.hpp>
 #include "census.hpp"
 #include "dataset.hpp"
 #include "public_fixture.hpp"
@@ -39,12 +40,8 @@ const J &data(const J &r, const char *section) {
 #include "fixture_requests.hpp"
 int main(int argc, char **argv) try {
   check(argc == 3);
-#ifdef __APPLE__
-  char temp[] = "/private/tmp/sbv-retained-dataset-XXXXXX";
-#else
-  char temp[] = "/tmp/sbv-retained-dataset-XXXXXX";
-#endif
-  check(::mkdtemp(temp));
+  auto temp = symphony::testing::temporary_pattern("sbv-retained-dataset-XXXXXX");
+  check(::mkdtemp(temp.data()));
   const std::string root = temp;
   struct Cleanup {
     std::string path;

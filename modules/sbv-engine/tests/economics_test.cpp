@@ -1,3 +1,4 @@
+#include <private_temp.hpp>
 #include "../src/detail.hpp"
 #include <cstdlib>
 #include <filesystem>
@@ -34,8 +35,8 @@ J call(const char *op, const J &j) {
   return s::dispatch(op, j, e::unix_time_ms() + 30000);
 }
 int main() try {
-  char temp[] = "/private/tmp/sbv-economics-XXXXXX";
-  check(::mkdtemp(temp) != nullptr);
+  auto temp = symphony::testing::temporary_pattern("sbv-economics-XXXXXX");
+  check(::mkdtemp(temp.data()) != nullptr);
   const std::string root = temp;
   struct Cleanup {
     std::string root;

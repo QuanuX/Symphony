@@ -1,3 +1,4 @@
+#include <private_temp.hpp>
 #include "../src/wide_rational.hpp"
 #include <cstdlib>
 #include <filesystem>
@@ -32,8 +33,8 @@ J read(const std::string &p) {
   return j;
 }
 int main() try {
-  char tmp[] = "/private/tmp/sbv-allocation-XXXXXX";
-  check(::mkdtemp(tmp) != nullptr);
+  auto tmp = symphony::testing::temporary_pattern("sbv-allocation-XXXXXX");
+  check(::mkdtemp(tmp.data()) != nullptr);
   std::string root = tmp;
   struct Cleanup {
     std::string p;

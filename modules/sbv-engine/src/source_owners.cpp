@@ -507,11 +507,18 @@ Json manifest_evidence(const sqmv::Manifest &m) {
 } // namespace
 
 Json source_owner_profile() {
+#if defined(__APPLE__)
+  constexpr auto platform = "macos_local_apfs";
+#elif defined(__linux__)
+  constexpr auto platform = "linux_caller_selected_filesystem";
+#else
+  constexpr auto platform = "unsupported";
+#endif
   return {{"protocol", "symphony.sbv.source-owner-profile.v1"},
           {"id", profile},
           {"scope", "optional composed SQAV/SQMV/SQFV/SQPV/SQDV route; not "
                     "standalone SBV or general SQPV limits"},
-          {"platform", "macos_local_apfs"},
+          {"platform", platform},
           {"owner_versions", versions()},
           {"maximum_root_bytes", "4096"},
           {"maximum_partition_bytes", "4096"},

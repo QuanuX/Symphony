@@ -1,3 +1,4 @@
+#include <private_temp.hpp>
 #include "../../sqav-databento-dbn-cpp/tests/public_fixture.hpp"
 #include "../src/detail.hpp"
 #include <cstdlib>
@@ -37,8 +38,8 @@ struct E {
   unsigned flags = 128;
 };
 int main() try {
-  char tmp[] = "/private/tmp/sbv-book-XXXXXX";
-  check(::mkdtemp(tmp) != nullptr);
+  auto tmp = symphony::testing::temporary_pattern("sbv-book-XXXXXX");
+  check(::mkdtemp(tmp.data()) != nullptr);
   const std::string root = tmp;
   struct Cleanup {
     std::string p;

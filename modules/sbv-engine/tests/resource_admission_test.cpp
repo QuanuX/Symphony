@@ -1,3 +1,4 @@
+#include <private_temp.hpp>
 #include "../src/resource_admission.hpp"
 #include <filesystem>
 #include <iostream>
@@ -77,8 +78,8 @@ int main() try {
         });
   });
   check(stop && attempted == 4 && entered == 3 && completed == 3);
-  char directory[] = "/private/tmp/sbv-resources-XXXXXX";
-  check(::mkdtemp(directory) != nullptr);
+  auto directory = symphony::testing::temporary_pattern("sbv-resources-XXXXXX");
+  check(::mkdtemp(directory.data()) != nullptr);
   struct Cleanup {
     std::string path;
     ~Cleanup() { std::filesystem::remove_all(path); }

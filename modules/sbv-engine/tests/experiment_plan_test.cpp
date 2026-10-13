@@ -1,3 +1,4 @@
+#include <private_temp.hpp>
 #include "../src/consumer_source.hpp"
 #include <filesystem>
 #include <fstream>
@@ -31,8 +32,8 @@ store::Reference bundle_ref(const J &r) {
 int main(int argc, char **argv) try {
   check(argc == 2);
   const auto templates = read(argv[1]).at("templates");
-  char tmp[] = "/private/tmp/sbv-experiment-plan-XXXXXX";
-  check(::mkdtemp(tmp));
+  auto tmp = symphony::testing::temporary_pattern("sbv-experiment-plan-XXXXXX");
+  check(::mkdtemp(tmp.data()));
   const std::string root = tmp;
   struct Cleanup {
     std::string path;

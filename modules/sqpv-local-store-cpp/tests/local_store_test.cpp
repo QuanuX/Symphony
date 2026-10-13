@@ -1,3 +1,4 @@
+#include <private_temp.hpp>
 #include "hook.hpp"
 #include <algorithm>
 #include <array>
@@ -11,7 +12,11 @@
 #include <signal.h>
 #include <string>
 #include <symphony/sqpv/local_store.hpp>
+#ifdef __APPLE__
 #include <sys/mount.h>
+#else
+#include <sys/vfs.h>
+#endif
 #include <sys/stat.h>
 #include <sys/wait.h>
 #include <thread>
@@ -52,8 +57,8 @@ void status(sqpv::Status actual, sqpv::Status expected, const char *message) {
 struct Root {
   std::string path;
   Root() {
-    char name[] = "/private/tmp/sqpv-native-XXXXXX";
-    auto *p = ::mkdtemp(name);
+    auto name = symphony::testing::temporary_pattern("sqpv-native-XXXXXX");
+    auto *p = ::mkdtemp(name.data());
     require(p != nullptr, "mkdtemp");
     path = p;
   }
@@ -308,7 +313,7 @@ void partial_staging_retries() {
   }
 }
 void allocation_failure_boundaries() {
-  unsigned failed = 0;
+  unsigned failed = 0, uncertain = 0;
   for (int selected = 0; selected < 1000; ++selected) {
     Root root;
     auto m = manifest();
@@ -325,8 +330,10 @@ void allocation_failure_boundaries() {
     auto result = s.append(c, b, r);
     allocation_failure = -1;
     if (result == sqpv::Status::ok) {
-      require(failed > 30, "allocation sweep exercised boundaries");
-      std::printf("SQPV allocation failures checked: %u\n", failed);
+      require(uncertain > 0 && failed > uncertain,
+              "allocation sweep exercises clean and uncertain failures");
+      std::printf("SQPV allocation failures checked: %u (%u uncertain)\n",
+                  failed, uncertain);
       return;
     }
     require(result == sqpv::Status::no_memory ||
@@ -334,6 +341,8 @@ void allocation_failure_boundaries() {
             "allocation failure classification");
     require(r.commit_sha256 == "unchanged", "allocation output unchanged");
     ++failed;
+    if (result == sqpv::Status::outcome_uncertain)
+      ++uncertain;
     s.reset();
     status(sqpv::Store::open(root.path, m, o, s), sqpv::Status::ok,
            "allocation reopen");
@@ -356,7 +365,7 @@ void create_allocation_failure_boundaries() {
     auto result = sqpv::Store::create(root.path, m, o, s);
     allocation_failure = -1;
     if (result == sqpv::Status::ok) {
-      require(failed > 30 && uncertain > 0,
+      require(uncertain > 0 && failed > uncertain,
               "create allocation sweep exercises both phases");
       std::printf(
           "SQPV create allocation failures checked: %u (%u uncertain)\n",
@@ -578,6 +587,45 @@ void fork_during_locked_operation() {
   for (int fd : {notify[0], notify[1], resume[0], resume[1]})
     ::close(fd);
 }
+// A destination appearing after the preflight must never be overwritten. This
+// deliberately injected collision is narrower than hostile-writer tolerance.
+void exclusive_publication_collision() {
+  Root root;
+  auto m = manifest();
+  auto o = options();
+  auto c = context();
+  auto b = batch(c, m, o, 7);
+  sqpv::Store s;
+  status(sqpv::Store::create(root.path, m, o, s), sqpv::Status::ok,
+         "collision create");
+  int notify[2], resume[2];
+  require(::pipe(notify) == 0 && ::pipe(resume) == 0, "collision pipes");
+  sqpv::testing::pause_at(1, notify[1], resume[0]);
+  sqpv::Receipt receipt;
+  receipt.commit_sha256 = "unchanged";
+  sqpv::Status result = sqpv::Status::closed;
+  std::thread writer([&] { result = s.append(c, b, receipt); });
+  char signal;
+  require(::read(notify[0], &signal, 1) == 1, "staged before publication");
+  const auto final_path = root.path + "/" + name("frame-", 7);
+  const auto fd = ::open(final_path.c_str(), O_WRONLY | O_CREAT | O_EXCL, 0600);
+  require(fd >= 0 && ::write(fd, "collision", 9) == 9 && ::close(fd) == 0,
+          "occupied destination fixture");
+  require(::write(resume[1], &signal, 1) == 1, "resume publication");
+  writer.join();
+  sqpv::testing::pause_at(0, -1, -1);
+  status(result, sqpv::Status::outcome_uncertain, "collision keeps uncertainty");
+  require(receipt.commit_sha256 == "unchanged", "failed publication preserves output");
+  std::ifstream input(final_path);
+  std::string retained((std::istreambuf_iterator<char>(input)), {});
+  require(retained == "collision", "exclusive publication preserves destination");
+  sqpv::Snapshot snapshot;
+  status(s.snapshot(snapshot), sqpv::Status::closed, "collision poisons handle");
+  require(!std::filesystem::exists(root.path + "/" + name("commit-", 7)),
+          "collision never publishes commit");
+  for (int pipe_fd : {notify[0], notify[1], resume[0], resume[1]})
+    ::close(pipe_fd);
+}
 } // namespace
 int main() {
   commit_retry_and_exact_stream();
@@ -591,9 +639,16 @@ int main() {
   capacity_and_output_preservation();
   exclusive_ownership_and_paths();
   fork_during_locked_operation();
+  exclusive_publication_collision();
   struct statfs volume{};
-  require(::statfs("/private/tmp", &volume) == 0, "filesystem profile");
-  std::printf("SQPV: 11 groups; 13 actual SIGKILL boundaries; 9 uncertain I/O "
-              "boundaries; filesystem=%s; process-crash evidence only\n",
-              volume.f_fstypename);
+  require(::statfs(symphony::testing::temporary_root().c_str(), &volume) == 0,
+          "filesystem profile");
+  std::printf("SQPV: 12 groups; 13 actual SIGKILL boundaries; 9 uncertain I/O "
+              "boundaries; exclusive collision verified; ");
+#ifdef __APPLE__
+  std::printf("filesystem=%s", volume.f_fstypename);
+#else
+  std::printf("filesystem_magic=%lx", static_cast<unsigned long>(volume.f_type));
+#endif
+  std::printf("; process-crash evidence only\n");
 }

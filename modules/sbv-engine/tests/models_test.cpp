@@ -1,3 +1,4 @@
+#include <private_temp.hpp>
 #include "../../sqav-databento-dbn-cpp/tests/public_fixture.hpp"
 #include <cstdlib>
 #include <filesystem>
@@ -32,8 +33,8 @@ J call(const char *op, const J &p) {
   return s::dispatch(op, p, e::unix_time_ms() + 30000);
 }
 int main() try {
-  char tmp[] = "/private/tmp/sbv-models-XXXXXX";
-  check(::mkdtemp(tmp) != nullptr);
+  auto tmp = symphony::testing::temporary_pattern("sbv-models-XXXXXX");
+  check(::mkdtemp(tmp.data()) != nullptr);
   const std::string root = tmp;
   struct Cleanup {
     std::string root;

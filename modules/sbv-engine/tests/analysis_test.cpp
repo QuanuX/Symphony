@@ -1,3 +1,4 @@
+#include <private_temp.hpp>
 #include "../src/wide_rational.hpp"
 #include <bit>
 #include <cmath>
@@ -21,9 +22,9 @@ J rat(const char *n, const char *d = "1") {
   return {{"numerator", n}, {"denominator", d}};
 }
 int main() try {
-  char tmp[] = "/private/tmp/sbv-analysis-XXXXXX";
+  auto tmp = symphony::testing::temporary_pattern("sbv-analysis-XXXXXX");
   const auto *dir = std::getenv("SYMPHONY_SBV_ANALYSIS_FIXTURES");
-  std::filesystem::path root = dir ? dir : mkdtemp(tmp);
+  std::filesystem::path root = dir ? dir : mkdtemp(tmp.data());
   std::filesystem::create_directories(root);
   unsigned seq = 0;
   auto save = [&](const J &v) {

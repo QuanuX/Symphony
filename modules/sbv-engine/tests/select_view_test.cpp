@@ -1,3 +1,4 @@
+#include <private_temp.hpp>
 #include "../src/consumer_source.hpp"
 #include <cstdlib>
 #include <filesystem>
@@ -18,8 +19,8 @@ void check(bool ok,
                              std::to_string(loc.line()));
 }
 int main() try {
-  char temporary[] = "/private/tmp/sbv-view-XXXXXX";
-  check(::mkdtemp(temporary));
+  auto temporary = symphony::testing::temporary_pattern("sbv-view-XXXXXX");
+  check(::mkdtemp(temporary.data()));
   const std::string root = temporary;
   struct Cleanup {
     std::string path;

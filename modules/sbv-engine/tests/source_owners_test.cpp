@@ -1,3 +1,4 @@
+#include <private_temp.hpp>
 #include "public_fixture.hpp"
 #include "source_owners.hpp"
 #include <csignal>
@@ -608,14 +609,17 @@ J exercise(const std::string &root, const std::string &raw, bool adversarial) {
 }
 int main(int argc, char **argv) try {
   check(argc == 1 || argc == 2 || argc == 4);
+#if defined(__APPLE__)
+  check(d::source_owner_profile().at("platform") == "macos_local_apfs");
+#elif defined(__linux__)
+  check(d::source_owner_profile().at("platform") == "linux_caller_selected_filesystem");
+#else
+  check(d::source_owner_profile().at("platform") == "unsupported");
+#endif
   std::string root;
   if (argc == 1) {
-#ifdef __APPLE__
-    char generated[] = "/private/tmp/sbvo-XXXXXX";
-#else
-    char generated[] = "/tmp/sbvo-XXXXXX";
-#endif
-    check(::mkdtemp(generated) != nullptr);
+    auto generated = symphony::testing::temporary_pattern("sbvo-XXXXXX");
+    check(::mkdtemp(generated.data()) != nullptr);
     root = generated;
   } else {
     root = argv[1];

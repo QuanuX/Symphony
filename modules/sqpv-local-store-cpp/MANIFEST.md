@@ -32,7 +32,9 @@
 
 ## Extent
 
-One exact local APFS append/read/recovery module is implemented. The installed
+One exact append/read/recovery module supports macOS local APFS and Linux
+filesystems satisfying its stated mechanics. Each deployment needs its own
+qualification; filesystem selection belongs to the caller. The installed
 receipt has no executable entry point and no engine identity. Private crash/fault
 hooks exist only in the separately instrumented test archive and are absent from
 the installed production archive. The SPEC defines storage interpretation;

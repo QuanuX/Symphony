@@ -17,7 +17,7 @@ SQPV owns selected research-data storage, retained positions, commit and read gu
 
 ## Implementation Status
 
-The narrow `modules/sqpv-local-store-cpp/` `0.1.0-dev` C++26 library supplies one explicit local filesystem retention path with bounded capacity, exact SQMV/SQFV binding, serialized append, verified commit records and process-crash recovery. Its module SPEC owns exact file layout, synchronization, retry and read behavior. Other backends, pruning, replication and delivery profiles remain independent future work. No `sqpv:` identity family, service or SQV qxctl operation is allocated by this Quad.
+The narrow `modules/sqpv-local-store-cpp/` `0.2.0-dev` C++26 library supplies one explicit local filesystem retention path with bounded capacity, exact SQMV/SQFV binding, serialized append, verified commit records and process-crash recovery. Its module SPEC owns exact file layout, synchronization, retry and read behavior. Other backends, pruning, replication and delivery profiles remain independent future work. No `sqpv:` identity family, service or SQV qxctl operation is allocated by this Quad.
 
 ## Language Boundary
 

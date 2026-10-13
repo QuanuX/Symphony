@@ -1,3 +1,4 @@
+#include <private_temp.hpp>
 #include "../src/provider.hpp"
 #include <atomic>
 #include <chrono>
@@ -117,12 +118,8 @@ J inspect(const J &selection) {
 int main(int argc, char **argv) try {
   check(argc == 6);
   const auto fixture = std::filesystem::canonical(argv[1]).string();
-#if defined(__APPLE__)
-  char temp[] = "/private/tmp/sbv-provider-test-XXXXXX";
-#else
-  char temp[] = "/tmp/sbv-provider-test-XXXXXX";
-#endif
-  check(::mkdtemp(temp) != nullptr);
+  auto temp = symphony::testing::temporary_pattern("sbv-provider-test-XXXXXX");
+  check(::mkdtemp(temp.data()) != nullptr);
   const std::string root = temp;
   struct Cleanup {
     std::string root;

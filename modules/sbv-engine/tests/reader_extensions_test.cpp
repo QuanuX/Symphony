@@ -1,8 +1,4 @@
-#ifdef __APPLE__
-#define SBV_TEST_TMP "/private/tmp"
-#else
-#define SBV_TEST_TMP "/tmp"
-#endif
+#include <private_temp.hpp>
 #include "result_store.hpp"
 #include <symphony/knowledge/engine/digest.hpp>
 #include <filesystem>
@@ -92,8 +88,8 @@ int main(int argc, char **argv) {
     std::string base;
     if (argc == 2) { base = argv[1]; require(fs::create_directory(base), "fresh evidence root"); }
     else if (argc == 1) {
-      char pattern[] = SBV_TEST_TMP "/sbv-reader-XXXXXX";
-      const auto created = ::mkdtemp(pattern);
+      auto pattern = symphony::testing::temporary_pattern("sbv-reader-XXXXXX");
+      const auto created = ::mkdtemp(pattern.data());
       require(created != nullptr, "fresh mkdtemp root"); base = created;
     } else throw std::runtime_error("usage: reader-test [new-evidence-directory]");
     const auto specimen = body(129);

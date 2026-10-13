@@ -5,7 +5,9 @@ manifest and an exact SQFV batch stream. Callers can commit contiguous immutable
 batches, obtain bounded commit evidence, retry an uncertain result, and read
 retained batches back into their chosen SQFV context.
 
-This first module selects local APFS on macOS, private caller-owned storage, one
+This module supports local APFS on macOS and caller-selected Linux filesystems
+with the SPEC-required publication, locking and synchronization semantics. It uses
+private caller-owned storage, one
 exclusive writer handle and finite caller-supplied limits. Those are this module's
 operating contract; other SQPV storage implementations remain possible. No
 background service, provider collection, qxctl surface, data deletion, replication,

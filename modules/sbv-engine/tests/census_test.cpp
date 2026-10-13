@@ -1,3 +1,4 @@
+#include <private_temp.hpp>
 #include "../../sqav-databento-dbn-cpp/tests/public_fixture.hpp"
 #include "../src/dataset.hpp"
 #include "../src/detail.hpp"
@@ -49,8 +50,8 @@ struct Artifact {
 int main(int argc, char **argv) try {
   check(argc == 2);
   const auto templates = read(argv[1]).at("templates");
-  char temp[] = "/private/tmp/sbv-census-XXXXXX";
-  check(::mkdtemp(temp));
+  auto temp = symphony::testing::temporary_pattern("sbv-census-XXXXXX");
+  check(::mkdtemp(temp.data()));
   const std::string root = temp;
   struct Cleanup {
     std::string path;

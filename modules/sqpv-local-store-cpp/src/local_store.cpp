@@ -15,6 +15,9 @@
 #include <sys/stat.h>
 #ifdef __APPLE__
 #include <sys/mount.h>
+#elif defined(__linux__)
+#include <linux/fs.h>
+#include <sys/syscall.h>
 #endif
 #include <unistd.h>
 #include <utility>
@@ -227,6 +230,15 @@ void exclusive_rename(int directory, const std::string &from,
   require(::renameatx_np(directory, from.c_str(), directory, to.c_str(),
                          RENAME_EXCL) == 0,
           Status::io_error);
+#elif defined(__linux__) && defined(SYS_renameat2)
+  // Never fall back to renameat: it would overwrite an immutable destination.
+  // Filesystem/kernel support is checked by the operation itself. After staging
+  // begins, a failure retains the existing outcome_uncertain/reopen contract.
+  if (::syscall(SYS_renameat2, directory, from.c_str(), directory, to.c_str(),
+                RENAME_NOREPLACE) != 0)
+    fail(errno == ENOSYS || errno == EINVAL || errno == EOPNOTSUPP
+             ? Status::unsupported
+             : Status::io_error);
 #else
   (void)directory;
   (void)from;
@@ -451,7 +463,7 @@ void inspect_frame(StoreHandle &h, const std::string &frame,
 void prepare(const std::string &path, const sqmv::Manifest &manifest,
              const Options &options, bool create,
              std::unique_ptr<StoreHandle> &h) {
-#ifndef __APPLE__
+#if !defined(__APPLE__) && !defined(__linux__)
   (void)path;
   (void)manifest;
   (void)options;

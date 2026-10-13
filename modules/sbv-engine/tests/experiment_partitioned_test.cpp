@@ -1,3 +1,4 @@
+#include <private_temp.hpp>
 #include "../../sqav-databento-dbn-cpp/tests/public_fixture.hpp"
 #include "../src/dataset.hpp"
 #include "../src/experiment_paths.hpp"
@@ -73,8 +74,8 @@ J science(J value) {
 int main(int argc, char **argv) try {
   check(argc == 2);
   auto templates = read(argv[1]);
-  char temporary[] = "/private/tmp/sbv-trials-partitioned-XXXXXX";
-  check(::mkdtemp(temporary));
+  auto temporary = symphony::testing::temporary_pattern("sbv-trials-partitioned-XXXXXX");
+  check(::mkdtemp(temporary.data()));
   const std::string root = temporary;
   struct Cleanup {
     std::string root;

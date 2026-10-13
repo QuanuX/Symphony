@@ -1,3 +1,4 @@
+#include <private_temp.hpp>
 #include "../src/detail.hpp"
 #include <filesystem>
 #include <fstream>
@@ -55,12 +56,8 @@ J sdk(const std::string &op, const J &p) {
   return parsed.at("result");
 }
 int main() try {
-#if defined(__APPLE__)
-  char temp[] = "/private/tmp/sbv-bundle-ops-XXXXXX";
-#else
-  char temp[] = "/tmp/sbv-bundle-ops-XXXXXX";
-#endif
-  auto *created = ::mkdtemp(temp);
+  auto temp = symphony::testing::temporary_pattern("sbv-bundle-ops-XXXXXX");
+  auto *created = ::mkdtemp(temp.data());
   check(created != nullptr);
   const std::filesystem::path dir(created);
   struct Cleanup {

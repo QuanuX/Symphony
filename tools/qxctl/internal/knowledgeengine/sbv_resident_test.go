@@ -71,7 +71,11 @@ func TestSBVInstalledResidentControls(t *testing.T) {
 	if err = json.Unmarshal(raw, &run); err != nil {
 		t.Fatal(err)
 	}
-	dir, err := os.MkdirTemp("/private/tmp", "sbv-go-control-")
+	scratch := os.Getenv("SYMPHONY_TEST_TMPDIR")
+	if scratch == "" {
+		scratch = "/tmp"
+	}
+	dir, err := os.MkdirTemp(scratch, "sbv-go-control-")
 	if err != nil {
 		t.Fatal(err)
 	}

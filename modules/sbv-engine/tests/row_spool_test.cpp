@@ -1,8 +1,4 @@
-#ifdef __APPLE__
-#define SBV_TEST_TMP "/private/tmp"
-#else
-#define SBV_TEST_TMP "/tmp"
-#endif
+#include <private_temp.hpp>
 #include "row_spool.hpp"
 #include <symphony/knowledge/engine/digest.hpp>
 #include <filesystem>
@@ -66,11 +62,7 @@ s::Receipt descendant(const std::string &path, const s::NodeHandle &array,
 
 int main() {
   try {
-#if defined(__APPLE__)
-    const std::string scratch = "/private/tmp";
-#else
-    const std::string scratch = "/tmp";
-#endif
+    const auto scratch = symphony::testing::temporary_root();
     const auto base = scratch + "/sbv-row-spool-" + std::to_string(::getpid());
     require(std::filesystem::create_directory(base), "fresh test scratch");
     auto small = [&] {

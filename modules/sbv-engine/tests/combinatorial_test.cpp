@@ -1,3 +1,4 @@
+#include <private_temp.hpp>
 #include "../src/combinatorial.hpp"
 #include <cstdlib>
 #include <filesystem>
@@ -50,9 +51,9 @@ int main() try {
   const std::string total200 =
       "90548514656103281165404177077484163874504589675413336841320";
   check(c::choose(200, 100, e::no_deadline).text() == total200);
-  char tmp[] = "/private/tmp/sbv-combinatorial-XXXXXX";
+  auto tmp = symphony::testing::temporary_pattern("sbv-combinatorial-XXXXXX");
   const auto *env = std::getenv("SYMPHONY_SBV_COMBINATORIAL_FIXTURES");
-  const auto *created = env ? env : mkdtemp(tmp);
+  const auto *created = env ? env : mkdtemp(tmp.data());
   check(created != nullptr);
   std::filesystem::path root(created);
   std::filesystem::create_directories(root);

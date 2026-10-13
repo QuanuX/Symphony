@@ -26,7 +26,8 @@
         "modules/sqpv-local-store-cpp/tests/local_store_test.cpp verifies bounded admission, exact identity, failure behavior and the stated native contract.",
         "modules/sqpv-local-store-cpp/tests/sdk-consumer/main.cpp verifies the installed public C++26 interface independently of private implementation headers.",
         "modules/sqpv-local-store-cpp/tests/package_lifecycle_test.cmake verifies isolated install and guarded removal of the exact library package.",
-        "The optional AsyncStore uses one owned worker with bounded frame bytes and slots including active writes, explicit lag/failure, drain and committed-prefix recovery. Native tests cover paused writes, conflicts, queue exhaustion, uncertain failure and two actual SIGKILL boundaries."
+        "The optional AsyncStore uses one owned worker with bounded frame bytes and slots including active writes, explicit lag/failure, drain and committed-prefix recovery. Native tests cover paused writes, conflicts, queue exhaustion, uncertain failure and two actual SIGKILL boundaries.",
+        "The portability revision adds an occupied-publication-target regression and portable native fixture roots; Linux and macOS results require exact dated host evidence."
       ],
       "feature_id": "ssfv:symphony:sqpv-local-store-cpp",
       "how": "Exclusive writer ownership, immutable frames and hash-linked commit records, an atomic checked head and explicit file/directory synchronization keep retained evidence distinct from staged work.",
@@ -51,7 +52,8 @@
       "kind": "feature",
       "non_claims": [
         "No provider acquisition, power-loss certification, replication, hostile same-user filesystem mutation tolerance, access authorization, pruning, generation replacement or universal storage default.",
-        "No destination acknowledgement, live-to-retained delivery cutover, remote transport, standalone C ABI, resident process or SQV qxctl command."
+        "No destination acknowledgement, live-to-retained delivery cutover, remote transport, standalone C ABI, resident process or SQV qxctl command.",
+        "A Linux filesystem name or successful syscall is not certification of physical locality, restart persistence, network/shared storage or power-loss durability."
       ],
       "owner_contract": "modules/sqpv-local-store-cpp/SPEC.md",
       "parent_feature_id": "ssfv:symphony:platform",
@@ -72,7 +74,7 @@
       "status": "experimental",
       "title": "SQPV bounded local retention library",
       "what": "Provides exact local retained streams and an optional bounded asynchronous writer with separate admission, confirmed progress and failure evidence.",
-      "when": "Only when a compatible trusted caller explicitly invokes the installed library; installation starts no service.",
+      "when": "Only when a compatible trusted caller explicitly invokes the installed library against a private selected root; macOS local APFS or Linux with required exclusive publication, locking and fsync semantics.",
       "where": "Inside the explicit native caller through the exact installed sqpv-local-store-cpp static library.",
       "who": "Trusted C++26 callers selecting a private local store for one exact manifest, partition and producer generation.",
       "why": "Provide the first independently selectable retention path while preserving exact source bindings, observable capacity failure and honest commit/recovery evidence."

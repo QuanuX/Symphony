@@ -793,7 +793,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `modules/sqpv-local-store-cpp`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:platform`
-- record_digest: `sha256:db1caaf6be746bd467098b8c208a5ef32e98cb58f8ea6fff1956a1668746b53b`
+- record_digest: `sha256:696e5b7707700024d598647b06d6b31611b66e354c6767563207c59f4ec77ed6`
 - notes: Bounded native C++26 library; exact module contract and focused evidence define its implemented extent.
 
 - feature_id: `ssfv:symphony:sqtv-integer-conversion-cpp`

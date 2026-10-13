@@ -18,9 +18,11 @@ SQPV supplies verified retained ranges for a selected consumer to catch up throu
 
 ## First Native Local Store
 
-`modules/sqpv-local-store-cpp/SPEC.md` owns the exact `0.1.0-dev` C++26 macOS local APFS library. One caller-selected root binds an immutable SQMV manifest, partition, producer generation, store generation, initial sequence and finite capacity. An exclusive writer lock serializes the selected store. Verified immutable SQFV frames and commit records, plus a checked head checkpoint, preserve a contiguous retained range. Exact retries return the original verified result; changed data at the same position conflicts. Capacity exhaustion stops admission without evicting committed data.
+`modules/sqpv-local-store-cpp/SPEC.md` owns the exact `0.2.0-dev` C++26 library with macOS local APFS and caller-selected Linux filesystem support. One caller-selected root binds an immutable SQMV manifest, partition, producer generation, store generation, initial sequence and finite capacity. An exclusive writer lock serializes the selected store. Verified immutable SQFV frames and commit records, plus a checked head checkpoint, preserve a contiguous retained range. Exact retries return the original verified result; changed data at the same position conflicts. Capacity exhaustion stops admission without evicting committed data.
 
 This module's selected guarantee uses explicit file and directory synchronization and is verified with process interruption/reopen tests on its stated development target. It does not claim power-loss certification, replication, runtime access enforcement, generation replacement, concurrent external mutation tolerance or a universal storage default. A retained read returns an independent SQFV batch under the caller's limits. SQDV still owns consumer cutover and destination interpretation. Alternate backends, retention pruning, broader durability profiles and performance thresholds remain later contracts; no colon namespace or SQV qxctl surface follows from this library.
+
+The Linux portability revision preserves the storage format and uncertainty semantics. Linux uses atomic no-replace publication and checked file/directory synchronization; exact deployment evidence is required. Filesystem selection remains with the caller. See the module SPEC for limitations.
 
 ## Non-Authorization Statement
 

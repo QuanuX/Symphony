@@ -1,3 +1,4 @@
+#include <private_temp.hpp>
 #include "../../sqav-databento-dbn-cpp/tests/public_fixture.hpp"
 #include "../src/dataset.hpp"
 #include "../src/stream_census.hpp"
@@ -89,12 +90,8 @@ J bundle_source(const J &receipt) {
 }
 int main(int argc, char **argv) try {
   check(argc == 2);
-#if defined(__APPLE__)
-  char temp[] = "/private/tmp/sbv-evaluate-partitioned-XXXXXX";
-#else
-  char temp[] = "/tmp/sbv-evaluate-partitioned-XXXXXX";
-#endif
-  check(::mkdtemp(temp));
+  auto temp = symphony::testing::temporary_pattern("sbv-evaluate-partitioned-XXXXXX");
+  check(::mkdtemp(temp.data()));
   const std::string root = temp,
                     library = std::filesystem::absolute(argv[1]).string();
   const auto raw = fixture(50), file = root + "/source.dbn";

@@ -1,3 +1,4 @@
+#include <private_temp.hpp>
 #include "../src/detail.hpp"
 #include <cstdlib>
 #include <filesystem>
@@ -18,9 +19,9 @@ void check(bool b, std::source_location l = std::source_location::current()) {
     throw std::runtime_error("split assertion " + std::to_string(l.line()));
 }
 int main() try {
-  char tmp[] = "/private/tmp/sbv-split-XXXXXX";
+  auto tmp = symphony::testing::temporary_pattern("sbv-split-XXXXXX");
   const auto *env = std::getenv("SYMPHONY_SBV_SPLIT_FIXTURES");
-  std::filesystem::path root = env ? env : mkdtemp(tmp);
+  std::filesystem::path root = env ? env : mkdtemp(tmp.data());
   std::filesystem::create_directories(root);
   unsigned seq = 0;
   auto path = [&](const std::string &x) { return (root / x).string(); };

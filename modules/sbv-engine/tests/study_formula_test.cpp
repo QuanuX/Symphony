@@ -1,3 +1,4 @@
+#include <private_temp.hpp>
 #include "../src/consumer_source.hpp"
 #include "../src/study_formula.hpp"
 #include <cstdlib>
@@ -27,9 +28,9 @@ J rat(const char *n, const char *den = "1") {
 }
 int main(int argc, char **argv) try {
   check(argc == 2);
-  char temp[] = "/private/tmp/sbv-formula-XXXXXX";
+  auto temp = symphony::testing::temporary_pattern("sbv-formula-XXXXXX");
   const char *owned = std::getenv("SYMPHONY_SBV_FORMULA_FIXTURES");
-  const auto root = std::string(owned ? owned : mkdtemp(temp));
+  const auto root = std::string(owned ? owned : mkdtemp(temp.data()));
   std::filesystem::create_directories(root);
   auto p = read(argv[1])["variants"]["analyze"]["formula"];
   auto source = d::base("independent formula oracle");

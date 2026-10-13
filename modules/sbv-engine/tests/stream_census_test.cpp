@@ -1,3 +1,4 @@
+#include <private_temp.hpp>
 #include "row_spool.hpp"
 #include "stream_census.hpp"
 #include <filesystem>
@@ -64,12 +65,8 @@ J reference(const store::Receipt &r, const std::string &pointer) {
       {"read_options", {{"max_page_bytes", nullptr}, {"cache_bytes", "0"}}}};
 }
 int main() try {
-#ifdef __APPLE__
-  char pattern[] = "/private/tmp/sbv-stream-census-XXXXXX";
-#else
-  char pattern[] = "/tmp/sbv-stream-census-XXXXXX";
-#endif
-  auto made = ::mkdtemp(pattern);
+  auto pattern = symphony::testing::temporary_pattern("sbv-stream-census-XXXXXX");
+  auto made = ::mkdtemp(pattern.data());
   check(made);
   const std::string root = made;
   d::Dataset dataset;

@@ -1,3 +1,4 @@
+#include <private_temp.hpp>
 #include "../../sqav-databento-dbn-cpp/tests/public_fixture.hpp"
 #include "../src/census.hpp"
 #include "../src/detail.hpp"
@@ -51,8 +52,8 @@ int main(int argc, char **argv) try {
   const auto library = std::filesystem::absolute(argv[1]).string();
   const auto library_sha = e::sha256_hex(d::read_file(library, e::no_deadline));
   const auto templates = read(argv[2]).at("templates");
-  char temp[] = "/private/tmp/sbv-provider-integration-XXXXXX";
-  check(::mkdtemp(temp));
+  auto temp = symphony::testing::temporary_pattern("sbv-provider-integration-XXXXXX");
+  check(::mkdtemp(temp.data()));
   const std::string root = temp;
   struct Cleanup {
     std::string path;

@@ -1,3 +1,4 @@
+#include <private_temp.hpp>
 #include "../src/experiment_result.hpp"
 #include <csignal>
 #include <fstream>
@@ -73,8 +74,8 @@ struct Child {
 };
 int main(int argc, char **argv) try {
   check(argc == 3);
-  char temp[] = "/private/tmp/sbv-jobs-XXXXXX";
-  check(mkdtemp(temp));
+  auto temp = symphony::testing::temporary_pattern("sbv-jobs-XXXXXX");
+  check(mkdtemp(temp.data()));
   std::string root = temp;
   struct Cleanup {
     std::string path;

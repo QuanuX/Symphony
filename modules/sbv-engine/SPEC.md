@@ -1671,3 +1671,14 @@ invoking caller's filesystem authority, not protected service administration. It
 introduces no daemon, remote listener, transport, cluster placement, remote hard
 termination or provisioning. R6.2 remains open for actual owner-backed remote work;
 R6.3 and the full M3 gate remain open.
+
+## Linux owner portability (development revision)
+
+The optional retained-source route uses the extended SQPV local store on Linux.
+Its existing qxctl source retain/inspect/deliver and dataset inputs keep the same
+caller-selected paths, limits and owner choices. The native source-owner profile
+reported through qxctl now identifies `linux_caller_selected_filesystem` on Linux,
+`macos_local_apfs` on Apple, and `unsupported` elsewhere. A platform label is not
+a physical-filesystem or deployment-durability attestation. Storage formats and
+public scientific/result schemas are unchanged; select the exact source revision
+and immutable installation receipt. SQPV's SPEC owns the storage requirements.

@@ -1,3 +1,4 @@
+#include <private_temp.hpp>
 #include "../src/detail.hpp"
 #include "../src/wide_rational.hpp"
 #include <cstdlib>
@@ -187,9 +188,9 @@ J source(std::string id, std::vector<std::int64_t> prices,
   return result;
 }
 int main() try {
-  char tmp[] = "/private/tmp/sbv-composition-XXXXXX";
+  auto tmp = symphony::testing::temporary_pattern("sbv-composition-XXXXXX");
   auto env = std::getenv("SYMPHONY_SBV_COMPOSITION_FIXTURES");
-  auto made = env ? env : mkdtemp(tmp);
+  auto made = env ? env : mkdtemp(tmp.data());
   check(made);
   std::filesystem::path root(made);
   std::filesystem::create_directories(root);

@@ -1,8 +1,3 @@
-#ifdef __APPLE__
-#define SBV_TEST_TMP "/private/tmp"
-#else
-#define SBV_TEST_TMP "/tmp"
-#endif
 #include "exact_id_index.hpp"
 #include <iostream>
 #include <stdexcept>

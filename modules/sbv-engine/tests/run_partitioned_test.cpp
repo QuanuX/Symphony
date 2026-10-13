@@ -1,3 +1,4 @@
+#include <private_temp.hpp>
 #include "../../sqav-databento-dbn-cpp/tests/public_fixture.hpp"
 #include "../src/dataset.hpp"
 #include "../src/stream_census.hpp"
@@ -69,12 +70,8 @@ J science(J value) {
   return value;
 }
 int main() try {
-#if defined(__APPLE__)
-  char temp[] = "/private/tmp/sbv-run-partitioned-XXXXXX";
-#else
-  char temp[] = "/tmp/sbv-run-partitioned-XXXXXX";
-#endif
-  check(::mkdtemp(temp));
+  auto temp = symphony::testing::temporary_pattern("sbv-run-partitioned-XXXXXX");
+  check(::mkdtemp(temp.data()));
   const std::string root = temp;
   auto make = [&](const std::string &name, std::uint64_t count) {
     const auto raw = fixture(count), path = root + "/" + name + ".dbn";

@@ -1,3 +1,4 @@
+#include <private_temp.hpp>
 #include "../src/consumer_source.hpp"
 #include <cstdlib>
 #include <filesystem>
@@ -35,8 +36,8 @@ int main(int argc, char **argv) try {
   const bool large = std::getenv("SYMPHONY_SBV_MODEL_LARGE"),
              bytes_case = std::getenv("SYMPHONY_SBV_COMPARE_BYTES");
   const std::uint64_t count = large ? 65537 : 7;
-  char tmp[] = "/private/tmp/sbv-model-partitioned-XXXXXX";
-  check(::mkdtemp(tmp));
+  auto tmp = symphony::testing::temporary_pattern("sbv-model-partitioned-XXXXXX");
+  check(::mkdtemp(tmp.data()));
   const std::string root = tmp;
   struct Cleanup {
     std::string path;

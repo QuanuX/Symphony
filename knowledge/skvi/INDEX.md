@@ -24882,3 +24882,17 @@ automatic nested fitting and cross-run holdout history remain unimplemented.
 - deferred_projections: Actual cross-host authority and transport, cluster and peer measurements
 - notes: Private data and local evidence are not portable deployment credentials.
 - status: canonical
+
+### Shared native private temporary fixtures
+
+- path: `tests/support/private_temp.hpp`
+- title: Caller-selected portable private fixture roots
+- surface_type: test support
+- truth_role: Native qualification fixture construction
+- owner: Symphony native test maintainers
+- scope: SQPV and SBV development fixtures
+- relationships: depends_on -> `modules/sqpv-local-store-cpp/SPEC.md`; depends_on -> `modules/sbv-engine/M3-QUALIFICATION.md`
+- consumers: Native qualification tests
+- deferred_projections: Production path canonicalization
+- notes: Canonical short temporary root or explicit SYMPHONY_TEST_TMPDIR; production caller path checks remain unchanged.
+- status: canonical

@@ -1,3 +1,4 @@
+#include <private_temp.hpp>
 #include <symphony/sqpv/async_store.hpp>
 #include "hook.hpp"
 #include <array>
@@ -11,7 +12,7 @@ using namespace symphony;
 namespace {
 void check(bool p, const char* why) { if (!p) { std::fprintf(stderr,"async retention: %s\n",why); std::abort(); } }
 struct Root { std::string path;
-  Root() { char n[]="/private/tmp/sqv20-async-XXXXXX"; auto p=::mkdtemp(n); check(p,"root"); path=p; }
+  Root() { auto n = symphony::testing::temporary_pattern("sqv20-async-XXXXXX"); auto p=::mkdtemp(n.data()); check(p,"root"); path=p; }
   ~Root() { std::filesystem::remove_all(path); }
 };
 struct Fixture {

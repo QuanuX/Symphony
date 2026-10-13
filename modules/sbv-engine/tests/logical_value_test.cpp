@@ -1,8 +1,4 @@
-#ifdef __APPLE__
-#define SBV_TEST_TMP "/private/tmp"
-#else
-#define SBV_TEST_TMP "/tmp"
-#endif
+#include <private_temp.hpp>
 #include "logical_value.hpp"
 #include "row_spool.hpp"
 #include <atomic>
@@ -46,8 +42,8 @@ Json body() {
 }
 int main() {
   try {
-    char pattern[] = SBV_TEST_TMP "/sbv-logical-XXXXXX";
-    auto p = ::mkdtemp(pattern);
+    auto pattern = symphony::testing::temporary_pattern("sbv-logical-XXXXXX");
+    auto p = ::mkdtemp(pattern.data());
     require(p, "tempdir");
     std::string base = p;
     Json value = {

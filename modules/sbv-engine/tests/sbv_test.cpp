@@ -1,3 +1,4 @@
+#include <private_temp.hpp>
 #include "../../sqav-databento-dbn-cpp/tests/public_fixture.hpp"
 #include <filesystem>
 #include <fstream>
@@ -44,8 +45,8 @@ J rat(const char *n, const char *d) {
   return {{"numerator", n}, {"denominator", d}};
 }
 int main() try {
-  char temp[] = "/private/tmp/sbv-contract-XXXXXX";
-  check(::mkdtemp(temp) != nullptr);
+  auto temp = symphony::testing::temporary_pattern("sbv-contract-XXXXXX");
+  check(::mkdtemp(temp.data()) != nullptr);
   const std::string root = temp;
   struct Cleanup {
     std::string root;

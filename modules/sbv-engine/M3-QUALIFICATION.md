@@ -79,3 +79,20 @@ cold-cache results or competitive speed superiority. CUDA/tensor seams remain
 capability contracts. The fresh primary competitor review records nine products
 and version/edition limits; no peer binaries were benchmarked. These distinctions
 preserve the original plan and user authority over future models and deployment.
+
+## Portable fixture roots and Linux storage
+
+Native fixtures and the installed Go resident-control check select canonical
+`/tmp` by default. Set `SYMPHONY_TEST_TMPDIR` to an existing private scratch parent
+on the filesystem being qualified; retain the selected path and mount properties.
+The short default avoids incidental Unix-domain socket path exhaustion. Supplied
+fixture/output arguments still take precedence where supported. Run this source
+revision without proot or LD_PRELOAD path rewriting. Do not reuse prior fixture
+products or same-version install receipts as evidence for a changed binary.
+
+Linux SQPV uses renameat2(RENAME_NOREPLACE) and the existing file/directory fsync
+and flock contracts. Run its owner crash/recovery/collision tests on the selected
+filesystem, then SBV source owner/dataset and installed recovery checks. The
+qxctl-visible source-owner profile must identify the actual host platform.
+A passing container overlayfs or tmpfs profile does not certify power loss, reboot
+persistence, underlying physical locality or a cross-host/network carrier.

@@ -1,3 +1,4 @@
+#include <private_temp.hpp>
 #include "../../sqav-databento-dbn-cpp/tests/public_fixture.hpp"
 #include "../src/consumer_source.hpp"
 #include <cstdlib>
@@ -35,8 +36,8 @@ int main(int argc, char **argv) try {
   const auto templates = read(argv[1]).at("templates");
   const bool large = std::getenv("SYMPHONY_SBV_EXECUTION_LARGE");
   const bool checkpoint_only = std::getenv("SYMPHONY_SBV_CHECKPOINT_ONLY");
-  char tmp[] = "/private/tmp/sbv-execution-partitioned-XXXXXX";
-  check(::mkdtemp(tmp));
+  auto tmp = symphony::testing::temporary_pattern("sbv-execution-partitioned-XXXXXX");
+  check(::mkdtemp(tmp.data()));
   const std::string root = tmp;
   struct Cleanup {
     std::string path;
