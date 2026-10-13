@@ -15951,3 +15951,99 @@ This PR authorizes none of the following:
   - `No new publication, live/provider testing, remote execution, SSIAG grant transfer, resource reservation, checkpoint/resume, shared-storage qualification or full R6.2b/M3 acceptance.`
 - notes: |
     Timestamps identify the observed local implementation commit. Post_merge is the legacy local source-closure disposition, not a new GitHub merge. User confirms no remote host currently available. R6.2b2 must implement the executable adapter and target-local authority before actual deployment qualification; R6.3 remains open.
+
+
+- record_id: `SCLV-CHG-sbv-r63-local-m3`
+- record_version: `3`
+- title: `SOV process handoff and selected local SBV M3 qualification`
+- status: `canonical`
+- date: `2026-10-13`
+- change_started_at: `2026-10-13T16:09:19Z`
+- change_completed_at: `2026-10-13T16:09:19Z`
+- recorded_at: `2026-10-13T16:09:29Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `implementation_change`
+- change_request_state: `not_applicable`
+- change_request_provider: `not_applicable`
+- change_request_id: `not_applicable`
+- change_request_reference: `not_applicable`
+- change_request_absence_reason: `Direct user authorization for implementation, final gate, commit and branch push; no pull request or main merge requested.`
+- revision_scheme: `git-sha1`
+- revision_value: `edef83317f118e207cad1f063be68a6059ae4aae`
+- tree_digest: `sha256:126bedce4b8b0f8be84dd5c44cb498b4a80cb0473581d54886fe4c5e1391035b`
+- ratification_subject: `Duncan (Architect)`
+- ratification_permission: `authorize_implementation_qualification_commit_and_push`
+- ratification_method: `explicit-user-instruction`
+- ratification_evidence_reference: `../sbv-m3-qualification/RATIFICATION.json`
+- ratification_evidence_digest: `sha256:099792969bf6496860a4222dea806093ee8c473c920845c685920b12bd1b039e`
+- affected_surfaces:
+  - `README.md`
+  - `go.work`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.json`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/sov/MANIFEST.md`
+  - `knowledge/sov/PROCESS-EXECUTION.md`
+  - `knowledge/sov/SPEC.md`
+  - `knowledge/ssfv/COVERAGE.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `modules/sbv-engine/M2-M3-READINESS.json`
+  - `modules/sbv-engine/M3-QUALIFICATION.md`
+  - `tools/qxctl/COMMANDS.json`
+  - `tools/qxctl/FEATURES.md`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/qxctl/cmd/qxctl/command_manifest_test.go`
+  - `tools/qxctl/cmd/qxctl/sov.go`
+  - `tools/qxctl/cmd/qxctl/sov_execution.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_jobs.go`
+  - `tools/qxctl/internal/sovremote/execution.go`
+  - `tools/qxctl/internal/sovremote/execution_test.go`
+  - `tools/qxctl/internal/sovremote/files_other.go`
+  - `tools/qxctl/internal/sovremote/files_unix.go`
+  - `tools/qxctl/internal/sovremote/plan.go`
+  - `tools/qxctl/internal/sovremote/resources.go`
+  - `tools/sov-stdio-adapter/FEATURES.md`
+  - `tools/sov-stdio-adapter/INTENT.md`
+  - `tools/sov-stdio-adapter/MANIFEST.md`
+  - `tools/sov-stdio-adapter/README.md`
+  - `tools/sov-stdio-adapter/SKILL.md`
+  - `tools/sov-stdio-adapter/go.mod`
+  - `tools/sov-stdio-adapter/main.go`
+  - `tools/sov-stdio-adapter/main_test.go`
+- skvi_references:
+  - `knowledge/sov/PROCESS-EXECUTION.md`
+  - `tools/sov-stdio-adapter/MANIFEST.md`
+  - `tools/qxctl/internal/sovremote/execution.go`
+  - `tools/qxctl/cmd/qxctl/sov_execution.go`
+  - `modules/sbv-engine/M3-QUALIFICATION.md`
+  - `modules/sbv-engine/M2-M3-READINESS.json`
+  - `knowledge/skvi/INDEX.md`
+- change_summary: |
+    R6.2b2 implements exact controller/adapter/target process handoff and target configure/inspect/remove/invoke through qxctl. Private compare-and-set configuration binds executable, installation, job plan and artifact identities. Target-owned filesystem or fresh SSIAG authority admits native operations. Native durable jobs reconcile lost replies and duplicate submissions without automatic retry. R6.3 qualifies the selected local M3 profile; full original remote and peer lanes remain open.
+- relationship_changes: |
+    SOV owns transport and target semantics; qxctl is the administrative presentation and Go process controller. The independent stdio adapter is separately buildable and removable. Native C++26 SBV0.33 remains the scientific/durable-job owner; optional Go0.1.7 remains a consumer. Five new leaves bring qxctl to459 command identities. Feature registry/admin metadata now uses supported namespaces and canonical normalization.
+- doctrine_changes: |
+    Callers select complete scientific requests, target authority/configuration, adapter, artifact projection, budgets and deadlines or none. The250ms cancellation cleanup grace and8MiB control frame are disclosed representation/cleanup contracts, not dataset limits or default calculation deadlines. Fixed-census and feedback semantics remain distinct; unsupported capabilities do not become acceptance through refusal tests.
+- compatibility_consequences: |
+    Native scientific code, schemas and SDK remain0.33 unchanged. Malformed externally paired request/reply values now fail without panic; safe native error codes survive transport. Cancellation bounds noncooperative process/pipe cleanup; FIFO config/executable paths fail promptly. Remote authenticated identity, resource brokerage and deployed SSIAG grant lifecycle remain unqualified.
+- publication_consequences: |
+    User authorized commit and branch push after the selected gates pass, followed by a Codex remote test environment. This source closure does not claim push, remote test completion or main merge. No live/provider acquisition or new data spend occurred.
+- projection_consequences: |
+    55 distinct native suites resolve through one broad campaign and focused IPC/admin corrections;4 ASan/UBSan suites pass.257 installed/native Go checks,27 command checks and127 initial adapter/race checks pass after fixture correction;102 final transport race checks and independent adversarial reproductions pass. Independent C/C++/qxctl complete account payloads agree.899 local-process projected nodes and78855 fresh retained-Databento export nodes verify.64 CPU/file/RAM/storage runs preserve selected science before timing. Nine-product primary research is refreshed without peer ranking.85 prior contract files and719 durable-job files plus2 symlinks remain unchanged.
+- evidence:
+  - `../sbv-m3-qualification/RATIFICATION.json`
+  - `../sbv-m3-qualification/evidence/SCLV_SOURCE_BINDING.json`
+  - `../sbv-m3-qualification/BUILD_IDENTITY.json`
+  - `../sbv-m3-qualification/CHECKS.json`
+  - `../sbv-m3-qualification/REVIEW.json`
+  - `../sbv-m3-qualification/CASE_EVIDENCE.json`
+  - `../sbv-m3-qualification/PROGRAMME_STATUS.json`
+  - `../sbv-m3-qualification/MILESTONE_DECISION.json`
+  - `../sbv-m3-qualification/PERFORMANCE.json`
+  - `../sbv-m3-qualification/COMPETITIVE_REFRESH.md`
+  - `../sbv-m3-qualification/evidence/prior-seals.json`
+- non_authorizations:
+  - `No main merge, live trading, fresh provider acquisition, calibrated market probability, actual device/cluster/NUMA/terabyte qualification, peer speed ranking or full original M3 acceptance.`
+- notes: |
+    Post_merge denotes local source closure, not a GitHub/main merge. Timestamps use the actual implementation commit. Historical ledger and sealed evidence remain unchanged. Selected local M3 is complete; actual cross-host transport/deployed authority and peer execution retain explicit open dispositions. A remote Codex runner pass would qualify its selected host profile, not establish network SOV semantics by itself.
