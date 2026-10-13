@@ -15870,3 +15870,84 @@ This PR authorizes none of the following:
   - `No remote publication, live/provider network activity, remote transport or deployment, cluster/device execution, calibrated likelihood, power-loss/shared-storage qualification, performance superiority or full R6.2/M3 acceptance.`
 - notes: |
     Timestamps identify the observed local implementation commit, not an invented work interval. Post_merge denotes local source closure, not a GitHub/main merge. Prior ledger bytes and sealed evidence remain unchanged. R6.2a is complete within the selected local scope; R6.2b needs actual owner-backed remote transport/deployed authority, and R6.3 remains open.
+
+
+- record_id: `SCLV-CHG-sbv-r62b1-remote-contract-local`
+- record_version: `3`
+- title: `SOV read-only remote handoff planning and native observation assessment`
+- status: `canonical`
+- date: `2026-10-13`
+- change_started_at: `2026-10-13T14:40:29Z`
+- change_completed_at: `2026-10-13T14:40:29Z`
+- recorded_at: `2026-10-13T14:41:23Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `implementation_change`
+- change_request_state: `not_applicable`
+- change_request_provider: `not_applicable`
+- change_request_id: `not_applicable`
+- change_request_reference: `not_applicable`
+- change_request_absence_reason: `Directly authorized local contract implementation after publishing the previous checkpoint; no new pull request or publication.`
+- revision_scheme: `git-sha1`
+- revision_value: `6bfd4261d529d673790586322653a93f7038fe93`
+- tree_digest: `sha256:2b79236078658beda4360a28e1e5e13db8e5b32420b91dde17a8d339ccc64167`
+- ratification_subject: `Duncan (Architect)`
+- ratification_permission: `authorize_local_implementation_and_source_closure`
+- ratification_method: `explicit-user-instruction`
+- ratification_evidence_reference: `../sbv-remote-contract/RATIFICATION.json`
+- ratification_evidence_digest: `sha256:5c1c54c1e53661822e5be91950b58c898ff6baad399dccaf2e5bac2740c2d76d`
+- affected_surfaces:
+  - `README.md`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.json`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/sov/MANIFEST.md`
+  - `knowledge/sov/REMOTE-HANDOFF.md`
+  - `knowledge/sov/REMOTE-QXCTL.md`
+  - `knowledge/sov/SPEC.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `modules/sbv-engine/M2-M3-READINESS.json`
+  - `tools/qxctl/COMMANDS.json`
+  - `tools/qxctl/FEATURES.md`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/qxctl/cmd/qxctl/cli_errors.go`
+  - `tools/qxctl/cmd/qxctl/command_manifest_test.go`
+  - `tools/qxctl/cmd/qxctl/commands.go`
+  - `tools/qxctl/cmd/qxctl/sbv.go`
+  - `tools/qxctl/cmd/qxctl/sov.go`
+  - `tools/qxctl/cmd/qxctl/sov_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_jobs.go`
+  - `tools/qxctl/internal/sovremote/plan.go`
+  - `tools/qxctl/internal/sovremote/plan_test.go`
+  - `tools/qxctl/internal/sovremote/resources.go`
+- skvi_references:
+  - `knowledge/sov/REMOTE-HANDOFF.md`
+  - `tools/qxctl/cmd/qxctl/sov.go`
+  - `tools/qxctl/internal/sovremote/plan.go`
+  - `tools/qxctl/internal/sovremote/resources.go`
+  - `knowledge/skvi/INDEX.md`
+- change_summary: |
+    R6.2b1 adds four read-only qxctl SOV remote plan, assess, schema and template commands. Exact selections bind target, adapter, runtime, immutable native job, resources and required authority. Supplied native observations preserve identity and complete results while classifying uncertain transport outcome without automatic retry.
+- relationship_changes: |
+    SOV owns the local handoff contract and qxctl presents it. Existing SBV job-inspect validation is reused; C++ calculations, native 0.33.0-dev and optional Go SBV adapter 0.1.7-dev remain unchanged. No adapter or target receiver is implemented. The expected command registry has 454 identities and the partial feature registry 143 records.
+- doctrine_changes: |
+    Caller selects arrangement, adapter, endpoint reference, resources, authority requirements and metadata. Resource decimal strings may exceed machine integers; null imposes no calculation deadline or RAM ceiling. Bounded administrative documents do not bound datasets. Supplied observations never become authenticated authority or automatic retry permission.
+- compatibility_consequences: |
+    New read-only local protocols only. No transport version is silently selected and the native observation profile remains exact SBV 0.33.0-dev. Existing SBV text/JSON/NDJSON rendering remains compatible; SOV uses complete text/JSON with its own title.
+- publication_consequences: |
+    Previous c63a58b checkpoint was explicitly pushed and fast-forward merged to GitHub main with the branch retained. This R6.2b1 implementation and source closure remain local; no new provider/live network request, deployment or spend.
+- projection_consequences: |
+    114 focused tests and subtests pass without skips, plus Go vet. An outside-checkout independent consumer makes 23 real CLI calls, reproduces plan digests and preserves full supplied local native status from retained AAPL/ESZ6, interrupted and cancelled jobs. Source validation reports zero violations and four existing warnings. All 719 files and two symlink records in the previous R6.2a seal remain unchanged.
+- evidence:
+  - `../sbv-remote-contract/RATIFICATION.json`
+  - `../sbv-remote-contract/evidence/SCLV_SOURCE_BINDING.json`
+  - `../sbv-remote-contract/BUILD_IDENTITY.json`
+  - `../sbv-remote-contract/CHECKS.json`
+  - `../sbv-remote-contract/REVIEW.json`
+  - `../sbv-remote-contract/CASE_EVIDENCE.json`
+  - `../sbv-remote-contract/OWNER_REFRESH.json`
+  - `../sbv-remote-contract/installed-consumer/REPORT.json`
+  - `../sbv-remote-contract/evidence/prior-seal.json`
+- non_authorizations:
+  - `No new publication, live/provider testing, remote execution, SSIAG grant transfer, resource reservation, checkpoint/resume, shared-storage qualification or full R6.2b/M3 acceptance.`
+- notes: |
+    Timestamps identify the observed local implementation commit. Post_merge is the legacy local source-closure disposition, not a new GitHub merge. User confirms no remote host currently available. R6.2b2 must implement the executable adapter and target-local authority before actual deployment qualification; R6.3 remains open.
