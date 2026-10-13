@@ -437,7 +437,7 @@
       "introduced_in": "0.1.0-dev",
       "deprecated_in": null,
       "replacement_ids": [],
-      "grammar": "qxctl knowledge engines bind \u003crole\u003e [--expected-registry-digest VALUE] [--json] [--prefix VALUE] [--state-root VALUE] [--version VALUE]",
+      "grammar": "qxctl knowledge engines bind <role> [--expected-registry-digest VALUE] [--json] [--prefix VALUE] [--state-root VALUE] [--version VALUE]",
       "aliases": [],
       "visibility": "public",
       "feature_bindings": [
@@ -491,7 +491,7 @@
       "introduced_in": "0.1.0-dev",
       "deprecated_in": null,
       "replacement_ids": [],
-      "grammar": "qxctl knowledge engines inspect \u003crole\u003e [--json] [--state-root VALUE]",
+      "grammar": "qxctl knowledge engines inspect <role> [--json] [--state-root VALUE]",
       "aliases": [],
       "visibility": "public",
       "feature_bindings": [
@@ -572,7 +572,7 @@
       "introduced_in": "0.1.0-dev",
       "deprecated_in": null,
       "replacement_ids": [],
-      "grammar": "qxctl knowledge engines unbind \u003crole\u003e [--expected-registry-digest VALUE] [--json] [--state-root VALUE]",
+      "grammar": "qxctl knowledge engines unbind <role> [--expected-registry-digest VALUE] [--json] [--state-root VALUE]",
       "aliases": [],
       "visibility": "public",
       "feature_bindings": [
@@ -2058,7 +2058,7 @@
       "introduced_in": "0.1.0-dev",
       "deprecated_in": null,
       "replacement_ids": [],
-      "grammar": "qxctl module check \u003cmodule-name\u003e",
+      "grammar": "qxctl module check <module-name>",
       "aliases": [],
       "visibility": "public",
       "feature_bindings": [
@@ -2197,7 +2197,7 @@
       "introduced_in": "0.1.0-dev",
       "deprecated_in": null,
       "replacement_ids": [],
-      "grammar": "qxctl module inspect \u003cmodule-name\u003e",
+      "grammar": "qxctl module inspect <module-name>",
       "aliases": [],
       "visibility": "public",
       "feature_bindings": [
@@ -2336,7 +2336,7 @@
       "introduced_in": "0.1.0-dev",
       "deprecated_in": null,
       "replacement_ids": [],
-      "grammar": "qxctl module metadata \u003cmodule-name\u003e [--json]",
+      "grammar": "qxctl module metadata <module-name> [--json]",
       "aliases": [],
       "visibility": "public",
       "feature_bindings": [
@@ -3685,6 +3685,45 @@
         "symphony.sav.named-version-validation-result.v1"
       ],
       "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:sbv.account.simulate",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl sbv account-simulate [--deadline-unix-ms VALUE] [--format VALUE] [--input VALUE] [--json] [--prefix VALUE] [--timeout VALUE] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl-sbv-administration",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:sbv-engine",
+          "interaction": "invoke"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:sbv.account-simulate"
+      ],
+      "mutability": "permission_backed_mutation",
+      "authority_mode": "target_host_permission",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.sbv.account-simulate-input.v1"
+      ],
+      "output_protocols": [
+        "symphony.sbv.account-simulate.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.sbv.account-simulate.v1"
+      ],
+      "recovery_command_id": "qxcmd:symphony:sbv.result.inspect",
       "noninteractive": true,
       "json_output": true
     },
@@ -18939,7 +18978,7 @@
       "introduced_in": "0.1.0-dev",
       "deprecated_in": null,
       "replacement_ids": [],
-      "grammar": "qxctl ssiag provider binding apply \u003cprovider-name\u003e [--expected-state-digest VALUE] [--json] [--plan-digest VALUE] [--scope VALUE] [--tops-id VALUE]",
+      "grammar": "qxctl ssiag provider binding apply <provider-name> [--expected-state-digest VALUE] [--json] [--plan-digest VALUE] [--scope VALUE] [--tops-id VALUE]",
       "aliases": [],
       "visibility": "public",
       "feature_bindings": [
@@ -18978,7 +19017,7 @@
       "introduced_in": "0.1.0-dev",
       "deprecated_in": null,
       "replacement_ids": [],
-      "grammar": "qxctl ssiag provider binding apply-status \u003cprovider-name\u003e [--json] [--operation-id VALUE] [--scope VALUE] [--tops-id VALUE]",
+      "grammar": "qxctl ssiag provider binding apply-status <provider-name> [--json] [--operation-id VALUE] [--scope VALUE] [--tops-id VALUE]",
       "aliases": [],
       "visibility": "public",
       "feature_bindings": [
@@ -19015,7 +19054,7 @@
       "introduced_in": "0.1.0-dev",
       "deprecated_in": null,
       "replacement_ids": [],
-      "grammar": "qxctl ssiag provider binding plan \u003cprovider-name\u003e [--expected-state-digest VALUE] [--installation-id VALUE] [--json] [--reason VALUE] [--scope VALUE] [--tops-id VALUE]",
+      "grammar": "qxctl ssiag provider binding plan <provider-name> [--expected-state-digest VALUE] [--installation-id VALUE] [--json] [--reason VALUE] [--scope VALUE] [--tops-id VALUE]",
       "aliases": [],
       "visibility": "public",
       "feature_bindings": [
@@ -19054,7 +19093,7 @@
       "introduced_in": "0.1.0-dev",
       "deprecated_in": null,
       "replacement_ids": [],
-      "grammar": "qxctl ssiag provider binding recover \u003cprovider-name\u003e [--expected-state-digest VALUE] [--json] [--reason VALUE] [--scope VALUE] [--tops-id VALUE]",
+      "grammar": "qxctl ssiag provider binding recover <provider-name> [--expected-state-digest VALUE] [--json] [--reason VALUE] [--scope VALUE] [--tops-id VALUE]",
       "aliases": [],
       "visibility": "public",
       "feature_bindings": [
@@ -19093,7 +19132,7 @@
       "introduced_in": "0.1.0-dev",
       "deprecated_in": null,
       "replacement_ids": [],
-      "grammar": "qxctl ssiag provider binding status \u003cprovider-name\u003e [--json] [--scope VALUE] [--tops-id VALUE]",
+      "grammar": "qxctl ssiag provider binding status <provider-name> [--json] [--scope VALUE] [--tops-id VALUE]",
       "aliases": [],
       "visibility": "public",
       "feature_bindings": [
@@ -19130,7 +19169,7 @@
       "introduced_in": "0.1.0-dev",
       "deprecated_in": null,
       "replacement_ids": [],
-      "grammar": "qxctl ssiag provider installations \u003cprovider-name\u003e [--json] [--scope VALUE] [--tops-id VALUE]",
+      "grammar": "qxctl ssiag provider installations <provider-name> [--json] [--scope VALUE] [--tops-id VALUE]",
       "aliases": [],
       "visibility": "public",
       "feature_bindings": [
@@ -19167,7 +19206,7 @@
       "introduced_in": "0.1.0-dev",
       "deprecated_in": null,
       "replacement_ids": [],
-      "grammar": "qxctl ssiag provider readiness \u003cprovider-name\u003e [--authority-basis VALUE] [--json] [--scope VALUE] [--tops-id VALUE]",
+      "grammar": "qxctl ssiag provider readiness <provider-name> [--authority-basis VALUE] [--json] [--scope VALUE] [--tops-id VALUE]",
       "aliases": [],
       "visibility": "public",
       "feature_bindings": [
@@ -19211,7 +19250,7 @@
       "introduced_in": "0.1.0-dev",
       "deprecated_in": null,
       "replacement_ids": [],
-      "grammar": "qxctl ssiag provider show \u003cprovider-name\u003e [--json] [--scope VALUE] [--tops-id VALUE]",
+      "grammar": "qxctl ssiag provider show <provider-name> [--json] [--scope VALUE] [--tops-id VALUE]",
       "aliases": [],
       "visibility": "public",
       "feature_bindings": [
@@ -19248,7 +19287,7 @@
       "introduced_in": "0.1.0-dev",
       "deprecated_in": null,
       "replacement_ids": [],
-      "grammar": "qxctl ssiag provider verify \u003cprovider-name\u003e [--authority-basis VALUE] [--json] [--scope VALUE] [--tops-id VALUE]",
+      "grammar": "qxctl ssiag provider verify <provider-name> [--authority-basis VALUE] [--json] [--scope VALUE] [--tops-id VALUE]",
       "aliases": [],
       "visibility": "public",
       "feature_bindings": [
@@ -20899,5 +20938,5 @@
       "json_output": true
     }
   ],
-  "registry_digest": "sha256:d63227f250f6c6990413956e0e56492db0e48416529b221acd60562e3d7af94e"
+  "registry_digest": "sha256:b6926fe011f0890f6b1dbadbdd4e0daf516859ce41b7aa9849d86cec6ab980a4"
 }

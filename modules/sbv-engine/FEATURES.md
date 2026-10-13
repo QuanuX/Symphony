@@ -23,6 +23,7 @@
       ],
       "distinctions": [],
       "evidence": [
+        "modules/sbv-engine/tests/account_test.cpp",
         "modules/sbv-engine/tests/adaptive_test.cpp",
         "modules/sbv-engine/tests/allocation_economics_test.cpp",
         "modules/sbv-engine/tests/analysis_test.cpp",
@@ -91,6 +92,7 @@
         "modules/sbv-engine/schemas/v1/node-stream.schema.json",
         "modules/sbv-engine/schemas/v1/partitioned-result.schema.json",
         "modules/sbv-engine/schemas/v1/result-page.schema.json",
+        "modules/sbv-engine/src/account_simulate.cpp",
         "modules/sbv-engine/src/allocation_economics.cpp",
         "modules/sbv-engine/src/analyze.cpp",
         "modules/sbv-engine/src/binary_studies.hpp",

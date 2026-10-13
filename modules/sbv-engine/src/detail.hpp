@@ -131,6 +131,7 @@ Json result_select(const Json &, std::int64_t);
 Json backend_plan(const Json &, std::int64_t);
 Json live_plan(const Json &, std::int64_t);
 Json allocation_economics(const Json &, std::int64_t);
+Json account_simulate(const Json &, std::int64_t);
 Json queue_scenarios(const Json &, std::int64_t);
 Json liquidity(const Json &, std::int64_t);
 Json book(const Json &, std::int64_t, const Dataset * = nullptr);

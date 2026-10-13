@@ -24420,3 +24420,45 @@ automatic nested fitting and cross-run holdout history remain unimplemented.
 - deferred_projections: peer rankings, device execution and cluster qualification
 - notes: Exclusive wall phases and complete work; no default active observer.
 - status: canonical
+
+### SBV account_simulate.cpp
+
+- path: `modules/sbv-engine/src/account_simulate.cpp`
+- title: SBV account_simulate.cpp
+- surface_type: implementation contract or test
+- truth_role: Exact supplied-event account semantics and contract verification
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.30 R6.1a account simulation
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, SDKs, agents and portable result consumers
+- deferred_projections: exchange matching, richer feedback providers and broader instrument economics
+- notes: Explicit user constraints, guards, ordering and branch state; no calibrated fill claim.
+- status: canonical
+
+### SBV account_test.cpp
+
+- path: `modules/sbv-engine/tests/account_test.cpp`
+- title: SBV account_test.cpp
+- surface_type: implementation contract or test
+- truth_role: Exact supplied-event account semantics and contract verification
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.30 R6.1a account simulation
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, SDKs, agents and portable result consumers
+- deferred_projections: exchange matching, richer feedback providers and broader instrument economics
+- notes: Explicit user constraints, guards, ordering and branch state; no calibrated fill claim.
+- status: canonical
+
+### SBV sbv_account_test.go
+
+- path: `tools/qxctl/internal/knowledgeengine/sbv_account_test.go`
+- title: SBV sbv_account_test.go
+- surface_type: implementation contract or test
+- truth_role: Exact supplied-event account semantics and contract verification
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.30 R6.1a account simulation
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, SDKs, agents and portable result consumers
+- deferred_projections: exchange matching, richer feedback providers and broader instrument economics
+- notes: Explicit user constraints, guards, ordering and branch state; no calibrated fill claim.
+- status: canonical

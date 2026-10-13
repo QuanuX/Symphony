@@ -1,6 +1,6 @@
 {
   "protocol": "symphony.sbv.milestone-readiness.v1",
-  "date": "2026-10-12",
+  "date": "2026-10-13",
   "status": "sequence_in_progress",
   "authority": "Selected local R5.1-R5.3 scope and R5.4 broad qualification are verified. Local M2 gate is complete within recorded profiles; M3 and explicitly deferred device/cold-cache/peer scopes remain open.",
   "baseline": {
@@ -248,7 +248,21 @@
         "A090",
         "A095"
       ],
-      "status": "prepared_not_started"
+      "status": "in_progress",
+      "steps": [
+        {
+          "id": "R6.1a",
+          "status": "verified_selected_scope",
+          "scope": "Exact supplied-event account simulation, shared balances, multiple ordered instrument streams, state guards and portable branches.",
+          "evidence": "workspace:implementation/sbv-account-simulation/CHECKS.json",
+          "release": "0.30.0-dev"
+        },
+        {
+          "id": "R6.1b",
+          "status": "prepared_not_started",
+          "scope": "Execution-result/shared-liquidity coupling, richer feedback providers and selected additional instrument economics."
+        }
+      ]
     },
     {
       "id": "R6.2",
@@ -340,5 +354,5 @@
       "correction": "The generic recommendation to replace the 4096-signal profile is historical/stale for already-shipped partitioned core producers; 0.24 qualified 65,537 signals. Residual legacy external/model/consumer domains remain profile-specific. Preserve the sealed original and use operation_profiles for current limits."
     }
   ],
-  "next_step": "R6.1"
+  "next_step": "R6.1b"
 }

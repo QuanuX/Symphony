@@ -33850,6 +33850,1915 @@
           "additionalProperties": false
         }
       ]
+    },
+    "account_simulate": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "protocol": {
+              "const": "symphony.sbv.account-simulate-input.v1"
+            },
+            "mode": {
+              "enum": [
+                "fixed_intents",
+                "stateful_feedback"
+              ]
+            },
+            "cash_units": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 256
+              }
+            },
+            "instruments": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "instrument_id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 256
+                  },
+                  "cash_unit": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 256
+                  },
+                  "settlement": {
+                    "const": "cash_notional"
+                  },
+                  "price_multiplier": {
+                    "type": "object",
+                    "properties": {
+                      "numerator": {
+                        "type": "string"
+                      },
+                      "denominator": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "numerator",
+                      "denominator"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "required": [
+                  "instrument_id",
+                  "cash_unit",
+                  "settlement",
+                  "price_multiplier"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "initial_state": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "cash": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "type": "object",
+                        "properties": {
+                          "numerator": {
+                            "type": "string"
+                          },
+                          "denominator": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "numerator",
+                          "denominator"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "positions": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "type": "object",
+                        "properties": {
+                          "numerator": {
+                            "type": "string"
+                          },
+                          "denominator": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "numerator",
+                          "denominator"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "marks": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "type": "object",
+                        "properties": {
+                          "numerator": {
+                            "type": "string"
+                          },
+                          "denominator": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "numerator",
+                          "denominator"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "time_ns": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "pattern": "^(0|[1-9][0-9]*)$",
+                          "maxLength": 20
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "cash",
+                    "positions",
+                    "marks",
+                    "time_ns"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "kind": {
+                      "const": "reference"
+                    },
+                    "source": {
+                      "anyOf": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "path": {
+                              "type": "string"
+                            },
+                            "expected_sha256": {
+                              "type": "string",
+                              "pattern": "^[0-9a-f]{64}$"
+                            },
+                            "pointer": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "path",
+                            "expected_sha256",
+                            "pointer"
+                          ],
+                          "additionalProperties": false
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "kind": {
+                              "const": "bundle"
+                            },
+                            "reference": {
+                              "type": "object",
+                              "properties": {
+                                "manifest_path": {
+                                  "type": "string",
+                                  "minLength": 2,
+                                  "maxLength": 4096,
+                                  "pattern": "^/",
+                                  "description": "Absolute clean component-wise no-follow path; native validation rejects controls, symlinks and unsafe components."
+                                },
+                                "manifest_sha256": {
+                                  "type": "string",
+                                  "pattern": "^[0-9a-f]{64}$"
+                                },
+                                "content_sha256": {
+                                  "type": "string",
+                                  "pattern": "^[0-9a-f]{64}$"
+                                }
+                              },
+                              "required": [
+                                "manifest_path",
+                                "manifest_sha256",
+                                "content_sha256"
+                              ],
+                              "additionalProperties": false
+                            },
+                            "selector": {
+                              "oneOf": [
+                                {
+                                  "type": "object",
+                                  "properties": {
+                                    "kind": {
+                                      "const": "node_id"
+                                    },
+                                    "node_id": {
+                                      "type": "string",
+                                      "pattern": "^(0|[1-9][0-9]*)$",
+                                      "maxLength": 20,
+                                      "description": "Canonical uint64 decimal; checked range at native and control boundary."
+                                    }
+                                  },
+                                  "required": [
+                                    "kind",
+                                    "node_id"
+                                  ],
+                                  "additionalProperties": false
+                                },
+                                {
+                                  "type": "object",
+                                  "properties": {
+                                    "kind": {
+                                      "const": "pointer"
+                                    },
+                                    "pointer": {
+                                      "type": "string",
+                                      "maxLength": 65536,
+                                      "pattern": "^(?:/|$)",
+                                      "description": "RFC6901 escaping validated natively; source-bound node IDs reach fields whose full pointer exceeds this convenience profile."
+                                    }
+                                  },
+                                  "required": [
+                                    "kind",
+                                    "pointer"
+                                  ],
+                                  "additionalProperties": false
+                                }
+                              ]
+                            },
+                            "read_options": {
+                              "type": "object",
+                              "properties": {
+                                "max_page_bytes": {
+                                  "oneOf": [
+                                    {
+                                      "type": "string",
+                                      "pattern": "^[1-9][0-9]*$",
+                                      "maxLength": 20,
+                                      "description": "Canonical positive uint64 decimal; checked range at native and control boundary."
+                                    },
+                                    {
+                                      "type": "null"
+                                    }
+                                  ]
+                                },
+                                "cache_bytes": {
+                                  "type": "string",
+                                  "pattern": "^(0|[1-9][0-9]*)$",
+                                  "maxLength": 20,
+                                  "description": "Canonical uint64 decimal; checked range at native and control boundary."
+                                }
+                              },
+                              "required": [
+                                "max_page_bytes",
+                                "cache_bytes"
+                              ],
+                              "additionalProperties": false
+                            }
+                          },
+                          "required": [
+                            "kind",
+                            "reference",
+                            "selector",
+                            "read_options"
+                          ],
+                          "additionalProperties": false
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "kind",
+                    "source"
+                  ],
+                  "additionalProperties": false
+                }
+              ]
+            },
+            "constraints": {
+              "type": "object",
+              "properties": {
+                "cash": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "object",
+                    "properties": {
+                      "minimum": {
+                        "anyOf": [
+                          {
+                            "type": "object",
+                            "properties": {
+                              "numerator": {
+                                "type": "string"
+                              },
+                              "denominator": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "numerator",
+                              "denominator"
+                            ],
+                            "additionalProperties": false
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "maximum": {
+                        "anyOf": [
+                          {
+                            "type": "object",
+                            "properties": {
+                              "numerator": {
+                                "type": "string"
+                              },
+                              "denominator": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "numerator",
+                              "denominator"
+                            ],
+                            "additionalProperties": false
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      }
+                    },
+                    "required": [
+                      "minimum",
+                      "maximum"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "positions": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "object",
+                    "properties": {
+                      "minimum": {
+                        "anyOf": [
+                          {
+                            "type": "object",
+                            "properties": {
+                              "numerator": {
+                                "type": "string"
+                              },
+                              "denominator": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "numerator",
+                              "denominator"
+                            ],
+                            "additionalProperties": false
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "maximum": {
+                        "anyOf": [
+                          {
+                            "type": "object",
+                            "properties": {
+                              "numerator": {
+                                "type": "string"
+                              },
+                              "denominator": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "numerator",
+                              "denominator"
+                            ],
+                            "additionalProperties": false
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      }
+                    },
+                    "required": [
+                      "minimum",
+                      "maximum"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              },
+              "required": [
+                "cash",
+                "positions"
+              ],
+              "additionalProperties": false
+            },
+            "on_constraint": {
+              "enum": [
+                "reject_event",
+                "abort"
+              ]
+            },
+            "streams": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "stream_id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 256
+                  },
+                  "events": {
+                    "anyOf": [
+                      {
+                        "type": "array",
+                        "items": {
+                          "anyOf": [
+                            {
+                              "type": "object",
+                              "properties": {
+                                "event_id": {
+                                  "type": "string",
+                                  "minLength": 1,
+                                  "maxLength": 256
+                                },
+                                "time_ns": {
+                                  "type": "string",
+                                  "pattern": "^(0|[1-9][0-9]*)$",
+                                  "maxLength": 20
+                                },
+                                "kind": {
+                                  "const": "cashflow"
+                                },
+                                "unit": {
+                                  "type": "string",
+                                  "minLength": 1,
+                                  "maxLength": 256
+                                },
+                                "amount": {
+                                  "type": "object",
+                                  "properties": {
+                                    "numerator": {
+                                      "type": "string"
+                                    },
+                                    "denominator": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "required": [
+                                    "numerator",
+                                    "denominator"
+                                  ],
+                                  "additionalProperties": false
+                                }
+                              },
+                              "required": [
+                                "event_id",
+                                "time_ns",
+                                "kind",
+                                "unit",
+                                "amount"
+                              ],
+                              "additionalProperties": false
+                            },
+                            {
+                              "type": "object",
+                              "properties": {
+                                "event_id": {
+                                  "type": "string",
+                                  "minLength": 1,
+                                  "maxLength": 256
+                                },
+                                "time_ns": {
+                                  "type": "string",
+                                  "pattern": "^(0|[1-9][0-9]*)$",
+                                  "maxLength": 20
+                                },
+                                "kind": {
+                                  "const": "mark"
+                                },
+                                "instrument_id": {
+                                  "type": "string",
+                                  "minLength": 1,
+                                  "maxLength": 256
+                                },
+                                "price": {
+                                  "type": "object",
+                                  "properties": {
+                                    "numerator": {
+                                      "type": "string"
+                                    },
+                                    "denominator": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "required": [
+                                    "numerator",
+                                    "denominator"
+                                  ],
+                                  "additionalProperties": false
+                                }
+                              },
+                              "required": [
+                                "event_id",
+                                "time_ns",
+                                "kind",
+                                "instrument_id",
+                                "price"
+                              ],
+                              "additionalProperties": false
+                            },
+                            {
+                              "type": "object",
+                              "properties": {
+                                "event_id": {
+                                  "type": "string",
+                                  "minLength": 1,
+                                  "maxLength": 256
+                                },
+                                "time_ns": {
+                                  "type": "string",
+                                  "pattern": "^(0|[1-9][0-9]*)$",
+                                  "maxLength": 20
+                                },
+                                "kind": {
+                                  "const": "fill_intent"
+                                },
+                                "instrument_id": {
+                                  "type": "string",
+                                  "minLength": 1,
+                                  "maxLength": 256
+                                },
+                                "price": {
+                                  "type": "object",
+                                  "properties": {
+                                    "numerator": {
+                                      "type": "string"
+                                    },
+                                    "denominator": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "required": [
+                                    "numerator",
+                                    "denominator"
+                                  ],
+                                  "additionalProperties": false
+                                },
+                                "quantity": {
+                                  "type": "object",
+                                  "properties": {
+                                    "numerator": {
+                                      "type": "string"
+                                    },
+                                    "denominator": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "required": [
+                                    "numerator",
+                                    "denominator"
+                                  ],
+                                  "additionalProperties": false
+                                },
+                                "fee": {
+                                  "type": "object",
+                                  "properties": {
+                                    "numerator": {
+                                      "type": "string"
+                                    },
+                                    "denominator": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "required": [
+                                    "numerator",
+                                    "denominator"
+                                  ],
+                                  "additionalProperties": false
+                                },
+                                "guards": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "object",
+                                    "properties": {
+                                      "balance": {
+                                        "enum": [
+                                          "cash",
+                                          "position"
+                                        ]
+                                      },
+                                      "key": {
+                                        "type": "string",
+                                        "minLength": 1,
+                                        "maxLength": 256
+                                      },
+                                      "comparison": {
+                                        "enum": [
+                                          "lt",
+                                          "le",
+                                          "eq",
+                                          "ne",
+                                          "ge",
+                                          "gt"
+                                        ]
+                                      },
+                                      "value": {
+                                        "type": "object",
+                                        "properties": {
+                                          "numerator": {
+                                            "type": "string"
+                                          },
+                                          "denominator": {
+                                            "type": "string"
+                                          }
+                                        },
+                                        "required": [
+                                          "numerator",
+                                          "denominator"
+                                        ],
+                                        "additionalProperties": false
+                                      }
+                                    },
+                                    "required": [
+                                      "balance",
+                                      "key",
+                                      "comparison",
+                                      "value"
+                                    ],
+                                    "additionalProperties": false
+                                  }
+                                }
+                              },
+                              "required": [
+                                "event_id",
+                                "time_ns",
+                                "kind",
+                                "instrument_id",
+                                "price",
+                                "quantity",
+                                "fee",
+                                "guards"
+                              ],
+                              "additionalProperties": false
+                            },
+                            {
+                              "type": "object",
+                              "properties": {
+                                "event_id": {
+                                  "type": "string",
+                                  "minLength": 1,
+                                  "maxLength": 256
+                                },
+                                "time_ns": {
+                                  "type": "string",
+                                  "pattern": "^(0|[1-9][0-9]*)$",
+                                  "maxLength": 20
+                                },
+                                "kind": {
+                                  "const": "fx"
+                                },
+                                "from_unit": {
+                                  "type": "string",
+                                  "minLength": 1,
+                                  "maxLength": 256
+                                },
+                                "to_unit": {
+                                  "type": "string",
+                                  "minLength": 1,
+                                  "maxLength": 256
+                                },
+                                "from_amount": {
+                                  "type": "object",
+                                  "properties": {
+                                    "numerator": {
+                                      "type": "string"
+                                    },
+                                    "denominator": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "required": [
+                                    "numerator",
+                                    "denominator"
+                                  ],
+                                  "additionalProperties": false
+                                },
+                                "to_amount": {
+                                  "type": "object",
+                                  "properties": {
+                                    "numerator": {
+                                      "type": "string"
+                                    },
+                                    "denominator": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "required": [
+                                    "numerator",
+                                    "denominator"
+                                  ],
+                                  "additionalProperties": false
+                                }
+                              },
+                              "required": [
+                                "event_id",
+                                "time_ns",
+                                "kind",
+                                "from_unit",
+                                "to_unit",
+                                "from_amount",
+                                "to_amount"
+                              ],
+                              "additionalProperties": false
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "kind": {
+                            "const": "referenced_rows"
+                          },
+                          "source": {
+                            "type": "object",
+                            "properties": {
+                              "kind": {
+                                "const": "bundle"
+                              },
+                              "reference": {
+                                "type": "object",
+                                "properties": {
+                                  "manifest_path": {
+                                    "type": "string",
+                                    "minLength": 2,
+                                    "maxLength": 4096,
+                                    "pattern": "^/",
+                                    "description": "Absolute clean component-wise no-follow path; native validation rejects controls, symlinks and unsafe components."
+                                  },
+                                  "manifest_sha256": {
+                                    "type": "string",
+                                    "pattern": "^[0-9a-f]{64}$"
+                                  },
+                                  "content_sha256": {
+                                    "type": "string",
+                                    "pattern": "^[0-9a-f]{64}$"
+                                  }
+                                },
+                                "required": [
+                                  "manifest_path",
+                                  "manifest_sha256",
+                                  "content_sha256"
+                                ],
+                                "additionalProperties": false
+                              },
+                              "selector": {
+                                "oneOf": [
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "kind": {
+                                        "const": "node_id"
+                                      },
+                                      "node_id": {
+                                        "type": "string",
+                                        "pattern": "^(0|[1-9][0-9]*)$",
+                                        "maxLength": 20,
+                                        "description": "Canonical uint64 decimal; checked range at native and control boundary."
+                                      }
+                                    },
+                                    "required": [
+                                      "kind",
+                                      "node_id"
+                                    ],
+                                    "additionalProperties": false
+                                  },
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "kind": {
+                                        "const": "pointer"
+                                      },
+                                      "pointer": {
+                                        "type": "string",
+                                        "maxLength": 65536,
+                                        "pattern": "^(?:/|$)",
+                                        "description": "RFC6901 escaping validated natively; source-bound node IDs reach fields whose full pointer exceeds this convenience profile."
+                                      }
+                                    },
+                                    "required": [
+                                      "kind",
+                                      "pointer"
+                                    ],
+                                    "additionalProperties": false
+                                  }
+                                ]
+                              },
+                              "read_options": {
+                                "type": "object",
+                                "properties": {
+                                  "max_page_bytes": {
+                                    "oneOf": [
+                                      {
+                                        "type": "string",
+                                        "pattern": "^[1-9][0-9]*$",
+                                        "maxLength": 20,
+                                        "description": "Canonical positive uint64 decimal; checked range at native and control boundary."
+                                      },
+                                      {
+                                        "type": "null"
+                                      }
+                                    ]
+                                  },
+                                  "cache_bytes": {
+                                    "type": "string",
+                                    "pattern": "^(0|[1-9][0-9]*)$",
+                                    "maxLength": 20,
+                                    "description": "Canonical uint64 decimal; checked range at native and control boundary."
+                                  }
+                                },
+                                "required": [
+                                  "max_page_bytes",
+                                  "cache_bytes"
+                                ],
+                                "additionalProperties": false
+                              }
+                            },
+                            "required": [
+                              "kind",
+                              "reference",
+                              "selector",
+                              "read_options"
+                            ],
+                            "additionalProperties": false
+                          }
+                        },
+                        "required": [
+                          "kind",
+                          "source"
+                        ],
+                        "additionalProperties": false
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "stream_id",
+                  "events"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "ordering": {
+              "const": "time_stream_order"
+            },
+            "retain_snapshots": {
+              "type": "boolean"
+            },
+            "extensions": {
+              "type": "object"
+            },
+            "output_path": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "protocol",
+            "mode",
+            "cash_units",
+            "instruments",
+            "initial_state",
+            "constraints",
+            "on_constraint",
+            "streams",
+            "ordering",
+            "retain_snapshots",
+            "extensions",
+            "output_path"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "protocol": {
+              "const": "symphony.sbv.account-simulate-input.v1"
+            },
+            "mode": {
+              "enum": [
+                "fixed_intents",
+                "stateful_feedback"
+              ]
+            },
+            "cash_units": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 256
+              }
+            },
+            "instruments": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "instrument_id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 256
+                  },
+                  "cash_unit": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 256
+                  },
+                  "settlement": {
+                    "const": "cash_notional"
+                  },
+                  "price_multiplier": {
+                    "type": "object",
+                    "properties": {
+                      "numerator": {
+                        "type": "string"
+                      },
+                      "denominator": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "numerator",
+                      "denominator"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "required": [
+                  "instrument_id",
+                  "cash_unit",
+                  "settlement",
+                  "price_multiplier"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "initial_state": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "cash": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "type": "object",
+                        "properties": {
+                          "numerator": {
+                            "type": "string"
+                          },
+                          "denominator": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "numerator",
+                          "denominator"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "positions": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "type": "object",
+                        "properties": {
+                          "numerator": {
+                            "type": "string"
+                          },
+                          "denominator": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "numerator",
+                          "denominator"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "marks": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "type": "object",
+                        "properties": {
+                          "numerator": {
+                            "type": "string"
+                          },
+                          "denominator": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "numerator",
+                          "denominator"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "time_ns": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "pattern": "^(0|[1-9][0-9]*)$",
+                          "maxLength": 20
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "cash",
+                    "positions",
+                    "marks",
+                    "time_ns"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "kind": {
+                      "const": "reference"
+                    },
+                    "source": {
+                      "anyOf": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "path": {
+                              "type": "string"
+                            },
+                            "expected_sha256": {
+                              "type": "string",
+                              "pattern": "^[0-9a-f]{64}$"
+                            },
+                            "pointer": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "path",
+                            "expected_sha256",
+                            "pointer"
+                          ],
+                          "additionalProperties": false
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "kind": {
+                              "const": "bundle"
+                            },
+                            "reference": {
+                              "type": "object",
+                              "properties": {
+                                "manifest_path": {
+                                  "type": "string",
+                                  "minLength": 2,
+                                  "maxLength": 4096,
+                                  "pattern": "^/",
+                                  "description": "Absolute clean component-wise no-follow path; native validation rejects controls, symlinks and unsafe components."
+                                },
+                                "manifest_sha256": {
+                                  "type": "string",
+                                  "pattern": "^[0-9a-f]{64}$"
+                                },
+                                "content_sha256": {
+                                  "type": "string",
+                                  "pattern": "^[0-9a-f]{64}$"
+                                }
+                              },
+                              "required": [
+                                "manifest_path",
+                                "manifest_sha256",
+                                "content_sha256"
+                              ],
+                              "additionalProperties": false
+                            },
+                            "selector": {
+                              "oneOf": [
+                                {
+                                  "type": "object",
+                                  "properties": {
+                                    "kind": {
+                                      "const": "node_id"
+                                    },
+                                    "node_id": {
+                                      "type": "string",
+                                      "pattern": "^(0|[1-9][0-9]*)$",
+                                      "maxLength": 20,
+                                      "description": "Canonical uint64 decimal; checked range at native and control boundary."
+                                    }
+                                  },
+                                  "required": [
+                                    "kind",
+                                    "node_id"
+                                  ],
+                                  "additionalProperties": false
+                                },
+                                {
+                                  "type": "object",
+                                  "properties": {
+                                    "kind": {
+                                      "const": "pointer"
+                                    },
+                                    "pointer": {
+                                      "type": "string",
+                                      "maxLength": 65536,
+                                      "pattern": "^(?:/|$)",
+                                      "description": "RFC6901 escaping validated natively; source-bound node IDs reach fields whose full pointer exceeds this convenience profile."
+                                    }
+                                  },
+                                  "required": [
+                                    "kind",
+                                    "pointer"
+                                  ],
+                                  "additionalProperties": false
+                                }
+                              ]
+                            },
+                            "read_options": {
+                              "type": "object",
+                              "properties": {
+                                "max_page_bytes": {
+                                  "oneOf": [
+                                    {
+                                      "type": "string",
+                                      "pattern": "^[1-9][0-9]*$",
+                                      "maxLength": 20,
+                                      "description": "Canonical positive uint64 decimal; checked range at native and control boundary."
+                                    },
+                                    {
+                                      "type": "null"
+                                    }
+                                  ]
+                                },
+                                "cache_bytes": {
+                                  "type": "string",
+                                  "pattern": "^(0|[1-9][0-9]*)$",
+                                  "maxLength": 20,
+                                  "description": "Canonical uint64 decimal; checked range at native and control boundary."
+                                }
+                              },
+                              "required": [
+                                "max_page_bytes",
+                                "cache_bytes"
+                              ],
+                              "additionalProperties": false
+                            }
+                          },
+                          "required": [
+                            "kind",
+                            "reference",
+                            "selector",
+                            "read_options"
+                          ],
+                          "additionalProperties": false
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "kind",
+                    "source"
+                  ],
+                  "additionalProperties": false
+                }
+              ]
+            },
+            "constraints": {
+              "type": "object",
+              "properties": {
+                "cash": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "object",
+                    "properties": {
+                      "minimum": {
+                        "anyOf": [
+                          {
+                            "type": "object",
+                            "properties": {
+                              "numerator": {
+                                "type": "string"
+                              },
+                              "denominator": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "numerator",
+                              "denominator"
+                            ],
+                            "additionalProperties": false
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "maximum": {
+                        "anyOf": [
+                          {
+                            "type": "object",
+                            "properties": {
+                              "numerator": {
+                                "type": "string"
+                              },
+                              "denominator": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "numerator",
+                              "denominator"
+                            ],
+                            "additionalProperties": false
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      }
+                    },
+                    "required": [
+                      "minimum",
+                      "maximum"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "positions": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "object",
+                    "properties": {
+                      "minimum": {
+                        "anyOf": [
+                          {
+                            "type": "object",
+                            "properties": {
+                              "numerator": {
+                                "type": "string"
+                              },
+                              "denominator": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "numerator",
+                              "denominator"
+                            ],
+                            "additionalProperties": false
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "maximum": {
+                        "anyOf": [
+                          {
+                            "type": "object",
+                            "properties": {
+                              "numerator": {
+                                "type": "string"
+                              },
+                              "denominator": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "numerator",
+                              "denominator"
+                            ],
+                            "additionalProperties": false
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      }
+                    },
+                    "required": [
+                      "minimum",
+                      "maximum"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              },
+              "required": [
+                "cash",
+                "positions"
+              ],
+              "additionalProperties": false
+            },
+            "on_constraint": {
+              "enum": [
+                "reject_event",
+                "abort"
+              ]
+            },
+            "streams": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "stream_id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 256
+                  },
+                  "events": {
+                    "anyOf": [
+                      {
+                        "type": "array",
+                        "items": {
+                          "anyOf": [
+                            {
+                              "type": "object",
+                              "properties": {
+                                "event_id": {
+                                  "type": "string",
+                                  "minLength": 1,
+                                  "maxLength": 256
+                                },
+                                "time_ns": {
+                                  "type": "string",
+                                  "pattern": "^(0|[1-9][0-9]*)$",
+                                  "maxLength": 20
+                                },
+                                "kind": {
+                                  "const": "cashflow"
+                                },
+                                "unit": {
+                                  "type": "string",
+                                  "minLength": 1,
+                                  "maxLength": 256
+                                },
+                                "amount": {
+                                  "type": "object",
+                                  "properties": {
+                                    "numerator": {
+                                      "type": "string"
+                                    },
+                                    "denominator": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "required": [
+                                    "numerator",
+                                    "denominator"
+                                  ],
+                                  "additionalProperties": false
+                                }
+                              },
+                              "required": [
+                                "event_id",
+                                "time_ns",
+                                "kind",
+                                "unit",
+                                "amount"
+                              ],
+                              "additionalProperties": false
+                            },
+                            {
+                              "type": "object",
+                              "properties": {
+                                "event_id": {
+                                  "type": "string",
+                                  "minLength": 1,
+                                  "maxLength": 256
+                                },
+                                "time_ns": {
+                                  "type": "string",
+                                  "pattern": "^(0|[1-9][0-9]*)$",
+                                  "maxLength": 20
+                                },
+                                "kind": {
+                                  "const": "mark"
+                                },
+                                "instrument_id": {
+                                  "type": "string",
+                                  "minLength": 1,
+                                  "maxLength": 256
+                                },
+                                "price": {
+                                  "type": "object",
+                                  "properties": {
+                                    "numerator": {
+                                      "type": "string"
+                                    },
+                                    "denominator": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "required": [
+                                    "numerator",
+                                    "denominator"
+                                  ],
+                                  "additionalProperties": false
+                                }
+                              },
+                              "required": [
+                                "event_id",
+                                "time_ns",
+                                "kind",
+                                "instrument_id",
+                                "price"
+                              ],
+                              "additionalProperties": false
+                            },
+                            {
+                              "type": "object",
+                              "properties": {
+                                "event_id": {
+                                  "type": "string",
+                                  "minLength": 1,
+                                  "maxLength": 256
+                                },
+                                "time_ns": {
+                                  "type": "string",
+                                  "pattern": "^(0|[1-9][0-9]*)$",
+                                  "maxLength": 20
+                                },
+                                "kind": {
+                                  "const": "fill_intent"
+                                },
+                                "instrument_id": {
+                                  "type": "string",
+                                  "minLength": 1,
+                                  "maxLength": 256
+                                },
+                                "price": {
+                                  "type": "object",
+                                  "properties": {
+                                    "numerator": {
+                                      "type": "string"
+                                    },
+                                    "denominator": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "required": [
+                                    "numerator",
+                                    "denominator"
+                                  ],
+                                  "additionalProperties": false
+                                },
+                                "quantity": {
+                                  "type": "object",
+                                  "properties": {
+                                    "numerator": {
+                                      "type": "string"
+                                    },
+                                    "denominator": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "required": [
+                                    "numerator",
+                                    "denominator"
+                                  ],
+                                  "additionalProperties": false
+                                },
+                                "fee": {
+                                  "type": "object",
+                                  "properties": {
+                                    "numerator": {
+                                      "type": "string"
+                                    },
+                                    "denominator": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "required": [
+                                    "numerator",
+                                    "denominator"
+                                  ],
+                                  "additionalProperties": false
+                                },
+                                "guards": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "object",
+                                    "properties": {
+                                      "balance": {
+                                        "enum": [
+                                          "cash",
+                                          "position"
+                                        ]
+                                      },
+                                      "key": {
+                                        "type": "string",
+                                        "minLength": 1,
+                                        "maxLength": 256
+                                      },
+                                      "comparison": {
+                                        "enum": [
+                                          "lt",
+                                          "le",
+                                          "eq",
+                                          "ne",
+                                          "ge",
+                                          "gt"
+                                        ]
+                                      },
+                                      "value": {
+                                        "type": "object",
+                                        "properties": {
+                                          "numerator": {
+                                            "type": "string"
+                                          },
+                                          "denominator": {
+                                            "type": "string"
+                                          }
+                                        },
+                                        "required": [
+                                          "numerator",
+                                          "denominator"
+                                        ],
+                                        "additionalProperties": false
+                                      }
+                                    },
+                                    "required": [
+                                      "balance",
+                                      "key",
+                                      "comparison",
+                                      "value"
+                                    ],
+                                    "additionalProperties": false
+                                  }
+                                }
+                              },
+                              "required": [
+                                "event_id",
+                                "time_ns",
+                                "kind",
+                                "instrument_id",
+                                "price",
+                                "quantity",
+                                "fee",
+                                "guards"
+                              ],
+                              "additionalProperties": false
+                            },
+                            {
+                              "type": "object",
+                              "properties": {
+                                "event_id": {
+                                  "type": "string",
+                                  "minLength": 1,
+                                  "maxLength": 256
+                                },
+                                "time_ns": {
+                                  "type": "string",
+                                  "pattern": "^(0|[1-9][0-9]*)$",
+                                  "maxLength": 20
+                                },
+                                "kind": {
+                                  "const": "fx"
+                                },
+                                "from_unit": {
+                                  "type": "string",
+                                  "minLength": 1,
+                                  "maxLength": 256
+                                },
+                                "to_unit": {
+                                  "type": "string",
+                                  "minLength": 1,
+                                  "maxLength": 256
+                                },
+                                "from_amount": {
+                                  "type": "object",
+                                  "properties": {
+                                    "numerator": {
+                                      "type": "string"
+                                    },
+                                    "denominator": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "required": [
+                                    "numerator",
+                                    "denominator"
+                                  ],
+                                  "additionalProperties": false
+                                },
+                                "to_amount": {
+                                  "type": "object",
+                                  "properties": {
+                                    "numerator": {
+                                      "type": "string"
+                                    },
+                                    "denominator": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "required": [
+                                    "numerator",
+                                    "denominator"
+                                  ],
+                                  "additionalProperties": false
+                                }
+                              },
+                              "required": [
+                                "event_id",
+                                "time_ns",
+                                "kind",
+                                "from_unit",
+                                "to_unit",
+                                "from_amount",
+                                "to_amount"
+                              ],
+                              "additionalProperties": false
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "kind": {
+                            "const": "referenced_rows"
+                          },
+                          "source": {
+                            "type": "object",
+                            "properties": {
+                              "kind": {
+                                "const": "bundle"
+                              },
+                              "reference": {
+                                "type": "object",
+                                "properties": {
+                                  "manifest_path": {
+                                    "type": "string",
+                                    "minLength": 2,
+                                    "maxLength": 4096,
+                                    "pattern": "^/",
+                                    "description": "Absolute clean component-wise no-follow path; native validation rejects controls, symlinks and unsafe components."
+                                  },
+                                  "manifest_sha256": {
+                                    "type": "string",
+                                    "pattern": "^[0-9a-f]{64}$"
+                                  },
+                                  "content_sha256": {
+                                    "type": "string",
+                                    "pattern": "^[0-9a-f]{64}$"
+                                  }
+                                },
+                                "required": [
+                                  "manifest_path",
+                                  "manifest_sha256",
+                                  "content_sha256"
+                                ],
+                                "additionalProperties": false
+                              },
+                              "selector": {
+                                "oneOf": [
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "kind": {
+                                        "const": "node_id"
+                                      },
+                                      "node_id": {
+                                        "type": "string",
+                                        "pattern": "^(0|[1-9][0-9]*)$",
+                                        "maxLength": 20,
+                                        "description": "Canonical uint64 decimal; checked range at native and control boundary."
+                                      }
+                                    },
+                                    "required": [
+                                      "kind",
+                                      "node_id"
+                                    ],
+                                    "additionalProperties": false
+                                  },
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "kind": {
+                                        "const": "pointer"
+                                      },
+                                      "pointer": {
+                                        "type": "string",
+                                        "maxLength": 65536,
+                                        "pattern": "^(?:/|$)",
+                                        "description": "RFC6901 escaping validated natively; source-bound node IDs reach fields whose full pointer exceeds this convenience profile."
+                                      }
+                                    },
+                                    "required": [
+                                      "kind",
+                                      "pointer"
+                                    ],
+                                    "additionalProperties": false
+                                  }
+                                ]
+                              },
+                              "read_options": {
+                                "type": "object",
+                                "properties": {
+                                  "max_page_bytes": {
+                                    "oneOf": [
+                                      {
+                                        "type": "string",
+                                        "pattern": "^[1-9][0-9]*$",
+                                        "maxLength": 20,
+                                        "description": "Canonical positive uint64 decimal; checked range at native and control boundary."
+                                      },
+                                      {
+                                        "type": "null"
+                                      }
+                                    ]
+                                  },
+                                  "cache_bytes": {
+                                    "type": "string",
+                                    "pattern": "^(0|[1-9][0-9]*)$",
+                                    "maxLength": 20,
+                                    "description": "Canonical uint64 decimal; checked range at native and control boundary."
+                                  }
+                                },
+                                "required": [
+                                  "max_page_bytes",
+                                  "cache_bytes"
+                                ],
+                                "additionalProperties": false
+                              }
+                            },
+                            "required": [
+                              "kind",
+                              "reference",
+                              "selector",
+                              "read_options"
+                            ],
+                            "additionalProperties": false
+                          }
+                        },
+                        "required": [
+                          "kind",
+                          "source"
+                        ],
+                        "additionalProperties": false
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "stream_id",
+                  "events"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "ordering": {
+              "const": "time_stream_order"
+            },
+            "retain_snapshots": {
+              "type": "boolean"
+            },
+            "extensions": {
+              "type": "object"
+            },
+            "output": {
+              "type": "object",
+              "properties": {
+                "kind": {
+                  "const": "partitioned"
+                },
+                "bundle_path": {
+                  "type": "string",
+                  "minLength": 2,
+                  "maxLength": 4096,
+                  "pattern": "^/",
+                  "description": "Absolute clean component-wise no-follow path; native validation rejects controls, symlinks and unsafe components."
+                },
+                "workspace_path": {
+                  "type": "string",
+                  "minLength": 2,
+                  "maxLength": 4096,
+                  "pattern": "^/",
+                  "description": "Absolute clean component-wise no-follow path; native validation rejects controls, symlinks and unsafe components."
+                },
+                "write_options": {
+                  "type": "object",
+                  "properties": {
+                    "page_bytes": {
+                      "type": "string",
+                      "pattern": "^[1-9][0-9]*$",
+                      "maxLength": 20,
+                      "description": "Canonical positive uint64 decimal; checked range at native and control boundary."
+                    },
+                    "index_fanout": {
+                      "type": "string",
+                      "pattern": "^([2-9]|[1-9][0-9]+)$",
+                      "maxLength": 20
+                    }
+                  },
+                  "required": [
+                    "page_bytes",
+                    "index_fanout"
+                  ],
+                  "additionalProperties": false
+                },
+                "scratch_read_options": {
+                  "type": "object",
+                  "properties": {
+                    "max_page_bytes": {
+                      "oneOf": [
+                        {
+                          "type": "string",
+                          "pattern": "^[1-9][0-9]*$",
+                          "maxLength": 20,
+                          "description": "Canonical positive uint64 decimal; checked range at native and control boundary."
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "cache_bytes": {
+                      "type": "string",
+                      "pattern": "^(0|[1-9][0-9]*)$",
+                      "maxLength": 20,
+                      "description": "Canonical uint64 decimal; checked range at native and control boundary."
+                    }
+                  },
+                  "required": [
+                    "max_page_bytes",
+                    "cache_bytes"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "kind",
+                "bundle_path",
+                "workspace_path",
+                "write_options"
+              ],
+              "additionalProperties": false,
+              "description": "Explicit partitioned output; new private workspace and final bundle must be disjoint. Scratch remains caller-owned on success/failure. No implicit fallback, cleanup, retry or default deadline."
+            }
+          },
+          "required": [
+            "protocol",
+            "mode",
+            "cash_units",
+            "instruments",
+            "initial_state",
+            "constraints",
+            "on_constraint",
+            "streams",
+            "ordering",
+            "retain_snapshots",
+            "extensions",
+            "output"
+          ],
+          "additionalProperties": false
+        }
+      ]
     }
   },
   "results": {
@@ -33860,7 +35769,7 @@
           "const": "symphony.sbv.capabilities.v1"
         },
         "engine_version": {
-          "const": "0.29.0-dev"
+          "const": "0.30.0-dev"
         },
         "cpu": {
           "type": "object",
@@ -35746,7 +37655,7 @@
           "const": "symphony.sbv.catalogue.v1"
         },
         "engine_version": {
-          "const": "0.29.0-dev"
+          "const": "0.30.0-dev"
         },
         "models": {
           "type": "array",
@@ -35787,7 +37696,8 @@
                     "allocation_economics",
                     "analyze",
                     "resample",
-                    "queue_scenarios"
+                    "queue_scenarios",
+                    "account_simulate"
                   ]
                 }
               },
@@ -38681,7 +40591,7 @@
           "const": "symphony.sbv.backend-plan.v1"
         },
         "engine_version": {
-          "const": "0.29.0-dev"
+          "const": "0.30.0-dev"
         },
         "status": {
           "enum": [
@@ -38974,7 +40884,7 @@
           "const": "symphony.sbv.live-plan.v1"
         },
         "engine_version": {
-          "const": "0.29.0-dev"
+          "const": "0.30.0-dev"
         },
         "can_activate": {
           "const": false
@@ -45884,7 +47794,7 @@
           "const": "symphony.sbv.provider-inspect.v1"
         },
         "engine_version": {
-          "const": "0.29.0-dev"
+          "const": "0.30.0-dev"
         },
         "provider": {
           "type": "object",
@@ -47653,7 +49563,7 @@
           "const": "symphony.sbv.dataset-jobs.v1"
         },
         "engine_version": {
-          "const": "0.29.0-dev"
+          "const": "0.30.0-dev"
         },
         "directory": {
           "type": "string"
@@ -47699,7 +49609,7 @@
           "const": "symphony.sbv.dataset-cancel.v1"
         },
         "engine_version": {
-          "const": "0.29.0-dev"
+          "const": "0.30.0-dev"
         },
         "directory": {
           "type": "string"
@@ -47728,7 +49638,7 @@
           "const": "symphony.sbv.dataset-stop.v1"
         },
         "engine_version": {
-          "const": "0.29.0-dev"
+          "const": "0.30.0-dev"
         },
         "directory": {
           "type": "string"
@@ -48011,6 +49921,507 @@
           "properties": {
             "protocol": {
               "const": "symphony.sbv.queue-scenarios.v1"
+            },
+            "status": {
+              "const": "recovery_required"
+            },
+            "code": {
+              "const": "sbv.partitioned_result_incomplete"
+            },
+            "cause": {
+              "type": "object",
+              "properties": {
+                "category": {
+                  "enum": [
+                    "contract",
+                    "storage",
+                    "deadline",
+                    "allocation",
+                    "unexpected"
+                  ]
+                },
+                "code": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9_.-]{0,127}$",
+                  "maxLength": 128
+                }
+              },
+              "required": [
+                "category",
+                "code"
+              ],
+              "additionalProperties": false
+            },
+            "request_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "automatic_retry": {
+              "const": false
+            },
+            "rollback_performed": {
+              "const": false
+            },
+            "recovery": {
+              "type": "object",
+              "properties": {
+                "output": {
+                  "type": "object",
+                  "properties": {
+                    "kind": {
+                      "const": "partitioned"
+                    },
+                    "bundle_path": {
+                      "type": "string",
+                      "minLength": 2,
+                      "maxLength": 4096,
+                      "pattern": "^/",
+                      "description": "Absolute clean component-wise no-follow path; native validation rejects controls, symlinks and unsafe components."
+                    },
+                    "workspace_path": {
+                      "type": "string",
+                      "minLength": 2,
+                      "maxLength": 4096,
+                      "pattern": "^/",
+                      "description": "Absolute clean component-wise no-follow path; native validation rejects controls, symlinks and unsafe components."
+                    },
+                    "write_options": {
+                      "type": "object",
+                      "properties": {
+                        "page_bytes": {
+                          "type": "string",
+                          "pattern": "^[1-9][0-9]*$",
+                          "maxLength": 20,
+                          "description": "Canonical positive uint64 decimal; checked range at native and control boundary."
+                        },
+                        "index_fanout": {
+                          "type": "string",
+                          "pattern": "^([2-9]|[1-9][0-9]+)$",
+                          "maxLength": 20
+                        }
+                      },
+                      "required": [
+                        "page_bytes",
+                        "index_fanout"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "scratch_read_options": {
+                      "type": "object",
+                      "properties": {
+                        "max_page_bytes": {
+                          "oneOf": [
+                            {
+                              "type": "string",
+                              "pattern": "^[1-9][0-9]*$",
+                              "maxLength": 20,
+                              "description": "Canonical positive uint64 decimal; checked range at native and control boundary."
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "cache_bytes": {
+                          "type": "string",
+                          "pattern": "^(0|[1-9][0-9]*)$",
+                          "maxLength": 20,
+                          "description": "Canonical uint64 decimal; checked range at native and control boundary."
+                        }
+                      },
+                      "required": [
+                        "max_page_bytes",
+                        "cache_bytes"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "required": [
+                    "kind",
+                    "bundle_path",
+                    "workspace_path",
+                    "write_options"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Explicit partitioned output; new private workspace and final bundle must be disjoint. Scratch remains caller-owned on success/failure. No implicit fallback, cleanup, retry or default deadline."
+                },
+                "phase": {
+                  "enum": [
+                    "create_workspace",
+                    "produce",
+                    "finalize_result"
+                  ]
+                },
+                "workspace_created": {
+                  "type": "boolean"
+                },
+                "workspace_creation_durable": {
+                  "type": "boolean"
+                },
+                "automatic_cleanup": {
+                  "const": false
+                },
+                "final_storage": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "bundle_path": {
+                          "type": "string",
+                          "minLength": 2,
+                          "maxLength": 4096,
+                          "pattern": "^/",
+                          "description": "Absolute clean component-wise no-follow path; native validation rejects controls, symlinks and unsafe components."
+                        },
+                        "manifest_path": {
+                          "type": "string",
+                          "minLength": 2,
+                          "maxLength": 4096,
+                          "pattern": "^/",
+                          "description": "Absolute clean component-wise no-follow path; native validation rejects controls, symlinks and unsafe components."
+                        },
+                        "phase": {
+                          "enum": [
+                            "create_directory",
+                            "write_pages",
+                            "publish_manifest",
+                            "sync_manifest"
+                          ]
+                        },
+                        "manifest_published": {
+                          "type": "boolean"
+                        },
+                        "durable": {
+                          "type": "boolean"
+                        },
+                        "page_files_created": {
+                          "type": "string",
+                          "pattern": "^(0|[1-9][0-9]*)$",
+                          "maxLength": 20,
+                          "description": "Canonical uint64 decimal; checked range at native and control boundary."
+                        },
+                        "page_bytes_created": {
+                          "type": "string",
+                          "pattern": "^(0|[1-9][0-9]*)$",
+                          "maxLength": 20,
+                          "description": "Canonical uint64 decimal; checked range at native and control boundary."
+                        },
+                        "reference": {
+                          "oneOf": [
+                            {
+                              "type": "object",
+                              "properties": {
+                                "manifest_path": {
+                                  "type": "string",
+                                  "minLength": 2,
+                                  "maxLength": 4096,
+                                  "pattern": "^/",
+                                  "description": "Absolute clean component-wise no-follow path; native validation rejects controls, symlinks and unsafe components."
+                                },
+                                "manifest_sha256": {
+                                  "type": "string",
+                                  "pattern": "^[0-9a-f]{64}$"
+                                },
+                                "content_sha256": {
+                                  "type": "string",
+                                  "pattern": "^[0-9a-f]{64}$"
+                                }
+                              },
+                              "required": [
+                                "manifest_path",
+                                "manifest_sha256",
+                                "content_sha256"
+                              ],
+                              "additionalProperties": false
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        }
+                      },
+                      "required": [
+                        "bundle_path",
+                        "manifest_path",
+                        "phase",
+                        "manifest_published",
+                        "durable",
+                        "page_files_created",
+                        "page_bytes_created",
+                        "reference"
+                      ],
+                      "additionalProperties": false
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "output",
+                "phase",
+                "workspace_created",
+                "workspace_creation_durable",
+                "automatic_cleanup",
+                "final_storage"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "protocol",
+            "status",
+            "code",
+            "cause",
+            "request_sha256",
+            "automatic_retry",
+            "rollback_performed",
+            "recovery"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "account_simulate": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "protocol": {
+              "const": "symphony.sbv.account-simulate.v1"
+            },
+            "path": {
+              "type": "string"
+            },
+            "content_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "file_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "bytes": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]*)$"
+            },
+            "status": {
+              "enum": [
+                "completed",
+                "partial"
+              ]
+            },
+            "summary": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "enum": [
+                    "available",
+                    "partial",
+                    "unavailable",
+                    "not_selected"
+                  ]
+                },
+                "reason": {
+                  "type": "string"
+                },
+                "data": {
+                  "$ref": "#/$defs/node"
+                }
+              },
+              "required": [
+                "status",
+                "reason",
+                "data"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "protocol",
+            "path",
+            "content_sha256",
+            "file_sha256",
+            "bytes",
+            "status",
+            "summary"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "protocol": {
+              "const": "symphony.sbv.account-simulate.v1"
+            },
+            "status": {
+              "enum": [
+                "partial",
+                "completed"
+              ]
+            },
+            "content_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "storage": {
+              "type": "object",
+              "properties": {
+                "kind": {
+                  "const": "partitioned"
+                },
+                "reference": {
+                  "type": "object",
+                  "properties": {
+                    "manifest_path": {
+                      "type": "string",
+                      "minLength": 2,
+                      "maxLength": 4096,
+                      "pattern": "^/",
+                      "description": "Absolute clean component-wise no-follow path; native validation rejects controls, symlinks and unsafe components."
+                    },
+                    "manifest_sha256": {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{64}$"
+                    },
+                    "content_sha256": {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{64}$"
+                    }
+                  },
+                  "required": [
+                    "manifest_path",
+                    "manifest_sha256",
+                    "content_sha256"
+                  ],
+                  "additionalProperties": false
+                },
+                "workspace_path": {
+                  "type": "string",
+                  "minLength": 2,
+                  "maxLength": 4096,
+                  "pattern": "^/",
+                  "description": "Absolute clean component-wise no-follow path; native validation rejects controls, symlinks and unsafe components."
+                },
+                "workspace_retained": {
+                  "const": true
+                },
+                "manifest_bytes": {
+                  "type": "string",
+                  "pattern": "^[1-9][0-9]*$",
+                  "maxLength": 20,
+                  "description": "Canonical positive uint64 decimal; checked range at native and control boundary."
+                },
+                "logical_body_bytes": {
+                  "type": "string",
+                  "pattern": "^(0|[1-9][0-9]*)$",
+                  "maxLength": 20,
+                  "description": "Canonical uint64 decimal; checked range at native and control boundary."
+                },
+                "logical_body_nodes": {
+                  "type": "string",
+                  "pattern": "^(0|[1-9][0-9]*)$",
+                  "maxLength": 20,
+                  "description": "Canonical uint64 decimal; checked range at native and control boundary."
+                },
+                "logical_body_values": {
+                  "type": "string",
+                  "pattern": "^(0|[1-9][0-9]*)$",
+                  "maxLength": 20,
+                  "description": "Canonical uint64 decimal; checked range at native and control boundary."
+                },
+                "exported_value_nodes": {
+                  "type": "string",
+                  "pattern": "^(0|[1-9][0-9]*)$",
+                  "maxLength": 20,
+                  "description": "Canonical uint64 decimal; checked range at native and control boundary."
+                },
+                "page_files_created": {
+                  "type": "string",
+                  "pattern": "^(0|[1-9][0-9]*)$",
+                  "maxLength": 20,
+                  "description": "Canonical uint64 decimal; checked range at native and control boundary."
+                },
+                "page_bytes_created": {
+                  "type": "string",
+                  "pattern": "^(0|[1-9][0-9]*)$",
+                  "maxLength": 20,
+                  "description": "Canonical uint64 decimal; checked range at native and control boundary."
+                },
+                "write_options": {
+                  "type": "object",
+                  "properties": {
+                    "page_bytes": {
+                      "type": "string",
+                      "pattern": "^[1-9][0-9]*$",
+                      "maxLength": 20,
+                      "description": "Canonical positive uint64 decimal; checked range at native and control boundary."
+                    },
+                    "index_fanout": {
+                      "type": "string",
+                      "pattern": "^([2-9]|[1-9][0-9]+)$",
+                      "maxLength": 20
+                    }
+                  },
+                  "required": [
+                    "page_bytes",
+                    "index_fanout"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "kind",
+                "reference",
+                "workspace_path",
+                "workspace_retained",
+                "manifest_bytes",
+                "logical_body_bytes",
+                "logical_body_nodes",
+                "logical_body_values",
+                "exported_value_nodes",
+                "page_files_created",
+                "page_bytes_created",
+                "write_options"
+              ],
+              "additionalProperties": false
+            },
+            "summary": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "const": "available"
+                },
+                "reason": {
+                  "type": "string"
+                },
+                "data": {
+                  "type": "object"
+                }
+              },
+              "required": [
+                "status",
+                "reason",
+                "data"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "protocol",
+            "status",
+            "content_sha256",
+            "storage",
+            "summary"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "protocol": {
+              "const": "symphony.sbv.account-simulate.v1"
             },
             "status": {
               "const": "recovery_required"
@@ -68947,6 +71358,447 @@
         "no_fill_probability",
         "expected_filled_quantity",
         "calibration"
+      ],
+      "additionalProperties": false
+    },
+    "account_event": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "event_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "time_ns": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]*)$",
+              "maxLength": 20
+            },
+            "kind": {
+              "const": "cashflow"
+            },
+            "unit": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "amount": {
+              "type": "object",
+              "properties": {
+                "numerator": {
+                  "type": "string"
+                },
+                "denominator": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "numerator",
+                "denominator"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "event_id",
+            "time_ns",
+            "kind",
+            "unit",
+            "amount"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "event_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "time_ns": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]*)$",
+              "maxLength": 20
+            },
+            "kind": {
+              "const": "mark"
+            },
+            "instrument_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "price": {
+              "type": "object",
+              "properties": {
+                "numerator": {
+                  "type": "string"
+                },
+                "denominator": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "numerator",
+                "denominator"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "event_id",
+            "time_ns",
+            "kind",
+            "instrument_id",
+            "price"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "event_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "time_ns": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]*)$",
+              "maxLength": 20
+            },
+            "kind": {
+              "const": "fill_intent"
+            },
+            "instrument_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "price": {
+              "type": "object",
+              "properties": {
+                "numerator": {
+                  "type": "string"
+                },
+                "denominator": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "numerator",
+                "denominator"
+              ],
+              "additionalProperties": false
+            },
+            "quantity": {
+              "type": "object",
+              "properties": {
+                "numerator": {
+                  "type": "string"
+                },
+                "denominator": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "numerator",
+                "denominator"
+              ],
+              "additionalProperties": false
+            },
+            "fee": {
+              "type": "object",
+              "properties": {
+                "numerator": {
+                  "type": "string"
+                },
+                "denominator": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "numerator",
+                "denominator"
+              ],
+              "additionalProperties": false
+            },
+            "guards": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "balance": {
+                    "enum": [
+                      "cash",
+                      "position"
+                    ]
+                  },
+                  "key": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 256
+                  },
+                  "comparison": {
+                    "enum": [
+                      "lt",
+                      "le",
+                      "eq",
+                      "ne",
+                      "ge",
+                      "gt"
+                    ]
+                  },
+                  "value": {
+                    "type": "object",
+                    "properties": {
+                      "numerator": {
+                        "type": "string"
+                      },
+                      "denominator": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "numerator",
+                      "denominator"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "required": [
+                  "balance",
+                  "key",
+                  "comparison",
+                  "value"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": [
+            "event_id",
+            "time_ns",
+            "kind",
+            "instrument_id",
+            "price",
+            "quantity",
+            "fee",
+            "guards"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "event_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "time_ns": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]*)$",
+              "maxLength": 20
+            },
+            "kind": {
+              "const": "fx"
+            },
+            "from_unit": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "to_unit": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "from_amount": {
+              "type": "object",
+              "properties": {
+                "numerator": {
+                  "type": "string"
+                },
+                "denominator": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "numerator",
+                "denominator"
+              ],
+              "additionalProperties": false
+            },
+            "to_amount": {
+              "type": "object",
+              "properties": {
+                "numerator": {
+                  "type": "string"
+                },
+                "denominator": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "numerator",
+                "denominator"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "event_id",
+            "time_ns",
+            "kind",
+            "from_unit",
+            "to_unit",
+            "from_amount",
+            "to_amount"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "account_guard": {
+      "type": "object",
+      "properties": {
+        "balance": {
+          "enum": [
+            "cash",
+            "position"
+          ]
+        },
+        "key": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "comparison": {
+          "enum": [
+            "lt",
+            "le",
+            "eq",
+            "ne",
+            "ge",
+            "gt"
+          ]
+        },
+        "value": {
+          "type": "object",
+          "properties": {
+            "numerator": {
+              "type": "string"
+            },
+            "denominator": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "numerator",
+            "denominator"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "balance",
+        "key",
+        "comparison",
+        "value"
+      ],
+      "additionalProperties": false
+    },
+    "account_state": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.account-state.v1"
+        },
+        "model_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "cash": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "numerator": {
+                "type": "string"
+              },
+              "denominator": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "numerator",
+              "denominator"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "positions": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "numerator": {
+                "type": "string"
+              },
+              "denominator": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "numerator",
+              "denominator"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "marks": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "numerator": {
+                "type": "string"
+              },
+              "denominator": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "numerator",
+              "denominator"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "time_ns": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]*)$",
+              "maxLength": 20
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "protocol",
+        "model_sha256",
+        "cash",
+        "positions",
+        "marks",
+        "time_ns"
       ],
       "additionalProperties": false
     }

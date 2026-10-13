@@ -3,9 +3,9 @@
   "module_id": "sbv-engine",
   "engine_id": "symphony-sbv",
   "namespace": "symphony::sbv::interface",
-  "current_version": "0.29.0-dev",
+  "current_version": "0.30.0-dev",
   "releases": {
-    "0.29.0-dev": [
+    "0.30.0-dev": [
       "capabilities",
       "run",
       "compose",
@@ -47,7 +47,8 @@
       "dataset_cancel",
       "dataset_configure",
       "dataset_stop",
-      "queue_scenarios"
+      "queue_scenarios",
+      "account_simulate"
     ]
   },
   "contract_versions": [
@@ -137,6 +138,8 @@
     "symphony.sbv.dataset-stop.v1",
     "symphony.sbv.queue-scenarios-input.v1",
     "symphony.sbv.queue-scenarios.v1",
+    "symphony.sbv.account-simulate-input.v1",
+    "symphony.sbv.account-simulate.v1",
     "symphony.sbv.linear-model.v1",
     "symphony.sbv.census-evidence.v1",
     "symphony.sbv.native-provider-census.v1",
@@ -149,7 +152,9 @@
     "symphony.sbv.result-page.v1",
     "symphony.sbv.node-stream.v1",
     "symphony.sbv.bundle-cursor.v1",
-    "symphony.sbv.exact-series-formula.v1"
+    "symphony.sbv.exact-series-formula.v1",
+    "symphony.sbv.account-state.v1",
+    "symphony.sbv.account-intent.v1"
   ],
   "operations": [
     {
@@ -1036,6 +1041,27 @@
       "mutability": "permission_backed_mutation",
       "operation_name": "queue_scenarios",
       "output_protocol": "symphony.sbv.queue-scenarios.v1",
+      "recovery_operation_id": "engop:symphony:sbv.result-inspect",
+      "thermal_path": "freezing"
+    },
+    {
+      "administration_disposition": "qxctl_required",
+      "administrative_interactions": [
+        "invoke"
+      ],
+      "authorization_requirement": "target_host_permission",
+      "availability": "implemented",
+      "direct_invocation": "supported",
+      "engine_operation_id": "engop:symphony:sbv.account-simulate",
+      "expected_state_required": false,
+      "feature_ids": [
+        "ssfv:symphony:sbv-engine"
+      ],
+      "idempotency": "non_idempotent",
+      "input_protocol": "symphony.sbv.account-simulate-input.v1",
+      "mutability": "permission_backed_mutation",
+      "operation_name": "account_simulate",
+      "output_protocol": "symphony.sbv.account-simulate.v1",
       "recovery_operation_id": "engop:symphony:sbv.result-inspect",
       "thermal_path": "freezing"
     }

@@ -2,7 +2,7 @@
 
 ## Version and ownership
 
-Contract v1; package `sbv-engine` 0.29.0-dev; engine `symphony-sbv`; vector `sbv`. C++26 owns computations, result sealing and artifact queries. Go qxctl verifies the exact installation and projects native evidence. OWNER-INTERFACE.json is the exact operation declaration; generated C++/Go metadata must match it. This release is experimental.
+Contract v1; package `sbv-engine` 0.30.0-dev; engine `symphony-sbv`; vector `sbv`. C++26 owns computations, result sealing and artifact queries. Go qxctl verifies the exact installation and projects native evidence. OWNER-INTERFACE.json is the exact operation declaration; generated C++/Go metadata must match it. This release is experimental.
 
 The engine uses knowledge-vector-engine-cpp 0.2.0-dev and sqav-databento-dbn-cpp 0.5.0-dev, with that adapter's exact static dependencies. It performs no data-provider network calls. Signal/replay semantics belong to SBV; acquisition remains SQAV, metadata SQMV, batch ownership SQFV, transformation SQTV, physical stores SQPV and recipient delivery SQDV. Its portable local JSON result is a derived artifact, not a new market-data persistence service. An optional offline retained-source route composes SQAV capture 0.2.0-dev, SQMV 0.2.0-dev, SQFV 0.3.0-dev, SQPV 0.2.0-dev and SQDV 0.3.0-dev under the selected profile described below.
 
@@ -1330,3 +1330,82 @@ shutdown as cancellation of that response. Force-stop retains its nonblocking
 best-effort acknowledgement because it must terminate even with a stalled reader.
 A lost/partial lifecycle receipt still requires reconciliation, never automatic
 retry. The R5.4 retained-source lifecycle regression covers the larger response.
+
+
+## Exact supplied-event account simulation (0.30, R6.1a)
+
+`qxctl sbv account-simulate` adds an exact C++26 cash-notional account model.
+Every choice is in its installed schema and templates (`feedback`, `partitioned`),
+with the same operation available through the C/C++ SDK and optional Go 0.1.4
+transport. Native 0.30 exposes 43 operations; qxctl has 46 SBV leaves. All ledger,
+signal, snapshot, input and branch evidence is portable through existing result
+query/export or bundle query/export. This is the first R6.1 increment, not full
+feedback-provider, exchange-matching or multiasset-economic qualification.
+
+`cash_units` and `instruments` explicitly define account balances and instrument
+cash units, positive exact price multipliers and `cash_notional` settlement.
+Initial cash, positions and optional marks are exact signed-128 rational maps;
+every declared cash/position key must appear. Prices, quantities, balances and
+fees may be signed (negative fees are rebates); zero fill quantity is invalid.
+The user supplies minimum/maximum constraints for each cash and position key;
+null means no bound. Initial state must satisfy selected bounds. A user can
+select no bounds to model debt or short positions. `on_constraint` selects
+atomic event rejection or request abortion. No clipping, forced liquidation,
+borrowing rate, implicit deadline or aggregate event-count limit is imposed.
+
+Each named stream supplies chronological event rows inline or through a verified
+bundle selection. Event IDs are unique within a stream. The stable merge order
+is increasing time, then the caller's stream-array order, then source ordinal;
+all tied events from an earlier stream precede a later stream's tied events.
+Decreasing time or duplicate IDs reject. A referenced array preserves its exact
+source and selected-value identity. Supplied timestamps describe the simulation;
+they do not authenticate causal availability in an external market source.
+
+A `fill_intent` declares instrument, signed quantity, price, fee and guards. Its
+cash delta is `-(quantity * price * multiplier + fee)` and position delta is
+quantity. Fees are in that instrument's cash unit. These supplied conditional
+fills are not observed executions or calibrated likelihoods. `cashflow` declares
+an exact signed amount in one unit. `fx` supplies positive debit and credit legs
+in distinct units, without deriving a rate or adding fees. `mark` changes the
+selected valuation price only; fills never silently update marks. Terminal equity
+is cash plus marked positions, separately per unit; nonzero unmarked positions
+make that unit's equity unavailable. No cross-currency sum is manufactured.
+
+`fixed_intents` requires empty guards and preserves every supplied fill intent
+in its own account-intent census, including constraint-rejected intents.
+`stateful_feedback` evaluates all declared cash/position comparison guards against
+the account state immediately before each intent. A failed guard suppresses that
+signal and execution; a later cashflow or execution can change future membership.
+An emitted but constraint-rejected intent remains in the census. Both modes create
+new immutable account results and identify their mode and model; neither rewrites
+or claims the original market fixed-census invariant. Account intent rows carry
+`symphony.sbv.account-intent.v1` and source occurrences. Guard suppression, constraint
+rejection and application are distinct ledger dispositions. No candidate output
+or tentative balance is silently committed after a rejected event.
+
+Every ledger row retains the exact input event, stream occurrence, before/after
+cash and positions, applied deltas and constraint findings. `retain_snapshots`
+selects initial/after-each-event state snapshots; terminal state is always retained.
+An explicit initial-state reference can select a prior snapshot using a legacy
+or bundle result. Its instrument/currency model digest must match; branches cannot
+move earlier than its time watermark. This starts a new caller-selected branch,
+not automatic resume/deduplication of its event tape. Equal-time branch events are
+permitted and their new stream order is explicit. Users can provide a new inline
+state/model to experiment with alternative definitions without changing the parent.
+
+Account state transitions are serial because they share balances. Independent
+experiments can run concurrently through `experiment`; this operation does not
+pretend instrument partitioning preserves shared capital. Memory holds account
+state, per-event candidate/before/after copies, one row per stream, stream metadata
+and per-stream seen-ID sets. Partitioned output spools ledger/signals/snapshots;
+legacy output retains them in memory and keeps its named format bounds. No
+out-of-core identity set, cluster, CUDA or throughput superiority is claimed.
+Arithmetic overflow rejects, never rounds; malformed events and cancellation do
+not publish a complete financial result. Existing partitioned recovery preserves
+scratch and typed uncertain-publication evidence.
+
+R6.1b remains open for native execution-result coupling and competing market
+liquidity, richer feedback providers and selected instrument economics. Futures
+margin, option exercise, multileg atomicity and automatic corporate-action/FX
+interpretation are not implied by cash-notional accounting. Explicit supplied
+cashflows remain available for caller-authored scenarios with disclosed semantics.

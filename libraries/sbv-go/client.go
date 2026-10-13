@@ -19,8 +19,8 @@ import (
 	"syscall"
 )
 
-const Version = "0.1.3-dev"
-const NativeVersion = "0.29.0-dev"
+const Version = "0.1.4-dev"
+const NativeVersion = "0.30.0-dev"
 
 // Error preserves a typed boundary and the original qxctl machine failure.
 // A failure never proves that a requested write had no effect. No retry occurs.
@@ -67,7 +67,7 @@ func New(config Config) (*Client, error) {
 
 // Operations returns a copy of the exact native administration surface.
 func Operations() []string {
-	return strings.Fields("capabilities run compose result_inspect result_query evaluate catalogue compose_joint economics book liquidity queue_scenarios allocation_economics result_select backend_plan live_plan analyze compare resample experiment split fit predict source_retain source_export generate_census provider_inspect compose_economics research_history dataset_load dataset_inspect dataset_execute dataset_release dataset_jobs dataset_cancel dataset_configure dataset_stop bundle_import bundle_inspect bundle_query bundle_verify bundle_export")
+	return strings.Fields("capabilities run compose result_inspect result_query evaluate catalogue compose_joint economics book liquidity queue_scenarios account_simulate allocation_economics result_select backend_plan live_plan analyze compare resample experiment split fit predict source_retain source_export generate_census provider_inspect compose_economics research_history dataset_load dataset_inspect dataset_execute dataset_release dataset_jobs dataset_cancel dataset_configure dataset_stop bundle_import bundle_inspect bundle_query bundle_verify bundle_export")
 }
 
 func (c *Client) verifyExecutable() error {

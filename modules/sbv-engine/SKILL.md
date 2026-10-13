@@ -75,3 +75,12 @@ statuses and full result exports. Excluded labels and undefined denominators
 remain visible. A Brier score or empirical reliability table is not proof of
 calibration, execution feasibility or untouched holdout history. Compare/experiment
 can consume the resulting exact metrics without changing the user's objective.
+
+
+For shared account experiments, use `account_simulate` with exact instruments,
+cash units, initial state, nullable balance bounds and caller-ordered event streams.
+Select fixed_intents or stateful_feedback and explicit guards. Supplied fills are
+conditional scenarios, not matching evidence. Select snapshots when needed; start
+a new branch from an exact snapshot reference and a caller-owned continuation tape.
+Inspect dispositions and unavailable marks before interpreting terminal equity.
+All controls and results use qxctl; independent experiments may execute concurrently.

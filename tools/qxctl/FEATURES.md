@@ -143,6 +143,7 @@
       "distinctions": [],
       "evidence": [
         "tools/qxctl/cmd/qxctl/sbv_test.go",
+        "tools/qxctl/internal/knowledgeengine/sbv_account_test.go",
         "tools/qxctl/internal/knowledgeengine/sbv_adaptive_test.go",
         "tools/qxctl/internal/knowledgeengine/sbv_allocation_economics_test.go",
         "tools/qxctl/internal/knowledgeengine/sbv_analysis_test.go",

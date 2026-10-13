@@ -224,6 +224,8 @@ Json descriptor() {
         "symphony.sbv.node-stream.v1", "symphony.sbv.bundle-cursor.v1"})
     r["contract_versions"].push_back(contract);
   r["contract_versions"].push_back("symphony.sbv.exact-series-formula.v1");
+  r["contract_versions"].push_back("symphony.sbv.account-state.v1");
+  r["contract_versions"].push_back("symphony.sbv.account-intent.v1");
   r["descriptor_digest"] = e::tagged_sha256(r.dump());
   return r;
 }
@@ -264,7 +266,7 @@ Json dispatch(const std::string &op, const Json &p, std::int64_t end) {
           {"partitioned_producers",
            Json::array({"run", "generate_census", "evaluate", "economics",
                         "compose_economics", "result_select", "analyze",
-                        "resample", "split", "book", "liquidity", "queue_scenarios",
+                        "resample", "split", "book", "liquidity", "queue_scenarios", "account_simulate",
                         "allocation_economics", "fit", "predict", "compare",
                         "research_history", "experiment"})},
           {"partitioned_resident_operations",
@@ -366,6 +368,8 @@ Json dispatch(const std::string &op, const Json &p, std::int64_t end) {
     return d::live_plan(p, end);
   if (op == "allocation_economics")
     return d::allocation_economics(p, end);
+  if (op == "account_simulate")
+    return d::account_simulate(p, end);
   if (op == "queue_scenarios")
     return d::queue_scenarios(p, end);
   if (op == "liquidity")

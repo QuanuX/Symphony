@@ -971,6 +971,7 @@
         },
         {
           "command_ids": [
+            "qxcmd:symphony:sbv.account.simulate",
             "qxcmd:symphony:sbv.allocation.economics",
             "qxcmd:symphony:sbv.analyze",
             "qxcmd:symphony:sbv.backend.plan",
@@ -1005,6 +1006,7 @@
           ],
           "delivery": "direct",
           "engine_operation_ids": [
+            "engop:symphony:sbv.account-simulate",
             "engop:symphony:sbv.allocation-economics",
             "engop:symphony:sbv.analyze",
             "engop:symphony:sbv.backend-plan",
@@ -2942,6 +2944,7 @@
         },
         {
           "command_ids": [
+            "qxcmd:symphony:sbv.account.simulate",
             "qxcmd:symphony:sbv.allocation.economics",
             "qxcmd:symphony:sbv.analyze",
             "qxcmd:symphony:sbv.backend.plan",
@@ -2976,6 +2979,7 @@
           ],
           "delivery": "direct",
           "engine_operation_ids": [
+            "engop:symphony:sbv.account-simulate",
             "engop:symphony:sbv.allocation-economics",
             "engop:symphony:sbv.analyze",
             "engop:symphony:sbv.backend-plan",
@@ -9852,6 +9856,6 @@
   "profile_id": "symphony.registered-features.administration.v1",
   "protocol": "symphony.knowledge.feature-administration-profile.v1",
   "registered_feature_count": 142,
-  "ssfv_registry_digest": "sha256:253a7e37db299329c9b8e8f5281324d427e19a1ca072fc6937df414013bce534",
-  "profile_digest": "sha256:efdb3b3207fc9ae679a3779f7765f7b6226753377e016f574bc7f5dc031521d3"
+  "ssfv_registry_digest": "sha256:79e61f1a8674096110cab46eda5c0029ee13b875a5bb24644766f3908a4a8b5a",
+  "profile_digest": "sha256:aff2e8dd3c6ba0988d169a567983acb09b2dd0409888f25150a22a4cfad69c00"
 }

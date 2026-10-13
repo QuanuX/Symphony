@@ -11,7 +11,7 @@ import (
 
 func sbvPartitionedProducer(op string) bool {
 	switch op {
-	case "run", "generate_census", "evaluate", "economics", "compose_economics", "result_select", "analyze", "resample", "split", "book", "liquidity", "queue_scenarios", "allocation_economics", "fit", "predict", "compare", "research_history", "experiment":
+	case "run", "generate_census", "evaluate", "economics", "compose_economics", "result_select", "analyze", "resample", "split", "book", "liquidity", "queue_scenarios", "account_simulate", "allocation_economics", "fit", "predict", "compare", "research_history", "experiment":
 		return true
 	}
 	return false
