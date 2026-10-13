@@ -15533,3 +15533,106 @@ This PR authorizes none of the following:
   - `No remote publication, live/provider activity, actual GPU/cluster execution, calibrated-market claim, speed superiority, futures-margin claim or full R6.1/M3 acceptance.`
 - notes: |
     Timestamps identify the observed local implementation commit, not an invented work interval. Post_merge denotes local source closure, not a GitHub/main merge. Earlier ledger bytes and evidence seals are preserved. Intermediate failures and corrected focused reruns are recorded. R6.1a is verified within selected supplied-event account scope; R6.1b execution-result/shared-liquidity coupling, richer feedback providers and selected broader instrument economics remain open, as do parent R6.1 and M3.
+
+
+- record_id: `SCLV-CHG-sbv-r61b-account-execution-local`
+- record_version: `3`
+- title: `SBV shared native depth execution and account feedback`
+- status: `canonical`
+- date: `2026-10-13`
+- change_started_at: `2026-10-13T08:41:59Z`
+- change_completed_at: `2026-10-13T08:41:59Z`
+- recorded_at: `2026-10-13T08:42:54Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `implementation_change`
+- change_request_state: `not_applicable`
+- change_request_provider: `not_applicable`
+- change_request_id: `not_applicable`
+- change_request_reference: `not_applicable`
+- change_request_absence_reason: `Directly authorized local implementation and qualification; no pull request or remote publication.`
+- revision_scheme: `git-sha1`
+- revision_value: `3661066b0557c07f02c5851d4149327bef04a392`
+- tree_digest: `sha256:e547725e438a73e7d8d2c7632b25dbceff79f2ece1b558f8bd3504d280f7f2af`
+- ratification_subject: `Duncan (Architect)`
+- ratification_permission: `authorize_local_implementation_and_source_closure`
+- ratification_method: `explicit-user-instruction`
+- ratification_evidence_reference: `../sbv-account-execution/RATIFICATION.json`
+- ratification_evidence_digest: `sha256:a86eb08e7468bab0009dd98b2569dae2e5b0d77dd552a5f78bfbd83d2b919cc5`
+- affected_surfaces:
+  - `cmake/SbvInterface.generated.cmake`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.json`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `libraries/sbv-go/IMPLEMENTATION.md`
+  - `libraries/sbv-go/MANIFEST.md`
+  - `libraries/sbv-go/README.md`
+  - `libraries/sbv-go/client.go`
+  - `modules/sbv-engine/CMakeLists.txt`
+  - `modules/sbv-engine/FEATURES.md`
+  - `modules/sbv-engine/INSTALL.md`
+  - `modules/sbv-engine/M2-M3-READINESS.json`
+  - `modules/sbv-engine/MANIFEST.md`
+  - `modules/sbv-engine/OWNER-INTERFACE.json`
+  - `modules/sbv-engine/SKILL.md`
+  - `modules/sbv-engine/SPEC.md`
+  - `modules/sbv-engine/include/symphony/sbv/sbv.hpp`
+  - `modules/sbv-engine/schemas/v1/admin.schema.json`
+  - `modules/sbv-engine/schemas/v1/admin.templates.json`
+  - `modules/sbv-engine/src/account_simulate.cpp`
+  - `modules/sbv-engine/src/depth_sweep.hpp`
+  - `modules/sbv-engine/src/interface.generated.hpp`
+  - `modules/sbv-engine/src/liquidity.cpp`
+  - `modules/sbv-engine/src/result.cpp`
+  - `modules/sbv-engine/tests/account_execution_test.cpp`
+  - `tools/qxctl/cmd/qxctl/sbv_bulk_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_account_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_allocation_economics_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_analysis_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_book_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_census_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_dependencies_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_economics_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_history_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_installed_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_interface_generated.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_liquidity_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_models_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_planning_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_research_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_split_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_test.go`
+- skvi_references:
+  - `modules/sbv-engine/M2-M3-READINESS.json`
+  - `modules/sbv-engine/src/account_simulate.cpp`
+  - `modules/sbv-engine/tests/account_execution_test.cpp`
+  - `modules/sbv-engine/OWNER-INTERFACE.json`
+  - `tools/qxctl/internal/knowledgeengine/sbv_account_test.go`
+  - `knowledge/skvi/INDEX.md`
+- change_summary: |
+    R6.1b connects account state to the existing native displayed-depth sweep. Named immutable source-frame pools retain shared remaining capacity; capital rejection atomically restores both balances and liquidity. Caller-selected target-position feedback, explicit fees and split events extend the account model. Pool-aware v2 snapshots preserve consumed capacity across explicit branches.
+- relationship_changes: |
+    C++26 remains the scientific owner, with one shared native sweep implementation for standalone liquidity and account execution. Existing account_simulate/qxctl account-simulate schema/template/result paths carry all new controls. Native 0.31.0-dev and optional Go 0.1.5-dev retain 43 native operations, 46 SBV leaves and 445 qxctl command identities. Independent C/C++/Go consumers agree with the entire native payload.
+- doctrine_changes: |
+    User authority is unchanged: callers select source mappings, ordering, fixed versus target quantities, guards, IOC/FOK, participation, price limits, fees, unavailable behavior, balance constraints, retention and deadlines or none. Physical remaining depth is a selected model constraint, not a global dataset cap. No implicit replenishment, rerouting or calibrated probability is inferred.
+- compatibility_consequences: |
+    Pool-free account snapshots remain v1; pool-aware snapshots use v2 and bind the exact instrument/pool model. Same-operation request extensions are optional. Candidate outcomes distinguish account_disposition and committed before consumers count fills. Explicit skip_event preserves an unavailable outcome and marks the result partial. Split events refuse stale pool units pending caller-supplied adjusted evidence. SDK ABI remains unchanged.
+- publication_consequences: |
+    Local commits and evidence only. No push, merge, live/provider request, new purchase, release publication or deployment.
+- projection_consequences: |
+    Four focused native suites pass, with 83 new account-execution checks, 64 prior account checks and 125 liquidity checks. Two final ASan/UBSan suites pass with leak detection disabled. Go checks pass: 15 command, 75 installed/schema and 25 adapter tests/subtests, plus vet; two unrelated environment-gated fixtures remain unselected and are disclosed. Independent exact arithmetic verifies shared depth and cash; 1086 terminal nodes and complete partitioned/C/C++/Go payloads match native. Two account experiment trials execute once and resume with zero executions and two reused receipts. Real retained AAPL/ESZ6 book evidence stays unavailable without initialization; positive fill fixtures are mechanical. All 324 prior R6.1a sealed files are unchanged.
+- evidence:
+  - `../sbv-account-execution/RATIFICATION.json`
+  - `../sbv-account-execution/evidence/SCLV_SOURCE_BINDING.json`
+  - `../sbv-account-execution/BUILD_IDENTITY.json`
+  - `../sbv-account-execution/CHECKS.json`
+  - `../sbv-account-execution/REVIEW.json`
+  - `../sbv-account-execution/CASE_EVIDENCE.json`
+  - `../sbv-account-execution/SOURCE_ATTRIBUTION.json`
+  - `../sbv-account-execution/installed-checks-02/REPORT.json`
+  - `../sbv-account-execution/sdk-checks/REPORT.json`
+  - `../sbv-account-execution/evidence/prior-seal.json`
+- non_authorizations:
+  - `No remote publication, live/provider activity, device/cluster execution, calibrated likelihood, full exchange matching, futures margin, speed superiority or parent R6.1/M3 acceptance.`
+- notes: |
+    Timestamps identify the observed local implementation commit, not an invented work interval. Post_merge denotes local source closure, not a GitHub/main merge. Prior ledger bytes and evidence seals are preserved. R6.1b is verified within selected atomic shared-snapshot execution, target feedback and explicit split scope. The originally broader runtime feedback-provider and additional settlement remainder is retained as R6.1c; parent R6.1 and M3 remain open.
