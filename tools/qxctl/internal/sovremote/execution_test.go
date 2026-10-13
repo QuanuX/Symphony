@@ -21,6 +21,10 @@ import (
 )
 
 func TestMain(m *testing.M) {
+	if os.Getenv("SOV_SSH_FIXTURE") != "" {
+		sshFixtureMain()
+		return
+	}
 	if len(os.Args) > 1 && os.Args[1] == "--target" {
 		raw, _ := io.ReadAll(os.Stdin)
 		in, e := DecodeInvocation(raw)

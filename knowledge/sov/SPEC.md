@@ -56,4 +56,9 @@ An unavailable fact remains unresolved. Failure must not be converted into a gue
 
 ## Non-Authorization Statement
 
+The optional `SSH-CARRIER.md` profile adds an explicit authenticated SSH exchange
+to a preinstalled target, selected through qxctl. It preserves independent carrier
+choice, native job semantics and target-local authority. Actual two-host deployment
+and protected authority qualification remain separately evidenced.
+
 The declared local planning and process-execution contracts require explicit caller invocation and exact selected authority. This specification alone authorizes no provider credentials, Terraform apply, real remote deployment, bus traffic, Node reimage, or live Nest modification.

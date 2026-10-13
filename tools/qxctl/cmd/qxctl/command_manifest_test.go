@@ -24,8 +24,8 @@ func TestCommandRegistryCobraParityAndStableIdentity(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(manifest.Commands) != 459 {
-		t.Fatalf("registered command count = %d, want 459", len(manifest.Commands))
+	if len(manifest.Commands) != 461 {
+		t.Fatalf("registered command count = %d, want 461", len(manifest.Commands))
 	}
 	seen := make(map[string]*string, len(manifest.Commands))
 	for _, command := range manifest.Commands {
@@ -41,6 +41,8 @@ func TestCommandRegistryCobraParityAndStableIdentity(t *testing.T) {
 		}
 	}
 	for _, required := range []string{
+		"qxcmd:symphony:sov.remote.ssh-endpoint",
+		"qxcmd:symphony:sov.remote.ssh-invoke",
 		"qxcmd:symphony:commands.manifest",
 		"qxcmd:symphony:sbv.account.simulate",
 		"qxcmd:symphony:sbv.bundle.import",

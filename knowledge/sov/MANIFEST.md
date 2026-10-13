@@ -1,5 +1,9 @@
 # Symphony Ops Vector Manifest
 
+The optional scoped network carrier and its complete qxctl selection are defined
+by `SSH-CARRIER.md` and `tools/sov-ssh-adapter/MANIFEST.md`. It does not provision
+the selected endpoint or qualify a deployment by its presence alone.
+
 ## Canonical Target
 
 `knowledge/sov/`

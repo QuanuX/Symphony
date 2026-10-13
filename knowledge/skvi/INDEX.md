@@ -24896,3 +24896,213 @@ automatic nested fitting and cross-run holdout history remain unimplemented.
 - deferred_projections: Production path canonicalization
 - notes: Canonical short temporary root or explicit SYMPHONY_TEST_TMPDIR; production caller path checks remain unchanged.
 - status: canonical
+
+### Optional SOV SSH carrier knowledge/sov/SSH-CARRIER.md
+
+- path: `knowledge/sov/SSH-CARRIER.md`
+- title: Optional SOV SSH carrier SSH-CARRIER.md
+- surface_type: contract, implementation or test
+- truth_role: Exact optional authenticated carrier and qxctl control
+- owner: Symphony Ops Vector maintainers
+- scope: Selected controller and preinstalled target
+- relationships: depends_on -> `knowledge/sov/SSH-CARRIER.md`
+- consumers: qxctl, agents and independent consumers
+- deferred_projections: Actual two-host deployment, protected authority and cluster qualification
+- notes: User-selected trust, resources and deadlines; no automatic retry.
+- status: canonical
+
+### Optional SOV SSH carrier tools/qxctl/cmd/qxctl/sov_ssh.go
+
+- path: `tools/qxctl/cmd/qxctl/sov_ssh.go`
+- title: Optional SOV SSH carrier sov_ssh.go
+- surface_type: contract, implementation or test
+- truth_role: Exact optional authenticated carrier and qxctl control
+- owner: Symphony Ops Vector maintainers
+- scope: Selected controller and preinstalled target
+- relationships: depends_on -> `knowledge/sov/SSH-CARRIER.md`
+- consumers: qxctl, agents and independent consumers
+- deferred_projections: Actual two-host deployment, protected authority and cluster qualification
+- notes: User-selected trust, resources and deadlines; no automatic retry.
+- status: canonical
+
+### Optional SOV SSH carrier tools/qxctl/cmd/qxctl/sov_ssh_test.go
+
+- path: `tools/qxctl/cmd/qxctl/sov_ssh_test.go`
+- title: Optional SOV SSH carrier sov_ssh_test.go
+- surface_type: contract, implementation or test
+- truth_role: Exact optional authenticated carrier and qxctl control
+- owner: Symphony Ops Vector maintainers
+- scope: Selected controller and preinstalled target
+- relationships: depends_on -> `knowledge/sov/SSH-CARRIER.md`
+- consumers: qxctl, agents and independent consumers
+- deferred_projections: Actual two-host deployment, protected authority and cluster qualification
+- notes: User-selected trust, resources and deadlines; no automatic retry.
+- status: canonical
+
+### Optional SOV SSH carrier tools/qxctl/internal/sovremote/ssh.go
+
+- path: `tools/qxctl/internal/sovremote/ssh.go`
+- title: Optional SOV SSH carrier ssh.go
+- surface_type: contract, implementation or test
+- truth_role: Exact optional authenticated carrier and qxctl control
+- owner: Symphony Ops Vector maintainers
+- scope: Selected controller and preinstalled target
+- relationships: depends_on -> `knowledge/sov/SSH-CARRIER.md`
+- consumers: qxctl, agents and independent consumers
+- deferred_projections: Actual two-host deployment, protected authority and cluster qualification
+- notes: User-selected trust, resources and deadlines; no automatic retry.
+- status: canonical
+
+### Optional SOV SSH carrier tools/qxctl/internal/sovremote/ssh_test.go
+
+- path: `tools/qxctl/internal/sovremote/ssh_test.go`
+- title: Optional SOV SSH carrier ssh_test.go
+- surface_type: contract, implementation or test
+- truth_role: Exact optional authenticated carrier and qxctl control
+- owner: Symphony Ops Vector maintainers
+- scope: Selected controller and preinstalled target
+- relationships: depends_on -> `knowledge/sov/SSH-CARRIER.md`
+- consumers: qxctl, agents and independent consumers
+- deferred_projections: Actual two-host deployment, protected authority and cluster qualification
+- notes: User-selected trust, resources and deadlines; no automatic retry.
+- status: canonical
+
+### Optional SOV SSH carrier tools/sov-ssh-adapter/FEATURES.md
+
+- path: `tools/sov-ssh-adapter/FEATURES.md`
+- title: Optional SOV SSH carrier FEATURES.md
+- surface_type: contract, implementation or test
+- truth_role: Exact optional authenticated carrier and qxctl control
+- owner: Symphony Ops Vector maintainers
+- scope: Selected controller and preinstalled target
+- relationships: depends_on -> `knowledge/sov/SSH-CARRIER.md`
+- consumers: qxctl, agents and independent consumers
+- deferred_projections: Actual two-host deployment, protected authority and cluster qualification
+- notes: User-selected trust, resources and deadlines; no automatic retry.
+- status: canonical
+
+### Optional SOV SSH carrier tools/sov-ssh-adapter/INTENT.md
+
+- path: `tools/sov-ssh-adapter/INTENT.md`
+- title: Optional SOV SSH carrier INTENT.md
+- surface_type: contract, implementation or test
+- truth_role: Exact optional authenticated carrier and qxctl control
+- owner: Symphony Ops Vector maintainers
+- scope: Selected controller and preinstalled target
+- relationships: depends_on -> `knowledge/sov/SSH-CARRIER.md`
+- consumers: qxctl, agents and independent consumers
+- deferred_projections: Actual two-host deployment, protected authority and cluster qualification
+- notes: User-selected trust, resources and deadlines; no automatic retry.
+- status: canonical
+
+### Optional SOV SSH carrier tools/sov-ssh-adapter/MANIFEST.md
+
+- path: `tools/sov-ssh-adapter/MANIFEST.md`
+- title: Optional SOV SSH carrier MANIFEST.md
+- surface_type: contract, implementation or test
+- truth_role: Exact optional authenticated carrier and qxctl control
+- owner: Symphony Ops Vector maintainers
+- scope: Selected controller and preinstalled target
+- relationships: depends_on -> `knowledge/sov/SSH-CARRIER.md`
+- consumers: qxctl, agents and independent consumers
+- deferred_projections: Actual two-host deployment, protected authority and cluster qualification
+- notes: User-selected trust, resources and deadlines; no automatic retry.
+- status: canonical
+
+### Optional SOV SSH carrier tools/sov-ssh-adapter/README.md
+
+- path: `tools/sov-ssh-adapter/README.md`
+- title: Optional SOV SSH carrier README.md
+- surface_type: contract, implementation or test
+- truth_role: Exact optional authenticated carrier and qxctl control
+- owner: Symphony Ops Vector maintainers
+- scope: Selected controller and preinstalled target
+- relationships: depends_on -> `knowledge/sov/SSH-CARRIER.md`
+- consumers: qxctl, agents and independent consumers
+- deferred_projections: Actual two-host deployment, protected authority and cluster qualification
+- notes: User-selected trust, resources and deadlines; no automatic retry.
+- status: canonical
+
+### Optional SOV SSH carrier tools/sov-ssh-adapter/SKILL.md
+
+- path: `tools/sov-ssh-adapter/SKILL.md`
+- title: Optional SOV SSH carrier SKILL.md
+- surface_type: contract, implementation or test
+- truth_role: Exact optional authenticated carrier and qxctl control
+- owner: Symphony Ops Vector maintainers
+- scope: Selected controller and preinstalled target
+- relationships: depends_on -> `knowledge/sov/SSH-CARRIER.md`
+- consumers: qxctl, agents and independent consumers
+- deferred_projections: Actual two-host deployment, protected authority and cluster qualification
+- notes: User-selected trust, resources and deadlines; no automatic retry.
+- status: canonical
+
+### Optional SOV SSH carrier tools/sov-ssh-adapter/contract/contract.go
+
+- path: `tools/sov-ssh-adapter/contract/contract.go`
+- title: Optional SOV SSH carrier contract.go
+- surface_type: contract, implementation or test
+- truth_role: Exact optional authenticated carrier and qxctl control
+- owner: Symphony Ops Vector maintainers
+- scope: Selected controller and preinstalled target
+- relationships: depends_on -> `knowledge/sov/SSH-CARRIER.md`
+- consumers: qxctl, agents and independent consumers
+- deferred_projections: Actual two-host deployment, protected authority and cluster qualification
+- notes: User-selected trust, resources and deadlines; no automatic retry.
+- status: canonical
+
+### Optional SOV SSH carrier tools/sov-ssh-adapter/contract/contract_test.go
+
+- path: `tools/sov-ssh-adapter/contract/contract_test.go`
+- title: Optional SOV SSH carrier contract_test.go
+- surface_type: contract, implementation or test
+- truth_role: Exact optional authenticated carrier and qxctl control
+- owner: Symphony Ops Vector maintainers
+- scope: Selected controller and preinstalled target
+- relationships: depends_on -> `knowledge/sov/SSH-CARRIER.md`
+- consumers: qxctl, agents and independent consumers
+- deferred_projections: Actual two-host deployment, protected authority and cluster qualification
+- notes: User-selected trust, resources and deadlines; no automatic retry.
+- status: canonical
+
+### Optional SOV SSH carrier tools/sov-ssh-adapter/go.mod
+
+- path: `tools/sov-ssh-adapter/go.mod`
+- title: Optional SOV SSH carrier go.mod
+- surface_type: contract, implementation or test
+- truth_role: Exact optional authenticated carrier and qxctl control
+- owner: Symphony Ops Vector maintainers
+- scope: Selected controller and preinstalled target
+- relationships: depends_on -> `knowledge/sov/SSH-CARRIER.md`
+- consumers: qxctl, agents and independent consumers
+- deferred_projections: Actual two-host deployment, protected authority and cluster qualification
+- notes: User-selected trust, resources and deadlines; no automatic retry.
+- status: canonical
+
+### Optional SOV SSH carrier tools/sov-ssh-adapter/main.go
+
+- path: `tools/sov-ssh-adapter/main.go`
+- title: Optional SOV SSH carrier main.go
+- surface_type: contract, implementation or test
+- truth_role: Exact optional authenticated carrier and qxctl control
+- owner: Symphony Ops Vector maintainers
+- scope: Selected controller and preinstalled target
+- relationships: depends_on -> `knowledge/sov/SSH-CARRIER.md`
+- consumers: qxctl, agents and independent consumers
+- deferred_projections: Actual two-host deployment, protected authority and cluster qualification
+- notes: User-selected trust, resources and deadlines; no automatic retry.
+- status: canonical
+
+### Optional SOV SSH carrier tools/sov-ssh-adapter/main_test.go
+
+- path: `tools/sov-ssh-adapter/main_test.go`
+- title: Optional SOV SSH carrier main_test.go
+- surface_type: contract, implementation or test
+- truth_role: Exact optional authenticated carrier and qxctl control
+- owner: Symphony Ops Vector maintainers
+- scope: Selected controller and preinstalled target
+- relationships: depends_on -> `knowledge/sov/SSH-CARRIER.md`
+- consumers: qxctl, agents and independent consumers
+- deferred_projections: Actual two-host deployment, protected authority and cluster qualification
+- notes: User-selected trust, resources and deadlines; no automatic retry.
+- status: canonical

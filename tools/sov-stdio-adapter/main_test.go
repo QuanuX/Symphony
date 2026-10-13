@@ -34,7 +34,14 @@ func TestRelayAndExactTarget(t *testing.T) {
 	if code := run(args, strings.NewReader(`{"opaque":"complete"}`), &out); code != 0 || out.String() != `{"opaque":"complete"}` {
 		t.Fatal(code, out.String())
 	}
+	out.Reset()
+	if code := run(append(append([]string{}, args...), "--self-sha256", digest), strings.NewReader(`{"self":"bound"}`), &out); code != 0 || out.String() != `{"self":"bound"}` {
+		t.Fatal("exact bootstrap self check failed", code, out.String())
+	}
 	args[3] = strings.Repeat("0", 64)
+	if code := run(append(append([]string{}, args...), "--self-sha256", strings.Repeat("0", 64)), strings.NewReader(""), &out); code != 2 {
+		t.Fatal("bootstrap drift admitted")
+	}
 	if code := run(args, strings.NewReader(""), &out); code != 2 {
 		t.Fatal("changed executable accepted")
 	}

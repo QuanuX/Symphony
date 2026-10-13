@@ -419,6 +419,63 @@
       "cross_vector_references": [
         {
           "applicability": "applicable",
+          "reason": "Indexes the exact SOV handoff contract and implementation paths; SOV is not an admitted cross-vector enum in this selected SSFV v1 schema.",
+          "reference": "knowledge/skvi/INDEX.md",
+          "vector": "skvi"
+        },
+        {
+          "applicability": "applicable",
+          "reason": "Optional target-local fresh authority; controller decisions never grant access.",
+          "reference": "knowledge/ssiag/SPEC.md",
+          "vector": "ssiag"
+        }
+      ],
+      "distinctions": [],
+      "evidence": [
+        "tools/qxctl/cmd/qxctl/sov_ssh_test.go",
+        "tools/qxctl/internal/sovremote/ssh_test.go",
+        "knowledge/sov/SSH-CARRIER.md"
+      ],
+      "feature_id": "ssfv:symphony:qxctl-sov-ssh-carrier",
+      "how": "Digest-bound public endpoint selection, staged carrier executable and complete typed native response validation with conservative lost-response outcomes.",
+      "implementation_languages": [
+        {
+          "language": "Go",
+          "role": "Exact owner installation discovery, bounded process consumption, retained administrative state and agentic command grammar."
+        }
+      ],
+      "implementation_paths": [
+        "tools/qxctl/cmd/qxctl/sov_ssh.go",
+        "tools/qxctl/internal/sovremote/ssh.go"
+      ],
+      "kind": "subfeature",
+      "non_claims": [
+        "No qualified two-host deployment, deployed SSIAG allow/expiry/revocation, cluster scheduling or remote provisioning.",
+        "No native checkpoint resume, automatic retry, private-key extraction or proof of remote termination from disconnection."
+      ],
+      "owner_contract": "tools/qxctl/MANIFEST.md",
+      "parent_feature_id": "ssfv:symphony:qxctl",
+      "record_version": 2,
+      "relationships": [
+        {
+          "rationale": "Native SBV owns durable job status and immutable result semantics.",
+          "target_feature_id": "ssfv:symphony:sbv-engine",
+          "type": "depends_on"
+        }
+      ],
+      "source_scope": "tools/qxctl",
+      "status": "experimental",
+      "title": "Optional scoped SOV SSH control",
+      "what": "Exact caller-selected authenticated SSH carrier invocation and complete endpoint inspection through qxctl.",
+      "when": "Explicit selected invocation or target configuration lifecycle.",
+      "where": "Selected controller qxctl and independently installed network carrier; existing target qxctl.",
+      "who": "Humans, agents and external consumers without caller-class distinctions.",
+      "why": "Keep durable native calculations recoverable across controller boundaries without hidden replay."
+    },
+    {
+      "cross_vector_references": [
+        {
+          "applicability": "applicable",
           "reason": "SCLV records reviewed session and authorization-boundary changes.",
           "reference": "knowledge/sclv/CHANGELOG.md",
           "vector": "sclv"

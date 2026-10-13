@@ -1337,6 +1337,57 @@
       ]
     },
     {
+      "feature_id": "ssfv:symphony:qxctl-sov-ssh-carrier",
+      "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:sov.remote.schema",
+            "qxcmd:symphony:sov.remote.template"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [],
+          "evidence": [
+            "knowledge/sov/SSH-CARRIER.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "discover",
+          "rationale": "Complete explicit endpoint selection and optional authenticated carrier invocation through qxctl.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:sov.remote.ssh-invoke"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [],
+          "evidence": [
+            "knowledge/sov/SSH-CARRIER.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "invoke",
+          "rationale": "Complete explicit endpoint selection and optional authenticated carrier invocation through qxctl.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:sov.remote.ssh-endpoint"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [],
+          "evidence": [
+            "knowledge/sov/SSH-CARRIER.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "validate",
+          "rationale": "Complete explicit endpoint selection and optional authenticated carrier invocation through qxctl.",
+          "requirement": "required"
+        }
+      ]
+    },
+    {
       "expectations": [
         {
           "command_ids": [
@@ -8272,6 +8323,26 @@
       "feature_id": "ssfv:symphony:sodv-engine.release-transaction-projection"
     },
     {
+      "feature_id": "ssfv:symphony:sov-ssh-adapter",
+      "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:sov.remote.ssh-invoke"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [],
+          "evidence": [
+            "knowledge/sov/SSH-CARRIER.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": "ssfv:symphony:qxctl-sov-ssh-carrier",
+          "interaction": "invoke",
+          "rationale": "Complete explicit endpoint selection and optional authenticated carrier invocation through qxctl.",
+          "requirement": "required"
+        }
+      ]
+    },
+    {
       "feature_id": "ssfv:symphony:sov-stdio-adapter",
       "expectations": [
         {
@@ -9999,7 +10070,7 @@
   "forward_gate": "enforce_new_records",
   "profile_id": "symphony.registered-features.administration.v1",
   "protocol": "symphony.knowledge.feature-administration-profile.v1",
-  "registered_feature_count": 145,
-  "ssfv_registry_digest": "sha256:046aa4477687992079c14f0f28b83b54f88d2c0bb127d87d59faeae9e4e31f8e",
-  "profile_digest": "sha256:b45c4d05d04a87b6a678d7b9a21dfd911b84edc5f354ccda9380bb847f770f4b"
+  "registered_feature_count": 147,
+  "ssfv_registry_digest": "sha256:89bb65f70f97dca998afa33b1de3422cdafcfba235503e3176ca59ef14e93165",
+  "profile_digest": "sha256:e5b73dfe7bc8722173e6c9f6538add9bfe605c735fcd1727f9a27509eb5a6abe"
 }

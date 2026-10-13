@@ -29,8 +29,21 @@ func run(args []string, in io.Reader, out io.Writer) int {
 	digest := f.String("target-sha256", "", "")
 	configuration := f.String("configuration", "", "")
 	configurationSHA := f.String("configuration-sha256", "", "")
+	selfSHA := f.String("self-sha256", "", "")
 	if f.Parse(args) != nil || f.NArg() != 0 || !filepath.IsAbs(*target) || !filepath.IsAbs(*configuration) || !regexp.MustCompile(`^[a-f0-9]{64}$`).MatchString(*digest) || !regexp.MustCompile(`^[a-f0-9]{64}$`).MatchString(*configurationSHA) {
 		return 2
+	}
+	// An authenticated remote endpoint may select this installed bootstrap.
+	// This self-check detects drift; it is not remote hardware attestation.
+	if *selfSHA != "" {
+		self, err := os.Executable()
+		if err != nil {
+			return 2
+		}
+		b, err := os.ReadFile(self)
+		if err != nil || fmt.Sprintf("%x", sha256.Sum256(b)) != *selfSHA {
+			return 2
+		}
 	}
 	src, e := os.OpenFile(*target, os.O_RDONLY|syscall.O_NONBLOCK, 0)
 	if e != nil {

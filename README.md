@@ -46,7 +46,7 @@ The detailed, ratified baseline is in [Symphony Emerging Vector Architecture](kn
 |---|---|---|
 | **SKV — Symphony Knowledge Vector** | Canonical knowledge architecture and the common contracts that let independently owned vectors remain coherent and agent-readable. | Phase 1 foundation is implemented; current and emerging surfaces are manifest-declared and SKVI-indexed. |
 | **SKVI / SCLV / SACV / SODV / SSFV / SAV / SEV** | Source routing, change truth, API governance, official documentation and release-publication governance, semantic feature truth, Accordare composition, and governed evolution. | Contracted Phase 1 domains with bounded engines and administrative integrations where their individual contracts say so. SODV governs official projection; it is not the publisher. |
-| **SOV — Symphony Ops Vector** | qxctl-administered provisioning, Habitat conditioning, Nest delivery, bus-adapter setup, and optional remote-Node operations. | Emerging operations domain; provider, Terraform, Habitat, Nest, bus, and remote-operation protocols remain to be designed and implemented. |
+| **SOV — Symphony Ops Vector** | qxctl-administered provisioning, Habitat conditioning, Nest delivery, bus-adapter setup, and optional remote-Node operations. | Bounded qxctl planning, durable local process handoff and an optional scoped SSH carrier are implemented. Actual cross-host deployment/authority and provider, Terraform, Habitat, Nest and bus operations retain their separate qualification requirements. |
 | **SCV — Symphony Cloud Vector** | Private knowledge of offsite provider resources, offerings, regions, constraints, observations, and hybrid possibilities. | Eight independently installed C++ engines provide bounded source/corpus knowledge, portable provider packages and finite caller-directed composition. qxctl supports retained workflows and protected graph selection; an optional DuckDB connector adds retained relational graph indexing through qxctl. Comprehensive provider coverage, dedicated graph traversal and operational adapters remain separate work. |
 | **SNV — Symphony Node Vector** | Records and relates Node identity, resources, cluster relationships, and names without dictating them. | Five independently installable C++26 engines implement supplied **SNIV** identity, **SNRV** resources, **SCIV** cluster relationships, SNV-bounded **SCNV** names and thin **SNV** composition/retention. Exact owner replay, explicit scope/time, retained history and agentic qxctl administration preserve uncertainty and source provenance. See the [bounded release and validation status](knowledge/snv/VALIDATION.md). Live observation and SOV provisioning remain separately scoped work. |
 | **SQV — Symphony Quantitative Vector** | Reusable quantitative and trading-system framework contracts without acquiring user strategy logic. | **SQAV**, **SQMV**, **SQFV**, **SQTV**, **SQPV**, and **SQDV** have bounded C++26 libraries for capture, metadata, flow, integer conversion, local retention, and replay/checkpoints. Seven independently installable administration engines expose request and configuration validation, metadata projections, and read-only retained-state inspection through qxctl. Source adapters retain their individually declared non-live scope; authenticated provider execution and live collection remain future work. **SOOV — Symphony Orchestra Omega Vector** separately retains the future C++ FIX architecture. |
@@ -121,16 +121,16 @@ The implemented qxctl and Phase 1 engines are local administrative/cold-or-freez
 
 qxctl also provides a Linux-only systemd receptor for report-only lifecycle planning at host boot. It is independently installable, disableable, reconcilable, and removable per TOPS/profile; it never invokes lifecycle apply or component execution. Windows users currently use WSL or administer a remote Linux TOPS Node.
 
-The emerging SOV remote-operation and deployment contracts do not make provider provisioning, Terraform apply, Habitat construction, Nest delivery, bus installation, remote command transport, or Prima Parte operational today.
+SOV implements explicit local handoff and optional SSH carrier control. These contracts do not establish an operational cross-host deployment, provider provisioning, Terraform apply, Habitat construction, Nest delivery, bus installation, or Prima Parte.
 
 <!-- symphony:root-summary:v1:begin -->
 ## Machine-Checked Repository Snapshot
 
 This bounded summary is derived from canonical SSFV coverage and routing, the feature-administration profile, the qxctl command registry, and completed SODV publication records. Edit its source contracts, then regenerate; do not hand-edit the values below.
 
-- SSFV catalog state: `partial`; registered features: **145**; registered owner scopes: **65**; ratified nested features: **78**.
-- Feature-administration expectations: **388** reviewed surfaces; **377** required, **29** evidence-backed exemptions, **9** prohibitions, **0** unreviewed.
-- qxctl stable command identities: **459**.
+- SSFV catalog state: `partial`; registered features: **147**; registered owner scopes: **65**; ratified nested features: **78**.
+- Feature-administration expectations: **392** reviewed surfaces; **381** required, **29** evidence-backed exemptions, **9** prohibitions, **0** unreviewed.
+- qxctl stable command identities: **461**.
 - Registered owner capabilities:
   - `ssfv:symphony:accordare-stav-producer`
   - `ssfv:symphony:knowledge-session-coordinator`
@@ -201,7 +201,7 @@ This bounded summary is derived from canonical SSFV coverage and routing, the fe
   - `github.com/QuanuX/Symphony/libraries/stav-protocol-go` `v0.2.0` (tag `libraries/stav-protocol-go/v0.2.0`, source `55f8faf26f4f85213ac23cc1de7ba897b2129a4c`)
   - `github.com/QuanuX/Symphony/modules/stav-append-authority` `v0.1.0` (tag `modules/stav-append-authority/v0.1.0`, source `55f8faf26f4f85213ac23cc1de7ba897b2129a4c`)
   - `github.com/QuanuX/Symphony/modules/stav-append-authority` `v0.2.0` (tag `modules/stav-append-authority/v0.2.0`, source `ed7484d70607aa96e64916dd4e59d3972a61980b`)
-- Snapshot digest: `sha256:03a6d35029a62189c5bb6c6bd7200f5e6bca78064185ed9a152586bc1a6cf7b9`
+- Snapshot digest: `sha256:6f81337a3663ec54c94df300b07f22e877680a8a2230f6a609ea379a5681638a`
 <!-- symphony:root-summary:v1:end -->
 
 ## Releases and Documentation

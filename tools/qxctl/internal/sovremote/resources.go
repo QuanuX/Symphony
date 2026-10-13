@@ -3,6 +3,7 @@ package sovremote
 import (
 	"encoding/json"
 	"fmt"
+	ssh "github.com/QuanuX/Symphony/tools/sov-ssh-adapter/contract"
 	"reflect"
 	"strings"
 
@@ -11,6 +12,9 @@ import (
 
 // Template contains deliberately synthetic references, not a discovered host.
 func Template(operation string) (any, error) {
+	if operation == "ssh_endpoint" || operation == "ssh_invoke" {
+		return sshTemplate(operation)
+	}
 	d := strings.Repeat("0", 64)
 	s := Selection{Protocol: PlanProtocol, OperationID: "example-operation", Target: Target{"example-tops", "example-node", "example-habitat", d}, Transport: Transport{"controller", "ipc", "example-adapter", "0.1.0", d, "example-endpoint-reference"}, Runtime: Runtime{"0.1.0-dev", d, knowledgeengine.SBVAdministrationInterfaceVersion, d}, Job: Job{"/example/private-job", "example-job", d}, Resources: Resources{Devices: []string{}}, Authority: Authority{Operation: "example-operation", Resource: "example-resource", Audience: "example-audience", Scope: "example-scope"}, Extensions: map[string]string{}}
 	if operation == "plan" {
@@ -42,6 +46,10 @@ func Template(operation string) (any, error) {
 func Schema(operation string) (any, error) {
 	var in, out any
 	switch operation {
+	case "ssh_endpoint":
+		in, out = ssh.Endpoint{}, SSHEndpointResult{}
+	case "ssh_invoke":
+		in, out = SSHInvocation{}, SSHInvocationResult{}
 	case "plan":
 		in, out = Selection{}, Plan{}
 	case "assess":
@@ -53,7 +61,11 @@ func Schema(operation string) (any, error) {
 	default:
 		return nil, fmt.Errorf("unknown SOV remote operation")
 	}
-	return map[string]any{"$schema": "https://json-schema.org/draft/2020-12/schema", "request": shape(reflect.TypeOf(in), ""), "result": shape(reflect.TypeOf(out), ""), "semantic_contract": "knowledge/sov/REMOTE-HANDOFF.md", "control_document_max_bytes": MaxDocumentBytes}, nil
+	owner := "knowledge/sov/REMOTE-HANDOFF.md"
+	if operation == "ssh_endpoint" || operation == "ssh_invoke" {
+		owner = "knowledge/sov/SSH-CARRIER.md"
+	}
+	return map[string]any{"$schema": "https://json-schema.org/draft/2020-12/schema", "request": shape(reflect.TypeOf(in), ""), "result": shape(reflect.TypeOf(out), ""), "semantic_contract": owner, "control_document_max_bytes": MaxDocumentBytes}, nil
 }
 func shape(t reflect.Type, name string) map[string]any {
 	if t == reflect.TypeOf(json.RawMessage{}) {
@@ -78,6 +90,13 @@ func shape(t reflect.Type, name string) map[string]any {
 		if protocol != "" {
 			properties["protocol"] = map[string]any{"const": protocol}
 		}
+		sshProtocol := map[reflect.Type]string{reflect.TypeOf(ssh.Endpoint{}): ssh.EndpointProtocol, reflect.TypeOf(SSHEndpointResult{}): "symphony.sov.ssh-endpoint-result.v1", reflect.TypeOf(SSHInvocation{}): ssh.InputProtocol, reflect.TypeOf(SSHInvocationResult{}): "symphony.sov.ssh-invoke.v1"}[t]
+		if sshProtocol != "" {
+			properties["protocol"] = map[string]any{"const": sshProtocol}
+		}
+		if t == reflect.TypeOf(SSHInvocationResult{}) {
+			properties["origin_verification"] = map[string]any{"enum": []string{"not_verified", "selected_adapter_authenticated_ssh_host"}}
+		}
 		if t == reflect.TypeOf(TargetResult{}) {
 			properties["status"] = map[string]any{"enum": []string{"completed", "native_error"}}
 		}
@@ -101,6 +120,8 @@ func shape(t reflect.Type, name string) map[string]any {
 			s["pattern"] = jobID.String()
 		}
 		switch name {
+		case "ssh_execution":
+			s["enum"] = []string{"stage_copy", "protected_system_path"}
 		case "sbv_version":
 			s["const"] = knowledgeengine.SBVAdministrationInterfaceVersion
 		case "authority_mode":

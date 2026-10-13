@@ -1345,6 +1345,24 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - record_digest: `sha256:63e8b6e8675debd37af81f165da498acb9073b89592d8274a415dafec867e507`
 - notes: Selected local process profile; real remote deployment unqualified.
 
+- feature_id: `ssfv:symphony:qxctl-sov-ssh-carrier`
+- feature_file: `tools/qxctl/FEATURES.md`
+- owner_contract: `tools/qxctl/MANIFEST.md`
+- source_scope: `tools/qxctl`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:qxctl`
+- record_digest: `sha256:149f7c7db2cbe911547da34172e782d121ccb6884a832a9ad52d277090a8e9d4`
+- notes: Optional scoped SSH implementation; actual two-host deployment remains unqualified.
+
+- feature_id: `ssfv:symphony:sov-ssh-adapter`
+- feature_file: `tools/sov-ssh-adapter/FEATURES.md`
+- owner_contract: `tools/sov-ssh-adapter/MANIFEST.md`
+- source_scope: `tools/sov-ssh-adapter`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:platform`
+- record_digest: `sha256:9b54b07e4d0eeab75d399f98b9c66ce5286cd0d3787896aa1d9160fc9dbec404`
+- notes: Optional scoped SSH implementation; actual two-host deployment remains unqualified.
+
 ## Prohibited Entries
 
 Do not register:

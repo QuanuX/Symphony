@@ -9,3 +9,5 @@ The fixed process arguments are `--target`, `--target-sha256`, `--configuration`
 SIGINT/SIGTERM propagates cancellation; 250 ms bounds process/pipe cleanup after cancellation or exit, not calculation duration. There is no default calculation deadline. A lost response never proves native termination or licenses automatic retry. The controller inspects/reconciles the same durable job; trusted user-selected code may escape process groups or have external effects.
 
 See [execution contract](../../knowledge/sov/PROCESS-EXECUTION.md). This local adapter is conformance evidence for the open protocol, not proof of a remote host or cluster.
+
+For a selected authenticated remote carrier, optional `--self-sha256` checks this launcher against an exact expected executable digest before staging target qxctl. It detects installation drift within a trusted host; it is not hardware attestation. Existing four-argument local invocations remain compatible.

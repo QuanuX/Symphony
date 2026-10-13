@@ -18312,6 +18312,10 @@
         {
           "feature_id": "ssfv:symphony:qxctl-sov-remote-planning",
           "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:qxctl-sov-ssh-carrier",
+          "interaction": "discover"
         }
       ],
       "infrastructure_purpose": null,
@@ -18331,6 +18335,72 @@
       "json_output": true
     },
     {
+      "command_id": "qxcmd:symphony:sov.remote.ssh-endpoint",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl sov remote ssh-endpoint [--input VALUE] [--json]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl-sov-ssh-carrier",
+          "interaction": "validate"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [],
+      "mutability": "read_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.sov.ssh-endpoint.v1"
+      ],
+      "output_protocols": [
+        "symphony.sov.ssh-endpoint-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.sov.ssh-endpoint-result.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:sov.remote.ssh-invoke",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl sov remote ssh-invoke [--input VALUE] [--json]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl-sov-ssh-carrier",
+          "interaction": "invoke"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [],
+      "mutability": "permission_backed_mutation",
+      "authority_mode": "target_host_permission",
+      "target_scope": "target_host",
+      "input_protocols": [
+        "symphony.sov.ssh-invoke-input.v1"
+      ],
+      "output_protocols": [
+        "symphony.sov.ssh-invoke.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.sov.ssh-invoke.v1"
+      ],
+      "recovery_command_id": "qxcmd:symphony:sov.remote.ssh-invoke",
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
       "command_id": "qxcmd:symphony:sov.remote.template",
       "status": "experimental",
       "introduced_in": "0.1.0-dev",
@@ -18346,6 +18416,10 @@
         },
         {
           "feature_id": "ssfv:symphony:qxctl-sov-remote-planning",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:qxctl-sov-ssh-carrier",
           "interaction": "discover"
         }
       ],
@@ -21446,5 +21520,5 @@
       "json_output": true
     }
   ],
-  "registry_digest": "sha256:94b19bb7820a42b23142893cbbb56878b2223702b6e4819dd80a17338a900a13"
+  "registry_digest": "sha256:b25c00bcc0b718df4556856d56c560d78331a4998d80795cf39faa657730f1d0"
 }

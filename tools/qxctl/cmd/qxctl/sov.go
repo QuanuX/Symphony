@@ -19,6 +19,7 @@ func newSOVCommand() *cobra.Command {
 		remote.AddCommand(newSOVRemoteLeaf(op))
 	}
 	remote.AddCommand(newSOVInvoke())
+	remote.AddCommand(newSOVSSH("ssh-endpoint"), newSOVSSH("ssh-invoke"))
 	root.AddCommand(remote, newSOVTarget())
 	return root
 }
@@ -70,7 +71,7 @@ func newSOVRemoteLeaf(op string) *cobra.Command {
 	c.Flags().StringVar(&format, "format", "text", "complete text or JSON output")
 	c.Flags().BoolVar(&machine, "json", false, "complete portable JSON output")
 	if resource {
-		c.Flags().StringVar(&operation, "operation", "", "plan, assess, invoke or target_configure")
+		c.Flags().StringVar(&operation, "operation", "", "plan, assess, invoke, target_configure, ssh_endpoint or ssh_invoke")
 		_ = c.MarkFlagRequired("operation")
 	} else {
 		c.Flags().StringVar(&input, "input", "", "local control JSON; no endpoint is contacted")
@@ -84,6 +85,7 @@ func newSOVRemoteLeaf(op string) *cobra.Command {
 	spec := commandSpec("sov.remote."+op, featureSOVRemotePlanning, interaction)
 	if resource {
 		spec.FeatureBindings = append(spec.FeatureBindings, commandregistry.FeatureBinding{FeatureID: featureSOVExecution, Interaction: "discover"})
+		spec.FeatureBindings = append(spec.FeatureBindings, commandregistry.FeatureBinding{FeatureID: featureSOVSSH, Interaction: "discover"})
 	}
 	if !resource {
 		spec.InputProtocols = []string{"symphony.sov.remote-" + op + "-input.v1"}

@@ -8,9 +8,11 @@ use (
 	./modules/stav-append-authority
 	./tools/qxctl
 	./tools/sov-stdio-adapter
+	./tools/sov-ssh-adapter
 )
 
 replace (
+	github.com/QuanuX/Symphony/tools/sov-ssh-adapter v0.1.0-dev => ./tools/sov-ssh-adapter
 	github.com/QuanuX/Symphony/libraries/stav-protocol-go v0.2.0 => ./libraries/stav-protocol-go
 	github.com/QuanuX/Symphony/modules/accordare-stav-producer v0.1.0 => ./modules/accordare-stav-producer
 	github.com/QuanuX/Symphony/modules/stav-append-authority v0.2.0 => ./modules/stav-append-authority
