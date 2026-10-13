@@ -15636,3 +15636,122 @@ This PR authorizes none of the following:
   - `No remote publication, live/provider activity, device/cluster execution, calibrated likelihood, full exchange matching, futures margin, speed superiority or parent R6.1/M3 acceptance.`
 - notes: |
     Timestamps identify the observed local implementation commit, not an invented work interval. Post_merge denotes local source closure, not a GitHub/main merge. Prior ledger bytes and evidence seals are preserved. R6.1b is verified within selected atomic shared-snapshot execution, target feedback and explicit split scope. The originally broader runtime feedback-provider and additional settlement remainder is retained as R6.1c; parent R6.1 and M3 remain open.
+
+
+- record_id: `SCLV-CHG-sbv-r61c-feedback-settlement-local`
+- record_version: `3`
+- title: `SBV native feedback providers and linear variation settlement`
+- status: `canonical`
+- date: `2026-10-13`
+- change_started_at: `2026-10-13T11:55:49Z`
+- change_completed_at: `2026-10-13T11:55:49Z`
+- recorded_at: `2026-10-13T11:56:50Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `implementation_change`
+- change_request_state: `not_applicable`
+- change_request_provider: `not_applicable`
+- change_request_id: `not_applicable`
+- change_request_reference: `not_applicable`
+- change_request_absence_reason: `Directly authorized local implementation and qualification; no pull request or remote publication.`
+- revision_scheme: `git-sha1`
+- revision_value: `75d9a0450b598c0b424fab262d6851b8a45b1b59`
+- tree_digest: `sha256:73ee42bba82ab9b3e3f55ecfd9ff3f5091953775dcd41345284203ec3ae0a607`
+- ratification_subject: `Duncan (Architect)`
+- ratification_permission: `authorize_local_implementation_and_source_closure`
+- ratification_method: `explicit-user-instruction`
+- ratification_evidence_reference: `../sbv-feedback-settlement/RATIFICATION.json`
+- ratification_evidence_digest: `sha256:c4611c0f711111cc2b1c5d2325278f6cd9af21a41264026f912e7092faad9e0d`
+- affected_surfaces:
+  - `cmake/SbvInterface.generated.cmake`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.json`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `libraries/sbv-go/IMPLEMENTATION.md`
+  - `libraries/sbv-go/MANIFEST.md`
+  - `libraries/sbv-go/README.md`
+  - `libraries/sbv-go/client.go`
+  - `modules/sbv-engine/CMakeLists.txt`
+  - `modules/sbv-engine/FEATURES.md`
+  - `modules/sbv-engine/INSTALL.md`
+  - `modules/sbv-engine/M2-M3-READINESS.json`
+  - `modules/sbv-engine/MANIFEST.md`
+  - `modules/sbv-engine/OWNER-INTERFACE.json`
+  - `modules/sbv-engine/SKILL.md`
+  - `modules/sbv-engine/SPEC.md`
+  - `modules/sbv-engine/include/symphony/sbv/feedback.h`
+  - `modules/sbv-engine/include/symphony/sbv/sbv.hpp`
+  - `modules/sbv-engine/schemas/v1/admin.schema.json`
+  - `modules/sbv-engine/schemas/v1/admin.templates.json`
+  - `modules/sbv-engine/src/account_simulate.cpp`
+  - `modules/sbv-engine/src/interface.generated.hpp`
+  - `modules/sbv-engine/src/provider.cpp`
+  - `modules/sbv-engine/src/provider.hpp`
+  - `modules/sbv-engine/src/result.cpp`
+  - `modules/sbv-engine/tests/account_execution_test.cpp`
+  - `modules/sbv-engine/tests/feedback_fixture.cpp`
+  - `modules/sbv-engine/tests/feedback_settlement_test.cpp`
+  - `modules/sbv-engine/tests/provider_abi_test.c`
+  - `tools/qxctl/cmd/qxctl/sbv_bulk_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_account_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_adaptive_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_allocation_economics_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_analysis_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_binary_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_book_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_census_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_dependencies_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_economics_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_history_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_installed_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_interface_generated.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_liquidity_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_models_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_nested_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_partitioned_installed_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_partitioned_schema_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_planning_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_provider_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_queue_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_research_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_resource_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_sources_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_split_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_test.go`
+- skvi_references:
+  - `modules/sbv-engine/M2-M3-READINESS.json`
+  - `modules/sbv-engine/src/account_simulate.cpp`
+  - `modules/sbv-engine/include/symphony/sbv/feedback.h`
+  - `modules/sbv-engine/tests/feedback_settlement_test.cpp`
+  - `modules/sbv-engine/OWNER-INTERFACE.json`
+  - `tools/qxctl/internal/knowledgeengine/sbv_account_test.go`
+  - `knowledge/skvi/INDEX.md`
+- change_summary: |
+    R6.1c adds a separately versioned optional native account feedback ABI, with explicit returned memory, current account state and a bounded preceding-event outcome. Linear variation settlement adds exact basis, realized cash, per-level crossing-flat accounting and explicit settlement events. V3 snapshots preserve feedback/basis together with shared capacity; ledger rows retain all callback and financial state evidence.
+- relationship_changes: |
+    C++26 owns scientific transitions. The existing trusted native loader supplies hash/staging/lifetime/cancellation admission without changing old strategy/model ABI tables. qxctl account-simulate/provider-inspect/schema/template/result paths and SDK consumers expose the complete new surface. Native 0.32.0-dev and Go 0.1.6-dev retain 43 operations, 46 SBV leaves and 445 qxctl command identities.
+- doctrine_changes: |
+    User authority remains explicit: native providers/configuration/context, state memory, accounting model, settlement events, bounds or none, source ordering, unavailable policy, retention and deadlines or none. No dataset-size policy or live provider call was introduced. Trusted callbacks are not sandboxed and external causality is not authenticated.
+- compatibility_consequences: |
+    Old strategy/model ABI and v1/v2 snapshot formats remain valid for their selected models. Feedback or linear variation uses v3 state and exact model binding. Successful memory survives financial rejection; financial basis/marks/cash/positions/pools roll back atomically. qxctl complete owned schemas use receipt-verified resource admission instead of the runtime message value-count limit; untrusted process request admission is unchanged.
+- publication_consequences: |
+    Local implementation and source closure only. No push, merge, live/provider network request, new purchase, release publication or deployment.
+- projection_consequences: |
+    Eight focused native suites pass, including 83 feedback/settlement assertions, 92 final account-execution checks, prior account/liquidity and old provider compatibility checks. Two ASan/UBSan suites pass with leak detection disabled. Go: 15 command, 91 installed/schema, two final correspondence/schema regressions and 25 adapter checks pass; two unrelated environment-gated fixtures remain explicitly skipped. Installed independent C/C++ consumers match feedback/settlement payloads; Go matches the feedback payload. All 1859 terminal nodes and complete partitioned payloads agree. Two independent feedback trials resume with zero executions. Retained AAPL/ESZ6 sources are hash verified and synthetic fills explicitly scoped. All 336 prior R6.1b sealed files are unchanged.
+- evidence:
+  - `../sbv-feedback-settlement/RATIFICATION.json`
+  - `../sbv-feedback-settlement/evidence/SCLV_SOURCE_BINDING.json`
+  - `../sbv-feedback-settlement/BUILD_IDENTITY.json`
+  - `../sbv-feedback-settlement/CHECKS.json`
+  - `../sbv-feedback-settlement/REVIEW.json`
+  - `../sbv-feedback-settlement/CASE_EVIDENCE.json`
+  - `../sbv-feedback-settlement/R6_1_RECONCILIATION.json`
+  - `../sbv-feedback-settlement/SOURCE_ATTRIBUTION.json`
+  - `../sbv-feedback-settlement/installed-checks-02/REPORT.json`
+  - `../sbv-feedback-settlement/sdk-checks/REPORT.json`
+  - `../sbv-feedback-settlement/evidence/prior-seal.json`
+- non_authorizations:
+  - `No remote publication, live/provider network activity, device/cluster execution, calibrated likelihood, full exchange matching, margin/liquidation, speed superiority or full M3 acceptance.`
+- notes: |
+    Timestamps identify the observed local implementation commit, not an invented work interval. Post_merge denotes local source closure, not a GitHub/main merge. Prior ledger bytes and evidence seals are preserved. R6.1a-c are complete within the recorded selected local model scope, retaining original-case partial/deferred dispositions. M3 remains open for R6.2 owner-backed remote/durable work and R6.3 broad/peer qualification.
