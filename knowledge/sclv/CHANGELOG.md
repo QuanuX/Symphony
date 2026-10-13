@@ -16047,3 +16047,135 @@ This PR authorizes none of the following:
   - `No main merge, live trading, fresh provider acquisition, calibrated market probability, actual device/cluster/NUMA/terabyte qualification, peer speed ranking or full original M3 acceptance.`
 - notes: |
     Post_merge denotes local source closure, not a GitHub/main merge. Timestamps use the actual implementation commit. Historical ledger and sealed evidence remain unchanged. Selected local M3 is complete; actual cross-host transport/deployed authority and peer execution retain explicit open dispositions. A remote Codex runner pass would qualify its selected host profile, not establish network SOV semantics by itself.
+
+
+- record_id: `SCLV-CHG-sbv-linux-portability`
+- record_version: `3`
+- title: `Linux SQPV support and SBV host qualification`
+- status: `canonical`
+- date: `2026-10-13`
+- change_started_at: `2026-10-13T20:25:44Z`
+- change_completed_at: `2026-10-13T20:27:20Z`
+- recorded_at: `2026-10-13T20:28:31Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `implementation_change`
+- change_request_state: `not_applicable`
+- change_request_provider: `not_applicable`
+- change_request_id: `not_applicable`
+- change_request_reference: `not_applicable`
+- change_request_absence_reason: `Direct user authorization for the Linux correction, remote qualification and passing local commit; no new push or main merge.`
+- revision_scheme: `git-sha1`
+- revision_value: `49702801b4d0ef21f2efc86b0caaadcda1132862`
+- tree_digest: `sha256:9a91da737742f83327321a4d31584f78ea53b235762593b6397d22dcce2283b2`
+- ratification_subject: `Duncan (Architect)`
+- ratification_permission: `authorize_implementation_qualification_and_local_commit`
+- ratification_method: `explicit-user-instruction`
+- ratification_evidence_reference: `../sbv-linux-portability/FINAL-AUTHORIZATION.json`
+- ratification_evidence_digest: `sha256:1e930a8161be8e0c8861a5254c9ba89cbfc86a0a9c4106c7b1835280b6f9a449`
+- affected_surfaces:
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.json`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/sqv/sqpv/MANIFEST.md`
+  - `knowledge/sqv/sqpv/SPEC.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `modules/sbv-engine/CMakeLists.txt`
+  - `modules/sbv-engine/M3-QUALIFICATION.md`
+  - `modules/sbv-engine/SPEC.md`
+  - `modules/sbv-engine/src/source_owners.cpp`
+  - `modules/sbv-engine/tests/account_execution_test.cpp`
+  - `modules/sbv-engine/tests/account_test.cpp`
+  - `modules/sbv-engine/tests/adaptive_test.cpp`
+  - `modules/sbv-engine/tests/allocation_economics_test.cpp`
+  - `modules/sbv-engine/tests/analysis_test.cpp`
+  - `modules/sbv-engine/tests/binary_studies_test.cpp`
+  - `modules/sbv-engine/tests/book_test.cpp`
+  - `modules/sbv-engine/tests/bundle_operations_test.cpp`
+  - `modules/sbv-engine/tests/census_test.cpp`
+  - `modules/sbv-engine/tests/combinatorial_test.cpp`
+  - `modules/sbv-engine/tests/compose_economics_test.cpp`
+  - `modules/sbv-engine/tests/dataset_test.cpp`
+  - `modules/sbv-engine/tests/dependencies_test.cpp`
+  - `modules/sbv-engine/tests/economics_partitioned_test.cpp`
+  - `modules/sbv-engine/tests/economics_test.cpp`
+  - `modules/sbv-engine/tests/evaluate_partitioned_test.cpp`
+  - `modules/sbv-engine/tests/exact_id_index_test.cpp`
+  - `modules/sbv-engine/tests/execution_partitioned_test.cpp`
+  - `modules/sbv-engine/tests/experiment_partitioned_test.cpp`
+  - `modules/sbv-engine/tests/experiment_plan_test.cpp`
+  - `modules/sbv-engine/tests/feedback_settlement_test.cpp`
+  - `modules/sbv-engine/tests/fit_test.cpp`
+  - `modules/sbv-engine/tests/generate_partitioned_test.cpp`
+  - `modules/sbv-engine/tests/history_test.cpp`
+  - `modules/sbv-engine/tests/jobs_test.cpp`
+  - `modules/sbv-engine/tests/liquidity_test.cpp`
+  - `modules/sbv-engine/tests/logical_value_test.cpp`
+  - `modules/sbv-engine/tests/model_partitioned_test.cpp`
+  - `modules/sbv-engine/tests/models_test.cpp`
+  - `modules/sbv-engine/tests/nested_split_test.cpp`
+  - `modules/sbv-engine/tests/partitioned_output_test.cpp`
+  - `modules/sbv-engine/tests/planning_test.cpp`
+  - `modules/sbv-engine/tests/provider_integration_test.cpp`
+  - `modules/sbv-engine/tests/provider_runtime_test.cpp`
+  - `modules/sbv-engine/tests/queue_test.cpp`
+  - `modules/sbv-engine/tests/reader_extensions_test.cpp`
+  - `modules/sbv-engine/tests/research_partitioned_test.cpp`
+  - `modules/sbv-engine/tests/research_test.cpp`
+  - `modules/sbv-engine/tests/resident_control_test.cpp`
+  - `modules/sbv-engine/tests/resource_admission_test.cpp`
+  - `modules/sbv-engine/tests/result_store_test.cpp`
+  - `modules/sbv-engine/tests/row_spool_test.cpp`
+  - `modules/sbv-engine/tests/run_partitioned_test.cpp`
+  - `modules/sbv-engine/tests/sbv_test.cpp`
+  - `modules/sbv-engine/tests/select_view_test.cpp`
+  - `modules/sbv-engine/tests/source_dataset_test.cpp`
+  - `modules/sbv-engine/tests/source_owners_test.cpp`
+  - `modules/sbv-engine/tests/split_test.cpp`
+  - `modules/sbv-engine/tests/stream_census_test.cpp`
+  - `modules/sbv-engine/tests/stream_model_test.cpp`
+  - `modules/sbv-engine/tests/study_formula_test.cpp`
+  - `modules/sqpv-local-store-cpp/CMakeLists.txt`
+  - `modules/sqpv-local-store-cpp/FEATURES.md`
+  - `modules/sqpv-local-store-cpp/INSTALL.md`
+  - `modules/sqpv-local-store-cpp/INTENT.md`
+  - `modules/sqpv-local-store-cpp/MANIFEST.md`
+  - `modules/sqpv-local-store-cpp/SPEC.md`
+  - `modules/sqpv-local-store-cpp/src/local_store.cpp`
+  - `modules/sqpv-local-store-cpp/tests/async_store_test.cpp`
+  - `modules/sqpv-local-store-cpp/tests/local_store_test.cpp`
+  - `tools/qxctl/internal/knowledgeengine/sbv_resident_test.go`
+  - `tests/support/private_temp.hpp`
+- skvi_references:
+  - `modules/sqpv-local-store-cpp/SPEC.md`
+  - `modules/sqpv-local-store-cpp/FEATURES.md`
+  - `modules/sbv-engine/M3-QUALIFICATION.md`
+  - `modules/sbv-engine/SPEC.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.json`
+  - `tests/support/private_temp.hpp`
+- change_summary: |
+    Linux SQPV uses renameat2(RENAME_NOREPLACE) for immutable publication, preserving existing format/API, descriptor-relative no-follow paths, owner checks, locking, synchronization and uncertain-outcome recovery. Portable native and installed resident fixtures select canonical /tmp or explicit SYMPHONY_TEST_TMPDIR. The SBV source-owner profile reports the actual host platform through qxctl. Canonical feature registry and administration profile digests match the updated owner contract.
+- relationship_changes: |
+    SQPV remains the optional retained-store owner, SBV composes the source route, and qxctl presents the native owner profile and complete results. Shared test support is indexed independently. No new runtime owner, dependency or integration authority is assigned.
+- doctrine_changes: |
+    Linux filesystem selection belongs to the caller; no filesystem-name allowlist is imposed. Required no-replace publication, locks and synchronization remain exact operating mechanics. Observed syscall and process-recovery success do not establish physical locality, reboot persistence or shared-storage durability. This increment adds no SBV dataset-size ceiling or deadline.
+- compatibility_consequences: |
+    SQPV0.2.0-dev and SBV0.33.0-dev API and storage format remain compatible. Apple local APFS admission is preserved. Fresh installation prefixes and exact binary receipts distinguish the changed development revision. Production paths retain strict admission; only fixture roots resolve aliases. Allocation fault sweeps assert both clean and uncertain failure phases without assuming a library-specific allocation count.
+- publication_consequences: |
+    The exact source and metadata patches were explicitly authorized for transfer to the existing private cloud test chat. Passing source is committed locally. No new branch push, main merge, environment republication, provider acquisition, live connection or data spend is included.
+- projection_consequences: |
+    Linux resolves55/55 native suites through the broad run and focused socket-path/administration corrections. Four ASan/UBSan/leak suites and eight installed Go checks pass with zero skips and no path shims. SQPV overlayfs3/3 and tmpfs2/2 include13 SIGKILL and9 I/O uncertainty boundaries per filesystem plus publication-collision checks. qxctl reports linux_caller_selected_filesystem and passes retained-source/export, file/retained-run and result-inspection/query/export checks. Local SQPV3/3, SBV owner/dataset/resident3/3 and administration1/1 pass. Initial failed attempts remain separate evidence.
+- evidence:
+  - `../sbv-linux-portability/RATIFICATION.json`
+  - `../sbv-linux-portability/FINAL-AUTHORIZATION.json`
+  - `../sbv-linux-portability/evidence/SCLV_SOURCE_BINDING.json`
+  - `../sbv-linux-portability/CANDIDATE_IDENTITY.json`
+  - `../sbv-linux-portability/CHECKS.json`
+  - `../sbv-linux-portability/REMOTE-SUMMARY.json`
+  - `../sbv-linux-portability/REMOTE-FINAL-SUMMARY.json`
+  - `../sbv-linux-portability/REMOTE-HANDOFF.json`
+  - `../sbv-linux-portability/REMOTE-FINAL-HANDOFF.json`
+- non_authorizations:
+  - `No push or merge, full original M3 acceptance, cross-host carrier/deployed SSIAG authority, power-loss certification, cluster/NUMA/terabyte or device qualification, market calibration, or competitor ranking.`
+- notes: |
+    Post_merge denotes local source closure, not a forge/main merge. Timestamps describe the final authorized correction/commit operation. The source revision binds the exact71-file candidate qualified remotely as baseline plus SOURCE.patch and METADATA.patch. Original sealed evidence remains unchanged; final administration uses fresh follow-up evidence and the unchanged test executable. The previous nine-process campaign was not repeated. Cloud archives are retained remotely; their reports and executed verification are preserved in the local packet.

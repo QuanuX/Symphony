@@ -96,3 +96,28 @@ filesystem, then SBV source owner/dataset and installed recovery checks. The
 qxctl-visible source-owner profile must identify the actual host platform.
 A passing container overlayfs or tmpfs profile does not certify power loss, reboot
 persistence, underlying physical locality or a cross-host/network carrier.
+
+
+## Selected Linux portability gate — 13 October 2026
+
+Debian 13 amd64 with Clang19.1.7, CMake3.31.6, Go1.26.5 and private libcurl8.7.1
+qualifies the Linux portability revision. The exact source implementation is
+`49702801b4d0ef21f2efc86b0caaadcda1132862`; the private workspace packet
+`implementation/sbv-linux-portability` binds the baseline, two applied patches,
+source hashes, fresh installation, commands and raw result provenance.
+
+The 55 native suites resolve through the initial broad run and focused corrections:
+three socket fixtures pass with a shorter caller-selected scratch path, and the
+administration contract passes after canonical SQPV registry/profile digest refresh.
+Four ASan/UBSan/leak suites pass without shims. Eight selected installed Go checks
+pass with zero skips, including owner evidence, three recovery cases, resident
+control and partitioned source. Installed qxctl reports
+`linux_caller_selected_filesystem` and verifies source retention/export, file and
+retained runs, and result inspection/query/export. SQPV passes three overlayfs gates
+and two tmpfs gates, with actual process-crash and exclusive-collision evidence.
+No proot, preload or path/ownership emulation is used. Initial failures are retained.
+
+The final administration rerun uses the unchanged native test executable and a new
+follow-up evidence directory; the earlier cloud archive remains sealed. This is
+selected second-host qualification. It does not close the remaining original M3
+carrier, deployed authority, cluster, device, durability or peer-performance lanes.
