@@ -28,7 +28,7 @@
       "verification": "Stale generation refusal, reject/drain below active demand, unlimited/uint64 selections, reads/decodes unchanged after source deletion."
     }
   ],
-  "next_increment": "R6.1",
+  "next_increment": "R6.2",
   "sequence": [
     {
       "id": "R5.1",
@@ -248,7 +248,7 @@
         "A090",
         "A095"
       ],
-      "status": "in_progress",
+      "status": "verified_selected_scope",
       "steps": [
         {
           "id": "R6.1a",
@@ -267,11 +267,17 @@
         },
         {
           "id": "R6.1c",
-          "status": "prepared_not_started",
+          "status": "verified_selected_scope",
           "scope": "Native runtime feedback-provider seam and selected additional settlement economics; final R6.1 contract/case reconciliation.",
-          "scope_origin": "Explicit remainder of the originally broader R6.1b provider/instrument scope after the independently verified atomic shared-snapshot increment."
+          "scope_origin": "Explicit remainder of the originally broader R6.1b provider/instrument scope after the independently verified atomic shared-snapshot increment.",
+          "release": "0.32.0-dev",
+          "evidence": "workspace:implementation/sbv-feedback-settlement/CHECKS.json",
+          "qualification": "Separate optional feedback ABI, explicit continuation memory, prior-event outcomes, exact basis/realized variation and v3 snapshots; independent fixture/consumer/terminal and error/lifetime checks. Native account execution remains ordered; independent account trials can run concurrently."
         }
-      ]
+      ],
+      "implementation_release": "0.32.0-dev",
+      "evidence": "workspace:implementation/sbv-feedback-settlement/CHECKS.json",
+      "qualification": "R6.1a-c verify the selected local account scope: multiple ordered instruments/shared capital, atomic single-frame liquidity, caller feedback providers with explicit memory, cash-notional and linear variation economics, explicit FX/cashflows/splits, portable branches and full qxctl/SDK results. Full exchange matching, margin/liquidation, nonlinear derivatives and multi-event transactional multileg models remain unsupported or future selections. Original case partial/deferred scope remains explicit; M3 is open for R6.2/R6.3."
     },
     {
       "id": "R6.2",
@@ -363,5 +369,5 @@
       "correction": "The generic recommendation to replace the 4096-signal profile is historical/stale for already-shipped partitioned core producers; 0.24 qualified 65,537 signals. Residual legacy external/model/consumer domains remain profile-specific. Preserve the sealed original and use operation_profiles for current limits."
     }
   ],
-  "next_step": "R6.1c"
+  "next_step": "R6.2"
 }

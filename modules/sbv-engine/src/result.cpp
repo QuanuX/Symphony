@@ -1,6 +1,6 @@
-#include "measurement.hpp"
 #include "detail.hpp"
 #include "interface.generated.hpp"
+#include "measurement.hpp"
 #include "operation_profiles.hpp"
 #include <cerrno>
 #include <fcntl.h>
@@ -227,6 +227,12 @@ Json descriptor() {
   r["contract_versions"].push_back("symphony.sbv.account-state.v1");
   r["contract_versions"].push_back("symphony.sbv.account-intent.v1");
   r["contract_versions"].push_back("symphony.sbv.account-state.v2");
+  r["contract_versions"].push_back("symphony.sbv.account-state.v3");
+  r["contract_versions"].push_back("symphony.sbv.account-feedback-call.v1");
+  r["contract_versions"].push_back("symphony.sbv.feedback-decision.v1");
+  r["contract_versions"].push_back(
+      "symphony.sbv.native-feedback-descriptor.v1");
+
   r["descriptor_digest"] = e::tagged_sha256(r.dump());
   return r;
 }
@@ -267,7 +273,8 @@ Json dispatch(const std::string &op, const Json &p, std::int64_t end) {
           {"partitioned_producers",
            Json::array({"run", "generate_census", "evaluate", "economics",
                         "compose_economics", "result_select", "analyze",
-                        "resample", "split", "book", "liquidity", "queue_scenarios", "account_simulate",
+                        "resample", "split", "book", "liquidity",
+                        "queue_scenarios", "account_simulate",
                         "allocation_economics", "fit", "predict", "compare",
                         "research_history", "experiment"})},
           {"partitioned_resident_operations",

@@ -3,9 +3,9 @@
   "module_id": "sbv-engine",
   "engine_id": "symphony-sbv",
   "namespace": "symphony::sbv::interface",
-  "current_version": "0.31.0-dev",
+  "current_version": "0.32.0-dev",
   "releases": {
-    "0.31.0-dev": [
+    "0.32.0-dev": [
       "capabilities",
       "run",
       "compose",
@@ -155,7 +155,11 @@
     "symphony.sbv.exact-series-formula.v1",
     "symphony.sbv.account-state.v1",
     "symphony.sbv.account-intent.v1",
-    "symphony.sbv.account-state.v2"
+    "symphony.sbv.account-state.v2",
+    "symphony.sbv.account-state.v3",
+    "symphony.sbv.account-feedback-call.v1",
+    "symphony.sbv.feedback-decision.v1",
+    "symphony.sbv.native-feedback-descriptor.v1"
   ],
   "operations": [
     {

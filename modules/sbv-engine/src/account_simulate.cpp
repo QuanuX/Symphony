@@ -1,5 +1,6 @@
 #include "consumer_source.hpp"
 #include "depth_sweep.hpp"
+#include "provider.hpp"
 #include "wide_rational.hpp"
 #include <map>
 #include <optional>
@@ -12,6 +13,7 @@ using Balances = std::map<std::string, w::R>;
 struct Instrument {
   std::string unit;
   w::R multiplier;
+  bool variation = false;
 };
 std::string identity(const Json &v) {
   auto s = str(v);
@@ -25,7 +27,9 @@ Json balances(const Balances &values) {
   return out;
 }
 struct State {
-  Balances cash, positions, marks;
+  Balances cash, positions, marks, basis;
+  bool feedback = false;
+  Json memory = Json::object(), previous = nullptr;
   std::map<std::string, depth_sweep::Snapshot> pools;
   std::optional<std::uint64_t> time;
 };
@@ -48,6 +52,14 @@ Json snapshot(const State &s, const std::string &model) {
       pools[id] = {{"bids", bids}, {"asks", asks}};
     }
     out["liquidity_remaining"] = pools;
+  }
+  if (!s.basis.empty() || s.feedback) {
+    out["protocol"] = "symphony.sbv.account-state.v3";
+    out["basis"] = balances(s.basis);
+    if (s.feedback) {
+      out["feedback_memory"] = s.memory;
+      out["feedback_previous"] = s.previous;
+    }
   }
   return out;
 }
@@ -116,7 +128,7 @@ logical::Value body(const Json &p, PartitionedOutput *context,
                 {"protocol", "mode", "cash_units", "instruments",
                  "initial_state", "constraints", "on_constraint", "streams",
                  "ordering", "retain_snapshots", "extensions"},
-                {"output", "output_path", "liquidity_pools"});
+                {"output", "output_path", "liquidity_pools", "feedback"});
   need(p.at("extensions").is_object() && p.at("retain_snapshots").is_boolean(),
        "account extensions/retention invalid");
   need(p.at("mode") == "fixed_intents" || p.at("mode") == "stateful_feedback",
@@ -126,6 +138,21 @@ logical::Value body(const Json &p, PartitionedOutput *context,
            p.at("on_constraint") == "abort",
        "account constraint disposition required");
   State state;
+  std::unique_ptr<NativeProvider> provider;
+  std::unique_ptr<NativeProviderInstance> instance;
+  if (p.contains("feedback")) {
+    keys(p.at("feedback"), {"provider", "on_unavailable"});
+    need(p.at("mode") == "stateful_feedback" &&
+             p.at("feedback").at("provider").at("role") == "feedback",
+         "feedback provider requires stateful feedback mode");
+    need(p.at("feedback").at("on_unavailable") == "abort" ||
+             p.at("feedback").at("on_unavailable") == "skip_trigger",
+         "feedback unavailable policy required");
+    provider =
+        std::make_unique<NativeProvider>(p.at("feedback").at("provider"), end);
+    instance = provider->create(end);
+    state.feedback = true;
+  }
   need(p.at("cash_units").is_array() && p.at("instruments").is_array(),
        "cash units/instruments arrays required");
   for (const auto &unit : p.at("cash_units"))
@@ -138,11 +165,17 @@ logical::Value body(const Json &p, PartitionedOutput *context,
          unit = identity(v.at("cash_unit"));
     auto multiplier = w::artifact(v.at("price_multiplier"));
     need(state.cash.contains(unit) && multiplier.n > 0 &&
-             v.at("settlement") == "cash_notional",
+             (v.at("settlement") == "cash_notional" ||
+              v.at("settlement") == "linear_variation"),
          "unsupported account instrument economics");
-    need(instruments.emplace(id, Instrument{unit, multiplier}).second,
+    need(instruments
+             .emplace(id, Instrument{unit, multiplier,
+                                     v.at("settlement") == "linear_variation"})
+             .second,
          "duplicate account instrument");
     state.positions.emplace(id, w::R{});
+    if (v.at("settlement") == "linear_variation")
+      state.basis.emplace(id, w::R{});
   }
   std::map<std::string, std::string> pool_instruments;
   Json pool_evidence = Json::array();
@@ -174,6 +207,8 @@ logical::Value body(const Json &p, PartitionedOutput *context,
                 {"instruments", p.at("instruments")}};
   if (!state.pools.empty())
     model["liquidity_pools"] = p.at("liquidity_pools");
+  if (provider)
+    model["feedback"] = p.at("feedback");
   const auto model_hash = e::sha256_hex(model.dump());
   Json initial = p.at("initial_state");
   std::optional<consumer::ValueSource> parent;
@@ -185,12 +220,17 @@ logical::Value body(const Json &p, PartitionedOutput *context,
     keys_optional(
         initial,
         {"protocol", "model_sha256", "cash", "positions", "marks", "time_ns"},
-        {"liquidity_remaining"});
-    need(initial.at("protocol") == (state.pools.empty()
+        {"liquidity_remaining", "basis", "feedback_memory",
+         "feedback_previous"});
+    need(initial.at("protocol") == ((!state.basis.empty() || state.feedback)
+                                        ? "symphony.sbv.account-state.v3"
+                                    : state.pools.empty()
                                         ? "symphony.sbv.account-state.v1"
                                         : "symphony.sbv.account-state.v2") &&
              initial.at("model_sha256") == model_hash,
          "account snapshot model mismatch");
+    need(initial.contains("basis") == (!state.basis.empty() || state.feedback),
+         "snapshot basis coverage mismatch");
     need(initial.contains("liquidity_remaining") == !state.pools.empty(),
          "snapshot liquidity coverage mismatch");
     if (!state.pools.empty()) {
@@ -218,7 +258,8 @@ logical::Value body(const Json &p, PartitionedOutput *context,
     if (!initial.at("time_ns").is_null())
       state.time = u64(initial.at("time_ns"));
   } else
-    keys(initial, {"cash", "positions", "marks", "time_ns"});
+    keys_optional(initial, {"cash", "positions", "marks", "time_ns"},
+                  {"basis", "feedback_memory", "feedback_previous"});
   if (!initial.at("time_ns").is_null())
     state.time = u64(initial.at("time_ns"));
   auto read = [&](const Json &v, Balances &out, bool marks) {
@@ -233,6 +274,24 @@ logical::Value body(const Json &p, PartitionedOutput *context,
   read(initial.at("cash"), state.cash, false);
   read(initial.at("positions"), state.positions, false);
   read(initial.at("marks"), state.marks, true);
+  need(state.basis.empty() || initial.contains("basis"),
+       "explicit basis required for variation instruments");
+  if (initial.contains("basis"))
+    read(initial.at("basis"), state.basis, false);
+  need(state.feedback || (!initial.contains("feedback_memory") &&
+                          !initial.contains("feedback_previous")),
+       "feedback state requires provider selection");
+  if (initial.contains("feedback_memory"))
+    state.memory = initial.at("feedback_memory");
+  if (initial.contains("feedback_previous"))
+    state.previous = initial.at("feedback_previous");
+  need(state.memory.is_object() &&
+           (state.previous.is_null() || state.previous.is_object()),
+       "feedback state objects required");
+  if (parent && state.feedback)
+    need(initial.contains("feedback_memory") &&
+             initial.contains("feedback_previous"),
+         "feedback snapshot state incomplete");
   const auto &constraints = p.at("constraints");
   keys(constraints, {"cash", "positions"});
   std::map<std::string, Bounds> cash_bounds, position_bounds;
@@ -294,19 +353,128 @@ logical::Value body(const Json &p, PartitionedOutput *context,
     auto index = queue.top();
     queue.pop();
     auto &stream = streams[index];
-    const auto &event = stream.row;
+    Json event = stream.row, feedback_record = nullptr;
+    bool no_action = false, provider_missing = false;
+    if (event.at("kind") == "feedback_trigger") {
+      keys(event, {"event_id", "time_ns", "kind", "context"});
+      need(instance && event.at("context").is_object(),
+           "feedback trigger requires selected provider and context object");
+      Json call = {
+          {"protocol", "symphony.sbv.account-feedback-call.v1"},
+          {"occurrence",
+           {{"stream_id", stream.id},
+            {"event_id", event.at("event_id")},
+            {"source_ordinal", dec(stream.ordinal)}}},
+          {"time_ns", event.at("time_ns")},
+          {"context", event.at("context")},
+          {"state",
+           {{"cash", balances(state.cash)},
+            {"positions", balances(state.positions)},
+            {"marks", balances(state.marks)},
+            {"basis", balances(state.basis)},
+            {"time_ns", state.time ? Json(dec(*state.time)) : Json(nullptr)}}},
+          {"memory", state.memory},
+          {"previous_event", state.previous}};
+      auto reply = instance->decide(call, end);
+      if (reply.status == SBV_PROVIDER_CANCELLED)
+        throw e::Error("sbv.cancelled", "feedback provider cancelled", 2);
+      need(reply.status == SBV_PROVIDER_OK ||
+               (reply.status == SBV_PROVIDER_UNAVAILABLE &&
+                p.at("feedback").at("on_unavailable") == "skip_trigger"),
+           "feedback provider failed or unavailable");
+      feedback_record = {
+          {"call", call},
+          {"status", dec(static_cast<std::uint64_t>(reply.status))},
+          {"decision", reply.value},
+          {"error", reply.error}};
+      provider_missing = reply.status == SBV_PROVIDER_UNAVAILABLE;
+      if (!provider_missing) {
+        keys(reply.value, {"protocol", "action", "memory", "extensions"});
+        need(reply.value.at("protocol") ==
+                     "symphony.sbv.feedback-decision.v1" &&
+                 reply.value.at("memory").is_object() &&
+                 reply.value.at("extensions").is_object(),
+             "invalid feedback decision");
+        state.memory = reply.value.at("memory");
+        no_action = reply.value.at("action").is_null();
+        if (!no_action) {
+          event = reply.value.at("action");
+          need(event.is_object() &&
+                   event.at("event_id") == stream.row.at("event_id") &&
+                   event.at("time_ns") == stream.row.at("time_ns") &&
+                   event.at("kind") != "feedback_trigger",
+               "feedback action identity/time or recursive trigger invalid");
+        }
+      }
+    }
     auto kind = str(event.at("kind"));
     State next = state;
     Json cash_delta = Json::object(), position_delta = Json::object();
     auto cash = [&](const std::string &unit, w::R delta) {
       need(next.cash.contains(unit), "unknown event cash unit");
       next.cash.at(unit) = w::plus(next.cash.at(unit), delta);
-      cash_delta[unit] = w::wire(delta);
+      cash_delta[unit] = w::wire(w::plus(
+          cash_delta.contains(unit) ? w::artifact(cash_delta.at(unit)) : w::R{},
+          delta));
     };
-    bool signal = false, admitted = true, execution_missing = false;
+    auto trade = [&](const std::string &id, w::R quantity, w::R price,
+                     w::R fee) {
+      const auto &instrument = instruments.at(id);
+      auto old = next.positions.at(id), current = w::plus(old, quantity);
+      if (!instrument.variation) {
+        auto cost = w::plus(
+            w::times(w::times(quantity, price), instrument.multiplier), fee);
+        cash(instrument.unit, {-cost.n, cost.d});
+      } else {
+        auto &basis = next.basis.at(id);
+        w::R realized;
+        if (!old.n || ((old.n > 0) == (quantity.n > 0))) {
+          basis = w::divide(
+              w::plus(w::times(old, basis), w::times(quantity, price)),
+              current);
+        } else {
+          auto magnitude_old = w::R{w::absolute(old.n), old.d},
+               magnitude_q = w::R{w::absolute(quantity.n), quantity.d};
+          auto closed = w::compare(magnitude_old, magnitude_q) < 0
+                            ? magnitude_old
+                            : magnitude_q;
+          if (old.n < 0)
+            closed.n = -closed.n;
+          realized =
+              w::times(w::times(closed, w::plus(price, {-basis.n, basis.d})),
+                       instrument.multiplier);
+          if (!current.n)
+            basis = {};
+          else if ((current.n > 0) != (old.n > 0))
+            basis = price;
+        }
+        cash(instrument.unit, w::plus(realized, {-fee.n, fee.d}));
+      }
+      next.positions.at(id) = current;
+      const auto previous = state.positions.at(id);
+      position_delta[id] = w::wire(w::plus(current, {-previous.n, previous.d}));
+    };
+    bool signal = false, admitted = true, execution_missing = provider_missing;
     Json execution_outcome = nullptr, resolved_quantity = nullptr;
     std::string suppression_reason;
-    if (kind == "liquidity_order") {
+    if (no_action || provider_missing) {
+      admitted = false;
+      suppression_reason =
+          provider_missing ? "provider_unavailable" : "provider_no_action";
+    } else if (kind == "settle") {
+      keys(event, {"event_id", "time_ns", "kind", "instrument_id", "price"});
+      auto id = identity(event.at("instrument_id"));
+      need(instruments.contains(id) && instruments.at(id).variation,
+           "settle requires linear variation instrument");
+      auto price = w::artifact(event.at("price"));
+      auto &basis = next.basis.at(id);
+      cash(instruments.at(id).unit,
+           w::times(w::times(next.positions.at(id),
+                             w::plus(price, {-basis.n, basis.d})),
+                    instruments.at(id).multiplier));
+      basis = next.positions.at(id).n ? price : w::R{};
+      next.marks[id] = price;
+    } else if (kind == "liquidity_order") {
       keys(event,
            {"event_id", "time_ns", "kind", "pool_id", "quantity_rule",
             "limit_price_nanos", "time_in_force", "max_level_participation",
@@ -411,20 +579,14 @@ logical::Value body(const Json &p, PartitionedOutput *context,
           const auto &data = execution_outcome.at("data");
           auto filled = u64(data.at("filled_quantity"));
           if (filled) {
-            auto signed_q = w::R{quantity.n > 0 ? static_cast<w::I>(filled)
-                                                : -static_cast<w::I>(filled),
-                                 1};
-            auto notional =
-                w::R{w::integer(data.at("notional_price_nanos_times_quantity")),
-                     1000000000};
-            if (quantity.n < 0)
-              notional.n = -notional.n;
+            for (const auto &fill : data.at("fills")) {
+              auto q = static_cast<w::I>(u64(fill.at("quantity")));
+              trade(id, {quantity.n > 0 ? q : -q, 1},
+                    {i64(fill.at("price_nanos")), 1000000000}, {});
+            }
             auto fee =
                 w::plus(fixed, w::times({static_cast<w::I>(filled), 1}, rate));
-            auto cost = w::plus(w::times(notional, instrument.multiplier), fee);
-            cash(instrument.unit, {-cost.n, cost.d});
-            next.positions.at(id) = w::plus(next.positions.at(id), signed_q);
-            position_delta[id] = w::wire(signed_q);
+            cash(instrument.unit, {-fee.n, fee.d});
           }
         }
       }
@@ -443,6 +605,8 @@ logical::Value body(const Json &p, PartitionedOutput *context,
       next.positions.at(id) = w::times(previous, factor);
       position_delta[id] =
           w::wire(w::plus(next.positions.at(id), {-previous.n, previous.d}));
+      if (next.basis.contains(id))
+        next.basis.at(id) = w::divide(next.basis.at(id), factor);
       if (next.marks.contains(id))
         next.marks.at(id) = w::divide(next.marks.at(id), factor);
     } else if (kind == "cashflow") {
@@ -471,7 +635,6 @@ logical::Value body(const Json &p, PartitionedOutput *context,
       if (kind == "mark")
         next.marks[id] = price;
       else {
-        const auto &instrument = instruments.at(id);
         auto quantity = w::artifact(event.at("quantity")),
              fee = w::artifact(event.at("fee"));
         need(quantity.n != 0, "fill intent requires nonzero signed quantity");
@@ -480,11 +643,7 @@ logical::Value body(const Json &p, PartitionedOutput *context,
         admitted = guards(event.at("guards"), state);
         signal = admitted;
         if (admitted) {
-          auto cost = w::plus(
-              w::times(w::times(quantity, price), instrument.multiplier), fee);
-          cash(instrument.unit, {-cost.n, cost.d});
-          next.positions.at(id) = w::plus(next.positions.at(id), quantity);
-          position_delta[id] = w::wire(quantity);
+          trade(id, quantity, price, fee);
         }
       }
     } else
@@ -508,7 +667,9 @@ logical::Value body(const Json &p, PartitionedOutput *context,
                           {"mode", p.at("mode")},
                           {"intent", event}});
     Json before = {{"cash", balances(state.cash)},
-                   {"positions", balances(state.positions)}};
+                   {"positions", balances(state.positions)},
+                   {"marks", balances(state.marks)},
+                   {"basis", balances(state.basis)}};
     if (disposition == "applied") {
       state = std::move(next);
       ++applied;
@@ -527,20 +688,31 @@ logical::Value body(const Json &p, PartitionedOutput *context,
       execution_outcome["committed"] = disposition == "applied";
     }
     state.time = stream.time;
-    ledger.append(Json{{"ordinal", dec(ledger.size())},
-                       {"occurrence", occurrence},
-                       {"event", event},
-                       {"disposition", disposition},
-                       {"constraint_violations", breached},
-                       {"suppression_reason", suppression_reason},
-                       {"resolved_quantity", resolved_quantity},
-                       {"execution_outcome", execution_outcome},
-                       {"cash_delta", cash_delta},
-                       {"position_delta", position_delta},
-                       {"before", before},
-                       {"after",
-                        {{"cash", balances(state.cash)},
-                         {"positions", balances(state.positions)}}}});
+    Json row{{"ordinal", dec(ledger.size())},
+             {"occurrence", occurrence},
+             {"event", stream.row},
+             {"resolved_event", event},
+             {"feedback", feedback_record},
+             {"disposition", disposition},
+             {"constraint_violations", breached},
+             {"suppression_reason", suppression_reason},
+             {"resolved_quantity", resolved_quantity},
+             {"execution_outcome", execution_outcome},
+             {"cash_delta", cash_delta},
+             {"position_delta", position_delta},
+             {"before", before},
+             {"after",
+              {{"cash", balances(state.cash)},
+               {"positions", balances(state.positions)},
+               {"marks", balances(state.marks)},
+               {"basis", balances(state.basis)}}}};
+    if (state.feedback)
+      state.previous = {{"event", event},
+                        {"disposition", disposition},
+                        {"cash_delta", cash_delta},
+                        {"position_delta", position_delta},
+                        {"execution_outcome", execution_outcome}};
+    ledger.append(row);
     if (p.at("retain_snapshots").get<bool>())
       snapshots.append(snapshot(state, model_hash));
     auto previous = stream.time;
@@ -559,9 +731,14 @@ logical::Value body(const Json &p, PartitionedOutput *context,
       if (!state.marks.contains(id))
         absent.push_back(id);
       else
-        value = w::plus(value, w::times(w::times(state.positions.at(id),
-                                                 state.marks.at(id)),
-                                        instrument.multiplier));
+        value = w::plus(value,
+                        w::times(w::times(state.positions.at(id),
+                                          (instrument.variation
+                                               ? w::plus(state.marks.at(id),
+                                                         {-state.basis.at(id).n,
+                                                          state.basis.at(id).d})
+                                               : state.marks.at(id))),
+                                 instrument.multiplier));
     }
     equity[unit] = {{"status", absent.empty() ? "available" : "unavailable"},
                     {"missing_marks", absent},
@@ -584,6 +761,8 @@ logical::Value body(const Json &p, PartitionedOutput *context,
                           {"terminal_equity_by_unit", equity}});
   s["choices"] = section(choices);
   s["liquidity_inputs"] = section(pool_evidence);
+  if (provider)
+    s["feedback_provider"] = section(provider->evidence());
   s["initial_state"] = section(initial_snapshot);
   s["terminal_state"] = section(snapshot(state, model_hash));
   s["provenance"] =
@@ -599,7 +778,8 @@ logical::Value body(const Json &p, PartitionedOutput *context,
       {{"backend", "cpu"},
        {"workers", "1"},
        {"ordering", "ascending time, caller stream order, source ordinal"},
-       {"resident_state", "account balances and selected depth pools, one "
+       {"resident_state", "account balances, settlement basis, provider memory "
+                          "and selected depth pools, one "
                           "event per stream, per-stream identity sets; no "
                           "policy event limit or automatic spill"}});
   s["user_extensions"] = section(p.at("extensions"));

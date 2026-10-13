@@ -22,7 +22,7 @@ func TestSBVInstalledOwnerEvidenceSchema(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	contract, err := sqavObject(raw, maxRequestBytes)
+	contract, err := sbvDecodeOwnedResource(raw)
 	if err != nil {
 		t.Fatal(err)
 	}

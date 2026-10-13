@@ -49,7 +49,7 @@ func TestSBVInstalledResourceAdmission(t *testing.T) {
 		if err != nil {
 			t.Fatalf("discoverable combined schema %s: %v", op, err)
 		}
-		shape, err := sqavObject(combined, maxRequestBytes)
+		shape, err := sbvDecodeOwnedResource(combined)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -82,7 +82,7 @@ func TestSBVInstalledResourceAdmission(t *testing.T) {
 	if _, _, err := SBVTemplateVariant(prefix, SBVAdministrationInterfaceVersion, "book", "unknown"); err == nil {
 		t.Fatal("unknown template variant admitted")
 	}
-	t.Logf("all %d schemas/default templates and %d partitioned variants admitted within individual control bounds; no operation invoked", len(SBVOperations), len(partitioned))
+	t.Logf("all %d owned schemas and default templates plus %d partitioned variants admitted through their respective resource/control readers; no operation invoked", len(SBVOperations), len(partitioned))
 }
 
 func TestSBVOwnedCatalogueExceedsMessageCount(t *testing.T) {
@@ -134,5 +134,22 @@ func TestSBVOwnedCatalogueRetainsStructuralChecks(t *testing.T) {
 				t.Fatal("malformed resource admitted")
 			}
 		})
+	}
+}
+
+func TestSBVExpandedSchemaRemainsDiscoverable(t *testing.T) {
+	catalogue := partitionedCatalogue(t, "admin.schema.json")
+	requests := catalogue["requests"].(map[string]any)
+	results := catalogue["results"].(map[string]any)
+	combined := map[string]any{"input": requests["account_simulate"], "output": results["account_simulate"], "$defs": catalogue["$defs"]}
+	raw, err := sbvCanonicalOwnedResource(combined)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err := sbvDecodeOwnedResource(raw); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := sqavObject(raw, maxRequestBytes); err == nil {
+		t.Fatal("regression requires expanded schema beyond runtime message admission")
 	}
 }

@@ -96,6 +96,17 @@ func sbvCanonicalControlResource(value any) (json.RawMessage, error) {
 	return out, err
 }
 
+// Schema output describes a receipt/hash-pinned resource; it is not sent to
+// the native process as a request. Keep its complete definitions discoverable
+// even when the schema grows beyond a runtime control frame's value count.
+func sbvCanonicalOwnedResource(value any) (json.RawMessage, error) {
+	out, err := SCVCanonical(value)
+	if err == nil {
+		_, err = sbvDecodeOwnedResource(out)
+	}
+	return out, err
+}
+
 // A receipt/hash-pinned catalogue is an owned resource, not a process request.
 // Its existing exact-byte admission bounds memory; a JSON value/key consumes
 // at least one byte, so len(raw) is a structural bound rather than a new quota.
@@ -434,8 +445,15 @@ func validateSBVResult(op string, p map[string]any, raw []byte) error {
 		}
 		// Descriptor JSON may contain ordinary JSON Schema numbers; its exact
 		// bytes are retained as a string by the numeric-string result contract.
+		descriptorProtocol, symbol := "symphony.sbv.native-provider-descriptor.v1", "symphony_sbv_provider_api_v1"
+		if selection["role"] == "feedback" {
+			descriptorProtocol, symbol = "symphony.sbv.native-feedback-descriptor.v1", "symphony_sbv_feedback_api_v1"
+		}
 		var declared map[string]any
-		if json.Unmarshal([]byte(descriptor), &declared) != nil || declared["protocol"] != "symphony.sbv.native-provider-descriptor.v1" {
+		if json.Unmarshal([]byte(descriptor), &declared) != nil || declared["protocol"] != descriptorProtocol {
+			return bad()
+		}
+		if selection["role"] == "feedback" && (declared["role"] != "feedback" || declared["input_profile"] != selection["input_profile"] || declared["concurrency"] != "serialized_instance" || declared["state_model"] != "explicit_returned_memory") {
 			return bad()
 		}
 		for _, key := range []string{"id", "version", "reproducibility", "cancellation"} {
@@ -446,7 +464,7 @@ func validateSBVResult(op string, p map[string]any, raw []byte) error {
 		}
 		configuration, ok := evidence["configuration_validation"].(string)
 		loading, present := evidence["loading"].(map[string]any)
-		if !ok || configuration == "" || !present || len(loading) != 6 || loading["isolation"] != false || loading["symbol"] != "symphony_sbv_provider_api_v1" {
+		if !ok || configuration == "" || !present || len(loading) != 6 || loading["isolation"] != false || loading["symbol"] != symbol {
 			return bad()
 		}
 		for _, key := range []string{"profile", "visibility", "dependency_resolution", "trust"} {
@@ -849,7 +867,7 @@ func SBVSchema(prefix, version, operation string) (json.RawMessage, error) {
 		if e != nil {
 			return nil, e
 		}
-		return sbvCanonicalControlResource(map[string]any{"result": result, "ndjson_record": stream})
+		return sbvCanonicalOwnedResource(map[string]any{"result": result, "ndjson_record": stream})
 	}
 	if !sbvAdministrationInterfaceAdmission[version][operation] {
 		return nil, fmt.Errorf("SBV schema operation unavailable")
@@ -866,7 +884,7 @@ func SBVSchema(prefix, version, operation string) (json.RawMessage, error) {
 	if !ok {
 		return nil, fmt.Errorf("SBV result schemas missing")
 	}
-	return sbvCanonicalControlResource(map[string]any{"input": requests[operation], "output": results[operation], "$defs": all["$defs"]})
+	return sbvCanonicalOwnedResource(map[string]any{"input": requests[operation], "output": results[operation], "$defs": all["$defs"]})
 }
 
 // Native nlohmann JSON uses UTF-8 for U+2028/U+2029. Go's encoder escapes

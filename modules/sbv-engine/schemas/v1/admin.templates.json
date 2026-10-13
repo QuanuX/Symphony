@@ -4128,6 +4128,235 @@
         ],
         "extensions": {},
         "output_path": "/absolute/private/account.json"
+      },
+      "native_feedback": {
+        "protocol": "symphony.sbv.account-simulate-input.v1",
+        "mode": "stateful_feedback",
+        "cash_units": [
+          "USD"
+        ],
+        "instruments": [
+          {
+            "instrument_id": "A",
+            "cash_unit": "USD",
+            "settlement": "cash_notional",
+            "price_multiplier": {
+              "numerator": "1",
+              "denominator": "1"
+            }
+          },
+          {
+            "instrument_id": "B",
+            "cash_unit": "USD",
+            "settlement": "cash_notional",
+            "price_multiplier": {
+              "numerator": "1",
+              "denominator": "1"
+            }
+          }
+        ],
+        "initial_state": {
+          "cash": {
+            "USD": {
+              "numerator": "100",
+              "denominator": "1"
+            }
+          },
+          "positions": {
+            "A": {
+              "numerator": "0",
+              "denominator": "1"
+            },
+            "B": {
+              "numerator": "0",
+              "denominator": "1"
+            }
+          },
+          "marks": {},
+          "time_ns": null
+        },
+        "constraints": {
+          "cash": {
+            "USD": {
+              "minimum": {
+                "numerator": "0",
+                "denominator": "1"
+              },
+              "maximum": null
+            }
+          },
+          "positions": {
+            "A": {
+              "minimum": null,
+              "maximum": null
+            },
+            "B": {
+              "minimum": null,
+              "maximum": null
+            }
+          }
+        },
+        "on_constraint": "reject_event",
+        "ordering": "time_stream_order",
+        "retain_snapshots": true,
+        "streams": [
+          {
+            "stream_id": "feedback",
+            "events": [
+              {
+                "event_id": "trigger",
+                "time_ns": "1",
+                "kind": "feedback_trigger",
+                "context": {}
+              }
+            ]
+          }
+        ],
+        "extensions": {},
+        "output_path": "/absolute/private/account.json",
+        "feedback": {
+          "provider": {
+            "protocol": "symphony.sbv.native-provider-selection.v1",
+            "library": {
+              "path": "/absolute/trusted/provider.dylib",
+              "expected_sha256": "REPLACE_WITH_BINARY_SHA256"
+            },
+            "id": "sbv-feedback-fixture",
+            "version": "1",
+            "role": "feedback",
+            "input_profile": "symphony.sbv.account-feedback-call.v1",
+            "concurrency": "serialized_instance",
+            "parameters": {},
+            "dependencies": {
+              "capture": "uncaptured",
+              "description": "Caller-selected native library; dynamic dependencies are not captured",
+              "artifacts": []
+            },
+            "extensions": {}
+          },
+          "on_unavailable": "abort"
+        }
+      },
+      "linear_variation": {
+        "protocol": "symphony.sbv.account-simulate-input.v1",
+        "mode": "fixed_intents",
+        "cash_units": [
+          "USD"
+        ],
+        "instruments": [
+          {
+            "instrument_id": "A",
+            "cash_unit": "USD",
+            "settlement": "linear_variation",
+            "price_multiplier": {
+              "numerator": "1",
+              "denominator": "1"
+            }
+          },
+          {
+            "instrument_id": "B",
+            "cash_unit": "USD",
+            "settlement": "cash_notional",
+            "price_multiplier": {
+              "numerator": "1",
+              "denominator": "1"
+            }
+          }
+        ],
+        "initial_state": {
+          "cash": {
+            "USD": {
+              "numerator": "100",
+              "denominator": "1"
+            }
+          },
+          "positions": {
+            "A": {
+              "numerator": "2",
+              "denominator": "1"
+            },
+            "B": {
+              "numerator": "0",
+              "denominator": "1"
+            }
+          },
+          "marks": {},
+          "time_ns": null,
+          "basis": {
+            "A": {
+              "numerator": "10",
+              "denominator": "1"
+            }
+          }
+        },
+        "constraints": {
+          "cash": {
+            "USD": {
+              "minimum": {
+                "numerator": "0",
+                "denominator": "1"
+              },
+              "maximum": null
+            }
+          },
+          "positions": {
+            "A": {
+              "minimum": null,
+              "maximum": null
+            },
+            "B": {
+              "minimum": null,
+              "maximum": null
+            }
+          }
+        },
+        "on_constraint": "reject_event",
+        "ordering": "time_stream_order",
+        "retain_snapshots": true,
+        "streams": [
+          {
+            "stream_id": "settlement",
+            "events": [
+              {
+                "event_id": "settle",
+                "time_ns": "1",
+                "kind": "settle",
+                "instrument_id": "A",
+                "price": {
+                  "numerator": "12",
+                  "denominator": "1"
+                }
+              }
+            ]
+          }
+        ],
+        "extensions": {},
+        "output_path": "/absolute/private/account.json"
+      }
+    },
+    "provider_inspect": {
+      "feedback": {
+        "protocol": "symphony.sbv.provider-inspect-input.v1",
+        "provider": {
+          "protocol": "symphony.sbv.native-provider-selection.v1",
+          "library": {
+            "path": "/absolute/trusted/provider.dylib",
+            "expected_sha256": "REPLACE_WITH_BINARY_SHA256"
+          },
+          "id": "sbv-feedback-fixture",
+          "version": "1",
+          "role": "feedback",
+          "input_profile": "symphony.sbv.account-feedback-call.v1",
+          "concurrency": "serialized_instance",
+          "parameters": {},
+          "dependencies": {
+            "capture": "uncaptured",
+            "description": "Caller-selected native library; dynamic dependencies are not captured",
+            "artifacts": []
+          },
+          "extensions": {}
+        },
+        "extensions": {}
       }
     }
   }

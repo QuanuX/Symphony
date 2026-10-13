@@ -24490,3 +24490,45 @@ automatic nested fitting and cross-run holdout history remain unimplemented.
 - deferred_projections: arbitrary runtime feedback providers and broader settlement models
 - notes: Explicit user policies and atomic capital/liquidity admission; no calibration claim.
 - status: canonical
+
+### SBV feedback.h
+
+- path: `modules/sbv-engine/include/symphony/sbv/feedback.h`
+- title: SBV feedback.h
+- surface_type: implementation contract or test
+- truth_role: Native feedback ABI and selected settlement verification
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.32 R6.1c native feedback and linear variation
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, SDKs, agents and portable result consumers
+- deferred_projections: exchange margin and remote/cluster qualification
+- notes: Explicit user policies and portable state; no calibration claim.
+- status: canonical
+
+### SBV feedback_fixture.cpp
+
+- path: `modules/sbv-engine/tests/feedback_fixture.cpp`
+- title: SBV feedback_fixture.cpp
+- surface_type: implementation contract or test
+- truth_role: Native feedback ABI and selected settlement verification
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.32 R6.1c native feedback and linear variation
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, SDKs, agents and portable result consumers
+- deferred_projections: exchange margin and remote/cluster qualification
+- notes: Explicit user policies and portable state; no calibration claim.
+- status: canonical
+
+### SBV feedback_settlement_test.cpp
+
+- path: `modules/sbv-engine/tests/feedback_settlement_test.cpp`
+- title: SBV feedback_settlement_test.cpp
+- surface_type: implementation contract or test
+- truth_role: Native feedback ABI and selected settlement verification
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.32 R6.1c native feedback and linear variation
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, SDKs, agents and portable result consumers
+- deferred_projections: exchange margin and remote/cluster qualification
+- notes: Explicit user policies and portable state; no calibration claim.
+- status: canonical

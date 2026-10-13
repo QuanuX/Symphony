@@ -3,6 +3,7 @@
 #include <atomic>
 #include <memory>
 #include <span>
+#include <symphony/sbv/feedback.h>
 #include <symphony/sbv/provider.h>
 #include <symphony/sqav/databento/dbn.hpp>
 namespace symphony::sbv::detail {
@@ -33,6 +34,8 @@ public:
   ~NativeProviderInstance();
   NativeProviderInstance(const NativeProviderInstance &) = delete;
   NativeProviderInstance &operator=(const NativeProviderInstance &) = delete;
+  ProviderReply decide(const Json &, std::int64_t,
+                       const std::atomic_bool *cancelled = nullptr);
   ProviderReply event(std::span<const sqav::databento::Mbo>,
                       std::size_t ordinal, std::int64_t deadline_ms,
                       const std::atomic_bool *cancelled = nullptr);

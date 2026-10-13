@@ -32,7 +32,10 @@ func TestSBVPartitionedRegisteredShapes(t *testing.T) {
 	legacy := templates["templates"].(map[string]any)
 	for op, value := range variants {
 		t.Run(op, func(t *testing.T) {
-			p := value.(map[string]any)["partitioned"].(map[string]any)
+			p, selected := value.(map[string]any)["partitioned"].(map[string]any)
+			if !selected {
+				return
+			} // Other operations may publish non-partitioned variants.
 			shape := requests[op].(map[string]any)
 			if !sbvInputShape(shape, p) || sbvPartitionedRequestPreflight(op, p) != nil {
 				t.Fatalf("complete partitioned template rejected: schema=%v preflight=%v", sbvInputShape(shape, p), sbvPartitionedRequestPreflight(op, p))
@@ -121,8 +124,8 @@ func TestSBVPartitionedRegisteredShapes(t *testing.T) {
 	}
 	for op, shape := range requests {
 		combined := map[string]any{"input": shape, "output": results[op], "$defs": catalogue["$defs"]}
-		if _, err := sbvCanonicalControlResource(combined); err != nil {
-			t.Fatalf("%s discoverable schema exceeds control frame: %v", op, err)
+		if _, err := sbvCanonicalOwnedResource(combined); err != nil {
+			t.Fatalf("%s discoverable owned schema rejected: %v", op, err)
 		}
 	}
 }

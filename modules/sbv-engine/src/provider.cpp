@@ -282,15 +282,20 @@ void admit_selection(const Json &p) {
        "provider selection protocol mismatch");
   label(p.at("id"));
   label(p.at("version"));
-  need(p.at("role") == "strategy" || p.at("role") == "model",
+  need(p.at("role") == "strategy" || p.at("role") == "model" ||
+           p.at("role") == "feedback",
        "unknown provider role");
-  need(p.at("input_profile") == "symphony.sbv.provider-databento-mbo-event.v1",
+  need(p.at("input_profile") ==
+           (p.at("role") == "feedback"
+                ? "symphony.sbv.account-feedback-call.v1"
+                : "symphony.sbv.provider-databento-mbo-event.v1"),
        "unsupported provider input profile");
   const auto mode = str(p.at("concurrency"));
   need(mode == "serialized_instance" || mode == "per_worker_instances" ||
            mode == "shared_reentrant_instance",
        "unknown provider concurrency");
-  need(p.at("role") != "strategy" || mode == "serialized_instance",
+  need((p.at("role") != "strategy" && p.at("role") != "feedback") ||
+           mode == "serialized_instance",
        "strategy instance requires ordered serialized calls");
   need(p.at("parameters").is_object() && p.at("extensions").is_object(),
        "provider parameters/extensions must be objects");
@@ -366,6 +371,28 @@ void admit_descriptor(const Json &d, const Json &p,
        "provider cancellation declaration required");
   label(d.at("dependency_disclosure"));
 }
+void admit_feedback_descriptor(const Json &d, const Json &p) {
+  keys(d, {"protocol", "id", "version", "role", "input_profile", "concurrency",
+           "state_model", "config_schema", "reproducibility", "cancellation",
+           "dependency_disclosure", "extensions"});
+  need(d.at("protocol") == "symphony.sbv.native-feedback-descriptor.v1" &&
+           d.at("id") == p.at("id") && d.at("version") == p.at("version") &&
+           d.at("role") == "feedback" &&
+           d.at("input_profile") == p.at("input_profile") &&
+           d.at("concurrency") == "serialized_instance" &&
+           d.at("state_model") == "explicit_returned_memory",
+       "feedback descriptor contract mismatch");
+  need(d.at("config_schema").is_object() && d.at("extensions").is_object(),
+       "feedback descriptor objects required");
+  need(d.at("reproducibility") == "deterministic_declared" ||
+           d.at("reproducibility") == "nondeterministic" ||
+           d.at("reproducibility") == "uncaptured",
+       "feedback reproducibility required");
+  need(d.at("cancellation") == "cooperative_polling" ||
+           d.at("cancellation") == "between_callbacks_only",
+       "feedback cancellation required");
+  label(d.at("dependency_disclosure"));
+}
 Json evidence_value(const Json &p, const Json &descriptor,
                     const std::string &raw, std::uint64_t library_bytes,
                     const Json &dependencies) {
@@ -390,7 +417,8 @@ Json evidence_value(const Json &p, const Json &descriptor,
                                    "without generic host validation"},
       {"loading",
        {{"profile", "private_verified_copy"},
-        {"symbol", "symphony_sbv_provider_api_v1"},
+        {"symbol", p.at("role") == "feedback" ? "symphony_sbv_feedback_api_v1"
+                                              : "symphony_sbv_provider_api_v1"},
         {"visibility", "local"},
         {"dependency_resolution",
          "loader-native; dependencies are not staged or relocated; "
@@ -412,12 +440,16 @@ void validate_native_provider_evidence(const Json &p, const Json &evidence) {
       e::parse_bounded_json(raw, artifact_bytes, artifact_values);
   // Retained evidence attests the admitted descriptor, not current loader
   // availability. The runtime table was checked when originally loaded.
-  sbv_provider_api_v1 declared_api{};
-  list(descriptor.at("roles"), {"strategy", "model"});
-  for (const auto &role : descriptor.at("roles"))
-    declared_api.role_bits |=
-        role == "strategy" ? SBV_PROVIDER_STRATEGY : SBV_PROVIDER_MODEL;
-  admit_descriptor(descriptor, p, declared_api);
+  if (p.at("role") == "feedback")
+    admit_feedback_descriptor(descriptor, p);
+  else {
+    sbv_provider_api_v1 declared_api{};
+    list(descriptor.at("roles"), {"strategy", "model"});
+    for (const auto &role : descriptor.at("roles"))
+      declared_api.role_bits |=
+          role == "strategy" ? SBV_PROVIDER_STRATEGY : SBV_PROVIDER_MODEL;
+    admit_descriptor(descriptor, p, declared_api);
+  }
   keys(evidence.at("library"), {"path", "expected_sha256", "bytes"});
   const auto library_bytes = u64(evidence.at("library").at("bytes"));
   need(library_bytes > 0, "retained provider library cannot be empty");
@@ -443,6 +475,7 @@ struct NativeProviderState {
   std::string root, staged;
   void *library = nullptr;
   sbv_provider_api_v1 api{};
+  sbv_feedback_api_v1 feedback{};
   ~NativeProviderState() {
     if (library)
       ::dlclose(library);
@@ -509,6 +542,32 @@ NativeProvider::NativeProvider(const Json &p, std::int64_t end)
                                                 : "loader error unavailable"),
                    2);
   }
+  if (p.at("role") == "feedback") {
+    const auto getter = reinterpret_cast<sbv_feedback_get_api_v1>(
+        ::dlsym(state_->library, "symphony_sbv_feedback_api_v1"));
+    need(getter != nullptr, "feedback ABI entry point unavailable");
+    auto &api = state_->feedback;
+    api.struct_size = sizeof(api);
+    api.abi_version = 1;
+    need(getter(&api) == SBV_PROVIDER_OK && api.struct_size == sizeof(api) &&
+             api.abi_version == 1 && api.required_capability_bits == 0 &&
+             api.descriptor && api.create && api.decide && api.destroy,
+         "feedback ABI/table admission failed");
+    Scope scope{end, nullptr};
+    std::string raw;
+    auto reply = invoke(
+        scope,
+        [&](const auto &ctx, auto &out, auto &err) {
+          return api.descriptor(&ctx, &out, &err);
+        },
+        &raw);
+    need(reply.status == SBV_PROVIDER_OK, "feedback descriptor unavailable");
+    admit_feedback_descriptor(reply.value, p);
+    state_->descriptor = reply.value;
+    state_->evidence =
+        evidence_value(p, reply.value, raw, h.bytes, dependencies);
+    return;
+  }
   const auto getter = reinterpret_cast<sbv_provider_get_api_v1>(
       ::dlsym(state_->library, "symphony_sbv_provider_api_v1"));
   need(getter != nullptr, "provider ABI entry point unavailable");
@@ -559,7 +618,9 @@ struct NativeProviderInstance::State {
   ~State() {
     if (!instance)
       return;
-    if (provider->selection.at("role") == "strategy")
+    if (provider->selection.at("role") == "feedback")
+      provider->feedback.destroy(instance);
+    else if (provider->selection.at("role") == "strategy")
       provider->api.strategy_destroy(instance);
     else
       provider->api.model_destroy(instance);
@@ -583,7 +644,9 @@ NativeProvider::create(std::int64_t end,
   auto input = bytes(config);
   Scope scope{end, cancelled};
   auto reply = invoke(scope, [&](const auto &ctx, auto &, auto &err) {
-    auto fn = state_->selection.at("role") == "strategy"
+    auto fn = state_->selection.at("role") == "feedback"
+                  ? state_->feedback.create
+              : state_->selection.at("role") == "strategy"
                   ? state_->api.strategy_create
                   : state_->api.model_create;
     return fn(&ctx, &input, &state->instance, &err);
@@ -596,6 +659,20 @@ NativeProvider::create(std::int64_t end,
        "successful provider creation returned a null instance");
   return std::unique_ptr<NativeProviderInstance>(
       new NativeProviderInstance(std::move(state)));
+}
+ProviderReply
+NativeProviderInstance::decide(const Json &input, std::int64_t end,
+                               const std::atomic_bool *cancelled) {
+  auto lock = state_->lock();
+  need(state_->provider->selection.at("role") == "feedback",
+       "feedback instance required");
+  auto text = input.dump();
+  auto view = bytes(text);
+  Scope scope{end, cancelled};
+  return invoke(scope, [&](const auto &ctx, auto &out, auto &err) {
+    return state_->provider->feedback.decide(state_->instance, &ctx, &view,
+                                             &out, &err);
+  });
 }
 ProviderReply NativeProviderInstance::event(std::span<const db::Mbo> events,
                                             std::size_t ordinal,

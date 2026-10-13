@@ -337,6 +337,29 @@ int main(int argc, char **argv) try {
   p["streams"][0]["events"][0]["fee_fixed"] = q("-1");
   auto negative = run(p);
   check(terminal(negative)["cash"]["USD"] == q("1012"));
+  // A sweep crossing flat realizes each level before opening residual exposure.
+  p = input;
+  p["instruments"][0]["settlement"] = "linear_variation";
+  p["initial_state"]["positions"]["A"] = q("-6");
+  p["initial_state"]["basis"] = {{"A", q("12")}};
+  p["initial_state"]["marks"]["A"] = q("12");
+  p["streams"][0]["events"] = J::array({order("cross-flat", "8")});
+  auto variation = run(p);
+  check(terminal(variation)["positions"]["A"] == q("2"));
+  check(terminal(variation)["basis"]["A"] == q("11"));
+  check(terminal(variation)["cash"]["USD"] == q("1010"));
+  check(variation["sections"]["summary"]["data"]["terminal_equity_by_unit"]
+                 ["USD"]["value"] == q("1012"));
+  check(terminal(variation)["liquidity_remaining"]["A-depth"]["asks"] ==
+        J::array({"0", "2"}));
+  p["constraints"]["cash"]["USD"]["maximum"] = q("1005");
+  auto rejected_variation = run(p);
+  check(terminal(rejected_variation)["positions"]["A"] == q("-6"));
+  check(terminal(rejected_variation)["basis"]["A"] == q("12"));
+  check(terminal(rejected_variation)["cash"]["USD"] == q("1000"));
+  check(
+      terminal(rejected_variation)["liquidity_remaining"]["A-depth"]["asks"] ==
+      J::array({"4", "6"}));
   // Full payload equality across native partitioned and legacy storage.
   p = input;
   p.erase("output_path");

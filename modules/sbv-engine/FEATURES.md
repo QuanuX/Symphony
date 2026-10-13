@@ -42,6 +42,8 @@
         "modules/sbv-engine/tests/execution_partitioned_test.cpp",
         "modules/sbv-engine/tests/experiment_partitioned_test.cpp",
         "modules/sbv-engine/tests/experiment_plan_test.cpp",
+        "modules/sbv-engine/tests/feedback_fixture.cpp",
+        "modules/sbv-engine/tests/feedback_settlement_test.cpp",
         "modules/sbv-engine/tests/fit_test.cpp",
         "modules/sbv-engine/tests/generate_partitioned_test.cpp",
         "modules/sbv-engine/tests/history_test.cpp",
@@ -87,6 +89,7 @@
       ],
       "implementation_paths": [
         "modules/sbv-engine/cmake/SymphonySbvSdkConfig.cmake.in",
+        "modules/sbv-engine/include/symphony/sbv/feedback.h",
         "modules/sbv-engine/include/symphony/sbv/interop.hpp",
         "modules/sbv-engine/include/symphony/sbv/sdk.h",
         "modules/sbv-engine/include/symphony/sbv/sdk.hpp",

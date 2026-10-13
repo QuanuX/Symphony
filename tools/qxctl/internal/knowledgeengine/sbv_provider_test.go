@@ -48,6 +48,32 @@ func TestSBVProviderEvidenceCorrespondence(t *testing.T) {
 			t.Fatalf("changed provider evidence admitted: %s", b)
 		}
 	}
+	// Feedback uses a separate symbol/descriptor while retaining selection and
+	// raw descriptor correspondence checks.
+	selection["role"] = "feedback"
+	selection["input_profile"] = "symphony.sbv.account-feedback-call.v1"
+	canonical, _ = sbvNativeCanonical(selection)
+	evidence["selection_sha256"] = digestBytes(canonical)[7:]
+	evidence["role"] = "feedback"
+	declared := map[string]any{"protocol": "symphony.sbv.native-feedback-descriptor.v1", "id": "example", "version": "1", "role": "feedback", "input_profile": selection["input_profile"], "concurrency": "serialized_instance", "state_model": "explicit_returned_memory", "config_schema": map[string]any{}, "extensions": map[string]any{}, "reproducibility": "deterministic_declared", "cancellation": "cooperative_polling", "dependency_disclosure": "explicit fixture"}
+	descriptorBytes, _ := json.Marshal(declared)
+	evidence["descriptor_json"], evidence["descriptor_sha256"] = string(descriptorBytes), digestBytes(descriptorBytes)[7:]
+	evidence["loading"].(map[string]any)["symbol"] = "symphony_sbv_feedback_api_v1"
+	raw, _ = json.Marshal(result)
+	if err := validateSBVResult("provider_inspect", request, raw); err != nil {
+		t.Fatal(err)
+	}
+	for _, field := range []string{"protocol", "state_model", "role", "input_profile", "concurrency"} {
+		copy := recoveryClone(t, declared)
+		copy[field] = "wrong"
+		bad, _ := json.Marshal(copy)
+		evidence["descriptor_json"], evidence["descriptor_sha256"] = string(bad), digestBytes(bad)[7:]
+		payload, _ := json.Marshal(result)
+		if validateSBVResult("provider_inspect", request, payload) == nil {
+			t.Fatalf("feedback %s mismatch admitted", field)
+		}
+	}
+
 }
 
 func TestSBVInstalledNativeProvider(t *testing.T) {
@@ -98,7 +124,7 @@ func TestSBVInstalledNativeProvider(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	schema, err := sqavObject(raw, maxRequestBytes)
+	schema, err := sbvDecodeOwnedResource(raw)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -116,7 +142,7 @@ func TestSBVInstalledNativeProvider(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	schema, err = sqavObject(raw, maxRequestBytes)
+	schema, err = sbvDecodeOwnedResource(raw)
 	if err != nil {
 		t.Fatal(err)
 	}

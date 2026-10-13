@@ -2,7 +2,7 @@
 
 ## Version and ownership
 
-Contract v1; package `sbv-engine` 0.31.0-dev; engine `symphony-sbv`; vector `sbv`. C++26 owns computations, result sealing and artifact queries. Go qxctl verifies the exact installation and projects native evidence. OWNER-INTERFACE.json is the exact operation declaration; generated C++/Go metadata must match it. This release is experimental.
+Contract v1; package `sbv-engine` 0.32.0-dev; engine `symphony-sbv`; vector `sbv`. C++26 owns computations, result sealing and artifact queries. Go qxctl verifies the exact installation and projects native evidence. OWNER-INTERFACE.json is the exact operation declaration; generated C++/Go metadata must match it. This release is experimental.
 
 The engine uses knowledge-vector-engine-cpp 0.2.0-dev and sqav-databento-dbn-cpp 0.5.0-dev, with that adapter's exact static dependencies. It performs no data-provider network calls. Signal/replay semantics belong to SBV; acquisition remains SQAV, metadata SQMV, batch ownership SQFV, transformation SQTV, physical stores SQPV and recipient delivery SQDV. Its portable local JSON result is a derived artifact, not a new market-data persistence service. An optional offline retained-source route composes SQAV capture 0.2.0-dev, SQMV 0.2.0-dev, SQFV 0.3.0-dev, SQPV 0.2.0-dev and SQDV 0.3.0-dev under the selected profile described below.
 
@@ -1487,3 +1487,87 @@ includes that depth state. No hidden spill, automatic parallelism across depende
 orders, global dataset cap, deadline, device runtime or speed claim is introduced.
 This release verifies selected account/shared-snapshot execution. Parent R6.1 and
 M3 remain open for richer provider/instrument selection and subsequent gates.
+
+
+## Native account feedback and linear variation settlement (0.32, R6.1c)
+
+The optional `feedback` selection on `account_simulate` requires
+`mode:stateful_feedback` and `on_unavailable:abort|skip_trigger`. It uses the
+existing digest-pinned native loader with role `feedback`, input profile
+`symphony.sbv.account-feedback-call.v1` and `serialized_instance` concurrency.
+The separately installed `symphony/sbv/feedback.h` exports
+`symphony_sbv_feedback_api_v1`; the existing strategy/model ABI table is unchanged.
+A provider implements descriptor, create, decide and destroy. Required capability
+bits must be zero in v1. Descriptor, configuration, library/dependency hashes,
+loading policy and reproducibility declarations are retained as provider evidence.
+`provider_inspect` accepts this selection without creating an account instance.
+Configuration schema is provider-declared and validated by that provider, not
+interpreted as a host authorization policy.
+
+A caller places `feedback_trigger` events in the ordinary ordered streams, with
+an explicit `context` object. At that event the host passes only its occurrence,
+time, caller context, current cash/positions/marks/basis and prior state time,
+explicit memory, and a bounded summary of the preceding processed event. It does
+not supply future stream rows, whole-run inputs or future depth frames. The
+summary carries resolved event, account disposition, cash/position deltas and
+execution outcome. Context/configuration and native code remain user authority:
+this is a host information boundary, not a sandbox, audit of external I/O or proof
+that a user-authored provider has no future information. Input numbers, returned
+memory and extensions use the same portable exact-string result convention.
+
+`feedback-decision.v1` returns an ordinary account `action` or null, explicit
+object `memory` and object `extensions`. An action must keep trigger ID/time and
+cannot recursively trigger feedback. Null retains `provider_no_action`. Successful
+memory is retained even when a selected account bound rejects the proposed trade;
+the following call receives that rejection. Unavailable callbacks abort unless
+skip_trigger was selected; skipping changes no balances or memory, retains the
+provider error and marks the result partial. Failed/malformed/cancelled callbacks
+do not publish a completed account result. Borrowed inputs and cancellation tokens
+last only for the synchronous callback; owned output/error buffers release once
+before instance destruction and library unload. Cancellation/deadlines follow the
+existing cooperative provider rules; native code is trusted, and the host cannot
+preempt a noncooperating callback. No deadline is selected by default.
+
+Continuation state belongs in returned memory. Each account invocation creates a
+new provider instance; independent experiment trials create independent instances.
+Hidden process state or nondeterministic/external dependencies cannot establish
+portable branch equivalence. v3 snapshots preserve basis and, when selected,
+feedback memory and the preceding event summary, together with remaining pool
+capacity. Model hashes bind provider configuration and settlement selection.
+Referenced branches require matching model/state coverage. Inline initial state
+is a caller-authored scenario; optional memory/previous summary can seed it.
+Stream source ordinals are local to each invocation, so a branch that reindexes
+streams must account for that in a provider that uses ordinals. Event ID/time and
+explicit returned state are available for stable continuation. Branching does
+not automatically deduplicate replayed events.
+
+`linear_variation` adds an exact linear settlement model per instrument, selected
+alongside `cash_notional`. Inline state supplies a `basis` entry for every such
+instrument. Opening/increasing a position charges fees, with no notional debit;
+basis is the signed-quantity weighted average. Closing quantity realizes signed
+closed quantity times (trade price minus basis) times the positive multiplier.
+Partial closes retain basis; flattening clears it; reversals use the new trade
+price for the residual position. Depth sweeps apply each fill in price order,
+which matters when a sweep crosses flat, then assess the selected fill fees once.
+A caller-timed `settle` event realizes position times (settlement price minus
+basis) times multiplier, resets non-flat basis and updates the mark. Terminal
+equity adds only unrealized variation to cash. Negative prices and rational bases
+remain exact. `position_split` also divides basis; stale pools remain disallowed.
+All basis, mark, cash, position and pool updates roll back together on financial
+constraint rejection. Explicit successful provider memory does not roll back.
+
+This is linear variation accounting, not exchange margin, liquidation, funding
+schedules, inverse/nonlinear payoff, option exercise, tax or corporate-action
+inference. Callers choose settlement events, bounds or no bounds, and can supply
+other explicit cashflows/FX events. Unsupported settlement names fail admission.
+The host imposes no dataset-size policy or hidden deadline. The serial account
+path preserves event dependencies; independent accounts can run concurrently.
+
+`native_feedback`, `linear_variation` and provider-inspect `feedback` templates
+expose all new controls through qxctl. The entire resolved action, callback input,
+decision/error, memory, financial state and provider evidence use existing terminal
+query/export and portable SDK surfaces, including partitioned results. Native
+0.32 and optional Go transport 0.1.6 are exact package selections. Retained market
+signals used as triggers establish source lineage, not calibration of the fixture
+strategy or truth of supplied execution. R6.1 reconciliation records this selected
+local scope; M3 remote/scale/device/peer qualification remains separate.

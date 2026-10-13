@@ -91,7 +91,7 @@ func TestSBVInstalledBinary(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	contract, err := sqavObject(schema, maxRequestBytes)
+	contract, err := sbvDecodeOwnedResource(schema)
 	if err != nil {
 		t.Fatal(err)
 	}

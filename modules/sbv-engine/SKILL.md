@@ -92,3 +92,11 @@ Inspect `execution_outcome.committed` and account disposition before counting fi
 Select fixed quantities or stateful target_position rules and explicit fees/policies.
 Pool-aware branches use v2 snapshots; unavailable skip_event results remain partial.
 Use position_split only with explicit adjusted-unit evidence and no stale pool.
+
+
+For native account feedback use the `native_feedback` template, replace its
+library/digest and select explicit unavailable behavior. Keep all continuation
+state in returned memory and inspect both trigger and resolved event/disposition.
+Use v3 snapshots for feedback or linear_variation instruments. Supply explicit
+basis and settlement events; this model supplies no exchange margin schedule.
+The provider-inspect feedback variant exposes the matching selection template; all results remain queryable/exportable.

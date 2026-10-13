@@ -1,6 +1,11 @@
 #include <stddef.h>
 #include <stdio.h>
+#include <symphony/sbv/feedback.h>
 #include <symphony/sbv/provider.h>
+_Static_assert(offsetof(sbv_feedback_api_v1, struct_size) == 0,
+               "feedback prefix");
+_Static_assert(offsetof(sbv_feedback_api_v1, abi_version) == sizeof(uint32_t),
+               "feedback ABI prefix");
 _Static_assert(offsetof(sbv_bytes_v1, struct_size) == 0, "prefix");
 _Static_assert(offsetof(sbv_bytes_v1, abi_version) == sizeof(uint32_t),
                "ABI prefix");

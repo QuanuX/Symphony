@@ -79,8 +79,40 @@ func TestSBVInstalledAccountSimulation(t *testing.T) {
 	if !sbvSchemaShape(defs["account_state"], gs["terminal_state"].(map[string]any)["data"], 0) {
 		t.Fatal("typed account state schema")
 	}
-	for _, variant := range []string{"", "feedback", "partitioned", "shared_liquidity", "target_position", "position_split"} {
+	for _, variant := range []string{"", "feedback", "partitioned", "shared_liquidity", "target_position", "position_split", "native_feedback", "linear_variation"} {
 		if _, _, err := SBVTemplateVariant(prefix, SBVAdministrationInterfaceVersion, "account_simulate", variant); err != nil {
+			t.Fatal(err)
+		}
+	}
+	if _, selected := p["feedback"]; selected {
+		if !reflect.DeepEqual(got, want) {
+			t.Fatal("complete native/qxctl feedback payload differs")
+		}
+		provider := gs["feedback_provider"].(map[string]any)["data"].(map[string]any)
+		var descriptor map[string]any
+		if json.Unmarshal([]byte(provider["descriptor_json"].(string)), &descriptor) != nil {
+			t.Fatal("feedback descriptor JSON")
+		}
+		if !sbvSchemaShape(defs["native_feedback_descriptor"], descriptor, 0) {
+			t.Fatal("feedback descriptor schema")
+		}
+		if _, err := invoke("provider_inspect", map[string]any{"protocol": "symphony.sbv.provider-inspect-input.v1", "provider": p["feedback"].(map[string]any)["provider"], "extensions": map[string]any{}}); err != nil {
+			t.Fatal(err)
+		}
+		for _, value := range gs["execution"].(map[string]any)["data"].([]any) {
+			row := value.(map[string]any)
+			if row["feedback"] == nil {
+				continue
+			}
+			feedback := row["feedback"].(map[string]any)
+			if !sbvSchemaShape(defs["account_feedback_call"], feedback["call"], 0) {
+				t.Fatal("feedback call schema")
+			}
+			if feedback["status"] == "0" && !sbvSchemaShape(defs["feedback_decision"], feedback["decision"], 0) {
+				t.Fatal("feedback decision schema")
+			}
+		}
+		if _, _, err := SBVTemplateVariant(prefix, SBVAdministrationInterfaceVersion, "provider_inspect", "feedback"); err != nil {
 			t.Fatal(err)
 		}
 	}

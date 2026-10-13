@@ -92,7 +92,7 @@ func TestSBVInstalledPartitionedReceipts(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		contract, err := sqavObject(combined, maxRequestBytes)
+		contract, err := sbvDecodeOwnedResource(combined)
 		if err != nil {
 			t.Fatal(err)
 		}

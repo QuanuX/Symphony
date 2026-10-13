@@ -1,7 +1,7 @@
 # SBV Go transport and data contract
 
-Contract: `symphony.sbv.go-adapter.v1`. Module version `v0.1.5-dev`; native owner
-release `0.31.0-dev`; dependency Go 1.26.5 standard library only. Native source
+Contract: `symphony.sbv.go-adapter.v1`. Module version `v0.1.6-dev`; native owner
+release `0.32.0-dev`; dependency Go 1.26.5 standard library only. Native source
 contracts and receipt-owned schemas outrank this convenience API. The adapter
 introduces no scientific protocol, administration state or registry authority.
 
@@ -87,3 +87,11 @@ unchanged; C++ owns sequencing, arithmetic and admission.
 Native 0.31 / transport 0.1.5 carries account liquidity pools, target-position
 rules, explicit splits and pool-aware v2 snapshots unchanged. No new transport
 operation is needed; qxctl/native schema and result controls own these fields.
+
+Native 0.32 / transport 0.1.6 preserves feedback selection, explicit memory,
+v3 snapshots and linear variation settlement fields unchanged through qxctl.
+
+qxctl renders full installed schema definitions through its receipt-verified
+resource reader. Schema growth does not alter runtime control-frame admission;
+feedback provider inspection verifies the separately selected ABI symbol and
+descriptor protocol before returning portable evidence.

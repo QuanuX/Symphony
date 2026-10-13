@@ -38,7 +38,7 @@ func TestSBVInstalledCensusContinuity(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		_, err = InvokeSBV(context.Background(), prefix, "0.31.0-dev", cwd, op, b)
+		_, err = InvokeSBV(context.Background(), prefix, "0.32.0-dev", cwd, op, b)
 		return err
 	}
 	run := read(filepath.Join(fixture, "run-request.json"))
@@ -61,11 +61,11 @@ func TestSBVInstalledCensusContinuity(t *testing.T) {
 		!reflect.DeepEqual(section(native, "census"), section(first, "census")) {
 		t.Fatal("model evaluation changed retained native census")
 	}
-	raw, err := SBVSchema(prefix, "0.31.0-dev", "evaluate")
+	raw, err := SBVSchema(prefix, "0.32.0-dev", "evaluate")
 	if err != nil {
 		t.Fatal(err)
 	}
-	schema, err := sqavObject(raw, maxRequestBytes)
+	schema, err := sbvDecodeOwnedResource(raw)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -115,11 +115,11 @@ func TestSBVInstalledEconomicComposition(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	raw, err := SBVSchema(prefix, "0.31.0-dev", "compose_economics")
+	raw, err := SBVSchema(prefix, "0.32.0-dev", "compose_economics")
 	if err != nil {
 		t.Fatal(err)
 	}
-	schema, err := sqavObject(raw, maxRequestBytes)
+	schema, err := sbvDecodeOwnedResource(raw)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -138,7 +138,7 @@ func TestSBVInstalledEconomicComposition(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		if _, err = InvokeSBV(context.Background(), prefix, "0.31.0-dev", cwd, "compose_economics", raw); err != nil {
+		if _, err = InvokeSBV(context.Background(), prefix, "0.32.0-dev", cwd, "compose_economics", raw); err != nil {
 			t.Fatal(err)
 		}
 		raw, err = os.ReadFile(request["output_path"].(string))
