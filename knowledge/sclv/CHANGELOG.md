@@ -15332,3 +15332,91 @@ This PR authorizes none of the following:
   - `No remote publication, provider/live activity, purchase, calibrated-market claim, performance superiority or full M2-M3 acceptance.`
 - notes: |
     Timestamps identify the observed implementation commit rather than an invented session interval. Post_merge denotes local committed source closure, not a remote/main merge. Earlier case-note IDs are reconciled to verbatim original requirements in the new packet; sealed originals remain unchanged. R5.4 is next.
+
+
+- record_id: `SCLV-CHG-sbv-r54-m2-qualification-local`
+- record_version: `3`
+- title: `SBV selected local M2 qualification and complete retained RAM release receipts`
+- status: `canonical`
+- date: `2026-10-13`
+- change_started_at: `2026-10-13T01:41:18Z`
+- change_completed_at: `2026-10-13T01:41:18Z`
+- recorded_at: `2026-10-13T01:42:19Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `implementation_change`
+- change_request_state: `not_applicable`
+- change_request_provider: `not_applicable`
+- change_request_id: `not_applicable`
+- change_request_reference: `not_applicable`
+- change_request_absence_reason: `Directly authorized local implementation and qualification; no pull request or remote publication.`
+- revision_scheme: `git-sha1`
+- revision_value: `a0208fbd481f5c0a0e2d3d36f4c9bfd06d562620`
+- tree_digest: `sha256:aab6a3c9a9e8e74ae91e959dc43cd14e7dbaf4b3d6093415fd8586732a738f35`
+- ratification_subject: `Duncan (Architect)`
+- ratification_permission: `authorize_local_implementation_and_source_closure`
+- ratification_method: `explicit-user-instruction`
+- ratification_evidence_reference: `../sbv-m2-qualification/RATIFICATION.json`
+- ratification_evidence_digest: `sha256:053f181bfb995d1f2eb05afe9258dfbde669e2fd3acd529cae9ca96b31e28d2a`
+- affected_surfaces:
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.json`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `libraries/sbv-go/FEATURES.md`
+  - `modules/sbv-engine/CMakeLists.txt`
+  - `modules/sbv-engine/FEATURES.md`
+  - `modules/sbv-engine/M2-M3-READINESS.json`
+  - `modules/sbv-engine/MANIFEST.md`
+  - `modules/sbv-engine/SPEC.md`
+  - `modules/sbv-engine/schemas/v1/admin.schema.json`
+  - `modules/sbv-engine/src/dataset.cpp`
+  - `modules/sbv-engine/src/measurement.hpp`
+  - `modules/sbv-engine/src/partitioned_output.cpp`
+  - `modules/sbv-engine/src/resident.cpp`
+  - `modules/sbv-engine/src/result.cpp`
+  - `modules/sbv-engine/src/run.cpp`
+  - `modules/sbv-engine/src/run_partitioned.cpp`
+  - `modules/sbv-engine/tests/administration_test.cpp`
+  - `modules/sbv-engine/tests/economics_test.cpp`
+  - `modules/sbv-engine/tests/models_test.cpp`
+  - `modules/sbv-engine/tests/performance_test.cpp`
+  - `modules/sbv-engine/tests/source_dataset_test.cpp`
+  - `tools/qxctl/internal/knowledgeengine/sbv_allocation_economics_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_economics_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_interface_generated.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_liquidity_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_resource_test.go`
+- skvi_references:
+  - `modules/sbv-engine/M2-M3-READINESS.json`
+  - `modules/sbv-engine/src/measurement.hpp`
+  - `modules/sbv-engine/tests/performance_test.cpp`
+  - `modules/sbv-engine/src/resident.cpp`
+  - `modules/sbv-engine/tests/source_dataset_test.cpp`
+  - `knowledge/skvi/INDEX.md`
+- change_summary: |
+    R5.4 qualifies selected local M2 with private opt-in phase measurements, fresh broad native and installed gates, exact worker/feed/storage scientific equivalence and actual retained-source RAM reuse. Graceful resident release now sends its complete potentially large acknowledgement under the caller deadline; force-stop remains nonblocking.
+- relationship_changes: |
+    C++ remains the scientific and lifecycle owner. Existing 42 native operations and 45 qxctl leaves retain shared result access. Corrected eight stale response engine-version constants, queue model catalog vocabulary and preexisting Go adapter SSFV routing/canonical metadata. Generated Go resource pins are current. No new installed operation or device runtime is introduced.
+- doctrine_changes: |
+    No change: users select resource limits or none, deadlines or none, workers, feeds, studies and retention. Explicit benchmark selections never become dataset limits. Complete-work timings include publication and verified reading; preload and setup costs are separately visible.
+- compatibility_consequences: |
+    Native 0.29.0-dev and optional Go transport 0.1.3-dev remain exact selections. Request/result scientific semantics and SDK ABI are unchanged. Response schemas now agree with the selected engine. Graceful release may finish its full response under the caller deadline instead of truncating it; uncertain outcomes still require reconciliation.
+- publication_consequences: |
+    Local commits and evidence only. No push, merge, release publication, live/provider request, new purchase or deployment.
+- projection_consequences: |
+    One broad run covered 51 native suites, with three catalog/administration failures corrected and affected checks passing. Four distinct ASan/UBSan suites, 254 resolved qxctl checks/subtests, 25 optional Go adapter checks, four independent C/C++ SDK/interop suites and six actual M2 SDK comparisons pass. Native 64 executions and installed 36 runs plus 12 M2 profile invocations verify exact selected science and 487836 export nodes. Both real RAM residents execute six jobs from one read/decode and release cleanly. All 2106 earlier sealed R5.3 files remain unchanged.
+- evidence:
+  - `../sbv-m2-qualification/RATIFICATION.json`
+  - `../sbv-m2-qualification/evidence/SCLV_SOURCE_BINDING.json`
+  - `../sbv-m2-qualification/BUILD_IDENTITY.json`
+  - `../sbv-m2-qualification/CHECKS.json`
+  - `../sbv-m2-qualification/REVIEW.json`
+  - `../sbv-m2-qualification/CASE_EVIDENCE.json`
+  - `../sbv-m2-qualification/CONTROL_INVENTORY.json`
+  - `../sbv-m2-qualification/PERFORMANCE.json`
+  - `../sbv-m2-qualification/installed-checks-04/REPORT.json`
+  - `../sbv-m2-qualification/evidence/prior-seals.json`
+- non_authorizations:
+  - `No remote publication, live/provider activity, actual GPU/cluster execution, calibrated-market claim, speed superiority or full original-register/M3 acceptance.`
+- notes: |
+    Timestamps identify the observed local implementation commit, not an invented work interval. Post_merge is local source closure, not a GitHub/main merge. Earlier ledger bytes and evidence seals are preserved. Partial/deferred original acceptance cases remain explicit. Selected local M2 gate is complete; R6.1 feedback, multiple instruments and shared capital is next. The local closure also corrects the stale next_step readiness field to agree with next_increment R6.1; this is metadata only and leaves the tested runtime unchanged.
