@@ -16179,3 +16179,96 @@ This PR authorizes none of the following:
   - `No push or merge, full original M3 acceptance, cross-host carrier/deployed SSIAG authority, power-loss certification, cluster/NUMA/terabyte or device qualification, market calibration, or competitor ranking.`
 - notes: |
     Post_merge denotes local source closure, not a forge/main merge. Timestamps describe the final authorized correction/commit operation. The source revision binds the exact71-file candidate qualified remotely as baseline plus SOURCE.patch and METADATA.patch. Original sealed evidence remains unchanged; final administration uses fresh follow-up evidence and the unchanged test executable. The previous nine-process campaign was not repeated. Cloud archives are retained remotely; their reports and executed verification are preserved in the local packet.
+
+
+- record_id: `SCLV-CHG-sbv-ssh-carrier`
+- record_version: `3`
+- title: `Optional authenticated SOV SSH carrier and qxctl control`
+- status: `canonical`
+- date: `2026-10-13`
+- change_started_at: `2026-10-13T21:47:43Z`
+- change_completed_at: `2026-10-13T21:47:43Z`
+- recorded_at: `2026-10-13T21:48:29Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `implementation_change`
+- change_request_state: `not_applicable`
+- change_request_provider: `not_applicable`
+- change_request_id: `not_applicable`
+- change_request_reference: `not_applicable`
+- change_request_absence_reason: `Direct user instruction to proceed with the assessed cross-host work; local implementation and qualification only.`
+- revision_scheme: `git-sha1`
+- revision_value: `1531cab95150d8ad1c69f059ebe54ce4aa56e14d`
+- tree_digest: `sha256:bcd5bb99fccd6cb227b877b1268bbceb90d8e79f0f4e1236caaaf8ee27629a39`
+- ratification_subject: `Duncan (Architect)`
+- ratification_permission: `authorize_implementation_qualification_and_local_commit`
+- ratification_method: `explicit-user-instruction`
+- ratification_evidence_reference: `../sbv-cross-host-carrier/RATIFICATION.json`
+- ratification_evidence_digest: `sha256:3c77be4498a57c9d8b2f7bfae72c8ce21fde5015a37ad3212275499045ee13f4`
+- affected_surfaces:
+  - `README.md`
+  - `go.work`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.json`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/sov/MANIFEST.md`
+  - `knowledge/sov/SPEC.md`
+  - `knowledge/sov/SSH-CARRIER.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `tools/qxctl/COMMANDS.json`
+  - `tools/qxctl/FEATURES.md`
+  - `tools/qxctl/INTENT.md`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/qxctl/cmd/qxctl/command_manifest_test.go`
+  - `tools/qxctl/cmd/qxctl/sov.go`
+  - `tools/qxctl/cmd/qxctl/sov_ssh.go`
+  - `tools/qxctl/cmd/qxctl/sov_ssh_test.go`
+  - `tools/qxctl/go.mod`
+  - `tools/qxctl/internal/sovremote/execution_test.go`
+  - `tools/qxctl/internal/sovremote/resources.go`
+  - `tools/qxctl/internal/sovremote/ssh.go`
+  - `tools/qxctl/internal/sovremote/ssh_test.go`
+  - `tools/sov-ssh-adapter/FEATURES.md`
+  - `tools/sov-ssh-adapter/INTENT.md`
+  - `tools/sov-ssh-adapter/MANIFEST.md`
+  - `tools/sov-ssh-adapter/README.md`
+  - `tools/sov-ssh-adapter/SKILL.md`
+  - `tools/sov-ssh-adapter/contract/contract.go`
+  - `tools/sov-ssh-adapter/contract/contract_test.go`
+  - `tools/sov-ssh-adapter/go.mod`
+  - `tools/sov-ssh-adapter/main.go`
+  - `tools/sov-ssh-adapter/main_test.go`
+  - `tools/sov-stdio-adapter/README.md`
+  - `tools/sov-stdio-adapter/main.go`
+  - `tools/sov-stdio-adapter/main_test.go`
+- skvi_references:
+  - `knowledge/sov/SSH-CARRIER.md`
+  - `tools/sov-ssh-adapter/MANIFEST.md`
+  - `tools/sov-ssh-adapter/contract/contract.go`
+  - `tools/sov-ssh-adapter/main.go`
+  - `tools/qxctl/internal/sovremote/ssh.go`
+  - `tools/qxctl/cmd/qxctl/sov_ssh.go`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.json`
+- change_summary: |
+    Adds an independently built standard-library Go SSH carrier, strict endpoint/invocation contracts and qxctl endpoint inspection, invocation, complete schemas/templates and terminal/JSON projections. Explicit client/target identities, selected agent-held key, exact executable digests and pinned host key bind the selected route. The target stdio launcher checks its selected digest before invoking the exact target qxctl. All nine existing lifecycle/result/bundle operations retain their native request and response bindings.
+- relationship_changes: |
+    SOV owns optional transport; SBV C++26 retains calculation and durable-job/result ownership. qxctl shares carrier wire types at build time, while the carrier remains independently installed at runtime. Target configuration, job creation, source/resource and resident controls remain target-local qxctl. Existing optional target SSIAG admission is preserved, not qualified as deployed authorization by this increment.
+- doctrine_changes: |
+    Optional SSH is an implementation assumption offered in an unanswered preference question, not an Architect-selected universal carrier or infrastructure mandate. Caller owns endpoint, runtime, key, execution mode and nullable connection timeout; this increment imposes no dataset/RAM ceiling or calculation deadline. The 8 MiB control-frame boundary does not cap aggregate data/results. Ambiguous dispatch remains response_lost without automatic replay; local interruption does not prove remote termination.
+- compatibility_consequences: |
+    Existing local transport v1 and SBV0.33.0-dev remain unchanged. The new SSH carrier is0.1.0-dev, Go1.26.5, with explicit stage_copy or protected_system_path client execution. macOS refuses a relocated system SSH binary; the latter mode verifies root-owned non-writable ancestry and the selected digest without claiming isolation from a trusted root administrator. Target launcher self-check is drift detection, not attestation. No automatic transport/execution fallback occurs.
+- publication_consequences: |
+    Passing implementation is committed locally on retained codex/sbv-implementation. No new push, main merge, host provisioning or cloud message is performed. Canonical command inventory now contains461 commands and feature registry147 entries; administration and root-summary projections are synchronized.
+- projection_consequences: |
+    Focused race tests pass132 test/subtest actions across four packages. The one optional installed-target skip is resolved by an explicit prefix-selected rerun with one pass and zero skips. Twelve focused command/registry checks, Go vet and native administration pass. Twenty-seven actual authenticated OpenSSH loopback CLI calls cover native job execution, repeat submission preserving result identity, root query-page parity, wrong host key, unavailable selected agent key and stale target configuration. This is a synthetic native transport fixture on one macOS host, not distinct-host or Databento qualification. Source validator has zero violations and four historical warnings before closure; final closure evidence is recorded separately.
+- evidence:
+  - `../sbv-cross-host-carrier/RATIFICATION.json`
+  - `../sbv-cross-host-carrier/evidence/SCLV_SOURCE_BINDING.json`
+  - `../sbv-cross-host-carrier/CANDIDATE.json`
+  - `../sbv-cross-host-carrier/CHECKS.json`
+  - `../sbv-cross-host-carrier/REVIEW.json`
+  - `../sbv-cross-host-carrier/loopback-final/REPORT.json`
+- non_authorizations:
+  - `No new push or merge, universal transport selection, true two-host qualification, deployed SSIAG/STAV authorization acceptance, fresh provider/live activity or spend, full original M3 acceptance, cluster/NUMA/terabyte/device or peer-performance claim.`
+- notes: |
+    Post_merge denotes local source closure, not a forge/main merge. Change timestamps identify the implementation commit; earlier development and test attempts remain in the evidence packet. Primary-agent review is recorded without an independent-review claim. Initial fixture, toolchain, copied-system-client, registry-count and profile-order failures are retained. A concurrent qxctl rebuild correctly triggered target digest refusal; the final passing loopback campaign uses frozen executable copies. Next qualification requires a reachable second host, deployed authority, remote setup/data access and interruption/reconciliation checks.
