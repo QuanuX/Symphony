@@ -18230,6 +18230,39 @@
       "json_output": true
     },
     {
+      "command_id": "qxcmd:symphony:sov.remote.invoke",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl sov remote invoke [--input VALUE] [--json]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl-sov-process-execution",
+          "interaction": "invoke"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [],
+      "mutability": "permission_backed_mutation",
+      "authority_mode": "target_host_permission",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.sov.remote-invoke-input.v1"
+      ],
+      "output_protocols": [
+        "symphony.sov.remote-invoke.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.sov.remote-invoke.v1"
+      ],
+      "recovery_command_id": "qxcmd:symphony:sov.remote.invoke",
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
       "command_id": "qxcmd:symphony:sov.remote.plan",
       "status": "experimental",
       "introduced_in": "0.1.0-dev",
@@ -18273,6 +18306,10 @@
       "visibility": "public",
       "feature_bindings": [
         {
+          "feature_id": "ssfv:symphony:qxctl-sov-process-execution",
+          "interaction": "discover"
+        },
+        {
           "feature_id": "ssfv:symphony:qxctl-sov-remote-planning",
           "interaction": "discover"
         }
@@ -18304,6 +18341,10 @@
       "visibility": "public",
       "feature_bindings": [
         {
+          "feature_id": "ssfv:symphony:qxctl-sov-process-execution",
+          "interaction": "discover"
+        },
+        {
           "feature_id": "ssfv:symphony:qxctl-sov-remote-planning",
           "interaction": "discover"
         }
@@ -18321,6 +18362,134 @@
         "symphony.sov.remote-template.v1"
       ],
       "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:sov.target.configure",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl sov target configure [--input VALUE] [--json]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl-sov-process-execution",
+          "interaction": "invoke"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [],
+      "mutability": "permission_backed_mutation",
+      "authority_mode": "target_host_permission",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.sov.target-configure-input.v1"
+      ],
+      "output_protocols": [
+        "symphony.sov.target-configuration-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.sov.target-configuration-result.v1"
+      ],
+      "recovery_command_id": "qxcmd:symphony:sov.target.inspect",
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:sov.target.inspect",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl sov target inspect [--configuration VALUE] [--configuration-sha256 VALUE] [--json]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl-sov-process-execution",
+          "interaction": "inspect"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [],
+      "mutability": "read_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [],
+      "output_protocols": [
+        "symphony.sov.target-configuration-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.sov.target-configuration-result.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:sov.target.invoke",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl sov target invoke [--configuration VALUE] [--configuration-sha256 VALUE] [--json]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl-sov-process-execution",
+          "interaction": "invoke"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [],
+      "mutability": "permission_backed_mutation",
+      "authority_mode": "target_host_permission",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.sov.remote-invoke-input.v1"
+      ],
+      "output_protocols": [
+        "symphony.sov.target-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.sov.target-result.v1"
+      ],
+      "recovery_command_id": "qxcmd:symphony:sov.target.inspect",
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:sov.target.remove",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl sov target remove [--configuration VALUE] [--configuration-sha256 VALUE] [--json]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl-sov-process-execution",
+          "interaction": "invoke"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [],
+      "mutability": "permission_backed_mutation",
+      "authority_mode": "target_host_permission",
+      "target_scope": "local",
+      "input_protocols": [],
+      "output_protocols": [
+        "symphony.sov.target-remove.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.sov.target-remove.v1"
+      ],
+      "recovery_command_id": "qxcmd:symphony:sov.target.inspect",
       "noninteractive": true,
       "json_output": true
     },
@@ -21277,5 +21446,5 @@
       "json_output": true
     }
   ],
-  "registry_digest": "sha256:89acc32426ffa68218f3f8ae069590a6b3db1f9a6372789808002daa2a49931a"
+  "registry_digest": "sha256:94b19bb7820a42b23142893cbbb56878b2223702b6e4819dd80a17338a900a13"
 }

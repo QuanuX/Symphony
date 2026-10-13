@@ -24672,3 +24672,213 @@ automatic nested fitting and cross-run holdout history remain unimplemented.
 - deferred_projections: Executable remote adapter, target authority and deployment qualification
 - notes: Caller resources or none; no dispatch or automatic retry.
 - status: canonical
+
+### SOV executable handoff knowledge/sov/PROCESS-EXECUTION.md
+
+- path: `knowledge/sov/PROCESS-EXECUTION.md`
+- title: SOV executable handoff PROCESS-EXECUTION.md
+- surface_type: contract, implementation or test
+- truth_role: Exact selected local process handoff and target control
+- owner: Symphony Ops Vector maintainers
+- scope: R6.2b2 local controller/target profile
+- relationships: depends_on -> `knowledge/sov/PROCESS-EXECUTION.md`
+- consumers: qxctl, agents and independent consumers
+- deferred_projections: Real remote deployment and authenticated remote principals
+- notes: No automatic retry; caller-owned configuration and deadlines.
+- status: canonical
+
+### SOV executable handoff tools/qxctl/cmd/qxctl/sov_execution.go
+
+- path: `tools/qxctl/cmd/qxctl/sov_execution.go`
+- title: SOV executable handoff sov_execution.go
+- surface_type: contract, implementation or test
+- truth_role: Exact selected local process handoff and target control
+- owner: Symphony Ops Vector maintainers
+- scope: R6.2b2 local controller/target profile
+- relationships: depends_on -> `knowledge/sov/PROCESS-EXECUTION.md`
+- consumers: qxctl, agents and independent consumers
+- deferred_projections: Real remote deployment and authenticated remote principals
+- notes: No automatic retry; caller-owned configuration and deadlines.
+- status: canonical
+
+### SOV executable handoff tools/qxctl/internal/sovremote/execution.go
+
+- path: `tools/qxctl/internal/sovremote/execution.go`
+- title: SOV executable handoff execution.go
+- surface_type: contract, implementation or test
+- truth_role: Exact selected local process handoff and target control
+- owner: Symphony Ops Vector maintainers
+- scope: R6.2b2 local controller/target profile
+- relationships: depends_on -> `knowledge/sov/PROCESS-EXECUTION.md`
+- consumers: qxctl, agents and independent consumers
+- deferred_projections: Real remote deployment and authenticated remote principals
+- notes: No automatic retry; caller-owned configuration and deadlines.
+- status: canonical
+
+### SOV executable handoff tools/qxctl/internal/sovremote/execution_test.go
+
+- path: `tools/qxctl/internal/sovremote/execution_test.go`
+- title: SOV executable handoff execution_test.go
+- surface_type: contract, implementation or test
+- truth_role: Exact selected local process handoff and target control
+- owner: Symphony Ops Vector maintainers
+- scope: R6.2b2 local controller/target profile
+- relationships: depends_on -> `knowledge/sov/PROCESS-EXECUTION.md`
+- consumers: qxctl, agents and independent consumers
+- deferred_projections: Real remote deployment and authenticated remote principals
+- notes: No automatic retry; caller-owned configuration and deadlines.
+- status: canonical
+
+### SOV executable handoff tools/qxctl/internal/sovremote/files_other.go
+
+- path: `tools/qxctl/internal/sovremote/files_other.go`
+- title: SOV executable handoff files_other.go
+- surface_type: contract, implementation or test
+- truth_role: Exact selected local process handoff and target control
+- owner: Symphony Ops Vector maintainers
+- scope: R6.2b2 local controller/target profile
+- relationships: depends_on -> `knowledge/sov/PROCESS-EXECUTION.md`
+- consumers: qxctl, agents and independent consumers
+- deferred_projections: Real remote deployment and authenticated remote principals
+- notes: No automatic retry; caller-owned configuration and deadlines.
+- status: canonical
+
+### SOV executable handoff tools/qxctl/internal/sovremote/files_unix.go
+
+- path: `tools/qxctl/internal/sovremote/files_unix.go`
+- title: SOV executable handoff files_unix.go
+- surface_type: contract, implementation or test
+- truth_role: Exact selected local process handoff and target control
+- owner: Symphony Ops Vector maintainers
+- scope: R6.2b2 local controller/target profile
+- relationships: depends_on -> `knowledge/sov/PROCESS-EXECUTION.md`
+- consumers: qxctl, agents and independent consumers
+- deferred_projections: Real remote deployment and authenticated remote principals
+- notes: No automatic retry; caller-owned configuration and deadlines.
+- status: canonical
+
+### SOV executable handoff tools/sov-stdio-adapter/FEATURES.md
+
+- path: `tools/sov-stdio-adapter/FEATURES.md`
+- title: SOV executable handoff FEATURES.md
+- surface_type: contract, implementation or test
+- truth_role: Exact selected local process handoff and target control
+- owner: Symphony Ops Vector maintainers
+- scope: R6.2b2 local controller/target profile
+- relationships: depends_on -> `knowledge/sov/PROCESS-EXECUTION.md`
+- consumers: qxctl, agents and independent consumers
+- deferred_projections: Real remote deployment and authenticated remote principals
+- notes: No automatic retry; caller-owned configuration and deadlines.
+- status: canonical
+
+### SOV executable handoff tools/sov-stdio-adapter/INTENT.md
+
+- path: `tools/sov-stdio-adapter/INTENT.md`
+- title: SOV executable handoff INTENT.md
+- surface_type: contract, implementation or test
+- truth_role: Exact selected local process handoff and target control
+- owner: Symphony Ops Vector maintainers
+- scope: R6.2b2 local controller/target profile
+- relationships: depends_on -> `knowledge/sov/PROCESS-EXECUTION.md`
+- consumers: qxctl, agents and independent consumers
+- deferred_projections: Real remote deployment and authenticated remote principals
+- notes: No automatic retry; caller-owned configuration and deadlines.
+- status: canonical
+
+### SOV executable handoff tools/sov-stdio-adapter/MANIFEST.md
+
+- path: `tools/sov-stdio-adapter/MANIFEST.md`
+- title: SOV executable handoff MANIFEST.md
+- surface_type: contract, implementation or test
+- truth_role: Exact selected local process handoff and target control
+- owner: Symphony Ops Vector maintainers
+- scope: R6.2b2 local controller/target profile
+- relationships: depends_on -> `knowledge/sov/PROCESS-EXECUTION.md`
+- consumers: qxctl, agents and independent consumers
+- deferred_projections: Real remote deployment and authenticated remote principals
+- notes: No automatic retry; caller-owned configuration and deadlines.
+- status: canonical
+
+### SOV executable handoff tools/sov-stdio-adapter/README.md
+
+- path: `tools/sov-stdio-adapter/README.md`
+- title: SOV executable handoff README.md
+- surface_type: contract, implementation or test
+- truth_role: Exact selected local process handoff and target control
+- owner: Symphony Ops Vector maintainers
+- scope: R6.2b2 local controller/target profile
+- relationships: depends_on -> `knowledge/sov/PROCESS-EXECUTION.md`
+- consumers: qxctl, agents and independent consumers
+- deferred_projections: Real remote deployment and authenticated remote principals
+- notes: No automatic retry; caller-owned configuration and deadlines.
+- status: canonical
+
+### SOV executable handoff tools/sov-stdio-adapter/SKILL.md
+
+- path: `tools/sov-stdio-adapter/SKILL.md`
+- title: SOV executable handoff SKILL.md
+- surface_type: contract, implementation or test
+- truth_role: Exact selected local process handoff and target control
+- owner: Symphony Ops Vector maintainers
+- scope: R6.2b2 local controller/target profile
+- relationships: depends_on -> `knowledge/sov/PROCESS-EXECUTION.md`
+- consumers: qxctl, agents and independent consumers
+- deferred_projections: Real remote deployment and authenticated remote principals
+- notes: No automatic retry; caller-owned configuration and deadlines.
+- status: canonical
+
+### SOV executable handoff tools/sov-stdio-adapter/go.mod
+
+- path: `tools/sov-stdio-adapter/go.mod`
+- title: SOV executable handoff go.mod
+- surface_type: contract, implementation or test
+- truth_role: Exact selected local process handoff and target control
+- owner: Symphony Ops Vector maintainers
+- scope: R6.2b2 local controller/target profile
+- relationships: depends_on -> `knowledge/sov/PROCESS-EXECUTION.md`
+- consumers: qxctl, agents and independent consumers
+- deferred_projections: Real remote deployment and authenticated remote principals
+- notes: No automatic retry; caller-owned configuration and deadlines.
+- status: canonical
+
+### SOV executable handoff tools/sov-stdio-adapter/main.go
+
+- path: `tools/sov-stdio-adapter/main.go`
+- title: SOV executable handoff main.go
+- surface_type: contract, implementation or test
+- truth_role: Exact selected local process handoff and target control
+- owner: Symphony Ops Vector maintainers
+- scope: R6.2b2 local controller/target profile
+- relationships: depends_on -> `knowledge/sov/PROCESS-EXECUTION.md`
+- consumers: qxctl, agents and independent consumers
+- deferred_projections: Real remote deployment and authenticated remote principals
+- notes: No automatic retry; caller-owned configuration and deadlines.
+- status: canonical
+
+### SOV executable handoff tools/sov-stdio-adapter/main_test.go
+
+- path: `tools/sov-stdio-adapter/main_test.go`
+- title: SOV executable handoff main_test.go
+- surface_type: contract, implementation or test
+- truth_role: Exact selected local process handoff and target control
+- owner: Symphony Ops Vector maintainers
+- scope: R6.2b2 local controller/target profile
+- relationships: depends_on -> `knowledge/sov/PROCESS-EXECUTION.md`
+- consumers: qxctl, agents and independent consumers
+- deferred_projections: Real remote deployment and authenticated remote principals
+- notes: No automatic retry; caller-owned configuration and deadlines.
+- status: canonical
+
+### SBV M3 qualification and remote reproduction
+
+- path: `modules/sbv-engine/M3-QUALIFICATION.md`
+- title: Selected local M3 gate and remote qualification
+- surface_type: qualification guidance
+- truth_role: Recorded selected gate and explicit remaining evidence requirements
+- owner: Symphony Backtesting Vector maintainers
+- scope: Native 0.33 local M3 and subsequent selected host qualification
+- relationships: depends_on -> `modules/sbv-engine/M2-M3-READINESS.json`; depends_on -> `knowledge/sov/PROCESS-EXECUTION.md`
+- consumers: qxctl operators, independent consumers and qualification agents
+- deferred_projections: Actual cross-host authority and transport, cluster and peer measurements
+- notes: Private data and local evidence are not portable deployment credentials.
+- status: canonical

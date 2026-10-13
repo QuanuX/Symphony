@@ -151,6 +151,10 @@ func named(s string) bool { return strings.TrimSpace(s) != "" && !strings.Contai
 func exactVersion(s string) bool {
 	return named(s) && s != "latest" && s != "*" && !strings.ContainsAny(s, "<>^~ ")
 }
+
+// qxctl currently reports this development identity; its mandatory executable
+// digest selects exact bytes even though the display version is not SemVer.
+func exactQXCTLVersion(s string) bool { return s == "qxctl dev" || exactVersion(s) }
 func nullablePositive(s *string) bool { return s == nil || positive.MatchString(*s) }
 func nullableSHA(s *string) bool      { return s == nil || sha.MatchString(*s) }
 func validate(s Selection) error {
@@ -167,7 +171,7 @@ func validate(s Selection) error {
 	if !named(s.Transport.AdapterID) || !exactVersion(s.Transport.AdapterVersion) || !sha.MatchString(s.Transport.AdapterSHA256) || !named(s.Transport.EndpointRef) {
 		return bad()
 	}
-	if !exactVersion(s.Runtime.QXCTLVersion) || !sha.MatchString(s.Runtime.QXCTLSHA256) || s.Runtime.SBVVersion != knowledgeengine.SBVAdministrationInterfaceVersion || !sha.MatchString(s.Runtime.SBVInstallationSHA256) {
+	if !exactQXCTLVersion(s.Runtime.QXCTLVersion) || !sha.MatchString(s.Runtime.QXCTLSHA256) || s.Runtime.SBVVersion != knowledgeengine.SBVAdministrationInterfaceVersion || !sha.MatchString(s.Runtime.SBVInstallationSHA256) {
 		return bad()
 	}
 	if !path.IsAbs(s.Job.Directory) || path.Clean(s.Job.Directory) != s.Job.Directory || s.Job.Directory == "/" || !named(s.Job.Directory) || !jobID.MatchString(s.Job.ID) || !sha.MatchString(s.Job.PlanSHA256) {

@@ -303,6 +303,122 @@
       "cross_vector_references": [
         {
           "applicability": "applicable",
+          "reason": "Indexes the exact SOV handoff contract and implementation paths; SOV is not an admitted cross-vector enum in this selected SSFV v1 schema.",
+          "reference": "knowledge/skvi/INDEX.md",
+          "vector": "skvi"
+        },
+        {
+          "applicability": "applicable",
+          "reason": "Optional target-local fresh authority; controller decisions never grant access.",
+          "reference": "knowledge/ssiag/SPEC.md",
+          "vector": "ssiag"
+        }
+      ],
+      "distinctions": [],
+      "evidence": [
+        "tools/qxctl/internal/sovremote/execution_test.go",
+        "knowledge/sov/PROCESS-EXECUTION.md"
+      ],
+      "feature_id": "ssfv:symphony:qxctl-sov-process-execution",
+      "how": "Exact staged executables, configuration CAS, target-local authority admission and complete request-bound portable results with conservative ambiguity.",
+      "implementation_languages": [
+        {
+          "language": "Go",
+          "role": "Exact owner installation discovery, bounded process consumption, retained administrative state and agentic command grammar."
+        }
+      ],
+      "implementation_paths": [
+        "tools/qxctl/cmd/qxctl/sov_execution.go",
+        "tools/qxctl/internal/sovremote/execution.go",
+        "tools/qxctl/internal/sovremote/files_other.go",
+        "tools/qxctl/internal/sovremote/files_unix.go"
+      ],
+      "kind": "subfeature",
+      "non_claims": [
+        "No qualified remote network/cluster/shared-storage deployment or delegated remote principal.",
+        "No native checkpoint resume, automatic retry, provisioning, live activity or calibrated performance superiority."
+      ],
+      "owner_contract": "tools/qxctl/MANIFEST.md",
+      "parent_feature_id": "ssfv:symphony:qxctl",
+      "record_version": 2,
+      "relationships": [
+        {
+          "rationale": "Native SBV owns durable job status and immutable result semantics.",
+          "target_feature_id": "ssfv:symphony:sbv-engine",
+          "type": "depends_on"
+        }
+      ],
+      "source_scope": "tools/qxctl",
+      "status": "experimental",
+      "title": "SOV exact process execution and target configuration",
+      "what": "Invokes a caller-selected exact adapter once and exposes target configuration plus full native job/result access.",
+      "when": "Explicit selected invocation or target configuration lifecycle.",
+      "where": "Controller and target qxctl; stock adapter uses local processes.",
+      "who": "Humans, agents and external consumers without caller-class distinctions.",
+      "why": "Keep durable native calculations recoverable across controller boundaries without hidden replay."
+    },
+    {
+      "cross_vector_references": [
+        {
+          "applicability": "applicable",
+          "reason": "Indexes the exact SOV handoff contract and implementation paths; SOV is not an admitted cross-vector enum in this selected SSFV v1 schema.",
+          "reference": "knowledge/skvi/INDEX.md",
+          "vector": "skvi"
+        },
+        {
+          "applicability": "applicable",
+          "reason": "Future target dispatch needs target-local authority; this planner does not transfer SSIAG decisions.",
+          "reference": "knowledge/ssiag/SPEC.md",
+          "vector": "ssiag"
+        }
+      ],
+      "distinctions": [],
+      "evidence": [
+        "tools/qxctl/cmd/qxctl/sov_test.go",
+        "tools/qxctl/internal/sovremote/plan_test.go",
+        "knowledge/sov/REMOTE-HANDOFF.md"
+      ],
+      "feature_id": "ssfv:symphony:qxctl-sov-remote-planning",
+      "how": "Closed typed selection and versioned digest; existing native SBV status validation; complete escaped text and portable JSON through four qxctl leaves.",
+      "implementation_languages": [
+        {
+          "language": "Go",
+          "role": "Exact owner installation discovery, bounded process consumption, retained administrative state and agentic command grammar."
+        }
+      ],
+      "implementation_paths": [
+        "tools/qxctl/cmd/qxctl/sov.go",
+        "tools/qxctl/internal/sovremote/plan.go",
+        "tools/qxctl/internal/sovremote/resources.go"
+      ],
+      "kind": "subfeature",
+      "non_claims": [
+        "No executable transport, remote dispatch, endpoint authentication, reservation, transfer, secret delivery, checkpoint/resume or remote deployment qualification.",
+        "Supplied observations remain unauthenticated; assessment is not retry permission or current-state proof."
+      ],
+      "owner_contract": "tools/qxctl/MANIFEST.md",
+      "parent_feature_id": "ssfv:symphony:qxctl",
+      "record_version": 2,
+      "relationships": [
+        {
+          "rationale": "Native SBV owns durable job status and immutable result semantics.",
+          "target_feature_id": "ssfv:symphony:sbv-engine",
+          "type": "depends_on"
+        }
+      ],
+      "source_scope": "tools/qxctl",
+      "status": "experimental",
+      "title": "SOV remote handoff planning and observation assessment",
+      "what": "Read-only local preparation of exact SOV remote target, adapter, native job, placement and authority selections plus classification of supplied native SBV status.",
+      "when": "Explicit local plan, assess, schema or template invocation.",
+      "where": "qxctl on the caller-selected controller; no endpoint is contacted.",
+      "who": "Humans, agents and external consumers without caller-class distinctions.",
+      "why": "Make future transport handoff and ambiguous-response recovery inspectable without inventing operational authority or repeating admitted calculations."
+    },
+    {
+      "cross_vector_references": [
+        {
+          "applicability": "applicable",
           "reason": "SCLV records reviewed session and authorization-boundary changes.",
           "reference": "knowledge/sclv/CHANGELOG.md",
           "vector": "sclv"
@@ -1484,64 +1600,6 @@
       "where": "Executes locally on the administrative TOPS node against the separately installed STAV append authority and per-installation ledger state.",
       "who": "Authorized target-host administrators, maintainers, auditors, automation, and agentic tools using qxctl.",
       "why": "Makes tamper-evident operational audit evidence inspectable without giving a general-purpose CLI permission to forge or edit the append-only record."
-    },
-    {
-      "cross_vector_references": [
-        {
-          "applicability": "applicable",
-          "reason": "SOV owns the remote handoff semantics; qxctl only implements and presents this read-only local contract.",
-          "reference": "knowledge/sov/REMOTE-HANDOFF.md",
-          "vector": "sov"
-        },
-        {
-          "applicability": "applicable",
-          "reason": "Future target dispatch needs target-local authority; this planner does not transfer SSIAG decisions.",
-          "reference": "knowledge/ssiag/SPEC.md",
-          "vector": "ssiag"
-        }
-      ],
-      "distinctions": [],
-      "evidence": [
-        "tools/qxctl/cmd/qxctl/sov_test.go",
-        "tools/qxctl/internal/sovremote/plan_test.go",
-        "knowledge/sov/REMOTE-HANDOFF.md"
-      ],
-      "feature_id": "ssfv:symphony:qxctl-sov-remote-planning",
-      "how": "Closed typed selection and versioned digest; existing native SBV status validation; complete escaped text and portable JSON through four qxctl leaves.",
-      "implementation_languages": [
-        {
-          "language": "Go",
-          "role": "Exact owner installation discovery, bounded process consumption, retained administrative state and agentic command grammar."
-        }
-      ],
-      "implementation_paths": [
-        "tools/qxctl/cmd/qxctl/sov.go",
-        "tools/qxctl/internal/sovremote/plan.go",
-        "tools/qxctl/internal/sovremote/resources.go"
-      ],
-      "kind": "subfeature",
-      "non_claims": [
-        "No executable transport, remote dispatch, endpoint authentication, reservation, transfer, secret delivery, checkpoint/resume or remote deployment qualification.",
-        "Supplied observations remain unauthenticated; assessment is not retry permission or current-state proof."
-      ],
-      "owner_contract": "tools/qxctl/MANIFEST.md",
-      "parent_feature_id": "ssfv:symphony:qxctl",
-      "record_version": 2,
-      "relationships": [
-        {
-          "rationale": "Native SBV owns durable job status and immutable result semantics.",
-          "target_feature_id": "ssfv:symphony:sbv-engine",
-          "type": "depends_on"
-        }
-      ],
-      "source_scope": "tools/qxctl",
-      "status": "experimental",
-      "title": "SOV remote handoff planning and observation assessment",
-      "what": "Read-only local preparation of exact SOV remote target, adapter, native job, placement and authority selections plus classification of supplied native SBV status.",
-      "when": "Explicit local plan, assess, schema or template invocation.",
-      "where": "qxctl on the caller-selected controller; no endpoint is contacted.",
-      "who": "Humans, agents and external consumers without caller-class distinctions.",
-      "why": "Make future transport handoff and ambiguous-response recovery inspectable without inventing operational authority or repeating admitted calculations."
     }
   ],
   "source_scope": "tools/qxctl"

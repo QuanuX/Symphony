@@ -2,7 +2,7 @@
 
 ## Status
 
-Architect-ratified domain and boundary specification. Read-only remote handoff planning and supplied-observation assessment are implemented by `REMOTE-HANDOFF.md`. Detailed executable transport, provisioning and mutation contracts remain deferred.
+Architect-ratified domain and boundary specification. `REMOTE-HANDOFF.md` defines exact planning and supplied-observation assessment. `PROCESS-EXECUTION.md` defines the implemented qxctl controller/target and independent local process adapter. Real remote deployment, provisioning and additional mutations remain unqualified or deferred.
 
 ## Operational Model
 
@@ -56,4 +56,4 @@ An unavailable fact remains unresolved. Failure must not be converted into a gue
 
 ## Non-Authorization Statement
 
-Except for the explicitly implemented read-only local handoff contract, this specification defines architectural obligations only. It authorizes no provider credentials, Terraform apply, remote command execution, package mutation, bus traffic, Node reimage, or live Nest modification.
+The declared local planning and process-execution contracts require explicit caller invocation and exact selected authority. This specification alone authorizes no provider credentials, Terraform apply, real remote deployment, bus traffic, Node reimage, or live Nest modification.

@@ -1,8 +1,8 @@
 {
   "protocol": "symphony.sbv.milestone-readiness.v1",
   "date": "2026-10-13",
-  "status": "sequence_in_progress",
-  "authority": "Selected local R5.1-R5.3 scope and R5.4 broad qualification are verified. Local M2 gate is complete within recorded profiles; M3 and explicitly deferred device/cold-cache/peer scopes remain open.",
+  "status": "selected_local_M2_M3_gate_accepted",
+  "authority": "User authorized R6.3 completion, focused independent audit, then commit/push and remote Codex testing. Selected local gate preserves all broader original-case limitations.",
   "baseline": {
     "selected_M1": "R3.3/R4 0.24 local candidate accepted at 50cedde31cb8c78dcc61845bfe067a1d84eb6026",
     "hardening_release": "0.25.0-dev",
@@ -28,7 +28,7 @@
       "verification": "Stale generation refusal, reject/drain below active demand, unlimited/uint64 selections, reads/decodes unchanged after source deletion."
     }
   ],
-  "next_increment": "R6.2b2",
+  "next_increment": "Remote deployment qualification",
   "sequence": [
     {
       "id": "R5.1",
@@ -310,7 +310,7 @@
         "A094",
         "A095"
       ],
-      "status": "local_durable_jobs_implemented_remote_open",
+      "status": "selected_local_transport_and_durable_scope_verified_remote_deployment_open",
       "increments": [
         {
           "id": "R6.2a",
@@ -323,8 +323,9 @@
         },
         {
           "id": "R6.2b",
-          "status": "owner_transport_and_deployment_selection_open",
-          "deliverable": "Select and implement actual SOV transport/deployed SSIAG authority, remote lifecycle and resource controls, then qualify remote loss/cancel/termination."
+          "status": "local_executable_profile_verified_remote_deployment_open",
+          "deliverable": "Exact local process adapter and target-owned authority with full loss/cancel/reconciliation/result projection; real remote deployment and resource brokerage remain open.",
+          "evidence": "workspace:implementation/sbv-remote-execution"
         }
       ]
     },
@@ -360,7 +361,9 @@
         "A094",
         "A095"
       ],
-      "status": "prepared_not_started"
+      "status": "accepted_selected_local_profile",
+      "evidence": "workspace:implementation/sbv-m3-qualification",
+      "qualification": "55 resolved native suites,4 sanitizer suites,installed Go/command/race gates,full independent results,64 scientific-equivalent CPU/RAM measurements,terminal exports,primary competitor refresh. No full remote/peer acceptance."
     }
   ],
   "every_increment_protocol": [
@@ -376,7 +379,7 @@
     "fresh_acquisition": "Requires operational selected SQAV/SSIAG provider bridge and explicit cost/unknown-outcome accounting within the existing aggregate $10 authorization. Not an implicit new spend.",
     "calibration": "Existing capped AAPL/ESZ6 fragments do not establish full initial book or execution-label truth.",
     "live": "Conceptual scaffold only; no live connection/test.",
-    "publication": "Local commits only for this increment; no new push/merge instruction.",
+    "publication": "Commit and push when selected gate passes, then remote Codex testing; no new main merge requested.",
     "limits": "Users select constraints or none. Framing/representation contracts and actual host capacity are disclosed, not described as universal dataset ceilings."
   },
   "tracked_corrections": [
@@ -385,13 +388,20 @@
       "correction": "The generic recommendation to replace the 4096-signal profile is historical/stale for already-shipped partitioned core producers; 0.24 qualified 65,537 signals. Residual legacy external/model/consumer domains remain profile-specific. Preserve the sealed original and use operation_profiles for current limits."
     }
   ],
-  "next_step": "R6.2b: actual SOV transport and deployed SSIAG authority selection/implementation; R6.2 and M3 remain open",
+  "next_step": "After passing local M3 gate and branch push, create supported Codex remote test environment; full cross-host SOV and deployed authority remain explicitly unqualified.",
   "R6_2b_local_contract": {
     "id": "R6.2b1",
     "status": "verified_selected_local_scope",
     "owner": "knowledge/sov/REMOTE-HANDOFF.md",
     "evidence": "workspace:implementation/sbv-remote-contract",
     "scope": "Read-only qxctl planning and supplied-observation assessment only. No host available; actual adapter/target authority/deployment remain R6.2b2.",
-    "next": "R6.2b2 actual transport/target authority, then selected deployment qualification and R6.3"
+    "next": "Executable local process profile now verified under PROCESS-EXECUTION.md; real deployment qualification remains open."
+  },
+  "R6_2b_execution": {
+    "id": "R6.2b2",
+    "status": "selected_local_process_profile_verified",
+    "contract": "knowledge/sov/PROCESS-EXECUTION.md",
+    "evidence": "workspace:implementation/sbv-remote-execution",
+    "remote_deployment": "unqualified"
   }
 }

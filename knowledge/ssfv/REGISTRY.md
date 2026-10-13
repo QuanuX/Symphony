@@ -1324,8 +1324,26 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `tools/qxctl`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:qxctl`
-- record_digest: `sha256:f13c79dc05324b85ab41670674866541df20ee719033ac7402ed9eea66041860`
+- record_digest: `sha256:6953709d0858e65f509a8202d6ea9bfa8213fd3368372269da2c2ab991cec04e`
 - notes: Read-only local plan and supplied-observation assessment; remote execution and deployment remain open.
+
+- feature_id: `ssfv:symphony:qxctl-sov-process-execution`
+- feature_file: `tools/qxctl/FEATURES.md`
+- owner_contract: `tools/qxctl/MANIFEST.md`
+- source_scope: `tools/qxctl`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:qxctl`
+- record_digest: `sha256:3122197cfd767e915ec4beaceded3d8aaf46e7096420801ffe3b751e8aa0678b`
+- notes: Selected local process profile; real remote deployment unqualified.
+
+- feature_id: `ssfv:symphony:sov-stdio-adapter`
+- feature_file: `tools/sov-stdio-adapter/FEATURES.md`
+- owner_contract: `tools/sov-stdio-adapter/MANIFEST.md`
+- source_scope: `tools/sov-stdio-adapter`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:platform`
+- record_digest: `sha256:63e8b6e8675debd37af81f165da498acb9073b89592d8274a415dafec867e507`
+- notes: Selected local process profile; real remote deployment unqualified.
 
 ## Prohibited Entries
 
@@ -1341,4 +1359,4 @@ Do not register:
 
 ## Non-Authorization Statement
 
-This 143-record registry is an explicitly partial catalog governed by `COVERAGE.md`. It does not authorize an unratified feature record, an unregistered distributed file, repository-wide or installed-host completeness, complete legacy-invariant coverage, engine-decided feature-worthiness, or canonical mutation.
+This 145-record registry is an explicitly partial catalog governed by `COVERAGE.md`. It does not authorize an unratified feature record, an unregistered distributed file, repository-wide or installed-host completeness, complete legacy-invariant coverage, engine-decided feature-worthiness, or canonical mutation.

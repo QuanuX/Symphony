@@ -20,6 +20,7 @@ The inventory is intentionally explicit. Directory discovery, file count, langua
 |---|---|---|---|
 | `knowledge/platform` | registered | `ssfv:symphony:platform` | `knowledge/platform/FEATURES.md` |
 | `libraries/knowledge-vector-engine-cpp` | registered | `ssfv:symphony:knowledge-vector-engine-foundation` | `libraries/knowledge-vector-engine-cpp/FEATURES.md` |
+| `tools/sov-stdio-adapter` | registered | `ssfv:symphony:sov-stdio-adapter` | `tools/sov-stdio-adapter/FEATURES.md` |
 | `libraries/sbv-go` | registered | `ssfv:symphony:sbv-go-adapter` | `libraries/sbv-go/FEATURES.md` |
 | `libraries/stav-protocol-go` | registered | `ssfv:symphony:stav-protocol-kernel` | `libraries/stav-protocol-go/FEATURES.md` |
 | `modules/accordare-stav-producer` | registered | `ssfv:symphony:accordare-stav-producer` | `modules/accordare-stav-producer/FEATURES.md` |

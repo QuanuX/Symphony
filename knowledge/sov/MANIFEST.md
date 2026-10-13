@@ -17,10 +17,11 @@ SOV is the semantic owner of supported provisioning, conditioning, delivery, rem
 - `knowledge/sov/PRIMA-PARTE.md`
 - `knowledge/sov/REMOTE-QXCTL.md`
 - `knowledge/sov/REMOTE-HANDOFF.md`
+- `knowledge/sov/PROCESS-EXECUTION.md`
 
 ## Implementation Status
 
-Canonical architecture contract with read-only local `qxctl sov remote plan|assess|schema|template` under `REMOTE-HANDOFF.md`. No SOV engine, provider mutation, Terraform execution, remote command receiver, transport adapter, Habitat builder, or Nest deployment command is claimed implemented by this Contract Quad.
+Canonical architecture contract with exact `qxctl sov remote plan|assess|schema|template|invoke` and `qxctl sov target configure|inspect|remove|invoke` under `REMOTE-HANDOFF.md` and `PROCESS-EXECUTION.md`. The independently packaged `tools/sov-stdio-adapter` implements the selected local process carrier. Real remote-host deployment and authenticated network identity remain unqualified. No SOV engine, provider mutation, Terraform execution, Habitat builder, or Nest deployment command is claimed.
 
 ## Language and Packaging
 

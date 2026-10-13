@@ -12,6 +12,39 @@ func ValidateSBVJobObservation(raw []byte, directory, jobID, planSHA256 string) 
 	return validateSBVJobResult("job_inspect", map[string]any{"directory": directory, "job_id": jobID, "expected_plan_sha256": planSHA256}, raw)
 }
 
+// ValidateSBVOperationResult validates a selected remote native response using
+// the same owner checks as direct invocation. This authenticates no transport.
+func ValidateSBVOperationResult(operation string, request, result []byte) (err error) {
+	// Direct invocation first validates installed owner schemas. At this external
+	// response boundary both request and reply are untrusted. Never let a type
+	// assertion in an owner validator turn a malformed pair into a process panic.
+	defer func() {
+		if recover() != nil {
+			err = fmt.Errorf("invalid remote SBV request/result shape")
+		}
+	}()
+	switch operation {
+	case "job_inspect", "job_execute", "job_cancel", "job_reconcile", "result_inspect", "result_query", "bundle_inspect", "bundle_query", "bundle_verify":
+	default:
+		return fmt.Errorf("unsupported remote SBV result operation")
+	}
+	p, err := sqavObject(request, maxRequestBytes)
+	if err != nil {
+		return err
+	}
+	if p["protocol"] != "symphony.sbv."+strings.ReplaceAll(operation, "_", "-")+"-input.v1" {
+		return fmt.Errorf("remote SBV request protocol mismatch")
+	}
+	if operation == "result_query" {
+		for _, key := range []string{"path", "expected_sha256", "pointer", "limit", "cursor"} {
+			if _, ok := p[key].(string); !ok {
+				return fmt.Errorf("remote SBV query field missing or invalid")
+			}
+		}
+	}
+	return validateSBVResult(operation, p, result)
+}
+
 // Journal references are immutable native result snapshots. The job plan binds
 // the full child selection; a status receipt does not assert remote authority.
 func validateSBVJobResult(op string, p map[string]any, raw []byte) error {

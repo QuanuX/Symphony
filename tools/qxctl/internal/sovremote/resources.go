@@ -23,6 +23,17 @@ func Template(operation string) (any, error) {
 		}
 		return AssessmentInput{Protocol: AssessmentProtocol, Selection: s, ExpectedPlanSHA256: p.PlanSHA256, TransportOutcome: "response_lost", Observation: json.RawMessage("null")}, nil
 	}
+	if operation == "invoke" {
+		p, err := build(s)
+		if err != nil {
+			return nil, err
+		}
+		raw, _ := json.Marshal(map[string]any{"protocol": "symphony.sbv.job-inspect-input.v1", "directory": s.Job.Directory, "job_id": s.Job.ID, "expected_plan_sha256": s.Job.PlanSHA256})
+		return Invocation{Protocol: "symphony.sov.remote-invoke-input.v1", Selection: s, ExpectedPlanSHA256: p.PlanSHA256, RequestID: "00000000-0000-4000-8000-000000000001", CorrelationID: "00000000-0000-4000-8000-000000000002", Operation: "job_inspect", Request: raw, Adapter: Executable{"/example/sov-stdio-adapter", d}, Endpoint: Endpoint{Executable{"/example/qxctl", d}, "/example/private-sov/configuration.json", d}}, nil
+	}
+	if operation == "target_configure" {
+		return ConfigureInput{Protocol: "symphony.sov.target-configure-input.v1", Path: "/example/private-sov/configuration.json", Configuration: Configuration{Protocol: "symphony.sov.target-configuration.v1", Target: s.Target, Job: s.Job, Runtime: s.Runtime, SBVPrefix: "/example/sbv-prefix", AuthorityMode: "owner_filesystem", Authority: s.Authority, AllowedArtifacts: []Artifact{}}}, nil
+	}
 	return nil, fmt.Errorf("unknown SOV remote operation")
 }
 
@@ -35,6 +46,10 @@ func Schema(operation string) (any, error) {
 		in, out = Selection{}, Plan{}
 	case "assess":
 		in, out = AssessmentInput{}, Assessment{}
+	case "invoke":
+		in, out = Invocation{}, InvocationResult{}
+	case "target_configure":
+		in, out = ConfigureInput{}, ConfigurationResult{}
 	default:
 		return nil, fmt.Errorf("unknown SOV remote operation")
 	}
@@ -42,7 +57,7 @@ func Schema(operation string) (any, error) {
 }
 func shape(t reflect.Type, name string) map[string]any {
 	if t == reflect.TypeOf(json.RawMessage{}) {
-		return map[string]any{"type": []string{"object", "null"}, "description": "Null or the complete native symphony.sbv.job-inspect.v1 status for the selected exact SBV version; validated by the SBV owner contract, never authenticated by this planner."}
+		return map[string]any{"type": []string{"object", "null"}, "description": "Complete native request/result for the selected operation and exact SBV version; native owner schemas and cross-field validation are normative. Assessment observation is null or job-inspect.v1. Invocation requests cannot be null."}
 	}
 	if t.Kind() == reflect.Pointer {
 		return map[string]any{"anyOf": []any{shape(t.Elem(), name), map[string]any{"type": "null"}}}
@@ -59,9 +74,18 @@ func shape(t reflect.Type, name string) map[string]any {
 			required = append(required, key)
 		}
 		s = map[string]any{"type": "object", "additionalProperties": false, "properties": properties, "required": required}
-		protocol := map[reflect.Type]string{reflect.TypeOf(Selection{}): PlanProtocol, reflect.TypeOf(Plan{}): "symphony.sov.remote-plan.v1", reflect.TypeOf(AssessmentInput{}): AssessmentProtocol, reflect.TypeOf(Assessment{}): "symphony.sov.remote-assess.v1"}[t]
+		protocol := map[reflect.Type]string{reflect.TypeOf(Selection{}): PlanProtocol, reflect.TypeOf(Plan{}): "symphony.sov.remote-plan.v1", reflect.TypeOf(AssessmentInput{}): AssessmentProtocol, reflect.TypeOf(Assessment{}): "symphony.sov.remote-assess.v1", reflect.TypeOf(Invocation{}): "symphony.sov.remote-invoke-input.v1", reflect.TypeOf(InvocationResult{}): "symphony.sov.remote-invoke.v1", reflect.TypeOf(TargetResult{}): "symphony.sov.target-result.v1", reflect.TypeOf(Configuration{}): "symphony.sov.target-configuration.v1", reflect.TypeOf(ConfigureInput{}): "symphony.sov.target-configure-input.v1", reflect.TypeOf(ConfigurationResult{}): "symphony.sov.target-configuration-result.v1"}[t]
 		if protocol != "" {
 			properties["protocol"] = map[string]any{"const": protocol}
+		}
+		if t == reflect.TypeOf(TargetResult{}) {
+			properties["status"] = map[string]any{"enum": []string{"completed", "native_error"}}
+		}
+		if t == reflect.TypeOf(Invocation{}) || t == reflect.TypeOf(TargetResult{}) {
+			properties["operation"] = map[string]any{"enum": []string{"job_inspect", "job_execute", "job_cancel", "job_reconcile", "result_inspect", "result_query", "bundle_inspect", "bundle_query", "bundle_verify"}}
+		}
+		if t == reflect.TypeOf(Invocation{}) {
+			properties["request"] = map[string]any{"type": "object"}
 		}
 	case reflect.String:
 		s["type"] = "string"
@@ -71,7 +95,7 @@ func shape(t reflect.Type, name string) map[string]any {
 		switch {
 		case strings.HasSuffix(name, "sha256"):
 			s["pattern"] = sha.String()
-		case name == "threads" || name == "memory_bytes" || name == "deadline_unix_ms":
+		case name == "threads" || name == "memory_bytes" || name == "deadline_unix_ms" || name == "authorization_window_seconds":
 			s["pattern"] = positive.String()
 		case name == "job_id":
 			s["pattern"] = jobID.String()
@@ -79,6 +103,12 @@ func shape(t reflect.Type, name string) map[string]any {
 		switch name {
 		case "sbv_version":
 			s["const"] = knowledgeengine.SBVAdministrationInterfaceVersion
+		case "authority_mode":
+			s["enum"] = []string{"owner_filesystem", "ssiag"}
+		case "origin_verification":
+			s["const"] = "selected_adapter_assertion"
+		case "request_id", "correlation_id":
+			s["pattern"] = uuid.String()
 		case "arrangement":
 			s["enum"] = []string{"controller", "target", "staged"}
 		case "family":
@@ -93,7 +123,10 @@ func shape(t reflect.Type, name string) map[string]any {
 			s["enum"] = []string{"qualify_target_and_authority", "inspect_same_job", "observe_same_job", "inspect_bound_result", "reconcile_same_job"}
 		}
 	case reflect.Bool:
-		s = map[string]any{"const": false}
+		s = map[string]any{"type": "boolean"}
+		if name != "dispatch_started" {
+			s = map[string]any{"const": false}
+		}
 	case reflect.Slice:
 		s = map[string]any{"type": "array", "items": shape(t.Elem(), "")}
 		if name == "device_refs" {

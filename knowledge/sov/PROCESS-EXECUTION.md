@@ -1,0 +1,31 @@
+# SOV executable handoff — selected local profile
+
+R6.2b2 implements an optional, one-shot process carrier and target receiver for an existing native SBV durable job. The prior `REMOTE-HANDOFF.md` plan/assessment contract remains read-only. This contract adds execution; it does not make an unselected remote deployment operational.
+
+## Control and selection
+
+`qxctl sov remote template|schema --operation invoke|target_configure --json` exposes all fields. `remote plan` hashes the complete selection. `remote invoke --input FILE --json` pins that plan, UUID request/correlation, operation, full native request, exact adapter and target executable bytes and target configuration hash. `qxctl sov target configure --input FILE --json` creates or replaces configuration with expected-digest CAS; inspect returns every value; remove requires the exact digest. The target's canonical parent directory and regular single-link configuration/lock must be private and owned by its OS identity. Parent and leaf symlinks are refused. Removal preserves the stable lock inode and all native job history.
+
+The target is invoked explicitly with `sov target invoke --configuration PATH --configuration-sha256 SHA --json`, reading one invocation on stdin. No listener or daemon runs. Both executables are staged in private temporary files and checked before execution. qxctl's current `qxctl dev` display identity is supported only alongside its mandatory exact executable digest; it is not an immutable release by itself.
+
+The selected stock arrangement is `controller`. Native resources are already sealed in the job; additional placement threads/memory/device/reservation observations are rejected until a resource adapter implements them. No default deadline or aggregate dataset/RAM ceiling is introduced. Caller-selected deadlines must fit this process runtime's signed millisecond representation; an omitted value remains unbounded. The 8 MiB control-document frame is not a dataset ceiling; complete result queries page arbitrarily larger artifacts.
+
+## Target authority
+
+Target-local configuration binds target TOPS/node/habitat/identity, exact qxctl/native installation receipt, native job and authority selection. `owner_filesystem` uses the executing target OS identity and private native job ownership, with no SSIAG decision. `ssiag` additionally obtains a fresh target-local protected Unix-peer decision for `authority.operation + "." + operation`, resource/audience/scope and caller-selected positive authorization window. The service identity/TOPS, complete decision/capability binding, expiry and optional policy digest are checked immediately before native invocation. The decision digest is returned; full authority audit remains with SSIAG/STAV. Neither mode accepts a controller-supplied token or proves which human owns an external remote credential.
+
+Authorization lifetime is admission freshness, not a calculation deadline. Removing/updating configuration affects future admissions; in-flight work requires native `job_cancel`. User-selected native providers and transport executables are trusted code, not a sandbox. The stock process runs as its invoking OS identity; no cross-user delegation or privilege transition is supplied.
+
+## Operations, outcomes and complete results
+
+Allowed native operations are `job_inspect`, `job_execute`, `job_cancel`, `job_reconcile`, `result_inspect`, `result_query`, `bundle_inspect`, `bundle_query`, `bundle_verify`. Job creation remains explicitly available on the target via `qxctl sbv job create`. Every job operation binds directory, ID and immutable plan. Result reads require a target-configured path and content digest; partitioned bundles pin manifest path/digest, whose native validation also binds logical content. This allow-list is entirely caller mutable through configuration.
+
+Native validation/dispatch stays in C++26. The target rechecks exact native installation and configuration, obtains required authority and returns the complete validated native object. `dispatch_started` means the request passed the final target admission hook and was offered to the native process wrapper; it does not prove that a calculation or side effect occurred. Known safe native error codes are preserved; other invocation/validation failures use `native_operation_failed`. Error prose is withheld. Target invoke returns a transport-success document for native errors; controller invoke returns exit 5 while preserving its one complete JSON document.
+
+Before adapter process start, failures report `not_dispatched`. After start, missing, malformed, oversized or mismatched replies report `response_lost`; an exact valid target reply reports `response_received`. This is the selected adapter's assertion, not independent remote-origin authentication. Every result binds request/invocation/configuration/target/operation. JSON and escaped terminal text contain the same full values. Native result query and bundle query expose every result/replay field in caller-selected pages for independent readers and future GUIs. No automatic retry occurs. A lost execute response is reconciled by inspecting the same job; native immutable admission prevents another execution even if the controller died. Unknown stays unknown when no authoritative native outcome exists. No native checkpoint resume, arbitrary output adoption or paid-effect rollback is claimed.
+
+SIGINT/SIGTERM requests process-group cancellation. A 250 ms process/pipe cleanup bound applies only after cancellation or exit; it is not a default job deadline. It cannot establish termination of escaped processes or remote side effects. Continue observation/reconciliation using the job journal.
+
+## Qualification scope
+
+Local actual-process owner-filesystem execution, refusal without target-local SSIAG, injectable authority admission tests, lost-response/cancellation regression checks and exact result consumers qualify this profile. They do not establish a deployed SSIAG/STAV allow path, different-user delegation, network transport, shared storage durability, cluster placement, terabyte memory or power-loss behavior. A selected host and transport are required for those gates. WP17 live operation remains conceptual.

@@ -193,6 +193,13 @@ func sbvDecodeOwnedResource(raw []byte) (map[string]any, error) {
 	return object, nil
 }
 func InvokeSBV(ctx context.Context, prefix, version, cwd, operation string, payload []byte) (Response, error) {
+	return InvokeSBVWithAdmission(ctx, prefix, version, cwd, operation, payload, nil)
+}
+
+// InvokeSBVWithAdmission runs a target-owned authorization check after request,
+// schema and installation admission and immediately before process invocation.
+// This does not turn a controller assertion into target authority.
+func InvokeSBVWithAdmission(ctx context.Context, prefix, version, cwd, operation string, payload []byte, admission func(Installation) error) (Response, error) {
 	p, err := sqavObject(payload, maxRequestBytes)
 	if err != nil {
 		return Response{}, err
@@ -232,6 +239,11 @@ func InvokeSBV(ctx context.Context, prefix, version, cwd, operation string, payl
 	canonical, err := SCVCanonical(p)
 	if err != nil {
 		return Response{}, err
+	}
+	if admission != nil {
+		if err = admission(inst); err != nil {
+			return Response{}, err
+		}
 	}
 	r, invokeErr := invokeResolved(ctx, sbvSpec(), inst.ExecutablePath, version, cwd, operation, canonical)
 	after, err := InspectSBV(prefix, version)

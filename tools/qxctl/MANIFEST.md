@@ -434,3 +434,6 @@ SOV R6.2b1 adds local read-only `sov remote plan|assess|schema|template` under
 `knowledge/sov/REMOTE-HANDOFF.md`. All caller selections and complete results use
 text/JSON; observations remain supplied and unauthenticated. No transport adapter,
 remote dispatch, resource reservation or deployed SSIAG authority is implied.
+
+
+The selected executable local process profile is now defined by `knowledge/sov/PROCESS-EXECUTION.md` and the independent `tools/sov-stdio-adapter/MANIFEST.md`. It adds explicit qxctl invocation and target configuration; earlier planning-only status remains historical. Real remote deployment remains unqualified.

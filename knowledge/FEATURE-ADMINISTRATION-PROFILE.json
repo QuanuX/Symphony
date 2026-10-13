@@ -1244,6 +1244,60 @@
       "feature_id": "ssfv:symphony:qxctl-snv-administration"
     },
     {
+      "feature_id": "ssfv:symphony:qxctl-sov-process-execution",
+      "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:sov.remote.schema",
+            "qxcmd:symphony:sov.remote.template"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [],
+          "evidence": [
+            "knowledge/sov/PROCESS-EXECUTION.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "discover",
+          "rationale": "Complete selected local process capability through qxctl.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:sov.target.inspect"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [],
+          "evidence": [
+            "knowledge/sov/PROCESS-EXECUTION.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "inspect",
+          "rationale": "Complete selected local process capability through qxctl.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:sov.remote.invoke",
+            "qxcmd:symphony:sov.target.configure",
+            "qxcmd:symphony:sov.target.invoke",
+            "qxcmd:symphony:sov.target.remove"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [],
+          "evidence": [
+            "knowledge/sov/PROCESS-EXECUTION.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "invoke",
+          "rationale": "Complete selected local process capability through qxctl.",
+          "requirement": "required"
+        }
+      ]
+    },
+    {
       "feature_id": "ssfv:symphony:qxctl-sov-remote-planning",
       "expectations": [
         {
@@ -1265,8 +1319,8 @@
         },
         {
           "command_ids": [
-            "qxcmd:symphony:sov.remote.plan",
-            "qxcmd:symphony:sov.remote.assess"
+            "qxcmd:symphony:sov.remote.assess",
+            "qxcmd:symphony:sov.remote.plan"
           ],
           "delivery": "direct",
           "engine_operation_ids": [],
@@ -8218,6 +8272,29 @@
       "feature_id": "ssfv:symphony:sodv-engine.release-transaction-projection"
     },
     {
+      "feature_id": "ssfv:symphony:sov-stdio-adapter",
+      "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:sov.remote.invoke",
+            "qxcmd:symphony:sov.target.configure",
+            "qxcmd:symphony:sov.target.invoke",
+            "qxcmd:symphony:sov.target.remove"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [],
+          "evidence": [
+            "knowledge/sov/PROCESS-EXECUTION.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": "ssfv:symphony:qxctl-sov-process-execution",
+          "interaction": "invoke",
+          "rationale": "Complete selected local process capability through qxctl.",
+          "requirement": "required"
+        }
+      ]
+    },
+    {
       "expectations": [
         {
           "command_ids": [
@@ -9922,7 +9999,7 @@
   "forward_gate": "enforce_new_records",
   "profile_id": "symphony.registered-features.administration.v1",
   "protocol": "symphony.knowledge.feature-administration-profile.v1",
-  "registered_feature_count": 143,
-  "ssfv_registry_digest": "sha256:2ea72d3cdbf3528cce72036e81026cec4a5aa7fe347cc961919f881175b0c869",
-  "profile_digest": "sha256:0c388a281a1dfaf630341dfdb3d66dcb822f6f38207621607391631e79cc5c47"
+  "registered_feature_count": 145,
+  "ssfv_registry_digest": "sha256:3f140bd764ff41ac983c5077187e54ff7c48b617b8234a08d81b2ed59fe70052",
+  "profile_digest": "sha256:569987fa5c7897be08f1e8e2eda7125ee50978f9a127296602a20bb4a76b16c3"
 }

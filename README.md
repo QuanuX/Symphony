@@ -128,9 +128,9 @@ The emerging SOV remote-operation and deployment contracts do not make provider 
 
 This bounded summary is derived from canonical SSFV coverage and routing, the feature-administration profile, the qxctl command registry, and completed SODV publication records. Edit its source contracts, then regenerate; do not hand-edit the values below.
 
-- SSFV catalog state: `partial`; registered features: **143**; registered owner scopes: **64**; ratified nested features: **78**.
-- Feature-administration expectations: **384** reviewed surfaces; **373** required, **29** evidence-backed exemptions, **9** prohibitions, **0** unreviewed.
-- qxctl stable command identities: **454**.
+- SSFV catalog state: `partial`; registered features: **145**; registered owner scopes: **65**; ratified nested features: **78**.
+- Feature-administration expectations: **388** reviewed surfaces; **377** required, **29** evidence-backed exemptions, **9** prohibitions, **0** unreviewed.
+- qxctl stable command identities: **459**.
 - Registered owner capabilities:
   - `ssfv:symphony:accordare-stav-producer`
   - `ssfv:symphony:knowledge-session-coordinator`
@@ -173,6 +173,7 @@ This bounded summary is derived from canonical SSFV coverage and routing, the fe
   - `ssfv:symphony:snv-engine`
   - `ssfv:symphony:snv-local-observer`
   - `ssfv:symphony:sodv-engine`
+  - `ssfv:symphony:sov-stdio-adapter`
   - `ssfv:symphony:sqav-attempt-engine`
   - `ssfv:symphony:sqav-capture-cpp`
   - `ssfv:symphony:sqav-databento-dbn-cpp`
@@ -200,7 +201,7 @@ This bounded summary is derived from canonical SSFV coverage and routing, the fe
   - `github.com/QuanuX/Symphony/libraries/stav-protocol-go` `v0.2.0` (tag `libraries/stav-protocol-go/v0.2.0`, source `55f8faf26f4f85213ac23cc1de7ba897b2129a4c`)
   - `github.com/QuanuX/Symphony/modules/stav-append-authority` `v0.1.0` (tag `modules/stav-append-authority/v0.1.0`, source `55f8faf26f4f85213ac23cc1de7ba897b2129a4c`)
   - `github.com/QuanuX/Symphony/modules/stav-append-authority` `v0.2.0` (tag `modules/stav-append-authority/v0.2.0`, source `ed7484d70607aa96e64916dd4e59d3972a61980b`)
-- Snapshot digest: `sha256:ee337b2cf6e6d636fdf7a9dcb5f0de57f67ba5b86cc8a726d4049a3a02eb4a23`
+- Snapshot digest: `sha256:03a6d35029a62189c5bb6c6bd7200f5e6bca78064185ed9a152586bc1a6cf7b9`
 <!-- symphony:root-summary:v1:end -->
 
 ## Releases and Documentation
