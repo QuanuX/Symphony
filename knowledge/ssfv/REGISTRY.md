@@ -1297,7 +1297,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `modules/sbv-engine`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:platform`
-- record_digest: `sha256:ae6db2170f2582eba16945aaa232d4884a5d0f497b9bd8f82c78a4651733ffc5`
+- record_digest: `sha256:4f66c970c0c3c42b0ea602f68de3862f4201a6128bdfdcc40201123a146e1c1c`
 - notes: Experimental SBV first implementation; exact declared operations and portable retained evidence only.
 
 - feature_id: `ssfv:symphony:qxctl-sbv-administration`
@@ -1308,6 +1308,15 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - parent_feature_id: `ssfv:symphony:qxctl`
 - record_digest: `sha256:8448cb41c47cd044efbda8862a531fe9711ab7dee1f9e132be1dcce01533072e`
 - notes: Experimental SBV first implementation; exact declared operations and portable retained evidence only.
+
+- feature_id: `ssfv:symphony:sbv-go-adapter`
+- feature_file: `libraries/sbv-go/FEATURES.md`
+- owner_contract: `libraries/sbv-go/MANIFEST.md`
+- source_scope: `libraries/sbv-go`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:platform`
+- record_digest: `sha256:c03257a07372e23088fb404fbf536db43260514ed28619812d1426d850eb4c53`
+- notes: Selected R5.2 independent Go adapter; native scientific and qxctl administrative ownership remain unchanged.
 
 ## Prohibited Entries
 
@@ -1323,13 +1332,4 @@ Do not register:
 
 ## Non-Authorization Statement
 
-This 138-record registry is an explicitly partial catalog governed by `COVERAGE.md`. It does not authorize an unratified feature record, an unregistered distributed file, repository-wide or installed-host completeness, complete legacy-invariant coverage, engine-decided feature-worthiness, or canonical mutation.
-
-- feature_id: `ssfv:symphony:sbv-go-adapter`
-- feature_file: `libraries/sbv-go/FEATURES.md`
-- owner_contract: `libraries/sbv-go/MANIFEST.md`
-- source_scope: `libraries/sbv-go`
-- status: `experimental`
-- parent_feature_id: `ssfv:symphony:platform`
-- record_digest: `sha256:710dfa0414c777be5a83b3c01b3bc8eae3742b5e0e39bd3fd334e59549e9af57`
-- notes: Selected R5.2 independent Go adapter; native scientific and qxctl administrative ownership remain unchanged.
+This 142-record registry is an explicitly partial catalog governed by `COVERAGE.md`. It does not authorize an unratified feature record, an unregistered distributed file, repository-wide or installed-host completeness, complete legacy-invariant coverage, engine-decided feature-worthiness, or canonical mutation.

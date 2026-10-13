@@ -1,3 +1,4 @@
+#include "measurement.hpp"
 #include "resource_admission.hpp"
 #include "census.hpp"
 #include "detail.hpp"
@@ -40,6 +41,7 @@ Json run_partitioned(const Json &, std::int64_t, const Dataset *);
 Json run(const Json &p, std::int64_t end, const Dataset *resident) {
   if (p.contains("output"))
     return run_partitioned(p, end, resident);
+  measurement::Scope computing(measurement::Phase::compute);
   keys_optional(p,
                 {"protocol", "output_path", "criteria", "replay", "execution",
                  "studies", "workers", "extensions"},

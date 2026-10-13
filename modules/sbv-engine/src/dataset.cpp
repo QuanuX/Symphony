@@ -1,3 +1,4 @@
+#include "measurement.hpp"
 #include "dataset.hpp"
 #include "source_owners.hpp"
 #include <algorithm>
@@ -170,6 +171,7 @@ Json Dataset::evidence(bool resident) const {
 }
 std::unique_ptr<Dataset> load_dataset(const Json &p, std::int64_t end,
                                       bool lock) {
+  measurement::Scope reading(measurement::Phase::read);
   deadline(end);
   auto d = std::make_unique<Dataset>();
   d->selected_limits = limits(p);
@@ -216,6 +218,8 @@ std::unique_ptr<Dataset> load_dataset(const Json &p, std::int64_t end,
   }
   need(e::sha256_hex(original) == d->sha256, "source byte digest mismatch");
   deadline(end);
+  reading.finish();
+  measurement::Scope decoding(measurement::Phase::decode);
   db::FileView view;
   need(db::FileView::inspect_dataset(original, decoder_limits, view) ==
            db::Status::ok,

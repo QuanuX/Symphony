@@ -671,8 +671,16 @@ int resident_worker() {
           stopping.store(true);
           endpoint.remove();
           lock.unlock();
-          final_send(client.n, success(result));
-          if (op == "dataset_stop") ::_exit(0); // explicit whole-host termination
+          if (op == "dataset_stop") {
+            final_send(client.n, success(result));
+            ::_exit(0); // explicit whole-host termination
+          }
+          // Graceful release retains the full source-delivery receipt, which
+          // can exceed one socket write. Host shutdown is not cancellation of
+          // this acknowledgement; only the caller's selected deadline applies.
+          // A disconnected reader still receives an uncertain transport outcome.
+          CancellationScope acknowledge(nullptr);
+          send(client.n, success(result), end);
           return;
         }
         const auto inner_op = str(input.at("operation"));

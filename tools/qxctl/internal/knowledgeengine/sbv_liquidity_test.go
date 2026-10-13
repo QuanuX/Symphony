@@ -112,7 +112,7 @@ func TestSBVInstalledLiquidity(t *testing.T) {
 	if !sqvTransportShape(cs["output"], catalogue, 0) {
 		t.Fatal("catalogue schema mismatch")
 	}
-	if len(catalogue["models"].([]any)) != 7 || len(catalogue["studies"].([]any)) != 21 {
+	if len(catalogue["models"].([]any)) != 8 || len(catalogue["studies"].([]any)) != 24 {
 		t.Fatal("catalogue incomplete")
 	}
 }

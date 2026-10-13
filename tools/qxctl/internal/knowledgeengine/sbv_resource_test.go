@@ -45,8 +45,19 @@ func TestSBVInstalledResourceAdmission(t *testing.T) {
 				t.Fatalf("selected resource %s template=%v transport: %v", op, template, err)
 			}
 		}
-		if _, err := SBVSchema(prefix, SBVAdministrationInterfaceVersion, op); err != nil {
+		combined, err := SBVSchema(prefix, SBVAdministrationInterfaceVersion, op)
+		if err != nil {
 			t.Fatalf("discoverable combined schema %s: %v", op, err)
+		}
+		shape, err := sqavObject(combined, maxRequestBytes)
+		if err != nil {
+			t.Fatal(err)
+		}
+		output, _ := shape["output"].(map[string]any)
+		properties, _ := output["properties"].(map[string]any)
+		version, _ := properties["engine_version"].(map[string]any)
+		if exact, exists := version["const"]; exists && exact != SBVAdministrationInterfaceVersion {
+			t.Fatalf("%s response engine_version %v differs from selected owner %s", op, exact, SBVAdministrationInterfaceVersion)
 		}
 	}
 	partitioned := []string{"run", "generate_census", "evaluate", "economics", "compose_economics", "dataset_execute", "experiment", "result_select", "analyze", "resample", "split", "book", "liquidity", "queue_scenarios", "allocation_economics", "fit", "predict", "compare", "research_history"}

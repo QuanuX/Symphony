@@ -1,3 +1,4 @@
+#include "measurement.hpp"
 #include "resource_admission.hpp"
 #include "partitioned_output.hpp"
 #include "run_math.hpp"
@@ -16,6 +17,7 @@ Value streamed_section(Value data, std::string status = "available",
 }
 } // namespace
 Json run_partitioned(const Json &p, std::int64_t end, const Dataset *resident) {
+  measurement::Scope computing(measurement::Phase::compute);
   keys_optional(p,
                 {"protocol", "output", "criteria", "replay", "execution",
                  "studies", "workers", "extensions"},

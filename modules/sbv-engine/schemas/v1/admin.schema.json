@@ -33860,7 +33860,7 @@
           "const": "symphony.sbv.capabilities.v1"
         },
         "engine_version": {
-          "const": "0.25.0-dev"
+          "const": "0.29.0-dev"
         },
         "cpu": {
           "type": "object",
@@ -35746,7 +35746,7 @@
           "const": "symphony.sbv.catalogue.v1"
         },
         "engine_version": {
-          "const": "0.25.0-dev"
+          "const": "0.29.0-dev"
         },
         "models": {
           "type": "array",
@@ -35786,7 +35786,8 @@
                     "liquidity",
                     "allocation_economics",
                     "analyze",
-                    "resample"
+                    "resample",
+                    "queue_scenarios"
                   ]
                 }
               },
@@ -38680,7 +38681,7 @@
           "const": "symphony.sbv.backend-plan.v1"
         },
         "engine_version": {
-          "const": "0.25.0-dev"
+          "const": "0.29.0-dev"
         },
         "status": {
           "enum": [
@@ -38973,7 +38974,7 @@
           "const": "symphony.sbv.live-plan.v1"
         },
         "engine_version": {
-          "const": "0.25.0-dev"
+          "const": "0.29.0-dev"
         },
         "can_activate": {
           "const": false
@@ -45883,7 +45884,7 @@
           "const": "symphony.sbv.provider-inspect.v1"
         },
         "engine_version": {
-          "const": "0.25.0-dev"
+          "const": "0.29.0-dev"
         },
         "provider": {
           "type": "object",
@@ -47652,7 +47653,7 @@
           "const": "symphony.sbv.dataset-jobs.v1"
         },
         "engine_version": {
-          "const": "0.25.0-dev"
+          "const": "0.29.0-dev"
         },
         "directory": {
           "type": "string"
@@ -47698,7 +47699,7 @@
           "const": "symphony.sbv.dataset-cancel.v1"
         },
         "engine_version": {
-          "const": "0.25.0-dev"
+          "const": "0.29.0-dev"
         },
         "directory": {
           "type": "string"
@@ -47727,7 +47728,7 @@
           "const": "symphony.sbv.dataset-stop.v1"
         },
         "engine_version": {
-          "const": "0.25.0-dev"
+          "const": "0.29.0-dev"
         },
         "directory": {
           "type": "string"

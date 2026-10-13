@@ -30,6 +30,24 @@ int main(int argc, char **argv) try {
     std::cerr << check.dump(2);
     return 1;
   }
+  const auto profile = read("knowledge/FEATURE-ADMINISTRATION-PROFILE.json");
+  if (profile.at("registered_feature_count") !=
+      check.at("semantic_snapshot").at("records").size()) {
+    std::cerr << "administration profile count "
+              << profile.at("registered_feature_count") << " differs from "
+              << check.at("semantic_snapshot").at("records").size()
+              << " complete snapshot records\n"
+              << check.at("summary").dump(2) << '\n';
+    for (const auto &feature : profile.at("features")) {
+      bool present = false;
+      for (const auto &record : check.at("semantic_snapshot").at("records"))
+        present |= record.at("feature_id") == feature.at("feature_id");
+      if (!present)
+        std::cerr << "missing snapshot feature " << feature.at("feature_id")
+                  << '\n';
+    }
+    return 1;
+  }
   const auto capabilities = symphony::sbv::dispatch(
       "capabilities", {{"protocol", "symphony.sbv.capabilities-input.v1"}},
       e::no_deadline);

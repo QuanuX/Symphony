@@ -216,3 +216,7 @@ Experimental 0.18 adds `qxctl sbv research-history`: source-bound fit/prediction
 - `modules/sbv-engine/src/binary_studies.hpp`
 
 - `modules/sbv-engine/tests/binary_studies_test.cpp`
+
+- `modules/sbv-engine/src/measurement.hpp`
+
+- `modules/sbv-engine/tests/performance_test.cpp`

@@ -558,7 +558,7 @@ int main() try {
   const auto cat =
       call("catalogue", {{"protocol", "symphony.sbv.catalogue-input.v1"}});
   check(cat["transforms"][0]["id"] == "linear_price_pnl");
-  check(cat["studies"].size() == 21);
+  check(cat["studies"].size() == 24);
   unsigned composition_cards = 0;
   for (const auto &card : cat.at("studies")) {
     if (card.at("id") != "terminal_moments" &&

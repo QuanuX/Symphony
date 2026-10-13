@@ -108,7 +108,7 @@ func TestSBVInstalledEconomics(t *testing.T) {
 			t.Fatal("study descriptor mismatch")
 		}
 	}
-	if len(cat["transforms"].([]any)) != 2 || len(cat["studies"].([]any)) != 21 {
+	if len(cat["transforms"].([]any)) != 2 || len(cat["studies"].([]any)) != 24 {
 		t.Fatal("discovery incomplete")
 	}
 }

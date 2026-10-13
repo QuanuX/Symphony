@@ -2,7 +2,7 @@
   "protocol": "symphony.sbv.milestone-readiness.v1",
   "date": "2026-10-12",
   "status": "sequence_in_progress",
-  "authority": "User requested continuing M2-M3. R5.1, R5.2 and selected local R5.3 nested/adaptive/study scope are verified; R5.4 broad M2 gate and M3 remain open.",
+  "authority": "Selected local R5.1-R5.3 scope and R5.4 broad qualification are verified. Local M2 gate is complete within recorded profiles; M3 and explicitly deferred device/cold-cache/peer scopes remain open.",
   "baseline": {
     "selected_M1": "R3.3/R4 0.24 local candidate accepted at 50cedde31cb8c78dcc61845bfe067a1d84eb6026",
     "hardening_release": "0.25.0-dev",
@@ -28,7 +28,7 @@
       "verification": "Stale generation refusal, reject/drain below active demand, unlimited/uint64 selections, reads/decodes unchanged after source deletion."
     }
   ],
-  "next_increment": "R5.3",
+  "next_increment": "R6.1",
   "sequence": [
     {
       "id": "R5.1",
@@ -209,7 +209,10 @@
         "A066",
         "A095"
       ],
-      "status": "prepared_not_started"
+      "status": "verified_selected_scope",
+      "implementation_release": "0.29.0-dev",
+      "evidence": "workspace:implementation/sbv-m2-qualification/CHECKS.json",
+      "qualification": "51 native suites resolved through one broad run plus affected corrections; native/installed worker-feed science parity, complete-work phase timings, actual retained resident reuse and release, independent SDK/Go consumers. No cold-cache, device runtime, terabyte/NUMA/cluster or peer ranking claim. Original-case partial/deferred scope remains explicit in CASE_EVIDENCE.json."
     },
     {
       "id": "R6.1",

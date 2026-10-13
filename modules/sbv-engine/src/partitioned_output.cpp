@@ -1,3 +1,4 @@
+#include "measurement.hpp"
 #include "partitioned_output.hpp"
 #include "detail.hpp"
 #include <cerrno>
@@ -373,6 +374,7 @@ Json partitioned_result(const Json &request, const std::string &slug,
   try {
     context.p_->create();
     auto body = produce(context);
+    measurement::Scope publishing(measurement::Phase::publication);
     context.p_->phase = "finalize_result";
     context.p_->check();
     need(body.kind() == "object" && body.size() == 4 &&

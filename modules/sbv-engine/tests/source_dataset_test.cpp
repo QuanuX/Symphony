@@ -102,6 +102,29 @@ int main(int argc, char **argv) try {
   check(from_retained->evidence(true).at("source_reads_this_job") == "0");
   check(from_retained->evidence(true).at("source_delivery") ==
         from_retained->source_delivery);
+  // A retained-source release acknowledgement is larger than the compact file
+  // receipt. Preserve the full receipt across socket backpressure and shutdown.
+  auto verbose_feed = retained;
+  verbose_feed["delivery"]["view_id"] = std::string(4096, 'v');
+  J load{{"protocol", "symphony.sbv.dataset-load-input.v1"},
+         {"directory", root},
+         {"instance_id", "000000000000000000000000000000aa"},
+         {"retained_source", verbose_feed},
+         {"residency", "pageable"},
+         {"memory_budget_bytes", nullptr},
+         {"max_concurrent_jobs", nullptr},
+         {"worker_budget", nullptr},
+         {"idle_timeout_ms", "0"}};
+  const auto loaded = s::dispatch("dataset_load", load, e::no_deadline);
+  check(loaded.dump().size() > 8192);
+  J release{{"protocol", "symphony.sbv.dataset-release-input.v1"},
+            {"directory", root}, {"instance_id", load["instance_id"]}};
+  const auto released = s::dispatch("dataset_release", release, e::no_deadline);
+  check(released["state"] == "released" &&
+        released["source_delivery"] == loaded["source_delivery"] &&
+        released["source_reads"] == "1" && released["decode_passes"] == "1");
+  release["protocol"] = "symphony.sbv.dataset-inspect-input.v1";
+  rejects([&] { (void)s::dispatch("dataset_inspect", release, e::no_deadline); });
   auto no_ack = selected;
   no_ack["retained_source"]["delivery"]["processed_ack"] = "none";
   check(d::load_dataset(no_ack, e::no_deadline)

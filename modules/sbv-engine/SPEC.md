@@ -1291,3 +1291,42 @@ Log loss, multiclass studies, calibration fitting, distribution shift, uncertain
 intervals and further catalogue proposals remain separate selectable extensions.
 This increment qualifies the named binary subset only. R5.3 acceptance is reconciled
 against original case wording in the accompanying packet; the broad M2 gate is R5.4.
+
+
+## M2 measurement profile (R5.4)
+
+The private `sbv-performance-tests` target measures the existing native run
+profile; it is test infrastructure, not a new installed operation or SDK ABI.
+Its JSON configuration chooses source requests, file/in-process RAM feeds,
+legacy/partitioned storage, workers, warmups, repetitions, page/cache options,
+output directories and a portable SBV result report. No observer is installed
+by normal native-process, SDK or resident-worker entry points. Inactive probes
+perform no clock sampling and do not change requests, calculations or results.
+
+A stack-scoped per-thread recorder reports exclusive wall time for source
+read/identity admission, DBN decode/validation/allocation, compute including
+scratch I/O and envelope work, and final publication including validation,
+hashing and durable output. Parallel compute is critical-path wall time, not
+summed worker CPU time. Source-owner admission completion belongs to decode
+validation; it is not represented as pure record conversion. The residual from
+observed producer wall time remains separately visible. Full logical-result
+materialization/hash verification is measured separately and included in the
+complete producer-plus-reader total. RAM preload is reported separately, so
+amortized totals must include it. Ordinary installed qxctl operations/export
+supply independent process-level measurements and scientific parity evidence.
+
+Benchmark reports preserve each sample, warmup status, scientific/result hashes,
+resource disclosures, process cumulative peak RSS, selected parameters and host
+context. Scientific equality compares complete summary/signals/execution/
+distributions/studies/replay/census sections, with representation differences
+qualified explicitly. Source-level observations and execution assumptions do not
+become calibrated market claims. Actual host allocation, selected dataset/control
+formats and user resource/deadline choices remain authoritative. Cache eviction,
+NUMA, clusters, terabyte RAM and GPU execution require their own real evidence.
+
+Graceful resident release sends its entire retained-source acknowledgement using
+the caller-selected deadline (including none). It does not treat its own host
+shutdown as cancellation of that response. Force-stop retains its nonblocking
+best-effort acknowledgement because it must terminate even with a stalled reader.
+A lost/partial lifecycle receipt still requires reconciliation, never automatic
+retry. The R5.4 retained-source lifecycle regression covers the larger response.

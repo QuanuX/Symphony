@@ -24392,3 +24392,31 @@ automatic nested fitting and cross-run holdout history remain unimplemented.
 - deferred_projections: calibration fitting, additional study families and broad M2 qualification
 - notes: Caller-selected numeric labels, weights, thresholds, bins and ties.
 - status: canonical
+
+### SBV measurement.hpp
+
+- path: `modules/sbv-engine/src/measurement.hpp`
+- title: SBV measurement.hpp
+- surface_type: implementation contract or test
+- truth_role: Private native measurement and reproducibility qualification
+- owner: Symphony Backtesting Vector maintainers
+- scope: R5.4 selected local CPU/file/RAM benchmark evidence
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: release qualification and qxctl result readers
+- deferred_projections: peer rankings, device execution and cluster qualification
+- notes: Exclusive wall phases and complete work; no default active observer.
+- status: canonical
+
+### SBV performance_test.cpp
+
+- path: `modules/sbv-engine/tests/performance_test.cpp`
+- title: SBV performance_test.cpp
+- surface_type: implementation contract or test
+- truth_role: Private native measurement and reproducibility qualification
+- owner: Symphony Backtesting Vector maintainers
+- scope: R5.4 selected local CPU/file/RAM benchmark evidence
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: release qualification and qxctl result readers
+- deferred_projections: peer rankings, device execution and cluster qualification
+- notes: Exclusive wall phases and complete work; no default active observer.
+- status: canonical

@@ -1,3 +1,4 @@
+#include "measurement.hpp"
 #include "detail.hpp"
 #include "interface.generated.hpp"
 #include "operation_profiles.hpp"
@@ -122,6 +123,7 @@ void validate_value(const Json &v, std::size_t depth, std::size_t &count) {
 }
 Json persist(Json result, const Json &request, const std::string &op,
              std::int64_t end) {
+  measurement::Scope publishing(measurement::Phase::publication);
   result = seal_result(std::move(result));
   validate_result(result);
   const auto bytes = result.dump();

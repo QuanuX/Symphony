@@ -10,12 +10,6 @@
       "cross_vector_references": [
         {
           "applicability": "applicable",
-          "reason": "SBV owns quantitative meaning and replay/results.",
-          "reference": "knowledge/sbv/SPEC.md",
-          "vector": "sbv"
-        },
-        {
-          "applicability": "applicable",
           "reason": "Local source closure retains implementation and verification provenance.",
           "reference": "knowledge/sclv/CHANGELOG.md",
           "vector": "sclv"
@@ -47,11 +41,11 @@
       ],
       "implementation_paths": [
         "libraries/sbv-go/client.go",
-        "libraries/sbv-go/stream.go",
-        "libraries/sbv-go/rows.go",
         "libraries/sbv-go/client_test.go",
-        "libraries/sbv-go/stream_test.go",
-        "libraries/sbv-go/examples/roundtrip/main.go"
+        "libraries/sbv-go/examples/roundtrip/main.go",
+        "libraries/sbv-go/rows.go",
+        "libraries/sbv-go/stream.go",
+        "libraries/sbv-go/stream_test.go"
       ],
       "kind": "feature",
       "non_claims": [
@@ -63,13 +57,13 @@
       "record_version": 2,
       "relationships": [
         {
-          "rationale": "Native C++ owns scientific calculation and source/result admission.",
-          "target_feature_id": "ssfv:symphony:sbv-engine",
+          "rationale": "All operation and discovery transport uses the same qxctl-first exact installed surface.",
+          "target_feature_id": "ssfv:symphony:qxctl-sbv-administration",
           "type": "depends_on"
         },
         {
-          "rationale": "All operation and discovery transport uses the same qxctl-first exact installed surface.",
-          "target_feature_id": "ssfv:symphony:qxctl-sbv-administration",
+          "rationale": "Native C++ owns scientific calculation and source/result admission.",
+          "target_feature_id": "ssfv:symphony:sbv-engine",
           "type": "depends_on"
         }
       ],
@@ -82,7 +76,8 @@
       "who": "Independent Go consumers, user-authored model/proposal producers, agents and future GUI adapters.",
       "why": "Provides an optional language boundary without duplicating C++ calculations or imposing an external framework."
     }
-  ]
+  ],
+  "source_scope": "libraries/sbv-go"
 }
 ```
 <!-- symphony:ssfv:feature-file:v1:end -->
