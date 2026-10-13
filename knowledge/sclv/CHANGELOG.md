@@ -16272,3 +16272,63 @@ This PR authorizes none of the following:
   - `No new push or merge, universal transport selection, true two-host qualification, deployed SSIAG/STAV authorization acceptance, fresh provider/live activity or spend, full original M3 acceptance, cluster/NUMA/terabyte/device or peer-performance claim.`
 - notes: |
     Post_merge denotes local source closure, not a forge/main merge. Change timestamps identify the implementation commit; earlier development and test attempts remain in the evidence packet. Primary-agent review is recorded without an independent-review claim. Initial fixture, toolchain, copied-system-client, registry-count and profile-order failures are retained. A concurrent qxctl rebuild correctly triggered target digest refusal; the final passing loopback campaign uses frozen executable copies. Next qualification requires a reachable second host, deployed authority, remote setup/data access and interruption/reconciliation checks.
+
+
+- record_id: `SCLV-CHG-sbv-M3-cross-OS-qualification`
+- record_version: `3`
+- title: `Close selected M3 release with authenticated cross-OS guest qualification`
+- status: `canonical`
+- date: `2026-10-13`
+- change_started_at: `2026-10-13T23:18:29Z`
+- change_completed_at: `2026-10-13T23:18:29Z`
+- recorded_at: `2026-10-13T23:19:10Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `documentation_change`
+- change_request_state: `not_applicable`
+- change_request_provider: `not_applicable`
+- change_request_id: `not_applicable`
+- change_request_reference: `not_applicable`
+- change_request_absence_reason: `Direct user instruction to finish M3; local qualification and commits, no new forge publication or main merge.`
+- revision_scheme: `git-sha1`
+- revision_value: `60b180ab6cf6c6b42d6edf115c16fc92d45d9c26`
+- tree_digest: `sha256:6c39489c0e26e73cdeea8245337398fcd68f8abd4fbb3b8fb776236648263b5c`
+- ratification_subject: `Duncan (Architect)`
+- ratification_permission: `authorize_qualification_and_local_commit`
+- ratification_method: `explicit-user-instruction`
+- ratification_evidence_reference: `../sbv-m3-remote-final/RATIFICATION.json`
+- ratification_evidence_digest: `sha256:d17c4ba67ef51991cc19e4e7aa0f9bf5b0f7c52c75c9bd62924067d988064f3f`
+- affected_surfaces:
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/sov/SSH-CARRIER.md`
+  - `modules/sbv-engine/M2-M3-READINESS.json`
+  - `modules/sbv-engine/M3-QUALIFICATION.md`
+- skvi_references:
+  - `knowledge/sov/SSH-CARRIER.md`
+  - `modules/sbv-engine/M2-M3-READINESS.json`
+  - `modules/sbv-engine/M3-QUALIFICATION.md`
+- change_summary: |
+    Records completion of the selected R6/M3 release, adding real target-local SSIAG/STAV and authenticated macOS-to-Linux guest SSH qualification to prior native/local/Linux gates. Corrects current readiness and deferred-index descriptions while preserving dated earlier evidence. Runtime source af4cd24d05b9881aa1496abe805b2b109d33d508 is unchanged.
+- relationship_changes: |
+    SOV owns optional SSH transport, SSIAG/STAV own target user-scope admission/audit, native SBV owns scientific/result/job state and qxctl exposes every selected control and result. Docker is temporary test provisioning and fault injection, not a Symphony runtime dependency. Actual qualified requests use the pinned network carrier and target qxctl. Owner-managed target setup/data placement remain explicit prerequisites.
+- doctrine_changes: |
+    User-selected limits or none remain authoritative; no aggregate dataset/RAM cap or mandatory job deadline is introduced. The gate covers a distinct Linux guest kernel on shared physical hardware, with same-UID user-scope authority. It is not physical-cluster, WAN or distinct-principal system-scope qualification. Selected milestone closure does not promote every original96-case capability into an implemented feature.
+- compatibility_consequences: |
+    Native SBV0.33.0-dev, Go transport0.1.7-dev and SSH carrier0.1.0-dev are unchanged. The Linux installation uses Clang19/C++26, Go1.26.5 and exact libcurl8.7.1. All9 remote operations,899 typed account nodes and374 typed replay nodes pass. Account output is identical across OSes; retained Databento values differ only in two explicit source paths and the digest binding them.
+- publication_consequences: |
+    Documentation and qualification closure are committed locally on codex/sbv-implementation. No push, main merge, live or paid/provider request occurs; new spend is zero. Temporary services/container/keys are removed and Docker Desktop is restored to its prior stopped state. Qualified binaries and private evidence remain local.
+- projection_consequences: |
+    Real-service grant/deny/revocation/policy/audit/expiry checks pass; expiry delays a genuine Mac SSIAG decision through an explicit test relay. Linux verifies fresh grant/default-denial/revocation over SSH. Queued/running cancellation, stale cursors/generations, missing/removed artifacts, killed worker/controller/SSH connection and response loss after completion resolve without duplicate dispatch or result retargeting. Independent final reviewer reports no actionable finding. Prior broad55native/four-sanitizer and focused carrier gates retain exact attribution; unchanged suites were not rerun.
+- evidence:
+  - `../sbv-m3-remote-final/RATIFICATION.json`
+  - `../sbv-m3-remote-final/SOURCE_BINDING.json`
+  - `../sbv-m3-remote-final/DOC_SOURCE_BINDING.json`
+  - `../sbv-m3-remote-final/CHECKS.json`
+  - `../sbv-m3-remote-final/CROSS_OS_PARITY.json`
+  - `../sbv-m3-remote-final/FINAL_REVIEW.json`
+  - `../sbv-m3-remote-final/MILESTONE_DECISION.json`
+  - `../sbv-m3-remote-final/CASE_EVIDENCE.json`
+- non_authorizations:
+  - `No new push/main merge, WAN or separate-physical-host claim, system-scope/distinct-principal authority claim, live/provider activity or spend, cluster/NUMA/terabyte/device/shared-storage-power-loss/checkpoint or peer-speed qualification.`
+- notes: |
+    Post_merge denotes local source closure, not a forge/main merge. Initial test-environment failures are preserved: sshd SetEnv composition, nondeterministic expiry timing, missing xz-utils, and a completed-versus-completed_partial assertion for an explicit one-signal cap. Focused final checks resolve these fixture issues without production-code changes. Existing Codex cloud environment network cannot supply the needed route; this gate selects the disclosed private Linux guest instead. A later different deployment needs its own positive evidence.
