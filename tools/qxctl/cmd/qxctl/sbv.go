@@ -27,13 +27,16 @@ func newSBVCommand() *cobra.Command {
 	results := structural("result", errUsageOnly)
 	datasets := structural("dataset", errUsageOnly)
 	bundles := structural("bundle", errUsageOnly)
+	jobs := structural("job", errUsageOnly)
 	for _, op := range knowledgeengine.SBVOperations {
-		leaf := strings.TrimPrefix(strings.TrimPrefix(strings.TrimPrefix(op, "result_"), "dataset_"), "bundle_")
+		leaf := strings.TrimPrefix(strings.TrimPrefix(strings.TrimPrefix(strings.TrimPrefix(op, "result_"), "dataset_"), "bundle_"), "job_")
 		c := newSBVLeaf(op, strings.ReplaceAll(leaf, "_", "-"))
 		if strings.HasPrefix(op, "result_") {
 			results.AddCommand(c)
 		} else if strings.HasPrefix(op, "dataset_") {
 			datasets.AddCommand(c)
+		} else if strings.HasPrefix(op, "job_") {
+			jobs.AddCommand(c)
 		} else if strings.HasPrefix(op, "bundle_") {
 			bundles.AddCommand(c)
 		} else {
@@ -41,7 +44,7 @@ func newSBVCommand() *cobra.Command {
 		}
 	}
 	results.AddCommand(newSBVLeaf("result_export", "export"))
-	root.AddCommand(results, datasets, bundles, newSBVLeaf("schema", "schema"), newSBVLeaf("template", "template"))
+	root.AddCommand(results, datasets, bundles, jobs, newSBVLeaf("schema", "schema"), newSBVLeaf("template", "template"))
 	return root
 }
 func sbvSafeError(err error) error {
@@ -202,7 +205,7 @@ func newSBVLeaf(op, leaf string) *cobra.Command {
 	interaction := "invoke"
 	if resource || op == "capabilities" || op == "catalogue" || op == "provider_inspect" {
 		interaction = "discover"
-	} else if read || op == "result_select" || op == "dataset_inspect" || op == "dataset_jobs" || op == "bundle_inspect" || op == "bundle_query" || op == "bundle_verify" {
+	} else if op == "job_inspect" || read || op == "result_select" || op == "dataset_inspect" || op == "dataset_jobs" || op == "bundle_inspect" || op == "bundle_query" || op == "bundle_verify" {
 		interaction = "inspect"
 	}
 	spec := commandSpec(key, featureSBVAdministration, interaction)
@@ -226,7 +229,15 @@ func newSBVLeaf(op, leaf string) *cobra.Command {
 	if op == "dataset_cancel" {
 		spec.RecoveryCommandID = stringPointer("qxcmd:symphony:sbv.dataset.jobs")
 	}
-	if op == "result_inspect" || op == "dataset_inspect" || op == "dataset_jobs" {
+	if op == "job_inspect" || op == "result_inspect" || op == "dataset_inspect" || op == "dataset_jobs" {
+		spec.FeatureBindings = append(spec.FeatureBindings, commandregistry.FeatureBinding{FeatureID: "ssfv:symphony:sbv-engine", Interaction: "recover"}, commandregistry.FeatureBinding{FeatureID: featureSBVAdministration, Interaction: "recover"})
+	}
+	if strings.HasPrefix(op, "job_") && op != "job_inspect" {
+		spec.Mutability = "permission_backed_mutation"
+		spec.AuthorityMode = "target_host_permission"
+		spec.RecoveryCommandID = stringPointer("qxcmd:symphony:sbv.job.reconcile")
+	}
+	if op == "job_reconcile" {
 		spec.FeatureBindings = append(spec.FeatureBindings, commandregistry.FeatureBinding{FeatureID: "ssfv:symphony:sbv-engine", Interaction: "recover"}, commandregistry.FeatureBinding{FeatureID: featureSBVAdministration, Interaction: "recover"})
 	}
 	nativeOp := op

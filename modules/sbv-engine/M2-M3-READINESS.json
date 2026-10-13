@@ -28,7 +28,7 @@
       "verification": "Stale generation refusal, reject/drain below active demand, unlimited/uint64 selections, reads/decodes unchanged after source deletion."
     }
   ],
-  "next_increment": "R6.2",
+  "next_increment": "R6.2b",
   "sequence": [
     {
       "id": "R5.1",
@@ -310,7 +310,23 @@
         "A094",
         "A095"
       ],
-      "status": "prepared_not_started"
+      "status": "local_durable_jobs_implemented_remote_open",
+      "increments": [
+        {
+          "id": "R6.2a",
+          "status": "complete_selected_local_scope",
+          "version": "0.33.0-dev",
+          "deliverable": "Five qxctl-first native durable local job operations; exact plan, one admission claim, cooperative cancellation, outcomes and reconciliation.",
+          "evidence": "../sbv-durable-jobs/",
+          "scope": "Local private POSIX journal; no remote transport/deployed grant, automatic retry, hard kill or automatic mid-run resume.",
+          "checks": "Four focused native suites, 118 durable-job assertions, ASan/UBSan, installed qxctl/schema/registry, independent C/C++/Go, full terminal parity and real controller interruption; see exact evidence counts in CHECKS.json."
+        },
+        {
+          "id": "R6.2b",
+          "status": "owner_transport_and_deployment_selection_open",
+          "deliverable": "Select and implement actual SOV transport/deployed SSIAG authority, remote lifecycle and resource controls, then qualify remote loss/cancel/termination."
+        }
+      ]
     },
     {
       "id": "R6.3",
@@ -369,5 +385,5 @@
       "correction": "The generic recommendation to replace the 4096-signal profile is historical/stale for already-shipped partitioned core producers; 0.24 qualified 65,537 signals. Residual legacy external/model/consumer domains remain profile-specific. Preserve the sealed original and use operation_profiles for current limits."
     }
   ],
-  "next_step": "R6.2"
+  "next_step": "R6.2b: actual SOV transport and deployed SSIAG authority selection/implementation; R6.2 and M3 remain open"
 }

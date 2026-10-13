@@ -37978,6 +37978,221 @@
           "additionalProperties": false
         }
       ]
+    },
+    "job_create": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.job-create-input.v1"
+        },
+        "directory": {
+          "type": "string"
+        },
+        "job_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,80}$"
+        },
+        "operation": {
+          "enum": [
+            "run",
+            "generate_census",
+            "evaluate",
+            "compose",
+            "compose_joint",
+            "economics",
+            "book",
+            "liquidity",
+            "queue_scenarios",
+            "account_simulate",
+            "allocation_economics",
+            "analyze",
+            "compare",
+            "resample",
+            "split",
+            "fit",
+            "predict",
+            "research_history",
+            "compose_economics",
+            "result_select"
+          ]
+        },
+        "request": {
+          "type": "object"
+        },
+        "deadline_unix_ms": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[1-9][0-9]*$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "read_options": {
+          "type": "object",
+          "properties": {
+            "max_page_bytes": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[1-9][0-9]*$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "cache_bytes": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]*)$"
+            }
+          },
+          "required": [
+            "max_page_bytes",
+            "cache_bytes"
+          ],
+          "additionalProperties": false
+        },
+        "extensions": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "protocol",
+        "directory",
+        "job_id",
+        "operation",
+        "request",
+        "deadline_unix_ms",
+        "read_options",
+        "extensions"
+      ],
+      "additionalProperties": false
+    },
+    "job_inspect": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.job-inspect-input.v1"
+        },
+        "directory": {
+          "type": "string"
+        },
+        "job_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,80}$"
+        },
+        "expected_plan_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      },
+      "required": [
+        "protocol",
+        "directory",
+        "job_id",
+        "expected_plan_sha256"
+      ],
+      "additionalProperties": false
+    },
+    "job_execute": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.job-execute-input.v1"
+        },
+        "directory": {
+          "type": "string"
+        },
+        "job_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,80}$"
+        },
+        "expected_plan_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      },
+      "required": [
+        "protocol",
+        "directory",
+        "job_id",
+        "expected_plan_sha256"
+      ],
+      "additionalProperties": false
+    },
+    "job_cancel": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.job-cancel-input.v1"
+        },
+        "directory": {
+          "type": "string"
+        },
+        "job_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,80}$"
+        },
+        "expected_plan_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "expected_generation": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$"
+        },
+        "request_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reason": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "protocol",
+        "directory",
+        "job_id",
+        "expected_plan_sha256",
+        "expected_generation",
+        "request_id",
+        "reason"
+      ],
+      "additionalProperties": false
+    },
+    "job_reconcile": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.job-reconcile-input.v1"
+        },
+        "directory": {
+          "type": "string"
+        },
+        "job_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,80}$"
+        },
+        "expected_plan_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "expected_generation": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$"
+        }
+      },
+      "required": [
+        "protocol",
+        "directory",
+        "job_id",
+        "expected_plan_sha256",
+        "expected_generation"
+      ],
+      "additionalProperties": false
     }
   },
   "results": {
@@ -37988,7 +38203,7 @@
           "const": "symphony.sbv.capabilities.v1"
         },
         "engine_version": {
-          "const": "0.32.0-dev"
+          "const": "0.33.0-dev"
         },
         "cpu": {
           "type": "object",
@@ -39874,7 +40089,7 @@
           "const": "symphony.sbv.catalogue.v1"
         },
         "engine_version": {
-          "const": "0.32.0-dev"
+          "const": "0.33.0-dev"
         },
         "models": {
           "type": "array",
@@ -42810,7 +43025,7 @@
           "const": "symphony.sbv.backend-plan.v1"
         },
         "engine_version": {
-          "const": "0.32.0-dev"
+          "const": "0.33.0-dev"
         },
         "status": {
           "enum": [
@@ -43103,7 +43318,7 @@
           "const": "symphony.sbv.live-plan.v1"
         },
         "engine_version": {
-          "const": "0.32.0-dev"
+          "const": "0.33.0-dev"
         },
         "can_activate": {
           "const": false
@@ -50013,7 +50228,7 @@
           "const": "symphony.sbv.provider-inspect.v1"
         },
         "engine_version": {
-          "const": "0.32.0-dev"
+          "const": "0.33.0-dev"
         },
         "provider": {
           "type": "object",
@@ -51782,7 +51997,7 @@
           "const": "symphony.sbv.dataset-jobs.v1"
         },
         "engine_version": {
-          "const": "0.32.0-dev"
+          "const": "0.33.0-dev"
         },
         "directory": {
           "type": "string"
@@ -51828,7 +52043,7 @@
           "const": "symphony.sbv.dataset-cancel.v1"
         },
         "engine_version": {
-          "const": "0.32.0-dev"
+          "const": "0.33.0-dev"
         },
         "directory": {
           "type": "string"
@@ -51857,7 +52072,7 @@
           "const": "symphony.sbv.dataset-stop.v1"
         },
         "engine_version": {
-          "const": "0.32.0-dev"
+          "const": "0.33.0-dev"
         },
         "directory": {
           "type": "string"
@@ -52902,6 +53117,1101 @@
           "additionalProperties": false
         }
       ]
+    },
+    "job_create": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.job-create.v1"
+        },
+        "engine_version": {
+          "const": "0.33.0-dev"
+        },
+        "directory": {
+          "type": "string"
+        },
+        "job_id": {
+          "type": "string"
+        },
+        "plan_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "generation": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$"
+        },
+        "phase": {
+          "enum": [
+            "queued",
+            "running",
+            "completed",
+            "completed_partial",
+            "cancelled",
+            "failed",
+            "unknown"
+          ]
+        },
+        "cancellation_requested": {
+          "type": "boolean"
+        },
+        "cancellation_observed": {
+          "type": "boolean"
+        },
+        "execution_lock_held": {
+          "type": "boolean"
+        },
+        "admitted": {
+          "type": "boolean"
+        },
+        "automatic_retry": {
+          "const": false
+        },
+        "result_receipt": {
+          "anyOf": [
+            {
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "error_code": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "plan_reference": {
+          "type": "object",
+          "properties": {
+            "path": {
+              "type": "string"
+            },
+            "expected_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "pointer": {
+              "const": ""
+            }
+          },
+          "required": [
+            "path",
+            "expected_sha256",
+            "pointer"
+          ],
+          "additionalProperties": false
+        },
+        "state_reference": {
+          "type": "object",
+          "properties": {
+            "path": {
+              "type": "string"
+            },
+            "expected_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "pointer": {
+              "const": ""
+            }
+          },
+          "required": [
+            "path",
+            "expected_sha256",
+            "pointer"
+          ],
+          "additionalProperties": false
+        },
+        "outcome_reference": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": "string"
+                },
+                "expected_sha256": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                "pointer": {
+                  "const": ""
+                }
+              },
+              "required": [
+                "path",
+                "expected_sha256",
+                "pointer"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "claim_reference": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": "string"
+                },
+                "expected_sha256": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                "pointer": {
+                  "const": ""
+                }
+              },
+              "required": [
+                "path",
+                "expected_sha256",
+                "pointer"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "cancellation_reference": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": "string"
+                },
+                "expected_sha256": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                "pointer": {
+                  "const": ""
+                }
+              },
+              "required": [
+                "path",
+                "expected_sha256",
+                "pointer"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "protocol",
+        "engine_version",
+        "directory",
+        "job_id",
+        "plan_sha256",
+        "generation",
+        "phase",
+        "cancellation_requested",
+        "cancellation_observed",
+        "execution_lock_held",
+        "admitted",
+        "automatic_retry",
+        "result_receipt",
+        "error_code",
+        "plan_reference",
+        "state_reference",
+        "outcome_reference",
+        "claim_reference",
+        "cancellation_reference"
+      ],
+      "additionalProperties": false
+    },
+    "job_inspect": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.job-inspect.v1"
+        },
+        "engine_version": {
+          "const": "0.33.0-dev"
+        },
+        "directory": {
+          "type": "string"
+        },
+        "job_id": {
+          "type": "string"
+        },
+        "plan_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "generation": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$"
+        },
+        "phase": {
+          "enum": [
+            "queued",
+            "running",
+            "completed",
+            "completed_partial",
+            "cancelled",
+            "failed",
+            "unknown"
+          ]
+        },
+        "cancellation_requested": {
+          "type": "boolean"
+        },
+        "cancellation_observed": {
+          "type": "boolean"
+        },
+        "execution_lock_held": {
+          "type": "boolean"
+        },
+        "admitted": {
+          "type": "boolean"
+        },
+        "automatic_retry": {
+          "const": false
+        },
+        "result_receipt": {
+          "anyOf": [
+            {
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "error_code": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "plan_reference": {
+          "type": "object",
+          "properties": {
+            "path": {
+              "type": "string"
+            },
+            "expected_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "pointer": {
+              "const": ""
+            }
+          },
+          "required": [
+            "path",
+            "expected_sha256",
+            "pointer"
+          ],
+          "additionalProperties": false
+        },
+        "state_reference": {
+          "type": "object",
+          "properties": {
+            "path": {
+              "type": "string"
+            },
+            "expected_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "pointer": {
+              "const": ""
+            }
+          },
+          "required": [
+            "path",
+            "expected_sha256",
+            "pointer"
+          ],
+          "additionalProperties": false
+        },
+        "outcome_reference": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": "string"
+                },
+                "expected_sha256": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                "pointer": {
+                  "const": ""
+                }
+              },
+              "required": [
+                "path",
+                "expected_sha256",
+                "pointer"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "claim_reference": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": "string"
+                },
+                "expected_sha256": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                "pointer": {
+                  "const": ""
+                }
+              },
+              "required": [
+                "path",
+                "expected_sha256",
+                "pointer"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "cancellation_reference": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": "string"
+                },
+                "expected_sha256": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                "pointer": {
+                  "const": ""
+                }
+              },
+              "required": [
+                "path",
+                "expected_sha256",
+                "pointer"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "protocol",
+        "engine_version",
+        "directory",
+        "job_id",
+        "plan_sha256",
+        "generation",
+        "phase",
+        "cancellation_requested",
+        "cancellation_observed",
+        "execution_lock_held",
+        "admitted",
+        "automatic_retry",
+        "result_receipt",
+        "error_code",
+        "plan_reference",
+        "state_reference",
+        "outcome_reference",
+        "claim_reference",
+        "cancellation_reference"
+      ],
+      "additionalProperties": false
+    },
+    "job_execute": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.job-execute.v1"
+        },
+        "engine_version": {
+          "const": "0.33.0-dev"
+        },
+        "directory": {
+          "type": "string"
+        },
+        "job_id": {
+          "type": "string"
+        },
+        "plan_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "generation": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$"
+        },
+        "phase": {
+          "enum": [
+            "queued",
+            "running",
+            "completed",
+            "completed_partial",
+            "cancelled",
+            "failed",
+            "unknown"
+          ]
+        },
+        "cancellation_requested": {
+          "type": "boolean"
+        },
+        "cancellation_observed": {
+          "type": "boolean"
+        },
+        "execution_lock_held": {
+          "type": "boolean"
+        },
+        "admitted": {
+          "type": "boolean"
+        },
+        "automatic_retry": {
+          "const": false
+        },
+        "result_receipt": {
+          "anyOf": [
+            {
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "error_code": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "plan_reference": {
+          "type": "object",
+          "properties": {
+            "path": {
+              "type": "string"
+            },
+            "expected_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "pointer": {
+              "const": ""
+            }
+          },
+          "required": [
+            "path",
+            "expected_sha256",
+            "pointer"
+          ],
+          "additionalProperties": false
+        },
+        "state_reference": {
+          "type": "object",
+          "properties": {
+            "path": {
+              "type": "string"
+            },
+            "expected_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "pointer": {
+              "const": ""
+            }
+          },
+          "required": [
+            "path",
+            "expected_sha256",
+            "pointer"
+          ],
+          "additionalProperties": false
+        },
+        "outcome_reference": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": "string"
+                },
+                "expected_sha256": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                "pointer": {
+                  "const": ""
+                }
+              },
+              "required": [
+                "path",
+                "expected_sha256",
+                "pointer"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "claim_reference": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": "string"
+                },
+                "expected_sha256": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                "pointer": {
+                  "const": ""
+                }
+              },
+              "required": [
+                "path",
+                "expected_sha256",
+                "pointer"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "cancellation_reference": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": "string"
+                },
+                "expected_sha256": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                "pointer": {
+                  "const": ""
+                }
+              },
+              "required": [
+                "path",
+                "expected_sha256",
+                "pointer"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "protocol",
+        "engine_version",
+        "directory",
+        "job_id",
+        "plan_sha256",
+        "generation",
+        "phase",
+        "cancellation_requested",
+        "cancellation_observed",
+        "execution_lock_held",
+        "admitted",
+        "automatic_retry",
+        "result_receipt",
+        "error_code",
+        "plan_reference",
+        "state_reference",
+        "outcome_reference",
+        "claim_reference",
+        "cancellation_reference"
+      ],
+      "additionalProperties": false
+    },
+    "job_cancel": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.job-cancel.v1"
+        },
+        "engine_version": {
+          "const": "0.33.0-dev"
+        },
+        "directory": {
+          "type": "string"
+        },
+        "job_id": {
+          "type": "string"
+        },
+        "plan_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "generation": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$"
+        },
+        "phase": {
+          "enum": [
+            "queued",
+            "running",
+            "completed",
+            "completed_partial",
+            "cancelled",
+            "failed",
+            "unknown"
+          ]
+        },
+        "cancellation_requested": {
+          "type": "boolean"
+        },
+        "cancellation_observed": {
+          "type": "boolean"
+        },
+        "execution_lock_held": {
+          "type": "boolean"
+        },
+        "admitted": {
+          "type": "boolean"
+        },
+        "automatic_retry": {
+          "const": false
+        },
+        "result_receipt": {
+          "anyOf": [
+            {
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "error_code": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "plan_reference": {
+          "type": "object",
+          "properties": {
+            "path": {
+              "type": "string"
+            },
+            "expected_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "pointer": {
+              "const": ""
+            }
+          },
+          "required": [
+            "path",
+            "expected_sha256",
+            "pointer"
+          ],
+          "additionalProperties": false
+        },
+        "state_reference": {
+          "type": "object",
+          "properties": {
+            "path": {
+              "type": "string"
+            },
+            "expected_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "pointer": {
+              "const": ""
+            }
+          },
+          "required": [
+            "path",
+            "expected_sha256",
+            "pointer"
+          ],
+          "additionalProperties": false
+        },
+        "outcome_reference": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": "string"
+                },
+                "expected_sha256": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                "pointer": {
+                  "const": ""
+                }
+              },
+              "required": [
+                "path",
+                "expected_sha256",
+                "pointer"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "claim_reference": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": "string"
+                },
+                "expected_sha256": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                "pointer": {
+                  "const": ""
+                }
+              },
+              "required": [
+                "path",
+                "expected_sha256",
+                "pointer"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "cancellation_reference": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": "string"
+                },
+                "expected_sha256": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                "pointer": {
+                  "const": ""
+                }
+              },
+              "required": [
+                "path",
+                "expected_sha256",
+                "pointer"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "protocol",
+        "engine_version",
+        "directory",
+        "job_id",
+        "plan_sha256",
+        "generation",
+        "phase",
+        "cancellation_requested",
+        "cancellation_observed",
+        "execution_lock_held",
+        "admitted",
+        "automatic_retry",
+        "result_receipt",
+        "error_code",
+        "plan_reference",
+        "state_reference",
+        "outcome_reference",
+        "claim_reference",
+        "cancellation_reference"
+      ],
+      "additionalProperties": false
+    },
+    "job_reconcile": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.sbv.job-reconcile.v1"
+        },
+        "engine_version": {
+          "const": "0.33.0-dev"
+        },
+        "directory": {
+          "type": "string"
+        },
+        "job_id": {
+          "type": "string"
+        },
+        "plan_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "generation": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$"
+        },
+        "phase": {
+          "enum": [
+            "queued",
+            "running",
+            "completed",
+            "completed_partial",
+            "cancelled",
+            "failed",
+            "unknown"
+          ]
+        },
+        "cancellation_requested": {
+          "type": "boolean"
+        },
+        "cancellation_observed": {
+          "type": "boolean"
+        },
+        "execution_lock_held": {
+          "type": "boolean"
+        },
+        "admitted": {
+          "type": "boolean"
+        },
+        "automatic_retry": {
+          "const": false
+        },
+        "result_receipt": {
+          "anyOf": [
+            {
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "error_code": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "plan_reference": {
+          "type": "object",
+          "properties": {
+            "path": {
+              "type": "string"
+            },
+            "expected_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "pointer": {
+              "const": ""
+            }
+          },
+          "required": [
+            "path",
+            "expected_sha256",
+            "pointer"
+          ],
+          "additionalProperties": false
+        },
+        "state_reference": {
+          "type": "object",
+          "properties": {
+            "path": {
+              "type": "string"
+            },
+            "expected_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "pointer": {
+              "const": ""
+            }
+          },
+          "required": [
+            "path",
+            "expected_sha256",
+            "pointer"
+          ],
+          "additionalProperties": false
+        },
+        "outcome_reference": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": "string"
+                },
+                "expected_sha256": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                "pointer": {
+                  "const": ""
+                }
+              },
+              "required": [
+                "path",
+                "expected_sha256",
+                "pointer"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "claim_reference": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": "string"
+                },
+                "expected_sha256": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                "pointer": {
+                  "const": ""
+                }
+              },
+              "required": [
+                "path",
+                "expected_sha256",
+                "pointer"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "cancellation_reference": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": "string"
+                },
+                "expected_sha256": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                "pointer": {
+                  "const": ""
+                }
+              },
+              "required": [
+                "path",
+                "expected_sha256",
+                "pointer"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "protocol",
+        "engine_version",
+        "directory",
+        "job_id",
+        "plan_sha256",
+        "generation",
+        "phase",
+        "cancellation_requested",
+        "cancellation_observed",
+        "execution_lock_held",
+        "admitted",
+        "automatic_retry",
+        "result_receipt",
+        "error_code",
+        "plan_reference",
+        "state_reference",
+        "outcome_reference",
+        "claim_reference",
+        "cancellation_reference"
+      ],
+      "additionalProperties": false
     }
   },
   "$defs": {

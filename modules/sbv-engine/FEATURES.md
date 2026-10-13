@@ -48,6 +48,7 @@
         "modules/sbv-engine/tests/generate_partitioned_test.cpp",
         "modules/sbv-engine/tests/history_test.cpp",
         "modules/sbv-engine/tests/interop_consumer.cpp",
+        "modules/sbv-engine/tests/jobs_test.cpp",
         "modules/sbv-engine/tests/liquidity_test.cpp",
         "modules/sbv-engine/tests/logical_value_test.cpp",
         "modules/sbv-engine/tests/model_partitioned_test.cpp",
@@ -76,7 +77,7 @@
         "modules/sbv-engine/tests/study_formula_test.cpp"
       ],
       "feature_id": "ssfv:symphony:sbv-engine",
-      "how": "C++26 computations behind exact native process and installed C ABI; optional C++ ownership wrapper; external language consumers reuse identical native results and explicit contracts. Resident controls expose addressable job inspection and cooperative cancellation, exact-incarnation force stop, and generation-checked admission/idle configuration without reloading RAM. SIGTERM and SIGINT propagate foreground qxctl cancellation.",
+      "how": "C++26 computations behind exact native process and installed C ABI; optional C++ ownership wrapper; external language consumers reuse identical native results and explicit contracts. Resident controls expose addressable job inspection and cooperative cancellation, exact-incarnation force stop, and generation-checked admission/idle configuration without reloading RAM. SIGTERM and SIGINT propagate foreground qxctl cancellation. Durable local jobs retain exact plans, one admission claim, cancellation and reconciled outcomes through all five qxctl lifecycle commands.",
       "implementation_languages": [
         {
           "language": "C++26",
@@ -127,6 +128,7 @@
         "modules/sbv-engine/src/fit.cpp",
         "modules/sbv-engine/src/generate_census.cpp",
         "modules/sbv-engine/src/history.cpp",
+        "modules/sbv-engine/src/jobs.cpp",
         "modules/sbv-engine/src/liquidity.cpp",
         "modules/sbv-engine/src/logical_value.cpp",
         "modules/sbv-engine/src/logical_value.hpp",

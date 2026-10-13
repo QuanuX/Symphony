@@ -1419,6 +1419,217 @@
       ],
       "extensions": {},
       "output_path": "/absolute/private/account.json"
+    },
+    "job_create": {
+      "protocol": "symphony.sbv.job-create-input.v1",
+      "directory": "/absolute/private/job",
+      "job_id": "example",
+      "operation": "account_simulate",
+      "request": {
+        "protocol": "symphony.sbv.account-simulate-input.v1",
+        "mode": "fixed_intents",
+        "cash_units": [
+          "USD"
+        ],
+        "instruments": [
+          {
+            "instrument_id": "A",
+            "cash_unit": "USD",
+            "settlement": "cash_notional",
+            "price_multiplier": {
+              "numerator": "1",
+              "denominator": "1"
+            }
+          },
+          {
+            "instrument_id": "B",
+            "cash_unit": "USD",
+            "settlement": "cash_notional",
+            "price_multiplier": {
+              "numerator": "1",
+              "denominator": "1"
+            }
+          }
+        ],
+        "initial_state": {
+          "cash": {
+            "USD": {
+              "numerator": "100",
+              "denominator": "1"
+            }
+          },
+          "positions": {
+            "A": {
+              "numerator": "0",
+              "denominator": "1"
+            },
+            "B": {
+              "numerator": "0",
+              "denominator": "1"
+            }
+          },
+          "marks": {},
+          "time_ns": null
+        },
+        "constraints": {
+          "cash": {
+            "USD": {
+              "minimum": {
+                "numerator": "0",
+                "denominator": "1"
+              },
+              "maximum": null
+            }
+          },
+          "positions": {
+            "A": {
+              "minimum": null,
+              "maximum": null
+            },
+            "B": {
+              "minimum": null,
+              "maximum": null
+            }
+          }
+        },
+        "on_constraint": "reject_event",
+        "ordering": "time_stream_order",
+        "retain_snapshots": true,
+        "streams": [
+          {
+            "stream_id": "first",
+            "events": [
+              {
+                "event_id": "buy-A",
+                "time_ns": "1",
+                "kind": "fill_intent",
+                "instrument_id": "A",
+                "quantity": {
+                  "numerator": "1",
+                  "denominator": "1"
+                },
+                "price": {
+                  "numerator": "60",
+                  "denominator": "1"
+                },
+                "fee": {
+                  "numerator": "0",
+                  "denominator": "1"
+                },
+                "guards": []
+              },
+              {
+                "event_id": "sell-A",
+                "time_ns": "2",
+                "kind": "fill_intent",
+                "instrument_id": "A",
+                "quantity": {
+                  "numerator": "-1",
+                  "denominator": "1"
+                },
+                "price": {
+                  "numerator": "70",
+                  "denominator": "1"
+                },
+                "fee": {
+                  "numerator": "0",
+                  "denominator": "1"
+                },
+                "guards": []
+              }
+            ]
+          },
+          {
+            "stream_id": "second",
+            "events": [
+              {
+                "event_id": "compete-B",
+                "time_ns": "1",
+                "kind": "fill_intent",
+                "instrument_id": "B",
+                "quantity": {
+                  "numerator": "1",
+                  "denominator": "1"
+                },
+                "price": {
+                  "numerator": "50",
+                  "denominator": "1"
+                },
+                "fee": {
+                  "numerator": "0",
+                  "denominator": "1"
+                },
+                "guards": []
+              },
+              {
+                "event_id": "reuse-B",
+                "time_ns": "2",
+                "kind": "fill_intent",
+                "instrument_id": "B",
+                "quantity": {
+                  "numerator": "1",
+                  "denominator": "1"
+                },
+                "price": {
+                  "numerator": "50",
+                  "denominator": "1"
+                },
+                "fee": {
+                  "numerator": "0",
+                  "denominator": "1"
+                },
+                "guards": []
+              },
+              {
+                "event_id": "mark-B",
+                "time_ns": "3",
+                "kind": "mark",
+                "instrument_id": "B",
+                "price": {
+                  "numerator": "55",
+                  "denominator": "1"
+                }
+              }
+            ]
+          }
+        ],
+        "extensions": {},
+        "output_path": "/absolute/private/account-result.json"
+      },
+      "deadline_unix_ms": null,
+      "read_options": {
+        "max_page_bytes": null,
+        "cache_bytes": "0"
+      },
+      "extensions": {}
+    },
+    "job_inspect": {
+      "protocol": "symphony.sbv.job-inspect-input.v1",
+      "directory": "/absolute/private/job",
+      "job_id": "example",
+      "expected_plan_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    "job_execute": {
+      "protocol": "symphony.sbv.job-execute-input.v1",
+      "directory": "/absolute/private/job",
+      "job_id": "example",
+      "expected_plan_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    "job_cancel": {
+      "protocol": "symphony.sbv.job-cancel-input.v1",
+      "directory": "/absolute/private/job",
+      "job_id": "example",
+      "expected_plan_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "expected_generation": "0",
+      "request_id": "cancel-1",
+      "reason": "Caller requested cancellation"
+    },
+    "job_reconcile": {
+      "protocol": "symphony.sbv.job-reconcile-input.v1",
+      "directory": "/absolute/private/job",
+      "job_id": "example",
+      "expected_plan_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "expected_generation": "0"
     }
   },
   "variants": {

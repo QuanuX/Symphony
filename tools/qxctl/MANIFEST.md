@@ -417,3 +417,14 @@ Seven native-owner operations extend the existing shared schema/template and dis
 - `tools/qxctl/internal/knowledgeengine/sbv_binary_test.go`
 
 - `tools/qxctl/internal/knowledgeengine/sbv_account_test.go`
+
+
+SBV 0.33 adds `sbv job create|inspect|execute|cancel|reconcile`, each taking exact
+`--input` JSON and exposing text/JSON/NDJSON plus caller timeout or none. Plan,
+immutable state and outcome references use `sbv result query|export`; child bundles
+use existing `sbv bundle` surfaces. All five commands are registry bound to native
+owner operations; no remote host or placement is inferred.
+
+- `tools/qxctl/internal/knowledgeengine/sbv_jobs.go`
+
+- `tools/qxctl/internal/knowledgeengine/sbv_jobs_test.go`

@@ -2,7 +2,7 @@
 
 ## Version and ownership
 
-Contract v1; package `sbv-engine` 0.32.0-dev; engine `symphony-sbv`; vector `sbv`. C++26 owns computations, result sealing and artifact queries. Go qxctl verifies the exact installation and projects native evidence. OWNER-INTERFACE.json is the exact operation declaration; generated C++/Go metadata must match it. This release is experimental.
+Contract v1; package `sbv-engine` 0.33.0-dev; engine `symphony-sbv`; vector `sbv`. C++26 owns computations, result sealing and artifact queries. Go qxctl verifies the exact installation and projects native evidence. OWNER-INTERFACE.json is the exact operation declaration; generated C++/Go metadata must match it. This release is experimental.
 
 The engine uses knowledge-vector-engine-cpp 0.2.0-dev and sqav-databento-dbn-cpp 0.5.0-dev, with that adapter's exact static dependencies. It performs no data-provider network calls. Signal/replay semantics belong to SBV; acquisition remains SQAV, metadata SQMV, batch ownership SQFV, transformation SQTV, physical stores SQPV and recipient delivery SQDV. Its portable local JSON result is a derived artifact, not a new market-data persistence service. An optional offline retained-source route composes SQAV capture 0.2.0-dev, SQMV 0.2.0-dev, SQFV 0.3.0-dev, SQPV 0.2.0-dev and SQDV 0.3.0-dev under the selected profile described below.
 
@@ -1571,3 +1571,103 @@ query/export and portable SDK surfaces, including partitioned results. Native
 signals used as triggers establish source lineage, not calibration of the fixture
 strategy or truth of supplied execution. R6.1 reconciliation records this selected
 local scope; M3 remote/scale/device/peer qualification remains separate.
+
+
+## Durable local calculation jobs (0.33, R6.2a)
+
+`qxctl sbv job create|inspect|execute|cancel|reconcile` exposes native operations
+`job_create`, `job_inspect`, `job_execute`, `job_cancel`, `job_reconcile`.
+All use the same installed C/C++ SDK and exact native process contract. The optional
+Go 0.1.7 transport exposes these operations without owning scientific calculations.
+Schemas and templates are available through `qxctl sbv schema|template --operation
+job_create` (or the other exact operation names). Job status supports text, JSON and
+NDJSON; its plan/state/outcome references are ordinary immutable SBV results and
+support complete terminal query/export. Scientific results retain their original
+legacy receipt or partitioned bundle reference, without copying them into status.
+
+Create selects an existing private caller-owned absolute `directory`, `job_id`,
+`operation`, complete native child `request`, `deadline_unix_ms` (positive absolute
+Unix milliseconds or null), `read_options` and `extensions`. The directory has no
+symlink components; journal files are private owner regular files without hardlinks.
+Child output paths must be disjoint from this journal. Create validates the job
+contract and records the child request; the selected scientific operation validates
+its own full inputs when executed. Create does not calculate or reserve cluster
+resources. Exact duplicate creation returns current state; a different immutable
+selection or engine version in the same journal refuses. To run a changed scenario
+or deliberately repeat an attempt, the caller creates a new explicit job directory
+and identity with new output destinations. This is an integrity contract for this
+journal, not a restriction on caller-authored orchestration or alternative engines.
+
+Selected operations are run, generate_census, evaluate, compose, compose_joint,
+economics, book, liquidity, queue_scenarios, account_simulate, allocation_economics,
+analyze, compare, resample, split, fit, predict, research_history, compose_economics
+and result_select. Their existing workers, source/reader modes, selected memory
+controls, output format, studies, policies and provider choices pass unchanged.
+A process-local resident handle is not made durable by recording it: a replaced
+resident remains subject to its exact-incarnation checks. Resident lifecycle,
+experiments, source-owner publication, nested jobs, provisioning and network calls
+are not job operations in this profile. Caller orchestration can compose these
+separate capabilities; no new scientific or dataset-size policy is imposed.
+
+Execute binds `directory`, `job_id`, `expected_plan_sha256`. It is synchronous and
+explicit. One stable execution lock permits one executor. A durable immutable claim
+is fsynced before dispatch; any existing claim prevents another dispatch, including
+when a process was killed before reaching calculation. A separate short control
+lock admits inspection and cancellation while execution is active. Mutable state
+heads are atomically replaced and fsynced; each head also has an immutable digest
+named snapshot. Plan, claim, cancellation and outcome records are immutable sealed
+native results. An outcome is fsynced before the terminal state head. Temporary
+files/orphaned state snapshots after a crash do not authorize execution. Job IDs
+are scoped to their journal, not globally registered cluster names. POSIX local
+filesystem locks and fsync are required; shared/network storage is unqualified.
+
+Inspect reports recorded phase, generation, admission, current execution-lock
+observation, cancellation request and observation, and plan/state/outcome/result
+references. A recorded `running` phase with no held lock is an unreconciled attempt,
+not proof of a currently running worker. Status reads do not rehash complete result
+storage; reconciliation verifies a completed receipt against its exact selection.
+All subsequent calls bind the exact plan; cancel/reconcile additionally require the
+observed `expected_generation`. Cancel also supplies `request_id` and `reason`.
+Exact replay of an existing cancellation request is idempotent even after generation
+advances; changing that request refuses. Cancellation after terminal completion is
+a no-op. A queued cancellation is observed before admission. Running cancellation
+is durably requested and only becomes observed when calculation reports cancellation.
+One joined control thread during execute polls the local cancellation marker and
+propagates SDK caller cancellation to existing native/provider cancellation tokens.
+It does not remain resident after invocation. A completed publication wins a late
+cancel; an uncooperative trusted native callback cannot be forcibly preempted by
+this API. Controller interruption may terminate the native process before it can
+record an outcome; callers inspect/reconcile that uncertainty. No PID-based signal
+or assumption of PID identity is used.
+
+Reconcile while the execution lock is held observes without changing the attempt.
+When no executor holds it, a saved authoritative outcome can repair a stale state
+head, after checking completed result identity. A claim without an outcome becomes
+`unknown`, even if a file exists at the proposed result path. An arbitrary output is
+never adopted as proof of completion and the job never automatically retries.
+Terminal phases are `completed`, `completed_partial`, `cancelled`, `failed`, and
+`unknown`; the last preserves missing or ambiguous publication outcome. An error
+returned by calculation can be recorded as failed/cancelled, but this asserts no
+rollback of external effects from caller-trusted native code. Missing/corrupt journal
+or result identity is an explicit contract error requiring caller recovery; deleting
+claims is not a supported retry procedure. A caller can intentionally choose a new
+job after examining possible effects.
+
+The saved child deadline and an explicitly supplied invocation deadline use the
+earlier value when both exist. Null plus `--timeout none` imposes no deadline. The
+small authoritative post-attempt journal commit completes outside a cancelled
+calculation deadline, so cancellation does not itself prevent outcome recording.
+Job controls do not add an aggregate dataset/result bound. Existing bounded control
+framing and selected legacy vs scalable partitioned formats remain explicit.
+Journal retention/deletion belongs to the caller; there is no automatic expiry.
+Existing account snapshots are explicit scientific continuation state, not a claim
+of automatic mid-instruction checkpoint/resume.
+
+This implements local durable calculation identity and reconciliation. SOV remote
+arrangements remain architectural; no executable selected transport/deployed worker
+was found at the recorded owner refresh. SSIAG has local foundation/provider policy
+surfaces, but those are not an implicit remote SBV grant. This increment uses the
+invoking caller's filesystem authority, not protected service administration. It
+introduces no daemon, remote listener, transport, cluster placement, remote hard
+termination or provisioning. R6.2 remains open for actual owner-backed remote work;
+R6.3 and the full M3 gate remain open.

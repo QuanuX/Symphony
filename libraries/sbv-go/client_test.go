@@ -164,3 +164,12 @@ wait:
 		t.Fatal("request leaked")
 	}
 }
+
+func TestDurableJobRoutes(t *testing.T) {
+	for _, leaf := range []string{"create", "inspect", "execute", "cancel", "reconcile"} {
+		args, err := route("job_" + leaf)
+		if err != nil || len(args) != 3 || args[0] != "sbv" || args[1] != "job" || args[2] != leaf {
+			t.Fatal(leaf, args, err)
+		}
+	}
+}

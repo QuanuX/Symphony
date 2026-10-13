@@ -13,7 +13,7 @@ import (
 	"strings"
 )
 
-var SBVOperations = []string{"capabilities", "run", "compose", "result_inspect", "result_query", "evaluate", "catalogue", "compose_joint", "economics", "book", "liquidity", "queue_scenarios", "account_simulate", "allocation_economics", "result_select", "backend_plan", "live_plan", "analyze", "compare", "resample", "experiment", "split", "fit", "predict", "source_retain", "source_export", "generate_census", "provider_inspect", "compose_economics", "research_history", "dataset_load", "dataset_inspect", "dataset_execute", "dataset_release", "dataset_jobs", "dataset_cancel", "dataset_configure", "dataset_stop", "bundle_import", "bundle_inspect", "bundle_query", "bundle_verify", "bundle_export"}
+var SBVOperations = []string{"capabilities", "run", "compose", "result_inspect", "result_query", "evaluate", "catalogue", "compose_joint", "economics", "book", "liquidity", "queue_scenarios", "account_simulate", "allocation_economics", "result_select", "backend_plan", "live_plan", "analyze", "compare", "resample", "experiment", "split", "fit", "predict", "source_retain", "source_export", "generate_census", "provider_inspect", "compose_economics", "research_history", "dataset_load", "dataset_inspect", "dataset_execute", "dataset_release", "dataset_jobs", "dataset_cancel", "dataset_configure", "dataset_stop", "bundle_import", "bundle_inspect", "bundle_query", "bundle_verify", "bundle_export", "job_create", "job_inspect", "job_execute", "job_cancel", "job_reconcile"}
 var sbvSHA = regexp.MustCompile(`^[0-9a-f]{64}$`)
 
 func sbvSpec() engineSpec {
@@ -247,6 +247,9 @@ func InvokeSBV(ctx context.Context, prefix, version, cwd, operation string, payl
 	return r, nil
 }
 func validateSBVResult(op string, p map[string]any, raw []byte) error {
+	if strings.HasPrefix(op, "job_") {
+		return validateSBVJobResult(op, p, raw)
+	}
 	if strings.HasPrefix(op, "bundle_") {
 		return ValidateSBVBundleResult(op, p, raw)
 	}

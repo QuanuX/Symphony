@@ -24532,3 +24532,59 @@ automatic nested fitting and cross-run holdout history remain unimplemented.
 - deferred_projections: exchange margin and remote/cluster qualification
 - notes: Explicit user policies and portable state; no calibration claim.
 - status: canonical
+
+### SBV jobs.cpp
+
+- path: `modules/sbv-engine/src/jobs.cpp`
+- title: SBV jobs.cpp
+- surface_type: implementation or test
+- truth_role: Durable local job identity, reconciliation and qxctl access
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.33 R6.2a local calculation lifecycle
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, SDKs, agents and portable result consumers
+- deferred_projections: SOV remote transport and cluster qualification
+- notes: Explicit caller limits and no automatic retry of admitted attempts.
+- status: canonical
+
+### SBV jobs_test.cpp
+
+- path: `modules/sbv-engine/tests/jobs_test.cpp`
+- title: SBV jobs_test.cpp
+- surface_type: implementation or test
+- truth_role: Durable local job identity, reconciliation and qxctl access
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.33 R6.2a local calculation lifecycle
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, SDKs, agents and portable result consumers
+- deferred_projections: SOV remote transport and cluster qualification
+- notes: Explicit caller limits and no automatic retry of admitted attempts.
+- status: canonical
+
+### SBV sbv_jobs.go
+
+- path: `tools/qxctl/internal/knowledgeengine/sbv_jobs.go`
+- title: SBV sbv_jobs.go
+- surface_type: implementation or test
+- truth_role: Durable local job identity, reconciliation and qxctl access
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.33 R6.2a local calculation lifecycle
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, SDKs, agents and portable result consumers
+- deferred_projections: SOV remote transport and cluster qualification
+- notes: Explicit caller limits and no automatic retry of admitted attempts.
+- status: canonical
+
+### SBV sbv_jobs_test.go
+
+- path: `tools/qxctl/internal/knowledgeengine/sbv_jobs_test.go`
+- title: SBV sbv_jobs_test.go
+- surface_type: implementation or test
+- truth_role: Durable local job identity, reconciliation and qxctl access
+- owner: Symphony Backtesting Vector maintainers
+- scope: Experimental 0.33 R6.2a local calculation lifecycle
+- relationships: depends_on -> `modules/sbv-engine/SPEC.md`
+- consumers: qxctl, SDKs, agents and portable result consumers
+- deferred_projections: SOV remote transport and cluster qualification
+- notes: Explicit caller limits and no automatic retry of admitted attempts.
+- status: canonical

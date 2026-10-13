@@ -362,6 +362,9 @@ Json dispatch(const std::string &op, const Json &p, std::int64_t end) {
     return d::split(p, end);
   if (op == "resample")
     return d::resample(p, end);
+  if (op == "job_create" || op == "job_inspect" || op == "job_execute" ||
+      op == "job_cancel" || op == "job_reconcile")
+    return d::job(op, p, end);
   if (op == "experiment")
     return d::experiment(p, end);
   if (op == "analyze")

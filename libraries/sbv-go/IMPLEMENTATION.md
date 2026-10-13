@@ -1,7 +1,7 @@
 # SBV Go transport and data contract
 
-Contract: `symphony.sbv.go-adapter.v1`. Module version `v0.1.6-dev`; native owner
-release `0.32.0-dev`; dependency Go 1.26.5 standard library only. Native source
+Contract: `symphony.sbv.go-adapter.v1`. Module version `v0.1.7-dev`; native owner
+release `0.33.0-dev`; dependency Go 1.26.5 standard library only. Native source
 contracts and receipt-owned schemas outrank this convenience API. The adapter
 introduces no scientific protocol, administration state or registry authority.
 
@@ -95,3 +95,6 @@ qxctl renders full installed schema definitions through its receipt-verified
 resource reader. Schema growth does not alter runtime control-frame admission;
 feedback provider inspection verifies the separately selected ABI symbol and
 descriptor protocol before returning portable evidence.
+
+Native 0.33 / Go 0.1.7 exposes five durable local job operations and preserves exact
+plan/state/outcome and scientific result references through the qxctl transport.

@@ -1,6 +1,6 @@
 # SBV engine manifest
 
-Module `sbv-engine`, engine `symphony-sbv`, vector `sbv`, release `0.32.0-dev`. Native executable with exact static source dependencies and versioned receipt-v2 ownership. Independent interop headers and the native C ABI/C++ calculation SDK with exact CMake targets are installed. Vendor model runtime adapters remain optional future work. Backtest artifacts are user-owned outputs outside the install receipt.
+Module `sbv-engine`, engine `symphony-sbv`, vector `sbv`, release `0.33.0-dev`. Native executable with exact static source dependencies and versioned receipt-v2 ownership. Independent interop headers and the native C ABI/C++ calculation SDK with exact CMake targets are installed. Vendor model runtime adapters remain optional future work. Backtest artifacts are user-owned outputs outside the install receipt.
 
 ## Canonical Surfaces
 
@@ -234,3 +234,7 @@ Experimental 0.18 adds `qxctl sbv research-history`: source-bound fit/prediction
 - `modules/sbv-engine/tests/feedback_fixture.cpp`
 
 - `modules/sbv-engine/tests/feedback_settlement_test.cpp`
+
+- `modules/sbv-engine/src/jobs.cpp`
+
+- `modules/sbv-engine/tests/jobs_test.cpp`

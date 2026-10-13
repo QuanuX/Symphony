@@ -3,9 +3,9 @@
   "module_id": "sbv-engine",
   "engine_id": "symphony-sbv",
   "namespace": "symphony::sbv::interface",
-  "current_version": "0.32.0-dev",
+  "current_version": "0.33.0-dev",
   "releases": {
-    "0.32.0-dev": [
+    "0.33.0-dev": [
       "capabilities",
       "run",
       "compose",
@@ -48,7 +48,12 @@
       "dataset_configure",
       "dataset_stop",
       "queue_scenarios",
-      "account_simulate"
+      "account_simulate",
+      "job_create",
+      "job_inspect",
+      "job_execute",
+      "job_cancel",
+      "job_reconcile"
     ]
   },
   "contract_versions": [
@@ -140,6 +145,16 @@
     "symphony.sbv.queue-scenarios.v1",
     "symphony.sbv.account-simulate-input.v1",
     "symphony.sbv.account-simulate.v1",
+    "symphony.sbv.job-create-input.v1",
+    "symphony.sbv.job-create.v1",
+    "symphony.sbv.job-inspect-input.v1",
+    "symphony.sbv.job-inspect.v1",
+    "symphony.sbv.job-execute-input.v1",
+    "symphony.sbv.job-execute.v1",
+    "symphony.sbv.job-cancel-input.v1",
+    "symphony.sbv.job-cancel.v1",
+    "symphony.sbv.job-reconcile-input.v1",
+    "symphony.sbv.job-reconcile.v1",
     "symphony.sbv.linear-model.v1",
     "symphony.sbv.census-evidence.v1",
     "symphony.sbv.native-provider-census.v1",
@@ -1068,6 +1083,112 @@
       "operation_name": "account_simulate",
       "output_protocol": "symphony.sbv.account-simulate.v1",
       "recovery_operation_id": "engop:symphony:sbv.result-inspect",
+      "thermal_path": "freezing"
+    },
+    {
+      "administration_disposition": "qxctl_required",
+      "administrative_interactions": [
+        "invoke"
+      ],
+      "authorization_requirement": "target_host_permission",
+      "availability": "implemented",
+      "direct_invocation": "supported",
+      "engine_operation_id": "engop:symphony:sbv.job-create",
+      "expected_state_required": false,
+      "feature_ids": [
+        "ssfv:symphony:sbv-engine"
+      ],
+      "idempotency": "idempotent_with_invocation_id",
+      "input_protocol": "symphony.sbv.job-create-input.v1",
+      "mutability": "permission_backed_mutation",
+      "operation_name": "job_create",
+      "output_protocol": "symphony.sbv.job-create.v1",
+      "recovery_operation_id": "engop:symphony:sbv.job-reconcile",
+      "thermal_path": "freezing"
+    },
+    {
+      "administration_disposition": "qxctl_required",
+      "administrative_interactions": [
+        "inspect",
+        "recover"
+      ],
+      "authorization_requirement": "none",
+      "availability": "implemented",
+      "direct_invocation": "supported",
+      "engine_operation_id": "engop:symphony:sbv.job-inspect",
+      "expected_state_required": false,
+      "feature_ids": [
+        "ssfv:symphony:sbv-engine"
+      ],
+      "idempotency": "idempotent",
+      "input_protocol": "symphony.sbv.job-inspect-input.v1",
+      "mutability": "read_only",
+      "operation_name": "job_inspect",
+      "output_protocol": "symphony.sbv.job-inspect.v1",
+      "recovery_operation_id": null,
+      "thermal_path": "freezing"
+    },
+    {
+      "administration_disposition": "qxctl_required",
+      "administrative_interactions": [
+        "invoke"
+      ],
+      "authorization_requirement": "target_host_permission",
+      "availability": "implemented",
+      "direct_invocation": "supported",
+      "engine_operation_id": "engop:symphony:sbv.job-execute",
+      "expected_state_required": false,
+      "feature_ids": [
+        "ssfv:symphony:sbv-engine"
+      ],
+      "idempotency": "idempotent_with_invocation_id",
+      "input_protocol": "symphony.sbv.job-execute-input.v1",
+      "mutability": "permission_backed_mutation",
+      "operation_name": "job_execute",
+      "output_protocol": "symphony.sbv.job-execute.v1",
+      "recovery_operation_id": "engop:symphony:sbv.job-reconcile",
+      "thermal_path": "freezing"
+    },
+    {
+      "administration_disposition": "qxctl_required",
+      "administrative_interactions": [
+        "invoke"
+      ],
+      "authorization_requirement": "target_host_permission",
+      "availability": "implemented",
+      "direct_invocation": "supported",
+      "engine_operation_id": "engop:symphony:sbv.job-cancel",
+      "expected_state_required": true,
+      "feature_ids": [
+        "ssfv:symphony:sbv-engine"
+      ],
+      "idempotency": "idempotent_with_invocation_id",
+      "input_protocol": "symphony.sbv.job-cancel-input.v1",
+      "mutability": "permission_backed_mutation",
+      "operation_name": "job_cancel",
+      "output_protocol": "symphony.sbv.job-cancel.v1",
+      "recovery_operation_id": "engop:symphony:sbv.job-reconcile",
+      "thermal_path": "freezing"
+    },
+    {
+      "administration_disposition": "qxctl_required",
+      "administrative_interactions": [
+        "invoke"
+      ],
+      "authorization_requirement": "target_host_permission",
+      "availability": "implemented",
+      "direct_invocation": "supported",
+      "engine_operation_id": "engop:symphony:sbv.job-reconcile",
+      "expected_state_required": true,
+      "feature_ids": [
+        "ssfv:symphony:sbv-engine"
+      ],
+      "idempotency": "idempotent_with_invocation_id",
+      "input_protocol": "symphony.sbv.job-reconcile-input.v1",
+      "mutability": "permission_backed_mutation",
+      "operation_name": "job_reconcile",
+      "output_protocol": "symphony.sbv.job-reconcile.v1",
+      "recovery_operation_id": "engop:symphony:sbv.job-reconcile",
       "thermal_path": "freezing"
     }
   ],

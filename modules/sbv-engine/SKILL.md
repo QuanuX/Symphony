@@ -100,3 +100,11 @@ state in returned memory and inspect both trigger and resolved event/disposition
 Use v3 snapshots for feedback or linear_variation instruments. Supply explicit
 basis and settlement events; this model supplies no exchange margin schedule.
 The provider-inspect feedback variant exposes the matching selection template; all results remain queryable/exportable.
+
+
+Use `qxctl sbv job create` to record an exact local calculation, then `execute`.
+Retain the returned plan digest. `inspect` exposes current generation and immutable
+state/result references; `cancel` and `reconcile` require that generation. An orphaned
+claim is unknown and is not re-executed. A deliberate new attempt uses a new explicit
+journal/output selection after caller review. All fields are exposed in owned job
+schema/templates. Local journals do not establish SOV remote execution or SSIAG grants.

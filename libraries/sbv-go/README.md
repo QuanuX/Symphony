@@ -1,7 +1,7 @@
 # SBV Go adapter
 
 Experimental source module `github.com/QuanuX/Symphony/libraries/sbv-go`, version
-`v0.1.6-dev`, targeting Go 1.26.5 and native SBV `0.32.0-dev`. It uses only the Go
+`v0.1.7-dev`, targeting Go 1.26.5 and native SBV `0.33.0-dev`. It uses only the Go
 standard library. This is a local source release; no published module/tag is
 claimed. C++ owns every scientific calculation and admission.
 

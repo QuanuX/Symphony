@@ -19,7 +19,9 @@ inline thread_local const std::atomic_bool *caller_cancellation = nullptr;
 struct CancellationScope {
   const std::atomic_bool *previous;
   explicit CancellationScope(const std::atomic_bool *flag)
-      : previous(caller_cancellation) { caller_cancellation = flag; }
+      : previous(caller_cancellation) {
+    caller_cancellation = flag;
+  }
   ~CancellationScope() { caller_cancellation = previous; }
   CancellationScope(const CancellationScope &) = delete;
 };
@@ -124,6 +126,7 @@ Json predict(const Json &, std::int64_t);
 Json split(const Json &, std::int64_t);
 Json resample(const Json &, std::int64_t);
 Json experiment(const Json &, std::int64_t);
+Json job(const std::string &, const Json &, std::int64_t);
 Json analyze(const Json &, std::int64_t);
 Json compare(const Json &, std::int64_t);
 Json result_select_view(const Json &, std::int64_t);

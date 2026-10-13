@@ -152,6 +152,7 @@
         "tools/qxctl/internal/knowledgeengine/sbv_census_test.go",
         "tools/qxctl/internal/knowledgeengine/sbv_economics_test.go",
         "tools/qxctl/internal/knowledgeengine/sbv_installed_test.go",
+        "tools/qxctl/internal/knowledgeengine/sbv_jobs_test.go",
         "tools/qxctl/internal/knowledgeengine/sbv_liquidity_test.go",
         "tools/qxctl/internal/knowledgeengine/sbv_models_test.go",
         "tools/qxctl/internal/knowledgeengine/sbv_nested_test.go",
@@ -164,7 +165,7 @@
         "tools/qxctl/internal/knowledgeengine/sbv_test.go"
       ],
       "feature_id": "ssfv:symphony:qxctl-sbv-administration",
-      "how": "Exact receipt/interface admission, owner schema resources, bounded native queries and lossless complete exports. Resident controls expose addressable job inspection and cooperative cancellation, exact-incarnation force stop, and generation-checked admission/idle configuration without reloading RAM. SIGTERM and SIGINT propagate foreground qxctl cancellation.",
+      "how": "Exact receipt/interface admission, owner schema resources, bounded native queries and lossless complete exports. Resident controls expose addressable job inspection and cooperative cancellation, exact-incarnation force stop, and generation-checked admission/idle configuration without reloading RAM. SIGTERM and SIGINT propagate foreground qxctl cancellation. Durable local jobs retain exact plans, one admission claim, cancellation and reconciled outcomes through all five qxctl lifecycle commands.",
       "implementation_languages": [
         {
           "language": "Go",
@@ -179,6 +180,7 @@
         "tools/qxctl/internal/knowledgeengine/sbv.go",
         "tools/qxctl/internal/knowledgeengine/sbv_bulk_stream.go",
         "tools/qxctl/internal/knowledgeengine/sbv_bundle.go",
+        "tools/qxctl/internal/knowledgeengine/sbv_jobs.go",
         "tools/qxctl/internal/knowledgeengine/sbv_partitioned.go",
         "tools/qxctl/internal/knowledgeengine/sbv_partitioned_installed_test.go",
         "tools/qxctl/internal/knowledgeengine/sbv_partitioned_schema_test.go",

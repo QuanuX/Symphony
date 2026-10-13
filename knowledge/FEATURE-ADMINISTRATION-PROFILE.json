@@ -943,6 +943,7 @@
             "qxcmd:symphony:sbv.bundle.verify",
             "qxcmd:symphony:sbv.dataset.inspect",
             "qxcmd:symphony:sbv.dataset.jobs",
+            "qxcmd:symphony:sbv.job.inspect",
             "qxcmd:symphony:sbv.result.export",
             "qxcmd:symphony:sbv.result.inspect",
             "qxcmd:symphony:sbv.result.query",
@@ -955,6 +956,7 @@
             "engop:symphony:sbv.bundle-verify",
             "engop:symphony:sbv.dataset-inspect",
             "engop:symphony:sbv.dataset-jobs",
+            "engop:symphony:sbv.job-inspect",
             "engop:symphony:sbv.result-inspect",
             "engop:symphony:sbv.result-query",
             "engop:symphony:sbv.result-select"
@@ -993,6 +995,10 @@
             "qxcmd:symphony:sbv.experiment",
             "qxcmd:symphony:sbv.fit",
             "qxcmd:symphony:sbv.generate.census",
+            "qxcmd:symphony:sbv.job.cancel",
+            "qxcmd:symphony:sbv.job.create",
+            "qxcmd:symphony:sbv.job.execute",
+            "qxcmd:symphony:sbv.job.reconcile",
             "qxcmd:symphony:sbv.liquidity",
             "qxcmd:symphony:sbv.live.plan",
             "qxcmd:symphony:sbv.predict",
@@ -1028,6 +1034,10 @@
             "engop:symphony:sbv.experiment",
             "engop:symphony:sbv.fit",
             "engop:symphony:sbv.generate-census",
+            "engop:symphony:sbv.job-cancel",
+            "engop:symphony:sbv.job-create",
+            "engop:symphony:sbv.job-execute",
+            "engop:symphony:sbv.job-reconcile",
             "engop:symphony:sbv.liquidity",
             "engop:symphony:sbv.live-plan",
             "engop:symphony:sbv.predict",
@@ -1055,6 +1065,8 @@
             "qxcmd:symphony:sbv.bundle.verify",
             "qxcmd:symphony:sbv.dataset.inspect",
             "qxcmd:symphony:sbv.dataset.jobs",
+            "qxcmd:symphony:sbv.job.inspect",
+            "qxcmd:symphony:sbv.job.reconcile",
             "qxcmd:symphony:sbv.result.inspect"
           ],
           "delivery": "direct",
@@ -1063,6 +1075,8 @@
             "engop:symphony:sbv.bundle-verify",
             "engop:symphony:sbv.dataset-inspect",
             "engop:symphony:sbv.dataset-jobs",
+            "engop:symphony:sbv.job-inspect",
+            "engop:symphony:sbv.job-reconcile",
             "engop:symphony:sbv.result-inspect"
           ],
           "evidence": [
@@ -2916,6 +2930,7 @@
             "qxcmd:symphony:sbv.bundle.verify",
             "qxcmd:symphony:sbv.dataset.inspect",
             "qxcmd:symphony:sbv.dataset.jobs",
+            "qxcmd:symphony:sbv.job.inspect",
             "qxcmd:symphony:sbv.result.export",
             "qxcmd:symphony:sbv.result.inspect",
             "qxcmd:symphony:sbv.result.query",
@@ -2928,6 +2943,7 @@
             "engop:symphony:sbv.bundle-verify",
             "engop:symphony:sbv.dataset-inspect",
             "engop:symphony:sbv.dataset-jobs",
+            "engop:symphony:sbv.job-inspect",
             "engop:symphony:sbv.result-inspect",
             "engop:symphony:sbv.result-query",
             "engop:symphony:sbv.result-select"
@@ -2966,6 +2982,10 @@
             "qxcmd:symphony:sbv.experiment",
             "qxcmd:symphony:sbv.fit",
             "qxcmd:symphony:sbv.generate.census",
+            "qxcmd:symphony:sbv.job.cancel",
+            "qxcmd:symphony:sbv.job.create",
+            "qxcmd:symphony:sbv.job.execute",
+            "qxcmd:symphony:sbv.job.reconcile",
             "qxcmd:symphony:sbv.liquidity",
             "qxcmd:symphony:sbv.live.plan",
             "qxcmd:symphony:sbv.predict",
@@ -3001,6 +3021,10 @@
             "engop:symphony:sbv.experiment",
             "engop:symphony:sbv.fit",
             "engop:symphony:sbv.generate-census",
+            "engop:symphony:sbv.job-cancel",
+            "engop:symphony:sbv.job-create",
+            "engop:symphony:sbv.job-execute",
+            "engop:symphony:sbv.job-reconcile",
             "engop:symphony:sbv.liquidity",
             "engop:symphony:sbv.live-plan",
             "engop:symphony:sbv.predict",
@@ -3028,6 +3052,8 @@
             "qxcmd:symphony:sbv.bundle.verify",
             "qxcmd:symphony:sbv.dataset.inspect",
             "qxcmd:symphony:sbv.dataset.jobs",
+            "qxcmd:symphony:sbv.job.inspect",
+            "qxcmd:symphony:sbv.job.reconcile",
             "qxcmd:symphony:sbv.result.inspect"
           ],
           "delivery": "direct",
@@ -3036,6 +3062,8 @@
             "engop:symphony:sbv.bundle-verify",
             "engop:symphony:sbv.dataset-inspect",
             "engop:symphony:sbv.dataset-jobs",
+            "engop:symphony:sbv.job-inspect",
+            "engop:symphony:sbv.job-reconcile",
             "engop:symphony:sbv.result-inspect"
           ],
           "evidence": [
@@ -9856,6 +9884,6 @@
   "profile_id": "symphony.registered-features.administration.v1",
   "protocol": "symphony.knowledge.feature-administration-profile.v1",
   "registered_feature_count": 142,
-  "ssfv_registry_digest": "sha256:369332c93e7fa6ff4d89efc691e5c020836c4ca501465d20caaef2458a800d91",
-  "profile_digest": "sha256:81ebf91fdf72a4b8f0cd0960f1d7b8bfbe7c901dd1135a000832ee31f7656c3f"
+  "ssfv_registry_digest": "sha256:7798806710fe46b8ab45c695abbb9114880bf4572098790c710999f401951e8f",
+  "profile_digest": "sha256:fe38e898768b206cf3005a4389ead5bb646cdfed0b33a03cb90120e2e2d4caf8"
 }

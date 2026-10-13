@@ -89,6 +89,14 @@ int32_t decide(void *, const sbv_call_context_v1 *ctx,
     auto call = parse(input);
     auto context = call.at("context");
     auto mode = context.value("mode", std::string{});
+    if (mode == "job_barrier") {
+      std::ofstream(context.at("entered").get<std::string>()) << "entered\n";
+      while (!std::ifstream(context.at("release").get<std::string>()).good()) {
+        if (ctx->cancel_state(ctx->token) != SBV_CALL_RUNNING)
+          return error(err, SBV_PROVIDER_CANCELLED);
+        std::this_thread::sleep_for(std::chrono::milliseconds(2));
+      }
+    }
     if (mode == "wait_cancel") {
       while (ctx->cancel_state(ctx->token) == SBV_CALL_RUNNING)
         std::this_thread::yield();
