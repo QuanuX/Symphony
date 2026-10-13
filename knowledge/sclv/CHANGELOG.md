@@ -15755,3 +15755,118 @@ This PR authorizes none of the following:
   - `No remote publication, live/provider network activity, device/cluster execution, calibrated likelihood, full exchange matching, margin/liquidation, speed superiority or full M3 acceptance.`
 - notes: |
     Timestamps identify the observed local implementation commit, not an invented work interval. Post_merge denotes local source closure, not a GitHub/main merge. Prior ledger bytes and evidence seals are preserved. R6.1a-c are complete within the recorded selected local model scope, retaining original-case partial/deferred dispositions. M3 remains open for R6.2 owner-backed remote/durable work and R6.3 broad/peer qualification.
+
+
+- record_id: `SCLV-CHG-sbv-r62a-durable-jobs-local`
+- record_version: `3`
+- title: `SBV durable local calculation jobs and qxctl lifecycle`
+- status: `canonical`
+- date: `2026-10-13`
+- change_started_at: `2026-10-13T12:49:45Z`
+- change_completed_at: `2026-10-13T12:49:45Z`
+- recorded_at: `2026-10-13T12:51:11Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `implementation_change`
+- change_request_state: `not_applicable`
+- change_request_provider: `not_applicable`
+- change_request_id: `not_applicable`
+- change_request_reference: `not_applicable`
+- change_request_absence_reason: `Directly authorized local implementation and qualification; no pull request or remote publication.`
+- revision_scheme: `git-sha1`
+- revision_value: `7dc94e64087d15505dc6f219d2ac56c5bc5c90f2`
+- tree_digest: `sha256:aa18ee1f19bd6c1430c69573209fea9d0f985ef2bc1c851b5325f6a026818dce`
+- ratification_subject: `Duncan (Architect)`
+- ratification_permission: `authorize_local_implementation_and_source_closure`
+- ratification_method: `explicit-user-instruction`
+- ratification_evidence_reference: `../sbv-durable-jobs/RATIFICATION.json`
+- ratification_evidence_digest: `sha256:891036860bb508e1a23df294c91f54f4478ddefeddb9620438682ef020af0ec4`
+- affected_surfaces:
+  - `README.md`
+  - `cmake/SbvInterface.generated.cmake`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.json`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `libraries/sbv-go/IMPLEMENTATION.md`
+  - `libraries/sbv-go/MANIFEST.md`
+  - `libraries/sbv-go/README.md`
+  - `libraries/sbv-go/client.go`
+  - `libraries/sbv-go/client_test.go`
+  - `modules/sbv-engine/CMakeLists.txt`
+  - `modules/sbv-engine/FEATURES.md`
+  - `modules/sbv-engine/INSTALL.md`
+  - `modules/sbv-engine/M2-M3-READINESS.json`
+  - `modules/sbv-engine/MANIFEST.md`
+  - `modules/sbv-engine/OWNER-INTERFACE.json`
+  - `modules/sbv-engine/SKILL.md`
+  - `modules/sbv-engine/SPEC.md`
+  - `modules/sbv-engine/include/symphony/sbv/sbv.hpp`
+  - `modules/sbv-engine/schemas/v1/admin.schema.json`
+  - `modules/sbv-engine/schemas/v1/admin.templates.json`
+  - `modules/sbv-engine/src/detail.hpp`
+  - `modules/sbv-engine/src/interface.generated.hpp`
+  - `modules/sbv-engine/src/jobs.cpp`
+  - `modules/sbv-engine/src/operation_profiles.hpp`
+  - `modules/sbv-engine/src/result.cpp`
+  - `modules/sbv-engine/tests/feedback_fixture.cpp`
+  - `modules/sbv-engine/tests/jobs_test.cpp`
+  - `tools/qxctl/COMMANDS.json`
+  - `tools/qxctl/FEATURES.md`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/qxctl/cmd/qxctl/command_manifest_test.go`
+  - `tools/qxctl/cmd/qxctl/sbv.go`
+  - `tools/qxctl/cmd/qxctl/sbv_bulk_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_allocation_economics_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_analysis_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_book_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_census_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_dependencies_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_economics_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_history_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_installed_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_interface_generated.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_jobs.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_jobs_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_liquidity_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_models_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_planning_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_research_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_split_test.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_test.go`
+- skvi_references:
+  - `modules/sbv-engine/M2-M3-READINESS.json`
+  - `modules/sbv-engine/src/jobs.cpp`
+  - `modules/sbv-engine/tests/jobs_test.cpp`
+  - `modules/sbv-engine/OWNER-INTERFACE.json`
+  - `tools/qxctl/internal/knowledgeengine/sbv_jobs.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_jobs_test.go`
+  - `knowledge/skvi/INDEX.md`
+- change_summary: |
+    R6.2a adds five native durable local job operations: create, inspect, execute, cancel and reconcile. Immutable plan and admission claim bind one attempt; atomic state heads retain immutable snapshots; authoritative outcomes precede terminal heads. Killed worker/controller or missing outcome becomes explicit unknown without automatic replay or adoption of an arbitrary output file.
+- relationship_changes: |
+    C++26 owns the journal and scientific dispatch. qxctl job commands, schemas/templates and portable result references expose every selected control and journal artifact. Native 0.33.0-dev and optional Go 0.1.7-dev expose 48 operations, 51 SBV leaves and 450 total qxctl command identities. SOV owner contracts were refreshed and remain architectural for remote transport; SSIAG local provider/policy capabilities are not an implicit remote grant.
+- doctrine_changes: |
+    Caller selects exact job, complete scientific request, workers/resources, deadline or none, cancellation reason and retention. No aggregate dataset/result ceiling, default timeout, automatic retry, remote daemon or provisioning authority was introduced. Explicit new jobs permit deliberate repeated or changed work. Trusted native external effects are not rolled back or sandboxed.
+- compatibility_consequences: |
+    Existing scientific contracts and C/C++ SDK ABI remain unchanged. Journal readers require the exact engine version and plan; generation protects cancel/reconcile. qxctl admits the real claim-before-state crash prefix while rejecting malformed phases, missing fields and retargeted references. Go routes the new job subgroup explicitly. Local POSIX locking/durability is the selected profile; network storage and remote checkpoint/termination remain unqualified.
+- publication_consequences: |
+    Local implementation and source closure only. No push, merge, provider/live network request, new spend, remote execution or deployment.
+- projection_consequences: |
+    Four focused native suites pass, including 118 durable-job assertions; one ASan/UBSan suite passes with leak detection disabled. Eighteen command/registry, twenty installed/schema/boundary and twenty-six adapter tests/subtests pass with no selected skips, plus vet. Installed independent C/C++/Go consumers agree; 1989 full terminal nodes and complete direct/job/partitioned payloads match. Actual qxctl controller termination reconciles unknown without replay; separate qxctl cancellation preserves requested versus observed state and exports its exact reason. Retained AAPL/ESZ6 Databento lineage is hash verified; account actions are synthetic. All 266 prior R6.1c sealed files remain unchanged.
+- evidence:
+  - `../sbv-durable-jobs/RATIFICATION.json`
+  - `../sbv-durable-jobs/evidence/SCLV_SOURCE_BINDING.json`
+  - `../sbv-durable-jobs/BUILD_IDENTITY.json`
+  - `../sbv-durable-jobs/CHECKS.json`
+  - `../sbv-durable-jobs/REVIEW.json`
+  - `../sbv-durable-jobs/CASE_EVIDENCE.json`
+  - `../sbv-durable-jobs/OWNER_REFRESH.json`
+  - `../sbv-durable-jobs/SOURCE_ATTRIBUTION.json`
+  - `../sbv-durable-jobs/installed-checks-final/REPORT.json`
+  - `../sbv-durable-jobs/cancel-checks/REPORT.json`
+  - `../sbv-durable-jobs/evidence/prior-seal.json`
+- non_authorizations:
+  - `No remote publication, live/provider network activity, remote transport or deployment, cluster/device execution, calibrated likelihood, power-loss/shared-storage qualification, performance superiority or full R6.2/M3 acceptance.`
+- notes: |
+    Timestamps identify the observed local implementation commit, not an invented work interval. Post_merge denotes local source closure, not a GitHub/main merge. Prior ledger bytes and sealed evidence remain unchanged. R6.2a is complete within the selected local scope; R6.2b needs actual owner-backed remote transport/deployed authority, and R6.3 remains open.
