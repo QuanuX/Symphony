@@ -28,7 +28,7 @@
       "verification": "Stale generation refusal, reject/drain below active demand, unlimited/uint64 selections, reads/decodes unchanged after source deletion."
     }
   ],
-  "next_increment": "User review/publication decision; optional additional deployment or capability profile",
+  "next_increment": "User-selected follow-on capability or deployment profile",
   "sequence": [
     {
       "id": "R5.1",
@@ -380,7 +380,7 @@
     "fresh_acquisition": "Requires operational selected SQAV/SSIAG provider bridge and explicit cost/unknown-outcome accounting within the existing aggregate $10 authorization. Not an implicit new spend.",
     "calibration": "Existing capped AAPL/ESZ6 fragments do not establish full initial book or execution-label truth.",
     "live": "Conceptual scaffold only; no live connection/test.",
-    "publication": "This increment is local qualification and commit only. Earlier branch pushes retain their historical authorization; no new push or merge.",
+    "publication": "User explicitly authorized committing the follow-on note, pushing all Symphony source commits to GitHub and merging into main, then removing empty artifact branches. Private data and qualification archives remain local.",
     "limits": "Users select constraints or none. Framing/representation contracts and actual host capacity are disclosed, not described as universal dataset ceilings."
   },
   "tracked_corrections": [
@@ -389,7 +389,7 @@
       "correction": "The generic recommendation to replace the 4096-signal profile is historical/stale for already-shipped partitioned core producers; 0.24 qualified 65,537 signals. Residual legacy external/model/consumer domains remain profile-specific. Preserve the sealed original and use operation_profiles for current limits."
     }
   ],
-  "next_step": "Selected M3 release complete. No push/merge inferred. Physical-host/WAN/cluster/device/peer and other optional domains retain explicit qualification requirements.",
+  "next_step": "Selected M3 release complete. User authorized source publication and main merge with a committed follow-on note. Future work starts from the named prerequisites and completion gates in FOLLOW-ON.md.",
   "R6_2b_local_contract": {
     "id": "R6.2b1",
     "status": "verified_selected_local_scope",
@@ -413,5 +413,6 @@
     "complete_typed_account_and_replay": true,
     "interruption_and_reconciliation_without_duplicate": true,
     "independent_final_review": "no actionable findings"
-  }
+  },
+  "follow_on_note": "modules/sbv-engine/FOLLOW-ON.md"
 }

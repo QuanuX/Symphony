@@ -24883,6 +24883,20 @@ automatic nested fitting and cross-run holdout history remain unimplemented.
 - notes: Private data and local evidence are not portable deployment credentials.
 - status: canonical
 
+### SBV post-M3 follow-on work
+
+- path: `modules/sbv-engine/FOLLOW-ON.md`
+- title: SBV follow-on work after the selected M3 release
+- surface_type: continuation guidance
+- truth_role: Explicit deferred capability and qualification backlog
+- owner: Symphony Backtesting Vector maintainers
+- scope: Post-M3 deployment, authority, scale, device, data, models, visualization and peer comparisons
+- relationships: depends_on -> `modules/sbv-engine/M3-QUALIFICATION.md`; depends_on -> `modules/sbv-engine/M2-M3-READINESS.json`
+- consumers: qxctl operators, maintainers and continuation agents
+- deferred_projections: All proposed follow-on capabilities retain their own positive implementation and qualification gates
+- notes: This note creates no runtime capability, universal transport mandate or user resource/deadline restriction.
+- status: canonical
+
 ### Shared native private temporary fixtures
 
 - path: `tests/support/private_temp.hpp`

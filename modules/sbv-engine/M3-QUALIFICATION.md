@@ -6,6 +6,10 @@ below. Earlier local-only and remote-pending entries remain dated evidence. This
 decision qualifies the selected R6 implementation; it does not claim that every
 optional capability in the original 96-case register is implemented.
 
+The resumable [follow-on note](FOLLOW-ON.md) records remaining deployment,
+authority, scale, device, data, model, visualization and comparison work, with
+prerequisites and evidence needed before claiming each capability.
+
 The selected local R6 profile is qualified on macOS with native 0.33.0-dev,
 the optional Go adapter 0.1.7-dev, and the SOV process adapter 0.1.0-dev.
 The private workspace packet `implementation/sbv-m3-qualification` records
