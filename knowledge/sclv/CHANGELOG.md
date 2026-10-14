@@ -16332,3 +16332,60 @@ This PR authorizes none of the following:
   - `No new push/main merge, WAN or separate-physical-host claim, system-scope/distinct-principal authority claim, live/provider activity or spend, cluster/NUMA/terabyte/device/shared-storage-power-loss/checkpoint or peer-speed qualification.`
 - notes: |
     Post_merge denotes local source closure, not a forge/main merge. Initial test-environment failures are preserved: sshd SetEnv composition, nondeterministic expiry timing, missing xz-utils, and a completed-versus-completed_partial assertion for an explicit one-signal cap. Focused final checks resolve these fixture issues without production-code changes. Existing Codex cloud environment network cannot supply the needed route; this gate selects the disclosed private Linux guest instead. A later different deployment needs its own positive evidence.
+
+
+- record_id: `SCLV-CHG-sbv-post-M3-follow-on`
+- record_version: `3`
+- title: `Preserve post-M3 follow-on work before authorized source publication`
+- status: `canonical`
+- date: `2026-10-14`
+- change_started_at: `2026-10-14T00:18:16Z`
+- change_completed_at: `2026-10-14T00:18:16Z`
+- recorded_at: `2026-10-14T00:19:03Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `documentation_change`
+- change_request_state: `not_applicable`
+- change_request_provider: `not_applicable`
+- change_request_id: `not_applicable`
+- change_request_reference: `not_applicable`
+- change_request_absence_reason: `Direct user instruction to commit future-work notes, push all completed source and merge main; no forge request required for a fast-forward.`
+- revision_scheme: `git-sha1`
+- revision_value: `8163d668c0b8cd43e64f9894d70dab8f41910319`
+- tree_digest: `sha256:e4005e03588b14dc3e8ef4697ddb9a2bf5e5a15107ca4b491c6dd9cc9e5f7ad1`
+- ratification_subject: `Duncan (Architect)`
+- ratification_permission: `authorize_documentation_commit_source_push_main_merge_and_empty_artifact_branch_cleanup`
+- ratification_method: `explicit-user-instruction`
+- ratification_evidence_reference: `../sbv-m3-publication-final/RATIFICATION.json`
+- ratification_evidence_digest: `sha256:1f1b698bc8e993b0bcac80218b0b175c730a13f6059f907780589f617f3bcd2c`
+- affected_surfaces:
+  - `modules/sbv-engine/FOLLOW-ON.md`
+  - `modules/sbv-engine/M3-QUALIFICATION.md`
+  - `modules/sbv-engine/M2-M3-READINESS.json`
+  - `knowledge/skvi/INDEX.md`
+- skvi_references:
+  - `modules/sbv-engine/FOLLOW-ON.md`
+  - `modules/sbv-engine/M3-QUALIFICATION.md`
+  - `modules/sbv-engine/M2-M3-READINESS.json`
+- change_summary: |
+    Adds an indexed, repository-portable follow-on note with actual remaining capabilities, prerequisites, owner relationships and positive completion evidence. Links it from the M3 qualification and readiness records. Records explicit source publication/main merge authorization separately from the prior completed local gate.
+- relationship_changes: |
+    Future remote provisioning/resource work remains with actual SOV and authority/data owners; SBV retains native scientific/job/result semantics and qxctl-first controls. GUI and external consumers use shared typed results. No new runtime integration or feature registration is implied.
+- doctrine_changes: |
+    Preserves user choice of model/study/weighting/retention, constraints or none, no imposed dataset/RAM cap and no mandatory deadline. Deferred physical-host/WAN, distinct-principal authority, cluster/device/checkpoint/data/model/live/peer lanes require their own selected evidence, without reopening completed selected M3 scope by implication.
+- compatibility_consequences: |
+    Documentation only; native0.33.0-dev and transport/carrier versions remain unchanged. Existing passing runtime and independent-review evidence remains applicable at its exact revision. Source validator and diff checks qualify this documentation change; no broad runtime suite is repeated.
+- publication_consequences: |
+    User authorizes publication of the complete committed Symphony source branch and main integration. Private retained evidence and licensed data remain outside this public source repository. Only fully merged stray artifact branches are eligible for deletion; the previously requested SBV continuation branch remains designated for future work.
+- projection_consequences: |
+    The note distinguishes implemented resident/CPU/terminal functionality from unqualified large-hardware/device and benchmark claims. It provides a reproducible continuation path and original case/package pointers; no peer-speed or universal deployment claim is made.
+- evidence:
+  - `../sbv-m3-publication-final/RATIFICATION.json`
+  - `../sbv-m3-publication-final/SOURCE_BINDING.json`
+  - `../sbv-m3-publication-final/BEFORE.json`
+  - `../sbv-m3-remote-final/CLOSEOUT.json`
+  - `../sbv-m3-remote-final/FINAL_REVIEW.json`
+- non_authorizations:
+  - `No private data/evidence publication, force push, unmerged branch deletion, provider/live request, or additional runtime/performance qualification.`
+- notes: |
+    Post_merge identifies local documentation closure. Publication and cleanup outcomes are recorded separately after GitHub acknowledgement; this record does not anticipate their success.
