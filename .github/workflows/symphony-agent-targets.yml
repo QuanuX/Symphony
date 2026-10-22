@@ -2,11 +2,12 @@ name: Symphony agent target fixtures
 
 on:
   workflow_dispatch:
-  push:
-    branches: [codex/symphony-agent-targets]
-    paths:
-      - integrations/symphony-agent/**
-      - .github/workflows/symphony-agent-targets.yml
+    inputs:
+      suite:
+        description: Target family to verify
+        type: choice
+        default: all
+        options: [all, linux, apple, wsl]
 
 permissions:
   contents: read
@@ -20,6 +21,7 @@ env:
 
 jobs:
   linux:
+    if: inputs.suite == 'all' || inputs.suite == 'linux'
     name: Ubuntu ${{ matrix.version }} ${{ matrix.arch }}
     strategy:
       fail-fast: false
@@ -71,6 +73,7 @@ jobs:
           if-no-files-found: error
 
   apple:
+    if: inputs.suite == 'all' || inputs.suite == 'apple'
     name: Apple Silicon ${{ matrix.runner }}
     strategy:
       fail-fast: false
@@ -111,6 +114,7 @@ jobs:
           if-no-files-found: error
 
   wsl:
+    if: inputs.suite == 'all' || inputs.suite == 'wsl'
     name: Windows WSL2 Ubuntu ${{ matrix.version }}
     runs-on: windows-2025
     strategy:

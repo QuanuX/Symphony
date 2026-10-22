@@ -5,6 +5,7 @@ $out = Join-Path $env:RUNNER_TEMP 'wsl-evidence'
 New-Item -ItemType Directory -Force $out | Out-Null
 Start-Transcript -Path (Join-Path $out 'windows-transcript.log')
 function Invoke-Wsl([string[]]$Arguments) {
+    Write-Host ('wsl.exe ' + ($Arguments -join ' '))
     & wsl.exe @Arguments
     if ($LASTEXITCODE -ne 0) { throw "WSL command failed with $LASTEXITCODE; this target is not qualified." }
 }
@@ -12,7 +13,6 @@ try {
     Invoke-Wsl @('--version')
     Invoke-Wsl @('--set-default-version', '2')
     Invoke-Wsl @('--install', '--distribution', $distro, '--no-launch', '--web-download')
-    Invoke-Wsl @('--set-version', $distro, '2')
     Invoke-Wsl @('--distribution', $distro, '--user', 'root', '--exec', 'uname', '-a')
     $listing = (& wsl.exe --list --verbose | Out-String) -replace "`0", ''
     if ($LASTEXITCODE -ne 0) { throw 'Unable to inspect WSL generation' }
