@@ -1,0 +1,8 @@
+# Generated connection fragments may be merged into an existing Codex config.
+# Replace the example absolute paths with the selected installed files.
+[mcp_servers.symphony]
+command = "/absolute/path/to/bin/symphony-mcp"
+args = ["--config", "/absolute/path/to/connection.json"]
+startup_timeout_sec = 70
+tool_timeout_sec = 70
+default_tools_approval_mode = "writes"

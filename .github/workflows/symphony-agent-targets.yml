@@ -1,0 +1,137 @@
+name: Symphony agent target fixtures
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [codex/symphony-agent-targets]
+    paths:
+      - integrations/symphony-agent/**
+      - .github/workflows/symphony-agent-targets.yml
+
+permissions:
+  contents: read
+
+concurrency:
+  group: symphony-agent-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  PLUGIN_ROOT: integrations/symphony-agent
+
+jobs:
+  linux:
+    name: Ubuntu ${{ matrix.version }} ${{ matrix.arch }}
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        include:
+          - {runner: ubuntu-22.04, version: '22.04', arch: x86_64}
+          - {runner: ubuntu-24.04, version: '24.04', arch: x86_64}
+          - {runner: ubuntu-26.04, version: '26.04', arch: x86_64, sanitizers: true}
+          - {runner: ubuntu-22.04-arm, version: '22.04', arch: arm64}
+          - {runner: ubuntu-24.04-arm, version: '24.04', arch: arm64}
+          - {runner: ubuntu-26.04-arm, version: '26.04', arch: arm64, sanitizers: true}
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - name: Provision isolated build account on disposable runner
+        shell: bash
+        run: |
+          sudo mkdir -p /work/source
+          sudo cp -R "$PLUGIN_ROOT/." /work/source/
+          sudo bash /work/source/ci/provision-linux.sh > "$RUNNER_TEMP/provision.log" 2>&1
+      - name: Compile, run all bridge fixtures, and package candidate
+        env:
+          TARGET_VERSION: ${{ matrix.version }}
+          TARGET_ARCH: ${{ matrix.arch }}
+          RUN_SANITIZERS: ${{ matrix.sanitizers || false }}
+        run: sudo -u symphonybuild bash /work/source/ci/ci-linux.sh "$TARGET_VERSION" "$TARGET_ARCH" vm "$RUN_SANITIZERS"
+      - name: Collect evidence
+        if: always()
+        shell: bash
+        run: |
+          mkdir -p "$RUNNER_TEMP/plugin-evidence"
+          for path in /work/toolchain /work/result /work/sanitizers /work/packages; do
+            if sudo test -d "$path"; then sudo cp -R "$path" "$RUNNER_TEMP/plugin-evidence/"; fi
+          done
+          sudo chmod -R a+rX "$RUNNER_TEMP/plugin-evidence"
+          printf '%s\n' "$GITHUB_SHA" > "$RUNNER_TEMP/plugin-evidence/repository-commit.txt"
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: always()
+        with:
+          name: ubuntu-${{ matrix.version }}-${{ matrix.arch }}-fixtures
+          path: |
+            ${{ runner.temp }}/plugin-evidence
+            ${{ runner.temp }}/provision.log
+          retention-days: 14
+          if-no-files-found: error
+
+  apple:
+    name: Apple Silicon ${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        runner: [macos-15, macos-26]
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - name: Prepare private build tools
+        shell: bash
+        run: |
+          test "$(uname -m)" = arm64
+          python3 -c 'import sys; assert sys.version_info >= (3,11)'
+          python3 -m venv "$RUNNER_TEMP/tools"
+          "$RUNNER_TEMP/tools/bin/pip" install --only-binary=:all: --report "$RUNNER_TEMP/cmake-install.json" cmake==3.31.6
+      - name: Native compile, fixture tests, and candidate
+        shell: bash
+        run: |
+          "$RUNNER_TEMP/tools/bin/python" "$PLUGIN_ROOT/ci/qualify_local.py" \
+            --source "$PLUGIN_ROOT" --out "$RUNNER_TEMP/result" --compiler /usr/bin/clang++ \
+            --cmake "$RUNNER_TEMP/tools/bin/cmake" --ctest "$RUNNER_TEMP/tools/bin/ctest" \
+            --expected-os macos --expected-arch arm64 --host-kind vm --macos-deployment-target 14.0
+          "$RUNNER_TEMP/tools/bin/python" "$PLUGIN_ROOT/scripts/package_release.py" \
+            --binary "$RUNNER_TEMP/result/build/symphony-mcp" \
+            --output "$RUNNER_TEMP/packages/symphony-0.1.0-alpha.1-macos-arm64-candidate.zip"
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: always()
+        with:
+          name: ${{ matrix.runner }}-arm64-fixtures
+          path: |
+            ${{ runner.temp }}/result
+            ${{ runner.temp }}/packages
+            ${{ runner.temp }}/cmake-install.json
+          retention-days: 14
+          if-no-files-found: error
+
+  wsl:
+    name: Windows WSL2 Ubuntu ${{ matrix.version }}
+    runs-on: windows-2025
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        version: ['22.04', '24.04', '26.04']
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - name: Start actual WSL2, provision guest, and test Windows stdio
+        env:
+          TARGET_VERSION: ${{ matrix.version }}
+        shell: pwsh
+        run: ./integrations/symphony-agent/ci/qualify-wsl.ps1 -Version $env:TARGET_VERSION
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: always()
+        with:
+          name: windows-wsl2-ubuntu-${{ matrix.version }}-fixtures
+          path: ${{ runner.temp }}/wsl-evidence
+          retention-days: 14
+          if-no-files-found: error

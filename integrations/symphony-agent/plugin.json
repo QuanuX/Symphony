@@ -1,0 +1,46 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "symphony",
+  "version": "0.1.0-alpha.1",
+  "description": "Connect an agent to a configured Symphony installation and administer its available qxctl capabilities through a C++ MCP bridge.",
+  "author": {
+    "name": "QuanuX",
+    "url": "https://quanux.org",
+    "email": "duncan@quanux.org"
+  },
+  "homepage": "https://quanux.org",
+  "keywords": [
+    "symphony",
+    "quantos",
+    "vgaa",
+    "administration",
+    "mcp"
+  ],
+  "extensions": {
+    "com.openai": {
+      "requires_local_executor": true,
+      "interface": {
+        "displayName": "Symphony",
+        "shortDescription": "Administer Symphony",
+        "longDescription": "Inspect a configured Symphony installation, discover its available commands, and prepare and execute authorized administration. This Alpha uses a local C++ MCP bridge and the installation's qxctl contracts. Optional local IPC connects clients to a same-user bridge process. Available features depend on the selected installation and enabled commands. Public directory acceptance and host qualification are separate release gates.",
+        "developerName": "QuanuX",
+        "websiteURL": "https://quanux.org",
+        "category": "Developer Tools",
+        "capabilities": [
+          "Read",
+          "Write"
+        ],
+        "defaultPrompt": [
+          "Inspect my Symphony connection and discover its available administration capabilities.",
+          "Help diagnose an interrupted Symphony operation using its retained status and recovery commands.",
+          "Prepare the Symphony administration change I requested using the installed command contract."
+        ],
+        "supportURL": "https://quanux.org/contact",
+        "logo": "./assets/favicon.svg",
+        "logoDark": "./assets/favicon-dark.svg",
+        "composerIcon": "./assets/favicon.svg",
+        "composerIconDark": "./assets/favicon-dark.svg"
+      }
+    }
+  }
+}

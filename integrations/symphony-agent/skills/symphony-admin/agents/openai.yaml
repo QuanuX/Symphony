@@ -1,0 +1,6 @@
+interface:
+  display_name: "Symphony Administration"
+  short_description: "Connect to and administer Symphony installations"
+  default_prompt: "Use $symphony-admin to inspect my Symphony connection and help complete my administration task."
+policy:
+  allow_implicit_invocation: true

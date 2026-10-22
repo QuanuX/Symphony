@@ -1,0 +1,11 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/mcp.schema.json",
+  "mcpServers": {
+    "symphony": {
+      "type": "stdio",
+      "command": "./bin/symphony-mcp",
+      "args": ["--config", "${PLUGIN_DATA}/connection.json"],
+      "cwd": "${PLUGIN_ROOT}"
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "name": "symphony",
+  "version": "0.1.0-alpha.1",
+  "description": "Connect to a configured Symphony installation and administer available qxctl capabilities.",
+  "author": {
+    "name": "QuanuX",
+    "url": "https://quanux.org"
+  },
+  "homepage": "https://quanux.org"
+}

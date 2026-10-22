@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Symphony generated JSON stdio adapter",
+  "description": "Narrow output contract for configure_clients.py; not a complete host configuration schema.",
+  "type": "object",
+  "required": ["mcpServers"],
+  "additionalProperties": false,
+  "properties": {
+    "mcpServers": {
+      "type": "object",
+      "required": ["symphony"],
+      "additionalProperties": false,
+      "properties": {
+        "symphony": {
+          "type": "object",
+          "required": ["command", "args"],
+          "additionalProperties": false,
+          "properties": {
+            "type": {"const": "stdio"},
+            "command": {"type": "string", "pattern": "^/", "minLength": 2},
+            "args": {
+              "type": "array",
+              "prefixItems": [
+                {"enum": ["--config", "--connect-socket"]},
+                {"type": "string", "pattern": "^/", "minLength": 2}
+              ],
+              "minItems": 2,
+              "maxItems": 2
+            }
+          }
+        }
+      }
+    }
+  }
+}

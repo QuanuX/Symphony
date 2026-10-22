@@ -1,0 +1,11 @@
+# Alpha data handling disclosure
+
+This local adapter does not send telemetry or operate a hosted backend. It launches the operator-selected local qxctl with explicit arguments and forwards its bounded results to the connected agent application. A user-selected qxctl operation may use native provider or remote transports under that operation's own configuration.
+
+The connected agent provider receives tool requests and returned data according to that application's policies. These may include installation paths, repository metadata, identities, operational state, and caller-selected result data. Running locally does not imply that content shown to an AI agent stays on the local machine.
+
+Connection-profile retention and cleanup depend on the selected storage location and the host application. Host-managed `${PLUGIN_DATA}` may be removed when the host uninstalls or resets the plugin; profile survival is not guaranteed. Operator-managed files follow the operator's own cleanup arrangements.
+
+A prepared preview expires for execution after five minutes. Expiry is not a five-minute memory-deletion guarantee: its record may remain held in process memory until an apply attempt consumes it, a later prepare call cleans up expired records, or the bridge session or process ends. The bridge does not persist an independent audit log. Symphony owners may persist their own intents, evidence, receipts and audit records according to their own storage and retention behavior. The bridge does not itself uninstall Symphony or delete native owner records; host-managed storage cleanup is a separate concern.
+
+This disclosure describes implementation behavior. The review candidate identifies QuanuX and links to its public contact route. The existing website privacy notice at https://quanux.org/privacy explicitly excludes independently operated Symphony installations; its reservation/contribution supplement does not cover this plugin either. Published plugin-specific privacy coverage and any required service terms remain outstanding. No privacy or terms URL is declared in the manifest until an applicable policy is published. This file is not an approved public privacy policy or evidence of OpenAI approval.
