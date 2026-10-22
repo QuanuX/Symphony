@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "symphony": {
+      "command": "C:\\Windows\\System32\\wsl.exe",
+      "args": ["--distribution", "Ubuntu-24.04", "--user", "symphony-user", "--cd", "/home/symphony-user", "--exec", "/home/symphony-user/symphony-agent-plugin/bin/symphony-mcp", "--config", "/home/symphony-user/.config/symphony/connection.json"]
+    }
+  }
+}

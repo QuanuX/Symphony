@@ -1,0 +1,13 @@
+# Windows clients through WSL 2
+
+The Windows client launches the Linux bridge with `wsl.exe`. Install the matching x86-64 Linux candidate, the selected qxctl and its native dependencies inside one named WSL 2 distribution. This does not supply a native Windows executable. Windows ARM64 and Windows 11 desktop UI integration have not been qualified.
+
+1. Verify the selected distribution shows version 2 in `wsl --list --verbose` from Windows. Do not convert a working version-2 distribution again.
+2. Extract the matching Ubuntu 22.04, 24.04 or 26.04 candidate inside the Linux user's filesystem. Preserve or restore executable permission on `bin/symphony-mcp`. Linux requires OpenSSL 3 and the distribution's C++ runtime; Python 3.11+ is needed for the setup scripts. Ubuntu 22.04's default Python is too old for those scripts; select a separate suitable Python without replacing system Python. The release bridge itself does not use Python.
+3. In that distribution, use `scripts/configure_connection.py` with the real Linux qxctl path, existing working directory and a private Linux connection-profile path. Select the exact installation and enabled commands; never use the CI fake qxctl as an installation.
+4. Copy the [Codex TOML example](../adapters/codex/windows-wsl2.toml.example) or [generic MCP JSON example](../adapters/generic/windows-wsl2.json.example) into the intended Windows client's configuration. Replace the Windows executable location if needed, distribution, Linux username and every Linux path. The generated POSIX configuration from `configure_clients.py` is for a client running inside Linux; a Windows client needs this `wsl.exe` adapter.
+5. Restart or reload that MCP connection and inspect the bridge's connection and registry through the host. Preserve unrelated client configuration. Actual Codex/Claude/Antigravity UI installation and authority checks remain a separate acceptance step.
+
+The arguments are an explicit argv array using `--distribution`, `--user`, `--cd` and `--exec`. No shell wrapper or quoting layer is required. The configured paths belong to the Linux guest, except for `wsl.exe` itself. If using the optional Unix-socket front end, run it inside that same distribution and user boundary and select `--connect-socket` with its Linux path; no Windows named-pipe endpoint is created.
+
+[Observed WSL qualification](platforms.md) passed all four Linux suites and a cold Windows-to-WSL MCP initialization, tool listing and fixture read for each Ubuntu version on Windows Server 2025. The host templates use that tested argv shape. They remain operator-edited examples, and no installed agent UI or real native-owner mutation is claimed.

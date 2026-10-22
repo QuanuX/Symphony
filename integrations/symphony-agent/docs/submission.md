@@ -1,6 +1,6 @@
 # Public Alpha submission
 
-Status: website-enriched **review candidate, not submission-ready**, prepared October 22, 2026 from the sealed `0.1.0-alpha.1` macOS x86_64 package. The runtime version and binary are unchanged; this is not a new runtime release. The publisher website announces Symphony Alpha for October 26, 2026, but that date does not establish OpenAI eligibility, review turnaround, acceptance or directory publication. This package does not claim native Apple Silicon, Linux, NVIDIA-device or WSL qualification.
+Status: website-enriched **review candidate, not submission-ready**, prepared October 22, 2026 from the sealed `0.1.0-alpha.1` macOS x86_64 package. The runtime version and binary are unchanged; this is not a new runtime release. The publisher website announces Symphony Alpha for October 26, 2026, but that date does not establish OpenAI eligibility, review turnaround, acceptance or directory publication. Subsequent [platform qualification](platforms.md) records native Apple Silicon/Linux and Windows-to-WSL fixture checks. NVIDIA-device qualification, installed host UI and native-owner acceptance remain open.
 
 ## Distribution path
 

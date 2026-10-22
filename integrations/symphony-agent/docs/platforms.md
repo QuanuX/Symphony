@@ -1,11 +1,20 @@
-# Platform qualification
+# Platform qualification — 22 October 2026
 
-The C++ runtime supports POSIX macOS and Linux. Build candidates are specific to OS series and CPU architecture. Windows hosts use a WSL2 Linux executable through `wsl.exe`; no native Windows binary or named-pipe transport is implemented.
+Eleven distinct platform candidates were built and exercised on standard GitHub-hosted runners. These are Symphony plugin/bridge builds; this project does not build or distribute OpenAI's Codex desktop application. The runtime source remains the frozen C++26 Alpha implementation with MCP 2025-11-25. Windows checkouts differ only by recorded CRLF line endings in some core files.
 
-The new CI workflow runs bridge fixture tests on Ubuntu 22.04/24.04/26.04 x86-64 and ARM64, macOS 15/26 Apple Silicon, and attempts actual WSL2 tests from Windows Server 2025. A job is evidence only after its recorded tests pass without required skips. Native Ubuntu 26.04 jobs include ASan/UBSan. Read-only repository permissions, pinned Actions and unprivileged fixture execution are used. No real Symphony account, provider, service or mutation is exercised.
+| Target | Observed result |
+| --- | --- |
+| Ubuntu 22.04, 24.04, 26.04 — x86-64 and ARM64 | All six native builds passed four suites without skips. Each exact ZIP then passed 20 MCP/Unix-socket cases in a fresh matching native container without a compiler. |
+| Apple Silicon — macOS 15 and 26 | Both native ARM64 builds passed four suites without skips; no Rosetta. Deployment target 14.0 is a build setting, not macOS 14 execution evidence. |
+| Windows Server 2025 → WSL 2 — Ubuntu 22.04, 24.04, 26.04 x86-64 | All three passed four guest suites without skips, plus a cold Windows `wsl.exe` MCP initialization, tool listing and fixture read. |
+| DGX OS 6/7 x86-64, enterprise ARM64, DGX Spark | Hardware/vendor-OS qualification pending. Generic Ubuntu ARM64, GPU VMs and containers do not close these lanes. |
 
-Local container tests have passed on Ubuntu 24.04 and 26.04 x86-64. An Apple Silicon binary has cross-compiled on Intel macOS but has not yet executed on Apple Silicon. Additional local/hosted runs are in progress; no unobserved result is claimed here. The original verification document is a dated Intel macOS baseline.
+Each four-suite release run covers 44 transport checks, five hash checks, 20 MCP cases and four adapter cases. Ubuntu 26.04 on both CPU architectures also passed ASan/UBSan runs for the instrumented transport/MCP targets. No real Symphony account, provider or native-owner mutation was exercised in this matrix. See the machine-readable [platform results and archive hashes](platform-results.json).
 
-DGX OS 6/7, enterprise ARM64 and DGX Spark need separate hardware/vendor-OS evidence. Generic GPU clouds, Ubuntu containers and ARM emulation do not certify those installations. The provisioner in `ci/` is for disposable Ubuntu runners only; do not run it on a DGX appliance.
+Evidence: [native builds](https://github.com/QuanuX/Symphony/actions/runs/39854747330), [corrected WSL runs](https://github.com/QuanuX/Symphony/actions/runs/39855798088), [clean package execution](https://github.com/QuanuX/Symphony/actions/runs/39857103515). The initial overall build run is red because an unnecessary conversion of already-version-2 WSL distributions failed; all eight native jobs passed. The dedicated WSL rerun removed that conversion and passed. An earlier package run stopped before testing because its evidence parent directory was absent; the corrected run passed all six packages. Failed runs remain visible.
 
-Public signing/notarization, minimum-macOS execution, installed qxctl authority, Codex/Claude/Antigravity UI integration, clean-machine install/uninstall and OpenAI local-MCP eligibility remain separate release gates. No platform artifact is an approved public release merely because it compiles or passes fixtures.
+The workflow is manually dispatched by suite. Read-only repository permissions, pinned Actions, separate unprivileged Linux fixture users and no real connection credentials are used. Artifacts expire after 14 days in GitHub; the review supplement preserves exact downloaded ZIPs and checksums. The Linux provisioner is for disposable Ubuntu runners only, never a DGX appliance.
+
+[Windows setup](windows-wsl2.md) supplies explicit Windows-to-WSL adapters. Actual Codex/Claude/Antigravity UI, native-owner authority/recovery, clean desktop installation/uninstall, macOS minimum-version execution, signing/notarization, applicable privacy/terms and OpenAI local-MCP eligibility remain release gates. No merge, GitHub Release or marketplace submission has occurred.
+
+The dated Intel-only verification and website submission documents shipped inside the tested ZIPs are preserved as build-time snapshots. This document and its linked results supersede their platform-pending statements only; they do not close the other public review gates.

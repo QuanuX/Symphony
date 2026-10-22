@@ -8,6 +8,8 @@ The socket belongs to this bridge. It is not a generic pre-existing Symphony adm
 
 Client registration examples are provided by the package's adapter generator. A missing binary, configuration, socket, or qxctl installation is setup work. Preserve an existing configuration and report the exact missing input; do not invent an installation from repository contents. Never collect credentials in chat.
 
+For a Windows-host client, use the package's `adapters/codex/windows-wsl2.toml.example` or `adapters/generic/windows-wsl2.json.example` and `docs/windows-wsl2.md`. Select the distribution, Linux user and Linux paths explicitly. A Windows client launches the Linux binary through `wsl.exe`; a POSIX executable path alone is insufficient.
+
 ## Discovery sequence
 
 1. Call `symphony_connection`. Record the selected configuration's installation identity and available connection details without exposing private paths unnecessarily.

@@ -1,0 +1,8 @@
+# Template: replace distribution, Linux user, and all Linux paths explicitly.
+# Windows-host Codex launches an already-installed Linux bridge; no shell wrapper.
+[mcp_servers.symphony]
+command = 'C:\Windows\System32\wsl.exe'
+args = ["--distribution", "Ubuntu-24.04", "--user", "symphony-user", "--cd", "/home/symphony-user", "--exec", "/home/symphony-user/symphony-agent-plugin/bin/symphony-mcp", "--config", "/home/symphony-user/.config/symphony/connection.json"]
+startup_timeout_sec = 70
+tool_timeout_sec = 70
+default_tools_approval_mode = "writes"
