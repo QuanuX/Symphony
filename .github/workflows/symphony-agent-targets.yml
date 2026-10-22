@@ -7,13 +7,17 @@ on:
         description: Target family to verify
         type: choice
         default: all
-        options: [all, linux, apple, wsl]
+        options: [all, linux, apple, wsl, packages]
+      build_run:
+        description: Prior successful native build run for package-only checks
+        type: string
+        default: ''
 
 permissions:
   contents: read
 
 concurrency:
-  group: symphony-agent-${{ github.ref }}
+  group: symphony-agent-${{ github.ref }}-${{ inputs.suite || 'all' }}
   cancel-in-progress: false
 
 env:
@@ -137,5 +141,56 @@ jobs:
         with:
           name: windows-wsl2-ubuntu-${{ matrix.version }}-fixtures
           path: ${{ runner.temp }}/wsl-evidence
+          retention-days: 14
+          if-no-files-found: error
+
+  packages:
+    if: inputs.suite == 'packages'
+    name: Clean package Ubuntu ${{ matrix.version }} ${{ matrix.arch }}
+    permissions:
+      contents: read
+      actions: read
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        include:
+          - {runner: ubuntu-22.04, version: '22.04', arch: x86_64, docker_arch: amd64}
+          - {runner: ubuntu-24.04, version: '24.04', arch: x86_64, docker_arch: amd64}
+          - {runner: ubuntu-26.04, version: '26.04', arch: x86_64, docker_arch: amd64}
+          - {runner: ubuntu-22.04-arm, version: '22.04', arch: arm64, docker_arch: arm64}
+          - {runner: ubuntu-24.04-arm, version: '24.04', arch: arm64, docker_arch: arm64}
+          - {runner: ubuntu-26.04-arm, version: '26.04', arch: arm64, docker_arch: arm64}
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - name: Download the selected build artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BUILD_RUN: ${{ inputs.build_run }}
+          TARGET_VERSION: ${{ matrix.version }}
+          TARGET_ARCH: ${{ matrix.arch }}
+        shell: bash
+        run: |
+          [[ "$BUILD_RUN" =~ ^[0-9]+$ ]]
+          gh run download "$BUILD_RUN" --repo "$GITHUB_REPOSITORY" \
+            --name "ubuntu-${TARGET_VERSION}-${TARGET_ARCH}-fixtures" --dir "$RUNNER_TEMP/download"
+      - name: Check exact binary hash and execute in a compiler-free matching container
+        env:
+          TARGET_VERSION: ${{ matrix.version }}
+          TARGET_ARCH: ${{ matrix.arch }}
+          DOCKER_ARCH: ${{ matrix.docker_arch }}
+        shell: bash
+        run: |
+          python3 "$PLUGIN_ROOT/ci/check_downloaded_package.py" --download "$RUNNER_TEMP/download" \
+            --ubuntu "$TARGET_VERSION" --arch "$TARGET_ARCH" --docker-arch "$DOCKER_ARCH"
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: always()
+        with:
+          name: clean-package-ubuntu-${{ matrix.version }}-${{ matrix.arch }}
+          path: integrations/symphony-agent/evidence
           retention-days: 14
           if-no-files-found: error
