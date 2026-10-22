@@ -18,7 +18,7 @@ p.add_argument('--ubuntu',required=True,choices=['22.04','24.04','26.04'])
 p.add_argument('--arch',required=True,choices=['amd64','arm64'])
 p.add_argument('--archive',required=True,type=Path)
 a=p.parse_args()
-out=ROOT/'evidence'/f'package-ubuntu-{a.ubuntu}-{a.arch}';out.mkdir(exist_ok=False)
+out=ROOT/'evidence'/f'package-ubuntu-{a.ubuntu}-{a.arch}';out.mkdir(parents=True,exist_ok=False)
 name='symphony-package-'+uuid.uuid4().hex[:10]
 host_arch={'x86_64':'amd64','aarch64':'arm64','arm64':'arm64'}.get(platform.machine())
 report={'status':'running','archive':a.archive.name,'sha256':hashlib.sha256(a.archive.read_bytes()).hexdigest(),
