@@ -75,3 +75,5 @@ The packager includes source, the selected binary, skill, adapters and licenses;
 OpenAI's public local-MCP path currently requires partner allowlisting. Publisher support/privacy/terms URLs, branding, reviewer demonstration, real host qualification and release acceptance remain external gates. The configured C++ runtime and adapters can be tested locally before those gates close. Neither this package nor a successful test guarantees a public launch date.
 
 Eleven hosted plugin candidates now pass the [platform qualification checks](docs/platforms.md): Ubuntu on x86-64/ARM64, Apple Silicon and Windows-to-WSL 2. [Windows clients use an explicit WSL adapter](docs/windows-wsl2.md). DGX/Spark hardware and actual agent UI/native-owner acceptance remain open. The original verification report remains a dated baseline.
+
+The manifest now offers the packaged `symphony-setup` onboarding workflow for selecting an existing installation and creating its private pinned profile. See [Codex acceptance](docs/codex-acceptance.md) for installed client evidence and remaining GUI checks. NVIDIA DGX/Spark qualification is a later milestone.

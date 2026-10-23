@@ -1,0 +1,115 @@
+{
+  "schema": "symphony.codex.acceptance.v1",
+  "date": "2026-10-23",
+  "codex_version": "0.163.0-alpha.10.2",
+  "model": "gpt-6.1-sol (host default)",
+  "os": "macOS 26.7.1 x86_64",
+  "plugin_version": "0.1.0-alpha.1",
+  "deterministic_codex_checks": 22,
+  "ipc_codex_checks": 8,
+  "reviewer_setup_checks": 6,
+  "model_cases": [
+    {
+      "id": "P1",
+      "result": "pass within stated scope",
+      "tools": [
+        "symphony_connection",
+        "symphony_discover",
+        "symphony_describe",
+        "symphony_describe",
+        "symphony_describe"
+      ],
+      "source_evidence": "model-P1-routing-fix.jsonl"
+    },
+    {
+      "id": "P2",
+      "result": "pass within stated scope",
+      "tools": [
+        "symphony_connection",
+        "symphony_discover",
+        "symphony_discover",
+        "symphony_describe",
+        "symphony_describe"
+      ],
+      "source_evidence": "model-P2.jsonl"
+    },
+    {
+      "id": "P3",
+      "result": "pass within stated scope",
+      "tools": [
+        "symphony_connection",
+        "symphony_discover",
+        "symphony_discover",
+        "symphony_describe",
+        "symphony_read"
+      ],
+      "source_evidence": "model-P3.jsonl"
+    },
+    {
+      "id": "P4",
+      "result": "pass within stated scope",
+      "tools": [
+        "symphony_connection",
+        "symphony_discover",
+        "symphony_describe",
+        "symphony_describe",
+        "symphony_prepare",
+        "symphony_apply",
+        "symphony_read"
+      ],
+      "source_evidence": "model-P4.jsonl"
+    },
+    {
+      "id": "P5",
+      "result": "pass within stated scope",
+      "tools": [
+        "symphony_connection",
+        "symphony_discover",
+        "symphony_describe",
+        "symphony_read"
+      ],
+      "source_evidence": "model-P5.jsonl"
+    },
+    {
+      "id": "N1",
+      "result": "pass after routing fix",
+      "tools": [],
+      "source_evidence": "model-N1-routing-fix.jsonl"
+    },
+    {
+      "id": "N2",
+      "result": "pass within stated scope",
+      "tools": [
+        "symphony_connection",
+        "symphony_discover",
+        "symphony_describe"
+      ],
+      "source_evidence": "model-N2.jsonl"
+    },
+    {
+      "id": "N3",
+      "result": "pass within stated scope",
+      "tools": [
+        "symphony_connection",
+        "symphony_discover",
+        "symphony_discover",
+        "symphony_discover"
+      ],
+      "source_evidence": "model-N3.jsonl"
+    }
+  ],
+  "initial_failure": {
+    "case": "N1",
+    "observed": "Unrelated weather prompt called connection and discovery",
+    "correction": "Scope skill workflow to Symphony-related user requests",
+    "retest": "N1 zero Symphony calls; P1 discovery still succeeds"
+  },
+  "scope_limits": [
+    "Codex app-server plugin installation and CLI model scenarios; desktop GUI/recording pending",
+    "Actual qxctl SOV local configuration owner; synthetic target/job references; no native SBV execution or deployed SSIAG allow path",
+    "IPC serial, same UID; no cross-user, remote, or multi-session concurrency qualification",
+    "Other platform runtime evidence is from prior hosted tests, not Codex GUI runs",
+    "NVIDIA hardware deferred; Claude/Antigravity actual host tests deferred"
+  ],
+  "cleanup": "Disposable model owner configuration removed with exact native digest; app-server profile restored read-only; IPC process/socket removed"
+}

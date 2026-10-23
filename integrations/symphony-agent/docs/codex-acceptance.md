@@ -1,0 +1,23 @@
+# Codex acceptance — 23 October 2026
+
+The ChatGPT desktop application's bundled Codex CLI **0.163.0-alpha.10.2** was exercised on **macOS 26.7.1 x86_64** using a separate test configuration/cache. Its actual plugin manager installed the portable Symphony package from an isolated local marketplace. Its app-server resolved both skills, the onboarding declaration and all six MCP tools. The original C++ runtime binary and exact qxctl executable/registry pins were used.
+
+**22 deterministic checks passed through Codex's actual MCP client.** These cover connection, discovery, exact command description, a real qxctl template read, disabled/write-via-read/unsupported-route refusal, and actual SOV owner configuration create, inspect, stale-CAS refusal, input-drift refusal, consumed-plan refusal, response-loss recovery and exact-digest removal. Recovery intentionally discarded an apply response, restarted the client and read the owner state without repeating the write. The profile was restored to read-only.
+
+**Eight further checks passed through the generated Codex standalone IPC adapter.** An owned private socket was created with mode 0600; two successive Codex sessions discovered six tools and read through the same bridge. The bridge survived reconnect. Codex app-server inventory must select both the thread and server to reuse that connection: a broad status request can open another connection and stall against this Alpha's serial listener. Prefer direct stdio for ordinary plugin installation and for concurrent sessions. An initial sandboxed bind was blocked by the operating-system sandbox; the authorized local socket test passed outside that sandbox.
+
+The SOV operation tested here persists a **disposable configuration** under the executing user's filesystem authority. Its target/job references are explicitly synthetic. This is real owner code and durable configuration/CAS behavior; it does not establish SBV job execution, a deployed SSIAG allow path, cross-user delegation, a live broker connection or a remote service. Deterministic app-server tests also do not establish model selection or desktop GUI behavior.
+
+The setup skill is available even before a connection file exists. Fresh installation without a profile predictably fails MCP initialization; creating the private pinned profile and reconnecting succeeds. The onboarding reference is resolved by the real host. Automatic GUI setup invocation, installation during an existing GUI conversation, download/quarantine/signing behavior and recording remain separate checks.
+
+NVIDIA DGX/Spark is deferred to a later milestone and does not block this initial Codex review candidate. The [platform matrix](platforms.md) remains the authority for the eleven previous native/WSL build results. Do not infer other operating systems' Codex UI behavior from this Intel Mac host pass.
+
+## Live model scenarios
+
+Five positive and three negative reviewer scenarios were exercised through live Codex CLI sessions using the existing ChatGPT login and the host-default `gpt-6.1-sol`. The packaged administration guidance was supplied in context and the generated standalone MCP connection was used. This complements the separate plugin-manager/app-server tests; it is not a GUI skill-selection test.
+
+P1 connection/discovery, P2 exact contract and limits, P3 native template interpretation, P4 one authorized configuration write with owner inspection, P5 read-only reconciliation, N2 disabled-operation refusal and N3 false-live-fill refusal passed. P5 correctly distinguished retained configuration from a comparison with input bytes it could not read. The harness separately verified those bytes matched. Its state was seeded from P4; the deterministic suite is the evidence for actual discarded-response/restart behavior.
+
+**N1 initially failed:** the unrelated weather prompt caused connection/discovery calls. A narrow relevance instruction was added to the administration skill. The N1 retest made zero Symphony calls; the P1 positive retest still performed appropriate connection/discovery. The original failure and both retests are retained in the local evidence record. This is one observed run per case, not a statistical reliability claim.
+
+The disposable reviewer setup helper passed six focused checks for private permissions, no mutation during setup, read-only defaults, one selected write permission and refusal to overwrite an existing directory. [Reviewer setup](reviewer-setup.md) and the manifest now contain five positive and three negative cases. [Machine-readable acceptance summary](codex-acceptance.json) records the exact scope.

@@ -5,6 +5,8 @@ description: Connect to, inspect, diagnose, and administer a configured Symphony
 
 # Symphony administration
 
+Apply this workflow when the user's task concerns their Symphony installation or its capabilities. For an unrelated request, such as an ordinary weather question, answer or clarify it normally without inspecting Symphony. The plugin being installed or this skill being present in context is not a reason to query the installation.
+
 Use the Symphony MCP bridge to carry out the user's requested work on their selected installation. Symphony is a quantOS built through Vector-Graph Application Architecture (VGAA). Users choose their programs, modules, providers, models, and topology. Published components have exact operating contracts; those contracts do not prescribe every system users may build.
 
 ## Establish the connection and available operations

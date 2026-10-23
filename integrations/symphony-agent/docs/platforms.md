@@ -7,7 +7,7 @@ Eleven distinct platform candidates were built and exercised on standard GitHub-
 | Ubuntu 22.04, 24.04, 26.04 — x86-64 and ARM64 | All six native builds passed four suites without skips. Each exact ZIP then passed 20 MCP/Unix-socket cases in a fresh matching native container without a compiler. |
 | Apple Silicon — macOS 15 and 26 | Both native ARM64 builds passed four suites without skips; no Rosetta. Deployment target 14.0 is a build setting, not macOS 14 execution evidence. |
 | Windows Server 2025 → WSL 2 — Ubuntu 22.04, 24.04, 26.04 x86-64 | All three passed four guest suites without skips, plus a cold Windows `wsl.exe` MCP initialization, tool listing and fixture read. |
-| DGX OS 6/7 x86-64, enterprise ARM64, DGX Spark | Hardware/vendor-OS qualification pending. Generic Ubuntu ARM64, GPU VMs and containers do not close these lanes. |
+| DGX OS 6/7 x86-64, enterprise ARM64, DGX Spark | Deferred after the initial Codex submission per publisher direction on 23 October. Hardware/vendor-OS qualification remains unrun. Generic Ubuntu ARM64, GPU VMs and containers do not close these lanes. |
 
 Each four-suite release run covers 44 transport checks, five hash checks, 20 MCP cases and four adapter cases. Ubuntu 26.04 on both CPU architectures also passed ASan/UBSan runs for the instrumented transport/MCP targets. No real Symphony account, provider or native-owner mutation was exercised in this matrix. See the machine-readable [platform results and archive hashes](platform-results.json).
 
@@ -15,6 +15,8 @@ Evidence: [native builds](https://github.com/QuanuX/Symphony/actions/runs/398547
 
 The workflow is manually dispatched by suite. Read-only repository permissions, pinned Actions, separate unprivileged Linux fixture users and no real connection credentials are used. Artifacts expire after 14 days in GitHub; the review supplement preserves exact downloaded ZIPs and checksums. The Linux provisioner is for disposable Ubuntu runners only, never a DGX appliance.
 
-[Windows setup](windows-wsl2.md) supplies explicit Windows-to-WSL adapters. Actual Codex/Claude/Antigravity UI, native-owner authority/recovery, clean desktop installation/uninstall, macOS minimum-version execution, signing/notarization, applicable privacy/terms and OpenAI local-MCP eligibility remain release gates. No merge, GitHub Release or marketplace submission has occurred.
+[Windows setup](windows-wsl2.md) supplies explicit Windows-to-WSL adapters. Actual Codex/Claude/Antigravity UI, broader native-engine authority/recovery, clean desktop installation/uninstall, macOS minimum-version execution, signing/notarization, applicable privacy/terms and OpenAI local-MCP eligibility remain release gates. No merge, GitHub Release or marketplace submission has occurred.
 
 The dated Intel-only verification and website submission documents shipped inside the tested ZIPs are preserved as build-time snapshots. This document and its linked results supersede their platform-pending statements only; they do not close the other public review gates.
+
+[Installed Codex acceptance](codex-acceptance.md) adds real host/client and disposable native SOV configuration evidence on Intel macOS. It does not change the sealed platform ZIPs or certify NVIDIA hardware.

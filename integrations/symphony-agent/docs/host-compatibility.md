@@ -18,8 +18,8 @@ The bridge's subprocess interface supplies structured argv and empty stdin. It d
 
 | Client | Delivered adapter | Documented format | Qualification |
 | --- | --- | --- | --- |
-| Codex / compatible OpenAI desktop host | Root `plugin.json`, `mcp.json`, shared `skills/` | Portable Agent Plugins 1.0.0 with stdio | Real host installation pending |
-| Codex standalone configuration | `scripts/configure_clients.py --client codex` | `[mcp_servers.symphony]` TOML | Real host connection pending |
+| Codex / compatible OpenAI desktop host | Root `plugin.json`, `mcp.json`, shared `skills/` | Portable Agent Plugins 1.0.0 with stdio | Installed Codex client verified on Intel macOS; GUI pending |
+| Codex standalone configuration | `scripts/configure_clients.py --client codex` | `[mcp_servers.symphony]` TOML | Direct/IPC Codex client verified on Intel macOS |
 | Claude Code | Root `.claude-plugin/plugin.json`, `.mcp.json`, shared `skills/` | Claude plugin and local stdio configuration | Real host connection pending |
 | Antigravity | Separate `adapters/antigravity/` manifest and generated MCP JSON | `plugin.json`, `mcp_config.json`, shared `skills/` | Real host connection pending |
 | Other MCP hosts | `--client generic` JSON fragment | Local command/args profile, subject to host support | Host-specific qualification required |
@@ -63,3 +63,5 @@ For each named host, record the exact host version, platform, binary digest, con
 No remote HTTPS/OAuth MCP endpoint is configured by this package. Existing bounded Symphony remote-owner commands may be discoverable through local qxctl; that is distinct from exposing this MCP bridge remotely. Client adapter support and a provider or broker integration must also be qualified separately.
 
 Official host documentation was inspected on 2026-10-22. Recheck before public submission. The core uses C++; the official MCP SDK inventory currently does not list a C++ SDK, so this implementation must maintain its own conformance evidence. [Official SDK inventory](https://modelcontextprotocol.io/docs/2026-07-28/sdk).
+
+Installed Codex evidence and its exact limits are recorded in [Codex acceptance](codex-acceptance.md). The manifest declares `symphony-setup` as its onboarding skill. NVIDIA hardware qualification is deferred beyond the initial Codex submission.
