@@ -14,12 +14,12 @@ The local C++ MCP server uses the documented desktop-only distribution path. Pub
 
 QuanuX, its public contact email `duncan@quanux.org`, contact route https://quanux.org/contact and original square website branding are recorded. `/support` is a contribution campaign and is not presented as technical support. [Asset provenance](website-branding.md) remains preserved.
 
-The public https://quanux.org/privacy page was refreshed on 23 October and still explicitly excludes independently operated Symphony installations. No applicable plugin policy/terms URL has been verified. `privacyPolicyURL`, `termsOfServiceURL` and the demo URL remain absent instead of using guessed or inapplicable URLs. The [technical data disclosure](privacy.md) supports publisher review but is not a published legal policy.
+The public https://quanux.org/privacy page was refreshed on 23 October after the publisher's deployment completed. Its notice, last updated 22 October 2026, explicitly covers the official local Symphony plugin, independent installations, connected AI applications, local retention/removal and separately supplied support information. The manifest now declares `privacyPolicyURL`. No applicable general plugin/service terms URL or genuine demo URL has been verified, so those fields remain absent. The [technical data disclosure](privacy.md) describes implementation behavior; verification of published coverage does not establish legal certification or OpenAI approval.
 
 ## Remaining submission checks
 
 - Confirm submitting account/business identity and local-MCP allowlisting with OpenAI; confirm public OS/architecture distribution, WSL launch arrangements and native signing requirements.
-- Publish or supply applicable publisher-approved privacy and terms URLs.
+- Publish or supply an applicable publisher-approved terms URL. Published plugin privacy coverage is verified and included.
 - Exercise fresh desktop GUI installation/setup, installation during an existing GUI conversation and download/quarantine/uninstall behavior on the intended supported desktop platforms. App-server/CLI checks do not close those GUI checks.
 - Record a genuine reviewer-accessible demonstration video using the supplied cases and disposable setup. No separate service credentials are required for the local owner-filesystem configuration scenarios; reviewers need their authorized host account and local qxctl.
 - Select final exact artifacts, validate them in the approved portal and obtain publisher authorization to submit. Portal acceptance of a draft does not imply review approval.

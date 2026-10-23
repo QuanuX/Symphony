@@ -72,7 +72,7 @@ python3 scripts/package_release.py --binary build/symphony-mcp \
 
 The packager includes source, the selected binary, skill, adapters and licenses; it excludes local profiles, build caches and private evidence. It emits an archive digest and never uploads. Build distinct qualified platform artifacts. A source-only archive omits `--binary` and requires a build before installation.
 
-OpenAI's public local-MCP path currently requires partner allowlisting. Publisher support/privacy/terms URLs, branding, reviewer demonstration, real host qualification and release acceptance remain external gates. The configured C++ runtime and adapters can be tested locally before those gates close. Neither this package nor a successful test guarantees a public launch date.
+OpenAI's public local-MCP path currently requires partner allowlisting. Publisher contact, original branding and published plugin privacy coverage are included. Applicable terms, reviewer demonstration, desktop GUI qualification and release acceptance remain open. The configured C++ runtime and adapters have the focused evidence recorded in [Codex acceptance](docs/codex-acceptance.md). Neither this package nor a successful test guarantees a public launch date.
 
 Eleven hosted plugin candidates now pass the [platform qualification checks](docs/platforms.md): Ubuntu on x86-64/ARM64, Apple Silicon and Windows-to-WSL 2. [Windows clients use an explicit WSL adapter](docs/windows-wsl2.md). DGX/Spark hardware and actual agent UI/native-owner acceptance remain open. The original verification report remains a dated baseline.
 

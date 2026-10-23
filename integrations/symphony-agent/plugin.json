@@ -36,6 +36,7 @@
           "Prepare the Symphony administration change I requested using the installed command contract."
         ],
         "supportURL": "https://quanux.org/contact",
+        "privacyPolicyURL": "https://quanux.org/privacy",
         "logo": "./assets/favicon.svg",
         "logoDark": "./assets/favicon-dark.svg",
         "composerIcon": "./assets/favicon.svg",
