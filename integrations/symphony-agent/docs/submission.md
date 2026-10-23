@@ -26,6 +26,8 @@ The public https://quanux.org/privacy page was refreshed on 23 October after the
 
 The five positive and three negative cases and accessible recording are review materials described by OpenAI. Local deterministic transcripts and model-case summaries are supporting evidence, not a substitute for the video. Broader native-engine/SSIAG/provider workflows require their own qualification before corresponding claims.
 
+[Desktop lifecycle preparation](desktop-lifecycle.md) adds focused existing-thread, disable/re-enable, uninstall/reinstall and macOS extraction checks. It records active-thread disable limitations, retained connection profiles and an unsigned Intel binary rejected by Gatekeeper assessment. Genuine GUI/download checks and the recording remain open; the prepared recording workspace does not close those requirements.
+
 ## Packaging
 
 Build a package for each selected platform with its matching binary. The tested WSL binaries run inside Linux guests; the explicit Windows-to-WSL launcher needs host-specific configuration and is not a native Windows executable. Do not upload an outer evidence bundle as a plugin. The upload ZIP has one plugin root, `plugin.json`, `mcp.json`, skills, assets, source/dependency licenses and the selected executable.
