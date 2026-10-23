@@ -28,6 +28,8 @@ The five positive and three negative cases and accessible recording are review m
 
 [Desktop lifecycle preparation](desktop-lifecycle.md) adds focused existing-thread, disable/re-enable, uninstall/reinstall and macOS extraction checks. It records active-thread disable limitations, retained connection profiles and an unsigned Intel binary rejected by Gatekeeper assessment. Genuine GUI/download checks and the recording remain open; the prepared recording workspace does not close those requirements.
 
+[Manual desktop review](manual-desktop-review.md) adds eleven focused checks of the unchanged candidate with the updated bundled client 0.163.0-alpha.11.2 and a staged local marketplace for the actual recording. Headless Symphony requires no separate GUI or native Computer Use feature. Desktop installation, real footage and a reviewer-accessible video URL remain pending.
+
 ## Packaging
 
 Build a package for each selected platform with its matching binary. The tested WSL binaries run inside Linux guests; the explicit Windows-to-WSL launcher needs host-specific configuration and is not a native Windows executable. Do not upload an outer evidence bundle as a plugin. The upload ZIP has one plugin root, `plugin.json`, `mcp.json`, skills, assets, source/dependency licenses and the selected executable.

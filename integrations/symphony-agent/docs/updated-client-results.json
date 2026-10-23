@@ -1,0 +1,32 @@
+{
+  "date": "2026-10-23",
+  "app_version": "26.1016.62342",
+  "app_build": "21477",
+  "codex_version": "codex-cli 0.163.0-alpha.11.2",
+  "archive": "symphony-0.1.0-alpha.1-macos-x86_64-codex-review-20261023.2.zip",
+  "archive_sha256": "f0422b475181ba8f0c2a4aaa68f17383d0f8e146f45d49acff415841a7be9985",
+  "qxctl_sha256": "dbaec017bab76d403dd359dfe72866d7f6c35e6958aa4068585f380e8e1585b9",
+  "checks": [
+    "exact candidate and reviewer qxctl hashes preserved",
+    "native extraction preserves executable permission",
+    "privacy declared; pending terms and recording not invented",
+    "exact package installed by updated client in isolated home",
+    "two skills and onboarding resolve",
+    "missing profile fails closed",
+    "setup writes mode-0600 read-only profile",
+    "configured client connects six tools",
+    "read-only connection pins native qxctl and reports health limits",
+    "native administration contracts discoverable",
+    "real native read succeeds"
+  ],
+  "passed": true,
+  "gui_test": false,
+  "model_test": false,
+  "native_owner_write": false,
+  "main_codex_settings_changed": false,
+  "broad_suites_rerun": false,
+  "isolated_plugin_installed": true,
+  "isolated_plugin_uninstalled": true,
+  "retained_profile": true,
+  "count": 11
+}
