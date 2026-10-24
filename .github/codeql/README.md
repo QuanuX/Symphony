@@ -37,9 +37,9 @@ jobs cover their respective build-tagged implementations. Other operating
 systems, custom build tags, and test-only Go code are outside this configuration.
 
 The Swift job compiles the provider without executing it, running its integration
-tests, installing it, or accessing Keychain items. Its native support code also
-falls within the C/C++ source-only baseline. These scans are static analysis,
-not Symphony runtime or release qualification.
+tests, installing it, or accessing Keychain items. The provider and its support
+target are Swift; separate C++ test fixtures are outside this Swift build. These
+scans are static analysis, not Symphony runtime or release qualification.
 
 ## Activation and verification
 

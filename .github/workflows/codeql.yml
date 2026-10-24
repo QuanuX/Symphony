@@ -20,7 +20,8 @@ jobs:
   analyze:
     name: Analyze ${{ matrix.language }} (${{ matrix.os }})
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 60
+    # Allow headroom for the macOS C/C++ source-only scan.
+    timeout-minutes: ${{ matrix.language == 'c-cpp' && matrix.os == 'macos-15-intel' && 90 || 60 }}
     permissions:
       contents: read
       actions: read
