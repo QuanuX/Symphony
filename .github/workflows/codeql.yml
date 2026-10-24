@@ -1,0 +1,100 @@
+name: CodeQL
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: '23 8 * * 2'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: codeql-${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  analyze:
+    name: Analyze ${{ matrix.language }} (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    # Allow headroom for the macOS C/C++ source-only scan.
+    timeout-minutes: ${{ matrix.language == 'c-cpp' && matrix.os == 'macos-15-intel' && 90 || 60 }}
+    permissions:
+      contents: read
+      actions: read
+      security-events: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # Source-only baseline across independently built C++26 modules.
+          # See ../codeql/README.md for extraction and platform limitations.
+          - language: c-cpp
+            os: ubuntu-24.04
+            build-mode: none
+          - language: c-cpp
+            os: macos-15-intel
+            build-mode: none
+          - language: go
+            os: ubuntu-24.04
+            build-mode: manual
+          - language: go
+            os: macos-15-intel
+            build-mode: manual
+          - language: swift
+            os: macos-15-intel
+            build-mode: manual
+          - language: actions
+            os: ubuntu-24.04
+            build-mode: none
+    steps:
+      - name: Check out source
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+
+      - name: Set up the repository's Go version
+        if: matrix.language == 'go'
+        uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6
+        with:
+          go-version-file: go.work
+          cache: false
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@9b3254085494b55a0f7c4c2b3d2d52cc712ce370 # v4.39.1
+        with:
+          languages: ${{ matrix.language }}
+          build-mode: ${{ matrix.build-mode }}
+          queries: security-extended
+
+      - name: Build every Go workspace module for extraction
+        if: matrix.language == 'go'
+        shell: bash
+        env:
+          GOCACHE: ${{ runner.temp }}/codeql-go-cache
+        run: |
+          packages=()
+          while IFS= read -r module; do
+            packages+=("${module}/...")
+          done < <(go work edit -json | jq -r '.Use[].DiskPath')
+          test "${#packages[@]}" -gt 0
+          go build -a "${packages[@]}"
+
+      - name: Build the macOS Keychain provider for extraction
+        if: matrix.language == 'swift'
+        shell: bash
+        run: |
+          swift --version
+          swift build \
+            --package-path modules/ssiag-provider-macos-keychain \
+            --scratch-path "$RUNNER_TEMP/codeql-swift-build" \
+            --configuration release
+
+      - name: Analyze and upload results
+        uses: github/codeql-action/analyze@9b3254085494b55a0f7c4c2b3d2d52cc712ce370 # v4.39.1
+        with:
+          category: /language:${{ matrix.language }}/os:${{ matrix.os }}
+          wait-for-processing: true
