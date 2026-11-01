@@ -84,4 +84,3 @@ On a failed install, preserve diagnostics and the immutable source selection; re
 If a signing key or artifact is revoked, stop distribution of that exact digest, update the independently distributed trust policy/revocation evidence, and publish a replacement under a new immutable artifact identity and fresh authorization. Preserve the original record and evidence for review; do not overwrite completed ledger entries or reuse a changed artifact's digest/version record. Reverify cached candidates against the current approved trust policy before installing. Removing a compromised signer from that policy makes this verifier reject its signature.
 
 The sprint uses Ubuntu ARM64 as the accepted ARM qualification target. Physical DGX Spark testing is a later optional observation, not an inferred result of hosted tests. Native Windows is unsupported.
-
