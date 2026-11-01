@@ -18,7 +18,8 @@
 
 - module: `modules/stav-append-authority/`
 - Go module: `github.com/QuanuX/Symphony/modules/stav-append-authority`
-- current source release: `v0.2.0`
+- current source release: `v0.2.1` (operational UID/GID validation and ownership verification)
+- historical source release: `v0.2.0` (supervised boundary)
 - historical source release: `v0.1.0` (pre-supervision boundary)
 - executable: `symphony-stav-append-authority`
 - implementation: Go, `CGO_ENABLED=0`

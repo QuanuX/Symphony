@@ -1,0 +1,48 @@
+name: qxctl standalone build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: qxctl-standalone-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  standalone:
+    name: Standalone qxctl (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, ubuntu-26.04, ubuntu-24.04-arm, macos-15, macos-15-intel]
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6
+        with:
+          go-version-file: tools/qxctl/go.mod
+          cache: false
+      - name: Build isolated qxctl from public module releases
+        run: sh tools/qxctl/tests/standalone_build.sh
+      - name: Check SSIAG public dependency build and server regressions
+        working-directory: modules/secure-identity-access-governance
+        env:
+          GOWORK: 'off'
+          GOTOOLCHAIN: local
+          GOPROXY: https://proxy.golang.org
+          GOSUMDB: sum.golang.org
+          GOMODCACHE: ${{ runner.temp }}/ssiag-public-module-cache
+          GOCACHE: ${{ runner.temp }}/ssiag-public-build-cache
+        run: |
+          go test -mod=readonly -race -count=1 ./internal/client ./internal/peerauth ./internal/server ./internal/stavproducer
+          go build -mod=readonly -trimpath -o "$RUNNER_TEMP/symphony-ssiag" ./cmd/symphony-ssiag
+          go mod verify

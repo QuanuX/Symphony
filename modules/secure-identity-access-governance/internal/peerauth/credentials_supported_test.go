@@ -10,10 +10,16 @@ import (
 )
 
 func TestCredentialsFromAcceptedUnixConnection(t *testing.T) {
-	socket := filepath.Join(t.TempDir(), "peer.sock")
+	// Keep the socket address independent of the test runner's temp-path length.
+	root, err := os.MkdirTemp("/tmp", "ssiag-p-")
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Cleanup(func() { _ = os.RemoveAll(root) })
+	socket := filepath.Join(root, "peer.sock")
 	listener, err := net.Listen("unix", socket)
 	if err != nil {
-		t.Skipf("Unix sockets unavailable: %v", err)
+		t.Fatalf("listen on short test socket: %v", err)
 	}
 	defer listener.Close()
 

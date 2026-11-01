@@ -111,21 +111,7 @@ func TestAuthorizationOverKernelAuthenticatedSocketIsAudited(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
 	done := make(chan error, 1)
 	go func() { done <- instance.Run(ctx) }()
-	deadline := time.Now().Add(3 * time.Second)
-	for {
-		if info, statErr := os.Stat(socket); statErr == nil && info.Mode()&os.ModeSocket != 0 {
-			break
-		}
-		select {
-		case runErr := <-done:
-			t.Fatalf("authorization server stopped before creating its socket: %v", runErr)
-		default:
-		}
-		if time.Now().After(deadline) {
-			t.Fatalf("socket %s was not created", socket)
-		}
-		time.Sleep(10 * time.Millisecond)
-	}
+	waitForSocket(t, socket)
 	transport := &http.Transport{DialContext: func(ctx context.Context, _, _ string) (net.Conn, error) {
 		return (&net.Dialer{}).DialContext(ctx, "unix", socket)
 	}}
@@ -667,10 +653,11 @@ func TestRefusesRegularFileAtSocketPath(t *testing.T) {
 }
 
 func TestRefusesActiveSocketPath(t *testing.T) {
-	socket := filepath.Join(t.TempDir(), "ssiag.sock")
+	socket := shortSocketPath(t)
+	t.Cleanup(func() { _ = os.Remove(socket + ".lock") })
 	listener, err := net.Listen("unix", socket)
 	if err != nil {
-		t.Skipf("unix sockets are unavailable in this test environment: %v", err)
+		t.Fatalf("listen on short test socket: %v", err)
 	}
 	defer listener.Close()
 
@@ -732,13 +719,18 @@ func TestHandlerRejectsRequestWithoutKernelPeerContext(t *testing.T) {
 func waitForSocket(t *testing.T, path string) {
 	t.Helper()
 	deadline := time.Now().Add(3 * time.Second)
+	var lastErr error
 	for time.Now().Before(deadline) {
-		if info, err := os.Stat(path); err == nil && info.Mode()&os.ModeSocket != 0 {
+		// bind creates the socket inode before listen starts accepting clients.
+		connection, err := net.DialTimeout("unix", path, 100*time.Millisecond)
+		if err == nil {
+			_ = connection.Close()
 			return
 		}
+		lastErr = err
 		time.Sleep(10 * time.Millisecond)
 	}
-	t.Fatalf("socket %s was not created", path)
+	t.Fatalf("socket %s did not accept connections: %v", path, lastErr)
 }
 
 func shortSocketPath(t *testing.T) string {

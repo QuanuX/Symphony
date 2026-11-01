@@ -393,3 +393,36 @@ SBV 0.5 adds `qxctl sbv liquidity` for caller-selected displayed-depth execution
 SBV 0.6 adds `qxctl sbv allocation-economics --prefix <exact-prefix> --version 0.6.0-dev --input <request.json>`. Installed schema/template/catalogue expose filled-quantity markout, caller marks, units, costs and optional activation mixtures. All conditional economics, exact moments, source allocations and replay are available through result inspect/query/export. Current totals: fifteen SBV leaves and 414 commands.
 
 SBV 0.7 adds `sbv result select`, `sbv backend-plan` and `sbv live-plan`, each with an exact JSON `--input` request and installed schema/template. Selection supports typed exact predicates/order and stable pagination. Planning reports no resource reservation or live activation. Current totals: eighteen SBV leaves and 417 commands.
+
+## Standalone dependency regression
+
+Install the exact Go version declared in `tools/qxctl/go.mod`, make it the `go`
+on `PATH`, then run this command from the repository root:
+
+```sh
+sh tools/qxctl/tests/standalone_build.sh
+```
+
+The check also accepts an explicit path to the qxctl module:
+
+```sh
+sh tools/qxctl/tests/standalone_build.sh /absolute/path/to/Symphony/tools/qxctl
+```
+
+It copies only the qxctl subtree to a temporary directory outside the checkout,
+disables workspace resolution and automatic toolchain downloads, and starts with
+empty module and build caches. Dependencies must resolve through
+`https://proxy.golang.org` with `sum.golang.org` verification. No selected module
+may use a replacement. It builds with `-mod=readonly -trimpath`, verifies downloaded
+modules, and runs `qxctl --version` and `qxctl --help` from an empty directory.
+SHA-256 checks require the original and copied `go.mod`/`go.sum` to remain unchanged,
+including on failure. Temporary sources, binaries, caches, and Go telemetry state
+are removed on exit. The script requires a POSIX shell, ordinary Unix utilities,
+and either `sha256sum` or `shasum`; no Python or package installation is needed.
+
+Run this after all pinned first-party module versions are publicly available and
+the committed sums have been refreshed. A missing release or sum is a failing
+regression, not a reason to add a local replacement. This gate proves the native
+CLI builds independently; full repository fixture tests and service installation
+acceptance remain separate checks. The workflow covers native Linux and macOS
+hosts; it does not establish Windows support or publish download binaries.

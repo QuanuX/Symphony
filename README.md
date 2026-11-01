@@ -199,11 +199,12 @@ This bounded summary is derived from canonical SSFV coverage and routing, the fe
   - `ssfv:symphony:symphony-validator`
 - Completed SODV source publications:
   - `github.com/QuanuX/Symphony/libraries/stav-protocol-go` `v0.2.0` (tag `libraries/stav-protocol-go/v0.2.0`, source `55f8faf26f4f85213ac23cc1de7ba897b2129a4c`)
+  - `github.com/QuanuX/Symphony/modules/accordare-stav-producer` `v0.1.0-dev` (tag `modules/accordare-stav-producer/v0.1.0-dev`, source `f36c3372ee5fb2ab9d1eb059eac30b543185db2d`)
   - `github.com/QuanuX/Symphony/modules/stav-append-authority` `v0.1.0` (tag `modules/stav-append-authority/v0.1.0`, source `55f8faf26f4f85213ac23cc1de7ba897b2129a4c`)
   - `github.com/QuanuX/Symphony/modules/stav-append-authority` `v0.2.0` (tag `modules/stav-append-authority/v0.2.0`, source `ed7484d70607aa96e64916dd4e59d3972a61980b`)
   - `github.com/QuanuX/Symphony/modules/stav-append-authority` `v0.2.1` (tag `modules/stav-append-authority/v0.2.1`, source `967c005e21a8f153ed453c79baa09fe2ab549f01`)
   - `github.com/QuanuX/Symphony/tools/sov-ssh-adapter` `v0.1.0-dev` (tag `tools/sov-ssh-adapter/v0.1.0-dev`, source `967c005e21a8f153ed453c79baa09fe2ab549f01`)
-- Snapshot digest: `sha256:5d2f20bcacc63eb6b49c8f39b4d98db70514e99493a0cec560d3654aa7208a2d`
+- Snapshot digest: `sha256:b4733fa10e43a1a76278a499acaf4f88fef66f174968e510ef3274490cc4c3c6`
 <!-- symphony:root-summary:v1:end -->
 
 ## Releases and Documentation
