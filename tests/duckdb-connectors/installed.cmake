@@ -26,11 +26,12 @@ mvp_run(duckdb-consumer-configure "${MVP_WORK}" "${CMAKE_COMMAND}" -S "${copy}" 
   "-DMVP_COMPONENT_FILE=${MVP_WORK}/metadata/duckdb-consumer.json"
   "-DMVP_PROOF_LOG=${MVP_WORK}/logs/duckdb-consumer-imports.log")
 mvp_run(duckdb-consumer-build "${MVP_WORK}" "${CMAKE_COMMAND}" --build "${copy}/build" --parallel "${MVP_JOBS}")
-mvp_run(duckdb-consumer-tests "${MVP_WORK}/tmp" "${MVP_CTEST}" --test-dir "${copy}/build" -V --no-tests=error)
-file(READ "${MVP_WORK}/logs/duckdb-consumer-tests.log" result)
-if(NOT result MATCHES "100% tests passed, 0 tests failed out of 4" OR result MATCHES "[Ss][Kk][Ii][Pp][Pp][Ee][Dd]")
-  message(FATAL_ERROR "All four installed DuckDB process/recovery tests must execute")
-endif()
+mvp_run(duckdb-consumer-tests "${MVP_WORK}/tmp" "${MVP_CTEST}" --test-dir "${copy}/build"
+  -V --no-tests=error --output-junit "${MVP_WORK}/logs/duckdb-consumer-tests.xml")
+mvp_run(duckdb-consumer-results "${MVP_WORK}" "${CMAKE_COMMAND}"
+  "-DRESULT_JUNIT=${MVP_WORK}/logs/duckdb-consumer-tests.xml"
+  "-DRESULT_LOG=${MVP_WORK}/logs/duckdb-consumer-tests.log" -DEXPECTED_TEST_COUNT=4
+  -P "${MVP_REPOSITORY}/tests/release-qualification/check-results.cmake")
 mvp_run(duckdb-loader-removal "${MVP_WORK}" "${CMAKE_COMMAND}"
   "-DMVP_REPOSITORY=${MVP_REPOSITORY}" "-DDUCKDB_WORK=${MVP_WORK}"
   "-DDUCKDB_PREFIX=${MVP_SELECTED_PREFIX}" -P "${MVP_REPOSITORY}/tests/duckdb-connectors/lifecycle.cmake")
