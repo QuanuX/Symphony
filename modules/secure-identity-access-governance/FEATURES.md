@@ -109,7 +109,7 @@
       "when": "Used for explicit administrative cold or freezing-path operations requiring fresh target-host authorization; it is not consulted inline by hot or warm trading work.",
       "where": "Runs on the target TOPS node over a protected Unix socket with isolated configuration, service identity, runtime state, and native supervision.",
       "who": "Any target-host-authorized caller, qxctl, protected Symphony administrative consumers, TOPS owners, maintainers, and provider adapters.",
-      "why": "Makes host ownership and granted permission\u2014not caller class\u2014the uniform gate for protected Symphony administration while preventing reusable bearer authority or secret leakage."
+      "why": "Makes host ownership and granted permission—not caller class—the uniform gate for protected Symphony administration while preventing reusable bearer authority or secret leakage."
     },
     {
       "cross_vector_references": [

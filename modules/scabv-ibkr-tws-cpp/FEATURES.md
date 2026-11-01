@@ -42,8 +42,8 @@
       "implementation_paths": [
         "modules/scabv-ibkr-tws-cpp/CMakeLists.txt",
         "modules/scabv-ibkr-tws-cpp/include/symphony/scabv/tws.hpp",
-        "modules/scabv-ibkr-tws-cpp/src/tws.cpp",
-        "modules/scabv-ibkr-tws-cpp/src/session.cpp"
+        "modules/scabv-ibkr-tws-cpp/src/session.cpp",
+        "modules/scabv-ibkr-tws-cpp/src/tws.cpp"
       ],
       "kind": "feature",
       "non_claims": [

@@ -50,7 +50,7 @@
       ],
       "owner_contract": "modules/sqav-databento-reference-cpp/SPEC.md",
       "parent_feature_id": "ssfv:symphony:platform",
-      "record_version": 3,
+      "record_version": 2,
       "relationships": [
         {
           "rationale": "Consumes the exact selected native dependency.",
