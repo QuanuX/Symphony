@@ -2,7 +2,7 @@
 
 The [machine-readable projection](mvp-dependencies.json) maps all 69 current component roots: 58 modules, four libraries and seven tools. It records 57 native build roots (56 installable packages and one authoring build), eight independent Go modules, one Swift provider, and the remaining proposal/shared-source roots. The baseline is main commit `4499b25170fc958d9f15f2c8d9446878060d3b78`, before this dependency alignment. `source_inputs` binds the actual projected files by SHA-256; the baseline is not the final change commit.
 
-This map does not authorize a release or activate a provider. L01 owns the approved release set. The required platforms are Apple Silicon macOS, Ubuntu LTS on x86_64 and ARM64, and physical DGX Spark ARM64 running a supported DGX OS. Ubuntu ARM64 CI does not qualify Spark hardware, its image, kernel, drivers or GPU behavior. Native Windows is unsupported and no port is planned. The native package matrix contains 54 packages for required-platform qualification and two current DuckDB packages reserved for legacy Intel macOS qualification; building either set must be evidenced separately.
+This map does not authorize a release or activate a provider. L01 owns the approved release set. The required sprint profiles are Apple Silicon macOS 15, Ubuntu 24.04 and 26.04 x86_64, and Ubuntu 24.04 ARM64. The user accepted Ubuntu ARM64 in place of physical DGX Spark for this sprint; these runs do not qualify Spark hardware, its image, kernel, drivers or GPU behavior. Exact declarations are in `mvp-platform-profiles.json`. Native Windows is unsupported and no port is planned. The native package matrix contains 56 packages for required-platform qualification, including both DuckDB connectors. Each exact profile and package result must be evidenced.
 
 Identity fields have different owners. A CMake project version selects an SDK configuration; a receipt package release selects exact installed artifacts; an owner-interface version selects admitted behavior; a Go tag identifies an immutable public module; and a schema ID or wire protocol identifies a data contract. Matching the digits in two fields does not make them interchangeable. No version is changed merely to make this map uniform.
 
@@ -33,12 +33,12 @@ Every component root appears once below. Native rows show `CMake project / recei
 | [modules/sclv-engine](../modules/sclv-engine) | `0.1.0` / `0.1.0-dev` | `SymphonyKnowledgeVectorEngine 0.2.0 EXACT` | knowledge |
 | [modules/scnv-engine](../modules/scnv-engine) | `0.1.0` / `0.1.0-dev` | `SymphonyKnowledgeVectorEngine 0.2.0 EXACT`; `SymphonySnvCommon 0.1.0 EXACT` | knowledge |
 | [modules/scv-engine](../modules/scv-engine) | `0.10.0` / `0.10.0-dev` | `SymphonyKnowledgeVectorEngine 0.2.0 EXACT` | cloud |
-| [modules/scv-graph-duckdb-connector](../modules/scv-graph-duckdb-connector) | `0.2.0` / `0.2.0-dev` | `SymphonyKnowledgeVectorEngine 0.2.0 EXACT` | legacy_duckdb |
+| [modules/scv-graph-duckdb-connector](../modules/scv-graph-duckdb-connector) | `0.2.0` / `0.2.0-dev` | `SymphonyKnowledgeVectorEngine 0.2.0 EXACT` | duckdb |
 | [modules/secure-identity-access-governance](../modules/secure-identity-access-governance) | source `dev`; public none in the verified dependency-pin set | `libraries/stav-protocol-go@v0.2.0`; `modules/stav-append-authority@v0.2.1` | independent Go module |
 | [modules/sev-engine](../modules/sev-engine) | `0.1.0` / `0.1.0-dev` | `SymphonyKnowledgeVectorEngine 0.2.0 EXACT` | knowledge |
 | [modules/shv-engine](../modules/shv-engine) | `0.4.0` / `0.4.0-dev` | `SymphonyKnowledgeVectorEngine 0.2.0 EXACT` | knowledge |
 | [modules/shv-graph-adapter](../modules/shv-graph-adapter) | `0.2.0` / `0.2.0-dev` | `SymphonyKnowledgeVectorEngine 0.2.0 EXACT` | knowledge |
-| [modules/shv-graph-duckdb-connector](../modules/shv-graph-duckdb-connector) | `0.4.0` / `0.4.0-dev` | `SymphonyKnowledgeVectorEngine 0.2.0 EXACT` | legacy_duckdb |
+| [modules/shv-graph-duckdb-connector](../modules/shv-graph-duckdb-connector) | `0.4.0` / `0.4.0-dev` | `SymphonyKnowledgeVectorEngine 0.2.0 EXACT` | duckdb |
 | [modules/shv-partition-engine](../modules/shv-partition-engine) | `0.4.0` / `0.4.0-dev` | `SymphonyKnowledgeVectorEngine 0.2.0 EXACT` | knowledge |
 | [modules/shv-pdf-adapter](../modules/shv-pdf-adapter) | `0.3.0` / `0.3.0-dev` | `SymphonyKnowledgeVectorEngine 0.2.0 EXACT` | knowledge |
 | [modules/shv-profile-engine](../modules/shv-profile-engine) | `0.3.0` / `0.3.0-dev` | `SymphonyKnowledgeVectorEngine 0.2.0 EXACT` | knowledge |
@@ -82,7 +82,7 @@ Every component root appears once below. Native rows show `CMake project / recei
 | [tools/sqv-administration-cpp](../tools/sqv-administration-cpp) | No independent runtime package/version | Shared source consumed by SQV owners | shared source support not independent package |
 | [tools/symphony-validator](../tools/symphony-validator) | `unversioned project` / `0.2.0-dev` | `SymphonyKnowledgeVectorEngine 0.2.0 EXACT` | knowledge |
 
-The native groups separate build cost and dependency order: `bootstrap` contains the foundation; `knowledge` contains knowledge owners, SNV SDK/owners and the SHV graph adapter; `cloud` contains the eight SCV domains; `quantitative` contains the remaining source/data SDKs, SQV owners and SBV. `legacy_duckdb` is deliberately excluded from required-platform qualification until L09 is resolved. `build_support` is non-installable authoring tooling. Groups are scheduling boundaries, not different protocol authorities.
+The native groups separate build cost and dependency order: `bootstrap` contains the foundation; `knowledge` contains knowledge owners, SNV SDK/owners and the SHV graph adapter; `cloud` contains the eight SCV domains; `quantitative` contains the remaining source/data SDKs, SQV owners and SBV. `duckdb` adds both graph connectors, with hash-pinned native dependencies and copied installed recovery/removal tests on every required profile. `build_support` is non-installable authoring tooling. Groups are scheduling boundaries, not different protocol authorities.
 
 Each installed-only native build must resolve imported first-party targets from a fresh prefix with its recorded `installed_options` enabled. Missing or wrong exact versions must fail configuration instead of silently adding source dependencies. A separately copied SDK consumer must configure and link without the producer source tree. The topological build order follows runtime dependencies; test-only edges can point to later packages, so tests are enabled after their required SDKs are installed. Receipts, installed file hashes, imported library locations and execution checks provide different evidence; success of a source-tree build alone is insufficient.
 
@@ -140,7 +140,7 @@ External dependencies and build tools retain their own selection rules:
 | `nlohmann-json` | `3.12.0` | vendored header, installed by foundation |
 | `CURL` | `8.7.1` | find_package EXACT and CURL::libcurl; no dependency download by module builds |
 | `zstd` | `1.5.7` | find_package EXACT CONFIG; zstd::libzstd_static |
-| `DuckDB` | `1.5.5` | supplied exact hashed files, macos-amd64 only |
+| `DuckDB` | `1.5.5` | supplied exact hashed files, macOS arm64/amd64 and Linux glibc arm64/amd64 |
 | `IBKR-TWS-SDK` | `10.45` | optional authorized external conformance fixture only; not a required library for normal scabv-ibkr-tws-cpp build |
 | `Threads` | `platform/caller selected` | platform Threads::Threads from compiler/OS, no project semver |
 | `dynamic-loader` | `platform/caller selected` | CMAKE_DL_LIBS from target platform, no project semver |
@@ -151,7 +151,7 @@ External dependencies and build tools retain their own selection rules:
 | Go | `1.26.5` | Exact local toolchain for independent module builds; automatic toolchain download is disabled in the gate. |
 | Swift / Apple SDK | Swift tools `6.0`; macOS `13.0+` | macOS Keychain provider only; Security.framework and bsm come from the selected Apple SDK. |
 
-CURL's exact version does not alone select its TLS backend, link mode or transitive libraries. DuckDB's current hashes describe the recorded Intel macOS artifact, not an ARM64/Linux promise. Optional PDFium and SBV provider plugins are selected by explicit path/digest and owner ABI checks. IBKR's optional SDK conformance fixture does not license or qualify live broker access. L09, L14–L17 and physical Spark qualification remain separate launch work; fixture-only success cannot complete promised provider capabilities.
+CURL's exact version does not alone select its TLS backend, link mode or transitive libraries. DuckDB's platform-specific hashes and ABI observations are in each connector's `DUCKDB-PROVENANCE.json`; supported profiles still require exact build/runtime evidence. Optional PDFium and SBV provider plugins are selected by explicit path/digest and owner ABI checks. IBKR's optional SDK conformance fixture does not license or qualify live broker access. L14–L17 remain separate launch work; physical Spark qualification is optional future evidence; fixture-only success cannot complete promised provider capabilities.
 
 The qualification build source archives are [curl 8.7.1](https://curl.se/download/curl-8.7.1.tar.xz), SHA-256 `6fea2aac6a4610fbd0400afb0bcddbe7258a64c63f1f68e5855ebc0c659710cd`, and [zstd 1.5.7](https://github.com/meta/zstd/releases/download/v1.5.7/zstd-1.5.7.tar.gz), SHA-256 `eb33e51f49a15e023950cd7825ca74a4a2b43db8354825ac24fc1b7ee09e6fa3`. These source pins are recorded for repeatable qualification builds; they do not imply completed runtime or redistribution qualification.
 

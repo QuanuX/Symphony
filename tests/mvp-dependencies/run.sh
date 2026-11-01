@@ -8,7 +8,7 @@ fi
 group=$1
 work=$2
 shift 2
-case "$group" in bootstrap|knowledge|cloud|quantitative|legacy_duckdb|build_support) ;; *) echo 'unknown qualification group' >&2; exit 2 ;; esac
+case "$group" in bootstrap|knowledge|cloud|quantitative|duckdb|build_support) ;; *) echo 'unknown qualification group' >&2; exit 2 ;; esac
 case "$work" in /*) ;; *) echo 'work directory must be absolute' >&2; exit 2 ;; esac
 if [ -e "$work" ] || [ -L "$work" ]; then
   echo 'work directory must not already exist' >&2

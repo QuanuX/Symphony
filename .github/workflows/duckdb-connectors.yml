@@ -1,0 +1,72 @@
+name: Native DuckDB connectors
+
+on:
+  pull_request:
+    branches: [main, 'codex/**']
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: duckdb-connectors-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  installed:
+    name: Installed DuckDB (${{ matrix.profile }})
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: macos-15
+            profile: macos15-arm64
+            cxx: /usr/bin/clang++
+          - runner: ubuntu-24.04
+            profile: ubuntu24.04-amd64
+            cxx: clang++-18
+          - runner: ubuntu-26.04
+            profile: ubuntu26.04-amd64
+            cxx: clang++-21
+          - runner: ubuntu-24.04-arm
+            profile: ubuntu24.04-arm64
+            cxx: clang++-18
+    env:
+      CXX: ${{ matrix.cxx }}
+      MVP_BUILD_JOBS: '2'
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - name: Select Apple C++26 toolchain
+        if: runner.os == 'macOS'
+        run: echo 'DEVELOPER_DIR=/Applications/Xcode_26.3.app/Contents/Developer' >> "$GITHUB_ENV"
+      - name: Record exact platform observations
+        run: sh tests/platform-qualification/capture.sh '${{ matrix.profile }}' "$RUNNER_TEMP/duckdb-platform"
+      - name: Prepare verified upstream DuckDB files
+        run: sh .github/scripts/prepare-duckdb-dependency.sh "$RUNNER_TEMP/duckdb-dependency"
+      - name: Build installed SDK closure and both connector lifecycle suites
+        shell: bash
+        run: |
+          args=()
+          if [[ "$RUNNER_OS" == macOS ]]; then args+=(-DCMAKE_OSX_DEPLOYMENT_TARGET=15.0); fi
+          sh tests/mvp-dependencies/run.sh duckdb "$RUNNER_TEMP/duckdb-qualification" \
+            -C "$RUNNER_TEMP/duckdb-dependency/dependency.cmake" "${args[@]}"
+      - name: Retain exact platform and connector evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: duckdb-${{ matrix.profile }}
+          path: |
+            ${{ runner.temp }}/duckdb-platform
+            ${{ runner.temp }}/duckdb-qualification/logs
+            ${{ runner.temp }}/duckdb-qualification/completed-steps.txt
+            ${{ runner.temp }}/duckdb-qualification/selected-components.txt
+            ${{ runner.temp }}/duckdb-qualification/metadata
+            ${{ runner.temp }}/duckdb-qualification/evidence
+            ${{ runner.temp }}/duckdb-dependency/DUCKDB-PROVENANCE.json
+          retention-days: 14

@@ -1220,11 +1220,13 @@
   ],
   "retained_qxctl_selection": "Legacy qxctl dev and historical exact version labels remain admitted with mandatory executable SHA256; the current emitted identity is 0.1.0-dev. Selection alone is not proof of the running executable.",
   "required_profiles": [
-    "macos-arm64",
-    "ubuntu-24.04-amd64",
-    "ubuntu-26.04-amd64",
-    "ubuntu-24.04-arm64"
+    "macos15-arm64",
+    "ubuntu24.04-amd64",
+    "ubuntu26.04-amd64",
+    "ubuntu24.04-arm64"
   ],
   "physical_dgx_spark_qualified": false,
-  "native_windows_supported": false
+  "native_windows_supported": false,
+  "platform_profile_catalog": "cmake/mvp-platform-profiles.json",
+  "physical_dgx_spark_scope": "Optional future physical evidence; user accepted Ubuntu ARM64 for current sprint qualification."
 }

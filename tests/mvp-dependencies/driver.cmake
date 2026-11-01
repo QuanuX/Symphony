@@ -215,6 +215,9 @@ if("modules/sbv-engine" IN_LIST ordered)
 endif()
 
 include("${MVP_REPOSITORY}/tests/release-qualification/native.cmake")
+if(MVP_GROUP STREQUAL "duckdb")
+  include("${MVP_REPOSITORY}/tests/duckdb-connectors/installed.cmake")
+endif()
 
 if(MVP_GROUP STREQUAL "cloud")
   execute_process(COMMAND "${CMAKE_COMMAND}" -E env GOTOOLCHAIN=local GOENV=off go env GOVERSION

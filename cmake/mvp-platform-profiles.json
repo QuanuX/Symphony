@@ -1,0 +1,162 @@
+{
+  "protocol": "symphony.mvp.platform-profiles.v1",
+  "status": "declared_profiles_not_qualification",
+  "profiles": [
+    {
+      "profile_id": "macos15-arm64",
+      "os": "macos",
+      "architecture": "arm64",
+      "os_release": "15",
+      "scope": "required_mvp",
+      "qualification_status": "requires_exact_run_evidence",
+      "kernel_baseline": "Darwin 24.x",
+      "c_runtime_baseline": "libSystem.B.dylib",
+      "cxx_runtime": "libc++.1.dylib",
+      "filesystem_qualification_target": "apfs",
+      "runner": "macos-15",
+      "abi": "LP64 little-endian; POSIX; native C ABI; C++26 implementation ABI not a cross-compiler SDK guarantee",
+      "toolchains": {
+        "go": "1.26.5",
+        "cxx": "AppleClang with C++26 support on macOS; Clang 18 on Ubuntu24; Clang 21 on Ubuntu26; exact compiler and standard library recorded per run"
+      },
+      "minimum_deployment_target": "15.0",
+      "hardware_requirement": "Native selected architecture; virtualized CI is recorded",
+      "gpu_qualification": "not claimed; CPU-only connectors do not execute CUDA",
+      "filesystem_contract": "Caller-selected local filesystem with coherent inode identity, no-follow opens, flock, atomic rename and fsync behavior. Test success is not proof of power-loss durability. Network/FUSE/overlay/tmpfs require separately named evidence; no product filesystem allowlist."
+    },
+    {
+      "profile_id": "ubuntu24.04-amd64",
+      "os": "linux",
+      "architecture": "amd64",
+      "os_release": "24.04",
+      "scope": "required_mvp",
+      "qualification_status": "requires_exact_run_evidence",
+      "kernel_baseline": "GA 6.8; HWE/cloud patches recorded per run",
+      "c_runtime_baseline": "glibc 2.39",
+      "cxx_runtime": "libstdc++.so.6",
+      "filesystem_qualification_target": "ext4",
+      "runner": "ubuntu-24.04",
+      "abi": "LP64 little-endian; POSIX; native C ABI; C++26 implementation ABI not a cross-compiler SDK guarantee",
+      "toolchains": {
+        "go": "1.26.5",
+        "cxx": "AppleClang with C++26 support on macOS; Clang 18 on Ubuntu24; Clang 21 on Ubuntu26; exact compiler and standard library recorded per run"
+      },
+      "minimum_deployment_target": null,
+      "hardware_requirement": "Native selected architecture; virtualized CI is recorded",
+      "gpu_qualification": "not claimed; CPU-only connectors do not execute CUDA",
+      "filesystem_contract": "Caller-selected local filesystem with coherent inode identity, no-follow opens, flock, atomic rename and fsync behavior. Test success is not proof of power-loss durability. Network/FUSE/overlay/tmpfs require separately named evidence; no product filesystem allowlist."
+    },
+    {
+      "profile_id": "ubuntu26.04-amd64",
+      "os": "linux",
+      "architecture": "amd64",
+      "os_release": "26.04",
+      "scope": "required_mvp",
+      "qualification_status": "requires_exact_run_evidence",
+      "kernel_baseline": "GA 7.0; cloud patches recorded per run",
+      "c_runtime_baseline": "glibc 2.43",
+      "cxx_runtime": "libstdc++.so.6",
+      "filesystem_qualification_target": "ext4",
+      "runner": "ubuntu-26.04",
+      "abi": "LP64 little-endian; POSIX; native C ABI; C++26 implementation ABI not a cross-compiler SDK guarantee",
+      "toolchains": {
+        "go": "1.26.5",
+        "cxx": "AppleClang with C++26 support on macOS; Clang 18 on Ubuntu24; Clang 21 on Ubuntu26; exact compiler and standard library recorded per run"
+      },
+      "minimum_deployment_target": null,
+      "hardware_requirement": "Native selected architecture; virtualized CI is recorded",
+      "gpu_qualification": "not claimed; CPU-only connectors do not execute CUDA",
+      "filesystem_contract": "Caller-selected local filesystem with coherent inode identity, no-follow opens, flock, atomic rename and fsync behavior. Test success is not proof of power-loss durability. Network/FUSE/overlay/tmpfs require separately named evidence; no product filesystem allowlist."
+    },
+    {
+      "profile_id": "ubuntu24.04-arm64",
+      "os": "linux",
+      "architecture": "arm64",
+      "os_release": "24.04",
+      "scope": "required_mvp",
+      "qualification_status": "requires_exact_run_evidence",
+      "kernel_baseline": "GA 6.8; ARM/cloud patches recorded per run",
+      "c_runtime_baseline": "glibc 2.39",
+      "cxx_runtime": "libstdc++.so.6",
+      "filesystem_qualification_target": "ext4",
+      "runner": "ubuntu-24.04-arm",
+      "abi": "LP64 little-endian; POSIX; native C ABI; C++26 implementation ABI not a cross-compiler SDK guarantee",
+      "toolchains": {
+        "go": "1.26.5",
+        "cxx": "AppleClang with C++26 support on macOS; Clang 18 on Ubuntu24; Clang 21 on Ubuntu26; exact compiler and standard library recorded per run"
+      },
+      "minimum_deployment_target": null,
+      "hardware_requirement": "Native selected architecture; virtualized CI is recorded",
+      "gpu_qualification": "not claimed; CPU-only connectors do not execute CUDA",
+      "filesystem_contract": "Caller-selected local filesystem with coherent inode identity, no-follow opens, flock, atomic rename and fsync behavior. Test success is not proof of power-loss durability. Network/FUSE/overlay/tmpfs require separately named evidence; no product filesystem allowlist."
+    },
+    {
+      "profile_id": "dgx-spark-dgxos7-arm64",
+      "os": "linux",
+      "architecture": "arm64",
+      "os_release": "24.04",
+      "scope": "optional_future_hardware",
+      "qualification_status": "requires_exact_run_evidence",
+      "kernel_baseline": "DGX OS 7.6 image: 7.0.0-1018-nvidia; actual required",
+      "c_runtime_baseline": "glibc 2.39",
+      "cxx_runtime": "libstdc++.so.6",
+      "filesystem_qualification_target": "ext4",
+      "runner": null,
+      "abi": "LP64 little-endian; POSIX; native C ABI; C++26 implementation ABI not a cross-compiler SDK guarantee",
+      "toolchains": {
+        "go": "1.26.5",
+        "cxx": "AppleClang with C++26 support on macOS; Clang 18 on Ubuntu24; Clang 21 on Ubuntu26; exact compiler and standard library recorded per run"
+      },
+      "minimum_deployment_target": null,
+      "hardware_requirement": "Physical NVIDIA DGX Spark (GB10); generic ARM VM is insufficient",
+      "gpu_qualification": "not claimed; CPU-only connectors do not execute CUDA",
+      "filesystem_contract": "Caller-selected local filesystem with coherent inode identity, no-follow opens, flock, atomic rename and fsync behavior. Test success is not proof of power-loss durability. Network/FUSE/overlay/tmpfs require separately named evidence; no product filesystem allowlist.",
+      "dgx_os": {
+        "family": "7",
+        "minimum_vendor_supported_spark_iso": "7.2.3",
+        "reference_image": "7.6.0",
+        "reference_base": "Ubuntu 24.04.5",
+        "reference_driver": "580.173.02",
+        "reference_cuda": "13.0 Update 3",
+        "qualification": "Exact installed DGX image/kernel/driver/CUDA and physical device evidence remain required; rolling repository versions may differ."
+      }
+    },
+    {
+      "profile_id": "macos26-amd64-legacy",
+      "os": "macos",
+      "architecture": "amd64",
+      "os_release": "26",
+      "scope": "optional_legacy",
+      "qualification_status": "requires_exact_run_evidence",
+      "kernel_baseline": "Darwin 25.x",
+      "c_runtime_baseline": "libSystem.B.dylib",
+      "cxx_runtime": "libc++.1.dylib",
+      "filesystem_qualification_target": "apfs",
+      "runner": "macos-26-intel",
+      "abi": "LP64 little-endian; POSIX; native C ABI; C++26 implementation ABI not a cross-compiler SDK guarantee",
+      "toolchains": {
+        "go": "1.26.5",
+        "cxx": "AppleClang with C++26 support on macOS; Clang 18 on Ubuntu24; Clang 21 on Ubuntu26; exact compiler and standard library recorded per run"
+      },
+      "minimum_deployment_target": null,
+      "hardware_requirement": "Native selected architecture; virtualized CI is recorded",
+      "gpu_qualification": "not claimed; CPU-only connectors do not execute CUDA",
+      "filesystem_contract": "Caller-selected local filesystem with coherent inode identity, no-follow opens, flock, atomic rename and fsync behavior. Test success is not proof of power-loss durability. Network/FUSE/overlay/tmpfs require separately named evidence; no product filesystem allowlist."
+    }
+  ],
+  "unsupported_native_platforms": [
+    "Windows"
+  ],
+  "access_options": [
+    "Windows users may use a separately qualified Linux installation through SSH or WSL2; this does not assert native Windows or WSL2 filesystem qualification."
+  ],
+  "sources": [
+    "https://documentation.ubuntu.com/release-notes/24.04/",
+    "https://documentation.ubuntu.com/release-notes/26.04/summary-for-lts-users/",
+    "https://docs.nvidia.com/dgx/dgx-os-7-user-guide/release_notes.html",
+    "https://docs.nvidia.com/dgx/dgx-spark-porting-guide/latest/porting/software-requirements.html",
+    "https://docs.github.com/en/actions/reference/runners/github-hosted-runners"
+  ],
+  "observed_evidence_protocol": "symphony.platform-observation.v1",
+  "physical_spark_status": "not_observed"
+}
