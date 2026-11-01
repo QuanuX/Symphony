@@ -16601,3 +16601,171 @@ This PR authorizes none of the following:
   - `No Anaconda, mirror, downloadable binary publication, native Windows port, or rewriting of historical records or tags is included.`
 - notes: |
     Start and completion times are the verified implementation and merge commit timestamps in UTC, not inferred message times. GitHub PR metadata reports a merge time one hour later than its Git commit and in the future relative to the observed successful merge; both raw values are retained in merge-time-evidence.json. The focused gate requires installed inputs and rejects skipped selected tests. It includes four native CTests, six installed native process checks and race-enabled Go transport/installed/command tests; native writers produce the fixtures and all three actual qxctl routes are exercised. All fourteen functional CI jobs passed before merge. The broader Intel macOS C++ CodeQL analysis remained in progress at merge; it is distinct from functional qualification. Qualification is bounded to the recorded hosts and filesystems. Physical DGX Spark qualification and promised operational credential/provider capabilities remain launch work. The earlier interrupted local invocation is preserved separately; the clean committed-source rerun is the local result. Branch cleanup is recorded separately after this closure merges.
+
+- record_id: `SCLV-CHG-launch-L05-dependency-version-qualification`
+- record_version: `3`
+- title: `MVP dependency and exact-version projection with installed qualification`
+- status: `canonical`
+- date: `2026-11-01`
+- change_started_at: `2026-11-01T09:20:05Z`
+- change_completed_at: `2026-11-01T16:44:03Z`
+- recorded_at: `2026-11-01T16:44:33Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `implementation_change`
+- change_request_state: `present`
+- change_request_provider: `github`
+- change_request_id: `173`
+- change_request_reference: `https://github.com/QuanuX/Symphony/pull/173`
+- change_request_absence_reason: `not_applicable`
+- revision_scheme: `git-sha1`
+- revision_value: `692349ca4791f2f392b9b3ea72543061b6f4f19e`
+- tree_digest: `sha256:d8a84999c271ae019163f63807d25f4bfd63b7e90a40c943772e5e5cfaa0271a`
+- ratification_subject: `Duncan (Architect)`
+- ratification_permission: `authorize_L05_dependency_version_map_scoped_security_fixes_focused_verification_main_merge_and_merged_branch_cleanup`
+- ratification_method: `explicit-user-instruction`
+- ratification_evidence_reference: `../l05/ratification.json`
+- ratification_evidence_digest: `sha256:51540295a9a179355b3792077a82665457fa3ed766e45e6838cae38446181573`
+- affected_surfaces:
+  - `.github/codeql/L05-TRIAGE.md`
+  - `.github/codeql/README.md`
+  - `.github/scripts/prepare-mvp-dependencies.sh`
+  - `.github/workflows/mvp-dependencies.yml`
+  - `cmake/MVP-DEPENDENCIES.md`
+  - `cmake/SymphonyScvEngine.cmake`
+  - `cmake/mvp-dependencies.json`
+  - `modules/knowledge-session-coordinator/CMakeLists.txt`
+  - `modules/knowledge-session-coordinator/INSTALL.md`
+  - `modules/knowledge-session-coordinator/tests/lifecycle_test.cpp`
+  - `modules/maestro/CMakeLists.txt`
+  - `modules/maestro/INSTALL.md`
+  - `modules/sacv-engine/CMakeLists.txt`
+  - `modules/sacv-engine/INSTALL.md`
+  - `modules/sav-engine/CMakeLists.txt`
+  - `modules/sav-engine/INSTALL.md`
+  - `modules/sbv-engine/CMakeLists.txt`
+  - `modules/sbv-engine/INSTALL.md`
+  - `modules/sbv-engine/src/wide_rational.hpp`
+  - `modules/sbv-engine/tests/feedback_fixture.cpp`
+  - `modules/sbv-engine/tests/feedback_settlement_test.cpp`
+  - `modules/sbv-engine/tests/queue_test.cpp`
+  - `modules/scev-cf-engine/INSTALL.md`
+  - `modules/scev-engine/INSTALL.md`
+  - `modules/schv-aws-engine/INSTALL.md`
+  - `modules/schv-azure-engine/INSTALL.md`
+  - `modules/schv-do-engine/INSTALL.md`
+  - `modules/schv-engine/INSTALL.md`
+  - `modules/schv-gcp-engine/INSTALL.md`
+  - `modules/sclv-engine/CMakeLists.txt`
+  - `modules/sclv-engine/INSTALL.md`
+  - `modules/scv-engine/INSTALL.md`
+  - `modules/scv-graph-duckdb-connector/CMakeLists.txt`
+  - `modules/scv-graph-duckdb-connector/INSTALL.md`
+  - `modules/sev-engine/CMakeLists.txt`
+  - `modules/sev-engine/INSTALL.md`
+  - `modules/shv-engine/CMakeLists.txt`
+  - `modules/shv-engine/INSTALL.md`
+  - `modules/shv-graph-adapter/CMakeLists.txt`
+  - `modules/shv-graph-adapter/INSTALL.md`
+  - `modules/shv-graph-adapter/cmake/SymphonyShvGraphAdapterConfig.cmake.in`
+  - `modules/shv-graph-adapter/tests/sdk-consumer/CMakeLists.txt`
+  - `modules/shv-graph-duckdb-connector/CMakeLists.txt`
+  - `modules/shv-graph-duckdb-connector/INSTALL.md`
+  - `modules/shv-partition-engine/CMakeLists.txt`
+  - `modules/shv-partition-engine/INSTALL.md`
+  - `modules/shv-pdf-adapter/CMakeLists.txt`
+  - `modules/shv-pdf-adapter/INSTALL.md`
+  - `modules/shv-profile-engine/CMakeLists.txt`
+  - `modules/shv-profile-engine/INSTALL.md`
+  - `modules/shv-publication-engine/CMakeLists.txt`
+  - `modules/shv-publication-engine/INSTALL.md`
+  - `modules/shv-source-engine/CMakeLists.txt`
+  - `modules/shv-source-engine/INSTALL.md`
+  - `modules/sodv-engine/CMakeLists.txt`
+  - `modules/sodv-engine/INSTALL.md`
+  - `modules/sqav-capture-cpp/CMakeLists.txt`
+  - `modules/sqav-capture-cpp/INSTALL.md`
+  - `modules/sqav-capture-cpp/tests/sdk-consumer/main.cpp`
+  - `modules/sqav-databento-dbn-cpp/tests/sdk-consumer/main.cpp`
+  - `modules/sqtv-integer-conversion-cpp/CMakeLists.txt`
+  - `modules/sqtv-integer-conversion-cpp/INSTALL.md`
+  - `modules/ssfv-engine/CMakeLists.txt`
+  - `modules/ssfv-engine/INSTALL.md`
+  - `tests/mvp-dependencies/README.md`
+  - `tests/mvp-dependencies/common.cmake`
+  - `tests/mvp-dependencies/driver.cmake`
+  - `tests/mvp-dependencies/go-graphs.cmake`
+  - `tests/mvp-dependencies/go-graphs.sh`
+  - `tests/mvp-dependencies/proof-regressions.cmake`
+  - `tests/mvp-dependencies/prove-imports.cmake`
+  - `tests/mvp-dependencies/refresh-inputs.cmake`
+  - `tests/mvp-dependencies/run.sh`
+  - `tests/mvp-dependencies/sbv-consumer/CMakeLists.txt`
+  - `tests/mvp-dependencies/sbv-consumer/interop_consumer.cpp`
+  - `tests/mvp-dependencies/sbv-consumer/provider_abi_test.c`
+  - `tests/mvp-dependencies/sbv-consumer/sdk_consumer.c`
+  - `tests/mvp-dependencies/sbv-consumer/sdk_consumer.cpp`
+  - `tests/mvp-dependencies/sbv-consumer/verify_sdk.cmake`
+  - `tests/mvp-dependencies/verify-loader.cmake`
+  - `tests/mvp-dependencies/verify-receipt.cmake`
+  - `tests/mvp-dependencies/verify.cmake`
+  - `tools/authoring-cpp/CMakeLists.txt`
+  - `tools/qxctl/README.md`
+  - `tools/qxctl/internal/knowledgeengine/sbv_partitioned.go`
+  - `tools/qxctl/internal/knowledgeengine/sbv_partitioned_test.go`
+  - `tools/symphony-validator/CMakeLists.txt`
+  - `tools/symphony-validator/INSTALL.md`
+- skvi_references:
+  - `libraries/knowledge-vector-engine-cpp/SPEC.md`
+  - `tools/qxctl/MANIFEST.md`
+  - `modules/sbv-engine/SPEC.md`
+- change_summary: |
+    Records a source-bound dependency and version projection covering 69 component roots, 57 native build roots, 8 Go modules and 23 owner declarations, with 985 source-input hashes. Aligns 25 foundation consumers with the existing exact 0.2.0 SDK, supplies installed-dependency modes for SBV, validator and authoring tooling, and verifies copied SDK consumers and independent public Go dependency graphs. Adds scoped hardening for the bounded Go map allocation and three native test-fixture findings, a portable checked signed-128 multiplication path for SBV on ARM64, private-prefix runtime-loader proof, and portable caller-selected temporary directories for the copied DBN consumer.
+- relationship_changes: |
+    Native consumers resolve exact imported first-party SDK targets and truthful exported dependency configurations. Reviewed shared implementation sources remain explicit; test-only source admission is gated by BUILD_TESTING. SCLV's owner and both evidence adapter executables are enumerated, as are six production Go commands; the SBV roundtrip example is separate. Native semantic ownership, qxctl transport authority and public Go module ownership remain unchanged.
+- doctrine_changes: |
+    None. SDK project versions, receipt package versions, runtime identities, public Go module tags, owner-interface versions and wire/schema IDs remain distinct. Historical exact admission and intentionally frozen embedded SHV identities are preserved. No uniform package version or filesystem allowlist is introduced.
+- compatibility_consequences: |
+    Installed-only dependency resolution and separately copied consumers are checked through the recorded CI profiles. Qualification artifacts retain private-prefix RPATHs; separate loader traces require an actual selected private curl load, not an ambient library or search attempt. These artifacts are not relocatable release packages. SBV checked multiplication uses unsigned magnitudes and a pre-product division bound instead of the signed-128 overflow builtin, preserving the symmetric admitted range, excluded signed-minimum result, minimum-times-zero behavior and existing refusal contract. The copied DBN SDK consumer uses the canonical platform temporary directory instead of a macOS-only fixture path. Current SCV fresh-install examples explicitly select 0.10.0-dev while historical CLI defaults remain admitted by their original owners. The 54 required-profile native packages and two existing legacy Intel DuckDB packages retain separate qualification scopes; L09 is not completed. Test logging uses a private preopened descriptor; capture fixture export refuses existing paths and symlinks; the deliberate 0777 negative-permission leaf remains under a private 0700 parent.
+- publication_consequences: |
+    Source changes are merged through PR173. No new public Go module tag, uniform release identity, native binary release, Anaconda channel or mirror is published. No provider, credential-use path or production service is activated. Existing immutable Go publications remain unchanged; release identity and final artifact publication remain separate launch work.
+- projection_consequences: |
+    The committed machine-readable map and readable dependency document expose exact component identities, schema resources, external dependency provenance, source hashes and supported build-group boundaries. Hosted Ubuntu ARM64 evidence does not qualify physical DGX Spark, its selected DGX OS image/kernel/drivers/storage, or GPU behavior. L01 release approval, L06 identities, L09 required-platform DuckDB support, L14-L17 operational provider capabilities and L26 final-download acceptance remain open separately.
+- evidence:
+  - `https://github.com/QuanuX/Symphony/pull/173`
+  - `https://github.com/QuanuX/Symphony/commit/692349ca4791f2f392b9b3ea72543061b6f4f19e`
+  - `https://github.com/QuanuX/Symphony/actions/runs/41324256719`
+  - `https://github.com/QuanuX/Symphony/actions/runs/41324256714`
+  - `https://github.com/QuanuX/Symphony/actions/runs/41324256765`
+  - `https://github.com/QuanuX/Symphony/actions/runs/41324256962`
+  - `https://github.com/QuanuX/Symphony/actions/runs/41324256715`
+  - `cmake/mvp-dependencies.json`
+  - `cmake/MVP-DEPENDENCIES.md`
+  - `.github/codeql/L05-TRIAGE.md`
+  - `../l05/source-pr.json`
+  - `../l05/ci-proof.json`
+  - `../l05/merge-time-evidence.json`
+  - `../l05/merged-tree.raw`
+  - `../l05/ratification.json`
+  - `../l05/native-inventory.json`
+  - `../l05/go-interface-inventory.json`
+  - `../l05/install-target-audit.json`
+  - `../l05/security-alerts.json`
+  - `../l05/security-go-tests.jsonl`
+  - `../l05/legacy-intel/qualification.json`
+  - `../l05/source-validator.json`
+  - `../l05/review.md`
+  - `../l05/codeql-pr-snapshot.json`
+  - `../l05/codeql-pr-snapshot-initialhead.json`
+  - `../l05/ci-diagnostics/wide-mul-independent/result.json`
+  - `../l05/ci-diagnostics/wide-mul-lowering/result.json`
+  - `../l05/source-validator-eb6c07b.json`
+  - `../l05/sbv-rpath-proof/qualification.json`
+  - `../l05/sbv-rpath-proof/feedback-results.json`
+  - `../l05/dbn-consumer-fix/qualification.json`
+- non_authorizations:
+  - `The dependency projection does not approve the final release capability manifest, flatten independent versions, change immutable public Go tags or qualify final downloadable binaries.`
+  - `No security-alert dismissal, query obfuscation, automatic provider activation, credential mutation, live broker/data operation or production-service activation is authorized by a build or test result.`
+  - `Generic ARM64 CI does not certify physical DGX Spark, exact DGX OS deployment, storage durability, driver compatibility or GPU behavior; no native Windows port, Anaconda or mirror setup is included.`
+- notes: |
+    Change start uses the first descendant task commit 7eb3221574d44fe72a87387361fa9baecca79bd6; completion uses the verified source merge commit timestamp in UTC. Ratification capture time is not treated as the user-message timestamp. All 5 recorded CI runs and 34 recorded jobs completed successfully for the exact source head, and source/tested/merged trees match. The separate GitHub CodeQL alert check remains failed solely for alert #9, the intentional mode-0777 negative fixture isolated by its retained mode-0700 parent. Source review and the coordinator regression verify exact production refusal and no journal writes; no alert is dismissed, and L21 retains the explicit disposition. Static-analysis job success does not imply zero open alerts or complete C++26 extraction; numbered alert dispositions remain separately dated. Exact per-profile counts and local evidence are retained in ci-proof.json. Branch cleanup follows this canonical closure and is recorded separately. Merge-time evidence retains the documented Git/API timestamp discrepancy; no API timestamp is silently substituted for the verified Git time.
