@@ -214,7 +214,7 @@ func sbvExpandedResidentRequest(p map[string]any) (map[string]any, error) {
 	if partitioned == legacy {
 		return nil, fmt.Errorf("SBV resident parent must select exactly one output")
 	}
-	out := make(map[string]any, len(child)+1)
+	out := make(map[string]any, len(child))
 	for key, value := range child {
 		out[key] = value
 	}

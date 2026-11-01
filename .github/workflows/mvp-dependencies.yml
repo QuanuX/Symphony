@@ -1,0 +1,134 @@
+name: MVP dependency map
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: mvp-dependencies-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  go-dependency-graphs:
+    name: Standalone Go graph and build (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, macos-15]
+    env:
+      GOWORK: 'off'
+      GOTOOLCHAIN: local
+      GOENV: 'off'
+      GOPROXY: https://proxy.golang.org
+      GOSUMDB: sum.golang.org
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6
+        with:
+          go-version-file: tools/qxctl/go.mod
+          cache: false
+      - name: Resolve and build every independent module
+        run: sh tests/mvp-dependencies/go-graphs.sh "$RUNNER_TEMP/mvp-go-graphs"
+      - name: Exercise bounded SBV request expansion
+        working-directory: tools/qxctl
+        env:
+          GOMODCACHE: ${{ runner.temp }}/mvp-go-regression-modules
+          GOCACHE: ${{ runner.temp }}/mvp-go-regression-build
+        run: go test -mod=readonly -race -count=1 -v ./internal/knowledgeengine -run '^(TestSBVPartitionedResidentRecoveryIdentities|TestSBVExpandedResidentOutputSelection|TestValidateJSONObjectHonorsSharedValueBoundary)$'
+      - name: Retain standalone graph evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: mvp-go-graphs-${{ matrix.os }}
+          path: ${{ runner.temp }}/mvp-go-graphs/logs
+          retention-days: 14
+
+  installed-dependencies:
+    name: Installed SDKs (${{ matrix.group }}, ${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        group: [knowledge, cloud, quantitative]
+        os: [ubuntu-24.04, ubuntu-26.04, ubuntu-24.04-arm, macos-15]
+        include:
+          - os: ubuntu-24.04
+            cxx: clang++-18
+          - os: ubuntu-26.04
+            cxx: clang++-21
+          - os: ubuntu-24.04-arm
+            cxx: clang++-18
+          - os: macos-15
+            cxx: /usr/bin/clang++
+    env:
+      CXX: ${{ matrix.cxx }}
+      GOWORK: 'off'
+      GOTOOLCHAIN: local
+      GOENV: 'off'
+      GOPROXY: https://proxy.golang.org
+      GOSUMDB: sum.golang.org
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6
+        with:
+          go-version-file: tools/qxctl/go.mod
+          cache: false
+      - name: Select Apple C++26 toolchain
+        if: runner.os == 'macOS'
+        run: echo 'DEVELOPER_DIR=/Applications/Xcode_26.3.app/Contents/Developer' >> "$GITHUB_ENV"
+      - name: Verify dependency map against source
+        run: cmake -P tests/mvp-dependencies/verify.cmake
+      - name: Prepare private exact external dependencies
+        if: matrix.group == 'quantitative'
+        run: sh .github/scripts/prepare-mvp-dependencies.sh "$RUNNER_TEMP/mvp-external"
+      - name: Build and exercise installed dependencies
+        env:
+          GOMODCACHE: ${{ runner.temp }}/mvp-go-modules
+          GOCACHE: ${{ runner.temp }}/mvp-go-build
+        run: |
+          set --
+          if [ "${{ matrix.group }}" = quantitative ]; then
+            set -- "-DCMAKE_PREFIX_PATH=$RUNNER_TEMP/mvp-external/prefix"
+          fi
+          sh tests/mvp-dependencies/run.sh "${{ matrix.group }}" "$RUNNER_TEMP/mvp-installed" "$@"
+      - name: Verify authoring tools against installed foundation
+        if: matrix.group == 'knowledge'
+        run: sh tests/mvp-dependencies/run.sh build_support "$RUNNER_TEMP/mvp-authoring"
+      - name: Build the declared Apple provider without activating it
+        if: matrix.group == 'knowledge' && runner.os == 'macOS'
+        run: |
+          swift --version
+          swift build --package-path modules/ssiag-provider-macos-keychain --scratch-path "$RUNNER_TEMP/mvp-swift" -c release
+      - name: Report qualification boundary
+        if: always()
+        run: echo 'This checks the mapped installed SDK graph on the recorded runner. Generic Ubuntu ARM64 does not qualify physical DGX Spark or its DGX OS image. The two legacy Intel-only DuckDB recipes remain tracked by L09.' >> "$GITHUB_STEP_SUMMARY"
+      - name: Retain installed dependency evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: mvp-installed-${{ matrix.group }}-${{ matrix.os }}
+          path: |
+            ${{ runner.temp }}/mvp-installed/logs
+            ${{ runner.temp }}/mvp-installed/metadata
+            ${{ runner.temp }}/mvp-installed/selected-components.txt
+            ${{ runner.temp }}/mvp-installed/completed-steps.txt
+            ${{ runner.temp }}/mvp-installed/proof-regressions/*.log
+            ${{ runner.temp }}/mvp-authoring/logs
+            ${{ runner.temp }}/mvp-authoring/metadata
+            ${{ runner.temp }}/mvp-authoring/selected-components.txt
+            ${{ runner.temp }}/mvp-authoring/completed-steps.txt
+            ${{ runner.temp }}/mvp-authoring/proof-regressions/*.log
+          retention-days: 14

@@ -2,18 +2,46 @@
 // parser.
 #include <cstdlib>
 #include <cstring>
+#include <cerrno>
+#include <charconv>
+#include <fcntl.h>
 #include <fstream>
 #include <nlohmann/json.hpp>
 #include <string>
 #include <symphony/sbv/feedback.h>
+#include <sys/stat.h>
 #include <thread>
+#include <unistd.h>
 using J = nlohmann::json;
 namespace {
 void log(const char *s) noexcept {
-  try {
-    if (auto p = std::getenv("SBV_FEEDBACK_LIFETIME_LOG"))
-      std::ofstream(p, std::ios::app) << s << '\n';
-  } catch (...) {
+  const auto value = std::getenv("SBV_FEEDBACK_LIFETIME_LOG_FD");
+  if (!value)
+    return;
+  const auto end = value + std::strlen(value);
+  int fd = -1;
+  const auto parsed = std::from_chars(value, end, fd);
+  if (parsed.ec != std::errc{} || parsed.ptr != end || fd < 3)
+    return;
+  struct stat status {};
+  const auto flags = ::fcntl(fd, F_GETFL);
+  if (flags == -1 || (flags & O_ACCMODE) != O_WRONLY || !(flags & O_APPEND) ||
+      ::fstat(fd, &status) != 0 || !S_ISREG(status.st_mode) ||
+      status.st_uid != ::geteuid() || (status.st_mode & 0777) != 0600)
+    return;
+  // The test owns and closes this private descriptor. The independently linked
+  // fixture never opens an environment-selected pathname.
+  for (const char *part : {s, "\n"}) {
+    auto remaining = std::strlen(part);
+    while (remaining != 0) {
+      const auto written = ::write(fd, part, remaining);
+      if (written < 0 && errno == EINTR)
+        continue;
+      if (written <= 0)
+        return;
+      part += written;
+      remaining -= static_cast<std::size_t>(written);
+    }
   }
 }
 void release(void *, const uint8_t *p, uint64_t) {

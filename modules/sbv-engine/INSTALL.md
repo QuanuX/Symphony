@@ -1,6 +1,6 @@
 # SBV installation
 
-Build with a CMake release that recognizes C++26 and a supported C++26 compiler. This source release uses the exact in-tree dependency revisions; it does not fetch upgrades.
+Build with CMake 3.30 or newer and a supported C++26 compiler. By default this source release builds the in-tree dependency revisions. It does not fetch upgrades.
 
 ```sh
 cmake -S modules/sbv-engine -B build/sbv -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/absolute/private/prefix
@@ -8,6 +8,10 @@ cmake --build build/sbv
 ctest --test-dir build/sbv --output-on-failure
 cmake --install build/sbv
 ```
+
+To consume independently installed first-party SDKs, use `-DSYMPHONY_SBV_USE_INSTALLED_DEPENDENCIES=ON` and an explicit `CMAKE_PREFIX_PATH` or exact package configuration directories. This mode requires `SymphonyKnowledgeVectorEngine` `0.2.0`, `SymphonySqavDatabentoDbn` `0.5.0`, and `SymphonySqdvDelivery` `0.3.0`, including their exact transitive SDK requirements. Missing or different versions fail configuration; no dependency source subproject is added. The selected first-party targets must be imported SDKs.
+
+Build the installed static SDK dependencies with `-DCMAKE_POSITION_INDEPENDENT_CODE=ON` before linking them into the shared SBV SDK, especially on Linux. SBV's own setting cannot change an already compiled dependency archive. The separate CURL dependency remains exact `8.7.1` through the DBN SDK. Use single-configuration Release builds and retain the selected architecture, compiler and dependency-prefix evidence.
 
 The independently installable executable is `libexec/symphony/sbv-engine/0.33.0-dev/symphony-sbv`. Receipt, contracts, schemas and licenses are versioned and owned by its v2 install receipt. Static dependencies are embedded in this executable; it does not require a running bus, provider connection, another engine process or a GPU. The static `Symphony::Sbv` target is available to in-tree builds; the shared `Symphony::SbvSdk` target supplies the installed C ABI/C++ wrapper.
 

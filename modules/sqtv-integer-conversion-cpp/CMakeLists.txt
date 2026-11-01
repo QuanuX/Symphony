@@ -129,7 +129,7 @@ add_custom_target(uninstall-${SQTV_MODULE}
 
 if(BUILD_TESTING)
     if(SYMPHONY_SQTV_USE_INSTALLED_DEPENDENCIES)
-        find_package(SymphonySqdvDelivery 0.2.0 EXACT REQUIRED CONFIG)
+        find_package(SymphonySqdvDelivery 0.3.0 EXACT REQUIRED CONFIG)
     else()
         function(sqtv_test_composition)
             set(BUILD_TESTING OFF)

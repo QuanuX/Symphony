@@ -53,6 +53,11 @@ Before merging, check all six pull-request jobs and their uploaded analyses in
 including file coverage and analysis categories. A successful scan can still
 report vulnerabilities; job success is not a clean security assessment.
 
+[L05 focused alert triage](L05-TRIAGE.md) records the dated state and source
+boundaries of alerts 3–6, their scoped hardening changes, regression coverage,
+and the intentionally retained negative-permission test. It does not replace
+verification of a fresh uploaded analysis or authorize alert dismissal.
+
 After merging, verify the push run on `main` to establish the default-branch
 baseline. The weekly schedule and manual dispatch then become available from
 `main`. Keep the action commit pins current when updating CodeQL and checkout.

@@ -320,6 +320,18 @@ Each operation requires a matching exact `symphony.knowledge.lifecycle.*` SSIAG 
 
 Package mutation and ownership mutation share one persistent lock at the exact target root. Profile mutation holds the exclusive profile lock while checking claims, while ownership reconciliation and action execution hold a shared profile lease before acquiring the root lock. A new empty root is enforced immediately; a pre-existing root is conservatively adopted with legacy-preserve claims. Before the registry commit, qxctl publishes a static receipt-layout compatibility fence: ownership-aware clients consume it, while older lifecycle clients preserve it as unsupported evidence and produce their existing global critical blocker. `knowledge lifecycle ownership status|reconcile|adopt|release` provides explicit administration. Before `adopt`, the administrator drains any old mutation already prepared from a pre-fence observation; no file marker can retroactively cancel such an action. A late completion is exposed by the next observation as missing retained state or new legacy evidence. Profile updates cannot abandon a claimed component/root mapping: keep it mapped with desired absence, converge, and only then remove or relocate it. Profile removal is likewise refused while that profile retains or retires a receipt, and uninstall is refused while any retained or legacy claim remains.
 
+## Inspect a current SCV installation
+
+The current source package for each of the eight SCV domains is `0.10.0-dev`. After installing the selected domain into a fresh prefix, pass its exact version explicitly:
+
+```sh
+qxctl scv inspect --domain scv --prefix /chosen/prefix --version 0.10.0-dev --json
+qxctl scv interface show --domain scv --prefix /chosen/prefix --version 0.10.0-dev --json
+qxctl scv schema list --domain scv --prefix /chosen/prefix --version 0.10.0-dev --json
+```
+
+Use the domain actually installed: `scv`, `schv`, `scev`, `schv-aws`, `schv-azure`, `schv-do`, `schv-gcp`, or `scev-cf`. Existing commands retain their original exact-version defaults, including `0.1.0-dev` for `inspect`, `0.4.0-dev` for schema discovery and `0.6.0-dev` for interface discovery. Those defaults require the corresponding retained installation; they do not resolve to the current package. Original-owner artifact replay continues to require its recorded exact installation.
+
 SCV agent-operated schemas, profile preparation, artifact retention and run recovery are governed by `knowledge/scv/AGENT-WORKFLOWS.md`. Read the selected installation's exact schemas/templates, supply caller-owned requirements, and use retained operation identities for status/recovery. SCV `--json` failures use `tools/qxctl/ERRORS.md`; successful owner result protocols are preserved.
 
 The SCV `.5` provider coverage interface in `knowledge/scv/COVERAGE.md` preserves declared inventory, exact corpus query and native interpretation replay. Artifact import/show/list additionally retain candidate provider definitions and coverage results through their original validating installation.

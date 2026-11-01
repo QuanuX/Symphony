@@ -19,3 +19,5 @@ The kernel reader and PDF interpretation code are compiled dependencies; runtime
 binding additionally requires the explicitly selected exact decoder installation.
 
 Generator regression tests use compiled C++ tools and gofmt; installed engine use requires neither. Build `shv-profile-interface-generator` from the `tools/authoring-cpp` CMake project. Checked-in metadata is verified with `<authoring-build>/shv-profile-interface-generator --check` before release.
+
+Installed dependency mode (`-DSYMPHONY_KVE_USE_INSTALLED=ON`) requires the exact `SymphonyKnowledgeVectorEngine` CMake package `0.2.0` from the independently installed `knowledge-vector-engine-cpp` package `0.2.0-dev`. Select its explicit configuration directory with `SymphonyKnowledgeVectorEngine_DIR`; a missing or different version fails configuration without adding foundation source. The module's own release and protocol versions are unchanged.

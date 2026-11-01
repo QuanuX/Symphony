@@ -49,3 +49,5 @@ OWNER-INTERFACE.json declares exact metadata. INTERFACE-GENERATOR.json selects g
 This inventory is not exhaustive. New owners can use `tools/shv-interface-codegen/EXTENDING.md` without extending a fixed generator whitelist. They must supply their own semantic contracts and qxctl integration.
 
 Store 0.4 can inventory retained writers 0.1/0.2/0.3/0.4; other data operations remain bound to the exact writer. Transfer planning binds its selected 0.3 or 0.4 reader. Old readers do not admit new 0.4 writers, and old publication admission remains unchanged. Embedded structural adapter stays exactly 0.1. No database migration or graph database default is introduced.
+
+Installed dependency mode (`-DSYMPHONY_KVE_USE_INSTALLED=ON`) requires the exact `SymphonyKnowledgeVectorEngine` CMake package `0.2.0` from the independently installed `knowledge-vector-engine-cpp` package `0.2.0-dev`. Select its explicit configuration directory with `SymphonyKnowledgeVectorEngine_DIR`; a missing or different version fails configuration without adding foundation source. The module's own release and protocol versions are unchanged.

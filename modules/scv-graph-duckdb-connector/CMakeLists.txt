@@ -9,7 +9,7 @@ get_filename_component(SYMPHONY_REPOSITORY_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/../
 include("${SYMPHONY_REPOSITORY_ROOT}/cmake/SymphonyInstallReceiptV2.cmake")
 option(SYMPHONY_KVE_USE_INSTALLED "Use an installed exact compatible C++ foundation" OFF)
 if(SYMPHONY_KVE_USE_INSTALLED)
-    find_package(SymphonyKnowledgeVectorEngine 0.1 REQUIRED CONFIG)
+    find_package(SymphonyKnowledgeVectorEngine 0.2.0 EXACT REQUIRED CONFIG)
 elseif(NOT TARGET Symphony::KnowledgeVectorEngine)
     set(SYMPHONY_KVE_BUILD_TESTING OFF CACHE BOOL "Build foundation tests separately" FORCE)
     add_subdirectory("${SYMPHONY_REPOSITORY_ROOT}/libraries/knowledge-vector-engine-cpp"

@@ -247,6 +247,39 @@ func TestSBVPartitionedResidentRecoveryIdentities(t *testing.T) {
 	partitionedValidate(t, "dataset_execute", parent, success, true)
 }
 
+func TestSBVExpandedResidentOutputSelection(t *testing.T) {
+	for _, key := range []string{"output", "output_path"} {
+		t.Run(key, func(t *testing.T) {
+			child := map[string]any{"protocol": "child", "extensions": map[string]any{}}
+			parent := map[string]any{"request": child, key: "selected-output"}
+			expanded, err := sbvExpandedResidentRequest(parent)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if len(expanded) != len(child)+1 || expanded[key] != parent[key] || expanded["protocol"] != child["protocol"] {
+				t.Fatal("resident output selection changed child fields")
+			}
+			expanded["protocol"] = "modified copy"
+			if child["protocol"] != "child" {
+				t.Fatal("expanded request aliases original child map")
+			}
+			if _, present := child[key]; present {
+				t.Fatal("expansion added output to original child")
+			}
+		})
+	}
+	for name, parent := range map[string]map[string]any{
+		"neither": {"request": map[string]any{}},
+		"both":    {"request": map[string]any{}, "output": nil, "output_path": nil},
+	} {
+		t.Run(name, func(t *testing.T) {
+			if _, err := sbvExpandedResidentRequest(parent); err == nil {
+				t.Fatal("ambiguous resident output selection admitted")
+			}
+		})
+	}
+}
+
 func partitionedSourceFixture() map[string]any {
 	return map[string]any{"kind": "bundle", "reference": map[string]any{"manifest_path": "/private/input/manifest.json", "manifest_sha256": strings.Repeat("a", 64), "content_sha256": strings.Repeat("b", 64)}, "selector": map[string]any{"kind": "pointer", "pointer": "/sections/user_extensions/data/rows"}, "read_options": map[string]any{"max_page_bytes": nil, "cache_bytes": "0"}}
 }
