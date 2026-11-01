@@ -6,12 +6,8 @@ file(READ "${RELEASE_HARNESS}/manifest.json" qualification)
 mvp_run(release-result-gate-regressions "${MVP_WORK}" "${CMAKE_COMMAND}"
   "-DRESULT_TEST_WORK=${MVP_WORK}/result-regressions" -P "${RELEASE_HARNESS}/result-regressions.cmake")
 file(MAKE_DIRECTORY "${MVP_WORK}/fixtures")
-if(MVP_GROUP STREQUAL "knowledge" OR MVP_GROUP STREQUAL "quantitative")
-  execute_process(COMMAND "${CMAKE_COMMAND}" -E env GOTOOLCHAIN=local GOENV=off go env GOVERSION
-    OUTPUT_VARIABLE go_version OUTPUT_STRIP_TRAILING_WHITESPACE RESULT_VARIABLE go_status)
-  if(NOT go_status EQUAL 0 OR NOT go_version STREQUAL "go1.26.5")
-    message(FATAL_ERROR "Installed Go release qualification requires Go1.26.5 on PATH")
-  endif()
+if(MVP_GROUP STREQUAL "knowledge" OR MVP_GROUP STREQUAL "quantitative" OR MVP_GROUP STREQUAL "duckdb")
+  include("${RELEASE_HARNESS}/require-go-toolchain.cmake")
 endif()
 
 if(MVP_GROUP STREQUAL "knowledge")
