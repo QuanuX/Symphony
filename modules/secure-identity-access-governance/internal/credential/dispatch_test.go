@@ -177,7 +177,7 @@ func TestDispatchKernelIdentityAuditAndSingleAttempt(t *testing.T) {
 		})
 	}
 	wg.Wait()
-	if delivered.Load() != 1 || spent.Load() != 63 || a.calls.Load() != 1 || p.executions.Load() != 1 || p.releases.Load() != 1 {
+	if delivered.Load() != 1 || spent.Load() != 63 || a.calls.Load() != 2 || p.executions.Load() != 1 || p.releases.Load() != 1 {
 		t.Fatal("single-attempt ordering failed")
 	}
 	if p.binding.SubjectID != "fixture-consumer" || p.binding.SubjectAuthority != peerauth.Mechanism || p.binding.Reference.Version != "generation-1" || p.binding.AuditReceiptDigest == "" {

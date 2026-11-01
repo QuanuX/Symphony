@@ -88,5 +88,5 @@ concurrent one-shot execution, concurrent replacement and cleanup ordering.
 
 Operational deployment still requires the persistent authority/lease owner,
 authenticated native recipient and provider pin backend, separately versioned
-protected channel, provider-outcome STAV integration and signed Keychain item
+protected channel, qualification of provider-outcome STAV integration and signed Keychain item
 lifecycle. Existing provider v1 and synthetic-channel flags remain disabled.

@@ -78,3 +78,10 @@ admission composition contract. `internal/credential/admission.go` implements
 private value ownership, revision CAS and pins through native execution/cleanup;
 `admission_test.go` verifies its affected boundaries. Native authentication,
 protected delivery and operational Keychain access remain disabled.
+
+`CREDENTIAL-JOURNAL.md` and `CREDENTIAL-DISPATCH.md` also cover the separate
+provider-outcome STAV receipt. `internal/credential/outcome.go` owns candidate
+replay and verified receipt persistence; `outcome_test.go` and
+`outcome_process_test.go` cover migration, audit failure, lost acknowledgement
+and actual append-authority restart. `CREDENTIAL-QUALIFICATION.md` records the
+remaining native bridge, deployment and live-provider acceptance work.

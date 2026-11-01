@@ -17,7 +17,8 @@ import (
 )
 
 const maxJournalRecordBytes = 8192
-const journalFormat = "ssiag-internal-credential-request-1"
+const legacyJournalFormat = "ssiag-internal-credential-request-1"
+const journalFormat = "ssiag-internal-credential-request-2"
 
 var errJournal = errors.New("credential journal unavailable")
 
@@ -50,7 +51,15 @@ type journalRecord struct {
 	Phase    string
 	Binding  *UseBinding
 	Outcome  DispatchStatus
+	Audit    *outcomeAudit `json:",omitempty"`
 	Digest   string
+}
+
+// Only nonsecret audit identity and independently verified STAV evidence belong
+// here. A receipt for the preceding policy decision is not an outcome receipt.
+type outcomeAudit struct {
+	RequestID string
+	Receipt   *stav.Receipt
 }
 
 // File handles stay pinned from initial claim through result commitment.
@@ -83,12 +92,19 @@ func journalKey(tops string, peer peerauth.Peer, in DispatchIntent) journalIdent
 	return journalIdentity{TOPSID: tops, RequestID: in.Authorization.RequestID, Subject: model.DecisionSubject{ID: peer.Subject.ID, Kind: peer.Subject.Kind, Authority: peer.Subject.Authority}, UID: peer.Credentials.UID, GID: peer.Credentials.GID, IntentDigest: journalDigest("intent", data)}
 }
 func journalDigest(domain string, data []byte) string {
-	sum := sha256.Sum256(append([]byte(journalFormat+":"+domain+"\x00"), data...))
+	// Request identity stays stable across the additive local storage upgrade.
+	return journalVersionDigest(legacyJournalFormat, domain, data)
+}
+func journalVersionDigest(format, domain string, data []byte) string {
+	sum := sha256.Sum256(append([]byte(format+":"+domain+"\x00"), data...))
 	return "sha256:" + hex.EncodeToString(sum[:])
 }
 func validJournalRecord(r journalRecord) bool {
 	k := r.Identity
-	if r.Format != journalFormat || paths.ValidateTOPSID(k.TOPSID) != nil || stav.ValidateRequestUUID(k.RequestID) != nil || !useDigest(k.IntentDigest) || !useToken(k.Subject.ID) || !useToken(k.Subject.Kind) || k.Subject.Authority != peerauth.Mechanism {
+	if (r.Format != journalFormat && r.Format != legacyJournalFormat) || paths.ValidateTOPSID(k.TOPSID) != nil || stav.ValidateRequestUUID(k.RequestID) != nil || !useDigest(k.IntentDigest) || !useToken(k.Subject.ID) || !useToken(k.Subject.Kind) || k.Subject.Authority != peerauth.Mechanism {
+		return false
+	}
+	if !validOutcomeAudit(r) {
 		return false
 	}
 	if r.Binding != nil {
@@ -122,7 +138,7 @@ func encodeJournal(r journalRecord) ([]byte, error) {
 	if err != nil {
 		return nil, errJournal
 	}
-	r.Digest = journalDigest("record", body)
+	r.Digest = journalVersionDigest(r.Format, "record", body)
 	data, err := json.Marshal(r)
 	data = append(data, '\n')
 	if err != nil || len(data) > maxJournalRecordBytes {
@@ -166,6 +182,9 @@ func (j *Journal) begin(ctx context.Context, k journalIdentity) (*journalAttempt
 			return nil, DispatchConflict
 		}
 		if r.Phase == "closed" {
+			if r.Binding != nil && (r.Audit == nil || r.Audit.Receipt == nil) {
+				return nil, DispatchRecoveryRequired
+			}
 			return nil, DispatchRecorded
 		}
 		return nil, DispatchRecoveryRequired
@@ -189,6 +208,11 @@ func (a *journalAttempt) arm(b UseBinding) error {
 	r := a.record
 	r.Phase = "armed"
 	r.Binding = &b
+	auditID, err := stav.GenerateUUIDv4()
+	if err != nil || auditID == b.RequestID || auditID == b.CorrelationID {
+		return errJournal
+	}
+	r.Audit = &outcomeAudit{RequestID: auditID}
 	data, err := encodeJournal(r)
 	if err != nil {
 		return errJournal
@@ -218,11 +242,12 @@ func (a *journalAttempt) finish(outcome DispatchStatus) error {
 // RecoveryResult reports durable metadata; Delivered here describes the earlier
 // attempt, not a delivery performed by recovery. No retry authority is returned.
 type RecoveryResult struct {
-	State   string
-	Outcome DispatchStatus
+	State      string
+	Outcome    DispatchStatus
+	AuditState string
 }
 
-func (j *Journal) recover(ctx context.Context, k journalIdentity) (RecoveryResult, error) {
+func (j *Journal) recover(ctx context.Context, k journalIdentity, reconcile func(*journalAttempt) error) (RecoveryResult, error) {
 	if j == nil || j.open == nil || ctx == nil || ctx.Err() != nil || k.TOPSID != j.topsID {
 		return RecoveryResult{}, errJournal
 	}
@@ -253,7 +278,20 @@ func (j *Journal) recover(ctx context.Context, k journalIdentity) (RecoveryResul
 			return RecoveryResult{}, errJournal
 		}
 	}
-	return RecoveryResult{State: r.Phase, Outcome: r.Outcome}, nil
+	auditState := "not_dispatched"
+	if r.Binding != nil {
+		auditState = "reconciliation_required"
+		a := &journalAttempt{file: f, record: r, started: true}
+		if reconcile != nil {
+			if err := reconcile(a); err != nil {
+				return RecoveryResult{}, errJournal
+			}
+		}
+		if a.record.Audit != nil && a.record.Audit.Receipt != nil {
+			auditState = "committed"
+		}
+	}
+	return RecoveryResult{State: r.Phase, Outcome: r.Outcome, AuditState: auditState}, nil
 }
 
 // Recover requires a new, fresh authorization request for the original exact
@@ -286,7 +324,9 @@ func (d *Dispatcher) Recover(ctx context.Context, original DispatchIntent, autho
 			return errJournal
 		}
 		var err error
-		result, err = d.journal.recover(bounded, journalKey(decision.TOPSID, peer, original))
+		result, err = d.journal.recover(bounded, journalKey(decision.TOPSID, peer, original), func(a *journalAttempt) error {
+			return d.commitOutcome(bounded, a)
+		})
 		return err
 	})
 	if err != nil {

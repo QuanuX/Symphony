@@ -103,6 +103,11 @@ internal durable request reservation, preparation, outcome and recovery boundary
 `CREDENTIAL-ADMISSION.md` defines the implemented process-local resource/lease
 snapshot pin, complete-snapshot CAS and native evidence checks. The native
 provider/recipient backend and protected delivery remain unimplemented; no route
-is enabled. Local execution records do not replace committed STAV evidence.
+is enabled. Local execution records do not replace committed STAV evidence. The dispatcher
+now commits a separate safe provider-outcome event after persisting its observed
+result, retains the exact verified receipt, and reconciles missing outcome
+receipts under fresh authorization without another delivery. Internal format-1
+records retain duplicate suppression and migrate only during protected recovery.
+Unknown delivery remains indeterminate even after its audit commits.
 
 Local peer authentication, exact UID/GID subject resolution, target-host-owner derivation, endpoint verification, native supervision, receipt-v2 identity, transactional recovery, exact-grant authorization, protected policy administration, typed SSIAG STAV submission, metadata-only provider mutual trust, and exact provider-binding lifecycle are implemented. General safeguards, lease issuance, credential delivery, operational provider operations, secret delivery, and canonical knowledge apply remain disabled.
