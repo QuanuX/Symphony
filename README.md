@@ -130,7 +130,7 @@ This bounded summary is derived from canonical SSFV coverage and routing, the fe
 
 - SSFV catalog state: `partial`; registered features: **147**; registered owner scopes: **65**; ratified nested features: **78**.
 - Feature-administration expectations: **392** reviewed surfaces; **381** required, **29** evidence-backed exemptions, **9** prohibitions, **0** unreviewed.
-- qxctl stable command identities: **461**.
+- qxctl stable command identities: **462**.
 - Registered owner capabilities:
   - `ssfv:symphony:accordare-stav-producer`
   - `ssfv:symphony:knowledge-session-coordinator`
@@ -204,7 +204,7 @@ This bounded summary is derived from canonical SSFV coverage and routing, the fe
   - `github.com/QuanuX/Symphony/modules/stav-append-authority` `v0.2.0` (tag `modules/stav-append-authority/v0.2.0`, source `ed7484d70607aa96e64916dd4e59d3972a61980b`)
   - `github.com/QuanuX/Symphony/modules/stav-append-authority` `v0.2.1` (tag `modules/stav-append-authority/v0.2.1`, source `967c005e21a8f153ed453c79baa09fe2ab549f01`)
   - `github.com/QuanuX/Symphony/tools/sov-ssh-adapter` `v0.1.0-dev` (tag `tools/sov-ssh-adapter/v0.1.0-dev`, source `967c005e21a8f153ed453c79baa09fe2ab549f01`)
-- Snapshot digest: `sha256:b4733fa10e43a1a76278a499acaf4f88fef66f174968e510ef3274490cc4c3c6`
+- Snapshot digest: `sha256:8001a5352893287775ce67a73b10776dae294ae962df3a580eaba258a5cd45ff`
 <!-- symphony:root-summary:v1:end -->
 
 ## Releases and Documentation
