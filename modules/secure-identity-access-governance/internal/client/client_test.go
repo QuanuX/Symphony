@@ -99,7 +99,7 @@ func TestPeerVerificationFailsBeforeHTTPBytes(t *testing.T) {
 	_, layout, _ := clientFixture(t)
 	listener, err := net.Listen("unix", layout.Socket)
 	if err != nil {
-		t.Skipf("Unix sockets unavailable: %v", err)
+		t.Fatalf("listen on short test socket: %v", err)
 	}
 	defer listener.Close()
 
@@ -137,7 +137,7 @@ func TestSocketOverrideRetainsPeerVerification(t *testing.T) {
 	override := filepath.Join(home, "override.sock")
 	listener, err := net.Listen("unix", override)
 	if err != nil {
-		t.Skipf("Unix sockets unavailable: %v", err)
+		t.Fatalf("listen on short test socket: %v", err)
 	}
 	defer listener.Close()
 	t.Setenv("SYMPHONY_SSIAG_SOCKET", override)
@@ -170,7 +170,13 @@ func TestSocketOverrideRetainsPeerVerification(t *testing.T) {
 
 func clientFixture(t *testing.T) (string, ssiagpaths.InstanceLayout, config.Config) {
 	t.Helper()
-	home := t.TempDir()
+	// Preserve the canonical TOPS layout under a short private root: its Unix
+	// socket must fit Darwin's address limit even when GOTMPDIR is long.
+	home, err := os.MkdirTemp("/tmp", "ssiag-c-")
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Cleanup(func() { _ = os.RemoveAll(home) })
 	t.Setenv("HOME", home)
 	t.Setenv("XDG_CONFIG_HOME", filepath.Join(home, "config"))
 	t.Setenv("XDG_RUNTIME_DIR", filepath.Join(home, "runtime"))
