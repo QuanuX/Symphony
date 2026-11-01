@@ -75,6 +75,12 @@ func (b *boundedBuffer) Write(p []byte) (int, error) {
 	return b.Buffer.Write(p)
 }
 func run(ctx context.Context, args []string, input io.Reader, output io.Writer) int {
+	if len(args) == 1 && args[0] == "--version" {
+		if _, err := fmt.Fprintf(output, "sov-ssh-adapter version %s\n", contract.Version); err != nil {
+			return 1
+		}
+		return 0
+	}
 	if len(args) != 0 {
 		return 2
 	}

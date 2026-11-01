@@ -5,6 +5,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <filesystem>
+#include <string>
 #include <signal.h>
 #include <symphony/sqav/databento/http.hpp>
 #include <sys/socket.h>
@@ -24,8 +25,10 @@ void check(bool b, const char *why) {
 struct Root {
   std::string path;
   Root() {
-    char name[] = "/private/tmp/sqv-http-XXXXXX";
-    auto p = ::mkdtemp(name);
+    auto name =
+        (std::filesystem::canonical(std::filesystem::temp_directory_path()) /
+         "sqv-http-XXXXXX").string();
+    auto p = ::mkdtemp(name.data());
     check(p, "root");
     path = p;
   }

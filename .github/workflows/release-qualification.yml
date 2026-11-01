@@ -1,0 +1,74 @@
+name: Release functional qualification
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-qualification-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  standalone-go-tests:
+    name: Go module race suites (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, ubuntu-26.04, ubuntu-24.04-arm, macos-15]
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6
+        with:
+          go-version-file: tools/qxctl/go.mod
+          cache: false
+      - name: Run all eight independent module suites
+        run: sh tests/release-qualification/go-tests.sh "$RUNNER_TEMP/release-go"
+      - name: Verify the complete release identity catalog
+        run: cmake -P cmake/VerifyMVPReleaseIdentities.cmake
+      - name: Verify five candidate Go artifact identities
+        run: sh .github/scripts/build-mvp-go-identities.sh "$RUNNER_TEMP/release-go-identities"
+      - name: Retain executed tests, explicit skips and candidate identities
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: release-go-${{ matrix.os }}
+          path: |
+            ${{ runner.temp }}/release-go/logs
+            ${{ runner.temp }}/release-go/host-info.log
+            ${{ runner.temp }}/release-go-identities/logs
+            ${{ runner.temp }}/release-go-identities/identities
+            ${{ runner.temp }}/release-go-identities/*.json
+          retention-days: 14
+      - name: Report evidence boundary
+        if: always()
+        run: echo 'Optional retained-installation and subprocess-helper skips are listed separately in JSON. A passing job does not execute excluded fixtures or activate providers. Review exact-head results before merge.' >> "$GITHUB_STEP_SUMMARY"
+
+  swift-provider-tests:
+    name: Apple provider contract tests (macos-15)
+    runs-on: macos-15
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - name: Select Swift toolchain
+        run: echo 'DEVELOPER_DIR=/Applications/Xcode_26.3.app/Contents/Developer' >> "$GITHUB_ENV"
+      - name: Run the selected scratch-built provider tests
+        run: sh tests/release-qualification/swift-tests.sh "$RUNNER_TEMP/release-swift"
+      - name: Retain Swift execution evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: release-swift-macos-15
+          path: ${{ runner.temp }}/release-swift/logs
+          retention-days: 14

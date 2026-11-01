@@ -52,6 +52,8 @@
 
 ## Identity
 - Declared tool name: qxctl
+- Development version: `0.1.0-dev`; no release publication is implied.
+- `version --json` binds source stamp declarations and actual runtime metadata to the running executable SHA256; unstamped builds report unavailable source fields.
 - Path: tools/qxctl
 - Language/Runtime: Go 1.26.5 with Cobra command grammar, constrained Viper configuration mapping, first-party STAV protocol/authority clients, and cgo-free platform dependencies
 
@@ -66,6 +68,9 @@
 - `FEATURES.md`
 - `cmd/qxctl/main.go`
 - `cmd/qxctl/commands.go`
+- `cmd/qxctl/version.go`
+- `internal/version/version.go`
+- `internal/version/build_info.go`
 - `cmd/qxctl/command_manifest.go`
 - `cmd/qxctl/command_specs.go`
 - `cmd/qxctl/knowledge_invariant.go`
@@ -99,6 +104,8 @@
 - `internal/knowledgelifecycle/state_unsupported.go`
 
 ## Supported Commands
+- `qxctl --version`
+- `qxctl version [--json]`
 - `qxctl commands manifest --json`
 - `qxctl commands expected --json`
 - `qxctl commands verify --input FILE --json`

@@ -81,9 +81,7 @@ import Testing
 }
 
 @Test func realProcessReadinessOperationHonorsDisabledBoundary() throws {
-    let tests = URL(fileURLWithPath: #filePath).deletingLastPathComponent()
-    let package = tests.deletingLastPathComponent().deletingLastPathComponent()
-    let executable = package.appending(path: ".build/debug/\(providerExecutableName)")
+    let executable = try providerTestExecutable()
     #expect(FileManager.default.isExecutableFile(atPath: executable.path))
     let process = Process()
     let output = Pipe()

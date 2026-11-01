@@ -57,3 +57,45 @@ foreach(case project-collision wrong-scoped-package wrong-visible-package)
   endif()
 endforeach()
 message(STATUS "PASS package/project scope collision and two wrong-package refusals")
+
+# Only mapped authoring support can be added for tests. The same declaration
+# must not admit that directory in a production configure or admit an SDK root.
+set(fixture_repo "${MVP_PROOF_TEST_WORK}/directory-fixture")
+file(MAKE_DIRECTORY "${fixture_repo}/owner" "${fixture_repo}/tools/authoring-cpp"
+  "${fixture_repo}/libraries/forbidden-sdk")
+file(WRITE "${fixture_repo}/tools/authoring-cpp/CMakeLists.txt" "# configure-only test helper\n")
+file(WRITE "${fixture_repo}/libraries/forbidden-sdk/CMakeLists.txt" "# forbidden SDK fallback\n")
+file(WRITE "${fixture_repo}/owner/CMakeLists.txt" [=[
+cmake_minimum_required(VERSION 3.30)
+project(DirectoryAdmission VERSION 0.1.0 LANGUAGES NONE)
+add_subdirectory("${MVP_REPOSITORY}/${SELECTED_DIRECTORY}" "${CMAKE_BINARY_DIR}/helper")
+]=])
+foreach(case test-helper production-helper sdk-fallback)
+  set(directory tools/authoring-cpp)
+  set(testing ON)
+  if(case STREQUAL "production-helper")
+    set(testing OFF)
+  elseif(case STREQUAL "sdk-fallback")
+    set(directory libraries/forbidden-sdk)
+  endif()
+  file(WRITE "${MVP_PROOF_TEST_WORK}/${case}-component.json"
+    "{\"project_version\":\"0.1.0\",\"artifact_targets\":[],\"first_party_sdk_dependencies\":[],\"allowed_test_build_directories\":[\"${directory}\"]}\n")
+  execute_process(COMMAND "${CMAKE_COMMAND}" -S "${fixture_repo}/owner"
+    -B "${MVP_PROOF_TEST_WORK}/${case}" "-DBUILD_TESTING=${testing}"
+    "-DSELECTED_DIRECTORY=${directory}" "-DMVP_REPOSITORY=${fixture_repo}"
+    -DCMAKE_BUILD_TYPE=Release -DCMAKE_POSITION_INDEPENDENT_CODE=ON
+    "-DMVP_SELECTED_PREFIX=${prefix}" "-DMVP_MAP=${MVP_PROOF_TEST_WORK}/map.json"
+    "-DMVP_COMPONENT_FILE=${MVP_PROOF_TEST_WORK}/${case}-component.json"
+    "-DMVP_PROOF_LOG=${MVP_PROOF_TEST_WORK}/${case}-imports.log"
+    "-DCMAKE_PROJECT_TOP_LEVEL_INCLUDES=${CMAKE_CURRENT_LIST_DIR}/prove-imports.cmake"
+    RESULT_VARIABLE status OUTPUT_VARIABLE output ERROR_VARIABLE error)
+  file(WRITE "${MVP_PROOF_TEST_WORK}/${case}.log" "${output}${error}")
+  if(case STREQUAL "test-helper")
+    if(NOT status EQUAL 0)
+      message(FATAL_ERROR "Mapped test helper rejected: ${output}${error}")
+    endif()
+  elseif(status EQUAL 0 OR NOT "${output}${error}" MATCHES "(Source dependency fallback added a directory|Unqualified test build directory)")
+    message(FATAL_ERROR "Directory boundary fixture did not fail as intended: ${case} ${output}${error}")
+  endif()
+endforeach()
+message(STATUS "PASS mapped test-only authoring directory; production and SDK source admission refused")

@@ -1,6 +1,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <filesystem>
+#include <string>
 #include <signal.h>
 #include <symphony/sqav/databento/attempts.hpp>
 #include <sys/wait.h>
@@ -34,8 +35,10 @@ void check(bool b, const char *text) {
 struct Root {
   std::string path;
   Root() {
-    char x[] = "/private/tmp/sqv-attempt-XXXXXX";
-    auto p = ::mkdtemp(x);
+    auto x =
+        (std::filesystem::canonical(std::filesystem::temp_directory_path()) /
+         "sqv-attempt-XXXXXX").string();
+    auto p = ::mkdtemp(x.data());
     check(p, "root");
     path = p;
   }

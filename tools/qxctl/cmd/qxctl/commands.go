@@ -243,6 +243,7 @@ func newRootCommand() (*cobra.Command, error) {
 	root.SetVersionTemplate("qxctl version {{.Version}}\n")
 
 	root.AddCommand(
+		newVersionCommand(),
 		operationCommand("doctor", featureQXCTL, "validate", runDoctor),
 		operationCommand("contracts", featureQXCTL, "validate", runContracts),
 		newInventoryCommand(),
@@ -1521,7 +1522,7 @@ func exactOneUsageArg(_ *cobra.Command, args []string) error {
 
 func knownTopLevel(value string) bool {
 	switch value {
-	case "--help", "--version", "doctor", "contracts", "commands", "inventory", "status", "modules", "module", "ssiag", "stav", "knowledge", "skvi", "sclv", "sacv", "sodv", "sav", "sev", "ssfv", "maestro", "validate", "scv", "shv", "sqv", "snv", "sbv", "sov":
+	case "--help", "--version", "version", "doctor", "contracts", "commands", "inventory", "status", "modules", "module", "ssiag", "stav", "knowledge", "skvi", "sclv", "sacv", "sodv", "sav", "sev", "ssfv", "maestro", "validate", "scv", "shv", "sqv", "snv", "sbv", "sov":
 		return true
 	default:
 		return false

@@ -18,7 +18,7 @@ jobs:
   standalone:
     name: Standalone qxctl (${{ matrix.os }})
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 20
+    timeout-minutes: 35
     strategy:
       fail-fast: false
       matrix:
@@ -31,8 +31,22 @@ jobs:
         with:
           go-version-file: tools/qxctl/go.mod
           cache: false
+      - name: Verify independently owned candidate identities
+        run: cmake -P cmake/VerifyMVPReleaseIdentities.cmake
       - name: Build isolated qxctl from public module releases
         run: sh tools/qxctl/tests/standalone_build.sh
+      - name: Verify qxctl source identity and two-build reproducibility
+        run: sh tools/qxctl/tests/reproducible_build.sh "$RUNNER_TEMP/qxctl-reproducible"
+      - name: Retain qxctl identity evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: qxctl-build-identity-${{ matrix.os }}
+          path: |
+            ${{ runner.temp }}/qxctl-reproducible/logs
+            ${{ runner.temp }}/qxctl-reproducible/*-build-info.json
+            ${{ runner.temp }}/qxctl-reproducible/artifact-identity.json
+          retention-days: 14
       - name: Check SSIAG public dependency build and server regressions
         working-directory: modules/secure-identity-access-governance
         env:

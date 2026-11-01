@@ -6,10 +6,31 @@ import (
 	"bytes"
 	"context"
 	"github.com/QuanuX/Symphony/tools/sov-ssh-adapter/contract"
+	"io"
 	"os/exec"
 	"strings"
 	"testing"
 )
+
+type unreadVersionInput struct{ t *testing.T }
+
+func (r unreadVersionInput) Read([]byte) (int, error) {
+	r.t.Fatal("version inspection read transport input")
+	return 0, io.EOF
+}
+
+func TestVersionWithoutTransportInput(t *testing.T) {
+	var out bytes.Buffer
+	if code := run(context.Background(), []string{"--version"}, unreadVersionInput{t}, &out); code != 0 || out.String() != "sov-ssh-adapter version 0.1.0-dev\n" {
+		t.Fatalf("version failed: code=%d output=%q", code, out.String())
+	}
+	for _, args := range [][]string{{"--version", "extra"}, {"--version=true"}} {
+		out.Reset()
+		if code := run(context.Background(), args, unreadVersionInput{t}, &out); code != 2 || out.Len() != 0 {
+			t.Fatalf("accepted non-version arguments: %v, %d, %q", args, code, out.String())
+		}
+	}
+}
 
 func TestSSHOptionsExactAndNoninteractive(t *testing.T) {
 	client, err := exec.LookPath("ssh")

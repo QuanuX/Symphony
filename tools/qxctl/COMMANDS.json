@@ -21518,7 +21518,36 @@
       "recovery_command_id": "qxcmd:symphony:validate.warning.mute",
       "noninteractive": true,
       "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:version",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl version [--json]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl",
+          "interaction": "inspect"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [],
+      "mutability": "read_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [],
+      "output_protocols": [
+        "symphony.qxctl.build-info.v1"
+      ],
+      "result_validation_protocols": [],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
     }
   ],
-  "registry_digest": "sha256:b25c00bcc0b718df4556856d56c560d78331a4998d80795cf39faa657730f1d0"
+  "registry_digest": "sha256:365967f40f59e9e419813d1cffc5c083daa5817cc8b6dd05dd5e83dcd49680b7"
 }

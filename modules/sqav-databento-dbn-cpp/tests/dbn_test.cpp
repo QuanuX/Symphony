@@ -4,6 +4,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <filesystem>
+#include <string>
 #include <fstream>
 #include <symphony/knowledge/engine/digest.hpp>
 #include <new>
@@ -249,8 +250,10 @@ void capture_and_retained_delivery() {
   pos.producer_generation[0] = 1;
   sqfv::Batch batch;
   check(capture.prepare(flow, manifest, pos, batch) == sqav::Status::ok);
-  char temp[] = "/private/tmp/sqv12-retention-XXXXXX";
-  auto path = ::mkdtemp(temp);
+  auto temp =
+      (std::filesystem::canonical(std::filesystem::temp_directory_path()) /
+       "sqv12-retention-XXXXXX").string();
+  auto path = ::mkdtemp(temp.data());
   check(path);
   {
     sqpv::Options o{
@@ -419,7 +422,11 @@ void verify_private_sample(const char* path, const char* dataset) {
   sqfv::Context flow;check(sqfv::Context::create({maximum,maximum+8192,4096,32U<<20,4},flow)==sqfv::Status::ok);
   sqav::Position pos{"sample",{},1};pos.producer_generation[0]=1;
   sqfv::Batch batch;check(capture.prepare(flow,manifest,pos,batch)==sqav::Status::ok);
-  char temp[]="/private/tmp/sqv13-retained-XXXXXX";auto root=::mkdtemp(temp);check(root);
+  auto temp =
+      (std::filesystem::canonical(std::filesystem::temp_directory_path()) /
+       "sqv13-retained-XXXXXX").string();
+  auto root = ::mkdtemp(temp.data());
+  check(root);
   {
     sqpv::Options options{pos.partition,pos.producer_generation,{},1,{maximum+8192,32U<<20,4}};
     options.store_generation[0]=1;sqdv::RetainedSource source;

@@ -25,7 +25,8 @@ func TestCLICompatibility(t *testing.T) {
 	}{
 		{name: "no arguments", status: 1, output: help},
 		{name: "help", args: []string{"--help"}, output: help},
-		{name: "version", args: []string{"--version"}, output: "qxctl version qxctl dev\n"},
+		{name: "version", args: []string{"--version"}, output: "qxctl version 0.1.0-dev\n"},
+		{name: "version command", args: []string{"version"}, output: "qxctl version 0.1.0-dev\n"},
 		{name: "unknown", args: []string{"unknown"}, status: 1, output: "unknown command: unknown\n" + help},
 		{name: "invalid inventory shape", args: []string{"inventory", "extra"}, status: 1, output: help},
 		{name: "invalid modules flag", args: []string{"modules", "check", "--json"}, status: 1, output: help},

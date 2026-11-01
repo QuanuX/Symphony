@@ -66,8 +66,7 @@ private struct StubInspector: FoundationInspecting {
 }
 
 @Test func realProcessOneShotHandshakeHonorsBoundary() throws {
-    let executable = packageRoot()
-        .appending(path: ".build/debug/symphony-ssiag-provider-macos-keychain")
+    let executable = try providerTestExecutable()
     #expect(FileManager.default.isExecutableFile(atPath: executable.path))
 
     let valid = try requestData(operation: "handshake")
@@ -90,7 +89,7 @@ private struct StubInspector: FoundationInspecting {
 }
 
 @Test func realInstalledAdapterProcessProvidesGoIntegrationFixture() throws {
-    let source = packageRoot().appending(path: ".build/debug/symphony-ssiag-provider-macos-keychain")
+    let source = try providerTestExecutable()
     let root = FileManager.default.temporaryDirectory
         .appending(path: "ssiag-installed-adapter-process-\(UUID().uuidString)", directoryHint: .isDirectory)
     defer { try? FileManager.default.removeItem(at: root) }

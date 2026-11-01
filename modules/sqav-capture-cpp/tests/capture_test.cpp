@@ -3,6 +3,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <filesystem>
+#include <string>
 #include <limits>
 #include <new>
 #include <symphony/knowledge/engine/digest.hpp>
@@ -312,8 +313,10 @@ void binding_and_original_identity() {
   }
 }
 void retained_delivery_composition() {
-  char temp[] = "/private/tmp/sqav-composition-XXXXXX";
-  auto path = ::mkdtemp(temp);
+  auto temp =
+      (std::filesystem::canonical(std::filesystem::temp_directory_path()) /
+       "sqav-composition-XXXXXX").string();
+  auto path = ::mkdtemp(temp.data());
   require(path, "private fixture root");
   {
     auto c = capture();

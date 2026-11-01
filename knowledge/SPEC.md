@@ -61,6 +61,8 @@ The v1 identifier family is:
 | `symphony.knowledge.engine-descriptor.v1` | engine identity and capability descriptor |
 | `symphony.knowledge.engine-descriptor.v2` | side-by-side stable engine-operation and administration descriptor without installation state |
 | `symphony.qxctl.command-registry.v1` | canonical expected or exact observed stable qxctl command registry |
+| `symphony.qxctl.build-info.v1` | running executable digest, runtime target, and explicit source stamp availability |
+| `symphony.artifact-build-identity.v1` | source- and digest-bound candidate build evidence with explicit qualification limits |
 | `symphony.knowledge.feature-administration-profile.v1` | registered-feature administration expectation and disposition profile |
 | `symphony.knowledge.administration-coverage-input.v1` | bounded repository-independent administration-check input |
 | `symphony.knowledge.administration-coverage-result.v1` | deterministic three-axis administration coverage and module-integration evidence |
@@ -131,6 +133,8 @@ The initial exact schemas are:
 - `knowledge/schemas/v1/engine-process-response.schema.json`;
 - `knowledge/schemas/v1/engine-descriptor.schema.json`;
 - `knowledge/schemas/v1/qxctl-command-registry.schema.json`;
+- `knowledge/schemas/v1/qxctl-build-info.schema.json`;
+- `knowledge/schemas/v1/artifact-build-identity.schema.json`;
 - `knowledge/schemas/v1/feature-administration-profile.schema.json`;
 - `knowledge/schemas/v1/administration-coverage-input.schema.json`;
 - `knowledge/schemas/v1/administration-coverage-result.schema.json`;

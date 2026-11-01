@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:qxctl:build-info:v1",
+  "title": "qxctl executable build information v1",
+  "description": "The running executable digest and runtime identity, with either a complete linked source declaration or explicitly unavailable source metadata. A stamp is not publication, installation trust, or reproducibility qualification.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "component_id", "version", "source_state", "source_commit", "source_tree", "source_date_epoch", "dependency_map_sha256", "build_recipe", "go_version", "goos", "goarch", "executable_sha256"],
+  "properties": {
+    "protocol": {"const": "symphony.qxctl.build-info.v1"},
+    "component_id": {"const": "qxctl"},
+    "version": {"type": "string", "minLength": 1, "maxLength": 64, "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(?:-(?:0|[1-9][0-9]*|[0-9]*[A-Za-z-][0-9A-Za-z-]*)(?:\\.(?:0|[1-9][0-9]*|[0-9]*[A-Za-z-][0-9A-Za-z-]*))*)?(?:\\+[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?$"},
+    "source_state": {"enum": ["stamped", "unavailable"]},
+    "source_commit": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/gitObject"}]},
+    "source_tree": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/gitObject"}]},
+    "source_date_epoch": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/epoch"}]},
+    "dependency_map_sha256": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/sha256"}]},
+    "build_recipe": {"oneOf": [{"type": "null"}, {"const": "symphony.qxctl.reproducible-build.v1"}]},
+    "go_version": {"type": "string", "minLength": 1},
+    "goos": {"type": "string", "pattern": "^[a-z][a-z0-9]*$"},
+    "goarch": {"type": "string", "pattern": "^[a-z][a-z0-9]*$"},
+    "executable_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "allOf": [{
+    "if": {"properties": {"source_state": {"const": "stamped"}}},
+    "then": {"properties": {
+      "source_commit": {"$ref": "#/$defs/gitObject"},
+      "source_tree": {"$ref": "#/$defs/gitObject"},
+      "source_date_epoch": {"$ref": "#/$defs/epoch"},
+      "dependency_map_sha256": {"$ref": "#/$defs/sha256"},
+      "build_recipe": {"const": "symphony.qxctl.reproducible-build.v1"}
+    }},
+    "else": {"properties": {
+      "source_commit": {"type": "null"}, "source_tree": {"type": "null"},
+      "source_date_epoch": {"type": "null"}, "dependency_map_sha256": {"type": "null"},
+      "build_recipe": {"type": "null"}
+    }}
+  }],
+  "$defs": {
+    "gitObject": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "epoch": {"type": "string", "maxLength": 19, "pattern": "^(0|[1-9][0-9]*)$", "description": "Canonical nonnegative Unix seconds from the selected source commit; runtime validation additionally bounds it to signed 64-bit range."}
+  }
+}

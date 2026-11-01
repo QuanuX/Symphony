@@ -214,28 +214,7 @@ if("modules/sbv-engine" IN_LIST ordered)
     -P "${CMAKE_CURRENT_LIST_DIR}/verify-loader.cmake")
 endif()
 
-set(regression_configured "")
-foreach(binding "modules/knowledge-session-coordinator|knowledge-lifecycle-planner-tests|knowledge-lifecycle-planner-tests" "modules/sbv-engine|sbv-feedback-settlement-tests|sbv-feedback-settlement-contracts" "modules/sbv-engine|sbv-queue-tests|sbv-queue-scenarios")
-  string(REPLACE "|" ";" fields "${binding}")
-  list(GET fields 0 path)
-  if(NOT path IN_LIST ordered)
-    continue()
-  endif()
-  list(GET fields 1 target)
-  list(GET fields 2 test)
-  mvp_component("${path}" component)
-  string(JSON id GET "${component}" component_id)
-  component_arguments("${component}" arguments)
-  if(NOT path IN_LIST regression_configured)
-    mvp_run("${id}-regression-configure" "${MVP_WORK}" "${CMAKE_COMMAND}"
-      -S "${MVP_REPOSITORY}/${path}" -B "${MVP_WORK}/build/${id}" ${arguments} -DBUILD_TESTING=ON)
-    list(APPEND regression_configured "${path}")
-  endif()
-  mvp_run("${target}-regression-build" "${MVP_WORK}" "${CMAKE_COMMAND}"
-    --build "${MVP_WORK}/build/${id}" --parallel "${MVP_JOBS}" --target "${target}")
-  mvp_run("${test}-regression-test" "${MVP_WORK}" "${MVP_CTEST}"
-    --test-dir "${MVP_WORK}/build/${id}" --output-on-failure --no-tests=error -R "^${test}$")
-endforeach()
+include("${MVP_REPOSITORY}/tests/release-qualification/native.cmake")
 
 if(MVP_GROUP STREQUAL "cloud")
   execute_process(COMMAND "${CMAKE_COMMAND}" -E env GOTOOLCHAIN=local GOENV=off go env GOVERSION
