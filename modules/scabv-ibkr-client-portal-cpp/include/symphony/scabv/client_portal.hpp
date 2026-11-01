@@ -67,6 +67,55 @@ public:
                                const sqav::Limits &,
                                sqav::Capture &) const noexcept;
 };
+// Host-owned read session. Its injected transport is a trusted owner boundary,
+// not proof of authenticated provider access. The default transport uses the
+// existing verified HTTPS fetch with no cookies, secrets, redirects or retries.
+class GatewayTransport {
+public:
+  virtual ~GatewayTransport() = default;
+  [[nodiscard]] virtual Status perform(const source::HttpRequest &,
+                                       const source::HttpLimits &,
+                                       std::stop_token,
+                                       source::HttpResponse &) = 0;
+};
+class HttpsGatewayTransport final : public GatewayTransport {
+public:
+  [[nodiscard]] Status perform(const source::HttpRequest &,
+                               const source::HttpLimits &, std::stop_token,
+                               source::HttpResponse &) override;
+};
+struct SessionConfig {
+  std::string gateway, account, private_scope;
+  source::HttpLimits http;
+  source::JsonLimits json;
+  // Local lifetime cap, not a prediction of the provider's expiration time.
+  std::uint32_t maximum_age_ms = 0;
+};
+enum class SessionState : std::uint8_t { ready, expired, failed, closed };
+namespace detail { struct Session; }
+class Session {
+  std::unique_ptr<detail::Session> state_;
+public:
+  Session() noexcept;
+  ~Session() noexcept;
+  Session(const Session &) = delete;
+  Session &operator=(const Session &) = delete;
+  // Explicit status POST then account discovery GET, never login or keepalive.
+  // No automatic reconnect. Transport outlives Session; methods are serialized
+  // by the host, and the transport must not reenter Session.
+  [[nodiscard]] static Status open(const SessionConfig &, GatewayTransport &,
+                                    std::stop_token, Session &) noexcept;
+  [[nodiscard]] SessionState state() const noexcept;
+  [[nodiscard]] const Binding &binding() const noexcept;
+  // Each read rechecks status and account membership before the data GET.
+  // Reserve five seconds after account discovery, including open→first read.
+  // Failed reads preserve Page output. No automatic pagination or retries.
+  [[nodiscard]] Status positions(std::uint32_t page, std::stop_token,
+                                 Page &) noexcept;
+  [[nodiscard]] Status historical_bars(const History &, std::uint32_t limit,
+                                       std::stop_token, Page &) noexcept;
+  void close() noexcept;
+};
 // Gateway must already have an authenticated, selected session and trusted TLS.
 // This read surface has no session mutation, order entry, or TLS bypass.
 [[nodiscard]] Status connect(std::string_view gateway, std::string_view account,

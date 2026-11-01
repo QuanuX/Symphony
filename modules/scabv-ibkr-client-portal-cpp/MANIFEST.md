@@ -24,6 +24,9 @@
 - `modules/scabv-ibkr-client-portal-cpp/tests/sdk-consumer/main.cpp`
 - `modules/scabv-ibkr-client-portal-cpp/tests/test.cpp`
 
+- `modules/scabv-ibkr-client-portal-cpp/src/session.cpp`
+- `modules/scabv-ibkr-client-portal-cpp/tests/session.cpp`
+
 ## Extent
 
 Exact private-account binding and bounded Client Portal account, position and historical-bar reads.
