@@ -73,14 +73,14 @@
         "tools/qxctl/cmd/qxctl/named_version.go",
         "tools/qxctl/cmd/qxctl/named_version_test.go",
         "tools/qxctl/cmd/qxctl/version.go",
-        "tools/qxctl/internal/version/build_info.go",
         "tools/qxctl/internal/knowledgeengine/client.go",
         "tools/qxctl/internal/knowledgelifecycle/executor.go",
         "tools/qxctl/internal/knowledgelifecycle/host.go",
         "tools/qxctl/internal/knowledgelifecycle/host_admin_unix.go",
         "tools/qxctl/internal/knowledgelifecycle/ownership.go",
         "tools/qxctl/internal/ssiagclient/client.go",
-        "tools/qxctl/internal/stavclient/client.go"
+        "tools/qxctl/internal/stavclient/client.go",
+        "tools/qxctl/internal/version/build_info.go"
       ],
       "kind": "feature",
       "non_claims": [

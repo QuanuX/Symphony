@@ -74,7 +74,8 @@ J science(J value) {
 int main(int argc, char **argv) try {
   check(argc == 2);
   auto templates = read(argv[1]);
-  auto temporary = symphony::testing::temporary_pattern("sbv-trials-partitioned-XXXXXX");
+  // Leave room for the instance ID and .sock under the selected CI scratch root.
+  auto temporary = symphony::testing::temporary_pattern("sbv-exp-XXXXXX");
   check(::mkdtemp(temporary.data()));
   const std::string root = temporary;
   struct Cleanup {

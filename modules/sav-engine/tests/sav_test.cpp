@@ -4,7 +4,8 @@
 #include "symphony/knowledge/engine/error.hpp"
 
 #include <algorithm>
-#include <cassert>
+#include <source_location>
+#include <stdexcept>
 #include <iostream>
 #include <set>
 #include <string_view>
@@ -13,6 +14,12 @@ namespace sav = symphony::knowledge::sav;
 namespace engine = symphony::knowledge::engine;
 
 namespace {
+
+void check(bool condition, std::source_location at = std::source_location::current()) {
+    if (!condition)
+        throw std::runtime_error("test assertion failed at line " + std::to_string(at.line()));
+}
+
 
 engine::Request request(std::string operation, engine::Json payload) {
     return {"test", "test", std::move(operation), sav::engine_id, 1, std::move(payload)};
@@ -51,49 +58,49 @@ void require_error(Function&& function, std::string_view code) {
     bool rejected = false;
     try { function(); }
     catch (const engine::Error& error) { rejected = error.code() == code; }
-    assert(rejected);
+    check(rejected);
 }
 
 }
 
 int main() {
     const auto descriptor = sav::descriptor();
-    assert(descriptor.at("protocol") == engine::descriptor_protocol_v2);
-    assert(descriptor.at("format_version") == 2);
-    assert(descriptor.size() == 17U);
+    check(descriptor.at("protocol") == engine::descriptor_protocol_v2);
+    check(descriptor.at("format_version") == 2);
+    check(descriptor.size() == 17U);
     const std::set<std::string> descriptor_fields{
         "protocol", "format_version", "module_id", "engine_id", "vector_id", "engine_version",
         "process_protocols", "contract_versions", "operations", "limits", "supported_scopes",
         "language", "thermal_path", "canonical_apply_enabled", "session_mutation_enabled",
         "network_listener", "descriptor_digest"};
     for (const auto& [field, value] : descriptor.items()) {
-        static_cast<void>(value); assert(descriptor_fields.contains(field));
+        static_cast<void>(value); check(descriptor_fields.contains(field));
     }
-    assert(descriptor.at("canonical_apply_enabled") == false);
-    assert(descriptor.at("limits").at("json_values") == engine::Limits::max_json_values);
+    check(descriptor.at("canonical_apply_enabled") == false);
+    check(descriptor.at("limits").at("json_values") == engine::Limits::max_json_values);
     auto descriptor_without_digest = descriptor;
     descriptor_without_digest.erase("descriptor_digest");
-    assert(descriptor.at("descriptor_digest") == engine::tagged_sha256(descriptor_without_digest.dump()));
+    check(descriptor.at("descriptor_digest") == engine::tagged_sha256(descriptor_without_digest.dump()));
     const auto& operations = descriptor.at("operations");
     const auto named_descriptor = std::find_if(operations.begin(), operations.end(), [](const auto& value) {
         return value.at("engine_operation_id") == "engop:symphony:sav.named-version.validate";
     });
-    assert(named_descriptor != operations.end());
-    assert(named_descriptor->at("input_protocol") == "symphony.sav.named-version-validation-input.v1");
-    assert(named_descriptor->at("feature_ids") == engine::Json::array({"ssfv:symphony:sav-engine.named-version"}));
+    check(named_descriptor != operations.end());
+    check(named_descriptor->at("input_protocol") == "symphony.sav.named-version-validation-input.v1");
+    check(named_descriptor->at("feature_ids") == engine::Json::array({"ssfv:symphony:sav-engine.named-version"}));
     const auto current_descriptor = std::find_if(operations.begin(), operations.end(), [](const auto& value) {
         return value.at("operation_name") == "current_resolve";
     });
-    assert(current_descriptor != operations.end());
-    assert(current_descriptor->at("engine_operation_id") == "engop:symphony:sav.current.resolve");
+    check(current_descriptor != operations.end());
+    check(current_descriptor->at("engine_operation_id") == "engop:symphony:sav.current.resolve");
     const auto current = sav::handle_request(request("current_resolve", current_input()));
-    assert(current.at("coverage_state") == "complete");
-    assert(current.at("canonical") == false);
-    assert(current.at("snapshot_digest").get<std::string>().starts_with("sha256:"));
+    check(current.at("coverage_state") == "complete");
+    check(current.at("canonical") == false);
+    check(current.at("snapshot_digest").get<std::string>().starts_with("sha256:"));
     auto absent = current_input();
     absent["sources"] = engine::Json::array();
     const auto unknown = sav::handle_request(request("current_resolve", absent));
-    assert(unknown.at("coverage_state") == "unknown");
+    check(unknown.at("coverage_state") == "unknown");
 
     engine::Json named{{"protocol", "symphony.sav.named-version.v1"},
         {"named_version_id", "savver:symphony:baseline"}, {"alias", "Baseline"},
@@ -105,7 +112,7 @@ int main() {
         {"sodv_publication_reference", nullptr}, {"named_version_digest", nullptr}};
     finalize(named, "named_version_digest");
     const auto named_result = sav::handle_request(request("named_version_validate", {{"named_version", named}}));
-    assert(named_result.at("state") == "valid_immutable_envelope" && named_result.at("seal_authorized") == false);
+    check(named_result.at("state") == "valid_immutable_envelope" && named_result.at("seal_authorized") == false);
 
     engine::Json capsule{{"protocol", "symphony.sav.extension-capsule.v1"},
         {"capsule_id", "savcapsule:thirdparty:module"}, {"namespace", "thirdparty"},
@@ -117,7 +124,7 @@ int main() {
         {"canonical", false}, {"capsule_digest", nullptr}};
     finalize(capsule, "capsule_digest");
     const auto capsule_result = sav::handle_request(request("extension_capsule_check", {{"capsule", capsule}}));
-    assert(capsule_result.at("package_inspectable") == true && capsule_result.at("integration_ready") == false &&
+    check(capsule_result.at("package_inspectable") == true && capsule_result.at("integration_ready") == false &&
            capsule_result.at("gaps").size() == 2U && capsule_result.at("invented_grammar") == false);
 
     engine::Json blueprint{{"protocol", "symphony.sav.installation-blueprint.v1"},
@@ -136,9 +143,9 @@ int main() {
     const auto reverse = sav::handle_request(request("installation_blueprint_plan", {
         {"blueprint", blueprint}, {"direction", "reverse"},
         {"completed_component_ids", engine::Json::array()}, {"blocked_component_ids", engine::Json::array()}}));
-    assert(forward.at("ready_component_ids") == engine::Json::array({"component:a"}));
-    assert(reverse.at("ready_component_ids") == engine::Json::array({"component:b"}));
-    assert(forward.at("dynamic_replanning") == true && forward.at("hard_safety_edges_preserved") == true);
+    check(forward.at("ready_component_ids") == engine::Json::array({"component:a"}));
+    check(reverse.at("ready_component_ids") == engine::Json::array({"component:b"}));
+    check(forward.at("dynamic_replanning") == true && forward.at("hard_safety_edges_preserved") == true);
     auto cyclic = blueprint;
     cyclic["forward_edges"].push_back({{"source", "component:b"}, {"target", "component:a"}, {"kind", "semantic_dependency"}});
     cyclic["reverse_edges"].push_back({{"source", "component:a"}, {"target", "component:b"}, {"kind", "semantic_dependency"}});
@@ -156,16 +163,16 @@ int main() {
         {"reader_versions", engine::Json::array({"v0"})}, {"writer_version", "v1"}}));
     const auto new_writer = sav::handle_request(request("compatibility", {
         {"reader_versions", engine::Json::array({"v1"})}, {"writer_version", "v2"}}));
-    assert(exact_compatibility.at("compatible") == true && exact_compatibility.at("reason") == "exact_v1_overlap");
-    assert(old_reader.at("compatible") == false && old_reader.at("reason") == "no_supported_overlap");
-    assert(new_writer.at("compatible") == false && new_writer.at("reason") == "no_supported_overlap");
-    assert(exact_compatibility == sav::handle_request(request("compatibility", {
+    check(exact_compatibility.at("compatible") == true && exact_compatibility.at("reason") == "exact_v1_overlap");
+    check(old_reader.at("compatible") == false && old_reader.at("reason") == "no_supported_overlap");
+    check(new_writer.at("compatible") == false && new_writer.at("reason") == "no_supported_overlap");
+    check(exact_compatibility == sav::handle_request(request("compatibility", {
         {"reader_versions", engine::Json::array({"v1"})}, {"writer_version", "v1"}})));
     require_error([&] { static_cast<void>(sav::handle_request(request("compatibility", {
         {"reader_versions", engine::Json::array({"v1", "v0"})}, {"writer_version", "v1"}}))); }, "sav.order");
     bool rejected = false;
     try { static_cast<void>(sav::handle_request(request("apply", {}))); }
     catch (const engine::Error& error) { rejected = error.code() == "operation.unsupported"; }
-    assert(rejected);
+    check(rejected);
     std::cout << "SAV engine tests passed\n";
 }

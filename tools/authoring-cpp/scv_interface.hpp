@@ -212,7 +212,10 @@ inline Json schema_inventory(const Json &m, const fs::path &root) {
             "duplicate or missing catalog protocol");
     files.insert(schema_name(entry.at("file")));
   }
-  for (const auto &op : projection(m, m.at("current_release")).at("operations"))
+  // Keep the owning JSON alive explicitly: older supported compilers do not
+  // extend a temporary through the reference returned by Json::at in a range.
+  const auto current_projection = projection(m, m.at("current_release"));
+  for (const auto &op : current_projection.at("operations"))
     for (const auto &[field, kind] :
          std::vector<std::pair<std::string, std::string>>{
              {"input_protocol", "input"}, {"output_protocol", "output"}}) {

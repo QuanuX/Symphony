@@ -2332,6 +2332,150 @@
       ],
       "source": "tools/qxctl/cmd/qxctl/scv_bundle_test.go",
       "line": 206
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./cmd/qxctl",
+      "test": "TestInstalledSCVCorpusRecoveryPinsSourcesAndRetainsFailedAttempts",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "requires exact installed 0.2.0-dev SCV engine"
+      ],
+      "source": "tools/qxctl/cmd/qxctl/scv_corpus_test.go",
+      "line": 95,
+      "skip_origin": "shared fixture admission helper in this source file"
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./cmd/qxctl",
+      "test": "TestInstalledSCVCorpusRejectsTamperedCaptureAndWrongCompletedSnapshot",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "requires exact installed 0.2.0-dev SCV engine"
+      ],
+      "source": "tools/qxctl/cmd/qxctl/scv_corpus_test.go",
+      "line": 175,
+      "skip_origin": "shared fixture admission helper in this source file"
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./cmd/qxctl",
+      "test": "TestInstalledSCVCorpusClockRollbackRemainsRecoverable",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "requires exact installed 0.2.0-dev SCV engine"
+      ],
+      "source": "tools/qxctl/cmd/qxctl/scv_corpus_test.go",
+      "line": 206,
+      "skip_origin": "shared fixture admission helper in this source file"
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./cmd/qxctl",
+      "test": "TestInstalledSCVCorpusExportBounds",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "requires exact installed 0.2.0-dev SCV engine"
+      ],
+      "source": "tools/qxctl/cmd/qxctl/scv_corpus_test.go",
+      "line": 247,
+      "skip_origin": "shared fixture admission helper in this source file"
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./cmd/qxctl",
+      "test": "TestInstalledSCVCorpusRejectsUnverifiableSuccessorBeforePublication",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "requires exact installed 0.2.0-dev SCV engine"
+      ],
+      "source": "tools/qxctl/cmd/qxctl/scv_corpus_test.go",
+      "line": 277,
+      "skip_origin": "shared fixture admission helper in this source file"
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./cmd/qxctl",
+      "test": "TestInstalledSCVCorpusDeadlineRetainsFailureCheckpoint",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "requires exact installed 0.2.0-dev SCV engine"
+      ],
+      "source": "tools/qxctl/cmd/qxctl/scv_corpus_test.go",
+      "line": 323,
+      "skip_origin": "shared fixture admission helper in this source file"
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./cmd/qxctl",
+      "test": "TestSCVProjectionRejectsForgedGraphBeforeIntent",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "requires receipt-owned installed SCV acceptance prefix"
+      ],
+      "source": "tools/qxctl/cmd/qxctl/scv_graph_test.go",
+      "line": 36,
+      "skip_origin": "shared fixture admission helper in this source file"
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./cmd/qxctl",
+      "test": "TestSCVProjectionRequiresAuditedAuthorization",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "requires receipt-owned installed SCV acceptance prefix"
+      ],
+      "source": "tools/qxctl/cmd/qxctl/scv_graph_test.go",
+      "line": 62,
+      "skip_origin": "shared fixture admission helper in this source file"
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./cmd/qxctl",
+      "test": "TestSCVLogicalProjectionOracle",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "requires SYMPHONY_SCV_PROJECTION_RECORD pointing to an exact retained bundle record"
+      ],
+      "source": "tools/qxctl/cmd/qxctl/scv_projection_bench_test.go",
+      "line": 101,
+      "skip_origin": "shared fixture admission helper in this source file"
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./cmd/qxctl",
+      "test": "TestInstalledSCVGraphAuthorizedSelectionReplay",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "requires exact staged SCV engines"
+      ],
+      "source": "tools/qxctl/cmd/qxctl/scv_test.go",
+      "line": 139,
+      "skip_origin": "shared fixture admission helper in this source file"
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./cmd/qxctl",
+      "test": "TestInstalledSCVWorkflowNativeRecoveryRefreshReassessmentAndComposition",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "requires exact installed 0.4.0-dev SCV owners"
+      ],
+      "source": "tools/qxctl/cmd/qxctl/scv_workflow_test.go",
+      "line": 369,
+      "skip_origin": "shared fixture admission helper in this source file"
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./cmd/qxctl",
+      "test": "TestInstalledSCVCorpusMetadataQueryExceedsExportBound",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "requires exact installed 0.4.0-dev SCV owners"
+      ],
+      "source": "tools/qxctl/cmd/qxctl/scv_workflow_test.go",
+      "line": 464,
+      "skip_origin": "shared fixture admission helper in this source file"
     }
   ],
   "installed_go_suites": [
