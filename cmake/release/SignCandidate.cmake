@@ -1,0 +1,16 @@
+include("${CMAKE_CURRENT_LIST_DIR}/Support.cmake")
+release_read("${RELEASE_CANDIDATE}/candidate.json" inventory)
+release_candidate_shape("${inventory}")
+string(JSON protocol GET "${inventory}" protocol)
+if(NOT protocol STREQUAL "symphony.release.candidate.v1")
+  message(FATAL_ERROR "Unexpected candidate protocol")
+endif()
+symphony_receipt_v2_regular_file("${RELEASE_SIGN_KEY}")
+if(EXISTS "${RELEASE_CANDIDATE}/candidate.json.sig" OR IS_SYMLINK "${RELEASE_CANDIDATE}/candidate.json.sig")
+  message(FATAL_ERROR "Candidate signature already exists; signatures are not overwritten")
+endif()
+find_program(RELEASE_SSH_KEYGEN ssh-keygen REQUIRED)
+execute_process(COMMAND "${RELEASE_SSH_KEYGEN}" -Y sign -f "${RELEASE_SIGN_KEY}"
+  -n symphony-release "${RELEASE_CANDIDATE}/candidate.json"
+  COMMAND_ERROR_IS_FATAL ANY)
+message(STATUS "SSHSIG created with namespace symphony-release; external allowed-signers policy remains required")

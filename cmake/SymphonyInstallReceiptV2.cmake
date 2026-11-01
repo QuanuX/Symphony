@@ -63,6 +63,31 @@ function(symphony_install_receipt_v2)
         endif()
     endforeach()
 
+    # Optional, source-selected packaging transformation. It runs only in an
+    # explicitly named private staging root, before the immutable receipt exists.
+    set(SYMPHONY_RECEIPT_FINALIZER "")
+    set(SYMPHONY_RECEIPT_FINALIZER_SHA256 "")
+    if(DEFINED SYMPHONY_PACKAGE_FINALIZER AND NOT SYMPHONY_PACKAGE_FINALIZER STREQUAL "")
+        if(NOT IS_ABSOLUTE "${SYMPHONY_PACKAGE_FINALIZER}")
+            message(FATAL_ERROR "package finalizer must be an absolute source-selected script")
+        endif()
+        set(forbidden_codes 59 91 93 127)
+        foreach(code RANGE 1 31)
+            list(APPEND forbidden_codes "${code}")
+        endforeach()
+        foreach(code IN LISTS forbidden_codes)
+            string(ASCII ${code} forbidden)
+            string(FIND "${SYMPHONY_PACKAGE_FINALIZER}" "${forbidden}" found)
+            if(NOT found EQUAL -1)
+                message(FATAL_ERROR "package finalizer path contains a control or CMake delimiter")
+            endif()
+        endforeach()
+        symphony_receipt_v2_regular_file("${SYMPHONY_PACKAGE_FINALIZER}")
+        file(REAL_PATH "${SYMPHONY_PACKAGE_FINALIZER}" SYMPHONY_RECEIPT_FINALIZER)
+        file(SHA256 "${SYMPHONY_RECEIPT_FINALIZER}" SYMPHONY_RECEIPT_FINALIZER_SHA256)
+    endif()
+
+
     # The early install rule was registered before any file mutations. Complete
     # its preflight now that the exact inventory is known.
     set(SYMPHONY_RECEIPT_PREFLIGHT_PATH "${RECEIPT_RECEIPT_PATH}")
@@ -105,6 +130,7 @@ function(symphony_install_receipt_v2)
     foreach(name OWNED_FILES ENTRY_POINTS PROVIDES_CAPABILITIES REQUIRES_CAPABILITIES COMPATIBLE_RECEPTORS)
         set(SYMPHONY_RECEIPT_${name} "${RECEIPT_${name}}")
     endforeach()
+
 
     string(MAKE_C_IDENTIFIER "${RECEIPT_PACKAGE_ID}_${RECEIPT_VERSION}" receipt_script_id)
     set(receipt_script

@@ -75,6 +75,46 @@ if(package_version STREQUAL "" OR version_length GREATER 64 OR
 endif()
 
 symphony_receipt_v2_root("$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}" install_root)
+set(finalizer [==[@SYMPHONY_RECEIPT_FINALIZER@]==])
+if(NOT finalizer STREQUAL "")
+    # Repeat the fence immediately before any transformation. No opt-in can
+    # make a package manager the writer of an already qxctl-owned root.
+    foreach(marker IN ITEMS ".symphony-lifecycle-ownership-v1.json"
+        "share/symphony/receipts/symphony-root-ownership/1/install-receipt.json"
+        "${receipt_relative}" "${receipt_relative}.tmp")
+        symphony_receipt_v2_no_follow("${install_root}" "${marker}")
+        if(EXISTS "${install_root}/${marker}")
+            message(FATAL_ERROR "package finalization refuses a managed, committed or interrupted receipt")
+        endif()
+    endforeach()
+    if(NOT DEFINED SYMPHONY_PACKAGE_STAGE_ROOT)
+        message(FATAL_ERROR "package finalization requires explicit SYMPHONY_PACKAGE_STAGE_ROOT")
+    endif()
+    symphony_receipt_v2_root("${SYMPHONY_PACKAGE_STAGE_ROOT}" declared_stage)
+    if(NOT declared_stage STREQUAL install_root)
+        message(FATAL_ERROR "package finalization stage differs from the actual install root")
+    endif()
+    symphony_receipt_v2_regular_file("${finalizer}")
+    file(SHA256 "${finalizer}" finalizer_sha)
+    if(NOT finalizer_sha STREQUAL "@SYMPHONY_RECEIPT_FINALIZER_SHA256@")
+        message(FATAL_ERROR "package finalizer changed since configure")
+    endif()
+    foreach(spec IN LISTS owned_specs)
+        string(REPLACE "|" ";" fields "${spec}")
+        list(GET fields 0 relative)
+        symphony_receipt_v2_no_follow("${install_root}" "${relative}")
+        symphony_receipt_v2_regular_file("${install_root}/${relative}")
+    endforeach()
+    execute_process(COMMAND "${CMAKE_COMMAND}"
+        "-DSYMPHONY_PACKAGE_ROOT=${install_root}"
+        "-DSYMPHONY_PACKAGE_OWNED_SPECS=${owned_specs}"
+        "-DSYMPHONY_PACKAGE_COMPONENT=${component_id}"
+        "-DSYMPHONY_PACKAGE_VERSION=${package_version}"
+        -P "${finalizer}" RESULT_VARIABLE finalized)
+    if(NOT finalized STREQUAL "0")
+        message(FATAL_ERROR "package transformation failed; no receipt was sealed; discard this private stage")
+    endif()
+endif()
 list(SORT owned_specs)
 list(LENGTH owned_specs owned_count)
 if(owned_count GREATER 4096)
