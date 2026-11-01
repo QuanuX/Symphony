@@ -12490,13 +12490,42 @@
         "installation_scope": "source_catalog_not_installation_assertion"
       },
       {
+        "path": "knowledge/sodv/ARTIFACT-RELEASES.json",
+        "sha256": "210e3aa3e9c5c1801d364c2563da0286de71ba0efa9c64bfd426c87e1690dd3e",
+        "schema_ids": [],
+        "schema_dialect": null,
+        "protocol": "symphony.sodv.artifact-release-ledger.v1",
+        "format_version": 1,
+        "kind": "resource",
+        "test_fixture": false,
+        "historical_or_example": false,
+        "installation_scope": "source_catalog_not_installation_assertion"
+      },
+      {
         "path": "knowledge/sodv/schemas/v1/MANIFEST.md",
-        "sha256": "e7ba2702e83c801e72a2eafaf4cdaa5e9050a52221fba4272a3da577e1b37b56",
+        "sha256": "a0d43e5616366a301e8aa6991a94e7d2b4813415b71673e32df56d7a216b39a5",
         "schema_ids": [],
         "schema_dialect": null,
         "protocol": null,
         "format_version": null,
         "kind": "resource",
+        "test_fixture": false,
+        "historical_or_example": false,
+        "installation_scope": "source_catalog_not_installation_assertion"
+      },
+      {
+        "path": "knowledge/sodv/schemas/v1/artifact-release-ledger.schema.json",
+        "sha256": "c29c89a193b1814c0da3af50d7f821c8d92161cc5d609640289d11e74f0ce4bf",
+        "schema_ids": [
+          {
+            "json_pointer": "/$id",
+            "id": "urn:symphony:sodv:artifact-release-ledger:v1"
+          }
+        ],
+        "schema_dialect": "https://json-schema.org/draft/2020-12/schema",
+        "protocol": null,
+        "format_version": null,
+        "kind": "schema",
         "test_fixture": false,
         "historical_or_example": false,
         "installation_scope": "source_catalog_not_installation_assertion"
@@ -18033,8 +18062,16 @@
       "sha256": "805da86da0063fbb21a312e8ef3e74a16e9b75ba0eb67e9ef7ac2685a0e429ac"
     },
     {
+      "path": "knowledge/sodv/ARTIFACT-RELEASES.json",
+      "sha256": "210e3aa3e9c5c1801d364c2563da0286de71ba0efa9c64bfd426c87e1690dd3e"
+    },
+    {
       "path": "knowledge/sodv/schemas/v1/MANIFEST.md",
-      "sha256": "e7ba2702e83c801e72a2eafaf4cdaa5e9050a52221fba4272a3da577e1b37b56"
+      "sha256": "a0d43e5616366a301e8aa6991a94e7d2b4813415b71673e32df56d7a216b39a5"
+    },
+    {
+      "path": "knowledge/sodv/schemas/v1/artifact-release-ledger.schema.json",
+      "sha256": "c29c89a193b1814c0da3af50d7f821c8d92161cc5d609640289d11e74f0ce4bf"
     },
     {
       "path": "knowledge/sodv/schemas/v1/check-result.schema.json",
@@ -20886,7 +20923,7 @@
     },
     {
       "path": "tools/symphony-validator/CMakeLists.txt",
-      "sha256": "d96424595b4ea5fbe2aac339daa74e87f5af665e97bf2573bc2a11d576668272"
+      "sha256": "2fe60631b81a12539b5a8ccfa1396cf7775f2c5b8e88d6417f5c225d1c470d7a"
     },
     {
       "path": "tools/symphony-validator/cmake/install-receipt.json.in",

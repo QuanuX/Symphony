@@ -21,6 +21,7 @@
 #include "validator_build.hpp"
 #include "sacv_registry.hpp"
 #include "sodv_releases.hpp"
+#include "sodv_artifacts.hpp"
 #include "projector.hpp"
 #include "feature_administration.hpp"
 #include "invariant_ownership.hpp"
@@ -178,6 +179,14 @@ int run_cli(const std::vector<std::string>& args) {
             SodvReleaseCheckResult sodv_result = check_sodv_releases(args[2]);
             process_messages(sodv_result.messages);
             if (!sodv_result.success) {
+                final_exit = 23;
+                print_summary();
+                return final_exit;
+            }
+
+            const auto artifacts_result = check_sodv_artifacts(args[2]);
+            process_messages(artifacts_result.messages);
+            if (!artifacts_result.success) {
                 final_exit = 23;
                 print_summary();
                 return final_exit;

@@ -1,0 +1,737 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:sodv:artifact-release-ledger:v1",
+  "title": "SODV governed native and conda artifact release companion v1",
+  "description": "Append-only externally authorized release evidence. The native validator checks digest chains, exact units, timing and evidence completeness; it does not authenticate authority/signatures or query publication state. Empty records mean no artifact release is authorized or completed.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "protocol",
+    "format_version",
+    "records"
+  ],
+  "properties": {
+    "protocol": {
+      "const": "symphony.sodv.artifact-release-ledger.v1"
+    },
+    "format_version": {
+      "const": 1
+    },
+    "records": {
+      "type": "array",
+      "minItems": 0,
+      "maxItems": 4096,
+      "items": {
+        "oneOf": [
+          {
+            "$ref": "#/$defs/authorization"
+          },
+          {
+            "$ref": "#/$defs/completion"
+          }
+        ]
+      }
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64,
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "git": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 40,
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "token": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+    },
+    "time": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 20,
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+    },
+    "uri": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4096,
+      "pattern": "^https://[^ /?#]+/[^ #]+$"
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_commit",
+        "source_tree",
+        "reference"
+      ],
+      "properties": {
+        "source_commit": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 40,
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "source_tree": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 40,
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "reference": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "pattern": "^[ -~]+$"
+        }
+      }
+    },
+    "platform": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "os",
+        "architecture",
+        "os_baseline",
+        "abi"
+      ],
+      "properties": {
+        "os": {
+          "enum": [
+            "linux",
+            "macos"
+          ]
+        },
+        "architecture": {
+          "enum": [
+            "x86_64",
+            "aarch64"
+          ]
+        },
+        "os_baseline": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^[ -~]+$"
+        },
+        "abi": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^[ -~]+$"
+        }
+      }
+    },
+    "dependency": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "version",
+        "identity_sha256"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[ -~]+$"
+        },
+        "identity_sha256": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    },
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "filename",
+        "sha256",
+        "size",
+        "immutable_uri"
+      ],
+      "properties": {
+        "filename": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 255,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._+!-]*$"
+        },
+        "sha256": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "size": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "immutable_uri": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "pattern": "^https://[^ /?#]+/[^ #]+$"
+        }
+      }
+    },
+    "signature": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "scheme",
+        "namespace",
+        "signer_identity",
+        "key_id",
+        "signature_sha256",
+        "signed_payload_sha256"
+      ],
+      "properties": {
+        "scheme": {
+          "const": "sshsig"
+        },
+        "namespace": {
+          "const": "symphony-release"
+        },
+        "signer_identity": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^[ -~]+$"
+        },
+        "key_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 50,
+          "pattern": "^SHA256:[A-Za-z0-9+/]{43}$"
+        },
+        "signature_sha256": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "signed_payload_sha256": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    },
+    "conda": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "subdir",
+        "build",
+        "build_number"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^[a-z0-9][a-z0-9._-]*$"
+        },
+        "subdir": {
+          "enum": [
+            "linux-64",
+            "linux-aarch64",
+            "osx-64",
+            "osx-arm64"
+          ]
+        },
+        "build": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+        },
+        "build_number": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        }
+      }
+    },
+    "unit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "unit_id",
+        "artifact_kind",
+        "component_id",
+        "version",
+        "source",
+        "platform",
+        "dependency_map_sha256",
+        "dependencies",
+        "artifact",
+        "signature",
+        "provenance_sha256",
+        "inventory_sha256",
+        "conda"
+      ],
+      "properties": {
+        "unit_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+        },
+        "artifact_kind": {
+          "enum": [
+            "native_archive",
+            "conda_package"
+          ]
+        },
+        "component_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._+!-]*$"
+        },
+        "source": {
+          "$ref": "#/$defs/source"
+        },
+        "platform": {
+          "$ref": "#/$defs/platform"
+        },
+        "dependency_map_sha256": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "dependencies": {
+          "type": "array",
+          "minItems": 0,
+          "maxItems": 256,
+          "items": {
+            "$ref": "#/$defs/dependency"
+          }
+        },
+        "artifact": {
+          "$ref": "#/$defs/artifact"
+        },
+        "signature": {
+          "$ref": "#/$defs/signature"
+        },
+        "provenance_sha256": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "inventory_sha256": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "conda": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/conda"
+            }
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "artifact_kind": {
+                "const": "native_archive"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "conda": {
+                "type": "null"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "conda": {
+                "$ref": "#/$defs/conda"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "verification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "identity",
+        "signer_identity",
+        "key_id",
+        "allowed_signers_sha256",
+        "independent_of_publisher",
+        "fresh_download",
+        "checksum_match",
+        "signature_verified",
+        "provenance_verified",
+        "inventory_verified",
+        "evidence_sha256"
+      ],
+      "properties": {
+        "identity": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^[ -~]+$"
+        },
+        "signer_identity": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^[ -~]+$"
+        },
+        "key_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 50,
+          "pattern": "^SHA256:[A-Za-z0-9+/]{43}$"
+        },
+        "allowed_signers_sha256": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "independent_of_publisher": {
+          "const": true
+        },
+        "fresh_download": {
+          "const": true
+        },
+        "checksum_match": {
+          "const": true
+        },
+        "signature_verified": {
+          "const": true
+        },
+        "provenance_verified": {
+          "const": true
+        },
+        "inventory_verified": {
+          "const": true
+        },
+        "evidence_sha256": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    },
+    "observation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "unit_id",
+        "artifact_sha256",
+        "signature_sha256",
+        "provenance_sha256",
+        "inventory_sha256",
+        "download_uri",
+        "downloaded_bytes",
+        "retrieved_at",
+        "verification"
+      ],
+      "properties": {
+        "unit_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+        },
+        "artifact_sha256": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "signature_sha256": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "provenance_sha256": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "inventory_sha256": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "download_uri": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "pattern": "^https://[^ /?#]+/[^ #]+$"
+        },
+        "downloaded_bytes": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "retrieved_at": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20,
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+        },
+        "verification": {
+          "$ref": "#/$defs/verification"
+        }
+      }
+    },
+    "authorization": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "record_id",
+        "record_type",
+        "recorded_at",
+        "recorded_by",
+        "previous_record_sha256",
+        "record_sha256",
+        "authority",
+        "units"
+      ],
+      "properties": {
+        "record_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 105,
+          "pattern": "^SODV-ART-[A-Z0-9][A-Z0-9._:-]*$"
+        },
+        "record_type": {
+          "const": "authorization"
+        },
+        "recorded_at": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20,
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+        },
+        "recorded_by": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^[ -~]+$"
+        },
+        "previous_record_sha256": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          ]
+        },
+        "record_sha256": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "authority": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "identity",
+            "publisher_identity",
+            "evidence_sha256"
+          ],
+          "properties": {
+            "identity": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256,
+              "pattern": "^[ -~]+$"
+            },
+            "publisher_identity": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256,
+              "pattern": "^[ -~]+$"
+            },
+            "evidence_sha256": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          }
+        },
+        "units": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 128,
+          "items": {
+            "$ref": "#/$defs/unit"
+          }
+        }
+      }
+    },
+    "completion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "record_id",
+        "record_type",
+        "recorded_at",
+        "recorded_by",
+        "previous_record_sha256",
+        "record_sha256",
+        "authorization_id",
+        "authorization_sha256",
+        "authorization_merge",
+        "published_at",
+        "observations"
+      ],
+      "properties": {
+        "record_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 105,
+          "pattern": "^SODV-ART-[A-Z0-9][A-Z0-9._:-]*$"
+        },
+        "record_type": {
+          "const": "completion"
+        },
+        "recorded_at": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20,
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+        },
+        "recorded_by": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^[ -~]+$"
+        },
+        "previous_record_sha256": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          ]
+        },
+        "record_sha256": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "authorization_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 105,
+          "pattern": "^SODV-ART-[A-Z0-9][A-Z0-9._:-]*$"
+        },
+        "authorization_sha256": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "authorization_merge": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "source_commit",
+            "merged_at",
+            "evidence_sha256"
+          ],
+          "properties": {
+            "source_commit": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 40,
+              "pattern": "^[0-9a-f]{40}$"
+            },
+            "merged_at": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20,
+              "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+            },
+            "evidence_sha256": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          }
+        },
+        "published_at": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20,
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+        },
+        "observations": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 128,
+          "items": {
+            "$ref": "#/$defs/observation"
+          }
+        }
+      }
+    }
+  }
+}
