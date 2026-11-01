@@ -228,8 +228,6 @@ void test_actual_repository(const fs::path& repository) {
 
     const auto check = sodv::handle_request(request("check", engine::Json{{"expected_ledger_digest", nullptr}}));
     require(check.at("summary").at("state") == "valid", "canonical ledger failed validation");
-    require(check.at("records_checked") == 3U && check.at("transactions_checked") == 1U,
-        "canonical release counts mismatch");
 
     const auto verify = sodv::handle_request(request("verify", completed_observation()));
     require(verify.at("verification_state") == "verified_completed", "canonical completion was not verified");
@@ -241,8 +239,30 @@ void test_actual_repository(const fs::path& repository) {
     require(blocked.at("verification_state") == "blocked_mismatch", "tag mismatch did not fail closed");
 
     const auto project = sodv::handle_request(request("project", engine::Json{{"format", "json"}}));
-    require(project.at("record_count") == 3U && project.at("transaction_count") == 1U,
-        "projection counts mismatch");
+    const auto& records = project.at("records");
+    const auto& transactions = project.at("transactions");
+    require(project.at("record_count") == records.size() &&
+        project.at("transaction_count") == transactions.size() &&
+        check.at("records_checked") == project.at("record_count") &&
+        check.at("transactions_checked") == project.at("transaction_count"),
+        "check and projection counts disagree with the current ledger");
+    std::size_t authorizations = 0;
+    for (const auto& record : records) {
+        if (record.at("record_type") == "authorization") { ++authorizations; }
+    }
+    require(transactions.size() == authorizations, "authorization transaction count mismatch");
+    require(records.size() >= 3U &&
+        records.at(0).at("release_record_id") == "SODV-REL-001" &&
+        records.at(0).at("record_type") == "authorization" &&
+        records.at(1).at("release_record_id") == "SODV-REL-002" &&
+        records.at(1).at("record_type") == "authorization_correction" &&
+        records.at(2).at("release_record_id") == "SODV-REL-003" &&
+        records.at(2).at("record_type") == "completion", "historical release lineage changed");
+    require(!transactions.empty() &&
+        transactions.at(0).at("authorization_record_id") == "SODV-REL-001" &&
+        transactions.at(0).at("latest_correction_record") == "SODV-REL-002" &&
+        transactions.at(0).at("completion_record") == "SODV-REL-003" &&
+        transactions.at(0).at("state") == "completed", "historical transaction changed");
     require(project.at("noncanonical") == true && project.at("rebuildable") == true,
         "projection claimed canonical authority");
 }

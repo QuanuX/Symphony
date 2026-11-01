@@ -166,3 +166,49 @@ There is no canonical `pending` release record. Local preparation state belongs 
   - `new SSIAG, STAV, qxctl, provider, or trading-node authority`
 - notes: |
     This closes the active PR #59 module-publication error. The historical temporary-proxy discrepancy remains documented as resolved evidence; no unresolved flag or mutable error state persists in the canonical release record.
+
+- release_record_id: `SODV-REL-20261101-L03-FOUNDATIONS-AUTH`
+- record_version: `2`
+- record_type: `authorization`
+- status: `authorized`
+- disposition: `prepublication_authorization`
+- recorded_at: `2026-11-01T06:28:19Z`
+- recorded_by: `Architect-directed release procedure`
+- subject_record_ids:
+  - `not_applicable`
+- publication_units:
+  - unit_id: `stav-append-authority-0.2.1`
+    artifact_kind: `go_module`
+    coordinate: `github.com/QuanuX/Symphony/modules/stav-append-authority`
+    version: `v0.2.1`
+    tag: `modules/stav-append-authority/v0.2.1`
+    revision_scheme: `git-sha1`
+    revision_value: `967c005e21a8f153ed453c79baa09fe2ab549f01`
+    source_reference: `https://github.com/QuanuX/Symphony/pull/166`
+    tag_object: null
+    content: null
+    metadata: null
+  - unit_id: `sov-ssh-adapter-0.1.0-dev`
+    artifact_kind: `go_module`
+    coordinate: `github.com/QuanuX/Symphony/tools/sov-ssh-adapter`
+    version: `v0.1.0-dev`
+    tag: `tools/sov-ssh-adapter/v0.1.0-dev`
+    revision_scheme: `git-sha1`
+    revision_value: `967c005e21a8f153ed453c79baa09fe2ab549f01`
+    source_reference: `https://github.com/QuanuX/Symphony/pull/166`
+    tag_object: null
+    content: null
+    metadata: null
+- purpose: `Authorize the two named Go module versions at the exact L02 ownership-validation source revision as the first publication step toward L03 standalone dependency closure.`
+- evidence:
+  - `https://github.com/QuanuX/Symphony/pull/166`
+  - `967c005e21a8f153ed453c79baa09fe2ab549f01`
+  - `knowledge/sodv/SPEC.md`
+  - `knowledge/sodv/RELEASES.md`
+- non_authorizations:
+  - `Moving, replacing, or force-updating an existing tag.`
+  - `Publishing from any source revision other than the exact authorized revision.`
+  - `Treating a local workspace, temporary proxy, or populated module cache as independent public-resolution evidence.`
+  - `Publishing Accordare, qxctl, SSIAG, or any other module version under this authorization.`
+  - `Publishing release binaries, Anaconda packages, mirrors, public documentation, SDKs, or OpenAPI artifacts.`
+- notes: `Before publication, PR #166 and this authorization must both be merged, the exact authorized source revision must be present in main ancestry, the module source and focused tests must be verified, and existing remote tags must be reconciled. Create only the two named annotated tags without replacing any existing tag. Completion requires both exact tag objects and peeled source commits, public Go module Sum and GoModSum values, and successful empty-module-cache GOWORK=off resolution using Go 1.26.5 with public checksum verification. Any prepublication archive simulation must use canonical VCS-aware Go module packaging including inherited repository-root LICENSE behavior. Append a separate immutable completion record preserving this exact two-unit set after both public resolutions are observed. Later Accordare and consumer dependency updates are separate source/publication steps; this authorization does not claim those steps complete.`
