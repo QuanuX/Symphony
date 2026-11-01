@@ -423,10 +423,11 @@
         }
       ],
       "evidence": [
-        "Enrollment, configuration, lifecycle, and path tests cover exact authority identity, empty grants, protected user/system roots, preservation, active-listener refusal, and explicit purge."
+        "Enrollment, configuration, lifecycle, and path tests cover exact authority identity, empty grants, protected user/system roots, preservation, active-listener refusal, and explicit purge.",
+        "Focused native-owner and closed bridge regressions verify pre-mutation intent commitment, distinct observed-outcome receipts, mismatched receipt refusal, lost-reply replay, restart reconciliation, and interrupted native-close recovery without re-execution."
       ],
       "feature_id": "ssfv:symphony:stav-append-authority.tops-enrollment",
-      "how": "Requires an installed binary, validates exact user or system authority identity, creates protected scope-specific paths, writes bounded configuration and an enrollment marker atomically, refuses active-service purge, and removes data only on explicit purge.",
+      "how": "Requires an installed binary, validates exact user or system authority identity, creates protected scope-specific paths, writes bounded configuration and an enrollment marker atomically, refuses active-service purge, and removes data only on explicit purge. Ordinary foundational mutations require an exact committed intent receipt before execution; the observed native outcome is persisted independently and receives a distinct committed receipt, with unavailable outcomes explicitly pending recovery.",
       "implementation_languages": [
         {
           "language": "Go",
@@ -436,16 +437,23 @@
       "implementation_paths": [
         "modules/stav-append-authority/cmd/symphony-stav-append-authority/main.go",
         "modules/stav-append-authority/internal/config/config.go",
+        "modules/stav-append-authority/internal/foundation/audit.go",
+        "modules/stav-append-authority/internal/foundation/audit_test.go",
         "modules/stav-append-authority/internal/foundation/engine.go",
         "modules/stav-append-authority/internal/foundation/engine_test.go",
         "modules/stav-append-authority/internal/foundation/transaction.go",
+        "modules/stav-append-authority/internal/foundationaudit/client_unix.go",
+        "modules/stav-append-authority/internal/foundationaudit/contract.go",
+        "modules/stav-append-authority/internal/foundationaudit/contract_test.go",
+        "modules/stav-append-authority/internal/foundationaudit/journal_unix.go",
         "modules/stav-append-authority/internal/lifecycle/enrollment.go",
         "modules/stav-append-authority/internal/lifecycle/enrollment_test.go",
         "modules/stav-append-authority/internal/paths/paths.go"
       ],
       "kind": "subfeature",
       "non_claims": [
-        "Does not create a system principal, grant append or read permission, create a ledger event, expose purge through machine/qxctl v1, or claim ordinary audit/reconciliation success without a real STAV receipt."
+        "Does not create a system principal, grant append or read permission, write ledger files directly, expose purge through machine/qxctl v1, or claim ordinary audit/reconciliation success without a real STAV receipt.",
+        "A committed pre-mutation intent never proves execution completion; no credential provider is activated, no append grant is created automatically, and deferred outcomes require their own exact receipt."
       ],
       "owner_contract": "modules/stav-append-authority/SPEC.md",
       "parent_feature_id": "ssfv:symphony:stav-append-authority",

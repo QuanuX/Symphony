@@ -206,7 +206,7 @@ func TestInterruptedMutationRequiresRecovery(t *testing.T) {
 	}
 }
 
-func TestOrdinaryAuditFailsBeforeAttemptOrMutation(t *testing.T) {
+func TestOrdinaryAuditPersistsIntentBeforeUnavailableWithoutMutation(t *testing.T) {
 	engine, _ := setupEngine(t)
 	mutated := false
 	engine.mutate = func(Plan) error { mutated = true; return nil }
@@ -226,7 +226,7 @@ func TestOrdinaryAuditFailsBeforeAttemptOrMutation(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if result.Disposition != "blocked" || result.Error == nil || result.Error.Code != "audit.unavailable" || mutated {
+	if result.Disposition != "failed" || result.Error == nil || result.Error.Code != "audit.unavailable" || !result.RecoveryRequired || mutated {
 		t.Fatalf("ordinary audit did not fail before mutation: %+v mutated=%t", result, mutated)
 	}
 	store, err := openAttemptStore(mustInstallLayout(ssiagpaths.ScopeUser).LifecycleDir, testTOPSID, "enrollment", false)
@@ -234,8 +234,8 @@ func TestOrdinaryAuditFailsBeforeAttemptOrMutation(t *testing.T) {
 		t.Fatal(err)
 	}
 	defer store.close()
-	if _, present, err := store.read(); err != nil || present {
-		t.Fatalf("ordinary audit created an attempt: present=%t err=%v", present, err)
+	if attempt, present, err := store.read(); err != nil || !present || attempt.Phase != "recovery_required" {
+		t.Fatalf("ordinary audit did not retain exact recovery intent: present=%t err=%v", present, err)
 	}
 }
 
