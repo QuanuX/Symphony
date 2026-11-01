@@ -1,0 +1,523 @@
+{
+  "format_version": 1,
+  "publisher": "bblanchon/pdfium-binaries (independent binary distributor; not Google or Foxit)",
+  "upstream": "https://pdfium.googlesource.com/pdfium/",
+  "release_url": "https://github.com/bblanchon/pdfium-binaries/releases/tag/chromium/8125",
+  "release_id": 424412891,
+  "build_recipe_commit": "4bdb7acd45b39ef6a7fc2a5b4c83f0398e45c9a6",
+  "version": "158.0.8125.0",
+  "tag": "chromium/8125",
+  "features": {
+    "v8": false,
+    "xfa": false
+  },
+  "assets": [
+    {
+      "platform": "linux-arm64",
+      "archive": "pdfium-linux-arm64.tgz",
+      "url": "https://github.com/bblanchon/pdfium-binaries/releases/download/chromium/8125/pdfium-linux-arm64.tgz",
+      "sha256": "8b8818f2ec57d1b213d952ca6d7f0ffeca9d0110487d0e20ad83ba918bc92efa",
+      "bytes": 3728574,
+      "library": "lib/libpdfium.so",
+      "files": [
+        {
+          "path": "LICENSE",
+          "sha256": "ba26c1263131696b86c10496b5066b918a20b7161822a80c274d0080105f6c93",
+          "bytes": 1177
+        },
+        {
+          "path": "VERSION",
+          "sha256": "77f606e89976f8563ad68506f457f9e37e8049793a0f8abe485840171db822d2",
+          "bytes": 37
+        },
+        {
+          "path": "args.gn",
+          "sha256": "3199e87f0b72a96a454bb5a5f880ea33ee8c6b4a0a5db4511eb0cec4a35e5ab5",
+          "bytes": 253
+        },
+        {
+          "path": "lib/libpdfium.so",
+          "sha256": "8cdc437dce84a6493b9ec6c4f5ad9ff2c299e505acfd7b0ad38cb440805b2c70",
+          "bytes": 8127624
+        },
+        {
+          "path": "licenses/abseil.txt",
+          "sha256": "c79a7fea0e3cac04cd43f20e7b648e5a0ff8fa5344e644b0ee09ca1162b62747",
+          "bytes": 11361
+        },
+        {
+          "path": "licenses/agg23.txt",
+          "sha256": "c110d3ea2ad77467ce0dcff7d3337e6c8be8049a5103f4b9bd5fd911a77972e5",
+          "bytes": 725
+        },
+        {
+          "path": "licenses/dragonbox-Apache2-LLVM.txt",
+          "sha256": "9e45e856bedccee9f67254082ca11851d954de2fed7448c4bed19ad9aab99a91",
+          "bytes": 12262
+        },
+        {
+          "path": "licenses/dragonbox-Boost.txt",
+          "sha256": "c9bff75738922193e67fa726fa225535870d2aa1059f91452c411736284ad566",
+          "bytes": 1338
+        },
+        {
+          "path": "licenses/fast_float.txt",
+          "sha256": "e562f3f974ced7e69dd1db77b820b36bcf8f30377f1aa105723fba449c53c4e6",
+          "bytes": 1079
+        },
+        {
+          "path": "licenses/freetype.txt",
+          "sha256": "f4b133e25df1f86ad3ffea453aa0e613f0474f34778dbbb3e437e7b2724937d8",
+          "bytes": 6741
+        },
+        {
+          "path": "licenses/harfbuzz.txt",
+          "sha256": "ba8f810f2455c2f08e2d56bb49b72f37fcf68f1f4fade38977cfd7372050ad64",
+          "bytes": 1971
+        },
+        {
+          "path": "licenses/highway.txt",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+          "bytes": 11357
+        },
+        {
+          "path": "licenses/icu.txt",
+          "sha256": "e55522d81edc687a341a4411e0776e54ca654e90147f354a90458aaced4116af",
+          "bytes": 27718
+        },
+        {
+          "path": "licenses/lcms.txt",
+          "sha256": "7312b68c5b25e9bf2b828706fb4e29588f22705112f411fd42e1f7d84c3d139a",
+          "bytes": 1353
+        },
+        {
+          "path": "licenses/libjpeg_turbo.ijg",
+          "sha256": "75815e3bf6484201a3c3d17a1bbf10f2e8e3237f84df10a2357ea896db2a81d6",
+          "bytes": 12799
+        },
+        {
+          "path": "licenses/libjpeg_turbo.md",
+          "sha256": "96f5b328adbb78eeaaec6980d73fd558cb1e4d62560ed615646bc3cf5e532430",
+          "bytes": 5620
+        },
+        {
+          "path": "licenses/libopenjpeg.txt",
+          "sha256": "c5ab0890a737c2dfa7ba675036554f6d17741d98629b0c2a145354d00617e6b2",
+          "bytes": 1794
+        },
+        {
+          "path": "licenses/libpng.txt",
+          "sha256": "bdb0a645ea18c60507d0368379b1ac5474b92255fcc2d115e07486a7672ba526",
+          "bytes": 5345
+        },
+        {
+          "path": "licenses/llvm-libc.txt",
+          "sha256": "ebcd9bbf783a73d05c53ba4d586b8d5813dcdf3bbec50265860ccc885e606f47",
+          "bytes": 15140
+        },
+        {
+          "path": "licenses/pdfium.txt",
+          "sha256": "961eacd9633fff6d051db7208b755e9210e30efac7adec3e6a6d52798f0ccf0e",
+          "bytes": 12818
+        },
+        {
+          "path": "licenses/simdutf.txt",
+          "sha256": "fc8dbc04e03ad4efc08a647ffe7f995b811a95bc04c0e85a56d5277c6593fa5f",
+          "bytes": 1059
+        },
+        {
+          "path": "licenses/zlib.txt",
+          "sha256": "33fd641c9f3b0e0be64bc78fea9e94807674cdd70c48477599226cb8956565fe",
+          "bytes": 1332
+        }
+      ],
+      "required": true
+    },
+    {
+      "platform": "linux-amd64",
+      "archive": "pdfium-linux-x64.tgz",
+      "url": "https://github.com/bblanchon/pdfium-binaries/releases/download/chromium/8125/pdfium-linux-x64.tgz",
+      "sha256": "e1c3ce6e270cb5e0c20816b379ad9f2c1309972697c505f508de92bf5e7d6659",
+      "bytes": 3828800,
+      "library": "lib/libpdfium.so",
+      "files": [
+        {
+          "path": "LICENSE",
+          "sha256": "ba26c1263131696b86c10496b5066b918a20b7161822a80c274d0080105f6c93",
+          "bytes": 1177
+        },
+        {
+          "path": "VERSION",
+          "sha256": "77f606e89976f8563ad68506f457f9e37e8049793a0f8abe485840171db822d2",
+          "bytes": 37
+        },
+        {
+          "path": "args.gn",
+          "sha256": "962426b1d9d24084e2d61980b38f322cbfb47d92464c339fe443545cecee9f9c",
+          "bytes": 251
+        },
+        {
+          "path": "lib/libpdfium.so",
+          "sha256": "1c251efce460d67437a4c76d4be9033ae2f17bf5603f5bff1af10209b94ca723",
+          "bytes": 8049768
+        },
+        {
+          "path": "licenses/abseil.txt",
+          "sha256": "c79a7fea0e3cac04cd43f20e7b648e5a0ff8fa5344e644b0ee09ca1162b62747",
+          "bytes": 11361
+        },
+        {
+          "path": "licenses/agg23.txt",
+          "sha256": "c110d3ea2ad77467ce0dcff7d3337e6c8be8049a5103f4b9bd5fd911a77972e5",
+          "bytes": 725
+        },
+        {
+          "path": "licenses/dragonbox-Apache2-LLVM.txt",
+          "sha256": "9e45e856bedccee9f67254082ca11851d954de2fed7448c4bed19ad9aab99a91",
+          "bytes": 12262
+        },
+        {
+          "path": "licenses/dragonbox-Boost.txt",
+          "sha256": "c9bff75738922193e67fa726fa225535870d2aa1059f91452c411736284ad566",
+          "bytes": 1338
+        },
+        {
+          "path": "licenses/fast_float.txt",
+          "sha256": "e562f3f974ced7e69dd1db77b820b36bcf8f30377f1aa105723fba449c53c4e6",
+          "bytes": 1079
+        },
+        {
+          "path": "licenses/freetype.txt",
+          "sha256": "f4b133e25df1f86ad3ffea453aa0e613f0474f34778dbbb3e437e7b2724937d8",
+          "bytes": 6741
+        },
+        {
+          "path": "licenses/harfbuzz.txt",
+          "sha256": "ba8f810f2455c2f08e2d56bb49b72f37fcf68f1f4fade38977cfd7372050ad64",
+          "bytes": 1971
+        },
+        {
+          "path": "licenses/highway.txt",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+          "bytes": 11357
+        },
+        {
+          "path": "licenses/icu.txt",
+          "sha256": "e55522d81edc687a341a4411e0776e54ca654e90147f354a90458aaced4116af",
+          "bytes": 27718
+        },
+        {
+          "path": "licenses/lcms.txt",
+          "sha256": "7312b68c5b25e9bf2b828706fb4e29588f22705112f411fd42e1f7d84c3d139a",
+          "bytes": 1353
+        },
+        {
+          "path": "licenses/libjpeg_turbo.ijg",
+          "sha256": "75815e3bf6484201a3c3d17a1bbf10f2e8e3237f84df10a2357ea896db2a81d6",
+          "bytes": 12799
+        },
+        {
+          "path": "licenses/libjpeg_turbo.md",
+          "sha256": "96f5b328adbb78eeaaec6980d73fd558cb1e4d62560ed615646bc3cf5e532430",
+          "bytes": 5620
+        },
+        {
+          "path": "licenses/libopenjpeg.txt",
+          "sha256": "c5ab0890a737c2dfa7ba675036554f6d17741d98629b0c2a145354d00617e6b2",
+          "bytes": 1794
+        },
+        {
+          "path": "licenses/libpng.txt",
+          "sha256": "bdb0a645ea18c60507d0368379b1ac5474b92255fcc2d115e07486a7672ba526",
+          "bytes": 5345
+        },
+        {
+          "path": "licenses/llvm-libc.txt",
+          "sha256": "ebcd9bbf783a73d05c53ba4d586b8d5813dcdf3bbec50265860ccc885e606f47",
+          "bytes": 15140
+        },
+        {
+          "path": "licenses/pdfium.txt",
+          "sha256": "961eacd9633fff6d051db7208b755e9210e30efac7adec3e6a6d52798f0ccf0e",
+          "bytes": 12818
+        },
+        {
+          "path": "licenses/simdutf.txt",
+          "sha256": "fc8dbc04e03ad4efc08a647ffe7f995b811a95bc04c0e85a56d5277c6593fa5f",
+          "bytes": 1059
+        },
+        {
+          "path": "licenses/zlib.txt",
+          "sha256": "33fd641c9f3b0e0be64bc78fea9e94807674cdd70c48477599226cb8956565fe",
+          "bytes": 1332
+        }
+      ],
+      "required": true
+    },
+    {
+      "platform": "darwin-arm64",
+      "archive": "pdfium-mac-arm64.tgz",
+      "url": "https://github.com/bblanchon/pdfium-binaries/releases/download/chromium/8125/pdfium-mac-arm64.tgz",
+      "sha256": "4939bd935ac83ddc09a3a4f038bc43a19cea1660316a3667f26cb07a070e139d",
+      "bytes": 3540999,
+      "library": "lib/libpdfium.dylib",
+      "files": [
+        {
+          "path": "LICENSE",
+          "sha256": "ba26c1263131696b86c10496b5066b918a20b7161822a80c274d0080105f6c93",
+          "bytes": 1177
+        },
+        {
+          "path": "VERSION",
+          "sha256": "77f606e89976f8563ad68506f457f9e37e8049793a0f8abe485840171db822d2",
+          "bytes": 37
+        },
+        {
+          "path": "args.gn",
+          "sha256": "e4c5e492ac60c39ecd4cfe08c57975d51bf97c7ce3e8df84b92aaaa536d5c400",
+          "bytes": 251
+        },
+        {
+          "path": "lib/libpdfium.dylib",
+          "sha256": "a45c44645523968525c710462691dd974f4efb1013ce1c249919a0939cfb373a",
+          "bytes": 7388864
+        },
+        {
+          "path": "licenses/abseil.txt",
+          "sha256": "c79a7fea0e3cac04cd43f20e7b648e5a0ff8fa5344e644b0ee09ca1162b62747",
+          "bytes": 11361
+        },
+        {
+          "path": "licenses/agg23.txt",
+          "sha256": "c110d3ea2ad77467ce0dcff7d3337e6c8be8049a5103f4b9bd5fd911a77972e5",
+          "bytes": 725
+        },
+        {
+          "path": "licenses/dragonbox-Apache2-LLVM.txt",
+          "sha256": "9e45e856bedccee9f67254082ca11851d954de2fed7448c4bed19ad9aab99a91",
+          "bytes": 12262
+        },
+        {
+          "path": "licenses/dragonbox-Boost.txt",
+          "sha256": "c9bff75738922193e67fa726fa225535870d2aa1059f91452c411736284ad566",
+          "bytes": 1338
+        },
+        {
+          "path": "licenses/fast_float.txt",
+          "sha256": "e562f3f974ced7e69dd1db77b820b36bcf8f30377f1aa105723fba449c53c4e6",
+          "bytes": 1079
+        },
+        {
+          "path": "licenses/freetype.txt",
+          "sha256": "f4b133e25df1f86ad3ffea453aa0e613f0474f34778dbbb3e437e7b2724937d8",
+          "bytes": 6741
+        },
+        {
+          "path": "licenses/harfbuzz.txt",
+          "sha256": "ba8f810f2455c2f08e2d56bb49b72f37fcf68f1f4fade38977cfd7372050ad64",
+          "bytes": 1971
+        },
+        {
+          "path": "licenses/highway.txt",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+          "bytes": 11357
+        },
+        {
+          "path": "licenses/icu.txt",
+          "sha256": "e55522d81edc687a341a4411e0776e54ca654e90147f354a90458aaced4116af",
+          "bytes": 27718
+        },
+        {
+          "path": "licenses/lcms.txt",
+          "sha256": "7312b68c5b25e9bf2b828706fb4e29588f22705112f411fd42e1f7d84c3d139a",
+          "bytes": 1353
+        },
+        {
+          "path": "licenses/libjpeg_turbo.ijg",
+          "sha256": "75815e3bf6484201a3c3d17a1bbf10f2e8e3237f84df10a2357ea896db2a81d6",
+          "bytes": 12799
+        },
+        {
+          "path": "licenses/libjpeg_turbo.md",
+          "sha256": "96f5b328adbb78eeaaec6980d73fd558cb1e4d62560ed615646bc3cf5e532430",
+          "bytes": 5620
+        },
+        {
+          "path": "licenses/libopenjpeg.txt",
+          "sha256": "c5ab0890a737c2dfa7ba675036554f6d17741d98629b0c2a145354d00617e6b2",
+          "bytes": 1794
+        },
+        {
+          "path": "licenses/libpng.txt",
+          "sha256": "bdb0a645ea18c60507d0368379b1ac5474b92255fcc2d115e07486a7672ba526",
+          "bytes": 5345
+        },
+        {
+          "path": "licenses/llvm-libc.txt",
+          "sha256": "ebcd9bbf783a73d05c53ba4d586b8d5813dcdf3bbec50265860ccc885e606f47",
+          "bytes": 15140
+        },
+        {
+          "path": "licenses/pdfium.txt",
+          "sha256": "1fe9dea718fbd75cf149adaf4d8a22a4335604d964ddb76d1b45383dec8668c9",
+          "bytes": 12896
+        },
+        {
+          "path": "licenses/simdutf.txt",
+          "sha256": "fc8dbc04e03ad4efc08a647ffe7f995b811a95bc04c0e85a56d5277c6593fa5f",
+          "bytes": 1059
+        },
+        {
+          "path": "licenses/zlib.txt",
+          "sha256": "33fd641c9f3b0e0be64bc78fea9e94807674cdd70c48477599226cb8956565fe",
+          "bytes": 1332
+        }
+      ],
+      "required": true
+    },
+    {
+      "platform": "darwin-amd64",
+      "archive": "pdfium-mac-x64.tgz",
+      "url": "https://github.com/bblanchon/pdfium-binaries/releases/download/chromium/8125/pdfium-mac-x64.tgz",
+      "sha256": "8a5193535b80c7215d8932f6647ae5097465b6dba2811602c21e120c2af112b0",
+      "bytes": 3749070,
+      "library": "lib/libpdfium.dylib",
+      "files": [
+        {
+          "path": "LICENSE",
+          "sha256": "ba26c1263131696b86c10496b5066b918a20b7161822a80c274d0080105f6c93",
+          "bytes": 1177
+        },
+        {
+          "path": "VERSION",
+          "sha256": "77f606e89976f8563ad68506f457f9e37e8049793a0f8abe485840171db822d2",
+          "bytes": 37
+        },
+        {
+          "path": "args.gn",
+          "sha256": "e80d60a05ccf3d0f30ab094b3ef73284d055c649f985de673ee1d278d4f3f3ff",
+          "bytes": 249
+        },
+        {
+          "path": "lib/libpdfium.dylib",
+          "sha256": "a9f428a16f46bab89646c8724b348e01c3fe707e3126d9356026cd876a74aecb",
+          "bytes": 7809288
+        },
+        {
+          "path": "licenses/abseil.txt",
+          "sha256": "c79a7fea0e3cac04cd43f20e7b648e5a0ff8fa5344e644b0ee09ca1162b62747",
+          "bytes": 11361
+        },
+        {
+          "path": "licenses/agg23.txt",
+          "sha256": "c110d3ea2ad77467ce0dcff7d3337e6c8be8049a5103f4b9bd5fd911a77972e5",
+          "bytes": 725
+        },
+        {
+          "path": "licenses/dragonbox-Apache2-LLVM.txt",
+          "sha256": "9e45e856bedccee9f67254082ca11851d954de2fed7448c4bed19ad9aab99a91",
+          "bytes": 12262
+        },
+        {
+          "path": "licenses/dragonbox-Boost.txt",
+          "sha256": "c9bff75738922193e67fa726fa225535870d2aa1059f91452c411736284ad566",
+          "bytes": 1338
+        },
+        {
+          "path": "licenses/fast_float.txt",
+          "sha256": "e562f3f974ced7e69dd1db77b820b36bcf8f30377f1aa105723fba449c53c4e6",
+          "bytes": 1079
+        },
+        {
+          "path": "licenses/freetype.txt",
+          "sha256": "f4b133e25df1f86ad3ffea453aa0e613f0474f34778dbbb3e437e7b2724937d8",
+          "bytes": 6741
+        },
+        {
+          "path": "licenses/harfbuzz.txt",
+          "sha256": "ba8f810f2455c2f08e2d56bb49b72f37fcf68f1f4fade38977cfd7372050ad64",
+          "bytes": 1971
+        },
+        {
+          "path": "licenses/highway.txt",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+          "bytes": 11357
+        },
+        {
+          "path": "licenses/icu.txt",
+          "sha256": "e55522d81edc687a341a4411e0776e54ca654e90147f354a90458aaced4116af",
+          "bytes": 27718
+        },
+        {
+          "path": "licenses/lcms.txt",
+          "sha256": "7312b68c5b25e9bf2b828706fb4e29588f22705112f411fd42e1f7d84c3d139a",
+          "bytes": 1353
+        },
+        {
+          "path": "licenses/libjpeg_turbo.ijg",
+          "sha256": "75815e3bf6484201a3c3d17a1bbf10f2e8e3237f84df10a2357ea896db2a81d6",
+          "bytes": 12799
+        },
+        {
+          "path": "licenses/libjpeg_turbo.md",
+          "sha256": "96f5b328adbb78eeaaec6980d73fd558cb1e4d62560ed615646bc3cf5e532430",
+          "bytes": 5620
+        },
+        {
+          "path": "licenses/libopenjpeg.txt",
+          "sha256": "c5ab0890a737c2dfa7ba675036554f6d17741d98629b0c2a145354d00617e6b2",
+          "bytes": 1794
+        },
+        {
+          "path": "licenses/libpng.txt",
+          "sha256": "bdb0a645ea18c60507d0368379b1ac5474b92255fcc2d115e07486a7672ba526",
+          "bytes": 5345
+        },
+        {
+          "path": "licenses/llvm-libc.txt",
+          "sha256": "ebcd9bbf783a73d05c53ba4d586b8d5813dcdf3bbec50265860ccc885e606f47",
+          "bytes": 15140
+        },
+        {
+          "path": "licenses/pdfium.txt",
+          "sha256": "1fe9dea718fbd75cf149adaf4d8a22a4335604d964ddb76d1b45383dec8668c9",
+          "bytes": 12896
+        },
+        {
+          "path": "licenses/simdutf.txt",
+          "sha256": "fc8dbc04e03ad4efc08a647ffe7f995b811a95bc04c0e85a56d5277c6593fa5f",
+          "bytes": 1059
+        },
+        {
+          "path": "licenses/zlib.txt",
+          "sha256": "33fd641c9f3b0e0be64bc78fea9e94807674cdd70c48477599226cb8956565fe",
+          "bytes": 1332
+        }
+      ],
+      "required": false
+    }
+  ],
+  "source": {
+    "url": "https://www.amd.com/content/dam/amd/en/documents/legal/epyc-app-export-control.pdf",
+    "publication": "AMD 69290",
+    "revision": "1.00",
+    "issue_date": "2026-04",
+    "bytes": 738352,
+    "sha256": "5178cba64d77199eb7b8e7baa2cf5f6c15308784939396a0d3338c0fb81e04f7",
+    "profile": "amd-69290-table8.v1",
+    "page_index": 12,
+    "rows": 28,
+    "documentary_lineages": 1
+  },
+  "coverage": {
+    "mapped_models": [
+      "7313"
+    ],
+    "hardware_class": "cpu",
+    "namespace": "AMD.OPN",
+    "namespace_equivalence": "not_asserted",
+    "measured_performance": false,
+    "universal_hardware_coverage": false
+  },
+  "runtime_policy": "All archive license notices remain with the selected decoder; only platform system libraries/frameworks are admitted by the loader inventory. No decoder asset is published by this qualification."
+}
