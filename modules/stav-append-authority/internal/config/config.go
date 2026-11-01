@@ -3,12 +3,23 @@ package config
 import (
 	"fmt"
 	"io"
+	"math"
 
 	stavprotocol "github.com/QuanuX/Symphony/libraries/stav-protocol-go"
 	stavpaths "github.com/QuanuX/Symphony/modules/stav-append-authority/internal/paths"
 )
 
 const maxConfigBytes = 1 << 20
+
+// ValidateAuthorityOwnership admits concrete Unix ownership IDs. The all-ones
+// value is reserved by chown to leave ownership unchanged, not an owner ID.
+// This operational constraint does not change the shared STAV peer wire model.
+func ValidateAuthorityOwnership(uid, gid uint64) error {
+	if uid >= math.MaxUint32 || gid >= math.MaxUint32 {
+		return fmt.Errorf("STAV authority UID/GID must be between 0 and %d; %d is reserved", uint64(math.MaxUint32)-1, uint64(math.MaxUint32))
+	}
+	return nil
+}
 
 func Default(layout stavpaths.InstanceLayout, authorityUID, authorityGID uint64) stavprotocol.AppendAuthorityConfig {
 	return stavprotocol.AppendAuthorityConfig{
@@ -64,14 +75,23 @@ func Load(path string) (stavprotocol.AppendAuthorityConfig, error) {
 	if err != nil {
 		return stavprotocol.AppendAuthorityConfig{}, fmt.Errorf("decode STAV config: %w", err)
 	}
+	if err := ValidateAuthorityOwnership(cfg.Authentication.Authority.UID, cfg.Authentication.Authority.GID); err != nil {
+		return stavprotocol.AppendAuthorityConfig{}, err
+	}
 	return cfg, nil
 }
 
 func Marshal(cfg stavprotocol.AppendAuthorityConfig) ([]byte, error) {
+	if err := ValidateAuthorityOwnership(cfg.Authentication.Authority.UID, cfg.Authentication.Authority.GID); err != nil {
+		return nil, err
+	}
 	return stavprotocol.EncodeAppendAuthorityConfig(cfg)
 }
 
 func ValidateLayout(cfg stavprotocol.AppendAuthorityConfig, layout stavpaths.InstanceLayout) error {
+	if err := ValidateAuthorityOwnership(cfg.Authentication.Authority.UID, cfg.Authentication.Authority.GID); err != nil {
+		return err
+	}
 	if cfg.TOPSID != layout.TOPSID || cfg.Mode != string(layout.Scope) || cfg.Listen.Address != layout.Socket || cfg.Ledger.Path != layout.LedgerFile {
 		return fmt.Errorf("STAV configuration does not match the selected TOPS layout")
 	}

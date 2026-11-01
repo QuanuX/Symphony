@@ -5,6 +5,7 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
+	"math"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -13,6 +14,147 @@ import (
 )
 
 const testTOPSID = "018f0c3a-7b2d-7e11-8c12-0242ac120002"
+
+func TestOwnershipIdentityValidationIndependentOfCLI(t *testing.T) {
+	for _, component := range []string{"ssiag", "stav"} {
+		for _, field := range []string{"uid", "gid"} {
+			for _, value := range []uint32{0, 501, math.MaxUint32 - 1, math.MaxUint32} {
+				plan := ownershipTestPlan(component)
+				if component == "ssiag" {
+					if field == "uid" {
+						plan.ServiceUID = &value
+					} else {
+						plan.ServiceGID = &value
+					}
+				} else {
+					if field == "uid" {
+						plan.AuthorityUID = &value
+					} else {
+						plan.AuthorityGID = &value
+					}
+				}
+				plan.PlanDigest = testObjectDigest(plan, "plan_digest")
+				intent := Intent{DesiredState: plan.DesiredState, TOPSName: plan.TOPSName,
+					ServiceUID: plan.ServiceUID, ServiceGID: plan.ServiceGID, AuthorityUID: plan.AuthorityUID,
+					AuthorityGID: plan.AuthorityGID, AuditMode: plan.AuditMode, TTLSeconds: 60}
+				// Machine input can construct these values without the CLI's parser.
+				for kind, err := range map[string]error{
+					"intent": validateIntent(intent, component, "enrollment", "system"),
+					"plan":   validatePlan(plan, component, "enrollment", "system", testTOPSID),
+				} {
+					if value == math.MaxUint32 {
+						if err == nil || !strings.Contains(err.Error(), "reserved ownership sentinel") {
+							t.Errorf("%s %s %s accepted reserved value: %v", component, kind, field, err)
+						}
+					} else if err != nil {
+						t.Errorf("%s %s %s rejected usable value %d: %v", component, kind, field, value, err)
+					}
+				}
+			}
+		}
+	}
+}
+
+func TestReadPlanRejectsResealedReservedOwnership(t *testing.T) {
+	for _, component := range []string{"ssiag", "stav"} {
+		for _, field := range []string{"uid", "gid"} {
+			for _, wrapped := range []bool{false, true} {
+				plan := ownershipTestPlan(component)
+				path := filepath.Join(t.TempDir(), "plan.json")
+				writePlan := func() {
+					t.Helper()
+					plan.PlanDigest = testObjectDigest(plan, "plan_digest")
+					var value any = plan
+					if wrapped {
+						observation := validTestObservation(component, "enrollment")
+						observation.Scope = "system"
+						observation.StableStateDigest, _ = digestWithoutFields(observation, "observed_at", "stable_state_digest", "observation_digest")
+						observation.ObservationDigest = testObjectDigest(observation, "observation_digest")
+						result := Result{Protocol: ResultProtocol, FormatVersion: 1, Operation: "plan", Component: component,
+							Surface: "enrollment", Scope: "system", TOPSID: testTOPSID, OperationID: &plan.OperationID,
+							Disposition: "planned", DesiredState: &plan.DesiredState, Observation: observation, Plan: &plan,
+							AuditState: "not_applicable", CompletedAt: "2026-08-13T12:00:00Z", ReadOnly: true}
+						result.ResultDigest = testObjectDigest(result, "result_digest")
+						value = result
+					}
+					encoded, err := json.Marshal(value)
+					if err != nil {
+						t.Fatal(err)
+					}
+					if err := os.WriteFile(path, encoded, 0o600); err != nil {
+						t.Fatal(err)
+					}
+				}
+				writePlan()
+				if _, err := ReadPlan(path); err != nil {
+					t.Fatalf("valid %s plan (wrapped=%t) rejected: %v", component, wrapped, err)
+				}
+				reserved := uint32(math.MaxUint32)
+				if component == "ssiag" {
+					if field == "uid" {
+						plan.ServiceUID = &reserved
+					} else {
+						plan.ServiceGID = &reserved
+					}
+				} else {
+					if field == "uid" {
+						plan.AuthorityUID = &reserved
+					} else {
+						plan.AuthorityGID = &reserved
+					}
+				}
+				writePlan()
+				if _, err := ReadPlan(path); err == nil || !strings.Contains(err.Error(), "reserved ownership sentinel") {
+					t.Errorf("resealed %s %s plan (wrapped=%t) accepted: %v", component, field, wrapped, err)
+				}
+			}
+		}
+	}
+}
+
+func TestReadPlanRejectsOutOfRangeOwnershipJSON(t *testing.T) {
+	for _, component := range []string{"ssiag", "stav"} {
+		label := "service"
+		if component == "stav" {
+			label = "authority"
+		}
+		for _, field := range []string{"uid", "gid"} {
+			for _, value := range []json.Number{"-1", "4294967296"} {
+				plan := ownershipTestPlan(component)
+				encoded, _ := json.Marshal(plan)
+				var object map[string]any
+				if err := json.Unmarshal(encoded, &object); err != nil {
+					t.Fatal(err)
+				}
+				object[label+"_"+field] = value
+				object["plan_digest"] = testObjectDigest(object, "plan_digest")
+				encoded, _ = json.Marshal(object)
+				path := filepath.Join(t.TempDir(), "plan.json")
+				if err := os.WriteFile(path, encoded, 0o600); err != nil {
+					t.Fatal(err)
+				}
+				if _, err := ReadPlan(path); err == nil || !strings.Contains(err.Error(), "decode foundational lifecycle plan") {
+					t.Errorf("%s %s JSON %s did not fail typed admission: %v", component, field, value, err)
+				}
+			}
+		}
+	}
+}
+
+func ownershipTestPlan(component string) Plan {
+	uid, gid := uint32(501), uint32(20)
+	plan := Plan{Protocol: PlanProtocol, FormatVersion: 1, Component: component, Surface: "enrollment", Scope: "system", TOPSID: testTOPSID,
+		OperationID: "ownership-check", RequestID: "018f0c3a-7b2d-7e11-8c12-0242ac120003", CorrelationID: "018f0c3a-7b2d-7e11-8c12-0242ac120004",
+		ExpectedStateDigest: testDigest("state"), DesiredState: "enrolled", AuditMode: "ordinary",
+		CreatedAt: "2026-08-13T12:00:00Z", ExpiresAt: "2026-08-13T12:05:00Z"}
+	if component == "ssiag" {
+		plan.TOPSName, plan.ServiceUID, plan.ServiceGID = stringTestPointer("Desk"), &uid, &gid
+	} else {
+		plan.AuthorityUID, plan.AuthorityGID = &uid, &gid
+	}
+	plan.PlanDigest = testObjectDigest(plan, "plan_digest")
+	return plan
+}
 
 func TestAdapterValidationBindsIndependentReceiptEvidence(t *testing.T) {
 	evidence := installEvidence{

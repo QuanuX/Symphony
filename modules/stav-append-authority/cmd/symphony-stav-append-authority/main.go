@@ -91,6 +91,9 @@ func runEnroll(args []string) error {
 			return fmt.Errorf("invalid authority GID %q", *authorityGIDValue)
 		}
 	}
+	if err := config.ValidateAuthorityOwnership(authorityUID, authorityGID); err != nil {
+		return err
+	}
 	uid, gid := uint32(authorityUID), uint32(authorityGID)
 	var uidInput, gidInput *uint32
 	if scope == stavpaths.ScopeSystem {

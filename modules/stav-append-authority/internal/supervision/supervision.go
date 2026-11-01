@@ -16,6 +16,7 @@ import (
 	texttemplate "text/template"
 
 	stavprotocol "github.com/QuanuX/Symphony/libraries/stav-protocol-go"
+	"github.com/QuanuX/Symphony/modules/stav-append-authority/internal/config"
 	stavpaths "github.com/QuanuX/Symphony/modules/stav-append-authority/internal/paths"
 )
 
@@ -62,8 +63,8 @@ func SpecFromConfig(scope stavpaths.Scope, topsID, binary string, cfg stavprotoc
 	if cfg.TOPSID != topsID || cfg.Mode != string(scope) {
 		return Spec{}, fmt.Errorf("configuration does not match selected TOPS and scope")
 	}
-	if cfg.Authentication.Authority.UID > uint64(^uint32(0)) || cfg.Authentication.Authority.GID > uint64(^uint32(0)) {
-		return Spec{}, fmt.Errorf("configured authority identity exceeds platform UID/GID range")
+	if err := config.ValidateAuthorityOwnership(cfg.Authentication.Authority.UID, cfg.Authentication.Authority.GID); err != nil {
+		return Spec{}, err
 	}
 	return Spec{Scope: scope, TOPSID: topsID, Binary: binary, UID: uint32(cfg.Authentication.Authority.UID), GID: uint32(cfg.Authentication.Authority.GID)}, nil
 }
@@ -274,6 +275,9 @@ func Stop(record Record) error {
 }
 
 func render(spec Spec) (Record, []byte, error) {
+	if err := config.ValidateAuthorityOwnership(uint64(spec.UID), uint64(spec.GID)); err != nil {
+		return Record{}, nil, err
+	}
 	if err := stavpaths.ValidateTOPSID(spec.TOPSID); err != nil {
 		return Record{}, nil, err
 	}

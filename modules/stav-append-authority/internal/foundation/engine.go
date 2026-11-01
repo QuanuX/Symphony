@@ -250,6 +250,12 @@ func validateCommand(command Command) error {
 	if (command.Operation == "apply" || command.Operation == "recover" || command.Operation == "plan") && !validToken(command.OperationID) {
 		return fmt.Errorf("operation requires a valid operation_id")
 	}
+	if command.Operation == "plan" {
+		return validateIntent(command.Surface, command.Scope, command.Intent)
+	}
+	if command.Plan != nil {
+		return validatePlanOwnership(*command.Plan)
+	}
 	return nil
 }
 
@@ -300,6 +306,9 @@ func validateIntent(surface, scope string, intent *Intent) error {
 	}
 	if needsAuthorityIdentity && scope == "system" && (intent.AuthorityUID == nil || intent.AuthorityGID == nil) {
 		return fmt.Errorf("system STAV lifecycle requires explicit authority UID/GID")
+	}
+	if intent.AuthorityUID != nil && intent.AuthorityGID != nil {
+		return config.ValidateAuthorityOwnership(uint64(*intent.AuthorityUID), uint64(*intent.AuthorityGID))
 	}
 	return nil
 }
