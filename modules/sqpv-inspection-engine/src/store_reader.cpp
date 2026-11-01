@@ -253,12 +253,12 @@ std::string field(std::string_view &in, std::size_t max) {
   return std::string(take(in, static_cast<std::size_t>(n)));
 }
 Snapshot inspect(const Json &p, std::int64_t end, const Visitor &visit) {
-#ifndef __APPLE__
+#if !defined(__APPLE__) && !defined(__linux__)
   (void)p;
   (void)end;
   (void)visit;
   refuse("sqv.store.unsupported",
-         "Retained store inspection requires local APFS", 3);
+         "Retained store inspection requires macOS or Linux", 3);
 #endif
   fields(p, {"root", "expected_metadata_reference", "expected_store_generation",
              "max_read_bytes", "max_batches"});

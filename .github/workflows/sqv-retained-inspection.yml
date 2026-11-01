@@ -1,0 +1,83 @@
+name: SQV retained inspection
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sqv-retained-inspection-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  retained-inspection:
+    name: Installed SQV inspection (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-24.04
+            cxx: clang++-18
+          - os: ubuntu-26.04
+            cxx: clang++-21
+          - os: ubuntu-24.04-arm
+            cxx: clang++-18
+          - os: macos-15
+            cxx: /usr/bin/clang++
+    env:
+      CXX: ${{ matrix.cxx }}
+      GOWORK: 'off'
+      GOTOOLCHAIN: local
+      GOENV: 'off'
+      GOPROXY: https://proxy.golang.org
+      GOSUMDB: sum.golang.org
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6
+        with:
+          go-version-file: tools/qxctl/go.mod
+          cache: false
+      - name: Select Apple C++26 toolchain
+        if: runner.os == 'macOS'
+        run: echo 'DEVELOPER_DIR=/Applications/Xcode_26.3.app/Contents/Developer' >> "$GITHUB_ENV"
+      - name: Prepare exact writer-fixture dependency
+        shell: bash
+        run: |
+          set -euo pipefail
+          # The existing SQAV writer pins curl 8.7.1. This private test dependency
+          # is not installed into the inspected owner prefix or published.
+          curl --fail --location --silent --show-error https://curl.se/download/curl-8.7.1.tar.xz -o "$RUNNER_TEMP/curl-8.7.1.tar.xz"
+          echo "6fea2aac6a4610fbd0400afb0bcddbe7258a64c63f1f68e5855ebc0c659710cd  $RUNNER_TEMP/curl-8.7.1.tar.xz" | shasum -a 256 --check
+          tar -xJf "$RUNNER_TEMP/curl-8.7.1.tar.xz" -C "$RUNNER_TEMP"
+          tls=(-DCURL_USE_OPENSSL=ON)
+          if [ "$RUNNER_OS" = macOS ]; then
+            tls=(-DCURL_USE_OPENSSL=OFF -DCURL_USE_SECTRANSP=ON)
+          fi
+          cmake -S "$RUNNER_TEMP/curl-8.7.1" -B "$RUNNER_TEMP/curl-build" \
+            -DCMAKE_POLICY_VERSION_MINIMUM=3.5 -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_INSTALL_PREFIX="$RUNNER_TEMP/sqv-curl" \
+            -DBUILD_CURL_EXE=OFF -DBUILD_TESTING=OFF -DBUILD_SHARED_LIBS=ON \
+            -DCURL_USE_LIBPSL=OFF -DCURL_DISABLE_LDAP=ON "${tls[@]}"
+          cmake --build "$RUNNER_TEMP/curl-build" --parallel 2
+          cmake --install "$RUNNER_TEMP/curl-build"
+      - name: Verify writer output through installed owners and qxctl
+        env:
+          CMAKE_PREFIX_PATH: ${{ runner.temp }}/sqv-curl
+          SQV_ADMIN_BUILD_JOBS: '2'
+          GOMODCACHE: ${{ runner.temp }}/sqv-go-modules
+          GOCACHE: ${{ runner.temp }}/sqv-go-build
+        run: sh tests/sqv-administration/run_regressions.sh "$RUNNER_TEMP/sqv-inspection"
+      - name: Report qualification boundary
+        if: always()
+        shell: bash
+        run: |
+          echo 'This gate exercises retained-state inspection on the recorded runner OS, architecture and filesystem. Ubuntu ARM64 is not physical DGX Spark / DGX OS storage or GPU qualification.' >> "$GITHUB_STEP_SUMMARY"

@@ -1,14 +1,17 @@
 package knowledgeengine
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"errors"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"reflect"
 	"strings"
 	"testing"
+	"time"
 
 	"golang.org/x/sys/unix"
 )
@@ -44,6 +47,17 @@ func adminResult(t *testing.T, prefix, operation string, p map[string]any) map[s
 	if err != nil {
 		t.Fatal(err)
 	}
+	if cli, enabled := adminCLI(t, prefix, operation, raw, false); enabled {
+		var response Response
+		if err := json.Unmarshal(cli, &response); err != nil || response.Outcome != "ok" ||
+			response.Operation != operation || response.EngineVersion != "0.1.0-dev" || response.EngineID != r.EngineID {
+			t.Fatalf("installed CLI response identity: %s (%v)", cli, err)
+		}
+		cliResult, err := sqavObject(response.Result, 450000)
+		if err != nil || !reflect.DeepEqual(cliResult, result) {
+			t.Fatalf("installed CLI result differs from exact native owner: %s (%v)", cli, err)
+		}
+	}
 	return result
 }
 func adminRefused(t *testing.T, prefix, operation string, p map[string]any, code string) {
@@ -59,6 +73,53 @@ func adminRefused(t *testing.T, prefix, operation string, p map[string]any, code
 			t.Fatalf("expected %s, got %v", code, err)
 		}
 	}
+	adminCLI(t, prefix, operation, raw, true)
+}
+
+// Exercise the real command boundary using the same writer-produced requests
+// and nonmutation assertions as the installed native-owner checks.
+func adminCLI(t *testing.T, prefix, operation string, payload []byte, refused bool) ([]byte, bool) {
+	t.Helper()
+	binary := os.Getenv("SQV_ADMIN_TEST_QXCTL")
+	if binary == "" || (operation != "store_inspect" && operation != "checkpoint_inspect" && operation != "attempts_inspect") {
+		return nil, false
+	}
+	op, err := sqvAdminOperation(operation)
+	if err != nil {
+		t.Fatal(err)
+	}
+	directory := t.TempDir()
+	input := filepath.Join(directory, "request.json")
+	if err := os.WriteFile(input, payload, 0600); err != nil {
+		t.Fatal(err)
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
+	defer cancel()
+	command := exec.CommandContext(ctx, binary, "sqv", op.Domain, op.Leaf,
+		"--prefix", prefix, "--version", "0.1.0-dev", "--input", input, "--json")
+	command.Dir = directory
+	var stderr bytes.Buffer
+	command.Stderr = &stderr
+	output, runErr := command.Output()
+	if ctx.Err() != nil || stderr.Len() != 0 || (runErr != nil) != refused {
+		t.Fatalf("installed CLI %s: refused=%t error=%v context=%v stderr=%s stdout=%s",
+			operation, refused, runErr, ctx.Err(), stderr.String(), output)
+	}
+	if refused {
+		var failure struct {
+			Protocol  string `json:"protocol"`
+			Outcome   string `json:"outcome"`
+			CommandID string `json:"command_id"`
+			ExitCode  int    `json:"exit_code"`
+		}
+		var exit *exec.ExitError
+		if !errors.As(runErr, &exit) || json.Unmarshal(output, &failure) != nil ||
+			failure.Protocol != "symphony.qxctl.error.v1" || failure.Outcome != "error" ||
+			failure.CommandID != "qxcmd:symphony:sqv."+op.Domain+"."+op.Leaf || failure.ExitCode != exit.ExitCode() {
+			t.Fatalf("installed CLI refusal lost command identity or status: %s (%v)", output, runErr)
+		}
+	}
+	return output, true
 }
 func adminFixture(t *testing.T, path string) map[string]any {
 	t.Helper()
@@ -131,7 +192,13 @@ func adminTree(t *testing.T, root string) map[string]string {
 func TestSQVAdministrationInstalled(t *testing.T) {
 	prefix, fixtures := os.Getenv("SQV_ADMIN_TEST_PREFIX"), os.Getenv("SQV_ADMIN_FIXTURES")
 	if prefix == "" || fixtures == "" {
+		if os.Getenv("SQV_ADMIN_REQUIRE_INSTALLED") == "1" {
+			t.Fatal("installed qualification requires SQV_ADMIN_TEST_PREFIX and SQV_ADMIN_FIXTURES")
+		}
 		t.Skip("set SQV_ADMIN_TEST_PREFIX and SQV_ADMIN_FIXTURES for installed integration")
+	}
+	if os.Getenv("SQV_ADMIN_REQUIRE_INSTALLED") == "1" && !filepath.IsAbs(os.Getenv("SQV_ADMIN_TEST_QXCTL")) {
+		t.Fatal("installed qualification requires an absolute SQV_ADMIN_TEST_QXCTL executable")
 	}
 	root, err := filepath.Abs("../../../..")
 	if err != nil {

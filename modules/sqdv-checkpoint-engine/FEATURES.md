@@ -28,7 +28,7 @@
         "tools/qxctl/internal/knowledgeengine/sqv_administration_test.go"
       ],
       "feature_id": "ssfv:symphony:sqdv-checkpoint-engine",
-      "how": "Exact C++26 owner operations return bounded request-bound evidence. Receipt-owned declarations and schema resources bind process admission; reusable transport helpers hold no vector semantics.",
+      "how": "Exact C++26 owner operations return bounded request-bound evidence. Receipt-owned declarations and schema resources bind process admission; reusable transport helpers hold no vector semantics. The shared SQPV reader preserves no-follow paths, shared locking, stat/inventory identity fences, finite bounds and dirty-state semantics on macOS local APFS and Linux.",
       "implementation_languages": [
         {
           "language": "C++26",
@@ -47,7 +47,9 @@
       ],
       "kind": "feature",
       "non_claims": [
-        "No live collection, provider access, credentials, paid request, store recovery, journal write, remote acknowledgment or execution grant."
+        "No live collection, provider access, credentials, paid request, store recovery, journal write, remote acknowledgment or execution grant.",
+        "No Linux filesystem-name allowlist or filesystem durability certification; the caller selects the deployment filesystem.",
+        "No native Windows support. Shared Linux ARM64 implementation does not establish physical DGX Spark, exact DGX OS image/kernel/driver/runtime or GPU qualification; that evidence remains separate and pending."
       ],
       "owner_contract": "modules/sqdv-checkpoint-engine/SPEC.md",
       "parent_feature_id": "ssfv:symphony:platform",
@@ -69,7 +71,7 @@
       "title": "SQDV checkpoint administration",
       "what": "Inspect persisted local-processing checkpoints without repairing or advancing the journal.",
       "when": "On explicit local invocation with an exact installed release and bounded request.",
-      "where": "Independently installed sqdv-checkpoint-engine process.",
+      "where": "Independently installed sqdv-checkpoint-engine process on macOS local APFS or Ubuntu LTS Linux x86_64/ARM64; DGX Spark shares the Linux ARM64 code path.",
       "who": "Native process callers and qxctl SQV administration.",
       "why": "Expose SQDV administration through its owner while sharing source discovery and schema/template routes."
     }

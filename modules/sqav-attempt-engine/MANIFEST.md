@@ -29,3 +29,7 @@ Module/package `sqav-attempt-engine`; version `0.1.0-dev`.
 - `modules/sqpv-inspection-engine/src/store_reader.hpp`
 
 - `modules/sqav-attempt-engine/tests/process.cpp`
+
+## Platform scope
+
+The shared SQPV reader supports macOS local APFS and Ubuntu LTS Linux x86_64/ARM64, with the Linux filesystem selected by the caller and no filesystem-name allowlist. DGX Spark uses that ARM64 code path; physical Spark/DGX OS qualification remains separate and pending. Native Windows is unsupported. SPEC owns the admission and observation contract; INSTALL describes per-deployment verification. The package version, process protocol and retained formats are unchanged by this portability revision.

@@ -6,6 +6,12 @@ Requests: at most 262144 payload bytes, 524288 process bytes; five-second deadli
 
 Dependencies: KnowledgeVectorEngine 0.2.0, SQFV batch 0.3.0, SQMV metadata 0.2.0; conversion additionally uses SQTV integer conversion 0.2.0. Observation engines share the SQPV-owned v1 store reader from sqpv-inspection-engine; they do not link a writer or call Store::open. Source dependency versions are checked. Dependencies are statically embedded; existing native package versions and ABI are preserved.
 
+## Platform and filesystem contract
+
+Attempt inspection inherits the platform and filesystem contract owned by `modules/sqpv-inspection-engine/SPEC.md`: macOS retains the local-APFS gate; Linux supports Ubuntu LTS x86_64 and ARM64/aarch64. DGX Spark shares the Linux ARM64 code path, while qualification on physical Spark hardware with the exact supported DGX OS image, kernel, drivers and runtime remains separate and pending. Generic Ubuntu ARM CI does not qualify Spark hardware or GPU behavior. Native Windows is unsupported.
+
+The caller selects the Linux filesystem; there is no filesystem-name allowlist. Descriptor-relative no-follow opens, cooperating shared `flock`, coherent stat/inode and directory-inventory checks, ownership/permission/link checks, finite bounds and identity fences remain mandatory. Successful syscalls do not certify filesystem topology or durability. The same dirty-store refusal applies before attempt accounting on both platforms; this observer never recovers a ledger or converts a reserved attempt into permission to retry.
+
 
 ## Persisted acquisition attempt contract
 
