@@ -125,8 +125,10 @@ jobs:
             ${{ runner.temp }}/mvp-installed/metadata
             ${{ runner.temp }}/mvp-installed/selected-components.txt
             ${{ runner.temp }}/mvp-installed/completed-steps.txt
+            ${{ runner.temp }}/mvp-installed/proof-regressions/*.log
             ${{ runner.temp }}/mvp-authoring/logs
             ${{ runner.temp }}/mvp-authoring/metadata
             ${{ runner.temp }}/mvp-authoring/selected-components.txt
             ${{ runner.temp }}/mvp-authoring/completed-steps.txt
+            ${{ runner.temp }}/mvp-authoring/proof-regressions/*.log
           retention-days: 14

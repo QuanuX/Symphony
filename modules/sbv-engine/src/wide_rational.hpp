@@ -29,10 +29,15 @@ inline I add(I a, I b) {
   return n;
 }
 inline I mul(I a, I b) {
-  I n;
-  need(!__builtin_mul_overflow(a, b, &n) && n != -max - 1,
-       "wide multiplication overflow");
-  return n;
+  if (a == 0 || b == 0)
+    return 0;
+  // Unsigned subtraction also represents the magnitude of the signed minimum.
+  // Admit only products in [-max, max] before multiplying or restoring a sign.
+  const U ua = a < 0 ? U{0} - static_cast<U>(a) : static_cast<U>(a);
+  const U ub = b < 0 ? U{0} - static_cast<U>(b) : static_cast<U>(b);
+  need(ua <= static_cast<U>(max) / ub, "wide multiplication overflow");
+  const I n = static_cast<I>(ua * ub);
+  return (a < 0) != (b < 0) ? -n : n;
 }
 inline R reduce(R r) {
   need(r.d > 0, "positive wide denominator required");

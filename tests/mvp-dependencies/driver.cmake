@@ -5,6 +5,9 @@ find_program(MVP_CTEST NAMES ctest REQUIRED)
 if(NOT MVP_JOBS MATCHES "^[1-9][0-9]*$")
   message(FATAL_ERROR "MVP_BUILD_JOBS must be a positive integer")
 endif()
+mvp_run(proof-scope-regressions "${MVP_WORK}" "${CMAKE_COMMAND}"
+  "-DMVP_REPOSITORY=${MVP_REPOSITORY}" "-DMVP_PROOF_TEST_WORK=${MVP_WORK}/proof-regressions"
+  -P "${CMAKE_CURRENT_LIST_DIR}/proof-regressions.cmake")
 set(MVP_SELECTED_PREFIX "${MVP_WORK}/prefix")
 set(external_prefix "$ENV{CMAKE_PREFIX_PATH}")
 set(extra "")
@@ -23,6 +26,7 @@ set(ENV{CMAKE_PREFIX_PATH} "${external_prefix}")
 set(base_arguments ${extra}
   "-DCMAKE_PREFIX_PATH=${MVP_SELECTED_PREFIX}" "-DCMAKE_INSTALL_PREFIX=${MVP_SELECTED_PREFIX}"
   -DCMAKE_BUILD_TYPE=Release -DCMAKE_POSITION_INDEPENDENT_CODE=ON
+  -DCMAKE_INSTALL_RPATH_USE_LINK_PATH=ON
   -DBUILD_TESTING=OFF -DSYMPHONY_KVE_BUILD_TESTING=OFF
   -DCMAKE_FIND_USE_PACKAGE_REGISTRY=OFF -DCMAKE_FIND_USE_SYSTEM_PACKAGE_REGISTRY=OFF
   -DCMAKE_FIND_PACKAGE_NO_PACKAGE_REGISTRY=ON -DCMAKE_EXPORT_NO_PACKAGE_REGISTRY=ON
@@ -192,9 +196,26 @@ if("modules/sbv-engine" IN_LIST ordered)
   mvp_run(sbv-consumer-build "${MVP_WORK}" "${CMAKE_COMMAND}" --build "${copy}/build" --parallel "${MVP_JOBS}")
   mvp_run(sbv-consumer-tests "${MVP_WORK}" "${MVP_CTEST}" --test-dir "${copy}/build"
     --output-on-failure --no-tests=error)
+  if(CMAKE_HOST_SYSTEM_NAME STREQUAL "Darwin")
+    set(loader_environment DYLD_PRINT_LIBRARIES=1)
+  elseif(CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux")
+    set(loader_environment LD_TRACE_LOADED_OBJECTS=1)
+  else()
+    message(FATAL_ERROR "SBV loader qualification supports macOS and Linux only")
+  endif()
+  # Keep loader diagnostics separate from the byte-correspondence CTest, which
+  # deliberately requires empty stderr from both SDK consumer invocations.
+  mvp_run(sbv-consumer-loader "${MVP_WORK}/tmp" "${CMAKE_COMMAND}" -E env
+    "${loader_environment}" "${copy}/build/sbv-installed-c-consumer"
+    "${copy}/build/descriptor-request.json")
+  mvp_run(sbv-consumer-loader-proof "${MVP_WORK}" "${CMAKE_COMMAND}"
+    "-DMVP_LOADER_LOG=${MVP_WORK}/logs/sbv-consumer-loader.log"
+    "-DMVP_EXTERNAL_PREFIX=${external_prefix}" "-DMVP_LOADER_SYSTEM=${CMAKE_HOST_SYSTEM_NAME}"
+    -P "${CMAKE_CURRENT_LIST_DIR}/verify-loader.cmake")
 endif()
 
-foreach(binding "modules/knowledge-session-coordinator|knowledge-lifecycle-planner-tests|knowledge-lifecycle-planner-tests" "modules/sbv-engine|sbv-feedback-settlement-tests|sbv-feedback-settlement-contracts")
+set(regression_configured "")
+foreach(binding "modules/knowledge-session-coordinator|knowledge-lifecycle-planner-tests|knowledge-lifecycle-planner-tests" "modules/sbv-engine|sbv-feedback-settlement-tests|sbv-feedback-settlement-contracts" "modules/sbv-engine|sbv-queue-tests|sbv-queue-scenarios")
   string(REPLACE "|" ";" fields "${binding}")
   list(GET fields 0 path)
   if(NOT path IN_LIST ordered)
@@ -205,11 +226,14 @@ foreach(binding "modules/knowledge-session-coordinator|knowledge-lifecycle-plann
   mvp_component("${path}" component)
   string(JSON id GET "${component}" component_id)
   component_arguments("${component}" arguments)
-  mvp_run("${id}-regression-configure" "${MVP_WORK}" "${CMAKE_COMMAND}"
-    -S "${MVP_REPOSITORY}/${path}" -B "${MVP_WORK}/build/${id}" ${arguments} -DBUILD_TESTING=ON)
-  mvp_run("${id}-regression-build" "${MVP_WORK}" "${CMAKE_COMMAND}"
+  if(NOT path IN_LIST regression_configured)
+    mvp_run("${id}-regression-configure" "${MVP_WORK}" "${CMAKE_COMMAND}"
+      -S "${MVP_REPOSITORY}/${path}" -B "${MVP_WORK}/build/${id}" ${arguments} -DBUILD_TESTING=ON)
+    list(APPEND regression_configured "${path}")
+  endif()
+  mvp_run("${target}-regression-build" "${MVP_WORK}" "${CMAKE_COMMAND}"
     --build "${MVP_WORK}/build/${id}" --parallel "${MVP_JOBS}" --target "${target}")
-  mvp_run("${id}-regression-test" "${MVP_WORK}" "${MVP_CTEST}"
+  mvp_run("${test}-regression-test" "${MVP_WORK}" "${MVP_CTEST}"
     --test-dir "${MVP_WORK}/build/${id}" --output-on-failure --no-tests=error -R "^${test}$")
 endforeach()
 

@@ -1,5 +1,6 @@
 #include <private_temp.hpp>
 #include "../src/detail.hpp"
+#include "wide_rational.hpp"
 #include <filesystem>
 #include <fstream>
 #include <iostream>
@@ -15,6 +16,51 @@ void check(bool v, std::source_location loc = std::source_location::current()) {
   if (!v)
     throw std::runtime_error("queue assertion line " +
                              std::to_string(loc.line()));
+}
+void wide_multiplication_boundaries() {
+  namespace w = d::wide_rational;
+  constexpr auto minimum = -w::max - 1;
+  const auto product = [](w::I a, w::I b, w::I expected) {
+    for (w::I sa : {-w::I{1}, w::I{1}})
+      for (w::I sb : {-w::I{1}, w::I{1}}) {
+        check(w::mul(sa * a, sb * b) == sa * sb * expected);
+        check(w::mul(sb * b, sa * a) == sa * sb * expected);
+      }
+  };
+  product(0, w::max, 0);
+  product(1, w::max, w::max);
+  product(w::max / 2, 2, w::max - 1);
+  product(w::I{1} << 64, (w::I{1} << 63) - 1,
+          w::max - (w::I{1} << 64) + 1);
+  check(w::mul(minimum, 0) == 0);
+  check(w::mul(0, minimum) == 0);
+  const auto refuse = [](w::I a, w::I b) {
+    bool refused = false;
+    try {
+      (void)w::mul(a, b);
+    } catch (const e::Error &error) {
+      refused = true;
+      check(error.code() == "sbv.contract" && error.exit_status() == 2);
+      check(std::string(error.what()) == "wide multiplication overflow");
+    }
+    check(refused);
+  };
+  for (w::I sa : {-w::I{1}, w::I{1}})
+    for (w::I sb : {-w::I{1}, w::I{1}}) {
+      refuse(sa * w::max, sb * 2);
+      refuse(sa * (w::max / 2 + 1), sb * 2);
+      refuse(sa * w::max, sb * w::max);
+      refuse(sa * (w::I{1} << 64), sb * (w::I{1} << 63));
+    }
+  for (w::I b : {minimum, -w::max, -w::I{2}, -w::I{1},
+                w::I{1}, w::I{2}, w::max}) {
+    refuse(minimum, b);
+    refuse(b, minimum);
+  }
+  check(w::equal(w::times({w::max, 2}, {2, w::max}), {1, 1}));
+  check(w::equal(w::times({-w::max, 7}, {7, w::max}), {-1, 1}));
+  check(w::integer(w::decimal(w::max)) == w::max);
+  check(w::integer(w::decimal(-w::max)) == -w::max);
 }
 J read(const std::string &p) {
   std::ifstream f(p);
@@ -32,6 +78,7 @@ J rat(const char *n, const char *den = "1") {
 }
 int main(int argc, char **argv) try {
   check(argc == 2);
+  wide_multiplication_boundaries();
   auto temp = symphony::testing::temporary_pattern("sbv-queue-XXXXXX");
   check(mkdtemp(temp.data()) != nullptr);
   std::string root = temp;

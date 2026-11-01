@@ -93,7 +93,11 @@ function(mvp_check_package_for_target target)
   endif()
   # Preserve any identity available from the owner's original find_package;
   # the proof must not replace an observable incorrect selection with a valid one.
-  if(DEFINED ${package}_VERSION AND
+  # project(Package VERSION ...) also creates Package_VERSION. A helper-local
+  # find_package may leave that unrelated project value visible here after its
+  # own result variables go out of scope.
+  if(${package}_FOUND AND DEFINED ${package}_CONFIG AND
+     DEFINED ${package}_VERSION AND
      NOT "${${package}_VERSION}" STREQUAL expected)
     message(FATAL_ERROR "Originally selected SDK version differs from map: ${package} ${${package}_VERSION} != ${expected}")
   endif()
@@ -110,8 +114,14 @@ function(mvp_check_package_for_target target)
   # Some owner helpers call find_package inside functions, so their version
   # variables need not survive to this deferred directory-scope proof.
   if(version_file)
+    set(config_search "${MVP_SELECTED_PREFIX}")
+    if(DEFINED ${package}_DIR)
+      # Re-evaluate the originally selected config; do not replace an old
+      # helper-local selection with another version elsewhere in the prefix.
+      set(config_search "${${package}_DIR}")
+    endif()
     find_package(${package} ${version} EXACT REQUIRED CONFIG
-      PATHS "${MVP_SELECTED_PREFIX}" NO_DEFAULT_PATH)
+      PATHS "${config_search}" NO_DEFAULT_PATH)
   else()
     # SBV's manually authored contracts expose release variables and exact
     # versioned config directories without ConfigVersion files.
