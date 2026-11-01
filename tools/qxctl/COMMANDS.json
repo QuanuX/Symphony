@@ -18242,6 +18242,10 @@
         {
           "feature_id": "ssfv:symphony:qxctl-sov-process-execution",
           "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:sov-stdio-adapter",
+          "interaction": "invoke"
         }
       ],
       "infrastructure_purpose": null,
@@ -18380,6 +18384,10 @@
         {
           "feature_id": "ssfv:symphony:qxctl-sov-ssh-carrier",
           "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:sov-ssh-adapter",
+          "interaction": "invoke"
         }
       ],
       "infrastructure_purpose": null,
@@ -18452,6 +18460,10 @@
         {
           "feature_id": "ssfv:symphony:qxctl-sov-process-execution",
           "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:sov-stdio-adapter",
+          "interaction": "invoke"
         }
       ],
       "infrastructure_purpose": null,
@@ -18516,6 +18528,10 @@
         {
           "feature_id": "ssfv:symphony:qxctl-sov-process-execution",
           "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:sov-stdio-adapter",
+          "interaction": "invoke"
         }
       ],
       "infrastructure_purpose": null,
@@ -18548,6 +18564,10 @@
       "feature_bindings": [
         {
           "feature_id": "ssfv:symphony:qxctl-sov-process-execution",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:sov-stdio-adapter",
           "interaction": "invoke"
         }
       ],
@@ -21549,5 +21569,5 @@
       "json_output": true
     }
   ],
-  "registry_digest": "sha256:365967f40f59e9e419813d1cffc5c083daa5817cc8b6dd05dd5e83dcd49680b7"
+  "registry_digest": "sha256:baded84e0d6262178fa26094abaebe5dd195fee9b0996cc5b206d68b63ac7711"
 }

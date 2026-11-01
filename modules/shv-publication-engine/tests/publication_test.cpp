@@ -2,7 +2,17 @@
 using namespace native_test;
 void test_native_publication_contract(Engine &e) {
   auto call = [&](std::string op, Json p, bool fail = false) {
-    return e.call(op, p, !fail);
+    const auto ordinal = e.calls + 1;
+    try {
+      return e.call(op, p, !fail);
+    } catch (const std::exception &error) {
+      // These are synthetic local fixtures. Preserve the exact failing input
+      // so compiler/profile-specific failures can be reproduced independently.
+      throw std::runtime_error("publication fixture call " +
+                               std::to_string(ordinal) + " operation=" + op +
+                               " expected=" + (fail ? "refusal" : "success") +
+                               " payload=" + p.dump() + "\n" + error.what());
+    }
   };
   std::string h = "sha256:" + std::string(64, 'a');
   Json inst = {
