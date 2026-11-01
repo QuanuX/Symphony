@@ -4955,7 +4955,7 @@
   ],
   "go_source_protocol_literals": {
     "scope": "Versioned symphony.*.vN literals in non-test Go source, not a new admission registry; includes input/output/discovery identifiers and does not equate protocol generation with module version.",
-    "count": 529,
+    "count": 530,
     "protocols": {
       "symphony.sbv.result-inspect-input.v1": [
         "libraries/sbv-go/examples/roundtrip/main.go:81"
@@ -5100,14 +5100,14 @@
       ],
       "symphony.knowledge.named-version-result.v1": [
         "modules/accordare-stav-producer/internal/protocol/validate.go:21",
-        "tools/qxctl/cmd/qxctl/command_specs.go:283",
-        "tools/qxctl/cmd/qxctl/command_specs.go:284",
+        "tools/qxctl/cmd/qxctl/command_specs.go:290",
+        "tools/qxctl/cmd/qxctl/command_specs.go:291",
         "tools/qxctl/cmd/qxctl/named_version.go:22"
       ],
       "symphony.knowledge.named-version-command.v1": [
         "modules/accordare-stav-producer/internal/protocol/validate.go:198",
         "modules/accordare-stav-producer/internal/protocol/validate.go:261",
-        "tools/qxctl/cmd/qxctl/command_specs.go:279",
+        "tools/qxctl/cmd/qxctl/command_specs.go:286",
         "tools/qxctl/cmd/qxctl/named_version.go:255"
       ],
       "symphony.sav.named-version-registry.absent.v1": [
@@ -5139,20 +5139,25 @@
       ],
       "symphony.ssiag.status.v1": [
         "modules/secure-identity-access-governance/internal/client/client.go:113",
-        "modules/secure-identity-access-governance/internal/server/server.go:959",
+        "modules/secure-identity-access-governance/internal/server/server.go:960",
         "tools/qxctl/cmd/qxctl/commands.go:1417",
         "tools/qxctl/internal/ssiagclient/client.go:587"
       ],
       "symphony.ssiag.providers.v1": [
         "modules/secure-identity-access-governance/internal/client/client.go:124",
-        "modules/secure-identity-access-governance/internal/server/server.go:978",
+        "modules/secure-identity-access-governance/internal/server/server.go:979",
         "tools/qxctl/cmd/qxctl/commands.go:1417",
         "tools/qxctl/internal/ssiagclient/client.go:598"
       ],
       "symphony.ssiag.config.v1": [
         "modules/secure-identity-access-governance/internal/config/config.go:100",
         "modules/secure-identity-access-governance/internal/config/config.go:162",
+        "modules/stav-append-authority/internal/foundationaudit/client_unix.go:82",
         "tools/qxctl/internal/ssiagclient/client.go:464"
+      ],
+      "symphony.ssiag.foundation-audit.v1": [
+        "modules/secure-identity-access-governance/internal/foundationaudit/contract.go:20",
+        "modules/stav-append-authority/internal/foundationaudit/contract.go:20"
       ],
       "symphony.foundation.lifecycle-adapter.v1": [
         "modules/secure-identity-access-governance/internal/foundationlifecycle/types.go:4",
@@ -5170,7 +5175,7 @@
         "modules/stav-append-authority/internal/foundation/types.go:6",
         "modules/stav-append-authority/internal/lifecycle/lifecycle.go:161",
         "modules/stav-append-authority/internal/lifecycle/lifecycle.go:481",
-        "tools/qxctl/cmd/qxctl/command_specs.go:344",
+        "tools/qxctl/cmd/qxctl/command_specs.go:351",
         "tools/qxctl/internal/foundationlifecycle/client.go:24",
         "tools/qxctl/internal/invariantregistry/registry.go:353",
         "tools/qxctl/internal/invariantregistry/registry.go:359",
@@ -5193,8 +5198,8 @@
       "symphony.foundation.lifecycle-result.v1": [
         "modules/secure-identity-access-governance/internal/foundationlifecycle/types.go:9",
         "modules/stav-append-authority/internal/foundation/types.go:10",
-        "tools/qxctl/cmd/qxctl/command_specs.go:345",
-        "tools/qxctl/cmd/qxctl/command_specs.go:346",
+        "tools/qxctl/cmd/qxctl/command_specs.go:352",
+        "tools/qxctl/cmd/qxctl/command_specs.go:353",
         "tools/qxctl/internal/foundationlifecycle/client.go:26"
       ],
       "symphony.ssiag.install.v1": [
@@ -5207,8 +5212,8 @@
       ],
       "symphony.ssiag.authorization-request.v1": [
         "modules/secure-identity-access-governance/internal/policy/policy.go:21",
-        "modules/secure-identity-access-governance/internal/server/server.go:691",
-        "modules/secure-identity-access-governance/internal/server/server.go:720",
+        "modules/secure-identity-access-governance/internal/server/server.go:692",
+        "modules/secure-identity-access-governance/internal/server/server.go:721",
         "tools/qxctl/cmd/qxctl/lifecycle.go:840",
         "tools/qxctl/cmd/qxctl/maestro.go:184",
         "tools/qxctl/cmd/qxctl/maestro.go:228",
@@ -5319,17 +5324,17 @@
         "modules/secure-identity-access-governance/internal/provider/trust.go:625"
       ],
       "symphony.ssiag.provider-readiness-observation-request.v1": [
-        "modules/secure-identity-access-governance/internal/server/server.go:430",
+        "modules/secure-identity-access-governance/internal/server/server.go:431",
         "tools/qxctl/internal/ssiagclient/provider_readiness.go:16"
       ],
       "symphony.ssiag.provider-trust-verification-request.v1": [
-        "modules/secure-identity-access-governance/internal/server/server.go:481",
+        "modules/secure-identity-access-governance/internal/server/server.go:482",
         "tools/qxctl/cmd/qxctl/commands.go:1306",
         "tools/qxctl/cmd/qxctl/main.go:3083",
         "tools/qxctl/internal/ssiagclient/client.go:647"
       ],
       "symphony.ssiag.error.v1": [
-        "modules/secure-identity-access-governance/internal/server/server.go:1067"
+        "modules/secure-identity-access-governance/internal/server/server.go:1068"
       ],
       "symphony.stav.append-authority.enrollment.v1": [
         "modules/stav-append-authority/internal/lifecycle/enrollment.go:180",
@@ -5358,28 +5363,28 @@
         "tools/qxctl/cmd/qxctl/command_manifest.go:115"
       ],
       "symphony.validation.warning-state.v1": [
-        "tools/qxctl/cmd/qxctl/command_specs.go:224",
-        "tools/qxctl/cmd/qxctl/command_specs.go:225",
+        "tools/qxctl/cmd/qxctl/command_specs.go:231",
+        "tools/qxctl/cmd/qxctl/command_specs.go:232",
         "tools/qxctl/internal/validation/types.go:9"
       ],
       "symphony.repository.root-summary.v1": [
-        "tools/qxctl/cmd/qxctl/command_specs.go:237",
-        "tools/qxctl/cmd/qxctl/command_specs.go:238",
+        "tools/qxctl/cmd/qxctl/command_specs.go:244",
+        "tools/qxctl/cmd/qxctl/command_specs.go:245",
         "tools/qxctl/internal/validation/types.go:10"
       ],
       "symphony.knowledge.invariant-query-result.v1": [
-        "tools/qxctl/cmd/qxctl/command_specs.go:244",
-        "tools/qxctl/cmd/qxctl/command_specs.go:245",
+        "tools/qxctl/cmd/qxctl/command_specs.go:251",
+        "tools/qxctl/cmd/qxctl/command_specs.go:252",
         "tools/qxctl/internal/invariantregistry/registry.go:23"
       ],
       "symphony.validation.result.v1": [
-        "tools/qxctl/cmd/qxctl/command_specs.go:251",
-        "tools/qxctl/cmd/qxctl/command_specs.go:252",
+        "tools/qxctl/cmd/qxctl/command_specs.go:258",
+        "tools/qxctl/cmd/qxctl/command_specs.go:259",
         "tools/qxctl/internal/knowledgeengine/client.go:130",
         "tools/qxctl/internal/validation/types.go:6"
       ],
       "symphony.sav.named-version-validation-input.v1": [
-        "tools/qxctl/cmd/qxctl/command_specs.go:281",
+        "tools/qxctl/cmd/qxctl/command_specs.go:288",
         "tools/qxctl/cmd/qxctl/commands.go:856"
       ],
       "symphony.knowledge.administration-coverage-input.v1": [
@@ -9540,7 +9545,7 @@
     "records": [
       {
         "path": "cmake/mvp-release-identities.json",
-        "sha256": "822402dd2fa837d307079ff97c317d9a9aedad36938899b23f09a9a8b64805c5",
+        "sha256": "c19617f12abc41a7a8cd5a7dab1031c9048daf799570b21b961372a0019694f3",
         "schema_ids": [],
         "schema_dialect": null,
         "protocol": "symphony.mvp.release-identities.v1",
@@ -9552,7 +9557,7 @@
       },
       {
         "path": "knowledge/FEATURE-ADMINISTRATION-PROFILE.json",
-        "sha256": "5e3447aa41491fdc55390a78c1bb4eb6f3f23df737ce1c1c9db2f4e170b4222f",
+        "sha256": "16615bda28dceaae144aacc964afc41983b4c2e0a0a8dfb2fe1264f88856aafe",
         "schema_ids": [],
         "schema_dialect": null,
         "protocol": "symphony.knowledge.feature-administration-profile.v1",
@@ -9564,7 +9569,7 @@
       },
       {
         "path": "knowledge/INVARIANT-OWNERSHIP.json",
-        "sha256": "57010ad9bbe0c9114413ce35454c333c4ed788bf5c6d0d321d8ef175561249e4",
+        "sha256": "62878590c9e1801f4e1d96195fa0e8a591f09d821c068343d5d8b56be38a95c3",
         "schema_ids": [],
         "schema_dialect": null,
         "protocol": "symphony.knowledge.invariant-ownership-registry.v3",
@@ -12998,7 +13003,7 @@
       },
       {
         "path": "knowledge/ssiag/schemas/v1/MANIFEST.md",
-        "sha256": "f7ff117d5139389cf300cbc1694046ae19642c16b92a1d93b1dbbf8a1a85224e",
+        "sha256": "e97ba961b28b9fbb6bfc6ac9b67b1b16164e24870ccfe55149c47c0c3213a127",
         "schema_ids": [],
         "schema_dialect": null,
         "protocol": null,
@@ -13066,6 +13071,40 @@
           {
             "json_pointer": "/$id",
             "id": "urn:symphony:ssiag:capability:v1"
+          }
+        ],
+        "schema_dialect": "https://json-schema.org/draft/2020-12/schema",
+        "protocol": null,
+        "format_version": null,
+        "kind": "schema",
+        "test_fixture": false,
+        "historical_or_example": false,
+        "installation_scope": "source_catalog_not_installation_assertion"
+      },
+      {
+        "path": "knowledge/ssiag/schemas/v1/foundation-audit-request.schema.json",
+        "sha256": "8f2040e5397e34e44b8cb1730e2912ca75c06d5ee0986d4ffb708270ca1198e7",
+        "schema_ids": [
+          {
+            "json_pointer": "/$id",
+            "id": "urn:symphony:ssiag:foundation-audit-request:v1"
+          }
+        ],
+        "schema_dialect": "https://json-schema.org/draft/2020-12/schema",
+        "protocol": null,
+        "format_version": null,
+        "kind": "schema",
+        "test_fixture": false,
+        "historical_or_example": false,
+        "installation_scope": "source_catalog_not_installation_assertion"
+      },
+      {
+        "path": "knowledge/ssiag/schemas/v1/foundation-audit-response.schema.json",
+        "sha256": "491e7b94da3f01143d51a172d555031803ec0dd393d9202623fd689cd80165ee",
+        "schema_ids": [
+          {
+            "json_pointer": "/$id",
+            "id": "urn:symphony:ssiag:foundation-audit-response:v1"
           }
         ],
         "schema_dialect": "https://json-schema.org/draft/2020-12/schema",
@@ -14551,10 +14590,10 @@
       },
       {
         "path": "modules/scv-graph-duckdb-connector/DUCKDB-PROVENANCE.json",
-        "sha256": "4567f836fb38b6881a8536cf4ee9feb3212ca024b57e3182999ba73a491d8d64",
+        "sha256": "4d63cd97acbaa120ae919c7cb8093f6d1f64d072404497a5ed125eb30e675707",
         "schema_ids": [],
         "schema_dialect": null,
-        "protocol": "symphony.scv.graph-index-duckdb-dependency.v1",
+        "protocol": "symphony.graph.duckdb-dependency.v2",
         "format_version": null,
         "kind": "resource",
         "test_fixture": false,
@@ -14763,10 +14802,10 @@
       },
       {
         "path": "modules/shv-graph-duckdb-connector/DUCKDB-PROVENANCE.json",
-        "sha256": "4567f836fb38b6881a8536cf4ee9feb3212ca024b57e3182999ba73a491d8d64",
+        "sha256": "4d63cd97acbaa120ae919c7cb8093f6d1f64d072404497a5ed125eb30e675707",
         "schema_ids": [],
         "schema_dialect": null,
-        "protocol": "symphony.scv.graph-index-duckdb-dependency.v1",
+        "protocol": "symphony.graph.duckdb-dependency.v2",
         "format_version": null,
         "kind": "resource",
         "test_fixture": false,
@@ -16108,7 +16147,7 @@
       },
       {
         "path": "tools/qxctl/COMMANDS.json",
-        "sha256": "1ff900c07c2fbc6aae6680f38640368fcddfdc0dfe43dc29d6fa4c4a9e32920b",
+        "sha256": "6b161bc7652f5b01f04f41c18efec56c5a4353b32f6e29680d7cb3b284dfe51a",
         "schema_ids": [],
         "schema_dialect": null,
         "protocol": "symphony.qxctl.command-registry.v1",
@@ -17359,7 +17398,7 @@
     },
     {
       "path": "knowledge/INVARIANT-OWNERSHIP.json",
-      "sha256": "57010ad9bbe0c9114413ce35454c333c4ed788bf5c6d0d321d8ef175561249e4"
+      "sha256": "62878590c9e1801f4e1d96195fa0e8a591f09d821c068343d5d8b56be38a95c3"
     },
     {
       "path": "knowledge/sacv/schemas/v1/MANIFEST.md",
@@ -18187,7 +18226,7 @@
     },
     {
       "path": "knowledge/ssiag/schemas/v1/MANIFEST.md",
-      "sha256": "f7ff117d5139389cf300cbc1694046ae19642c16b92a1d93b1dbbf8a1a85224e"
+      "sha256": "e97ba961b28b9fbb6bfc6ac9b67b1b16164e24870ccfe55149c47c0c3213a127"
     },
     {
       "path": "knowledge/ssiag/schemas/v1/authorization-decision.schema.json",
@@ -18204,6 +18243,14 @@
     {
       "path": "knowledge/ssiag/schemas/v1/capability.schema.json",
       "sha256": "b45d0af37074465da078500465def334612524fe1386f9994601a1d82fd10a78"
+    },
+    {
+      "path": "knowledge/ssiag/schemas/v1/foundation-audit-request.schema.json",
+      "sha256": "8f2040e5397e34e44b8cb1730e2912ca75c06d5ee0986d4ffb708270ca1198e7"
+    },
+    {
+      "path": "knowledge/ssiag/schemas/v1/foundation-audit-response.schema.json",
+      "sha256": "491e7b94da3f01143d51a172d555031803ec0dd393d9202623fd689cd80165ee"
     },
     {
       "path": "knowledge/ssiag/schemas/v1/lifecycle-grant-plan.schema.json",
@@ -18735,7 +18782,7 @@
     },
     {
       "path": "modules/scabv-ibkr-client-portal-cpp/CMakeLists.txt",
-      "sha256": "be48bfafbbd4359304508a34a9d7bb4756d1a842a81b23a0ad27ec1abdc87bb2"
+      "sha256": "dd789515f095f03ee593f3e350f48f05c64c473760f52870353918c312fbb92b"
     },
     {
       "path": "modules/scabv-ibkr-client-portal-cpp/cmake/SymphonyScabvIbkrClientPortalConfig.cmake.in",
@@ -18751,7 +18798,7 @@
     },
     {
       "path": "modules/scabv-ibkr-tws-cpp/CMakeLists.txt",
-      "sha256": "a81d3ecea668eeb286d743b87fc5b75a0cfc7fcbeb82cb558ec362d5d7a759b8"
+      "sha256": "828eb7623dd214ca549953c4c24c43cbb8684a116b1c902b10eada8bafd42ed3"
     },
     {
       "path": "modules/scabv-ibkr-tws-cpp/cmake/SymphonyScabvIbkrTwsConfig.cmake.in",
@@ -18995,23 +19042,31 @@
     },
     {
       "path": "modules/secure-identity-access-governance/internal/credential/dispatch.go",
-      "sha256": "77b3f2c8ca5857dd1ef3207b09b5f45ef400100093ec8bf13bd2e9a50099bbcd"
+      "sha256": "6555872e32a1660122d027011f70a1fde90b48edae56baacdab68607a0a877e6"
     },
     {
       "path": "modules/secure-identity-access-governance/internal/credential/dispatch_test.go",
-      "sha256": "35fc2e0a21e23ef82ae4d411c0ddb0fe5a62782b7a66274a393f26e172f82746"
+      "sha256": "26c5f7a929d11942919e68ace0ca1b72b715ddd29d86591acb064ddb61f94012"
     },
     {
       "path": "modules/secure-identity-access-governance/internal/credential/journal.go",
-      "sha256": "2249d6a3b09972bd8d67dc89b7c451e85b1bd3e25cc6f4a2987844bdbc8cc70b"
+      "sha256": "4aff053204287fae2b1b075b8069a319a265ad03b0e72359758ded59df179afd"
     },
     {
       "path": "modules/secure-identity-access-governance/internal/credential/journal_test.go",
-      "sha256": "f7afb4fc9c353dc3d8118b8962c1179f9430333b998679c2e3d9d0e411811940"
+      "sha256": "a554cdd34db257edf9eb37144146105a732a7b39f68ac61b880affbffd57db44"
     },
     {
       "path": "modules/secure-identity-access-governance/internal/credential/journal_unix.go",
       "sha256": "44da9c08f5be96a87fd4e850ce0166c95a8196ac89adc347c505fc5e1f5307b9"
+    },
+    {
+      "path": "modules/secure-identity-access-governance/internal/credential/outcome.go",
+      "sha256": "d2f8bbd7d4bdd4b71f9eb212d68d3d141c9507080fbdb1310fb2a8aae67dc4d2"
+    },
+    {
+      "path": "modules/secure-identity-access-governance/internal/foundationaudit/contract.go",
+      "sha256": "9f482db88dc57ea7bdb7f2f899d6c0735bef514cbc0db50c333098aee8a9d2ab"
     },
     {
       "path": "modules/secure-identity-access-governance/internal/foundationlifecycle/types.go",
@@ -19059,7 +19114,7 @@
     },
     {
       "path": "modules/secure-identity-access-governance/internal/server/server.go",
-      "sha256": "bfead8a6a4de24327f9ba065a21c36048d90a0a43f58ba368f7c022bc0bb929a"
+      "sha256": "9062be8608be0a5441be6e575d27e1fa2f0f6e2e86d1667cdda660607ebdd2ea"
     },
     {
       "path": "modules/secure-identity-access-governance/internal/server/server_test.go",
@@ -19067,7 +19122,7 @@
     },
     {
       "path": "modules/secure-identity-access-governance/internal/stavproducer/producer.go",
-      "sha256": "766d6d2d922c103d1ec4894a870af62ae10546b899967f53df9ad0323d063d7b"
+      "sha256": "f6da623eb30744665c6fcc1180f32cea518036fd9911875fa33c893a37c316ea"
     },
     {
       "path": "modules/secure-identity-access-governance/internal/stavproducer/producer_test.go",
@@ -20052,6 +20107,14 @@
     {
       "path": "modules/stav-append-authority/internal/foundation/types.go",
       "sha256": "55e17a8457fc3dfb202463e052cee338e16ceb937772f726c98b5074c3d11409"
+    },
+    {
+      "path": "modules/stav-append-authority/internal/foundationaudit/client_unix.go",
+      "sha256": "84c646b1707245641a99fe718c9ef8e8c214b75d042bbaccf579385647eb2acd"
+    },
+    {
+      "path": "modules/stav-append-authority/internal/foundationaudit/contract.go",
+      "sha256": "9f482db88dc57ea7bdb7f2f899d6c0735bef514cbc0db50c333098aee8a9d2ab"
     },
     {
       "path": "modules/stav-append-authority/internal/lifecycle/enrollment.go",

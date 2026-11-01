@@ -998,11 +998,37 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: canonical protocol schema manifest
 - truth_role: inventory and boundary for exact authorization, policy, provider-control, and provider-trust schemas
 - owner: SSIAG knowledge maintainer
-- scope: Declares thirty-two bounded caller-neutral SSIAG v1 contracts, including metadata-only provider trust, protected exact-installation binding, and three-layer readiness boundaries.
+- scope: Declares bounded caller-neutral SSIAG v1 contracts, including metadata-only provider trust, protected exact-installation binding, three-layer readiness boundaries, and closed foundational lifecycle audit requests and receipts.
 - relationships: depends_on -> `knowledge/ssiag/SPEC.md`; governs -> `modules/secure-identity-access-governance/internal/policy/policy.go`; governs -> `modules/secure-identity-access-governance/internal/provider/trust.go`; governs -> `modules/knowledge-session-coordinator/src/authority_session.cpp`
 - consumers: SSIAG, provider adapters, qxctl, coordinator, validator, conformance tests, reviewers
 - deferred_projections: rendered protocol documentation
 - notes: These schemas define safe evidence and explicitly disabled secret-channel descriptors, not credentials, bearer tokens, grants by possession, or canonical apply authority.
+- status: canonical
+
+#### SSIAG Foundational Audit Request Schema
+- path: `knowledge/ssiag/schemas/v1/foundation-audit-request.schema.json`
+- title: SSIAG Foundational Audit Request v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical bounded foundational intent and observed-outcome audit request truth
+- owner: SSIAG knowledge maintainer
+- scope: Binds the exact SSIAG or STAV lifecycle operation, TOPS, plan, prior state, audit phase and retained outcome without accepting arbitrary audit events or caller-supplied identity.
+- relationships: depends_on -> `knowledge/ssiag/SPEC.md`; governed_by -> `knowledge/FOUNDATIONAL-LIFECYCLE.md`; implemented_by -> `modules/secure-identity-access-governance/internal/foundationaudit/contract.go`; consumed_by -> `modules/stav-append-authority/internal/foundationaudit/contract.go`
+- consumers: SSIAG and STAV native lifecycle owners, validators, conformance tests, reviewers
+- deferred_projections: rendered protocol documentation
+- notes: The server independently authenticates the target-host owner; request possession grants no mutation or producer authority.
+- status: canonical
+
+#### SSIAG Foundational Audit Response Schema
+- path: `knowledge/ssiag/schemas/v1/foundation-audit-response.schema.json`
+- title: SSIAG Foundational Audit Response v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical phase-specific committed foundational audit receipt truth
+- owner: SSIAG knowledge maintainer
+- scope: Binds an intent or outcome response to the exact request digest and committed STAV receipt; native owners independently validate receipt identity and candidate binding.
+- relationships: depends_on -> `knowledge/ssiag/schemas/v1/foundation-audit-request.schema.json`; depends_on -> `knowledge/stav/schemas/v1/receipt.schema.json`; implemented_by -> `modules/secure-identity-access-governance/internal/server/foundation_audit.go`; consumed_by -> `modules/stav-append-authority/internal/foundationaudit/client_unix.go`
+- consumers: SSIAG and STAV native lifecycle owners, validators, conformance tests, reviewers
+- deferred_projections: rendered protocol documentation
+- notes: Intent commitment does not establish native execution; deferred outcomes remain uncommitted until their own receipt is recovered.
 - status: canonical
 
 #### SSIAG macOS Signing Policy Schema
