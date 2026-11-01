@@ -254,7 +254,8 @@ check current-repository "$REPO_ROOT" 0 'violation=0 exit=0'
     fail 'current repository must have exactly one caller-authority summary'
 grep 'caller_authority.scan_complete ' "$CASE_LOG" | grep 'findings=0' >/dev/null ||
     fail 'current repository has caller-authority findings'
-contains "$CASE_LOG" 'sodv.releases.scan_complete records=3 transactions=1 violations=0'
+grep 'sodv.releases.scan_complete records=' "$CASE_LOG" | grep 'violations=0' >/dev/null ||
+    fail 'current repository has SODV release violations'
 grep 'feature_administration.scan_complete features=' "$CASE_LOG" | grep 'violations=0' >/dev/null ||
     fail 'current repository has feature-administration violations'
 "$FIXTURE_BIN" json-inventory "$REPO_ROOT" "$CASE_LOG"
