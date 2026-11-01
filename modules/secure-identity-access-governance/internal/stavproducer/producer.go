@@ -14,6 +14,8 @@ import (
 type Kind string
 
 const (
+	FoundationIntent         Kind = "foundation_intent"
+	FoundationOutcome        Kind = "foundation_outcome"
 	AuthenticationDecision   Kind = "authentication_decision"
 	PolicyDecision           Kind = "policy_decision"
 	ProviderOperation        Kind = "provider_operation"
@@ -32,6 +34,14 @@ type eventContract struct {
 }
 
 var contracts = map[Kind]eventContract{
+	FoundationIntent: {
+		eventClass: "symphony.ssiag.foundation.intent", operationID: "symphony.ssiag.foundation.prepare", intentID: "symphony.ssiag.foundation.prepare",
+		reasons: map[string]string{"allowed": "symphony.ssiag.foundation.intent.allowed"},
+	},
+	FoundationOutcome: {
+		eventClass: "symphony.ssiag.foundation.outcome", operationID: "symphony.ssiag.foundation.observe", intentID: "symphony.ssiag.foundation.observe",
+		reasons: map[string]string{"succeeded": "symphony.ssiag.foundation.outcome.observed"},
+	},
 	AuthenticationDecision: {
 		eventClass:  "symphony.ssiag.authentication.decision",
 		operationID: "symphony.ssiag.authenticate",

@@ -136,6 +136,7 @@ func newServer(cfg config.Config, registry *provider.Registry, audit auditSink, 
 func (s *Server) Handler() http.Handler {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/v1/status", s.handleStatus)
+	mux.HandleFunc("/v1/foundation-lifecycle/audit", s.handleFoundationAudit)
 	mux.HandleFunc("/v1/providers", s.handleProviders)
 	mux.HandleFunc("/v1/authorization/decisions", s.handleAuthorization)
 	if s.admin != nil {

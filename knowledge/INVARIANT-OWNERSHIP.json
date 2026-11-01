@@ -731,9 +731,30 @@
       "producer_regressions": [
         {
           "cases": [
-            "TestOrdinaryAuditFailsBeforeAttemptOrMutation"
+            "TestFoundationLifecycleRealSTAVBridgeRestartReconcilesLostReply"
+          ],
+          "path": "modules/secure-identity-access-governance/internal/foundationlifecycle/audit_process_test.go"
+        },
+        {
+          "cases": [
+            "TestExplicitRestartPreservesAndReconcilesOriginalStopOutcome",
+            "TestObservedOutcomeCrashBeforeNativeClosureFinishesWithoutMutation",
+            "TestOrdinaryLifecycleReceiptsAndPendingOutcomeRecoverAfterRestart"
+          ],
+          "path": "modules/secure-identity-access-governance/internal/foundationlifecycle/audit_test.go"
+        },
+        {
+          "cases": [
+            "TestOrdinaryAuditPersistsIntentBeforeUnavailableWithoutMutation"
           ],
           "path": "modules/secure-identity-access-governance/internal/foundationlifecycle/engine_test.go"
+        },
+        {
+          "cases": [
+            "TestOrdinarySTAVLifecycleOutcomePendingAndRecover",
+            "TestOutcomeRecoveryCASUsesLatestNativeAttemptAfterInterruptedJournalBinding"
+          ],
+          "path": "modules/stav-append-authority/internal/foundation/audit_test.go"
         },
         {
           "cases": [
@@ -4251,7 +4272,7 @@
     }
   ],
   "protocol": "symphony.knowledge.invariant-ownership-registry.v3",
-  "registry_digest": "sha256:bb879413948c35f4ed8d52fe73d4d7dd37b08b5ed2c4406ac5c20167f32842a7",
+  "registry_digest": "sha256:a9acbd38c51d0830d6c73f5888f726a9dcd4d379a782028edcca05d4579953b9",
   "scope": "common_lowest_authoritative_layer",
   "test_policy": {
     "consumer_boundary_rejection_required": true,

@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:ssiag:foundation-audit-response:v1",
+  "title": "SSIAG foundational audit committed receipt response",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "phase",
+    "request_digest",
+    "receipt"
+  ],
+  "properties": {
+    "schema": {
+      "const": "symphony.ssiag.foundation-audit.v1"
+    },
+    "phase": {
+      "enum": [
+        "intent",
+        "outcome"
+      ]
+    },
+    "request_digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "receipt": {
+      "allOf": [
+        {
+          "$ref": "https://github.com/QuanuX/Symphony/knowledge/stav/schemas/v1/receipt.schema.json"
+        },
+        {
+          "properties": {
+            "disposition": {
+              "const": "committed"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

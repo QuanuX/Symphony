@@ -182,8 +182,9 @@ func Execute(command Command) (Result, error) {
 
 // DirectApply keeps the human CLI on the same plan/apply transaction engine.
 func DirectApply(surface string, scope stavpaths.Scope, topsID, desiredState string, authorityUID, authorityGID *uint32, auditDeferred bool) (Result, error) {
-	if !auditDeferred {
-		return Result{}, fmt.Errorf("direct foundational mutation requires explicit --audit-deferred until a closed audit receipt is available")
+	mode := "ordinary"
+	if auditDeferred {
+		mode = "audit_deferred"
 	}
 	observation, err := Observe(scope, topsID, surface)
 	if err != nil {
@@ -193,7 +194,7 @@ func DirectApply(surface string, scope stavpaths.Scope, topsID, desiredState str
 	requestID, correlationID := randomUUID(), randomUUID()
 	requested := time.Now().UTC().Truncate(time.Second)
 	deadline := requested.Add(maxDeadline)
-	command := Command{Protocol: CommandProtocol, FormatVersion: 1, Operation: "plan", Component: "stav", Surface: surface, Scope: string(scope), TOPSID: topsID, OperationID: &operationID, RequestID: &requestID, CorrelationID: &correlationID, ExpectedStateDigest: &observation.StableStateDigest, Intent: &Intent{DesiredState: desiredState, AuthorityUID: authorityUID, AuthorityGID: authorityGID, AuditMode: "audit_deferred", TTLSeconds: 60}, RequestedAt: formatTimestamp(requested), DeadlineAt: formatTimestamp(deadline)}
+	command := Command{Protocol: CommandProtocol, FormatVersion: 1, Operation: "plan", Component: "stav", Surface: surface, Scope: string(scope), TOPSID: topsID, OperationID: &operationID, RequestID: &requestID, CorrelationID: &correlationID, ExpectedStateDigest: &observation.StableStateDigest, Intent: &Intent{DesiredState: desiredState, AuthorityUID: authorityUID, AuthorityGID: authorityGID, AuditMode: mode, TTLSeconds: 60}, RequestedAt: formatTimestamp(requested), DeadlineAt: formatTimestamp(deadline)}
 	planned, err := Execute(command)
 	if err != nil {
 		return planned, err

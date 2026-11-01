@@ -15,6 +15,7 @@ import (
 	"time"
 
 	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/config"
+	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/foundationaudit"
 	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/lifecycle"
 	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/packageinstall"
 	ssiagpaths "github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/paths"
@@ -23,6 +24,7 @@ import (
 )
 
 type Engine struct {
+	audit     foundationaudit.Submit
 	now       func() time.Time
 	mutate    func(Plan) error
 	observeFn func(string, ssiagpaths.Scope, string, *Attempt) (Observation, error)
@@ -45,6 +47,7 @@ func New() *Engine {
 	engine.mutate = engine.mutatePlan
 	engine.observeFn = engine.observe
 	engine.evidence = engine.invocationEvidence
+	engine.audit = submitFoundationAudit
 	return engine
 }
 
@@ -208,41 +211,6 @@ func (engine *Engine) DirectApply(surface string, scope ssiagpaths.Scope, topsID
 	return result, resultError(result, err)
 }
 
-// BindCommittedAuditReceipt is the typed handoff for the separately owned
-// SSIAG/STAV reconciliation endpoint. The caller must first validate a
-// committed receipt bound to this exact lifecycle attempt; this method only
-// performs the protected compare-and-swap binding and never manufactures one.
-func (engine *Engine) BindCommittedAuditReceipt(scope ssiagpaths.Scope, topsID, surface, expectedAttemptDigest, receiptDigest string) (Attempt, error) {
-	if !validDigest(expectedAttemptDigest) || !validDigest(receiptDigest) {
-		return Attempt{}, fmt.Errorf("SSIAG lifecycle audit reconciliation digest is invalid")
-	}
-	install, err := ssiagpaths.ResolveInstall(scope)
-	if err != nil {
-		return Attempt{}, err
-	}
-	store, err := openAttemptStore(install.LifecycleDir, topsID, surface, true)
-	if err != nil {
-		return Attempt{}, err
-	}
-	defer store.close()
-	attempt, present, err := store.read()
-	if err != nil || !present {
-		return Attempt{}, fmt.Errorf("SSIAG lifecycle audit reconciliation attempt is absent")
-	}
-	if attempt.AttemptDigest != expectedAttemptDigest || attempt.Phase != "closed" || attempt.AuditState != "audit_deferred" || attempt.AuditReceiptDigest != nil {
-		return Attempt{}, fmt.Errorf("SSIAG lifecycle audit reconciliation compare-and-swap mismatch")
-	}
-	predecessor := attempt.AttemptDigest
-	attempt.PredecessorDigest = &predecessor
-	attempt.AuditState = "reconciled"
-	attempt.AuditReceiptDigest = &receiptDigest
-	attempt.UpdatedAt = engine.stscNow()
-	if err := store.write(&attempt); err != nil {
-		return Attempt{}, err
-	}
-	return attempt, nil
-}
-
 func (engine *Engine) Execute(command Command) (Result, error) {
 	deadline, err := time.Parse(time.RFC3339, command.DeadlineAt)
 	if err != nil || !deadline.After(engine.now()) {
@@ -336,7 +304,12 @@ func (engine *Engine) apply(command Command, observation Observation, current *A
 		if current.OperationID == plan.OperationID && current.PlanDigest == plan.PlanDigest && current.Phase == "closed" {
 			return engine.appliedResult(command, observation, &plan, current, false, true, recovered, "already_applied")
 		}
-		if current.Phase == "closed" && current.AuditState == "audit_deferred" {
+		bootstrapRestart := false
+		if current.Phase == "closed" && current.AuditState == "audit_deferred" && plan.Surface == "supervisor" && plan.DesiredState == "native_running" && plan.AuditMode == "audit_deferred" {
+			previous, err := foundationaudit.Load(filepath.Join(store.directory, "audit"), current.OperationID)
+			bootstrapRestart = err == nil && previous.Outcome != nil && previous.Base.PlanDigest == current.PlanDigest
+		}
+		if current.Phase == "closed" && current.AuditState == "audit_deferred" && !bootstrapRestart {
 			result, err := engine.blocked(command, observation, &plan, "audit.reconciliation-required", "the previous SSIAG lifecycle outcome must be reconciled before this surface accepts another mutation")
 			if err != nil {
 				return Result{}, err
@@ -366,9 +339,6 @@ func (engine *Engine) apply(command Command, observation Observation, current *A
 	if engine.desiredProven(plan, observation) {
 		return engine.appliedResult(command, observation, &plan, nil, false, true, recovered, "already_applied")
 	}
-	if plan.AuditMode == "ordinary" {
-		return engine.blocked(command, observation, &plan, "audit.unavailable", "ordinary SSIAG foundational lifecycle mutation requires a committed STAV receipt before external mutation")
-	}
 	if plan.Surface == "supervisor" && observation.Supervisor.ManagerState == "manager_unavailable" {
 		return engine.blocked(command, observation, &plan, "manager.unavailable", "native SSIAG supervisor manager is unavailable")
 	}
@@ -393,6 +363,18 @@ func (engine *Engine) apply(command Command, observation Observation, current *A
 }
 
 func (engine *Engine) resume(command Command, prior Observation, plan *Plan, attempt *Attempt, store *attemptStore, recovered bool) (Result, error) {
+	// A durable observation closes the old execution even if a later external
+	// transition changed current state; recovery must never repeat that mutation.
+	if journal, err := foundationaudit.Load(filepath.Join(store.directory, "audit"), plan.OperationID); err == nil && journal.Outcome != nil {
+		return engine.closeAttempt(command, prior, plan, attempt, store, false, false, recovered)
+	}
+	if err := engine.prepareAudit(store, *plan, attempt); err != nil {
+		return engine.markRecoveryRequired(command, prior, plan, attempt, store, "audit.unavailable", "ordinary lifecycle intent lacks an exact committed STAV receipt")
+	}
+	deadline, err := time.Parse(time.RFC3339, command.DeadlineAt)
+	if err != nil || !engine.now().Before(deadline) {
+		return engine.markRecoveryRequired(command, prior, plan, attempt, store, "deadline.elapsed", "command expired while waiting for the exact audit intent receipt")
+	}
 	if engine.desiredProven(*plan, prior) {
 		return engine.closeAttempt(command, prior, plan, attempt, store, false, true, recovered)
 	}
@@ -430,6 +412,11 @@ func (engine *Engine) resume(command Command, prior Observation, plan *Plan, att
 }
 
 func (engine *Engine) recover(command Command, observation Observation, current *Attempt, store *attemptStore) (Result, error) {
+	if current == nil || current.Phase == "closed" {
+		if result, handled, err := engine.recoverAudit(command, observation, store); handled {
+			return result, err
+		}
+	}
 	if current == nil {
 		return engine.blocked(command, observation, nil, "recovery.absent", "SSIAG lifecycle recovery evidence is absent")
 	}
@@ -646,6 +633,9 @@ func endpointState(path string) string {
 }
 
 func (engine *Engine) closeAttempt(command Command, observation Observation, plan *Plan, attempt *Attempt, store *attemptStore, changed, replayed, recovered bool) (Result, error) {
+	if err := engine.observeAudit(store, *plan, attempt, observation, recovered); err != nil {
+		return Result{}, err
+	}
 	if err := engine.advance(store, attempt, "mutation_closed"); err != nil {
 		return Result{}, err
 	}
@@ -657,7 +647,14 @@ func (engine *Engine) closeAttempt(command Command, observation Observation, pla
 	if err := store.write(attempt); err != nil {
 		return Result{}, err
 	}
-	observation, err := engine.observeFn(command.Surface, parseScope(command.Scope), command.TOPSID, attempt)
+	j, err := foundationaudit.Open(filepath.Join(store.directory, "audit"), auditRequest(*plan))
+	if err != nil {
+		return Result{}, err
+	}
+	if err = j.BindAttempt(attempt.AttemptDigest); err != nil {
+		return Result{}, err
+	}
+	observation, err = engine.observeFn(command.Surface, parseScope(command.Scope), command.TOPSID, attempt)
 	if err != nil {
 		return Result{}, err
 	}
@@ -672,7 +669,7 @@ func (engine *Engine) markRecoveryRequired(command Command, observation Observat
 	if observeErr != nil {
 		return Result{}, observeErr
 	}
-	result, err := engine.finish(Result{Operation: command.Operation, Component: "ssiag", Surface: command.Surface, Scope: command.Scope, TOPSID: command.TOPSID, OperationID: command.OperationID, Disposition: "failed", DesiredState: stringPointer(plan.DesiredState), Observation: observation, Plan: plan, RecoveryRequired: true, ReconciliationRequired: plan.AuditMode == "audit_deferred", AttemptDigest: stringPointer(attempt.AttemptDigest), AuditState: publicAuditState(attempt.AuditState), StartedAt: stringPointer(attempt.StartedAt), Error: &ErrorResult{Code: code, Message: message}})
+	result, err := engine.finish(Result{Operation: command.Operation, Component: "ssiag", Surface: command.Surface, Scope: command.Scope, TOPSID: command.TOPSID, OperationID: command.OperationID, Disposition: "failed", DesiredState: stringPointer(plan.DesiredState), Observation: observation, Plan: plan, RecoveryRequired: true, ReconciliationRequired: attempt.AuditState == "audit_deferred", AttemptDigest: stringPointer(attempt.AttemptDigest), AuditState: publicAuditState(attempt.AuditState), StartedAt: stringPointer(attempt.StartedAt), Error: &ErrorResult{Code: code, Message: message}})
 	return result, err
 }
 
@@ -685,6 +682,9 @@ func (engine *Engine) advance(store *attemptStore, attempt *Attempt, phase strin
 }
 
 func (engine *Engine) appliedResult(command Command, observation Observation, plan *Plan, attempt *Attempt, changed, replayed, recovered bool, disposition string) (Result, error) {
+	if disposition == "recovered" {
+		replayed = false
+	}
 	result := Result{Operation: command.Operation, Component: "ssiag", Surface: command.Surface, Scope: command.Scope, TOPSID: command.TOPSID, OperationID: command.OperationID, Disposition: disposition, DesiredState: stringPointer(plan.DesiredState), Observation: observation, Plan: plan, Changed: changed, Replayed: replayed, Recovered: recovered, AuditState: "not_applicable"}
 	if attempt != nil {
 		result.AttemptDigest = stringPointer(attempt.AttemptDigest)
@@ -732,6 +732,9 @@ func publicAuditState(value string) string {
 	return value
 }
 func auditAttemptState(mode string) string {
+	if mode == "ordinary" {
+		return "pending"
+	}
 	return "audit_deferred"
 }
 func auditPlanMode(state string) string {

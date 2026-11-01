@@ -165,6 +165,8 @@ bool is_authorized_canonical_json(const std::string& relative_path) {
         "knowledge/ssiag/schemas/v1/authorization-policy.schema.json",
         "knowledge/ssiag/schemas/v1/policy-proposal-request.schema.json",
         "knowledge/ssiag/schemas/v1/policy-proposal.schema.json",
+        "knowledge/ssiag/schemas/v1/foundation-audit-request.schema.json",
+        "knowledge/ssiag/schemas/v1/foundation-audit-response.schema.json",
         "knowledge/ssiag/schemas/v1/policy-apply-request.schema.json",
         "knowledge/ssiag/schemas/v1/policy-recovery-request.schema.json",
         "knowledge/ssiag/schemas/v1/policy-result.schema.json",

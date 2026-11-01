@@ -85,11 +85,11 @@ Readers preserve supported legacy SSIAG install-v1 and STAV pre-receipt evidence
 
 ## Audit and Deferred Recovery
 
-Every foundational mutation first records protected local attempt evidence. Ordinary audited mutations use the closed SSIAG-to-STAV producer path and release success only with the required receipt. qxctl never receives a raw STAV producer grant, constructs arbitrary candidates, or edits ledger files.
+Every foundational mutation first records protected local attempt evidence. Ordinary audited mutations use the closed SSIAG-to-STAV producer path: an exact intent receipt gates external mutation, and a distinct observed-outcome receipt establishes audit completion. A pre-stop intent receipt never certifies successful stop. The bounded bridge, explicit bootstrap grants, persisted observations and forward reconciliation are governed by `knowledge/ssiag/SPEC.md`. qxctl never receives a raw STAV producer grant, constructs arbitrary candidates, or edits ledger files.
 
 Bootstrap, self-impacting teardown, or recovery may use `audit_deferred` only when the caller explicitly selects that path and the target-host permission and expected-state checks succeed. It is never an automatic downgrade. The result remains `reconciliation_required` until the closed producer appends the later lifecycle outcome and the attempt binds the exact receipt. Reconciliation records its real later timestamp and original operation/correlation identities; it never backdates the append or impersonates the original event time.
 
-An unreconciled attempt cannot be discarded, relabeled as committed, or used as proof of completed permanent retirement. Operations that would make reconciliation permanently impossible remain blocked pending a separately ratified retirement contract.
+An explicitly deferred `native_running` request may restore an unavailable audit dependency only when its previous observed outcome is already durably retained in a separately recoverable operation journal. It does not reconcile that earlier outcome or authorize any other bypass. An unreconciled attempt cannot be discarded, relabeled as committed, or used as proof of completed permanent retirement. Operations that would make reconciliation permanently impossible remain blocked pending a separately ratified retirement contract.
 
 ## Temporal and Thermal Boundary
 

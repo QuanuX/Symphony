@@ -41,3 +41,5 @@ qxctl ssiag provider binding status native --json --scope user \
 Use `qxctl ssiag policy propose` with an exact current policy digest and either a bounded policy file or `--reset`; inspect the emitted proposal, then pass it to `qxctl ssiag policy apply`. If status reports `recovery_required`, use the exact attempt digest with `qxctl ssiag policy recover`. The enrolled config is never rewritten, and every result reports `canonical=false`.
 
 Read `knowledge/ssiag/`, `ARCHITECTURE.md`, `REQUIREMENTS.md`, `THREAT-MODEL.md`, and `IMPLEMENTATION.md` before configuring grants or enabling any canonical mutation or operational provider behavior.
+
+Foundational lifecycle ordinary mutations now use the bounded host-owner audit bridge described in `knowledge/ssiag/SPEC.md`. A pre-mutation intent receipt and the later observed-outcome receipt are distinct. Stop/restart and bootstrap may retain `audit_deferred` outcomes until existing lifecycle recovery commits them; no provider activation or producer grant is implicit.
