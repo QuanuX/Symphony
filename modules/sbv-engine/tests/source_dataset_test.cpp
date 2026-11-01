@@ -40,7 +40,8 @@ const J &data(const J &r, const char *section) {
 #include "fixture_requests.hpp"
 int main(int argc, char **argv) try {
   check(argc == 3);
-  auto temp = symphony::testing::temporary_pattern("sbv-retained-dataset-XXXXXX");
+  // Leave room for the resident instance socket beneath hosted TMPDIR paths.
+  auto temp = symphony::testing::temporary_pattern("sbv-dataset-XXXXXX");
   check(::mkdtemp(temp.data()));
   const std::string root = temp;
   struct Cleanup {
