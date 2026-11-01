@@ -447,13 +447,22 @@ SodvReleaseCheckResult check_sodv_releases(const std::string& repo_root) {
         if (record.units.size() != expected_record->units.size()) {
             violation(result, "sodv.releases.unit_set", record, "unit_cardinality_changed");
         }
+        // Authorization may precede publication evidence; declared values and
+        // the latest correction's complete evidence remain immutable.
+        const auto preserves_publication_value = [expected_record, authorization](
+            const std::optional<std::string>& expected_value,
+            const std::optional<std::string>& actual_value) {
+            return (expected_record == authorization && !expected_value) || expected_value == actual_value;
+        };
         for (const auto& unit : record.units) {
             const auto found = std::find_if(expected_record->units.begin(), expected_record->units.end(),
                 [&](const Unit& candidate) {
                     return candidate.coordinate == unit.coordinate && candidate.version == unit.version &&
                            candidate.tag == unit.tag && candidate.revision == unit.revision &&
-                           (record.type != "completion" || (candidate.tag_object == unit.tag_object &&
-                            candidate.content == unit.content && candidate.metadata == unit.metadata));
+                           (record.type != "completion" ||
+                            (preserves_publication_value(candidate.tag_object, unit.tag_object) &&
+                             preserves_publication_value(candidate.content, unit.content) &&
+                             preserves_publication_value(candidate.metadata, unit.metadata)));
                 });
             if (found == expected_record->units.end()) {
                 violation(result, "sodv.releases.authorization_mismatch", record,

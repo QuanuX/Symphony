@@ -1,6 +1,7 @@
 package lifecycle
 
 import (
+	"errors"
 	"math"
 	"os"
 	"path/filepath"
@@ -57,5 +58,32 @@ func TestOwnedDirectoryVerifiesOwnershipAfterChown(t *testing.T) {
 	stat := info.Sys().(*syscall.Stat_t)
 	if stat.Uid != uid || stat.Gid != gid || info.Mode().Perm() != 0o700 {
 		t.Fatalf("directory postcondition not satisfied: uid=%d gid=%d mode=%v", stat.Uid, stat.Gid, info.Mode())
+	}
+}
+
+func TestOwnedDirectoryPreservesRepresentableIdentityAtChown(t *testing.T) {
+	captureOnly := errors.New("ownership arguments captured without changing ownership")
+	for _, value := range []uint32{0, math.MaxInt32, math.MaxInt32 + 1, math.MaxUint32 - 1} {
+		for _, ids := range [][2]uint32{{value, 20}, {501, value}} {
+			path := filepath.Join(t.TempDir(), "capture-only-chown")
+			called := false
+			err := ensureOwnedPrivateDirectoryWithChown(path, ids[0], ids[1], func(_ string, uid, gid int) error {
+				called = true
+				if uid < 0 || gid < 0 || uint64(uid) != uint64(ids[0]) || uint64(gid) != uint64(ids[1]) {
+					t.Errorf("ownership IDs changed during conversion: want %v, got %d/%d", ids, uid, gid)
+				}
+				return captureOnly
+			})
+			if uint64(ids[0]) > math.MaxInt || uint64(ids[1]) > math.MaxInt {
+				if err == nil || called || !strings.Contains(err.Error(), "cannot be represented") {
+					t.Fatalf("unrepresentable identity %v reached chown: called=%t error=%v", ids, called, err)
+				}
+				if _, err := os.Lstat(path); !os.IsNotExist(err) {
+					t.Fatalf("unrepresentable identity created a directory: %v", err)
+				}
+			} else if !called || !errors.Is(err, captureOnly) {
+				t.Fatalf("representable identity %v did not reach capture-only chown: called=%t error=%v", ids, called, err)
+			}
+		}
 	}
 }

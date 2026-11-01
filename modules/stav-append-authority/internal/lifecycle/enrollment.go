@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"math"
 	"net"
 	"os"
 	"path/filepath"
@@ -341,10 +342,16 @@ func ensureOwnedPrivateDirectoryWithChown(path string, uid, gid uint32, chown fu
 	if err := config.ValidateAuthorityOwnership(uint64(uid), uint64(gid)); err != nil {
 		return err
 	}
+	// Chown takes int. Keep the full admitted UID/GID range on 64-bit hosts,
+	// while rejecting values that a narrower host int cannot represent.
+	uidValue, gidValue := uint64(uid), uint64(gid)
+	if uidValue > math.MaxInt || gidValue > math.MaxInt {
+		return fmt.Errorf("STAV authority UID/GID cannot be represented by the host ownership API")
+	}
 	if err := ensurePrivateDirectory(path); err != nil {
 		return err
 	}
-	if err := chown(path, int(uid), int(gid)); err != nil {
+	if err := chown(path, int(uidValue), int(gidValue)); err != nil {
 		return fmt.Errorf("assign STAV authority ownership to %s: %w", path, err)
 	}
 	info, err := os.Lstat(path)
