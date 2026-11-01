@@ -11,6 +11,16 @@ cmake --install build/schv-do-engine --prefix /chosen/prefix
 
 The exact executable is `libexec/symphony/schv-do-engine/0.10.0-dev/symphony-schv-do` beneath the selected prefix. Install receipts and contract documents use the common exact `share` layout. Installation is inactive `installed_undocked`; it neither selects a binding nor installs another domain. Use an explicit prefix, exact version and selected domain through the admitted qxctl command surface. Direct `--descriptor` returns the supported operations.
 
+For a fresh installation built from this checkout, select the installed `0.10.0-dev` package explicitly:
+
+```sh
+qxctl scv inspect --domain schv-do --prefix /chosen/prefix --version 0.10.0-dev --json
+qxctl scv interface show --domain schv-do --prefix /chosen/prefix --version 0.10.0-dev --json
+qxctl scv schema list --domain schv-do --prefix /chosen/prefix --version 0.10.0-dev --json
+```
+
+Earlier command defaults remain pinned to their original exact releases; they do not select this current installation automatically.
+
 Only receipt-owned files may be removed by the module's receipt-verified uninstaller. Source stores, captured evidence, selected graphs, other versions and containing directories are not package files. An immutable version cannot be overwritten in place. No remote acquisition, provider credential, network activation or publication is part of installation.
 
 The additive `0.3.0-dev` package can coexist with retained exact `0.1.0-dev` and `0.2.0-dev` installations. Do not rebuild changed source under the old version identity, overwrite an existing receipt, or install a latest alias. Corpus operations retain exact `.2` admission; provider interpretation and connection operations retain exact `.3` admission. Later explicitly selected supported releases add their declared interfaces. Existing command defaults remain unchanged until the caller selects another admitted exact version.
@@ -44,3 +54,5 @@ Exact `0.9.0-dev` exposes 30 native operations. `knowledge/scv/BUNDLES.md` owns 
 ## Explicit Bundle Workflows
 
 Exact `0.10.0-dev` retains thirty native operations and adds qxctl bundle workflow run/status/recover and immutable bundled obligation retain/show. `knowledge/scv/BUNDLE-WORKFLOWS.md` owns the versioned coordination and logical-reference contracts. Separate v2 journals pin explicit transport, caller input and exact installation before work; original records preserve both native and transport identities. Status reports sealed checkpoint validation, while run/recovery and relationship inspection replay original owners. Twenty-nine schemas expose112 catalog protocols with twelve owner companions. Prior routes, defaults, records and packages remain preserved.
+
+Installed dependency mode (`-DSYMPHONY_KVE_USE_INSTALLED=ON`) requires the exact `SymphonyKnowledgeVectorEngine` CMake package `0.2.0` from the independently installed `knowledge-vector-engine-cpp` package `0.2.0-dev`. Select its explicit configuration directory with `SymphonyKnowledgeVectorEngine_DIR`; a missing or different version fails configuration without adding foundation source. The module's own release and protocol versions are unchanged.

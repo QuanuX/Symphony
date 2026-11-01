@@ -9,6 +9,8 @@ The Symphony Validator requires:
 * CMake 3.30+
 * On macOS: Xcode Command Line Tools or full Xcode with a C++26-capable compiler
 
+By default the validator builds the repository foundation. For an independently installed foundation, set `-DSYMPHONY_KVE_USE_INSTALLED=ON` and `-DSymphonyKnowledgeVectorEngine_DIR=/exact/prefix/lib/cmake/SymphonyKnowledgeVectorEngine-0.2.0-dev`. This requires the exact CMake package version `0.2.0` and an imported `Symphony::KnowledgeVectorEngine` target. Missing or different versions fail configuration without adding foundation source. The validator package remains `0.2.0-dev`.
+
 ## macOS Build Instructions
 
 The current source has been built and smoke-tested with AppleClang 21 from Xcode. Use the native toolchain first:

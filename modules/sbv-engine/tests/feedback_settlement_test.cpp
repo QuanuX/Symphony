@@ -1,9 +1,11 @@
 #include <private_temp.hpp>
 #include "../src/provider.hpp"
+#include <fcntl.h>
 #include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <source_location>
+#include <sys/stat.h>
 #include <unistd.h>
 namespace s = symphony::sbv;
 namespace d = s::detail;
@@ -95,8 +97,24 @@ int main(int argc, char **argv) try {
   auto ledger = [](const J &j) {
     return j.at("sections").at("execution").at("data");
   };
-  auto log = root + "/lifetime.log";
-  check(setenv("SBV_FEEDBACK_LIFETIME_LOG", log.c_str(), 1) == 0);
+  auto log = cleanup.path + "/lifetime.log";
+  struct LifetimeLog {
+    int fd;
+    ~LifetimeLog() {
+      unsetenv("SBV_FEEDBACK_LIFETIME_LOG_FD");
+      if (fd >= 0)
+        ::close(fd);
+    }
+  } lifetime_log{::open(log.c_str(), O_WRONLY | O_CREAT | O_EXCL | O_NOFOLLOW |
+                                       O_CLOEXEC | O_APPEND,
+                       0600)};
+  check(lifetime_log.fd >= 3);
+  struct stat log_status {};
+  check(::fstat(lifetime_log.fd, &log_status) == 0);
+  check(S_ISREG(log_status.st_mode) && (log_status.st_mode & 0777) == 0600);
+  check((::fcntl(lifetime_log.fd, F_GETFD) & FD_CLOEXEC) != 0);
+  auto log_fd = std::to_string(lifetime_log.fd);
+  check(setenv("SBV_FEEDBACK_LIFETIME_LOG_FD", log_fd.c_str(), 1) == 0);
   auto result = run(input);
   auto rows = ledger(result);
   auto state = terminal(result);
@@ -192,7 +210,26 @@ int main(int argc, char **argv) try {
     }
     check(cancelled);
   }
-  unsetenv("SBV_FEEDBACK_LIFETIME_LOG");
+  const auto logged = bytes(log);
+  for (const char *invalid : {"", "-1", "0", "1", "2", "+3", "3tail",
+                              "2147483648"}) {
+    check(setenv("SBV_FEEDBACK_LIFETIME_LOG_FD", invalid, 1) == 0);
+    check(terminal(run(input)) == state);
+    check(bytes(log) == logged);
+  }
+  const auto read_only = ::open(log.c_str(), O_RDONLY | O_NOFOLLOW | O_CLOEXEC);
+  check(read_only >= 3);
+  const auto read_only_fd = std::to_string(read_only);
+  check(setenv("SBV_FEEDBACK_LIFETIME_LOG_FD", read_only_fd.c_str(), 1) == 0);
+  check(terminal(run(input)) == state);
+  check(::close(read_only) == 0);
+  check(bytes(log) == logged);
+  // A missing or now-closed descriptor also leaves provider semantics intact.
+  check(terminal(run(input)) == state);
+  check(bytes(log) == logged);
+  check(unsetenv("SBV_FEEDBACK_LIFETIME_LOG_FD") == 0);
+  check(terminal(run(input)) == state);
+  check(bytes(log) == logged);
   auto variation =
       templates["variants"]["account_simulate"]["linear_variation"];
   variation["initial_state"]["cash"]["USD"] = q("1000");

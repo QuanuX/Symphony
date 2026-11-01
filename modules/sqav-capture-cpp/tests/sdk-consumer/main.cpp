@@ -1,7 +1,12 @@
 #include <algorithm>
 #include <cstdio>
 #include <cstdlib>
+#include <fcntl.h>
+#include <filesystem>
+#include <fstream>
 #include <symphony/sqav/capture.hpp>
+#include <sys/stat.h>
+#include <unistd.h>
 #include <vector>
 using namespace symphony;
 void check(bool p) {
@@ -106,20 +111,72 @@ void installed_capture_rejection() {
   check(changed.prepare(flow, m, p, out_batch) ==
         sqav::Status::binding_mismatch);
 }
+bool export_fixture(const char *path, const sqav::Capture &capture) {
+  const auto fd = ::open(path, O_WRONLY | O_CREAT | O_EXCL | O_NOFOLLOW | O_CLOEXEC,
+                         0600);
+  if (fd < 0)
+    return false;
+  auto file = ::fdopen(fd, "wb");
+  if (!file) {
+    ::close(fd);
+    return false;
+  }
+  const auto bytes = capture.encoded();
+  const auto written = std::fwrite(bytes.data(), 1, bytes.size(), file);
+  const auto closed = std::fclose(file);
+  return written == bytes.size() && closed == 0;
+}
+void installed_capture_private_export() {
+  namespace fs = std::filesystem;
+  auto pattern = (fs::temp_directory_path() / "sqav-capture-export-XXXXXX").string();
+  check(::mkdtemp(pattern.data()) != nullptr);
+  struct Cleanup {
+    fs::path path;
+    ~Cleanup() {
+      std::error_code ignored;
+      fs::remove_all(path, ignored);
+    }
+  } cleanup{pattern};
+  struct RestoreUmask {
+    mode_t previous = ::umask(0);
+    ~RestoreUmask() { ::umask(previous); }
+  } restore_umask;
+  const auto capture = fixture();
+  const auto output = cleanup.path / "fixture.sqac";
+  check(export_fixture(output.c_str(), capture));
+  struct stat status {};
+  check(::lstat(output.c_str(), &status) == 0);
+  check(S_ISREG(status.st_mode) && (status.st_mode & 0777) == 0600);
+  const auto contents = [&] {
+    std::ifstream input(output, std::ios::binary);
+    check(input.good());
+    return std::vector<std::uint8_t>{std::istreambuf_iterator<char>(input), {}};
+  };
+  check(std::ranges::equal(contents(), capture.encoded()));
+  check(!export_fixture(output.c_str(), capture));
+  const auto link = cleanup.path / "symlink.sqac";
+  fs::create_symlink(output, link);
+  check(!export_fixture(link.c_str(), capture));
+  check(fs::is_symlink(link));
+  const auto absent = cleanup.path / "absent.sqac";
+  const auto dangling = cleanup.path / "dangling.sqac";
+  fs::create_symlink(absent, dangling);
+  check(!export_fixture(dangling.c_str(), capture));
+  check(fs::is_symlink(dangling) && !fs::exists(absent));
+  check(std::ranges::equal(contents(), capture.encoded()));
+}
 int main(int argc, char **argv) {
   installed_capture_roundtrip();
   installed_capture_rejection();
+  installed_capture_private_export();
   if (argc == 2) {
     auto c = fixture();
-    auto f = std::fopen(argv[1], "wb");
-    check(f);
-    check(std::fwrite(c.encoded().data(), 1, c.encoded().size(), f) ==
-          c.encoded().size());
-    check(std::fclose(f) == 0);
+    if (!export_fixture(argv[1], c))
+      return 1;
     std::printf("%.*s\n%.*s\n", static_cast<int>(c.reference().size()),
                 c.reference().data(),
                 static_cast<int>(c.source_reference().size()),
                 c.source_reference().data());
   }
-  std::puts("sqav installed consumer: 2 groups passed");
+  std::puts("sqav installed consumer: 3 groups passed");
 }

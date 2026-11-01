@@ -14,7 +14,14 @@ if(NOT CMAKE_INSTALL_LIBEXECDIR STREQUAL "libexec" OR
 endif()
 
 get_filename_component(SYMPHONY_REPOSITORY_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/../.." ABSOLUTE)
-if(NOT TARGET Symphony::KnowledgeVectorEngine)
+option(SYMPHONY_KVE_USE_INSTALLED "Use an exact installed Symphony knowledge-vector foundation" OFF)
+if(SYMPHONY_KVE_USE_INSTALLED)
+  find_package(SymphonyKnowledgeVectorEngine 0.2.0 EXACT REQUIRED CONFIG)
+  get_target_property(foundation_imported Symphony::KnowledgeVectorEngine IMPORTED)
+  if(NOT foundation_imported)
+    message(FATAL_ERROR "Installed validator dependencies require an imported foundation SDK")
+  endif()
+elseif(NOT TARGET Symphony::KnowledgeVectorEngine)
   set(SYMPHONY_KVE_BUILD_TESTING OFF CACHE BOOL "Build embedded foundation tests" FORCE)
   add_subdirectory(
     "${SYMPHONY_REPOSITORY_ROOT}/libraries/knowledge-vector-engine-cpp"

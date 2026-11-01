@@ -13,3 +13,5 @@ OWNER-INTERFACE.json declares exact metadata. INTERFACE-GENERATOR.json selects g
 This inventory is not exhaustive. New owners can use `tools/shv-interface-codegen/EXTENDING.md` without extending a fixed generator whitelist. They must supply their own semantic contracts and qxctl integration.
 
 The kernel retains its exact embedded PDF 0.2 reader. PDF 0.3 is independently selectable for PDF operations; it is not substituted into kernel provenance.
+
+Installed dependency mode (`-DSYMPHONY_KVE_USE_INSTALLED=ON`) requires the exact `SymphonyKnowledgeVectorEngine` CMake package `0.2.0` from the independently installed `knowledge-vector-engine-cpp` package `0.2.0-dev`. Select its explicit configuration directory with `SymphonyKnowledgeVectorEngine_DIR`; a missing or different version fails configuration without adding foundation source. The module's own release and protocol versions are unchanged.

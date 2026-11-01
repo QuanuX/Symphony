@@ -878,14 +878,26 @@ void test_apply_serializes_external_maestro_docking() {
 
 void test_durable_boot_journal_replanning_and_recovery() {
     TemporaryDirectory state;
-    TemporaryDirectory unsafe_state;
-    if (::chmod(unsafe_state.path().c_str(), 0777) != 0) {
+    TemporaryDirectory unsafe_parent;
+    const auto unsafe_state = unsafe_parent.path() / "unsafe-state";
+    fs::create_directory(unsafe_state);
+    // The deliberately unsafe leaf tests admission without exposing a writable
+    // directory to other users of the host's shared temporary directory.
+    if (::chmod(unsafe_state.c_str(), 0777) != 0) {
         throw std::runtime_error("could not create unsafe lifecycle state fixture");
     }
+    struct stat parent_status{}, unsafe_status{};
+    require(::stat(unsafe_parent.path().c_str(), &parent_status) == 0 &&
+            (parent_status.st_mode & 0777) == 0700,
+            "unsafe fixture parent is not private");
+    require(::stat(unsafe_state.c_str(), &unsafe_status) == 0 &&
+            (unsafe_status.st_mode & 0777) == 0777,
+            "unsafe fixture leaf does not exercise world-writable admission");
     require_error([&] {
         static_cast<void>(lifecycle_boot_state(
-            unsafe_state.path(), "lifecycle_boot_status", nullptr, nullptr, "unsafe-status"));
+            unsafe_state, "lifecycle_boot_status", nullptr, nullptr, "unsafe-status"));
     }, "lifecycle_journal.state_directory_unsafe");
+    require(fs::is_empty(unsafe_state), "unsafe state admission created journal files");
     const auto absent_root = state.path() / "absent-state-root";
     const auto absent = lifecycle_boot_state(
         absent_root, "lifecycle_boot_status", nullptr, nullptr, "absent-status");

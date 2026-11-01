@@ -28,3 +28,5 @@ No active executable alias, background process, database, source/graph selection
 ## Uninstall and Caller Data
 
 The `uninstall-scv-graph-duckdb-connector` build target removes only the selected receipt-owned package files after the installer's ownership checks. Caller databases and their journal/import state are outside package ownership and must remain intact. Uninstalling does not grant permission to delete them or to remove another connector release. The colocated dependency library is receipt owned; external source/dependency inputs and unrelated system installations are not.
+
+Installed dependency mode (`-DSYMPHONY_KVE_USE_INSTALLED=ON`) requires the exact `SymphonyKnowledgeVectorEngine` CMake package `0.2.0` from the independently installed `knowledge-vector-engine-cpp` package `0.2.0-dev`. Select its explicit configuration directory with `SymphonyKnowledgeVectorEngine_DIR`; a missing or different version fails configuration without adding foundation source. The module's own release and protocol versions are unchanged.

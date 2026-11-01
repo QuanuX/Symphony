@@ -8,7 +8,7 @@ option(SYMPHONY_KVE_USE_INSTALLED "Use an installed Symphony knowledge-vector fo
 get_filename_component(SYMPHONY_REPOSITORY_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/../.." ABSOLUTE)
 include("${SYMPHONY_REPOSITORY_ROOT}/cmake/SymphonyInstallReceiptV2.cmake")
 if(SYMPHONY_KVE_USE_INSTALLED)
-    find_package(SymphonyKnowledgeVectorEngine 0.1 REQUIRED CONFIG)
+    find_package(SymphonyKnowledgeVectorEngine 0.2.0 EXACT REQUIRED CONFIG)
 elseif(NOT TARGET Symphony::KnowledgeVectorEngine)
     set(SYMPHONY_KVE_BUILD_TESTING OFF CACHE BOOL "Build embedded foundation tests" FORCE)
     add_subdirectory(
