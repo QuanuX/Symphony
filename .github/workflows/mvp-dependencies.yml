@@ -152,6 +152,7 @@ jobs:
             ${{ runner.temp }}/shv-release/summary.json
             ${{ runner.temp }}/shv-release/source.txt
             ${{ runner.temp }}/shv-release/source-status.txt
+            ${{ runner.temp }}/shv-release/go-environment.json
             ${{ runner.temp }}/shv-release/assets/assets.json
             ${{ runner.temp }}/shv-release/assets/request.json
             ${{ runner.temp }}/shv-release/assets/decoder-loader.log

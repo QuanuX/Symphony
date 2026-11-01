@@ -2509,6 +2509,17 @@
       "source": "tools/qxctl/cmd/qxctl/scv_workflow_test.go",
       "line": 464,
       "skip_origin": "shared fixture admission helper in this source file"
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./cmd/qxctl",
+      "test": "TestInstalledSHVBoundedCatalogueWorkflow",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "requires exact installed SHV owners/store and pinned PDFium/AMD request via SHV_RELEASE_PREFIX, SHV_RELEASE_STORE_PREFIX, SHV_RELEASE_PDF_REQUEST, SHV_RELEASE_SSIAG, SHV_RELEASE_STAV"
+      ],
+      "source": "tools/qxctl/cmd/qxctl/shv_release_qualification_test.go",
+      "line": 25
     }
   ],
   "installed_go_suites": [
@@ -2580,5 +2591,46 @@
       "ubuntu24.04-arm64"
     ],
     "boundaries": "Copied process consumers, deterministic native SIGKILL/reopen/retry, adjacent runtime loader and receipt-owned removal. No power-loss or GPU test claim."
-  }
+  },
+  "selected_installed_campaigns": [
+    {
+      "task": "L18",
+      "group": "knowledge",
+      "harness": "tests/shv-release-qualification/run.sh",
+      "profiles": [
+        "macos15-arm64",
+        "ubuntu24.04-amd64",
+        "ubuntu26.04-amd64",
+        "ubuntu24.04-arm64"
+      ],
+      "skips_allowed": false,
+      "scope": "Pinned PDFium/AMD replay and one protected catalogue workflow with actual private SSIAG/STAV policy audit, installed DuckDB commit and publication preview. No source-write audit receipt or publication application."
+    },
+    {
+      "task": "L19",
+      "group": "knowledge",
+      "harness": "tests/snv-qualification/run.sh",
+      "profiles": [
+        "macos15-arm64",
+        "ubuntu24.04-amd64",
+        "ubuntu26.04-amd64",
+        "ubuntu24.04-arm64"
+      ],
+      "skips_allowed": false,
+      "scope": "Five installed supplied-record SDK owners, receipt stability and qxctl replay. Linux proc/sysfs observer executes; native macOS explicitly reports unavailable."
+    },
+    {
+      "task": "L20",
+      "group": "quantitative",
+      "harness": "tests/sbv-launch-boundary/run.sh",
+      "profiles": [
+        "macos15-arm64",
+        "ubuntu24.04-amd64",
+        "ubuntu26.04-amd64",
+        "ubuntu24.04-arm64"
+      ],
+      "skips_allowed": false,
+      "scope": "Small capped CPU census, typed second pass and production same-host same-UID SOV stdio recovery with actual completion loss and native worker interruption. No new SSH, independent host, GPU, live capture or checkpoint resume claim."
+    }
+  ]
 }
