@@ -18,6 +18,14 @@ void installed_boundary() {
   check(sqav::fred::Page::admit(p, response, {4096, 128, 128, 8}, page) ==
             source::Status::ok &&
         page.vintage_dates().size() == 1);
+  sqav::fred::Collection sequence;
+  check(sqav::fred::Collection::begin(p, {1, 1, 1, 4096}, sequence) ==
+        source::Status::ok);
+  check(sequence.accept(page) == source::Status::ok &&
+        sequence.progress().complete && sequence.progress().records == 1 &&
+        sequence.pages()[0].reference() == page.reference() &&
+        !sequence.next_plan());
+  check(sequence.accept(page) == source::Status::invalid_argument);
   auto before = std::string(page.reference());
   response.complete = false;
   check(sqav::fred::Page::admit(p, response, {4096, 128, 128, 8}, page) ==

@@ -3,13 +3,16 @@
 #endif
 #include <cstdio>
 #include <cstdlib>
+#include <source_location>
 #include <symphony/source/json.hpp>
 #include <symphony/sqav/fred.hpp>
 using namespace symphony;
 namespace f = sqav::fred;
-void check(bool x) {
-  if (!x)
+void check(bool x, std::source_location loc = std::source_location::current()) {
+  if (!x) {
+    std::fprintf(stderr, "FRED assertion line %u\n", loc.line());
     std::abort();
+  }
 }
 source::HttpResponse fixture(std::string_view vintage, std::uint32_t count = 2,
                              std::uint32_t offset = 0) {
@@ -44,7 +47,93 @@ f::Plan plan(std::string_view date, std::uint32_t offset = 0) {
                         p) == source::Status::ok);
   return p;
 }
+void collection_boundaries() {
+  const source::JsonLimits json{65536, 4096, 4096, 16};
+  const auto first = plan("2021-01-01");
+  f::Page a, b;
+  check(f::Page::admit(first, fixture("2021-01-01", 4), json, a) ==
+        source::Status::ok);
+  auto last = fixture("2021-01-01", 4, 2);
+  auto value = nlohmann::json::parse(last.body);
+  value["observations"][0]["date"] = "2020-03-01";
+  value["observations"][1]["date"] = "2020-04-01";
+  auto encoded = value.dump();
+  last.body.assign(encoded.begin(), encoded.end());
+  check(f::Page::admit(plan("2021-01-01", 2), last, json, b) ==
+        source::Status::ok);
+  f::Collection sequence;
+  const f::CollectionLimits limits{2, 4, 1, 65536};
+  check(f::Collection::begin(first, limits, sequence) == source::Status::ok);
+  check(sequence.accept(b) == source::Status::binding_mismatch &&
+        sequence.progress().pages == 0);
+  check(sequence.accept(a) == source::Status::ok &&
+        sequence.next_plan()->selection().offset == 2 &&
+        sequence.progress().pages == 1 && !sequence.progress().complete);
+  const auto pending = std::string(sequence.next_plan()->reference());
+  check(sequence.accept(a) == source::Status::binding_mismatch);
+  f::Page bad;
+  check(f::Page::admit(plan("2021-01-01", 2),
+                       fixture("2021-01-01", 6, 2), json, bad) == source::Status::ok);
+  check(sequence.accept(bad) == source::Status::binding_mismatch);
+  check(f::Page::admit(plan("2021-01-01", 2),
+                       fixture("2021-01-01", 4, 2), json, bad) == source::Status::ok);
+  check(sequence.accept(bad) == source::Status::binding_mismatch &&
+        sequence.next_plan()->reference() == pending &&
+        sequence.pages().size() == 1);
+  // Same-date boundary duplicates are refused even though each page is valid.
+  value["observations"][0]["date"] = "2020-02-01";
+  encoded = value.dump();
+  auto duplicate = last;
+  duplicate.body.assign(encoded.begin(), encoded.end());
+  check(f::Page::admit(plan("2021-01-01", 2), duplicate, json, bad) == source::Status::ok);
+  check(sequence.accept(bad) == source::Status::binding_mismatch);
+  check(sequence.accept(b) == source::Status::ok &&
+        sequence.progress().complete && !sequence.next_plan() &&
+        sequence.progress().records == 4 && sequence.progress().declared_count == 4 &&
+        sequence.progress().original_bytes == a.original().size() + b.original().size());
+  check(sequence.accept(b) == source::Status::invalid_argument);
+  f::Collection replay;
+  check(f::Collection::begin(first, limits, replay) == source::Status::ok);
+  for (const auto &retained : sequence.pages())
+    check(replay.accept(retained) == source::Status::ok);
+  check(replay.progress().complete && replay.progress().requests == 0 &&
+        replay.pages()[1].reference() == b.reference());
+  check(f::Collection::begin(plan("2021-01-01", 2), limits, replay) ==
+        source::Status::invalid_argument && replay.progress().complete);
+  for (const auto bounded : {f::CollectionLimits{1, 4, 1, 65536},
+                            f::CollectionLimits{2, 3, 1, 65536},
+                            f::CollectionLimits{2, 4, 1, 1}}) {
+    f::Collection limited;
+    check(f::Collection::begin(first, bounded, limited) == source::Status::ok &&
+          limited.accept(a) == source::Status::limit &&
+          limited.progress().pages == 0);
+  }
+  struct Deny : source::CredentialUse {
+    unsigned calls = 0;
+    std::string request;
+    source::Status with_secret(std::string_view ref, std::uint32_t,
+                               std::stop_token, source::SecretSink &) override {
+      ++calls;
+      check(ref == request);
+      return source::Status::not_authorized;
+    }
+  } deny;
+  deny.request = first.reference();
+  f::Collection attempted;
+  check(f::Collection::begin(first, limits, attempted) == source::Status::ok);
+  std::stop_source stopped;
+  stopped.request_stop();
+  check(attempted.collect_next(deny, {100, 50, 1024, 65536}, json,
+                               stopped.get_token()) == source::Status::cancelled &&
+        attempted.progress().requests == 0);
+  check(attempted.collect_next(deny, {100, 50, 1024, 65536}, json, {}) ==
+        source::Status::not_authorized && attempted.progress().requests == 1 &&
+        attempted.next_plan()->reference() == first.reference());
+  check(attempted.collect_next(deny, {100, 50, 1024, 65536}, json, {}) ==
+        source::Status::limit && deny.calls == 1 && attempted.pages().empty());
+}
 int main() {
+  collection_boundaries();
   source::JsonLimits limits{65536, 4096, 4096, 16};
   auto first = plan("2021-01-01"), later = plan("2022-01-01");
   f::Page a, b;

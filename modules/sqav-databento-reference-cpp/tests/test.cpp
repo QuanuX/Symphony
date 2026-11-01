@@ -2,13 +2,17 @@
 #include "retention.hpp"
 #endif
 #include <algorithm>
+#include <array>
+#include <chrono>
 #include <cstdio>
 #include <cstdlib>
+#include <filesystem>
 #include <fstream>
 #include <iterator>
 #include <source_location>
 #include <symphony/sqav/databento/reference.hpp>
 #include <zstd.h>
+#include <unistd.h>
 namespace ref = symphony::sqav::databento::reference;
 namespace db = symphony::sqav::databento;
 namespace src = symphony::source;
@@ -50,6 +54,144 @@ void public_file(const char *path, ref::Operation op) {
   check(std::string_view(reinterpret_cast<const char *>(page.jsonl().data()),
                          page.jsonl().size()) == raw);
 }
+void acquisition_boundaries() {
+  auto root = (std::filesystem::canonical(std::filesystem::temp_directory_path()) /
+               "sqav-acquisition-XXXXXX").string();
+  check(::mkdtemp(root.data()) != nullptr);
+  struct Cleanup {
+    std::string path;
+    ~Cleanup() { std::filesystem::remove_all(path); }
+  } cleanup{root};
+  const auto now = static_cast<std::uint64_t>(
+      std::chrono::duration_cast<std::chrono::milliseconds>(
+          std::chrono::system_clock::now().time_since_epoch()).count());
+  db::HistoricalPlan plan;
+  check(db::HistoricalPlan::create({"GLBX.MDP3", {"ESZ6"}, 1000, 2000, 100},
+                                  {{65536, 4096, 100}, 10000, 2, 8, 60},
+                                  plan) == db::Status::ok);
+  ref::CostQuote quote;
+  check(ref::CostQuote::admit(plan, response("1.25"), now, 60000, quote) ==
+        src::Status::ok);
+  db::AttemptQuote original;
+  check(quote.for_attempt(plan, now, original) == src::Status::ok);
+  ref::AcquisitionAuthorization authorization{
+      "fixture:explicit-spend-approval", std::string(plan.reference()),
+      original.evidence_ref, "fixture-attempt", 2'500'000'000, now, now + 30000};
+  db::AttemptBudget budget{{}, 10'000'000'000, 0, 8, 1U << 20};
+  budget.generation[0] = 9;
+  db::AttemptLedger ledger;
+  check(db::AttemptLedger::create(root, budget, ledger) == db::AttemptStatus::ok);
+  struct Bridge final : db::SsiagHistoricalUse {
+    db::AttemptLedger *ledger;
+    std::string expected_request;
+    unsigned calls = 0;
+    bool lose_handle = false, invalid_secret = false;
+    std::stop_source *cancel = nullptr;
+    db::HttpStatus with_key(std::string_view request, std::uint32_t duration,
+                            std::stop_token, db::HistoricalKeySink &sink) noexcept override {
+      ++calls;
+      check(request == expected_request && duration > 0 && duration <= 30000);
+      db::AttemptSnapshot snapshot;
+      check(ledger->snapshot(snapshot) == db::AttemptStatus::ok &&
+            snapshot.attempts == calls &&
+            snapshot.charged_ceiling_nano_usd == calls * 2'500'000'000ULL);
+      if (lose_handle) ledger->reset();
+      if (cancel) cancel->request_stop();
+      if (invalid_secret) {
+        const std::array<std::uint8_t, 1> invalid{0};
+        check(sink.use(invalid) == db::HttpStatus::not_authorized);
+        return db::HttpStatus::ok; // A hostile bridge cannot promote refusal.
+      }
+      return db::HttpStatus::not_authorized;
+    }
+  } bridge;
+  bridge.ledger = &ledger;
+  bridge.expected_request = plan.reference();
+  db::HistoricalResponse output;
+  const db::HttpLimits http{60000, 1000, 4096};
+  auto invoke = [&](std::string_view id, const ref::AcquisitionAuthorization &a,
+                    std::stop_token stop = {}) {
+    auto approved = a;
+    approved.attempt_id = id;
+    return ref::acquire_quoted_historical(plan, quote, approved, ledger, bridge,
+                                          http, stop, output);
+  };
+  auto wrong = authorization;
+  wrong.quote_evidence_ref = "wrong-quote";
+  check(invoke("refused-quote", wrong).admission == src::Status::binding_mismatch);
+  wrong = authorization;
+  wrong.request_ref = "wrong-request";
+  check(invoke("refused-request", wrong).admission == src::Status::invalid_argument);
+  wrong = authorization;
+  wrong.ceiling_nano_usd = 1'249'999'999;
+  check(invoke("refused-ceiling", wrong).admission == src::Status::limit);
+  wrong = authorization;
+  wrong.authorized_unix_ms = now + 100000;
+  wrong.expires_unix_ms = now + 150000;
+  check(invoke("refused-future", wrong).admission == src::Status::stale);
+  wrong = authorization;
+  wrong.authorized_unix_ms = 1;
+  wrong.expires_unix_ms = 2;
+  check(invoke("refused-expiry", wrong).admission == src::Status::stale);
+  auto invalid_http = http;
+  invalid_http.timeout_ms = 0;
+  check(ref::acquire_quoted_historical(plan, quote, authorization, ledger,
+      bridge, invalid_http, {}, output).admission ==
+      src::Status::invalid_argument);
+  std::stop_source stopped;
+  stopped.request_stop();
+  check(invoke("refused-cancel", authorization, stopped.get_token()).admission ==
+        src::Status::cancelled);
+  db::AttemptSnapshot snapshot;
+  check(bridge.calls == 0 && ledger.snapshot(snapshot) == db::AttemptStatus::ok &&
+        snapshot.attempts == 0);
+
+  auto result = invoke("denied", authorization);
+  check(result.admission == src::Status::ok &&
+        result.reservation == db::AttemptStatus::ok && result.execution_invoked &&
+        result.execution.status == db::HttpStatus::not_authorized &&
+        result.execution.persistence == db::AttemptStatus::ok &&
+        result.reservation_evidence_ref.starts_with("db-acquisition-v1-"));
+  db::AttemptOutcome outcome;
+  check(ledger.lookup("denied", outcome) == db::AttemptStatus::ok &&
+        outcome == db::AttemptOutcome::rejected);
+  check(invoke("denied", authorization).reservation == db::AttemptStatus::conflict &&
+        bridge.calls == 1);
+
+  bridge.invalid_secret = true;
+  result = invoke("invalid-key", authorization);
+  check(result.execution.status == db::HttpStatus::not_authorized &&
+        ledger.lookup("invalid-key", outcome) == db::AttemptStatus::ok &&
+        outcome == db::AttemptOutcome::indeterminate);
+  bridge.invalid_secret = false;
+  bridge.lose_handle = true;
+  result = invoke("lost-terminal", authorization);
+  check(result.reservation == db::AttemptStatus::ok && result.execution_invoked &&
+        result.execution.status == db::HttpStatus::persistence_failure);
+  check(db::AttemptLedger::open(root, budget, ledger) == db::AttemptStatus::ok &&
+        ledger.lookup("lost-terminal", outcome) == db::AttemptStatus::ok &&
+        outcome == db::AttemptOutcome::indeterminate);
+  check(invoke("lost-terminal", authorization).reservation == db::AttemptStatus::conflict &&
+        bridge.calls == 3);
+  wrong = authorization;
+  wrong.ceiling_nano_usd = 2'500'000'001;
+  check(invoke("over-budget", wrong).reservation == db::AttemptStatus::limit &&
+        bridge.calls == 3);
+  bridge.lose_handle = false;
+  std::stop_source cancel;
+  bridge.cancel = &cancel;
+  result = invoke("cancelled", authorization, cancel.get_token());
+  check(result.execution.status == db::HttpStatus::cancelled &&
+        ledger.lookup("cancelled", outcome) == db::AttemptStatus::ok &&
+        outcome == db::AttemptOutcome::cancelled);
+  check(ledger.snapshot(snapshot) == db::AttemptStatus::ok &&
+        snapshot.charged_ceiling_nano_usd == 10'000'000'000 &&
+        snapshot.remaining_nano_usd == 0 && snapshot.unresolved == 2);
+  ledger.reset();
+  check(db::AttemptLedger::open(root, budget, ledger) == db::AttemptStatus::ok &&
+        ledger.snapshot(snapshot) == db::AttemptStatus::ok &&
+        snapshot.charged_ceiling_nano_usd == 10'000'000'000);
+}
 int main(int argc, char **argv) {
   if (argc == 4) {
     public_file(argv[1], ref::Operation::security_master_range);
@@ -60,6 +202,7 @@ int main(int argc, char **argv) {
     return 0;
   }
   check(argc == 1);
+  acquisition_boundaries();
   auto p = plan(ref::Operation::corporate_actions);
   check(p.request().post && p.request().parameters.find(
                                 "allocate_isins=false") != std::string::npos);

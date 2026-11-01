@@ -13,3 +13,5 @@ cmake -DINSTALL_PREFIX=/tmp/sqav-databento-reference-cpp-prefix -P /tmp/sqav-dat
 ```
 
 Receipt-v2 owns only this version’s archive, header(s), exact CMake exports, six owner documents and AGPL license. Guarded removal checks exact receipt/digest/path ownership. Installation starts no service or provider operation. Operational credentials, provider host applications and rights remain separate.
+
+The public reference.hpp also exports AcquisitionAuthorization, AcquisitionResult and acquire_quoted_historical. First obtain the exact quote, retain it, and separately obtain a request/quote/attempt-bound approval; then invoke the joined operation with a private existing AttemptLedger and actual SsiagHistoricalUse bridge. See SPEC.md for result interpretation and the prepared operational qualification sequence. Installing or testing this SDK grants no spend or provider authority.
