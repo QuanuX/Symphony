@@ -53,7 +53,7 @@ void test_native_publication_contract(Engine &e) {
   auto head = call("publication_reduce",
                    {{"current", nullptr}, {"plan", plan}})["head"];
   NT_REQUIRE(head["generation"] == 1);
-  NT_REQUIRE(call("publication_status", {{"history", {head}}})["head"] == head);
+  NT_REQUIRE(call("publication_status", {{"history", Json::array({head})}})["head"] == head);
   call("publication_plan", updated(base, {{"current", head}}), true);
   for (auto change :
        Json::array({{{"catalogue_id", "other"}},
@@ -115,7 +115,10 @@ void test_native_publication_contract(Engine &e) {
        updated(base, {{"desired", updated(allowed, {{"manifest", missing}})}}));
   call("publication_status", {{"history", Json::array()}}, true);
   call("publication_status", {{"history", {head, head}}}, true);
-  Json history = {head};
+  // Single-element braced construction can select JSON's object copy path on
+  // older supported compilers. History is always an explicit sequence.
+  Json history = Json::array({head});
+  NT_REQUIRE(history.is_array() && history.size() == 1 && history.front() == head);
   for (int n = 2; n <= 32; ++n) {
     auto next = call(
         "publication_plan",
