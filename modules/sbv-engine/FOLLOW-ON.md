@@ -1,5 +1,57 @@
 # SBV follow-on work after the selected M3 release
 
+
+## Current MVP launch boundary and reproducible gate
+
+The selected SBV MVP is CPU execution on macOS 15 Apple Silicon, Ubuntu 24.04
+AMD64/ARM64 and Ubuntu 26.04 AMD64. Ubuntu ARM64 qualification satisfies the
+user's current target choice; physical DGX Spark hardware/image qualification is
+not a current launch requirement. Native Windows is outside the selected scope.
+The existing native scientific/result contracts and explicit user resource
+choices remain unchanged. There is no mandatory RAM ceiling, execution deadline,
+GPU requirement or promised throughput added by this qualification profile.
+
+`tests/sbv-launch-boundary/run.sh` is the required reproducible installed-artifact
+process gate, reused by the quantitative jobs in `mvp-dependencies.yml`. It uses
+exact receipt-admitted SBV 0.33.0-dev, independently built qxctl 0.1.0-dev and SOV
+stdio adapter 0.1.0-dev. Controller and target are separate real processes on the
+same host under the same UID, with private owner-filesystem configuration and
+pinned executable/installation digests. This is local IPC, not a new SSH,
+independent-host, distinct-principal or SSIAG/STAV deployment qualification.
+
+The exact small-data profile is 15 synthetic DBN v3 events (1,200 bytes), one
+instrument, two selected signals, one worker, and explicit observed-trade-level
+model choices. The two-signal selection cap is reported as partial. Pass two
+must preserve the closed census, and CLI export must preserve the complete typed
+native result. Separate account-template cases verify queued/running
+cancellation, real completed-reply loss, and a real blocked-worker SIGKILL.
+Recovery observes the original committed receipt or retains `unknown`; it never
+converts an orphan claim into proof of completion or implicitly restarts it.
+The reply-dropping carrier and feedback barrier are explicitly test fixtures,
+while target dispatch, native calculation, journal persistence and reconciliation
+use production installed code.
+
+Launch evidence must include successful, non-skipped results on each selected
+profile, exact source and executable identities, native receipt digest, compiler
+and host observations, and the retained case outputs. Adding this gate does not
+assert that its hosted runs have passed. Its tiny deterministic fixture is a
+correctness boundary, not calibrated market data, a scale benchmark, all-model
+qualification, or real broker/provider acceptance. The existing full native
+suite remains required alongside this selected end-to-end path.
+
+The extensions below remain outside this MVP: independent-host/WAN transport,
+distinct-principal/system-scope remote deployment, cluster/NUMA/terabyte-scale
+acceptance, mid-calculation checkpoint/resume, actual GPU execution, live capture,
+and comparative performance claims. Their prerequisites and owner boundaries
+remain explicit below. Any future promise in one of those lanes needs its own
+measured profile and acceptance evidence; this gate cannot stand in for it.
+
+## Historical selected M3 qualification and follow-on record
+
+The remainder records the earlier selected M3 release and its evidence as of
+13 October 2026. Its successful same-machine macOS-to-Linux SSH observations are
+historical evidence, not a claim that the new four-profile gate has run.
+
 Recorded 13 October 2026 at Duncan's request. This is a resumable backlog, not a
 claim that the capabilities below have shipped or a restriction on user systems.
 The selected M3 gate is complete; its exact evidence and limitations are in

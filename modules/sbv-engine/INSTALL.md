@@ -53,3 +53,14 @@ The optional [Go adapter](../../libraries/sbv-go/README.md) v0.1.0-dev is instal
 and removed as an independent source-module dependency. It selects the exact
 qxctl executable and native 0.33.0-dev prefix; no adapter file is added to this
 native receipt and no native installation is removed with the adapter.
+
+
+### Selected MVP installed-process qualification
+
+After the quantitative dependency group is installed, run
+`sh tests/sbv-launch-boundary/run.sh /absolute/prefix /absolute/new-work` from the
+repository. The harness builds isolated controller/adapter binaries, consumes
+installed receipt-owned SBV interfaces, and records the exact CPU/data/transport
+profile. Its same-host owner-filesystem IPC path and explicit fault fixtures do
+not qualify SSH or live providers. See `FOLLOW-ON.md` and the harness README for
+the current launch boundary and required native runner profiles.

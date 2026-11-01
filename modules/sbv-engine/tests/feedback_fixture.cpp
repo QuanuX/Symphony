@@ -118,6 +118,11 @@ int32_t decide(void *, const sbv_call_context_v1 *ctx,
     auto context = call.at("context");
     auto mode = context.value("mode", std::string{});
     if (mode == "job_barrier") {
+      // Optional qualification-only marker identifies this exact admitted
+      // worker for a real SIGKILL/reconciliation regression. No product PID
+      // discovery or authority is inferred from it.
+      if (context.contains("pid_marker"))
+        std::ofstream(context.at("pid_marker").get<std::string>()) << ::getpid() << "\n";
       std::ofstream(context.at("entered").get<std::string>()) << "entered\n";
       while (!std::ifstream(context.at("release").get<std::string>()).good()) {
         if (ctx->cancel_state(ctx->token) != SBV_CALL_RUNNING)
