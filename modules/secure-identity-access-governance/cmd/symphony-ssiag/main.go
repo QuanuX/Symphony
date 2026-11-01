@@ -437,6 +437,11 @@ func runEnroll(args []string) error {
 		val := uint32(parsed)
 		serviceGID = &val
 	}
+	if serviceUID != nil && serviceGID != nil {
+		if err := config.ValidateServiceOwnership(*serviceUID, *serviceGID); err != nil {
+			return err
+		}
+	}
 	name := *topsName
 	auditMode := "ordinary"
 	if *auditDeferred {

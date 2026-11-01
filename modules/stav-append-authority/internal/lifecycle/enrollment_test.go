@@ -3,6 +3,7 @@ package lifecycle
 import (
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 
 	"github.com/QuanuX/Symphony/modules/stav-append-authority/internal/config"
@@ -34,6 +35,11 @@ func TestEnrollPreserveAndExplicitPurge(t *testing.T) {
 	}
 	if cfg.TOPSID != enrollmentTOPSID || len(cfg.Authentication.Producers) != 0 || len(cfg.Authentication.Readers) != 0 {
 		t.Fatalf("unexpected enrollment configuration: %#v", cfg)
+	}
+	for _, ids := range [][2]uint64{{uint64(os.Geteuid()) ^ 1, uint64(os.Getegid())}, {uint64(os.Geteuid()), uint64(os.Getegid()) ^ 1}} {
+		if _, err := Enroll(stavpaths.ScopeUser, enrollmentTOPSID, ids[0], ids[1]); err == nil || !strings.Contains(err.Error(), "conflicts with the existing") {
+			t.Fatalf("re-enrollment changed the configured authority: %v", err)
+		}
 	}
 	if err := os.WriteFile(filepath.Join(record.StateDir, "preserved"), []byte("evidence"), 0o600); err != nil {
 		t.Fatal(err)

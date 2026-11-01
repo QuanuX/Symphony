@@ -9,6 +9,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"math"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -614,6 +615,9 @@ func validatePlan(value Plan, component, surface, scope, topsID string) error {
 	if (value.ServiceUID == nil) != (value.ServiceGID == nil) || (value.AuthorityUID == nil) != (value.AuthorityGID == nil) {
 		return fmt.Errorf("%s lifecycle plan contains an incomplete service identity", component)
 	}
+	if !validOwnershipIdentity(value.ServiceUID, value.ServiceGID, value.AuthorityUID, value.AuthorityGID) {
+		return fmt.Errorf("%s lifecycle plan contains a reserved ownership sentinel", component)
+	}
 	if surface == "enrollment" && value.DesiredState == "unenrolled_preserved" &&
 		(value.TOPSName != nil || value.ServiceUID != nil || value.ServiceGID != nil || value.AuthorityUID != nil || value.AuthorityGID != nil) {
 		return fmt.Errorf("unenrollment plan contains enrollment-only identity intent")
@@ -699,6 +703,9 @@ func validateIntent(value Intent, component, surface, scope string) error {
 		(value.ServiceUID == nil) != (value.ServiceGID == nil) || (value.AuthorityUID == nil) != (value.AuthorityGID == nil) {
 		return fmt.Errorf("%s lifecycle intent violates the required contract", component)
 	}
+	if !validOwnershipIdentity(value.ServiceUID, value.ServiceGID, value.AuthorityUID, value.AuthorityGID) {
+		return fmt.Errorf("%s lifecycle intent contains a reserved ownership sentinel", component)
+	}
 	if surface == "supervisor" && (value.TOPSName != nil || value.ServiceUID != nil || value.ServiceGID != nil || value.AuthorityUID != nil || value.AuthorityGID != nil) {
 		return fmt.Errorf("supervisor lifecycle intent contains enrollment-only identity fields")
 	}
@@ -720,6 +727,17 @@ func validateIntent(value Intent, component, surface, scope string) error {
 		return fmt.Errorf("system-scope lifecycle intent omits its explicit service identity")
 	}
 	return nil
+}
+
+// The maximum uint32 is the POSIX leave-ownership-unchanged sentinel, not
+// an assignable service identity. Observations retain their reporting contract.
+func validOwnershipIdentity(values ...*uint32) bool {
+	for _, value := range values {
+		if value != nil && *value == math.MaxUint32 {
+			return false
+		}
+	}
+	return true
 }
 
 func validNullablePaths(value Observation) bool {

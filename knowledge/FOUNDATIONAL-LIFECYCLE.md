@@ -32,6 +32,8 @@ The installed module adapter owns canonical paths, configuration interpretation,
 
 The human module CLI and machine adapter MUST call the same transaction implementation. Direct administration without qxctl remains supported and cannot bypass attempt, expected-state, purge-safety, or recovery invariants.
 
+Assignable service and authority UID/GID values are `0..4294967294`, inclusive. The Unix ownership sentinel `4294967295` is not an identity and MUST be rejected in CLI input, machine intents, admitted plans, operational configuration and ownership helpers before mutation. Zero remains a valid explicit identity where the selected scope and caller authority permit it. Ownership assignment MUST read back and verify both UID and GID before reporting success. This requirement does not broaden caller permissions, provision service accounts, or change generic peer-identity wire representations.
+
 ## Invariant Ownership and Evidence
 
 `knowledge/INVARIANTS.md` defines the common lowest-authoritative-layer rule, and `knowledge/INVARIANT-OWNERSHIP.json` assigns stable IDs to this contract's adapter provenance, bounded process framing, stable observation digests, plan/attempt compare-and-swap, evidence-driven recovery, audit closure, and shared transaction-core invariants. Those IDs are protocol identifiers; neither the Go modules, qxctl, the C++ engine, nor AI derives them from display names.

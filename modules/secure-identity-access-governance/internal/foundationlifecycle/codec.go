@@ -12,6 +12,8 @@ import (
 	"regexp"
 	"strings"
 	"time"
+
+	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/config"
 )
 
 const (
@@ -118,6 +120,11 @@ func (intent Intent) validate(surface string) error {
 	}
 	if (intent.ServiceUID == nil) != (intent.ServiceGID == nil) || intent.AuthorityUID != nil || intent.AuthorityGID != nil {
 		return fmt.Errorf("SSIAG lifecycle intent identity is invalid")
+	}
+	if intent.ServiceUID != nil {
+		if err := config.ValidateServiceOwnership(*intent.ServiceUID, *intent.ServiceGID); err != nil {
+			return err
+		}
 	}
 	if surface == "enrollment" {
 		if !oneOf(intent.DesiredState, "enrolled", "unenrolled_preserved") || intent.DesiredState == "enrolled" && (intent.TOPSName == nil || *intent.TOPSName == "") {

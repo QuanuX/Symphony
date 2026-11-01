@@ -149,6 +149,11 @@ func enroll(scope ssiagpaths.Scope, topsID, topsName string, serviceUID, service
 	if (serviceUID == nil) != (serviceGID == nil) {
 		return EnrollmentRecord{}, fmt.Errorf("service UID and GID must be supplied together")
 	}
+	if serviceUID != nil {
+		if err := config.ValidateServiceOwnership(*serviceUID, *serviceGID); err != nil {
+			return EnrollmentRecord{}, err
+		}
+	}
 	if scope == ssiagpaths.ScopeUser && serviceUID != nil {
 		return EnrollmentRecord{}, fmt.Errorf("user enrollment binds the SSIAG service to the enrolling process effective identity and does not accept an override")
 	}
@@ -519,11 +524,26 @@ func ensureSystemSharedDirectory(path, root string) error {
 }
 
 func ensureOwnedPrivateDirectory(path string, uid, gid uint32) error {
+	return ensureOwnedPrivateDirectoryWithChown(path, uid, gid, os.Chown)
+}
+
+func ensureOwnedPrivateDirectoryWithChown(path string, uid, gid uint32, chown func(string, int, int) error) error {
+	if err := config.ValidateServiceOwnership(uid, gid); err != nil {
+		return err
+	}
 	if err := ensureDirectory(path); err != nil {
 		return err
 	}
-	if err := os.Chown(path, int(uid), int(gid)); err != nil {
+	if err := chown(path, int(uid), int(gid)); err != nil {
 		return fmt.Errorf("assign service ownership to %s: %w", path, err)
+	}
+	info, err := os.Lstat(path)
+	if err != nil {
+		return fmt.Errorf("verify service directory ownership: %w", err)
+	}
+	stat, ok := info.Sys().(*syscall.Stat_t)
+	if !info.IsDir() || info.Mode()&os.ModeSymlink != 0 || !ok || stat.Uid != uid || stat.Gid != gid {
+		return fmt.Errorf("service directory ownership does not match requested UID/GID: %s", path)
 	}
 	if err := os.Chmod(path, 0o700); err != nil {
 		return fmt.Errorf("restrict service directory %s: %w", path, err)

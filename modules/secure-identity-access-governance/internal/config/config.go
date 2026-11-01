@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"math"
 	"os"
 	"path/filepath"
 	"strings"
@@ -12,6 +13,15 @@ import (
 )
 
 const maxConfigBytes = 1 << 20
+
+// ValidateServiceOwnership excludes chown's leave-unchanged sentinel from the
+// service's concrete ownership identity. Explicit UID/GID zero remains valid.
+func ValidateServiceOwnership(uid, gid uint32) error {
+	if uid == math.MaxUint32 || gid == math.MaxUint32 {
+		return fmt.Errorf("SSIAG service UID/GID must be between 0 and %d; %d is reserved", uint64(math.MaxUint32)-1, uint64(math.MaxUint32))
+	}
+	return nil
+}
 
 const (
 	ServiceSubjectID   = "symphony.ssiag.service"
@@ -294,6 +304,9 @@ func validateAuthentication(authentication *AuthenticationConfig) error {
 		}
 		if service.UID == nil || service.GID == nil {
 			return fmt.Errorf("authentication service must explicitly declare uid and gid")
+		}
+		if err := ValidateServiceOwnership(*service.UID, *service.GID); err != nil {
+			return err
 		}
 	}
 	seenSubjects := make(map[string]struct{}, len(authentication.Subjects))

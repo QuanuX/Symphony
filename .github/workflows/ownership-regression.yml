@@ -1,0 +1,52 @@
+name: Ownership regression
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ownership-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ownership:
+    name: Ownership (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, ubuntu-26.04, ubuntu-24.04-arm, macos-15, macos-15-intel]
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6
+        with:
+          go-version-file: go.work
+          cache: false
+      - name: Test ownership admission and lifecycle regressions
+        env:
+          GOCACHE: ${{ runner.temp }}/ownership-go-cache
+          GOMODCACHE: ${{ runner.temp }}/ownership-module-cache
+          GOTOOLCHAIN: local
+        run: |
+          go test -race -count=1 \
+            ./modules/stav-append-authority/internal/config \
+            ./modules/stav-append-authority/internal/lifecycle \
+            ./modules/stav-append-authority/internal/foundation \
+            ./modules/stav-append-authority/internal/supervision \
+            ./modules/stav-append-authority/cmd/symphony-stav-append-authority \
+            ./modules/secure-identity-access-governance/internal/config \
+            ./modules/secure-identity-access-governance/internal/lifecycle \
+            ./modules/secure-identity-access-governance/internal/foundationlifecycle \
+            ./modules/secure-identity-access-governance/internal/supervision \
+            ./modules/secure-identity-access-governance/cmd/symphony-ssiag \
+            ./tools/qxctl/internal/foundationlifecycle
+          go test -race -count=1 ./tools/qxctl/cmd/qxctl -run 'TestFoundationLifecycle'

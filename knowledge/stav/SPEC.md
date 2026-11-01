@@ -85,6 +85,8 @@ The append authority owns socket creation and never uses supervisor socket activ
 
 Direct file mutation is prohibited through supported interfaces for every caller, including qxctl clients and producers. Enrollment creates no producer or reader grant; grants require explicit host-administrator configuration and do not vary by caller type. Recovery is limited to the evidence-preserving incomplete-tail procedure below. Any other repair remains a separately authorized administrative operation.
 
+Operational append-authority UID/GID values MUST be in the inclusive range `0..4294967294`. The reserved `4294967295` Unix ownership sentinel is not an assignable identity. Enrollment and supervisor admission reject it before mutation; directory ownership assignment verifies the resulting UID and GID before reporting success. This operational restriction does not redefine the shared protocol codec's representational range for peer grants.
+
 The configuration contains endpoint trust and grant metadata but no secrets. Its final path component MUST NOT be a symbolic link and it MUST NOT be writable by group or other. User enrollment writes it as `0600`. System enrollment writes it as administrator-owned `0644` so separately identified producers and readers can obtain the authority identity and public grants without gaining configuration mutation authority.
 
 ## Durable Ledger

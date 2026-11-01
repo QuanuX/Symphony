@@ -592,7 +592,21 @@ func readPlan(path string) (Plan, error) {
 	if plan.PlanDigest != digestWithout(plan, "plan_digest") {
 		return Plan{}, fmt.Errorf("protected lifecycle plan digest is invalid")
 	}
+	if err := validatePlanOwnership(plan); err != nil {
+		return Plan{}, err
+	}
 	return plan, nil
+}
+
+// Recovery may admit an expired plan, but never a reserved ownership identity.
+func validatePlanOwnership(plan Plan) error {
+	if (plan.AuthorityUID == nil) != (plan.AuthorityGID == nil) {
+		return fmt.Errorf("plan authority UID and GID must be supplied together")
+	}
+	if plan.AuthorityUID != nil {
+		return config.ValidateAuthorityOwnership(uint64(*plan.AuthorityUID), uint64(*plan.AuthorityGID))
+	}
+	return nil
 }
 
 func setAttemptDigest(attempt *Attempt) {

@@ -325,6 +325,9 @@ func recordFor(scope ssiagpaths.Scope, topsID string) (Record, error) {
 }
 
 func render(spec Spec) (Record, []byte, error) {
+	if err := config.ValidateServiceOwnership(spec.UID, spec.GID); err != nil {
+		return Record{}, nil, err
+	}
 	if err := ssiagpaths.ValidateTOPSID(spec.TOPSID); err != nil {
 		return Record{}, nil, err
 	}
@@ -472,6 +475,9 @@ func SpecFromConfig(scope ssiagpaths.Scope, topsID string, binary string, cfg co
 	}
 	if cfg.TOPS.ID != topsID || cfg.Mode != string(scope) {
 		return Spec{}, fmt.Errorf("configuration does not match selected TOPS and scope")
+	}
+	if err := config.ValidateServiceOwnership(*cfg.Authentication.Service.UID, *cfg.Authentication.Service.GID); err != nil {
+		return Spec{}, err
 	}
 	return Spec{Scope: scope, TOPSID: topsID, Binary: binary, UID: *cfg.Authentication.Service.UID, GID: *cfg.Authentication.Service.GID}, nil
 }

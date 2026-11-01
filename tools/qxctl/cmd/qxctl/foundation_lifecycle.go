@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"math"
 	"strconv"
 	"time"
 
@@ -238,9 +239,15 @@ func pairedUint32(uidValue, gidValue, label string) (*uint32, *uint32, error) {
 	if err != nil {
 		return nil, nil, fmt.Errorf("invalid --%s-uid", label)
 	}
+	if uid64 == math.MaxUint32 {
+		return nil, nil, fmt.Errorf("invalid --%s-uid: reserved ownership sentinel", label)
+	}
 	gid64, err := strconv.ParseUint(gidValue, 10, 32)
 	if err != nil {
 		return nil, nil, fmt.Errorf("invalid --%s-gid", label)
+	}
+	if gid64 == math.MaxUint32 {
+		return nil, nil, fmt.Errorf("invalid --%s-gid: reserved ownership sentinel", label)
 	}
 	uid, gid := uint32(uid64), uint32(gid64)
 	return &uid, &gid, nil
