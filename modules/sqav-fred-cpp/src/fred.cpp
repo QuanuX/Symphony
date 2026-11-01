@@ -19,6 +19,14 @@ struct PageState {
   std::uint32_t count = 0;
   std::optional<std::uint32_t> next;
 };
+struct CollectionState {
+  Plan next;
+  CollectionLimits limits;
+  CollectionProgress progress;
+  std::vector<Page> pages;
+  std::set<std::string> seen;
+  std::string last_date;
+};
 } // namespace detail
 namespace {
 const Selection empty_selection{};
@@ -252,5 +260,112 @@ Status collect(const Plan &p, source::CredentialUse &credentials,
   if (s != Status::ok)
     return s;
   return Page::admit(p, response, json, out);
+}
+
+Collection::Collection() noexcept = default;
+Collection::~Collection() = default;
+Collection::Collection(Collection &&) noexcept = default;
+Collection &Collection::operator=(Collection &&) noexcept = default;
+Status Collection::begin(const Plan &first, const CollectionLimits &limits,
+                         Collection &out) noexcept {
+  if (!first || first.selection().offset != 0 || !limits.pages ||
+      limits.pages > 4096 || !limits.records || limits.records > 1'000'000 ||
+      !limits.requests || limits.requests > 65536 || !limits.original_bytes ||
+      limits.original_bytes > 64U * 1024U * 1024U)
+    return Status::invalid_argument;
+  try {
+    auto state = std::make_unique<detail::CollectionState>();
+    state->next = first;
+    state->limits = limits;
+    out.state_ = std::move(state);
+    return Status::ok;
+  } catch (const std::bad_alloc &) {
+    return Status::no_memory;
+  } catch (...) {
+    return Status::internal_error;
+  }
+}
+const Plan *Collection::next_plan() const noexcept {
+  return state_ && !state_->progress.complete ? &state_->next : nullptr;
+}
+CollectionProgress Collection::progress() const noexcept {
+  return state_ ? state_->progress : CollectionProgress{};
+}
+std::span<const Page> Collection::pages() const noexcept {
+  return state_ ? std::span<const Page>(state_->pages) : std::span<const Page>{};
+}
+Status Collection::accept(const Page &page) noexcept {
+  if (!state_ || !page || state_->progress.complete)
+    return Status::invalid_argument;
+  if (page.state_->plan.reference() != state_->next.reference() ||
+      (state_->progress.declared_count &&
+       *state_->progress.declared_count != page.total_count()))
+    return Status::binding_mismatch;
+  const auto count = page.observations().size() + page.vintage_dates().size();
+  const auto &limits = state_->limits;
+  const auto &progress = state_->progress;
+  if (progress.pages == limits.pages || page.total_count() > limits.records ||
+      count > limits.records - progress.records ||
+      page.original().size() > limits.original_bytes - progress.original_bytes)
+    return Status::limit;
+  // The count is uint32 and limit is positive; division avoids rounded-up
+  // addition overflow. Empty results still require one observed page.
+  const auto page_size = state_->next.selection().limit;
+  const auto required_pages =
+      page.total_count() == 0 ? 1U : (page.total_count() - 1U) / page_size + 1U;
+  if (required_pages > limits.pages)
+    return Status::limit;
+  try {
+    // Stage the entire update. A changed count, duplicate, reversed boundary or
+    // allocation failure must not advance the pending request or retained pages.
+    auto next = std::make_unique<detail::CollectionState>(*state_);
+    for (const auto &row : page.observations()) {
+      if (row.date < next->last_date ||
+          !next->seen.insert(row.date + "/" + row.realtime_start + "/" +
+                             row.realtime_end).second)
+        return Status::binding_mismatch;
+      next->last_date = row.date;
+    }
+    for (const auto &date : page.vintage_dates()) {
+      if (!next->last_date.empty() && date <= next->last_date)
+        return Status::binding_mismatch;
+      next->last_date = date;
+    }
+    if (page.next_offset()) {
+      auto selection = next->next.selection();
+      selection.offset = *page.next_offset();
+      const auto status = Plan::create(selection, next->next);
+      if (status != Status::ok)
+        return status;
+    }
+    next->pages.push_back(page);
+    next->progress.pages++;
+    next->progress.records += static_cast<std::uint32_t>(count);
+    next->progress.original_bytes += page.original().size();
+    next->progress.declared_count = page.total_count();
+    next->progress.complete = !page.next_offset();
+    state_ = std::move(next);
+    return Status::ok;
+  } catch (const std::bad_alloc &) {
+    return Status::no_memory;
+  } catch (...) {
+    return Status::internal_error;
+  }
+}
+Status Collection::collect_next(source::CredentialUse &credentials,
+                                 const source::HttpLimits &http,
+                                 const source::JsonLimits &json,
+                                 std::stop_token stop) noexcept {
+  if (!state_ || state_->progress.complete)
+    return Status::invalid_argument;
+  if (stop.stop_requested())
+    return Status::cancelled;
+  if (state_->progress.requests == state_->limits.requests)
+    return Status::limit;
+  ++state_->progress.requests;
+  const auto request = state_->next;
+  Page page;
+  const auto status = collect(request, credentials, http, json, stop, page);
+  return status == Status::ok ? accept(page) : status;
 }
 } // namespace symphony::sqav::fred

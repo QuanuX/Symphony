@@ -13,3 +13,29 @@ C++26, initially verified on macOS amd64 / AppleClang 21 with compatible native 
 `tests/test.cpp` exercises supported positive and negative boundaries; `tests/sdk-consumer/main.cpp` exercises the installed public API outside the checkout. The SQV non-live source composition tests preserve selected capture evidence through exact local retention/replay. The tests and package receipts do not establish provider access, production conformance or a licence grant.
 
 No selected publisher/feed, vendor wire connector, HTTP server, article scraping, full-feed completeness, licence grant, persistent correction catalogue or mutation of prior revisions.
+
+## Operational ingress qualification
+
+The recorded user choice is a vendor-neutral article API. No subsequent release
+preparation implicitly selects a news vendor, enables scraping or promises a
+vendor feed. An operational host supplies the authorized envelope and actual
+predecessor evidence to `Article::admit`, then supplies the explicit attempt,
+observer, access scope and acquisition time to `Article::capture`. The API does
+not retrieve a credential or fetch `source_uri`; upstream transport/authentication
+and rights belong to the selected caller and content source.
+
+On each required Apple Silicon macOS, Ubuntu LTS x86_64 and Ubuntu LTS ARM64
+profile, qualify the actual installed caller/SDK and retention path with an
+authorized original article and correction. Record exact SDK/receipt identities,
+the supplied source/rights attribution, original bytes, original/correction
+references and separate publication/update/acquisition times. Verify a correction
+uses the exact immutable predecessor and never replaces it. Reject a missing or
+mismatched predecessor, changed article identity or reversed update time; confirm
+refusal leaves prior retained evidence intact. After caller restart, retrieve
+the actual retained predecessor and repeat the binding checks without inventing
+a catalogue entry or inferring complete feed coverage.
+
+Until that installed caller and authorized content/retention evidence are
+provided, parser and fixture tests are preparation only. News-vendor selection,
+licensing and feed operations would require a separate explicit scope decision;
+their absence must not be reported as an implemented vendor integration.

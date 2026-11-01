@@ -26,6 +26,6 @@
 
 ## Extent
 
-Exact observation and vintage-date requests, original decimal/missing values, pagination and capture.
+Exact observation and vintage-date requests, original decimal/missing values and bounded page collection with explicit retry and retained-page recovery.
 
 No FRED key provisioning, operational SSIAG bridge, arbitrary output types, frequency aggregation, series metadata API, cross-page snapshot atomicity or provider-authenticated fixtures.
