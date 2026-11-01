@@ -25,12 +25,30 @@ request=$(jq -cn --argjson deadline "$deadline" '{
   payload: {expected_ledger_digest: null}
 }')
 
-(cd "$repository" && printf '%s\n' "$request" | "$engine") | jq -e '
+checked=$(cd "$repository" && printf '%s\n' "$request" | "$engine")
+printf '%s\n' "$checked" | jq -e '
   .outcome == "ok" and
   .result.summary.state == "valid" and
-  .result.records_checked == 3 and
-  .result.transactions_checked == 1 and
   .result.canonical_apply_enabled == false
+' >/dev/null
+
+projection_request=$(printf '%s\n' "$request" | jq -c '
+  .operation = "project" | .payload = {format: "json"}
+')
+(cd "$repository" && printf '%s\n' "$projection_request" | "$engine") | jq -e --argjson checked "$checked" '
+  .outcome == "ok" and
+  (.result |
+    .noncanonical == true and .rebuildable == true and
+    .record_count == (.records | length) and
+    .transaction_count == (.transactions | length) and
+    .transaction_count == ([.records[] | select(.record_type == "authorization")] | length) and
+    .record_count == $checked.result.records_checked and
+    .transaction_count == $checked.result.transactions_checked and
+    [.records[0:3][].release_record_id] == ["SODV-REL-001", "SODV-REL-002", "SODV-REL-003"] and
+    .transactions[0].authorization_record_id == "SODV-REL-001" and
+    .transactions[0].latest_correction_record == "SODV-REL-002" and
+    .transactions[0].completion_record == "SODV-REL-003" and
+    .transactions[0].state == "completed")
 ' >/dev/null
 
 reserved=$(jq -cn --argjson deadline "$deadline" '{
