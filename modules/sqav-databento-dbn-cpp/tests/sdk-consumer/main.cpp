@@ -3,14 +3,18 @@
 #include <cstdlib>
 #include <symphony/sqav/databento/http.hpp>
 #include <filesystem>
+#include <source_location>
 #include <unistd.h>
 #include <vector>
 using namespace symphony;
 namespace db = symphony::sqav::databento;
 constexpr db::Limits limits{65536, 4096, 100};
-void check(bool p) {
-  if (!p)
+void check(bool p, std::source_location location = std::source_location::current()) {
+  if (!p) {
+    std::fprintf(stderr, "DBN installed consumer assertion failed at %s:%u\n",
+                 location.file_name(), location.line());
     std::abort();
+  }
 }
 std::vector<std::uint8_t> fixture() {
   // Public Databento C++ v0.68.0 test_data.mbo.v3.dbn, unchanged file bytes.
@@ -143,7 +147,9 @@ void installed_historical_admission() {
   check(response.capture(observer,{65536,16384,4096},capture)==db::Status::binding_mismatch && capture.reference()==saved);
 }
 void installed_attempt_and_http_refusal() {
-  char path[]="/private/tmp/sqav-installed-attempt-XXXXXX";check(::mkdtemp(path));
+  auto path = (std::filesystem::canonical(std::filesystem::temp_directory_path()) /
+               "sqav-installed-attempt-XXXXXX").string();
+  check(::mkdtemp(path.data()) != nullptr);
   {
     auto bytes=fixture();db::FileView file;check(db::FileView::inspect(bytes,limits,file)==db::Status::ok);const auto& m=file.metadata();
     db::HistoricalPlan plan;check(db::HistoricalPlan::create({std::string(m.dataset),{"ESH1"},m.start,m.end,m.limit},{limits,86'400'000'000'000ULL,8,3,60},plan)==db::Status::ok);
