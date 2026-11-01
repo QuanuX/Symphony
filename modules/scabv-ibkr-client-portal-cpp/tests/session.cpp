@@ -69,12 +69,21 @@ int main() {
   check(cp::Session::open(bad, transport, {}, s) ==
             source::Status::invalid_argument &&
         transport.calls == 0);
+  bad = c;
+  bad.http.max_header_bytes = 65537;
+  check(cp::Session::open(bad, transport, {}, s) ==
+            source::Status::invalid_argument &&
+        transport.calls == 0);
+  c.http.max_header_bytes = 65536;
   check(cp::Session::open(c, transport, {}, s) == source::Status::ok &&
         transport.calls == 2);
   check(s.binding().account() == "U_TEST" &&
         s.state() == cp::SessionState::ready);
   check(s.positions(10000, {}, page) == source::Status::invalid_argument &&
         transport.calls == 2);
+  check(s.positions(0, {}, page) == source::Status::limit &&
+        transport.calls == 2 && !page);
+  std::this_thread::sleep_for(std::chrono::milliseconds(5010));
   transport.refresh();
   transport.replies.push_back(
       {"/portfolio/U_TEST/positions/0", false, response(position)});
@@ -84,7 +93,7 @@ int main() {
                          page.original().size()) == position);
   check(s.positions(1, {}, page) == source::Status::limit &&
         transport.calls == 5 && page.records() == 1);
-  std::this_thread::sleep_for(std::chrono::milliseconds(1010));
+  std::this_thread::sleep_for(std::chrono::milliseconds(5010));
   transport.refresh();
   transport.replies.push_back(
       {"/portfolio/U_TEST/positions/1", false, response("[]")});
@@ -101,6 +110,7 @@ int main() {
   check(hs.historical_bars({123, "1d", "1min", "bad", false}, 10, {}, page) ==
             source::Status::invalid_argument &&
         history.calls == 2);
+  std::this_thread::sleep_for(std::chrono::milliseconds(5010));
   history.refresh();
   history.replies.push_back(
       {"/iserver/marketdata/history", false,
@@ -118,6 +128,7 @@ int main() {
     t.refresh();
     cp::Session session;
     check(cp::Session::open(c, t, {}, session) == source::Status::ok);
+    std::this_thread::sleep_for(std::chrono::milliseconds(5010));
     t.replies.push_back({"/iserver/auth/status", true, response("", code)});
     check(session.positions(0, {}, page) == source::Status::not_authorized &&
           t.calls == 3);
@@ -148,6 +159,7 @@ int main() {
   cp::Session changed_session;
   check(cp::Session::open(c, changed, {}, changed_session) ==
         source::Status::ok);
+  std::this_thread::sleep_for(std::chrono::milliseconds(5010));
   changed.refresh(authenticated, R"([{"id":"OTHER"}])");
   check(changed_session.positions(0, {}, page) ==
             source::Status::not_authorized &&
@@ -156,6 +168,7 @@ int main() {
   denied.refresh();
   cp::Session denied_session;
   check(cp::Session::open(c, denied, {}, denied_session) == source::Status::ok);
+  std::this_thread::sleep_for(std::chrono::milliseconds(5010));
   denied.refresh();
   denied.replies.push_back(
       {"/iserver/marketdata/history", false, response("", 403)});

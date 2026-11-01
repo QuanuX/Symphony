@@ -108,6 +108,7 @@ public:
   [[nodiscard]] SessionState state() const noexcept;
   [[nodiscard]] const Binding &binding() const noexcept;
   // Each read rechecks status and account membership before the data GET.
+  // Reserve five seconds after account discovery, including open→first read.
   // Failed reads preserve Page output. No automatic pagination or retries.
   [[nodiscard]] Status positions(std::uint32_t page, std::stop_token,
                                  Page &) noexcept;

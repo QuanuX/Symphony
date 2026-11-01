@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <chrono>
 #include <symphony/scabv/client_portal.hpp>
 #include <symphony/source/json.hpp>
@@ -111,6 +112,9 @@ struct Session {
                                  "", false,
                                  source::HttpRequest::Credential::none};
     result = exchange(accounts, stop, response);
+    // Reserve the endpoint budget from completion, including open discovery.
+    // A slow status or account request must not compress the next interval.
+    next_read = Clock::now() + std::chrono::seconds(5);
     if (result != Status::ok)
       return result;
     Binding updated;
@@ -149,7 +153,7 @@ Status Session::open(const SessionConfig &c, GatewayTransport &transport,
       !source::valid_limits(c.json) || c.http.timeout_ms == 0 ||
       c.http.timeout_ms > 300000 || c.http.connect_timeout_ms == 0 ||
       c.http.connect_timeout_ms > c.http.timeout_ms ||
-      c.http.max_header_bytes == 0 || c.http.max_header_bytes > 1048576 ||
+      c.http.max_header_bytes == 0 || c.http.max_header_bytes > 65536 ||
       c.http.max_body_bytes == 0 || c.http.max_body_bytes > c.json.bytes)
     return Status::invalid_argument;
   if (stop.stop_requested())
@@ -203,7 +207,6 @@ Status Session::positions(std::uint32_t page, std::stop_token stop,
     return Status::invalid_argument;
   if (detail::Session::Clock::now() < s.next_read)
     return Status::limit;
-  s.next_read = detail::Session::Clock::now() + std::chrono::seconds(1);
   try {
     result = s.refresh(stop);
     if (result != Status::ok)
@@ -234,7 +237,6 @@ Status Session::historical_bars(const History &h, std::uint32_t limit,
       return result;
     if (detail::Session::Clock::now() < s.next_read)
       return Status::limit;
-    s.next_read = detail::Session::Clock::now() + std::chrono::seconds(1);
     result = s.refresh(stop);
     if (result != Status::ok)
       return result;
