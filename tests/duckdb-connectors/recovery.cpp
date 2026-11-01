@@ -75,6 +75,7 @@ int main(int argc, char **argv) {
       if (stage == "commit.after_commit" && args.has("retain-root")) {
         const auto retained = fs::path(args.require("retain-root"));
         NT_REQUIRE(!fs::exists(retained));
+        fs::create_directories(retained.parent_path());
         fs::copy(temp.path, retained, fs::copy_options::recursive);
         nt::write_json(retained / "expected-status.json", result);
         nt::write_json(retained / "status-request.json", nt::request(engine_id, "status", target_key));
