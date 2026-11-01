@@ -16517,3 +16517,87 @@ This PR authorizes none of the following:
   - `No existing release tag, SODV record, or historical SCLV record may be rewritten under this closure.`
 - notes: |
     Start time identifies the first recorded implementation commit, not an inferred message timestamp. The broad qxctl race run had 657 top-level passes, 87 explicit integration/helper skips and one process-fixture failure; that failure did not reproduce in 61 focused runs or a complete package rerun. No full installed-integration qualification or uniformly clean broad run is claimed. The user requires Apple Silicon, Ubuntu LTS and DGX Spark ARM64 DGX OS for MVP, permits proposals in progress, excludes native Windows, and requires credential/provider completion before launch. Anaconda, mirrors, binary publication and platform/provider activation remain later work. The final ownership and isolated-build workflows each passed all five native runner targets; logged Go host identities include darwin/arm64 and linux/arm64. Broader CodeQL scans may still be running at recording time; the earlier ownership-source scans passed and the ownership findings are fixed. Branch cleanup is recorded separately after this closure merges.
+
+- record_id: `SCLV-CHG-launch-L04-linux-retained-inspection`
+- record_version: `3`
+- title: `Linux retained store, attempt and checkpoint inspection`
+- status: `canonical`
+- date: `2026-11-01`
+- change_started_at: `2026-11-01T07:48:28Z`
+- change_completed_at: `2026-11-01T08:00:42Z`
+- recorded_at: `2026-11-01T08:02:16Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `implementation_change`
+- change_request_state: `present`
+- change_request_provider: `github`
+- change_request_id: `171`
+- change_request_reference: `https://github.com/QuanuX/Symphony/pull/171`
+- change_request_absence_reason: `not_applicable`
+- revision_scheme: `git-sha1`
+- revision_value: `b53f3c075dd1e2e013ea73583e1eb1500750570f`
+- tree_digest: `sha256:e080b6b35ee96d768b8707ceee72146ee8e38133c89cb2ef5371b547b5548d32`
+- ratification_subject: `Duncan (Architect)`
+- ratification_permission: `authorize_L04_implementation_focused_regressions_main_merge_and_merged_branch_cleanup`
+- ratification_method: `explicit-user-instruction`
+- ratification_evidence_reference: `../l04/ratification.json`
+- ratification_evidence_digest: `sha256:a72c04702247b7fcf3f3c95570093af50de9e655ff45cd2e07c612d54aaf8bcc`
+- affected_surfaces:
+  - `.github/workflows/sqv-retained-inspection.yml`
+  - `modules/sqav-attempt-engine/FEATURES.md`
+  - `modules/sqav-attempt-engine/INSTALL.md`
+  - `modules/sqav-attempt-engine/INTENT.md`
+  - `modules/sqav-attempt-engine/MANIFEST.md`
+  - `modules/sqav-attempt-engine/SKILL.md`
+  - `modules/sqav-attempt-engine/SPEC.md`
+  - `modules/sqdv-checkpoint-engine/FEATURES.md`
+  - `modules/sqdv-checkpoint-engine/INSTALL.md`
+  - `modules/sqdv-checkpoint-engine/INTENT.md`
+  - `modules/sqdv-checkpoint-engine/MANIFEST.md`
+  - `modules/sqdv-checkpoint-engine/SKILL.md`
+  - `modules/sqdv-checkpoint-engine/SPEC.md`
+  - `modules/sqpv-inspection-engine/FEATURES.md`
+  - `modules/sqpv-inspection-engine/INSTALL.md`
+  - `modules/sqpv-inspection-engine/INTENT.md`
+  - `modules/sqpv-inspection-engine/MANIFEST.md`
+  - `modules/sqpv-inspection-engine/SKILL.md`
+  - `modules/sqpv-inspection-engine/SPEC.md`
+  - `modules/sqpv-inspection-engine/src/store_reader.cpp`
+  - `tests/sqv-administration/CMakeLists.txt`
+  - `tests/sqv-administration/README.md`
+  - `tests/sqv-administration/reader_test.cpp`
+  - `tests/sqv-administration/run_regressions.sh`
+  - `tools/qxctl/internal/knowledgeengine/sqv_administration_test.go`
+- skvi_references:
+  - `modules/sqpv-inspection-engine/SPEC.md`
+  - `modules/sqdv-checkpoint-engine/SPEC.md`
+  - `modules/sqav-attempt-engine/SPEC.md`
+- change_summary: |
+    Enables Linux in the existing SQPV-owned read-only retained store reader shared by store, attempt and checkpoint inspection. Adds portable native adversarial regressions and a fail-closed installed-owner/qxctl gate using actual SQPV/SQDV/SQAV writer fixtures.
+- relationship_changes: |
+    The three semantic owners continue to share the SQPV reader and retain their separate observation contracts. qxctl continues to transport owner requests and validate results; it does not acquire writer or recovery authority.
+- doctrine_changes: |
+    None. Descriptor-relative no-follow paths, private ownership/modes, shared nonblocking locking, identity/inventory rechecks, finite bounds and dirty-tail non-recovery remain mandatory. Linux follows the existing writer contract of caller-selected filesystems without a filesystem-name allowlist.
+- compatibility_consequences: |
+    Linux now enters the portable reader path. macOS still requires local APFS. Native tests and all three installed qxctl routes pass on Ubuntu 24.04 x86_64/ARM64, Ubuntu 26.04 x86_64 and Apple Silicon macOS; local Intel macOS adds compatibility evidence. Existing package versions, wire protocols and retained formats are unchanged. Native Windows remains unsupported.
+- publication_consequences: |
+    Source changes are merged through PR171. No immutable source tag, binary package, Anaconda channel or mirror is published. The exact curl dependency exists only in isolated writer-fixture build storage and is absent from the installed observation owners.
+- projection_consequences: |
+    Module documentation describes Linux/macOS admission and qualified read-only behavior. Ubuntu ARM64 exercises the same Linux code path used by DGX Spark, but physical Spark with its exact DGX OS, kernel and storage remains a separate L01/L26 launch qualification.
+- evidence:
+  - `https://github.com/QuanuX/Symphony/pull/171`
+  - `https://github.com/QuanuX/Symphony/commit/b53f3c075dd1e2e013ea73583e1eb1500750570f`
+  - `https://github.com/QuanuX/Symphony/actions/runs/41286278710`
+  - `../l04/ratification.json`
+  - `../l04/source-binding.json`
+  - `../l04/merge-time-evidence.json`
+  - `../l04/ci-proof.json`
+  - `../l04/local-regressions.log`
+  - `../l04/source-validator.json`
+  - `../l04/review.md`
+- non_authorizations:
+  - `No recovery, repair, publication of dirty tails, provider call, credential mutation or production service activation is authorized by an inspection result.`
+  - `Successful filesystem syscalls do not certify physical locality, restart persistence, network/shared storage, power-loss durability, DGX Spark hardware or GPU behavior.`
+  - `No Anaconda, mirror, downloadable binary publication, native Windows port, or rewriting of historical records or tags is included.`
+- notes: |
+    Start and completion times are the verified implementation and merge commit timestamps in UTC, not inferred message times. GitHub PR metadata reports a merge time one hour later than its Git commit and in the future relative to the observed successful merge; both raw values are retained in merge-time-evidence.json. The focused gate requires installed inputs and rejects skipped selected tests. It includes four native CTests, six installed native process checks and race-enabled Go transport/installed/command tests; native writers produce the fixtures and all three actual qxctl routes are exercised. All fourteen functional CI jobs passed before merge. The broader Intel macOS C++ CodeQL analysis remained in progress at merge; it is distinct from functional qualification. Qualification is bounded to the recorded hosts and filesystems. Physical DGX Spark qualification and promised operational credential/provider capabilities remain launch work. The earlier interrupted local invocation is preserved separately; the clean committed-source rerun is the local result. Branch cleanup is recorded separately after this closure merges.
