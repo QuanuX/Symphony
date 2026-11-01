@@ -22,5 +22,26 @@ void installed_boundary() {
   check(scabv::client_portal::Plan::positions(b, 10000, p) ==
         source::Status::invalid_argument);
   check(scabv::client_portal::Plan::positions(b, 0, p) == source::Status::ok);
+  struct Expired : scabv::client_portal::GatewayTransport {
+    source::Status perform(const source::HttpRequest &r,
+                           const source::HttpLimits &, std::stop_token,
+                           source::HttpResponse &out) override {
+      check(r.post && r.endpoint.ends_with("/iserver/auth/status") &&
+            r.parameters.empty());
+      out = {401, {}, true};
+      return source::Status::http_error;
+    }
+  } transport;
+  scabv::client_portal::Session session;
+  check(scabv::client_portal::Session::open({"https://localhost:5000",
+                                             "U_TEST",
+                                             "private:fixture",
+                                             {1000, 100, 1024, 4096},
+                                             {4096, 128, 128, 8},
+                                             1000},
+                                            transport, {}, session) ==
+        source::Status::not_authorized);
+  check(session.state() == scabv::client_portal::SessionState::expired &&
+        !session.binding());
 }
 int main() { installed_boundary(); }

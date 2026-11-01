@@ -28,8 +28,11 @@
 - `modules/scabv-ibkr-tws-cpp/tests/sdk1045-conformance/conformance.cpp`
 - `modules/scabv-ibkr-tws-cpp/tests/test.cpp`
 
+- `modules/scabv-ibkr-tws-cpp/src/session.cpp`
+- `modules/scabv-ibkr-tws-cpp/tests/session.cpp`
+
 ## Extent
 
 Finite read-only native request/callback state around the external Stable 10.45 SDK dependency.
 
-No installed or licensed vendor SDK, verified SDK 10.45 conformance, connection/login runtime, complete EWrapper implementation, automatic request-ID allocation/pacing, live collection, order entry, provider cancellation receipt or operational SSIAG authorization.
+No installed or licensed vendor SDK, verified SDK 10.45 conformance, concrete vendor socket/EReader/EWrapper/Decimal bridge, login automation, live collection, order entry, provider cancellation receipt or operational SSIAG authorization. Host session fixtures do not establish SDK or operational acceptance.
