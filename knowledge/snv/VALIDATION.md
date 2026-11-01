@@ -74,3 +74,33 @@ recovery and unselection checked. Six native/CLI wrapper schema gates checked
 64 actual outputs. Exact independently installed collector and five-engine Go
 consumer gates used separate prefixes. These are bounded local results; the
 prior supplied-record ledger above retains its original revision and conditions.
+
+## Reproducible MVP target qualification
+
+The current source adds `tests/snv-qualification/run.sh` to the existing installed
+knowledge-group qualification. Its four required profiles are Ubuntu 24.04 and
+26.04 amd64, Ubuntu 24.04 arm64, and macOS 15 arm64. The arm64 Linux runner is a
+platform substitute; this does not claim a physical Spark or DGX run. Hosted
+results are determined by the exact run's retained evidence, not by this profile
+declaration or the historical local counts above.
+
+The harness accepts an explicit installed prefix, a new private work directory
+and an exact qxctl executable. Eight receipt checks and installed-only imports
+bind foundation, common mechanics, five independent owner SDKs and the optional
+observer. Supplied original records pass through each SDK and actual qxctl
+commands. Private evidence prepare/commit/status, repeated commit, absent-root
+read-only status and pure state planning are checked without selecting a view.
+Existing installed interface-tamper and adversarial process gates must execute
+without skips, and all eight receipts are checked again after use.
+
+The optional observer has separate synthetic-reader and native-host evidence.
+Denied/unseen fields stay null; refresh retains the original observation. Native
+Linux captures record kernel/OS/architecture, proc/sysfs filesystem admission
+and available virtualization/container classification. At least one actual
+field must be observed for Linux qualification; partial and changed evidence is
+preserved. macOS explicitly reports native collection unavailable. Neither path
+creates physical identity, proves bare metal/cgroup allocation, or grants
+provisioning authority. See `tests/snv-qualification/README.md` for invocation,
+artifact interpretation and the protected selected-view operations outside this
+profile. Only a completed exact-run `evidence.json` establishes this harness's
+success; it does not certify public publication or deployed service accounts.
