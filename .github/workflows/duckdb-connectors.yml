@@ -72,5 +72,8 @@ jobs:
             ${{ runner.temp }}/duckdb-qualification/selected-components.txt
             ${{ runner.temp }}/duckdb-qualification/metadata
             ${{ runner.temp }}/duckdb-qualification/evidence
+            ${{ runner.temp }}/duckdb-qualification/qxctl-admission/*.json
+            ${{ runner.temp }}/duckdb-qualification/qxctl-admission/*.log
+            ${{ runner.temp }}/duckdb-qualification/qxctl-admission/*.txt
             ${{ runner.temp }}/duckdb-dependency/DUCKDB-PROVENANCE.json
           retention-days: 14
