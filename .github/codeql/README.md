@@ -61,7 +61,7 @@ and the intentionally retained negative-permission test. It does not replace
 verification of a fresh uploaded analysis or authorize alert dismissal.
 
 After merging, verify the push run on `main` to establish the default-branch
-baseline. The workflow retains original and post-processed SARIF plus a diagnostic summary per category for 14 days. Inspect these artifacts as well as the uploaded result: PR filtering and empty API warning fields do not prove full extraction. Run `python3 .github/codeql/test_collect_evidence.py` when changing the collector.
+baseline. The workflow retains original and post-processed SARIF plus a diagnostic summary per category for 14 days. Inspect these artifacts as well as the uploaded result: PR filtering and empty API warning fields do not prove full extraction. The standard-library collector uses exact Go 1.26.5, prepared in all six jobs. Run `GOTOOLCHAIN=local GOWORK=off GOPROXY=off go test .github/codeql/collect_evidence.go .github/codeql/collect_evidence_test.go` with that toolchain when changing the collector.
 
 The weekly schedule and manual dispatch then become available from
 `main`. Keep the action commit pins current when updating CodeQL and checkout.
