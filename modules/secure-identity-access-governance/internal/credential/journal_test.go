@@ -128,7 +128,7 @@ func TestJournalRecoveryPreservesIntentAndUncertainty(t *testing.T) {
 			if armed && a.arm(binding) != nil {
 				t.Fatal("arm failed")
 			}
-			if _, err := j.recover(context.Background(), key); err == nil {
+			if _, err := j.recover(context.Background(), key, nil); err == nil {
 				t.Fatal("recovered an active request")
 			}
 			a.file.close()
@@ -136,19 +136,27 @@ func TestJournalRecoveryPreservesIntentAndUncertainty(t *testing.T) {
 				t.Fatal("abandoned request replayed")
 			}
 			// Historical binding timestamps are deliberately old and remain recoverable.
-			result, err := j.recover(context.Background(), key)
+			result, err := j.recover(context.Background(), key, nil)
 			want := DispatchNotDispatched
 			if armed {
 				want = DispatchIndeterminate
 			}
-			if err != nil || result.State != "closed" || result.Outcome != want {
+			wantAudit := "not_dispatched"
+			if armed {
+				wantAudit = "reconciliation_required"
+			}
+			if err != nil || result.State != "closed" || result.Outcome != want || result.AuditState != wantAudit {
 				t.Fatal("wrong recovered state", err, result)
 			}
-			again, err := j.recover(context.Background(), key)
+			again, err := j.recover(context.Background(), key, nil)
 			if err != nil || again != result {
 				t.Fatal("recovery was not idempotent")
 			}
-			if tx, status := j.begin(context.Background(), key); tx != nil || status != DispatchRecorded {
+			wantStatus := DispatchRecorded
+			if armed {
+				wantStatus = DispatchRecoveryRequired
+			}
+			if tx, status := j.begin(context.Background(), key); tx != nil || status != wantStatus {
 				t.Fatal("closed tombstone lost")
 			}
 		})
@@ -352,6 +360,13 @@ func TestJournalCrashWorker(t *testing.T) {
 	if stage == "intent" {
 		a.after = pause
 	}
+	if stage == "outcome-audited" {
+		a.after = func() {
+			if a.calls.Load() == 2 {
+				pause()
+			}
+		}
+	}
 	p.execute = func(context.Context, UseBinding) DispatchStatus {
 		if stage == "armed" {
 			pause()
@@ -385,7 +400,7 @@ func TestJournalCrashWorker(t *testing.T) {
 	t.Fatal("unknown worker stage")
 }
 func TestJournalSIGKILLRecoveryNeverRedelivers(t *testing.T) {
-	for _, stage := range []string{"intent", "armed", "effect", "closed"} {
+	for _, stage := range []string{"intent", "armed", "effect", "outcome-audited", "closed"} {
 		t.Run(stage, func(t *testing.T) {
 			d, in, p, _, _ := dispatchFixture(t)
 			root := d.journal.root
@@ -442,7 +457,7 @@ func TestJournalSIGKILLRecoveryNeverRedelivers(t *testing.T) {
 			if stage == "intent" {
 				want = DispatchNotDispatched
 			}
-			if stage == "closed" {
+			if stage == "closed" || stage == "outcome-audited" {
 				want = DispatchDelivered
 			}
 			if result.Outcome != want || p.executions.Load() != 0 || p.pins.Load() != 0 {
@@ -450,7 +465,7 @@ func TestJournalSIGKILLRecoveryNeverRedelivers(t *testing.T) {
 			}
 			effect, _ := os.ReadFile(filepath.Join(root, "effect"))
 			expected := 0
-			if stage == "effect" || stage == "closed" {
+			if stage == "effect" || stage == "closed" || stage == "outcome-audited" {
 				expected = 1
 			}
 			if len(effect) != expected {

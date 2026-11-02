@@ -74,6 +74,7 @@ class Collector {
   std::unique_ptr<detail::CollectorState> state_;
 
 public:
+  [[nodiscard]] explicit operator bool() const noexcept { return bool(state_); }
   Collector() noexcept;
   ~Collector() noexcept;
   Collector(Collector &&) noexcept;
@@ -100,6 +101,63 @@ public:
   [[nodiscard]] Status poll(std::stop_token = {}) noexcept;
   [[nodiscard]] Status snapshot(Snapshot &) const noexcept;
   void reset() noexcept;
+};
+// The authenticated host owns the vendor socket, EReader queue and EWrapper.
+// Only pump may synchronously route callbacks to Session; connect/start/cancel/
+// disconnect must not reenter it. All Session methods run on one owner thread.
+struct Connection {
+  std::string host, account, model, private_scope, session_tag;
+  std::uint16_t port = 0;
+  std::int32_t client_id = 0;
+  std::uint32_t handshake_timeout_ms = 0;
+  std::int32_t first_request_id = 1;
+};
+class RuntimeDriver : public Driver {
+public:
+  [[nodiscard]] virtual Status connect(const Connection &,
+                                       std::string_view generation) = 0;
+  // Drain a bounded amount of already queued input; do not wait indefinitely.
+  // The host must preserve the generation captured when its reader was created.
+  [[nodiscard]] virtual Status pump() = 0;
+  virtual void disconnect() noexcept = 0;
+};
+enum class SessionState : std::uint8_t { connecting, ready, disconnected, failed };
+namespace detail { struct Session; }
+class Session {
+  std::unique_ptr<detail::Session> state_;
+public:
+  Session() noexcept;
+  ~Session() noexcept;
+  Session(const Session &) = delete;
+  Session &operator=(const Session &) = delete;
+  // RuntimeDriver outlives Session. A dispatched connection failure publishes
+  // a failed Session; invalid arguments preserve output. No login is performed.
+  [[nodiscard]] static Status open(const Connection &, RuntimeDriver &,
+                                    Session &) noexcept;
+  [[nodiscard]] std::string_view generation() const noexcept;
+  [[nodiscard]] SessionState state() const noexcept;
+  [[nodiscard]] Status next_valid_id(std::string_view generation,
+                                     std::int32_t order_id) noexcept;
+  [[nodiscard]] Status managed_accounts(std::string_view generation,
+                                        std::span<const std::string>) noexcept;
+  // Identity fields in Request must be empty/zero. The host supplies its bound
+  // account/model/scope, captured generation and a never reused read request ID.
+  [[nodiscard]] Status start(const Request &, std::int32_t &request_id) noexcept;
+  [[nodiscard]] Status position(std::string_view, std::int32_t,
+                                const Position &) noexcept;
+  [[nodiscard]] Status historical_bar(std::string_view, std::int32_t,
+                                      const Bar &) noexcept;
+  [[nodiscard]] Status end(std::string_view, std::int32_t,
+                           std::string_view = {}, std::string_view = {}) noexcept;
+  [[nodiscard]] Status fail(std::string_view, std::int32_t,
+                            std::int32_t provider_code) noexcept;
+  [[nodiscard]] Status disconnected(std::string_view) noexcept;
+  [[nodiscard]] Status poll(std::stop_token = {}) noexcept;
+  [[nodiscard]] Status snapshot(Snapshot &) const noexcept;
+  // Explicitly discard a terminal request before another start or reconnect.
+  [[nodiscard]] Status release_request() noexcept;
+  [[nodiscard]] Status reconnect() noexcept;
+  void close() noexcept;
 };
 // External SDK adaptation is an explicit template instantiation using the
 // authorized SDK's EClient, Contract and TagValueListSPtr. No SDK source is

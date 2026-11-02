@@ -171,6 +171,10 @@ func (a *DispatchAttempt) Run(ctx context.Context) DispatchStatus {
 			if transaction.started {
 				result = DispatchIndeterminate
 			}
+		} else if transaction.record.Binding != nil && d.commitOutcome(bounded, transaction) != nil && result != DispatchIndeterminate {
+			// Execution evidence is already durable. An absent outcome receipt
+			// requires recovery, not a new provider attempt or a success claim.
+			result = DispatchRecoveryRequired
 		}
 		return nil
 	})

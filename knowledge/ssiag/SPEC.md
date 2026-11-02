@@ -60,7 +60,10 @@ The provider-binding surface is governed in full by `knowledge/ssiag/PROVIDER-LI
 
 Provider readiness is governed by `knowledge/ssiag/PROVIDER-READINESS.md`. `POST /v1/provider-readiness/<provider_name>/observations` performs a fresh, permission-backed but non-mutating observation through the exact bound installation. Structural signature validity, native protected-policy match, and operational eligibility are separate layers. Phase 10B leaves eligibility unevaluated and fixes all operational flags false. The stable qxctl command is `qxcmd:symphony:ssiag.provider.readiness`; qxctl accepts no path or signing-policy values and validates the entire safe result.
 
-The canonical authorization and lifecycle-grant planning schemas are:
+The canonical authorization, foundational audit and lifecycle-grant planning schemas are:
+
+- `knowledge/ssiag/schemas/v1/foundation-audit-request.schema.json`;
+- `knowledge/ssiag/schemas/v1/foundation-audit-response.schema.json`;
 
 - `knowledge/ssiag/schemas/v1/authorization-request.schema.json`;
 - `knowledge/ssiag/schemas/v1/authorization-decision.schema.json`;
@@ -130,7 +133,7 @@ SSIAG and the STAV append authority occupy the foundational bootstrap stratum. A
 
 Supervision owns process liveness only. Starting, stopping, monitoring, or restarting a process MUST NOT grant the supervisor SSIAG policy authority, provider authority, administrative apply authority, or ledger file access. An optional Troll does not inherit authority merely because it supervises another component.
 
-The implemented native profiles are per-TOPS launchd jobs on macOS and per-TOPS systemd units on Linux. The stable launchd label prefixes are `io.github.quanux.symphony.ssiag.` and `io.github.quanux.symphony.stav.` followed by the immutable TOPS UUID. Linux unit names are `symphony-ssiag@<tops-id>.service` and `symphony-stav@<tops-id>.service`. No SSIAG unit requires, wants, or starts STAV: each service starts independently. Future ordinary audited mutation fails closed at the operation boundary if STAV is unavailable; the separately permissioned audit-deferred administrator recovery contract above remains the only planned exception.
+The implemented native profiles are per-TOPS launchd jobs on macOS and per-TOPS systemd units on Linux. The stable launchd label prefixes are `io.github.quanux.symphony.ssiag.` and `io.github.quanux.symphony.stav.` followed by the immutable TOPS UUID. Linux unit names are `symphony-ssiag@<tops-id>.service` and `symphony-stav@<tops-id>.service`. No SSIAG unit requires, wants, or starts STAV: each service starts independently. Ordinary audited mutation fails closed at the operation boundary if the SSIAG bridge or STAV is unavailable; the explicit administrator bootstrap and outcome-reconciliation contract below governs self-impacting recovery.
 
 System service accounts are an owner or package-manager prerequisite. Symphony MUST NOT silently create an account, infer root, or treat an account name as endpoint authority. Supervisor installation consumes the numeric UID/GID already recorded in the per-TOPS trust configuration and fails when that identity is not provisioned where the native manager requires a name. Shared system parents are administrator-owned and traversable; the SSIAG and STAV runtime/state children are separately owned and `0700`. Linux runtime children live below `/run/symphony/<tops-id>/`; macOS uses its native `/var/run/symphony/<tops-id>/` root.
 
@@ -197,3 +200,64 @@ The SSIAG producer constructs the candidate from typed safe references and close
 Architecture is ratified for local peer authentication, foundational supervision, proposal/apply mutation, provider mutual trust, protected secret delivery, and per-user macOS Keychain use. Darwin/Linux peer extraction, exact UID/GID subject mapping, target-host-owner derivation, endpoint trust, native launchd/systemd supervision, runtime ownership, bounded restart/shutdown, serialized stale-socket recovery, exact deny-by-default evaluation, audited authorization decisions, bounded non-transferable capabilities, protected local policy administration, and the metadata-only provider mutual-trust runtime are implemented. The provider runtime validates one exact protected declaration, receipt, executable, staged process, request/response, and adapter-side foundation observation; the synthetic channel remains non-operational. Unmapped peers remain read-only except for the independently proven `host_owner` policy basis. Mutually authenticated STAV submission and the closed SSIAG producer vocabulary are the fail-closed audit dependency. Canonical knowledge apply and operational provider enablement still require safeguard administration, production code-signing policy, Keychain namespace and operation policy, operational secret-channel framing, broader provider negative tests, lifecycle tests, and release evidence.
 
 Remote SSIAG access, a network gateway, generic SSIAG tokens, implicit provider fallback, non-permission-backed apply authority, and graph-database deployment remain unauthorized.
+
+## Audited foundational lifecycle bridge
+
+`POST /v1/foundation-lifecycle/audit` is a bounded local SSIAG route governed by
+`schemas/v1/foundation-audit-request.schema.json` and
+`schemas/v1/foundation-audit-response.schema.json`. It accepts only the SSIAG or
+STAV enrollment and supervisor desired states already supported by their native
+owners. The authenticated kernel peer MUST be the target-host owner; the route
+MUST derive the actor from that peer and MUST NOT accept caller-provided actors,
+producer identities, arbitrary candidates, event classes, operation names, or
+reason strings. It accepts no credential material. Scope and TOPS MUST match the
+serving SSIAG instance. This route does not authorize a provider operation.
+
+The closed producer vocabulary adds exactly these pairs:
+
+| Phase | Event class | Operation and intent | Outcome | Reason |
+| --- | --- | --- | --- | --- |
+| Intent | `symphony.ssiag.foundation.intent` | `symphony.ssiag.foundation.prepare` | `allowed` | `symphony.ssiag.foundation.intent.allowed` |
+| Observed outcome | `symphony.ssiag.foundation.outcome` | `symphony.ssiag.foundation.observe` | `succeeded` | `symphony.ssiag.foundation.outcome.observed` |
+
+An intent receipt certifies only admission of the exact plan before mutation. It
+MUST NOT certify execution, successful stop, or completed reconciliation. The
+candidate binds the plan digest and the SHA-256 digest of the complete JCS request,
+including component, surface, scope, TOPS, operation, request/correlation IDs,
+prior state, desired state and phase. The target is the exact component/surface
+and TOPS. The observed-outcome request additionally binds the original observed
+state digest and UTC observation time. Its separate UUIDv4 is generated once and
+durably persisted before submission. Retrying either phase MUST reuse its exact
+request and candidate. Receipt admission checks the full STAV receipt, committed
+state, TOPS, request ID, phase, request digest, kernel actor and candidate digest.
+A caller-supplied receipt digest alone is insufficient.
+
+Native owners durably prepare safe audit intent before ordinary mutation and
+refuse execution until its receipt commits. They persist a proven native outcome
+before requesting its distinct receipt. A transport error or lost reply retains
+that metadata for exact replay; it never becomes success by inference. Journals
+remain in protected host lifecycle roots outside purged per-TOPS service data.
+They contain no raw ledger events and confer no append authority. STAV remains
+the sole ledger writer. Public lifecycle `committed` and `reconciled` states refer
+only to the observed-outcome receipt. An unavailable completion append leaves
+`audit_deferred`, a null public receipt digest, and
+`reconciliation_required=true`, even when the intent receipt is already committed.
+
+Bootstrap is explicit: install and enroll the exact two foundations using the
+administrator's `--audit-deferred` path, author the exact enrolled SSIAG UID/GID
+producer grant with the two pairs above in protected STAV configuration, then
+start the two independent native supervisors. No grant or start is implicit.
+Recover each retained operation ID through the existing foundation lifecycle
+`recover` command after the bridge and append authority are available. Recovery
+appends a new event at actual commitment time; it does not backdate the ledger.
+The original observation time is retained only as request-bound evidence.
+
+Stopping either foundation may make the outcome append unavailable. Only an
+explicitly deferred `native_running` request may cross the previous-outcome fence
+to restore that audit dependency, and only when the previous observed outcome is
+already durably retained. Older operation journals remain separately recoverable
+by exact operation ID after restart. Historical reconciliation does not replay
+native mutation or assert that the present process state is the earlier stop.
+Exact CAS uses the latest same-operation native attempt when available, including
+an interrupted final journal binding. Existing pre-bridge records without a
+proven persisted outcome are not converted into fabricated historical receipts.

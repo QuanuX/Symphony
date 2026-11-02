@@ -7,7 +7,7 @@ It provides request reservation, dispatch preparation, outcome persistence and
 recovery on Darwin/Linux. It remains an internal foundation component: no
 credential endpoint, qxctl surface, operational provider backend or Keychain
 operation is enabled. Tests use real filesystem operations and kernel locks;
-provider delivery and STAV transport remain fixtures.
+provider delivery remains synthetic in local tests. A separate process regression uses the actual STAV append authority, authenticated local IPC, durable receipts and restart idempotency; it does not establish operational credential delivery.
 
 ## Identity and storage
 
@@ -34,7 +34,13 @@ The existing 4,096-byte delivery ceiling is a separate binding constraint.
 
 No key bytes, native error text, secret-derived digest or provider payload belongs
 in a record. Digests cover metadata only. The local format identifier is an
-internal storage version, not an admitted IPC schema or bearer capability.
+internal storage version, not an admitted IPC schema or bearer capability. New
+records use internal format 2 and carry an independent outcome-audit request ID,
+reserved before provider execution, and an optional full committed STAV receipt.
+Format 1 remains readable with its original digest domain and request identity.
+Authenticated recovery upgrades an armed/closed format-1 record only while its
+original request lock is held; identity, execution binding and outcome stay intact.
+An older reader refuses format 2 rather than treating it as a new request.
 
 ## Ordering and recovery
 
@@ -43,6 +49,8 @@ flowchart LR
     I[Durable intent] --> A[Durable armed binding]
     A --> E[Provider Execute]
     E --> C[Durable closed outcome]
+    C --> S[Committed STAV outcome receipt]
+    S --> D[Durable receipt binding]
     I --> R[Closed refusal before dispatch]
 ```
 
@@ -58,6 +66,11 @@ flowchart LR
 5. Commit a `closed` outcome before reporting completed execution. Failure to
    record completion after arming returns `indeterminate`, even if the provider
    reported success. Descriptor and provider-pin cleanup occurs on every path.
+6. Submit the closed provider-operation event with the independent audit request
+   reserved before execution. Verify committed receipt, TOPS, request and exact
+   candidate digest, then durably retain the receipt. A missing or unpersisted
+   receipt returns `recovery_required` for a known outcome; an indeterminate
+   execution remains indeterminate. Neither state authorizes another delivery.
 
 Recovery acquires the same lock and cannot classify a live attempt. It requires
 a fresh, separately identified authorization request for the original exact
@@ -68,12 +81,15 @@ original authenticated subject and complete intent.
 |---|---|
 | `intent` | Commit `closed / not_dispatched`; provider `Execute` was not entered. Audit or metadata work may have occurred. |
 | `armed` | Commit `closed / indeterminate`; delivery may have occurred. |
-| `closed` | Return the retained historical outcome without another dispatch. |
+| `closed` with a dispatch binding and no outcome receipt | Replay the original safe audit candidate and retain its independently verified receipt; never invoke the provider. |
+| `closed` with committed outcome receipt | Return the retained historical outcome and `AuditState: committed`, without another outcome append or dispatch. |
+| Legacy `closed` with a dispatch binding | Persist a format-2 audit identity before reconciliation, retaining all original execution evidence. |
 | Missing/inconsistent/corrupt record or lock | Refuse recovery; missing evidence never means permission to retry. |
 
 Recovery never invokes provider admission or execution. It does not convert
 uncertainty into success or authorize a new request. A duplicate `Run` returns
-`already_recorded` or `recovery_required`, not a new delivery result. The explicit
+`already_recorded` only after required outcome auditing is retained, otherwise
+`recovery_required`; neither is a new delivery result. The explicit
 recovery result can describe an earlier `delivered` outcome; it performs no delivery.
 
 ## Filesystem guarantees and boundaries
@@ -119,5 +135,16 @@ distinct evidence; Linux runtime and power-loss testing remain outside this pass
 
 Remaining operational gates: trusted provider/lease/recipient pins, protected
 native delivery with byte/termination enforcement, signed Keychain item lifecycle,
-and durable provider-outcome STAV integration. The journal is local execution
-state and does not replace STAV or prove that the recipient used a credential.
+and live qualification of the integrated outcome path. The journal is local
+execution state and does not replace STAV or prove that the recipient used a
+credential. An outcome receipt reports the observed provider callback result,
+not successful use at an external service. The existing STAV v1 vocabulary maps
+`delivered` to `succeeded`, `refused` to `failed`, and `indeterminate` to
+`unavailable` (confirmed completion evidence unavailable). The original journal
+continues to expose `indeterminate`; audit reconciliation cannot promote it to
+success or prove that no bytes escaped.
+
+The outcome regressions also cover audit unavailability, substituted candidate
+receipts, persistence failures on both sides of the receipt write, stable audit
+identity across recovery, historical format migration, and lost acknowledgement
+after an actual STAV append followed by authority restart.

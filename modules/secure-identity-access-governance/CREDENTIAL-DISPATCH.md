@@ -12,7 +12,9 @@ kernel identity is exercised using real accepted Unix connections.
 SQV-16 requires the [durable request journal](CREDENTIAL-JOURNAL.md) for every
 dispatcher. It reserves request identity before audit and commits the exact
 binding before execution. New objects and process restarts cannot automatically
-reissue a recorded request; recovery preserves uncertain outcomes without delivery.
+reissue a recorded request; recovery preserves uncertain outcomes without delivery. Internal storage format 2
+reserves a distinct provider-outcome request before execution and retains its
+verified committed STAV receipt after the local outcome is durable.
 
 The coordinator is Go 1.26.5, cgo-free. The separate native provider and C++26 SQV
 consumer retain their existing language and ownership boundaries.
@@ -50,6 +52,10 @@ consumer retain their existing language and ownership boundaries.
    `indeterminate`. A fresh object, restored process or ambiguous result is not
    permission to repeat delivery. The result vocabulary carries no raw errors or
    credential bytes.
+8. Persist the observed execution outcome before submitting its separate closed
+   STAV provider-operation event. Retain the verified receipt durably. If audit
+   completion is unavailable, authenticated recovery replays only that stable
+   safe candidate and never calls provider admission or execution again.
 
 The initial policy snapshot now owns its own grant storage. Caller mutation of
 the original config cannot alter active grants or limits without a digest-bound
@@ -78,8 +84,8 @@ credential bytes and credential-derived hashes remain excluded.
 
 ## Gates still required for operational access
 
-- Integration of the implemented local journal with deployment state ownership
-  and durable provider-outcome STAV evidence before operational release.
+- Integration of the implemented local journal and provider-outcome STAV
+  reconciliation with deployment state ownership and live operational acceptance.
 - Durable authority loading and native provider/recipient pins. The internal
   snapshot wrapper coordinates exact resource/lease state with replacement;
   busy replacement is not completed revocation or rotation.
@@ -88,7 +94,7 @@ credential bytes and credential-derived hashes remain excluded.
   implemented channel.
 - Signed macOS Keychain import, lookup, rotation/revocation and user-session
   behavior under the selected deployment's TOPS and access-group identity.
-- Durable provider-outcome auditing and full delivery/recovery conformance before
+- Full native delivery/recovery conformance and live outcome-audit qualification before
   admitting a versioned operational endpoint. Existing metadata protocols and
   their disabled flags remain unchanged.
 

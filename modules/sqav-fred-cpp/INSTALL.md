@@ -13,3 +13,5 @@ cmake -DINSTALL_PREFIX=/tmp/sqav-fred-cpp-prefix -P /tmp/sqav-fred-cpp-build/uni
 ```
 
 Receipt-v2 owns only this version’s archive, header(s), exact CMake exports, six owner documents and AGPL license. Guarded removal checks exact receipt/digest/path ownership. Installation starts no service or provider operation. Operational credentials, provider host applications and rights remain separate.
+
+The public fred.hpp also exports Collection, CollectionLimits and CollectionProgress. Begin at an explicit offset-zero Plan; invoke collect_next once per authorized caller action with the actual CredentialUse bridge, or accept actual retained pages to reconstruct progress. See SPEC.md for count/order bounds, retry semantics and operational qualification. Local request allowances are not durable account-wide rate limits.

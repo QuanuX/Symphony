@@ -28,7 +28,7 @@ Both uninstall paths remove only owned package evidence. They refuse active TOPS
 
 `foundation-lifecycle describe --json` emits one digest-bearing adapter descriptor. The machine form accepts exactly one bounded strict `symphony.foundation.lifecycle-command.v1` JSON value on stdin and emits exactly one bounded result on stdout. It supports enrollment and supervisor `observe`, `plan`, `apply`, `apply_status`, and `recover`, with exact state/attempt compare-and-swap, deadline and future-skew validation, immutable installation evidence, result digests, STSC timestamps, replay, and crash recovery. Attempts are no-follow, owner-controlled, fsynced, digest-linked, and stored in a host lifecycle root outside every per-TOPS purge subtree.
 
-Observation is offline and does not invoke the native manager. Apply refuses an unavailable manager before attempt creation. Ordinary mutation fails before persistent attempt or external mutation until a real committed STAV receipt path is wired. Explicit `audit_deferred` mutation journals the state and returns `reconciliation_required=true`; the typed receipt-binding hook cannot itself validate or manufacture a receipt and is not a completed reconciliation endpoint. Purge is absent from qxctl/foundation lifecycle v1.
+Observation is offline and does not invoke the native manager. Apply refuses an unavailable manager before attempt creation. Ordinary mutation durably prepares its exact intent and requires a committed closed SSIAG/STAV intent receipt before external mutation. The independently observed outcome is persisted before requesting its distinct receipt. Unavailable outcome commitment remains `audit_deferred` with `reconciliation_required=true`; existing `recover` reconciles the exact retained observation without repeating native execution. Digest-only receipt binding is not supported. The bounded host-owner bridge and bootstrap/restart semantics are defined in `knowledge/ssiag/SPEC.md`. Purge is absent from qxctl/foundation lifecycle v1.
 
 ## TOPS Enrollment
 
@@ -55,6 +55,8 @@ Before dialing, the client requires a Unix socket owned by the configured servic
 ## Local API
 
 The foundation listens on one Unix socket for one TOPS and exposes:
+
+- `POST /v1/foundation-lifecycle/audit`: closed host-owner intent or observed-outcome commitment, governed by the canonical foundation-audit request/response schemas;
 
 - `GET /v1/status`: version, readiness, mode, TOPS ID/name, transport, provider count;
 - `GET /v1/providers`: safe declared descriptors.
@@ -103,6 +105,11 @@ internal durable request reservation, preparation, outcome and recovery boundary
 `CREDENTIAL-ADMISSION.md` defines the implemented process-local resource/lease
 snapshot pin, complete-snapshot CAS and native evidence checks. The native
 provider/recipient backend and protected delivery remain unimplemented; no route
-is enabled. Local execution records do not replace committed STAV evidence.
+is enabled. Local execution records do not replace committed STAV evidence. The dispatcher
+now commits a separate safe provider-outcome event after persisting its observed
+result, retains the exact verified receipt, and reconciles missing outcome
+receipts under fresh authorization without another delivery. Internal format-1
+records retain duplicate suppression and migrate only during protected recovery.
+Unknown delivery remains indeterminate even after its audit commits.
 
 Local peer authentication, exact UID/GID subject resolution, target-host-owner derivation, endpoint verification, native supervision, receipt-v2 identity, transactional recovery, exact-grant authorization, protected policy administration, typed SSIAG STAV submission, metadata-only provider mutual trust, and exact provider-binding lifecycle are implemented. General safeguards, lease issuance, credential delivery, operational provider operations, secret delivery, and canonical knowledge apply remain disabled.

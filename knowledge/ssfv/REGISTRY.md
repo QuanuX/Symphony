@@ -946,7 +946,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `modules/secure-identity-access-governance`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:ssiag-foundation`
-- record_digest: `sha256:1b399689c832b297451a8304392a6c61b46889f7f3a59ea0ec7925a44624b73b`
+- record_digest: `sha256:bc7d0711d8ac9dc46e7907a3a07dc51292f80dd30731d63589ca34275d472616`
 - notes: Architect-ratified F2 subfeature for closed safe SSIAG audit production; coverage remains partial.
 
 - feature_id: `ssfv:symphony:ssiag-foundation.tops-enrollment`
@@ -955,7 +955,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `modules/secure-identity-access-governance`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:ssiag-foundation`
-- record_digest: `sha256:dbbede83433c4356f388b94ef10e86a9997a8cab3ff96947328cfa4f7659bc9b`
+- record_digest: `sha256:ac35b703b5a6ddc065618e0d897b255f1248350e0114410247ac6bd1e61527f7`
 - notes: Architect-ratified F2 subfeature for per-TOPS SSIAG enrollment and isolation; coverage remains partial.
 
 - feature_id: `ssfv:symphony:ssiag.macos-keychain-metadata`
@@ -1027,7 +1027,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `modules/stav-append-authority`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:stav-append-authority`
-- record_digest: `sha256:39dd01d227c6ce26f370f8966baff21a737e5ff509f49c20c0768e8e03a62a80`
+- record_digest: `sha256:5466c0aa08094d4233ce7a76fd581375f29d51444716d6f67cca09826ebb2a31`
 - notes: Architect-ratified F2 subfeature for per-TOPS STAV serialization-domain enrollment; coverage remains partial.
 
 - feature_id: `ssfv:symphony:stav-protocol-kernel`
@@ -1099,7 +1099,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `modules/sqav-fred-cpp`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:platform`
-- record_digest: `sha256:74a2ee101d645bc92f95fd61a8152bc2efd31ab72d1afff6bea0d2338b4f55f5`
+- record_digest: `sha256:3a70dced9522db6d0a91f238f30799f667e607be9eb319d3565718796a3e3ca9`
 - notes: Bounded non-live source implementation; exact external activation and deployment requirements remain explicit.
 
 - feature_id: `ssfv:symphony:sqav-news-api-cpp`
@@ -1117,7 +1117,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `modules/scabv-ibkr-client-portal-cpp`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:platform`
-- record_digest: `sha256:0333ddef2815ae20e47c90a6a11e5bfae85bd4753f8b206877b4363b8659749b`
+- record_digest: `sha256:40150b9f773067baf12dca02e13b763e3b719d785484b8a43272afc056915bce`
 - notes: Bounded non-live source implementation; exact external activation and deployment requirements remain explicit.
 
 - feature_id: `ssfv:symphony:scabv-ibkr-tws-cpp`
@@ -1126,7 +1126,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `modules/scabv-ibkr-tws-cpp`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:platform`
-- record_digest: `sha256:5ef6be58e386e0e0e79362d54c7aed3996379c919d643fec35e8d40348160bd1`
+- record_digest: `sha256:3688260d9d5f099a59206d8179edcfd78a477df7aa2715dfe920858e514d08e0`
 - notes: Bounded non-live source implementation; exact external activation and deployment requirements remain explicit.
 
 - feature_id: `ssfv:symphony:sqav-databento-reference-cpp`
@@ -1135,7 +1135,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `modules/sqav-databento-reference-cpp`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:platform`
-- record_digest: `sha256:8dc2e1c5a80fbb4371d9fd72a5dbcf6fa5dc4888425c108f550482c916779ed5`
+- record_digest: `sha256:ffcb664808c6cb0286bdda1ba764b2e69a426f076ba5bcaa5b1be6be93cc1f1d`
 - notes: Bounded non-live source implementation; exact external activation and deployment requirements remain explicit.
 
 - feature_id: `ssfv:symphony:qxctl.sqv-administration`

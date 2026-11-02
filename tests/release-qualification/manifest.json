@@ -479,7 +479,8 @@
         "BUILD_TESTING": true
       },
       "ctests": [
-        "scabv-ibkr-client-portal"
+        "scabv-ibkr-client-portal",
+        "scabv-ibkr-client-portal-session"
       ],
       "direct_tests": [],
       "excluded_direct_tests": [],
@@ -494,7 +495,8 @@
       },
       "ctests": [
         "scabv-ibkr-tws",
-        "scabv-ibkr-tws-allocation"
+        "scabv-ibkr-tws-allocation",
+        "scabv-ibkr-tws-session"
       ],
       "direct_tests": [],
       "excluded_direct_tests": [],
@@ -2564,7 +2566,7 @@
   ],
   "native_totals": {
     "roots": 57,
-    "ctests": 165,
+    "ctests": 167,
     "direct_tests": 16
   },
   "duckdb_installed_campaign": {

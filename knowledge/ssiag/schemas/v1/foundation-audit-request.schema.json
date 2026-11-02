@@ -1,0 +1,167 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:ssiag:foundation-audit-request:v1",
+  "title": "SSIAG closed foundational lifecycle audit request",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "component",
+    "surface",
+    "scope",
+    "tops_id",
+    "operation_id",
+    "request_id",
+    "correlation_id",
+    "plan_digest",
+    "prior_state_digest",
+    "desired_state",
+    "audit_mode",
+    "phase"
+  ],
+  "properties": {
+    "schema": {
+      "const": "symphony.ssiag.foundation-audit.v1"
+    },
+    "component": {
+      "enum": [
+        "ssiag",
+        "stav"
+      ]
+    },
+    "surface": {
+      "enum": [
+        "enrollment",
+        "supervisor"
+      ]
+    },
+    "scope": {
+      "enum": [
+        "user",
+        "system"
+      ]
+    },
+    "tops_id": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+    },
+    "operation_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+    },
+    "request_id": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[47][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+    },
+    "correlation_id": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[47][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+    },
+    "plan_digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "prior_state_digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "desired_state": {
+      "enum": [
+        "enrolled",
+        "unenrolled_preserved",
+        "native_running",
+        "native_installed_stopped",
+        "absent_stopped"
+      ]
+    },
+    "audit_mode": {
+      "enum": [
+        "ordinary",
+        "audit_deferred"
+      ]
+    },
+    "phase": {
+      "enum": [
+        "intent",
+        "outcome"
+      ]
+    },
+    "observed_state_digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "observed_at": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "phase": {
+            "const": "intent"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "audit_mode": {
+            "const": "ordinary"
+          }
+        },
+        "not": {
+          "anyOf": [
+            {
+              "required": [
+                "observed_at"
+              ]
+            },
+            {
+              "required": [
+                "observed_state_digest"
+              ]
+            }
+          ]
+        }
+      },
+      "else": {
+        "required": [
+          "observed_at",
+          "observed_state_digest"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "surface": {
+            "const": "enrollment"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "desired_state": {
+            "enum": [
+              "enrolled",
+              "unenrolled_preserved"
+            ]
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "desired_state": {
+            "enum": [
+              "native_running",
+              "native_installed_stopped",
+              "absent_stopped"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

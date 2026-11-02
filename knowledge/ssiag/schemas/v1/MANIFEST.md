@@ -2,6 +2,9 @@
 
 ## Canonical Surfaces
 
+- `knowledge/ssiag/schemas/v1/foundation-audit-request.schema.json`
+- `knowledge/ssiag/schemas/v1/foundation-audit-response.schema.json`
+
 - `knowledge/ssiag/schemas/v1/MANIFEST.md`
 - `knowledge/ssiag/schemas/v1/authorization-decision.schema.json`
 - `knowledge/ssiag/schemas/v1/authorization-policy.schema.json`

@@ -1,6 +1,7 @@
 #include <algorithm>
 #include <array>
 #include <charconv>
+#include <chrono>
 #include <limits>
 #include <set>
 #include <symphony/source/json.hpp>
@@ -451,5 +452,114 @@ Status quote(const HistoricalPlan &p, source::CredentialUse &credentials,
   s = source::fetch(r, &credentials, h, stop, response);
   return s == Status::ok ? CostQuote::admit(p, response, now, validity, out)
                          : s;
+}
+
+AcquisitionResult acquire_quoted_historical(
+    const HistoricalPlan &plan, const CostQuote &quote,
+    const AcquisitionAuthorization &authorization, AttemptLedger &ledger,
+    SsiagHistoricalUse &credentials, const databento::HttpLimits &http,
+    std::stop_token stop,
+    HistoricalResponse &out) noexcept {
+  AcquisitionResult result;
+  const auto now_ms = []() noexcept -> std::uint64_t {
+    const auto value = std::chrono::duration_cast<std::chrono::milliseconds>(
+                           std::chrono::system_clock::now().time_since_epoch())
+                           .count();
+    return value > 0 ? static_cast<std::uint64_t>(value) : 0;
+  };
+  if (!plan || !source::token(authorization.evidence_ref, 192) ||
+      !source::token(authorization.attempt_id, 192) ||
+      authorization.request_ref != plan.reference() ||
+      !authorization.authorized_unix_ms ||
+      authorization.expires_unix_ms <= authorization.authorized_unix_ms ||
+      authorization.expires_unix_ms - authorization.authorized_unix_ms >
+          86400000 ||
+      !http.timeout_ms || http.timeout_ms > 300000 ||
+      !http.connect_timeout_ms || http.connect_timeout_ms > http.timeout_ms ||
+      !http.max_header_bytes || http.max_header_bytes > 65536)
+    return result;
+  if (stop.stop_requested()) {
+    result.admission = Status::cancelled;
+    return result;
+  }
+  try {
+    const auto now = now_ms();
+    AttemptQuote admitted;
+    result.admission = quote.for_attempt(plan, now, admitted);
+    if (result.admission != Status::ok)
+      return result;
+    if (authorization.quote_evidence_ref != admitted.evidence_ref) {
+      result.admission = Status::binding_mismatch;
+      return result;
+    }
+    if (now < authorization.authorized_unix_ms ||
+        now >= authorization.expires_unix_ms) {
+      result.admission = Status::stale;
+      return result;
+    }
+    if (authorization.ceiling_nano_usd < admitted.ceiling_nano_usd) {
+      result.admission = Status::limit;
+      return result;
+    }
+    // Bind both distinct evidence records and the caller-selected ceiling. A
+    // quote estimate is deliberately not used as an implicit authorization.
+    result.reservation_evidence_ref =
+        "db-acquisition-v1-" +
+        source::digest(std::string(plan.reference()) + "\n" +
+                       admitted.evidence_ref + "\n" +
+                       authorization.evidence_ref + "\n" +
+                       authorization.attempt_id + "\n" +
+                       std::to_string(authorization.ceiling_nano_usd) + "\n" +
+                       std::to_string(authorization.authorized_unix_ms) + "\n" +
+                       std::to_string(authorization.expires_unix_ms));
+    admitted.evidence_ref = result.reservation_evidence_ref;
+    admitted.ceiling_nano_usd = authorization.ceiling_nano_usd;
+    admitted.quoted_unix_ms =
+        std::max(admitted.quoted_unix_ms, authorization.authorized_unix_ms);
+    admitted.expires_unix_ms =
+        std::min(admitted.expires_unix_ms, authorization.expires_unix_ms);
+    AttemptTicket ticket;
+    result.reservation = ledger.reserve(plan, authorization.attempt_id, admitted,
+                                        now, ticket);
+    if (result.reservation != AttemptStatus::ok)
+      return result;
+    const auto execution_now = now_ms();
+    // Persistence can consume the remaining validity, and cancellation can
+    // arrive while it is in flight. Record a terminal without obtaining a key.
+    if (stop.stop_requested() || execution_now < now ||
+        execution_now >= admitted.expires_unix_ms) {
+      const bool cancelled = stop.stop_requested();
+      result.execution.status =
+          cancelled ? HttpStatus::cancelled : HttpStatus::stale;
+      result.execution.persistence = ledger.finish(
+          ticket, cancelled ? AttemptOutcome::cancelled : AttemptOutcome::rejected);
+      if (result.execution.persistence != AttemptStatus::ok)
+        result.execution.status = HttpStatus::persistence_failure;
+      return result;
+    }
+    auto bounded = http;
+    bounded.timeout_ms = static_cast<std::uint32_t>(std::min<std::uint64_t>(
+        http.timeout_ms, admitted.expires_unix_ms - execution_now));
+    bounded.connect_timeout_ms =
+        std::min(bounded.connect_timeout_ms, bounded.timeout_ms);
+    result.execution_invoked = true;
+    result.execution = execute_historical(plan, ledger, ticket, credentials,
+                                         bounded, execution_now, stop, out);
+    // Cancellation can race the pre-dispatch check. The HTTP owner reports
+    // closed persistence only when it returns cancelled before ticket claim.
+    if (result.execution.status == HttpStatus::cancelled &&
+        result.execution.persistence == AttemptStatus::closed) {
+      result.execution.persistence =
+          ledger.finish(ticket, AttemptOutcome::cancelled);
+      if (result.execution.persistence != AttemptStatus::ok)
+        result.execution.status = HttpStatus::persistence_failure;
+    }
+    return result;
+  } catch (const std::bad_alloc &) {
+    result.admission = Status::no_memory;
+  } catch (...) {
+    result.admission = Status::internal_error;
+  }
+  return result;
 }
 } // namespace symphony::sqav::databento::reference

@@ -3,6 +3,7 @@
 #include <memory>
 #include <symphony/source/support.hpp>
 #include <symphony/sqav/databento/attempts.hpp>
+#include <symphony/sqav/databento/http.hpp>
 namespace symphony::sqav::databento::reference {
 using Status = source::Status;
 enum class Operation : std::uint8_t {
@@ -80,5 +81,33 @@ public:
                            std::uint64_t quoted_unix_ms,
                            std::uint32_t validity_ms, std::stop_token,
                            CostQuote &) noexcept;
+
+// The trusted caller supplies authorization for this exact quote and request.
+// The ceiling is independently selected by that authority; a provider estimate
+// is neither a guaranteed invoice nor a remotely enforced spending limit.
+struct AcquisitionAuthorization {
+  std::string evidence_ref, request_ref, quote_evidence_ref, attempt_id;
+  std::uint64_t ceiling_nano_usd = 0, authorized_unix_ms = 0,
+                expires_unix_ms = 0;
+};
+struct AcquisitionResult {
+  // Admission is only local contract validation, never provider success or
+  // authentication of the caller's authorization evidence.
+  Status admission = Status::invalid_argument;
+  AttemptStatus reservation = AttemptStatus::closed;
+  bool execution_invoked = false;
+  HttpResult execution;
+  std::string reservation_evidence_ref;
+};
+// Joins a separately obtained quote, explicit spend authorization, durable
+// reservation and one HTTP attempt. Uses the runtime UTC clock, rechecks after
+// persistence and bounds HTTP duration by both expiries. Never retries, refunds,
+// obtains approval, or promotes estimate/transport completion into coverage.
+// An uncertain reservation/terminal requires ledger recovery before any new
+// caller decision. Original quote and authorization evidence remain caller-owned.
+[[nodiscard]] AcquisitionResult acquire_quoted_historical(
+    const HistoricalPlan &, const CostQuote &, const AcquisitionAuthorization &,
+    AttemptLedger &, SsiagHistoricalUse &, const databento::HttpLimits &,
+    std::stop_token, HistoricalResponse &) noexcept;
 } // namespace symphony::sqav::databento::reference
 #endif

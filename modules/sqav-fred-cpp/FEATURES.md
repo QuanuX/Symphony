@@ -24,10 +24,11 @@
       "distinctions": [],
       "evidence": [
         "modules/sqav-fred-cpp/tests/test.cpp verifies the selected positive and refusal boundaries.",
-        "modules/sqav-fred-cpp/tests/sdk-consumer/main.cpp verifies public installed admission and refusal independently of source include paths."
+        "modules/sqav-fred-cpp/tests/sdk-consumer/main.cpp verifies public installed admission and refusal independently of source include paths.",
+        "modules/sqav-fred-cpp/tests/test.cpp exercises the bounded orchestration and failure/recovery paths with fabricated or denied inputs; no live provider acceptance is claimed."
       ],
       "feature_id": "ssfv:symphony:sqav-fred-cpp",
-      "how": "Provider surface: FRED unversioned HTTP API observed 2026-09-28; endpoints series/observations and series/vintagedates, JSON, ascending order. Explicit series, real-time start/end and observation dates prevent current-date defaults from changing identity. Observations use units=lin and output_type=1; actual physical units and seasonal metadata are not invented from that parameter. Exact date-level real-time bounds permit ALFRED snapshots without inventing publication instants. Page size 1–100,000 for observations or 1–10,000 for vintage dates; uint32 offsets/counts checked before arithmetic. The response must echo the requested ranges, limit, offset and selected output settings. Records must fill the exact remaining page count. Missing value dot is distinct from zero; values remain decimal text. Capture preserves original JSON, request/vintage identity and page scope; a single page is complete only when offset zero covers the declared result count. No multi-request atomicity is implied. Partial pages expose the next offset for an explicitly bounded caller workflow. Collection uses the shared native HTTP boundary and an actual supplied credential-use bridge.",
+      "how": "Provider surface: FRED unversioned HTTP API observed 2026-09-28; endpoints series/observations and series/vintagedates, JSON, ascending order. Explicit series, real-time start/end and observation dates prevent current-date defaults from changing identity. Observations use units=lin and output_type=1; actual physical units and seasonal metadata are not invented from that parameter. Exact date-level real-time bounds permit ALFRED snapshots without inventing publication instants. Page size 1–100,000 for observations or 1–10,000 for vintage dates; uint32 offsets/counts checked before arithmetic. The response must echo the requested ranges, limit, offset and selected output settings. Records must fill the exact remaining page count. Missing value dot is distinct from zero; values remain decimal text. Capture preserves original JSON, request/vintage identity and page scope; a single page is complete only when offset zero covers the declared result count. No multi-request atomicity is implied. Partial pages expose the next offset for an explicitly bounded caller workflow. Collection uses the shared native HTTP boundary and an actual supplied credential-use bridge. Collection sequences offset-zero admitted pages under explicit page/record/original-byte/local-call limits. Each collect_next permits one operation, preserves the pending request on failure and performs no automatic retry. Count drift, cross-page reversals and duplicates are refused. Retained pages can reconstruct progress after restart, without claiming a durable request budget, network history or cross-page snapshot atomicity.",
       "implementation_languages": [
         {
           "language": "C++26",
@@ -65,7 +66,7 @@
       "source_scope": "modules/sqav-fred-cpp",
       "status": "experimental",
       "title": "FRED and ALFRED native adapter",
-      "what": "Exact observation and vintage-date requests, original decimal/missing values, pagination and capture.",
+      "what": "Exact observation and vintage-date requests, original decimal/missing values and bounded page collection with explicit retry and retained-page recovery.",
       "when": "Only when a compatible trusted caller explicitly invokes the installed library; installation starts no service.",
       "where": "The independently installed sqav-fred-cpp library.",
       "who": "Explicit native C++26 callers within the selected source contract.",

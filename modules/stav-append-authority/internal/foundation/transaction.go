@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/QuanuX/Symphony/modules/stav-append-authority/internal/config"
+	"github.com/QuanuX/Symphony/modules/stav-append-authority/internal/foundationaudit"
 	"github.com/QuanuX/Symphony/modules/stav-append-authority/internal/lifecycle"
 	stavpaths "github.com/QuanuX/Symphony/modules/stav-append-authority/internal/paths"
 	"github.com/QuanuX/Symphony/modules/stav-append-authority/internal/supervision"
@@ -57,7 +58,40 @@ func apply(command Command, base Result) (Result, error) {
 		if desiredSatisfied(current, active.DesiredState) {
 			return closeAttempt(layout, *active, *plan, base, current, true, false)
 		}
-		return resumePrepared(layout, *active, *plan, base, current, true, false)
+		return resumePrepared(layout, *active, *plan, base, current, true, false, command.DeadlineAt)
+	}
+	if last, _, err := readAttempt(layout.LastAttempt); err != nil {
+		return base, err
+	} else if last != nil {
+		if last.OperationID == plan.OperationID {
+			if last.PlanDigest != plan.PlanDigest {
+				err := fmt.Errorf("operation identity is already bound to another plan")
+				return failedResult(base, "state_conflict", err, true), err
+			}
+			base.Disposition = "already_applied"
+			base.Replayed = true
+			base.AttemptDigest = &last.AttemptDigest
+			base.AuditState = last.AuditState
+			base.AuditReceiptDigest = last.AuditReceiptDigest
+			base.ReconciliationRequired = last.AuditState == "audit_deferred"
+			base.StartedAt = &last.StartedAt
+			finalizeResult(&base)
+			return base, nil
+		}
+		bootstrapRestart := false
+		if last.AuditState == "audit_deferred" && plan.Surface == "supervisor" && plan.DesiredState == "native_running" && plan.AuditMode == "audit_deferred" {
+			previous, err := foundationaudit.Load(filepath.Join(layout.LifecycleDir, "audit"), last.OperationID)
+			bootstrapRestart = err == nil && previous.Outcome != nil && previous.Base.PlanDigest == last.PlanDigest
+		}
+		if last.AuditState == "audit_deferred" && !bootstrapRestart {
+			err := fmt.Errorf("previous observed lifecycle outcome requires reconciliation")
+			result := failedResult(base, "audit_reconciliation_required", err, true)
+			result.AuditState = "audit_deferred"
+			result.ReconciliationRequired = true
+			result.AttemptDigest = &last.AttemptDigest
+			finalizeResult(&result)
+			return result, err
+		}
 	}
 	if command.ExpectedAttemptDigest == nil || *command.ExpectedAttemptDigest != "absent" {
 		err := fmt.Errorf("apply requires expected_attempt_digest absent when no attempt is active")
@@ -76,9 +110,7 @@ func apply(command Command, base Result) (Result, error) {
 	}
 	attempt := Attempt{Protocol: AttemptProtocol, FormatVersion: 1, Component: "stav", Surface: command.Surface, Scope: command.Scope, TOPSID: command.TOPSID, OperationID: plan.OperationID, RequestID: plan.RequestID, CorrelationID: plan.CorrelationID, Phase: "prepared", PlanDigest: plan.PlanDigest, PriorStateDigest: current.StableStateDigest, DesiredState: plan.DesiredState, BinaryDigest: "sha256:" + installRecord.BinarySHA256, InstallEvidenceDigest: evidenceDigest, AuditState: plan.AuditMode, StartedAt: canonicalNow(), UpdatedAt: canonicalNow()}
 	if plan.AuditMode == "ordinary" {
-		err := fmt.Errorf("ordinary foundational mutation requires a committed closed SSIAG/STAV receipt")
-		result := failedResult(base, "audit_unavailable", err, true)
-		return result, err
+		attempt.AuditState = "not_applicable"
 	}
 	setAttemptDigest(&attempt)
 	if err := writeAttempt(layout.ActiveAttempt, attempt); err != nil {
@@ -92,7 +124,7 @@ func apply(command Command, base Result) (Result, error) {
 			return base, err
 		}
 	}
-	return resumePrepared(layout, attempt, *plan, base, current, false, false)
+	return resumePrepared(layout, attempt, *plan, base, current, false, false, command.DeadlineAt)
 }
 
 func validatePlan(command Command, plan *Plan) error {
@@ -120,7 +152,40 @@ func validatePlan(command Command, plan *Plan) error {
 	return validateIntent(plan.Surface, plan.Scope, intent)
 }
 
-func resumePrepared(layout stavpaths.InstanceLayout, attempt Attempt, plan Plan, base Result, prior Observation, replayed, recovered bool) (Result, error) {
+func resumePrepared(layout stavpaths.InstanceLayout, attempt Attempt, plan Plan, base Result, prior Observation, replayed, recovered bool, deadlineAt string) (Result, error) {
+	if journal, err := foundationaudit.Load(filepath.Join(layout.LifecycleDir, "audit"), plan.OperationID); err == nil && journal.Outcome != nil {
+		return closeAttempt(layout, attempt, plan, base, prior, false, recovered)
+	}
+	if err := prepareAudit(layout, plan, attempt); err != nil {
+		result := failedResult(base, "audit_unavailable", err, false)
+		observation, observeErr := Observe(stavpaths.Scope(plan.Scope), plan.TOPSID, plan.Surface)
+		if observeErr != nil {
+			return base, observeErr
+		}
+		result.Observation = observation
+		result.RecoveryRequired = true
+		result.AttemptDigest = &attempt.AttemptDigest
+		result.AuditState = attempt.AuditState
+		result.ReconciliationRequired = attempt.AuditState == "audit_deferred"
+		finalizeResult(&result)
+		return result, err
+	}
+	deadline, deadlineErr := parseTimestamp(deadlineAt)
+	if deadlineErr != nil || !time.Now().UTC().Before(deadline) {
+		err := fmt.Errorf("command expired while waiting for exact audit intent receipt")
+		result := failedResult(base, "deadline_elapsed", err, false)
+		observation, observeErr := Observe(stavpaths.Scope(plan.Scope), plan.TOPSID, plan.Surface)
+		if observeErr != nil {
+			return base, observeErr
+		}
+		result.Observation = observation
+		result.RecoveryRequired = true
+		result.AttemptDigest = &attempt.AttemptDigest
+		result.AuditState = attempt.AuditState
+		result.ReconciliationRequired = attempt.AuditState == "audit_deferred"
+		finalizeResult(&result)
+		return result, err
+	}
 	attempt.Phase, attempt.UpdatedAt = "mutating", canonicalNow()
 	setAttemptDigest(&attempt)
 	if err := writeAttempt(layout.ActiveAttempt, attempt); err != nil {
@@ -253,6 +318,9 @@ func desiredProcess(state string) string {
 }
 
 func closeAttempt(layout stavpaths.InstanceLayout, attempt Attempt, plan Plan, base Result, observation Observation, replayed, recovered bool) (Result, error) {
+	if err := observeAudit(layout, plan, &attempt, observation, recovered); err != nil {
+		return base, err
+	}
 	completed := canonicalNow()
 	attempt.Phase, attempt.UpdatedAt, attempt.CompletedAt = "mutation_closed", completed, &completed
 	if attempt.AuditState == "ordinary" {
@@ -265,8 +333,10 @@ func closeAttempt(layout stavpaths.InstanceLayout, attempt Attempt, plan Plan, b
 	}
 	if recovered {
 		base.Disposition = "recovered"
+		base.Replayed = false
 	}
 	base.AuditState = attempt.AuditState
+	base.AuditReceiptDigest = attempt.AuditReceiptDigest
 	base.ReconciliationRequired = attempt.AuditState == "audit_deferred"
 	base.StartedAt, base.CompletedAt = &attempt.StartedAt, completed
 	setAttemptDigest(&attempt)
@@ -300,6 +370,15 @@ func closeAttempt(layout stavpaths.InstanceLayout, attempt Attempt, plan Plan, b
 	if err := writeAttempt(archive, attempt); err != nil {
 		return base, err
 	}
+	j, err := foundationaudit.Open(filepath.Join(layout.LifecycleDir, "audit"), auditRequest(plan))
+	if err != nil {
+		return base, err
+	}
+	if err = j.BindAttempt(attempt.AttemptDigest); err != nil {
+		return base, err
+	}
+	base.AttemptDigest = &attempt.AttemptDigest
+	finalizeResult(&base)
 	return base, nil
 }
 
@@ -338,6 +417,7 @@ func applyStatus(command Command, base Result) (Result, error) {
 	}
 	base.OperationID, base.DesiredState, base.AttemptDigest, base.StartedAt = &attempt.OperationID, &attempt.DesiredState, &attempt.AttemptDigest, &attempt.StartedAt
 	base.AuditState, base.ReconciliationRequired = attempt.AuditState, attempt.AuditState == "audit_deferred"
+	base.AuditReceiptDigest = attempt.AuditReceiptDigest
 	base.RecoveryRequired = attempt.Phase != "mutation_closed" && attempt.Phase != "closed"
 	base.Disposition, base.ReadOnly = "observed", true
 	finalizeResult(&base)
@@ -363,6 +443,11 @@ func recoverAttempt(command Command, base Result) (Result, error) {
 	}
 	base.Observation = current
 	attempt, _, err := readAttempt(layout.ActiveAttempt)
+	if err == nil && attempt == nil {
+		if result, handled, auditErr := recoverAudit(layout, command, base); handled {
+			return result, auditErr
+		}
+	}
 	if err != nil || attempt == nil {
 		if err == nil {
 			err = fmt.Errorf("no active lifecycle attempt requires recovery")
@@ -402,6 +487,9 @@ func recoverAttempt(command Command, base Result) (Result, error) {
 		return base, err
 	}
 	base.Observation, base.Plan, base.DesiredState = current, &plan, &plan.DesiredState
+	if journal, err := foundationaudit.Load(filepath.Join(layout.LifecycleDir, "audit"), plan.OperationID); err == nil && journal.Outcome != nil {
+		return closeAttempt(layout, *attempt, plan, base, current, false, true)
+	}
 	if desiredSatisfied(current, plan.DesiredState) {
 		return closeAttempt(layout, *attempt, plan, base, current, true, true)
 	}
@@ -416,7 +504,7 @@ func recoverAttempt(command Command, base Result) (Result, error) {
 		finalizeResult(&result)
 		return result, err
 	}
-	return resumePrepared(layout, *attempt, plan, base, current, true, true)
+	return resumePrepared(layout, *attempt, plan, base, current, true, true, command.DeadlineAt)
 }
 
 func stateBeforeActiveAttempt(observation Observation) string {
@@ -424,38 +512,6 @@ func stateBeforeActiveAttempt(observation Observation) string {
 	observation.ActiveAttemptDigest = nil
 	observation.StableStateDigest = digestWithout(observation, "observed_at", "stable_state_digest", "observation_digest")
 	return observation.StableStateDigest
-}
-
-// BindAuditReceipt is the typed hook used by the future closed SSIAG producer
-// reconciliation path. It never appends to STAV and never marks reconciliation
-// complete without an exact receipt digest supplied by that closed producer.
-func BindAuditReceipt(scope stavpaths.Scope, topsID, attemptDigest, receiptDigest string) (Attempt, error) {
-	if !digestPattern.MatchString(receiptDigest) || !digestPattern.MatchString(attemptDigest) {
-		return Attempt{}, fmt.Errorf("invalid audit receipt or attempt digest")
-	}
-	layout, err := stavpaths.ResolveInstance(scope, topsID)
-	if err != nil {
-		return Attempt{}, err
-	}
-	if err := ensureTransactionDirectory(layout); err != nil {
-		return Attempt{}, err
-	}
-	lease, err := acquireLifecycleLease(layout.LifecycleLock)
-	if err != nil {
-		return Attempt{}, err
-	}
-	defer lease.Close()
-	attempt, _, err := readAttempt(layout.LastAttempt)
-	if err != nil || attempt == nil || attempt.AttemptDigest != attemptDigest || attempt.AuditState != "audit_deferred" {
-		return Attempt{}, fmt.Errorf("exact audit-deferred attempt is unavailable for reconciliation")
-	}
-	attempt.PredecessorDigest = &attempt.AttemptDigest
-	attempt.AuditReceiptDigest, attempt.AuditState, attempt.UpdatedAt, attempt.Phase = &receiptDigest, "reconciled", canonicalNow(), "closed"
-	setAttemptDigest(attempt)
-	if err := writeAttempt(layout.LastAttempt, *attempt); err != nil {
-		return Attempt{}, err
-	}
-	return *attempt, nil
 }
 
 // PreflightNativePurge enforces the stronger module-native purge boundary.
