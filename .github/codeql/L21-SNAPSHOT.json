@@ -1,0 +1,1073 @@
+{
+  "format_version": 1,
+  "recorded_at": "2026-11-02T03:23:49.869699+00:00",
+  "repository": "QuanuX/Symphony",
+  "reviewed_source_commit": "33a69a74ca2f061627c841fe7f0e7c10f29219d2",
+  "collection": "single completed-results snapshot; no polling, dismissal or suppression",
+  "alert_counts": {
+    "fixed": 8,
+    "open": 1,
+    "dismissed": 0
+  },
+  "alerts": [
+    {
+      "number": 9,
+      "state": "open",
+      "rule": "cpp/world-writable-file-creation",
+      "security_severity": "high",
+      "fixed_at": null,
+      "dismissed_at": null,
+      "url": "https://github.com/QuanuX/Symphony/security/code-scanning/9",
+      "most_recent_instance": {
+        "ref": "refs/heads/main",
+        "analysis_key": ".github/workflows/codeql.yml:analyze",
+        "environment": "{\"build-mode\":\"none\",\"language\":\"c-cpp\",\"os\":\"macos-15-intel\"}",
+        "category": "/language:c-cpp/os:macos-15-intel",
+        "state": "open",
+        "commit_sha": "692349ca4791f2f392b9b3ea72543061b6f4f19e",
+        "message": {
+          "text": "This sets a file's permissions to 0777, which would make it world-writable."
+        },
+        "location": {
+          "path": "modules/knowledge-session-coordinator/tests/lifecycle_test.cpp",
+          "start_line": 886,
+          "end_line": 886,
+          "start_column": 9,
+          "end_column": 16
+        },
+        "classifications": [
+          "test"
+        ]
+      }
+    },
+    {
+      "number": 8,
+      "state": "fixed",
+      "rule": "go/incorrect-integer-conversion",
+      "security_severity": "high",
+      "fixed_at": "2026-11-01T07:03:00Z",
+      "dismissed_at": null,
+      "url": "https://github.com/QuanuX/Symphony/security/code-scanning/8",
+      "most_recent_instance": {
+        "ref": "refs/heads/main",
+        "analysis_key": ".github/workflows/codeql.yml:analyze",
+        "environment": "{\"build-mode\":\"manual\",\"language\":\"go\",\"os\":\"macos-15-intel\"}",
+        "category": "/language:go/os:macos-15-intel",
+        "state": "fixed",
+        "commit_sha": "bc2cf9b56a6c4c0bb2614be2bf962838935b5fc6",
+        "message": {
+          "text": "Incorrect conversion of an unsigned 32-bit integer from strconv.ParseUint to a lower bit size type int without an upper bound check."
+        },
+        "location": {
+          "path": "modules/stav-append-authority/internal/lifecycle/enrollment.go",
+          "start_line": 347,
+          "end_line": 347,
+          "start_column": 34,
+          "end_column": 42
+        },
+        "classifications": []
+      }
+    },
+    {
+      "number": 7,
+      "state": "fixed",
+      "rule": "go/incorrect-integer-conversion",
+      "security_severity": "high",
+      "fixed_at": "2026-11-01T07:03:00Z",
+      "dismissed_at": null,
+      "url": "https://github.com/QuanuX/Symphony/security/code-scanning/7",
+      "most_recent_instance": {
+        "ref": "refs/heads/main",
+        "analysis_key": ".github/workflows/codeql.yml:analyze",
+        "environment": "{\"build-mode\":\"manual\",\"language\":\"go\",\"os\":\"macos-15-intel\"}",
+        "category": "/language:go/os:macos-15-intel",
+        "state": "fixed",
+        "commit_sha": "bc2cf9b56a6c4c0bb2614be2bf962838935b5fc6",
+        "message": {
+          "text": "Incorrect conversion of an unsigned 32-bit integer from strconv.ParseUint to a lower bit size type int without an upper bound check."
+        },
+        "location": {
+          "path": "modules/stav-append-authority/internal/lifecycle/enrollment.go",
+          "start_line": 347,
+          "end_line": 347,
+          "start_column": 24,
+          "end_column": 32
+        },
+        "classifications": []
+      }
+    },
+    {
+      "number": 6,
+      "state": "fixed",
+      "rule": "cpp/world-writable-file-creation",
+      "security_severity": "high",
+      "fixed_at": "2026-11-01T17:43:43Z",
+      "dismissed_at": null,
+      "url": "https://github.com/QuanuX/Symphony/security/code-scanning/6",
+      "most_recent_instance": {
+        "ref": "refs/heads/main",
+        "analysis_key": ".github/workflows/codeql.yml:analyze",
+        "environment": "{\"build-mode\":\"none\",\"language\":\"c-cpp\",\"os\":\"ubuntu-24.04\"}",
+        "category": "/language:c-cpp/os:ubuntu-24.04",
+        "state": "fixed",
+        "commit_sha": "b53f3c075dd1e2e013ea73583e1eb1500750570f",
+        "message": {
+          "text": "A file may be created here with mode 0666, which would make it world-writable."
+        },
+        "location": {
+          "path": "modules/sqav-capture-cpp/tests/sdk-consumer/main.cpp",
+          "start_line": 114,
+          "end_line": 114,
+          "start_column": 14,
+          "end_column": 24
+        },
+        "classifications": [
+          "test"
+        ]
+      }
+    },
+    {
+      "number": 5,
+      "state": "fixed",
+      "rule": "cpp/world-writable-file-creation",
+      "security_severity": "high",
+      "fixed_at": "2026-11-01T17:43:43Z",
+      "dismissed_at": null,
+      "url": "https://github.com/QuanuX/Symphony/security/code-scanning/5",
+      "most_recent_instance": {
+        "ref": "refs/heads/main",
+        "analysis_key": ".github/workflows/codeql.yml:analyze",
+        "environment": "{\"build-mode\":\"none\",\"language\":\"c-cpp\",\"os\":\"ubuntu-24.04\"}",
+        "category": "/language:c-cpp/os:ubuntu-24.04",
+        "state": "fixed",
+        "commit_sha": "b53f3c075dd1e2e013ea73583e1eb1500750570f",
+        "message": {
+          "text": "This sets a file's permissions to 0777, which would make it world-writable."
+        },
+        "location": {
+          "path": "modules/knowledge-session-coordinator/tests/lifecycle_test.cpp",
+          "start_line": 882,
+          "end_line": 882,
+          "start_column": 9,
+          "end_column": 16
+        },
+        "classifications": [
+          "test"
+        ]
+      }
+    },
+    {
+      "number": 4,
+      "state": "fixed",
+      "rule": "cpp/path-injection",
+      "security_severity": "high",
+      "fixed_at": "2026-11-01T17:43:43Z",
+      "dismissed_at": null,
+      "url": "https://github.com/QuanuX/Symphony/security/code-scanning/4",
+      "most_recent_instance": {
+        "ref": "refs/heads/main",
+        "analysis_key": ".github/workflows/codeql.yml:analyze",
+        "environment": "{\"build-mode\":\"none\",\"language\":\"c-cpp\",\"os\":\"ubuntu-24.04\"}",
+        "category": "/language:c-cpp/os:ubuntu-24.04",
+        "state": "fixed",
+        "commit_sha": "b53f3c075dd1e2e013ea73583e1eb1500750570f",
+        "message": {
+          "text": "This argument to a file access function is derived from user input (an environment variable) and then passed to std::basic_ofstream<char, char_traits<char>>::basic_ofstream(__s).\nThis argument to a file access function is derived from user input (an environment variable) and then passed to std::basic_ofstream<char, char_traits<char>>::basic_ofstream(__s), which calls std::basic_ofstream<char, char_traits<char>>::open(__s), which calls std::basic_filebuf<char, char_traits<char>>::open(__s).\nThis argument to a file access function is derived from user input (an environment variable) and then passed to std::basic_ofstream<char, char_traits<char>>::basic_ofstream(__s), which calls std::basic_ofstream<char, char_traits<char>>::open(__s)."
+        },
+        "location": {
+          "path": "modules/sbv-engine/tests/feedback_fixture.cpp",
+          "start_line": 15,
+          "end_line": 15,
+          "start_column": 21,
+          "end_column": 22
+        },
+        "classifications": [
+          "test"
+        ]
+      }
+    },
+    {
+      "number": 3,
+      "state": "fixed",
+      "rule": "go/allocation-size-overflow",
+      "security_severity": "high",
+      "fixed_at": "2026-11-01T16:53:59Z",
+      "dismissed_at": null,
+      "url": "https://github.com/QuanuX/Symphony/security/code-scanning/3",
+      "most_recent_instance": {
+        "ref": "refs/heads/main",
+        "analysis_key": ".github/workflows/codeql.yml:analyze",
+        "environment": "{\"build-mode\":\"manual\",\"language\":\"go\",\"os\":\"macos-15-intel\"}",
+        "category": "/language:go/os:macos-15-intel",
+        "state": "fixed",
+        "commit_sha": "b53f3c075dd1e2e013ea73583e1eb1500750570f",
+        "message": {
+          "text": "This operation, which is used in an allocation, involves a potentially large value and might overflow.\nThis operation, which is used in an allocation, involves a potentially large value and might overflow."
+        },
+        "location": {
+          "path": "tools/qxctl/internal/knowledgeengine/sbv_partitioned.go",
+          "start_line": 217,
+          "end_line": 217,
+          "start_column": 30,
+          "end_column": 40
+        },
+        "classifications": []
+      }
+    },
+    {
+      "number": 2,
+      "state": "fixed",
+      "rule": "go/incorrect-integer-conversion",
+      "security_severity": "high",
+      "fixed_at": "2026-11-01T06:45:16Z",
+      "dismissed_at": null,
+      "url": "https://github.com/QuanuX/Symphony/security/code-scanning/2",
+      "most_recent_instance": {
+        "ref": "refs/heads/main",
+        "analysis_key": ".github/workflows/codeql.yml:analyze",
+        "environment": "{\"build-mode\":\"manual\",\"language\":\"go\",\"os\":\"macos-15-intel\"}",
+        "category": "/language:go/os:macos-15-intel",
+        "state": "fixed",
+        "commit_sha": "1a50852ca87f314e1612f39ed3b3a2514f837462",
+        "message": {
+          "text": "Incorrect conversion of an unsigned 32-bit integer from strconv.ParseUint to a lower bit size type int without an upper bound check."
+        },
+        "location": {
+          "path": "modules/stav-append-authority/internal/lifecycle/enrollment.go",
+          "start_line": 337,
+          "end_line": 337,
+          "start_column": 37,
+          "end_column": 45
+        },
+        "classifications": []
+      }
+    },
+    {
+      "number": 1,
+      "state": "fixed",
+      "rule": "go/incorrect-integer-conversion",
+      "security_severity": "high",
+      "fixed_at": "2026-11-01T06:45:16Z",
+      "dismissed_at": null,
+      "url": "https://github.com/QuanuX/Symphony/security/code-scanning/1",
+      "most_recent_instance": {
+        "ref": "refs/heads/main",
+        "analysis_key": ".github/workflows/codeql.yml:analyze",
+        "environment": "{\"build-mode\":\"manual\",\"language\":\"go\",\"os\":\"macos-15-intel\"}",
+        "category": "/language:go/os:macos-15-intel",
+        "state": "fixed",
+        "commit_sha": "1a50852ca87f314e1612f39ed3b3a2514f837462",
+        "message": {
+          "text": "Incorrect conversion of an unsigned 32-bit integer from strconv.ParseUint to a lower bit size type int without an upper bound check."
+        },
+        "location": {
+          "path": "modules/stav-append-authority/internal/lifecycle/enrollment.go",
+          "start_line": 337,
+          "end_line": 337,
+          "start_column": 27,
+          "end_column": 35
+        },
+        "classifications": []
+      }
+    }
+  ],
+  "refs": [
+    {
+      "ref": "refs/heads/main",
+      "head_commit": "c15eda9b0092f123e86d4be577fe6d00ba68e1b1",
+      "pr_merge_commit": null,
+      "analysis_categories_present": 6,
+      "analyses": [
+        {
+          "id": 2072192344,
+          "category": "/language:actions/os:ubuntu-24.04",
+          "commit_sha": "692349ca4791f2f392b9b3ea72543061b6f4f19e",
+          "created_at": "2026-11-01T16:46:06Z",
+          "results_count": 0,
+          "rules_count": 23,
+          "error": "",
+          "warning": "",
+          "tool": {
+            "name": "CodeQL",
+            "guid": null,
+            "version": "2.27.3"
+          },
+          "url": "https://api.github.com/repos/QuanuX/Symphony/code-scanning/analyses/2072192344"
+        },
+        {
+          "id": 2072348222,
+          "category": "/language:c-cpp/os:macos-15-intel",
+          "commit_sha": "692349ca4791f2f392b9b3ea72543061b6f4f19e",
+          "created_at": "2026-11-01T17:43:43Z",
+          "results_count": 1,
+          "rules_count": 95,
+          "error": "",
+          "warning": "",
+          "tool": {
+            "name": "CodeQL",
+            "guid": null,
+            "version": "2.27.3"
+          },
+          "url": "https://api.github.com/repos/QuanuX/Symphony/code-scanning/analyses/2072348222"
+        },
+        {
+          "id": 2072234755,
+          "category": "/language:c-cpp/os:ubuntu-24.04",
+          "commit_sha": "692349ca4791f2f392b9b3ea72543061b6f4f19e",
+          "created_at": "2026-11-01T17:02:40Z",
+          "results_count": 1,
+          "rules_count": 95,
+          "error": "",
+          "warning": "",
+          "tool": {
+            "name": "CodeQL",
+            "guid": null,
+            "version": "2.27.3"
+          },
+          "url": "https://api.github.com/repos/QuanuX/Symphony/code-scanning/analyses/2072234755"
+        },
+        {
+          "id": 2072212549,
+          "category": "/language:go/os:macos-15-intel",
+          "commit_sha": "692349ca4791f2f392b9b3ea72543061b6f4f19e",
+          "created_at": "2026-11-01T16:53:59Z",
+          "results_count": 0,
+          "rules_count": 35,
+          "error": "",
+          "warning": "",
+          "tool": {
+            "name": "CodeQL",
+            "guid": null,
+            "version": "2.27.3"
+          },
+          "url": "https://api.github.com/repos/QuanuX/Symphony/code-scanning/analyses/2072212549"
+        },
+        {
+          "id": 2072193011,
+          "category": "/language:go/os:ubuntu-24.04",
+          "commit_sha": "692349ca4791f2f392b9b3ea72543061b6f4f19e",
+          "created_at": "2026-11-01T16:46:21Z",
+          "results_count": 0,
+          "rules_count": 35,
+          "error": "",
+          "warning": "",
+          "tool": {
+            "name": "CodeQL",
+            "guid": null,
+            "version": "2.27.3"
+          },
+          "url": "https://api.github.com/repos/QuanuX/Symphony/code-scanning/analyses/2072193011"
+        },
+        {
+          "id": 2072219013,
+          "category": "/language:swift/os:macos-15-intel",
+          "commit_sha": "692349ca4791f2f392b9b3ea72543061b6f4f19e",
+          "created_at": "2026-11-01T16:56:16Z",
+          "results_count": 0,
+          "rules_count": 28,
+          "error": "",
+          "warning": "",
+          "tool": {
+            "name": "CodeQL",
+            "guid": null,
+            "version": "2.27.3"
+          },
+          "url": "https://api.github.com/repos/QuanuX/Symphony/code-scanning/analyses/2072219013"
+        }
+      ],
+      "exact_current_analysis_target": false
+    },
+    {
+      "ref": "refs/pull/175/merge",
+      "head_commit": "7ee16ad6e309c3fa3c9b34b6839337b1eba0b155",
+      "pr_merge_commit": "3c93ec43aac7b332cf85c0541cf08c3077b089d5",
+      "analysis_categories_present": 6,
+      "analyses": [
+        {
+          "id": 2072902929,
+          "category": "/language:actions/os:ubuntu-24.04",
+          "commit_sha": "3c93ec43aac7b332cf85c0541cf08c3077b089d5",
+          "created_at": "2026-11-01T21:07:46Z",
+          "results_count": 0,
+          "rules_count": 23,
+          "error": "",
+          "warning": "",
+          "tool": {
+            "name": "CodeQL",
+            "guid": null,
+            "version": "2.27.3"
+          },
+          "url": "https://api.github.com/repos/QuanuX/Symphony/code-scanning/analyses/2072902929"
+        },
+        {
+          "id": 2072956159,
+          "category": "/language:c-cpp/os:macos-15-intel",
+          "commit_sha": "3c93ec43aac7b332cf85c0541cf08c3077b089d5",
+          "created_at": "2026-11-01T21:25:38Z",
+          "results_count": 0,
+          "rules_count": 95,
+          "error": "",
+          "warning": "",
+          "tool": {
+            "name": "CodeQL",
+            "guid": null,
+            "version": "2.27.3"
+          },
+          "url": "https://api.github.com/repos/QuanuX/Symphony/code-scanning/analyses/2072956159"
+        },
+        {
+          "id": 2072918261,
+          "category": "/language:c-cpp/os:ubuntu-24.04",
+          "commit_sha": "3c93ec43aac7b332cf85c0541cf08c3077b089d5",
+          "created_at": "2026-11-01T21:12:57Z",
+          "results_count": 0,
+          "rules_count": 95,
+          "error": "",
+          "warning": "",
+          "tool": {
+            "name": "CodeQL",
+            "guid": null,
+            "version": "2.27.3"
+          },
+          "url": "https://api.github.com/repos/QuanuX/Symphony/code-scanning/analyses/2072918261"
+        },
+        {
+          "id": 2072904466,
+          "category": "/language:go/os:macos-15-intel",
+          "commit_sha": "3c93ec43aac7b332cf85c0541cf08c3077b089d5",
+          "created_at": "2026-11-01T21:08:22Z",
+          "results_count": 0,
+          "rules_count": 35,
+          "error": "",
+          "warning": "",
+          "tool": {
+            "name": "CodeQL",
+            "guid": null,
+            "version": "2.27.3"
+          },
+          "url": "https://api.github.com/repos/QuanuX/Symphony/code-scanning/analyses/2072904466"
+        },
+        {
+          "id": 2072886807,
+          "category": "/language:go/os:ubuntu-24.04",
+          "commit_sha": "3c93ec43aac7b332cf85c0541cf08c3077b089d5",
+          "created_at": "2026-11-01T21:02:04Z",
+          "results_count": 0,
+          "rules_count": 35,
+          "error": "",
+          "warning": "",
+          "tool": {
+            "name": "CodeQL",
+            "guid": null,
+            "version": "2.27.3"
+          },
+          "url": "https://api.github.com/repos/QuanuX/Symphony/code-scanning/analyses/2072886807"
+        },
+        {
+          "id": 2072915532,
+          "category": "/language:swift/os:macos-15-intel",
+          "commit_sha": "3c93ec43aac7b332cf85c0541cf08c3077b089d5",
+          "created_at": "2026-11-01T21:12:10Z",
+          "results_count": 0,
+          "rules_count": 28,
+          "error": "",
+          "warning": "",
+          "tool": {
+            "name": "CodeQL",
+            "guid": null,
+            "version": "2.27.3"
+          },
+          "url": "https://api.github.com/repos/QuanuX/Symphony/code-scanning/analyses/2072915532"
+        }
+      ],
+      "exact_current_analysis_target": true
+    },
+    {
+      "ref": "refs/pull/176/merge",
+      "head_commit": "ded20079a8deb3966075415e0d7dfb184220214f",
+      "pr_merge_commit": "2f1be85ff80073f84fba1e7b9e7083f26d756168",
+      "analysis_categories_present": 6,
+      "analyses": [
+        {
+          "id": 2072897871,
+          "category": "/language:actions/os:ubuntu-24.04",
+          "commit_sha": "2f1be85ff80073f84fba1e7b9e7083f26d756168",
+          "created_at": "2026-11-01T21:05:53Z",
+          "results_count": 0,
+          "rules_count": 23,
+          "error": "",
+          "warning": "",
+          "tool": {
+            "name": "CodeQL",
+            "guid": null,
+            "version": "2.27.3"
+          },
+          "url": "https://api.github.com/repos/QuanuX/Symphony/code-scanning/analyses/2072897871"
+        },
+        {
+          "id": 2073208901,
+          "category": "/language:c-cpp/os:macos-15-intel",
+          "commit_sha": "2f1be85ff80073f84fba1e7b9e7083f26d756168",
+          "created_at": "2026-11-01T22:54:27Z",
+          "results_count": 0,
+          "rules_count": 95,
+          "error": "",
+          "warning": "",
+          "tool": {
+            "name": "CodeQL",
+            "guid": null,
+            "version": "2.27.3"
+          },
+          "url": "https://api.github.com/repos/QuanuX/Symphony/code-scanning/analyses/2073208901"
+        },
+        {
+          "id": 2072950335,
+          "category": "/language:c-cpp/os:ubuntu-24.04",
+          "commit_sha": "2f1be85ff80073f84fba1e7b9e7083f26d756168",
+          "created_at": "2026-11-01T21:23:41Z",
+          "results_count": 0,
+          "rules_count": 95,
+          "error": "",
+          "warning": "",
+          "tool": {
+            "name": "CodeQL",
+            "guid": null,
+            "version": "2.27.3"
+          },
+          "url": "https://api.github.com/repos/QuanuX/Symphony/code-scanning/analyses/2072950335"
+        },
+        {
+          "id": 2073078928,
+          "category": "/language:go/os:macos-15-intel",
+          "commit_sha": "2f1be85ff80073f84fba1e7b9e7083f26d756168",
+          "created_at": "2026-11-01T22:09:20Z",
+          "results_count": 0,
+          "rules_count": 35,
+          "error": "",
+          "warning": "",
+          "tool": {
+            "name": "CodeQL",
+            "guid": null,
+            "version": "2.27.3"
+          },
+          "url": "https://api.github.com/repos/QuanuX/Symphony/code-scanning/analyses/2073078928"
+        },
+        {
+          "id": 2072921936,
+          "category": "/language:go/os:ubuntu-24.04",
+          "commit_sha": "2f1be85ff80073f84fba1e7b9e7083f26d756168",
+          "created_at": "2026-11-01T21:13:59Z",
+          "results_count": 0,
+          "rules_count": 35,
+          "error": "",
+          "warning": "",
+          "tool": {
+            "name": "CodeQL",
+            "guid": null,
+            "version": "2.27.3"
+          },
+          "url": "https://api.github.com/repos/QuanuX/Symphony/code-scanning/analyses/2072921936"
+        },
+        {
+          "id": 2072956250,
+          "category": "/language:swift/os:macos-15-intel",
+          "commit_sha": "2f1be85ff80073f84fba1e7b9e7083f26d756168",
+          "created_at": "2026-11-01T21:25:39Z",
+          "results_count": 0,
+          "rules_count": 28,
+          "error": "",
+          "warning": "",
+          "tool": {
+            "name": "CodeQL",
+            "guid": null,
+            "version": "2.27.3"
+          },
+          "url": "https://api.github.com/repos/QuanuX/Symphony/code-scanning/analyses/2072956250"
+        }
+      ],
+      "exact_current_analysis_target": true
+    },
+    {
+      "ref": "refs/pull/177/merge",
+      "head_commit": "3cdbdfbfb9feb03c83a8a48cf42b023ad2ae077e",
+      "pr_merge_commit": "2717d570f358272736d4aa210603ea8305b7c058",
+      "analysis_categories_present": 6,
+      "analyses": [
+        {
+          "id": 2072969726,
+          "category": "/language:actions/os:ubuntu-24.04",
+          "commit_sha": "2717d570f358272736d4aa210603ea8305b7c058",
+          "created_at": "2026-11-01T21:30:26Z",
+          "results_count": 0,
+          "rules_count": 23,
+          "error": "",
+          "warning": "",
+          "tool": {
+            "name": "CodeQL",
+            "guid": null,
+            "version": "2.27.3"
+          },
+          "url": "https://api.github.com/repos/QuanuX/Symphony/code-scanning/analyses/2072969726"
+        },
+        {
+          "id": 2073101230,
+          "category": "/language:c-cpp/os:macos-15-intel",
+          "commit_sha": "2717d570f358272736d4aa210603ea8305b7c058",
+          "created_at": "2026-11-01T22:16:47Z",
+          "results_count": 0,
+          "rules_count": 95,
+          "error": "",
+          "warning": "",
+          "tool": {
+            "name": "CodeQL",
+            "guid": null,
+            "version": "2.27.3"
+          },
+          "url": "https://api.github.com/repos/QuanuX/Symphony/code-scanning/analyses/2073101230"
+        },
+        {
+          "id": 2072978213,
+          "category": "/language:c-cpp/os:ubuntu-24.04",
+          "commit_sha": "2717d570f358272736d4aa210603ea8305b7c058",
+          "created_at": "2026-11-01T21:33:22Z",
+          "results_count": 0,
+          "rules_count": 95,
+          "error": "",
+          "warning": "",
+          "tool": {
+            "name": "CodeQL",
+            "guid": null,
+            "version": "2.27.3"
+          },
+          "url": "https://api.github.com/repos/QuanuX/Symphony/code-scanning/analyses/2072978213"
+        },
+        {
+          "id": 2073043897,
+          "category": "/language:go/os:macos-15-intel",
+          "commit_sha": "2717d570f358272736d4aa210603ea8305b7c058",
+          "created_at": "2026-11-01T21:56:47Z",
+          "results_count": 0,
+          "rules_count": 35,
+          "error": "",
+          "warning": "",
+          "tool": {
+            "name": "CodeQL",
+            "guid": null,
+            "version": "2.27.3"
+          },
+          "url": "https://api.github.com/repos/QuanuX/Symphony/code-scanning/analyses/2073043897"
+        },
+        {
+          "id": 2072956982,
+          "category": "/language:go/os:ubuntu-24.04",
+          "commit_sha": "2717d570f358272736d4aa210603ea8305b7c058",
+          "created_at": "2026-11-01T21:25:53Z",
+          "results_count": 0,
+          "rules_count": 35,
+          "error": "",
+          "warning": "",
+          "tool": {
+            "name": "CodeQL",
+            "guid": null,
+            "version": "2.27.3"
+          },
+          "url": "https://api.github.com/repos/QuanuX/Symphony/code-scanning/analyses/2072956982"
+        },
+        {
+          "id": 2072977710,
+          "category": "/language:swift/os:macos-15-intel",
+          "commit_sha": "2717d570f358272736d4aa210603ea8305b7c058",
+          "created_at": "2026-11-01T21:33:12Z",
+          "results_count": 0,
+          "rules_count": 28,
+          "error": "",
+          "warning": "",
+          "tool": {
+            "name": "CodeQL",
+            "guid": null,
+            "version": "2.27.3"
+          },
+          "url": "https://api.github.com/repos/QuanuX/Symphony/code-scanning/analyses/2072977710"
+        }
+      ],
+      "exact_current_analysis_target": true
+    },
+    {
+      "ref": "refs/pull/178/merge",
+      "head_commit": "cc1cdf94f042b3c3813190c65045a4c8db144542",
+      "pr_merge_commit": "320edcc367389f039d490b661427b49d15fb07a7",
+      "analysis_categories_present": 6,
+      "analyses": [
+        {
+          "id": 2072952748,
+          "category": "/language:actions/os:ubuntu-24.04",
+          "commit_sha": "320edcc367389f039d490b661427b49d15fb07a7",
+          "created_at": "2026-11-01T21:24:29Z",
+          "results_count": 0,
+          "rules_count": 23,
+          "error": "",
+          "warning": "",
+          "tool": {
+            "name": "CodeQL",
+            "guid": null,
+            "version": "2.27.3"
+          },
+          "url": "https://api.github.com/repos/QuanuX/Symphony/code-scanning/analyses/2072952748"
+        },
+        {
+          "id": 2073037454,
+          "category": "/language:c-cpp/os:macos-15-intel",
+          "commit_sha": "320edcc367389f039d490b661427b49d15fb07a7",
+          "created_at": "2026-11-01T21:54:27Z",
+          "results_count": 0,
+          "rules_count": 95,
+          "error": "",
+          "warning": "",
+          "tool": {
+            "name": "CodeQL",
+            "guid": null,
+            "version": "2.27.3"
+          },
+          "url": "https://api.github.com/repos/QuanuX/Symphony/code-scanning/analyses/2073037454"
+        },
+        {
+          "id": 2072967708,
+          "category": "/language:c-cpp/os:ubuntu-24.04",
+          "commit_sha": "320edcc367389f039d490b661427b49d15fb07a7",
+          "created_at": "2026-11-01T21:29:44Z",
+          "results_count": 0,
+          "rules_count": 95,
+          "error": "",
+          "warning": "",
+          "tool": {
+            "name": "CodeQL",
+            "guid": null,
+            "version": "2.27.3"
+          },
+          "url": "https://api.github.com/repos/QuanuX/Symphony/code-scanning/analyses/2072967708"
+        },
+        {
+          "id": 2073020581,
+          "category": "/language:go/os:macos-15-intel",
+          "commit_sha": "320edcc367389f039d490b661427b49d15fb07a7",
+          "created_at": "2026-11-01T21:48:10Z",
+          "results_count": 0,
+          "rules_count": 35,
+          "error": "",
+          "warning": "",
+          "tool": {
+            "name": "CodeQL",
+            "guid": null,
+            "version": "2.27.3"
+          },
+          "url": "https://api.github.com/repos/QuanuX/Symphony/code-scanning/analyses/2073020581"
+        },
+        {
+          "id": 2072889682,
+          "category": "/language:go/os:ubuntu-24.04",
+          "commit_sha": "320edcc367389f039d490b661427b49d15fb07a7",
+          "created_at": "2026-11-01T21:03:07Z",
+          "results_count": 0,
+          "rules_count": 35,
+          "error": "",
+          "warning": "",
+          "tool": {
+            "name": "CodeQL",
+            "guid": null,
+            "version": "2.27.3"
+          },
+          "url": "https://api.github.com/repos/QuanuX/Symphony/code-scanning/analyses/2072889682"
+        },
+        {
+          "id": 2073069727,
+          "category": "/language:swift/os:macos-15-intel",
+          "commit_sha": "320edcc367389f039d490b661427b49d15fb07a7",
+          "created_at": "2026-11-01T22:06:04Z",
+          "results_count": 0,
+          "rules_count": 28,
+          "error": "",
+          "warning": "",
+          "tool": {
+            "name": "CodeQL",
+            "guid": null,
+            "version": "2.27.3"
+          },
+          "url": "https://api.github.com/repos/QuanuX/Symphony/code-scanning/analyses/2073069727"
+        }
+      ],
+      "exact_current_analysis_target": true
+    },
+    {
+      "ref": "refs/pull/179/merge",
+      "head_commit": "33a69a74ca2f061627c841fe7f0e7c10f29219d2",
+      "pr_merge_commit": "57c23ccd452d794471ed96266a9a9bc9b5b1de7e",
+      "analysis_categories_present": 6,
+      "analyses": [
+        {
+          "id": 2073050196,
+          "category": "/language:actions/os:ubuntu-24.04",
+          "commit_sha": "57c23ccd452d794471ed96266a9a9bc9b5b1de7e",
+          "created_at": "2026-11-01T21:59:12Z",
+          "results_count": 0,
+          "rules_count": 23,
+          "error": "",
+          "warning": "",
+          "tool": {
+            "name": "CodeQL",
+            "guid": null,
+            "version": "2.27.3"
+          },
+          "url": "https://api.github.com/repos/QuanuX/Symphony/code-scanning/analyses/2073050196"
+        },
+        {
+          "id": 2073101499,
+          "category": "/language:c-cpp/os:macos-15-intel",
+          "commit_sha": "57c23ccd452d794471ed96266a9a9bc9b5b1de7e",
+          "created_at": "2026-11-01T22:16:52Z",
+          "results_count": 0,
+          "rules_count": 95,
+          "error": "",
+          "warning": "",
+          "tool": {
+            "name": "CodeQL",
+            "guid": null,
+            "version": "2.27.3"
+          },
+          "url": "https://api.github.com/repos/QuanuX/Symphony/code-scanning/analyses/2073101499"
+        },
+        {
+          "id": 2073068488,
+          "category": "/language:c-cpp/os:ubuntu-24.04",
+          "commit_sha": "57c23ccd452d794471ed96266a9a9bc9b5b1de7e",
+          "created_at": "2026-11-01T22:05:40Z",
+          "results_count": 0,
+          "rules_count": 95,
+          "error": "",
+          "warning": "",
+          "tool": {
+            "name": "CodeQL",
+            "guid": null,
+            "version": "2.27.3"
+          },
+          "url": "https://api.github.com/repos/QuanuX/Symphony/code-scanning/analyses/2073068488"
+        },
+        {
+          "id": 2073007654,
+          "category": "/language:go/os:macos-15-intel",
+          "commit_sha": "57c23ccd452d794471ed96266a9a9bc9b5b1de7e",
+          "created_at": "2026-11-01T21:43:33Z",
+          "results_count": 0,
+          "rules_count": 35,
+          "error": "",
+          "warning": "",
+          "tool": {
+            "name": "CodeQL",
+            "guid": null,
+            "version": "2.27.3"
+          },
+          "url": "https://api.github.com/repos/QuanuX/Symphony/code-scanning/analyses/2073007654"
+        },
+        {
+          "id": 2072996206,
+          "category": "/language:go/os:ubuntu-24.04",
+          "commit_sha": "57c23ccd452d794471ed96266a9a9bc9b5b1de7e",
+          "created_at": "2026-11-01T21:39:33Z",
+          "results_count": 0,
+          "rules_count": 35,
+          "error": "",
+          "warning": "",
+          "tool": {
+            "name": "CodeQL",
+            "guid": null,
+            "version": "2.27.3"
+          },
+          "url": "https://api.github.com/repos/QuanuX/Symphony/code-scanning/analyses/2072996206"
+        },
+        {
+          "id": 2073018488,
+          "category": "/language:swift/os:macos-15-intel",
+          "commit_sha": "57c23ccd452d794471ed96266a9a9bc9b5b1de7e",
+          "created_at": "2026-11-01T21:47:22Z",
+          "results_count": 0,
+          "rules_count": 28,
+          "error": "",
+          "warning": "",
+          "tool": {
+            "name": "CodeQL",
+            "guid": null,
+            "version": "2.27.3"
+          },
+          "url": "https://api.github.com/repos/QuanuX/Symphony/code-scanning/analyses/2073018488"
+        }
+      ],
+      "exact_current_analysis_target": true
+    }
+  ],
+  "main_unanalyzed_delta": [
+    "knowledge/sclv/CHANGELOG.md"
+  ],
+  "cpp_extraction": [
+    {
+      "job_id": 124982267235,
+      "job_url": "https://github.com/QuanuX/Symphony/actions/runs/41351436975/job/124982267235",
+      "runner": "ubuntu-24.04",
+      "cpp_scanned": 575,
+      "cpp_reported_total": 588,
+      "c_scanned": 8,
+      "c_reported_total": 8,
+      "missing_cpp_file_count": 13,
+      "missing_cpp_file_names": "not present in retrieved public SARIF or job summary",
+      "full_cpp26_coverage": false,
+      "codeql_cli": "2.27.3",
+      "cpp_queries": "1.9.2",
+      "build_mode": "none"
+    },
+    {
+      "job_id": 124982267443,
+      "job_url": "https://github.com/QuanuX/Symphony/actions/runs/41351436975/job/124982267443",
+      "runner": "macos-15-intel",
+      "cpp_scanned": 575,
+      "cpp_reported_total": 588,
+      "c_scanned": 8,
+      "c_reported_total": 8,
+      "missing_cpp_file_count": 13,
+      "missing_cpp_file_names": "not present in retrieved public SARIF or job summary",
+      "full_cpp26_coverage": false,
+      "codeql_cli": "2.27.3",
+      "cpp_queries": "1.9.2",
+      "build_mode": "none"
+    }
+  ],
+  "source_bindings": [
+    {
+      "path": "modules/stav-append-authority/internal/config/config.go",
+      "sha256": "138262639c2200df530b5ce7544a78a2add133f7aa6189e0226f11966dc90c20"
+    },
+    {
+      "path": "modules/stav-append-authority/internal/lifecycle/enrollment.go",
+      "sha256": "51632754478245f52dfa024d6a50a033fd6b7f6809f5ea8c1e6582a7a03658b1"
+    },
+    {
+      "path": "modules/stav-append-authority/internal/lifecycle/ownership_test.go",
+      "sha256": "5a8ac1863156109ca058b047adeff0d14bbf80689e2aff30918e0a2eaeda969f"
+    },
+    {
+      "path": "tools/qxctl/internal/foundationlifecycle/client.go",
+      "sha256": "1c60ef8f61040ed4dc0feb5e1e037b0c07c0d538fbaecafa05a9a7f18635e895"
+    },
+    {
+      "path": "tools/qxctl/internal/knowledgeengine/sbv_partitioned.go",
+      "sha256": "67fff2fe55757f0230b8d675f98595bd95ffc9c9671bd05703696efd66831609"
+    },
+    {
+      "path": "modules/sbv-engine/tests/feedback_fixture.cpp",
+      "sha256": "e0d68228dab0183e8b9f4293307a7a1e4e7d5dcdb853b9fc9d697875be6934f4"
+    },
+    {
+      "path": "modules/sbv-engine/tests/feedback_settlement_test.cpp",
+      "sha256": "c7302cbbe86c2c43d1392e8ab8c7d4c6b8e711a17669e2dc417e881c740d6f07"
+    },
+    {
+      "path": "modules/knowledge-session-coordinator/tests/lifecycle_test.cpp",
+      "sha256": "03bb21656c7e75f13244487e4d2e0fae0f42de83c9a4d00b7e3d55b0777c1755"
+    },
+    {
+      "path": "modules/knowledge-session-coordinator/src/lifecycle_journal.cpp",
+      "sha256": "ddb689e936fd9ebe6877106bb5adb57bbfbfcdd15386292f8c4b02faa6a8a81d"
+    },
+    {
+      "path": "modules/sqav-capture-cpp/tests/sdk-consumer/main.cpp",
+      "sha256": "f3e9807cfbbc8d373586a887974c56bbe5e79f69dab0231806e437a178ed8247"
+    },
+    {
+      "path": ".github/workflows/codeql.yml",
+      "sha256": "a6e709ff3e2dc78dc013c64f23e04395b4c330007dae84bcb43d19730e7bc75d"
+    }
+  ],
+  "raw_evidence": [
+    {
+      "file": "alert-9-instances.json",
+      "bytes": 2255,
+      "sha256": "e1d275b9eb9cb7cf5d75267bd5cfcef4d2ed1760cc3f8a6aebf30f94a9907348"
+    },
+    {
+      "file": "alerts.json",
+      "bytes": 56150,
+      "sha256": "bd81bb01d83264990b532401e2d017c25d1600efdf04a01bbe5cf6bb3977e242"
+    },
+    {
+      "file": "analyses.json",
+      "bytes": 104933,
+      "sha256": "6987333a7ed53d45761adb528295ecd022d74d8dae2c7c111cd52c44d7d0dbde"
+    },
+    {
+      "file": "branches-main.json",
+      "bytes": 5150,
+      "sha256": "949a7d230bbef8e33a7b2610de4908a3ac5bea2f49cbe44ed5afcab5430e3205"
+    },
+    {
+      "file": "job-124982267235.log",
+      "bytes": 166135,
+      "sha256": "2498a2dca8c35ae7f1ef8a969dd3e6bdccefccf3c766abf356f4a0eda10c1b43"
+    },
+    {
+      "file": "job-124982267443.log",
+      "bytes": 170187,
+      "sha256": "e7abfe4246c4d69603c0ea42eaf8102a5e3e5004a0a2939aacf6e35015d51e62"
+    },
+    {
+      "file": "pr179-codeql-jobs.json",
+      "bytes": 12199,
+      "sha256": "6499584d70729472535d854eba2e90c1d22a7562a3d2667f606ab69c3e819953"
+    },
+    {
+      "file": "pr179-cpp-linux.sarif",
+      "bytes": 395766,
+      "sha256": "6a6c3f95b5a35e27ee2728b9a9615f9ee3d91a986b03b748672484c450f3bd24"
+    },
+    {
+      "file": "pr179-cpp-macos.sarif",
+      "bytes": 395768,
+      "sha256": "f98bc49834d2284267e0375d304d5124910c9e0c7667f0f443d9579011bbe701"
+    },
+    {
+      "file": "pr179-runs.json",
+      "bytes": 3121,
+      "sha256": "dd9773853a2607655737ef6f134642b5976743c4687261b20fe8368dd6e43033"
+    },
+    {
+      "file": "pulls-175.json",
+      "bytes": 18267,
+      "sha256": "c7fe29afc44e4f826f4f839d50b117c77079b19a54dcca47918c7a0e13be062f"
+    },
+    {
+      "file": "pulls-176.json",
+      "bytes": 17879,
+      "sha256": "8c5be0b064e2925b170bcee90e6112df365756c49be8d7387f28b3b6a591b396"
+    },
+    {
+      "file": "pulls-177.json",
+      "bytes": 18730,
+      "sha256": "9a4c17428fa3998adfad4f072fb92f981007f049c8c1da693b4bfab6fbff160f"
+    },
+    {
+      "file": "pulls-178.json",
+      "bytes": 20720,
+      "sha256": "44337c152030e6e873c355115c3f31dcd36f546f214604c8e0719bc1e01f7234"
+    },
+    {
+      "file": "pulls-179.json",
+      "bytes": 19044,
+      "sha256": "61341b1266de3cdc5a35a6eab7e825def8c6e88ede72ee3800a01eea283660d3"
+    }
+  ],
+  "qualification": "triaged with explicit limitations; not security clearance; new source requires fresh analysis",
+  "limits": [
+    "PR SARIF contains codeql-action/pr-diff-range and cannot close unchanged default-branch alert9.",
+    "Analysis API warnings/error fields are empty; they do not enumerate all extraction diagnostics.",
+    "Source-only inference is not the exact installed dependency/SDK build.",
+    "CodeQL published support does not include C++26.",
+    "Native CodeQL runners are amd64; no native ARM extraction is claimed.",
+    "New process-helper correction and evidence-retention workflow are not covered by this pre-change scan snapshot."
+  ]
+}

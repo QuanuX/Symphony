@@ -98,3 +98,31 @@ jobs:
         with:
           category: /language:${{ matrix.language }}/os:${{ matrix.os }}
           wait-for-processing: true
+          output: ${{ runner.temp }}/codeql-evidence/original
+          post-processed-sarif-path: ${{ runner.temp }}/codeql-evidence/uploaded
+
+      - name: Collect original extraction evidence
+        if: always()
+        env:
+          ANALYSIS_CATEGORY: /language:${{ matrix.language }}/os:${{ matrix.os }}
+          ANALYSIS_LANGUAGE: ${{ matrix.language }}
+          ANALYSIS_RUNNER: ${{ matrix.os }}
+          ANALYSIS_BUILD_MODE: ${{ matrix.build-mode }}
+          PYTHONDONTWRITEBYTECODE: '1'
+        run: |
+          python3 .github/codeql/test_collect_evidence.py
+          python3 .github/codeql/collect_evidence.py \
+            --sarif-root "$RUNNER_TEMP/codeql-evidence/original" \
+            --output "$RUNNER_TEMP/codeql-evidence/summary.json" \
+            --commit "$(git rev-parse HEAD)" --ref "$GITHUB_REF" \
+            --category "$ANALYSIS_CATEGORY" --language "$ANALYSIS_LANGUAGE" \
+            --runner "$ANALYSIS_RUNNER" --build-mode "$ANALYSIS_BUILD_MODE"
+
+      - name: Retain extraction and upload evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: codeql-evidence-${{ matrix.language }}-${{ matrix.os }}
+          path: ${{ runner.temp }}/codeql-evidence
+          if-no-files-found: warn
+          retention-days: 14
