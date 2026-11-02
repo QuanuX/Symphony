@@ -6,6 +6,8 @@ set(_files
   "@CMAKE_INSTALL_LIBDIR@/symphony/knowledge-vector-engine/0.2.0-dev/@CMAKE_STATIC_LIBRARY_PREFIX@symphony-knowledge-vector-engine@CMAKE_STATIC_LIBRARY_SUFFIX@"
   "@SYMPHONY_KVE_INCLUDE_DIR@/symphony/knowledge/engine/json.hpp"
   "@SYMPHONY_KVE_INCLUDE_DIR@/symphony/knowledge/engine/limits.hpp"
+  "@SYMPHONY_KVE_INCLUDE_DIR@/symphony/knowledge/engine/manifest_discovery.hpp"
+  "@SYMPHONY_KVE_INCLUDE_DIR@/symphony/knowledge/engine/operation.hpp"
   "@SYMPHONY_KVE_INCLUDE_DIR@/symphony/knowledge/engine/error.hpp"
   "@SYMPHONY_KVE_INCLUDE_DIR@/symphony/knowledge/engine/digest.hpp"
   "@SYMPHONY_KVE_INCLUDE_DIR@/symphony/knowledge/engine/path.hpp"

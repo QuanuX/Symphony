@@ -1,0 +1,188 @@
+{
+  "format_version": 1,
+  "sdk_producers": [
+    {
+      "path": "libraries/knowledge-vector-engine-cpp",
+      "coverage": "mechanics_consumer",
+      "exports": [
+        "SymphonyKnowledgeVectorEngine"
+      ]
+    },
+    {
+      "path": "libraries/snv-common-cpp",
+      "coverage": "mechanics_consumer",
+      "exports": [
+        "SymphonySnvCommon"
+      ]
+    },
+    {
+      "path": "modules/native-source-support-cpp",
+      "coverage": "mvp_copied_consumer",
+      "exports": [
+        "SymphonyNativeSourceSupport"
+      ]
+    },
+    {
+      "path": "modules/sbv-engine",
+      "coverage": "mvp_c_abi_cpp_interop",
+      "exports": [
+        "SymphonySbvInterop",
+        "SymphonySbvProvider",
+        "SymphonySbvSdk"
+      ]
+    },
+    {
+      "path": "modules/scabv-ibkr-client-portal-cpp",
+      "coverage": "mvp_copied_consumer",
+      "exports": [
+        "SymphonyScabvIbkrClientPortal"
+      ]
+    },
+    {
+      "path": "modules/scabv-ibkr-tws-cpp",
+      "coverage": "mvp_copied_consumer",
+      "exports": [
+        "SymphonyScabvIbkrTws"
+      ]
+    },
+    {
+      "path": "modules/sciv-engine",
+      "coverage": "snv_campaign",
+      "exports": [
+        "SymphonySciv"
+      ]
+    },
+    {
+      "path": "modules/scnv-engine",
+      "coverage": "snv_campaign",
+      "exports": [
+        "SymphonyScnv"
+      ]
+    },
+    {
+      "path": "modules/shv-graph-adapter",
+      "coverage": "mvp_copied_consumer",
+      "exports": [
+        "SymphonyShvGraphAdapter"
+      ]
+    },
+    {
+      "path": "modules/sniv-engine",
+      "coverage": "snv_campaign",
+      "exports": [
+        "SymphonySniv"
+      ]
+    },
+    {
+      "path": "modules/snrv-engine",
+      "coverage": "snv_campaign",
+      "exports": [
+        "SymphonySnrv"
+      ]
+    },
+    {
+      "path": "modules/snv-engine",
+      "coverage": "snv_campaign",
+      "exports": [
+        "SymphonySnv"
+      ]
+    },
+    {
+      "path": "modules/snv-local-observer",
+      "coverage": "snv_campaign",
+      "exports": [
+        "SymphonySnvLocalObserver"
+      ]
+    },
+    {
+      "path": "modules/sqav-capture-cpp",
+      "coverage": "mvp_copied_consumer",
+      "exports": [
+        "SymphonySqavCapture"
+      ]
+    },
+    {
+      "path": "modules/sqav-databento-dbn-cpp",
+      "coverage": "mvp_copied_consumer",
+      "exports": [
+        "SymphonySqavDatabentoDbn"
+      ]
+    },
+    {
+      "path": "modules/sqav-databento-reference-cpp",
+      "coverage": "mvp_copied_consumer",
+      "exports": [
+        "SymphonySqavDatabentoReference"
+      ]
+    },
+    {
+      "path": "modules/sqav-fred-cpp",
+      "coverage": "mvp_copied_consumer",
+      "exports": [
+        "SymphonySqavFred"
+      ]
+    },
+    {
+      "path": "modules/sqav-news-api-cpp",
+      "coverage": "mvp_copied_consumer",
+      "exports": [
+        "SymphonySqavNewsApi"
+      ]
+    },
+    {
+      "path": "modules/sqdv-delivery-cpp",
+      "coverage": "mvp_copied_consumer",
+      "exports": [
+        "SymphonySqdvDelivery"
+      ]
+    },
+    {
+      "path": "modules/sqfv-batch-cpp",
+      "coverage": "mvp_copied_consumer",
+      "exports": [
+        "SymphonySqfvBatch"
+      ]
+    },
+    {
+      "path": "modules/sqmv-metadata-cpp",
+      "coverage": "mvp_copied_consumer",
+      "exports": [
+        "SymphonySqmvMetadata"
+      ]
+    },
+    {
+      "path": "modules/sqpv-local-store-cpp",
+      "coverage": "mvp_copied_consumer",
+      "exports": [
+        "SymphonySqpvLocalStore"
+      ]
+    },
+    {
+      "path": "modules/sqtv-integer-conversion-cpp",
+      "coverage": "mvp_copied_consumer",
+      "exports": [
+        "SymphonySqtvIntegerConversion"
+      ]
+    }
+  ],
+  "explicit_external_exclusions": [
+    {
+      "path": "modules/scabv-ibkr-tws-cpp/tests/sdk1045-conformance/CMakeLists.txt",
+      "reason": "Requires separately supplied licensed IBKR SDK 10.45; public installed consumer and ABI/session fixtures remain mandatory."
+    }
+  ],
+  "source_consumers": [
+    {
+      "path": "libraries/sbv-go/examples/roundtrip",
+      "coverage": "copied_source_against_exact_native_artifacts",
+      "group": "quantitative"
+    }
+  ],
+  "separate_campaigns": [
+    {
+      "path": "tests/duckdb-connectors/CMakeLists.txt",
+      "workflow": ".github/workflows/duckdb-connectors.yml",
+      "reason": "Independent pinned DuckDB source/SDK consumers and installed receipt/removal campaign on the same four profiles; retained legacy embedded SDK identities are intentional."
+    }
+  ]
+}

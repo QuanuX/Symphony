@@ -116,6 +116,20 @@ jobs:
           GOMODCACHE: ${{ runner.temp }}/mvp-go-modules
           GOCACHE: ${{ runner.temp }}/mvp-go-build
         run: sh tests/shv-release-qualification/run.sh "$RUNNER_TEMP/mvp-installed/prefix" "$RUNNER_TEMP/shv-release"
+      - name: Qualify installed SDK distribution and removal
+        run: |
+          set -- "${{ matrix.group }}" "$RUNNER_TEMP/mvp-installed" "$RUNNER_TEMP/native-sdk-distribution"
+          if [ "${{ matrix.group }}" = knowledge ]; then
+            set -- "$@" "$RUNNER_TEMP/snv-qualification"
+          elif [ "${{ matrix.group }}" = quantitative ]; then
+            set -- "$@" "$RUNNER_TEMP/sbv-launch-boundary"
+          fi
+          sh tests/native-sdk-distribution/run.sh "$@"
+      - name: Inventory dependency notices from final installed artifacts
+        env:
+          GOMODCACHE: ${{ runner.temp }}/mvp-installed/go/modules
+          GOCACHE: ${{ runner.temp }}/mvp-installed/go/build
+        run: sh tests/dependency-notices/run.sh "$RUNNER_TEMP/mvp-installed/prefix" "$RUNNER_TEMP/dependency-notices" "$RUNNER_TEMP/mvp-external/prefix" "$RUNNER_TEMP/mvp-installed/qxctl"
       - name: Verify authoring tools against installed foundation
         if: matrix.group == 'knowledge'
         run: sh tests/mvp-dependencies/run.sh build_support "$RUNNER_TEMP/mvp-authoring"
@@ -159,6 +173,13 @@ jobs:
             ${{ runner.temp }}/shv-release/assets/decoder-machine.log
             ${{ runner.temp }}/shv-release/pdf-replay
             ${{ runner.temp }}/shv-release/catalogue
+            ${{ runner.temp }}/native-sdk-distribution/logs
+            ${{ runner.temp }}/native-sdk-distribution/metadata
+            ${{ runner.temp }}/native-sdk-distribution/evidence.json
+            ${{ runner.temp }}/native-sdk-distribution/source-roundtrip-output/report.json
+            ${{ runner.temp }}/dependency-notices/inventory.json
+            ${{ runner.temp }}/dependency-notices/notices
+            ${{ runner.temp }}/dependency-notices/logs
             ${{ runner.temp }}/mvp-authoring/logs
             ${{ runner.temp }}/mvp-authoring/metadata
             ${{ runner.temp }}/mvp-authoring/selected-components.txt
