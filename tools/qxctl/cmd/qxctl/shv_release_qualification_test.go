@@ -90,6 +90,9 @@ func TestInstalledSHVBoundedCatalogueWorkflow(t *testing.T) {
 			args = append(args, "--input", write(fmt.Sprintf("%03d-request", calls), body))
 		}
 		out, status := invokeCLI(t, args...)
+		if err := os.WriteFile(filepath.Join(evidence, fmt.Sprintf("%03d-output.txt", calls)), []byte(out), 0600); err != nil {
+			t.Fatal(err)
+		}
 		if (status == 0) != good {
 			t.Fatalf("%s: status=%d output=%s", route, status, out)
 		}
@@ -110,6 +113,11 @@ func TestInstalledSHVBoundedCatalogueWorkflow(t *testing.T) {
 		return v
 	}
 	owner := func(version string) []string { return []string{"--prefix", prefix, "--version", version} }
+	connector, err := knowledgeengine.InspectSHVStore(storePrefix, "0.4.0-dev")
+	if err != nil {
+		t.Fatalf("exact installed connector admission: %v", err)
+	}
+	write("connector-installation", connector)
 	request := read(requestPath)
 	source := object(request["source"])
 	original, err := os.ReadFile(filepath.Join(request["source_root"].(string), source["path"].(string)))
