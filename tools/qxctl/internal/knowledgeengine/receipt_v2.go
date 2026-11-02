@@ -15,8 +15,11 @@ import (
 )
 
 // Package artifacts include executable and static SDK objects. Their hashing
-// bound is independent from the process protocol's JSON byte limits.
-const maxReceiptV2ArtifactBytes int64 = 64 * 1024 * 1024
+// bound is independent from the process protocol's JSON byte limits. The pinned
+// DuckDB 1.5.5 Linux amd64 runtime alone is 70,529,912 bytes. Hash complete files
+// through a fixed-size streaming buffer; retain an explicit 128 MiB admission
+// ceiling, exact receipt size/digest, no-follow reads and identity rechecks.
+const maxReceiptV2ArtifactBytes int64 = 128 * 1024 * 1024
 
 // ReceiptV2EntryPointSpec identifies one typed executable owned by one exact
 // immutable package receipt. It is also used by the existing engine verifier,

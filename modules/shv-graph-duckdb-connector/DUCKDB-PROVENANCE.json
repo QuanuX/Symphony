@@ -1,14 +1,10 @@
 {
-  "protocol": "symphony.scv.graph-index-duckdb-dependency.v1",
+  "protocol": "symphony.graph.duckdb-dependency.v2",
   "version": "1.5.5",
   "runtime_version": "v1.5.5",
   "commit": "d8cdaa33fda8df955cc76ef58a280f68f4cd43fa",
   "source": "https://github.com/duckdb/duckdb/releases/tag/v1.5.5",
-  "archive_url": "https://github.com/duckdb/duckdb/releases/download/v1.5.5/libduckdb-osx-universal.zip",
-  "archive_sha256": "7b5b8915cc382d0708636fe6385c0cdad5a61c9ff8ba2638b3e2141640783155",
-  "archive_bytes": 36178910,
-  "platform": "macos-amd64",
-  "derivation": "Apple lipo -thin x86_64; no source or machine-code changes",
+  "license_url": "https://raw.githubusercontent.com/duckdb/duckdb/d8cdaa33fda8df955cc76ef58a280f68f4cd43fa/LICENSE",
   "files": {
     "duckdb.h": {
       "bytes": 244057,
@@ -18,9 +14,88 @@
       "bytes": 1072,
       "sha256": "7e17fd31249fa875cb3b1c5e05c6c3e99b75509f6a2804ca176c217834de1dcb"
     },
-    "x86_64/libduckdb.dylib": {
-      "bytes": 59743808,
-      "sha256": "822d5334a21745b490baef99bc346bdff7fcfd57eb1f7c58ab250f137e931466"
+    "THIRD_PARTY_LICENSES.txt": {
+      "bytes": 67209,
+      "sha256": "ae3baaa55e64975a529f7ff1d54081db1376c312c212ed4eb388923644e790c4"
     }
-  }
+  },
+  "notice_source": {
+    "archive_url": "https://github.com/duckdb/duckdb/releases/download/v1.5.5/libduckdb-src.zip",
+    "archive_sha256": "102813201cf8072b8a56b6013978963f3c89202a148fd152d06909477e36fbf8",
+    "archive_bytes": 4974643,
+    "file": "duckdb.cpp",
+    "start_marker": "### THIRD PARTY LICENSE #1 ###",
+    "end_marker": "last closing block comment",
+    "license_count": 20,
+    "prefix": "DuckDB 1.5.5 third-party license notices\nSource: official libduckdb-src.zip (DuckDB commit d8cdaa33fda8df955cc76ef58a280f68f4cd43fa).\nThe following license appendix is retained verbatim from duckdb.cpp.\n\n"
+  },
+  "platforms": {
+    "macos-amd64": {
+      "archive_url": "https://github.com/duckdb/duckdb/releases/download/v1.5.5/libduckdb-osx-universal.zip",
+      "archive_sha256": "7b5b8915cc382d0708636fe6385c0cdad5a61c9ff8ba2638b3e2141640783155",
+      "archive_bytes": 36178910,
+      "archive_library": "libduckdb.dylib",
+      "library_name": "libduckdb.dylib",
+      "library_sha256": "822d5334a21745b490baef99bc346bdff7fcfd57eb1f7c58ab250f137e931466",
+      "library_bytes": 59743808,
+      "derivation": "lipo -thin x86_64; upstream slice is unchanged",
+      "object_architecture": "x86_64",
+      "upstream_runtime_floor": {
+        "minimum_macos": "11.0",
+        "cxx_runtime": "libc++.1.dylib"
+      }
+    },
+    "macos-arm64": {
+      "archive_url": "https://github.com/duckdb/duckdb/releases/download/v1.5.5/libduckdb-osx-universal.zip",
+      "archive_sha256": "7b5b8915cc382d0708636fe6385c0cdad5a61c9ff8ba2638b3e2141640783155",
+      "archive_bytes": 36178910,
+      "archive_library": "libduckdb.dylib",
+      "library_name": "libduckdb.dylib",
+      "library_sha256": "fbbab4c8390d59cd01ee0768da80a4dadfc9f8e00edb43abff75460f580d1312",
+      "library_bytes": 57236352,
+      "derivation": "lipo -thin arm64; upstream slice is unchanged",
+      "object_architecture": "aarch64",
+      "upstream_runtime_floor": {
+        "minimum_macos": "11.0",
+        "cxx_runtime": "libc++.1.dylib"
+      }
+    },
+    "linux-amd64": {
+      "archive_url": "https://github.com/duckdb/duckdb/releases/download/v1.5.5/libduckdb-linux-amd64.zip",
+      "archive_sha256": "1fb8ce388157d84a25abe685a8a2520bf00c00321821968e4bb398fd766e7abb",
+      "archive_bytes": 41300590,
+      "archive_library": "libduckdb.so",
+      "library_name": "libduckdb.so",
+      "library_sha256": "fc23f12e376c47be520f75221288281906e7942e8fd6f6ce4849198ba60d0405",
+      "library_bytes": 70529912,
+      "derivation": "unmodified upstream glibc shared library",
+      "object_architecture": "x86_64",
+      "upstream_runtime_floor": {
+        "documented_glibc_minimum": "2.28",
+        "observed_max_glibc_symbol": "2.25",
+        "observed_max_glibcxx_symbol": "3.4.22",
+        "observed_max_cxxabi_symbol": "1.3.8",
+        "cxx_runtime": "libstdc++.so.6"
+      }
+    },
+    "linux-arm64": {
+      "archive_url": "https://github.com/duckdb/duckdb/releases/download/v1.5.5/libduckdb-linux-arm64.zip",
+      "archive_sha256": "abe4f6f005ee0b448a058322f4263584b4bd1b6faf7ab4637b79eeaf978f8e9c",
+      "archive_bytes": 37694966,
+      "archive_library": "libduckdb.so",
+      "library_name": "libduckdb.so",
+      "library_sha256": "d00d007f3f7ca1f2896a5e4b89c2ce141bf0508506a9d6d56f9598b8e59d074e",
+      "library_bytes": 62963152,
+      "derivation": "unmodified upstream glibc shared library",
+      "object_architecture": "aarch64",
+      "upstream_runtime_floor": {
+        "documented_glibc_minimum": "2.28",
+        "observed_max_glibc_symbol": "2.25",
+        "observed_max_glibcxx_symbol": "3.4.22",
+        "observed_max_cxxabi_symbol": "1.3.8",
+        "cxx_runtime": "libstdc++.so.6"
+      }
+    }
+  },
+  "qualification_boundary": "Dependency identity and ABI inspection do not qualify an OS, filesystem, physical DGX Spark, or GPU workload."
 }

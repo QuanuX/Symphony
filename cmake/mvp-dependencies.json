@@ -1397,10 +1397,17 @@
       ],
       "exported_packages": [],
       "installable": true,
-      "installed_sdk_consumer_checks": [],
+      "installed_sdk_consumer_checks": [
+        {
+          "path": "tests/duckdb-connectors/CMakeLists.txt",
+          "scope": "Copied installed process/recovery consumer; foundation imported from selected prefix; receipt-owned DuckDB loaded adjacent."
+        }
+      ],
       "allowed_shared_implementation_sources": [],
-      "allowed_test_implementation_sources": [],
-      "qualification_group": "legacy_duckdb"
+      "allowed_test_implementation_sources": [
+        "tools/qxctl/tests/scv-index-transfer/installed.cpp"
+      ],
+      "qualification_group": "duckdb"
     },
     {
       "component_id": "sev-engine",
@@ -1586,12 +1593,36 @@
       ],
       "exported_packages": [],
       "installable": true,
-      "installed_sdk_consumer_checks": [],
+      "installed_sdk_consumer_checks": [
+        {
+          "path": "tests/duckdb-connectors/CMakeLists.txt",
+          "scope": "Copied installed process/recovery consumer; foundation imported from selected prefix; receipt-owned DuckDB loaded adjacent."
+        }
+      ],
       "allowed_shared_implementation_sources": [
         "modules/shv-graph-adapter/src/adapter.cpp"
       ],
-      "allowed_test_implementation_sources": [],
-      "qualification_group": "legacy_duckdb"
+      "allowed_test_implementation_sources": [
+        "modules/scv-engine/tests/interface_generation_test.cpp",
+        "modules/scv-engine/tools/generate_interface.cpp",
+        "modules/shv-engine/scripts/build_schema.cpp",
+        "modules/shv-profile-engine/scripts/build_schema.cpp",
+        "modules/shv-profile-engine/tests/interface_test.cpp",
+        "modules/shv-profile-engine/tools/generate_interface.cpp",
+        "modules/shv-source-engine/scripts/build_schema.cpp",
+        "tools/authoring-cpp/local_refs_test.cpp",
+        "tools/authoring-cpp/schema_test.cpp",
+        "tools/qxctl/scripts/build_shv_activation_schema.cpp",
+        "tools/qxctl/scripts/build_shv_refresh_schema.cpp",
+        "tools/shv-interface-codegen/generate.cpp",
+        "tools/shv-interface-codegen/owner_codegen.cpp",
+        "tools/shv-interface-codegen/tests/interface_test.cpp",
+        "tools/shv-interface-codegen/tests/owner_test.cpp"
+      ],
+      "qualification_group": "duckdb",
+      "allowed_test_build_directories": [
+        "tools/authoring-cpp"
+      ]
     },
     {
       "component_id": "shv-partition-engine",
@@ -16916,22 +16947,18 @@
     {
       "id": "DuckDB",
       "version": "1.5.5",
-      "selection": "supplied exact hashed files, macos-amd64 only",
+      "selection": "Exact hashed upstream shared libraries: macOS arm64/amd64, Linux glibc arm64/amd64; caller supplies verified private files.",
       "direct_consumers": [
         "scv-graph-duckdb-connector",
         "shv-graph-duckdb-connector"
       ],
       "provenance": {
-        "protocol": "symphony.scv.graph-index-duckdb-dependency.v1",
+        "protocol": "symphony.graph.duckdb-dependency.v2",
         "version": "1.5.5",
         "runtime_version": "v1.5.5",
         "commit": "d8cdaa33fda8df955cc76ef58a280f68f4cd43fa",
         "source": "https://github.com/duckdb/duckdb/releases/tag/v1.5.5",
-        "archive_url": "https://github.com/duckdb/duckdb/releases/download/v1.5.5/libduckdb-osx-universal.zip",
-        "archive_sha256": "7b5b8915cc382d0708636fe6385c0cdad5a61c9ff8ba2638b3e2141640783155",
-        "archive_bytes": 36178910,
-        "platform": "macos-amd64",
-        "derivation": "Apple lipo -thin x86_64; no source or machine-code changes",
+        "license_url": "https://raw.githubusercontent.com/duckdb/duckdb/d8cdaa33fda8df955cc76ef58a280f68f4cd43fa/LICENSE",
         "files": {
           "duckdb.h": {
             "bytes": 244057,
@@ -16941,11 +16968,90 @@
             "bytes": 1072,
             "sha256": "7e17fd31249fa875cb3b1c5e05c6c3e99b75509f6a2804ca176c217834de1dcb"
           },
-          "x86_64/libduckdb.dylib": {
-            "bytes": 59743808,
-            "sha256": "822d5334a21745b490baef99bc346bdff7fcfd57eb1f7c58ab250f137e931466"
+          "THIRD_PARTY_LICENSES.txt": {
+            "bytes": 67209,
+            "sha256": "ae3baaa55e64975a529f7ff1d54081db1376c312c212ed4eb388923644e790c4"
           }
-        }
+        },
+        "notice_source": {
+          "archive_url": "https://github.com/duckdb/duckdb/releases/download/v1.5.5/libduckdb-src.zip",
+          "archive_sha256": "102813201cf8072b8a56b6013978963f3c89202a148fd152d06909477e36fbf8",
+          "archive_bytes": 4974643,
+          "file": "duckdb.cpp",
+          "start_marker": "### THIRD PARTY LICENSE #1 ###",
+          "end_marker": "last closing block comment",
+          "license_count": 20,
+          "prefix": "DuckDB 1.5.5 third-party license notices\nSource: official libduckdb-src.zip (DuckDB commit d8cdaa33fda8df955cc76ef58a280f68f4cd43fa).\nThe following license appendix is retained verbatim from duckdb.cpp.\n\n"
+        },
+        "platforms": {
+          "macos-amd64": {
+            "archive_url": "https://github.com/duckdb/duckdb/releases/download/v1.5.5/libduckdb-osx-universal.zip",
+            "archive_sha256": "7b5b8915cc382d0708636fe6385c0cdad5a61c9ff8ba2638b3e2141640783155",
+            "archive_bytes": 36178910,
+            "archive_library": "libduckdb.dylib",
+            "library_name": "libduckdb.dylib",
+            "library_sha256": "822d5334a21745b490baef99bc346bdff7fcfd57eb1f7c58ab250f137e931466",
+            "library_bytes": 59743808,
+            "derivation": "lipo -thin x86_64; upstream slice is unchanged",
+            "object_architecture": "x86_64",
+            "upstream_runtime_floor": {
+              "minimum_macos": "11.0",
+              "cxx_runtime": "libc++.1.dylib"
+            }
+          },
+          "macos-arm64": {
+            "archive_url": "https://github.com/duckdb/duckdb/releases/download/v1.5.5/libduckdb-osx-universal.zip",
+            "archive_sha256": "7b5b8915cc382d0708636fe6385c0cdad5a61c9ff8ba2638b3e2141640783155",
+            "archive_bytes": 36178910,
+            "archive_library": "libduckdb.dylib",
+            "library_name": "libduckdb.dylib",
+            "library_sha256": "fbbab4c8390d59cd01ee0768da80a4dadfc9f8e00edb43abff75460f580d1312",
+            "library_bytes": 57236352,
+            "derivation": "lipo -thin arm64; upstream slice is unchanged",
+            "object_architecture": "aarch64",
+            "upstream_runtime_floor": {
+              "minimum_macos": "11.0",
+              "cxx_runtime": "libc++.1.dylib"
+            }
+          },
+          "linux-amd64": {
+            "archive_url": "https://github.com/duckdb/duckdb/releases/download/v1.5.5/libduckdb-linux-amd64.zip",
+            "archive_sha256": "1fb8ce388157d84a25abe685a8a2520bf00c00321821968e4bb398fd766e7abb",
+            "archive_bytes": 41300590,
+            "archive_library": "libduckdb.so",
+            "library_name": "libduckdb.so",
+            "library_sha256": "fc23f12e376c47be520f75221288281906e7942e8fd6f6ce4849198ba60d0405",
+            "library_bytes": 70529912,
+            "derivation": "unmodified upstream glibc shared library",
+            "object_architecture": "x86_64",
+            "upstream_runtime_floor": {
+              "documented_glibc_minimum": "2.28",
+              "observed_max_glibc_symbol": "2.25",
+              "observed_max_glibcxx_symbol": "3.4.22",
+              "observed_max_cxxabi_symbol": "1.3.8",
+              "cxx_runtime": "libstdc++.so.6"
+            }
+          },
+          "linux-arm64": {
+            "archive_url": "https://github.com/duckdb/duckdb/releases/download/v1.5.5/libduckdb-linux-arm64.zip",
+            "archive_sha256": "abe4f6f005ee0b448a058322f4263584b4bd1b6faf7ab4637b79eeaf978f8e9c",
+            "archive_bytes": 37694966,
+            "archive_library": "libduckdb.so",
+            "library_name": "libduckdb.so",
+            "library_sha256": "d00d007f3f7ca1f2896a5e4b89c2ce141bf0508506a9d6d56f9598b8e59d074e",
+            "library_bytes": 62963152,
+            "derivation": "unmodified upstream glibc shared library",
+            "object_architecture": "aarch64",
+            "upstream_runtime_floor": {
+              "documented_glibc_minimum": "2.28",
+              "observed_max_glibc_symbol": "2.25",
+              "observed_max_glibcxx_symbol": "3.4.22",
+              "observed_max_cxxabi_symbol": "1.3.8",
+              "cxx_runtime": "libstdc++.so.6"
+            }
+          }
+        },
+        "qualification_boundary": "Dependency identity and ABI inspection do not qualify an OS, filesystem, physical DGX Spark, or GPU workload."
       }
     },
     {
@@ -17135,6 +17241,10 @@
       "sha256": "dd3567928349ba1689f7d945e5facc82617c1ef6737fe518ad6bf1a5f30916b6"
     },
     {
+      "path": "cmake/SymphonyDuckDBDependency.cmake",
+      "sha256": "1469a45517036adc795ad8d3e35a4ca2acaecc407d297f2c583f72a0a8ef7ec1"
+    },
+    {
       "path": "cmake/SymphonyInstallReceiptV2.cmake",
       "sha256": "68227eaf8919a8a791f1c621f808cb5472f182c57d1fefbeee7f2dd3999aaa24"
     },
@@ -17149,6 +17259,10 @@
     {
       "path": "cmake/SymphonyNativeTests.cmake",
       "sha256": "9dcf09954079fa7bf3e095ba5fe0facf1f416ca0afe0dc6a5e4af73f1bf5596f"
+    },
+    {
+      "path": "cmake/SymphonyPrepareDuckDB.cmake",
+      "sha256": "00a1e33012502c45b8dac34d0905b0443ac7733acd59ba02d7c2445ca6a43b6d"
     },
     {
       "path": "cmake/SymphonyReceiptV2Support.cmake",
@@ -17171,8 +17285,12 @@
       "sha256": "9233bb96822bc108898b7ecca45f97d27c131eea4fe696c9908830a65e0dee0d"
     },
     {
+      "path": "cmake/mvp-platform-profiles.json",
+      "sha256": "5919db98185207278845d1d63c5c2a77b4daff032d44ebb0f4889b8785173bd5"
+    },
+    {
       "path": "cmake/mvp-release-identities.json",
-      "sha256": "822402dd2fa837d307079ff97c317d9a9aedad36938899b23f09a9a8b64805c5"
+      "sha256": "c19617f12abc41a7a8cd5a7dab1031c9048daf799570b21b961372a0019694f3"
     },
     {
       "path": "go.work",
@@ -18760,11 +18878,11 @@
     },
     {
       "path": "modules/scv-graph-duckdb-connector/CMakeLists.txt",
-      "sha256": "84d90813157cf68e65b55fe44e1974ca58c1690385155f970c963627c235349c"
+      "sha256": "516553d7ae826414f223215a1995fd4f2386b6afbdd6b131a8c95063d75c11dc"
     },
     {
       "path": "modules/scv-graph-duckdb-connector/DUCKDB-PROVENANCE.json",
-      "sha256": "4567f836fb38b6881a8536cf4ee9feb3212ca024b57e3182999ba73a491d8d64"
+      "sha256": "4d63cd97acbaa120ae919c7cb8093f6d1f64d072404497a5ed125eb30e675707"
     },
     {
       "path": "modules/scv-graph-duckdb-connector/cmake/uninstall.cmake.in",
@@ -18980,11 +19098,11 @@
     },
     {
       "path": "modules/shv-graph-duckdb-connector/CMakeLists.txt",
-      "sha256": "b20be030f9d8a29346e857b93f6a22e93f00f9f3b21a03984b1b4a4c0140dd97"
+      "sha256": "c65be1bab6971351214772765277f869ceba20243336ed447bf39c99f06117bb"
     },
     {
       "path": "modules/shv-graph-duckdb-connector/DUCKDB-PROVENANCE.json",
-      "sha256": "4567f836fb38b6881a8536cf4ee9feb3212ca024b57e3182999ba73a491d8d64"
+      "sha256": "4d63cd97acbaa120ae919c7cb8093f6d1f64d072404497a5ed125eb30e675707"
     },
     {
       "path": "modules/shv-graph-duckdb-connector/INTERFACE-GENERATOR.json",
@@ -20998,5 +21116,6 @@
       "path": "tools/symphony-validator/tests/fixtures_vocab_seeds_3/tools/symphony-validator/CMakeLists.txt",
       "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     }
-  ]
+  ],
+  "platform_profile_catalog": "cmake/mvp-platform-profiles.json"
 }

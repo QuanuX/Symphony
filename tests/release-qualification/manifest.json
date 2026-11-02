@@ -1423,18 +1423,49 @@
         }
       ],
       "known_internal_skips": []
-    }
-  ],
-  "native_exclusions": [
+    },
     {
       "path": "modules/scv-graph-duckdb-connector",
-      "reason": "Legacy Intel-only DuckDB package; required-platform qualification remains L09."
+      "group": "duckdb",
+      "configure_options": {
+        "BUILD_TESTING": true,
+        "SYMPHONY_KVE_USE_INSTALLED": true
+      },
+      "ctests": [
+        "scv-graph-duckdb-connector-process",
+        "scv-graph-duckdb-inventory"
+      ],
+      "direct_tests": [],
+      "excluded_direct_tests": [
+        {
+          "target": "scv-graph-duckdb-commit-fault-test",
+          "reason": "Fault-instrumented helper executed through the copied installed recovery consumer in tests/duckdb-connectors; not a standalone case."
+        }
+      ],
+      "known_internal_skips": []
     },
     {
       "path": "modules/shv-graph-duckdb-connector",
-      "reason": "Legacy Intel-only DuckDB package; required-platform qualification remains L09."
+      "group": "duckdb",
+      "configure_options": {
+        "BUILD_TESTING": true,
+        "SYMPHONY_KVE_USE_INSTALLED": true
+      },
+      "ctests": [
+        "shv-graph-duckdb-connector-process",
+        "shv-graph-duckdb-connector-interface"
+      ],
+      "direct_tests": [],
+      "excluded_direct_tests": [
+        {
+          "target": "shv-graph-duckdb-commit-fault-test",
+          "reason": "Fault-instrumented helper executed through the copied installed recovery consumer in tests/duckdb-connectors; not a standalone case."
+        }
+      ],
+      "known_internal_skips": []
     }
   ],
+  "native_exclusions": [],
   "go_modules": [
     {
       "path": "libraries/sbv-go",
@@ -2532,8 +2563,20 @@
     "Source-only prototypes and operational/provider activation are not admitted by this manifest."
   ],
   "native_totals": {
-    "roots": 55,
-    "ctests": 161,
+    "roots": 57,
+    "ctests": 165,
     "direct_tests": 16
+  },
+  "duckdb_installed_campaign": {
+    "harness": "tests/duckdb-connectors/installed.cmake",
+    "ctests": 4,
+    "recovery_barriers_per_connector": 6,
+    "profiles": [
+      "macos15-arm64",
+      "ubuntu24.04-amd64",
+      "ubuntu26.04-amd64",
+      "ubuntu24.04-arm64"
+    ],
+    "boundaries": "Copied process consumers, deterministic native SIGKILL/reopen/retry, adjacent runtime loader and receipt-owned removal. No power-loss or GPU test claim."
   }
 }
