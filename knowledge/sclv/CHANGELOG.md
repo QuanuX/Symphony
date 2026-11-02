@@ -16769,3 +16769,531 @@ This PR authorizes none of the following:
   - `Generic ARM64 CI does not certify physical DGX Spark, exact DGX OS deployment, storage durability, driver compatibility or GPU behavior; no native Windows port, Anaconda or mirror setup is included.`
 - notes: |
     Change start uses the first descendant task commit 7eb3221574d44fe72a87387361fa9baecca79bd6; completion uses the verified source merge commit timestamp in UTC. Ratification capture time is not treated as the user-message timestamp. All 5 recorded CI runs and 34 recorded jobs completed successfully for the exact source head, and source/tested/merged trees match. The separate GitHub CodeQL alert check remains failed solely for alert #9, the intentional mode-0777 negative fixture isolated by its retained mode-0700 parent. Source review and the coordinator regression verify exact production refusal and no journal writes; no alert is dismissed, and L21 retains the explicit disposition. Static-analysis job success does not imply zero open alerts or complete C++26 extraction; numbered alert dispositions remain separately dated. Exact per-profile counts and local evidence are retained in ci-proof.json. Branch cleanup follows this canonical closure and is recorded separately. Merge-time evidence retains the documented Git/API timestamp discrepancy; no API timestamp is silently substituted for the verified Git time.
+
+- record_id: `SCLV-CHG-launch-pr175-verified-implementation`
+- record_version: `3`
+- title: `Verified MVP implementation merge for PR 175`
+- status: `canonical`
+- date: `2026-11-02`
+- change_started_at: `2026-11-01T17:39:19Z`
+- change_completed_at: `2026-11-02T15:21:38Z`
+- recorded_at: `2026-11-02T18:49:48Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `implementation_change`
+- change_request_state: `present`
+- change_request_provider: `github`
+- change_request_id: `175`
+- change_request_reference: `https://github.com/QuanuX/Symphony/pull/175`
+- change_request_absence_reason: `not_applicable`
+- revision_scheme: `git-sha1`
+- revision_value: `39bfc72429a467c54ec95fb1c2b326b847b805bb`
+- tree_digest: `sha256:129616b46af0765fda5e2a5127613ee6540c4e069143cea7e6040ea9b750aa98`
+- ratification_subject: `Duncan (Architect)`
+- ratification_permission: `authorize_verified_implementation_merge_and_branch_cleanup`
+- ratification_method: `explicit-user-instruction`
+- ratification_evidence_reference: `../ci-review-175-180/ratification.json`
+- ratification_evidence_digest: `sha256:2239775cd889d85e7d4ac1147d4008bfc524cc7e3135a8894d95fef87c7e445c`
+- affected_surfaces:
+  - `.github/scripts/build-mvp-go-identities.sh`
+  - `.github/workflows/mvp-dependencies.yml`
+  - `.github/workflows/qxctl-standalone.yml`
+  - `.github/workflows/release-qualification.yml`
+  - `README.md`
+  - `cmake/MVP-DEPENDENCIES.md`
+  - `cmake/MVP-RELEASE-IDENTITIES.md`
+  - `cmake/SymphonyGoCandidateIdentities.cmake`
+  - `cmake/VerifyMVPReleaseIdentities.cmake`
+  - `cmake/mvp-dependencies.json`
+  - `cmake/mvp-release-identities.json`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.json`
+  - `knowledge/SPEC.md`
+  - `knowledge/schemas/v1/MANIFEST.md`
+  - `knowledge/schemas/v1/artifact-build-identity.schema.json`
+  - `knowledge/schemas/v1/qxctl-build-info.schema.json`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `libraries/knowledge-vector-engine-cpp/tests/native_process_test.cpp`
+  - `libraries/knowledge-vector-engine-cpp/tests/support/native_test.hpp`
+  - `modules/sav-engine/tests/sav_test.cpp`
+  - `modules/sbv-engine/tests/evaluate_partitioned_test.cpp`
+  - `modules/sbv-engine/tests/experiment_partitioned_test.cpp`
+  - `modules/sbv-engine/tests/source_dataset_test.cpp`
+  - `modules/secure-identity-access-governance/internal/version/version.go`
+  - `modules/sev-engine/tests/sev_test.cpp`
+  - `modules/shv-publication-engine/tests/publication_test.cpp`
+  - `modules/sqav-capture-cpp/tests/capture_test.cpp`
+  - `modules/sqav-databento-dbn-cpp/tests/attempts_test.cpp`
+  - `modules/sqav-databento-dbn-cpp/tests/dbn_test.cpp`
+  - `modules/sqav-databento-dbn-cpp/tests/historical_test.cpp`
+  - `modules/sqav-databento-dbn-cpp/tests/http_test.cpp`
+  - `modules/sqdv-delivery-cpp/tests/checkpoint_test.cpp`
+  - `modules/sqdv-delivery-cpp/tests/delivery_test.cpp`
+  - `modules/sqtv-integer-conversion-cpp/tests/integer_conversion_test.cpp`
+  - `modules/ssiag-provider-macos-keychain/Tests/SSIAGMacOSKeychainSupportTests/ProtocolTests.swift`
+  - `modules/ssiag-provider-macos-keychain/Tests/SSIAGMacOSKeychainSupportTests/SignedBundleReadinessTests.swift`
+  - `modules/ssiag-provider-macos-keychain/Tests/SSIAGMacOSKeychainSupportTests/TestExecutable.swift`
+  - `tests/mvp-dependencies/driver.cmake`
+  - `tests/mvp-dependencies/proof-regressions.cmake`
+  - `tests/mvp-dependencies/prove-imports.cmake`
+  - `tests/release-qualification/README.md`
+  - `tests/release-qualification/check-results.cmake`
+  - `tests/release-qualification/go-runner.go`
+  - `tests/release-qualification/go-runner_test.go`
+  - `tests/release-qualification/go-tests.sh`
+  - `tests/release-qualification/manifest.json`
+  - `tests/release-qualification/native.cmake`
+  - `tests/release-qualification/result-regressions.cmake`
+  - `tests/release-qualification/sqv-fixtures/CMakeLists.txt`
+  - `tests/release-qualification/swift-tests.sh`
+  - `tests/release-qualification/verify.cmake`
+  - `tools/authoring-cpp/scv_interface.hpp`
+  - `tools/qxctl/COMMANDS.json`
+  - `tools/qxctl/COMMANDS.md`
+  - `tools/qxctl/FEATURES.md`
+  - `tools/qxctl/INSTALL.md`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/qxctl/README.md`
+  - `tools/qxctl/cmd/qxctl/cli_compat_test.go`
+  - `tools/qxctl/cmd/qxctl/command_manifest_test.go`
+  - `tools/qxctl/cmd/qxctl/command_specs.go`
+  - `tools/qxctl/cmd/qxctl/commands.go`
+  - `tools/qxctl/cmd/qxctl/version.go`
+  - `tools/qxctl/cmd/qxctl/version_test.go`
+  - `tools/qxctl/internal/knowledgeengine/process_unix_test.go`
+  - `tools/qxctl/internal/sovremote/execution_test.go`
+  - `tools/qxctl/internal/sovremote/plan.go`
+  - `tools/qxctl/internal/sovremote/plan_test.go`
+  - `tools/qxctl/internal/version/build_info.go`
+  - `tools/qxctl/internal/version/build_info_test.go`
+  - `tools/qxctl/internal/version/version.go`
+  - `tools/qxctl/tests/reproducible_build.cmake`
+  - `tools/qxctl/tests/reproducible_build.sh`
+  - `tools/sov-ssh-adapter/MANIFEST.md`
+  - `tools/sov-ssh-adapter/README.md`
+  - `tools/sov-ssh-adapter/main.go`
+  - `tools/sov-ssh-adapter/main_test.go`
+  - `tools/sov-stdio-adapter/MANIFEST.md`
+  - `tools/sov-stdio-adapter/README.md`
+  - `tools/sov-stdio-adapter/main.go`
+  - `tools/sov-stdio-adapter/main_test.go`
+  - `tools/symphony-validator/src/artifacts.cpp`
+- skvi_references:
+  - `tools/qxctl/MANIFEST.md`
+- change_summary: |
+    Add MVP candidate identities and functional qualification gates (L06–L07); completed exact-source workflows passed before merge.
+- relationship_changes: |
+    Preserves native owner authority and independent component identities; records the implemented build, administration and qualification boundaries.
+- doctrine_changes: |
+    No new authority or automatic operational activation.
+- compatibility_consequences: |
+    Selected Apple Silicon and Ubuntu amd64/ARM64 profiles verified; generic ARM qualification does not certify physical DGX Spark or GPU behavior.
+- publication_consequences: |
+    No binary distribution, provider activation, Anaconda or mirror publication.
+- projection_consequences: |
+    Qualification and source dependency projections follow the merged implementation; operational launch acceptance remains separate.
+- notes: |
+    All selected completed workflows passed. Source and merged Git trees are identical; cancelled duplicate runs are not counted as success. PR180 remains unmerged pending corrections. Operational credential/provider capabilities and final release review remain launch gates.
+- evidence:
+  - `https://github.com/QuanuX/Symphony/pull/175`
+  - `../ci-review-175-180/snapshot.json`
+  - `../ci-review-175-180/merges.json`
+- non_authorizations:
+  - `No launch clearance, security alert dismissal, production credential/provider use, native Windows support or physical DGX/GPU qualification.`
+
+- record_id: `SCLV-CHG-launch-pr176-verified-implementation`
+- record_version: `3`
+- title: `Verified MVP implementation merge for PR 176`
+- status: `canonical`
+- date: `2026-11-02`
+- change_started_at: `2026-11-01T18:26:37Z`
+- change_completed_at: `2026-11-02T15:21:50Z`
+- recorded_at: `2026-11-02T18:49:48Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `implementation_change`
+- change_request_state: `present`
+- change_request_provider: `github`
+- change_request_id: `176`
+- change_request_reference: `https://github.com/QuanuX/Symphony/pull/176`
+- change_request_absence_reason: `not_applicable`
+- revision_scheme: `git-sha1`
+- revision_value: `9094b78b06641c1a833a8260bca0271e6caf0b75`
+- tree_digest: `sha256:25527d01b7e20c634779bee20cb9dba392c8b50e28244f733a9210046171184a`
+- ratification_subject: `Duncan (Architect)`
+- ratification_permission: `authorize_verified_implementation_merge_and_branch_cleanup`
+- ratification_method: `explicit-user-instruction`
+- ratification_evidence_reference: `../ci-review-175-180/ratification.json`
+- ratification_evidence_digest: `sha256:2239775cd889d85e7d4ac1147d4008bfc524cc7e3135a8894d95fef87c7e445c`
+- affected_surfaces:
+  - `.github/scripts/prepare-duckdb-dependency.sh`
+  - `.github/workflows/codeql.yml`
+  - `.github/workflows/duckdb-connectors.yml`
+  - `.github/workflows/mvp-dependencies.yml`
+  - `.github/workflows/ownership-regression.yml`
+  - `.github/workflows/qxctl-standalone.yml`
+  - `.github/workflows/release-qualification.yml`
+  - `.github/workflows/sqv-retained-inspection.yml`
+  - `cmake/MVP-DEPENDENCIES.md`
+  - `cmake/MVP-PLATFORMS.md`
+  - `cmake/MVP-RELEASE-IDENTITIES.md`
+  - `cmake/SymphonyDuckDBDependency.cmake`
+  - `cmake/SymphonyPrepareDuckDB.cmake`
+  - `cmake/mvp-dependencies.json`
+  - `cmake/mvp-platform-profiles.json`
+  - `cmake/mvp-release-identities.json`
+  - `modules/scv-graph-duckdb-connector/CMakeLists.txt`
+  - `modules/scv-graph-duckdb-connector/DUCKDB-PROVENANCE.json`
+  - `modules/scv-graph-duckdb-connector/INSTALL.md`
+  - `modules/shv-graph-duckdb-connector/CMakeLists.txt`
+  - `modules/shv-graph-duckdb-connector/DUCKDB-PROVENANCE.json`
+  - `modules/shv-graph-duckdb-connector/INSTALL.md`
+  - `modules/shv-graph-duckdb-connector/SPEC.md`
+  - `tests/duckdb-connectors/CMakeLists.txt`
+  - `tests/duckdb-connectors/dependency-refusals.cmake`
+  - `tests/duckdb-connectors/installed.cmake`
+  - `tests/duckdb-connectors/lifecycle.cmake`
+  - `tests/duckdb-connectors/qxctl-admission.cmake`
+  - `tests/duckdb-connectors/qxctl-admission.sh`
+  - `tests/duckdb-connectors/recovery.cpp`
+  - `tests/mvp-dependencies/README.md`
+  - `tests/mvp-dependencies/driver.cmake`
+  - `tests/mvp-dependencies/run.sh`
+  - `tests/platform-qualification/capture.cmake`
+  - `tests/platform-qualification/capture.sh`
+  - `tests/platform-qualification/filesystem.c`
+  - `tests/release-qualification/README.md`
+  - `tests/release-qualification/manifest.json`
+  - `tests/release-qualification/native.cmake`
+  - `tests/release-qualification/require-go-toolchain.cmake`
+  - `tests/release-qualification/verify.cmake`
+  - `tools/qxctl/INSTALL.md`
+  - `tools/qxctl/internal/knowledgeengine/receipt_v2.go`
+  - `tools/qxctl/internal/knowledgeengine/receipt_v2_artifact_test.go`
+- skvi_references:
+  - `tools/qxctl/MANIFEST.md`
+- change_summary: |
+    Add native platform profiles and portable DuckDB connectors (L08–L09); completed exact-source workflows passed before merge.
+- relationship_changes: |
+    Preserves native owner authority and independent component identities; records the implemented build, administration and qualification boundaries.
+- doctrine_changes: |
+    No new authority or automatic operational activation.
+- compatibility_consequences: |
+    Selected Apple Silicon and Ubuntu amd64/ARM64 profiles verified; generic ARM qualification does not certify physical DGX Spark or GPU behavior.
+- publication_consequences: |
+    No binary distribution, provider activation, Anaconda or mirror publication.
+- projection_consequences: |
+    Qualification and source dependency projections follow the merged implementation; operational launch acceptance remains separate.
+- notes: |
+    All selected completed workflows passed. Source and merged Git trees are identical; cancelled duplicate runs are not counted as success. PR180 remains unmerged pending corrections. Operational credential/provider capabilities and final release review remain launch gates.
+- evidence:
+  - `https://github.com/QuanuX/Symphony/pull/176`
+  - `../ci-review-175-180/snapshot.json`
+  - `../ci-review-175-180/merges.json`
+- non_authorizations:
+  - `No launch clearance, security alert dismissal, production credential/provider use, native Windows support or physical DGX/GPU qualification.`
+
+- record_id: `SCLV-CHG-launch-pr177-verified-implementation`
+- record_version: `3`
+- title: `Verified MVP implementation merge for PR 177`
+- status: `canonical`
+- date: `2026-11-02`
+- change_started_at: `2026-11-01T18:30:03Z`
+- change_completed_at: `2026-11-02T15:22:01Z`
+- recorded_at: `2026-11-02T18:49:48Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `implementation_change`
+- change_request_state: `present`
+- change_request_provider: `github`
+- change_request_id: `177`
+- change_request_reference: `https://github.com/QuanuX/Symphony/pull/177`
+- change_request_absence_reason: `not_applicable`
+- revision_scheme: `git-sha1`
+- revision_value: `e09a9a04967b5799e588e5af47e895acd3b44225`
+- tree_digest: `sha256:0b3dfa708a3f95bfdcd0e34f8ad101eeae45090a921ada189986f79bb4d2e004`
+- ratification_subject: `Duncan (Architect)`
+- ratification_permission: `authorize_verified_implementation_merge_and_branch_cleanup`
+- ratification_method: `explicit-user-instruction`
+- ratification_evidence_reference: `../ci-review-175-180/ratification.json`
+- ratification_evidence_digest: `sha256:2239775cd889d85e7d4ac1147d4008bfc524cc7e3135a8894d95fef87c7e445c`
+- affected_surfaces:
+  - `.github/workflows/package-release.yml`
+  - `cmake/MVP-DEPENDENCIES.md`
+  - `cmake/PACKAGE-HANDOFF.md`
+  - `cmake/SymphonyInstallReceiptV2.cmake`
+  - `cmake/SymphonyInstallReceiptV2.cmake.in`
+  - `cmake/SymphonyInstallReceiptV2Preflight.cmake.in`
+  - `cmake/mvp-dependencies.json`
+  - `cmake/release/FinalizeNativePayload.cmake`
+  - `cmake/release/PrepareCandidate.cmake`
+  - `cmake/release/SignCandidate.cmake`
+  - `cmake/release/StrictJSON.cmake`
+  - `cmake/release/Support.cmake`
+  - `cmake/release/VerifyCandidate.cmake`
+  - `knowledge/SPEC.md`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/sodv/ARTIFACT-RELEASES.json`
+  - `knowledge/sodv/MANIFEST.md`
+  - `knowledge/sodv/SKILL.md`
+  - `knowledge/sodv/SPEC.md`
+  - `knowledge/sodv/schemas/v1/MANIFEST.md`
+  - `knowledge/sodv/schemas/v1/artifact-release-ledger.schema.json`
+  - `modules/sodv-engine/SPEC.md`
+  - `tests/package-release/README.md`
+  - `tests/package-release/fixture/CMakeLists.txt`
+  - `tests/package-release/fixture/payload.c`
+  - `tests/package-release/fixture/probe.c`
+  - `tests/package-release/run.cmake`
+  - `tools/symphony-validator/CMakeLists.txt`
+  - `tools/symphony-validator/MANIFEST.md`
+  - `tools/symphony-validator/SPEC.md`
+  - `tools/symphony-validator/src/artifacts.cpp`
+  - `tools/symphony-validator/src/cli.cpp`
+  - `tools/symphony-validator/src/sodv_artifacts.cpp`
+  - `tools/symphony-validator/src/sodv_artifacts.hpp`
+  - `tools/symphony-validator/tests/sodv_artifact_test.cpp`
+  - `tools/symphony-validator/tests/sodv_release_test.cpp`
+- skvi_references:
+  - `tools/qxctl/MANIFEST.md`
+- change_summary: |
+    Prepare package ownership, candidate trust and binary release governance (L10–L12); completed exact-source workflows passed before merge.
+- relationship_changes: |
+    Preserves native owner authority and independent component identities; records the implemented build, administration and qualification boundaries.
+- doctrine_changes: |
+    No new authority or automatic operational activation.
+- compatibility_consequences: |
+    Selected Apple Silicon and Ubuntu amd64/ARM64 profiles verified; generic ARM qualification does not certify physical DGX Spark or GPU behavior.
+- publication_consequences: |
+    No binary distribution, provider activation, Anaconda or mirror publication.
+- projection_consequences: |
+    Qualification and source dependency projections follow the merged implementation; operational launch acceptance remains separate.
+- notes: |
+    All selected completed workflows passed. Source and merged Git trees are identical; cancelled duplicate runs are not counted as success. PR180 remains unmerged pending corrections. Operational credential/provider capabilities and final release review remain launch gates.
+- evidence:
+  - `https://github.com/QuanuX/Symphony/pull/177`
+  - `../ci-review-175-180/snapshot.json`
+  - `../ci-review-175-180/merges.json`
+- non_authorizations:
+  - `No launch clearance, security alert dismissal, production credential/provider use, native Windows support or physical DGX/GPU qualification.`
+
+- record_id: `SCLV-CHG-launch-pr178-verified-implementation`
+- record_version: `3`
+- title: `Verified MVP implementation merge for PR 178`
+- status: `canonical`
+- date: `2026-11-02`
+- change_started_at: `2026-11-01T19:47:45Z`
+- change_completed_at: `2026-11-02T15:22:14Z`
+- recorded_at: `2026-11-02T18:49:48Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `implementation_change`
+- change_request_state: `present`
+- change_request_provider: `github`
+- change_request_id: `178`
+- change_request_reference: `https://github.com/QuanuX/Symphony/pull/178`
+- change_request_absence_reason: `not_applicable`
+- revision_scheme: `git-sha1`
+- revision_value: `5c90f863528e817be198238430201b8648dc4f64`
+- tree_digest: `sha256:68d50883b84d304c443fc7237ab19e38bcbc37a552e1d83b913e9816af6228e2`
+- ratification_subject: `Duncan (Architect)`
+- ratification_permission: `authorize_verified_implementation_merge_and_branch_cleanup`
+- ratification_method: `explicit-user-instruction`
+- ratification_evidence_reference: `../ci-review-175-180/ratification.json`
+- ratification_evidence_digest: `sha256:2239775cd889d85e7d4ac1147d4008bfc524cc7e3135a8894d95fef87c7e445c`
+- affected_surfaces:
+  - `cmake/mvp-dependencies.json`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.json`
+  - `knowledge/FOUNDATIONAL-LIFECYCLE.md`
+  - `knowledge/INVARIANT-OWNERSHIP.json`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `knowledge/ssiag/SPEC.md`
+  - `knowledge/ssiag/schemas/v1/MANIFEST.md`
+  - `knowledge/ssiag/schemas/v1/foundation-audit-request.schema.json`
+  - `knowledge/ssiag/schemas/v1/foundation-audit-response.schema.json`
+  - `knowledge/stav/SPEC.md`
+  - `modules/scabv-ibkr-client-portal-cpp/CMakeLists.txt`
+  - `modules/scabv-ibkr-client-portal-cpp/FEATURES.md`
+  - `modules/scabv-ibkr-client-portal-cpp/INSTALL.md`
+  - `modules/scabv-ibkr-client-portal-cpp/MANIFEST.md`
+  - `modules/scabv-ibkr-client-portal-cpp/SPEC.md`
+  - `modules/scabv-ibkr-client-portal-cpp/include/symphony/scabv/client_portal.hpp`
+  - `modules/scabv-ibkr-client-portal-cpp/src/session.cpp`
+  - `modules/scabv-ibkr-client-portal-cpp/tests/sdk-consumer/main.cpp`
+  - `modules/scabv-ibkr-client-portal-cpp/tests/session.cpp`
+  - `modules/scabv-ibkr-tws-cpp/CMakeLists.txt`
+  - `modules/scabv-ibkr-tws-cpp/FEATURES.md`
+  - `modules/scabv-ibkr-tws-cpp/INTENT.md`
+  - `modules/scabv-ibkr-tws-cpp/MANIFEST.md`
+  - `modules/scabv-ibkr-tws-cpp/SDK-HANDOFF.md`
+  - `modules/scabv-ibkr-tws-cpp/SPEC.md`
+  - `modules/scabv-ibkr-tws-cpp/include/symphony/scabv/tws.hpp`
+  - `modules/scabv-ibkr-tws-cpp/src/session.cpp`
+  - `modules/scabv-ibkr-tws-cpp/tests/sdk-consumer/main.cpp`
+  - `modules/scabv-ibkr-tws-cpp/tests/session.cpp`
+  - `modules/secure-identity-access-governance/CREDENTIAL-ADMISSION.md`
+  - `modules/secure-identity-access-governance/CREDENTIAL-DISPATCH.md`
+  - `modules/secure-identity-access-governance/CREDENTIAL-JOURNAL.md`
+  - `modules/secure-identity-access-governance/CREDENTIAL-QUALIFICATION.md`
+  - `modules/secure-identity-access-governance/FEATURES.md`
+  - `modules/secure-identity-access-governance/MANIFEST.md`
+  - `modules/secure-identity-access-governance/README.md`
+  - `modules/secure-identity-access-governance/SPEC.md`
+  - `modules/secure-identity-access-governance/internal/client/foundation_audit.go`
+  - `modules/secure-identity-access-governance/internal/credential/dispatch.go`
+  - `modules/secure-identity-access-governance/internal/credential/dispatch_test.go`
+  - `modules/secure-identity-access-governance/internal/credential/journal.go`
+  - `modules/secure-identity-access-governance/internal/credential/journal_test.go`
+  - `modules/secure-identity-access-governance/internal/credential/outcome.go`
+  - `modules/secure-identity-access-governance/internal/credential/outcome_process_test.go`
+  - `modules/secure-identity-access-governance/internal/credential/outcome_test.go`
+  - `modules/secure-identity-access-governance/internal/foundationaudit/contract.go`
+  - `modules/secure-identity-access-governance/internal/foundationaudit/contract_test.go`
+  - `modules/secure-identity-access-governance/internal/foundationaudit/journal_unix.go`
+  - `modules/secure-identity-access-governance/internal/foundationlifecycle/audit.go`
+  - `modules/secure-identity-access-governance/internal/foundationlifecycle/audit_process_test.go`
+  - `modules/secure-identity-access-governance/internal/foundationlifecycle/audit_test.go`
+  - `modules/secure-identity-access-governance/internal/foundationlifecycle/engine.go`
+  - `modules/secure-identity-access-governance/internal/foundationlifecycle/engine_test.go`
+  - `modules/secure-identity-access-governance/internal/server/foundation_audit.go`
+  - `modules/secure-identity-access-governance/internal/server/foundation_audit_test.go`
+  - `modules/secure-identity-access-governance/internal/server/server.go`
+  - `modules/secure-identity-access-governance/internal/stavproducer/producer.go`
+  - `modules/sqav-databento-reference-cpp/FEATURES.md`
+  - `modules/sqav-databento-reference-cpp/INSTALL.md`
+  - `modules/sqav-databento-reference-cpp/INTENT.md`
+  - `modules/sqav-databento-reference-cpp/MANIFEST.md`
+  - `modules/sqav-databento-reference-cpp/SKILL.md`
+  - `modules/sqav-databento-reference-cpp/SPEC.md`
+  - `modules/sqav-databento-reference-cpp/include/symphony/sqav/databento/reference.hpp`
+  - `modules/sqav-databento-reference-cpp/src/reference.cpp`
+  - `modules/sqav-databento-reference-cpp/tests/sdk-consumer/main.cpp`
+  - `modules/sqav-databento-reference-cpp/tests/test.cpp`
+  - `modules/sqav-fred-cpp/FEATURES.md`
+  - `modules/sqav-fred-cpp/INSTALL.md`
+  - `modules/sqav-fred-cpp/INTENT.md`
+  - `modules/sqav-fred-cpp/MANIFEST.md`
+  - `modules/sqav-fred-cpp/SKILL.md`
+  - `modules/sqav-fred-cpp/SPEC.md`
+  - `modules/sqav-fred-cpp/include/symphony/sqav/fred.hpp`
+  - `modules/sqav-fred-cpp/src/fred.cpp`
+  - `modules/sqav-fred-cpp/tests/sdk-consumer/main.cpp`
+  - `modules/sqav-fred-cpp/tests/test.cpp`
+  - `modules/sqav-news-api-cpp/SPEC.md`
+  - `modules/stav-append-authority/FEATURES.md`
+  - `modules/stav-append-authority/README.md`
+  - `modules/stav-append-authority/SPEC.md`
+  - `modules/stav-append-authority/cmd/symphony-stav-append-authority/ownership_test.go`
+  - `modules/stav-append-authority/internal/foundation/audit.go`
+  - `modules/stav-append-authority/internal/foundation/audit_test.go`
+  - `modules/stav-append-authority/internal/foundation/engine.go`
+  - `modules/stav-append-authority/internal/foundation/transaction.go`
+  - `modules/stav-append-authority/internal/foundationaudit/client_test.go`
+  - `modules/stav-append-authority/internal/foundationaudit/client_unix.go`
+  - `modules/stav-append-authority/internal/foundationaudit/contract.go`
+  - `modules/stav-append-authority/internal/foundationaudit/contract_test.go`
+  - `modules/stav-append-authority/internal/foundationaudit/journal_unix.go`
+  - `tests/release-qualification/README.md`
+  - `tests/release-qualification/manifest.json`
+  - `tools/symphony-validator/src/artifacts.cpp`
+- skvi_references:
+  - `tools/qxctl/MANIFEST.md`
+- change_summary: |
+    Prepare L13–L17 audited lifecycle and provider integrations; completed exact-source workflows passed before merge.
+- relationship_changes: |
+    Preserves native owner authority and independent component identities; records the implemented build, administration and qualification boundaries.
+- doctrine_changes: |
+    No new authority or automatic operational activation.
+- compatibility_consequences: |
+    Selected Apple Silicon and Ubuntu amd64/ARM64 profiles verified; generic ARM qualification does not certify physical DGX Spark or GPU behavior.
+- publication_consequences: |
+    No binary distribution, provider activation, Anaconda or mirror publication.
+- projection_consequences: |
+    Qualification and source dependency projections follow the merged implementation; operational launch acceptance remains separate.
+- notes: |
+    All selected completed workflows passed. Source and merged Git trees are identical; cancelled duplicate runs are not counted as success. PR180 remains unmerged pending corrections. Operational credential/provider capabilities and final release review remain launch gates.
+- evidence:
+  - `https://github.com/QuanuX/Symphony/pull/178`
+  - `../ci-review-175-180/snapshot.json`
+  - `../ci-review-175-180/merges.json`
+- non_authorizations:
+  - `No launch clearance, security alert dismissal, production credential/provider use, native Windows support or physical DGX/GPU qualification.`
+
+- record_id: `SCLV-CHG-launch-pr179-verified-implementation`
+- record_version: `3`
+- title: `Verified MVP implementation merge for PR 179`
+- status: `canonical`
+- date: `2026-11-02`
+- change_started_at: `2026-11-01T21:19:36Z`
+- change_completed_at: `2026-11-02T15:22:25Z`
+- recorded_at: `2026-11-02T18:49:48Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `implementation_change`
+- change_request_state: `present`
+- change_request_provider: `github`
+- change_request_id: `179`
+- change_request_reference: `https://github.com/QuanuX/Symphony/pull/179`
+- change_request_absence_reason: `not_applicable`
+- revision_scheme: `git-sha1`
+- revision_value: `84e303b69611a17593fdf0b8cb4da15900d1107a`
+- tree_digest: `sha256:270d3e3241f8bb1b5b60f1265570f5d12d95062f502dac898ad7a5c85799a81e`
+- ratification_subject: `Duncan (Architect)`
+- ratification_permission: `authorize_verified_implementation_merge_and_branch_cleanup`
+- ratification_method: `explicit-user-instruction`
+- ratification_evidence_reference: `../ci-review-175-180/ratification.json`
+- ratification_evidence_digest: `sha256:2239775cd889d85e7d4ac1147d4008bfc524cc7e3135a8894d95fef87c7e445c`
+- affected_surfaces:
+  - `.github/workflows/mvp-dependencies.yml`
+  - `cmake/mvp-dependencies.json`
+  - `knowledge/snv/VALIDATION.md`
+  - `modules/sbv-engine/FOLLOW-ON.md`
+  - `modules/sbv-engine/INSTALL.md`
+  - `modules/sbv-engine/tests/feedback_fixture.cpp`
+  - `modules/shv-pdf-adapter/INSTALL.md`
+  - `modules/snv-local-observer/INSTALL.md`
+  - `tests/release-qualification/README.md`
+  - `tests/release-qualification/manifest.json`
+  - `tests/sbv-launch-boundary/CMakeLists.txt`
+  - `tests/sbv-launch-boundary/README.md`
+  - `tests/sbv-launch-boundary/fixture.cpp`
+  - `tests/sbv-launch-boundary/main.go`
+  - `tests/sbv-launch-boundary/main_test.go`
+  - `tests/sbv-launch-boundary/run.sh`
+  - `tests/shv-release-qualification/README.md`
+  - `tests/shv-release-qualification/dependencies.json`
+  - `tests/shv-release-qualification/prepare.go`
+  - `tests/shv-release-qualification/run.sh`
+  - `tests/shv-release-qualification/verify.go`
+  - `tests/snv-qualification/README.md`
+  - `tests/snv-qualification/qualification.go`
+  - `tests/snv-qualification/qualification_test.go`
+  - `tests/snv-qualification/qualify.cmake`
+  - `tests/snv-qualification/run.sh`
+  - `tests/snv-qualification/sdk-consumer/CMakeLists.txt`
+  - `tests/snv-qualification/sdk-consumer/consumer.cpp`
+  - `tools/qxctl/cmd/qxctl/shv_release_authorities_test.go`
+  - `tools/qxctl/cmd/qxctl/shv_release_qualification_test.go`
+- skvi_references:
+  - `tools/qxctl/MANIFEST.md`
+- change_summary: |
+    Qualify bounded SHV, SNV and SBV MVP paths across release targets; completed exact-source workflows passed before merge.
+- relationship_changes: |
+    Preserves native owner authority and independent component identities; records the implemented build, administration and qualification boundaries.
+- doctrine_changes: |
+    No new authority or automatic operational activation.
+- compatibility_consequences: |
+    Selected Apple Silicon and Ubuntu amd64/ARM64 profiles verified; generic ARM qualification does not certify physical DGX Spark or GPU behavior.
+- publication_consequences: |
+    No binary distribution, provider activation, Anaconda or mirror publication.
+- projection_consequences: |
+    Qualification and source dependency projections follow the merged implementation; operational launch acceptance remains separate.
+- notes: |
+    All selected completed workflows passed. Source and merged Git trees are identical; cancelled duplicate runs are not counted as success. PR180 remains unmerged pending corrections. Operational credential/provider capabilities and final release review remain launch gates.
+- evidence:
+  - `https://github.com/QuanuX/Symphony/pull/179`
+  - `../ci-review-175-180/snapshot.json`
+  - `../ci-review-175-180/merges.json`
+- non_authorizations:
+  - `No launch clearance, security alert dismissal, production credential/provider use, native Windows support or physical DGX/GPU qualification.`
