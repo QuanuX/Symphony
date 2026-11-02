@@ -32,6 +32,9 @@ mvp_run(duckdb-consumer-results "${MVP_WORK}" "${CMAKE_COMMAND}"
   "-DRESULT_JUNIT=${MVP_WORK}/logs/duckdb-consumer-tests.xml"
   "-DRESULT_LOG=${MVP_WORK}/logs/duckdb-consumer-tests.log" -DEXPECTED_TEST_COUNT=4
   -P "${MVP_REPOSITORY}/tests/release-qualification/check-results.cmake")
+mvp_run(duckdb-qxctl-admission "${MVP_WORK}" sh
+  "${MVP_REPOSITORY}/tests/duckdb-connectors/qxctl-admission.sh"
+  "${MVP_SELECTED_PREFIX}" "${MVP_WORK}/qxctl-admission")
 mvp_run(duckdb-loader-removal "${MVP_WORK}" "${CMAKE_COMMAND}"
   "-DMVP_REPOSITORY=${MVP_REPOSITORY}" "-DDUCKDB_WORK=${MVP_WORK}"
   "-DDUCKDB_PREFIX=${MVP_SELECTED_PREFIX}" -P "${MVP_REPOSITORY}/tests/duckdb-connectors/lifecycle.cmake")
