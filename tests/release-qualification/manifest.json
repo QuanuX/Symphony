@@ -2631,6 +2631,40 @@
       ],
       "skips_allowed": false,
       "scope": "Small capped CPU census, typed second pass and production same-host same-UID SOV stdio recovery with actual completion loss and native worker interruption. No new SSH, independent host, GPU, live capture or checkpoint resume claim."
+    },
+    {
+      "task": "L22",
+      "groups": [
+        "knowledge",
+        "cloud",
+        "quantitative"
+      ],
+      "harness": "tests/native-sdk-distribution/run.sh",
+      "profiles": [
+        "macos15-arm64",
+        "ubuntu24.04-amd64",
+        "ubuntu26.04-amd64",
+        "ubuntu24.04-arm64"
+      ],
+      "skips_allowed": false,
+      "scope": "Binds all 23 native SDK producers and existing copied consumers; adds common-mechanics consumer and executes shipped Go SBV roundtrip. Tamper refusal, interrupted/idempotent removal and unrelated-file preservation run on a disposable full prefix with detached configured uninstallers; original installed prefix remains unchanged. Proprietary SDK conformance and DuckDB connector-specific consumers remain separately selected campaigns."
+    },
+    {
+      "task": "L23",
+      "groups": [
+        "knowledge",
+        "cloud",
+        "quantitative"
+      ],
+      "harness": "tests/dependency-notices/run.sh",
+      "profiles": [
+        "macos15-arm64",
+        "ubuntu24.04-amd64",
+        "ubuntu26.04-amd64",
+        "ubuntu24.04-arm64"
+      ],
+      "skips_allowed": false,
+      "scope": "Artifact-specific receipt-owned notices, static loader references, actual linked qxctl modules and exact private dependency build selection. No selected native artifact is executed by the collector. Missing required material fails; success retains publisher review and release readiness as pending, with recursive runtime/TLS closure and corresponding source still required."
     }
   ]
 }

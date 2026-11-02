@@ -17313,6 +17313,10 @@
       "sha256": "dd3567928349ba1689f7d945e5facc82617c1ef6737fe518ad6bf1a5f30916b6"
     },
     {
+      "path": "cmake/SymphonyDependencyNotices.cmake",
+      "sha256": "c12be3439e0fee8af18f69e02b1b2d6d63233cf6125dea38137caeff48af0538"
+    },
+    {
       "path": "cmake/SymphonyDuckDBDependency.cmake",
       "sha256": "1469a45517036adc795ad8d3e35a4ca2acaecc407d297f2c583f72a0a8ef7ec1"
     },
@@ -17363,6 +17367,22 @@
     {
       "path": "cmake/mvp-release-identities.json",
       "sha256": "c19617f12abc41a7a8cd5a7dab1031c9048daf799570b21b961372a0019694f3"
+    },
+    {
+      "path": "cmake/notices/CaptureExternal.cmake",
+      "sha256": "6c532e0618a087492d171b3e0dac3189d1f15fc5f59d2aac337e133ba0bd8029"
+    },
+    {
+      "path": "cmake/notices/curl-8.7.1.COPYING",
+      "sha256": "adb1fc06547fd136244179809f7b7c2d2ae6c4534f160aa513af9b6a12866a32"
+    },
+    {
+      "path": "cmake/notices/sources.json",
+      "sha256": "d9460c3f81f51c26ba9c4e9ac1c41950844a516841d3ee75bef03801b39c0f54"
+    },
+    {
+      "path": "cmake/notices/zstd-1.5.7.LICENSE",
+      "sha256": "7055266497633c9025b777c78eb7235af13922117480ed5c674677adc381c9d8"
     },
     {
       "path": "cmake/release/FinalizeNativePayload.cmake",
@@ -18518,7 +18538,7 @@
     },
     {
       "path": "libraries/knowledge-vector-engine-cpp/cmake/uninstall.cmake.in",
-      "sha256": "f8171ec50be71bca36e0affc31214d58f34e5dc641c31b5c609e955bcdbf110f"
+      "sha256": "a6317732aac33c949b8e10adaaa5c295ea08cb30758ff522dd3dce99c2411f65"
     },
     {
       "path": "libraries/knowledge-vector-engine-cpp/third_party/nlohmann/json.hpp",
@@ -18662,7 +18682,7 @@
     },
     {
       "path": "modules/native-source-support-cpp/CMakeLists.txt",
-      "sha256": "1084498d7c98830f372271f41dd65dba488d1899e6a07e9034b14d9fbad84db6"
+      "sha256": "63030a537d362d037f43877dfae70f5193ccff76643c063436f05b2e0df0a9d0"
     },
     {
       "path": "modules/native-source-support-cpp/cmake/SymphonyNativeSourceSupportConfig.cmake.in",
@@ -19666,7 +19686,7 @@
     },
     {
       "path": "modules/sqav-databento-dbn-cpp/CMakeLists.txt",
-      "sha256": "d7a49f31abd51e6d92e8d041440f6249b4454e04b734b44eaddad676796e76ee"
+      "sha256": "7a9b79c50c408febfd6efb12b89a0e43dd275f2517d3e9e3d8a27cc3e7a34823"
     },
     {
       "path": "modules/sqav-databento-dbn-cpp/cmake/SymphonySqavDatabentoDbnConfig.cmake.in",
@@ -19686,7 +19706,7 @@
     },
     {
       "path": "modules/sqav-databento-reference-cpp/CMakeLists.txt",
-      "sha256": "5fb5f58da051afdb1d1252133b21c24c3443c3da26ef9e53841a17de4ff5eec5"
+      "sha256": "896f1bbf510ea8907ac0f2f7d87e55449a8b8e2c37c75ac4a43e33b44fef7764"
     },
     {
       "path": "modules/sqav-databento-reference-cpp/cmake/SymphonySqavDatabentoReferenceConfig.cmake.in",
@@ -19734,7 +19754,7 @@
     },
     {
       "path": "modules/sqav-request-engine/CMakeLists.txt",
-      "sha256": "114e54daba9015f9bedacd84079325430ed378a86d126456bdaf76e76d115400"
+      "sha256": "2b58136f92c4d13e6a73c21d4ec768040e13122926a2b25805ce3b4f64ff7cff"
     },
     {
       "path": "modules/sqav-request-engine/INTERFACE-GENERATOR.json",
