@@ -97,7 +97,7 @@ struct ProcessResult {
 // Match subprocess's close_fds boundary. Inspect the child's own descriptor
 // table after fork so descriptors opened concurrently in the parent cannot
 // escape the snapshot. Both supported POSIX hosts expose this table.
-inline bool close_process_descriptors() {
+inline bool close_process_descriptors(int preserved = -1) {
   DIR *table = ::opendir("/dev/fd");
   if (table == nullptr)
     table = ::opendir("/proc/self/fd");
@@ -105,12 +105,12 @@ inline bool close_process_descriptors() {
     return false;
   const int table_fd = ::dirfd(table);
   std::vector<int> descriptors;
-  bool complete = true;
+  int failure = 0;
   for (;;) {
     errno = 0;
     auto *entry = ::readdir(table);
     if (entry == nullptr) {
-      complete = errno == 0;
+      failure = errno;
       break;
     }
     char *end = nullptr;
@@ -119,20 +119,24 @@ inline bool close_process_descriptors() {
         number > std::numeric_limits<int>::max())
       continue;
     const auto fd = static_cast<int>(number);
-    if (fd != table_fd)
+    if (fd != table_fd && fd != preserved)
       descriptors.push_back(fd);
   }
-  if (::closedir(table) != 0)
-    complete = false;
-  if (!complete)
+  if (::closedir(table) != 0 && failure == 0)
+    failure = errno;
+  if (failure != 0) {
+    errno = failure;
     return false;
+  }
   for (const int fd : descriptors)
     if (::close(fd) != 0 && errno != EBADF)
       return false;
   return true;
 }
-inline void terminate_process_group(pid_t child, bool reaped) noexcept {
-  ::kill(-child, SIGKILL);
+inline void terminate_process_group(pid_t child, bool reaped,
+                                    bool group_confirmed = true) noexcept {
+  if (group_confirmed)
+    ::kill(-child, SIGKILL);
   if (!reaped) {
     ::kill(child, SIGKILL);
     while (::waitpid(child, nullptr, 0) < 0 && errno == EINTR) {
@@ -170,70 +174,195 @@ run(const std::vector<std::string> &command, const std::string &input = "",
   for (auto &entry : environment_entries)
     environment_pointers.push_back(entry.data());
   environment_pointers.push_back(nullptr);
+  std::vector<char *> argv;
+  for (const auto &arg : command)
+    argv.push_back(const_cast<char *>(arg.c_str()));
+  argv.push_back(nullptr);
   TempDir files("native-process-");
   write(files.path / "stdin", input);
+  struct Descriptor {
+    int value = -1;
+    void close() noexcept {
+      if (value >= 0) {
+        ::close(value);
+        value = -1;
+      }
+    }
+    ~Descriptor() { close(); }
+  } in, out, err, setup_read, setup_write, gate_read, gate_write;
+  in.value = ::open((files.path / "stdin").c_str(), O_RDONLY | O_CLOEXEC);
+  out.value =
+      ::open((files.path / "stdout").c_str(),
+             O_WRONLY | O_CREAT | O_EXCL | O_NOFOLLOW | O_CLOEXEC, 0600);
+  err.value =
+      ::open((files.path / "stderr").c_str(),
+             O_WRONLY | O_CREAT | O_EXCL | O_NOFOLLOW | O_CLOEXEC, 0600);
+  require(in.value >= 0 && out.value >= 0 && err.value >= 0,
+          "Cannot open private process capture files");
+  int setup_pipe[2];
+  require(::pipe(setup_pipe) == 0, "Cannot create process setup pipe");
+  setup_read.value = setup_pipe[0];
+  setup_write.value = setup_pipe[1];
+  require(::fcntl(setup_read.value, F_SETFD, FD_CLOEXEC) == 0 &&
+              ::fcntl(setup_write.value, F_SETFD, FD_CLOEXEC) == 0 &&
+              ::fcntl(setup_read.value, F_SETFL, O_NONBLOCK) == 0,
+          "Cannot configure process setup pipe");
+  int gate_pipe[2];
+  require(::pipe(gate_pipe) == 0, "Cannot create process readiness gate");
+  gate_read.value = gate_pipe[0];
+  gate_write.value = gate_pipe[1];
+  require(::fcntl(gate_read.value, F_SETFD, FD_CLOEXEC) == 0 &&
+              ::fcntl(gate_write.value, F_SETFD, FD_CLOEXEC) == 0,
+          "Cannot configure process readiness gate");
+  enum SetupStage {
+    group_ready,
+    group_failed,
+    gate_failed,
+    capture_failed,
+    descriptors_failed,
+    directory_failed,
+    execute_failed
+  };
+  struct SetupMessage {
+    int stage;
+    int error;
+  };
+  // One deadline covers setup and execution. Only the child changes its group;
+  // the parent must observe its ready message before signalling that group.
+  const auto deadline =
+      std::chrono::steady_clock::now() + std::chrono::seconds(timeout_seconds);
   pid_t child = ::fork();
   require(child >= 0, "fork failed");
   if (child == 0) {
+    ::close(setup_read.value);
+    ::close(gate_write.value);
+    auto report = [&](SetupStage stage, int error) {
+      const SetupMessage message{stage, error};
+      ssize_t sent;
+      do {
+        sent = ::write(setup_write.value, &message, sizeof(message));
+      } while (sent < 0 && errno == EINTR);
+      if (sent != sizeof(message))
+        _exit(126);
+    };
+    auto fail = [&](SetupStage stage) {
+      const int error = errno;
+      report(stage, error);
+      _exit(126);
+    };
     if (::setpgid(0, 0) != 0)
-      _exit(126);
-    int in = ::open((files.path / "stdin").c_str(), O_RDONLY);
-    int out = ::open((files.path / "stdout").c_str(),
-                     O_WRONLY | O_CREAT | O_TRUNC, 0600);
-    int err = ::open((files.path / "stderr").c_str(),
-                     O_WRONLY | O_CREAT | O_TRUNC, 0600);
-    if (in < 0 || out < 0 || err < 0)
-      _exit(126);
-    if (::dup2(in, STDIN_FILENO) < 0 || ::dup2(out, STDOUT_FILENO) < 0 ||
-        ::dup2(err, STDERR_FILENO) < 0 || !close_process_descriptors())
-      _exit(126);
+      fail(group_failed);
+    report(group_ready, 0);
+    // No executable can spawn descendants until the parent knows which group
+    // it owns. A setup timeout can therefore safely kill the direct child.
+    char acknowledged = 0;
+    ssize_t received;
+    do {
+      received = ::read(gate_read.value, &acknowledged, 1);
+    } while (received < 0 && errno == EINTR);
+    if (received != 1 || acknowledged != 1) {
+      if (received >= 0)
+        errno = EPIPE;
+      fail(gate_failed);
+    }
+    ::close(gate_read.value);
+    if (::dup2(in.value, STDIN_FILENO) < 0 ||
+        ::dup2(out.value, STDOUT_FILENO) < 0 ||
+        ::dup2(err.value, STDERR_FILENO) < 0 ||
+        ::fcntl(STDIN_FILENO, F_SETFD, 0) < 0 ||
+        ::fcntl(STDOUT_FILENO, F_SETFD, 0) < 0 ||
+        ::fcntl(STDERR_FILENO, F_SETFD, 0) < 0)
+      fail(capture_failed);
+    // This one internal descriptor is closed atomically by exec. It is not
+    // available to the executed command or any of that command's descendants.
+    if (!close_process_descriptors(setup_write.value))
+      fail(descriptors_failed);
     if (!cwd.empty() && ::chdir(cwd.c_str()) != 0)
-      _exit(126);
-    // Build an explicit, null-terminated environment before fork. In
-    // particular, macOS setenv cannot safely rebuild an environment set to
-    // nullptr.
+      fail(directory_failed);
     ::environ = environment_pointers.data();
-    std::vector<char *> argv;
-    for (const auto &arg : command)
-      argv.push_back(const_cast<char *>(arg.c_str()));
-    argv.push_back(nullptr);
     ::execvp(argv[0], argv.data());
-    _exit(127);
+    fail(execute_failed);
   }
-  // Establish the same group from the parent as well, before a timeout can
-  // arrive. EACCES means the child already exec'd; ESRCH means it already
-  // exited.
-  if (::setpgid(child, child) != 0 && errno != EACCES && errno != ESRCH) {
-    terminate_process_group(child, false);
-    throw std::runtime_error("Cannot establish process group");
-  }
+  in.close();
+  out.close();
+  err.close();
+  setup_write.close();
   int status = 0;
-  const auto deadline =
-      std::chrono::steady_clock::now() + std::chrono::seconds(timeout_seconds);
+  bool group_confirmed = false, reaped = false, setup_closed = false;
+  auto fail = [&](const std::string &message) {
+    terminate_process_group(child, reaped, group_confirmed);
+    throw std::runtime_error(message + ": " + command[0]);
+  };
+  auto drain_setup = [&] {
+    while (!setup_closed) {
+      SetupMessage message{};
+      const auto received = ::read(setup_read.value, &message, sizeof(message));
+      if (received < 0 && errno == EINTR)
+        continue;
+      if (received < 0 && (errno == EAGAIN || errno == EWOULDBLOCK))
+        return;
+      if (received == 0) {
+        setup_closed = true;
+        if (!group_confirmed)
+          fail("Process exited before group readiness");
+        return;
+      }
+      if (received != sizeof(message))
+        fail("Invalid process setup message");
+      if (message.stage == group_ready && message.error == 0 &&
+          !group_confirmed) {
+        group_confirmed = true;
+        const char acknowledged = 1;
+        ssize_t sent;
+        do {
+          sent = ::write(gate_write.value, &acknowledged, 1);
+        } while (sent < 0 && errno == EINTR);
+        // Keep our read end open through this write, avoiding SIGPIPE even if
+        // the child has already died. The gate never carries more than a byte.
+        if (sent != 1)
+          fail("Cannot acknowledge process group readiness");
+        gate_read.close();
+        gate_write.close();
+        continue;
+      }
+      const char *stage = message.stage == group_failed     ? "setpgid"
+                          : message.stage == gate_failed    ? "readiness gate"
+                          : message.stage == capture_failed ? "capture"
+                          : message.stage == descriptors_failed ? "close_fds"
+                          : message.stage == directory_failed   ? "chdir"
+                          : message.stage == execute_failed     ? "execvp"
+                                                                : "unknown";
+      fail("Process setup failed at " + std::string(stage) +
+           " (errno=" + std::to_string(message.error) + ": " +
+           std::strerror(message.error) + ")");
+    }
+  };
   for (;;) {
-    auto waited = ::waitpid(child, &status, WNOHANG);
-    if (waited == child)
+    drain_setup();
+    const auto waited = ::waitpid(child, &status, WNOHANG);
+    if (waited == child) {
+      reaped = true;
+      drain_setup();
+      if (!group_confirmed)
+        fail("Process exited before group readiness");
       break;
-    if (waited < 0 && errno != EINTR) {
-      terminate_process_group(child, false);
-      throw std::runtime_error("waitpid failed");
     }
-    if (std::chrono::steady_clock::now() >= deadline) {
-      terminate_process_group(child, false);
-      throw std::runtime_error("Process timed out: " + command[0]);
-    }
+    if (waited < 0 && errno != EINTR)
+      fail("waitpid failed (errno=" + std::to_string(errno) + ")");
+    if (std::chrono::steady_clock::now() >= deadline)
+      fail("Process timed out");
     std::this_thread::sleep_for(std::chrono::milliseconds(2));
   }
-  // A regular capture file has no EOF notification from inherited writers.
-  // After reaping the direct child, any remaining group member is a leaked
-  // descendant; it may still append output or mutate the acceptance fixture.
+  // This preserves the existing group-based descendant boundary. It is not a
+  // general supervisor for descendants that intentionally leave the group.
   if (::kill(-child, 0) == 0 || errno == EPERM) {
-    terminate_process_group(child, true);
+    terminate_process_group(child, true, group_confirmed);
     throw std::runtime_error("Process left running descendants: " + command[0]);
   }
   return {WIFEXITED(status) ? WEXITSTATUS(status) : 128 + WTERMSIG(status),
           read(files.path / "stdout"), read(files.path / "stderr")};
 }
+
 struct Arguments {
   std::map<std::string, std::string> values;
   Arguments(int argc, char **argv) {
