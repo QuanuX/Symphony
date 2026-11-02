@@ -25,8 +25,8 @@ func TestInvokeDeadlineTerminatesDescendantsHoldingOutput(t *testing.T) {
 		_, err := Invoke(ctx, prefix, "0.1.0-dev", directory, "inspect", []byte(`{}`))
 		finished <- err
 	}()
-	leader := waitEnginePID(t, directory, "leader.pid")
-	descendant := waitEnginePID(t, directory, "descendant.pid")
+	leader := waitEnginePID(t, directory, "leader.pid", finished)
+	descendant := waitEnginePID(t, directory, "descendant.pid", finished)
 	t.Cleanup(func() {
 		_ = unix.Kill(-leader, unix.SIGKILL)
 		_ = unix.Kill(descendant, unix.SIGKILL)
@@ -58,13 +58,15 @@ func TestInvokeDeadlineTerminatesDescendantsHoldingOutput(t *testing.T) {
 func TestInvokeLeaderExitBoundsPipesAndCleansDescendants(t *testing.T) {
 	prefix, directory := t.TempDir(), t.TempDir()
 	createInstalledFixture(t, prefix, "#!/bin/sh\n/bin/sleep 30 &\nprintf '%s' \"$!\" > descendant.pid\nprintf '%s' \"$$\" > leader.pid\nexit 0\n")
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
 	finished := make(chan error, 1)
 	go func() {
-		_, err := Invoke(context.Background(), prefix, "0.1.0-dev", directory, "inspect", []byte(`{}`))
+		_, err := Invoke(ctx, prefix, "0.1.0-dev", directory, "inspect", []byte(`{}`))
 		finished <- err
 	}()
-	leader := waitEnginePID(t, directory, "leader.pid")
-	descendant := waitEnginePID(t, directory, "descendant.pid")
+	leader := waitEnginePID(t, directory, "leader.pid", finished)
+	descendant := waitEnginePID(t, directory, "descendant.pid", finished)
 	t.Cleanup(func() {
 		_ = unix.Kill(-leader, unix.SIGKILL)
 		_ = unix.Kill(descendant, unix.SIGKILL)
@@ -82,7 +84,7 @@ func TestInvokeLeaderExitBoundsPipesAndCleansDescendants(t *testing.T) {
 	assertEngineProcessGone(t, descendant)
 }
 
-func waitEnginePID(t *testing.T, directory, name string) int {
+func waitEnginePID(t *testing.T, directory, name string, finished <-chan error) int {
 	t.Helper()
 	until := time.Now().Add(5 * time.Second)
 	for time.Now().Before(until) {
@@ -95,7 +97,15 @@ func waitEnginePID(t *testing.T, directory, name string) int {
 		}
 		time.Sleep(5 * time.Millisecond)
 	}
-	t.Fatalf("engine did not record %s", name)
+	// Preserve the original startup bound and expose an early admission/process
+	// failure if it caused the missing acknowledgement. Successful waits do not
+	// consume the invocation result used by the lifecycle assertions below.
+	select {
+	case err := <-finished:
+		t.Fatalf("engine did not record %s; invocation completed with: %v", name, err)
+	default:
+		t.Fatalf("engine did not record %s; invocation remains pending", name)
+	}
 	return 0
 }
 

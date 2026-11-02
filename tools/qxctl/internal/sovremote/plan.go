@@ -152,8 +152,9 @@ func exactVersion(s string) bool {
 	return named(s) && s != "latest" && s != "*" && !strings.ContainsAny(s, "<>^~ ")
 }
 
-// qxctl currently reports this development identity; its mandatory executable
-// digest selects exact bytes even though the display version is not SemVer.
+// Retain the former development identity for already selected executables.
+// Both historical and current labels still require the exact executable digest;
+// admission never upgrades a selected version or changes target equality.
 func exactQXCTLVersion(s string) bool { return s == "qxctl dev" || exactVersion(s) }
 func nullablePositive(s *string) bool { return s == nil || positive.MatchString(*s) }
 func nullableSHA(s *string) bool      { return s == nil || sha.MatchString(*s) }

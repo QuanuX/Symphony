@@ -2,7 +2,8 @@
 #include "symphony/knowledge/engine/digest.hpp"
 #include "symphony/knowledge/engine/error.hpp"
 #include <algorithm>
-#include <cassert>
+#include <source_location>
+#include <stdexcept>
 #include <functional>
 #include <iostream>
 #include <set>
@@ -12,6 +13,12 @@ namespace sev = symphony::knowledge::sev;
 namespace engine = symphony::knowledge::engine;
 
 namespace {
+
+void check(bool condition, std::source_location at = std::source_location::current()) {
+    if (!condition)
+        throw std::runtime_error("test assertion failed at line " + std::to_string(at.line()));
+}
+
 engine::Request request(std::string operation, engine::Json payload) {
     return {"test", "test", std::move(operation), sev::engine_id, 1, std::move(payload)};
 }
@@ -59,51 +66,51 @@ void require_error(const std::string& code, const std::function<void()>& functio
     bool rejected = false;
     try { function(); }
     catch (const engine::Error& error) { rejected = error.code() == code; }
-    assert(rejected);
+    check(rejected);
 }
 }
 
 int main() {
     const auto descriptor = sev::descriptor();
-    assert(descriptor.at("protocol") == engine::descriptor_protocol_v2);
-    assert(descriptor.at("format_version") == 2);
-    assert(descriptor.size() == 17U);
+    check(descriptor.at("protocol") == engine::descriptor_protocol_v2);
+    check(descriptor.at("format_version") == 2);
+    check(descriptor.size() == 17U);
     const std::set<std::string> descriptor_fields{
         "protocol", "format_version", "module_id", "engine_id", "vector_id", "engine_version",
         "process_protocols", "contract_versions", "operations", "limits", "supported_scopes",
         "language", "thermal_path", "canonical_apply_enabled", "session_mutation_enabled",
         "network_listener", "descriptor_digest"};
     for (const auto& [field, value] : descriptor.items()) {
-        static_cast<void>(value); assert(descriptor_fields.contains(field));
+        static_cast<void>(value); check(descriptor_fields.contains(field));
     }
-    assert(descriptor.at("limits").at("json_values") == engine::Limits::max_json_values);
+    check(descriptor.at("limits").at("json_values") == engine::Limits::max_json_values);
     auto descriptor_without_digest = descriptor;
     descriptor_without_digest.erase("descriptor_digest");
-    assert(descriptor.at("descriptor_digest") == engine::tagged_sha256(descriptor_without_digest.dump()));
+    check(descriptor.at("descriptor_digest") == engine::tagged_sha256(descriptor_without_digest.dump()));
     const auto& operations = descriptor.at("operations");
     const auto trigger_descriptor = std::find_if(operations.begin(), operations.end(), [](const auto& value) {
         return value.at("engine_operation_id") == "engop:symphony:sev.trigger.coalesce";
     });
-    assert(trigger_descriptor != operations.end());
-    assert(trigger_descriptor->at("input_protocol") == "symphony.sev.trigger-coalescing-input.v1");
-    assert(trigger_descriptor->at("feature_ids") == engine::Json::array({"ssfv:symphony:sev-engine.novelty-watch"}));
-    assert(trigger_descriptor->at("recovery_operation_id") == "engop:symphony:sev.trigger.coalesce");
+    check(trigger_descriptor != operations.end());
+    check(trigger_descriptor->at("input_protocol") == "symphony.sev.trigger-coalescing-input.v1");
+    check(trigger_descriptor->at("feature_ids") == engine::Json::array({"ssfv:symphony:sev-engine.novelty-watch"}));
+    check(trigger_descriptor->at("recovery_operation_id") == "engop:symphony:sev.trigger.coalesce");
     engine::Json input{{"protocol", "symphony.sev.case-open-input.v1"},
         {"case_id", "sevcase:symphony:test"}, {"case_kind", "planned_change"},
         {"source_current", current()}, {"target", {{"version", "v2"}}},
         {"created_at", "2026-08-20T12:00:00Z"}};
     const auto opened = sev::handle_request(request("case_open", input));
-    assert(opened.at("state") == "open");
-    assert(opened.at("canonical") == false);
+    check(opened.at("state") == "open");
+    check(opened.at("canonical") == false);
     const auto status = sev::handle_request(request("case_status", {{"case", opened}}));
-    assert(status.at("case_id") == "sevcase:symphony:test");
+    check(status.at("case_id") == "sevcase:symphony:test");
     const auto session_binding = sev::handle_request(request("evolution_session_bind", {
         {"case", opened}, {"lifecycle_profile_id", "accordare-test"},
         {"lifecycle_profile_digest", digest_for("profile")},
         {"source_report_journal_digest", digest_for("report-journal")},
         {"desired_state_digest", digest_for("desired")}, {"direction", "forward"},
         {"created_at", "2026-08-20T12:00:01Z"}}));
-    assert(session_binding.at("case_digest") == opened.at("case_digest") &&
+    check(session_binding.at("case_digest") == opened.at("case_digest") &&
            session_binding.at("source_snapshot_digest") == opened.at("source_snapshot_digest") &&
            session_binding.at("apply_authorized") == false &&
            session_binding.at("binding_digest").get<std::string>().starts_with("sha256:"));
@@ -115,14 +122,14 @@ int main() {
         {"edges", engine::Json::array({{{"source", "action:01"}, {"target", "action:02"},
             {"kind", "hard_safety"}}})}, {"blockers", engine::Json::array()}};
     const auto plan = sev::handle_request(request("disposition_plan", plan_input));
-    assert(plan.at("state") == "ready" && plan.at("ready_action_ids") == engine::Json::array({"action:01"}));
+    check(plan.at("state") == "ready" && plan.at("ready_action_ids") == engine::Json::array({"action:01"}));
 
     auto observed = current(); observed["coverage_state"] = "complete";
     const auto recalculated = sev::handle_request(request("case_recalculate", {
         {"case", opened}, {"plan", plan}, {"observed_current", observed},
         {"completed_action_ids", engine::Json::array({"action:01"})},
         {"failed_action_ids", engine::Json::array()}, {"updated_at", "2026-08-20T12:00:01Z"}}));
-    assert(recalculated.at("state") == "ready" &&
+    check(recalculated.at("state") == "ready" &&
            recalculated.at("ready_action_ids") == engine::Json::array({"action:02"}));
     auto successor_plan_input = plan_input;
     successor_plan_input["case"] = recalculated;
@@ -132,13 +139,13 @@ int main() {
         {"case", recalculated}, {"plan", successor_plan}, {"observed_current", observed},
         {"completed_action_ids", engine::Json::array({"action:01", "action:02"})},
         {"failed_action_ids", engine::Json::array()}, {"updated_at", "2026-08-20T12:00:02Z"}}));
-    assert(converged.at("state") == "converged" && converged.at("ready_action_ids").empty());
+    check(converged.at("state") == "converged" && converged.at("ready_action_ids").empty());
 
     const auto blocked = sev::handle_request(request("case_recalculate", {
         {"case", opened}, {"plan", plan}, {"observed_current", observed},
         {"completed_action_ids", engine::Json::array()},
         {"failed_action_ids", engine::Json::array({"action:01"})}, {"updated_at", "2026-08-20T12:00:01Z"}}));
-    assert(blocked.at("state") == "blocked" &&
+    check(blocked.at("state") == "blocked" &&
            blocked.at("blocker_ids") == engine::Json::array({"action:01", "action:02"}));
 
     auto cycle_input = plan_input;
@@ -166,14 +173,14 @@ int main() {
         {"updated_at", "2026-08-20T12:00:00Z"}, {"canonical", false}, {"policy_digest", nullptr}};
     finalize(policy, "policy_digest");
     const auto policy_result = sev::handle_request(request("watch_policy_check", {{"policy", policy}}));
-    assert(policy_result.at("ambient_mutation") == false && policy_result.at("thermal_path") == "freezing");
+    check(policy_result.at("ambient_mutation") == false && policy_result.at("thermal_path") == "freezing");
     engine::Json event{{"event_id", "event:01"}, {"event_class", "event:contract-change"},
         {"source_scope", "scope:knowledge"}, {"occurred_at", "2026-08-20T12:00:01Z"},
         {"event_digest", nullptr}};
     finalize(event, "event_digest");
     const auto coalesced = sev::handle_request(request("trigger_coalesce", {
         {"policy", policy}, {"events", engine::Json::array({event})}}));
-    assert(coalesced.at("event_count") == 1U && coalesced.at("case_open_authorized") == false);
+    check(coalesced.at("event_count") == 1U && coalesced.at("case_open_authorized") == false);
 
     const std::vector<std::string> consequence_families{
         "command_identity", "grammar", "feature_binding", "engine_operation_binding", "authority",
@@ -187,7 +194,7 @@ int main() {
         {"source_snapshot_digest", opened.at("source_snapshot_digest")},
         {"proposal_digest", digest_for("accordare-qxctl-proposal")}, {"change_kind", "add"},
         {"consequences", consequences}}));
-    assert(self_hosted.at("state") == "complete" && self_hosted.at("missing").empty());
+    check(self_hosted.at("state") == "complete" && self_hosted.at("missing").empty());
     auto incomplete = consequences;
     incomplete[0]["state"] = "missing";
     incomplete[0]["detail"] = "third-party package supplied no stable command identity";
@@ -196,7 +203,7 @@ int main() {
         {"source_snapshot_digest", opened.at("source_snapshot_digest")},
         {"proposal_digest", digest_for("third-party-proposal")}, {"change_kind", "add"},
         {"consequences", incomplete}}));
-    assert(third_party.at("state") == "semantic_registration_required" &&
+    check(third_party.at("state") == "semantic_registration_required" &&
            third_party.at("invented_identity") == false && third_party.at("invented_grammar") == false);
 
     engine::Json item{{"item_id", "item:01"}, {"disclosure_class", "internal"},
@@ -210,7 +217,7 @@ int main() {
         {"canonical", false}, {"bundle_digest", nullptr}};
     finalize(bundle, "bundle_digest");
     const auto novelty = sev::handle_request(request("novelty_bundle_check", {{"bundle", bundle}}));
-    assert(novelty.at("state") == "valid_offline_projection" && novelty.at("export_authorized") == false);
+    check(novelty.at("state") == "valid_offline_projection" && novelty.at("export_authorized") == false);
     auto forbidden = bundle;
     forbidden["items"][0]["payload"] = {{"token", "not-allowed"}};
     forbidden["items"][0]["content_digest"] = engine::tagged_sha256(forbidden["items"][0]["payload"].dump());
@@ -228,10 +235,10 @@ int main() {
         {"reader_versions", engine::Json::array({"v0"})}, {"writer_version", "v1"}}));
     const auto new_writer = sev::handle_request(request("compatibility", {
         {"reader_versions", engine::Json::array({"v1"})}, {"writer_version", "v2"}}));
-    assert(exact_compatibility.at("compatible") == true && exact_compatibility.at("unknown_critical_preserved") == false);
-    assert(old_reader.at("compatible") == false && old_reader.at("unknown_critical_preserved") == true);
-    assert(new_writer.at("compatible") == false && new_writer.at("reason") == "no_supported_overlap");
-    assert(exact_compatibility == sev::handle_request(request("compatibility", {
+    check(exact_compatibility.at("compatible") == true && exact_compatibility.at("unknown_critical_preserved") == false);
+    check(old_reader.at("compatible") == false && old_reader.at("unknown_critical_preserved") == true);
+    check(new_writer.at("compatible") == false && new_writer.at("reason") == "no_supported_overlap");
+    check(exact_compatibility == sev::handle_request(request("compatibility", {
         {"reader_versions", engine::Json::array({"v1"})}, {"writer_version", "v1"}})));
     require_error("sev.order", [&] {
         static_cast<void>(sev::handle_request(request("compatibility", {

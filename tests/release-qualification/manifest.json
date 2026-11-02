@@ -1,0 +1,2539 @@
+{
+  "format_version": 1,
+  "scope": "Functional release-qualification gates layered on the L05 installed dependency projection; no release approval, provider activation, historical package substitution or physical DGX qualification.",
+  "component_roots": [
+    {
+      "path": "modules/accordare-stav-producer",
+      "disposition": "go_module"
+    },
+    {
+      "path": "modules/hotpath-runtime",
+      "disposition": "proposal_only_no_implementation_or_installer"
+    },
+    {
+      "path": "modules/knowledge-session-coordinator",
+      "disposition": "native_cmake_root"
+    },
+    {
+      "path": "modules/maestro",
+      "disposition": "native_cmake_root"
+    },
+    {
+      "path": "modules/native-source-support-cpp",
+      "disposition": "native_cmake_root"
+    },
+    {
+      "path": "modules/sacv-engine",
+      "disposition": "native_cmake_root"
+    },
+    {
+      "path": "modules/sav-engine",
+      "disposition": "native_cmake_root"
+    },
+    {
+      "path": "modules/sbv-engine",
+      "disposition": "native_cmake_root"
+    },
+    {
+      "path": "modules/scabv-ibkr-client-portal-cpp",
+      "disposition": "native_cmake_root"
+    },
+    {
+      "path": "modules/scabv-ibkr-tws-cpp",
+      "disposition": "native_cmake_root"
+    },
+    {
+      "path": "modules/scev-cf-engine",
+      "disposition": "native_cmake_root"
+    },
+    {
+      "path": "modules/scev-engine",
+      "disposition": "native_cmake_root"
+    },
+    {
+      "path": "modules/schv-aws-engine",
+      "disposition": "native_cmake_root"
+    },
+    {
+      "path": "modules/schv-azure-engine",
+      "disposition": "native_cmake_root"
+    },
+    {
+      "path": "modules/schv-do-engine",
+      "disposition": "native_cmake_root"
+    },
+    {
+      "path": "modules/schv-engine",
+      "disposition": "native_cmake_root"
+    },
+    {
+      "path": "modules/schv-gcp-engine",
+      "disposition": "native_cmake_root"
+    },
+    {
+      "path": "modules/sciv-engine",
+      "disposition": "native_cmake_root"
+    },
+    {
+      "path": "modules/sclv-engine",
+      "disposition": "native_cmake_root"
+    },
+    {
+      "path": "modules/scnv-engine",
+      "disposition": "native_cmake_root"
+    },
+    {
+      "path": "modules/scv-engine",
+      "disposition": "native_cmake_root"
+    },
+    {
+      "path": "modules/scv-graph-duckdb-connector",
+      "disposition": "native_cmake_root"
+    },
+    {
+      "path": "modules/secure-identity-access-governance",
+      "disposition": "go_module"
+    },
+    {
+      "path": "modules/sev-engine",
+      "disposition": "native_cmake_root"
+    },
+    {
+      "path": "modules/shv-engine",
+      "disposition": "native_cmake_root"
+    },
+    {
+      "path": "modules/shv-graph-adapter",
+      "disposition": "native_cmake_root"
+    },
+    {
+      "path": "modules/shv-graph-duckdb-connector",
+      "disposition": "native_cmake_root"
+    },
+    {
+      "path": "modules/shv-partition-engine",
+      "disposition": "native_cmake_root"
+    },
+    {
+      "path": "modules/shv-pdf-adapter",
+      "disposition": "native_cmake_root"
+    },
+    {
+      "path": "modules/shv-profile-engine",
+      "disposition": "native_cmake_root"
+    },
+    {
+      "path": "modules/shv-publication-engine",
+      "disposition": "native_cmake_root"
+    },
+    {
+      "path": "modules/shv-source-engine",
+      "disposition": "native_cmake_root"
+    },
+    {
+      "path": "modules/skvi-engine",
+      "disposition": "native_cmake_root"
+    },
+    {
+      "path": "modules/sniv-engine",
+      "disposition": "native_cmake_root"
+    },
+    {
+      "path": "modules/snrv-engine",
+      "disposition": "native_cmake_root"
+    },
+    {
+      "path": "modules/snv-engine",
+      "disposition": "native_cmake_root"
+    },
+    {
+      "path": "modules/snv-local-observer",
+      "disposition": "native_cmake_root"
+    },
+    {
+      "path": "modules/sodv-engine",
+      "disposition": "native_cmake_root"
+    },
+    {
+      "path": "modules/sqav-attempt-engine",
+      "disposition": "native_cmake_root"
+    },
+    {
+      "path": "modules/sqav-capture-cpp",
+      "disposition": "native_cmake_root"
+    },
+    {
+      "path": "modules/sqav-databento-dbn-cpp",
+      "disposition": "native_cmake_root"
+    },
+    {
+      "path": "modules/sqav-databento-reference-cpp",
+      "disposition": "native_cmake_root"
+    },
+    {
+      "path": "modules/sqav-fred-cpp",
+      "disposition": "native_cmake_root"
+    },
+    {
+      "path": "modules/sqav-news-api-cpp",
+      "disposition": "native_cmake_root"
+    },
+    {
+      "path": "modules/sqav-request-engine",
+      "disposition": "native_cmake_root"
+    },
+    {
+      "path": "modules/sqdv-checkpoint-engine",
+      "disposition": "native_cmake_root"
+    },
+    {
+      "path": "modules/sqdv-delivery-cpp",
+      "disposition": "native_cmake_root"
+    },
+    {
+      "path": "modules/sqfv-batch-cpp",
+      "disposition": "native_cmake_root"
+    },
+    {
+      "path": "modules/sqfv-flow-engine",
+      "disposition": "native_cmake_root"
+    },
+    {
+      "path": "modules/sqmv-metadata-cpp",
+      "disposition": "native_cmake_root"
+    },
+    {
+      "path": "modules/sqmv-metadata-engine",
+      "disposition": "native_cmake_root"
+    },
+    {
+      "path": "modules/sqpv-inspection-engine",
+      "disposition": "native_cmake_root"
+    },
+    {
+      "path": "modules/sqpv-local-store-cpp",
+      "disposition": "native_cmake_root"
+    },
+    {
+      "path": "modules/sqtv-conversion-engine",
+      "disposition": "native_cmake_root"
+    },
+    {
+      "path": "modules/sqtv-integer-conversion-cpp",
+      "disposition": "native_cmake_root"
+    },
+    {
+      "path": "modules/ssfv-engine",
+      "disposition": "native_cmake_root"
+    },
+    {
+      "path": "modules/ssiag-provider-macos-keychain",
+      "disposition": "macos_swift_package"
+    },
+    {
+      "path": "modules/stav-append-authority",
+      "disposition": "go_module"
+    },
+    {
+      "path": "libraries/knowledge-vector-engine-cpp",
+      "disposition": "native_cmake_root"
+    },
+    {
+      "path": "libraries/sbv-go",
+      "disposition": "go_module"
+    },
+    {
+      "path": "libraries/snv-common-cpp",
+      "disposition": "native_cmake_root"
+    },
+    {
+      "path": "libraries/stav-protocol-go",
+      "disposition": "go_module"
+    },
+    {
+      "path": "tools/authoring-cpp",
+      "disposition": "native_cmake_root"
+    },
+    {
+      "path": "tools/qxctl",
+      "disposition": "go_module"
+    },
+    {
+      "path": "tools/shv-interface-codegen",
+      "disposition": "authoring_source_built_by_tools_authoring_cpp_not_runtime_package"
+    },
+    {
+      "path": "tools/sov-ssh-adapter",
+      "disposition": "go_module"
+    },
+    {
+      "path": "tools/sov-stdio-adapter",
+      "disposition": "go_module"
+    },
+    {
+      "path": "tools/sqv-administration-cpp",
+      "disposition": "shared_source_support_not_independent_package"
+    },
+    {
+      "path": "tools/symphony-validator",
+      "disposition": "native_cmake_root"
+    }
+  ],
+  "native_suites": [
+    {
+      "path": "libraries/knowledge-vector-engine-cpp",
+      "group": "knowledge",
+      "configure_options": {
+        "BUILD_TESTING": true,
+        "SYMPHONY_KVE_BUILD_TESTING": true
+      },
+      "ctests": [
+        "knowledge-vector-engine-foundation-tests",
+        "knowledge-vector-native-process-tests",
+        "knowledge-vector-digest-failure-tests"
+      ],
+      "direct_tests": [],
+      "excluded_direct_tests": [],
+      "known_internal_skips": []
+    },
+    {
+      "path": "libraries/snv-common-cpp",
+      "group": "knowledge",
+      "configure_options": {
+        "SYMPHONY_SNV_USE_INSTALLED_DEPENDENCIES": "ON",
+        "BUILD_TESTING": true
+      },
+      "ctests": [
+        "snv-common-cpp-tests"
+      ],
+      "direct_tests": [
+        {
+          "target": "snv-sdk-receipt-admission-tests",
+          "arguments": [
+            "--source",
+            "${SOURCE}",
+            "--prefix",
+            "${PREFIX}",
+            "--compiler",
+            "${COMPILER}"
+          ],
+          "source": [
+            "libraries/snv-common-cpp/tests/sdk_receipt_admission.cpp"
+          ]
+        }
+      ],
+      "excluded_direct_tests": [],
+      "known_internal_skips": []
+    },
+    {
+      "path": "modules/knowledge-session-coordinator",
+      "group": "knowledge",
+      "configure_options": {
+        "SYMPHONY_KVE_USE_INSTALLED": "ON",
+        "BUILD_TESTING": true
+      },
+      "ctests": [
+        "knowledge-session-coordinator-tests",
+        "knowledge-lifecycle-planner-tests",
+        "knowledge-ssfv-maintenance-tests",
+        "knowledge-named-version-tests",
+        "knowledge-session-process-smoke"
+      ],
+      "direct_tests": [],
+      "excluded_direct_tests": [],
+      "known_internal_skips": []
+    },
+    {
+      "path": "modules/maestro",
+      "group": "knowledge",
+      "configure_options": {
+        "SYMPHONY_KVE_USE_INSTALLED": "ON",
+        "BUILD_TESTING": true
+      },
+      "ctests": [
+        "maestro-tests",
+        "maestro-process-smoke"
+      ],
+      "direct_tests": [],
+      "excluded_direct_tests": [],
+      "known_internal_skips": []
+    },
+    {
+      "path": "modules/native-source-support-cpp",
+      "group": "quantitative",
+      "configure_options": {
+        "SYMPHONY_NATIVESOURCESUPPORT_INSTALLED": "ON",
+        "BUILD_TESTING": true
+      },
+      "ctests": [
+        "native-source-support",
+        "native-source-http"
+      ],
+      "direct_tests": [],
+      "excluded_direct_tests": [],
+      "known_internal_skips": []
+    },
+    {
+      "path": "modules/sacv-engine",
+      "group": "knowledge",
+      "configure_options": {
+        "SYMPHONY_KVE_USE_INSTALLED": "ON",
+        "BUILD_TESTING": true
+      },
+      "ctests": [
+        "sacv-engine-tests",
+        "sacv-engine-process-smoke"
+      ],
+      "direct_tests": [],
+      "excluded_direct_tests": [],
+      "known_internal_skips": []
+    },
+    {
+      "path": "modules/sav-engine",
+      "group": "knowledge",
+      "configure_options": {
+        "SYMPHONY_KVE_USE_INSTALLED": "ON",
+        "BUILD_TESTING": true
+      },
+      "ctests": [
+        "sav-engine-tests",
+        "sav-engine-process-smoke"
+      ],
+      "direct_tests": [],
+      "excluded_direct_tests": [],
+      "known_internal_skips": []
+    },
+    {
+      "path": "modules/sbv-engine",
+      "group": "quantitative",
+      "configure_options": {
+        "SYMPHONY_SBV_USE_INSTALLED_DEPENDENCIES": "ON",
+        "BUILD_TESTING": true
+      },
+      "ctests": [
+        "sbv-durable-jobs",
+        "sbv-feedback-settlement-contracts",
+        "sbv-account-execution-contracts",
+        "sbv-account-contracts",
+        "sbv-performance-scopes",
+        "sbv-binary-studies",
+        "sbv-adaptive",
+        "sbv-nested-split",
+        "sbv-study-formula",
+        "sbv-experiment-plan",
+        "sbv-model-partitioned",
+        "sbv-execution-partitioned",
+        "sbv-research-partitioned",
+        "sbv-select-view",
+        "sbv-experiment-partitioned",
+        "sbv-resource-admission",
+        "sbv-focused-contracts",
+        "sbv-economics-contracts",
+        "sbv-book-contracts",
+        "sbv-queue-scenarios",
+        "sbv-liquidity-contracts",
+        "sbv-allocation-economics-contracts",
+        "sbv-planning-contracts",
+        "sbv-analysis-contracts",
+        "sbv-research-contracts",
+        "sbv-split-contracts",
+        "sbv-combinatorial-contracts",
+        "sbv-dataset-contracts",
+        "sbv-dependencies-contracts",
+        "sbv-census-contracts",
+        "sbv-compose-economics-contracts",
+        "sbv-history-contracts",
+        "sbv-fit-contracts",
+        "sbv-sdk-contracts",
+        "sbv-model-contracts",
+        "sbv-administration-contract",
+        "sbv-resident-control",
+        "sbv-provider-c-abi",
+        "sbv-provider-runtime",
+        "sbv-provider-integration",
+        "sbv-source-owners-contracts",
+        "sbv-source-dataset-contracts",
+        "sbv-bundle-operation-contracts",
+        "sbv-result-store-contracts",
+        "sbv-reader-extensions-contracts",
+        "sbv-row-spool-contracts",
+        "sbv-exact-id-index-contracts",
+        "sbv-logical-value-contracts",
+        "sbv-stream-census-contracts",
+        "sbv-partitioned-output-contracts",
+        "sbv-stream-model-contracts",
+        "sbv-economics-partitioned-contracts",
+        "sbv-run-partitioned-contracts",
+        "sbv-generate-partitioned-contracts",
+        "sbv-evaluate-partitioned-contracts"
+      ],
+      "direct_tests": [],
+      "excluded_direct_tests": [],
+      "known_internal_skips": []
+    },
+    {
+      "path": "modules/scabv-ibkr-client-portal-cpp",
+      "group": "quantitative",
+      "configure_options": {
+        "SYMPHONY_SCABVIBKRCLIENTPORTAL_INSTALLED": "ON",
+        "BUILD_TESTING": true
+      },
+      "ctests": [
+        "scabv-ibkr-client-portal"
+      ],
+      "direct_tests": [],
+      "excluded_direct_tests": [],
+      "known_internal_skips": []
+    },
+    {
+      "path": "modules/scabv-ibkr-tws-cpp",
+      "group": "quantitative",
+      "configure_options": {
+        "SYMPHONY_SCABVIBKRTWS_INSTALLED": "ON",
+        "BUILD_TESTING": true
+      },
+      "ctests": [
+        "scabv-ibkr-tws",
+        "scabv-ibkr-tws-allocation"
+      ],
+      "direct_tests": [],
+      "excluded_direct_tests": [],
+      "known_internal_skips": [],
+      "external_exclusions": [
+        {
+          "target": "scabv-ibkr-tws-vendor-conformance",
+          "reason": "Optional IBKR TWS SDK10.45 object conformance requires independently supplied vendor SDK; self-contained wire/metadata CTests execute."
+        }
+      ]
+    },
+    {
+      "path": "modules/scev-cf-engine",
+      "group": "cloud",
+      "configure_options": {
+        "SYMPHONY_KVE_USE_INSTALLED": "ON",
+        "BUILD_TESTING": true
+      },
+      "ctests": [
+        "scv-installed-process-integration"
+      ],
+      "direct_tests": [],
+      "excluded_direct_tests": [],
+      "known_internal_skips": [
+        "SKIP provider coverage is an exact .5 addition"
+      ]
+    },
+    {
+      "path": "modules/scev-engine",
+      "group": "cloud",
+      "configure_options": {
+        "SYMPHONY_KVE_USE_INSTALLED": "ON",
+        "BUILD_TESTING": true
+      },
+      "ctests": [
+        "scv-installed-process-integration"
+      ],
+      "direct_tests": [],
+      "excluded_direct_tests": [],
+      "known_internal_skips": [
+        "SKIP provider coverage is an exact .5 addition"
+      ]
+    },
+    {
+      "path": "modules/schv-aws-engine",
+      "group": "cloud",
+      "configure_options": {
+        "SYMPHONY_KVE_USE_INSTALLED": "ON",
+        "BUILD_TESTING": true
+      },
+      "ctests": [
+        "scv-installed-process-integration"
+      ],
+      "direct_tests": [],
+      "excluded_direct_tests": [],
+      "known_internal_skips": [
+        "SKIP provider coverage is an exact .5 addition"
+      ]
+    },
+    {
+      "path": "modules/schv-azure-engine",
+      "group": "cloud",
+      "configure_options": {
+        "SYMPHONY_KVE_USE_INSTALLED": "ON",
+        "BUILD_TESTING": true
+      },
+      "ctests": [
+        "scv-installed-process-integration"
+      ],
+      "direct_tests": [],
+      "excluded_direct_tests": [],
+      "known_internal_skips": [
+        "SKIP provider coverage is an exact .5 addition"
+      ]
+    },
+    {
+      "path": "modules/schv-do-engine",
+      "group": "cloud",
+      "configure_options": {
+        "SYMPHONY_KVE_USE_INSTALLED": "ON",
+        "BUILD_TESTING": true
+      },
+      "ctests": [
+        "scv-installed-process-integration"
+      ],
+      "direct_tests": [],
+      "excluded_direct_tests": [],
+      "known_internal_skips": [
+        "SKIP provider coverage is an exact .5 addition"
+      ]
+    },
+    {
+      "path": "modules/schv-engine",
+      "group": "cloud",
+      "configure_options": {
+        "SYMPHONY_KVE_USE_INSTALLED": "ON",
+        "BUILD_TESTING": true
+      },
+      "ctests": [
+        "scv-installed-process-integration"
+      ],
+      "direct_tests": [],
+      "excluded_direct_tests": [],
+      "known_internal_skips": [
+        "SKIP provider coverage is an exact .5 addition"
+      ]
+    },
+    {
+      "path": "modules/schv-gcp-engine",
+      "group": "cloud",
+      "configure_options": {
+        "SYMPHONY_KVE_USE_INSTALLED": "ON",
+        "BUILD_TESTING": true
+      },
+      "ctests": [
+        "scv-installed-process-integration"
+      ],
+      "direct_tests": [],
+      "excluded_direct_tests": [],
+      "known_internal_skips": [
+        "SKIP provider coverage is an exact .5 addition"
+      ]
+    },
+    {
+      "path": "modules/sciv-engine",
+      "group": "knowledge",
+      "configure_options": {
+        "SYMPHONY_SNV_USE_INSTALLED_DEPENDENCIES": "ON",
+        "BUILD_TESTING": true
+      },
+      "ctests": [
+        "sciv-engine-tests"
+      ],
+      "direct_tests": [
+        {
+          "target": "sciv-engine-process-tests",
+          "arguments": [
+            "--prefix",
+            "${PREFIX}",
+            "--input",
+            "${WORK}/fixtures/sciv_validate.json",
+            "--operation",
+            "sciv_validate"
+          ],
+          "source": [
+            "modules/sciv-engine/tests/process.cpp"
+          ]
+        }
+      ],
+      "excluded_direct_tests": [],
+      "known_internal_skips": []
+    },
+    {
+      "path": "modules/sclv-engine",
+      "group": "knowledge",
+      "configure_options": {
+        "SYMPHONY_KVE_USE_INSTALLED": "ON",
+        "BUILD_TESTING": true
+      },
+      "ctests": [
+        "sclv-engine-tests",
+        "sclv-engine-process-smoke"
+      ],
+      "direct_tests": [],
+      "excluded_direct_tests": [],
+      "known_internal_skips": []
+    },
+    {
+      "path": "modules/scnv-engine",
+      "group": "knowledge",
+      "configure_options": {
+        "SYMPHONY_SNV_USE_INSTALLED_DEPENDENCIES": "ON",
+        "BUILD_TESTING": true
+      },
+      "ctests": [
+        "scnv-engine-tests"
+      ],
+      "direct_tests": [
+        {
+          "target": "scnv-engine-process-tests",
+          "arguments": [
+            "--prefix",
+            "${PREFIX}",
+            "--input",
+            "${REPO}/modules/scnv-engine/tests/fixtures/names_validate.json",
+            "--operation",
+            "names_validate"
+          ],
+          "source": [
+            "modules/scnv-engine/tests/process.cpp"
+          ]
+        }
+      ],
+      "excluded_direct_tests": [],
+      "known_internal_skips": []
+    },
+    {
+      "path": "modules/scv-engine",
+      "group": "cloud",
+      "configure_options": {
+        "SYMPHONY_KVE_USE_INSTALLED": "ON",
+        "BUILD_TESTING": true
+      },
+      "ctests": [
+        "scv-source-tests",
+        "scv-knowledge-tests",
+        "scv-corpus-tests",
+        "scv-interpretation-tests",
+        "scv-coverage-tests",
+        "scv-pack-tests",
+        "scv-composition-tests",
+        "scv-obligation-tests",
+        "scv-bundle-tests",
+        "scv-interface-generation-tests",
+        "scv-installed-process-integration"
+      ],
+      "direct_tests": [],
+      "excluded_direct_tests": [],
+      "known_internal_skips": [
+        "SKIP provider coverage is an exact .5 addition"
+      ]
+    },
+    {
+      "path": "modules/sev-engine",
+      "group": "knowledge",
+      "configure_options": {
+        "SYMPHONY_KVE_USE_INSTALLED": "ON",
+        "BUILD_TESTING": true
+      },
+      "ctests": [
+        "sev-engine-tests",
+        "sev-engine-process-smoke"
+      ],
+      "direct_tests": [],
+      "excluded_direct_tests": [],
+      "known_internal_skips": []
+    },
+    {
+      "path": "modules/shv-engine",
+      "group": "knowledge",
+      "configure_options": {
+        "SYMPHONY_KVE_USE_INSTALLED": "ON",
+        "BUILD_TESTING": true
+      },
+      "ctests": [
+        "shv-tables-process",
+        "shv-kernel-process",
+        "shv-engine-interface"
+      ],
+      "direct_tests": [],
+      "excluded_direct_tests": [],
+      "known_internal_skips": []
+    },
+    {
+      "path": "modules/shv-graph-adapter",
+      "group": "knowledge",
+      "configure_options": {
+        "SYMPHONY_KVE_USE_INSTALLED": "ON",
+        "BUILD_TESTING": true
+      },
+      "ctests": [
+        "shv-graph-adapter-conformance",
+        "shv-graph-adapter-interface"
+      ],
+      "direct_tests": [],
+      "excluded_direct_tests": [],
+      "known_internal_skips": []
+    },
+    {
+      "path": "modules/shv-partition-engine",
+      "group": "knowledge",
+      "configure_options": {
+        "SYMPHONY_KVE_USE_INSTALLED": "ON",
+        "BUILD_TESTING": true
+      },
+      "ctests": [
+        "shv-partition-process",
+        "shv-partition-engine-interface"
+      ],
+      "direct_tests": [],
+      "excluded_direct_tests": [],
+      "known_internal_skips": []
+    },
+    {
+      "path": "modules/shv-pdf-adapter",
+      "group": "knowledge",
+      "configure_options": {
+        "SYMPHONY_KVE_USE_INSTALLED": "ON",
+        "BUILD_TESTING": true
+      },
+      "ctests": [
+        "shv-pdf-bounded-table",
+        "shv-pdf-adapter-interface"
+      ],
+      "direct_tests": [],
+      "excluded_direct_tests": [
+        {
+          "target": "shv-pdf-adapter-installed-integration",
+          "reason": "Requires caller-supplied AMD69290 PDF and exact PDFium decoder path/digest; no retained public fixture is committed. PDF unit and interface CTests still execute."
+        }
+      ],
+      "known_internal_skips": []
+    },
+    {
+      "path": "modules/shv-profile-engine",
+      "group": "knowledge",
+      "configure_options": {
+        "SYMPHONY_KVE_USE_INSTALLED": "ON",
+        "BUILD_TESTING": true
+      },
+      "ctests": [
+        "shv-profile-interface",
+        "shv-profile-process",
+        "shv-profile-diagnostics"
+      ],
+      "direct_tests": [
+        {
+          "target": "shv-profile-engine-installed-integration",
+          "arguments": [
+            "--output",
+            "${OUTPUT}",
+            "--qxctl",
+            "${QXCTL}",
+            "--prefix",
+            "${PREFIX}",
+            "--version",
+            "${VERSION}"
+          ],
+          "source": [
+            "modules/shv-profile-engine/tests/installed_integration.cpp"
+          ]
+        }
+      ],
+      "excluded_direct_tests": [],
+      "known_internal_skips": []
+    },
+    {
+      "path": "modules/shv-publication-engine",
+      "group": "knowledge",
+      "configure_options": {
+        "SYMPHONY_KVE_USE_INSTALLED": "ON",
+        "BUILD_TESTING": true
+      },
+      "ctests": [
+        "shv-publication-interface",
+        "shv-publication-process"
+      ],
+      "direct_tests": [
+        {
+          "target": "shv-publication-engine-installed-integration",
+          "arguments": [
+            "--output",
+            "${OUTPUT}",
+            "--qxctl",
+            "${QXCTL}",
+            "--prefix",
+            "${PREFIX}",
+            "--version",
+            "${VERSION}",
+            "--partition-prefix",
+            "${PARTITION_PREFIX}",
+            "--partition-version",
+            "${PARTITION_VERSION}"
+          ],
+          "source": [
+            "modules/shv-publication-engine/tests/installed_integration.cpp"
+          ]
+        }
+      ],
+      "excluded_direct_tests": [],
+      "known_internal_skips": []
+    },
+    {
+      "path": "modules/shv-source-engine",
+      "group": "knowledge",
+      "configure_options": {
+        "SYMPHONY_KVE_USE_INSTALLED": "ON",
+        "BUILD_TESTING": true
+      },
+      "ctests": [
+        "shv-source-interface",
+        "shv-source-process"
+      ],
+      "direct_tests": [],
+      "excluded_direct_tests": [],
+      "known_internal_skips": []
+    },
+    {
+      "path": "modules/skvi-engine",
+      "group": "knowledge",
+      "configure_options": {
+        "SYMPHONY_KVE_USE_INSTALLED": "ON",
+        "BUILD_TESTING": true
+      },
+      "ctests": [
+        "skvi-engine-tests",
+        "skvi-engine-process-smoke"
+      ],
+      "direct_tests": [],
+      "excluded_direct_tests": [],
+      "known_internal_skips": []
+    },
+    {
+      "path": "modules/sniv-engine",
+      "group": "knowledge",
+      "configure_options": {
+        "SYMPHONY_SNV_USE_INSTALLED_DEPENDENCIES": "ON",
+        "BUILD_TESTING": true
+      },
+      "ctests": [
+        "sniv-engine-tests"
+      ],
+      "direct_tests": [
+        {
+          "target": "sniv-engine-process-tests",
+          "arguments": [
+            "--prefix",
+            "${PREFIX}",
+            "--input",
+            "${REPO}/modules/sniv-engine/tests/fixtures/identity_validate.json",
+            "--operation",
+            "identity_validate"
+          ],
+          "source": [
+            "modules/sniv-engine/tests/process.cpp"
+          ]
+        }
+      ],
+      "excluded_direct_tests": [],
+      "known_internal_skips": []
+    },
+    {
+      "path": "modules/snrv-engine",
+      "group": "knowledge",
+      "configure_options": {
+        "SYMPHONY_SNV_USE_INSTALLED_DEPENDENCIES": "ON",
+        "BUILD_TESTING": true
+      },
+      "ctests": [
+        "snrv-engine-tests"
+      ],
+      "direct_tests": [
+        {
+          "target": "snrv-engine-process-tests",
+          "arguments": [
+            "--prefix",
+            "${PREFIX}",
+            "--input",
+            "${REPO}/modules/snrv-engine/tests/fixtures/resources_validate.json",
+            "--operation",
+            "resources_validate"
+          ],
+          "source": [
+            "modules/snrv-engine/tests/process.cpp"
+          ]
+        }
+      ],
+      "excluded_direct_tests": [],
+      "known_internal_skips": []
+    },
+    {
+      "path": "modules/snv-engine",
+      "group": "knowledge",
+      "configure_options": {
+        "SYMPHONY_SNV_USE_INSTALLED_DEPENDENCIES": "ON",
+        "BUILD_TESTING": true
+      },
+      "ctests": [
+        "snv-engine-tests"
+      ],
+      "direct_tests": [
+        {
+          "target": "snv-engine-process-tests",
+          "arguments": [
+            "--prefix",
+            "${PREFIX}",
+            "--input",
+            "${REPO}/modules/snv-engine/tests/fixtures/snv_inspect.json",
+            "--operation",
+            "snv_inspect"
+          ],
+          "source": [
+            "modules/snv-engine/tests/process.cpp"
+          ]
+        }
+      ],
+      "excluded_direct_tests": [],
+      "known_internal_skips": []
+    },
+    {
+      "path": "modules/snv-local-observer",
+      "group": "knowledge",
+      "configure_options": {
+        "SYMPHONY_SNV_USE_INSTALLED_DEPENDENCIES": "ON",
+        "BUILD_TESTING": true
+      },
+      "ctests": [
+        "snv-local-observer-tests"
+      ],
+      "direct_tests": [
+        {
+          "target": "snv-local-observer-process-tests",
+          "arguments": [
+            "--prefix",
+            "${PREFIX}",
+            "--input",
+            "${REPO}/modules/snv-local-observer/tests/fixtures/observe.json"
+          ],
+          "source": [
+            "modules/snv-local-observer/tests/process.cpp"
+          ]
+        }
+      ],
+      "excluded_direct_tests": [],
+      "known_internal_skips": []
+    },
+    {
+      "path": "modules/sodv-engine",
+      "group": "knowledge",
+      "configure_options": {
+        "SYMPHONY_KVE_USE_INSTALLED": "ON",
+        "BUILD_TESTING": true
+      },
+      "ctests": [
+        "sodv-engine-tests",
+        "sodv-engine-process-smoke"
+      ],
+      "direct_tests": [],
+      "excluded_direct_tests": [],
+      "known_internal_skips": []
+    },
+    {
+      "path": "modules/sqav-attempt-engine",
+      "group": "quantitative",
+      "configure_options": {
+        "SYMPHONY_SQV_ADMIN_INSTALLED": "ON",
+        "BUILD_TESTING": true
+      },
+      "ctests": [],
+      "direct_tests": [
+        {
+          "target": "sqav-attempt-engine-process-test",
+          "arguments": [
+            "--prefix",
+            "${PREFIX}",
+            "--input",
+            "${SQV_GENERATED_FIXTURES}/attempts.json"
+          ],
+          "source": [
+            "modules/sqav-attempt-engine/tests/process.cpp"
+          ]
+        }
+      ],
+      "excluded_direct_tests": [],
+      "known_internal_skips": []
+    },
+    {
+      "path": "modules/sqav-capture-cpp",
+      "group": "quantitative",
+      "configure_options": {
+        "SYMPHONY_SQAV_USE_INSTALLED_DEPENDENCIES": "ON",
+        "BUILD_TESTING": true
+      },
+      "ctests": [
+        "sqav-capture",
+        "sqav-package-lifecycle"
+      ],
+      "direct_tests": [],
+      "excluded_direct_tests": [],
+      "known_internal_skips": []
+    },
+    {
+      "path": "modules/sqav-databento-dbn-cpp",
+      "group": "quantitative",
+      "configure_options": {
+        "SYMPHONY_SQAV_DBN_USE_INSTALLED_DEPENDENCIES": "ON",
+        "BUILD_TESTING": true
+      },
+      "ctests": [
+        "sqav-databento-dbn",
+        "sqav-databento-historical",
+        "sqav-databento-attempts",
+        "sqav-databento-http",
+        "sqav-dbn-package-lifecycle"
+      ],
+      "direct_tests": [],
+      "excluded_direct_tests": [],
+      "known_internal_skips": []
+    },
+    {
+      "path": "modules/sqav-databento-reference-cpp",
+      "group": "quantitative",
+      "configure_options": {
+        "SYMPHONY_SQAVDATABENTOREFERENCE_INSTALLED": "ON",
+        "BUILD_TESTING": true
+      },
+      "ctests": [
+        "sqav-databento-reference"
+      ],
+      "direct_tests": [],
+      "excluded_direct_tests": [],
+      "known_internal_skips": []
+    },
+    {
+      "path": "modules/sqav-fred-cpp",
+      "group": "quantitative",
+      "configure_options": {
+        "SYMPHONY_SQAVFRED_INSTALLED": "ON",
+        "BUILD_TESTING": true
+      },
+      "ctests": [
+        "sqav-fred"
+      ],
+      "direct_tests": [],
+      "excluded_direct_tests": [],
+      "known_internal_skips": []
+    },
+    {
+      "path": "modules/sqav-news-api-cpp",
+      "group": "quantitative",
+      "configure_options": {
+        "SYMPHONY_SQAVNEWSAPI_INSTALLED": "ON",
+        "BUILD_TESTING": true
+      },
+      "ctests": [
+        "sqav-news-api"
+      ],
+      "direct_tests": [],
+      "excluded_direct_tests": [],
+      "known_internal_skips": []
+    },
+    {
+      "path": "modules/sqav-request-engine",
+      "group": "quantitative",
+      "configure_options": {
+        "SYMPHONY_SQAV_REQUEST_INSTALLED": "ON",
+        "BUILD_TESTING": true
+      },
+      "ctests": [
+        "sqav-request-native"
+      ],
+      "direct_tests": [
+        {
+          "target": "sqav-request-process-test",
+          "arguments": [
+            "--prefix",
+            "${PREFIX}"
+          ],
+          "source": [
+            "modules/sqav-request-engine/tests/process.cpp"
+          ]
+        }
+      ],
+      "excluded_direct_tests": [],
+      "known_internal_skips": []
+    },
+    {
+      "path": "modules/sqdv-checkpoint-engine",
+      "group": "quantitative",
+      "configure_options": {
+        "SYMPHONY_SQV_ADMIN_INSTALLED": "ON",
+        "BUILD_TESTING": true
+      },
+      "ctests": [],
+      "direct_tests": [
+        {
+          "target": "sqdv-checkpoint-engine-process-test",
+          "arguments": [
+            "--prefix",
+            "${PREFIX}",
+            "--input",
+            "${SQV_GENERATED_FIXTURES}/checkpoint.json"
+          ],
+          "source": [
+            "modules/sqdv-checkpoint-engine/tests/process.cpp"
+          ]
+        }
+      ],
+      "excluded_direct_tests": [],
+      "known_internal_skips": []
+    },
+    {
+      "path": "modules/sqdv-delivery-cpp",
+      "group": "quantitative",
+      "configure_options": {
+        "SYMPHONY_SQDV_USE_INSTALLED_DEPENDENCIES": "ON",
+        "BUILD_TESTING": true
+      },
+      "ctests": [
+        "sqdv-delivery",
+        "sqdv-checkpoint",
+        "sqdv-package-lifecycle"
+      ],
+      "direct_tests": [],
+      "excluded_direct_tests": [],
+      "known_internal_skips": []
+    },
+    {
+      "path": "modules/sqfv-batch-cpp",
+      "group": "quantitative",
+      "configure_options": {
+        "BUILD_TESTING": true
+      },
+      "ctests": [
+        "sqfv-batch",
+        "sqfv-frame",
+        "sqfv-allocation-failure",
+        "sqfv-package-lifecycle"
+      ],
+      "direct_tests": [],
+      "excluded_direct_tests": [],
+      "known_internal_skips": []
+    },
+    {
+      "path": "modules/sqfv-flow-engine",
+      "group": "quantitative",
+      "configure_options": {
+        "SYMPHONY_SQV_ADMIN_INSTALLED": "ON",
+        "BUILD_TESTING": true
+      },
+      "ctests": [],
+      "direct_tests": [
+        {
+          "target": "sqfv-flow-engine-process-test",
+          "arguments": [
+            "--prefix",
+            "${PREFIX}",
+            "--input",
+            "${REPO}/modules/sqfv-flow-engine/tests/fixtures/flow_validate.json"
+          ],
+          "source": [
+            "modules/sqfv-flow-engine/tests/process.cpp"
+          ]
+        }
+      ],
+      "excluded_direct_tests": [],
+      "known_internal_skips": []
+    },
+    {
+      "path": "modules/sqmv-metadata-cpp",
+      "group": "quantitative",
+      "configure_options": {
+        "SYMPHONY_SQMV_USE_INSTALLED_DEPENDENCIES": "ON",
+        "BUILD_TESTING": true
+      },
+      "ctests": [
+        "sqmv-metadata",
+        "sqmv-package-lifecycle"
+      ],
+      "direct_tests": [],
+      "excluded_direct_tests": [],
+      "known_internal_skips": []
+    },
+    {
+      "path": "modules/sqmv-metadata-engine",
+      "group": "quantitative",
+      "configure_options": {
+        "SYMPHONY_SQV_ADMIN_INSTALLED": "ON",
+        "BUILD_TESTING": true
+      },
+      "ctests": [],
+      "direct_tests": [
+        {
+          "target": "sqmv-metadata-engine-process-test",
+          "arguments": [
+            "--prefix",
+            "${PREFIX}",
+            "--input",
+            "${REPO}/modules/sqmv-metadata-engine/tests/fixtures/metadata_validate.json"
+          ],
+          "source": [
+            "modules/sqmv-metadata-engine/tests/process.cpp"
+          ]
+        }
+      ],
+      "excluded_direct_tests": [],
+      "known_internal_skips": []
+    },
+    {
+      "path": "modules/sqpv-inspection-engine",
+      "group": "quantitative",
+      "configure_options": {
+        "SYMPHONY_SQV_ADMIN_INSTALLED": "ON",
+        "BUILD_TESTING": true
+      },
+      "ctests": [],
+      "direct_tests": [
+        {
+          "target": "sqpv-inspection-engine-process-test",
+          "arguments": [
+            "--prefix",
+            "${PREFIX}",
+            "--input",
+            "${SQV_GENERATED_FIXTURES}/store.json"
+          ],
+          "source": [
+            "modules/sqpv-inspection-engine/tests/process.cpp"
+          ]
+        }
+      ],
+      "excluded_direct_tests": [],
+      "known_internal_skips": []
+    },
+    {
+      "path": "modules/sqpv-local-store-cpp",
+      "group": "quantitative",
+      "configure_options": {
+        "SYMPHONY_SQPV_USE_INSTALLED_DEPENDENCIES": "ON",
+        "BUILD_TESTING": true
+      },
+      "ctests": [
+        "sqpv-local-store",
+        "sqpv-async-store",
+        "sqpv-package-lifecycle"
+      ],
+      "direct_tests": [],
+      "excluded_direct_tests": [],
+      "known_internal_skips": []
+    },
+    {
+      "path": "modules/sqtv-conversion-engine",
+      "group": "quantitative",
+      "configure_options": {
+        "SYMPHONY_SQV_ADMIN_INSTALLED": "ON",
+        "BUILD_TESTING": true
+      },
+      "ctests": [],
+      "direct_tests": [
+        {
+          "target": "sqtv-conversion-engine-process-test",
+          "arguments": [
+            "--prefix",
+            "${PREFIX}",
+            "--input",
+            "${REPO}/modules/sqtv-conversion-engine/tests/fixtures/conversion_validate.json"
+          ],
+          "source": [
+            "modules/sqtv-conversion-engine/tests/process.cpp"
+          ]
+        }
+      ],
+      "excluded_direct_tests": [],
+      "known_internal_skips": []
+    },
+    {
+      "path": "modules/sqtv-integer-conversion-cpp",
+      "group": "quantitative",
+      "configure_options": {
+        "SYMPHONY_SQTV_USE_INSTALLED_DEPENDENCIES": "ON",
+        "BUILD_TESTING": true
+      },
+      "ctests": [
+        "sqtv-integer-conversion",
+        "sqtv-package-lifecycle"
+      ],
+      "direct_tests": [],
+      "excluded_direct_tests": [],
+      "known_internal_skips": []
+    },
+    {
+      "path": "modules/ssfv-engine",
+      "group": "knowledge",
+      "configure_options": {
+        "SYMPHONY_KVE_USE_INSTALLED": "ON",
+        "BUILD_TESTING": true
+      },
+      "ctests": [
+        "ssfv-engine-tests",
+        "ssfv-engine-process-smoke"
+      ],
+      "direct_tests": [],
+      "excluded_direct_tests": [],
+      "known_internal_skips": []
+    },
+    {
+      "path": "tools/authoring-cpp",
+      "group": "build_support",
+      "configure_options": {
+        "SYMPHONY_KVE_USE_INSTALLED": "ON",
+        "BUILD_TESTING": true
+      },
+      "ctests": [
+        "native-authoring-schema",
+        "native-authoring-local-references",
+        "native-authoring-scv"
+      ],
+      "direct_tests": [],
+      "excluded_direct_tests": [
+        {
+          "target": "shv-interface-tests",
+          "reason": "Authoring helper covered through owner-specific registered CTests; do not invoke with no arguments or count again as an independent authoring test."
+        },
+        {
+          "target": "shv-owner-interface-tests",
+          "reason": "Authoring helper covered through owner-specific registered CTests; do not invoke with no arguments or count again as an independent authoring test."
+        },
+        {
+          "target": "shv-profile-interface-tests",
+          "reason": "Authoring helper covered through owner-specific registered CTests; do not invoke with no arguments or count again as an independent authoring test."
+        }
+      ],
+      "known_internal_skips": []
+    },
+    {
+      "path": "tools/symphony-validator",
+      "group": "knowledge",
+      "configure_options": {
+        "SYMPHONY_KVE_USE_INSTALLED": "ON",
+        "BUILD_TESTING": true
+      },
+      "ctests": [
+        "sclv-temporal-tests",
+        "sclv-cross-reference-tests",
+        "caller-authority-tests",
+        "sodv-release-tests",
+        "feature-administration-tests",
+        "root-summary-tests",
+        "invariant-ownership-tests",
+        "canonical-surface-tests"
+      ],
+      "direct_tests": [],
+      "excluded_direct_tests": [
+        {
+          "target": "validator-fixture-prepare",
+          "reason": "Fixture utility, not an additional test case"
+        }
+      ],
+      "known_internal_skips": []
+    }
+  ],
+  "native_exclusions": [
+    {
+      "path": "modules/scv-graph-duckdb-connector",
+      "reason": "Legacy Intel-only DuckDB package; required-platform qualification remains L09."
+    },
+    {
+      "path": "modules/shv-graph-duckdb-connector",
+      "reason": "Legacy Intel-only DuckDB package; required-platform qualification remains L09."
+    }
+  ],
+  "go_modules": [
+    {
+      "path": "libraries/sbv-go",
+      "packages": [
+        "./..."
+      ]
+    },
+    {
+      "path": "libraries/stav-protocol-go",
+      "packages": [
+        "./..."
+      ]
+    },
+    {
+      "path": "modules/accordare-stav-producer",
+      "packages": [
+        "./..."
+      ]
+    },
+    {
+      "path": "modules/secure-identity-access-governance",
+      "packages": [
+        "./..."
+      ]
+    },
+    {
+      "path": "modules/stav-append-authority",
+      "packages": [
+        "./..."
+      ]
+    },
+    {
+      "path": "tools/qxctl",
+      "packages": [
+        "./..."
+      ]
+    },
+    {
+      "path": "tools/sov-stdio-adapter",
+      "packages": [
+        "./..."
+      ]
+    },
+    {
+      "path": "tools/sov-ssh-adapter",
+      "packages": [
+        "./..."
+      ]
+    }
+  ],
+  "optional_go_tests": [
+    {
+      "module": "modules/accordare-stav-producer",
+      "package": "./internal/producer",
+      "test": "TestInstalledSTAVAcceptance",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "set SYMPHONY_STAV_ACCEPTANCE_BINARY to an exact built STAV executable"
+      ],
+      "source": "modules/accordare-stav-producer/internal/producer/installed_stav_acceptance_test.go",
+      "line": 18
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./internal/sovremote",
+      "test": "TestTargetInstalledAuthorityAndBinding",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "select installed native SBV"
+      ],
+      "source": "tools/qxctl/internal/sovremote/execution_test.go",
+      "line": 272
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./internal/knowledgeengine",
+      "test": "TestSBVInstalledNativeProvider",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "set exact installation and emitted native provider fixture directory"
+      ],
+      "source": "tools/qxctl/internal/knowledgeengine/sbv_provider_test.go",
+      "line": 79
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./internal/knowledgeengine",
+      "test": "TestSBVInstalledNestedSplit",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "exact installed native and nested fixture required"
+      ],
+      "source": "tools/qxctl/internal/knowledgeengine/sbv_nested_test.go",
+      "line": 51
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./internal/knowledgeengine",
+      "test": "TestSBVInstalledPartitionedReceipts",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "select exact installed prefix, existing source request and new evidence root"
+      ],
+      "source": "tools/qxctl/internal/knowledgeengine/sbv_partitioned_installed_test.go",
+      "line": 14
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./internal/knowledgeengine",
+      "test": "TestSHVInterfaceOwnersInstalled",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "select the five interface-owner packages"
+      ],
+      "source": "tools/qxctl/internal/knowledgeengine/shv_interface_versions_test.go",
+      "line": 10
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./internal/knowledgeengine",
+      "test": "TestSQVAdministrationInstalled",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "set SQV_ADMIN_TEST_PREFIX and SQV_ADMIN_FIXTURES for installed integration"
+      ],
+      "source": "tools/qxctl/internal/knowledgeengine/sqv_administration_test.go",
+      "line": 192
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./internal/knowledgeengine",
+      "test": "TestInstalledSCVSchemaDiscoveryWithoutCheckout",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "requires exact .4 packages"
+      ],
+      "source": "tools/qxctl/internal/knowledgeengine/scv_schema_test.go",
+      "line": 20
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./internal/knowledgeengine",
+      "test": "TestInstalledSCVCoverageDiscoveryIncludesExactCompanion",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "requires exact .5 packages"
+      ],
+      "source": "tools/qxctl/internal/knowledgeengine/scv_schema_test.go",
+      "line": 80
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./internal/knowledgeengine",
+      "test": "TestInstalledSCVSchemaDiscoveryRejectsChangedOwnedBytes",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "requires exact .4 package"
+      ],
+      "source": "tools/qxctl/internal/knowledgeengine/scv_schema_test.go",
+      "line": 124
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./internal/knowledgeengine",
+      "test": "TestSBVInstalledOwnerEvidenceSchema",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "select installed owner-route evidence"
+      ],
+      "source": "tools/qxctl/internal/knowledgeengine/sbv_sources_test.go",
+      "line": 16
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./internal/knowledgeengine",
+      "test": "TestSBVNativeRecoveryFixtures",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "select native emitted recovery fixtures"
+      ],
+      "source": "tools/qxctl/internal/knowledgeengine/sbv_sources_test.go",
+      "line": 157
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./internal/knowledgeengine",
+      "test": "TestSBVInstalledBoundary",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "set exact installed SBV prefix"
+      ],
+      "source": "tools/qxctl/internal/knowledgeengine/sbv_installed_test.go",
+      "line": 13
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./internal/knowledgeengine",
+      "test": "TestInstalledSCVProfileConnectionProvenance",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "requires exact installed 0.3.0-dev packages"
+      ],
+      "source": "tools/qxctl/internal/knowledgeengine/scv_interpretation_test.go",
+      "line": 37
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./internal/knowledgeengine",
+      "test": "TestInstalledSCVConnectionReasonParityAcrossExactVersions",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "requires exact selected package"
+      ],
+      "source": "tools/qxctl/internal/knowledgeengine/scv_interpretation_test.go",
+      "line": 295
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./internal/knowledgeengine",
+      "test": "TestSBVInstalledBinary",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "installed native binary fixtures required"
+      ],
+      "source": "tools/qxctl/internal/knowledgeengine/sbv_binary_test.go",
+      "line": 40
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./internal/knowledgeengine",
+      "test": "TestSBVInstalledBook",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "set exact installation and native-emitted book fixture"
+      ],
+      "source": "tools/qxctl/internal/knowledgeengine/sbv_book_test.go",
+      "line": 11
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./internal/knowledgeengine",
+      "test": "TestInstalledSCVCompositionEnumerationAndTamper",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "requires exact installed 0.6.0-dev packages"
+      ],
+      "source": "tools/qxctl/internal/knowledgeengine/scv_composition_test.go",
+      "line": 50
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./internal/knowledgeengine",
+      "test": "TestSBVInstalledModels",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "set exact installed prefix and emitted offline model fixture"
+      ],
+      "source": "tools/qxctl/internal/knowledgeengine/sbv_models_test.go",
+      "line": 11
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./internal/knowledgeengine",
+      "test": "TestInstalledSCVProfilePreparation",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "requires exact .4 packages"
+      ],
+      "source": "tools/qxctl/internal/knowledgeengine/scv_profile_test.go",
+      "line": 35
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./internal/knowledgeengine",
+      "test": "TestSBVInstalledDependencies",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "exact installed SBV and dependency fixtures required"
+      ],
+      "source": "tools/qxctl/internal/knowledgeengine/sbv_dependencies_test.go",
+      "line": 11
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./internal/knowledgeengine",
+      "test": "TestSBVInstalledResearchHistory",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "exact installed SBV and history fixtures required"
+      ],
+      "source": "tools/qxctl/internal/knowledgeengine/sbv_history_test.go",
+      "line": 12
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./internal/knowledgeengine",
+      "test": "TestInstalledSCVObligationConsumerAndCallerContinuity",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "requires exact installed 0.8.0-dev owner"
+      ],
+      "source": "tools/qxctl/internal/knowledgeengine/scv_obligation_test.go",
+      "line": 195
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./internal/knowledgeengine",
+      "test": "TestInstalledSCVOwnerInterfaceAndSchemasWithoutCheckout",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "requires exact .6 packages"
+      ],
+      "source": "tools/qxctl/internal/knowledgeengine/scv_interface_test.go",
+      "line": 93
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./internal/knowledgeengine",
+      "test": "TestInstalledSCVOwnerInterfaceRejectsAlteredOwnedBytes",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "requires exact .6 package"
+      ],
+      "source": "tools/qxctl/internal/knowledgeengine/scv_interface_test.go",
+      "line": 125
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./internal/knowledgeengine",
+      "test": "TestSHVProfileNativeCorrespondence",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "set SHV_PROFILE_CASES to retained native/installed acceptance cases"
+      ],
+      "source": "tools/qxctl/internal/knowledgeengine/shv_profile_test.go",
+      "line": 124
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./internal/knowledgeengine",
+      "test": "TestSBVInstalledAllocationEconomics",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "set exact installation and native-emitted allocation economics fixture"
+      ],
+      "source": "tools/qxctl/internal/knowledgeengine/sbv_allocation_economics_test.go",
+      "line": 11
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./internal/knowledgeengine",
+      "test": "TestInstalledSCVProviderCoverageSelectedEvidenceAndIndependentPolicies",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "requires exact installed 0.5.0-dev packages"
+      ],
+      "source": "tools/qxctl/internal/knowledgeengine/scv_coverage_test.go",
+      "line": 69
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./internal/knowledgeengine",
+      "test": "TestSBVInstalledCensusContinuity",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "set exact installation and emitted census fixture directory"
+      ],
+      "source": "tools/qxctl/internal/knowledgeengine/sbv_census_test.go",
+      "line": 12
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./internal/knowledgeengine",
+      "test": "TestSBVInstalledEconomicComposition",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "set exact installation and native-emitted composition fixtures"
+      ],
+      "source": "tools/qxctl/internal/knowledgeengine/sbv_census_test.go",
+      "line": 105
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./internal/knowledgeengine",
+      "test": "TestSBVInstalledAnalysis",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "exact installed SBV and native analysis/comparison fixtures required"
+      ],
+      "source": "tools/qxctl/internal/knowledgeengine/sbv_analysis_test.go",
+      "line": 11
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./internal/knowledgeengine",
+      "test": "TestSBVInstalledResearch",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "exact installed SBV and research fixtures required"
+      ],
+      "source": "tools/qxctl/internal/knowledgeengine/sbv_research_test.go",
+      "line": 11
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./internal/knowledgeengine",
+      "test": "TestSBVInstalledLiquidity",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "set exact installation and native-emitted liquidity fixture"
+      ],
+      "source": "tools/qxctl/internal/knowledgeengine/sbv_liquidity_test.go",
+      "line": 11
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./internal/knowledgeengine",
+      "test": "TestSBVInstalledResidentControls",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "installed SBV/source fixture not selected"
+      ],
+      "source": "tools/qxctl/internal/knowledgeengine/sbv_resident_test.go",
+      "line": 61
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./internal/knowledgeengine",
+      "test": "TestSNVObserverInstalledConsumer",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "SNV_OBSERVER_TEST_PREFIX selects the independently installed optional collector"
+      ],
+      "source": "tools/qxctl/internal/knowledgeengine/snv_observer_installed_test.go",
+      "line": 11
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./internal/knowledgeengine",
+      "test": "TestInstalledSCVDomainDescriptors",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "requires exact staged SCV domain installations"
+      ],
+      "source": "tools/qxctl/internal/knowledgeengine/scv_test.go",
+      "line": 52
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./internal/knowledgeengine",
+      "test": "TestInstalledSCVRetainsExactOldAndNewOperationSets",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "requires retained 0.1.0-dev and separate 0.2.0-dev installations"
+      ],
+      "source": "tools/qxctl/internal/knowledgeengine/scv_test.go",
+      "line": 74
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./internal/knowledgeengine",
+      "test": "TestSHVInstalledNativeOperations",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "requires explicit installed SHV and adapter prefixes"
+      ],
+      "source": "tools/qxctl/internal/knowledgeengine/shv_test.go",
+      "line": 200
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./internal/knowledgeengine",
+      "test": "TestSBVInstalledAdaptive",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "installed native and adaptive fixture required"
+      ],
+      "source": "tools/qxctl/internal/knowledgeengine/sbv_adaptive_test.go",
+      "line": 38
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./internal/knowledgeengine",
+      "test": "TestSBVInstalledDurableJobs",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "select exact installed SBV prefix"
+      ],
+      "source": "tools/qxctl/internal/knowledgeengine/sbv_jobs_test.go",
+      "line": 77
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./internal/knowledgeengine",
+      "test": "TestSBVInstalledResourceAdmission",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "selected installed resource evidence not configured"
+      ],
+      "source": "tools/qxctl/internal/knowledgeengine/sbv_resource_test.go",
+      "line": 11
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./internal/knowledgeengine",
+      "test": "TestSHVSourceInterfaceInstalledReplay",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "set SHV_OWNER_INTERFACE_PREFIX to the source/publication interface installation"
+      ],
+      "source": "tools/qxctl/internal/knowledgeengine/shv_owner_interface_test.go",
+      "line": 9
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./internal/knowledgeengine",
+      "test": "TestSHVPublicationInterfaceInstalledReplay",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "set SHV_OWNER_INTERFACE_PREFIX to the source/publication interface installation"
+      ],
+      "source": "tools/qxctl/internal/knowledgeengine/shv_owner_interface_test.go",
+      "line": 47
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./internal/knowledgeengine",
+      "test": "TestSBVInstalledTemporalSplit",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "exact installed SBV and split fixtures required"
+      ],
+      "source": "tools/qxctl/internal/knowledgeengine/sbv_split_test.go",
+      "line": 11
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./internal/knowledgeengine",
+      "test": "TestSBVInstalledCombinatorialSplit",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "exact installed SBV and combinatorial fixtures required"
+      ],
+      "source": "tools/qxctl/internal/knowledgeengine/sbv_split_test.go",
+      "line": 116
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./internal/knowledgeengine",
+      "test": "TestSBVInstalledFitPredict",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "exact installed SBV and fit fixtures required"
+      ],
+      "source": "tools/qxctl/internal/knowledgeengine/sbv_split_test.go",
+      "line": 212
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./internal/knowledgeengine",
+      "test": "TestSBVInstalledPlanning",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "set exact prefix and planning fixture directory"
+      ],
+      "source": "tools/qxctl/internal/knowledgeengine/sbv_planning_test.go",
+      "line": 11
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./internal/knowledgeengine",
+      "test": "TestSHVTablesInstalled",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "explicit installed 0.2.0-dev kernel required"
+      ],
+      "source": "tools/qxctl/internal/knowledgeengine/shv_tables_test.go",
+      "line": 187
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./internal/knowledgeengine",
+      "test": "TestSBVInstalledQueueScenarios",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "select exact installation and native queue fixture"
+      ],
+      "source": "tools/qxctl/internal/knowledgeengine/sbv_queue_test.go",
+      "line": 11
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./internal/knowledgeengine",
+      "test": "TestInstalledSCVProviderPackConsumer",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "requires exact .6 installed owner"
+      ],
+      "source": "tools/qxctl/internal/knowledgeengine/scv_pack_test.go",
+      "line": 175
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./internal/knowledgeengine",
+      "test": "TestSHVProfileDiagnosticsInstalledCorrespondence",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "set SHV_DIAGNOSTIC_CASES to the installed diagnostic campaign"
+      ],
+      "source": "tools/qxctl/internal/knowledgeengine/shv_profile_diagnostics_test.go",
+      "line": 45
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./internal/knowledgeengine",
+      "test": "TestSBVInstalledAccountSimulation",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "select exact installation and account fixture directory"
+      ],
+      "source": "tools/qxctl/internal/knowledgeengine/sbv_account_test.go",
+      "line": 12
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./internal/knowledgeengine",
+      "test": "TestSQAVInstalled",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "set SQAV_REQUEST_TEST_PREFIX to a verified native installation"
+      ],
+      "source": "tools/qxctl/internal/knowledgeengine/sqav_request_test.go",
+      "line": 48
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./internal/knowledgeengine",
+      "test": "TestSHVLifecycleInstalled",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "explicit installed SHV source prefix required"
+      ],
+      "source": "tools/qxctl/internal/knowledgeengine/shv_lifecycle_test.go",
+      "line": 194
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./internal/knowledgeengine",
+      "test": "TestSNVInstalledAdversarialTransport",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "SYMPHONY_SNV_TEST_PREFIX selects an actual installed SNIV package"
+      ],
+      "source": "tools/qxctl/internal/knowledgeengine/snv_transport_adversarial_test.go",
+      "line": 21
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./internal/knowledgeengine",
+      "test": "TestSNVAdversarialChildProcess",
+      "classification": "subprocess_helper",
+      "reasons": [
+        "actual child helper invoked by the installed transport gate"
+      ],
+      "source": "tools/qxctl/internal/knowledgeengine/snv_transport_adversarial_test.go",
+      "line": 132
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./internal/knowledgeengine",
+      "test": "TestSNVCLIWrapperSchemas",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "set SYMPHONY_SNV_WRAPPER_TEST_EVIDENCE to preserved independent real CLI outputs"
+      ],
+      "source": "tools/qxctl/internal/knowledgeengine/snv_wrapper_schema_test.go",
+      "line": 11
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./internal/knowledgeengine",
+      "test": "TestInstalledSCVBundleCodecAndFourLogicalOperations",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "requires exact installed .9 owner"
+      ],
+      "source": "tools/qxctl/internal/knowledgeengine/scv_bundle_test.go",
+      "line": 258
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./internal/knowledgeengine",
+      "test": "TestSBVInstalledEconomics",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "set exact installation and native-emitted economics fixture"
+      ],
+      "source": "tools/qxctl/internal/knowledgeengine/sbv_economics_test.go",
+      "line": 11
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./internal/knowledgeengine",
+      "test": "TestSNVInterfaceResourcesRejectTampering",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "SNV_TEST_PREFIX selects actual installed package gate"
+      ],
+      "source": "tools/qxctl/internal/knowledgeengine/snv_test.go",
+      "line": 180
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./internal/knowledgeengine",
+      "test": "TestSNVInstalledConsumer",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "SNV_TEST_PREFIX selects actual installed package gate"
+      ],
+      "source": "tools/qxctl/internal/knowledgeengine/snv_test.go",
+      "line": 225
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./internal/snvstate",
+      "test": "TestSNVCompetingWriterProcess",
+      "classification": "subprocess_helper",
+      "reasons": [
+        "separate competing-writer helper"
+      ],
+      "source": "tools/qxctl/internal/snvstate/store_test.go",
+      "line": 657
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./internal/snvstate",
+      "test": "TestSNVAuthorizationHistoryFixture",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "set explicit disposable history fixture root"
+      ],
+      "source": "tools/qxctl/internal/snvstate/errors_test.go",
+      "line": 112
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./cmd/qxctl",
+      "test": "TestInstalledSCVBundleWorkflowOriginalOwnersAndEveryDurableBoundary",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "requires exact .10 bundle workflow and preserved .6 package installations"
+      ],
+      "source": "tools/qxctl/cmd/qxctl/scv_bundle_workflow_test.go",
+      "line": 382
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./cmd/qxctl",
+      "test": "TestInstalledSCVCompositionArtifactsRetainExactOwnerAndRejectEarlierAdmission",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "requires exact installed 0.6.0-dev SCV owners"
+      ],
+      "source": "tools/qxctl/cmd/qxctl/scv_composition_test.go",
+      "line": 11
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./cmd/qxctl",
+      "test": "TestSNVFollowupAuthorizationHistoryPaging",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "set exact disposable2000-record history fixture"
+      ],
+      "source": "tools/qxctl/cmd/qxctl/snv_followup_test.go",
+      "line": 212
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./cmd/qxctl",
+      "test": "TestInstalledSCVProviderCoverageArtifactsReplayOriginalOwner",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "requires exact installed 0.5.0-dev packages"
+      ],
+      "source": "tools/qxctl/cmd/qxctl/scv_coverage_test.go",
+      "line": 39
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./cmd/qxctl",
+      "test": "TestInstalledSCVCompositionWorkflowRetainsOriginalOwnersAndRecovers",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "requires exact .7 workflow and preserved .6 package installations"
+      ],
+      "source": "tools/qxctl/cmd/qxctl/scv_composition_workflow_test.go",
+      "line": 249
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./cmd/qxctl",
+      "test": "TestSHVActivationInstalledReadOnlyAndRejections",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "explicit production CLI and source installation required"
+      ],
+      "source": "tools/qxctl/cmd/qxctl/shv_source_activation_test.go",
+      "line": 114
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./cmd/qxctl",
+      "test": "TestInstalledSCVJSONFailureAndSuccessCompatibility",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "requires exact installed 0.3.0-dev package"
+      ],
+      "source": "tools/qxctl/cmd/qxctl/cli_errors_test.go",
+      "line": 170
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./cmd/qxctl",
+      "test": "TestInstalledSCVSourceDeniedThenAuthorizedReplay",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "requires exact staged SCV engines"
+      ],
+      "source": "tools/qxctl/cmd/qxctl/scv_test.go",
+      "line": 44
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./cmd/qxctl",
+      "test": "TestInstalledNamedVersionAcceptance",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "installed Named Version acceptance requires an exact staged prefix and repository"
+      ],
+      "source": "tools/qxctl/cmd/qxctl/named_version_installed_acceptance_test.go",
+      "line": 17
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./cmd/qxctl",
+      "test": "TestSHVInstalledCLIProcess",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "requires explicit production qxctl and exact installed SHV/adapter prefixes"
+      ],
+      "source": "tools/qxctl/cmd/qxctl/shv_test.go",
+      "line": 70
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./cmd/qxctl",
+      "test": "TestSHVLifecycleInstalledProductionCLI",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "explicit built qxctl and installed source prefix required"
+      ],
+      "source": "tools/qxctl/cmd/qxctl/shv_source_test.go",
+      "line": 46
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./cmd/qxctl",
+      "test": "TestSHVLifecycleInstalledCLISequence",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "explicit production binary and installed prefix required"
+      ],
+      "source": "tools/qxctl/cmd/qxctl/shv_source_test.go",
+      "line": 86
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./cmd/qxctl",
+      "test": "TestInstalledSCVBundleRoutesPreserveValidReplacementAndSurrogatePair",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "requires exact installed .9 bundle owner"
+      ],
+      "source": "tools/qxctl/cmd/qxctl/scv_bundle_test.go",
+      "line": 142
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./cmd/qxctl",
+      "test": "TestInstalledSCVBundlePackOutputRoundtripsAtFileBound",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "requires exact installed .9 bundle owner"
+      ],
+      "source": "tools/qxctl/cmd/qxctl/scv_bundle_test.go",
+      "line": 206
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./cmd/qxctl",
+      "test": "TestInstalledSCVCorpusRecoveryPinsSourcesAndRetainsFailedAttempts",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "requires exact installed 0.2.0-dev SCV engine"
+      ],
+      "source": "tools/qxctl/cmd/qxctl/scv_corpus_test.go",
+      "line": 95,
+      "skip_origin": "shared fixture admission helper in this source file"
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./cmd/qxctl",
+      "test": "TestInstalledSCVCorpusRejectsTamperedCaptureAndWrongCompletedSnapshot",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "requires exact installed 0.2.0-dev SCV engine"
+      ],
+      "source": "tools/qxctl/cmd/qxctl/scv_corpus_test.go",
+      "line": 175,
+      "skip_origin": "shared fixture admission helper in this source file"
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./cmd/qxctl",
+      "test": "TestInstalledSCVCorpusClockRollbackRemainsRecoverable",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "requires exact installed 0.2.0-dev SCV engine"
+      ],
+      "source": "tools/qxctl/cmd/qxctl/scv_corpus_test.go",
+      "line": 206,
+      "skip_origin": "shared fixture admission helper in this source file"
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./cmd/qxctl",
+      "test": "TestInstalledSCVCorpusExportBounds",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "requires exact installed 0.2.0-dev SCV engine"
+      ],
+      "source": "tools/qxctl/cmd/qxctl/scv_corpus_test.go",
+      "line": 247,
+      "skip_origin": "shared fixture admission helper in this source file"
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./cmd/qxctl",
+      "test": "TestInstalledSCVCorpusRejectsUnverifiableSuccessorBeforePublication",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "requires exact installed 0.2.0-dev SCV engine"
+      ],
+      "source": "tools/qxctl/cmd/qxctl/scv_corpus_test.go",
+      "line": 277,
+      "skip_origin": "shared fixture admission helper in this source file"
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./cmd/qxctl",
+      "test": "TestInstalledSCVCorpusDeadlineRetainsFailureCheckpoint",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "requires exact installed 0.2.0-dev SCV engine"
+      ],
+      "source": "tools/qxctl/cmd/qxctl/scv_corpus_test.go",
+      "line": 323,
+      "skip_origin": "shared fixture admission helper in this source file"
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./cmd/qxctl",
+      "test": "TestSCVProjectionRejectsForgedGraphBeforeIntent",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "requires receipt-owned installed SCV acceptance prefix"
+      ],
+      "source": "tools/qxctl/cmd/qxctl/scv_graph_test.go",
+      "line": 36,
+      "skip_origin": "shared fixture admission helper in this source file"
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./cmd/qxctl",
+      "test": "TestSCVProjectionRequiresAuditedAuthorization",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "requires receipt-owned installed SCV acceptance prefix"
+      ],
+      "source": "tools/qxctl/cmd/qxctl/scv_graph_test.go",
+      "line": 62,
+      "skip_origin": "shared fixture admission helper in this source file"
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./cmd/qxctl",
+      "test": "TestSCVLogicalProjectionOracle",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "requires SYMPHONY_SCV_PROJECTION_RECORD pointing to an exact retained bundle record"
+      ],
+      "source": "tools/qxctl/cmd/qxctl/scv_projection_bench_test.go",
+      "line": 101,
+      "skip_origin": "shared fixture admission helper in this source file"
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./cmd/qxctl",
+      "test": "TestInstalledSCVGraphAuthorizedSelectionReplay",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "requires exact staged SCV engines"
+      ],
+      "source": "tools/qxctl/cmd/qxctl/scv_test.go",
+      "line": 139,
+      "skip_origin": "shared fixture admission helper in this source file"
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./cmd/qxctl",
+      "test": "TestInstalledSCVWorkflowNativeRecoveryRefreshReassessmentAndComposition",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "requires exact installed 0.4.0-dev SCV owners"
+      ],
+      "source": "tools/qxctl/cmd/qxctl/scv_workflow_test.go",
+      "line": 369,
+      "skip_origin": "shared fixture admission helper in this source file"
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./cmd/qxctl",
+      "test": "TestInstalledSCVCorpusMetadataQueryExceedsExportBound",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "requires exact installed 0.4.0-dev SCV owners"
+      ],
+      "source": "tools/qxctl/cmd/qxctl/scv_workflow_test.go",
+      "line": 464,
+      "skip_origin": "shared fixture admission helper in this source file"
+    }
+  ],
+  "installed_go_suites": [
+    {
+      "group": "knowledge",
+      "module": "tools/qxctl",
+      "package": "./internal/knowledgeengine",
+      "tests": [
+        "TestSNVInterfaceResourcesRejectTampering",
+        "TestSNVInstalledConsumer",
+        "TestSNVInstalledAdversarialTransport",
+        "TestSNVObserverInstalledConsumer"
+      ],
+      "prefix_environment": [
+        "SNV_TEST_PREFIX",
+        "SYMPHONY_SNV_TEST_PREFIX",
+        "SNV_OBSERVER_TEST_PREFIX"
+      ]
+    },
+    {
+      "group": "quantitative",
+      "module": "tools/qxctl",
+      "package": "./internal/knowledgeengine",
+      "tests": [
+        "TestSBVInstalledBoundary",
+        "TestSQAVInstalled"
+      ],
+      "prefix_environment": [
+        "SYMPHONY_SBV_TEST_PREFIX",
+        "SQAV_REQUEST_TEST_PREFIX"
+      ]
+    }
+  ],
+  "required_go_tests": [
+    {
+      "module": "tools/qxctl",
+      "package": "./internal/knowledgeengine",
+      "tests": [
+        "TestInvokeDeadlineTerminatesDescendantsHoldingOutput",
+        "TestInvokeLeaderExitBoundsPipesAndCleansDescendants"
+      ]
+    }
+  ],
+  "swift": {
+    "path": "modules/ssiag-provider-macos-keychain",
+    "profiles": [
+      "Darwin"
+    ],
+    "scope": "metadata, protocol, lifecycle and native trust fixtures; all operational access remains disabled"
+  },
+  "boundaries": [
+    "A classified optional Go skip is recorded, never counted as executed installed coverage. Selected installed suites reject every skip.",
+    "Historical SCV/SHV prefixes and native-emitted SBV research fixtures remain separately selected evidence.",
+    "Source-only prototypes and operational/provider activation are not admitted by this manifest."
+  ],
+  "native_totals": {
+    "roots": 55,
+    "ctests": 161,
+    "direct_tests": 16
+  }
+}

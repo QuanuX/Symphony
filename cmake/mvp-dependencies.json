@@ -965,7 +965,9 @@
       "allowed_shared_implementation_sources": [
         "modules/scv-engine/src"
       ],
-      "allowed_test_implementation_sources": [],
+      "allowed_test_implementation_sources": [
+        "modules/scv-engine/tests/installed_integration.cpp"
+      ],
       "qualification_group": "cloud"
     },
     {
@@ -998,7 +1000,9 @@
       "allowed_shared_implementation_sources": [
         "modules/scv-engine/src"
       ],
-      "allowed_test_implementation_sources": [],
+      "allowed_test_implementation_sources": [
+        "modules/scv-engine/tests/installed_integration.cpp"
+      ],
       "qualification_group": "cloud"
     },
     {
@@ -1031,7 +1035,9 @@
       "allowed_shared_implementation_sources": [
         "modules/scv-engine/src"
       ],
-      "allowed_test_implementation_sources": [],
+      "allowed_test_implementation_sources": [
+        "modules/scv-engine/tests/installed_integration.cpp"
+      ],
       "qualification_group": "cloud"
     },
     {
@@ -1064,7 +1070,9 @@
       "allowed_shared_implementation_sources": [
         "modules/scv-engine/src"
       ],
-      "allowed_test_implementation_sources": [],
+      "allowed_test_implementation_sources": [
+        "modules/scv-engine/tests/installed_integration.cpp"
+      ],
       "qualification_group": "cloud"
     },
     {
@@ -1097,7 +1105,9 @@
       "allowed_shared_implementation_sources": [
         "modules/scv-engine/src"
       ],
-      "allowed_test_implementation_sources": [],
+      "allowed_test_implementation_sources": [
+        "modules/scv-engine/tests/installed_integration.cpp"
+      ],
       "qualification_group": "cloud"
     },
     {
@@ -1130,7 +1140,9 @@
       "allowed_shared_implementation_sources": [
         "modules/scv-engine/src"
       ],
-      "allowed_test_implementation_sources": [],
+      "allowed_test_implementation_sources": [
+        "modules/scv-engine/tests/installed_integration.cpp"
+      ],
       "qualification_group": "cloud"
     },
     {
@@ -1163,7 +1175,9 @@
       "allowed_shared_implementation_sources": [
         "modules/scv-engine/src"
       ],
-      "allowed_test_implementation_sources": [],
+      "allowed_test_implementation_sources": [
+        "modules/scv-engine/tests/installed_integration.cpp"
+      ],
       "qualification_group": "cloud"
     },
     {
@@ -1335,8 +1349,27 @@
       "allowed_shared_implementation_sources": [
         "modules/scv-engine/src"
       ],
-      "allowed_test_implementation_sources": [],
-      "qualification_group": "cloud"
+      "allowed_test_implementation_sources": [
+        "modules/scv-engine/tests/interface_generation_test.cpp",
+        "modules/scv-engine/tools/generate_interface.cpp",
+        "modules/shv-engine/scripts/build_schema.cpp",
+        "modules/shv-profile-engine/scripts/build_schema.cpp",
+        "modules/shv-profile-engine/tests/interface_test.cpp",
+        "modules/shv-profile-engine/tools/generate_interface.cpp",
+        "modules/shv-source-engine/scripts/build_schema.cpp",
+        "tools/authoring-cpp/local_refs_test.cpp",
+        "tools/authoring-cpp/schema_test.cpp",
+        "tools/qxctl/scripts/build_shv_activation_schema.cpp",
+        "tools/qxctl/scripts/build_shv_refresh_schema.cpp",
+        "tools/shv-interface-codegen/generate.cpp",
+        "tools/shv-interface-codegen/owner_codegen.cpp",
+        "tools/shv-interface-codegen/tests/interface_test.cpp",
+        "tools/shv-interface-codegen/tests/owner_test.cpp"
+      ],
+      "qualification_group": "cloud",
+      "allowed_test_build_directories": [
+        "tools/authoring-cpp"
+      ]
     },
     {
       "component_id": "scv-graph-duckdb-connector",
@@ -1430,8 +1463,27 @@
       "allowed_shared_implementation_sources": [
         "modules/shv-pdf-adapter/src"
       ],
-      "allowed_test_implementation_sources": [],
-      "qualification_group": "knowledge"
+      "allowed_test_implementation_sources": [
+        "modules/scv-engine/tests/interface_generation_test.cpp",
+        "modules/scv-engine/tools/generate_interface.cpp",
+        "modules/shv-engine/scripts/build_schema.cpp",
+        "modules/shv-profile-engine/scripts/build_schema.cpp",
+        "modules/shv-profile-engine/tests/interface_test.cpp",
+        "modules/shv-profile-engine/tools/generate_interface.cpp",
+        "modules/shv-source-engine/scripts/build_schema.cpp",
+        "tools/authoring-cpp/local_refs_test.cpp",
+        "tools/authoring-cpp/schema_test.cpp",
+        "tools/qxctl/scripts/build_shv_activation_schema.cpp",
+        "tools/qxctl/scripts/build_shv_refresh_schema.cpp",
+        "tools/shv-interface-codegen/generate.cpp",
+        "tools/shv-interface-codegen/owner_codegen.cpp",
+        "tools/shv-interface-codegen/tests/interface_test.cpp",
+        "tools/shv-interface-codegen/tests/owner_test.cpp"
+      ],
+      "qualification_group": "knowledge",
+      "allowed_test_build_directories": [
+        "tools/authoring-cpp"
+      ]
     },
     {
       "component_id": "shv-graph-adapter",
@@ -1486,8 +1538,27 @@
         }
       ],
       "allowed_shared_implementation_sources": [],
-      "allowed_test_implementation_sources": [],
-      "qualification_group": "knowledge"
+      "allowed_test_implementation_sources": [
+        "modules/scv-engine/tests/interface_generation_test.cpp",
+        "modules/scv-engine/tools/generate_interface.cpp",
+        "modules/shv-engine/scripts/build_schema.cpp",
+        "modules/shv-profile-engine/scripts/build_schema.cpp",
+        "modules/shv-profile-engine/tests/interface_test.cpp",
+        "modules/shv-profile-engine/tools/generate_interface.cpp",
+        "modules/shv-source-engine/scripts/build_schema.cpp",
+        "tools/authoring-cpp/local_refs_test.cpp",
+        "tools/authoring-cpp/schema_test.cpp",
+        "tools/qxctl/scripts/build_shv_activation_schema.cpp",
+        "tools/qxctl/scripts/build_shv_refresh_schema.cpp",
+        "tools/shv-interface-codegen/generate.cpp",
+        "tools/shv-interface-codegen/owner_codegen.cpp",
+        "tools/shv-interface-codegen/tests/interface_test.cpp",
+        "tools/shv-interface-codegen/tests/owner_test.cpp"
+      ],
+      "qualification_group": "knowledge",
+      "allowed_test_build_directories": [
+        "tools/authoring-cpp"
+      ]
     },
     {
       "component_id": "shv-graph-duckdb-connector",
@@ -1550,8 +1621,27 @@
       "installable": true,
       "installed_sdk_consumer_checks": [],
       "allowed_shared_implementation_sources": [],
-      "allowed_test_implementation_sources": [],
-      "qualification_group": "knowledge"
+      "allowed_test_implementation_sources": [
+        "modules/scv-engine/tests/interface_generation_test.cpp",
+        "modules/scv-engine/tools/generate_interface.cpp",
+        "modules/shv-engine/scripts/build_schema.cpp",
+        "modules/shv-profile-engine/scripts/build_schema.cpp",
+        "modules/shv-profile-engine/tests/interface_test.cpp",
+        "modules/shv-profile-engine/tools/generate_interface.cpp",
+        "modules/shv-source-engine/scripts/build_schema.cpp",
+        "tools/authoring-cpp/local_refs_test.cpp",
+        "tools/authoring-cpp/schema_test.cpp",
+        "tools/qxctl/scripts/build_shv_activation_schema.cpp",
+        "tools/qxctl/scripts/build_shv_refresh_schema.cpp",
+        "tools/shv-interface-codegen/generate.cpp",
+        "tools/shv-interface-codegen/owner_codegen.cpp",
+        "tools/shv-interface-codegen/tests/interface_test.cpp",
+        "tools/shv-interface-codegen/tests/owner_test.cpp"
+      ],
+      "qualification_group": "knowledge",
+      "allowed_test_build_directories": [
+        "tools/authoring-cpp"
+      ]
     },
     {
       "component_id": "shv-pdf-adapter",
@@ -1581,8 +1671,27 @@
       "installable": true,
       "installed_sdk_consumer_checks": [],
       "allowed_shared_implementation_sources": [],
-      "allowed_test_implementation_sources": [],
-      "qualification_group": "knowledge"
+      "allowed_test_implementation_sources": [
+        "modules/scv-engine/tests/interface_generation_test.cpp",
+        "modules/scv-engine/tools/generate_interface.cpp",
+        "modules/shv-engine/scripts/build_schema.cpp",
+        "modules/shv-profile-engine/scripts/build_schema.cpp",
+        "modules/shv-profile-engine/tests/interface_test.cpp",
+        "modules/shv-profile-engine/tools/generate_interface.cpp",
+        "modules/shv-source-engine/scripts/build_schema.cpp",
+        "tools/authoring-cpp/local_refs_test.cpp",
+        "tools/authoring-cpp/schema_test.cpp",
+        "tools/qxctl/scripts/build_shv_activation_schema.cpp",
+        "tools/qxctl/scripts/build_shv_refresh_schema.cpp",
+        "tools/shv-interface-codegen/generate.cpp",
+        "tools/shv-interface-codegen/owner_codegen.cpp",
+        "tools/shv-interface-codegen/tests/interface_test.cpp",
+        "tools/shv-interface-codegen/tests/owner_test.cpp"
+      ],
+      "qualification_group": "knowledge",
+      "allowed_test_build_directories": [
+        "tools/authoring-cpp"
+      ]
     },
     {
       "component_id": "shv-profile-engine",
@@ -1615,8 +1724,27 @@
         "modules/shv-pdf-adapter/src",
         "modules/shv-engine/src"
       ],
-      "allowed_test_implementation_sources": [],
-      "qualification_group": "knowledge"
+      "allowed_test_implementation_sources": [
+        "modules/scv-engine/tests/interface_generation_test.cpp",
+        "modules/scv-engine/tools/generate_interface.cpp",
+        "modules/shv-engine/scripts/build_schema.cpp",
+        "modules/shv-profile-engine/scripts/build_schema.cpp",
+        "modules/shv-profile-engine/tests/interface_test.cpp",
+        "modules/shv-profile-engine/tools/generate_interface.cpp",
+        "modules/shv-source-engine/scripts/build_schema.cpp",
+        "tools/authoring-cpp/local_refs_test.cpp",
+        "tools/authoring-cpp/schema_test.cpp",
+        "tools/qxctl/scripts/build_shv_activation_schema.cpp",
+        "tools/qxctl/scripts/build_shv_refresh_schema.cpp",
+        "tools/shv-interface-codegen/generate.cpp",
+        "tools/shv-interface-codegen/owner_codegen.cpp",
+        "tools/shv-interface-codegen/tests/interface_test.cpp",
+        "tools/shv-interface-codegen/tests/owner_test.cpp"
+      ],
+      "qualification_group": "knowledge",
+      "allowed_test_build_directories": [
+        "tools/authoring-cpp"
+      ]
     },
     {
       "component_id": "shv-publication-engine",
@@ -1648,8 +1776,27 @@
       "allowed_shared_implementation_sources": [
         "modules/shv-partition-engine/src"
       ],
-      "allowed_test_implementation_sources": [],
-      "qualification_group": "knowledge"
+      "allowed_test_implementation_sources": [
+        "modules/scv-engine/tests/interface_generation_test.cpp",
+        "modules/scv-engine/tools/generate_interface.cpp",
+        "modules/shv-engine/scripts/build_schema.cpp",
+        "modules/shv-profile-engine/scripts/build_schema.cpp",
+        "modules/shv-profile-engine/tests/interface_test.cpp",
+        "modules/shv-profile-engine/tools/generate_interface.cpp",
+        "modules/shv-source-engine/scripts/build_schema.cpp",
+        "tools/authoring-cpp/local_refs_test.cpp",
+        "tools/authoring-cpp/schema_test.cpp",
+        "tools/qxctl/scripts/build_shv_activation_schema.cpp",
+        "tools/qxctl/scripts/build_shv_refresh_schema.cpp",
+        "tools/shv-interface-codegen/generate.cpp",
+        "tools/shv-interface-codegen/owner_codegen.cpp",
+        "tools/shv-interface-codegen/tests/interface_test.cpp",
+        "tools/shv-interface-codegen/tests/owner_test.cpp"
+      ],
+      "qualification_group": "knowledge",
+      "allowed_test_build_directories": [
+        "tools/authoring-cpp"
+      ]
     },
     {
       "component_id": "shv-source-engine",
@@ -1679,8 +1826,27 @@
       "installable": true,
       "installed_sdk_consumer_checks": [],
       "allowed_shared_implementation_sources": [],
-      "allowed_test_implementation_sources": [],
-      "qualification_group": "knowledge"
+      "allowed_test_implementation_sources": [
+        "modules/scv-engine/tests/interface_generation_test.cpp",
+        "modules/scv-engine/tools/generate_interface.cpp",
+        "modules/shv-engine/scripts/build_schema.cpp",
+        "modules/shv-profile-engine/scripts/build_schema.cpp",
+        "modules/shv-profile-engine/tests/interface_test.cpp",
+        "modules/shv-profile-engine/tools/generate_interface.cpp",
+        "modules/shv-source-engine/scripts/build_schema.cpp",
+        "tools/authoring-cpp/local_refs_test.cpp",
+        "tools/authoring-cpp/schema_test.cpp",
+        "tools/qxctl/scripts/build_shv_activation_schema.cpp",
+        "tools/qxctl/scripts/build_shv_refresh_schema.cpp",
+        "tools/shv-interface-codegen/generate.cpp",
+        "tools/shv-interface-codegen/owner_codegen.cpp",
+        "tools/shv-interface-codegen/tests/interface_test.cpp",
+        "tools/shv-interface-codegen/tests/owner_test.cpp"
+      ],
+      "qualification_group": "knowledge",
+      "allowed_test_build_directories": [
+        "tools/authoring-cpp"
+      ]
     },
     {
       "component_id": "skvi-engine",
@@ -3527,7 +3693,7 @@
           "binary_name": "symphony-ssiag",
           "entrypoint": "modules/secure-identity-access-governance/cmd/symphony-ssiag/main.go",
           "source_identity": "dev",
-          "source_identity_evidence": "modules/secure-identity-access-governance/internal/version/version.go:3",
+          "source_identity_evidence": "modules/secure-identity-access-governance/internal/version/version.go:5",
           "installation_scope": "production_command; release approval and final artifact identity remain L01/L06"
         }
       ],
@@ -3641,7 +3807,7 @@
       ],
       "resolved_graph_scope": "Sum and GoModSum are present where reported by go list; this resolves selected module metadata, not a claim that every selected archive was downloaded or built.",
       "source_runtime_version": "dev",
-      "source_version_evidence": "modules/secure-identity-access-governance/internal/version/version.go:3",
+      "source_version_evidence": "modules/secure-identity-access-governance/internal/version/version.go:5",
       "verified_public_release_identities": [],
       "public_identity_scope": "No public release in the verified direct-dependency pin set; this is not an assertion about all remote tags",
       "native_engine_pin": null,
@@ -3762,7 +3928,7 @@
           "package": "./cmd/qxctl",
           "binary_name": "qxctl",
           "entrypoint": "tools/qxctl/cmd/qxctl/main.go",
-          "source_identity": "qxctl dev",
+          "source_identity": "0.1.0-dev",
           "source_identity_evidence": "tools/qxctl/internal/version/version.go:4",
           "installation_scope": "production_command; release approval and final artifact identity remain L01/L06"
         }
@@ -4616,7 +4782,7 @@
         }
       ],
       "resolved_graph_scope": "Sum and GoModSum are present where reported by go list; this resolves selected module metadata, not a claim that every selected archive was downloaded or built.",
-      "source_runtime_version": "qxctl dev",
+      "source_runtime_version": "0.1.0-dev",
       "source_version_evidence": "tools/qxctl/internal/version/version.go:4",
       "verified_public_release_identities": [],
       "public_identity_scope": "No public release in the verified direct-dependency pin set; this is not an assertion about all remote tags",
@@ -4711,7 +4877,7 @@
       "path": "modules/secure-identity-access-governance/internal/version/version.go",
       "name": "Version",
       "value": "dev",
-      "evidence": "modules/secure-identity-access-governance/internal/version/version.go:3"
+      "evidence": "modules/secure-identity-access-governance/internal/version/version.go:5"
     },
     {
       "path": "modules/stav-append-authority/internal/version/version.go",
@@ -4722,7 +4888,7 @@
     {
       "path": "tools/qxctl/internal/version/version.go",
       "name": "Version",
-      "value": "qxctl dev",
+      "value": "0.1.0-dev",
       "evidence": "tools/qxctl/internal/version/version.go:4"
     },
     {
@@ -4758,7 +4924,7 @@
   ],
   "go_source_protocol_literals": {
     "scope": "Versioned symphony.*.vN literals in non-test Go source, not a new admission registry; includes input/output/discovery identifiers and does not equate protocol generation with module version.",
-    "count": 527,
+    "count": 529,
     "protocols": {
       "symphony.sbv.result-inspect-input.v1": [
         "libraries/sbv-go/examples/roundtrip/main.go:81"
@@ -4943,13 +5109,13 @@
       "symphony.ssiag.status.v1": [
         "modules/secure-identity-access-governance/internal/client/client.go:113",
         "modules/secure-identity-access-governance/internal/server/server.go:959",
-        "tools/qxctl/cmd/qxctl/commands.go:1416",
+        "tools/qxctl/cmd/qxctl/commands.go:1417",
         "tools/qxctl/internal/ssiagclient/client.go:587"
       ],
       "symphony.ssiag.providers.v1": [
         "modules/secure-identity-access-governance/internal/client/client.go:124",
         "modules/secure-identity-access-governance/internal/server/server.go:978",
-        "tools/qxctl/cmd/qxctl/commands.go:1416",
+        "tools/qxctl/cmd/qxctl/commands.go:1417",
         "tools/qxctl/internal/ssiagclient/client.go:598"
       ],
       "symphony.ssiag.config.v1": [
@@ -5096,7 +5262,7 @@
       ],
       "symphony.ssiag.provider-trust-result.v1": [
         "modules/secure-identity-access-governance/internal/provider/trust.go:26",
-        "tools/qxctl/cmd/qxctl/commands.go:1295",
+        "tools/qxctl/cmd/qxctl/commands.go:1296",
         "tools/qxctl/internal/ssiagclient/client.go:718"
       ],
       "symphony.ssiag.provider-control-request.v1": [
@@ -5127,7 +5293,7 @@
       ],
       "symphony.ssiag.provider-trust-verification-request.v1": [
         "modules/secure-identity-access-governance/internal/server/server.go:481",
-        "tools/qxctl/cmd/qxctl/commands.go:1305",
+        "tools/qxctl/cmd/qxctl/commands.go:1306",
         "tools/qxctl/cmd/qxctl/main.go:3083",
         "tools/qxctl/internal/ssiagclient/client.go:647"
       ],
@@ -5147,7 +5313,7 @@
       ],
       "symphony.sav.current-resolution-input.v1": [
         "tools/qxctl/cmd/qxctl/accordare_host.go:18",
-        "tools/qxctl/cmd/qxctl/commands.go:850"
+        "tools/qxctl/cmd/qxctl/commands.go:851"
       ],
       "symphony.maestro.receptor-inventory-result.v1": [
         "tools/qxctl/cmd/qxctl/accordare_host.go:118",
@@ -5183,154 +5349,154 @@
       ],
       "symphony.sav.named-version-validation-input.v1": [
         "tools/qxctl/cmd/qxctl/command_specs.go:281",
-        "tools/qxctl/cmd/qxctl/commands.go:855"
+        "tools/qxctl/cmd/qxctl/commands.go:856"
       ],
       "symphony.knowledge.administration-coverage-input.v1": [
-        "tools/qxctl/cmd/qxctl/commands.go:779"
+        "tools/qxctl/cmd/qxctl/commands.go:780"
       ],
       "symphony.knowledge.administration-coverage-result.v1": [
-        "tools/qxctl/cmd/qxctl/commands.go:780",
         "tools/qxctl/cmd/qxctl/commands.go:781",
+        "tools/qxctl/cmd/qxctl/commands.go:782",
         "tools/qxctl/cmd/qxctl/ssfv.go:402"
       ],
       "symphony.sav.inspect-result.v1": [
-        "tools/qxctl/cmd/qxctl/commands.go:848",
-        "tools/qxctl/cmd/qxctl/main.go:1891"
-      ],
-      "symphony.sav.reference-check-result.v1": [
         "tools/qxctl/cmd/qxctl/commands.go:849",
         "tools/qxctl/cmd/qxctl/main.go:1891"
       ],
-      "symphony.sav.current-snapshot.v1": [
+      "symphony.sav.reference-check-result.v1": [
         "tools/qxctl/cmd/qxctl/commands.go:850",
-        "tools/qxctl/cmd/qxctl/main.go:1892"
+        "tools/qxctl/cmd/qxctl/main.go:1891"
       ],
-      "symphony.sav.evaluation-input.v1": [
-        "tools/qxctl/cmd/qxctl/commands.go:851"
-      ],
-      "symphony.sav.evaluation-result.v1": [
+      "symphony.sav.current-snapshot.v1": [
         "tools/qxctl/cmd/qxctl/commands.go:851",
         "tools/qxctl/cmd/qxctl/main.go:1892"
       ],
-      "symphony.sav.diff-result.v1": [
-        "tools/qxctl/cmd/qxctl/commands.go:852",
-        "tools/qxctl/cmd/qxctl/main.go:1893"
+      "symphony.sav.evaluation-input.v1": [
+        "tools/qxctl/cmd/qxctl/commands.go:852"
       ],
-      "symphony.sav.explain-result.v1": [
+      "symphony.sav.evaluation-result.v1": [
+        "tools/qxctl/cmd/qxctl/commands.go:852",
+        "tools/qxctl/cmd/qxctl/main.go:1892"
+      ],
+      "symphony.sav.diff-result.v1": [
         "tools/qxctl/cmd/qxctl/commands.go:853",
         "tools/qxctl/cmd/qxctl/main.go:1893"
       ],
-      "symphony.sav.graph-projection.v1": [
+      "symphony.sav.explain-result.v1": [
         "tools/qxctl/cmd/qxctl/commands.go:854",
+        "tools/qxctl/cmd/qxctl/main.go:1893"
+      ],
+      "symphony.sav.graph-projection.v1": [
+        "tools/qxctl/cmd/qxctl/commands.go:855",
         "tools/qxctl/cmd/qxctl/main.go:1894"
       ],
       "symphony.sav.named-version-validation-result.v1": [
-        "tools/qxctl/cmd/qxctl/commands.go:855",
-        "tools/qxctl/cmd/qxctl/main.go:1895"
-      ],
-      "symphony.sav.named-version-diff-input.v1": [
-        "tools/qxctl/cmd/qxctl/commands.go:856"
-      ],
-      "symphony.sav.named-version-diff-result.v1": [
         "tools/qxctl/cmd/qxctl/commands.go:856",
         "tools/qxctl/cmd/qxctl/main.go:1895"
       ],
-      "symphony.sav.extension-capsule-check-input.v1": [
+      "symphony.sav.named-version-diff-input.v1": [
         "tools/qxctl/cmd/qxctl/commands.go:857"
       ],
-      "symphony.sav.extension-capsule-check-result.v1": [
+      "symphony.sav.named-version-diff-result.v1": [
         "tools/qxctl/cmd/qxctl/commands.go:857",
-        "tools/qxctl/cmd/qxctl/main.go:1896"
+        "tools/qxctl/cmd/qxctl/main.go:1895"
       ],
-      "symphony.sav.installation-blueprint-plan-input.v1": [
+      "symphony.sav.extension-capsule-check-input.v1": [
         "tools/qxctl/cmd/qxctl/commands.go:858"
       ],
-      "symphony.sav.installation-blueprint-plan-result.v1": [
+      "symphony.sav.extension-capsule-check-result.v1": [
         "tools/qxctl/cmd/qxctl/commands.go:858",
         "tools/qxctl/cmd/qxctl/main.go:1896"
       ],
-      "symphony.sav.compatibility-result.v1": [
+      "symphony.sav.installation-blueprint-plan-input.v1": [
+        "tools/qxctl/cmd/qxctl/commands.go:859"
+      ],
+      "symphony.sav.installation-blueprint-plan-result.v1": [
         "tools/qxctl/cmd/qxctl/commands.go:859",
+        "tools/qxctl/cmd/qxctl/main.go:1896"
+      ],
+      "symphony.sav.compatibility-result.v1": [
+        "tools/qxctl/cmd/qxctl/commands.go:860",
         "tools/qxctl/cmd/qxctl/main.go:1894"
       ],
       "symphony.sev.inspect-result.v1": [
-        "tools/qxctl/cmd/qxctl/commands.go:959",
+        "tools/qxctl/cmd/qxctl/commands.go:960",
         "tools/qxctl/cmd/qxctl/main.go:1899"
       ],
       "symphony.sev.case-open-input.v1": [
-        "tools/qxctl/cmd/qxctl/commands.go:960"
+        "tools/qxctl/cmd/qxctl/commands.go:961"
       ],
       "symphony.sev.evolution-case.v1": [
-        "tools/qxctl/cmd/qxctl/commands.go:960",
-        "tools/qxctl/cmd/qxctl/commands.go:964",
+        "tools/qxctl/cmd/qxctl/commands.go:961",
+        "tools/qxctl/cmd/qxctl/commands.go:965",
         "tools/qxctl/cmd/qxctl/main.go:1899",
         "tools/qxctl/cmd/qxctl/main.go:1901"
       ],
       "symphony.sev.impact-result.v1": [
-        "tools/qxctl/cmd/qxctl/commands.go:961",
-        "tools/qxctl/cmd/qxctl/main.go:1900"
-      ],
-      "symphony.sev.disposition-plan.v1": [
         "tools/qxctl/cmd/qxctl/commands.go:962",
         "tools/qxctl/cmd/qxctl/main.go:1900"
       ],
+      "symphony.sev.disposition-plan.v1": [
+        "tools/qxctl/cmd/qxctl/commands.go:963",
+        "tools/qxctl/cmd/qxctl/main.go:1900"
+      ],
       "symphony.sev.transition-verification-input.v1": [
-        "tools/qxctl/cmd/qxctl/commands.go:963"
+        "tools/qxctl/cmd/qxctl/commands.go:964"
       ],
       "symphony.sev.transition-verification-result.v1": [
-        "tools/qxctl/cmd/qxctl/commands.go:963",
+        "tools/qxctl/cmd/qxctl/commands.go:964",
         "tools/qxctl/cmd/qxctl/main.go:1901"
       ],
       "symphony.sev.case-status-result.v1": [
-        "tools/qxctl/cmd/qxctl/commands.go:965",
-        "tools/qxctl/cmd/qxctl/main.go:1902"
-      ],
-      "symphony.sev.case-recovery-advice.v1": [
         "tools/qxctl/cmd/qxctl/commands.go:966",
         "tools/qxctl/cmd/qxctl/main.go:1902"
       ],
-      "symphony.sev.case-close-proposal.v1": [
+      "symphony.sev.case-recovery-advice.v1": [
         "tools/qxctl/cmd/qxctl/commands.go:967",
-        "tools/qxctl/cmd/qxctl/main.go:1903"
+        "tools/qxctl/cmd/qxctl/main.go:1902"
       ],
-      "symphony.sev.command-surface-assessment.v1": [
+      "symphony.sev.case-close-proposal.v1": [
         "tools/qxctl/cmd/qxctl/commands.go:968",
         "tools/qxctl/cmd/qxctl/main.go:1903"
       ],
-      "symphony.sev.novelty-bundle-check-input.v1": [
-        "tools/qxctl/cmd/qxctl/commands.go:969"
-      ],
-      "symphony.sev.novelty-bundle-check-result.v1": [
+      "symphony.sev.command-surface-assessment.v1": [
         "tools/qxctl/cmd/qxctl/commands.go:969",
-        "tools/qxctl/cmd/qxctl/main.go:1905"
+        "tools/qxctl/cmd/qxctl/main.go:1903"
       ],
-      "symphony.sev.watch-policy-check-input.v1": [
+      "symphony.sev.novelty-bundle-check-input.v1": [
         "tools/qxctl/cmd/qxctl/commands.go:970"
       ],
-      "symphony.sev.watch-policy-check-result.v1": [
+      "symphony.sev.novelty-bundle-check-result.v1": [
         "tools/qxctl/cmd/qxctl/commands.go:970",
         "tools/qxctl/cmd/qxctl/main.go:1905"
       ],
-      "symphony.sev.trigger-coalescing-input.v1": [
+      "symphony.sev.watch-policy-check-input.v1": [
         "tools/qxctl/cmd/qxctl/commands.go:971"
       ],
-      "symphony.sev.trigger-coalescing-result.v1": [
+      "symphony.sev.watch-policy-check-result.v1": [
         "tools/qxctl/cmd/qxctl/commands.go:971",
+        "tools/qxctl/cmd/qxctl/main.go:1905"
+      ],
+      "symphony.sev.trigger-coalescing-input.v1": [
+        "tools/qxctl/cmd/qxctl/commands.go:972"
+      ],
+      "symphony.sev.trigger-coalescing-result.v1": [
+        "tools/qxctl/cmd/qxctl/commands.go:972",
         "tools/qxctl/cmd/qxctl/main.go:1906"
       ],
       "symphony.sev.evolution-session-binding-input.v1": [
-        "tools/qxctl/cmd/qxctl/commands.go:972"
+        "tools/qxctl/cmd/qxctl/commands.go:973"
       ],
       "symphony.sev.evolution-session-binding.v1": [
-        "tools/qxctl/cmd/qxctl/commands.go:972",
+        "tools/qxctl/cmd/qxctl/commands.go:973",
         "tools/qxctl/cmd/qxctl/main.go:1907"
       ],
       "symphony.sev.graph-projection.v1": [
-        "tools/qxctl/cmd/qxctl/commands.go:973",
+        "tools/qxctl/cmd/qxctl/commands.go:974",
         "tools/qxctl/cmd/qxctl/main.go:1904"
       ],
       "symphony.sev.compatibility-result.v1": [
-        "tools/qxctl/cmd/qxctl/commands.go:974",
+        "tools/qxctl/cmd/qxctl/commands.go:975",
         "tools/qxctl/cmd/qxctl/main.go:1904"
       ],
       "symphony.knowledge.lifecycle-plan-command.v1": [
@@ -6809,11 +6975,11 @@
         "tools/qxctl/internal/sovremote/plan.go:19"
       ],
       "symphony.sov.remote-plan.v1": [
-        "tools/qxctl/internal/sovremote/plan.go:215",
+        "tools/qxctl/internal/sovremote/plan.go:216",
         "tools/qxctl/internal/sovremote/resources.go:89"
       ],
       "symphony.sov.remote-assess.v1": [
-        "tools/qxctl/internal/sovremote/plan.go:251",
+        "tools/qxctl/internal/sovremote/plan.go:252",
         "tools/qxctl/internal/sovremote/resources.go:89"
       ],
       "symphony.sbv.job-inspect-input.v1": [
@@ -6833,6 +6999,12 @@
       ],
       "symphony.validation.baseline.v1": [
         "tools/qxctl/internal/validation/types.go:8"
+      ],
+      "symphony.qxctl.build-info.v1": [
+        "tools/qxctl/internal/version/build_info.go:11"
+      ],
+      "symphony.qxctl.reproducible-build.v1": [
+        "tools/qxctl/internal/version/build_info.go:12"
       ],
       "symphony.sov.ssh-carrier-result.v1": [
         "tools/sov-ssh-adapter/contract/contract.go:26"
@@ -9336,6 +9508,18 @@
     "scope": "Source schema IDs and JSON/resources are distinct from package releases, CMake project versions and Go module tags. Source inclusion does not claim installation or current admission; historical declarations stay owner-controlled. Test/example flags classify source paths, not whether an owner currently admits an older contract generation.",
     "records": [
       {
+        "path": "cmake/mvp-release-identities.json",
+        "sha256": "822402dd2fa837d307079ff97c317d9a9aedad36938899b23f09a9a8b64805c5",
+        "schema_ids": [],
+        "schema_dialect": null,
+        "protocol": "symphony.mvp.release-identities.v1",
+        "format_version": 1,
+        "kind": "resource",
+        "test_fixture": false,
+        "historical_or_example": false,
+        "installation_scope": "source_catalog_not_installation_assertion"
+      },
+      {
         "path": "knowledge/FEATURE-ADMINISTRATION-PROFILE.json",
         "sha256": "5e3447aa41491fdc55390a78c1bb4eb6f3f23df737ce1c1c9db2f4e170b4222f",
         "schema_ids": [],
@@ -9793,7 +9977,7 @@
       },
       {
         "path": "knowledge/schemas/v1/MANIFEST.md",
-        "sha256": "e8e794d9c060bb18d64151aba870aa1bbc93f7ae0c83eb406bea4c54afd11d8c",
+        "sha256": "0d3ffb081a491cfeec94f7166d950202db19ec7ff2ad0614c4ed24ed7e12b954",
         "schema_ids": [],
         "schema_dialect": null,
         "protocol": null,
@@ -9827,6 +10011,23 @@
           {
             "json_pointer": "/$id",
             "id": "urn:symphony:knowledge:administration-coverage-result:v1"
+          }
+        ],
+        "schema_dialect": "https://json-schema.org/draft/2020-12/schema",
+        "protocol": null,
+        "format_version": null,
+        "kind": "schema",
+        "test_fixture": false,
+        "historical_or_example": false,
+        "installation_scope": "source_catalog_not_installation_assertion"
+      },
+      {
+        "path": "knowledge/schemas/v1/artifact-build-identity.schema.json",
+        "sha256": "e3aaa8e6c6be20dd9af5d4c777a4a89a3e286e7f87d75a7e3850bd4e191820dd",
+        "schema_ids": [
+          {
+            "json_pointer": "/$id",
+            "id": "urn:symphony:artifact:build-identity:v1"
           }
         ],
         "schema_dialect": "https://json-schema.org/draft/2020-12/schema",
@@ -10677,6 +10878,23 @@
           {
             "json_pointer": "/$id",
             "id": "urn:symphony:knowledge:provider-evidence:v1"
+          }
+        ],
+        "schema_dialect": "https://json-schema.org/draft/2020-12/schema",
+        "protocol": null,
+        "format_version": null,
+        "kind": "schema",
+        "test_fixture": false,
+        "historical_or_example": false,
+        "installation_scope": "source_catalog_not_installation_assertion"
+      },
+      {
+        "path": "knowledge/schemas/v1/qxctl-build-info.schema.json",
+        "sha256": "2378ef3d0a6d6a95bdc67f26af91ce6be2d4a7e88261f616d631bfa2a9251ec3",
+        "schema_ids": [
+          {
+            "json_pointer": "/$id",
+            "id": "urn:symphony:qxctl:build-info:v1"
           }
         ],
         "schema_dialect": "https://json-schema.org/draft/2020-12/schema",
@@ -15830,7 +16048,7 @@
       },
       {
         "path": "tools/qxctl/COMMANDS.json",
-        "sha256": "59427f2a25b1ae5202d549624035147330cbe793aa2afda3d0d4005a701111bb",
+        "sha256": "1ff900c07c2fbc6aae6680f38640368fcddfdc0dfe43dc29d6fa4c4a9e32920b",
         "schema_ids": [],
         "schema_dialect": null,
         "protocol": "symphony.qxctl.command-registry.v1",
@@ -16953,12 +17171,16 @@
       "sha256": "9233bb96822bc108898b7ecca45f97d27c131eea4fe696c9908830a65e0dee0d"
     },
     {
+      "path": "cmake/mvp-release-identities.json",
+      "sha256": "822402dd2fa837d307079ff97c317d9a9aedad36938899b23f09a9a8b64805c5"
+    },
+    {
       "path": "go.work",
       "sha256": "73a9ee240809e259dc45d0c4156107ba197a62de70c1222db1a3616903a7e4a4"
     },
     {
       "path": "knowledge/FEATURE-ADMINISTRATION-PROFILE.json",
-      "sha256": "5e3447aa41491fdc55390a78c1bb4eb6f3f23df737ce1c1c9db2f4e170b4222f"
+      "sha256": "16615bda28dceaae144aacc964afc41983b4c2e0a0a8dfb2fe1264f88856aafe"
     },
     {
       "path": "knowledge/INVARIANT-OWNERSHIP.json",
@@ -17070,7 +17292,7 @@
     },
     {
       "path": "knowledge/schemas/v1/MANIFEST.md",
-      "sha256": "e8e794d9c060bb18d64151aba870aa1bbc93f7ae0c83eb406bea4c54afd11d8c"
+      "sha256": "0d3ffb081a491cfeec94f7166d950202db19ec7ff2ad0614c4ed24ed7e12b954"
     },
     {
       "path": "knowledge/schemas/v1/administration-coverage-input.schema.json",
@@ -17079,6 +17301,10 @@
     {
       "path": "knowledge/schemas/v1/administration-coverage-result.schema.json",
       "sha256": "7f6ed708240859e20dd28a33adea74f825be823eed18d9526ff5ae6b0db2de10"
+    },
+    {
+      "path": "knowledge/schemas/v1/artifact-build-identity.schema.json",
+      "sha256": "e3aaa8e6c6be20dd9af5d4c777a4a89a3e286e7f87d75a7e3850bd4e191820dd"
     },
     {
       "path": "knowledge/schemas/v1/engine-binding-registry.schema.json",
@@ -17279,6 +17505,10 @@
     {
       "path": "knowledge/schemas/v1/provider-evidence.schema.json",
       "sha256": "0708b5c67082420be359cc82abbcd704b2306b8ddbd3fa5273fd71821be45d1e"
+    },
+    {
+      "path": "knowledge/schemas/v1/qxctl-build-info.schema.json",
+      "sha256": "2378ef3d0a6d6a95bdc67f26af91ce6be2d4a7e88261f616d631bfa2a9251ec3"
     },
     {
       "path": "knowledge/schemas/v1/qxctl-command-registry.schema.json",
@@ -18662,7 +18892,7 @@
     },
     {
       "path": "modules/secure-identity-access-governance/internal/version/version.go",
-      "sha256": "0d9b848926e19a10dd05438a2665386cbeb8550bdef736b01a0c54dd3021a5b4"
+      "sha256": "34a169bf630d86bcc6dc329e0a1a29766568ef16b143c08e34e96ab0dd7a98ce"
     },
     {
       "path": "modules/sev-engine/CMakeLists.txt",
@@ -19702,7 +19932,7 @@
     },
     {
       "path": "tools/qxctl/COMMANDS.json",
-      "sha256": "59427f2a25b1ae5202d549624035147330cbe793aa2afda3d0d4005a701111bb"
+      "sha256": "6b161bc7652f5b01f04f41c18efec56c5a4353b32f6e29680d7cb3b284dfe51a"
     },
     {
       "path": "tools/qxctl/cmd/qxctl/accordare_host.go",
@@ -19718,11 +19948,11 @@
     },
     {
       "path": "tools/qxctl/cmd/qxctl/command_specs.go",
-      "sha256": "b44fe344128302189523edafcd7b6600a126636291bde4ba6182b8bfb1787fcf"
+      "sha256": "f6df0ba2966b17596c5be57bdc3bca9c7d43a5f9a97488e34a5d224817d8c0ac"
     },
     {
       "path": "tools/qxctl/cmd/qxctl/commands.go",
-      "sha256": "3203e6c2761434b146df0cab18cf3de9fa3300dbac649a6cae505b9288461283"
+      "sha256": "defb4187c263ee70b9d6d4ef7cea19aa27e697cb155de4d42fdf7a5ed4561a5c"
     },
     {
       "path": "tools/qxctl/cmd/qxctl/lifecycle.go",
@@ -20398,7 +20628,7 @@
     },
     {
       "path": "tools/qxctl/internal/sovremote/plan.go",
-      "sha256": "1785daaa531ef4e59b41dda576696875c8ae83ba29a7ddcec44e79b3823265d2"
+      "sha256": "1a1a9fc07ce7153905fd315576d58af6c8c9a75b5c41fb918a3220e68b97fa16"
     },
     {
       "path": "tools/qxctl/internal/sovremote/resources.go",
@@ -20437,8 +20667,12 @@
       "sha256": "2247b1fdf004ed88857ee757a8de7fb2f9ef494ce81a373d8f15371dbad2a786"
     },
     {
+      "path": "tools/qxctl/internal/version/build_info.go",
+      "sha256": "f79cd04d53f3a42de65923b997827ac820063844225d222d919f0ee289f2ceef"
+    },
+    {
       "path": "tools/qxctl/internal/version/version.go",
-      "sha256": "1d6338290233cf091ba4d15754b8f5773e3fddb77addd24a1336cb57a1ae470b"
+      "sha256": "db49d7737a99030fdb6f44bdfa5dcd3dfd6f3a03cf59a56c33764f46df5e5378"
     },
     {
       "path": "tools/qxctl/tests/scv-source-maintenance/CMakeLists.txt",
@@ -20494,7 +20728,7 @@
     },
     {
       "path": "tools/sov-ssh-adapter/main.go",
-      "sha256": "60afd7db9c2ad16150e89a177e592a6b50cd4d77b216a64f1e0691eaaca8ba0b"
+      "sha256": "ea9539322b6ee25188663e726bd57ccb52fb9fc5d990d4dd2cc23d60fce6e76a"
     },
     {
       "path": "tools/sov-stdio-adapter/go.mod",
@@ -20502,7 +20736,7 @@
     },
     {
       "path": "tools/sov-stdio-adapter/main.go",
-      "sha256": "ada3172985c4afd2825ea86fd989c7c86ca8d51bf2d5ec180b18cf06a16c33e2"
+      "sha256": "fb404f94c2fbb1b5cf5fad5ea5ca8b8f96d4d2db76f92d180fda568d0a42b6da"
     },
     {
       "path": "tools/symphony-validator/CMakeLists.txt",

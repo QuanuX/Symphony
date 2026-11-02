@@ -3027,6 +3027,32 @@ Future validator increments may add separately ratified deterministic checks wit
 - notes: The canonical expected registry remains evaluable when an observed qxctl binary is absent.
 - status: canonical
 
+##### qxctl Executable Build Information Schema
+- path: `knowledge/schemas/v1/qxctl-build-info.schema.json`
+- title: qxctl Executable Build Information v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical shape for the running executable digest, runtime target, and explicit source stamp availability
+- owner: Symphony Knowledge Vector and qxctl maintainers
+- scope: Separates the qxctl semantic version from its executable SHA256 and actual Go/OS/architecture, and admits either a complete source declaration or unavailable source metadata.
+- relationships: depends_on -> `knowledge/schemas/v1/MANIFEST.md`; governed_by -> `knowledge/SPEC.md`; implemented_by -> `tools/qxctl/MANIFEST.md`
+- consumers: qxctl, candidate build recipes, validators, reviewers, agentic tools
+- deferred_projections: reviewed candidate artifact and reproducibility evidence
+- notes: A linked source declaration does not prove reproducibility, installation trust, release approval, or provider activation.
+- status: canonical
+
+##### Candidate Artifact Build Identity Schema
+- path: `knowledge/schemas/v1/artifact-build-identity.schema.json`
+- title: Symphony Candidate Artifact Build Identity v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical shape for source-, dependency-, toolchain-, and digest-bound candidate build evidence
+- owner: Symphony Knowledge Vector maintainers
+- scope: Records exact candidate source and executable identities while distinguishing one isolated build from repeated-build reproducibility evidence on the recorded target profile.
+- relationships: depends_on -> `knowledge/schemas/v1/MANIFEST.md`; governed_by -> `knowledge/SPEC.md`; governed_by -> `knowledge/sodv/SPEC.md`
+- consumers: candidate build recipes, validators, release reviewers, agentic tools
+- deferred_projections: separately authorized release and distribution evidence
+- notes: Candidate evidence carries no publication authorization and cannot substitute for SODV release truth or operational qualification.
+- status: canonical
+
 ##### qxctl Expected Command Registry
 - path: `tools/qxctl/COMMANDS.json`
 - title: qxctl Expected Command Registry

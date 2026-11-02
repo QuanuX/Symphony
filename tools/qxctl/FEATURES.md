@@ -55,7 +55,8 @@
         "The qxctl Go suites exercise command grammar, exact installation resolution, endpoint trust, digest validation, state durability, replay, recovery, and lifecycle compatibility.",
         "Lifecycle host tests prove descriptor compare-and-swap, report-only systemd grammar, content-addressed fallback promotion, and resumable marker-owned uninstall.",
         "The root command exposes implemented administrative surfaces while namespace-reserved or unauthorized mutation leaves fail closed.",
-        "SSIAG client and CLI tests cover bounded no-follow policy input, closed proposal/apply/recovery protocols, TOPS binding, and caller-neutral result checks."
+        "SSIAG client and CLI tests cover bounded no-follow policy input, closed proposal/apply/recovery protocols, TOPS binding, and caller-neutral result checks.",
+        "Version tests bind the explicit qxctl development identity to the running executable digest and runtime target, validate all-or-none source stamps, and preserve retained SOV version and digest admission."
       ],
       "feature_id": "ssfv:symphony:qxctl",
       "how": "Cobra/Viper grammar invokes exact installed components, authenticates local endpoints, requests fresh operation-bound SSIAG decisions, administers server-owned policy protocols from bounded files, serializes shared-root multi-profile receipt claims with receipt-layout old-client fencing and conservative reclamation, installs and reconciles an explicit content-addressed Linux report-only boot receptor, validates nested evidence and digests, preserves compare-and-swap state, and presents bounded human or JSON output.",
@@ -71,13 +72,15 @@
         "tools/qxctl/cmd/qxctl/main.go",
         "tools/qxctl/cmd/qxctl/named_version.go",
         "tools/qxctl/cmd/qxctl/named_version_test.go",
+        "tools/qxctl/cmd/qxctl/version.go",
         "tools/qxctl/internal/knowledgeengine/client.go",
         "tools/qxctl/internal/knowledgelifecycle/executor.go",
         "tools/qxctl/internal/knowledgelifecycle/host.go",
         "tools/qxctl/internal/knowledgelifecycle/host_admin_unix.go",
         "tools/qxctl/internal/knowledgelifecycle/ownership.go",
         "tools/qxctl/internal/ssiagclient/client.go",
-        "tools/qxctl/internal/stavclient/client.go"
+        "tools/qxctl/internal/stavclient/client.go",
+        "tools/qxctl/internal/version/build_info.go"
       ],
       "kind": "feature",
       "non_claims": [

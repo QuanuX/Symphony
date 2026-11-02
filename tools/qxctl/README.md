@@ -8,6 +8,26 @@ This tool is seeded with `Go 1.26.5` as the deterministic scripted baseline. Its
 
 ## Usage
 
+### Executable identity
+
+`qxctl --version` and `qxctl version` report the explicit development identity
+`0.1.0-dev`. `qxctl version --json` emits `symphony.qxctl.build-info.v1` with the
+actual executable SHA256, Go runtime version, OS, architecture, and linked source
+commit, tree, source-date epoch, dependency-map SHA256, and build-recipe identity.
+The exact executable digest distinguishes builds that share a semantic version.
+
+Ordinary `go build` remains supported and reports `source_state: unavailable`
+with null source fields. The reproducible build recipe supplies the complete
+stamp; partially populated or malformed stamps fail the JSON command. `stamped`
+describes supplied metadata, not release approval, reproducibility evidence, or
+installation trust. Source dates come from the selected commit rather than the
+build clock. Source stamps and executable digests are independent of native
+package, SDK, owner-interface, and protocol versions.
+
+SOV continues to admit retained `qxctl dev` selections and exact historical
+labels. Its target compares both the selected version and executable digest;
+neither a new tool version nor build metadata upgrades a retained selection.
+
 ### Linux report-only boot receptor
 
 `knowledge lifecycle host install|update|status|reconcile|enable|disable|uninstall|run` administers or dispatches one explicit system-scoped systemd receptor per TOPS/profile. Install and update require `--expected-host-digest`; the default system state base is `/var/lib`, and `--integration-root` may select a different protected executor root at installation. Relocation uses explicit uninstall followed by install so no old root becomes untracked. qxctl copies its administrator-owned protected executable into a content-addressed slot and retains up to eight explicitly ordered digest-valid fallbacks, so a module/qxctl update in either order remains fail-closed and recoverable without selecting a newest version.

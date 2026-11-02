@@ -2,7 +2,17 @@
 using namespace native_test;
 void test_native_publication_contract(Engine &e) {
   auto call = [&](std::string op, Json p, bool fail = false) {
-    return e.call(op, p, !fail);
+    const auto ordinal = e.calls + 1;
+    try {
+      return e.call(op, p, !fail);
+    } catch (const std::exception &error) {
+      // These are synthetic local fixtures. Preserve the exact failing input
+      // so compiler/profile-specific failures can be reproduced independently.
+      throw std::runtime_error("publication fixture call " +
+                               std::to_string(ordinal) + " operation=" + op +
+                               " expected=" + (fail ? "refusal" : "success") +
+                               " payload=" + p.dump() + "\n" + error.what());
+    }
   };
   std::string h = "sha256:" + std::string(64, 'a');
   Json inst = {
@@ -43,7 +53,7 @@ void test_native_publication_contract(Engine &e) {
   auto head = call("publication_reduce",
                    {{"current", nullptr}, {"plan", plan}})["head"];
   NT_REQUIRE(head["generation"] == 1);
-  NT_REQUIRE(call("publication_status", {{"history", {head}}})["head"] == head);
+  NT_REQUIRE(call("publication_status", {{"history", Json::array({head})}})["head"] == head);
   call("publication_plan", updated(base, {{"current", head}}), true);
   for (auto change :
        Json::array({{{"catalogue_id", "other"}},
@@ -105,7 +115,10 @@ void test_native_publication_contract(Engine &e) {
        updated(base, {{"desired", updated(allowed, {{"manifest", missing}})}}));
   call("publication_status", {{"history", Json::array()}}, true);
   call("publication_status", {{"history", {head, head}}}, true);
-  Json history = {head};
+  // Single-element braced construction can select JSON's object copy path on
+  // older supported compilers. History is always an explicit sequence.
+  Json history = Json::array({head});
+  NT_REQUIRE(history.is_array() && history.size() == 1 && history.front() == head);
   for (int n = 2; n <= 32; ++n) {
     auto next = call(
         "publication_plan",

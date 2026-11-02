@@ -23,6 +23,12 @@ const Version = "0.1.0-dev"
 
 func main() { os.Exit(run(os.Args[1:], os.Stdin, os.Stdout)) }
 func run(args []string, in io.Reader, out io.Writer) int {
+	if len(args) == 1 && args[0] == "--version" {
+		if _, err := fmt.Fprintf(out, "sov-stdio-adapter version %s\n", Version); err != nil {
+			return 1
+		}
+		return 0
+	}
 	f := flag.NewFlagSet("sov-stdio-adapter", flag.ContinueOnError)
 	f.SetOutput(io.Discard)
 	target := f.String("target", "", "")

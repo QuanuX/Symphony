@@ -90,7 +90,8 @@ J bundle_source(const J &receipt) {
 }
 int main(int argc, char **argv) try {
   check(argc == 2);
-  auto temp = symphony::testing::temporary_pattern("sbv-evaluate-partitioned-XXXXXX");
+  // The nested host endpoint also appends a 32-byte instance ID and .sock.
+  auto temp = symphony::testing::temporary_pattern("sbv-eval-XXXXXX");
   check(::mkdtemp(temp.data()));
   const std::string root = temp,
                     library = std::filesystem::absolute(argv[1]).string();

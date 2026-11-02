@@ -199,7 +199,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `tools/qxctl`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:platform`
-- record_digest: `sha256:8a37773651503e32d302fab6f3b09c46a0bf435eac5af24a388975d01e9e5f77`
+- record_digest: `sha256:7f066bec765e90b523f722f87807e5eff2255ff7eebada5296eef30318deffb1`
 - notes: Partial-catalog record for the Go Cobra/Viper administrative and query surface, including the explicit Linux report-only lifecycle receptor, across independently installed Symphony modules.
 
 - feature_id: `ssfv:symphony:qxctl.authenticated-sessions`
@@ -1189,7 +1189,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `modules/sqpv-inspection-engine`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:platform`
-- record_digest: `sha256:983c9833e02080d6aebd7edcf32031054e5818c78f9b500a1ee5ee1c41865224`
+- record_digest: `sha256:6fac9cba0ab6d6664fd2d4423f72f15fbacbf56bf0a407d6de63b1c02f6a6a15`
 - notes: Explicit non-live administration scoped to SQPV ownership; shared transport does not create a parent runtime.
 
 - feature_id: `ssfv:symphony:sqdv-checkpoint-engine`
@@ -1198,7 +1198,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `modules/sqdv-checkpoint-engine`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:platform`
-- record_digest: `sha256:2f375422fc2af4e89adbc803075dd7423b86b8ae17cf9a137a11154db16f5419`
+- record_digest: `sha256:601f3e0f522dbda8cc2264f4d6851865256792ea73c11589771ce2e0c39e4cde`
 - notes: Explicit non-live administration scoped to SQDV ownership; shared transport does not create a parent runtime.
 
 - feature_id: `ssfv:symphony:sqav-attempt-engine`
@@ -1207,7 +1207,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `modules/sqav-attempt-engine`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:platform`
-- record_digest: `sha256:56bfe0493136ae76e6af9d74847d0594dd0ca99885ee9b03c200dfdb3b6f0c40`
+- record_digest: `sha256:e8321ab6ddeb1c61a0bd0b9930589fb4ad948b6b89e5fdb5df246b9760af9e23`
 - notes: Explicit non-live administration scoped to SQAV ownership; shared transport does not create a parent runtime.
 
 

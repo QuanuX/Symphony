@@ -2,6 +2,7 @@
 
 - Module: `github.com/QuanuX/Symphony/tools/sov-ssh-adapter`
 - Release: `0.1.0-dev`
+- Identity inspection: exact `--version` prints the compiled version without invocation input or SSH execution.
 - Go baseline: `1.26.5`; standard library only
 - Stock platforms: Darwin and Linux; exact host qualification is recorded separately
 - Owner: `knowledge/sov/SSH-CARRIER.md`

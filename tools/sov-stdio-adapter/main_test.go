@@ -22,6 +22,27 @@ func TestMain(m *testing.M) {
 	}
 	os.Exit(m.Run())
 }
+
+type unreadVersionInput struct{ t *testing.T }
+
+func (r unreadVersionInput) Read([]byte) (int, error) {
+	r.t.Fatal("version inspection read transport input")
+	return 0, io.EOF
+}
+
+func TestVersionWithoutTransportInput(t *testing.T) {
+	var out bytes.Buffer
+	if code := run([]string{"--version"}, unreadVersionInput{t}, &out); code != 0 || out.String() != "sov-stdio-adapter version 0.1.0-dev\n" {
+		t.Fatalf("version failed: code=%d output=%q", code, out.String())
+	}
+	for _, args := range [][]string{{"--version", "extra"}, {"--version=true"}} {
+		out.Reset()
+		if code := run(args, unreadVersionInput{t}, &out); code != 2 || out.Len() != 0 {
+			t.Fatalf("accepted non-version arguments: %v, %d, %q", args, code, out.String())
+		}
+	}
+}
+
 func TestRelayAndExactTarget(t *testing.T) {
 	self, _ := os.Executable()
 	b, e := os.ReadFile(self)

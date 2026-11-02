@@ -162,6 +162,50 @@ func TestConfigurationCASAndAuthority(t *testing.T) {
 		t.Fatal("stable lock missing")
 	}
 }
+
+func TestTargetQXCTLIdentityMismatchBeforeNativeInspection(t *testing.T) {
+	self, err := os.Executable()
+	if err != nil {
+		t.Fatal(err)
+	}
+	raw, err := os.ReadFile(self)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, selectedVersion := range []string{"qxctl dev", "0.1.0-dev"} {
+		for _, mismatch := range []string{"version", "digest"} {
+			t.Run(selectedVersion+"/"+mismatch, func(t *testing.T) {
+				in := testInvocation(t)
+				in.Selection.Runtime.QXCTLVersion = selectedVersion
+				in.Selection.Runtime.QXCTLSHA256 = Digest(raw)
+				in.Endpoint.TargetQXCTL = Executable{self, Digest(raw)}
+				if mismatch == "digest" {
+					in.Selection.Runtime.QXCTLSHA256 = strings.Repeat("f", 64)
+					in.Endpoint.TargetQXCTL.SHA256 = in.Selection.Runtime.QXCTLSHA256
+				}
+				config := Configuration{Protocol: "symphony.sov.target-configuration.v1", Target: in.Selection.Target,
+					Job: in.Selection.Job, Runtime: in.Selection.Runtime, SBVPrefix: filepath.Join(privateDir(t), "absent-native"),
+					AuthorityMode: "owner_filesystem", Authority: in.Selection.Authority, AllowedArtifacts: []Artifact{}}
+				input := ConfigureInput{Protocol: "symphony.sov.target-configure-input.v1", Path: filepath.Join(privateDir(t), "target.json"), Configuration: config}
+				out, err := Configure(encoded(t, input))
+				if err != nil {
+					t.Fatal(err)
+				}
+				in.Endpoint.ConfigurationPath, in.Endpoint.ConfigurationSHA256 = input.Path, out.SHA256
+				replan(t, &in)
+				actualVersion := selectedVersion
+				if mismatch == "version" {
+					actualVersion = "different"
+				}
+				_, err = Serve(context.Background(), encoded(t, in), input.Path, out.SHA256, actualVersion, nil)
+				if err == nil || err.Error() != "target qxctl identity mismatch" {
+					t.Fatalf("identity mismatch did not precede native inspection: %v", err)
+				}
+			})
+		}
+	}
+}
+
 func TestConfigurationRejectsUnsafeFiles(t *testing.T) {
 	for _, kind := range []string{"public_file", "symlink", "hardlink", "public_parent", "parent_symlink"} {
 		t.Run(kind, func(t *testing.T) {

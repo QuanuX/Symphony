@@ -5,6 +5,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <filesystem>
+#include <string>
 #include <limits>
 #include <new>
 #include <symphony/sqdv/delivery.hpp>
@@ -334,8 +335,10 @@ void rejection_and_bounds() {
           "lineage saturation visible");
 }
 void converted_retention_delivery() {
-  char temp[] = "/private/tmp/sqtv-retained-XXXXXX";
-  auto path = ::mkdtemp(temp);
+  auto temp =
+      (std::filesystem::canonical(std::filesystem::temp_directory_path()) /
+       "sqtv-retained-XXXXXX").string();
+  auto path = ::mkdtemp(temp.data());
   require(path, "private root");
   {
     auto c = context();

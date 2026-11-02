@@ -1,0 +1,174 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:artifact:build-identity:v1",
+  "title": "Go candidate artifact build identity v1",
+  "description": "Recipe evidence binding a local candidate executable to its source, independent identity catalog, dependencies and target. This is not a signature, publisher attestation, release approval or provider activation.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "protocol",
+    "component_id",
+    "version",
+    "binary_name",
+    "source_commit",
+    "source_tree",
+    "source_date_epoch",
+    "dependency_map_sha256",
+    "release_identity_catalog_sha256",
+    "go_mod_sha256",
+    "go_sum_sha256",
+    "build_recipe",
+    "go_version",
+    "goos",
+    "goarch",
+    "executable_sha256",
+    "isolated_builds",
+    "reproducibility",
+    "publication_authorized"
+  ],
+  "properties": {
+    "protocol": {
+      "const": "symphony.artifact-build-identity.v1"
+    },
+    "component_id": {
+      "enum": [
+        "qxctl",
+        "accordare-stav-producer",
+        "secure-identity-access-governance",
+        "stav-append-authority",
+        "sov-stdio-adapter",
+        "sov-ssh-adapter"
+      ]
+    },
+    "version": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64,
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(?:-(?:0|[1-9][0-9]*|[0-9]*[A-Za-z-][0-9A-Za-z-]*)(?:\\.(?:0|[1-9][0-9]*|[0-9]*[A-Za-z-][0-9A-Za-z-]*))*)?(?:\\+[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?$"
+    },
+    "binary_name": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]+$"
+    },
+    "source_commit": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "source_tree": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "source_date_epoch": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)$",
+      "maxLength": 19
+    },
+    "dependency_map_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "release_identity_catalog_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "go_mod_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "go_sum_sha256": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      ]
+    },
+    "build_recipe": {
+      "enum": [
+        "symphony.qxctl.reproducible-build.v1",
+        "symphony.go.candidate-build.v1"
+      ]
+    },
+    "go_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "goos": {
+      "enum": [
+        "darwin",
+        "linux"
+      ]
+    },
+    "goarch": {
+      "enum": [
+        "amd64",
+        "arm64"
+      ]
+    },
+    "executable_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "isolated_builds": {
+      "type": "integer",
+      "enum": [
+        1,
+        2
+      ]
+    },
+    "reproducibility": {
+      "enum": [
+        "not_assessed",
+        "verified_on_recorded_profile"
+      ]
+    },
+    "publication_authorized": {
+      "const": false
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "build_recipe": {
+            "const": "symphony.qxctl.reproducible-build.v1"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "component_id": {
+            "const": "qxctl"
+          },
+          "binary_name": {
+            "const": "qxctl"
+          },
+          "isolated_builds": {
+            "const": 2
+          },
+          "reproducibility": {
+            "const": "verified_on_recorded_profile"
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "component_id": {
+            "not": {
+              "const": "qxctl"
+            }
+          },
+          "isolated_builds": {
+            "const": 1
+          },
+          "reproducibility": {
+            "const": "not_assessed"
+          }
+        }
+      }
+    }
+  ]
+}

@@ -4,6 +4,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <filesystem>
+#include <string>
 #include <new>
 #include <source_location>
 #include <symphony/sqav/databento/historical.hpp>
@@ -399,8 +400,10 @@ void historical_retained_replay() {
   pos.producer_generation[0] = 1;
   sqfv::Batch batch;
   check(capture.prepare(flow, manifest, pos, batch) == sqav::Status::ok);
-  char temp[] = "/private/tmp/sqv21-history-XXXXXX";
-  auto root = ::mkdtemp(temp);
+  auto temp =
+      (std::filesystem::canonical(std::filesystem::temp_directory_path()) /
+       "sqv21-history-XXXXXX").string();
+  auto root = ::mkdtemp(temp.data());
   check(root);
   {
     sqpv::Options options{

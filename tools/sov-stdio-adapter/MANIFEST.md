@@ -2,6 +2,7 @@
 
 - Module: `github.com/QuanuX/Symphony/tools/sov-stdio-adapter`
 - Release: `0.1.0-dev`, unpublished local source
+- Identity inspection: exact `--version` prints the compiled version without transport input or execution.
 - Go baseline: 1.26.5; standard library only
 - Supported stock platforms: darwin, linux; locally qualified on darwin only
 - Owner: `knowledge/sov/PROCESS-EXECUTION.md`

@@ -24,6 +24,30 @@ func selection(t *testing.T) Selection {
 	return v.(Selection)
 }
 func ptr(s string) *string { return &s }
+
+func TestQXCTLCurrentAndRetainedVersionSelection(t *testing.T) {
+	var priorDigest string
+	for _, version := range []string{"qxctl dev", "0.1.0-dev", "0.0.1", "0.1.0-rc.1+build.2"} {
+		s := selection(t)
+		s.Runtime.QXCTLVersion = version
+		plan, err := MakePlan(encoded(t, s))
+		if err != nil {
+			t.Fatalf("retained/current version %q refused: %v", version, err)
+		}
+		if plan.Selection.Runtime.QXCTLVersion != version || plan.PlanSHA256 == priorDigest {
+			t.Fatalf("selection identity was rewritten or unbound: %+v", plan)
+		}
+		priorDigest = plan.PlanSHA256
+	}
+	for _, version := range []string{"", "latest", "*", "^0.1.0", "~0.1.0", ">=0.1.0", "qxctl 0.1.0-dev"} {
+		s := selection(t)
+		s.Runtime.QXCTLVersion = version
+		if _, err := MakePlan(encoded(t, s)); err == nil {
+			t.Fatalf("accepted non-exact identity %q", version)
+		}
+	}
+}
+
 func TestPlanSelectionsAndUnboundedResources(t *testing.T) {
 	s := selection(t)
 	s.Resources.MemoryBytes = ptr("18446744073709551616000000000000")

@@ -94,7 +94,7 @@ jobs:
       - name: Prepare private exact external dependencies
         if: matrix.group == 'quantitative'
         run: sh .github/scripts/prepare-mvp-dependencies.sh "$RUNNER_TEMP/mvp-external"
-      - name: Build and exercise installed dependencies
+      - name: Build installed dependencies and run declared native suites
         env:
           GOMODCACHE: ${{ runner.temp }}/mvp-go-modules
           GOCACHE: ${{ runner.temp }}/mvp-go-build
@@ -107,6 +107,8 @@ jobs:
       - name: Verify authoring tools against installed foundation
         if: matrix.group == 'knowledge'
         run: sh tests/mvp-dependencies/run.sh build_support "$RUNNER_TEMP/mvp-authoring"
+      - name: Check native qualification manifest
+        run: cmake -P tests/release-qualification/verify.cmake
       - name: Build the declared Apple provider without activating it
         if: matrix.group == 'knowledge' && runner.os == 'macOS'
         run: |

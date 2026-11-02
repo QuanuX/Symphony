@@ -27,6 +27,15 @@ The SKVI, SCLV, SACV, SODV, and SSFV command groups require their separately ins
 
 For the clean public-dependency build gate, run `sh tests/standalone_build.sh` from this module directory with the exact declared Go version on `PATH`. It copies qxctl outside the repository and builds with empty caches, public checksum verification, and no workspace replacements. See [Standalone dependency regression](README.md#standalone-dependency-regression) for the complete procedure.
 
+## Build identity
+
+The current unpublished development identity is `0.1.0-dev`. Use
+`qxctl version --json` to inspect the running executable digest and source stamps.
+An ordinary local build reports unavailable source metadata. A complete source
+stamp is a declaration verified by the separate reproducible build evidence; it
+does not publish a release or grant installation trust. Retained installed engine
+versions and SOV executable selections remain exact and caller-selected.
+
 ## Migration Note
 qxctl targets Go 1.27 only after general availability and the differential fixture/digest, default-vs-`nojsonv2`, vet, race, and supported-platform cross-build gates pass. The workspace and module pins change atomically, and the migration cannot alter qxctl grammar or STAV bytes.
 

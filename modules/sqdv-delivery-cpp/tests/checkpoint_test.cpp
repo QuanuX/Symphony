@@ -1,6 +1,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <filesystem>
+#include <string>
 #include <signal.h>
 #include <symphony/sqdv/checkpoint.hpp>
 #include <sys/wait.h>
@@ -36,8 +37,10 @@ void require(bool condition, const char *message) {
 struct Root {
   std::string path;
   Root() {
-    char name[] = "/private/tmp/sqdv-native-XXXXXX";
-    auto *created = ::mkdtemp(name);
+    auto name =
+        (std::filesystem::canonical(std::filesystem::temp_directory_path()) /
+         "sqdv-native-XXXXXX").string();
+    auto *created = ::mkdtemp(name.data());
     require(created != nullptr, "private temporary root");
     path = created;
   }

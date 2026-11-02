@@ -1,5 +1,9 @@
 # SOV SSH adapter 0.1.0-dev
 
+`sov-ssh-adapter --version` prints the compiled `0.1.0-dev` identity without
+reading an invocation, contacting an agent, or starting SSH. The version label
+does not replace the selected executable digest.
+
 Build from the repository workspace using the selected Go toolchain:
 
 ```sh

@@ -24,8 +24,8 @@ func TestCommandRegistryCobraParityAndStableIdentity(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(manifest.Commands) != 461 {
-		t.Fatalf("registered command count = %d, want 461", len(manifest.Commands))
+	if len(manifest.Commands) != 462 {
+		t.Fatalf("registered command count = %d, want 462", len(manifest.Commands))
 	}
 	seen := make(map[string]*string, len(manifest.Commands))
 	for _, command := range manifest.Commands {
@@ -41,6 +41,7 @@ func TestCommandRegistryCobraParityAndStableIdentity(t *testing.T) {
 		}
 	}
 	for _, required := range []string{
+		"qxcmd:symphony:version",
 		"qxcmd:symphony:sov.remote.ssh-endpoint",
 		"qxcmd:symphony:sov.remote.ssh-invoke",
 		"qxcmd:symphony:commands.manifest",
@@ -190,8 +191,8 @@ func TestCommandRegistryBindsVectorCapabilitiesNotBindingSelection(t *testing.T)
 }
 
 func TestReviewedBackendFeatureBindingsReachExpectedRegistry(t *testing.T) {
-	if len(reviewedBackendFeatureBindings) != 87 {
-		t.Fatalf("reviewed backend command count = %d, want 87", len(reviewedBackendFeatureBindings))
+	if len(reviewedBackendFeatureBindings) != 92 {
+		t.Fatalf("reviewed backend command count = %d, want 92", len(reviewedBackendFeatureBindings))
 	}
 	secondaryBindingCount := 0
 	for key, bindings := range reviewedBackendFeatureBindings {
@@ -200,8 +201,8 @@ func TestReviewedBackendFeatureBindingsReachExpectedRegistry(t *testing.T) {
 		}
 		secondaryBindingCount += len(bindings)
 	}
-	if secondaryBindingCount != 102 {
-		t.Fatalf("reviewed backend binding count = %d, want 102", secondaryBindingCount)
+	if secondaryBindingCount != 107 {
+		t.Fatalf("reviewed backend binding count = %d, want 107", secondaryBindingCount)
 	}
 
 	root, err := newRootCommand()
@@ -245,6 +246,50 @@ func TestReviewedBackendFeatureBindingsReachExpectedRegistry(t *testing.T) {
 	}
 	if found != len(reviewedBackendFeatureBindings) {
 		t.Fatalf("registered reviewed backend command count = %d, want %d", found, len(reviewedBackendFeatureBindings))
+	}
+}
+
+func TestSOVAdapterInheritedInvokeBindingsPreserveAuthority(t *testing.T) {
+	root, err := newRootCommand()
+	if err != nil {
+		t.Fatal(err)
+	}
+	manifest, err := commandregistry.BuildExpected(root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	want := map[string]struct{ wrapper, adapter, scope, recovery string }{
+		"sov.remote.ssh-invoke": {featureSOVSSH, "ssfv:symphony:sov-ssh-adapter", "target_host", "sov.remote.ssh-invoke"},
+		"sov.remote.invoke":     {featureSOVExecution, "ssfv:symphony:sov-stdio-adapter", "local", "sov.remote.invoke"},
+		"sov.target.configure":  {featureSOVExecution, "ssfv:symphony:sov-stdio-adapter", "local", "sov.target.inspect"},
+		"sov.target.invoke":     {featureSOVExecution, "ssfv:symphony:sov-stdio-adapter", "local", "sov.target.inspect"},
+		"sov.target.remove":     {featureSOVExecution, "ssfv:symphony:sov-stdio-adapter", "local", "sov.target.inspect"},
+	}
+	for _, command := range manifest.Commands {
+		key := strings.TrimPrefix(command.CommandID, "qxcmd:symphony:")
+		contract, required := want[key]
+		if !required {
+			for _, feature := range []string{"ssfv:symphony:sov-ssh-adapter", "ssfv:symphony:sov-stdio-adapter"} {
+				if containsFeatureBinding(command.FeatureBindings, commandregistry.FeatureBinding{FeatureID: feature, Interaction: "invoke"}) {
+					t.Fatalf("unreviewed adapter invocation binding on %s", command.CommandID)
+				}
+			}
+			continue
+		}
+		for _, feature := range []string{contract.wrapper, contract.adapter} {
+			if !containsFeatureBinding(command.FeatureBindings, commandregistry.FeatureBinding{FeatureID: feature, Interaction: "invoke"}) {
+				t.Errorf("%s lacks exact inherited invoke binding for %s", command.CommandID, feature)
+			}
+		}
+		if len(command.FeatureBindings) != 2 || command.Mutability != "permission_backed_mutation" ||
+			command.AuthorityMode != "target_host_permission" || command.TargetScope != contract.scope ||
+			command.RecoveryCommandID == nil || *command.RecoveryCommandID != "qxcmd:symphony:"+contract.recovery {
+			t.Errorf("%s changed the existing authority or recovery contract: %#v", command.CommandID, command)
+		}
+		delete(want, key)
+	}
+	if len(want) != 0 {
+		t.Fatalf("missing adapter administration commands: %v", want)
 	}
 }
 

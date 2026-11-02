@@ -87,6 +87,8 @@ const (
 	backendFeatureValidator            = "ssfv:symphony:symphony-validator"
 	backendFeatureRootSummary          = "ssfv:symphony:symphony-validator.root-summary-assurance"
 	backendFeatureInvariantAssurance   = "ssfv:symphony:symphony-validator.invariant-ownership-assurance"
+	backendFeatureSOVSSHAdapter        = "ssfv:symphony:sov-ssh-adapter"
+	backendFeatureSOVStdioAdapter      = "ssfv:symphony:sov-stdio-adapter"
 )
 
 // reviewedBackendFeatureBindings is the ratified semantic bridge from stable
@@ -144,6 +146,11 @@ var reviewedBackendFeatureBindings = map[string][]commandregistry.FeatureBinding
 	"module.check":                       {{FeatureID: backendFeatureCoordinator, Interaction: "validate"}},
 	"module.inspect":                     {{FeatureID: backendFeatureCoordinator, Interaction: "inspect"}},
 	"modules":                            {{FeatureID: backendFeaturePlatform, Interaction: "discover"}},
+	"sov.remote.ssh-invoke":              {{FeatureID: backendFeatureSOVSSHAdapter, Interaction: "invoke"}},
+	"sov.remote.invoke":                  {{FeatureID: backendFeatureSOVStdioAdapter, Interaction: "invoke"}},
+	"sov.target.configure":               {{FeatureID: backendFeatureSOVStdioAdapter, Interaction: "invoke"}},
+	"sov.target.invoke":                  {{FeatureID: backendFeatureSOVStdioAdapter, Interaction: "invoke"}},
+	"sov.target.remove":                  {{FeatureID: backendFeatureSOVStdioAdapter, Interaction: "invoke"}},
 	"ssiag.doctor":                       {{FeatureID: backendFeatureSSIAG, Interaction: "validate"}},
 	"ssiag.enrollment.status":            {{FeatureID: backendFeatureSSIAGEnrollment, Interaction: "lifecycle"}},
 	"ssiag.enrollment.plan":              {{FeatureID: backendFeatureSSIAGEnrollment, Interaction: "lifecycle"}},

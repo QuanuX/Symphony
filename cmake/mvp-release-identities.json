@@ -1,0 +1,1230 @@
+{
+  "protocol": "symphony.mvp.release-identities.v1",
+  "format_version": 1,
+  "baseline_commit": "c15eda9b0092f123e86d4be577fe6d00ba68e1b1",
+  "scope": "Candidate identities for all current component roots. L01 separately approves the shipped capability set. Exact artifact evidence and release authorization are separate. No tag, binary upload, provider activation, Anaconda channel or mirror is created.",
+  "candidate_selection": {
+    "qxctl": "0.1.0-dev matches its existing command IntroducedIn identity and replaces the generic display version.",
+    "stav-append-authority": "0.2.1 is selected explicitly for candidate binaries from the current v0.2.1 source line; source dev defaults and immutable Go tags remain separate.",
+    "secure-identity-access-governance": "0.1.0-dev is the selected unpublished initial binary candidate; ordinary source builds retain the legacy dev default.",
+    "other_components": "Retain independently owned current receipt, SDK and runtime identities, including prerelease and draft labels; do not flatten versions."
+  },
+  "source_binding_policy": {
+    "go_candidates": "Sidecars bind executable SHA256, selected package version, source commit/tree, source date, dependency and identity catalog digests, exact Go toolchain, target and recipe. Native --version output is checked independently.",
+    "qxctl": "The binary reports stamp availability, not verification. Its dedicated recipe checks metadata independently and equal binary hashes from two source paths and fresh build caches.",
+    "native_candidates": "Retain current exact receipt package and SDK identities. Qualification evidence binds source commit/tree, toolchain and selected dependencies to validated receipt/file digests; final relocation, signing and publication remain L10-L12.",
+    "swift_provider": "Keep 0.1.0-draft and metadata/lifecycle-only scope. Operational credential use and signed production bundle acceptance remain separate launch gates."
+  },
+  "components": [
+    {
+      "component_id": "accordare-stav-producer",
+      "path": "modules/accordare-stav-producer",
+      "kind": "go_command",
+      "package_version": "0.1.0-dev",
+      "sdk_versions": [],
+      "source_runtime_version": "0.1.0-dev",
+      "public_go_source_identities": [
+        {
+          "module": "github.com/QuanuX/Symphony/modules/accordare-stav-producer",
+          "version": "v0.1.0-dev",
+          "repository_tag": "modules/accordare-stav-producer/v0.1.0-dev",
+          "repository_commit": "f36c3372ee5fb2ab9d1eb059eac30b543185db2d",
+          "verification_scope": "L04 standalone qxctl build used a fresh task-local public proxy/sumdb cache and succeeded; local tag metadata read again for this inventory. No new publication performed."
+        }
+      ],
+      "publication_status": "not_authorized_by_this_catalog",
+      "qualification_scope": "required_ci_profiles"
+    },
+    {
+      "component_id": "hotpath-runtime",
+      "path": "modules/hotpath-runtime",
+      "kind": "proposal_only_no_implementation_or_installer",
+      "package_version": null,
+      "sdk_versions": [],
+      "source_runtime_version": null,
+      "public_go_source_identities": [],
+      "publication_status": "not_authorized_by_this_catalog",
+      "qualification_scope": "proposal_not_a_runtime_package"
+    },
+    {
+      "component_id": "knowledge-session-coordinator",
+      "path": "modules/knowledge-session-coordinator",
+      "kind": "native_package",
+      "package_version": "0.1.0-dev",
+      "sdk_versions": [],
+      "source_runtime_version": null,
+      "public_go_source_identities": [],
+      "publication_status": "not_authorized_by_this_catalog",
+      "qualification_scope": "required_ci_profiles"
+    },
+    {
+      "component_id": "maestro",
+      "path": "modules/maestro",
+      "kind": "native_package",
+      "package_version": "0.1.0-dev",
+      "sdk_versions": [],
+      "source_runtime_version": null,
+      "public_go_source_identities": [],
+      "publication_status": "not_authorized_by_this_catalog",
+      "qualification_scope": "required_ci_profiles"
+    },
+    {
+      "component_id": "native-source-support-cpp",
+      "path": "modules/native-source-support-cpp",
+      "kind": "native_package",
+      "package_version": "0.1.0-dev",
+      "sdk_versions": [
+        {
+          "package": "SymphonyNativeSourceSupport",
+          "version": "0.1.0"
+        }
+      ],
+      "source_runtime_version": null,
+      "public_go_source_identities": [],
+      "publication_status": "not_authorized_by_this_catalog",
+      "qualification_scope": "required_ci_profiles"
+    },
+    {
+      "component_id": "sacv-engine",
+      "path": "modules/sacv-engine",
+      "kind": "native_package",
+      "package_version": "0.1.0-dev",
+      "sdk_versions": [],
+      "source_runtime_version": null,
+      "public_go_source_identities": [],
+      "publication_status": "not_authorized_by_this_catalog",
+      "qualification_scope": "required_ci_profiles"
+    },
+    {
+      "component_id": "sav-engine",
+      "path": "modules/sav-engine",
+      "kind": "native_package",
+      "package_version": "0.1.0-dev",
+      "sdk_versions": [],
+      "source_runtime_version": null,
+      "public_go_source_identities": [],
+      "publication_status": "not_authorized_by_this_catalog",
+      "qualification_scope": "required_ci_profiles"
+    },
+    {
+      "component_id": "sbv-engine",
+      "path": "modules/sbv-engine",
+      "kind": "native_package",
+      "package_version": "0.33.0-dev",
+      "sdk_versions": [
+        {
+          "package": "SymphonySbvInterop",
+          "version": "0.33.0"
+        },
+        {
+          "package": "SymphonySbvProvider",
+          "version": "0.33.0"
+        },
+        {
+          "package": "SymphonySbvSdk",
+          "version": "0.33.0"
+        }
+      ],
+      "source_runtime_version": null,
+      "public_go_source_identities": [],
+      "publication_status": "not_authorized_by_this_catalog",
+      "qualification_scope": "required_ci_profiles"
+    },
+    {
+      "component_id": "scabv-ibkr-client-portal-cpp",
+      "path": "modules/scabv-ibkr-client-portal-cpp",
+      "kind": "native_package",
+      "package_version": "0.1.0-dev",
+      "sdk_versions": [
+        {
+          "package": "SymphonyScabvIbkrClientPortal",
+          "version": "0.1.0"
+        }
+      ],
+      "source_runtime_version": null,
+      "public_go_source_identities": [],
+      "publication_status": "not_authorized_by_this_catalog",
+      "qualification_scope": "required_ci_profiles"
+    },
+    {
+      "component_id": "scabv-ibkr-tws-cpp",
+      "path": "modules/scabv-ibkr-tws-cpp",
+      "kind": "native_package",
+      "package_version": "0.1.0-dev",
+      "sdk_versions": [
+        {
+          "package": "SymphonyScabvIbkrTws",
+          "version": "0.1.0"
+        }
+      ],
+      "source_runtime_version": null,
+      "public_go_source_identities": [],
+      "publication_status": "not_authorized_by_this_catalog",
+      "qualification_scope": "required_ci_profiles"
+    },
+    {
+      "component_id": "scev-cf-engine",
+      "path": "modules/scev-cf-engine",
+      "kind": "native_package",
+      "package_version": "0.10.0-dev",
+      "sdk_versions": [],
+      "source_runtime_version": null,
+      "public_go_source_identities": [],
+      "publication_status": "not_authorized_by_this_catalog",
+      "qualification_scope": "required_ci_profiles"
+    },
+    {
+      "component_id": "scev-engine",
+      "path": "modules/scev-engine",
+      "kind": "native_package",
+      "package_version": "0.10.0-dev",
+      "sdk_versions": [],
+      "source_runtime_version": null,
+      "public_go_source_identities": [],
+      "publication_status": "not_authorized_by_this_catalog",
+      "qualification_scope": "required_ci_profiles"
+    },
+    {
+      "component_id": "schv-aws-engine",
+      "path": "modules/schv-aws-engine",
+      "kind": "native_package",
+      "package_version": "0.10.0-dev",
+      "sdk_versions": [],
+      "source_runtime_version": null,
+      "public_go_source_identities": [],
+      "publication_status": "not_authorized_by_this_catalog",
+      "qualification_scope": "required_ci_profiles"
+    },
+    {
+      "component_id": "schv-azure-engine",
+      "path": "modules/schv-azure-engine",
+      "kind": "native_package",
+      "package_version": "0.10.0-dev",
+      "sdk_versions": [],
+      "source_runtime_version": null,
+      "public_go_source_identities": [],
+      "publication_status": "not_authorized_by_this_catalog",
+      "qualification_scope": "required_ci_profiles"
+    },
+    {
+      "component_id": "schv-do-engine",
+      "path": "modules/schv-do-engine",
+      "kind": "native_package",
+      "package_version": "0.10.0-dev",
+      "sdk_versions": [],
+      "source_runtime_version": null,
+      "public_go_source_identities": [],
+      "publication_status": "not_authorized_by_this_catalog",
+      "qualification_scope": "required_ci_profiles"
+    },
+    {
+      "component_id": "schv-engine",
+      "path": "modules/schv-engine",
+      "kind": "native_package",
+      "package_version": "0.10.0-dev",
+      "sdk_versions": [],
+      "source_runtime_version": null,
+      "public_go_source_identities": [],
+      "publication_status": "not_authorized_by_this_catalog",
+      "qualification_scope": "required_ci_profiles"
+    },
+    {
+      "component_id": "schv-gcp-engine",
+      "path": "modules/schv-gcp-engine",
+      "kind": "native_package",
+      "package_version": "0.10.0-dev",
+      "sdk_versions": [],
+      "source_runtime_version": null,
+      "public_go_source_identities": [],
+      "publication_status": "not_authorized_by_this_catalog",
+      "qualification_scope": "required_ci_profiles"
+    },
+    {
+      "component_id": "sciv-engine",
+      "path": "modules/sciv-engine",
+      "kind": "native_package",
+      "package_version": "0.1.0-dev",
+      "sdk_versions": [
+        {
+          "package": "SymphonySciv",
+          "version": "0.1.0"
+        }
+      ],
+      "source_runtime_version": null,
+      "public_go_source_identities": [],
+      "publication_status": "not_authorized_by_this_catalog",
+      "qualification_scope": "required_ci_profiles"
+    },
+    {
+      "component_id": "sclv-engine",
+      "path": "modules/sclv-engine",
+      "kind": "native_package",
+      "package_version": "0.1.0-dev",
+      "sdk_versions": [],
+      "source_runtime_version": null,
+      "public_go_source_identities": [],
+      "publication_status": "not_authorized_by_this_catalog",
+      "qualification_scope": "required_ci_profiles"
+    },
+    {
+      "component_id": "scnv-engine",
+      "path": "modules/scnv-engine",
+      "kind": "native_package",
+      "package_version": "0.1.0-dev",
+      "sdk_versions": [
+        {
+          "package": "SymphonyScnv",
+          "version": "0.1.0"
+        }
+      ],
+      "source_runtime_version": null,
+      "public_go_source_identities": [],
+      "publication_status": "not_authorized_by_this_catalog",
+      "qualification_scope": "required_ci_profiles"
+    },
+    {
+      "component_id": "scv-engine",
+      "path": "modules/scv-engine",
+      "kind": "native_package",
+      "package_version": "0.10.0-dev",
+      "sdk_versions": [],
+      "source_runtime_version": null,
+      "public_go_source_identities": [],
+      "publication_status": "not_authorized_by_this_catalog",
+      "qualification_scope": "required_ci_profiles"
+    },
+    {
+      "component_id": "scv-graph-duckdb-connector",
+      "path": "modules/scv-graph-duckdb-connector",
+      "kind": "native_package",
+      "package_version": "0.2.0-dev",
+      "sdk_versions": [],
+      "source_runtime_version": null,
+      "public_go_source_identities": [],
+      "publication_status": "not_authorized_by_this_catalog",
+      "qualification_scope": "legacy_intel_only"
+    },
+    {
+      "component_id": "secure-identity-access-governance",
+      "path": "modules/secure-identity-access-governance",
+      "kind": "go_command",
+      "package_version": "0.1.0-dev",
+      "sdk_versions": [],
+      "source_runtime_version": "dev",
+      "public_go_source_identities": [],
+      "publication_status": "not_authorized_by_this_catalog",
+      "qualification_scope": "required_ci_profiles"
+    },
+    {
+      "component_id": "sev-engine",
+      "path": "modules/sev-engine",
+      "kind": "native_package",
+      "package_version": "0.1.0-dev",
+      "sdk_versions": [],
+      "source_runtime_version": null,
+      "public_go_source_identities": [],
+      "publication_status": "not_authorized_by_this_catalog",
+      "qualification_scope": "required_ci_profiles"
+    },
+    {
+      "component_id": "shv-engine",
+      "path": "modules/shv-engine",
+      "kind": "native_package",
+      "package_version": "0.4.0-dev",
+      "sdk_versions": [],
+      "source_runtime_version": null,
+      "public_go_source_identities": [],
+      "publication_status": "not_authorized_by_this_catalog",
+      "qualification_scope": "required_ci_profiles"
+    },
+    {
+      "component_id": "shv-graph-adapter",
+      "path": "modules/shv-graph-adapter",
+      "kind": "native_package",
+      "package_version": "0.2.0-dev",
+      "sdk_versions": [
+        {
+          "package": "SymphonyShvGraphAdapter",
+          "version": "0.2.0"
+        }
+      ],
+      "source_runtime_version": null,
+      "public_go_source_identities": [],
+      "publication_status": "not_authorized_by_this_catalog",
+      "qualification_scope": "required_ci_profiles"
+    },
+    {
+      "component_id": "shv-graph-duckdb-connector",
+      "path": "modules/shv-graph-duckdb-connector",
+      "kind": "native_package",
+      "package_version": "0.4.0-dev",
+      "sdk_versions": [],
+      "source_runtime_version": null,
+      "public_go_source_identities": [],
+      "publication_status": "not_authorized_by_this_catalog",
+      "qualification_scope": "legacy_intel_only"
+    },
+    {
+      "component_id": "shv-partition-engine",
+      "path": "modules/shv-partition-engine",
+      "kind": "native_package",
+      "package_version": "0.4.0-dev",
+      "sdk_versions": [],
+      "source_runtime_version": null,
+      "public_go_source_identities": [],
+      "publication_status": "not_authorized_by_this_catalog",
+      "qualification_scope": "required_ci_profiles"
+    },
+    {
+      "component_id": "shv-pdf-adapter",
+      "path": "modules/shv-pdf-adapter",
+      "kind": "native_package",
+      "package_version": "0.3.0-dev",
+      "sdk_versions": [],
+      "source_runtime_version": null,
+      "public_go_source_identities": [],
+      "publication_status": "not_authorized_by_this_catalog",
+      "qualification_scope": "required_ci_profiles"
+    },
+    {
+      "component_id": "shv-profile-engine",
+      "path": "modules/shv-profile-engine",
+      "kind": "native_package",
+      "package_version": "0.3.0-dev",
+      "sdk_versions": [],
+      "source_runtime_version": null,
+      "public_go_source_identities": [],
+      "publication_status": "not_authorized_by_this_catalog",
+      "qualification_scope": "required_ci_profiles"
+    },
+    {
+      "component_id": "shv-publication-engine",
+      "path": "modules/shv-publication-engine",
+      "kind": "native_package",
+      "package_version": "0.4.0-dev",
+      "sdk_versions": [],
+      "source_runtime_version": null,
+      "public_go_source_identities": [],
+      "publication_status": "not_authorized_by_this_catalog",
+      "qualification_scope": "required_ci_profiles"
+    },
+    {
+      "component_id": "shv-source-engine",
+      "path": "modules/shv-source-engine",
+      "kind": "native_package",
+      "package_version": "0.2.0-dev",
+      "sdk_versions": [],
+      "source_runtime_version": null,
+      "public_go_source_identities": [],
+      "publication_status": "not_authorized_by_this_catalog",
+      "qualification_scope": "required_ci_profiles"
+    },
+    {
+      "component_id": "skvi-engine",
+      "path": "modules/skvi-engine",
+      "kind": "native_package",
+      "package_version": "0.2.0-dev",
+      "sdk_versions": [],
+      "source_runtime_version": null,
+      "public_go_source_identities": [],
+      "publication_status": "not_authorized_by_this_catalog",
+      "qualification_scope": "required_ci_profiles"
+    },
+    {
+      "component_id": "sniv-engine",
+      "path": "modules/sniv-engine",
+      "kind": "native_package",
+      "package_version": "0.1.0-dev",
+      "sdk_versions": [
+        {
+          "package": "SymphonySniv",
+          "version": "0.1.0"
+        }
+      ],
+      "source_runtime_version": null,
+      "public_go_source_identities": [],
+      "publication_status": "not_authorized_by_this_catalog",
+      "qualification_scope": "required_ci_profiles"
+    },
+    {
+      "component_id": "snrv-engine",
+      "path": "modules/snrv-engine",
+      "kind": "native_package",
+      "package_version": "0.1.0-dev",
+      "sdk_versions": [
+        {
+          "package": "SymphonySnrv",
+          "version": "0.1.0"
+        }
+      ],
+      "source_runtime_version": null,
+      "public_go_source_identities": [],
+      "publication_status": "not_authorized_by_this_catalog",
+      "qualification_scope": "required_ci_profiles"
+    },
+    {
+      "component_id": "snv-engine",
+      "path": "modules/snv-engine",
+      "kind": "native_package",
+      "package_version": "0.1.0-dev",
+      "sdk_versions": [
+        {
+          "package": "SymphonySnv",
+          "version": "0.1.0"
+        }
+      ],
+      "source_runtime_version": null,
+      "public_go_source_identities": [],
+      "publication_status": "not_authorized_by_this_catalog",
+      "qualification_scope": "required_ci_profiles"
+    },
+    {
+      "component_id": "snv-local-observer",
+      "path": "modules/snv-local-observer",
+      "kind": "native_package",
+      "package_version": "0.1.0-dev",
+      "sdk_versions": [
+        {
+          "package": "SymphonySnvLocalObserver",
+          "version": "0.1.0"
+        }
+      ],
+      "source_runtime_version": null,
+      "public_go_source_identities": [],
+      "publication_status": "not_authorized_by_this_catalog",
+      "qualification_scope": "required_ci_profiles"
+    },
+    {
+      "component_id": "sodv-engine",
+      "path": "modules/sodv-engine",
+      "kind": "native_package",
+      "package_version": "0.1.0-dev",
+      "sdk_versions": [],
+      "source_runtime_version": null,
+      "public_go_source_identities": [],
+      "publication_status": "not_authorized_by_this_catalog",
+      "qualification_scope": "required_ci_profiles"
+    },
+    {
+      "component_id": "sqav-attempt-engine",
+      "path": "modules/sqav-attempt-engine",
+      "kind": "native_package",
+      "package_version": "0.1.0-dev",
+      "sdk_versions": [],
+      "source_runtime_version": null,
+      "public_go_source_identities": [],
+      "publication_status": "not_authorized_by_this_catalog",
+      "qualification_scope": "required_ci_profiles"
+    },
+    {
+      "component_id": "sqav-capture-cpp",
+      "path": "modules/sqav-capture-cpp",
+      "kind": "native_package",
+      "package_version": "0.2.0-dev",
+      "sdk_versions": [
+        {
+          "package": "SymphonySqavCapture",
+          "version": "0.2.0"
+        }
+      ],
+      "source_runtime_version": null,
+      "public_go_source_identities": [],
+      "publication_status": "not_authorized_by_this_catalog",
+      "qualification_scope": "required_ci_profiles"
+    },
+    {
+      "component_id": "sqav-databento-dbn-cpp",
+      "path": "modules/sqav-databento-dbn-cpp",
+      "kind": "native_package",
+      "package_version": "0.5.0-dev",
+      "sdk_versions": [
+        {
+          "package": "SymphonySqavDatabentoDbn",
+          "version": "0.5.0"
+        }
+      ],
+      "source_runtime_version": null,
+      "public_go_source_identities": [],
+      "publication_status": "not_authorized_by_this_catalog",
+      "qualification_scope": "required_ci_profiles"
+    },
+    {
+      "component_id": "sqav-databento-reference-cpp",
+      "path": "modules/sqav-databento-reference-cpp",
+      "kind": "native_package",
+      "package_version": "0.1.0-dev",
+      "sdk_versions": [
+        {
+          "package": "SymphonySqavDatabentoReference",
+          "version": "0.1.0"
+        }
+      ],
+      "source_runtime_version": null,
+      "public_go_source_identities": [],
+      "publication_status": "not_authorized_by_this_catalog",
+      "qualification_scope": "required_ci_profiles"
+    },
+    {
+      "component_id": "sqav-fred-cpp",
+      "path": "modules/sqav-fred-cpp",
+      "kind": "native_package",
+      "package_version": "0.1.0-dev",
+      "sdk_versions": [
+        {
+          "package": "SymphonySqavFred",
+          "version": "0.1.0"
+        }
+      ],
+      "source_runtime_version": null,
+      "public_go_source_identities": [],
+      "publication_status": "not_authorized_by_this_catalog",
+      "qualification_scope": "required_ci_profiles"
+    },
+    {
+      "component_id": "sqav-news-api-cpp",
+      "path": "modules/sqav-news-api-cpp",
+      "kind": "native_package",
+      "package_version": "0.1.0-dev",
+      "sdk_versions": [
+        {
+          "package": "SymphonySqavNewsApi",
+          "version": "0.1.0"
+        }
+      ],
+      "source_runtime_version": null,
+      "public_go_source_identities": [],
+      "publication_status": "not_authorized_by_this_catalog",
+      "qualification_scope": "required_ci_profiles"
+    },
+    {
+      "component_id": "sqav-request-engine",
+      "path": "modules/sqav-request-engine",
+      "kind": "native_package",
+      "package_version": "0.1.0-dev",
+      "sdk_versions": [],
+      "source_runtime_version": null,
+      "public_go_source_identities": [],
+      "publication_status": "not_authorized_by_this_catalog",
+      "qualification_scope": "required_ci_profiles"
+    },
+    {
+      "component_id": "sqdv-checkpoint-engine",
+      "path": "modules/sqdv-checkpoint-engine",
+      "kind": "native_package",
+      "package_version": "0.1.0-dev",
+      "sdk_versions": [],
+      "source_runtime_version": null,
+      "public_go_source_identities": [],
+      "publication_status": "not_authorized_by_this_catalog",
+      "qualification_scope": "required_ci_profiles"
+    },
+    {
+      "component_id": "sqdv-delivery-cpp",
+      "path": "modules/sqdv-delivery-cpp",
+      "kind": "native_package",
+      "package_version": "0.3.0-dev",
+      "sdk_versions": [
+        {
+          "package": "SymphonySqdvDelivery",
+          "version": "0.3.0"
+        }
+      ],
+      "source_runtime_version": null,
+      "public_go_source_identities": [],
+      "publication_status": "not_authorized_by_this_catalog",
+      "qualification_scope": "required_ci_profiles"
+    },
+    {
+      "component_id": "sqfv-batch-cpp",
+      "path": "modules/sqfv-batch-cpp",
+      "kind": "native_package",
+      "package_version": "0.3.0-dev",
+      "sdk_versions": [
+        {
+          "package": "SymphonySqfvBatch",
+          "version": "0.3.0"
+        }
+      ],
+      "source_runtime_version": null,
+      "public_go_source_identities": [],
+      "publication_status": "not_authorized_by_this_catalog",
+      "qualification_scope": "required_ci_profiles"
+    },
+    {
+      "component_id": "sqfv-flow-engine",
+      "path": "modules/sqfv-flow-engine",
+      "kind": "native_package",
+      "package_version": "0.1.0-dev",
+      "sdk_versions": [],
+      "source_runtime_version": null,
+      "public_go_source_identities": [],
+      "publication_status": "not_authorized_by_this_catalog",
+      "qualification_scope": "required_ci_profiles"
+    },
+    {
+      "component_id": "sqmv-metadata-cpp",
+      "path": "modules/sqmv-metadata-cpp",
+      "kind": "native_package",
+      "package_version": "0.2.0-dev",
+      "sdk_versions": [
+        {
+          "package": "SymphonySqmvMetadata",
+          "version": "0.2.0"
+        }
+      ],
+      "source_runtime_version": null,
+      "public_go_source_identities": [],
+      "publication_status": "not_authorized_by_this_catalog",
+      "qualification_scope": "required_ci_profiles"
+    },
+    {
+      "component_id": "sqmv-metadata-engine",
+      "path": "modules/sqmv-metadata-engine",
+      "kind": "native_package",
+      "package_version": "0.1.0-dev",
+      "sdk_versions": [],
+      "source_runtime_version": null,
+      "public_go_source_identities": [],
+      "publication_status": "not_authorized_by_this_catalog",
+      "qualification_scope": "required_ci_profiles"
+    },
+    {
+      "component_id": "sqpv-inspection-engine",
+      "path": "modules/sqpv-inspection-engine",
+      "kind": "native_package",
+      "package_version": "0.1.0-dev",
+      "sdk_versions": [],
+      "source_runtime_version": null,
+      "public_go_source_identities": [],
+      "publication_status": "not_authorized_by_this_catalog",
+      "qualification_scope": "required_ci_profiles"
+    },
+    {
+      "component_id": "sqpv-local-store-cpp",
+      "path": "modules/sqpv-local-store-cpp",
+      "kind": "native_package",
+      "package_version": "0.2.0-dev",
+      "sdk_versions": [
+        {
+          "package": "SymphonySqpvLocalStore",
+          "version": "0.2.0"
+        }
+      ],
+      "source_runtime_version": null,
+      "public_go_source_identities": [],
+      "publication_status": "not_authorized_by_this_catalog",
+      "qualification_scope": "required_ci_profiles"
+    },
+    {
+      "component_id": "sqtv-conversion-engine",
+      "path": "modules/sqtv-conversion-engine",
+      "kind": "native_package",
+      "package_version": "0.1.0-dev",
+      "sdk_versions": [],
+      "source_runtime_version": null,
+      "public_go_source_identities": [],
+      "publication_status": "not_authorized_by_this_catalog",
+      "qualification_scope": "required_ci_profiles"
+    },
+    {
+      "component_id": "sqtv-integer-conversion-cpp",
+      "path": "modules/sqtv-integer-conversion-cpp",
+      "kind": "native_package",
+      "package_version": "0.2.0-dev",
+      "sdk_versions": [
+        {
+          "package": "SymphonySqtvIntegerConversion",
+          "version": "0.2.0"
+        }
+      ],
+      "source_runtime_version": null,
+      "public_go_source_identities": [],
+      "publication_status": "not_authorized_by_this_catalog",
+      "qualification_scope": "required_ci_profiles"
+    },
+    {
+      "component_id": "ssfv-engine",
+      "path": "modules/ssfv-engine",
+      "kind": "native_package",
+      "package_version": "0.1.0-dev",
+      "sdk_versions": [],
+      "source_runtime_version": null,
+      "public_go_source_identities": [],
+      "publication_status": "not_authorized_by_this_catalog",
+      "qualification_scope": "required_ci_profiles"
+    },
+    {
+      "component_id": "ssiag-macos-keychain-provider",
+      "path": "modules/ssiag-provider-macos-keychain",
+      "kind": "swift_provider",
+      "package_version": "0.1.0-draft",
+      "sdk_versions": [],
+      "source_runtime_version": "0.1.0-draft",
+      "public_go_source_identities": [],
+      "publication_status": "not_authorized_by_this_catalog",
+      "qualification_scope": "macos_provider_metadata_and_lifecycle_only"
+    },
+    {
+      "component_id": "stav-append-authority",
+      "path": "modules/stav-append-authority",
+      "kind": "go_command",
+      "package_version": "0.2.1",
+      "sdk_versions": [],
+      "source_runtime_version": "dev",
+      "public_go_source_identities": [
+        {
+          "module": "github.com/QuanuX/Symphony/modules/stav-append-authority",
+          "version": "v0.2.1",
+          "repository_tag": "modules/stav-append-authority/v0.2.1",
+          "repository_commit": "967c005e21a8f153ed453c79baa09fe2ab549f01",
+          "verification_scope": "L04 standalone qxctl build used a fresh task-local public proxy/sumdb cache and succeeded; local tag metadata read again for this inventory. No new publication performed."
+        }
+      ],
+      "publication_status": "not_authorized_by_this_catalog",
+      "qualification_scope": "required_ci_profiles"
+    },
+    {
+      "component_id": "knowledge-vector-engine-cpp",
+      "path": "libraries/knowledge-vector-engine-cpp",
+      "kind": "native_package",
+      "package_version": "0.2.0-dev",
+      "sdk_versions": [
+        {
+          "package": "SymphonyKnowledgeVectorEngine",
+          "version": "0.2.0"
+        }
+      ],
+      "source_runtime_version": null,
+      "public_go_source_identities": [],
+      "publication_status": "not_authorized_by_this_catalog",
+      "qualification_scope": "required_ci_profiles"
+    },
+    {
+      "component_id": "sbv-go",
+      "path": "libraries/sbv-go",
+      "kind": "go_library",
+      "package_version": null,
+      "sdk_versions": [],
+      "source_runtime_version": "0.1.7-dev",
+      "public_go_source_identities": [],
+      "publication_status": "not_authorized_by_this_catalog",
+      "qualification_scope": "required_ci_profiles"
+    },
+    {
+      "component_id": "snv-common-cpp",
+      "path": "libraries/snv-common-cpp",
+      "kind": "native_package",
+      "package_version": "0.1.0-dev",
+      "sdk_versions": [
+        {
+          "package": "SymphonySnvCommon",
+          "version": "0.1.0"
+        }
+      ],
+      "source_runtime_version": null,
+      "public_go_source_identities": [],
+      "publication_status": "not_authorized_by_this_catalog",
+      "qualification_scope": "required_ci_profiles"
+    },
+    {
+      "component_id": "stav-protocol-go",
+      "path": "libraries/stav-protocol-go",
+      "kind": "go_library",
+      "package_version": null,
+      "sdk_versions": [],
+      "source_runtime_version": null,
+      "public_go_source_identities": [
+        {
+          "module": "github.com/QuanuX/Symphony/libraries/stav-protocol-go",
+          "version": "v0.2.0",
+          "repository_tag": "libraries/stav-protocol-go/v0.2.0",
+          "repository_commit": "55f8faf26f4f85213ac23cc1de7ba897b2129a4c",
+          "verification_scope": "L04 standalone qxctl build used a fresh task-local public proxy/sumdb cache and succeeded; local tag metadata read again for this inventory. No new publication performed."
+        }
+      ],
+      "publication_status": "not_authorized_by_this_catalog",
+      "qualification_scope": "required_ci_profiles"
+    },
+    {
+      "component_id": "authoring-cpp",
+      "path": "tools/authoring-cpp",
+      "kind": "build_support",
+      "package_version": null,
+      "sdk_versions": [],
+      "source_runtime_version": null,
+      "public_go_source_identities": [],
+      "publication_status": "not_authorized_by_this_catalog",
+      "qualification_scope": "authoring_support"
+    },
+    {
+      "component_id": "qxctl",
+      "path": "tools/qxctl",
+      "kind": "go_command",
+      "package_version": "0.1.0-dev",
+      "sdk_versions": [],
+      "source_runtime_version": "0.1.0-dev",
+      "public_go_source_identities": [],
+      "publication_status": "not_authorized_by_this_catalog",
+      "qualification_scope": "required_ci_profiles"
+    },
+    {
+      "component_id": "shv-interface-codegen",
+      "path": "tools/shv-interface-codegen",
+      "kind": "authoring_source_built_by_tools_authoring_cpp_not_runtime_package",
+      "package_version": null,
+      "sdk_versions": [],
+      "source_runtime_version": null,
+      "public_go_source_identities": [],
+      "publication_status": "not_authorized_by_this_catalog",
+      "qualification_scope": "shared_source_or_authoring_support"
+    },
+    {
+      "component_id": "sov-ssh-adapter",
+      "path": "tools/sov-ssh-adapter",
+      "kind": "go_command",
+      "package_version": "0.1.0-dev",
+      "sdk_versions": [],
+      "source_runtime_version": "0.1.0-dev",
+      "public_go_source_identities": [
+        {
+          "module": "github.com/QuanuX/Symphony/tools/sov-ssh-adapter",
+          "version": "v0.1.0-dev",
+          "repository_tag": "tools/sov-ssh-adapter/v0.1.0-dev",
+          "repository_commit": "967c005e21a8f153ed453c79baa09fe2ab549f01",
+          "verification_scope": "L04 standalone qxctl build used a fresh task-local public proxy/sumdb cache and succeeded; local tag metadata read again for this inventory. No new publication performed."
+        }
+      ],
+      "publication_status": "not_authorized_by_this_catalog",
+      "qualification_scope": "required_ci_profiles"
+    },
+    {
+      "component_id": "sov-stdio-adapter",
+      "path": "tools/sov-stdio-adapter",
+      "kind": "go_command",
+      "package_version": "0.1.0-dev",
+      "sdk_versions": [],
+      "source_runtime_version": "0.1.0-dev",
+      "public_go_source_identities": [],
+      "publication_status": "not_authorized_by_this_catalog",
+      "qualification_scope": "required_ci_profiles"
+    },
+    {
+      "component_id": "sqv-administration-cpp",
+      "path": "tools/sqv-administration-cpp",
+      "kind": "shared_source_support_not_independent_package",
+      "package_version": null,
+      "sdk_versions": [],
+      "source_runtime_version": null,
+      "public_go_source_identities": [],
+      "publication_status": "not_authorized_by_this_catalog",
+      "qualification_scope": "shared_source_or_authoring_support"
+    },
+    {
+      "component_id": "symphony-validator",
+      "path": "tools/symphony-validator",
+      "kind": "native_package",
+      "package_version": "0.2.0-dev",
+      "sdk_versions": [],
+      "source_runtime_version": null,
+      "public_go_source_identities": [],
+      "publication_status": "not_authorized_by_this_catalog",
+      "qualification_scope": "required_ci_profiles"
+    }
+  ],
+  "go_artifacts": [
+    {
+      "component_id": "accordare-stav-producer",
+      "path": "modules/accordare-stav-producer",
+      "main_package": "./cmd/symphony-accordare-stav-producer",
+      "entrypoint": "modules/accordare-stav-producer/cmd/symphony-accordare-stav-producer/main.go",
+      "binary_name": "symphony-accordare-stav-producer",
+      "package_version": "0.1.0-dev",
+      "source_runtime_version": "0.1.0-dev",
+      "version_symbol": null,
+      "version_output_prefix": "symphony-accordare-stav-producer version ",
+      "recipe": "go-candidate"
+    },
+    {
+      "component_id": "secure-identity-access-governance",
+      "path": "modules/secure-identity-access-governance",
+      "main_package": "./cmd/symphony-ssiag",
+      "entrypoint": "modules/secure-identity-access-governance/cmd/symphony-ssiag/main.go",
+      "binary_name": "symphony-ssiag",
+      "package_version": "0.1.0-dev",
+      "source_runtime_version": "dev",
+      "version_symbol": "github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/version.Version",
+      "version_output_prefix": "symphony-ssiag version ",
+      "recipe": "go-candidate"
+    },
+    {
+      "component_id": "stav-append-authority",
+      "path": "modules/stav-append-authority",
+      "main_package": "./cmd/symphony-stav-append-authority",
+      "entrypoint": "modules/stav-append-authority/cmd/symphony-stav-append-authority/main.go",
+      "binary_name": "symphony-stav-append-authority",
+      "package_version": "0.2.1",
+      "source_runtime_version": "dev",
+      "version_symbol": "github.com/QuanuX/Symphony/modules/stav-append-authority/internal/version.Version",
+      "version_output_prefix": "symphony-stav-append-authority version ",
+      "recipe": "go-candidate"
+    },
+    {
+      "component_id": "qxctl",
+      "path": "tools/qxctl",
+      "main_package": "./cmd/qxctl",
+      "entrypoint": "tools/qxctl/cmd/qxctl/main.go",
+      "binary_name": "qxctl",
+      "package_version": "0.1.0-dev",
+      "source_runtime_version": "0.1.0-dev",
+      "version_symbol": null,
+      "version_output_prefix": "qxctl version ",
+      "recipe": "qxctl-reproducible"
+    },
+    {
+      "component_id": "sov-ssh-adapter",
+      "path": "tools/sov-ssh-adapter",
+      "main_package": ".",
+      "entrypoint": "tools/sov-ssh-adapter/main.go",
+      "binary_name": "sov-ssh-adapter",
+      "package_version": "0.1.0-dev",
+      "source_runtime_version": "0.1.0-dev",
+      "version_symbol": null,
+      "version_output_prefix": "sov-ssh-adapter version ",
+      "recipe": "go-candidate"
+    },
+    {
+      "component_id": "sov-stdio-adapter",
+      "path": "tools/sov-stdio-adapter",
+      "main_package": ".",
+      "entrypoint": "tools/sov-stdio-adapter/main.go",
+      "binary_name": "sov-stdio-adapter",
+      "package_version": "0.1.0-dev",
+      "source_runtime_version": "0.1.0-dev",
+      "version_symbol": null,
+      "version_output_prefix": "sov-stdio-adapter version ",
+      "recipe": "go-candidate"
+    }
+  ],
+  "supported_owner_interfaces": [
+    {
+      "path": "knowledge/scv/OWNER-INTERFACE.json",
+      "protocol": "symphony.scv.owner-interface.v1",
+      "current_package_version": "0.10.0-dev",
+      "retained_package_versions": [
+        "0.1.0-dev",
+        "0.2.0-dev",
+        "0.3.0-dev",
+        "0.4.0-dev",
+        "0.5.0-dev",
+        "0.6.0-dev",
+        "0.7.0-dev",
+        "0.8.0-dev",
+        "0.9.0-dev",
+        "0.10.0-dev"
+      ]
+    },
+    {
+      "path": "modules/sbv-engine/OWNER-INTERFACE.json",
+      "protocol": "symphony.shv.owner-interface.v2",
+      "current_package_version": "0.33.0-dev",
+      "retained_package_versions": [
+        "0.33.0-dev"
+      ]
+    },
+    {
+      "path": "modules/sciv-engine/OWNER-INTERFACE.json",
+      "protocol": "symphony.shv.owner-interface.v2",
+      "current_package_version": "0.1.0-dev",
+      "retained_package_versions": [
+        "0.1.0-dev"
+      ]
+    },
+    {
+      "path": "modules/scnv-engine/OWNER-INTERFACE.json",
+      "protocol": "symphony.shv.owner-interface.v2",
+      "current_package_version": "0.1.0-dev",
+      "retained_package_versions": [
+        "0.1.0-dev"
+      ]
+    },
+    {
+      "path": "modules/shv-engine/OWNER-INTERFACE.json",
+      "protocol": "symphony.shv.owner-interface.v2",
+      "current_package_version": "0.4.0-dev",
+      "retained_package_versions": [
+        "0.1.0-dev",
+        "0.2.0-dev",
+        "0.3.0-dev",
+        "0.4.0-dev"
+      ]
+    },
+    {
+      "path": "modules/shv-graph-adapter/OWNER-INTERFACE.json",
+      "protocol": "symphony.shv.owner-interface.v2",
+      "current_package_version": "0.2.0-dev",
+      "retained_package_versions": [
+        "0.1.0-dev",
+        "0.2.0-dev"
+      ]
+    },
+    {
+      "path": "modules/shv-graph-duckdb-connector/OWNER-INTERFACE.json",
+      "protocol": "symphony.shv.owner-interface.v2",
+      "current_package_version": "0.4.0-dev",
+      "retained_package_versions": [
+        "0.1.0-dev",
+        "0.2.0-dev",
+        "0.3.0-dev",
+        "0.4.0-dev"
+      ]
+    },
+    {
+      "path": "modules/shv-partition-engine/OWNER-INTERFACE.json",
+      "protocol": "symphony.shv.owner-interface.v2",
+      "current_package_version": "0.4.0-dev",
+      "retained_package_versions": [
+        "0.1.0-dev",
+        "0.2.0-dev",
+        "0.3.0-dev",
+        "0.4.0-dev"
+      ]
+    },
+    {
+      "path": "modules/shv-pdf-adapter/OWNER-INTERFACE.json",
+      "protocol": "symphony.shv.owner-interface.v2",
+      "current_package_version": "0.3.0-dev",
+      "retained_package_versions": [
+        "0.1.0-dev",
+        "0.2.0-dev",
+        "0.3.0-dev"
+      ]
+    },
+    {
+      "path": "modules/shv-profile-engine/OWNER-INTERFACE.json",
+      "protocol": "symphony.shv.profile-owner-interface.v1",
+      "current_package_version": "0.3.0-dev",
+      "retained_package_versions": [
+        "0.1.0-dev",
+        "0.2.0-dev",
+        "0.3.0-dev"
+      ]
+    },
+    {
+      "path": "modules/shv-publication-engine/OWNER-INTERFACE.json",
+      "protocol": "symphony.shv.owner-interface.v1",
+      "current_package_version": "0.4.0-dev",
+      "retained_package_versions": [
+        "0.1.0-dev",
+        "0.2.0-dev",
+        "0.3.0-dev",
+        "0.4.0-dev"
+      ]
+    },
+    {
+      "path": "modules/shv-source-engine/OWNER-INTERFACE.json",
+      "protocol": "symphony.shv.owner-interface.v1",
+      "current_package_version": "0.2.0-dev",
+      "retained_package_versions": [
+        "0.1.0-dev",
+        "0.2.0-dev"
+      ]
+    },
+    {
+      "path": "modules/sniv-engine/OWNER-INTERFACE.json",
+      "protocol": "symphony.shv.owner-interface.v2",
+      "current_package_version": "0.1.0-dev",
+      "retained_package_versions": [
+        "0.1.0-dev"
+      ]
+    },
+    {
+      "path": "modules/snrv-engine/OWNER-INTERFACE.json",
+      "protocol": "symphony.shv.owner-interface.v2",
+      "current_package_version": "0.1.0-dev",
+      "retained_package_versions": [
+        "0.1.0-dev"
+      ]
+    },
+    {
+      "path": "modules/snv-engine/OWNER-INTERFACE.json",
+      "protocol": "symphony.shv.owner-interface.v2",
+      "current_package_version": "0.1.0-dev",
+      "retained_package_versions": [
+        "0.1.0-dev"
+      ]
+    },
+    {
+      "path": "modules/snv-local-observer/OWNER-INTERFACE.json",
+      "protocol": "symphony.shv.owner-interface.v2",
+      "current_package_version": "0.1.0-dev",
+      "retained_package_versions": [
+        "0.1.0-dev"
+      ]
+    },
+    {
+      "path": "modules/sqav-attempt-engine/OWNER-INTERFACE.json",
+      "protocol": "symphony.shv.owner-interface.v2",
+      "current_package_version": "0.1.0-dev",
+      "retained_package_versions": [
+        "0.1.0-dev"
+      ]
+    },
+    {
+      "path": "modules/sqav-request-engine/OWNER-INTERFACE.json",
+      "protocol": "symphony.shv.owner-interface.v2",
+      "current_package_version": "0.1.0-dev",
+      "retained_package_versions": [
+        "0.1.0-dev"
+      ]
+    },
+    {
+      "path": "modules/sqdv-checkpoint-engine/OWNER-INTERFACE.json",
+      "protocol": "symphony.shv.owner-interface.v2",
+      "current_package_version": "0.1.0-dev",
+      "retained_package_versions": [
+        "0.1.0-dev"
+      ]
+    },
+    {
+      "path": "modules/sqfv-flow-engine/OWNER-INTERFACE.json",
+      "protocol": "symphony.shv.owner-interface.v2",
+      "current_package_version": "0.1.0-dev",
+      "retained_package_versions": [
+        "0.1.0-dev"
+      ]
+    },
+    {
+      "path": "modules/sqmv-metadata-engine/OWNER-INTERFACE.json",
+      "protocol": "symphony.shv.owner-interface.v2",
+      "current_package_version": "0.1.0-dev",
+      "retained_package_versions": [
+        "0.1.0-dev"
+      ]
+    },
+    {
+      "path": "modules/sqpv-inspection-engine/OWNER-INTERFACE.json",
+      "protocol": "symphony.shv.owner-interface.v2",
+      "current_package_version": "0.1.0-dev",
+      "retained_package_versions": [
+        "0.1.0-dev"
+      ]
+    },
+    {
+      "path": "modules/sqtv-conversion-engine/OWNER-INTERFACE.json",
+      "protocol": "symphony.shv.owner-interface.v2",
+      "current_package_version": "0.1.0-dev",
+      "retained_package_versions": [
+        "0.1.0-dev"
+      ]
+    }
+  ],
+  "retained_qxctl_selection": "Legacy qxctl dev and historical exact version labels remain admitted with mandatory executable SHA256; the current emitted identity is 0.1.0-dev. Selection alone is not proof of the running executable.",
+  "required_profiles": [
+    "macos-arm64",
+    "ubuntu-24.04-amd64",
+    "ubuntu-26.04-amd64",
+    "ubuntu-24.04-arm64"
+  ],
+  "physical_dgx_spark_qualified": false,
+  "native_windows_supported": false
+}

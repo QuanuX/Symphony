@@ -5,6 +5,7 @@
 - `knowledge/schemas/v1/MANIFEST.md`
 - `knowledge/schemas/v1/administration-coverage-input.schema.json`
 - `knowledge/schemas/v1/administration-coverage-result.schema.json`
+- `knowledge/schemas/v1/artifact-build-identity.schema.json`
 - `knowledge/schemas/v1/engine-binding-registry.schema.json`
 - `knowledge/schemas/v1/engine-descriptor.schema.json`
 - `knowledge/schemas/v1/engine-process-request.schema.json`
@@ -56,6 +57,7 @@
 - `knowledge/schemas/v1/proposal.schema.json`
 - `knowledge/schemas/v1/provider-evidence.schema.json`
 - `knowledge/schemas/v1/qxctl-command-registry.schema.json`
+- `knowledge/schemas/v1/qxctl-build-info.schema.json`
 - `knowledge/schemas/v1/reconciliation-command.schema.json`
 - `knowledge/schemas/v1/reconciliation-head.schema.json`
 - `knowledge/schemas/v1/reconciliation-journal.schema.json`
@@ -77,7 +79,7 @@
 
 ## Authority
 
-These exact JSON Schema files are canonical common process and lifecycle contract truth owned by the `knowledge/` umbrella. Implementations remain subordinate to them.
+These exact JSON Schema files are canonical common process, lifecycle, and executable/build-identity contract truth owned by the `knowledge/` umbrella. Implementations remain subordinate to them.
 
 ## Schemas
 
@@ -85,6 +87,8 @@ These exact JSON Schema files are canonical common process and lifecycle contrac
 - `engine-process-response.schema.json`: one bounded local process response envelope.
 - `engine-descriptor.schema.json`: installed engine/coordinator identity and capability truth.
 - `qxctl-command-registry.schema.json`: canonical expected or exact observed qxctl executable-leaf identity, grammar, feature, backend, machine-output, and trust evidence.
+- `qxctl-build-info.schema.json`: the running qxctl executable digest and runtime identity, with complete linked source declarations or explicitly unavailable source metadata.
+- `artifact-build-identity.schema.json`: source-, dependency-, toolchain-, and digest-bound candidate artifact evidence with explicit single-build or repeated-build scope and no publication authorization.
 - `feature-administration-profile.schema.json`: registered-feature interaction requirements, explicit dispositions, finite inheritance, and bootstrap forward-gate truth.
 - `invariant-ownership-registry.schema.json`: lowest-authoritative-layer invariant IDs, owner contracts/components, producer and consumer regressions, real-process IPC evidence, and finite allowed versioned adapters.
 - `invariant-query-result.schema.json`: bounded digest-bearing qxctl status, list, and show projections over the canonical invariant-ownership registry, with semantic validity explicitly reserved for the complete validator check.
@@ -156,6 +160,8 @@ These exact JSON Schema files are canonical common process and lifecycle contrac
 All schemas use JSON Schema Draft 2020-12, close every common-governed object with `additionalProperties: false`, and carry no secrets. The proposal operation's bounded `data` object is deliberately governed by the applicable vector schema; operation-specific payload/result schemas remain owned by that engine Contract Quad.
 
 ## Boundary
+
+Build identity schemas describe evidence. A source stamp does not authorize publication, prove installation trust, activate a provider, or replace independently retained build and reproducibility results. Release authorization remains with SODV.
 
 The host-integration schemas authorize only an explicit Linux systemd receptor for report-only boot planning; they grant no lifecycle apply, component execution, login/session hook, native Windows receptor, or hidden watcher. The separate foundational-lifecycle schemas authorize only exact installation-proven SSIAG/STAV module adapters and do not widen generic executable or service activation.
 
