@@ -23,7 +23,7 @@ string(JSON version GET "${receipt}" version)
 string(JSON kind GET "${receipt}" component_kind)
 string(JSON engine_type TYPE "${receipt}" engine_id)
 string(JSON entry_count LENGTH "${receipt}" entry_points)
-if(NOT count EQUAL 16 OR NOT module STREQUAL PACKAGE_MODULE OR
+if(NOT count EQUAL 17 OR NOT module STREQUAL PACKAGE_MODULE OR
    NOT version STREQUAL "0.5.0-dev" OR NOT kind STREQUAL "module" OR
    NOT engine_type STREQUAL "NULL" OR NOT entry_count EQUAL 0)
     message(FATAL_ERROR "unexpected library-only package receipt")
@@ -46,6 +46,10 @@ foreach(index RANGE 0 ${last})
     endif()
     list(APPEND owned "${relative}")
 endforeach()
+set(curl_notice "share/licenses/symphony-${PACKAGE_MODULE}/0.5.0-dev/curl-COPYING")
+if(NOT curl_notice IN_LIST owned)
+    message(FATAL_ERROR "curl notice is not receipt-owned")
+endif()
 run_expect("same-version overwrite refusal" FALSE
     "${CMAKE_COMMAND}" --install "${PACKAGE_BINARY_DIR}" --prefix "${prefix}")
 set(probe "${test_root}/wrong-version")

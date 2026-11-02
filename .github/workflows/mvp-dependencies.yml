@@ -125,6 +125,14 @@ jobs:
             set -- "$@" "$RUNNER_TEMP/sbv-launch-boundary"
           fi
           sh tests/native-sdk-distribution/run.sh "$@"
+      - name: Prepare complete Go module cache for offline notice verification
+        env:
+          GOMODCACHE: ${{ runner.temp }}/mvp-installed/go/modules
+          GOCACHE: ${{ runner.temp }}/mvp-installed/go/build
+        working-directory: tools/qxctl
+        run: |
+          go mod download
+          git diff --exit-code -- go.mod go.sum
       - name: Inventory dependency notices from final installed artifacts
         env:
           GOMODCACHE: ${{ runner.temp }}/mvp-installed/go/modules

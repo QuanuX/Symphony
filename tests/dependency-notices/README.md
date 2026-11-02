@@ -24,7 +24,7 @@ The evidence contains:
 - The source dependency map, including exact resolved Go graphs, separated from
   actual linked modules reported by the selected Go executable's buildinfo.
   Replacement modules are refused. `go mod verify` checks the exact module cache
-  before notice collection. Missing legal files for a linked module fails.
+  before notice collection. The workflow first runs `go mod download` with the public checksum-verified proxy to populate the complete declared graph, including metadata for platform-excluded modules; this preparation does not add them to the linked-artifact inventory. Missing legal files for a linked module fails.
 - Copies and hashes of actual Go module legal files, matching Go toolchain
   license/patent and standard-library vendor notices, and current main-source
   license. These retained files can be a superset of linked packages; their
