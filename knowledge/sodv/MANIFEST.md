@@ -2,6 +2,7 @@
 
 ## Canonical Surfaces
 
+- `knowledge/sodv/ARTIFACT-RELEASES.json`
 - `knowledge/sodv/INTENT.md`
 - `knowledge/sodv/MANIFEST.md`
 - `knowledge/sodv/RELEASES.md`
@@ -97,3 +98,7 @@ PR history is review and merge evidence.
 
 ## Non-Authorization Statement
 This manifest authorizes the implemented bounded SODV proposal/read engine, its operational schemas, and qxctl invocation. It authorizes no canonical apply, public documentation files, docs directory, `mint.json`, Mintlify configuration, tag creation, external publication, NotebookLM automation, general publication pipeline, or release-completion claim.
+
+## Governed Artifact Companion
+
+`ARTIFACT-RELEASES.json` and its exact v1 schema govern prospective native archive and conda package authorizations/completions. The native validator checks local consistency; external permission holders and independently gathered verification evidence retain publication authority. The current empty ledger creates no release. SODV0.1 Go-module operations and existing Go ledger history are unchanged. See `SPEC.md` for exact units, signature identity, temporal and append-only rules.

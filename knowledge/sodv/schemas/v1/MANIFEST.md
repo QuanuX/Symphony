@@ -3,6 +3,7 @@
 ## Canonical Surfaces
 
 - `knowledge/sodv/schemas/v1/MANIFEST.md`
+- `knowledge/sodv/schemas/v1/artifact-release-ledger.schema.json`
 - `knowledge/sodv/schemas/v1/check-result.schema.json`
 - `knowledge/sodv/schemas/v1/observed-state.schema.json`
 - `knowledge/sodv/schemas/v1/projection.schema.json`
@@ -26,3 +27,5 @@ This directory owns the machine-readable contracts for the initial Symphony Offi
 | `projection.schema.json` | Disposable inventory derived from the canonical release ledger |
 
 These operational schemas do not authorize public-documentation schemas, tags, uploads, package publication, canonical apply, Mintlify configuration, or release completion.
+
+The separately governed `artifact-release-ledger.schema.json` defines the native/conda companion `knowledge/sodv/ARTIFACT-RELEASES.json`. It is checked by symphony-validator, not admitted through the SODV0.1 Go-module operation payloads. Shape validation is supplemented by native digest-chain, identity, timestamp and completion-relationship checks. No release is authorized by an empty ledger or a successful validator result.

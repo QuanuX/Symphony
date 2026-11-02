@@ -28,3 +28,7 @@ The common request, response, JSON, path, file, count, and deadline bounds apply
 ## Non-Authorization
 
 No operation authenticates, grants release permission, writes a file, creates or moves a tag, uploads an artifact, contacts a package proxy or checksum database, appends the release ledger, publishes documentation, configures Mintlify, automates NotebookLM, starts a listener, activates a version, or docks with Maestro.
+
+## Separately Governed Artifact Companion
+
+Native/conda publication is governed by `knowledge/sodv/ARTIFACT-RELEASES.json` and checked through the native symphony-validator. This module at 0.1.0-dev still accepts only the existing Go-module ledger and v1 operation payloads; it does not read, verify or propose companion records. The companion adds no operation, wire admission, network access or publication authority to this engine.

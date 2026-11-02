@@ -1,0 +1,96 @@
+name: Package candidate and lifecycle qualification
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main, 'codex/**']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: package-release-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  package-release:
+    name: Package lifecycle (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, ubuntu-26.04, ubuntu-24.04-arm, macos-15]
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6
+        with:
+          go-version: '1.26.5'
+          cache: false
+      - name: Select Apple toolchain
+        if: runner.os == 'macOS'
+        run: echo 'DEVELOPER_DIR=/Applications/Xcode_26.3.app/Contents/Developer' >> "$GITHUB_ENV"
+      - name: Record source and host
+        run: |
+          umask 077
+          mkdir -p "$RUNNER_TEMP/package-evidence"
+          {
+            git rev-parse HEAD 'HEAD^{tree}'
+            git status --porcelain
+            uname -srm
+            cmake --version
+            cc --version
+            go version
+          } > "$RUNNER_TEMP/package-evidence/host-source.log"
+      - name: Exercise private staging, signed candidates and relocated payloads
+        run: |
+          set -euo pipefail
+          umask 077
+          cmake -DWORK="$RUNNER_TEMP/package-fixture" -P tests/package-release/run.cmake \
+            2>&1 | tee "$RUNNER_TEMP/package-evidence/native-harness.log"
+      - name: Exercise qxctl lifecycle and receipt refusal contracts
+        env:
+          GOWORK: 'off'
+          GOENV: 'off'
+          GOTOOLCHAIN: local
+          GOPROXY: https://proxy.golang.org
+          GOSUMDB: sum.golang.org
+        run: |
+          set -euo pipefail
+          umask 077
+          export GOMODCACHE="$RUNNER_TEMP/package-go/mod"
+          export GOCACHE="$RUNNER_TEMP/package-go/build"
+          export GOTMPDIR="$RUNNER_TEMP/package-go/tmp"
+          mkdir -p "$GOMODCACHE" "$GOCACHE" "$GOTMPDIR"
+          test "$(go env GOVERSION)" = go1.26.5
+          cd tools/qxctl
+          go test -mod=readonly -race -count=1 -v \
+            -run '^(TestRuntimeStoreCASAndSemanticRetry|TestExecutorInstallsAndUninstallsV2WithRollbackProof|TestOwnership.*|TestReceiptV2CannotOwnLifecycleControlOrReceiptPaths|TestInspectInstallationSupportsImmutableReceiptV2AndDetectsTampering|TestGenericReceiptV2EntryPointUsesSameCompletePackageVerifier|TestReceiptV2SupportsForwardFileGrowthAndRejectsSemanticDrift)$' \
+            ./internal/knowledgelifecycle ./internal/knowledgeengine \
+            2>&1 | tee "$RUNNER_TEMP/package-evidence/qxctl-focused.log"
+          if grep -Eq '^[[:space:]]*--- SKIP:' "$RUNNER_TEMP/package-evidence/qxctl-focused.log"; then
+            echo 'A required lifecycle/receipt regression was skipped' >&2
+            exit 1
+          fi
+          test "$(grep -c '^--- PASS:' "$RUNNER_TEMP/package-evidence/qxctl-focused.log")" -eq 12
+      - name: Retain only verification results and logs
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: package-release-${{ matrix.os }}
+          path: |
+            ${{ runner.temp }}/package-evidence
+            ${{ runner.temp }}/package-fixture/logs
+          if-no-files-found: error
+          retention-days: 14
+      - name: Record qualification boundary
+        if: always()
+        run: |
+          echo 'Synthetic local fixture only: disposable SSH signing key, ad-hoc Apple signing, no publisher credentials, download delivery, notarization, production activation or release approval. Artifacts contain verification records and logs, not test keys or candidate binaries. Review the exact source results before merge.' >> "$GITHUB_STEP_SUMMARY"

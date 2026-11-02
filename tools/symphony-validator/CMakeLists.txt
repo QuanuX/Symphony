@@ -40,6 +40,7 @@ add_executable(symphony-validator
     src/skvi_paths.cpp
     src/sacv_registry.cpp
     src/sodv_releases.cpp
+    src/sodv_artifacts.cpp
     src/sclv_changelog.cpp
     src/sclv_shape.cpp
     src/sclv_ledger.cpp
@@ -111,7 +112,9 @@ add_executable(caller-authority-tests
 
 add_executable(sodv-release-tests
     tests/sodv_release_test.cpp
+    tests/sodv_artifact_test.cpp
     src/sodv_releases.cpp
+    src/sodv_artifacts.cpp
     src/evidence.cpp
 )
 
@@ -180,6 +183,7 @@ set_target_properties(feature-administration-tests PROPERTIES
 )
 
 target_include_directories(sodv-release-tests PRIVATE src)
+target_link_libraries(sodv-release-tests PRIVATE Symphony::KnowledgeVectorEngine)
 
 set_target_properties(sodv-release-tests PROPERTIES
   CXX_STANDARD 26

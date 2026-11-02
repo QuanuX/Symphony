@@ -89,3 +89,7 @@ SODV is not public documentation. SODV is not a docs site. SODV is not Mintlify.
 
 ## Non-Authorization Statement
 This skill guides the implemented bounded SODV proposal/read engine but authorizes no canonical apply, tag creation, public publication, Mintlify configuration, NotebookLM automation, general publication pipeline, or release-completion claim.
+
+## Artifact companion review
+
+For native/conda publication, inspect `knowledge/sodv/ARTIFACT-RELEASES.json` and run the native validator. Confirm an externally ratified, merged authorization and actual independent artifact/signature/provenance/inventory evidence before a separate completion is appended. A local consistency pass is not authentication or permission. Keep candidate fixtures out of the canonical ledger. The installed SODV0.1 Go-module proposal/read operations do not process this companion.

@@ -230,10 +230,13 @@ void test_impossible_timestamp(const fs::path& repository) {
 
 }
 
+void test_sodv_artifacts(const std::filesystem::path& repository);
+
 int main(int argc, char** argv) {
     try {
         if (argc != 2) { throw std::runtime_error("repository root required"); }
         const auto repository = fs::canonical(argv[1]);
+        test_sodv_artifacts(repository);
         test_v2_publication_evidence();
         test_actual(repository);
         test_duplicate(repository);

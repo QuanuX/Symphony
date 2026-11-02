@@ -25146,3 +25146,29 @@ automatic nested fitting and cross-run holdout history remain unimplemented.
 - deferred_projections: Actual two-host deployment, protected authority and cluster qualification
 - notes: User-selected trust, resources and deadlines; no automatic retry.
 - status: canonical
+
+### SODV Native and Conda Release Companion
+- path: `knowledge/sodv/ARTIFACT-RELEASES.json`
+- title: SODV Native and Conda Release Companion
+- surface_type: canonical SODV artifact publication contract
+- truth_role: bounded artifact publication governance
+- owner: SODV maintainers
+- scope: Empty canonical append-only artifact authorization/completion ledger; no publication currently authorized.
+- relationships: depends_on -> `knowledge/sodv/SPEC.md`; checked_by -> `tools/symphony-validator/SPEC.md`
+- consumers: external release permission holders, independent verifiers, native validator
+- deferred_projections: binary publication and package-provider automation
+- notes: Local consistency does not authenticate authority, signatures or external availability; existing Go history is unchanged.
+- status: canonical
+
+### SODV Artifact Release Companion v1 Schema
+- path: `knowledge/sodv/schemas/v1/artifact-release-ledger.schema.json`
+- title: SODV Artifact Release Companion v1 Schema
+- surface_type: canonical SODV artifact publication contract
+- truth_role: bounded artifact publication governance
+- owner: SODV maintainers
+- scope: Exact artifact, source/platform/dependency, signature, authority and independent completion evidence shape.
+- relationships: depends_on -> `knowledge/sodv/SPEC.md`; checked_by -> `tools/symphony-validator/SPEC.md`
+- consumers: external release permission holders, independent verifiers, native validator
+- deferred_projections: binary publication and package-provider automation
+- notes: Local consistency does not authenticate authority, signatures or external availability; existing Go history is unchanged.
+- status: canonical

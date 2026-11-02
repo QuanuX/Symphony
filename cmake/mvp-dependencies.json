@@ -12490,13 +12490,42 @@
         "installation_scope": "source_catalog_not_installation_assertion"
       },
       {
+        "path": "knowledge/sodv/ARTIFACT-RELEASES.json",
+        "sha256": "210e3aa3e9c5c1801d364c2563da0286de71ba0efa9c64bfd426c87e1690dd3e",
+        "schema_ids": [],
+        "schema_dialect": null,
+        "protocol": "symphony.sodv.artifact-release-ledger.v1",
+        "format_version": 1,
+        "kind": "resource",
+        "test_fixture": false,
+        "historical_or_example": false,
+        "installation_scope": "source_catalog_not_installation_assertion"
+      },
+      {
         "path": "knowledge/sodv/schemas/v1/MANIFEST.md",
-        "sha256": "e7ba2702e83c801e72a2eafaf4cdaa5e9050a52221fba4272a3da577e1b37b56",
+        "sha256": "a0d43e5616366a301e8aa6991a94e7d2b4813415b71673e32df56d7a216b39a5",
         "schema_ids": [],
         "schema_dialect": null,
         "protocol": null,
         "format_version": null,
         "kind": "resource",
+        "test_fixture": false,
+        "historical_or_example": false,
+        "installation_scope": "source_catalog_not_installation_assertion"
+      },
+      {
+        "path": "knowledge/sodv/schemas/v1/artifact-release-ledger.schema.json",
+        "sha256": "c29c89a193b1814c0da3af50d7f821c8d92161cc5d609640289d11e74f0ce4bf",
+        "schema_ids": [
+          {
+            "json_pointer": "/$id",
+            "id": "urn:symphony:sodv:artifact-release-ledger:v1"
+          }
+        ],
+        "schema_dialect": "https://json-schema.org/draft/2020-12/schema",
+        "protocol": null,
+        "format_version": null,
+        "kind": "schema",
         "test_fixture": false,
         "historical_or_example": false,
         "installation_scope": "source_catalog_not_installation_assertion"
@@ -17149,6 +17178,10 @@
   ],
   "source_inputs": [
     {
+      "path": "cmake/PACKAGE-HANDOFF.md",
+      "sha256": "fd4b3bd514863a605f6767ce16cea3295c4c0074e36d7c540f9bb700104f41f4"
+    },
+    {
       "path": "cmake/SbvInterface.generated.cmake",
       "sha256": "19603ea94c8b70d8161de85c4c7fa6224d91a3efba05b286624501ef199b5049"
     },
@@ -17246,15 +17279,15 @@
     },
     {
       "path": "cmake/SymphonyInstallReceiptV2.cmake",
-      "sha256": "68227eaf8919a8a791f1c621f808cb5472f182c57d1fefbeee7f2dd3999aaa24"
+      "sha256": "38b49d3deec4807a6ead8329214f1f61f8f99905c1fc39fa6d2b1945468880ca"
     },
     {
       "path": "cmake/SymphonyInstallReceiptV2.cmake.in",
-      "sha256": "4cf59cb2e8affd474bf316c96c53c32265ecb1db3055fa2f16fb1dd5ce2a2335"
+      "sha256": "24f0cd834ebecfeb2a3265c5852e9fd74e0dfe1e48498a9b826643a079a3102d"
     },
     {
       "path": "cmake/SymphonyInstallReceiptV2Preflight.cmake.in",
-      "sha256": "e4450cb9a1ef0a652b2bcbea5aac9e9d68b1751b55c462a36cfca882a68e9d1f"
+      "sha256": "d523ea689d6e9f7dc4bcee483e31900fe7a22f0c92917b0f7e78e6aff84f61c4"
     },
     {
       "path": "cmake/SymphonyNativeTests.cmake",
@@ -17291,6 +17324,30 @@
     {
       "path": "cmake/mvp-release-identities.json",
       "sha256": "c19617f12abc41a7a8cd5a7dab1031c9048daf799570b21b961372a0019694f3"
+    },
+    {
+      "path": "cmake/release/FinalizeNativePayload.cmake",
+      "sha256": "10976b114e1884725fcdddc3329bcd169bd39601c781461b7b6a420a74b75f75"
+    },
+    {
+      "path": "cmake/release/PrepareCandidate.cmake",
+      "sha256": "0899e9f23dbb9fd72a5d7bdd27bb85ad66ab25d7884b5ef7d09f04e0aea4ec13"
+    },
+    {
+      "path": "cmake/release/SignCandidate.cmake",
+      "sha256": "ec0d003004962fea75707c93bbcd7beb9dd3f25327a72e9f002dad5d67eb8f62"
+    },
+    {
+      "path": "cmake/release/StrictJSON.cmake",
+      "sha256": "c49fc2c75acb48feada302f1d2ef50854a6f5d39d14f6204ac9d17a655e2c5fb"
+    },
+    {
+      "path": "cmake/release/Support.cmake",
+      "sha256": "690caa82df8b4b5433ba86419a25f00dbfa25a84c6b29d4b586eba1bdda516d5"
+    },
+    {
+      "path": "cmake/release/VerifyCandidate.cmake",
+      "sha256": "ab88c4f4d3f0ec310e677637731b0304d7faa727b15f5cbd6532ad8141069239"
     },
     {
       "path": "go.work",
@@ -18005,8 +18062,16 @@
       "sha256": "805da86da0063fbb21a312e8ef3e74a16e9b75ba0eb67e9ef7ac2685a0e429ac"
     },
     {
+      "path": "knowledge/sodv/ARTIFACT-RELEASES.json",
+      "sha256": "210e3aa3e9c5c1801d364c2563da0286de71ba0efa9c64bfd426c87e1690dd3e"
+    },
+    {
       "path": "knowledge/sodv/schemas/v1/MANIFEST.md",
-      "sha256": "e7ba2702e83c801e72a2eafaf4cdaa5e9050a52221fba4272a3da577e1b37b56"
+      "sha256": "a0d43e5616366a301e8aa6991a94e7d2b4813415b71673e32df56d7a216b39a5"
+    },
+    {
+      "path": "knowledge/sodv/schemas/v1/artifact-release-ledger.schema.json",
+      "sha256": "c29c89a193b1814c0da3af50d7f821c8d92161cc5d609640289d11e74f0ce4bf"
     },
     {
       "path": "knowledge/sodv/schemas/v1/check-result.schema.json",
@@ -20858,7 +20923,7 @@
     },
     {
       "path": "tools/symphony-validator/CMakeLists.txt",
-      "sha256": "d96424595b4ea5fbe2aac339daa74e87f5af665e97bf2573bc2a11d576668272"
+      "sha256": "2fe60631b81a12539b5a8ccfa1396cf7775f2c5b8e88d6417f5c225d1c470d7a"
     },
     {
       "path": "tools/symphony-validator/cmake/install-receipt.json.in",
@@ -21117,5 +21182,22 @@
       "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     }
   ],
-  "platform_profile_catalog": "cmake/mvp-platform-profiles.json"
+  "platform_profile_catalog": "cmake/mvp-platform-profiles.json",
+  "candidate_packaging": {
+    "scope": "Private native receipt-v2 candidates; finalization before receipt hashing; no publication or runtime qualification implied",
+    "receipt_protocol": "symphony.knowledge.install-receipt.v2",
+    "candidate_protocol": "symphony.release.candidate.v1",
+    "verification_protocol": "symphony.release.candidate-verification.v1",
+    "source_paths": [
+      "cmake/PACKAGE-HANDOFF.md",
+      "cmake/release/FinalizeNativePayload.cmake",
+      "cmake/release/PrepareCandidate.cmake",
+      "cmake/release/SignCandidate.cmake",
+      "cmake/release/StrictJSON.cmake",
+      "cmake/release/Support.cmake",
+      "cmake/release/VerifyCandidate.cmake"
+    ],
+    "signing_scheme": "SSHSIG namespace symphony-release over exact candidate inventory bytes",
+    "publication_authorized": false
+  }
 }
