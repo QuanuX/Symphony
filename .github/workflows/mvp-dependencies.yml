@@ -104,6 +104,18 @@ jobs:
             set -- "-DCMAKE_PREFIX_PATH=$RUNNER_TEMP/mvp-external/prefix"
           fi
           sh tests/mvp-dependencies/run.sh "${{ matrix.group }}" "$RUNNER_TEMP/mvp-installed" "$@"
+      - name: Qualify installed SBV census and recovery boundary
+        if: matrix.group == 'quantitative'
+        run: sh tests/sbv-launch-boundary/run.sh "$RUNNER_TEMP/mvp-installed/prefix" "$RUNNER_TEMP/sbv-launch-boundary"
+      - name: Qualify installed SNV supplied-record and observer boundary
+        if: matrix.group == 'knowledge'
+        run: sh tests/snv-qualification/run.sh "$RUNNER_TEMP/mvp-installed/prefix" "$RUNNER_TEMP/snv-qualification" "$RUNNER_TEMP/mvp-installed/qxctl"
+      - name: Qualify installed SHV PDF and catalogue boundary
+        if: matrix.group == 'knowledge'
+        env:
+          GOMODCACHE: ${{ runner.temp }}/mvp-go-modules
+          GOCACHE: ${{ runner.temp }}/mvp-go-build
+        run: sh tests/shv-release-qualification/run.sh "$RUNNER_TEMP/mvp-installed/prefix" "$RUNNER_TEMP/shv-release"
       - name: Verify authoring tools against installed foundation
         if: matrix.group == 'knowledge'
         run: sh tests/mvp-dependencies/run.sh build_support "$RUNNER_TEMP/mvp-authoring"
@@ -116,7 +128,7 @@ jobs:
           swift build --package-path modules/ssiag-provider-macos-keychain --scratch-path "$RUNNER_TEMP/mvp-swift" -c release
       - name: Report qualification boundary
         if: always()
-        run: echo 'This checks the mapped installed SDK graph on the recorded runner. Generic Ubuntu ARM64 does not qualify physical DGX Spark or its DGX OS image. The two legacy Intel-only DuckDB recipes remain tracked by L09.' >> "$GITHUB_STEP_SUMMARY"
+        run: echo 'This checks the mapped installed SDK graph on the recorded runner. Generic Ubuntu ARM64 is the selected sprint target; it does not establish physical DGX Spark, GPU or operational provider qualification.' >> "$GITHUB_STEP_SUMMARY"
       - name: Retain installed dependency evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
@@ -128,6 +140,25 @@ jobs:
             ${{ runner.temp }}/mvp-installed/selected-components.txt
             ${{ runner.temp }}/mvp-installed/completed-steps.txt
             ${{ runner.temp }}/mvp-installed/proof-regressions/*.log
+            ${{ runner.temp }}/sbv-launch-boundary/logs
+            ${{ runner.temp }}/sbv-launch-boundary/outputs
+            ${{ runner.temp }}/sbv-launch-boundary/evidence.json
+            ${{ runner.temp }}/sbv-launch-boundary/evidence.pending.json
+            ${{ runner.temp }}/snv-qualification/logs
+            ${{ runner.temp }}/snv-qualification/outputs
+            ${{ runner.temp }}/snv-qualification/evidence.json
+            ${{ runner.temp }}/snv-qualification/evidence.pending.json
+            ${{ runner.temp }}/shv-release/logs
+            ${{ runner.temp }}/shv-release/summary.json
+            ${{ runner.temp }}/shv-release/source.txt
+            ${{ runner.temp }}/shv-release/source-status.txt
+            ${{ runner.temp }}/shv-release/go-environment.json
+            ${{ runner.temp }}/shv-release/assets/assets.json
+            ${{ runner.temp }}/shv-release/assets/request.json
+            ${{ runner.temp }}/shv-release/assets/decoder-loader.log
+            ${{ runner.temp }}/shv-release/assets/decoder-machine.log
+            ${{ runner.temp }}/shv-release/pdf-replay
+            ${{ runner.temp }}/shv-release/catalogue
             ${{ runner.temp }}/mvp-authoring/logs
             ${{ runner.temp }}/mvp-authoring/metadata
             ${{ runner.temp }}/mvp-authoring/selected-components.txt

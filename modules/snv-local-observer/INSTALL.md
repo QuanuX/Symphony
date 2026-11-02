@@ -14,3 +14,19 @@ An installed-dependency build uses `-DSYMPHONY_SNV_USE_INSTALLED_DEPENDENCIES=ON
 Native Linux reads require ordinary read access to selected proc/sysfs files. No elevation, external command, network, listener or daemon is used. Kernel filesystem type, regular file type and no-follow path traversal are checked. Restricted exposure is an explicit result.
 
 Synthetic reader tests and macOS unavailable output do not establish Linux runtime conformance. Actual Linux VM/container evidence describes only that process's exposure, never bare-metal inventory.
+
+For the repeatable MVP profile, first obtain the installed knowledge-group
+prefix and its exact qxctl, then run:
+
+```sh
+sh tests/snv-qualification/run.sh /chosen/prefix /absolute/new-private-work /absolute/qxctl
+```
+
+This verifies receipt-owned SDK/process selection before collection and preserves
+native captures separately from injected SDK tests. Ubuntu host/container runs
+record the actual kernel and admitted proc/sysfs filesystem conditions; restricted
+or unseen facts remain explicit. A fresh capture gets a new observation identifier
+and never overwrites the earlier result. `complete` covers only selected fields,
+not physical inventory or allocation. On macOS, native unavailability is the
+expected exercised result, not Linux conformance or a skipped test. The profile
+requests no identity assignment, provider access or provisioning authority.
