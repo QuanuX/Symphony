@@ -1,6 +1,6 @@
 # CodeQL advanced setup
 
-[The workflow](../workflows/codeql.yml) runs on pull requests targeting `main`,
+[The workflow](../workflows/codeql.yml) runs on pull requests targeting `main` or `codex/**`,
 pushes to `main`, manual dispatch, and Tuesdays at 08:23 UTC. Each language and
 platform has its own stable analysis category, so one upload does not replace
 another platform's results. All jobs use the `security-extended` query suite.
@@ -48,6 +48,8 @@ disabled when using this advanced workflow; enabling both causes upload conflict
 No personal access token or custom repository secret is needed: the job grants
 `security-events: write` to GitHub's temporary workflow token.
 
+[L21 triage and coverage](L21-TRIAGE.md) records the later eight-fixed/one-open alert snapshot, exact uploaded category bindings, measured C++ file counts, and the separately retained negative-test finding. [L21-SNAPSHOT.json](L21-SNAPSHOT.json) binds its raw evidence and reviewed source. These are dated observations, not a blanket release approval.
+
 Before merging, check all six pull-request jobs and their uploaded analyses in
 **Security → Code scanning**. Review extraction warnings and the tool status page,
 including file coverage and analysis categories. A successful scan can still
@@ -59,7 +61,9 @@ and the intentionally retained negative-permission test. It does not replace
 verification of a fresh uploaded analysis or authorize alert dismissal.
 
 After merging, verify the push run on `main` to establish the default-branch
-baseline. The weekly schedule and manual dispatch then become available from
+baseline. The workflow retains original and post-processed SARIF plus a diagnostic summary per category for 14 days. Inspect these artifacts as well as the uploaded result: PR filtering and empty API warning fields do not prove full extraction. Run `python3 .github/codeql/test_collect_evidence.py` when changing the collector.
+
+The weekly schedule and manual dispatch then become available from
 `main`. Keep the action commit pins current when updating CodeQL and checkout.
 The `setup-go` pin follows the verified v6 release line; its input preserves the
 repository's exact Go version.
