@@ -1,0 +1,59 @@
+{
+  "format_version": 1,
+  "state": "preparation_only",
+  "release_acceptance_complete": false,
+  "publication_authorized": false,
+  "required_profiles": [
+    "macos15-arm64",
+    "ubuntu24.04-amd64",
+    "ubuntu24.04-arm64",
+    "ubuntu26.04-amd64"
+  ],
+  "required_inputs": [
+    "approved_capability_manifest",
+    "candidate_url_and_digest",
+    "independent_signer_policy",
+    "runtime_and_notice_closure",
+    "authorized_provider_profiles",
+    "authorized_tws_sdk_provenance",
+    "named_acceptance_reviewer"
+  ],
+  "required_scenarios": [
+    "verified_download_and_tamper_refusal",
+    "fresh_install_discovery_version_loader",
+    "bounded_offline_quantitative_result",
+    "source_hardware_knowledge_workflow",
+    "protected_administration_denial_and_success",
+    "every_promised_provider_operation_and_refusal",
+    "timeout_cancellation_uncertainty_reconciliation",
+    "side_by_side_upgrade_and_compatible_rollback",
+    "removal_preserving_user_data"
+  ],
+  "report_fields": [
+    "source_commit",
+    "artifact_digest",
+    "manifest_digest",
+    "signer_policy_digest",
+    "retrieval_url_and_time",
+    "host_image_kernel_arch_runtime_filesystem",
+    "clean_host_inventory",
+    "receipt_digests",
+    "scenario_commands_input_output_digests",
+    "expected_and_actual_outcomes",
+    "skips",
+    "before_after_user_data_digests",
+    "reviewer_and_review_time"
+  ],
+  "existing_development_harnesses": [
+    "tests/package-release/run.cmake",
+    "tests/sbv-launch-boundary/run.sh",
+    "tests/shv-release-qualification/run.sh",
+    "tests/snv-qualification/run.sh",
+    "tests/native-sdk-distribution/run.sh"
+  ],
+  "boundaries": [
+    "Source smoke is not final-download acceptance",
+    "No provider credentials or paid data embedded",
+    "No release date or publisher authorization inferred"
+  ]
+}
