@@ -19698,7 +19698,7 @@
     },
     {
       "path": "modules/sqav-databento-dbn-cpp/tests/package_lifecycle_test.cmake",
-      "sha256": "85fe285f15a0cd9e8a957016b7b90eb08dbccd249ac16f85792441ebcdde04d1"
+      "sha256": "5d5194a337a99c48120d21acc6c6ff1c0df986270f07911c03158363b8adbbd6"
     },
     {
       "path": "modules/sqav-databento-dbn-cpp/tests/sdk-consumer/CMakeLists.txt",
