@@ -10,6 +10,7 @@
     "ubuntu26.04-amd64"
   ],
   "required_inputs": [
+    "native_credential_provider_implementation_evidence",
     "approved_capability_manifest",
     "candidate_url_and_digest",
     "independent_signer_policy",
@@ -49,7 +50,8 @@
     "tests/sbv-launch-boundary/run.sh",
     "tests/shv-release-qualification/run.sh",
     "tests/snv-qualification/run.sh",
-    "tests/native-sdk-distribution/run.sh"
+    "tests/native-sdk-distribution/run.sh",
+    "tests/launch-acceptance/candidate-host.go"
   ],
   "boundaries": [
     "Source smoke is not final-download acceptance",

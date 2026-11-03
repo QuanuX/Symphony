@@ -27,10 +27,12 @@ provider-v1 flag is enabled by this increment.
 
 ## Native and deployment work still required
 
-1. The SSIAG owner must persist exact resource/lease generation state, issue and
-   revoke it under current authority, and republish only recovered current state
-   after restart. The existing process-local registry starts empty. A busy
-   replacement is not completed revocation.
+1. Protected exact-owner admission persistence now restores revisions and grants
+   after restart, fences uncertain writes and retains committed empty revocation
+   snapshots; see `CREDENTIAL-ADMISSION.md`. The SSIAG lifecycle owner must still
+   wire permission-backed issuance/revocation and safe audit commitment into this
+   internal primitive. The process-local constructor remains available for bounded
+   composition. A busy or unavailable replacement is not completed revocation.
 2. Implement and qualify the native admission backend's independent provider
    identity, recipient executable/connection lifetime and bounded protected
    one-shot delivery. A PID, digest-shaped assertion or fixture pin is not proof.

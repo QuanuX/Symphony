@@ -31,3 +31,54 @@ After the separately reviewed extraction procedure has produced `unpacked`, repe
 ## Scope review before candidate selection
 
 Use the [finish-line checklist](../../.github/RELEASE-GATES.md) and `prepare-review.cmake` to produce an exact-source component/version inventory with unfilled acceptance inputs. It is preparation for selecting the shipped capability manifest, not a candidate or approval.
+
+## Verified extraction on the selected host
+
+Build the standalone standard-library helper with the pinned Go 1.26.5 toolchain:
+
+```sh
+GOWORK=off GOTOOLCHAIN=local go build -trimpath \
+  -o /absolute/private-tools/candidate-host tests/launch-acceptance/candidate-host.go
+```
+
+After the operator has obtained exact candidate files and the independently
+approved signer policy, invoke it with a reviewed verification-tool checkout:
+
+```sh
+/absolute/private-tools/candidate-host \
+  -repository /absolute/reviewed-verification-source \
+  -candidate /absolute/retrieved-candidate \
+  -allowed-signers /absolute/independent-policy/allowed-signers \
+  -signer SELECTED_PUBLISHER -profile SELECTED_PROFILE \
+  -work /absolute/new-private-work
+```
+
+All filesystem arguments are absolute. The work parent must exist and be under
+operator control; work must be new and outside the source/candidate directories.
+Use quiescent private inputs, retain the source/tool identity separately, and
+never substitute the package regression's disposable signing policy for publisher
+trust. The helper performs no network request or key enrollment. Candidate
+retrieval URL, time and digest must still be recorded by the operator.
+
+It runs existing signature/profile/evidence verification before reading the
+archive, checks the opened archive's complete size/digest, and admits only the
+signed inventory's exact regular files. Symlinks, hardlinks, devices, path escapes,
+duplicate/unlisted/missing members, altered bytes, unsafe file modes and nonzero
+trailing content are refused. Its current explicit ceiling is 16 GiB total
+payload/archive, 16 MiB inventory and 65,536 files. Output stays inside a new
+private prefix. A failure leaves diagnostic work for inspection and produces no
+successful host report; retry uses a fresh work directory.
+
+After extraction, the existing verifier checks the receipt/file closure again.
+Both observations must bind the same manifest and independent signer policy.
+`host-preparation.json` records actual host OS/architecture/kernel and the exact
+source/artifact identities. It deliberately reports `verified_extraction_only`,
+`fresh_host_verified=false`, `provider_qualification_complete=false`,
+`release_acceptance_complete=false` and `publication_authorized=false`.
+
+The helper does not execute downloaded code or prove native compatibility,
+production signing/notarization, a clean host, loader closure, redistribution
+rights or provider success. Run the nine approved scenarios separately against
+`payload/`, retaining exact command/input/output and host-provisioning evidence.
+The four-target package fixture workflow exercises this path and executes its
+two independently built fixture probes; those results remain development evidence.

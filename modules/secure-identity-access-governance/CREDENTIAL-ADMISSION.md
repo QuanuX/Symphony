@@ -5,8 +5,9 @@
 SQV-17 implements `AdmissionRegistry` in `internal/credential/admission.go`.
 It implements the dispatcher's `ProviderAdmission` interface by composing a
 current owner-verified resource/lease snapshot with a required native admission
-backend. The registry starts empty and refuses every use until trusted SSIAG
-owner code publishes a complete snapshot. It reads no configuration, issues no
+backend. The process-local constructor starts empty; `OpenAdmissionRegistry` restores
+a protected exact-owner snapshot. Both refuse use without a current matching
+grant supplied by trusted SSIAG owner code. It reads no configuration, issues no
 lease, creates no endpoint and enables no provider operation.
 
 The native backend remains unimplemented for operational delivery. Test backends
@@ -28,10 +29,12 @@ private storage; retaining or changing the caller's input cannot mutate it.
 The current profile permits one active reference for each subject/target tuple
 and one entry per lease ID. Ambiguous entries reject the entire replacement.
 Tokens/digests use the existing internal grammar; byte bounds remain 1–4,096.
-The registry has no serialized collection or fixed entry-count ceiling. This does
-not change the repository's separate SKVI JSON capacity.
+The internal profile permits at most 64 active entries and a 1 MiB serialized
+snapshot. Overflow rejects the whole replacement without changing durable bytes.
+Reserved UID/GID ownership sentinels are refused. These limits do not change
+the repository's separate SKVI JSON capacity.
 
-`Replace` is a trusted owner-only, process-local complete-snapshot CAS. Revision
+`Replace` is a trusted owner-only complete-snapshot CAS. Revision
 starts at 1 and advances on each successful replacement, including identical
 values. Stale revisions fail; the counter never wraps. Empty state removes all
 admission. Expired or malformed entries reject the whole candidate. Future leases
@@ -44,10 +47,39 @@ neither cancels an admitted delivery nor promises writer fairness. A trusted
 lifecycle owner must arrange retry/drain and audit publication before reporting
 its own operation complete. No such administration route is enabled here.
 
-The revision is tied to this registry object's lifetime. It is not a persistent
-revision or a cross-process authority token. Restart creates empty state; a future
-loader must recover current durable authority before publishing. No implicit
-replay, lease reissuance, generation fallback or discovery of newest state exists.
+`NewAdmissionRegistry` retains process-local revision semantics. The optional
+`OpenAdmissionRegistry(stateDir, topsID, authorityDigest, native)` constructor
+holds an exclusive lifetime lock and restores the same revision and exact grants.
+The authority digest must come from current protected SSIAG owner configuration,
+not a request. Mismatched authority refuses rather than resetting or reissuing.
+No implicit replay, lease reissuance, generation fallback or newest selection exists.
+
+## Protected persistence
+
+Internal state is `credential-admission/<tops-id>/active.json` with a persistent
+`active.lock`, below the existing private SSIAG state directory. This is nonsecret
+admission metadata, not a credential vault, public schema, bearer grant or audit
+ledger. The Go owner uses the existing descriptor-relative, no-follow filesystem
+primitives with owner-only directories/files, one cooperating writer, strict
+canonical encoding, a domain-separated digest and TOPS/authority/revision binding.
+The request journal retains its separate namespace and 8 KiB record limit.
+
+Replacement writes and syncs a private temporary file, atomically renames it, and
+syncs the directory before activating the in-memory snapshot. Any persistence
+error fences all future pin/update attempts in that registry: the old grants may
+no longer match disk. Close and independently reopen/reconcile the actual durable
+state; an error never proves that a requested revocation committed. Missing state
+beside an existing lock, missing lock beside state, malformed/unknown/duplicate
+fields, altered bytes, unsafe permissions and symlinks refuse recovery.
+
+`Close` refuses while native pins are held. It releases the persistent lock only
+after native cleanup, does not delete state, and is idempotent. Expired recovered
+grants remain retained but cannot reach the native backend. Every actual dispatch
+still requires current policy/STAV authority and independent native recipient and
+provider validation. The snapshot alone issues no lease and proves no credential
+operation. Cooperative private storage does not provide rollback resistance
+against the host owner replacing an entire old snapshot and lock; no such
+anti-rollback or power-loss qualification is claimed.
 
 ## Admission and use
 
@@ -86,7 +118,9 @@ rotation and revocation while pinned, stale CAS and overflow, real kernel-peer
 context, native evidence mismatches, expiry/cancellation, native error cleanup,
 concurrent one-shot execution, concurrent replacement and cleanup ordering.
 
-Operational deployment still requires the persistent authority/lease owner,
+Restart, crash/lock release, durable revocation, authority drift, capacity, corruption
+and uncertain-write regressions cover the persistence primitive. Operational
+deployment still requires permission-backed lease issuance/revocation and audit wiring,
 authenticated native recipient and provider pin backend, separately versioned
 protected channel, qualification of provider-outcome STAV integration and signed Keychain item
 lifecycle. Existing provider v1 and synthetic-channel flags remain disabled.

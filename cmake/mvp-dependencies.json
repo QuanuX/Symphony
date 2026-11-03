@@ -19061,6 +19061,18 @@
       "sha256": "e811f41ea0d7c9fc01f66dd9f99ac63605e2e5d2358fade504770f78dd15f967"
     },
     {
+      "path": "modules/secure-identity-access-governance/internal/credential/admission.go",
+      "sha256": "6dee3e45a3a3cc7878b486e6181fbe534e17aa90c431bbdfce88ce6d3b0f5453"
+    },
+    {
+      "path": "modules/secure-identity-access-governance/internal/credential/admission_store.go",
+      "sha256": "8b69bf3cdd9b6ec800d5db14cba8f316705eb77298093e6862163fd40db5b904"
+    },
+    {
+      "path": "modules/secure-identity-access-governance/internal/credential/admission_store_test.go",
+      "sha256": "1c174ecd11314b96dbc134c1dd9db4fa7d71e8cb562e22f9a6a4bb76f1711b39"
+    },
+    {
       "path": "modules/secure-identity-access-governance/internal/credential/dispatch.go",
       "sha256": "6555872e32a1660122d027011f70a1fde90b48edae56baacdab68607a0a877e6"
     },
@@ -19078,7 +19090,11 @@
     },
     {
       "path": "modules/secure-identity-access-governance/internal/credential/journal_unix.go",
-      "sha256": "44da9c08f5be96a87fd4e850ce0166c95a8196ac89adc347c505fc5e1f5307b9"
+      "sha256": "c7fa7614e8c6c295bb8210ca59945146ff03308e5aa581c8b0868215fed7d329"
+    },
+    {
+      "path": "modules/secure-identity-access-governance/internal/credential/journal_unsupported.go",
+      "sha256": "60ad2ebee924680e310e53c5673bbf5ddf024dd0b2f399210b50517db8bc62ab"
     },
     {
       "path": "modules/secure-identity-access-governance/internal/credential/outcome.go",
@@ -20175,6 +20191,22 @@
     {
       "path": "modules/stav-append-authority/internal/version/version.go",
       "sha256": "ee7a882d970abacb90cbf928cf81dd7947ed460945426fda8678e9c746859320"
+    },
+    {
+      "path": "tests/launch-acceptance/candidate-host.go",
+      "sha256": "831c6bfcabf982aee99b71034c81904d52d5fdd727cbca0a6e4e62c85b48dfcd"
+    },
+    {
+      "path": "tests/launch-acceptance/candidate-host_test.go",
+      "sha256": "f7e99ee96e2c459012e8baa0d21e5ab6185ce04df3af93d0f66ddb10eab64dae"
+    },
+    {
+      "path": "tests/launch-acceptance/plan.json",
+      "sha256": "64175c90cef16e5ddb714c1a9b99756718312b85aacdab9b737647ae7ff12603"
+    },
+    {
+      "path": "tests/package-release/run.cmake",
+      "sha256": "7f80a73ac12e944299b16a24a78059aae03a38272892e72f1bf447746b0f6271"
     },
     {
       "path": "tests/sqv-administration/CMakeLists.txt",
