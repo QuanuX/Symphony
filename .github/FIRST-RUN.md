@@ -27,3 +27,5 @@ Keep old and new exact versions in separate private prefixes until the new recei
 Rollback selects the previous verified executable/prefix explicitly. It does not downgrade or rewrite retained data; check that owner's retained-version admissions first. Reconcile uncertain lifecycle outcomes before retrying. For this CLI-only example, removal is deletion of the explicitly selected standalone binary after saving its evidence; no service or system entry was installed. Keep failed work directories for diagnosis rather than reusing partial stages.
 
 Package relocation, tamper refusal, interrupted transforms, retries and rollback mechanics are tested in `tests/package-release/README.md`. Those fixtures are not released product archives. Final downloadable installation commands remain pending an approved candidate URL, trust policy and artifact manifest; do not substitute an unverified URL or claim these source commands prove fresh-machine acceptance.
+
+For retained-store operation, account boundaries, documentary starter content and the supported API-parser example, continue with the [L27–L30 operator procedures](../tests/launch-operations/README.md).

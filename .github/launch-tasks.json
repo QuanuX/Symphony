@@ -246,7 +246,10 @@
       "role": "SCV/SHV/SNV store owners",
       "maintainer": null,
       "depends_on": "L01,L05",
-      "completion_criteria": "Exercise full-capacity refusal, export/backup, interrupted writes and restart recovery. Record retained-store bounds and exact older-writer requirements; demonstrate upgrade without rewriting history or deleting user evidence. Add migration/pruning only if the chosen launch promise requires it."
+      "completion_criteria": "Exercise full-capacity refusal, export/backup, interrupted writes and restart recovery. Record retained-store bounds and exact older-writer requirements; demonstrate upgrade without rewriting history or deleting user evidence. Add migration/pruning only if the chosen launch promise requires it.",
+      "implementation_state": "source_prepared_for_review",
+      "qualification_guide": "tests/launch-operations/RETENTION.md",
+      "qualification_boundary": "Runbooks, quiescent restore and capacity-preservation regressions prepared. Live database backups, power-loss durability and cross-version migration are not claimed."
     },
     {
       "id": "L28",
@@ -255,7 +258,10 @@
       "role": "SSIAG/STAV and protected-workflow owners",
       "maintainer": null,
       "depends_on": "L01,L13",
-      "completion_criteria": "State and test same-UID versus distinct-account profiles; demonstrate denied, expired, revoked, wrong-resource and interrupted operations. Describe the existing policy-check-to-write window and whether audit records the decision or the resulting mutation. Strengthen atomicity only when required by the selected security contract; do not imply it exists."
+      "completion_criteria": "State and test same-UID versus distinct-account profiles; demonstrate denied, expired, revoked, wrong-resource and interrupted operations. Describe the existing policy-check-to-write window and whether audit records the decision or the resulting mutation. Strengthen atomicity only when required by the selected security contract; do not imply it exists.",
+      "implementation_state": "source_prepared_for_review",
+      "qualification_guide": "tests/launch-operations/AUTHORIZATION.md",
+      "qualification_boundary": "Same-UID, actual peer/owner refusal, policy/guard and audit/effect boundaries recorded. Distinct-account deployment and atomic authorization-to-filesystem mutation are not claimed."
     },
     {
       "id": "L29",
@@ -264,7 +270,10 @@
       "role": "SCV/SHV content owners",
       "maintainer": null,
       "depends_on": "L01,L18",
-      "completion_criteria": "Choose a bounded real source corpus with exact revisions, captures, mappings, coverage and freshness; demonstrate replay and unresolved facts. Keep synthetic fixtures labeled. A comprehensive atlas or minimum coverage policy is not required for caller-supplied tools."
+      "completion_criteria": "Choose a bounded real source corpus with exact revisions, captures, mappings, coverage and freshness; demonstrate replay and unresolved facts. Keep synthetic fixtures labeled. A comprehensive atlas or minimum coverage policy is not required for caller-supplied tools.",
+      "implementation_state": "source_prepared_for_review",
+      "qualification_guide": "examples/mvp-hardware/README.md",
+      "qualification_boundary": "Optional one-lineage AMD documentary starter reuses the pinned installed recipe. Actual selected-platform execution is separate from the other required target results; no atlas or publication approval."
     },
     {
       "id": "L30",
@@ -273,7 +282,10 @@
       "role": "SACV owner",
       "maintainer": null,
       "depends_on": "L01",
-      "completion_criteria": "Validate shipped contracts/examples using the current JSON OpenAPI 3.2.0 and internal-reference subset. If YAML or external references are promised, implement and separately qualify those extensions; otherwise document stable unsupported responses."
+      "completion_criteria": "Validate shipped contracts/examples using the current JSON OpenAPI 3.2.0 and internal-reference subset. If YAML or external references are promised, implement and separately qualify those extensions; otherwise document stable unsupported responses.",
+      "implementation_state": "source_prepared_for_review",
+      "qualification_guide": "modules/sacv-engine/tests/fixtures/README.md",
+      "qualification_boundary": "Shipped synthetic JSON/internal-reference example and explicit YAML/external-reference refusals are tested. No canonical API registration or endpoint publication."
     }
   ],
   "release_approver": "@quantDIY",
