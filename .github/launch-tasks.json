@@ -1,0 +1,282 @@
+{
+  "format_version": 1,
+  "milestone": null,
+  "ownership_state": "release_and_rollback_primary_assigned_other_assignments_pending",
+  "private_security_destination": null,
+  "release_approval": false,
+  "tasks": [
+    {
+      "id": "L01",
+      "title": "Approve the exact first-release capability manifest",
+      "scope": "All launch packages",
+      "role": "Release lead",
+      "maintainer": null,
+      "depends_on": "",
+      "completion_criteria": "Record shipped modules, independent versions and supported operations against required Apple Silicon macOS and Ubuntu LTS x86_64/ARM64 profiles. Specify exact OS/runtime baselines. Ubuntu ARM64 suffices for the current sprint under the user decision; physical DGX Spark hardware/OS and GPU qualification are deferred and unclaimed. Native Windows is unsupported and no port is planned. Proposals may remain in progress, with their implementation status explicit. Complete every promised MVP credential/provider capability; fixture-only or developer-alpha behavior cannot substitute for that operational acceptance."
+    },
+    {
+      "id": "L02",
+      "title": "Reject reserved ownership IDs and verify actual ownership",
+      "scope": "STAV, SSIAG, qxctl enrollment",
+      "role": "Identity and audit owners",
+      "maintainer": null,
+      "depends_on": "",
+      "completion_criteria": "Reject 4294967295 for UID and GID at CLI and owner boundaries; enforce again in directory helpers; read back ownership after Chown. Test sentinel, zero, ordinary IDs, representable limits, mismatch, existing identities and failure recovery. Then rerun and resolve alerts #1/#2 with evidence."
+    },
+    {
+      "id": "L03",
+      "title": "Close unpublished Go dependency and checksum gaps",
+      "scope": "Standalone qxctl and first-party Go consumers",
+      "role": "Go module and release owners",
+      "maintainer": null,
+      "depends_on": "L01",
+      "completion_criteria": "Replace the initially missing Accordare and SSH coordinates with authorized immutable publications, and release the fixed STAV consumer surface so standalone builds include L02. Update consumer requirements and sums from public artifacts. Prove dependency closure with GOWORK=off, empty caches, the explicit public proxy and checksum verification, no selected replacements, and unchanged module files. Build qxctl from its copied subtree and smoke-test version/help; run applicable module tests separately where repository fixtures are required. Keep experimental sbv-go status explicit until separately released."
+    },
+    {
+      "id": "L04",
+      "title": "Complete Linux store, attempt and checkpoint inspection",
+      "scope": "Linux retained-state administration",
+      "role": "SQPV/SQAV/SQDV owners",
+      "maintainer": null,
+      "depends_on": "L01",
+      "completion_criteria": "Enable the shared read-only Linux reader while preserving no-follow paths, cooperating shared locking, stat/inventory checks, bounds, identity fences and dirty-state semantics. Verify real native writer output through all three installed qxctl owner routes on Ubuntu LTS x86_64/ARM64 and retain macOS local-APFS regression coverage. Record exact source, dependency, runner/filesystem and test evidence, then verify merge and cleanup. Caller-selected Linux filesystems have no name allowlist and successful syscalls do not certify durability. L04 closes source and installed CI qualification only; physical DGX Spark/DGX OS image/kernel/driver/runtime qualification is deferred under the later user decision accepting Ubuntu ARM64 for this sprint."
+    },
+    {
+      "id": "L05",
+      "title": "Freeze a coherent dependency and exact-version matrix",
+      "scope": "All packaged modules and qxctl",
+      "role": "Build and module owners",
+      "maintainer": null,
+      "depends_on": "L01",
+      "completion_criteria": "Record all 69 current component roots and their independently owned executable, SDK, receipt, public Go, interface and schema identities with source bindings. Reconcile older foundation 0.1 consumers with exact foundation 0.2; prove installed-SDK builds and copied consumers without source-tree fallbacks, plus workspace-disabled Go dependency closure. Qualify the selected 54 native packages on required CI profiles and retain the two current DuckDB packages as separately bounded legacy Intel evidence. Fresh-install examples select compatible versions explicitly, including SCV 0.10.0-dev versus retained historical defaults. Verify source/closure merges and cleanup; this map does not close L01 release approval, L06 release identity, L09 required-platform DuckDB support or operational provider qualification; physical Spark qualification is deferred under the current user decision."
+    },
+    {
+      "id": "L06",
+      "title": "Make binary identity and supported prerelease versions precise",
+      "scope": "Release identity",
+      "role": "Release and qxctl owners",
+      "maintainer": null,
+      "depends_on": "L05",
+      "completion_criteria": "Select per-module prerelease/release identities without flattening independent ownership. Replace generic qxctl dev identity with verifiable version/commit/build metadata; align receipt, interface, SDK and CLI admission values. Test both current and retained compatible versions."
+    },
+    {
+      "id": "L07",
+      "title": "Add reproducible build and test release gates",
+      "scope": "Release qualification",
+      "role": "Build/CI owner",
+      "maintainer": null,
+      "depends_on": "L01,L05",
+      "completion_criteria": "Create an enumerated build/test manifest for all selected modules, libraries and tools. Run focused native suites, Go tests, Swift tests, generated-interface checks, validator, installed consumers and integration paths on each supported target. Complete selected installed integration qualification rather than treating explicit helper skips as coverage. Retain and investigate the unreproduced qxctl process-fixture startup failure without claiming a clean full-suite run. Keep CodeQL and functional qualification distinct; attach exact compiler/dependency/commit evidence to candidates."
+    },
+    {
+      "id": "L08",
+      "title": "Qualify each native OS and architecture separately",
+      "scope": "Platform scope",
+      "role": "Platform owners",
+      "maintainer": null,
+      "depends_on": "L01,L07",
+      "completion_criteria": "Qualify required Apple Silicon macOS and Ubuntu LTS x86_64/ARM64 profiles with explicit OS/kernel/libc/C++ runtime baselines, architectures and filesystems. Ubuntu ARM64 is sufficient for this sprint by user decision; physical DGX Spark hardware/OS and GPU qualification are deferred and unclaimed. Any extra Intel macOS or Linux architecture needs separate evidence. Native Windows is unsupported, with no port planned; WSL/remote Linux are separately labeled access options."
+    },
+    {
+      "id": "L09",
+      "title": "Add reviewed dependency recipes for additional targets",
+      "scope": "SCV/SHV DuckDB connectors",
+      "role": "Graph connector owners",
+      "maintainer": null,
+      "depends_on": "L01,L08",
+      "completion_criteria": "For each shipped connector, create hash-pinned DuckDB dependency provenance and linkage/notice recipes for required Apple Silicon and Ubuntu LTS x86_64/ARM64 targets. Run isolated installed connector, recovery and removal tests on each qualified profile. Existing Intel macOS admission does not qualify the required platforms; optional connectors may be excluded only through the explicit capability manifest."
+    },
+    {
+      "id": "L10",
+      "title": "Define package-manager and qxctl ownership handoff",
+      "scope": "Package installation and lifecycle",
+      "role": "Lifecycle and packaging owners",
+      "maintainer": null,
+      "depends_on": "L05,L06",
+      "completion_criteria": "Prove the final package survives relocation, stripping and signing while exact installed hashes remain truthful. Define who stages, activates, upgrades and removes files in a qxctl-managed root. Test side-by-side versions, retries, interrupted installs, foreign files and preserved user state; do not silently bypass the shared-root fence."
+    },
+    {
+      "id": "L11",
+      "title": "Prepare artifact signing, provenance and source correspondence",
+      "scope": "Downloadable release trust",
+      "role": "Release owner",
+      "maintainer": null,
+      "depends_on": "L06,L10",
+      "completion_criteria": "Define final artifact digests, signatures/publisher identity, SBOM/component inventory and matching source revisions. Apply platform signing/notarization where selected before sealing the installed-byte receipts. Verify downloaded artifacts from a clean machine; publish a recovery and revocation procedure."
+    },
+    {
+      "id": "L12",
+      "title": "Extend release records beyond Go modules",
+      "scope": "Binary release governance",
+      "role": "SODV and release owners",
+      "maintainer": null,
+      "depends_on": "L01,L06",
+      "completion_criteria": "Specify native/conda publication units and evidence for version, source, platform/ABI, dependencies, immutable artifact, checksum/signature, authorization and independently verified completion. Update SODV schema/engine/validator tests, or approve an explicit governed companion record; keep publication authority external to SODV."
+    },
+    {
+      "id": "L13",
+      "title": "Close and demonstrate the bootstrap-to-audited lifecycle",
+      "scope": "Operational local administration",
+      "role": "SSIAG/STAV and lifecycle owners",
+      "maintainer": null,
+      "depends_on": "L01,L02",
+      "completion_criteria": "Choose the supported bootstrap path, wire real STAV receipt commitment/reconciliation for ordinary foundational mutations, and verify repeated operations, restart, interruption and audit unavailability without pretending audit_deferred is committed. Complete the operational lifecycle required by the promised MVP provider/credential paths; staged/report-only behavior does not satisfy that acceptance."
+    },
+    {
+      "id": "L14",
+      "title": "Implement and qualify SSIAG credential-use integration",
+      "scope": "Required MVP operational provider access",
+      "role": "Identity and source owners",
+      "maintainer": null,
+      "depends_on": "L01,L13",
+      "completion_criteria": "Wire the actual scoped credential-use owner to every promised MVP provider adapter on each required target. Prove lease/recipient binding, expiry/revocation, deadlines, cleanup and refusal with explicitly authorized credentials and bounded provider operations. Complete operational qualification before launch; fixture-only or developer-alpha evidence cannot satisfy this task."
+    },
+    {
+      "id": "L15",
+      "title": "Finish exact SDK and host runtime handoff",
+      "scope": "MVP IBKR TWS access",
+      "role": "Broker adapter owner",
+      "maintainer": null,
+      "depends_on": "L01,L08,L14",
+      "completion_criteria": "Complete the promised MVP TWS capability using authorized SDK 10.45 provenance; pass independent SDK conformance and supply connection/login, EReader/EWrapper routing, request IDs and pacing in the proper host owner. Qualify Decimal precision, end markers, cancel/disconnect/reconnect and account binding through authorized bounded read-only provider tests on required targets. SDK stubs and fixtures do not complete operational acceptance."
+    },
+    {
+      "id": "L16",
+      "title": "Qualify the external authenticated Gateway profile",
+      "scope": "MVP IBKR Client Portal access",
+      "role": "Broker adapter owner",
+      "maintainer": null,
+      "depends_on": "L01,L08,L14",
+      "completion_criteria": "Complete the promised MVP Client Portal capability with trusted HTTPS Gateway and supported account/session prerequisites. Verify actual authorized read-only discovery, account binding, pagination, history, session expiry and entitlement refusal on required targets. Preserve non-atomic multipage semantics and exclude order entry from this adapter scope. Fixture-only Gateway tests do not complete operational acceptance."
+    },
+    {
+      "id": "L17",
+      "title": "Complete and qualify the promised data-source capabilities",
+      "scope": "MVP Databento/FRED/news provider paths",
+      "role": "SQAV source owners",
+      "maintainer": null,
+      "depends_on": "L01,L14",
+      "completion_criteria": "Complete operational acceptance for every promised MVP provider path with actual authorized request/quote/budget/attempt reservation, uncertainty and recovery checks on required targets. Distinguish DBN parsing from acquisition/live feeds and news ingress SDKs from implemented vendor feeds; implement the promised acquisition or feed behavior rather than substituting fixtures. Only formats, vendors and capabilities outside the agreed MVP may remain deferred."
+    },
+    {
+      "id": "L18",
+      "title": "Qualify PDFium and a useful bounded hardware catalogue workflow",
+      "scope": "SHV release profile",
+      "role": "SHV owner",
+      "maintainer": null,
+      "depends_on": "L01,L08",
+      "completion_criteria": "Record exact PDFium dependency/runtime assets and test final installed PDF adapter per target; establish the chosen source revisions, evidence provenance and component coverage. Exercise protected source activation, refresh, profile/partition, graph and publication-preview paths without promising automated vendor discovery or universal hardware coverage."
+    },
+    {
+      "id": "L19",
+      "title": "Publish and reproduce supplied-evidence/observer qualification",
+      "scope": "SNV and optional local observation",
+      "role": "SNV owners",
+      "maintainer": null,
+      "depends_on": "L01,L07",
+      "completion_criteria": "Repeat the five-engine installed-SDK/receipt and qxctl profile on every promised target; keep optional observer evidence separate, including its actual Linux host/container conditions and admitted filesystems. Document unseen facts, partial observations and refresh behavior without inventing identity or provisioning authority."
+    },
+    {
+      "id": "L20",
+      "title": "Turn FOLLOW-ON into an explicit launch boundary",
+      "scope": "SBV selected release",
+      "role": "SBV owner",
+      "maintainer": null,
+      "depends_on": "L01,L07",
+      "completion_criteria": "Reproduce the chosen candidate end-to-end from installed artifacts on the required profiles, including Ubuntu ARM64 evidence accepted for this sprint, and preserve census/result authority, cancellation and indeterminate remote recovery. State exact data/scale/controller-target profile and any promised GPU behavior. WAN/independent-host, distinct-principal, large-scale, live capture and checkpoint/resume extensions may remain separate only when outside the agreed MVP."
+    },
+    {
+      "id": "L21",
+      "title": "Complete evidence-backed security triage",
+      "scope": "CodeQL findings and extraction coverage",
+      "role": "Security and module owners",
+      "maintainer": null,
+      "depends_on": "L02",
+      "completion_criteria": "Retain verified L02 closure of #1/#2/#7/#8; document bounded-admission reasoning for #3 and test-only scope for #4. Verify the scoped fixture hardening for #5/#6, rerun and inspect uploaded analyses, and retain a separate decision for any intentional negative-test finding. No automatic dismissal or query obfuscation is authorized. Do not treat successful scan jobs as proof of zero vulnerabilities or full C++26 coverage."
+    },
+    {
+      "id": "L22",
+      "title": "Automate independent installed consumers and clean removal",
+      "scope": "Native SDK/source distribution",
+      "role": "SDK/build owners",
+      "maintainer": null,
+      "depends_on": "L05,L07,L10",
+      "completion_criteria": "Install the exact dependency DAG into empty prefixes and build all shipped consumers away from the checkout. Include source adapters whose SDK consumers are not automatically run by CTest. Verify headers, exports, ABI/runtime, receipt tamper refusal, uninstall and preservation of unrelated packages against final artifacts."
+    },
+    {
+      "id": "L23",
+      "title": "Finish artifact/component and notice inventory",
+      "scope": "Redistributed dependencies and data",
+      "role": "Release/dependency owners",
+      "maintainer": null,
+      "depends_on": "L05",
+      "completion_criteria": "Inventory exact curl/zstd/TLS/DuckDB/PDFium/JSON/Go components and linkage; include correct notices and matching source material required by the selected licenses. Fix clean-build notice discovery that assumes Homebrew. Keep vendor SDKs, paid/private datasets and public test fixtures appropriately separated; obtain publisher review of redistribution choices."
+    },
+    {
+      "id": "L24",
+      "title": "Reconcile stale claims and write tested first-run guides",
+      "scope": "User-facing installation and scope docs",
+      "role": "Documentation and module owners",
+      "maintainer": null,
+      "depends_on": "L01,L05,L08,L13",
+      "completion_criteria": "Update past launch-date metadata and seven-sprints placeholder; align SHV activation status, Linux writer versus reader scope, CMake minimums and exact CLI versions. Provide fresh-machine install, first bounded success, expected refusal, upgrade, rollback and remove guides for each supported profile. Keep architectural futures clearly separate."
+    },
+    {
+      "id": "L25",
+      "title": "Create the launch tracking and support surface",
+      "scope": "Module/release ownership and user reports",
+      "role": "Release lead",
+      "maintainer": "@quantDIY",
+      "depends_on": "L01",
+      "completion_criteria": "Assign each task to an actual maintainer and milestone; define release approval/rollback ownership and a security-reporting route. Convert accepted tasks into issues when requested; add reproducible bug-report inputs (module, version, OS, receipt, safe logs) and retain known limitations. The initial audit inventory had no open issues/PRs despite these source gaps; subsequent implementation activity is tracked separately."
+    },
+    {
+      "id": "L26",
+      "title": "Run the selected end-to-end launch scenarios",
+      "scope": "Fresh-machine release acceptance",
+      "role": "Release/test owners",
+      "maintainer": null,
+      "depends_on": "L02,L03,L05,L07,L08,L10,L13,L14,L15,L16,L17,L22",
+      "completion_criteria": "From final candidate downloads on required Apple Silicon and Ubuntu LTS x86_64/ARM64 profiles, demonstrate install/discovery/version, a meaningful offline quantitative path, every promised operational credential/provider path, source/knowledge workflow and protected administration. Physical DGX Spark hardware/OS qualification is deferred by user decision; Ubuntu ARM64 acceptance must not be described as Spark or GPU qualification. Cover timeout, refusal, recovery, upgrade/rollback and uninstall without deleting user state. Record exact versions, digests and outcomes; repository caches and fixture-only provider success are not substitutes."
+    },
+    {
+      "id": "L27",
+      "title": "Finish capacity, export, backup and recovery runbooks",
+      "scope": "Retained cloud/hardware/node evidence",
+      "role": "SCV/SHV/SNV store owners",
+      "maintainer": null,
+      "depends_on": "L01,L05",
+      "completion_criteria": "Exercise full-capacity refusal, export/backup, interrupted writes and restart recovery. Record retained-store bounds and exact older-writer requirements; demonstrate upgrade without rewriting history or deleting user evidence. Add migration/pruning only if the chosen launch promise requires it."
+    },
+    {
+      "id": "L28",
+      "title": "Qualify the actual account and authorization-to-effect model",
+      "scope": "Protected selections and publication",
+      "role": "SSIAG/STAV and protected-workflow owners",
+      "maintainer": null,
+      "depends_on": "L01,L13",
+      "completion_criteria": "State and test same-UID versus distinct-account profiles; demonstrate denied, expired, revoked, wrong-resource and interrupted operations. Describe the existing policy-check-to-write window and whether audit records the decision or the resulting mutation. Strengthen atomicity only when required by the selected security contract; do not imply it exists."
+    },
+    {
+      "id": "L29",
+      "title": "Provide a small provenance-complete cloud/hardware starter example",
+      "scope": "Supplied starter content, if promised",
+      "role": "SCV/SHV content owners",
+      "maintainer": null,
+      "depends_on": "L01,L18",
+      "completion_criteria": "Choose a bounded real source corpus with exact revisions, captures, mappings, coverage and freshness; demonstrate replay and unresolved facts. Keep synthetic fixtures labeled. A comprehensive atlas or minimum coverage policy is not required for caller-supplied tools."
+    },
+    {
+      "id": "L30",
+      "title": "Align SACV release examples with its implemented parser subset",
+      "scope": "Advertised API-contract formats",
+      "role": "SACV owner",
+      "maintainer": null,
+      "depends_on": "L01",
+      "completion_criteria": "Validate shipped contracts/examples using the current JSON OpenAPI 3.2.0 and internal-reference subset. If YAML or external references are promised, implement and separately qualify those extensions; otherwise document stable unsupported responses."
+    }
+  ],
+  "release_approver": "@quantDIY",
+  "rollback_owner": "@quantDIY",
+  "backup_owner": null
+}

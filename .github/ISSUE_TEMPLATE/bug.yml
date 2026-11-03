@@ -1,0 +1,25 @@
+name: Reproducible defect
+description: Report a bounded defect without credentials or private data.
+body:
+  - type: markdown
+    attributes:
+      value: "Do not submit security vulnerabilities here. Read SECURITY.md. Omit credentials, account identifiers, private datasets and raw provider responses."
+  - type: textarea
+    id: identity
+    attributes:
+      label: Module and environment
+      description: Exact module/CLI version, source commit, OS/architecture and compiler/runtime. Include receipt digest, not confidential paths.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Small safe reproduction
+      description: Commands, expected outcome, actual outcome and safe synthetic inputs. State whether the operation changed state or has an uncertain outcome.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Redacted evidence and recovery state
+      description: Safe error codes/log excerpt, last confirmed receipt, retries already attempted and whether the original evidence is preserved.
