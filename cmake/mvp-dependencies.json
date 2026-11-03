@@ -20838,7 +20838,7 @@
     },
     {
       "path": "tools/qxctl/internal/shvpublicationstate/store_test.go",
-      "sha256": "750b6138ce9f3b042ac33bd6381dcc0922d8dca4f2326ea577ed07fef709614a"
+      "sha256": "02a6b2a6b4a21f758bf17521b58524db9d18fde446209c2fdbc680e625917848"
     },
     {
       "path": "tools/qxctl/internal/shvpublicationstate/validation.go",
@@ -20854,7 +20854,7 @@
     },
     {
       "path": "tools/qxctl/internal/shvstate/store_test.go",
-      "sha256": "809acea474abce4493ab78f31bcb9ce12de6cbabd6bf5c7f7dfd7ab450fe1632"
+      "sha256": "e6ba91d5795ff76ffe265cf89c70d9c4337d48137a193434915d761d82789a6c"
     },
     {
       "path": "tools/qxctl/internal/shvstate/validation.go",

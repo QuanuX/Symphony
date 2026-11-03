@@ -1,0 +1,49 @@
+{
+  "openapi": "3.2.0",
+  "info": {
+    "title": "Fixture API",
+    "version": "1.0.0",
+    "description": "Synthetic parser example only; no endpoint or transport is offered."
+  },
+  "x-symphony-security-profile": "knowledge/ssiag/SPEC.md",
+  "security": [
+    {
+      "ssiag": []
+    }
+  ],
+  "paths": {
+    "/fixture": {
+      "get": {
+        "operationId": "fixtureGet",
+        "responses": {
+          "200": {
+            "description": "Synthetic result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FixtureValue"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Synthetic invalid request"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "ssiag": {
+        "type": "mutualTLS"
+      }
+    },
+    "schemas": {
+      "FixtureValue": {
+        "type": "number",
+        "minimum": 0.5
+      }
+    }
+  }
+}

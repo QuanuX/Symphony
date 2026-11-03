@@ -370,8 +370,16 @@ func TestSHVPublicationStatePathAndHistoryBounds(t *testing.T) {
 		if e = tx.save(d); e != nil {
 			return e
 		}
+		before, readErr := os.ReadFile(statePath(s))
+		if readErr != nil {
+			t.Fatal(readErr)
+		}
 		if _, e = tx.Prepare(intentFor(t, "over-limit", nil, "Vendor")); e == nil {
 			t.Fatal("attempt bound ignored")
+		}
+		after, readErr := os.ReadFile(statePath(s))
+		if readErr != nil || string(before) != string(after) {
+			t.Fatal("capacity refusal changed retained journal", readErr)
 		}
 		return nil
 	}); e != nil {

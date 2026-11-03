@@ -226,6 +226,29 @@ void test_registered_json_and_fail_closed_yaml() {
             "YAML parser-unavailable evidence missing");
 }
 
+void test_shipped_release_example(const fs::path& repository_root) {
+    std::ifstream source(repository_root / "modules/sacv-engine/tests/fixtures/mvp-example.openapi.json", std::ios::binary);
+    require(source.good(), "shipped parser example missing");
+    const auto bytes = engine::read_bounded(source, engine::Limits::max_request_bytes);
+    TemporaryDirectory temporary;
+    create_fixture(temporary.path());
+    const auto path = temporary.path() / "knowledge/fixture/api/fixture-v1.openapi.json";
+    write_file(path, bytes);
+    CurrentDirectory current(temporary.path());
+    auto check = sacv::handle_request(request("check", engine::Json{{"expected_registry_digest", nullptr}}));
+    require(check.at("summary").at("state") == "valid" && check.at("operations_checked") == 1U,
+            "shipped JSON/internal-reference example rejected");
+    for (const auto& ref : {"other.openapi.json#/components/schemas/FixtureValue", "https://example.invalid/schema.json"}) {
+        auto document = engine::Json::parse(bytes);
+        document["paths"]["/fixture"]["get"]["responses"]["200"]["content"]["application/json"]["schema"]["$ref"] = ref;
+        write_file(path, document.dump());
+        check = sacv::handle_request(request("check", engine::Json{{"expected_registry_digest", nullptr}}));
+        require(check.at("summary").at("state") == "invalid" &&
+                check.dump().find("sacv.reference.external_unavailable") != std::string::npos,
+                "external reference did not produce the documented refusal");
+    }
+}
+
 void test_profile_violations_and_no_follow() {
     {
         TemporaryDirectory temporary;
@@ -371,6 +394,7 @@ int main(int argc, char** argv) {
         }
         test_descriptor_and_actual_repository(fs::canonical(argv[1]));
         test_registered_json_and_fail_closed_yaml();
+        test_shipped_release_example(fs::canonical(argv[1]));
         test_profile_violations_and_no_follow();
         test_diff_classification();
         test_proposal_and_reserved_authority();
