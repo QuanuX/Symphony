@@ -1,6 +1,6 @@
 # Final-download MVP acceptance
 
-L26 remains blocked on a final selected capability manifest, published candidate bytes, independent publisher trust policy, runtime/license closure and authorized provider profiles/SDK. Current CI builds and packaging fixtures are development evidence. This procedure must run on a fresh selected host after those prerequisites exist; never relabel source checkout/cached fixture results as final-download acceptance.
+L26 remains blocked on completion of the native credential/provider integration, a final selected capability manifest, published candidate bytes, independent publisher trust policy, runtime/license closure and authorized provider profiles/SDK. Current CI builds and packaging fixtures are development evidence. This procedure must run on a fresh selected host after those prerequisites exist; never relabel source checkout/cached fixture results as final-download acceptance.
 
 Required profiles: macOS 15 ARM64; Ubuntu 24.04 amd64 and ARM64; Ubuntu 26.04 amd64. Record actual OS image/kernel, CPU architecture, libc/C++ runtime, filesystem and tool versions. Generic Ubuntu ARM64 is sufficient for this sprint, without physical DGX Spark, GPU or native Windows claims.
 
@@ -27,3 +27,7 @@ cmake -DRELEASE_CANDIDATE="$candidate" \
 ```
 
 After the separately reviewed extraction procedure has produced `unpacked`, repeat with `-DRELEASE_UNPACKED_ROOT="$unpacked"` and a new output path `"$evidence/unpacked.json"`. The first record proves signed byte bindings; the second compares caller-supplied payload files. Neither proves extraction origin, native execution, clean-host provisioning or provider success. Retain those observations separately. The package fixture regression demonstrates these mechanics with disposable keys only; never install its trust policy as publisher authority.
+
+## Scope review before candidate selection
+
+Use the [finish-line checklist](../../.github/RELEASE-GATES.md) and `prepare-review.cmake` to produce an exact-source component/version inventory with unfilled acceptance inputs. It is preparation for selecting the shipped capability manifest, not a candidate or approval.
