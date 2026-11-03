@@ -69,7 +69,7 @@ Next, choose the path you need:
 - **Hardware knowledge:** follow the [installed hardware starter](examples/mvp-hardware/README.md), which reuses the pinned documentary-source campaign.
 - **Operating an installation:** read the [source first-run and removal guide](.github/FIRST-RUN.md) and [retention and authorization runbooks](tests/launch-operations/README.md) before changing protected state.
 
-Full native qualification uses CMake **3.31+**, a profile-selected C++26 compiler and platform SDK, and exact external dependencies. The current recipe selects AppleClang 21, Clang 18 on Ubuntu 24.04, and Clang 21 on Ubuntu 26.04. Individual projects may have lower CMake minimums. Go, native package, SDK, schema, and owner-interface versions are independent; the [dependency map](cmake/mvp-dependencies.json) records their exact relationships.
+Full native qualification uses CMake **3.31+**, a profile-selected C++26 compiler and platform SDK, and exact external dependencies. The installed CI recipe selects Xcode 26.3’s Apple compiler on macOS, Clang 18 on Ubuntu 24.04, and Clang 21 on Ubuntu 26.04; exact compiler/runtime versions are recorded per run. Individual projects may have lower CMake minimums. Go, native package, SDK, schema, and owner-interface versions are independent; the [dependency map](cmake/mvp-dependencies.json) records their exact relationships.
 
 Modules install independently into explicit prefixes with owned-file receipts and guarded removal. Keep old and new versions side by side until compatibility is verified. Installation does not activate a provider or authorize an operation. Anaconda packages and download mirrors are planned distribution work; no production channel or installation command is claimed here yet.
 
