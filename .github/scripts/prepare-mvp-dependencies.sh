@@ -45,7 +45,9 @@ cmake -S "$task_work/zstd-1.5.7/build/cmake" -B "$task_work/zstd-build" \
     -DZSTD_BUILD_SHARED=OFF -DZSTD_BUILD_STATIC=ON
 cmake --build "$task_work/zstd-build" --parallel 2
 cmake --install "$task_work/zstd-build"
-# The zstd CMake install omits its license. Keep the publisher's exact notice
-# beside this private package; the SQAV request package requires it explicitly.
-cp "$task_work/zstd-1.5.7/LICENSE" "$task_prefix/LICENSE"
+# Preserve exact versioned notices and build-time TLS/dependency selection.
+# Product packages use the same pinned notices without searching Homebrew or a
+# bare prefix/LICENSE that could belong to a different component.
+repo=$(CDPATH= cd -- "$(dirname -- "$0")/../.." && pwd -P)
+cmake -DDEPENDENCY_WORK="$task_work" -P "$repo/cmake/notices/CaptureExternal.cmake"
 printf 'Private dependency prefix: %s\n' "$task_prefix"
