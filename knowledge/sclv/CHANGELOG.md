@@ -17297,3 +17297,151 @@ This PR authorizes none of the following:
   - `../ci-review-175-180/merges.json`
 - non_authorizations:
   - `No launch clearance, security alert dismissal, production credential/provider use, native Windows support or physical DGX/GPU qualification.`
+
+- record_id: `SCLV-CHG-launch-pr180-verified-implementation`
+- record_version: `3`
+- title: `Verified MVP implementation merge for PR 180`
+- status: `canonical`
+- date: `2026-11-03`
+- change_started_at: `2026-11-02T03:47:46Z`
+- change_completed_at: `2026-11-03T00:24:49Z`
+- recorded_at: `2026-11-03T00:26:08Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `implementation_change`
+- change_request_state: `present`
+- change_request_provider: `github`
+- change_request_id: `180`
+- change_request_reference: `https://github.com/QuanuX/Symphony/pull/180`
+- change_request_absence_reason: `not_applicable`
+- revision_scheme: `git-sha1`
+- revision_value: `a9f6a3fb31d371d7ccc76ee8a60c9dd2f5b66135`
+- tree_digest: `sha256:c1059ef906813c257c727041167d8441fdbc2063690160ad226cda14d8d59fa0`
+- ratification_subject: `Duncan (@quantDIY, Architect)`
+- ratification_permission: `authorize_verified_implementation_merge_and_branch_cleanup`
+- ratification_method: `explicit-user-instruction`
+- ratification_evidence_reference: `../integration-180-182/ratification.json`
+- ratification_evidence_digest: `sha256:3e90ec9f3214dd708a0925ad96ed9da5cc5504f58cd3ae7e91d8455e354cd24d`
+- affected_surfaces:
+  - `.github/codeql/L21-SNAPSHOT.json`
+  - `.github/codeql/L21-TRIAGE.md`
+  - `.github/codeql/README.md`
+  - `.github/codeql/collect_evidence.go`
+  - `.github/codeql/collect_evidence_test.go`
+  - `.github/scripts/prepare-mvp-dependencies.sh`
+  - `.github/workflows/codeql.yml`
+  - `.github/workflows/mvp-dependencies.yml`
+  - `cmake/SymphonyDependencyNotices.cmake`
+  - `cmake/mvp-dependencies.json`
+  - `cmake/notices/CaptureExternal.cmake`
+  - `cmake/notices/PUBLISHER-REVIEW.md`
+  - `cmake/notices/curl-8.7.1.COPYING`
+  - `cmake/notices/sources.json`
+  - `cmake/notices/zstd-1.5.7.LICENSE`
+  - `libraries/knowledge-vector-engine-cpp/cmake/uninstall.cmake.in`
+  - `modules/native-source-support-cpp/CMakeLists.txt`
+  - `modules/sqav-databento-dbn-cpp/CMakeLists.txt`
+  - `modules/sqav-databento-dbn-cpp/tests/package_lifecycle_test.cmake`
+  - `modules/sqav-databento-reference-cpp/CMakeLists.txt`
+  - `modules/sqav-request-engine/CMakeLists.txt`
+  - `modules/sqav-request-engine/INSTALL.md`
+  - `tests/dependency-notices/README.md`
+  - `tests/dependency-notices/inventory.go`
+  - `tests/dependency-notices/inventory_test.go`
+  - `tests/dependency-notices/regressions.cmake`
+  - `tests/dependency-notices/run.sh`
+  - `tests/native-sdk-distribution/README.md`
+  - `tests/native-sdk-distribution/inspect-uninstaller.cmake`
+  - `tests/native-sdk-distribution/main.go`
+  - `tests/native-sdk-distribution/main_test.go`
+  - `tests/native-sdk-distribution/manifest.json`
+  - `tests/native-sdk-distribution/mechanics/CMakeLists.txt`
+  - `tests/native-sdk-distribution/mechanics/main.cpp`
+  - `tests/native-sdk-distribution/run.sh`
+  - `tests/release-qualification/README.md`
+  - `tests/release-qualification/manifest.json`
+- skvi_references:
+  - `tools/qxctl/MANIFEST.md`
+- change_summary: |
+    Prepare L21–L23 security evidence, SDK removal and dependency notices; all eight exact-source workflows passed before integration.
+- relationship_changes: |
+    Preserves native owner authority, independent module identities and explicitly assigned release ownership.
+- doctrine_changes: |
+    No automatic provider activation or release approval.
+- compatibility_consequences: |
+    Required profiles remain Apple Silicon macOS and Ubuntu amd64/ARM64; generic Ubuntu ARM64 does not qualify physical DGX Spark or GPU behavior.
+- publication_consequences: |
+    Source and release-evidence preparation only; final downloads, runtime/license closure, provider qualification and publication approval remain gates.
+- projection_consequences: |
+    The dependency, qualification and ownership projections reflect merged preparation; proposal-only and operationally unqualified capabilities remain explicit.
+- notes: |
+    All six uploaded CodeQL categories, including /language:c-cpp/os:macos-15-intel, were present for the reviewed PR and main baseline. The current CodeQL check reports no new alerts. Source and merged Git trees are identical. Historical extraction limits and separately retained findings are not cleared by this record.
+- evidence:
+  - `https://github.com/QuanuX/Symphony/pull/180`
+  - `../integration-180-182/snapshot.json`
+  - `../integration-180-182/source-merges.json`
+  - `../integration-180-182/latest-analyses.json`
+- non_authorizations:
+  - `No launch clearance, vulnerability dismissal, production provider activation, artifact publication, native Windows support or physical DGX/GPU qualification.`
+
+- record_id: `SCLV-CHG-launch-pr182-verified-implementation`
+- record_version: `3`
+- title: `Verified MVP implementation merge for PR 182`
+- status: `canonical`
+- date: `2026-11-03`
+- change_started_at: `2026-11-02T19:06:00Z`
+- change_completed_at: `2026-11-03T00:25:26Z`
+- recorded_at: `2026-11-03T00:26:08Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `implementation_change`
+- change_request_state: `present`
+- change_request_provider: `github`
+- change_request_id: `182`
+- change_request_reference: `https://github.com/QuanuX/Symphony/pull/182`
+- change_request_absence_reason: `not_applicable`
+- revision_scheme: `git-sha1`
+- revision_value: `a437f6f90aec8e4d3edd5e182caa65d2af8fdc6f`
+- tree_digest: `sha256:745e70d8e64359bc8c9a2e632a8a4625a9dd45a362e135e911cce9b6e0e830a9`
+- ratification_subject: `Duncan (@quantDIY, Architect)`
+- ratification_permission: `authorize_verified_implementation_merge_and_branch_cleanup`
+- ratification_method: `explicit-user-instruction`
+- ratification_evidence_reference: `../integration-180-182/ratification.json`
+- ratification_evidence_digest: `sha256:3e90ec9f3214dd708a0925ad96ed9da5cc5504f58cd3ae7e91d8455e354cd24d`
+- affected_surfaces:
+  - `.github/FIRST-RUN.md`
+  - `.github/ISSUE_TEMPLATE/bug.yml`
+  - `.github/LAUNCH.md`
+  - `.github/launch-tasks.json`
+  - `.github/workflows/qxctl-standalone.yml`
+  - `README.md`
+  - `SECURITY.md`
+  - `modules/knowledge-session-coordinator/INSTALL.md`
+  - `modules/sqdv-delivery-cpp/INSTALL.md`
+  - `modules/sqpv-local-store-cpp/INSTALL.md`
+  - `tests/launch-acceptance/README.md`
+  - `tests/launch-acceptance/plan.json`
+  - `tests/launch-acceptance/source-smoke.sh`
+- skvi_references:
+  - `tools/qxctl/MANIFEST.md`
+- change_summary: |
+    Prepare L24–L26 first-run, launch ownership and final acceptance; all eight exact-source workflows passed before integration.
+- relationship_changes: |
+    Preserves native owner authority, independent module identities and explicitly assigned release ownership.
+- doctrine_changes: |
+    No automatic provider activation or release approval.
+- compatibility_consequences: |
+    Required profiles remain Apple Silicon macOS and Ubuntu amd64/ARM64; generic Ubuntu ARM64 does not qualify physical DGX Spark or GPU behavior.
+- publication_consequences: |
+    Source and release-evidence preparation only; final downloads, runtime/license closure, provider qualification and publication approval remain gates.
+- projection_consequences: |
+    The dependency, qualification and ownership projections reflect merged preparation; proposal-only and operationally unqualified capabilities remain explicit.
+- notes: |
+    All six uploaded CodeQL categories, including /language:c-cpp/os:macos-15-intel, were present for the reviewed PR and main baseline. The current CodeQL check reports no new alerts. Source and merged Git trees are identical. Historical extraction limits and separately retained findings are not cleared by this record.
+- evidence:
+  - `https://github.com/QuanuX/Symphony/pull/182`
+  - `../integration-180-182/snapshot.json`
+  - `../integration-180-182/source-merges.json`
+  - `../integration-180-182/latest-analyses.json`
+- non_authorizations:
+  - `No launch clearance, vulnerability dismissal, production provider activation, artifact publication, native Windows support or physical DGX/GPU qualification.`

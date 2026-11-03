@@ -37,12 +37,15 @@ jobs:
         run: sh tools/qxctl/tests/standalone_build.sh
       - name: Verify qxctl source identity and two-build reproducibility
         run: sh tools/qxctl/tests/reproducible_build.sh "$RUNNER_TEMP/qxctl-reproducible"
+      - name: Exercise documented source first run
+        run: sh tests/launch-acceptance/source-smoke.sh "$RUNNER_TEMP/qxctl-reproducible/first/bin/qxctl" "$GITHUB_WORKSPACE" "$RUNNER_TEMP/source-first-run"
       - name: Retain qxctl identity evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: qxctl-build-identity-${{ matrix.os }}
           path: |
+            ${{ runner.temp }}/source-first-run
             ${{ runner.temp }}/qxctl-reproducible/logs
             ${{ runner.temp }}/qxctl-reproducible/*-build-info.json
             ${{ runner.temp }}/qxctl-reproducible/artifact-identity.json

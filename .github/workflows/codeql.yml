@@ -56,8 +56,7 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Set up the repository's Go version
-        if: matrix.language == 'go'
+      - name: Set up exact Go for extraction and evidence collection
         uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6
         with:
           go-version-file: go.work
@@ -82,6 +81,9 @@ jobs:
           done < <(go work edit -json | jq -r '.Use[].DiskPath')
           test "${#packages[@]}" -gt 0
           go build -a "${packages[@]}"
+          # This standalone repository tool is outside the workspace modules.
+          GOWORK=off GOTOOLCHAIN=local GOPROXY=off go build -a \
+            -o "$RUNNER_TEMP/codeql-evidence-collector" .github/codeql/collect_evidence.go
 
       - name: Build the macOS Keychain provider for extraction
         if: matrix.language == 'swift'
@@ -98,3 +100,38 @@ jobs:
         with:
           category: /language:${{ matrix.language }}/os:${{ matrix.os }}
           wait-for-processing: true
+          output: ${{ runner.temp }}/codeql-evidence/original
+          post-processed-sarif-path: ${{ runner.temp }}/codeql-evidence/uploaded
+
+      - name: Collect original extraction evidence
+        if: always()
+        shell: bash
+        env:
+          ANALYSIS_CATEGORY: /language:${{ matrix.language }}/os:${{ matrix.os }}
+          ANALYSIS_LANGUAGE: ${{ matrix.language }}
+          ANALYSIS_RUNNER: ${{ matrix.os }}
+          ANALYSIS_BUILD_MODE: ${{ matrix.build-mode }}
+          GOTOOLCHAIN: local
+          GOWORK: 'off'
+          GOENV: 'off'
+          GOPROXY: 'off'
+          GOFLAGS: ''
+          GOCACHE: ${{ runner.temp }}/codeql-evidence-go-cache
+        run: |
+          test "$(go env GOVERSION)" = go1.26.5
+          go test .github/codeql/collect_evidence.go .github/codeql/collect_evidence_test.go
+          go run .github/codeql/collect_evidence.go \
+            --sarif-root "$RUNNER_TEMP/codeql-evidence/original" \
+            --output "$RUNNER_TEMP/codeql-evidence/summary.json" \
+            --commit "$(git rev-parse HEAD)" --ref "$GITHUB_REF" \
+            --category "$ANALYSIS_CATEGORY" --language "$ANALYSIS_LANGUAGE" \
+            --runner "$ANALYSIS_RUNNER" --build-mode "$ANALYSIS_BUILD_MODE"
+
+      - name: Retain extraction and upload evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: codeql-evidence-${{ matrix.language }}-${{ matrix.os }}
+          path: ${{ runner.temp }}/codeql-evidence
+          if-no-files-found: warn
+          retention-days: 14

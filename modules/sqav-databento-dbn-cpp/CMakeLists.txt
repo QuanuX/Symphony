@@ -131,6 +131,10 @@ endforeach()
 install(FILES "${SYMPHONY_REPOSITORY_ROOT}/LICENSE"
     DESTINATION "${SQAV_DBN_LICENSE_DIR}" RENAME LICENSE-AGPL-3.0)
 sqav_dbn_own("${SQAV_DBN_LICENSE_DIR}/LICENSE-AGPL-3.0")
+include("${SYMPHONY_REPOSITORY_ROOT}/cmake/SymphonyDependencyNotices.cmake")
+symphony_dependency_notice(curl DEPENDENCY_NOTICE)
+install(FILES "${DEPENDENCY_NOTICE}" DESTINATION "${SQAV_DBN_LICENSE_DIR}" RENAME curl-COPYING)
+sqav_dbn_own("${SQAV_DBN_LICENSE_DIR}/curl-COPYING")
 
 symphony_install_receipt_v2(
     COMPONENT_ID "${SQAV_DBN_MODULE}" COMPONENT_KIND module MODULE_ID "${SQAV_DBN_MODULE}"

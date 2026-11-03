@@ -1,0 +1,17 @@
+cmake_minimum_required(VERSION 3.30)
+# Read the configured exact file list without executing its removal include.
+# The wrapper and its hash are retained with the detached configured helpers.
+function(include path)
+  get_filename_component(name "${path}" NAME)
+  if(NOT name STREQUAL "SymphonyUninstallReceiptV2.cmake")
+    message(FATAL_ERROR "Unexpected uninstall wrapper include: ${path}")
+  endif()
+  if(NOT DEFINED _files)
+    message(FATAL_ERROR "Configured uninstall wrapper has no exact file list")
+  endif()
+  file(WRITE "${SDK_INVENTORY_OUTPUT}" "${_files}")
+endfunction()
+_include("${SDK_UNINSTALLER}")
+if(NOT EXISTS "${SDK_INVENTORY_OUTPUT}")
+  message(FATAL_ERROR "Uninstall wrapper did not expose configured ownership")
+endif()

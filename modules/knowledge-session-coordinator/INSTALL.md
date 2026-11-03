@@ -2,7 +2,7 @@
 
 ## Requirements
 
-- CMake 3.25 or newer
+- CMake 3.30 or newer for the repository foundation and packaging path (the coordinator project declaration alone is 3.25); the aggregate MVP qualification recipes require 3.31 or newer
 - a C++26-capable compiler
 - a single-configuration CMake generator when building the foundation from this monorepo
 - the checked-out Symphony monorepo, or a previously installed compatible `SymphonyKnowledgeVectorEngine` CMake package
