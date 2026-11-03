@@ -2,6 +2,12 @@
 
 This is a dated review of completed analyses, not a security clearance. The [machine-readable snapshot](L21-SNAPSHOT.json) records the observed alert states, exact analysis IDs and source commits, category matrix, source hashes and raw evidence hashes. It was assembled on 2026-11-02 UTC from GitHub's read-only API and completed job logs. No alert was dismissed, severity changed, query suppressed, or scan cancelled.
 
+## Alert 9 fixture removal follow-up
+
+The user subsequently requested removal of the deliberate unsafe-permission test after it had served its purpose. The `unsafe_parent`/`unsafe_state` fixture and its `chmod(..., 0777)` call have been removed from `lifecycle_test.cpp`. Production ownership and group/other-write admission checks are unchanged; the remaining durable lifecycle journal, read-only, symlink, replanning and recovery regressions remain in place. The dated assessment below records the earlier decision, not an instruction to recreate the fixture.
+
+Source removal is not proof of GitHub alert closure. Keep alert 9 open until a completed default-branch CodeQL analysis confirms the result; do not dismiss the alert or suppress the query to substitute for that verification.
+
 ## Findings and decisions
 
 The current default-branch inventory contains **eight fixed alerts and one open alert**. A fixed alert's `most_recent_instance.commit_sha` identifies its last reported instance; it is not itself the fixing commit. Preserve `fixed_at` and source evidence separately.
@@ -17,7 +23,7 @@ The current default-branch inventory contains **eight fixed alerts and one open 
 
 The original L05 reasoning, regression target names and historical states remain in [L05-TRIAGE.md](L05-TRIAGE.md). They are not overwritten by this later snapshot.
 
-### Separate decision for the intentional negative test
+### Historical decision for the intentional negative test
 
 At reviewed source `33a69a74ca2f061627c841fe7f0e7c10f29219d2`, [lifecycle_test.cpp](../../modules/knowledge-session-coordinator/tests/lifecycle_test.cpp) creates the parent with `mkdtemp` (lines 55–64), then creates `unsafe-state` beneath that retained parent and visibly sets only that leaf to 0777 (lines 879–900). It asserts the parent is 0700, the leaf is actually 0777, the production owner returns `lifecycle_journal.state_directory_unsafe`, and the refused leaf remains empty. The [production checks](../../modules/knowledge-session-coordinator/src/lifecycle_journal.cpp) reject wrong ownership or group/other-write permission on state roots and child directories (lines 561–595).
 
