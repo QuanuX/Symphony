@@ -19,25 +19,30 @@ type diskJournal struct {
 	directory, lock *os.File
 	name            string
 	created         bool
+	maximumBytes    int
 }
 
 func openJournalFile(j *Journal, requestID string, create bool) (journalFile, error) {
 	if stav.ValidateRequestUUID(requestID) != nil {
 		return nil, errJournal
 	}
-	directory, err := journalDirectory(j, create)
+	return openCredentialFile(j, "credential-requests", requestID, maxJournalRecordBytes, create)
+}
+
+func openCredentialFile(j *Journal, namespace, name string, maximumBytes int, create bool) (journalFile, error) {
+	directory, err := credentialDirectory(j, namespace, create)
 	if err != nil {
 		return nil, errJournal
 	}
 	fail := func() (journalFile, error) { directory.Close(); return nil, errJournal }
 	created := false
 	flags := unix.O_RDWR | unix.O_NOFOLLOW | unix.O_CLOEXEC | unix.O_NONBLOCK
-	fd, err := unix.Openat(int(directory.Fd()), requestID+".lock", flags, 0)
+	fd, err := unix.Openat(int(directory.Fd()), name+".lock", flags, 0)
 	if errors.Is(err, unix.ENOENT) && create {
-		fd, err = createJournalLock(int(directory.Fd()), requestID+".lock")
+		fd, err = createJournalLock(int(directory.Fd()), name+".lock")
 		created = err == nil
 		if errors.Is(err, unix.EEXIST) {
-			fd, err = unix.Openat(int(directory.Fd()), requestID+".lock", flags, 0)
+			fd, err = unix.Openat(int(directory.Fd()), name+".lock", flags, 0)
 		}
 	}
 	if err != nil {
@@ -52,7 +57,7 @@ func openJournalFile(j *Journal, requestID string, create bool) (journalFile, er
 		lock.Close()
 		return fail()
 	}
-	return &diskJournal{directory: directory, lock: lock, name: requestID + ".json", created: created}, nil
+	return &diskJournal{directory: directory, lock: lock, name: name + ".json", created: created, maximumBytes: maximumBytes}, nil
 }
 
 // Publish a newly created lock only after it is exclusively held. Otherwise
@@ -87,7 +92,7 @@ func createJournalLock(directory int, name string) (int, error) {
 	return fd, nil
 }
 
-func journalDirectory(j *Journal, create bool) (*os.File, error) {
+func credentialDirectory(j *Journal, namespace string, create bool) (*os.File, error) {
 	path := j.root
 	// Permit only the documented macOS system aliases, never arbitrary symlinks.
 	for alias, target := range map[string]string{"/var": "/private/var", "/tmp": "/private/tmp", "/etc": "/private/etc"} {
@@ -119,7 +124,7 @@ func journalDirectory(j *Journal, create bool) (*os.File, error) {
 			return nil, errJournal
 		}
 	}
-	for _, c := range []string{"credential-requests", j.topsID} {
+	for _, c := range []string{namespace, j.topsID} {
 		var err error
 		if create {
 			err = unix.Mkdirat(current, c, 0700)
@@ -194,8 +199,8 @@ func (s *diskJournal) read() ([]byte, bool, error) {
 	if journalRegular(fd, false) != nil {
 		return nil, false, errJournal
 	}
-	data, err := io.ReadAll(io.LimitReader(f, maxJournalRecordBytes+1))
-	if err != nil || len(data) > maxJournalRecordBytes {
+	data, err := io.ReadAll(io.LimitReader(f, int64(s.maximumBytes)+1))
+	if err != nil || len(data) > s.maximumBytes {
 		return nil, false, errJournal
 	}
 	// A recovered observation must also establish directory-entry durability.
@@ -205,7 +210,7 @@ func (s *diskJournal) read() ([]byte, bool, error) {
 	return data, true, nil
 }
 func (s *diskJournal) write(data []byte) error {
-	if len(data) > maxJournalRecordBytes {
+	if len(data) > s.maximumBytes {
 		return errJournal
 	}
 	var entropy [16]byte
@@ -238,4 +243,8 @@ func (s *diskJournal) write(data []byte) error {
 		return errJournal
 	}
 	return nil
+}
+
+func openAdmissionFile(j *Journal) (journalFile, error) {
+	return openCredentialFile(j, "credential-admission", "active", maxAdmissionRecordBytes, true)
 }

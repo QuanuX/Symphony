@@ -1,7 +1,7 @@
 # Package candidate and lifecycle regressions
 
 Run from the checkout with CMake 3.30 or newer, a native C compiler, Git,
-OpenSSH (`ssh-keygen` with SSH signature support), and `strip`:
+OpenSSH (`ssh-keygen` with SSH signature support), `strip`, and Go 1.26.5:
 
 ```sh
 umask 077
@@ -60,3 +60,15 @@ qualify a complete product bundle, publisher identity, public download, archive
 reproducibility, Developer ID signature, notarization, supported-host deployment
 or release approval. Hosted results remain pending until reviewed for the exact
 source tree.
+
+The candidate-host path additionally verifies signed bytes, extracts only exact
+inventory-owned regular files into a new private prefix, re-verifies receipts,
+and executes both fixture versions from that prefix. Race-enabled Go regressions
+reject traversal, links/devices, duplicate/unlisted/missing members, digest/size
+drift, unsafe modes, trailing content and existing prefixes. The four-platform
+package workflow runs these checks with its existing exact-source matrix.
+Fixture evidence never becomes live-provider or final-download acceptance.
+
+The same matrix also runs `acceptance-gates` evidence-packet regressions. These
+check completeness and digest bindings only; a structurally complete fixture
+packet never grants release acceptance or publication authority.

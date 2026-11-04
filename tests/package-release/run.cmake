@@ -183,6 +183,38 @@ set(verify "${CMAKE_COMMAND}" "-DRELEASE_CANDIDATE=${work}/candidate"
   -DRELEASE_EXPECTED_PROFILE=fixture-only)
 run(verify-download pass ${verify} "-DRELEASE_VERIFICATION_OUTPUT=${work}/logs/download-verification.json"
   -P "${repository}/cmake/release/VerifyCandidate.cmake")
+# Exercise the bounded extraction path using the same exact signed fixture.
+find_program(host_go go REQUIRED)
+execute_process(COMMAND "${host_go}" env GOVERSION OUTPUT_VARIABLE host_go_version
+  OUTPUT_STRIP_TRAILING_WHITESPACE COMMAND_ERROR_IS_FATAL ANY)
+if(NOT host_go_version STREQUAL "go1.26.5")
+  message(FATAL_ERROR "Candidate host qualification requires Go 1.26.5")
+endif()
+file(MAKE_DIRECTORY "${work}/go-build" "${work}/go-tmp" "${work}/go-mod")
+set(host_go_env "${CMAKE_COMMAND}" -E env GOWORK=off GOTOOLCHAIN=local GOENV=off
+  "GOCACHE=${work}/go-build" "GOTMPDIR=${work}/go-tmp" "GOMODCACHE=${work}/go-mod")
+run(host-extraction-regressions pass ${host_go_env} "${host_go}" test -race -count=1
+  "${repository}/tests/launch-acceptance/candidate-host.go"
+  "${repository}/tests/launch-acceptance/candidate-host_test.go")
+run(acceptance-gates-regressions pass ${host_go_env} "${host_go}" test -race -count=1
+  "${repository}/tests/launch-acceptance/acceptance-gates.go"
+  "${repository}/tests/launch-acceptance/acceptance-gates_test.go")
+run(host-extraction-build pass ${host_go_env} "${host_go}" build -trimpath
+  -o "${work}/candidate-host" "${repository}/tests/launch-acceptance/candidate-host.go")
+run(host-extraction pass "${work}/candidate-host" -repository "${repository}"
+  -candidate "${work}/candidate" -allowed-signers "${work}/allowed-signers"
+  -signer fixture-publisher -profile fixture-only -work "${work}/host-preparation")
+release_read("${work}/host-preparation/host-preparation.json" host_preparation)
+foreach(field publication_authorized release_acceptance_complete fresh_host_verified provider_qualification_complete)
+  string(JSON claimed GET "${host_preparation}" "${field}")
+  if(claimed)
+    message(FATAL_ERROR "Fixture extraction overclaims ${field}")
+  endif()
+endforeach()
+configure_file("${work}/host-preparation/host-preparation.json" "${work}/logs/host-preparation.json" COPYONLY)
+foreach(version IN ITEMS 1.0.0 2.0.0)
+  run("host-extracted-execution-${version}" pass "${work}/host-preparation/payload/libexec/symphony/package-fixture/${version}/probe")
+endforeach()
 file(WRITE "${work}/extract.cmake"
   "file(ARCHIVE_EXTRACT INPUT [==[${work}/candidate/candidate.tar]==] DESTINATION [==[${work}/extracted]==])\n")
 run(extract-archive pass "${CMAKE_COMMAND}" -P "${work}/extract.cmake")

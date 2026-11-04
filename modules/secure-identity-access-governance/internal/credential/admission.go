@@ -36,24 +36,29 @@ var errAdmission = errors.New("credential admission unavailable")
 type AdmissionUpdate string
 
 const (
-	AdmissionUpdated   AdmissionUpdate = "updated"
-	AdmissionInvalid   AdmissionUpdate = "invalid"
-	AdmissionBusy      AdmissionUpdate = "busy"
-	AdmissionConflict  AdmissionUpdate = "revision_conflict"
-	AdmissionCancelled AdmissionUpdate = "cancelled"
+	AdmissionUpdated     AdmissionUpdate = "updated"
+	AdmissionInvalid     AdmissionUpdate = "invalid"
+	AdmissionBusy        AdmissionUpdate = "busy"
+	AdmissionConflict    AdmissionUpdate = "revision_conflict"
+	AdmissionCancelled   AdmissionUpdate = "cancelled"
+	AdmissionUnavailable AdmissionUpdate = "unavailable"
 )
 
 // AdmissionRegistry holds a process-local snapshot pin across native admission,
 // execution and native cleanup. It must not be copied. Native remains responsible
 // for actual signed process/connection identity and protected channel enforcement.
-// No public route, lease issuer or persistent authority loader is provided here.
+// OpenAdmissionRegistry adds protected persistence. Neither constructor provides
+// a public route, lease issuer or independent authority.
 type AdmissionRegistry struct {
-	mu       sync.RWMutex
-	topsID   string
-	revision uint64
-	grants   map[admissionKey]AdmissionGrant
-	native   ProviderAdmission
-	now      func() time.Time
+	mu          sync.RWMutex
+	topsID      string
+	revision    uint64
+	grants      map[admissionKey]AdmissionGrant
+	native      ProviderAdmission
+	now         func() time.Time
+	persist     func(uint64, map[admissionKey]AdmissionGrant) error
+	release     func()
+	unavailable bool
 }
 
 func NewAdmissionRegistry(topsID string, native ProviderAdmission) (*AdmissionRegistry, error) {
@@ -67,9 +72,10 @@ func NewAdmissionRegistry(topsID string, native ProviderAdmission) (*AdmissionRe
 // removes all admission. Busy means NOTHING changed: an admitted use still owns
 // a pin. The owner must not report a rotation/revocation committed on this result.
 // Revision starts at 1, advances even for identical state and never wraps. This
-// counter is only meaningful within this registry's lifetime, not across restart.
+// counter is process-local for NewAdmissionRegistry; the durable constructor
+// retains it across restart. Persistence failure fences all further admission.
 func (r *AdmissionRegistry) Replace(ctx context.Context, expected uint64, grants []AdmissionGrant) (uint64, AdmissionUpdate) {
-	if r == nil || r.now == nil || ctx == nil || expected == 0 {
+	if r == nil || r.now == nil || ctx == nil || expected == 0 || len(grants) > MaxAdmissionGrants {
 		return 0, AdmissionInvalid
 	}
 	if ctx.Err() != nil {
@@ -101,6 +107,9 @@ func (r *AdmissionRegistry) Replace(ctx context.Context, expected uint64, grants
 		return 0, AdmissionBusy
 	}
 	defer r.mu.Unlock()
+	if r.unavailable {
+		return r.revision, AdmissionUnavailable
+	}
 	if ctx.Err() != nil {
 		return r.revision, AdmissionCancelled
 	}
@@ -117,13 +126,19 @@ func (r *AdmissionRegistry) Replace(ctx context.Context, expected uint64, grants
 			return r.revision, AdmissionInvalid
 		}
 	}
+	if r.persist != nil && r.persist(r.revision+1, next) != nil {
+		// A rename may have committed even if its final directory sync failed.
+		// Never continue admitting the old in-memory grants after uncertainty.
+		r.unavailable = true
+		return r.revision, AdmissionUnavailable
+	}
 	r.grants = next
 	r.revision++
 	return r.revision, AdmissionUpdated
 }
 
 func validAdmissionGrant(g AdmissionGrant) bool {
-	if g.Subject.Authority != peerauth.Mechanism || !useDigest(g.ConsumerDigest) || !useDigest(g.ProviderBindingDigest) ||
+	if g.UID == math.MaxUint32 || g.GID == math.MaxUint32 || g.Subject.Authority != peerauth.Mechanism || !useDigest(g.ConsumerDigest) || !useDigest(g.ProviderBindingDigest) ||
 		g.MaximumBytes == 0 || g.MaximumBytes > MaxUseBytes || g.NotBefore.IsZero() || g.ExpiresAt.IsZero() ||
 		g.NotBefore.Location() != time.UTC || g.ExpiresAt.Location() != time.UTC || !g.ExpiresAt.After(g.NotBefore) {
 		return false
@@ -156,6 +171,9 @@ func (r *AdmissionRegistry) Pin(ctx context.Context, peer peerauth.Peer, in Disp
 			r.mu.RUnlock()
 		}
 	}()
+	if r.unavailable {
+		return nil, errAdmission
+	}
 	subject := model.DecisionSubject{ID: peer.Subject.ID, Kind: peer.Subject.Kind, Authority: peer.Subject.Authority}
 	a := in.Authorization
 	target := model.DecisionTarget{Operation: a.Operation, Resource: a.Resource, Audience: a.Audience, Scope: a.Scope}
