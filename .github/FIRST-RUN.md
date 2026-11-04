@@ -2,7 +2,7 @@
 
 This guide builds the current development CLI, not a released download. Use a reviewed immutable source revision. Required release profiles are macOS 15 ARM64, Ubuntu 24.04 amd64/ARM64 and Ubuntu 26.04 amd64. Intel macOS is supplemental development evidence. Ubuntu ARM64 is accepted for the sprint; physical DGX Spark/DGX OS, GPU behavior and native Windows are not qualified.
 
-Install the exact Go version from `tools/qxctl/go.mod` (currently 1.26.5) through your existing trusted toolchain process. Full native qualification additionally needs CMake 3.31+, the selected C++26 compiler (AppleClang 21, Clang 18 on Ubuntu 24.04 or Clang 21 on Ubuntu 26.04), Git and the platform SDK. Do not change a system compiler or install a package manager implicitly. Versions and independent SDK requirements are in `cmake/mvp-dependencies.json`; individual project minimums are not the aggregate recipe minimum.
+Install the exact Go version from `tools/qxctl/go.mod` (currently 1.26.5) through your existing trusted toolchain process. Full native qualification additionally needs CMake 3.31+, the selected C++26 compiler (Xcode 26.3’s Apple compiler in installed macOS CI, Clang 18 on Ubuntu 24.04 or Clang 21 on Ubuntu 26.04; exact versions recorded per run), Git and the platform SDK. Do not change a system compiler or install a package manager implicitly. Versions and independent SDK requirements are in `cmake/mvp-dependencies.json`; individual project minimums are not the aggregate recipe minimum.
 
 From the source root, create a private directory outside the checkout:
 

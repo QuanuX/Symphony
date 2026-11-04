@@ -1,127 +1,178 @@
 # QuanuX Symphony
 
-> [!IMPORTANT]
-> Symphony is in active development. Phase 1 contains substantial working foundations; the emerging vector architecture remains deliberately separated from runtime claims that have not yet been implemented.
+**A modular workbench for quantitative research and system administration.**
 
-Symphony is an agentic-first cockpit for quantitative developers, researchers, traders, and the other participants a user chooses to involve. Its long-range purpose is to provide a coherent suite of independently installable components for researching, constructing, testing, deploying, operating, and eventually observing quantitative trading systems—without taking ownership of the user's strategy logic or forcing every installation into one infrastructure model.
+Symphony brings quantitative data, replay, hardware and infrastructure knowledge, and explicit administrative control into one inspectable platform. Its native engines and SDKs do the domain work; `qxctl` gives people and agents a common way to inspect, validate, and administer separately installed components.
+
+Build the environment your work needs. Keep your strategy logic, provider choices, hardware, and deployment topology under your control.
+
+[Start from source](.github/FIRST-RUN.md) · [Explore the components](#architecture) · [Platform targets](#platform-targets) · [Release gates](.github/RELEASE-GATES.md) · [Report a problem](#support-and-contributing)
+
+> **Development status:** Symphony has working native libraries, engines, administrative services, and cross-platform qualification. It is preparing for its first MVP binary distribution. Final downloadable packages and operational credential/provider acceptance are not complete. The tables below distinguish working source capabilities from the remaining release work.
 
 ## Identity
 
-- **QuanuX** is the brand, ecosystem, application owner, and steward of official source truth.
-- **Symphony** is the open-source platform.
-- A user's Symphony or TOPS installation is private to that user. Its declared and observed truth may guide its own bespoke evolution without becoming official QuanuX source truth.
+QuanuX is the ecosystem and steward of official source truth. Symphony is its open-source platform. A user’s private Symphony/TOPS installation retains its own declared and observed state; that state does not become official QuanuX source truth.
+
+## What you can do today
+
+| Workflow | Available in the repository | Where to start |
+| --- | --- | --- |
+| Inspect and administer an installation | Query contracts, versions, command identities, installed engines, lifecycle state, and protected selections through a Go CLI with structured output. | [qxctl](tools/qxctl/README.md) |
+| Work with quantitative data | Use C++ SDKs for capture, metadata, flow, integer conversion, retained stores, replay and checkpoints; inspect retained state through installed owner engines. | [SQV contracts](knowledge/sqv/) · [Installed dependency recipe](tests/mvp-dependencies/README.md) |
+| Run bounded backtest research | Build a signal census, run native evaluations, retain results, and exercise cancellation and recovery through SBV and the optional Go adapter. | [Installed SBV scenario](tests/sbv-launch-boundary/README.md) · [Go adapter](libraries/sbv-go/README.md) |
+| Build traceable hardware knowledge | Retain source captures, replay a selected catalogue, evaluate requirements, query a graph, and preview publication with explicit provenance. | [Hardware starter](examples/mvp-hardware/README.md) |
+| Inspect cloud and Node evidence | Use cloud/provider source-knowledge engines and five Node engines for supplied identity, resources, cluster relationships, names, and composition. | [SCV source knowledge](knowledge/scv/SOURCE-KNOWLEDGE.md) · [SNV qualification](knowledge/snv/VALIDATION.md) |
+| Add relational graph indexing | Use the optional native DuckDB connectors for retained SCV and SHV graphs. Both connectors have installed qualification on all four MVP targets. | [Connector workflow](.github/workflows/duckdb-connectors.yml) · [Exact dependency map](cmake/mvp-dependencies.json) |
+| Govern local administration | Apply exact authorization policy, maintain append-only audit evidence, inspect lifecycle plans, and recover bounded administrative operations. | [SSIAG](modules/secure-identity-access-governance/README.md) · [STAV](modules/stav-append-authority/) · [Operator runbooks](tests/launch-operations/README.md) |
+
+The SBV launch scenario uses deliberately synthetic market events, a small CPU workload, and same-host process transport. It verifies that path, including uncertainty and recovery; it does not establish strategy performance, live trading readiness, or distributed performance. Cloud knowledge does not provision a cloud account, and a hardware catalogue does not install a driver.
+
+## Platform targets
+
+The required MVP profiles are:
+
+| Target | Architecture | Current qualification boundary |
+| --- | --- | --- |
+| macOS 15 | Apple Silicon / ARM64 | Native installed SDKs, Go modules, retained inspection, package lifecycle, and DuckDB connectors; Apple provider contract tests remain distinct from operational Keychain access. |
+| Ubuntu 24.04 LTS | x86_64 / amd64 | Native installed SDKs, Go modules, retained inspection, package lifecycle, and DuckDB connectors. |
+| Ubuntu 24.04 LTS | ARM64 / aarch64 | The same selected Linux qualification; accepted as the ARM Linux target for this MVP sprint. |
+| Ubuntu 26.04 LTS | x86_64 / amd64 | Native installed SDKs, Go modules, retained inspection, package lifecycle, and DuckDB connectors. |
+
+[PR #184](https://github.com/QuanuX/Symphony/pull/184) completed all eight workflows for its exact source revision, including the four-target installed and DuckDB matrices. This is source/build qualification. Every final downloadable candidate still needs fresh-host acceptance on its selected profile.
+
+**DGX Spark:** Ubuntu ARM64 is the current qualification substitute. Physical DGX Spark, its DGX OS image, NVIDIA drivers, and GPU behavior are not yet qualified. Intel macOS checks provide supplemental development evidence. Native Windows is unsupported, and no native Windows port is planned; WSL and remote Linux access are separate Linux environments.
+
+## Get started from source
+
+Start with the CLI to explore the repository without enrolling a service or contacting a provider. Use a reviewed source revision and the exact Go toolchain declared in [`tools/qxctl/go.mod`](tools/qxctl/go.mod), currently **Go 1.26.5**.
+
+From the repository root:
+
+```sh
+repo=$(pwd -P)
+umask 077
+work=$(mktemp -d "${TMPDIR:-/tmp}/symphony-first-run.XXXXXX")
+(cd tools/qxctl && GOWORK=off GOTOOLCHAIN=local GOENV=off \
+  GOPROXY=https://proxy.golang.org GOSUMDB=sum.golang.org \
+  go build -mod=readonly -trimpath -o "$work/qxctl" ./cmd/qxctl)
+"$work/qxctl" version --json
+sh tests/launch-acceptance/source-smoke.sh "$work/qxctl" "$repo" "$work/evidence"
+```
+
+This builds a development CLI, reports its executable identity, reads the invariant registry, and checks refusal of a missing repository. It does not establish repository semantic validity; that requires the separately installed validator. An ordinary local build reports `0.1.0-dev` and unavailable source-stamp fields. A release build must bind its exact source, dependency map, and build recipe separately.
+
+Next, choose the path you need:
+
+- **Native foundations:** use the [`bootstrap` installed recipe](tests/mvp-dependencies/README.md), then the selected module's `INSTALL.md`.
+- **Quantitative research:** build the `quantitative` dependency group and run the [bounded SBV scenario](tests/sbv-launch-boundary/README.md).
+- **Hardware knowledge:** follow the [installed hardware starter](examples/mvp-hardware/README.md), which reuses the pinned documentary-source campaign.
+- **Operating an installation:** read the [source first-run and removal guide](.github/FIRST-RUN.md) and [retention and authorization runbooks](tests/launch-operations/README.md) before changing protected state.
+
+Full native qualification uses CMake **3.31+**, a profile-selected C++26 compiler and platform SDK, and exact external dependencies. The installed CI recipe selects Xcode 26.3’s Apple compiler on macOS, Clang 18 on Ubuntu 24.04, and Clang 21 on Ubuntu 26.04; exact compiler/runtime versions are recorded per run. Individual projects may have lower CMake minimums. Go, native package, SDK, schema, and owner-interface versions are independent; the [dependency map](cmake/mvp-dependencies.json) records their exact relationships.
+
+Modules install independently into explicit prefixes with owned-file receipts and guarded removal. Keep old and new versions side by side until compatibility is verified. Installation does not activate a provider or authorize an operation. Anaconda packages and download mirrors are planned distribution work; no production channel or installation command is claimed here yet.
+
+## Provider and credential status
+
+Provider integration has several layers: a parser or SDK, a bounded session/acquisition path, credential authority, an actual provider connection, and operational acceptance. A passing fixture test proves only the layer it exercises.
+
+| Integration | Implemented source capability | Required before an operational launch promise |
+| --- | --- | --- |
+| **SSIAG credentials** | Internal one-shot guard, policy-bound dispatch, resource/lease admission interfaces, durable intent/outcome journal, STAV commitment and reconciliation. | Durable resource/lease ownership, native recipient/provider admission and protected delivery, and the actual native consumer bridge. No operational secret-delivery route is enabled. |
+| **Apple Keychain** | Independently installed Swift metadata adapter, native peer/code checks, signed-bundle and session-readiness observations. | Data-protection Keychain item/access-control operations, deployment identity and login-context qualification, and protected credential use. Metadata readiness does not open the Keychain. |
+| **Linux credentials** | SSIAG's portable authorization and journal foundations. | The separately identified Linux Secret Service provider and native delivery integration. Headless identities need their own explicit profile. |
+| **Databento** | DBN decoding and replay, reference/quote support, and quote/request/attempt-bound historical acquisition composition. | Actual SSIAG bridge, authorized account and entitlements, bounded request/spend approval, and real success/refusal/recovery evidence. |
+| **FRED / ALFRED** | Bounded native request and response handling with series/vintage/page identity and caller-supplied credential-use integration. | Operational credential bridge and authorized installed-provider qualification, including partial pages and refusal paths. |
+| **IBKR Client Portal** | Read-only session admission, authenticated-status/account checks, bounded data reads and expiry/refusal handling through an explicit Gateway transport. | An externally authenticated Gateway and authorized profile; actual installed session and transport qualification. No login automation or order entry is implied. |
+| **IBKR TWS** | Serialized host-session coordinator and read-only callback collection with generation/request binding, pacing, cancellation and disconnect handling. | Authorized SDK 10.45 provenance, concrete vendor socket/EReader/EWrapper/Decimal bridge and actual TWS/Gateway host qualification. Fixture sessions are not vendor SDK conformance. |
+| **News** | Vendor-neutral article ingress, immutable revision/correction binding and capture. | An authorized caller/content source and installed retention qualification. No news vendor, scraper, feed subscription or fetching of article URLs is selected. |
+
+The [credential integration handoff](modules/secure-identity-access-governance/CREDENTIAL-QUALIFICATION.md) identifies remaining **implementation**, deployment and qualification work. These are launch gates for promised capabilities, not optional disclaimers. Credentials and private provider payloads must remain outside command arguments, logs, public issues, and qualification artifacts.
 
 ## Architecture
 
-Symphony is a monorepo for inspectability, not a monolithic runtime. Canonical knowledge, implementation, integration boundaries, and validation evidence live together so people and agents can reason from the same source, while runtime modules preserve independent identity, version, configuration, state, installation, update, and removal boundaries.
+Symphony is a monorepo for inspectability, with independently versioned and installable runtime components. A user can select, update, diagnose and remove engines individually. Shared native mechanics do not make the system a single resident process.
 
-**Every implemented vector engine is an independently installable module with its own executable, version, installation receipt, and owned files.** Users select, install, update, diagnose, and remove engines individually. Shared C++ mechanics are statically linked; required build and runtime dependencies follow explicit owner and version contracts. qxctl administers the selected, separately installed engines. The [engine topology contract](knowledge/SPEC.md#engine-topology) defines this boundary; each module's `INSTALL.md` identifies its build, installation, dependency, and removal requirements.
+| Area | Components and responsibility |
+| --- | --- |
+| Administrative interface | [qxctl](tools/qxctl/) owns CLI grammar and presentation. It invokes exact installed owners and preserves their response and authorization boundaries. |
+| Knowledge foundation | [C++ foundation](libraries/knowledge-vector-engine-cpp/) provides bounded framing, JSON, hashes, manifests and receipt mechanics. [Validator](tools/symphony-validator/) performs deterministic read-only checks. |
+| Coordination | [Knowledge Session Coordinator](modules/knowledge-session-coordinator/) manages bounded sessions, compatibility and lifecycle plans/journals. [Maestro](modules/maestro/) records authenticated engine presence; it does not schedule or execute engines. |
+| Identity and audit | [SSIAG](modules/secure-identity-access-governance/) owns authentication/authorization and provider bindings. [STAV](modules/stav-append-authority/) owns append authority; [Go protocol](libraries/stav-protocol-go/) and [Accordare producer](modules/accordare-stav-producer/) retain separate roles. |
+| Knowledge governance | [SKVI](modules/skvi-engine/) indexes declared surfaces; [SCLV](modules/sclv-engine/) checks change history; [SACV](modules/sacv-engine/) checks API contracts; [SODV](modules/sodv-engine/) checks release-publication evidence; [SSFV](modules/ssfv-engine/) checks feature truth. |
+| Composition and evolution | [SAV / Accordare](modules/sav-engine/) resolves and evaluates explicit composition; [SEV](modules/sev-engine/) prepares evolution plans and evidence. Neither silently applies canonical changes. |
+| Cloud, hardware and Nodes | [SCV](knowledge/scv/), [SHV](knowledge/shv/) and [SNV](knowledge/snv/) own their respective source evidence, interpretation and supplied state. Optional DuckDB connectors add retained relational graph indexes. |
+| Quantitative work | [SQV](knowledge/sqv/) includes capture, metadata, flow, conversion, retention, replay and source adapters. [SBV](modules/sbv-engine/) owns native backtest research, with an optional [Go client](libraries/sbv-go/). |
+| Operations | [SOV](knowledge/sov/) provides bounded local handoff and an optional scoped SSH carrier. These mechanisms do not establish general cloud provisioning or cross-host deployment acceptance. |
 
-Phases are delivery chronology. Vectors are enduring semantic owners. A component may first be researched in one phase without making that phase its permanent architectural owner.
+The machine-readable [component/version map](cmake/mvp-dependencies.json) and [functional qualification manifest](tests/release-qualification/manifest.json) enumerate current roots and test selections. A component in that inventory is not automatically selected for the first binary release. Each module's Contract Quad (`INTENT.md`, `MANIFEST.md`, `SKILL.md`, `SPEC.md`) and `INSTALL.md` define its actual boundary.
 
-The platform separates four concerns that must not be collapsed:
+## Doctrine
 
-- owner-controlled canonical meaning;
-- exact evidence about physical and software reality;
-- user-selected composition and operational action;
-- derived projections that can always be traced back to their owners.
+- **Explicit ownership:** domain vectors own meaning; qxctl presents their operations. Derived views retain provenance to their source owners.
+- **Evidence before action:** exact versions, receipt identities, expected state, bounded requests, and explicit authority constrain supported mutations. An uncertain outcome is reconciled rather than silently retried.
+- **Independent deployment:** modules retain their own configuration, state, installation, update and removal boundaries. There is no implicit newest-version selection.
+- **User-controlled composition:** strategy logic, provider selection, bus topology and supported adapters remain the user's choices. Human or agent identity alone grants no authority.
+- **A protected hot path:** administration and knowledge work are cold or freezing-path capabilities. qxctl is not a mandatory resident trading-loop dependency. Explicitly installed SSIAG/STAV services retain their documented supervision roles.
 
-Symphony reports exact compatibility, incompatibility, unresolved facts, and consequences. It does not rank providers, prescribe a strategy, infer authority from caller type, or quietly widen a user's environment.
-
-### Node, Habitat, and Nest
-
-A **Node** is the target physical computer resource with specifically identified resources. Disconnecting, reconnecting, restarting, or reflashing only software does not create a new physical Node. Destruction, physical replacement, or a material local hardware change does. A Node incarnation is separate evidence created when that Node is attached to a bus as a participant in a trading system, research cluster, or another Symphony-built system.
-
-A **Habitat** is the exact operating system and package conditioning delivered to a Node for the work selected by the user. Its default is the required software surface only: no unrelated packages, hidden runtimes, containers, Kubernetes, or implicit virtualization. A broad general-purpose Habitat remains a valid explicit user choice.
-
-A **Nest** serves a purpose chosen by the user. Live strategy execution is expected to be common, and one strategy may contain many modular code sections, but Symphony does not define the Nest's purpose or equate it with one source file, process, algorithm, broker API, or data interface. Strategy logic remains the user's domain.
-
-Multiple Nodes form a cluster only when connected to one another through one or more buses. Multiple bus fabrics may coexist inside one cluster, and a Node-in-cluster relationship may identify the relevant bus without changing the physical Node's identity.
+A **Node** identifies physical computer resources. A **Habitat** is the exact OS/package conditioning selected for a Node. A **Nest** serves the user's chosen purpose; it is not constrained to one strategy, file, process or broker interface. Multiple buses may coexist, and their choice remains explicit. See the [architecture](knowledge/ARCHITECTURE.md), [terminology](knowledge/SLANG.md), [identity namespaces](knowledge/NAMESPACES.md), and [platform governance](knowledge/platform/INTENT.md) for precise definitions.
 
 ## Emerging Vector Architecture
 
-The detailed, ratified baseline is in [Symphony Emerging Vector Architecture](knowledge/ARCHITECTURE.md). Its terms are routed through [SLANG](knowledge/SLANG.md), while universal identity-family ownership and retired identifiers are governed by [NAMESPACES](knowledge/NAMESPACES.md).
+SIV (Symphony Intelligence Vector) remains an emerging domain. Its optional SMCV Markdown mediation component has no implemented translator or command; SAIV is reserved. **SAV continues to mean Symphony Accordare Vector.** Prima Parte is a ratified optional Node-local witness concept, not an executable. `hotpath-runtime` is a proposal-only contract seed. The retired `node-troll` and `bus-troll` names are reserved tombstones.
 
-| Vector | Bounded purpose | Current posture |
-|---|---|---|
-| **SKV — Symphony Knowledge Vector** | Canonical knowledge architecture and the common contracts that let independently owned vectors remain coherent and agent-readable. | Phase 1 foundation is implemented; current and emerging surfaces are manifest-declared and SKVI-indexed. |
-| **SKVI / SCLV / SACV / SODV / SSFV / SAV / SEV** | Source routing, change truth, API governance, official documentation and release-publication governance, semantic feature truth, Accordare composition, and governed evolution. | Contracted Phase 1 domains with bounded engines and administrative integrations where their individual contracts say so. SODV governs official projection; it is not the publisher. |
-| **SOV — Symphony Ops Vector** | qxctl-administered provisioning, Habitat conditioning, Nest delivery, bus-adapter setup, and optional remote-Node operations. | Bounded qxctl planning, durable local process handoff and an optional scoped SSH carrier are implemented. Actual cross-host deployment/authority and provider, Terraform, Habitat, Nest and bus operations retain their separate qualification requirements. |
-| **SCV — Symphony Cloud Vector** | Private knowledge of offsite provider resources, offerings, regions, constraints, observations, and hybrid possibilities. | Eight independently installed C++ engines provide bounded source/corpus knowledge, portable provider packages and finite caller-directed composition. qxctl supports retained workflows and protected graph selection; an optional DuckDB connector adds retained relational graph indexing through qxctl. Comprehensive provider coverage, dedicated graph traversal and operational adapters remain separate work. |
-| **SNV — Symphony Node Vector** | Records and relates Node identity, resources, cluster relationships, and names without dictating them. | Five independently installable C++26 engines implement supplied **SNIV** identity, **SNRV** resources, **SCIV** cluster relationships, SNV-bounded **SCNV** names and thin **SNV** composition/retention. Exact owner replay, explicit scope/time, retained history and agentic qxctl administration preserve uncertainty and source provenance. See the [bounded release and validation status](knowledge/snv/VALIDATION.md). Live observation and SOV provisioning remain separately scoped work. |
-| **SQV — Symphony Quantitative Vector** | Reusable quantitative and trading-system framework contracts without acquiring user strategy logic. | **SQAV**, **SQMV**, **SQFV**, **SQTV**, **SQPV**, and **SQDV** have bounded C++26 libraries for capture, metadata, flow, integer conversion, local retention, and replay/checkpoints. Seven independently installable administration engines expose request and configuration validation, metadata projections, and read-only retained-state inspection through qxctl. Source adapters retain their individually declared non-live scope; authenticated provider execution and live collection remain future work. **SOOV — Symphony Orchestra Omega Vector** separately retains the future C++ FIX architecture. |
-| **SHV — Symphony Hardware Vector** | Hardware-capability knowledge for processors, CPU topology and execution-unit designs, caches, GPUs, NICs and fibre interfaces, motherboards, RAM and NVMe; default curation prioritizes original components and evidenced variants. | Initial C++ kernel: caller-defined coverage, retained-source catalogue replay, requirement evaluation and graph projection. Source revision/capture provenance engine and generic graph exchange are implemented; bounded protected source activation and publication preview are implemented and qualified through explicit caller-selected sources. Broad component mappings, durable vendor drivers, applied publication and Composer integration retain their separate scope. |
-| **SIV — Symphony Intelligence Vector** | Future local and remote agent collaboration, extended context, structured long-term logic, communication, and governed Symphony interaction. | Emerging domain. **SMCV** is its optional Markdown conversion component; **SAIV** is reserved for a later integration subvector and currently has no behavior. |
+General provider provisioning, Terraform apply, Habitat construction, Nest delivery, bus installation and canonical knowledge apply remain outside the implemented runtime promises. The Linux systemd boot receptor performs report-only lifecycle planning; it does not apply the plan. SACV currently supports bounded OpenAPI 3.2.0 JSON with internal references; YAML and external references return explicit unsupported responses. See its [shipped example](modules/sacv-engine/tests/fixtures/README.md).
 
-SAV continues to mean **Symphony Accordare Vector**. It is not the intelligence vector.
+## Root-Level Governance Role
 
-SMCV is planned as an optional, qxctl-configurable translator above an enabled IPC connection. It may preserve precise Markdown for an agent while mapping to the exact versioned JSON or other machine format owned by the receiving contract; it cannot invent missing meaning, repair invalid input, or authorize execution. No SMCV command or translator is implemented yet.
+The [platform governance contract](knowledge/platform/INTENT.md) defines shared invariants and modular sovereignty within the knowledge architecture. It does not absorb a vector’s meaning or a module’s runtime authority. Current contracts describe current truth; immutable change and publication records retain historical evidence. Phases describe delivery chronology, while vectors remain the enduring domain owners.
 
-Every new vector and subvector inherits the Phase 1 method without surrendering its domain:
+## Verification and release readiness
 
-1. the semantic owner receives a Contract Quad—`INTENT.md`, `MANIFEST.md`, `SKILL.md`, and `SPEC.md`—plus only the focused companion surfaces it actually needs;
-2. owner manifests declare their canonical surfaces and delegation graph;
-3. SKVI maps each current surface exactly once;
-4. SLANG and NAMESPACES route terminology and identity families without copying owner doctrine;
-5. SCLV, SEV, SSFV, SACV, SAV, qxctl, lifecycle, SSIAG, STAV, Maestro, validation, and SODV are engaged only when their own applicability boundaries are met; and
-6. obsolete companion surfaces are superseded, retired, or removed through the same governed evolution path instead of lingering as contradictory agent context.
+Symphony's checks cover distinct questions:
 
-This is evidence-based integration, not ceremonial duplication. A deferred engine has no fabricated receipt, a proposed API has no invented registry entry, and an unpublished contract has no SODV completion claim.
+| Evidence | What it establishes |
+| --- | --- |
+| [Dependency map verification](tests/mvp-dependencies/README.md) | Source/version consistency, explicit dependency ordering and installed SDK consumption. |
+| [Functional qualification](tests/release-qualification/README.md) | Selected native tests, Go race suites, Swift contracts, generated interfaces and installed scenarios on named profiles. |
+| [Package qualification](tests/package-release/README.md) | Candidate verification and lifecycle mechanics using controlled fixtures. |
+| [SDK distribution and removal](tests/native-sdk-distribution/README.md) | Receipt-owned headers/exports, installed consumers, refusal and resumable removal preserving unrelated files. |
+| [Dependency notice inventory](tests/dependency-notices/README.md) | Collected identities and notice material; publisher review and recursive runtime closure remain separate. |
+| [CodeQL](.github/codeql/README.md) | Static-analysis baseline. C++ uses source-only analysis with documented C++26 coverage limits; a clean scan is not complete security or runtime qualification. |
+| [Final-download acceptance](tests/launch-acceptance/README.md) | Still pending: actual approved candidate bytes, independent signer trust, fresh hosts and all required scenarios, including promised provider operations. |
 
-### Operations, provider, and bus posture
+Run the source checks with CMake from the repository root:
 
-The user chooses provider, region, owned hardware, topology, bus, software, and per-Node administration arrangement. The initial SCV comparison universe includes AWS, Azure, Google Cloud, DigitalOcean, Cloudflare, and user-owned hardware, including mixed-provider or region-constrained systems. Each provider's realities remain visible without treating any provider as the baseline.
+```sh
+cmake -P tests/mvp-dependencies/verify.cmake
+cmake -P tests/release-qualification/verify.cmake
+```
 
-SOV is the control plane through which authorized qxctl operations may act on SCV evidence. SCV owns provider meaning; SOV does not rewrite it, and SCV does not perform provider operations.
+The [finish-line gate checklist](.github/RELEASE-GATES.md) consolidates the remaining capability selection, credential/provider implementation, redistribution review, candidate trust, acceptance and operational ownership decisions. [Launch ownership](.github/LAUNCH.md) names @quantDIY as release approver and rollback primary. Completing source tasks does not itself authorize publication.
 
-Bus choice is also user-controlled. NATS JetStream, ZeroMQ, and other fabrics are adapters rather than doctrine. Heavy transfer, control, research, and execution exhaust do not have to share one bus. A topology may use multiple buses or bypass a bus for a declared path, especially where shared traffic could add jitter. Symphony does not prescribe the contents of strategy exhaust.
+Symphony releases module by module. Existing SODV source publications below are public Go source-module versions, not a platform binary launch. Independent versions and compatibility boundaries remain visible through release preparation.
 
-qxctl and the knowledge plane are cold or freezing-path administration. They may explicitly act on a Node that also hosts live work, but they must not become continuous hot-path dependencies, hidden watchers, resident interpreters, or unsolicited background package managers.
+## Support and contributing
 
-### Remote qxctl and Prima Parte
+For non-sensitive defects, [open a bug report](https://github.com/QuanuX/Symphony/issues/new?template=bug.yml) with the exact component version/source, OS/architecture, reproduction, expected outcome and redacted evidence. For vulnerabilities, use the support-ticket route in [SECURITY.md](SECURITY.md); do not disclose credentials or exploit details in a public issue. Response ownership and intake qualification remain tracked release work; no response-time guarantee is stated.
 
-Phase 2 research preserves three optional remote-administration arrangements: controller-side qxctl, qxctl installed on an enabled target Node, and qxctl staged for one bounded target operation. The cluster creator chooses the arrangement, globally or per Node. IPC is preferred where the selected topology supports it; a scoped remote CLI or shell-mediated invocation may be a fallback. The controller/target work split and exact transport remain open design questions.
+When changing a component, start with its owning contracts and installation guide. Keep proposals labelled, preserve independent versions and receipt ownership, update the dependency/test maps when their inputs change, and run the affected focused and installed checks. Canonical change recording follows [SCLV guidance](knowledge/sclv/SKILL.md); historical records are append-only.
 
-**Prima Parte** is a ratified Phase 3 concept, not a current executable. It is an optional, extremely lightweight C++ Node-local state witness explicitly invoked by qxctl after a material operation. It has no daemon, listener, timer, watcher, polling loop, or resident bus connection. Its bounded durable vocabulary includes `current`, `previous`, and `lastTransmitted`; transmitted means sent by the remote Node after the associated command executed, not confirmed received. Prima Parte records only its own Node, never becomes a smaller Maestro, and exits after its bounded work.
+## Python Doctrine
 
-The retired `node-troll` and `bus-troll` module identities remain reserved tombstones. “Troll” may still describe an optional user-programmed resident living at a connection point, but Symphony assigns it no required Node, bus, supervision, compatibility, or messaging role. The concept may disappear entirely if the architecture makes it unnecessary.
+First-party source, generators, schema authoring, tests and acceptance helpers have no Python implementation or dependency. User-authored programs and explicitly selected isolated Habitats are not restricted by that repository policy.
 
-## Delivery
+## License
 
-Delivery is tracked by explicit MVP capability, platform and acceptance gates, not a fixed sprint count or promised launch date. See the [source first-run guide](.github/FIRST-RUN.md), [launch ownership and gates](.github/LAUNCH.md), and [final-download acceptance procedure](tests/launch-acceptance/README.md). No downloadable platform release is asserted by a successful source build.
+Symphony is licensed under the [GNU Affero General Public License v3.0 only](LICENSE) (`AGPL-3.0-only`). Without a separate written agreement, use, modification, distribution and network deployment are governed by that license. Commercial licensing inquiries: `licensing@quanux.org`.
 
-## Implemented Foundations
+## Repository facts
 
-- [`qxctl`](tools/qxctl/) is Symphony's Go-based, agentic-first administrative and query CLI. Its checked-in registry binds executable command leaves to stable machine identities and reviewed feature-administration evidence. It implements repository and contract inspection; validator, warning, invariant, feature, lifecycle, session, reconciliation, binding, Maestro, SSIAG, STAV, Accordare, and implemented vector-engine administration. Exact installation verification, bounded subprocesses, hard deadlines, response identity/digest checks, expected-state transactions, and durable recovery are used where the owning contract requires them. Engine-binding registry v2 supports thirteen established roles, including the five exact SNV owners, and bounded future role identities; legacy v1 state is dual-read and requires explicit digest-bound migration before mutation.
-- [Symphony Secure Identity and Access Governance](modules/secure-identity-access-governance/) is an independently installable, cgo-free Go foundation for exact caller-neutral authorization, per-TOPS enrollment, local endpoint trust, protected policy lifecycle, provider-installation and binding lifecycle, safe audit metadata, and native launchd/systemd supervision. Ordinary foundational mutation fails closed pending its required audit route. Operational credential use, canonical knowledge apply, and secret delivery remain disabled.
-- [STAV Append Authority](modules/stav-append-authority/) is an independently installable Go service for per-TOPS append-only audit ledgers, mutually authenticated local IPC, exact producer/reader grants, fsync-before-receipt durability, bounded reads, verification, recovery, enrollment, and native supervision. qxctl never receives raw append authority.
-- [STAV Protocol for Go](libraries/stav-protocol-go/) is an authority-free Go library implementing the canonical STAV v1 codec, strict validation, digests, framing, conformance rules, and closed producer vocabulary.
-- [Accordare STAV Producer](modules/accordare-stav-producer/) is an independently installable, freezing-path Go producer for the bounded SAV Named Version audit circuit. It keeps pre-mutation intent and append recovery durable, authenticates its local peers, and submits only the exact safe candidate admitted by its closed vocabulary; it is not STAV append authority.
-- [SSIAG macOS Keychain Provider](modules/ssiag-provider-macos-keychain/) is an independently installable Swift metadata adapter with a bounded mutually verified handshake and signed-bundle/session-readiness observation. Operational Keychain access remains deliberately disabled.
-- [Symphony Validator](tools/symphony-validator/) is an independent, deterministic, read-only C++26 repository checker. It reports line or structured JSON evidence for contract shape, current source closure, invariant ownership, feature administration, releases, and the machine-owned root summary; it cannot repair or publish the repository.
-- [Knowledge Vector Engine C++ Foundation](libraries/knowledge-vector-engine-cpp/) supplies authority-free process framing, bounded JSON, SHA-256, no-follow reads, deterministic snapshots, temporal validation, exact owner-manifest discovery, versioned packaging, receipts, and receipt-owned uninstall mechanics. Manifest discovery begins from a fixed bootstrap set and traverses only explicit subordinate declarations—never an ambient repository crawl.
-- [Knowledge Session Coordinator](modules/knowledge-session-coordinator/) is an independently installable C++26 process for bounded compatibility, worktree reconciliation, authenticated noncanonical sessions, SSFV maintenance, report-only lifecycle planning, and separately authorized apply-capable journals with prepared attempts, compare-and-swap, re-observation, dynamic replanning, and recovery. It does not execute vector semantics or host actions by itself.
-- [Maestro](modules/maestro/) is an independently installable freezing-path C++26 presence authority. It records exact authenticated vector-engine docking relationships per TOPS and receptor and derives a complete read-only inventory. It does not start, schedule, supervise, or invoke engines.
-- [SKVI Engine](modules/skvi-engine/) implements deterministic inspect/check, caller-declared immutable proposals, and disposable digest-bound projections. It now verifies that every manifest-declared required surface is indexed exactly once, but it cannot decide membership or write canonical truth.
-- [SCLV Engine](modules/sclv-engine/) implements deterministic append-only ledger checks, provider-neutral v3 proposals, non-mutating recovery, and disposable projections. Admission binds current indexed evidence; later legitimate retirement preserves immutable historical provenance without forcing deleted current prose back into SKVI.
-- [SACV Engine](modules/sacv-engine/) implements bounded OpenAPI 3.2.0 JSON checks, deterministic compatibility diffs, caller-declared registry proposals, and disposable inventories. No endpoint, SDK, publication, generated binding, or canonical apply is implied.
-- [SODV Engine](modules/sodv-engine/) implements local append-only release-ledger checks, caller-supplied observation verification, provider-neutral release proposals, non-mutating recovery, and disposable release inventories. It has no network access, publishes nothing, creates no tags, and cannot declare a release complete.
-- [SSFV Engine](modules/ssfv-engine/) implements structural and freshness-aware feature checks, content-addressed diffs, caller-declared proposals, deterministic disposable graphs, and feature-administration assurance. Its catalog is explicitly partial; it does not decide feature-worthiness, invent identities, or claim repository/host completeness.
-- [Symphony Accordare Vector Engine](modules/sav-engine/) is a freezing-path C++26 engine for deterministic Accord reference resolution, immutable derived CURRENT snapshots, three-axis evaluation, comparison, explanation, graphs, Named Version validation/diff, Extension Capsule checks, Installation Blueprint planning, and compatibility negotiation. It produces evidence and proposals, not canonical mutations.
-- [Symphony Evolution Vector Engine](modules/sev-engine/) is a freezing-path C++26 engine for deterministic evolution cases, impact/disposition planning, dependency-ready-set recalculation, transition verification, recovery advice, SCSEV assessment, novelty/watch checks, trigger coalescing, lifecycle-session binding, and graph projection. It neither watches a host nor applies a transition.
-- [SCV source-knowledge engines](knowledge/scv/SOURCE-KNOWLEDGE.md) provide eight independently packaged C++26 SCV, hyperscaler, edge and provider domains. They preserve explicit source revisions and bounded captures, retain qualified claims and native document structure, and produce reproducible graph/query evidence. qxctl separately administers audited local source changes and coherent graph selection; provider operations and complete cloud catalogs remain outside this increment.
-- [SNV engines](knowledge/snv/VALIDATION.md) provide five independently installable C++26 identity, resource, cluster, naming and composition engines with exact public SDKs. Sixteen qxctl leaves administer supplied evidence, protected selected views and the separate optional [local observer](modules/snv-local-observer/). The collector reports selected CPU/memory observations and explicit uncertainty; it allocates no identity, membership, names or selected state.
-- [`knowledge/`](knowledge/) contains the current canonical SKV corpus: vector Contract Quads, schemas, registries, profiles, ledgers, companion surfaces, and the emerging Phase 2–8 architecture. Implementations remain subordinate to their semantic owners.
+The following generated snapshot is validated against the owning source contracts. Its feature catalog is intentionally partial; counts are not a claim of complete platform or host coverage.
 
-`hotpath-runtime` remains a proposal-only contract seed awaiting its own architectural review. It has no executable implementation or installation-readiness claim.
-
-## Current Integration Boundary
-
-The implemented qxctl and Phase 1 engines are local administrative/cold-or-freezing-path capabilities. qxctl invokes an exact receipt-validated installation and preserves the operation owner's authority and response contract. The current generic apply adapters are deliberately finite: staged receipt-v2 package installation/reclamation, protected selection/activation state, side-by-side coordinator handoff, and authenticated Maestro presence. Package download, receipt-v1 mutation, arbitrary entry-point execution, live-service activation, in-place coordinator self-replacement, hidden watchers, native Windows host integration, Maestro engine execution, and canonical knowledge apply are not implemented.
-
-qxctl also provides a Linux-only systemd receptor for report-only lifecycle planning at host boot. It is independently installable, disableable, reconcilable, and removable per TOPS/profile; it never invokes lifecycle apply or component execution. Native Windows is unsupported and no port is planned. WSL or a remote Linux Node is a separately qualified Linux environment, not native Windows support.
-
-SOV implements explicit local handoff and optional SSH carrier control. These contracts do not establish an operational cross-host deployment, provider provisioning, Terraform apply, Habitat construction, Nest delivery, bus installation, or Prima Parte.
+<details>
+<summary>Machine-checked feature, command and source-publication inventory</summary>
 
 <!-- symphony:root-summary:v1:begin -->
 ## Machine-Checked Repository Snapshot
@@ -207,34 +258,4 @@ This bounded summary is derived from canonical SSFV coverage and routing, the fe
 - Snapshot digest: `sha256:8001a5352893287775ce67a73b10776dae294ae962df3a580eaba258a5cd45ff`
 <!-- symphony:root-summary:v1:end -->
 
-## Releases and Documentation
-
-Symphony releases module by module rather than waiting for a monolithic platform release. Each published unit retains its own version, compatibility boundary, and evidence. Only artifacts actually published from the repository are releases.
-
-The machine-checked snapshot lists every completed SODV source publication. Those entries are public Go source-module versions, not GitHub binary releases or a platform launch. Contracts and implementation notes describe development truth; official public projections remain governed by SODV.
-
-## Root-Level Governance Role
-
-The [platform governance contract](knowledge/platform/INTENT.md) establishes platform invariants, shared interpretation rules, and modular sovereignty within SKV. It does not absorb a vector's meaning or a module's runtime authority.
-
-The SKV evolution framework allows Symphony to add, change, supersede, deprecate, retire, and remove surfaces while preserving the distinction between present truth and historical evidence. Companion files exist only while they improve bounded agent understanding; they must not remain as stale restatements once their purpose disappears.
-
-## Doctrine
-
-- User strategy logic, Nest purpose, provider choice, hardware choice, bus topology, and supported adapter selection remain user-controlled.
-- Symphony provides exact compatibility evidence and supported operations; it does not turn recommendations into platform law.
-- The hot path is protected from administrative residency and accidental shared-bus pressure. A user's explicit architecture remains sovereign.
-- qxctl owns command grammar and presentation. Domain vectors own the operations and meanings those commands expose.
-- Names are recorded under their owning scope; SNV and SCNV do not dictate them, and root NAMESPACES remains broader than SNV.
-- A caller's classification as human, AI, agent, service, or workload does not grant or remove authority. Target-host ownership, explicit permission, expected state, and owner-configured safeguards govern supported actions.
-- Current contracts describe current truth. Immutable SCLV/SODV records preserve what was known, changed, authorized, or completed at their recorded point in history.
-
-The optional [SBV Go adapter](libraries/sbv-go/) is an independently consumable standard-library module for exact qxctl control, streamed replay/results and external model/proposal pipelines. It adds no scientific engine or vendor runtime dependency.
-
-## Python Doctrine
-
-First-party Symphony source, generators, schema authoring, tests, and acceptance helpers require no Python implementation or dependency. The former Python development tooling is replaced by C++. This repository policy does not restrict user-authored programs or explicitly selected isolated Habitats.
-
-## License
-
-Symphony is licensed under the GNU Affero General Public License v3.0 only (`AGPL-3.0-only`). Without a separate written agreement, use, modification, distribution, and network deployment are governed by that license. For commercial licensing inquiries, contact `licensing@quanux.org`.
+</details>
