@@ -1,6 +1,8 @@
 # Final-download MVP acceptance
 
-L26 remains blocked on completion of the native credential/provider integration, a final selected capability manifest, published candidate bytes, independent publisher trust policy, runtime/license closure and authorized provider profiles/SDK. Current CI builds and packaging fixtures are development evidence. This procedure must run on a fresh selected host after those prerequisites exist; never relabel source checkout/cached fixture results as final-download acceptance.
+Live-provider qualification is user-led **after packaging**. Candidate preparation and build/package verification may proceed while live profiles, SDK material and live results are unavailable. The selected testing candidate must identify supported operations, disabled or unimplemented native paths, exact artifacts and trust evidence. This sequencing decision does not complete native credential/provider implementation or authorize publication automatically.
+
+This L26 plan describes full acceptance of the resulting downloads. Its live-provider scenarios are performed by users with their own authorized profiles after the packages are available; users return redacted, artifact-bound observations for review. Runtime/notice and publisher/trust decisions still apply to the actual payload. Current CI builds and packaging fixtures remain development evidence. Run the final-download scenarios on fresh selected hosts; never relabel source checkout/cached fixture results as final-download acceptance.
 
 Required profiles: macOS 15 ARM64; Ubuntu 24.04 amd64 and ARM64; Ubuntu 26.04 amd64. Record actual OS image/kernel, CPU architecture, libc/C++ runtime, filesystem and tool versions. Generic Ubuntu ARM64 is sufficient for this sprint, without physical DGX Spark, GPU or native Windows claims.
 
