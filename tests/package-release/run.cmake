@@ -196,6 +196,9 @@ set(host_go_env "${CMAKE_COMMAND}" -E env GOWORK=off GOTOOLCHAIN=local GOENV=off
 run(host-extraction-regressions pass ${host_go_env} "${host_go}" test -race -count=1
   "${repository}/tests/launch-acceptance/candidate-host.go"
   "${repository}/tests/launch-acceptance/candidate-host_test.go")
+run(acceptance-gates-regressions pass ${host_go_env} "${host_go}" test -race -count=1
+  "${repository}/tests/launch-acceptance/acceptance-gates.go"
+  "${repository}/tests/launch-acceptance/acceptance-gates_test.go")
 run(host-extraction-build pass ${host_go_env} "${host_go}" build -trimpath
   -o "${work}/candidate-host" "${repository}/tests/launch-acceptance/candidate-host.go")
 run(host-extraction pass "${work}/candidate-host" -repository "${repository}"

@@ -20193,6 +20193,14 @@
       "sha256": "ee7a882d970abacb90cbf928cf81dd7947ed460945426fda8678e9c746859320"
     },
     {
+      "path": "tests/launch-acceptance/acceptance-gates.go",
+      "sha256": "2531373371c466e561feecc107056acb6f4336c979eb11baebe0830fa3c28194"
+    },
+    {
+      "path": "tests/launch-acceptance/acceptance-gates_test.go",
+      "sha256": "451a36ebbb6577e10ee22cb0bc1818767d4bb77fcd724987548b40f12306b4e6"
+    },
+    {
       "path": "tests/launch-acceptance/candidate-host.go",
       "sha256": "831c6bfcabf982aee99b71034c81904d52d5fdd727cbca0a6e4e62c85b48dfcd"
     },
@@ -20206,7 +20214,7 @@
     },
     {
       "path": "tests/package-release/run.cmake",
-      "sha256": "7f80a73ac12e944299b16a24a78059aae03a38272892e72f1bf447746b0f6271"
+      "sha256": "8a22da2a4a068c151438a084dc6deab8774a73186ac97296c275a560c1b2d03c"
     },
     {
       "path": "tests/sqv-administration/CMakeLists.txt",

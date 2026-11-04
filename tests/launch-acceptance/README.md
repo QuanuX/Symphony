@@ -82,3 +82,79 @@ rights or provider success. Run the nine approved scenarios separately against
 `payload/`, retaining exact command/input/output and host-provisioning evidence.
 The four-target package fixture workflow exercises this path and executes its
 two independently built fixture probes; those results remain development evidence.
+
+## Runnable evidence gates while live inputs are unavailable
+
+The standard-library `acceptance-gates` tool creates a packet from the current
+plan and checks the evidence supplied later. It never connects to a provider,
+executes a packet's commands, imports credentials, or approves publication.
+
+```sh
+GOWORK=off GOTOOLCHAIN=local go build -trimpath \
+  -o /absolute/private-tools/acceptance-gates tests/launch-acceptance/acceptance-gates.go
+/absolute/private-tools/acceptance-gates -mode init \
+  -plan /absolute/reviewed-source/tests/launch-acceptance/plan.json \
+  -packet /absolute/private-evidence/packet.json
+/absolute/private-tools/acceptance-gates -mode check \
+  -plan /absolute/reviewed-source/tests/launch-acceptance/plan.json \
+  -packet /absolute/private-evidence/packet.json \
+  -report /absolute/private-evidence/new-report.json
+```
+
+Create the private evidence directory first. The template includes every required
+input and all nine scenarios for all four profiles. Missing inputs remain null;
+all scenarios start pending and unqualified. Initial checking intentionally exits
+**2** with an `incomplete` report enumerating the missing items. Exit **1** means
+invalid/tampered evidence or an output conflict. Exit **0** means only that the
+packet is structurally ready for independent review. All reports keep
+`release_acceptance_complete=false` and `publication_authorized=false`.
+
+Every attachment is `{ "path": "relative/path", "sha256": "64-lowercase-hex" }`.
+Paths resolve beneath the packet directory; links and traversal are refused.
+Evidence is limited to 16 MiB per file. Use a private quiescent directory, retain
+actual redacted observation files, and record their SHA-256 hashes. Do not attach
+credentials, private SDK source, signing keys or paid/private provider payloads.
+An attachment is evidence to review, not proof that its author had authority.
+
+For each profile, supply source commit and artifact/manifest/signer-policy hashes;
+attach the actual `caller_supplied_payload` output from candidate verification,
+clean-host inventory and runtime/notice review. The checker requires verification
+fields to match that profile and those exact identities. All profiles must use
+the same selected source commit. Run `candidate-host` first; do not fabricate its
+upstream verification record or treat an inventory attachment as host execution.
+
+A scenario's attached record has this closed structure:
+
+```json
+{
+  "profile_id": "ubuntu24.04-arm64",
+  "scenario": "every_promised_provider_operation_and_refusal",
+  "source_commit": "EXACT_40_HEX_COMMIT",
+  "artifact_sha256": "EXACT_64_HEX_ARTIFACT_DIGEST",
+  "result": "pending",
+  "scope": "unqualified",
+  "skips": 0,
+  "evidence": [{"path": "observations/provider.json", "sha256": "EXACT_64_HEX_DIGEST"}]
+}
+```
+
+The uppercase values above are documentation placeholders and intentionally fail
+validation. Bind actual command/input/output and expected/observed result records
+under `evidence`. Paths in this list are relative to the packet directory too.
+Each scenario envelope must match its packet profile, scenario, source, artifact,
+result, scope and skip count. At least one digest-verified observation is required.
+`result` is `pending`, `failed` or `passed`; `scope` is `unqualified`, `fixture` or
+`operational`. Only a passed, operational, zero-skip result can satisfy the
+structural gate. Here operational means the approved scenario actually ran on the
+selected final candidate; an intentionally synthetic offline-research scenario
+remains labelled synthetic in its observations. Live-provider scenarios require
+actual authorized provider results, not synthetic callbacks.
+
+The tool detects missing/drifted bindings and corrupted attachments. It does not
+independently establish the truth of supplied observations, re-verify a publisher
+signature, evaluate licence rights, inspect provider entitlements, or attest a
+fresh host. A reviewer must examine the referenced evidence and record acceptance
+through the existing release authority. Complete structure never changes that
+boundary. The package CI matrix runs fixture regressions for missing coverage,
+changed hashes, wrong identities, duplicate/unknown fields, unsafe paths, skips,
+failed/fixture results and overwrite refusal.

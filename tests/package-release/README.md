@@ -68,3 +68,7 @@ reject traversal, links/devices, duplicate/unlisted/missing members, digest/size
 drift, unsafe modes, trailing content and existing prefixes. The four-platform
 package workflow runs these checks with its existing exact-source matrix.
 Fixture evidence never becomes live-provider or final-download acceptance.
+
+The same matrix also runs `acceptance-gates` evidence-packet regressions. These
+check completeness and digest bindings only; a structurally complete fixture
+packet never grants release acceptance or publication authority.
