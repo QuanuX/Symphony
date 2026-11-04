@@ -8,7 +8,7 @@ Build the environment your work needs. Keep your strategy logic, provider choice
 
 [Start from source](.github/FIRST-RUN.md) · [Explore the components](#architecture) · [Platform targets](#platform-targets) · [Release gates](.github/RELEASE-GATES.md) · [Report a problem](#support-and-contributing)
 
-> **Development status:** Symphony has working native libraries, engines, administrative services, and cross-platform qualification. It is preparing for its first MVP binary distribution. Final downloadable packages and operational credential/provider acceptance are not complete. The tables below distinguish working source capabilities from the remaining release work.
+> **Development status:** Symphony has working native libraries, engines, administrative services, and cross-platform qualification. It is preparing for its first MVP binary distribution. Final downloadable packages are being prepared; users will perform live-provider qualification after packaging. Native credential/provider implementation limits remain explicit below. The tables below distinguish working source capabilities from the remaining release work.
 
 ## Identity
 
@@ -88,7 +88,7 @@ Provider integration has several layers: a parser or SDK, a bounded session/acqu
 | **IBKR TWS** | Serialized host-session coordinator and read-only callback collection with generation/request binding, pacing, cancellation and disconnect handling. | Authorized SDK 10.45 provenance, concrete vendor socket/EReader/EWrapper/Decimal bridge and actual TWS/Gateway host qualification. Fixture sessions are not vendor SDK conformance. |
 | **News** | Vendor-neutral article ingress, immutable revision/correction binding and capture. | An authorized caller/content source and installed retention qualification. No news vendor, scraper, feed subscription or fetching of article URLs is selected. |
 
-The [credential integration handoff](modules/secure-identity-access-governance/CREDENTIAL-QUALIFICATION.md) identifies remaining **implementation**, deployment and qualification work. These are launch gates for promised capabilities, not optional disclaimers. Credentials and private provider payloads must remain outside command arguments, logs, public issues, and qualification artifacts.
+The [credential integration handoff](modules/secure-identity-access-governance/CREDENTIAL-QUALIFICATION.md) identifies remaining **implementation**, deployment and qualification work. Missing native implementation must be completed before its operations are advertised as supported. Users will qualify supported live-provider paths after packaging; unavailable live test profiles do not block package preparation. Credentials and private provider payloads must remain outside command arguments, logs, public issues, and qualification artifacts.
 
 ## Architecture
 
