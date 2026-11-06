@@ -21,7 +21,7 @@ func TestSQVCanonicalSurface(t *testing.T) {
 		want["qxcmd:symphony:sqv."+op.Domain+"."+op.Leaf] = false
 	}
 	for _, c := range m.Commands {
-		if strings.HasPrefix(c.CommandID, "qxcmd:symphony:sqv.") {
+		if strings.HasPrefix(c.CommandID, "qxcmd:symphony:sqv.") && !strings.HasPrefix(c.CommandID, "qxcmd:symphony:sqv.rithmic.") {
 			if _, ok := want[c.CommandID]; !ok || len(c.Aliases) != 0 {
 				t.Fatalf("extra or aliased SQV operation: %s", c.CommandID)
 			}

@@ -14,6 +14,8 @@ SQV is the home for ratified quantitative framework components. Its six admitted
 
 Symphony Orchestra Omega Vector (SOOV) remains SQV's separate C++-only FIX child. Its scope is not absorbed by the six research-data owners.
 
+SQV admits three peer connection classes: SOOV for FIX, SCABV for its component-scoped broker/API bindings, and Symphony Rithmic RAPI Vector (SRRAPIV) for dedicated Rithmic R API+ C++ integration. SRRAPIV owns its Rithmic provider semantics, account/session bindings, exact SDK lineage and recovery contracts independently of SCABV and SOOV. The initial SRRAPIV platform scope is non-Windows. Its owning contracts distinguish implemented native capability from provider conformance and production acceptance.
+
 ## Non-Scope
 
 SQV does not make every Nest a strategy, require a broker or data API, make non-FIX semantics universal, or prescribe live strategy data handling. SOOV retains FIX scope. Backtesting, broker, indicator, and mathematics contracts remain with their respective future or separate owners. The research-data expansion does not turn its selected data path into a compulsory trading path.

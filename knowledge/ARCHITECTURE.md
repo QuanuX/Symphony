@@ -64,12 +64,14 @@ Heavy workloads need not share an exhaust, control, research, or other bus where
 - SOV owns operations semantics exercised through qxctl, including provisioning, conditioning, delivery, provider/local actions, and bus-adapter administration.
 - SCV owns private semantic knowledge about offsite provider resources, offerings, regions, constraints, and hybrid possibilities. SOV acts upon SCV evidence; it does not take SCV semantic ownership.
 - SNV owns Node identity, resource, cluster-relationship, and SNV-bounded naming records through SNIV, SNRV, SCIV, and SCNV.
-- SQV owns Symphony's quantitative framework domain without acquiring user strategy logic. Its six research-data architecture owners are SQAV acquisition, SQMV metadata, SQFV flow, SQTV transformation, SQPV persistence, and SQDV delivery; SOOV separately owns its high-performance C++-only FIX architecture. These are architecture owners, not claims of operating engines.
+- SQV owns Symphony's quantitative framework domain without acquiring user strategy logic. Its six research-data architecture owners are SQAV acquisition, SQMV metadata, SQFV flow, SQTV transformation, SQPV persistence, and SQDV delivery. Its three peer connection classes are SOOV for FIX, SCABV for its component-scoped broker/API bindings, and sovereign SRRAPIV for dedicated Rithmic R API+ C++ integration. Each owner's contract states its implemented extent; ownership alone does not prove provider readiness.
 - SHV owns hardware-capability knowledge through bounded C++ source, catalogue, profile, partition, graph and publication contracts; broad hardware coverage remains extensible.
 - SAV remains the Symphony Accordare Vector.
 - SIV is the Symphony Intelligence Vector. SMCV is its optional Markdown conversion component, and SAIV is reserved for a later integration sub-vector.
 
 The six SQV research-data children have separate Contract Quads; exact native modules, providers, representations, storage guarantees, and recipient interfaces remain to be admitted. Backtesting, broker/data API lineage, non-FIX broker integration, indicator mathematics, broader freezing-path data handling, persistence/replay outside the selected SQV research-data scope, and account truth remain future work where exact contracts or ownership have not been admitted.
+
+SRRAPIV's dedicated ownership and exact implemented native extent are declared in `knowledge/sqv/srrapiv/SPEC.md` and `modules/srrapiv-runtime-cpp/SPEC.md`. It is a sibling of SOOV and SCABV, not a delegated SCABV adapter. Native artifact and binding validation, runtime control, and actual vendor qualification remain distinct evidence. Shared identity, audit, installation, indexing and research-data contracts do not transfer provider semantics or impose a mandatory path on user strategies.
 
 ## Contract Integration
 

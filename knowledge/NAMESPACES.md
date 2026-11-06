@@ -78,7 +78,9 @@ The following established domains therefore remain delegated without being norma
 
 A shared field label such as `module_id` does not create a shared identity space. Consumers qualify it by its protocol and owner contract.
 
-The existence of the SCV, SOV, SNV, SHV, SQV, SQAV, SQMV, SQFV, SQTV, SQPV, SQDV, SIV, SOOV, SCABV, SMCV, SAIV, SNIV, SNRV, SCIV, or SCNV domain name does not allocate a matching colon-prefixed family. Architecture admission of the six SQV research-data children allocates none either. Any future machine identity for those domains requires its own reviewed owner grammar and an entry in this register.
+The existence of the SCV, SOV, SNV, SHV, SQV, SQAV, SQMV, SQFV, SQTV, SQPV, SQDV, SIV, SOOV, SCABV, SRRAPIV, SMCV, SAIV, SNIV, SNRV, SCIV, or SCNV domain name does not allocate a matching colon-prefixed family. Architecture admission of the six SQV research-data children allocates none either. Any future machine identity for those domains requires its own reviewed owner grammar and an entry in this register.
+
+SRRAPIV owns its versioned `symphony.srrapiv.*` protocols and digest-bound artifact, binding and operation-attempt identities declared in `knowledge/sqv/srrapiv/SPEC.md` and `modules/srrapiv-runtime-cpp/OWNER-INTERFACE.json`. Its registered `engop:`, `qxcmd:` and `ssfv:` identities use the existing delegated families. This admission creates no `srrapiv:` colon family; provider-native names and opaque external references retain their own authority.
 
 SBV owns the versioned `symphony.sbv.*.v1` experiment/result protocols and `engop:symphony:sbv.*` operation identities declared in `modules/sbv-engine/OWNER-INTERFACE.json`. Signal/path identifiers are local to a digest-bound result and convey no universal identity or execution authority. Candidate SBV subvector names remain unallocated design proposals.
 

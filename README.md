@@ -20,6 +20,7 @@ QuanuX is the ecosystem and steward of official source truth. Symphony is its op
 | --- | --- | --- |
 | Inspect and administer an installation | Query contracts, versions, command identities, installed engines, lifecycle state, and protected selections through a Go CLI with structured output. | [qxctl](tools/qxctl/README.md) |
 | Work with quantitative data | Use C++ SDKs for capture, metadata, flow, integer conversion, retained stores, replay and checkpoints; inspect retained state through installed owner engines. | [SQV contracts](knowledge/sqv/) · [Installed dependency recipe](tests/mvp-dependencies/README.md) |
+| Develop a dedicated Rithmic integration | Inspect exact SDK/adapter bindings and maintenance impacts; build the non-Windows native SRRAPIV runtime with an explicitly supplied SDK. Native mapping, runtime tests and live vendor qualification remain separate evidence. | [SRRAPIV contracts](knowledge/sqv/srrapiv/SPEC.md) · [Native runtime](modules/srrapiv-runtime-cpp/INSTALL.md) |
 | Run bounded backtest research | Build a signal census, run native evaluations, retain results, and exercise cancellation and recovery through SBV and the optional Go adapter. | [Installed SBV scenario](tests/sbv-launch-boundary/README.md) · [Go adapter](libraries/sbv-go/README.md) |
 | Build traceable hardware knowledge | Retain source captures, replay a selected catalogue, evaluate requirements, query a graph, and preview publication with explicit provenance. | [Hardware starter](examples/mvp-hardware/README.md) |
 | Inspect cloud and Node evidence | Use cloud/provider source-knowledge engines and five Node engines for supplied identity, resources, cluster relationships, names, and composition. | [SCV source knowledge](knowledge/scv/SOURCE-KNOWLEDGE.md) · [SNV qualification](knowledge/snv/VALIDATION.md) |
@@ -104,6 +105,7 @@ Symphony is a monorepo for inspectability, with independently versioned and inst
 | Composition and evolution | [SAV / Accordare](modules/sav-engine/) resolves and evaluates explicit composition; [SEV](modules/sev-engine/) prepares evolution plans and evidence. Neither silently applies canonical changes. |
 | Cloud, hardware and Nodes | [SCV](knowledge/scv/), [SHV](knowledge/shv/) and [SNV](knowledge/snv/) own their respective source evidence, interpretation and supplied state. Optional DuckDB connectors add retained relational graph indexes. |
 | Quantitative work | [SQV](knowledge/sqv/) includes capture, metadata, flow, conversion, retention, replay and source adapters. [SBV](modules/sbv-engine/) owns native backtest research, with an optional [Go client](libraries/sbv-go/). |
+| Connection classes | SQV's peer owners are [SOOV](knowledge/sqv/soov/) for FIX, [SCABV](knowledge/sqv/scabv/) for component-scoped broker/API bindings, and sovereign [SRRAPIV](knowledge/sqv/srrapiv/) for dedicated R API+ C++ integration. Exact module contracts delimit implementation and qualification. |
 | Operations | [SOV](knowledge/sov/) provides bounded local handoff and an optional scoped SSH carrier. These mechanisms do not establish general cloud provisioning or cross-host deployment acceptance. |
 
 The machine-readable [component/version map](cmake/mvp-dependencies.json) and [functional qualification manifest](tests/release-qualification/manifest.json) enumerate current roots and test selections. A component in that inventory is not automatically selected for the first binary release. Each module's Contract Quad (`INTENT.md`, `MANIFEST.md`, `SKILL.md`, `SPEC.md`) and `INSTALL.md` define its actual boundary.
@@ -179,9 +181,9 @@ The following generated snapshot is validated against the owning source contract
 
 This bounded summary is derived from canonical SSFV coverage and routing, the feature-administration profile, the qxctl command registry, and completed SODV publication records. Edit its source contracts, then regenerate; do not hand-edit the values below.
 
-- SSFV catalog state: `partial`; registered features: **147**; registered owner scopes: **65**; ratified nested features: **78**.
-- Feature-administration expectations: **392** reviewed surfaces; **381** required, **29** evidence-backed exemptions, **9** prohibitions, **0** unreviewed.
-- qxctl stable command identities: **462**.
+- SSFV catalog state: `partial`; registered features: **149**; registered owner scopes: **66**; ratified nested features: **79**.
+- Feature-administration expectations: **404** reviewed surfaces; **393** required, **29** evidence-backed exemptions, **9** prohibitions, **0** unreviewed.
+- qxctl stable command identities: **475**.
 - Registered owner capabilities:
   - `ssfv:symphony:accordare-stav-producer`
   - `ssfv:symphony:knowledge-session-coordinator`
@@ -242,6 +244,7 @@ This bounded summary is derived from canonical SSFV coverage and routing, the fe
   - `ssfv:symphony:sqpv-local-store-cpp`
   - `ssfv:symphony:sqtv-conversion-engine`
   - `ssfv:symphony:sqtv-integer-conversion-cpp`
+  - `ssfv:symphony:srrapiv-runtime-cpp`
   - `ssfv:symphony:ssfv-engine`
   - `ssfv:symphony:ssiag-foundation`
   - `ssfv:symphony:ssiag.macos-keychain-metadata`
@@ -255,7 +258,7 @@ This bounded summary is derived from canonical SSFV coverage and routing, the fe
   - `github.com/QuanuX/Symphony/modules/stav-append-authority` `v0.2.0` (tag `modules/stav-append-authority/v0.2.0`, source `ed7484d70607aa96e64916dd4e59d3972a61980b`)
   - `github.com/QuanuX/Symphony/modules/stav-append-authority` `v0.2.1` (tag `modules/stav-append-authority/v0.2.1`, source `967c005e21a8f153ed453c79baa09fe2ab549f01`)
   - `github.com/QuanuX/Symphony/tools/sov-ssh-adapter` `v0.1.0-dev` (tag `tools/sov-ssh-adapter/v0.1.0-dev`, source `967c005e21a8f153ed453c79baa09fe2ab549f01`)
-- Snapshot digest: `sha256:8001a5352893287775ce67a73b10776dae294ae962df3a580eaba258a5cd45ff`
+- Snapshot digest: `sha256:facd520df02ec72ef655af68d188fcc4c196141bf0b53c53438bc35ffaf65314`
 <!-- symphony:root-summary:v1:end -->
 
 </details>

@@ -1,0 +1,3 @@
+# SRRAPIV native operations
+
+Inspect the exact installed receipt, descriptor and qxctl schemas. Keep SDK-less and SDK-linked builds distinct. Do not initialize or log in merely to inspect API metadata. Start only an explicitly selected private configuration, retain its generation and use a unique durable attempt identity for each intended effect. After timeout or lost response, inspect runtime status and attempts; never blindly replay an order. A callback stream gap invalidates any completeness assumption until operation-specific provider reconciliation. Never commit SDK files, secrets or account observations.

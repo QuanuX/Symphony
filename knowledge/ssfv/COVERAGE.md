@@ -65,6 +65,7 @@ The inventory is intentionally explicit. Directory discovery, file count, langua
 | `modules/sqfv-batch-cpp` | registered | `ssfv:symphony:sqfv-batch-cpp` | `modules/sqfv-batch-cpp/FEATURES.md` |
 | `modules/sqmv-metadata-cpp` | registered | `ssfv:symphony:sqmv-metadata-cpp` | `modules/sqmv-metadata-cpp/FEATURES.md` |
 | `modules/sqpv-local-store-cpp` | registered | `ssfv:symphony:sqpv-local-store-cpp` | `modules/sqpv-local-store-cpp/FEATURES.md` |
+| `modules/srrapiv-runtime-cpp` | registered | `ssfv:symphony:srrapiv-runtime-cpp` | `modules/srrapiv-runtime-cpp/FEATURES.md` |
 | `modules/ssfv-engine` | registered | `ssfv:symphony:ssfv-engine` | `modules/ssfv-engine/FEATURES.md` |
 | `modules/ssiag-provider-macos-keychain` | registered | `ssfv:symphony:ssiag.macos-keychain-metadata` | `modules/ssiag-provider-macos-keychain/FEATURES.md` |
 | `modules/stav-append-authority` | registered | `ssfv:symphony:stav-append-authority` | `modules/stav-append-authority/FEATURES.md` |
@@ -92,11 +93,11 @@ The inventory is intentionally explicit. Directory discovery, file count, langua
 
 ## Ratified Nested Review Progress
 
-The F1 through F3 review, feature-administration assurance slice, root-summary assurance slice, invariant-assurance slice, provider-trust assurance slice, provider-binding lifecycle slice, and Accordare durability/supervision review record seventy-eight ratified nested feature-worthy boundaries inside seventeen registered non-root owner scopes:
+The F1 through F3 review, feature-administration assurance slice, root-summary assurance slice, invariant-assurance slice, provider-trust assurance slice, provider-binding lifecycle slice, and Accordare durability/supervision review record seventy-nine ratified nested feature-worthy boundaries inside seventeen registered non-root owner scopes:
 
 | Owner scope | Ratified nested records | Review disposition |
 |---|---:|---|
-| `tools/qxctl` | 14 | Exact engine bindings, authenticated sessions, lifecycle convergence, Linux report-only host receptor, SSIAG administration, STAV administration, Maestro administration, governed validation, the stable command registry, invariant assurance, protected SCV source/graph administration, and SHV source-backed kernel/generic graph administration, non-live SQV administration, and bounded SNV administration are registered. |
+| `tools/qxctl` | 15 | Exact engine bindings, authenticated sessions, lifecycle convergence, Linux report-only host receptor, SSIAG administration, STAV administration, Maestro administration, governed validation, the stable command registry, invariant assurance, protected SCV source/graph administration, and SHV source-backed kernel/generic graph administration, non-live SQV administration, bounded SNV administration, and exact native SRRAPIV administration are registered. |
 | `modules/knowledge-session-coordinator` | 6 | Reconciliation, authority epochs, semantic maintenance, lifecycle planning, lifecycle apply coordination, and protected Named Version durability are registered. |
 | `modules/maestro` | 1 | Complete derived receptor inventory is registered separately from durable receptor presence. |
 | `libraries/stav-protocol-go` | 2 | Canonical bytes, digests, and bounded local frames are separated from exact content and identifier validation; durable checksummed ledger framing is explicitly owned by the append authority. |
@@ -196,3 +197,7 @@ The SCLV historical-warning entry points are scoped administration of the existi
 ## SQV Administration Review
 
 Six experimental owner scopes expose seven additional non-live actions. Metadata projections, flow resource checks, integer layouts, commit verification, checkpoint replay and attempt accounting are facets of those owner features. `tools/sqv-administration-cpp` supplies shared transport mechanics only and is excluded as an independent application feature. No live runtime, provider activation, mutating recovery or remote acknowledgment is claimed. Existing library features and ABI identities remain unchanged.
+
+## SRRAPIV Administration Review
+
+The dedicated C++ runtime is the sovereign Rithmic integration owner under SQV. Its qxctl adapter receives one administration subfeature exposing thirteen commands: eleven native operations plus exact schema/template discovery. The generic SDK invocation method and version-specific typed inventory form one complete control surface; individual SDK overloads, codec fields and callback methods are facets, not new semantic features. Native binding rules, runtime generations, protected local permissions, provider dispatch and uncertain-attempt records remain with SRRAPIV. Local structural or SDK-linked build evidence does not establish live-provider acceptance, and this increment does not claim SSIAG integration or catalog completeness.

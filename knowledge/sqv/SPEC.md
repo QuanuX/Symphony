@@ -22,6 +22,8 @@ Not every execution Nest needs a broker API or data API. Broker interfaces are p
 
 FIX systems approach data, symbol matching, and messaging through their own regulated protocol family and SOOV architecture. SCABV now owns the bounded separate Client Portal and external Stable 10.45 TWS read adapters admitted at `knowledge/sqv/scabv/SPEC.md`. Their broader broker governance programme, authorized vendor SDK conformance and operational credential paths remain explicit prerequisites.
 
+SRRAPIV is SQV's sovereign third connection class, alongside SOOV and SCABV. `knowledge/sqv/srrapiv/SPEC.md` owns dedicated Rithmic R API+ C++ behavior, account/session bindings, SDK/adapter lineage, complete public-surface administration requirements and operation-specific recovery. SRRAPIV is not routed through SCABV as a prerequisite. Its native runtime module states exact delivered operations and unresolved coverage; a native build or catalog assertion is not provider conformance, entitlement or live readiness. Existing and new SDK artifacts coexist under immutable exact bindings without automatic substitution.
+
 ## Reusable Engines
 
 Historical user-authored engines may later be decomposed by function into reusable example components and reassembled as coherent public engines. The Architect determines their names and approves function-to-vector ownership.

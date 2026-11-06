@@ -18861,6 +18861,505 @@
       "json_output": true
     },
     {
+      "command_id": "qxcmd:symphony:sqv.rithmic.api.describe",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl sqv rithmic api describe [--input VALUE] [--json] [--prefix VALUE] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.srrapiv-administration",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:srrapiv-runtime-cpp",
+          "interaction": "discover"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:srrapiv.api.describe"
+      ],
+      "mutability": "read_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.srrapiv.request.v1"
+      ],
+      "output_protocols": [
+        "symphony.srrapiv.result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.srrapiv.result.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:sqv.rithmic.binding.compare",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl sqv rithmic binding compare [--input VALUE] [--json] [--prefix VALUE] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.srrapiv-administration",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:srrapiv-runtime-cpp",
+          "interaction": "inspect"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:srrapiv.binding.compare"
+      ],
+      "mutability": "read_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.srrapiv.request.v1"
+      ],
+      "output_protocols": [
+        "symphony.srrapiv.result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.srrapiv.result.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:sqv.rithmic.binding.validate",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl sqv rithmic binding validate [--input VALUE] [--json] [--prefix VALUE] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.srrapiv-administration",
+          "interaction": "validate"
+        },
+        {
+          "feature_id": "ssfv:symphony:srrapiv-runtime-cpp",
+          "interaction": "validate"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:srrapiv.binding.validate"
+      ],
+      "mutability": "read_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.srrapiv.request.v1"
+      ],
+      "output_protocols": [
+        "symphony.srrapiv.result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.srrapiv.result.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:sqv.rithmic.catalog.inspect",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl sqv rithmic catalog inspect [--input VALUE] [--json] [--prefix VALUE] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.srrapiv-administration",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:srrapiv-runtime-cpp",
+          "interaction": "inspect"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:srrapiv.catalog.inspect"
+      ],
+      "mutability": "read_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.srrapiv.request.v1"
+      ],
+      "output_protocols": [
+        "symphony.srrapiv.result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.srrapiv.result.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:sqv.rithmic.coverage.assess",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl sqv rithmic coverage assess [--input VALUE] [--json] [--prefix VALUE] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.srrapiv-administration",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:srrapiv-runtime-cpp",
+          "interaction": "inspect"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:srrapiv.coverage.assess"
+      ],
+      "mutability": "read_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.srrapiv.request.v1"
+      ],
+      "output_protocols": [
+        "symphony.srrapiv.result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.srrapiv.result.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:sqv.rithmic.runtime.attempts",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl sqv rithmic runtime attempts [--input VALUE] [--json] [--prefix VALUE] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.srrapiv-administration",
+          "interaction": "recover"
+        },
+        {
+          "feature_id": "ssfv:symphony:srrapiv-runtime-cpp",
+          "interaction": "recover"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:srrapiv.runtime.attempts"
+      ],
+      "mutability": "read_only",
+      "authority_mode": "target_host_permission",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.srrapiv.request.v1"
+      ],
+      "output_protocols": [
+        "symphony.srrapiv.result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.srrapiv.result.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:sqv.rithmic.runtime.events",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl sqv rithmic runtime events [--input VALUE] [--json] [--prefix VALUE] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.srrapiv-administration",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:srrapiv-runtime-cpp",
+          "interaction": "inspect"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:srrapiv.runtime.events"
+      ],
+      "mutability": "read_only",
+      "authority_mode": "target_host_permission",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.srrapiv.request.v1"
+      ],
+      "output_protocols": [
+        "symphony.srrapiv.result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.srrapiv.result.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:sqv.rithmic.runtime.invoke",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl sqv rithmic runtime invoke [--input VALUE] [--json] [--prefix VALUE] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.srrapiv-administration",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:srrapiv-runtime-cpp",
+          "interaction": "invoke"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:srrapiv.runtime.invoke"
+      ],
+      "mutability": "permission_backed_mutation",
+      "authority_mode": "target_host_permission",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.srrapiv.request.v1"
+      ],
+      "output_protocols": [
+        "symphony.srrapiv.result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.srrapiv.result.v1"
+      ],
+      "recovery_command_id": "qxcmd:symphony:sqv.rithmic.runtime.attempts",
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:sqv.rithmic.runtime.start",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl sqv rithmic runtime start [--input VALUE] [--json] [--prefix VALUE] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.srrapiv-administration",
+          "interaction": "lifecycle"
+        },
+        {
+          "feature_id": "ssfv:symphony:srrapiv-runtime-cpp",
+          "interaction": "lifecycle"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:srrapiv.runtime.start"
+      ],
+      "mutability": "permission_backed_mutation",
+      "authority_mode": "target_host_permission",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.srrapiv.request.v1"
+      ],
+      "output_protocols": [
+        "symphony.srrapiv.result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.srrapiv.result.v1"
+      ],
+      "recovery_command_id": "qxcmd:symphony:sqv.rithmic.runtime.status",
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:sqv.rithmic.runtime.status",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl sqv rithmic runtime status [--input VALUE] [--json] [--prefix VALUE] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.srrapiv-administration",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:srrapiv-runtime-cpp",
+          "interaction": "inspect"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:srrapiv.runtime.status"
+      ],
+      "mutability": "read_only",
+      "authority_mode": "target_host_permission",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.srrapiv.request.v1"
+      ],
+      "output_protocols": [
+        "symphony.srrapiv.result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.srrapiv.result.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:sqv.rithmic.runtime.stop",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl sqv rithmic runtime stop [--input VALUE] [--json] [--prefix VALUE] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.srrapiv-administration",
+          "interaction": "lifecycle"
+        },
+        {
+          "feature_id": "ssfv:symphony:srrapiv-runtime-cpp",
+          "interaction": "lifecycle"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:srrapiv.runtime.stop"
+      ],
+      "mutability": "permission_backed_mutation",
+      "authority_mode": "target_host_permission",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.srrapiv.request.v1"
+      ],
+      "output_protocols": [
+        "symphony.srrapiv.result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.srrapiv.result.v1"
+      ],
+      "recovery_command_id": "qxcmd:symphony:sqv.rithmic.runtime.status",
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:sqv.rithmic.schema",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl sqv rithmic schema [--json] [--operation VALUE] [--prefix VALUE] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.srrapiv-administration",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:srrapiv-runtime-cpp",
+          "interaction": "discover"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [],
+      "mutability": "read_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [],
+      "output_protocols": [
+        "symphony.qxctl.srrapiv-schema.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.qxctl.srrapiv-schema.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:sqv.rithmic.template",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl sqv rithmic template [--json] [--operation VALUE] [--prefix VALUE] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.srrapiv-administration",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:srrapiv-runtime-cpp",
+          "interaction": "discover"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [],
+      "mutability": "read_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [],
+      "output_protocols": [
+        "symphony.qxctl.srrapiv-template.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.qxctl.srrapiv-template.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
       "command_id": "qxcmd:symphony:sqv.schema",
       "status": "experimental",
       "introduced_in": "0.1.0-dev",
@@ -21569,5 +22068,5 @@
       "json_output": true
     }
   ],
-  "registry_digest": "sha256:baded84e0d6262178fa26094abaebe5dd195fee9b0996cc5b206d68b63ac7711"
+  "registry_digest": "sha256:c99468bb69ed28ba1ba6c7ab3506f9e7608adcdc43db5a5c2a110752e070cd46"
 }
