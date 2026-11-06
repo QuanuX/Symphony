@@ -3,16 +3,16 @@
   "baseline_commit": "4499b25170fc958d9f15f2c8d9446878060d3b78",
   "baseline_note": "Prior main commit before this dependency-alignment change; source_inputs binds the projected source bytes. This is not a claim to be the final commit or a release authorization.",
   "scope": {
-    "component_root_count": 69,
-    "module_root_count": 58,
+    "component_root_count": 70,
+    "module_root_count": 59,
     "library_root_count": 4,
     "tool_root_count": 7,
-    "native_component_count": 57,
-    "native_installable_count": 56,
-    "required_profile_native_package_count": 54,
+    "native_component_count": 58,
+    "native_installable_count": 57,
+    "required_profile_native_package_count": 55,
     "legacy_duckdb_package_count": 2,
     "go_module_count": 8,
-    "owner_interface_count": 23,
+    "owner_interface_count": 24,
     "release_approval": "L01 remains separate; this inventory includes implemented components, authoring/shared support and an unimplemented proposal.",
     "required_platforms": [
       "Apple Silicon macOS",
@@ -437,6 +437,12 @@
       "category": "tools",
       "disposition": "native_cmake_root",
       "evidence": "tools/symphony-validator/CMakeLists.txt"
+    },
+    {
+      "path": "modules/srrapiv-runtime-cpp",
+      "category": "modules",
+      "disposition": "native_cmake_root",
+      "evidence": "modules/srrapiv-runtime-cpp/CMakeLists.txt"
     }
   ],
   "native_components": [
@@ -3414,6 +3420,40 @@
       "allowed_shared_implementation_sources": [],
       "allowed_test_implementation_sources": [],
       "qualification_group": "knowledge"
+    },
+    {
+      "component_id": "srrapiv-runtime-cpp",
+      "path": "modules/srrapiv-runtime-cpp",
+      "project_version": "0.1.0",
+      "package_release_version": "0.1.0-dev",
+      "installed_options": {
+        "SYMPHONY_SRRAPIV_INSTALLED": "ON",
+        "SYMPHONY_SRRAPIV_WITH_RAPI": "OFF"
+      },
+      "artifact_targets": [
+        "srrapiv-core",
+        "symphony-srrapiv",
+        "srrapiv-vendor-codegen"
+      ],
+      "first_party_sdk_dependencies": [
+        {
+          "package": "SymphonyKnowledgeVectorEngine",
+          "version": "0.2.0",
+          "target": "Symphony::KnowledgeVectorEngine",
+          "path": "libraries/knowledge-vector-engine-cpp",
+          "scope": "runtime",
+          "exact": true
+        }
+      ],
+      "dependency_paths_in_build_order": [
+        "libraries/knowledge-vector-engine-cpp"
+      ],
+      "exported_packages": [],
+      "installable": true,
+      "installed_sdk_consumer_checks": [],
+      "allowed_shared_implementation_sources": [],
+      "allowed_test_implementation_sources": [],
+      "qualification_group": "quantitative"
     }
   ],
   "native_build_order": [
@@ -3471,6 +3511,7 @@
     "modules/sqpv-inspection-engine",
     "modules/sqtv-integer-conversion-cpp",
     "modules/sqtv-conversion-engine",
+    "modules/srrapiv-runtime-cpp",
     "modules/ssfv-engine",
     "tools/authoring-cpp",
     "tools/symphony-validator"
@@ -7223,6 +7264,14 @@
       "module_id": "sqtv-conversion-engine",
       "owner_interface": "modules/sqtv-conversion-engine/OWNER-INTERFACE.json",
       "canonical_definition_digest": "sha256:e3a711bbb26a4683082be8be8132c9fbbbeecd56ca0cdd634525b1254c6ad4c6"
+    },
+    {
+      "symbol": "SRRAPIVVersion",
+      "version": "0.1.0-dev",
+      "evidence": "tools/qxctl/internal/knowledgeengine/srrapiv.go:16",
+      "module_id": "srrapiv-runtime-cpp",
+      "owner_interface": "modules/srrapiv-runtime-cpp/OWNER-INTERFACE.json",
+      "canonical_definition_digest": "sha256:bae05c8868e997dba42376daa29c17ff5ec275e26e8cff712226a0de6a7f1d46"
     }
   ],
   "owner_interfaces": [
@@ -9538,6 +9587,115 @@
         "owner_interface": "share/symphony/contracts/sqtv-conversion-engine/0.1.0-dev/OWNER-INTERFACE.json",
         "schema_directory": "share/symphony/schemas/sqtv-conversion-engine/0.1.0-dev"
       }
+    },
+    {
+      "path": "modules/srrapiv-runtime-cpp/OWNER-INTERFACE.json",
+      "protocol": "symphony.shv.owner-interface.v2",
+      "module_id": "srrapiv-runtime-cpp",
+      "engine_id": "symphony-srrapiv",
+      "current_package_version": "0.1.0-dev",
+      "domains": null,
+      "releases": {
+        "0.1.0-dev": [
+          "catalog_inspect",
+          "binding_validate",
+          "binding_compare",
+          "coverage_assess",
+          "api_describe",
+          "runtime_start",
+          "runtime_status",
+          "runtime_invoke",
+          "runtime_events",
+          "runtime_stop",
+          "runtime_attempts"
+        ]
+      },
+      "operation_count": 11,
+      "operation_protocols": [
+        {
+          "name": "catalog_inspect",
+          "introduced_in": null,
+          "input_protocol": "symphony.srrapiv.request.v1",
+          "output_protocol": "symphony.srrapiv.result.v1"
+        },
+        {
+          "name": "binding_validate",
+          "introduced_in": null,
+          "input_protocol": "symphony.srrapiv.request.v1",
+          "output_protocol": "symphony.srrapiv.result.v1"
+        },
+        {
+          "name": "binding_compare",
+          "introduced_in": null,
+          "input_protocol": "symphony.srrapiv.request.v1",
+          "output_protocol": "symphony.srrapiv.result.v1"
+        },
+        {
+          "name": "coverage_assess",
+          "introduced_in": null,
+          "input_protocol": "symphony.srrapiv.request.v1",
+          "output_protocol": "symphony.srrapiv.result.v1"
+        },
+        {
+          "name": "api_describe",
+          "introduced_in": null,
+          "input_protocol": "symphony.srrapiv.request.v1",
+          "output_protocol": "symphony.srrapiv.result.v1"
+        },
+        {
+          "name": "runtime_start",
+          "introduced_in": null,
+          "input_protocol": "symphony.srrapiv.request.v1",
+          "output_protocol": "symphony.srrapiv.result.v1"
+        },
+        {
+          "name": "runtime_status",
+          "introduced_in": null,
+          "input_protocol": "symphony.srrapiv.request.v1",
+          "output_protocol": "symphony.srrapiv.result.v1"
+        },
+        {
+          "name": "runtime_invoke",
+          "introduced_in": null,
+          "input_protocol": "symphony.srrapiv.request.v1",
+          "output_protocol": "symphony.srrapiv.result.v1"
+        },
+        {
+          "name": "runtime_events",
+          "introduced_in": null,
+          "input_protocol": "symphony.srrapiv.request.v1",
+          "output_protocol": "symphony.srrapiv.result.v1"
+        },
+        {
+          "name": "runtime_stop",
+          "introduced_in": null,
+          "input_protocol": "symphony.srrapiv.request.v1",
+          "output_protocol": "symphony.srrapiv.result.v1"
+        },
+        {
+          "name": "runtime_attempts",
+          "introduced_in": null,
+          "input_protocol": "symphony.srrapiv.request.v1",
+          "output_protocol": "symphony.srrapiv.result.v1"
+        }
+      ],
+      "contract_versions": [
+        "modules/srrapiv-runtime-cpp/SPEC.md@v1",
+        "symphony.srrapiv.request.v1",
+        "symphony.srrapiv.result.v1"
+      ],
+      "schemas": [
+        "modules/srrapiv-runtime-cpp/schemas/v1/srrapiv.schema.json",
+        "modules/srrapiv-runtime-cpp/schemas/v1/srrapiv.templates.json"
+      ],
+      "schema_catalog": null,
+      "embedded_dependencies": [],
+      "version_evidence": "modules/srrapiv-runtime-cpp/OWNER-INTERFACE.json",
+      "installed_resource_layout": {
+        "receipt": "share/symphony/receipts/srrapiv-runtime-cpp/0.1.0-dev/install-receipt.json",
+        "owner_interface": "share/symphony/contracts/srrapiv-runtime-cpp/0.1.0-dev/OWNER-INTERFACE.json",
+        "schema_directory": "share/symphony/schemas/srrapiv-runtime-cpp/0.1.0-dev"
+      }
     }
   ],
   "schema_catalog": {
@@ -9545,7 +9703,7 @@
     "records": [
       {
         "path": "cmake/mvp-release-identities.json",
-        "sha256": "c19617f12abc41a7a8cd5a7dab1031c9048daf799570b21b961372a0019694f3",
+        "sha256": "8dc8321b071792fe3a2debef3ceb36cc87b27eb42b268ff8c9d78f5febad5ba9",
         "schema_ids": [],
         "schema_dialect": null,
         "protocol": "symphony.mvp.release-identities.v1",
@@ -9557,7 +9715,7 @@
       },
       {
         "path": "knowledge/FEATURE-ADMINISTRATION-PROFILE.json",
-        "sha256": "3bce382da6b70fae1b588333d77ddb0424087da5583359fd4fcdb9421f8e541b",
+        "sha256": "bcfaee59bf13b95848fd9e9c01a17ba3f1ad1d8e57172d638444b59e18204571",
         "schema_ids": [],
         "schema_dialect": null,
         "protocol": "symphony.knowledge.feature-administration-profile.v1",
@@ -16147,7 +16305,7 @@
       },
       {
         "path": "tools/qxctl/COMMANDS.json",
-        "sha256": "6b161bc7652f5b01f04f41c18efec56c5a4353b32f6e29680d7cb3b284dfe51a",
+        "sha256": "9f51b14922c873bbf6690c0fb574c1af80c92a3b6c99fd3c8707c9455ff3f63f",
         "schema_ids": [],
         "schema_dialect": null,
         "protocol": "symphony.qxctl.command-registry.v1",
@@ -16520,6 +16678,66 @@
         "test_fixture": true,
         "historical_or_example": false,
         "installation_scope": "excluded_test_or_example"
+      },
+      {
+        "path": "modules/srrapiv-runtime-cpp/OWNER-INTERFACE.json",
+        "sha256": "3eafa546f7f7c9ab0f7a658f8e704fb63f8c6d5bc908f11f3d7587eb23f68f50",
+        "schema_ids": [],
+        "schema_dialect": null,
+        "protocol": "symphony.shv.owner-interface.v2",
+        "format_version": null,
+        "kind": "resource",
+        "test_fixture": false,
+        "historical_or_example": false,
+        "installation_scope": "source_catalog_not_installation_assertion"
+      },
+      {
+        "path": "modules/srrapiv-runtime-cpp/schemas/v1/srrapiv.schema.json",
+        "sha256": "25d0ddadf603c0cdbc9169f90052ce8e6fff672505231e8e356b54220f7f3069",
+        "schema_ids": [],
+        "schema_dialect": null,
+        "protocol": null,
+        "format_version": null,
+        "kind": "schema",
+        "test_fixture": false,
+        "historical_or_example": false,
+        "installation_scope": "source_catalog_not_installation_assertion"
+      },
+      {
+        "path": "modules/srrapiv-runtime-cpp/schemas/v1/srrapiv.templates.json",
+        "sha256": "cc301ff28c310dbf8ed22561ceb4c03b9cff8d5da5fdf1b67d6464fd3147e947",
+        "schema_ids": [],
+        "schema_dialect": null,
+        "protocol": null,
+        "format_version": null,
+        "kind": "resource",
+        "test_fixture": false,
+        "historical_or_example": false,
+        "installation_scope": "source_catalog_not_installation_assertion"
+      },
+      {
+        "path": "modules/srrapiv-runtime-cpp/src/vendor_surface.json",
+        "sha256": "c6d2de2cc0fbe6ef42e6a4cebc062c1abfc42ee70575c058f1d35535cfe55dff",
+        "schema_ids": [],
+        "schema_dialect": null,
+        "protocol": null,
+        "format_version": null,
+        "kind": "resource",
+        "test_fixture": false,
+        "historical_or_example": false,
+        "installation_scope": "source_catalog_not_installation_assertion"
+      },
+      {
+        "path": "modules/srrapiv-runtime-cpp/tools/vendor_schema_13_7.json",
+        "sha256": "43557ef268c9b5a0be179b3ea68751e94768e586ee5cc40f27a4774e439a4afd",
+        "schema_ids": [],
+        "schema_dialect": null,
+        "protocol": null,
+        "format_version": null,
+        "kind": "resource",
+        "test_fixture": false,
+        "historical_or_example": false,
+        "installation_scope": "source_catalog_not_installation_assertion"
       }
     ],
     "nonparseable_source_files": [
@@ -17189,6 +17407,30 @@
         "modules/sbv-engine/include/symphony/sbv/provider.h",
         "modules/sbv-engine/include/symphony/sbv/feedback.h"
       ]
+    },
+    {
+      "id": "Rithmic-R-API-Plus-CPP",
+      "version": "13.7.0.0",
+      "selection": "Optional caller-supplied licensed SDK, disabled in shared qualification. Exact header SHA256 and explicitly selected platform archive closure are bound by the native build; vendor files are not redistributed here. Continued server compatibility and live-provider qualification are separate.",
+      "consumers": [
+        "srrapiv-runtime-cpp"
+      ],
+      "header_sha256": "b996e76fbfe20c7f4d7ba2d645c45cb13d6b19df37d7522125e94e61e74df5b4",
+      "evidence": [
+        "modules/srrapiv-runtime-cpp/CMakeLists.txt",
+        "modules/srrapiv-runtime-cpp/INSTALL.md"
+      ]
+    },
+    {
+      "id": "SRRAPIV-platform-zlib",
+      "version": null,
+      "selection": "SDK-enabled profile only: Apple SDK -lz or Linux ZLIB::ZLIB; exact native dependency closure requires target qualification. SDK-free shared qualification does not link R API+ or zlib.",
+      "consumers": [
+        "srrapiv-runtime-cpp"
+      ],
+      "evidence": [
+        "modules/srrapiv-runtime-cpp/CMakeLists.txt"
+      ]
     }
   ],
   "intentional_frozen_embedded_identities": [
@@ -17366,7 +17608,7 @@
     },
     {
       "path": "cmake/mvp-release-identities.json",
-      "sha256": "c19617f12abc41a7a8cd5a7dab1031c9048daf799570b21b961372a0019694f3"
+      "sha256": "8dc8321b071792fe3a2debef3ceb36cc87b27eb42b268ff8c9d78f5febad5ba9"
     },
     {
       "path": "cmake/notices/CaptureExternal.cmake",
@@ -17414,7 +17656,7 @@
     },
     {
       "path": "knowledge/FEATURE-ADMINISTRATION-PROFILE.json",
-      "sha256": "3bce382da6b70fae1b588333d77ddb0424087da5583359fd4fcdb9421f8e541b"
+      "sha256": "bcfaee59bf13b95848fd9e9c01a17ba3f1ad1d8e57172d638444b59e18204571"
     },
     {
       "path": "knowledge/INVARIANT-OWNERSHIP.json",
@@ -20238,7 +20480,7 @@
     },
     {
       "path": "tools/qxctl/COMMANDS.json",
-      "sha256": "6b161bc7652f5b01f04f41c18efec56c5a4353b32f6e29680d7cb3b284dfe51a"
+      "sha256": "9f51b14922c873bbf6690c0fb574c1af80c92a3b6c99fd3c8707c9455ff3f63f"
     },
     {
       "path": "tools/qxctl/cmd/qxctl/accordare_host.go",
@@ -20486,7 +20728,7 @@
     },
     {
       "path": "tools/qxctl/cmd/qxctl/sqv.go",
-      "sha256": "86f605be24c3ffc2cf773ec323de0bb440dc2ba556e0291c3911bf01ee5fbb41"
+      "sha256": "de3be084172bb2ec786436363efb96f94100b39a20c848722e27d045bd586e1b"
     },
     {
       "path": "tools/qxctl/cmd/qxctl/ssfv.go",
@@ -21303,6 +21545,42 @@
     {
       "path": "tools/symphony-validator/tests/fixtures_vocab_seeds_3/tools/symphony-validator/CMakeLists.txt",
       "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "modules/srrapiv-runtime-cpp/cmake/uninstall.cmake.in",
+      "sha256": "f89cc92ea11a96ddc468b4cdb084e22f2487f6bd07ec6f3ad4fa350032ab7be6"
+    },
+    {
+      "path": "modules/srrapiv-runtime-cpp/CMakeLists.txt",
+      "sha256": "ba0e690886174e0621d0577f79170e39035cd765f5bfe4f51a0851987c51570a"
+    },
+    {
+      "path": "modules/srrapiv-runtime-cpp/OWNER-INTERFACE.json",
+      "sha256": "3eafa546f7f7c9ab0f7a658f8e704fb63f8c6d5bc908f11f3d7587eb23f68f50"
+    },
+    {
+      "path": "modules/srrapiv-runtime-cpp/schemas/v1/srrapiv.schema.json",
+      "sha256": "25d0ddadf603c0cdbc9169f90052ce8e6fff672505231e8e356b54220f7f3069"
+    },
+    {
+      "path": "modules/srrapiv-runtime-cpp/schemas/v1/srrapiv.templates.json",
+      "sha256": "cc301ff28c310dbf8ed22561ceb4c03b9cff8d5da5fdf1b67d6464fd3147e947"
+    },
+    {
+      "path": "modules/srrapiv-runtime-cpp/src/vendor_surface.json",
+      "sha256": "c6d2de2cc0fbe6ef42e6a4cebc062c1abfc42ee70575c058f1d35535cfe55dff"
+    },
+    {
+      "path": "modules/srrapiv-runtime-cpp/tools/vendor_schema_13_7.json",
+      "sha256": "43557ef268c9b5a0be179b3ea68751e94768e586ee5cc40f27a4774e439a4afd"
+    },
+    {
+      "path": "tools/qxctl/internal/knowledgeengine/srrapiv_interface_generated.go",
+      "sha256": "4100da994974c1f6eaee07149e20a573308675377f30c1c85587074a6141b424"
+    },
+    {
+      "path": "tools/qxctl/internal/knowledgeengine/srrapiv.go",
+      "sha256": "c8a39d6993c9ca44c47564539a472f6553ba9cc3a0d6ae63a4875aefc454e0e1"
     }
   ],
   "platform_profile_catalog": "cmake/mvp-platform-profiles.json",

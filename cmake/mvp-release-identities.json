@@ -929,6 +929,17 @@
       "public_go_source_identities": [],
       "publication_status": "not_authorized_by_this_catalog",
       "qualification_scope": "required_ci_profiles"
+    },
+    {
+      "component_id": "srrapiv-runtime-cpp",
+      "path": "modules/srrapiv-runtime-cpp",
+      "kind": "native_package",
+      "package_version": "0.1.0-dev",
+      "sdk_versions": [],
+      "source_runtime_version": null,
+      "public_go_source_identities": [],
+      "publication_status": "not_authorized_by_this_catalog",
+      "qualification_scope": "required_ci_profiles_sdk_free; licensed SDK and live-provider qualification separate"
     }
   ],
   "go_artifacts": [
@@ -1211,6 +1222,14 @@
     },
     {
       "path": "modules/sqtv-conversion-engine/OWNER-INTERFACE.json",
+      "protocol": "symphony.shv.owner-interface.v2",
+      "current_package_version": "0.1.0-dev",
+      "retained_package_versions": [
+        "0.1.0-dev"
+      ]
+    },
+    {
+      "path": "modules/srrapiv-runtime-cpp/OWNER-INTERFACE.json",
       "protocol": "symphony.shv.owner-interface.v2",
       "current_package_version": "0.1.0-dev",
       "retained_package_versions": [

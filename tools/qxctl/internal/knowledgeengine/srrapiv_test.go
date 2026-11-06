@@ -191,18 +191,69 @@ func TestSRRAPIVInstalledNative(t *testing.T) {
 	}
 }
 
-// This exercises the finite process client's process-group cleanup against the
-// real detached resident owner. The fixture must be an offline start config;
-// no SDK initialization, login, subscription or trading method is invoked.
-func TestSRRAPIVInstalledResidentLifecycle(t *testing.T) {
-	prefix, configFile := os.Getenv("SRRAPIV_TEST_PREFIX"), os.Getenv("SRRAPIV_TEST_CONFIG")
-	if prefix == "" || configFile == "" {
-		t.Skip("select the exact native prefix and offline start fixture")
-	}
-	config, err := os.ReadFile(configFile)
+// Build a synthetic binding to the exact selected binary. Discovery is local;
+// all provider/trading admission remains disabled and credentials are absent.
+func srrapivOfflineStartConfig(t *testing.T, prefix string) []byte {
+	t.Helper()
+	response, err := InvokeSRRAPIV(context.Background(), prefix, SRRAPIVVersion, t.TempDir(), "api_describe", []byte(`{"protocol":"symphony.srrapiv.request.v1"}`))
 	if err != nil {
 		t.Fatal(err)
 	}
+	var envelope struct {
+		Result map[string]any `json:"result"`
+	}
+	if err = json.Unmarshal(response.Result, &envelope); err != nil {
+		t.Fatal(err)
+	}
+	api := envelope.Result
+	build, ok := api["runtime_build"].(map[string]any)
+	if !ok {
+		t.Fatal("description lacks runtime build identity")
+	}
+	digest := func(value string) string { return digestBytes([]byte(value)) }
+	seal := func(value map[string]any, field string) {
+		value[field] = digestBytes(srrapivTestJSON(t, value))
+	}
+	artifact := map[string]any{
+		"sdk_version": "13.7.0.0", "product": "rithmic-rapi-plus-cpp",
+		"archive_digest": digest("synthetic-archive"), "header_digest": "sha256:" + api["header_sha256"].(string),
+		"library_digest": digest("synthetic-library"), "adapter_version": SRRAPIVVersion, "adapter_digest": build["adapter_digest"],
+		"platform": map[string]any{"os": build["os"], "architecture": build["architecture"], "compiler": "fixture", "abi": "fixture", "dependency_digest": digest("synthetic-deps")},
+		"contracts": map[string]any{
+			"api_mapping": "rapi-mapping.v1", "control": "srrapiv-control.v1", "event": "srrapiv-event.v1",
+			"state": "state.v1", "journal": "journal.v1", "state_reader": "srrapiv-reader.v1",
+			"readable_state_schemas": []string{"state.v1"}, "readable_journal_schemas": []string{"journal.v1"},
+		},
+		"connection":   map[string]any{"profile_digest": digest("synthetic-profile"), "trust_digest": digest("synthetic-trust")},
+		"capabilities": []string{"getVersion"},
+	}
+	if library, ok := api["selected_library_sha256"].(string); ok {
+		artifact["library_digest"] = "sha256:" + library
+	}
+	seal(artifact, "artifact_id")
+	binding := map[string]any{
+		"schema": "symphony.srrapiv.binding.v1", "artifact_id": artifact["artifact_id"],
+		"strategy_id": "strategy:offline-test", "environment": "offline-test", "account_ref": "account:synthetic",
+		"credential_reference":  map[string]any{"provider_id": "ssiag:provider:synthetic", "resource_id": "credential:absent"},
+		"required_capabilities": []string{"getVersion"}, "required_evidence_scope": "provider_test",
+		"feed_profile_digest": digest("synthetic-feed"), "metadata_digest": digest("synthetic-metadata"),
+	}
+	seal(binding, "binding_id")
+	return srrapivTestJSON(t, map[string]any{
+		"catalog": map[string]any{"schema": "symphony.srrapiv.catalog.v1", "artifacts": []any{artifact}},
+		"binding": binding, "compatibility_evidence": []any{}, "allow_provider_calls": false, "allow_trading": false,
+		"engine": map[string]any{}, "secrets": map[string]any{},
+	})
+}
+
+// Exercise finite-client process-group cleanup against the detached resident.
+// No SDK initialization, login, subscription or trading method is invoked.
+func TestSRRAPIVInstalledResidentLifecycle(t *testing.T) {
+	prefix := os.Getenv("SRRAPIV_TEST_PREFIX")
+	if prefix == "" {
+		t.Skip("select the exact installed native SRRAPIV prefix")
+	}
+	config := srrapivOfflineStartConfig(t, prefix)
 	base := "/tmp"
 	if runtime.GOOS == "darwin" {
 		base = "/private/tmp"

@@ -1,6 +1,6 @@
 # MVP candidate release identities
 
-[mvp-release-identities.json](mvp-release-identities.json) selects candidate identities for all 69 current component roots and all six production Go commands. The dependency projection remains authoritative for current SDK exports, receipts, owner interfaces and immutable public Go source pins. Run `cmake -P cmake/VerifyMVPReleaseIdentities.cmake` to verify their correspondence and retained owner versions.
+[mvp-release-identities.json](mvp-release-identities.json) selects candidate identities for all 70 current component roots and all six production Go commands. The dependency projection remains authoritative for current SDK exports, receipts, owner interfaces and immutable public Go source pins. Run `cmake -P cmake/VerifyMVPReleaseIdentities.cmake` to verify their correspondence and retained owner versions.
 
 The catalog selects identities for build qualification. L01 still approves the shipped capability set; it does not publish a tag or binary, approve a download channel, or activate a provider. A proposal and shared authoring source need no invented runtime package version. The DuckDB recipes select exact upstream files for macOS arm64/amd64 and Linux arm64/amd64. `mvp-platform-profiles.json` records the four required sprint profiles; physical DGX Spark remains optional future evidence.
 
@@ -13,7 +13,7 @@ The catalog selects identities for build qualification. L01 still approves the s
 | sov-stdio-adapter | `0.1.0-dev` | `0.1.0-dev` | Retains the current identity; `--version` reads no transport input. |
 | sov-ssh-adapter | `0.1.0-dev` | `0.1.0-dev` | Retains the current identity; `--version` starts no transport. |
 
-Native package receipt versions, exported SDK versions and exact owner admission lists remain unchanged. Their different numbers serve different contracts. The catalog records all 23 owner declarations, including historical SCV selections. Existing `dev` binaries and the retained SOV `qxctl dev` selection are not silently rewritten. SOV still compares both the selected version and executable digest with the actual serving tool.
+Native package receipt versions, exported SDK versions and exact owner admission lists remain unchanged. Their different numbers serve different contracts. The catalog records all 24 owner declarations, including historical SCV selections. Existing `dev` binaries and the retained SOV `qxctl dev` selection are not silently rewritten. SOV still compares both the selected version and executable digest with the actual serving tool.
 
 `qxctl --version` prints the current command version. `qxctl version --json` reports the `symphony.qxctl.build-info.v1` record, actual Go runtime and target, and executable file digest. A normal unstamped build reports unavailable source fields. A complete, syntactically valid source stamp is labeled `stamped`; that label is not independent verification, publisher trust or release approval. Partial or malformed stamps fail explicitly.
 

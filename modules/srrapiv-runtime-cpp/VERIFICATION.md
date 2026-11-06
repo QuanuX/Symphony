@@ -33,3 +33,11 @@ The checked-in CI workflow declares SDK-free Ubuntu x86_64, Ubuntu ARM64 and mac
 - `tools/README.md`: exact-header regeneration and SDK fixture compilation guidance.
 - `CMakeLists.txt`: native test targets and explicit SDK selection.
 - `.github/workflows/srrapiv.yml`: declared hosted SDK-free checks.
+
+## CI integration follow-up
+
+The initial PR revision `1c688724` passed the dedicated SRRAPIV workflow on Ubuntu x86_64, Ubuntu ARM64 and macOS Intel. Review of its completed runs found 20 failed jobs across the dependency-map, DuckDB and release workflows. Sixteen stopped at the shared component-map coverage check because SRRAPIV had not been registered. Four rejected the three unclassified installation-dependent Go test skips. The release identity catalog also needed the new component and owner before its downstream gate could run.
+
+The correction registers the native dependency, owner, source identities, release candidate and SDK-free native/installed test selections. Its installed build requires SymphonyKnowledgeVectorEngine 0.2.0 EXACT and rejects source fallback. The resident-lifecycle Go test now creates its own synthetic offline binding from local binary discovery: its prior extra configuration requirement could silently skip this test in the dedicated workflow. Provider/trading admission is disabled and no credentials are supplied.
+
+Focused follow-up checks passed on Darwin Intel: all three SDK-free native tests; ten top-level SRRAPIV Go tests and six subtests under the race detector with zero skips; the three release-result regression tests; exact imported-SDK proof, missing-SDK refusal, installed receipt validation and CTest discovery. Dependency-source, release-manifest and candidate-identity verification passed with 70 roots and 24 owner declarations. The repository validator retained 18,211 passes, zero violations and four historical-path warnings. This follow-up used Clang 23.1.2 and Go 1.27.1 locally; hosted jobs retain their declared Go 1.26.5 toolchain. The complete shared campaigns and hosted reruns are not claimed by these focused checks.

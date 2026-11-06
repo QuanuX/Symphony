@@ -9,6 +9,8 @@ ctest --test-dir build/srrapiv --output-on-failure
 cmake --install build/srrapiv --prefix /absolute/selected/prefix
 ```
 
+For an independent installed build, select `-DSYMPHONY_SRRAPIV_INSTALLED=ON` and `-DCMAKE_PREFIX_PATH=/absolute/foundation/prefix`. This requires the exact installed SymphonyKnowledgeVectorEngine 0.2.0 SDK and refuses source fallback. Shared qualification uses this profile with `SYMPHONY_SRRAPIV_WITH_RAPI=OFF`.
+
 For the actual C++ bridge, obtain the SDK under your applicable vendor agreement, extract it outside the source tree and explicitly select its platform lane.
 
 ```sh
