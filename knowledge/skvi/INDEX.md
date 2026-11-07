@@ -25198,3 +25198,679 @@ automatic nested fitting and cross-run holdout history remain unimplemented.
 - deferred_projections: binary publication and package-provider automation
 - notes: Local consistency does not authenticate authority, signatures or external availability; existing Go history is unchanged.
 - status: canonical
+
+### SRRAPIV ARCHITECTURE.md — knowledge/sqv/srrapiv/ARCHITECTURE.md
+- path: `knowledge/sqv/srrapiv/ARCHITECTURE.md`
+- title: SRRAPIV ARCHITECTURE.md
+- surface_type: sovereign Rithmic contract, implementation or test
+- truth_role: Exact native implementation and scoped evidence
+- owner: SRRAPIV maintainers
+- scope: Dedicated non-Windows R API+ C++ integration and exact-version administration.
+- relationships: governed_by -> `knowledge/sqv/srrapiv/SPEC.md`
+- consumers: Native callers, qxctl, reviewers and qualification tools
+- deferred_projections: Provider conformance and exact live deployment qualification
+- notes: Declared coverage and local checks do not establish provider entitlement, production acceptance or unknown-outcome replay safety.
+- status: canonical
+
+### SRRAPIV BINDINGS.md — knowledge/sqv/srrapiv/BINDINGS.md
+- path: `knowledge/sqv/srrapiv/BINDINGS.md`
+- title: SRRAPIV BINDINGS.md
+- surface_type: sovereign Rithmic contract, implementation or test
+- truth_role: Exact native implementation and scoped evidence
+- owner: SRRAPIV maintainers
+- scope: Dedicated non-Windows R API+ C++ integration and exact-version administration.
+- relationships: governed_by -> `knowledge/sqv/srrapiv/SPEC.md`
+- consumers: Native callers, qxctl, reviewers and qualification tools
+- deferred_projections: Provider conformance and exact live deployment qualification
+- notes: Declared coverage and local checks do not establish provider entitlement, production acceptance or unknown-outcome replay safety.
+- status: canonical
+
+### SRRAPIV INTENT.md — knowledge/sqv/srrapiv/INTENT.md
+- path: `knowledge/sqv/srrapiv/INTENT.md`
+- title: SRRAPIV INTENT.md
+- surface_type: sovereign Rithmic contract, implementation or test
+- truth_role: Exact native implementation and scoped evidence
+- owner: SRRAPIV maintainers
+- scope: Dedicated non-Windows R API+ C++ integration and exact-version administration.
+- relationships: governed_by -> `knowledge/sqv/srrapiv/SPEC.md`
+- consumers: Native callers, qxctl, reviewers and qualification tools
+- deferred_projections: Provider conformance and exact live deployment qualification
+- notes: Declared coverage and local checks do not establish provider entitlement, production acceptance or unknown-outcome replay safety.
+- status: canonical
+
+### SRRAPIV MAINTENANCE.md — knowledge/sqv/srrapiv/MAINTENANCE.md
+- path: `knowledge/sqv/srrapiv/MAINTENANCE.md`
+- title: SRRAPIV MAINTENANCE.md
+- surface_type: sovereign Rithmic contract, implementation or test
+- truth_role: Exact native implementation and scoped evidence
+- owner: SRRAPIV maintainers
+- scope: Dedicated non-Windows R API+ C++ integration and exact-version administration.
+- relationships: governed_by -> `knowledge/sqv/srrapiv/SPEC.md`
+- consumers: Native callers, qxctl, reviewers and qualification tools
+- deferred_projections: Provider conformance and exact live deployment qualification
+- notes: Declared coverage and local checks do not establish provider entitlement, production acceptance or unknown-outcome replay safety.
+- status: canonical
+
+### SRRAPIV MANIFEST.md — knowledge/sqv/srrapiv/MANIFEST.md
+- path: `knowledge/sqv/srrapiv/MANIFEST.md`
+- title: SRRAPIV MANIFEST.md
+- surface_type: sovereign Rithmic contract, implementation or test
+- truth_role: Exact native implementation and scoped evidence
+- owner: SRRAPIV maintainers
+- scope: Dedicated non-Windows R API+ C++ integration and exact-version administration.
+- relationships: governed_by -> `knowledge/sqv/srrapiv/SPEC.md`
+- consumers: Native callers, qxctl, reviewers and qualification tools
+- deferred_projections: Provider conformance and exact live deployment qualification
+- notes: Declared coverage and local checks do not establish provider entitlement, production acceptance or unknown-outcome replay safety.
+- status: canonical
+
+### SRRAPIV SKILL.md — knowledge/sqv/srrapiv/SKILL.md
+- path: `knowledge/sqv/srrapiv/SKILL.md`
+- title: SRRAPIV SKILL.md
+- surface_type: sovereign Rithmic contract, implementation or test
+- truth_role: Exact native implementation and scoped evidence
+- owner: SRRAPIV maintainers
+- scope: Dedicated non-Windows R API+ C++ integration and exact-version administration.
+- relationships: governed_by -> `knowledge/sqv/srrapiv/SPEC.md`
+- consumers: Native callers, qxctl, reviewers and qualification tools
+- deferred_projections: Provider conformance and exact live deployment qualification
+- notes: Declared coverage and local checks do not establish provider entitlement, production acceptance or unknown-outcome replay safety.
+- status: canonical
+
+### SRRAPIV SPEC.md — knowledge/sqv/srrapiv/SPEC.md
+- path: `knowledge/sqv/srrapiv/SPEC.md`
+- title: SRRAPIV SPEC.md
+- surface_type: sovereign Rithmic contract, implementation or test
+- truth_role: Exact native implementation and scoped evidence
+- owner: SRRAPIV maintainers
+- scope: Dedicated non-Windows R API+ C++ integration and exact-version administration.
+- relationships: governed_by -> `knowledge/sqv/srrapiv/SPEC.md`
+- consumers: Native callers, qxctl, reviewers and qualification tools
+- deferred_projections: Provider conformance and exact live deployment qualification
+- notes: Declared coverage and local checks do not establish provider entitlement, production acceptance or unknown-outcome replay safety.
+- status: canonical
+
+### SRRAPIV CMakeLists.txt — modules/srrapiv-runtime-cpp/CMakeLists.txt
+- path: `modules/srrapiv-runtime-cpp/CMakeLists.txt`
+- title: SRRAPIV CMakeLists.txt
+- surface_type: sovereign Rithmic contract, implementation or test
+- truth_role: Exact native implementation and scoped evidence
+- owner: SRRAPIV maintainers
+- scope: Dedicated non-Windows R API+ C++ integration and exact-version administration.
+- relationships: governed_by -> `modules/srrapiv-runtime-cpp/SPEC.md`
+- consumers: Native callers, qxctl, reviewers and qualification tools
+- deferred_projections: Provider conformance and exact live deployment qualification
+- notes: Declared coverage and local checks do not establish provider entitlement, production acceptance or unknown-outcome replay safety.
+- status: canonical
+
+### SRRAPIV FEATURES.md — modules/srrapiv-runtime-cpp/FEATURES.md
+- path: `modules/srrapiv-runtime-cpp/FEATURES.md`
+- title: SRRAPIV FEATURES.md
+- surface_type: sovereign Rithmic contract, implementation or test
+- truth_role: Exact native implementation and scoped evidence
+- owner: SRRAPIV maintainers
+- scope: Dedicated non-Windows R API+ C++ integration and exact-version administration.
+- relationships: governed_by -> `modules/srrapiv-runtime-cpp/SPEC.md`
+- consumers: Native callers, qxctl, reviewers and qualification tools
+- deferred_projections: Provider conformance and exact live deployment qualification
+- notes: Declared coverage and local checks do not establish provider entitlement, production acceptance or unknown-outcome replay safety.
+- status: canonical
+
+### SRRAPIV INSTALL.md — modules/srrapiv-runtime-cpp/INSTALL.md
+- path: `modules/srrapiv-runtime-cpp/INSTALL.md`
+- title: SRRAPIV INSTALL.md
+- surface_type: sovereign Rithmic contract, implementation or test
+- truth_role: Exact native implementation and scoped evidence
+- owner: SRRAPIV maintainers
+- scope: Dedicated non-Windows R API+ C++ integration and exact-version administration.
+- relationships: governed_by -> `modules/srrapiv-runtime-cpp/SPEC.md`
+- consumers: Native callers, qxctl, reviewers and qualification tools
+- deferred_projections: Provider conformance and exact live deployment qualification
+- notes: Declared coverage and local checks do not establish provider entitlement, production acceptance or unknown-outcome replay safety.
+- status: canonical
+
+### SRRAPIV INTENT.md — modules/srrapiv-runtime-cpp/INTENT.md
+- path: `modules/srrapiv-runtime-cpp/INTENT.md`
+- title: SRRAPIV INTENT.md
+- surface_type: sovereign Rithmic contract, implementation or test
+- truth_role: Exact native implementation and scoped evidence
+- owner: SRRAPIV maintainers
+- scope: Dedicated non-Windows R API+ C++ integration and exact-version administration.
+- relationships: governed_by -> `modules/srrapiv-runtime-cpp/SPEC.md`
+- consumers: Native callers, qxctl, reviewers and qualification tools
+- deferred_projections: Provider conformance and exact live deployment qualification
+- notes: Declared coverage and local checks do not establish provider entitlement, production acceptance or unknown-outcome replay safety.
+- status: canonical
+
+### SRRAPIV MANIFEST.md — modules/srrapiv-runtime-cpp/MANIFEST.md
+- path: `modules/srrapiv-runtime-cpp/MANIFEST.md`
+- title: SRRAPIV MANIFEST.md
+- surface_type: sovereign Rithmic contract, implementation or test
+- truth_role: Exact native implementation and scoped evidence
+- owner: SRRAPIV maintainers
+- scope: Dedicated non-Windows R API+ C++ integration and exact-version administration.
+- relationships: governed_by -> `modules/srrapiv-runtime-cpp/SPEC.md`
+- consumers: Native callers, qxctl, reviewers and qualification tools
+- deferred_projections: Provider conformance and exact live deployment qualification
+- notes: Declared coverage and local checks do not establish provider entitlement, production acceptance or unknown-outcome replay safety.
+- status: canonical
+
+### SRRAPIV OWNER-INTERFACE.json — modules/srrapiv-runtime-cpp/OWNER-INTERFACE.json
+- path: `modules/srrapiv-runtime-cpp/OWNER-INTERFACE.json`
+- title: SRRAPIV OWNER-INTERFACE.json
+- surface_type: sovereign Rithmic contract, implementation or test
+- truth_role: Exact native implementation and scoped evidence
+- owner: SRRAPIV maintainers
+- scope: Dedicated non-Windows R API+ C++ integration and exact-version administration.
+- relationships: governed_by -> `modules/srrapiv-runtime-cpp/SPEC.md`
+- consumers: Native callers, qxctl, reviewers and qualification tools
+- deferred_projections: Provider conformance and exact live deployment qualification
+- notes: Declared coverage and local checks do not establish provider entitlement, production acceptance or unknown-outcome replay safety.
+- status: canonical
+
+### SRRAPIV SKILL.md — modules/srrapiv-runtime-cpp/SKILL.md
+- path: `modules/srrapiv-runtime-cpp/SKILL.md`
+- title: SRRAPIV SKILL.md
+- surface_type: sovereign Rithmic contract, implementation or test
+- truth_role: Exact native implementation and scoped evidence
+- owner: SRRAPIV maintainers
+- scope: Dedicated non-Windows R API+ C++ integration and exact-version administration.
+- relationships: governed_by -> `modules/srrapiv-runtime-cpp/SPEC.md`
+- consumers: Native callers, qxctl, reviewers and qualification tools
+- deferred_projections: Provider conformance and exact live deployment qualification
+- notes: Declared coverage and local checks do not establish provider entitlement, production acceptance or unknown-outcome replay safety.
+- status: canonical
+
+### SRRAPIV SPEC.md — modules/srrapiv-runtime-cpp/SPEC.md
+- path: `modules/srrapiv-runtime-cpp/SPEC.md`
+- title: SRRAPIV SPEC.md
+- surface_type: sovereign Rithmic contract, implementation or test
+- truth_role: Exact native implementation and scoped evidence
+- owner: SRRAPIV maintainers
+- scope: Dedicated non-Windows R API+ C++ integration and exact-version administration.
+- relationships: governed_by -> `modules/srrapiv-runtime-cpp/SPEC.md`
+- consumers: Native callers, qxctl, reviewers and qualification tools
+- deferred_projections: Provider conformance and exact live deployment qualification
+- notes: Declared coverage and local checks do not establish provider entitlement, production acceptance or unknown-outcome replay safety.
+- status: canonical
+
+### SRRAPIV srrapiv.schema.json — modules/srrapiv-runtime-cpp/schemas/v1/srrapiv.schema.json
+- path: `modules/srrapiv-runtime-cpp/schemas/v1/srrapiv.schema.json`
+- title: SRRAPIV srrapiv.schema.json
+- surface_type: sovereign Rithmic contract, implementation or test
+- truth_role: Exact native implementation and scoped evidence
+- owner: SRRAPIV maintainers
+- scope: Dedicated non-Windows R API+ C++ integration and exact-version administration.
+- relationships: governed_by -> `modules/srrapiv-runtime-cpp/SPEC.md`
+- consumers: Native callers, qxctl, reviewers and qualification tools
+- deferred_projections: Provider conformance and exact live deployment qualification
+- notes: Declared coverage and local checks do not establish provider entitlement, production acceptance or unknown-outcome replay safety.
+- status: canonical
+
+### SRRAPIV srrapiv.templates.json — modules/srrapiv-runtime-cpp/schemas/v1/srrapiv.templates.json
+- path: `modules/srrapiv-runtime-cpp/schemas/v1/srrapiv.templates.json`
+- title: SRRAPIV srrapiv.templates.json
+- surface_type: sovereign Rithmic contract, implementation or test
+- truth_role: Exact native implementation and scoped evidence
+- owner: SRRAPIV maintainers
+- scope: Dedicated non-Windows R API+ C++ integration and exact-version administration.
+- relationships: governed_by -> `modules/srrapiv-runtime-cpp/SPEC.md`
+- consumers: Native callers, qxctl, reviewers and qualification tools
+- deferred_projections: Provider conformance and exact live deployment qualification
+- notes: Declared coverage and local checks do not establish provider entitlement, production acceptance or unknown-outcome replay safety.
+- status: canonical
+
+### SRRAPIV catalog.cpp — modules/srrapiv-runtime-cpp/src/catalog.cpp
+- path: `modules/srrapiv-runtime-cpp/src/catalog.cpp`
+- title: SRRAPIV catalog.cpp
+- surface_type: sovereign Rithmic contract, implementation or test
+- truth_role: Exact native implementation and scoped evidence
+- owner: SRRAPIV maintainers
+- scope: Dedicated non-Windows R API+ C++ integration and exact-version administration.
+- relationships: governed_by -> `modules/srrapiv-runtime-cpp/SPEC.md`
+- consumers: Native callers, qxctl, reviewers and qualification tools
+- deferred_projections: Provider conformance and exact live deployment qualification
+- notes: Declared coverage and local checks do not establish provider entitlement, production acceptance or unknown-outcome replay safety.
+- status: canonical
+
+### SRRAPIV catalog.hpp — modules/srrapiv-runtime-cpp/src/catalog.hpp
+- path: `modules/srrapiv-runtime-cpp/src/catalog.hpp`
+- title: SRRAPIV catalog.hpp
+- surface_type: sovereign Rithmic contract, implementation or test
+- truth_role: Exact native implementation and scoped evidence
+- owner: SRRAPIV maintainers
+- scope: Dedicated non-Windows R API+ C++ integration and exact-version administration.
+- relationships: governed_by -> `modules/srrapiv-runtime-cpp/SPEC.md`
+- consumers: Native callers, qxctl, reviewers and qualification tools
+- deferred_projections: Provider conformance and exact live deployment qualification
+- notes: Declared coverage and local checks do not establish provider entitlement, production acceptance or unknown-outcome replay safety.
+- status: canonical
+
+### SRRAPIV main.cpp — modules/srrapiv-runtime-cpp/src/main.cpp
+- path: `modules/srrapiv-runtime-cpp/src/main.cpp`
+- title: SRRAPIV main.cpp
+- surface_type: sovereign Rithmic contract, implementation or test
+- truth_role: Exact native implementation and scoped evidence
+- owner: SRRAPIV maintainers
+- scope: Dedicated non-Windows R API+ C++ integration and exact-version administration.
+- relationships: governed_by -> `modules/srrapiv-runtime-cpp/SPEC.md`
+- consumers: Native callers, qxctl, reviewers and qualification tools
+- deferred_projections: Provider conformance and exact live deployment qualification
+- notes: Declared coverage and local checks do not establish provider entitlement, production acceptance or unknown-outcome replay safety.
+- status: canonical
+
+### SRRAPIV private_io.hpp — modules/srrapiv-runtime-cpp/src/private_io.hpp
+- path: `modules/srrapiv-runtime-cpp/src/private_io.hpp`
+- title: SRRAPIV private_io.hpp
+- surface_type: sovereign Rithmic contract, implementation or test
+- truth_role: Exact native implementation and scoped evidence
+- owner: SRRAPIV maintainers
+- scope: Dedicated non-Windows R API+ C++ integration and exact-version administration.
+- relationships: governed_by -> `modules/srrapiv-runtime-cpp/SPEC.md`
+- consumers: Native callers, qxctl, reviewers and qualification tools
+- deferred_projections: Provider conformance and exact live deployment qualification
+- notes: Declared coverage and local checks do not establish provider entitlement, production acceptance or unknown-outcome replay safety.
+- status: canonical
+
+### SRRAPIV runtime.cpp — modules/srrapiv-runtime-cpp/src/runtime.cpp
+- path: `modules/srrapiv-runtime-cpp/src/runtime.cpp`
+- title: SRRAPIV runtime.cpp
+- surface_type: sovereign Rithmic contract, implementation or test
+- truth_role: Exact native implementation and scoped evidence
+- owner: SRRAPIV maintainers
+- scope: Dedicated non-Windows R API+ C++ integration and exact-version administration.
+- relationships: governed_by -> `modules/srrapiv-runtime-cpp/SPEC.md`
+- consumers: Native callers, qxctl, reviewers and qualification tools
+- deferred_projections: Provider conformance and exact live deployment qualification
+- notes: Declared coverage and local checks do not establish provider entitlement, production acceptance or unknown-outcome replay safety.
+- status: canonical
+
+### SRRAPIV runtime.hpp — modules/srrapiv-runtime-cpp/src/runtime.hpp
+- path: `modules/srrapiv-runtime-cpp/src/runtime.hpp`
+- title: SRRAPIV runtime.hpp
+- surface_type: sovereign Rithmic contract, implementation or test
+- truth_role: Exact native implementation and scoped evidence
+- owner: SRRAPIV maintainers
+- scope: Dedicated non-Windows R API+ C++ integration and exact-version administration.
+- relationships: governed_by -> `modules/srrapiv-runtime-cpp/SPEC.md`
+- consumers: Native callers, qxctl, reviewers and qualification tools
+- deferred_projections: Provider conformance and exact live deployment qualification
+- notes: Declared coverage and local checks do not establish provider entitlement, production acceptance or unknown-outcome replay safety.
+- status: canonical
+
+### SRRAPIV vendor.cpp — modules/srrapiv-runtime-cpp/src/vendor.cpp
+- path: `modules/srrapiv-runtime-cpp/src/vendor.cpp`
+- title: SRRAPIV vendor.cpp
+- surface_type: sovereign Rithmic contract, implementation or test
+- truth_role: Exact native implementation and scoped evidence
+- owner: SRRAPIV maintainers
+- scope: Dedicated non-Windows R API+ C++ integration and exact-version administration.
+- relationships: governed_by -> `modules/srrapiv-runtime-cpp/SPEC.md`
+- consumers: Native callers, qxctl, reviewers and qualification tools
+- deferred_projections: Provider conformance and exact live deployment qualification
+- notes: Declared coverage and local checks do not establish provider entitlement, production acceptance or unknown-outcome replay safety.
+- status: canonical
+
+### SRRAPIV vendor.hpp — modules/srrapiv-runtime-cpp/src/vendor.hpp
+- path: `modules/srrapiv-runtime-cpp/src/vendor.hpp`
+- title: SRRAPIV vendor.hpp
+- surface_type: sovereign Rithmic contract, implementation or test
+- truth_role: Exact native implementation and scoped evidence
+- owner: SRRAPIV maintainers
+- scope: Dedicated non-Windows R API+ C++ integration and exact-version administration.
+- relationships: governed_by -> `modules/srrapiv-runtime-cpp/SPEC.md`
+- consumers: Native callers, qxctl, reviewers and qualification tools
+- deferred_projections: Provider conformance and exact live deployment qualification
+- notes: Declared coverage and local checks do not establish provider entitlement, production acceptance or unknown-outcome replay safety.
+- status: canonical
+
+### SRRAPIV vendor_callback_checks.inc — modules/srrapiv-runtime-cpp/src/vendor_callback_checks.inc
+- path: `modules/srrapiv-runtime-cpp/src/vendor_callback_checks.inc`
+- title: SRRAPIV vendor_callback_checks.inc
+- surface_type: sovereign Rithmic contract, implementation or test
+- truth_role: Exact native implementation and scoped evidence
+- owner: SRRAPIV maintainers
+- scope: Dedicated non-Windows R API+ C++ integration and exact-version administration.
+- relationships: governed_by -> `modules/srrapiv-runtime-cpp/SPEC.md`
+- consumers: Native callers, qxctl, reviewers and qualification tools
+- deferred_projections: Provider conformance and exact live deployment qualification
+- notes: Declared coverage and local checks do not establish provider entitlement, production acceptance or unknown-outcome replay safety.
+- status: canonical
+
+### SRRAPIV vendor_callbacks.inc — modules/srrapiv-runtime-cpp/src/vendor_callbacks.inc
+- path: `modules/srrapiv-runtime-cpp/src/vendor_callbacks.inc`
+- title: SRRAPIV vendor_callbacks.inc
+- surface_type: sovereign Rithmic contract, implementation or test
+- truth_role: Exact native implementation and scoped evidence
+- owner: SRRAPIV maintainers
+- scope: Dedicated non-Windows R API+ C++ integration and exact-version administration.
+- relationships: governed_by -> `modules/srrapiv-runtime-cpp/SPEC.md`
+- consumers: Native callers, qxctl, reviewers and qualification tools
+- deferred_projections: Provider conformance and exact live deployment qualification
+- notes: Declared coverage and local checks do not establish provider entitlement, production acceptance or unknown-outcome replay safety.
+- status: canonical
+
+### SRRAPIV vendor_codecs.inc — modules/srrapiv-runtime-cpp/src/vendor_codecs.inc
+- path: `modules/srrapiv-runtime-cpp/src/vendor_codecs.inc`
+- title: SRRAPIV vendor_codecs.inc
+- surface_type: sovereign Rithmic contract, implementation or test
+- truth_role: Exact native implementation and scoped evidence
+- owner: SRRAPIV maintainers
+- scope: Dedicated non-Windows R API+ C++ integration and exact-version administration.
+- relationships: governed_by -> `modules/srrapiv-runtime-cpp/SPEC.md`
+- consumers: Native callers, qxctl, reviewers and qualification tools
+- deferred_projections: Provider conformance and exact live deployment qualification
+- notes: Declared coverage and local checks do not establish provider entitlement, production acceptance or unknown-outcome replay safety.
+- status: canonical
+
+### SRRAPIV vendor_declarations.inc — modules/srrapiv-runtime-cpp/src/vendor_declarations.inc
+- path: `modules/srrapiv-runtime-cpp/src/vendor_declarations.inc`
+- title: SRRAPIV vendor_declarations.inc
+- surface_type: sovereign Rithmic contract, implementation or test
+- truth_role: Exact native implementation and scoped evidence
+- owner: SRRAPIV maintainers
+- scope: Dedicated non-Windows R API+ C++ integration and exact-version administration.
+- relationships: governed_by -> `modules/srrapiv-runtime-cpp/SPEC.md`
+- consumers: Native callers, qxctl, reviewers and qualification tools
+- deferred_projections: Provider conformance and exact live deployment qualification
+- notes: Declared coverage and local checks do not establish provider entitlement, production acceptance or unknown-outcome replay safety.
+- status: canonical
+
+### SRRAPIV vendor_dispatch.inc — modules/srrapiv-runtime-cpp/src/vendor_dispatch.inc
+- path: `modules/srrapiv-runtime-cpp/src/vendor_dispatch.inc`
+- title: SRRAPIV vendor_dispatch.inc
+- surface_type: sovereign Rithmic contract, implementation or test
+- truth_role: Exact native implementation and scoped evidence
+- owner: SRRAPIV maintainers
+- scope: Dedicated non-Windows R API+ C++ integration and exact-version administration.
+- relationships: governed_by -> `modules/srrapiv-runtime-cpp/SPEC.md`
+- consumers: Native callers, qxctl, reviewers and qualification tools
+- deferred_projections: Provider conformance and exact live deployment qualification
+- notes: Declared coverage and local checks do not establish provider entitlement, production acceptance or unknown-outcome replay safety.
+- status: canonical
+
+### SRRAPIV vendor_metadata.inc — modules/srrapiv-runtime-cpp/src/vendor_metadata.inc
+- path: `modules/srrapiv-runtime-cpp/src/vendor_metadata.inc`
+- title: SRRAPIV vendor_metadata.inc
+- surface_type: sovereign Rithmic contract, implementation or test
+- truth_role: Exact native implementation and scoped evidence
+- owner: SRRAPIV maintainers
+- scope: Dedicated non-Windows R API+ C++ integration and exact-version administration.
+- relationships: governed_by -> `modules/srrapiv-runtime-cpp/SPEC.md`
+- consumers: Native callers, qxctl, reviewers and qualification tools
+- deferred_projections: Provider conformance and exact live deployment qualification
+- notes: Declared coverage and local checks do not establish provider entitlement, production acceptance or unknown-outcome replay safety.
+- status: canonical
+
+### SRRAPIV vendor_objects.inc — modules/srrapiv-runtime-cpp/src/vendor_objects.inc
+- path: `modules/srrapiv-runtime-cpp/src/vendor_objects.inc`
+- title: SRRAPIV vendor_objects.inc
+- surface_type: sovereign Rithmic contract, implementation or test
+- truth_role: Exact native implementation and scoped evidence
+- owner: SRRAPIV maintainers
+- scope: Dedicated non-Windows R API+ C++ integration and exact-version administration.
+- relationships: governed_by -> `modules/srrapiv-runtime-cpp/SPEC.md`
+- consumers: Native callers, qxctl, reviewers and qualification tools
+- deferred_projections: Provider conformance and exact live deployment qualification
+- notes: Declared coverage and local checks do not establish provider entitlement, production acceptance or unknown-outcome replay safety.
+- status: canonical
+
+### SRRAPIV vendor_surface.json — modules/srrapiv-runtime-cpp/src/vendor_surface.json
+- path: `modules/srrapiv-runtime-cpp/src/vendor_surface.json`
+- title: SRRAPIV vendor_surface.json
+- surface_type: sovereign Rithmic contract, implementation or test
+- truth_role: Exact native implementation and scoped evidence
+- owner: SRRAPIV maintainers
+- scope: Dedicated non-Windows R API+ C++ integration and exact-version administration.
+- relationships: governed_by -> `modules/srrapiv-runtime-cpp/SPEC.md`
+- consumers: Native callers, qxctl, reviewers and qualification tools
+- deferred_projections: Provider conformance and exact live deployment qualification
+- notes: Declared coverage and local checks do not establish provider entitlement, production acceptance or unknown-outcome replay safety.
+- status: canonical
+
+### SRRAPIV catalog_test.cpp — modules/srrapiv-runtime-cpp/tests/catalog_test.cpp
+- path: `modules/srrapiv-runtime-cpp/tests/catalog_test.cpp`
+- title: SRRAPIV catalog_test.cpp
+- surface_type: sovereign Rithmic contract, implementation or test
+- truth_role: Exact native implementation and scoped evidence
+- owner: SRRAPIV maintainers
+- scope: Dedicated non-Windows R API+ C++ integration and exact-version administration.
+- relationships: governed_by -> `modules/srrapiv-runtime-cpp/SPEC.md`
+- consumers: Native callers, qxctl, reviewers and qualification tools
+- deferred_projections: Provider conformance and exact live deployment qualification
+- notes: Declared coverage and local checks do not establish provider entitlement, production acceptance or unknown-outcome replay safety.
+- status: canonical
+
+### SRRAPIV runtime_test.cpp — modules/srrapiv-runtime-cpp/tests/runtime_test.cpp
+- path: `modules/srrapiv-runtime-cpp/tests/runtime_test.cpp`
+- title: SRRAPIV runtime_test.cpp
+- surface_type: sovereign Rithmic contract, implementation or test
+- truth_role: Exact native implementation and scoped evidence
+- owner: SRRAPIV maintainers
+- scope: Dedicated non-Windows R API+ C++ integration and exact-version administration.
+- relationships: governed_by -> `modules/srrapiv-runtime-cpp/SPEC.md`
+- consumers: Native callers, qxctl, reviewers and qualification tools
+- deferred_projections: Provider conformance and exact live deployment qualification
+- notes: Declared coverage and local checks do not establish provider entitlement, production acceptance or unknown-outcome replay safety.
+- status: canonical
+
+### SRRAPIV generate_vendor_bridge.cpp — modules/srrapiv-runtime-cpp/tools/generate_vendor_bridge.cpp
+- path: `modules/srrapiv-runtime-cpp/tools/generate_vendor_bridge.cpp`
+- title: SRRAPIV generate_vendor_bridge.cpp
+- surface_type: sovereign Rithmic contract, implementation or test
+- truth_role: Exact native implementation and scoped evidence
+- owner: SRRAPIV maintainers
+- scope: Dedicated non-Windows R API+ C++ integration and exact-version administration.
+- relationships: governed_by -> `modules/srrapiv-runtime-cpp/SPEC.md`
+- consumers: Native callers, qxctl, reviewers and qualification tools
+- deferred_projections: Provider conformance and exact live deployment qualification
+- notes: Declared coverage and local checks do not establish provider entitlement, production acceptance or unknown-outcome replay safety.
+- status: canonical
+
+### SRRAPIV reviewed R API+ 13.7 vendor schema
+- path: `modules/srrapiv-runtime-cpp/tools/vendor_schema_13_7.json`
+- title: SRRAPIV reviewed R API+ 13.7 vendor schema
+- surface_type: version-pinned native generation source
+- truth_role: Reviewed declaration inventory and explicit generated codec inputs
+- owner: SRRAPIV maintainers
+- scope: Exact R API+ C++ 13.7.0.0 header mapping; no automatic mapping for another release.
+- relationships: governed_by -> `modules/srrapiv-runtime-cpp/SPEC.md`; consumed_by -> `modules/srrapiv-runtime-cpp/tools/generate_vendor_bridge.cpp`
+- consumers: Native bridge generator and release reviewers
+- deferred_projections: Provider conformance and exact live deployment qualification
+- notes: Header identity and declaration inventory establish source mapping, not runtime behavior or live acceptance.
+- status: canonical
+
+### SRRAPIV catalog fixture factory
+- path: `modules/srrapiv-runtime-cpp/tests/catalog_fixture.hpp`
+- title: SRRAPIV catalog fixture factory
+- surface_type: synthetic native test fixture
+- truth_role: Exact synthetic artifact and binding inputs
+- owner: SRRAPIV maintainers
+- scope: Focused catalog and runtime tests; no real SDK byte hashes.
+- relationships: governed_by -> `modules/srrapiv-runtime-cpp/SPEC.md`
+- consumers: Native tests
+- deferred_projections: Provider qualification
+- notes: Synthetic identifiers are not deployment evidence.
+- status: canonical
+
+### SRRAPIV qxctl tools/qxctl/SRRAPIV.md
+- path: `tools/qxctl/SRRAPIV.md`
+- title: SRRAPIV exact native administration wrapper
+- surface_type: qxctl contract, implementation or test
+- truth_role: Exact installed native-owner dispatch and result correlation
+- owner: qxctl maintainers
+- scope: Registered SRRAPIV command surfaces; native C++ retains provider semantics.
+- relationships: governed_by -> `tools/qxctl/MANIFEST.md`; depends_on -> `modules/srrapiv-runtime-cpp/OWNER-INTERFACE.json`
+- consumers: Human operators, software callers and tests
+- deferred_projections: Provider qualification and remote carriers
+- notes: CLI coverage does not authenticate provider entitlement or turn uncertain order attempts into retry permission.
+- status: canonical
+
+### SRRAPIV qxctl tools/qxctl/cmd/qxctl/srrapiv.go
+- path: `tools/qxctl/cmd/qxctl/srrapiv.go`
+- title: SRRAPIV exact native administration wrapper
+- surface_type: qxctl contract, implementation or test
+- truth_role: Exact installed native-owner dispatch and result correlation
+- owner: qxctl maintainers
+- scope: Registered SRRAPIV command surfaces; native C++ retains provider semantics.
+- relationships: governed_by -> `tools/qxctl/MANIFEST.md`; depends_on -> `modules/srrapiv-runtime-cpp/OWNER-INTERFACE.json`
+- consumers: Human operators, software callers and tests
+- deferred_projections: Provider qualification and remote carriers
+- notes: CLI coverage does not authenticate provider entitlement or turn uncertain order attempts into retry permission.
+- status: canonical
+
+### SRRAPIV qxctl tools/qxctl/cmd/qxctl/srrapiv_test.go
+- path: `tools/qxctl/cmd/qxctl/srrapiv_test.go`
+- title: SRRAPIV exact native administration wrapper
+- surface_type: qxctl contract, implementation or test
+- truth_role: Exact installed native-owner dispatch and result correlation
+- owner: qxctl maintainers
+- scope: Registered SRRAPIV command surfaces; native C++ retains provider semantics.
+- relationships: governed_by -> `tools/qxctl/MANIFEST.md`; depends_on -> `modules/srrapiv-runtime-cpp/OWNER-INTERFACE.json`
+- consumers: Human operators, software callers and tests
+- deferred_projections: Provider qualification and remote carriers
+- notes: CLI coverage does not authenticate provider entitlement or turn uncertain order attempts into retry permission.
+- status: canonical
+
+### SRRAPIV qxctl tools/qxctl/internal/knowledgeengine/srrapiv.go
+- path: `tools/qxctl/internal/knowledgeengine/srrapiv.go`
+- title: SRRAPIV exact native administration wrapper
+- surface_type: qxctl contract, implementation or test
+- truth_role: Exact installed native-owner dispatch and result correlation
+- owner: qxctl maintainers
+- scope: Registered SRRAPIV command surfaces; native C++ retains provider semantics.
+- relationships: governed_by -> `tools/qxctl/MANIFEST.md`; depends_on -> `modules/srrapiv-runtime-cpp/OWNER-INTERFACE.json`
+- consumers: Human operators, software callers and tests
+- deferred_projections: Provider qualification and remote carriers
+- notes: CLI coverage does not authenticate provider entitlement or turn uncertain order attempts into retry permission.
+- status: canonical
+
+### SRRAPIV qxctl tools/qxctl/internal/knowledgeengine/srrapiv_shape.go
+- path: `tools/qxctl/internal/knowledgeengine/srrapiv_shape.go`
+- title: SRRAPIV exact native administration wrapper
+- surface_type: qxctl contract, implementation or test
+- truth_role: Exact installed native-owner dispatch and result correlation
+- owner: qxctl maintainers
+- scope: Registered SRRAPIV command surfaces; native C++ retains provider semantics.
+- relationships: governed_by -> `tools/qxctl/MANIFEST.md`; depends_on -> `modules/srrapiv-runtime-cpp/OWNER-INTERFACE.json`
+- consumers: Human operators, software callers and tests
+- deferred_projections: Provider qualification and remote carriers
+- notes: CLI coverage does not authenticate provider entitlement or turn uncertain order attempts into retry permission.
+- status: canonical
+
+### SRRAPIV qxctl tools/qxctl/internal/knowledgeengine/srrapiv_interface_generated.go
+- path: `tools/qxctl/internal/knowledgeengine/srrapiv_interface_generated.go`
+- title: SRRAPIV exact native administration wrapper
+- surface_type: qxctl contract, implementation or test
+- truth_role: Exact installed native-owner dispatch and result correlation
+- owner: qxctl maintainers
+- scope: Registered SRRAPIV command surfaces; native C++ retains provider semantics.
+- relationships: governed_by -> `tools/qxctl/MANIFEST.md`; depends_on -> `modules/srrapiv-runtime-cpp/OWNER-INTERFACE.json`
+- consumers: Human operators, software callers and tests
+- deferred_projections: Provider qualification and remote carriers
+- notes: CLI coverage does not authenticate provider entitlement or turn uncertain order attempts into retry permission.
+- status: canonical
+
+### SRRAPIV qxctl tools/qxctl/internal/knowledgeengine/srrapiv_test.go
+- path: `tools/qxctl/internal/knowledgeengine/srrapiv_test.go`
+- title: SRRAPIV exact native administration wrapper
+- surface_type: qxctl contract, implementation or test
+- truth_role: Exact installed native-owner dispatch and result correlation
+- owner: qxctl maintainers
+- scope: Registered SRRAPIV command surfaces; native C++ retains provider semantics.
+- relationships: governed_by -> `tools/qxctl/MANIFEST.md`; depends_on -> `modules/srrapiv-runtime-cpp/OWNER-INTERFACE.json`
+- consumers: Human operators, software callers and tests
+- deferred_projections: Provider qualification and remote carriers
+- notes: CLI coverage does not authenticate provider entitlement or turn uncertain order attempts into retry permission.
+- status: canonical
+
+### SRRAPIV slow vendor fixture
+- path: `modules/srrapiv-runtime-cpp/tests/slow_vendor.cpp`
+- title: SRRAPIV slow vendor fixture
+- surface_type: test-only native fixture
+- truth_role: Exact source contract and scoped verification input
+- owner: SRRAPIV maintainers
+- scope: Deliberately slow SDK substitute for control responsiveness and shutdown tests; no provider behavior.
+- relationships: governed_by -> `modules/srrapiv-runtime-cpp/SPEC.md`
+- consumers: Native maintainers, reviewers and test runners
+- deferred_projections: Actual target execution and live provider qualification
+- notes: Source presence does not establish passing execution or provider acceptance.
+- status: canonical
+
+### SRRAPIV native vendor fixture tests
+- path: `modules/srrapiv-runtime-cpp/tests/vendor_test.cpp`
+- title: SRRAPIV native vendor fixture tests
+- surface_type: SDK-linked offline fixture tests
+- truth_role: Exact source contract and scoped verification input
+- owner: SRRAPIV maintainers
+- scope: Native local utilities and callback codecs; no REngine construction or provider login.
+- relationships: governed_by -> `modules/srrapiv-runtime-cpp/SPEC.md`
+- consumers: Native maintainers, reviewers and test runners
+- deferred_projections: Actual target execution and live provider qualification
+- notes: Source presence does not establish passing execution or provider acceptance.
+- status: canonical
+
+### SRRAPIV guarded uninstall template
+- path: `modules/srrapiv-runtime-cpp/cmake/uninstall.cmake.in`
+- title: SRRAPIV guarded uninstall template
+- surface_type: native package lifecycle template
+- truth_role: Exact source contract and scoped verification input
+- owner: SRRAPIV maintainers
+- scope: Receipt-v2 guarded removal of the selected module installation.
+- relationships: governed_by -> `modules/srrapiv-runtime-cpp/SPEC.md`
+- consumers: Native maintainers, reviewers and test runners
+- deferred_projections: Actual target execution and live provider qualification
+- notes: Source presence does not establish passing execution or provider acceptance.
+- status: canonical
+
+### SRRAPIV binding regeneration guide
+- path: `modules/srrapiv-runtime-cpp/tools/README.md`
+- title: SRRAPIV binding regeneration guide
+- surface_type: maintainer workflow contract
+- truth_role: Exact source contract and scoped verification input
+- owner: SRRAPIV maintainers
+- scope: Exact-header native binding generation and separately scoped qualification.
+- relationships: governed_by -> `modules/srrapiv-runtime-cpp/SPEC.md`
+- consumers: Native maintainers, reviewers and test runners
+- deferred_projections: Actual target execution and live provider qualification
+- notes: Source presence does not establish passing execution or provider acceptance.
+- status: canonical
+
+### SRRAPIV SDK-free continuous integration
+- path: `.github/workflows/srrapiv.yml`
+- title: SRRAPIV SDK-free continuous integration
+- surface_type: CI workflow source
+- truth_role: Declared hosted verification jobs, not execution evidence
+- owner: SRRAPIV maintainers
+- scope: SDK-free Ubuntu x86_64, Ubuntu ARM64 and macOS Intel native controls and installed qxctl checks.
+- relationships: governed_by -> `modules/srrapiv-runtime-cpp/SPEC.md`
+- consumers: CI runners, maintainers and reviewers
+- deferred_projections: Recorded hosted results, SDK target qualification and provider acceptance
+- notes: Proprietary SDKs and provider credentials are not selected by this workflow.
+- status: canonical
+
+### SRRAPIV native public-field initialization
+- path: `modules/srrapiv-runtime-cpp/src/vendor_initializers.inc`
+- title: SRRAPIV native public-field initialization
+- surface_type: generated native implementation
+- truth_role: Exact implementation or dated scoped evidence
+- owner: SRRAPIV maintainers
+- scope: Initializes public native fixture/request fields while preserving native private state; generated from the exact reviewed SDK schema.
+- relationships: governed_by -> `modules/srrapiv-runtime-cpp/SPEC.md`
+- consumers: Maintainers, reviewers and qualification tools
+- deferred_projections: Unexercised target builds, hosted CI and live provider qualification
+- notes: Local source and fixture evidence does not establish provider conformance.
+- status: canonical
+
+### SRRAPIV local verification record
+- path: `modules/srrapiv-runtime-cpp/VERIFICATION.md`
+- title: SRRAPIV local verification record
+- surface_type: bounded verification evidence
+- truth_role: Exact implementation or dated scoped evidence
+- owner: SRRAPIV maintainers
+- scope: Records completed local checks and explicit target, provider and hosted-CI limits as of 2026-11-06.
+- relationships: governed_by -> `modules/srrapiv-runtime-cpp/SPEC.md`
+- consumers: Maintainers, reviewers and qualification tools
+- deferred_projections: Unexercised target builds, hosted CI and live provider qualification
+- notes: Local source and fixture evidence does not establish provider conformance.
+- status: canonical

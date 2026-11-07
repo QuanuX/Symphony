@@ -406,6 +406,8 @@ Keep this state, logs and test/build evidence outside the repository and deliver
 
 The non-live SQV surface includes native acquisition request validation, metadata validation/inspection, flow and integer-conversion validation, and read-only retained-store/checkpoint/attempt inspection. Use `sqv schema` and `sqv template` with an exact operation and installed release. See `COMMANDS.md` and the selected owner's installed SPEC. Live activation and mutating recovery remain separate work.
 
+The separate `sqv rithmic` namespace exposes SRRAPIV's exact installed C++ owner, SDK description, binding checks, persistent runtime controls and attempt recovery. Its thirteen command leaves preserve native authority and explicit engine versions. See [SRRAPIV administration](SRRAPIV.md).
+
 ## SBV historical experiments and results
 
 The experimental `sbv` namespace selects an exact independently installed C++26 SBV release. `sbv capabilities`, `sbv schema --operation run`, and `sbv template --operation run` disclose supported choices. Extract `.template` from the JSON template wrapper and replace every placeholder before using it as `--input`. `sbv run --input request.json` and `sbv compose --input scenario.json` create a new immutable private artifact. All commands require `--prefix` and `--version`.

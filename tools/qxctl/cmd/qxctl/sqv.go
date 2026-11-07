@@ -28,7 +28,7 @@ func newSQVCommand() *cobra.Command {
 		}
 		group.AddCommand(newSQVAdministrationLeaf(op))
 	}
-	root.AddCommand(acquisition, newSQVLeaf("schema"), newSQVLeaf("template"))
+	root.AddCommand(acquisition, newSQVLeaf("schema"), newSQVLeaf("template"), newSRRAPIVCommand())
 	return root
 }
 func sqvSafeError(err error) error {

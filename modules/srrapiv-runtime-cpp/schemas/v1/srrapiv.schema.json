@@ -1,0 +1,889 @@
+{
+  "requests": {
+    "catalog_inspect": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.srrapiv.request.v1"
+        },
+        "catalog": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "artifact_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        }
+      },
+      "required": [
+        "protocol",
+        "catalog"
+      ],
+      "additionalProperties": false
+    },
+    "binding_validate": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.srrapiv.request.v1"
+        },
+        "catalog": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "binding": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "compatibility_evidence": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      },
+      "required": [
+        "protocol",
+        "catalog",
+        "binding",
+        "compatibility_evidence"
+      ],
+      "additionalProperties": false
+    },
+    "binding_compare": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.srrapiv.request.v1"
+        },
+        "catalog": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "from_binding": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "to_binding": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "compatibility_evidence": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      },
+      "required": [
+        "protocol",
+        "catalog",
+        "from_binding",
+        "to_binding",
+        "compatibility_evidence"
+      ],
+      "additionalProperties": false
+    },
+    "coverage_assess": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.srrapiv.request.v1"
+        },
+        "schema": {
+          "const": "symphony.srrapiv.coverage.v1"
+        },
+        "sdk_artifact_id": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "universe": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "mappings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      },
+      "required": [
+        "protocol",
+        "schema",
+        "sdk_artifact_id",
+        "universe",
+        "mappings"
+      ],
+      "additionalProperties": false
+    },
+    "api_describe": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.srrapiv.request.v1"
+        }
+      },
+      "required": [
+        "protocol"
+      ],
+      "additionalProperties": false
+    },
+    "runtime_start": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.srrapiv.request.v1"
+        },
+        "runtime_dir": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "config_file": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        }
+      },
+      "required": [
+        "protocol",
+        "runtime_dir",
+        "config_file"
+      ],
+      "additionalProperties": false
+    },
+    "runtime_status": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.srrapiv.request.v1"
+        },
+        "runtime_dir": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "expected_generation": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        }
+      },
+      "required": [
+        "protocol",
+        "runtime_dir"
+      ],
+      "additionalProperties": false
+    },
+    "runtime_invoke": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.srrapiv.request.v1"
+        },
+        "runtime_dir": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "expected_generation": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "method": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "params": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "attempt_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "authority": {
+          "type": "object",
+          "properties": {
+            "allow_provider": {
+              "type": "boolean"
+            },
+            "allow_trading": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "allow_provider"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "protocol",
+        "runtime_dir",
+        "expected_generation",
+        "method",
+        "params",
+        "attempt_id",
+        "authority"
+      ],
+      "additionalProperties": false
+    },
+    "runtime_events": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.srrapiv.request.v1"
+        },
+        "runtime_dir": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "expected_generation": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "after_sequence": {
+          "type": "string",
+          "format": "uint64-decimal"
+        },
+        "limit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 256
+        }
+      },
+      "required": [
+        "protocol",
+        "runtime_dir",
+        "expected_generation"
+      ],
+      "additionalProperties": false
+    },
+    "runtime_stop": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.srrapiv.request.v1"
+        },
+        "runtime_dir": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "expected_generation": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        }
+      },
+      "required": [
+        "protocol",
+        "runtime_dir",
+        "expected_generation"
+      ],
+      "additionalProperties": false
+    },
+    "runtime_attempts": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.srrapiv.request.v1"
+        },
+        "runtime_dir": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "expected_generation": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "attempt_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "after_key": {
+          "type": "string",
+          "maxLength": 69
+        },
+        "limit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 256
+        }
+      },
+      "required": [
+        "protocol",
+        "runtime_dir"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "results": {
+    "catalog_inspect": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.srrapiv.result.v1"
+        },
+        "operation": {
+          "type": "string",
+          "enum": [
+            "catalog_inspect",
+            "binding_validate",
+            "binding_compare",
+            "coverage_assess",
+            "api_describe",
+            "runtime_start",
+            "runtime_status",
+            "runtime_invoke",
+            "runtime_events",
+            "runtime_stop",
+            "runtime_attempts"
+          ]
+        },
+        "engine_version": {
+          "const": "0.1.0-dev"
+        },
+        "request_digest": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "result": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "result_digest": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        }
+      },
+      "required": [
+        "protocol",
+        "operation",
+        "engine_version",
+        "request_digest",
+        "result",
+        "result_digest"
+      ],
+      "additionalProperties": false
+    },
+    "binding_validate": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.srrapiv.result.v1"
+        },
+        "operation": {
+          "type": "string",
+          "enum": [
+            "catalog_inspect",
+            "binding_validate",
+            "binding_compare",
+            "coverage_assess",
+            "api_describe",
+            "runtime_start",
+            "runtime_status",
+            "runtime_invoke",
+            "runtime_events",
+            "runtime_stop",
+            "runtime_attempts"
+          ]
+        },
+        "engine_version": {
+          "const": "0.1.0-dev"
+        },
+        "request_digest": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "result": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "result_digest": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        }
+      },
+      "required": [
+        "protocol",
+        "operation",
+        "engine_version",
+        "request_digest",
+        "result",
+        "result_digest"
+      ],
+      "additionalProperties": false
+    },
+    "binding_compare": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.srrapiv.result.v1"
+        },
+        "operation": {
+          "type": "string",
+          "enum": [
+            "catalog_inspect",
+            "binding_validate",
+            "binding_compare",
+            "coverage_assess",
+            "api_describe",
+            "runtime_start",
+            "runtime_status",
+            "runtime_invoke",
+            "runtime_events",
+            "runtime_stop",
+            "runtime_attempts"
+          ]
+        },
+        "engine_version": {
+          "const": "0.1.0-dev"
+        },
+        "request_digest": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "result": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "result_digest": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        }
+      },
+      "required": [
+        "protocol",
+        "operation",
+        "engine_version",
+        "request_digest",
+        "result",
+        "result_digest"
+      ],
+      "additionalProperties": false
+    },
+    "coverage_assess": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.srrapiv.result.v1"
+        },
+        "operation": {
+          "type": "string",
+          "enum": [
+            "catalog_inspect",
+            "binding_validate",
+            "binding_compare",
+            "coverage_assess",
+            "api_describe",
+            "runtime_start",
+            "runtime_status",
+            "runtime_invoke",
+            "runtime_events",
+            "runtime_stop",
+            "runtime_attempts"
+          ]
+        },
+        "engine_version": {
+          "const": "0.1.0-dev"
+        },
+        "request_digest": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "result": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "result_digest": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        }
+      },
+      "required": [
+        "protocol",
+        "operation",
+        "engine_version",
+        "request_digest",
+        "result",
+        "result_digest"
+      ],
+      "additionalProperties": false
+    },
+    "api_describe": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.srrapiv.result.v1"
+        },
+        "operation": {
+          "type": "string",
+          "enum": [
+            "catalog_inspect",
+            "binding_validate",
+            "binding_compare",
+            "coverage_assess",
+            "api_describe",
+            "runtime_start",
+            "runtime_status",
+            "runtime_invoke",
+            "runtime_events",
+            "runtime_stop",
+            "runtime_attempts"
+          ]
+        },
+        "engine_version": {
+          "const": "0.1.0-dev"
+        },
+        "request_digest": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "result": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "result_digest": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        }
+      },
+      "required": [
+        "protocol",
+        "operation",
+        "engine_version",
+        "request_digest",
+        "result",
+        "result_digest"
+      ],
+      "additionalProperties": false
+    },
+    "runtime_start": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.srrapiv.result.v1"
+        },
+        "operation": {
+          "type": "string",
+          "enum": [
+            "catalog_inspect",
+            "binding_validate",
+            "binding_compare",
+            "coverage_assess",
+            "api_describe",
+            "runtime_start",
+            "runtime_status",
+            "runtime_invoke",
+            "runtime_events",
+            "runtime_stop",
+            "runtime_attempts"
+          ]
+        },
+        "engine_version": {
+          "const": "0.1.0-dev"
+        },
+        "request_digest": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "result": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "result_digest": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        }
+      },
+      "required": [
+        "protocol",
+        "operation",
+        "engine_version",
+        "request_digest",
+        "result",
+        "result_digest"
+      ],
+      "additionalProperties": false
+    },
+    "runtime_status": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.srrapiv.result.v1"
+        },
+        "operation": {
+          "type": "string",
+          "enum": [
+            "catalog_inspect",
+            "binding_validate",
+            "binding_compare",
+            "coverage_assess",
+            "api_describe",
+            "runtime_start",
+            "runtime_status",
+            "runtime_invoke",
+            "runtime_events",
+            "runtime_stop",
+            "runtime_attempts"
+          ]
+        },
+        "engine_version": {
+          "const": "0.1.0-dev"
+        },
+        "request_digest": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "result": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "result_digest": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        }
+      },
+      "required": [
+        "protocol",
+        "operation",
+        "engine_version",
+        "request_digest",
+        "result",
+        "result_digest"
+      ],
+      "additionalProperties": false
+    },
+    "runtime_invoke": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.srrapiv.result.v1"
+        },
+        "operation": {
+          "type": "string",
+          "enum": [
+            "catalog_inspect",
+            "binding_validate",
+            "binding_compare",
+            "coverage_assess",
+            "api_describe",
+            "runtime_start",
+            "runtime_status",
+            "runtime_invoke",
+            "runtime_events",
+            "runtime_stop",
+            "runtime_attempts"
+          ]
+        },
+        "engine_version": {
+          "const": "0.1.0-dev"
+        },
+        "request_digest": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "result": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "result_digest": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        }
+      },
+      "required": [
+        "protocol",
+        "operation",
+        "engine_version",
+        "request_digest",
+        "result",
+        "result_digest"
+      ],
+      "additionalProperties": false
+    },
+    "runtime_events": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.srrapiv.result.v1"
+        },
+        "operation": {
+          "type": "string",
+          "enum": [
+            "catalog_inspect",
+            "binding_validate",
+            "binding_compare",
+            "coverage_assess",
+            "api_describe",
+            "runtime_start",
+            "runtime_status",
+            "runtime_invoke",
+            "runtime_events",
+            "runtime_stop",
+            "runtime_attempts"
+          ]
+        },
+        "engine_version": {
+          "const": "0.1.0-dev"
+        },
+        "request_digest": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "result": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "result_digest": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        }
+      },
+      "required": [
+        "protocol",
+        "operation",
+        "engine_version",
+        "request_digest",
+        "result",
+        "result_digest"
+      ],
+      "additionalProperties": false
+    },
+    "runtime_stop": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.srrapiv.result.v1"
+        },
+        "operation": {
+          "type": "string",
+          "enum": [
+            "catalog_inspect",
+            "binding_validate",
+            "binding_compare",
+            "coverage_assess",
+            "api_describe",
+            "runtime_start",
+            "runtime_status",
+            "runtime_invoke",
+            "runtime_events",
+            "runtime_stop",
+            "runtime_attempts"
+          ]
+        },
+        "engine_version": {
+          "const": "0.1.0-dev"
+        },
+        "request_digest": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "result": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "result_digest": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        }
+      },
+      "required": [
+        "protocol",
+        "operation",
+        "engine_version",
+        "request_digest",
+        "result",
+        "result_digest"
+      ],
+      "additionalProperties": false
+    },
+    "runtime_attempts": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.srrapiv.result.v1"
+        },
+        "operation": {
+          "type": "string",
+          "enum": [
+            "catalog_inspect",
+            "binding_validate",
+            "binding_compare",
+            "coverage_assess",
+            "api_describe",
+            "runtime_start",
+            "runtime_status",
+            "runtime_invoke",
+            "runtime_events",
+            "runtime_stop",
+            "runtime_attempts"
+          ]
+        },
+        "engine_version": {
+          "const": "0.1.0-dev"
+        },
+        "request_digest": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "result": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "result_digest": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        }
+      },
+      "required": [
+        "protocol",
+        "operation",
+        "engine_version",
+        "request_digest",
+        "result",
+        "result_digest"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

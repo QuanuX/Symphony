@@ -56,6 +56,9 @@ The platform governance companions under `knowledge/platform/` retain Symphony-w
 
 ## Subordinate Manifests
 
+- `knowledge/sqv/srrapiv/MANIFEST.md`
+- `modules/srrapiv-runtime-cpp/MANIFEST.md`
+
 - `knowledge/sbv/MANIFEST.md`
 - `modules/sbv-engine/MANIFEST.md`
 

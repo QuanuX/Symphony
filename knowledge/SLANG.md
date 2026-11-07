@@ -568,8 +568,17 @@ SLANG does not allocate identity namespaces, define domain protocols, prescribe 
 ### SCABV
 
 - term: `SCABV`
-- meaning: Symphony C++ API Broker Vector; owner of selected native non-FIX broker API bindings under SQV.
+- meaning: Symphony C++ API Broker Vector; owner of selected component-scoped native non-FIX broker API bindings under SQV, excluding the dedicated sovereign SRRAPIV connection class.
 - owner_contract: `knowledge/sqv/scabv/SPEC.md`
 - example: `SCABV preserves the exact private account and session binding for an IBKR read capture.`
 - counterexample: `An SQAV research collection implicitly authorizes order entry or substitutes a new broker SDK.`
 - notes: Separate experimental Client Portal and external Stable 10.45 TWS read boundaries are implemented; actual vendor deployment and SDK conformance remain explicit prerequisites. FIX remains SOOV-owned.
+
+### SRRAPIV
+
+- term: `SRRAPIV`
+- meaning: Symphony Rithmic RAPI Vector; sovereign owner of dedicated Rithmic R API+ C++ integration, SDK lineage, native provider behavior, account/session bindings and recovery under SQV.
+- owner_contract: `knowledge/sqv/srrapiv/SPEC.md`
+- example: `Two strategies select separate exact R API+ and SRRAPIV artifact bindings without either following a moving latest-version alias.`
+- counterexample: `SRRAPIV is a SCABV adapter, R Protocol API substitute, Windows connector, or proof that vendor conformance passed.`
+- notes: SRRAPIV, SOOV and SCABV are peer connection classes. Exact native implementation, qxctl coverage and vendor qualification are separately evidenced; user composition remains open.

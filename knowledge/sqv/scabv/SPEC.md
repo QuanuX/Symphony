@@ -4,6 +4,8 @@
 
 SCABV owns non-FIX broker-specific request, account/session binding and response interpretation. SQAV consumes its attributable read captures through the existing SQAV capture contract; SQMV/SQFV/SQPV/SQDV retain their independent catalogue, movement, retention and delivery ownership. SSIAG owns credential/identity authority. Private account scope is explicit; caller-supplied provider responses do not authenticate themselves.
 
+This ownership is component-scoped and excludes the dedicated Rithmic R API+ C++ connection class. SRRAPIV, declared in `knowledge/sqv/srrapiv/SPEC.md`, is a sovereign sibling of SCABV and SOOV under SQV. It owns its Rithmic request/callback, binding, version and recovery semantics directly. An explicit cross-owner mapping may relate concepts; it cannot silently transfer session control or make a generic broker abstraction mandatory.
+
 ## Exact initial contracts
 
 - `modules/scabv-ibkr-client-portal-cpp/SPEC.md`: independently installed C++26 Client Portal v1 account discovery, positions and bounded historical bars through an already authenticated local HTTPS Gateway.

@@ -20,7 +20,11 @@ SQV owns Symphony-authored quantitative framework semantics while preserving com
 - `tests/sqv-research-pipeline/nonlive.cpp`
 - `tests/sqv-research-pipeline/preview_progress.cpp`
 
-## Research-Data Child Posture
+## Connection-Class Child Posture
+
+Three peer connection owners remain distinct: `knowledge/sqv/soov/MANIFEST.md` for FIX, `knowledge/sqv/scabv/MANIFEST.md` for admitted component-scoped broker/API bindings, and `knowledge/sqv/srrapiv/MANIFEST.md` for sovereign Rithmic R API+ C++ integration. SRRAPIV's native module is `modules/srrapiv-runtime-cpp/MANIFEST.md`; its exact artifact/binding and maintenance contracts do not imply completed vendor conformance or live deployment. It does not inherit SCABV account authority.
+
+## Research-Data Child Extent
 
 The six research-data children have Contract Quads under `knowledge/sqv/sqav/`, `knowledge/sqv/sqmv/`, `knowledge/sqv/sqfv/`, `knowledge/sqv/sqtv/`, `knowledge/sqv/sqpv/`, and `knowledge/sqv/sqdv/`. All six research-data owners have bounded first native libraries described below. Root knowledge-manifest and SKVI routes make these separate owners discoverable. SOOV's separate FIX Quad remains under `knowledge/sqv/soov/`.
 

@@ -1244,7 +1244,6 @@
       "feature_id": "ssfv:symphony:qxctl-snv-administration"
     },
     {
-      "feature_id": "ssfv:symphony:qxctl-sov-process-execution",
       "expectations": [
         {
           "command_ids": [
@@ -1295,10 +1294,10 @@
           "rationale": "Complete selected local process capability through qxctl.",
           "requirement": "required"
         }
-      ]
+      ],
+      "feature_id": "ssfv:symphony:qxctl-sov-process-execution"
     },
     {
-      "feature_id": "ssfv:symphony:qxctl-sov-remote-planning",
       "expectations": [
         {
           "command_ids": [
@@ -1334,10 +1333,10 @@
           "rationale": "Exact local planning and supplied-observation assessment expose every implemented control and result. No remote mutation is claimed.",
           "requirement": "required"
         }
-      ]
+      ],
+      "feature_id": "ssfv:symphony:qxctl-sov-remote-planning"
     },
     {
-      "feature_id": "ssfv:symphony:qxctl-sov-ssh-carrier",
       "expectations": [
         {
           "command_ids": [
@@ -1385,7 +1384,8 @@
           "rationale": "Complete explicit endpoint selection and optional authenticated carrier invocation through qxctl.",
           "requirement": "required"
         }
-      ]
+      ],
+      "feature_id": "ssfv:symphony:qxctl-sov-ssh-carrier"
     },
     {
       "expectations": [
@@ -2565,6 +2565,131 @@
       "expectations": [
         {
           "command_ids": [
+            "qxcmd:symphony:sqv.rithmic.api.describe",
+            "qxcmd:symphony:sqv.rithmic.schema",
+            "qxcmd:symphony:sqv.rithmic.template"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+            "engop:symphony:srrapiv.api.describe"
+          ],
+          "evidence": [
+            "modules/srrapiv-runtime-cpp/SPEC.md",
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/SRRAPIV.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "discover",
+          "rationale": "Discover exact native schemas, unanswered templates, and the compiled R API+ method and callback inventory without contacting the provider.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:sqv.rithmic.binding.compare",
+            "qxcmd:symphony:sqv.rithmic.catalog.inspect",
+            "qxcmd:symphony:sqv.rithmic.coverage.assess",
+            "qxcmd:symphony:sqv.rithmic.runtime.events",
+            "qxcmd:symphony:sqv.rithmic.runtime.status"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+            "engop:symphony:srrapiv.binding.compare",
+            "engop:symphony:srrapiv.catalog.inspect",
+            "engop:symphony:srrapiv.coverage.assess",
+            "engop:symphony:srrapiv.runtime.events",
+            "engop:symphony:srrapiv.runtime.status"
+          ],
+          "evidence": [
+            "modules/srrapiv-runtime-cpp/SPEC.md",
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/SRRAPIV.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "inspect",
+          "rationale": "Inspect exact immutable artifacts, compare all binding identity dimensions and directional reader compatibility, assess the supplied coverage universe, and read local runtime observations without inferring provider qualification.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:sqv.rithmic.runtime.invoke"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+            "engop:symphony:srrapiv.runtime.invoke"
+          ],
+          "evidence": [
+            "modules/srrapiv-runtime-cpp/SPEC.md",
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/SRRAPIV.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "invoke",
+          "rationale": "Submit one explicitly authorized invocation to the selected persistent native owner with generation checks and a durable pre-dispatch attempt record; acknowledgement is not provider completion.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:sqv.rithmic.runtime.start",
+            "qxcmd:symphony:sqv.rithmic.runtime.stop"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+            "engop:symphony:srrapiv.runtime.start",
+            "engop:symphony:srrapiv.runtime.stop"
+          ],
+          "evidence": [
+            "modules/srrapiv-runtime-cpp/SPEC.md",
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/SRRAPIV.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "lifecycle",
+          "rationale": "Start or stop one local same-UID runtime bound to an exact artifact and generation; starting does not log in and stopping does not promise order cancellation.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:sqv.rithmic.runtime.attempts"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+            "engop:symphony:srrapiv.runtime.attempts"
+          ],
+          "evidence": [
+            "modules/srrapiv-runtime-cpp/SPEC.md",
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/SRRAPIV.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "recover",
+          "rationale": "Read durable attempt outcomes, including unknown outcomes, without replaying operations or inferring provider state.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:sqv.rithmic.binding.validate"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+            "engop:symphony:srrapiv.binding.validate"
+          ],
+          "evidence": [
+            "modules/srrapiv-runtime-cpp/SPEC.md",
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/SRRAPIV.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "validate",
+          "rationale": "Validate the exact immutable binding tuple and separately report supplied capability assertions; structural validity does not authorize provider activity.",
+          "requirement": "required"
+        }
+      ],
+      "feature_id": "ssfv:symphony:qxctl.srrapiv-administration"
+    },
+    {
+      "expectations": [
+        {
+          "command_ids": [
             "qxcmd:symphony:ssiag.policy.apply"
           ],
           "delivery": "direct",
@@ -3224,23 +3349,23 @@
       "feature_id": "ssfv:symphony:sbv-engine"
     },
     {
-      "feature_id": "ssfv:symphony:sbv-go-adapter",
       "expectations": [
         {
-          "interaction": "invoke",
-          "requirement": "required",
-          "delivery": "runtime_only",
           "command_ids": [],
+          "delivery": "runtime_only",
           "engine_operation_ids": [],
-          "inherited_from_feature_id": null,
           "evidence": [
             "libraries/sbv-go/FEATURES.md",
             "libraries/sbv-go/IMPLEMENTATION.md",
             "tools/qxctl/cmd/qxctl/sbv.go"
           ],
-          "rationale": "Linked consumer adapter has no independent administrative state; every native capability, model/proposal selection and mutation is delegated to existing exact qxctl SBV leaves. Stream/row decoding only projects the same portable evidence."
+          "inherited_from_feature_id": null,
+          "interaction": "invoke",
+          "rationale": "Linked consumer adapter has no independent administrative state; every native capability, model/proposal selection and mutation is delegated to existing exact qxctl SBV leaves. Stream/row decoding only projects the same portable evidence.",
+          "requirement": "required"
         }
-      ]
+      ],
+      "feature_id": "ssfv:symphony:sbv-go-adapter"
     },
     {
       "expectations": [
@@ -8323,7 +8448,6 @@
       "feature_id": "ssfv:symphony:sodv-engine.release-transaction-projection"
     },
     {
-      "feature_id": "ssfv:symphony:sov-ssh-adapter",
       "expectations": [
         {
           "command_ids": [
@@ -8340,10 +8464,10 @@
           "rationale": "Complete explicit endpoint selection and optional authenticated carrier invocation through qxctl.",
           "requirement": "required"
         }
-      ]
+      ],
+      "feature_id": "ssfv:symphony:sov-ssh-adapter"
     },
     {
-      "feature_id": "ssfv:symphony:sov-stdio-adapter",
       "expectations": [
         {
           "command_ids": [
@@ -8363,7 +8487,8 @@
           "rationale": "Complete selected local process capability through qxctl.",
           "requirement": "required"
         }
-      ]
+      ],
+      "feature_id": "ssfv:symphony:sov-stdio-adapter"
     },
     {
       "expectations": [
@@ -9072,6 +9197,131 @@
         }
       ],
       "feature_id": "ssfv:symphony:sqtv-integer-conversion-cpp"
+    },
+    {
+      "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:sqv.rithmic.api.describe",
+            "qxcmd:symphony:sqv.rithmic.schema",
+            "qxcmd:symphony:sqv.rithmic.template"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:srrapiv.api.describe"
+          ],
+          "evidence": [
+            "modules/srrapiv-runtime-cpp/SPEC.md",
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/SRRAPIV.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "discover",
+          "rationale": "Discover exact native schemas, unanswered templates, and the compiled R API+ method and callback inventory without contacting the provider.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:sqv.rithmic.binding.compare",
+            "qxcmd:symphony:sqv.rithmic.catalog.inspect",
+            "qxcmd:symphony:sqv.rithmic.coverage.assess",
+            "qxcmd:symphony:sqv.rithmic.runtime.events",
+            "qxcmd:symphony:sqv.rithmic.runtime.status"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:srrapiv.binding.compare",
+            "engop:symphony:srrapiv.catalog.inspect",
+            "engop:symphony:srrapiv.coverage.assess",
+            "engop:symphony:srrapiv.runtime.events",
+            "engop:symphony:srrapiv.runtime.status"
+          ],
+          "evidence": [
+            "modules/srrapiv-runtime-cpp/SPEC.md",
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/SRRAPIV.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "inspect",
+          "rationale": "Inspect exact immutable artifacts, compare all binding identity dimensions and directional reader compatibility, assess the supplied coverage universe, and read local runtime observations without inferring provider qualification.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:sqv.rithmic.runtime.invoke"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:srrapiv.runtime.invoke"
+          ],
+          "evidence": [
+            "modules/srrapiv-runtime-cpp/SPEC.md",
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/SRRAPIV.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "invoke",
+          "rationale": "Submit one explicitly authorized invocation to the selected persistent native owner with generation checks and a durable pre-dispatch attempt record; acknowledgement is not provider completion.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:sqv.rithmic.runtime.start",
+            "qxcmd:symphony:sqv.rithmic.runtime.stop"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:srrapiv.runtime.start",
+            "engop:symphony:srrapiv.runtime.stop"
+          ],
+          "evidence": [
+            "modules/srrapiv-runtime-cpp/SPEC.md",
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/SRRAPIV.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "lifecycle",
+          "rationale": "Start or stop one local same-UID runtime bound to an exact artifact and generation; starting does not log in and stopping does not promise order cancellation.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:sqv.rithmic.runtime.attempts"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:srrapiv.runtime.attempts"
+          ],
+          "evidence": [
+            "modules/srrapiv-runtime-cpp/SPEC.md",
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/SRRAPIV.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "recover",
+          "rationale": "Read durable attempt outcomes, including unknown outcomes, without replaying operations or inferring provider state.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:sqv.rithmic.binding.validate"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:srrapiv.binding.validate"
+          ],
+          "evidence": [
+            "modules/srrapiv-runtime-cpp/SPEC.md",
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/SRRAPIV.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "validate",
+          "rationale": "Validate the exact immutable binding tuple and separately report supplied capability assertions; structural validity does not authorize provider activity.",
+          "requirement": "required"
+        }
+      ],
+      "feature_id": "ssfv:symphony:srrapiv-runtime-cpp"
     },
     {
       "expectations": [
@@ -10068,9 +10318,9 @@
   ],
   "format_version": 1,
   "forward_gate": "enforce_new_records",
+  "profile_digest": "sha256:2d6bdc400af049c98c3d316411bd53feca14822ff38adc8453031a716b90019e",
   "profile_id": "symphony.registered-features.administration.v1",
   "protocol": "symphony.knowledge.feature-administration-profile.v1",
-  "registered_feature_count": 147,
-  "ssfv_registry_digest": "sha256:8a00b28d10e70658e47643f690f8bbe8cdd88c9c523fa7d16998a51d3d5537a4",
-  "profile_digest": "sha256:e0b0e1d6b6cc570b78bea0bea314fe865a8e2b6d25b98b17723c5f9e69a0bbdb"
+  "registered_feature_count": 149,
+  "ssfv_registry_digest": "sha256:4ed7211eff49409fc6f0b53f6fb5f146a174c4fe7be724820ae5070073d9b4b1"
 }

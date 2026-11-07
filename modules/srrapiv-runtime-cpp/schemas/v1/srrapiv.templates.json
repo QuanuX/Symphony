@@ -1,0 +1,68 @@
+{
+  "templates": {
+    "catalog_inspect": {
+      "protocol": "symphony.srrapiv.request.v1",
+      "catalog": {}
+    },
+    "binding_validate": {
+      "protocol": "symphony.srrapiv.request.v1",
+      "catalog": {},
+      "binding": {},
+      "compatibility_evidence": []
+    },
+    "binding_compare": {
+      "protocol": "symphony.srrapiv.request.v1",
+      "catalog": {},
+      "from_binding": {},
+      "to_binding": {},
+      "compatibility_evidence": []
+    },
+    "coverage_assess": {
+      "protocol": "symphony.srrapiv.request.v1",
+      "schema": "symphony.srrapiv.coverage.v1",
+      "sdk_artifact_id": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+      "universe": [
+        "REPLACE_WITH_INDEPENDENT_INVENTORY"
+      ],
+      "mappings": []
+    },
+    "api_describe": {
+      "protocol": "symphony.srrapiv.request.v1"
+    },
+    "runtime_start": {
+      "protocol": "symphony.srrapiv.request.v1",
+      "runtime_dir": "/absolute/private/runtime",
+      "config_file": "/absolute/private/runtime-config.json"
+    },
+    "runtime_status": {
+      "protocol": "symphony.srrapiv.request.v1",
+      "runtime_dir": "/absolute/private/runtime"
+    },
+    "runtime_invoke": {
+      "protocol": "symphony.srrapiv.request.v1",
+      "runtime_dir": "/absolute/private/runtime",
+      "expected_generation": "GENERATION_FROM_RUNTIME_STATUS",
+      "method": "REngine.getVersion#1",
+      "params": {},
+      "attempt_id": "unique-attempt-1",
+      "authority": {
+        "allow_provider": false,
+        "allow_trading": false
+      }
+    },
+    "runtime_events": {
+      "protocol": "symphony.srrapiv.request.v1",
+      "runtime_dir": "/absolute/private/runtime",
+      "expected_generation": "GENERATION_FROM_RUNTIME_STATUS"
+    },
+    "runtime_stop": {
+      "protocol": "symphony.srrapiv.request.v1",
+      "runtime_dir": "/absolute/private/runtime",
+      "expected_generation": "GENERATION_FROM_RUNTIME_STATUS"
+    },
+    "runtime_attempts": {
+      "protocol": "symphony.srrapiv.request.v1",
+      "runtime_dir": "/absolute/private/runtime"
+    }
+  }
+}

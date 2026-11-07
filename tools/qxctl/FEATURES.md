@@ -1486,6 +1486,64 @@
       "cross_vector_references": [
         {
           "applicability": "applicable",
+          "reason": "Material source change closes append-only after verification.",
+          "reference": "knowledge/sclv/SPEC.md",
+          "vector": "sclv"
+        },
+        {
+          "applicability": "applicable",
+          "reason": "Source contract discovery and exact closure traceability.",
+          "reference": "knowledge/skvi/INDEX.md",
+          "vector": "skvi"
+        }
+      ],
+      "distinctions": [],
+      "evidence": [
+        "knowledge/sqv/srrapiv/SPEC.md",
+        "tools/qxctl/cmd/qxctl/srrapiv_test.go",
+        "tools/qxctl/internal/knowledgeengine/srrapiv_test.go"
+      ],
+      "feature_id": "ssfv:symphony:qxctl.srrapiv-administration",
+      "how": "Go verifies bounded transport, receipt and resource identities, command correspondence and result digests. Native C++ owns binding rules, SDK calls, runtime identity, local authorization and uncertain-attempt recovery.",
+      "implementation_languages": [
+        {
+          "language": "Go",
+          "role": "Command grammar, discovery, exact installation selection, bounded transport and result correspondence."
+        }
+      ],
+      "implementation_paths": [
+        "tools/qxctl/cmd/qxctl/srrapiv.go",
+        "tools/qxctl/internal/knowledgeengine/srrapiv.go",
+        "tools/qxctl/internal/knowledgeengine/srrapiv_shape.go"
+      ],
+      "kind": "subfeature",
+      "non_claims": [
+        "No implicit upgrade, provider-side exactly-once guarantee, automatic uncertain mutation retry, or SSIAG readiness claim.",
+        "Discovery or structural validity does not establish live-provider qualification."
+      ],
+      "owner_contract": "tools/qxctl/MANIFEST.md",
+      "parent_feature_id": "ssfv:symphony:qxctl",
+      "record_version": 2,
+      "relationships": [
+        {
+          "rationale": "The sovereign native owner implements exact SDK and persistent runtime semantics.",
+          "target_feature_id": "ssfv:symphony:srrapiv-runtime-cpp",
+          "type": "depends_on"
+        }
+      ],
+      "source_scope": "tools/qxctl",
+      "status": "experimental",
+      "title": "SRRAPIV exact native administration",
+      "what": "Thirteen canonical commands expose native Rithmic API discovery, binding and coverage checks, persistent runtime control, attempt recovery, and exact installed schemas/templates.",
+      "when": "On explicit local invocation with an exact installation prefix and engine version; runtime mutations require native owner permission.",
+      "where": "qxctl sqv rithmic catalog, api, binding, coverage, runtime, schema and template.",
+      "who": "Operators, strategy developers, agents and automation selecting exact native SRRAPIV installations.",
+      "why": "Expose the sovereign SQV Rithmic vector through complete discoverable controls while preserving exact selected releases and native authority."
+    },
+    {
+      "cross_vector_references": [
+        {
+          "applicability": "applicable",
           "reason": "SCLV records reviewed SSIAG client and grammar changes.",
           "reference": "knowledge/sclv/CHANGELOG.md",
           "vector": "sclv"

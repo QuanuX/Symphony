@@ -409,6 +409,17 @@ The SCV gate adds exact graph-index schema discovery, keeping connector receipt-
 
 Seven native-owner operations extend the existing shared schema/template and discovery routes. Declared output shapes, request/result digests and exact receipt-owned resources are independently checked. Native vector semantics remain C++26.
 
+## SRRAPIV administration
+
+`sqv rithmic` adds thirteen canonical leaves for the sovereign SQV Rithmic C++ owner. Exact native resource pins, receipts, request/result correspondence and bounded transport are checked by Go; SDK dispatch, bindings, runtime identity, authorization and recovery remain native. Runtime mutations declare recovery routes and are never automatically retried. See `tools/qxctl/SRRAPIV.md`.
+
+- `tools/qxctl/cmd/qxctl/srrapiv.go`
+- `tools/qxctl/cmd/qxctl/srrapiv_test.go`
+- `tools/qxctl/internal/knowledgeengine/srrapiv.go`
+- `tools/qxctl/internal/knowledgeengine/srrapiv_shape.go`
+- `tools/qxctl/internal/knowledgeengine/srrapiv_interface_generated.go`
+- `tools/qxctl/internal/knowledgeengine/srrapiv_test.go`
+
 - `tools/qxctl/internal/knowledgeengine/sbv_partitioned.go`
 
 - `tools/qxctl/internal/knowledgeengine/sbv_partitioned_test.go`

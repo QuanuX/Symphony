@@ -2,7 +2,7 @@
 
 ## Status
 
-Canonical SSFV feature-routing registry. The partial catalog routes 142 experimental records across the platform governance scope and 64 owner scopes enumerated by `COVERAGE.md`.
+Canonical SSFV feature-routing registry. The partial catalog routes 149 experimental records across 67 owner scopes enumerated by `COVERAGE.md`.
 
 ## Purpose
 
@@ -1363,6 +1363,24 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - record_digest: `sha256:9b54b07e4d0eeab75d399f98b9c66ce5286cd0d3787896aa1d9160fc9dbec404`
 - notes: Optional scoped SSH implementation; actual two-host deployment remains unqualified.
 
+- feature_id: `ssfv:symphony:srrapiv-runtime-cpp`
+- feature_file: `modules/srrapiv-runtime-cpp/FEATURES.md`
+- owner_contract: `modules/srrapiv-runtime-cpp/SPEC.md`
+- source_scope: `modules/srrapiv-runtime-cpp`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:platform`
+- record_digest: `sha256:0b0aa7284220f8dee8043518715458090518106857b72e0eb97e3ad08ff7997f`
+- notes: Exact sovereign R API+ native integration; source coverage, installed behavior and provider qualification remain separately evidenced.
+
+- feature_id: `ssfv:symphony:qxctl.srrapiv-administration`
+- feature_file: `tools/qxctl/FEATURES.md`
+- owner_contract: `tools/qxctl/MANIFEST.md`
+- source_scope: `tools/qxctl`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:qxctl`
+- record_digest: `sha256:04dd4aca66a0dad09317987fa401b6c79b0630d246866e5d6f3ecef792b004fa`
+- notes: Exact native SRRAPIV discovery, immutable binding checks, explicit resident lifecycle and recovery; no provider qualification or SSIAG readiness claim.
+
 ## Prohibited Entries
 
 Do not register:
@@ -1377,4 +1395,4 @@ Do not register:
 
 ## Non-Authorization Statement
 
-This 145-record registry is an explicitly partial catalog governed by `COVERAGE.md`. It does not authorize an unratified feature record, an unregistered distributed file, repository-wide or installed-host completeness, complete legacy-invariant coverage, engine-decided feature-worthiness, or canonical mutation.
+This 149-record registry is an explicitly partial catalog governed by `COVERAGE.md`. It does not authorize an unratified feature record, an unregistered distributed file, repository-wide or installed-host completeness, complete legacy-invariant coverage, engine-decided feature-worthiness, or canonical mutation.

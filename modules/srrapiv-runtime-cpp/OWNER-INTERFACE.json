@@ -1,0 +1,266 @@
+{
+  "protocol": "symphony.shv.owner-interface.v2",
+  "module_id": "srrapiv-runtime-cpp",
+  "engine_id": "symphony-srrapiv",
+  "namespace": "symphony::srrapiv",
+  "current_version": "0.1.0-dev",
+  "releases": {
+    "0.1.0-dev": [
+      "catalog_inspect",
+      "binding_validate",
+      "binding_compare",
+      "coverage_assess",
+      "api_describe",
+      "runtime_start",
+      "runtime_status",
+      "runtime_invoke",
+      "runtime_events",
+      "runtime_stop",
+      "runtime_attempts"
+    ]
+  },
+  "contract_versions": [
+    "modules/srrapiv-runtime-cpp/SPEC.md@v1",
+    "symphony.srrapiv.request.v1",
+    "symphony.srrapiv.result.v1"
+  ],
+  "operations": [
+    {
+      "engine_operation_id": "engop:symphony:srrapiv.catalog.inspect",
+      "operation_name": "catalog_inspect",
+      "availability": "implemented",
+      "feature_ids": [
+        "ssfv:symphony:srrapiv-runtime-cpp"
+      ],
+      "administrative_interactions": [
+        "inspect"
+      ],
+      "administration_disposition": "qxctl_required",
+      "input_protocol": "symphony.srrapiv.request.v1",
+      "output_protocol": "symphony.srrapiv.result.v1",
+      "mutability": "read_only",
+      "idempotency": "idempotent",
+      "expected_state_required": false,
+      "authorization_requirement": "none",
+      "recovery_operation_id": null,
+      "direct_invocation": "supported",
+      "thermal_path": "freezing"
+    },
+    {
+      "engine_operation_id": "engop:symphony:srrapiv.binding.validate",
+      "operation_name": "binding_validate",
+      "availability": "implemented",
+      "feature_ids": [
+        "ssfv:symphony:srrapiv-runtime-cpp"
+      ],
+      "administrative_interactions": [
+        "validate"
+      ],
+      "administration_disposition": "qxctl_required",
+      "input_protocol": "symphony.srrapiv.request.v1",
+      "output_protocol": "symphony.srrapiv.result.v1",
+      "mutability": "read_only",
+      "idempotency": "idempotent",
+      "expected_state_required": false,
+      "authorization_requirement": "none",
+      "recovery_operation_id": null,
+      "direct_invocation": "supported",
+      "thermal_path": "freezing"
+    },
+    {
+      "engine_operation_id": "engop:symphony:srrapiv.binding.compare",
+      "operation_name": "binding_compare",
+      "availability": "implemented",
+      "feature_ids": [
+        "ssfv:symphony:srrapiv-runtime-cpp"
+      ],
+      "administrative_interactions": [
+        "inspect"
+      ],
+      "administration_disposition": "qxctl_required",
+      "input_protocol": "symphony.srrapiv.request.v1",
+      "output_protocol": "symphony.srrapiv.result.v1",
+      "mutability": "read_only",
+      "idempotency": "idempotent",
+      "expected_state_required": false,
+      "authorization_requirement": "none",
+      "recovery_operation_id": null,
+      "direct_invocation": "supported",
+      "thermal_path": "freezing"
+    },
+    {
+      "engine_operation_id": "engop:symphony:srrapiv.coverage.assess",
+      "operation_name": "coverage_assess",
+      "availability": "implemented",
+      "feature_ids": [
+        "ssfv:symphony:srrapiv-runtime-cpp"
+      ],
+      "administrative_interactions": [
+        "inspect"
+      ],
+      "administration_disposition": "qxctl_required",
+      "input_protocol": "symphony.srrapiv.request.v1",
+      "output_protocol": "symphony.srrapiv.result.v1",
+      "mutability": "read_only",
+      "idempotency": "idempotent",
+      "expected_state_required": false,
+      "authorization_requirement": "none",
+      "recovery_operation_id": null,
+      "direct_invocation": "supported",
+      "thermal_path": "freezing"
+    },
+    {
+      "engine_operation_id": "engop:symphony:srrapiv.api.describe",
+      "operation_name": "api_describe",
+      "availability": "implemented",
+      "feature_ids": [
+        "ssfv:symphony:srrapiv-runtime-cpp"
+      ],
+      "administrative_interactions": [
+        "discover"
+      ],
+      "administration_disposition": "qxctl_required",
+      "input_protocol": "symphony.srrapiv.request.v1",
+      "output_protocol": "symphony.srrapiv.result.v1",
+      "mutability": "read_only",
+      "idempotency": "idempotent",
+      "expected_state_required": false,
+      "authorization_requirement": "none",
+      "recovery_operation_id": null,
+      "direct_invocation": "supported",
+      "thermal_path": "freezing"
+    },
+    {
+      "engine_operation_id": "engop:symphony:srrapiv.runtime.start",
+      "operation_name": "runtime_start",
+      "availability": "implemented",
+      "feature_ids": [
+        "ssfv:symphony:srrapiv-runtime-cpp"
+      ],
+      "administrative_interactions": [
+        "lifecycle"
+      ],
+      "administration_disposition": "qxctl_required",
+      "input_protocol": "symphony.srrapiv.request.v1",
+      "output_protocol": "symphony.srrapiv.result.v1",
+      "mutability": "permission_backed_mutation",
+      "idempotency": "non_idempotent",
+      "expected_state_required": false,
+      "authorization_requirement": "target_host_permission",
+      "recovery_operation_id": "engop:symphony:srrapiv.runtime.status",
+      "direct_invocation": "supported",
+      "thermal_path": "freezing"
+    },
+    {
+      "engine_operation_id": "engop:symphony:srrapiv.runtime.status",
+      "operation_name": "runtime_status",
+      "availability": "implemented",
+      "feature_ids": [
+        "ssfv:symphony:srrapiv-runtime-cpp"
+      ],
+      "administrative_interactions": [
+        "inspect"
+      ],
+      "administration_disposition": "qxctl_required",
+      "input_protocol": "symphony.srrapiv.request.v1",
+      "output_protocol": "symphony.srrapiv.result.v1",
+      "mutability": "read_only",
+      "idempotency": "idempotent",
+      "expected_state_required": false,
+      "authorization_requirement": "target_host_permission",
+      "recovery_operation_id": null,
+      "direct_invocation": "supported",
+      "thermal_path": "freezing"
+    },
+    {
+      "engine_operation_id": "engop:symphony:srrapiv.runtime.invoke",
+      "operation_name": "runtime_invoke",
+      "availability": "implemented",
+      "feature_ids": [
+        "ssfv:symphony:srrapiv-runtime-cpp"
+      ],
+      "administrative_interactions": [
+        "invoke"
+      ],
+      "administration_disposition": "qxctl_required",
+      "input_protocol": "symphony.srrapiv.request.v1",
+      "output_protocol": "symphony.srrapiv.result.v1",
+      "mutability": "permission_backed_mutation",
+      "idempotency": "idempotent_with_invocation_id",
+      "expected_state_required": true,
+      "authorization_requirement": "target_host_permission",
+      "recovery_operation_id": "engop:symphony:srrapiv.runtime.attempts",
+      "direct_invocation": "supported",
+      "thermal_path": "freezing"
+    },
+    {
+      "engine_operation_id": "engop:symphony:srrapiv.runtime.events",
+      "operation_name": "runtime_events",
+      "availability": "implemented",
+      "feature_ids": [
+        "ssfv:symphony:srrapiv-runtime-cpp"
+      ],
+      "administrative_interactions": [
+        "inspect"
+      ],
+      "administration_disposition": "qxctl_required",
+      "input_protocol": "symphony.srrapiv.request.v1",
+      "output_protocol": "symphony.srrapiv.result.v1",
+      "mutability": "read_only",
+      "idempotency": "idempotent",
+      "expected_state_required": false,
+      "authorization_requirement": "target_host_permission",
+      "recovery_operation_id": null,
+      "direct_invocation": "supported",
+      "thermal_path": "freezing"
+    },
+    {
+      "engine_operation_id": "engop:symphony:srrapiv.runtime.stop",
+      "operation_name": "runtime_stop",
+      "availability": "implemented",
+      "feature_ids": [
+        "ssfv:symphony:srrapiv-runtime-cpp"
+      ],
+      "administrative_interactions": [
+        "lifecycle"
+      ],
+      "administration_disposition": "qxctl_required",
+      "input_protocol": "symphony.srrapiv.request.v1",
+      "output_protocol": "symphony.srrapiv.result.v1",
+      "mutability": "permission_backed_mutation",
+      "idempotency": "non_idempotent",
+      "expected_state_required": true,
+      "authorization_requirement": "target_host_permission",
+      "recovery_operation_id": "engop:symphony:srrapiv.runtime.status",
+      "direct_invocation": "supported",
+      "thermal_path": "freezing"
+    },
+    {
+      "engine_operation_id": "engop:symphony:srrapiv.runtime.attempts",
+      "operation_name": "runtime_attempts",
+      "availability": "implemented",
+      "feature_ids": [
+        "ssfv:symphony:srrapiv-runtime-cpp"
+      ],
+      "administrative_interactions": [
+        "recover"
+      ],
+      "administration_disposition": "qxctl_required",
+      "input_protocol": "symphony.srrapiv.request.v1",
+      "output_protocol": "symphony.srrapiv.result.v1",
+      "mutability": "read_only",
+      "idempotency": "idempotent",
+      "expected_state_required": false,
+      "authorization_requirement": "target_host_permission",
+      "recovery_operation_id": null,
+      "direct_invocation": "supported",
+      "thermal_path": "freezing"
+    }
+  ],
+  "schemas": [
+    "modules/srrapiv-runtime-cpp/schemas/v1/srrapiv.schema.json",
+    "modules/srrapiv-runtime-cpp/schemas/v1/srrapiv.templates.json"
+  ],
+  "companions": [],
+  "embedded_dependencies": []
+}
