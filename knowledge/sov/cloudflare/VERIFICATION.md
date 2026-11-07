@@ -46,8 +46,8 @@ go test ./internal/sovremote ./cmd/qxctl -run 'TestSSH|TestCommandRegistry' -cou
 Platform: macOS amd64. cf 1.0.0-beta.28; Node 26.12.0. The host's older Node 26.10.0 was not used. Full archive, dependency/license and build-tool provenance is in `knowledge/sov/cloudflare/c0/manifest.json`.
 
 - Toolchain bundle: `sha256:02dd198aa1fc6a3e8e7a8ec1b6a26ef75b4f47619428085aed6306060d4dc813`.
-- Installed adapter executable: `sha256:0d8734f8116c7dac7d0e2b912ea31adae6c1bba5339c3ece76428c9c18640496`.
-- Installed adapter receipt: `sha256:28e10baaa61ca5254b7eb76124aa6096cfe01a1211612f32682c5f88d68ffeb7`.
+- Initial I1 adapter executable (real CLI qualification): `sha256:0d8734f8116c7dac7d0e2b912ea31adae6c1bba5339c3ece76428c9c18640496`.
+- Initial I1 installed adapter receipt: `sha256:28e10baaa61ca5254b7eb76124aa6096cfe01a1211612f32682c5f88d68ffeb7`.
 - qxctl test executable: `sha256:86097d5317e1d5d8d35636653670780b0d21a39f6e3f7bf3861b0b642a83eff9`.
 
 ## Open qualification
@@ -57,3 +57,10 @@ C0/I1 satisfies the local foundation slice, not all of M1-01 or I6. Context appl
 Linux/ARM and macOS ARM builds are not locally qualified. A credential-free hosted workflow covers the local fixtures; remote checks are not awaited after push, per the user's instruction. No full SCV/SHV, provider, production or multi-host campaign was run. Source checks do not establish account entitlements or live-provider acceptance.
 
 Canonical SCLV post-merge closure is not asserted before merge. This dated source record provides the completion inputs for that later closure; no merge, release, deployment or provider authority is inferred.
+
+## Final journal strictness follow-up
+
+Status, apply admission and recovery now parse only the four exact attempt fields and bind the stored plan identity. Unknown fields, mismatched identities and invalid stage/effect values reject without returning the stored text. A sentinel-bearing corrupted-journal test covers status and recovery. The seven native contract groups and the receipt-backed native/Go consumer checks passed for this follow-up. The real cf search/schema paths were unchanged; their nine-check evidence above remains tied to the initial I1 executable.
+
+- Reviewed adapter executable: `sha256:16f7e15e6ad38655d2760e935b921821ce430ca173131580fe2b512a8b87615c`.
+- Reviewed adapter receipt: `sha256:e212b803dfbf0b03a6194c378c9d76faa2b9f6ccdce313884ad1de28840af065`.

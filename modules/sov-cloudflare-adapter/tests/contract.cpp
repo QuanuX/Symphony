@@ -102,6 +102,11 @@ void reconciliation(const fs::path& exe) {
 void store_and_plan_substitution(const fs::path& exe) {
     Harness h(exe); auto [source,id] = h.fixture();auto target = h.temporary.path / "target";fs::create_directory(target);fs::create_directory_symlink(target,h.store);h.plan("install",id,source,nullptr,false);fs::remove(h.store);
     auto plan = h.plan("install",id,source);auto d=plan.at("data").at("plan_digest").get<std::string>();auto path=h.store / "plans" / (d.substr(7)+".json");auto changed=read_json(path);changed["action"]="remove";write_json(path,changed);h.apply(plan,false);
+    write_json(path,plan.at("data").at("plan"));
+    auto attempt=h.store/"attempts"/(d.substr(7)+".json");
+    write_json(attempt,{{"protocol","symphony.sov.cloudflare-attempt.v1"},{"plan_digest",d},{"stage","settled"},{"effect_state","not_applied"},{"unexpected","SECRET-SENTINEL"}});
+    NT_REQUIRE(h.call("installation.status",{{"store",h.store.string()},{"plan_digest",d}},nullptr,false).at("error_code")=="integrity_failure");
+    h.call("installation.reconcile",{{"store",h.store.string()},{"plan_digest",d}},d,false);
 }
 }
 int main(int argc, char** argv) {

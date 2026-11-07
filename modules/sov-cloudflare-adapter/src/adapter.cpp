@@ -89,6 +89,15 @@ void make_private(const fs::path& p) {
     require(::lstat(p.c_str(), &s) == 0 && S_ISDIR(s.st_mode) && s.st_uid == ::geteuid() && (s.st_mode & 0077) == 0, "integrity_failure");
 }
 Json initial() { return Json{{"protocol", state_protocol}, {"generation", "0"}, {"selected", nullptr}, {"installations", Json::object()}}; }
+Json journal(const fs::path& path, const std::string& expected) {
+    auto j = parse(read_file(path, frame_limit));
+    require(j.is_object() && j.size() == 4 && j.contains("protocol") && j.contains("plan_digest") && j.contains("stage") && j.contains("effect_state"), "integrity_failure");
+    require(j.at("protocol") == "symphony.sov.cloudflare-attempt.v1" && j.at("plan_digest") == expected, "integrity_failure");
+    const std::set<std::string> stages{"prepared", "admitted", "dispatch_started", "observed", "settled"};
+    const std::set<std::string> effects{"not_applied", "applied_verified", "unresolved"};
+    require(stages.contains(str(j.at("stage"))) && effects.contains(str(j.at("effect_state"))), "integrity_failure");
+    return j;
+}
 struct Store {
     fs::path path;
     FD lock;
@@ -223,7 +232,7 @@ Json load_plan(Store& store, const std::string& d, const Json& request) {
 void no_unsettled(Store& store) {
     for (const auto& e : fs::directory_iterator(store.path / "attempts")) {
         if (e.path().extension() != ".json") continue; // Unpublished atomic-write temporaries are not journals.
-        auto j = parse(read_file(e.path(), frame_limit));
+        auto j = journal(e.path(), "sha256:" + e.path().stem().string());
         require(j.at("stage") == "settled", "unresolved_attempt");
     }
 }
@@ -234,7 +243,7 @@ Json lifecycle(Store& store, const Json& request, bool& started) {
     if (op == "installation.plan") return plan(store, input, request);
     auto d = str(input.at("plan_digest")); auto p = load_plan(store, d, request);
     auto journal_path = store.record("attempts", d);
-    Json journal = fs::exists(journal_path) ? parse(read_file(journal_path, frame_limit)) : Json(nullptr);
+    Json journal = fs::exists(journal_path) ? cloudflare::journal(journal_path, d) : Json(nullptr);
     if (op == "installation.status") return Json{{"plan_digest", d}, {"attempt", journal}, {"current_state_digest", digest(store.state(), state_protocol)}};
     require(request.at("plan_ref") == d, "binding_mismatch");
     if (op == "installation.reconcile") {
