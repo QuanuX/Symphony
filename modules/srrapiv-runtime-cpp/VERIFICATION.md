@@ -56,3 +56,11 @@ Focused local verification on Darwin Intel with Clang 23.1.2 passed:
 - Repository validation: 18,211 passes, zero violations and four existing historical-path warnings. The generated README projection remained current.
 
 These checks establish the corrected native registration locally. Hosted results for the correction are not claimed, and no provider session or trading operation was performed.
+
+## Installed Go evidence follow-up
+
+Completed hosted runs for revision `e668dac29bc7af079620a07d4a18a67907e231e5` passed all four knowledge profiles. The four remaining failures in dependency-map run `42318885876` were quantitative jobs on Ubuntu 24.04 x86_64, Ubuntu 26.04 x86_64, Ubuntu 24.04 ARM64 and macOS 15. Each completed its declared native checks and the first installed Go suite (four top-level tests and three subtests), then stopped before the second suite because `installed-go/tools-qxctl.jsonl` already existed. Both selected packages belong to the same Go module; report names previously included only the module.
+
+Installed report names now include the complete suite-selection digest, keeping event, stderr and summary files independent across packages and named-test selections. Exclusive file creation remains enforced. A new regression reproduced the original `file exists` failure before the fix, then passed with three real Go test invocations across two packages, including two distinct selections in the same package. It also verifies that an identical repeated selection is refused without altering any retained evidence.
+
+All four runner regression tests passed locally with the race detector on Darwin Intel using Go 1.27.1. Release-manifest and dependency-source verification passed; repository validation reported 18,211 passes, zero violations and four existing historical-path warnings. These focused checks do not claim the complete installed campaign or a local exact-Go-1.26.5 run; hosted jobs retain that toolchain requirement. No provider session or trading operation was performed, and hosted reruns for this correction were not awaited.

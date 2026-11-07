@@ -183,6 +183,15 @@ func run(repo, work, mode, prefix string, selected module, tests []suite, option
 		return err
 	}
 	label := strings.ReplaceAll(selected.Path, "/", "-")
+	if mode == "installed" {
+		// A module may have multiple package or test selections. Bind each set
+		// of evidence files to its complete selection while retaining O_EXCL.
+		selection, err := json.Marshal(tests)
+		if err != nil {
+			return err
+		}
+		label += fmt.Sprintf("-%x", sha256.Sum256(selection))
+	}
 	stdout, err := os.OpenFile(filepath.Join(work, label+".jsonl"), os.O_CREATE|os.O_EXCL|os.O_WRONLY, 0600)
 	if err != nil {
 		return err
