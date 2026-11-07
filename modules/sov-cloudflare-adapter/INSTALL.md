@@ -9,6 +9,13 @@ ctest --test-dir /absolute/build --output-on-failure
 cmake --install /absolute/build
 ```
 
+To consume an independently installed foundation, configure a fresh build with
+`-DSYMPHONY_CLOUDFLARE_INSTALLED=ON -DCMAKE_PREFIX_PATH=/absolute/foundation-prefix`.
+This requires `SymphonyKnowledgeVectorEngine 0.2.0 EXACT` and never falls back to
+the sibling source tree. The default source build remains available. Shared
+installed-SDK qualification uses the installed option and verifies the selected
+headers and library belong to the supplied prefix.
+
 Receipt-v2 lives under share/symphony/receipts/sov-cloudflare-adapter/0.1.0-dev/. Select that exact prefix/version with qxctl's --adapter-prefix and --adapter-version flags. No global search path selection. The adapter receipt covers schemas, templates and its declaration. Toolchain bundles are imported separately by installation plan/apply. Their removal does not remove the adapter. Use `cmake --build /absolute/build --target uninstall-sov-cloudflare-adapter` for the common exact receipt-bound removal; it refuses changed files and leaves unrelated prefix content.
 
 Example offline discovery input: {"store":null,"toolchain_id":null,"query":null}. Pass it via --input to `qxctl sov cloudflare cf capability list`. Use capability template with {"operation":"installation.plan"} for lifecycle inputs. Do not execute these examples under sudo.

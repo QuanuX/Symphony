@@ -115,7 +115,7 @@ func TestOptionalSkipsRemainDistinctFromCoverage(t *testing.T) {
 	}
 }
 
-func TestSRRAPIVInstalledQualificationIsRequired(t *testing.T) {
+func TestInstalledQualificationIsRequired(t *testing.T) {
 	_, source, _, ok := runtime.Caller(0)
 	if !ok {
 		t.Fatal("test source unavailable")
@@ -128,10 +128,11 @@ func TestSRRAPIVInstalledQualificationIsRequired(t *testing.T) {
 	if err = json.Unmarshal(raw, &m); err != nil {
 		t.Fatal(err)
 	}
-	for _, selected := range []struct{ pkg, name string }{
-		{"./internal/knowledgeengine", "TestSRRAPIVInstalledNative"},
-		{"./internal/knowledgeengine", "TestSRRAPIVInstalledResidentLifecycle"},
-		{"./cmd/qxctl", "TestSRRAPIVInstalledCLI"},
+	for _, selected := range []struct{ pkg, name, group, prefix string }{
+		{"./internal/knowledgeengine", "TestSRRAPIVInstalledNative", "quantitative", "SRRAPIV_TEST_PREFIX"},
+		{"./internal/knowledgeengine", "TestSRRAPIVInstalledResidentLifecycle", "quantitative", "SRRAPIV_TEST_PREFIX"},
+		{"./cmd/qxctl", "TestSRRAPIVInstalledCLI", "quantitative", "SRRAPIV_TEST_PREFIX"},
+		{"./internal/sovcloudflare", "TestCloudflareInstalledReceiptProcess", "cloud", "SYMPHONY_CLOUDFLARE_TEST_PREFIX"},
 	} {
 		pkg := packageName("example/qxctl", selected.pkg)
 		events := []event{{Action: "pass", Package: pkg, Test: "TestUnit"}, {Action: "skip", Package: pkg, Test: selected.name}}
@@ -140,11 +141,18 @@ func TestSRRAPIVInstalledQualificationIsRequired(t *testing.T) {
 		}
 		var required []suite
 		for _, s := range m.Installed {
-			if s.Group != "quantitative" || s.Module != "tools/qxctl" || s.Package != selected.pkg {
+			if s.Group != selected.group || s.Module != "tools/qxctl" || s.Package != selected.pkg {
 				continue
 			}
 			for _, name := range s.Tests {
 				if name == selected.name {
+					foundPrefix := false
+					for _, variable := range s.PrefixEnvironment {
+						foundPrefix = foundPrefix || variable == selected.prefix
+					}
+					if !foundPrefix {
+						t.Fatalf("%s lacks its exact installed prefix binding", selected.name)
+					}
 					required = append(required, suite{Module: s.Module, Package: s.Package, Tests: []string{name}})
 				}
 			}

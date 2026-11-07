@@ -6,7 +6,7 @@ file(READ "${RELEASE_HARNESS}/manifest.json" qualification)
 mvp_run(release-result-gate-regressions "${MVP_WORK}" "${CMAKE_COMMAND}"
   "-DRESULT_TEST_WORK=${MVP_WORK}/result-regressions" -P "${RELEASE_HARNESS}/result-regressions.cmake")
 file(MAKE_DIRECTORY "${MVP_WORK}/fixtures")
-if(MVP_GROUP STREQUAL "knowledge" OR MVP_GROUP STREQUAL "quantitative" OR MVP_GROUP STREQUAL "duckdb")
+if(MVP_GROUP STREQUAL "knowledge" OR MVP_GROUP STREQUAL "quantitative" OR MVP_GROUP STREQUAL "duckdb" OR MVP_GROUP STREQUAL "cloud")
   include("${RELEASE_HARNESS}/require-go-toolchain.cmake")
 endif()
 
@@ -156,7 +156,7 @@ foreach(index IN LISTS suites)
   file(WRITE "${MVP_WORK}/logs/${id}-release-selection.json" "${suite}\n")
 endforeach()
 
-if(MVP_GROUP STREQUAL "knowledge" OR MVP_GROUP STREQUAL "quantitative")
+if(MVP_GROUP STREQUAL "knowledge" OR MVP_GROUP STREQUAL "quantitative" OR MVP_GROUP STREQUAL "cloud")
   mvp_run(release-installed-go "${MVP_REPOSITORY}" "${CMAKE_COMMAND}" -E env
     GOWORK=off GOTOOLCHAIN=local GOENV=off "GOMODCACHE=${MVP_WORK}/go/modules"
     "GOCACHE=${MVP_WORK}/go/build" "GOPATH=${MVP_WORK}/go/path"

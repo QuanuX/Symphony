@@ -51,8 +51,14 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          cmake -S libraries/knowledge-vector-engine-cpp -B "$RUNNER_TEMP/cloudflare-foundation-build" \
+            -DCMAKE_BUILD_TYPE=Release -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DBUILD_TESTING=OFF -DSYMPHONY_KVE_BUILD_TESTING=OFF \
+            -DCMAKE_INSTALL_PREFIX="$RUNNER_TEMP/cloudflare-install"
+          cmake --build "$RUNNER_TEMP/cloudflare-foundation-build" --parallel 2
+          cmake --install "$RUNNER_TEMP/cloudflare-foundation-build"
           cmake -S modules/sov-cloudflare-adapter -B "$RUNNER_TEMP/cloudflare-build" \
-            -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="$RUNNER_TEMP/cloudflare-install"
+            -DCMAKE_BUILD_TYPE=Release -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DCMAKE_INSTALL_PREFIX="$RUNNER_TEMP/cloudflare-install" \
+            -DSYMPHONY_CLOUDFLARE_INSTALLED=ON -DCMAKE_PREFIX_PATH="$RUNNER_TEMP/cloudflare-install"
           cmake --build "$RUNNER_TEMP/cloudflare-build" --parallel 2
           ctest --test-dir "$RUNNER_TEMP/cloudflare-build" --output-on-failure
           cmake --install "$RUNNER_TEMP/cloudflare-build"

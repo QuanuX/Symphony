@@ -64,3 +64,29 @@ Status, apply admission and recovery now parse only the four exact attempt field
 
 - Reviewed adapter executable: `sha256:16f7e15e6ad38655d2760e935b921821ce430ca173131580fe2b512a8b87615c`.
 - Reviewed adapter receipt: `sha256:e212b803dfbf0b03a6194c378c9d76faa2b9f6ccdce313884ad1de28840af065`.
+
+## C0/I1 shared qualification repair — November 7, 2026
+
+PR #189 at `229fd6ba415cd2f6706b1efbe7b3fe6feae62a8c` completed with 34 successful and 20 failed checks. CodeQL and the three Cloudflare jobs passed. Sixteen SDK/DuckDB jobs stopped at the shared dependency-map gate because the adapter root was not registered. Four Go-release jobs rejected the unclassified `TestCloudflareInstalledReceiptProcess` skip; their retained events contain no failed Go test results. These were integration omissions, not provider or SSH failures.
+
+The repair registers the component, exact foundation dependency, build order, cloud qualification group, owner/schema inputs and optional C0 runtime dependencies. Four changed source hashes and their applicable catalogue records are refreshed after review. Native tests and the installed consumer are included in the release manifest. The source-only test classification is paired with mandatory installed cloud execution; installed skips and missing tests remain failures. The recorded native totals now match the actual selection: 59 roots, 172 CTests and 17 direct suites.
+
+`SYMPHONY_CLOUDFLARE_INSTALLED=ON` requires `SymphonyKnowledgeVectorEngine 0.2.0 EXACT` without source fallback. Shared qualification and the dedicated workflow select this mode; the default source-build mode remains available. No adapter runtime, qxctl operation, dependency pin or SSH v1 source was changed.
+
+Focused local results on macOS amd64 with Go 1.26.5, CMake 4.4.3 and Apple Clang 21:
+
+| Boundary | Result |
+| --- | --- |
+| Dependency projection and release manifest | Passed: 71 component roots, 59 native components, 1,110 source hashes; exact release selections validated. |
+| Independent installed SDK | Built foundation separately; adapter configure passed the existing imported-target, exact-version, selected-prefix and no-source-fallback proof. |
+| SDK refusal | Missing/disabled required package and supplied incompatible 0.2.1 package both rejected during configure. |
+| Source and installed builds | Both passed owner projection and seven-group native contract CTests; installed CTest discovery exactly matched the manifest. |
+| Installed receipt and native consumer | Receipt self-digest, every owned file, executable identity and native process consumer passed. |
+| Installed Go consumer | Actual shared release runner, cloud selection, race-enabled: one required test passed, zero skips. |
+| Qualification result gates | Classified source-only skip remains separate from coverage; missing, skipped or incorrectly bound installed execution is rejected. |
+| Retained release events | Re-evaluated all eight module event streams from each of four failed-run artifacts (32 summaries). The corrected manifest passes; removing the new classification reproduces the original qxctl error on each runner. This is evidence replay, not a fresh multi-platform run. |
+| SSH v1 | Focused race-enabled carrier, consumer and command-surface regressions passed; SSH source diff against baseline `3d32f149` remains empty. |
+
+The installed native executable is byte-identical to the reviewed journal-hardening artifact: `sha256:16f7e15e6ad38655d2760e935b921821ce430ca173131580fe2b512a8b87615c`. Its receipt, including updated installation documentation, is `sha256:6c24898f4b861e900d3f132ec3aaeb2a6b7080d1782e9bf6825f06680df53b15`. The existing real-CLI evidence retains its original stated identity and scope; no new provider or real-CLI execution is claimed here.
+
+A local shared Go-cache checksum mismatch was resolved by using a fresh task module cache and normal public-proxy/checksum verification. No checksums or dependency pins were relaxed or changed. Evidence is retained separately in the workspace's `implementation/cloudflare-c0-i1/ci-repair/` directory. Full SCV/SHV, complete installed-group and fresh remote campaigns are deferred. Remote checks are not awaited after pushing this corrective increment. I2 remains unstarted.
