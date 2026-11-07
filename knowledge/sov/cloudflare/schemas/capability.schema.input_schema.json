@@ -1,0 +1,50 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "kind": {
+      "enum": [
+        "input",
+        "request",
+        "result",
+        "bundle",
+        "vendor"
+      ],
+      "type": "string"
+    },
+    "operation": {
+      "maxLength": 4096,
+      "type": "string"
+    },
+    "store": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "maxLength": 4096,
+          "pattern": "^/[^\\x00-\\x1f]*$",
+          "type": "string"
+        }
+      ]
+    },
+    "toolchain_id": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "maxLength": 4096,
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "type": "string"
+        }
+      ]
+    }
+  },
+  "required": [
+    "operation",
+    "kind",
+    "store",
+    "toolchain_id"
+  ],
+  "type": "object"
+}

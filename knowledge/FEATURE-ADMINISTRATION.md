@@ -88,3 +88,5 @@ The current SSFV registry contains exactly one hundred experimental records and 
 ## Non-Authorization
 
 This contract authorizes read-only coverage evidence and proposal-only remediation recipes. It does not authorize canonical mutation, semantic name invention, dynamic executable injection, receipt rewriting, installation, docking, activation, arbitrary module entry-point execution, SSIAG permission, STAV append, AI-specific authority, or qxctl presence.
+
+The SOV Cloudflare 0.1.0-dev adapter is administered through twelve receipt-bound local qxctl operations. Capability discovery reports unavailable provider work without registering executable provider commands. New profile-based SSH administration is not present in this increment.

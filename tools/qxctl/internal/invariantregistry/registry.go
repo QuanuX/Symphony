@@ -19,6 +19,7 @@ import (
 const (
 	Protocol       = "symphony.knowledge.invariant-ownership-registry.v1"
 	ProtocolV2     = "symphony.knowledge.invariant-ownership-registry.v2"
+	ProtocolV4     = "symphony.knowledge.invariant-ownership-registry.v4"
 	ProtocolV3     = "symphony.knowledge.invariant-ownership-registry.v3"
 	QueryProtocol  = "symphony.knowledge.invariant-query-result.v1"
 	RegistryPath   = "knowledge/INVARIANT-OWNERSHIP.json"
@@ -260,7 +261,7 @@ func setResultDigest(value any, target *string) error {
 }
 
 func validate(registry Registry) error {
-	if !(registry.Protocol == Protocol && registry.FormatVersion == 1 || registry.Protocol == ProtocolV2 && registry.FormatVersion == 2 || registry.Protocol == ProtocolV3 && registry.FormatVersion == 3) ||
+	if !(registry.Protocol == Protocol && registry.FormatVersion == 1 || registry.Protocol == ProtocolV2 && registry.FormatVersion == 2 || registry.Protocol == ProtocolV3 && registry.FormatVersion == 3 || registry.Protocol == ProtocolV4 && registry.FormatVersion == 4) ||
 		registry.Scope != "common_lowest_authoritative_layer" ||
 		registry.CatalogScope != "registered_incremental" || registry.CatalogComplete ||
 		registry.ForwardGate != "enforce_new_or_modified" || !digestPattern.MatchString(registry.RegistryDigest) {
@@ -316,12 +317,12 @@ func validateAdapter(adapter Adapter) error {
 }
 
 func validateAdapterVersion(adapter Adapter, registryVersion uint64) error {
-	if registryVersion == 3 && adapter.FormatVersion == 3 {
+	if registryVersion >= 3 && adapter.FormatVersion == 3 || registryVersion == 4 && adapter.FormatVersion == 4 {
 		if len(adapter.Component) > 256 || !regexp.MustCompile(`^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$`).MatchString(adapter.Component) || !tokenPattern.MatchString(adapter.EntryPointID) ||
 			!strings.HasPrefix(adapter.EntryPointID, "symphony-") || len(adapter.EntryPointID) <= len("symphony-") ||
 			adapter.OwnerContract != "modules/"+adapter.Component+"/SPEC.md" ||
 			adapter.ImplementationPath != "modules/"+adapter.Component ||
-			adapter.CommandProtocol != "symphony.knowledge.engine-process.v1" ||
+			(adapter.FormatVersion == 3 && adapter.CommandProtocol != "symphony.knowledge.engine-process.v1" || adapter.FormatVersion == 4 && !regexp.MustCompile(`^symphony\.[a-z0-9]+(?:[.-][a-z0-9]+)*\.v1$`).MatchString(adapter.CommandProtocol)) ||
 			adapter.AdapterID != "adapter:symphony:"+adapter.EntryPointID+".v1" ||
 			adapter.VersionPolicy != "exact_receipt_v2_entry_point_and_capability_compatible" ||
 			len(adapter.OperationIDs) < 1 || len(adapter.OperationIDs) > maxOperations ||

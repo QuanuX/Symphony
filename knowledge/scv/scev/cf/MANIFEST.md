@@ -30,3 +30,7 @@ The additive `0.6.0-dev` package preserves this domain boundary while exposing t
 ## Exact Release Routing
 
 The current source package retains thirty native operations under `knowledge/scv/OWNER-INTERFACE.json`. The later shared contracts are `knowledge/scv/COMPOSITION-WORKFLOWS.md` (`0.7.0-dev`), `knowledge/scv/OBLIGATIONS.md` (`0.8.0-dev`), `knowledge/scv/BUNDLES.md` (`0.9.0-dev`) and `knowledge/scv/BUNDLE-WORKFLOWS.md` (`0.10.0-dev`). Each applies within this owner's existing domain. Earlier exact installations retain their receipt-owned contracts and operation sets; current source documentation neither relabels them nor changes command defaults.
+
+## Native administration companion
+
+Dated exact CLI/toolchain evidence is at `knowledge/sov/cloudflare/c0/`. SCEV-CF retains provider knowledge ownership. The independently installed SOV Cloudflare adapter owns local CLI lifecycle and offline discovery; it does not add provider mutations or a tunnel process to this knowledge engine. Credentials, real provider operations and optional Access SSH profiles remain separately gated increments.

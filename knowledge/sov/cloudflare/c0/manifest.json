@@ -17,7 +17,13 @@
     "archive_url": "https://nodejs.org/dist/v26.12.0/node-v26.12.0-darwin-x64.tar.gz",
     "archive_digest": "sha256:878ecede191c7abc1bff01d3fb81f7ed81aa1161040dba18776b8ff8593614b1",
     "executable_digest": "sha256:7c9cb31a1a9d7a2448b8e9bb2dd022f48a9b02ce5d13cdec43145bd8a002ce3e",
-    "license_digest": "sha256:8e603aa87c70d36e497004f0dec63111511cb61b7d65ace12e10ea791599286c"
+    "license_digest": "sha256:8e603aa87c70d36e497004f0dec63111511cb61b7d65ace12e10ea791599286c",
+    "system_dependencies": [
+      "\t/System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation (compatibility version 150.0.0, current version 3502.1.255)",
+      "\t/System/Library/Frameworks/Security.framework/Versions/A/Security (compatibility version 1.0.0, current version 61439.120.27)",
+      "\t/usr/lib/libc++.1.dylib (compatibility version 1.0.0, current version 1900.180.0)",
+      "\t/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1351.0.0)"
+    ]
   },
   "cloudflared": {
     "version": "2026.10.7",
@@ -97,5 +103,10 @@
       "gate": "I6",
       "status": "open"
     }
+  },
+  "catalogue": {
+    "path": "schema-catalogue.json",
+    "sha256": "c3da794b7954cc80760802429213db8f65ccf797495bfa00c9c00552b3a7c087",
+    "qualification": "vendor catalogue only; not supported operation admission"
   }
 }

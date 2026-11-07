@@ -1,0 +1,13 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "operation": {
+      "maxLength": 4096,
+      "type": "string"
+    }
+  },
+  "required": [
+    "operation"
+  ],
+  "type": "object"
+}

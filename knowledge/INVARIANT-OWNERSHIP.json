@@ -610,6 +610,30 @@
       "version_policy": "exact_receipt_v2_entry_point_and_capability_compatible"
     },
     {
+      "adapter_id": "adapter:symphony:symphony-sov-cloudflare-adapter.v1",
+      "command_protocol": "symphony.sov.cloudflare-request.v1",
+      "component": "sov-cloudflare-adapter",
+      "entry_point_id": "symphony-sov-cloudflare-adapter",
+      "format_version": 4,
+      "implementation_path": "modules/sov-cloudflare-adapter",
+      "operation_ids": [
+        "engop:symphony:sov.cloudflare.capability.describe",
+        "engop:symphony:sov.cloudflare.capability.list",
+        "engop:symphony:sov.cloudflare.capability.schema",
+        "engop:symphony:sov.cloudflare.capability.template",
+        "engop:symphony:sov.cloudflare.context.inspect",
+        "engop:symphony:sov.cloudflare.context.plan",
+        "engop:symphony:sov.cloudflare.installation.apply",
+        "engop:symphony:sov.cloudflare.installation.inspect",
+        "engop:symphony:sov.cloudflare.installation.list",
+        "engop:symphony:sov.cloudflare.installation.plan",
+        "engop:symphony:sov.cloudflare.installation.reconcile",
+        "engop:symphony:sov.cloudflare.installation.status"
+      ],
+      "owner_contract": "modules/sov-cloudflare-adapter/SPEC.md",
+      "version_policy": "exact_receipt_v2_entry_point_and_capability_compatible"
+    },
+    {
       "adapter_id": "adapter:symphony:symphony-sqav-attempt.v1",
       "command_protocol": "symphony.knowledge.engine-process.v1",
       "component": "sqav-attempt-engine",
@@ -704,7 +728,7 @@
   ],
   "catalog_complete": false,
   "catalog_scope": "registered_incremental",
-  "format_version": 3,
+  "format_version": 4,
   "forward_gate": "enforce_new_or_modified",
   "invariants": [
     {
@@ -2742,6 +2766,46 @@
     },
     {
       "allowed_adapter_ids": [
+        "adapter:symphony:symphony-sov-cloudflare-adapter.v1"
+      ],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "TestCloudflareStrictConsumerAndDigest"
+          ],
+          "path": "tools/qxctl/internal/sovcloudflare/cloudflare_test.go"
+        }
+      ],
+      "invariant_id": "invariant:symphony:sov.cloudflare-exact-owner",
+      "ipc_boundary": true,
+      "owner_component": "sov-cloudflare-adapter",
+      "owner_contract": "modules/sov-cloudflare-adapter/SPEC.md",
+      "producer_implementations": [
+        "modules/sov-cloudflare-adapter/src/adapter.cpp",
+        "modules/sov-cloudflare-adapter/src/main.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "test_cloudflare_owner_rejects_unknown_fields"
+          ],
+          "path": "modules/sov-cloudflare-adapter/tests/installed.cpp"
+        }
+      ],
+      "real_process_regressions": [
+        {
+          "cases": [
+            "test_cloudflare_installed_process"
+          ],
+          "path": "modules/sov-cloudflare-adapter/tests/installed.cpp"
+        }
+      ],
+      "statement": "The native Cloudflare owner independently rejects unbound or unknown controls; qxctl verifies the complete exact receipt and correlated result. Offline discovery cannot acquire provider credentials or an SSH exception.",
+      "status": "active",
+      "title": "Cloudflare exact native owner and offline boundary"
+    },
+    {
+      "allowed_adapter_ids": [
         "adapter:symphony:symphony-sqav-attempt.v1"
       ],
       "consumer_boundary_rejections": [
@@ -4271,8 +4335,8 @@
       "title": "Provider readiness evidence cannot become operational authority"
     }
   ],
-  "protocol": "symphony.knowledge.invariant-ownership-registry.v3",
-  "registry_digest": "sha256:a9acbd38c51d0830d6c73f5888f726a9dcd4d379a782028edcca05d4579953b9",
+  "protocol": "symphony.knowledge.invariant-ownership-registry.v4",
+  "registry_digest": "sha256:9b88fbb2aebbe6a3738ba67e44a9ca2a29f787046d16f8cb97b4b1ebbb4507a6",
   "scope": "common_lowest_authoritative_layer",
   "test_policy": {
     "consumer_boundary_rejection_required": true,

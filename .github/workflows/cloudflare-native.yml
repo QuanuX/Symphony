@@ -1,0 +1,70 @@
+name: Cloudflare native local foundation
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main, 'codex/**']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: cloudflare-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  local-runtime:
+    name: Native local profile (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-24.04
+            cxx: clang++-18
+          - os: ubuntu-24.04-arm
+            cxx: clang++-18
+          - os: macos-15-intel
+            cxx: /usr/bin/clang++
+    env:
+      CXX: ${{ matrix.cxx }}
+      GOWORK: 'off'
+      GOTOOLCHAIN: local
+      GOENV: 'off'
+      GOPROXY: https://proxy.golang.org
+      GOSUMDB: sum.golang.org
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6
+        with:
+          go-version-file: tools/qxctl/go.mod
+          cache: false
+      - name: Select Apple C++26 toolchain
+        if: runner.os == 'macOS'
+        run: echo 'DEVELOPER_DIR=/Applications/Xcode_26.3.app/Contents/Developer' >> "$GITHUB_ENV"
+      - name: Build and verify the independent local owner
+        shell: bash
+        run: |
+          set -euo pipefail
+          cmake -S modules/sov-cloudflare-adapter -B "$RUNNER_TEMP/cloudflare-build" \
+            -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="$RUNNER_TEMP/cloudflare-install"
+          cmake --build "$RUNNER_TEMP/cloudflare-build" --parallel 2
+          ctest --test-dir "$RUNNER_TEMP/cloudflare-build" --output-on-failure
+          cmake --install "$RUNNER_TEMP/cloudflare-build"
+          "$RUNNER_TEMP/cloudflare-build/cloudflare-installed-tests" "$RUNNER_TEMP/cloudflare-install"
+      - name: Check installed qxctl and unchanged direct SSH boundaries
+        working-directory: tools/qxctl
+        env:
+          SYMPHONY_CLOUDFLARE_TEST_PREFIX: ${{ runner.temp }}/cloudflare-install
+        run: go test -count=1 ./internal/sovcloudflare ./internal/invariantregistry ./internal/sovremote ./cmd/qxctl -run 'TestCloudflare|TestV4Owner|TestSSH|TestCommandRegistry'
+      - name: Check independent direct SSH carrier
+        working-directory: tools/sov-ssh-adapter
+        run: go test -count=1 ./... -run 'TestSSHOptionsExactAndNoninteractive|TestProtectedSystemPathRefusesCallerWritableTree'
+      - name: Report scope
+        if: always()
+        run: echo 'Local fixtures and installed receipt boundaries only. No Cloudflare credentials, resource operations, tunnel, SSH connection or profile privilege change. Real cf/Node offline probes require the separately selected pinned bundle.' >> "$GITHUB_STEP_SUMMARY"

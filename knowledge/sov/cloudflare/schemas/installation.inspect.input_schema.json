@@ -1,0 +1,20 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "installation_id": {
+      "maxLength": 4096,
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "store": {
+      "maxLength": 4096,
+      "pattern": "^/[^\\x00-\\x1f]*$",
+      "type": "string"
+    }
+  },
+  "required": [
+    "store",
+    "installation_id"
+  ],
+  "type": "object"
+}

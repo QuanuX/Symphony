@@ -1,0 +1,47 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "query": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "maxLength": 4096,
+          "pattern": "^[^\\x00-\\x1f]{1,256}$",
+          "type": "string"
+        }
+      ]
+    },
+    "store": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "maxLength": 4096,
+          "pattern": "^/[^\\x00-\\x1f]*$",
+          "type": "string"
+        }
+      ]
+    },
+    "toolchain_id": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "maxLength": 4096,
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "type": "string"
+        }
+      ]
+    }
+  },
+  "required": [
+    "store",
+    "toolchain_id",
+    "query"
+  ],
+  "type": "object"
+}

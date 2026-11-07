@@ -2503,6 +2503,115 @@
       "expectations": [
         {
           "command_ids": [
+            "qxcmd:symphony:sov.cloudflare.cf.installation.apply"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:sov.cloudflare.installation.apply"
+          ],
+          "evidence": [
+            "knowledge/sov/cloudflare/owner.json",
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/MANIFEST.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "apply",
+          "rationale": "Exact native local owner operation; no provider or SSH authority.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:sov.cloudflare.cf.capability.describe",
+            "qxcmd:symphony:sov.cloudflare.cf.capability.list",
+            "qxcmd:symphony:sov.cloudflare.cf.capability.schema",
+            "qxcmd:symphony:sov.cloudflare.cf.capability.template"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:sov.cloudflare.capability.describe",
+            "engop:symphony:sov.cloudflare.capability.list",
+            "engop:symphony:sov.cloudflare.capability.schema",
+            "engop:symphony:sov.cloudflare.capability.template"
+          ],
+          "evidence": [
+            "knowledge/sov/cloudflare/owner.json",
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/MANIFEST.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "discover",
+          "rationale": "Exact native local owner operation; no provider or SSH authority.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:sov.cloudflare.cf.context.inspect",
+            "qxcmd:symphony:sov.cloudflare.cf.installation.inspect",
+            "qxcmd:symphony:sov.cloudflare.cf.installation.list",
+            "qxcmd:symphony:sov.cloudflare.cf.installation.status"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:sov.cloudflare.context.inspect",
+            "engop:symphony:sov.cloudflare.installation.inspect",
+            "engop:symphony:sov.cloudflare.installation.list",
+            "engop:symphony:sov.cloudflare.installation.status"
+          ],
+          "evidence": [
+            "knowledge/sov/cloudflare/owner.json",
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/MANIFEST.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "inspect",
+          "rationale": "Exact native local owner operation; no provider or SSH authority.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:sov.cloudflare.cf.context.plan",
+            "qxcmd:symphony:sov.cloudflare.cf.installation.plan"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:sov.cloudflare.context.plan",
+            "engop:symphony:sov.cloudflare.installation.plan"
+          ],
+          "evidence": [
+            "knowledge/sov/cloudflare/owner.json",
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/MANIFEST.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "propose",
+          "rationale": "Exact native local owner operation; no provider or SSH authority.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:sov.cloudflare.cf.installation.reconcile"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:sov.cloudflare.installation.reconcile"
+          ],
+          "evidence": [
+            "knowledge/sov/cloudflare/owner.json",
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/MANIFEST.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "recover",
+          "rationale": "Exact native local owner operation; no provider or SSH authority.",
+          "requirement": "required"
+        }
+      ],
+      "feature_id": "ssfv:symphony:qxctl.sov-cloudflare-administration"
+    },
+    {
+      "expectations": [
+        {
+          "command_ids": [
             "qxcmd:symphony:sqv.schema",
             "qxcmd:symphony:sqv.template"
           ],
@@ -8451,6 +8560,115 @@
       "expectations": [
         {
           "command_ids": [
+            "qxcmd:symphony:sov.cloudflare.cf.installation.apply"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:sov.cloudflare.installation.apply"
+          ],
+          "evidence": [
+            "knowledge/sov/cloudflare/owner.json",
+            "modules/sov-cloudflare-adapter/SPEC.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "apply",
+          "rationale": "Exact native local owner operation; no provider or SSH authority.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:sov.cloudflare.cf.capability.describe",
+            "qxcmd:symphony:sov.cloudflare.cf.capability.list",
+            "qxcmd:symphony:sov.cloudflare.cf.capability.schema",
+            "qxcmd:symphony:sov.cloudflare.cf.capability.template"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:sov.cloudflare.capability.describe",
+            "engop:symphony:sov.cloudflare.capability.list",
+            "engop:symphony:sov.cloudflare.capability.schema",
+            "engop:symphony:sov.cloudflare.capability.template"
+          ],
+          "evidence": [
+            "knowledge/sov/cloudflare/owner.json",
+            "modules/sov-cloudflare-adapter/SPEC.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "discover",
+          "rationale": "Exact native local owner operation; no provider or SSH authority.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:sov.cloudflare.cf.context.inspect",
+            "qxcmd:symphony:sov.cloudflare.cf.installation.inspect",
+            "qxcmd:symphony:sov.cloudflare.cf.installation.list",
+            "qxcmd:symphony:sov.cloudflare.cf.installation.status"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:sov.cloudflare.context.inspect",
+            "engop:symphony:sov.cloudflare.installation.inspect",
+            "engop:symphony:sov.cloudflare.installation.list",
+            "engop:symphony:sov.cloudflare.installation.status"
+          ],
+          "evidence": [
+            "knowledge/sov/cloudflare/owner.json",
+            "modules/sov-cloudflare-adapter/SPEC.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "inspect",
+          "rationale": "Exact native local owner operation; no provider or SSH authority.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:sov.cloudflare.cf.context.plan",
+            "qxcmd:symphony:sov.cloudflare.cf.installation.plan"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:sov.cloudflare.context.plan",
+            "engop:symphony:sov.cloudflare.installation.plan"
+          ],
+          "evidence": [
+            "knowledge/sov/cloudflare/owner.json",
+            "modules/sov-cloudflare-adapter/SPEC.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "propose",
+          "rationale": "Exact native local owner operation; no provider or SSH authority.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:sov.cloudflare.cf.installation.reconcile"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:sov.cloudflare.installation.reconcile"
+          ],
+          "evidence": [
+            "knowledge/sov/cloudflare/owner.json",
+            "modules/sov-cloudflare-adapter/SPEC.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "recover",
+          "rationale": "Exact native local owner operation; no provider or SSH authority.",
+          "requirement": "required"
+        }
+      ],
+      "feature_id": "ssfv:symphony:sov-cloudflare-adapter"
+    },
+    {
+      "expectations": [
+        {
+          "command_ids": [
             "qxcmd:symphony:sov.remote.ssh-invoke"
           ],
           "delivery": "composed",
@@ -10318,9 +10536,9 @@
   ],
   "format_version": 1,
   "forward_gate": "enforce_new_records",
-  "profile_digest": "sha256:2d6bdc400af049c98c3d316411bd53feca14822ff38adc8453031a716b90019e",
+  "profile_digest": "sha256:35ac1f008bb43b9526dcc6917b76b89b659517a68ec294f8a44744d27257124d",
   "profile_id": "symphony.registered-features.administration.v1",
   "protocol": "symphony.knowledge.feature-administration-profile.v1",
-  "registered_feature_count": 149,
-  "ssfv_registry_digest": "sha256:4ed7211eff49409fc6f0b53f6fb5f146a174c4fe7be724820ae5070073d9b4b1"
+  "registered_feature_count": 151,
+  "ssfv_registry_digest": "sha256:3906357bef306518aadeb7555de1fa6a311038b4dc967b457bedcf93113dde75"
 }
