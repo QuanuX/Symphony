@@ -8,6 +8,7 @@
 #include <filesystem>
 #include <fstream>
 #include <iostream>
+#include <iterator>
 #include <map>
 #include <sstream>
 #include <stdexcept>
@@ -22,7 +23,7 @@ namespace engine = symphony::knowledge::engine;
 
 namespace {
 
-constexpr std::size_t skvi_entry_ceiling = 2048;
+constexpr std::size_t expanded_fixture_entries = 2500;
 
 class TemporaryDirectory final {
 public:
@@ -218,8 +219,8 @@ void test_descriptor_and_actual_repository(const fs::path& repository_root) {
         "check", engine::Json{{"expected_index_digest", nullptr}}));
     require(check.at("summary").at("state") == "valid", "actual SKVI index is invalid");
     require(check.at("summary").at("violation") == 0, "actual index has violations");
-    require(check.at("entries_checked").get<std::size_t>() > 512U,
-        "actual index no longer exercises the expanded entry capacity");
+    require(check.at("entries_checked").get<std::size_t>() > 0U,
+        "actual index contains no entries");
     const auto current_project_request = request("project", engine::Json{{"format", "json"}});
     const auto current_projection = skvi::handle_request(current_project_request);
     require(current_projection.at("entry_count") == check.at("entries_checked"),
@@ -355,7 +356,7 @@ void test_process_envelope_capacity() {
     TemporaryDirectory temporary;
     create_fixture(temporary.path());
     std::ofstream index(temporary.path() / "knowledge/skvi/INDEX.md", std::ios::app | std::ios::binary);
-    for (std::size_t number = required_paths.size(); number < skvi_entry_ceiling; ++number) {
+    for (std::size_t number = required_paths.size(); number < expanded_fixture_entries; ++number) {
         std::ostringstream path;
         path << "fixture/surface-" << number << ".md";
         write_file(temporary.path() / path.str(), "fixture\n");
@@ -366,11 +367,11 @@ void test_process_envelope_capacity() {
     CurrentDirectory current(temporary.path());
     const auto check = skvi::handle_request(request(
         "check", engine::Json{{"expected_index_digest", nullptr}}));
-    require(check.at("entries_checked") == skvi_entry_ceiling, "maximum check entry count mismatch");
-    require(check.at("summary").at("state") == "valid", "maximum-size index is invalid");
+    require(check.at("entries_checked") == expanded_fixture_entries, "expanded check entry count mismatch");
+    require(check.at("summary").at("state") == "valid", "expanded index is invalid");
     const auto project_request = request("project", engine::Json{{"format", "json"}});
     const auto projection = skvi::handle_request(project_request);
-    require(projection.at("entry_count") == skvi_entry_ceiling, "maximum projection entry count mismatch");
+    require(projection.at("entry_count") == expanded_fixture_entries, "expanded projection entry count mismatch");
     require_error([&] {
         static_cast<void>(engine::serialize_response(engine::success_response(
             project_request, skvi::engine_id, skvi::engine_version, projection)));
@@ -378,25 +379,72 @@ void test_process_envelope_capacity() {
     const auto response = engine::serialize_response(engine::success_response(
         project_request, skvi::engine_id, skvi::engine_version, projection),
         skvi::max_json_values);
-    require(!response.empty(), "maximum projection did not fit the common response envelope");
+    require(!response.empty(), "expanded projection did not fit the common response envelope");
     require(engine::parse_bounded_json(
         response, engine::Limits::max_response_bytes, skvi::max_json_values)
-            .at("result").at("entry_count") == skvi_entry_ceiling,
-        "maximum projection did not fit the SKVI JSON event envelope");
-    require(response.size() <= engine::Limits::max_response_bytes / 4U,
-        "compact maximum-count projection does not retain three MiB of byte headroom");
+            .at("result").at("entry_count") == expanded_fixture_entries,
+        "expanded projection did not fit the SKVI JSON event envelope");
+    // A larger valid index is still checkable even when a full projection cannot
+    // fit the existing process JSON budget. No new count ceiling replaces 2,048.
+    constexpr std::size_t larger_fixture_entries = 3000;
+    std::ofstream more(temporary.path() / "knowledge/skvi/INDEX.md", std::ios::app | std::ios::binary);
+    for (std::size_t number = expanded_fixture_entries; number < larger_fixture_entries; ++number) {
+        const auto path = "fixture/surface-" + std::to_string(number) + ".md";
+        write_file(temporary.path() / path, "fixture\n");
+        more << fixture_entry(path);
+    }
+    more.close();
+    const auto larger_check = skvi::handle_request(request(
+        "check", engine::Json{{"expected_index_digest", nullptr}}));
+    require(larger_check.at("entries_checked") == larger_fixture_entries,
+        "larger check entry count mismatch");
+    require(larger_check.at("summary").at("state") == "valid", "larger index is invalid");
+    const auto larger_check_request = request("check", engine::Json{{"expected_index_digest", nullptr}});
+    static_cast<void>(engine::serialize_response(engine::success_response(
+        larger_check_request, skvi::engine_id, skvi::engine_version, larger_check), skvi::max_json_values));
+    static_cast<void>(skvi::handle_request(request("propose", proposal_payload(engine::Json{
+        {"type", "add_entry"}, {"target_path", "candidate.md"},
+        {"expected_entry_digest", nullptr}, {"entry", candidate_entry()},
+    }))));
+    const auto larger_project_request = request("project", engine::Json{{"format", "json"}});
+    const auto larger_projection = skvi::handle_request(larger_project_request);
+    require(larger_projection.at("entry_count") == larger_fixture_entries,
+        "larger projection entry count mismatch");
+    require_error([&] {
+        static_cast<void>(engine::serialize_response(engine::success_response(
+            larger_project_request, skvi::engine_id, skvi::engine_version, larger_projection),
+            skvi::max_json_values));
+    }, "response.invalid");
 
-    write_file(temporary.path() / "fixture/overflow.md", "fixture\n");
-    std::ofstream overflow(temporary.path() / "knowledge/skvi/INDEX.md", std::ios::app | std::ios::binary);
-    overflow << fixture_entry("fixture/overflow.md");
-    overflow.close();
+    // Escaping can exceed response bytes even when the source index fits its
+    // own byte bound. The response guard remains independent of index admission.
+    std::ifstream input(temporary.path() / "knowledge/skvi/INDEX.md", std::ios::binary);
+    std::string escaped_index((std::istreambuf_iterator<char>(input)), std::istreambuf_iterator<char>());
+    input.close();
+    const std::string original_notes = "- notes: test-only canonical entry";
+    const std::string escaped_notes = "- notes: " + std::string(800, '\\');
+    std::size_t position = 0;
+    while ((position = escaped_index.find(original_notes, position)) != std::string::npos) {
+        escaped_index.replace(position, original_notes.size(), escaped_notes);
+        position += escaped_notes.size();
+    }
+    require(escaped_index.size() < engine::Limits::max_snapshot_file_bytes,
+        "escaped fixture index must fit the input byte bound");
+    write_file(temporary.path() / "knowledge/skvi/INDEX.md", escaped_index);
+    const auto escaped_project_request = request("project", engine::Json{{"format", "json"}});
+    const auto escaped_projection = skvi::handle_request(escaped_project_request);
+    require_error([&] {
+        static_cast<void>(engine::serialize_response(engine::success_response(
+            escaped_project_request, skvi::engine_id, skvi::engine_version, escaped_projection),
+            skvi::max_json_values));
+    }, "response.too_large");
+
+    write_file(temporary.path() / "knowledge/skvi/INDEX.md",
+        std::string(engine::Limits::max_snapshot_file_bytes + 1U, 'x'));
     require_error([&] {
         static_cast<void>(skvi::handle_request(request(
             "check", engine::Json{{"expected_index_digest", nullptr}})));
-    }, "skvi.entry_limit");
-    require_error([&] {
-        static_cast<void>(skvi::handle_request(request("project", engine::Json{{"format", "json"}})));
-    }, "skvi.entry_limit");
+    }, "path.file_too_large");
 }
 
 void test_schema_documents(const fs::path& repository_root) {
@@ -421,19 +469,26 @@ void test_schema_documents(const fs::path& repository_root) {
         require(document.at("additionalProperties") == false, "schema root is not closed: " + relative_path);
         if (identifier == "urn:symphony:skvi:check-result:v1" ||
             identifier == "urn:symphony:skvi:check-result:v2") {
-            const auto expected_ceiling = identifier.ends_with(":v1") ? 1024U : skvi_entry_ceiling;
-            require(document.at("properties").at("entries_checked").at("maximum") == expected_ceiling,
-                "check schema entry ceiling mismatch");
+            const auto& count = document.at("properties").at("entries_checked");
+            if (identifier.ends_with(":v1")) {
+                require(count.at("maximum") == 1024U, "v1 check entry ceiling changed");
+            } else {
+                require(!count.contains("maximum"), "v2 check retains an entry-count ceiling");
+            }
             require(document.at("$defs").at("snapshot").at("properties").at("files").at("maxItems") ==
                     engine::Limits::max_snapshot_files,
                 "check schema snapshot ceiling mismatch");
         } else if (identifier == "urn:symphony:skvi:projection:v1" ||
                    identifier == "urn:symphony:skvi:projection:v2") {
-            const auto expected_ceiling = identifier.ends_with(":v1") ? 1024U : skvi_entry_ceiling;
-            require(document.at("properties").at("entry_count").at("maximum") == expected_ceiling,
-                "projection schema entry-count ceiling mismatch");
-            require(document.at("properties").at("entries").at("maxItems") == expected_ceiling,
-                "projection schema entry-array ceiling mismatch");
+            const auto& count = document.at("properties").at("entry_count");
+            const auto& entries = document.at("properties").at("entries");
+            if (identifier.ends_with(":v1")) {
+                require(count.at("maximum") == 1024U && entries.at("maxItems") == 1024U,
+                    "v1 projection entry ceilings changed");
+            } else {
+                require(!count.contains("maximum") && !entries.contains("maxItems"),
+                    "v2 projection retains an entry-count ceiling");
+            }
             require(document.at("$defs").at("snapshot").at("properties").at("files").at("maxItems") ==
                     engine::Limits::max_snapshot_files,
                 "projection schema snapshot ceiling mismatch");

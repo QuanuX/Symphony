@@ -55,7 +55,8 @@
       "who": "Humans, agents and independent native consumers.",
       "why": "Administer an independent Cloudflare CLI without ambient selection or premature provider authority."
     }
-  ]
+  ],
+  "source_scope": "modules/sov-cloudflare-adapter"
 }
 ```
 <!-- symphony:ssfv:feature-file:v1:end -->

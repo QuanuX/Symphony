@@ -3897,7 +3897,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - path: `knowledge/skvi/schemas/v2/MANIFEST.md`
 - title: SKVI Schemas v2
 - surface_type: vector-specific protocol schema manifest
-- truth_role: canonical inventory and boundary for SKVI 2,048-entry result schemas
+- truth_role: canonical inventory and boundary for SKVI v2 result schemas without a separate entry-count quota
 - owner: SKVI maintainers
 - scope: Declares versioned check and projection results; v1 entry and operation payloads remain in force.
 - relationships: depends_on -> `knowledge/skvi/SPEC.md`; reuses -> `knowledge/skvi/schemas/v1/entry.schema.json`; implemented_by -> `modules/skvi-engine/SPEC.md`
@@ -3912,7 +3912,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: JSON Schema Draft 2020-12 contract
 - truth_role: canonical deterministic structural evidence shape
 - owner: SKVI maintainers
-- scope: Raises checked-entry count to 2,048 while preserving independent snapshot and evidence bounds.
+- scope: Admits a nonnegative checked-entry count without a separate quota while preserving independent file, snapshot and evidence bounds.
 - relationships: depends_on -> `knowledge/skvi/schemas/v2/MANIFEST.md`; implemented_by -> `modules/skvi-engine/SPEC.md`
 - consumers: qxctl check presentation, conformance tests, validator, reviewers
 - deferred_projections: check reports and analytical evidence
@@ -3925,7 +3925,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: JSON Schema Draft 2020-12 contract
 - truth_role: canonical disposable projection-result shape
 - owner: SKVI maintainers
-- scope: Raises the full result to 2,048 normalized entries under an engine-specific 65,536 JSON event budget.
+- scope: Admits normalized entries without a separate array quota; complete responses remain subject to the engine-specific 65,536 JSON event and 4 MiB byte budgets.
 - relationships: depends_on -> `knowledge/skvi/schemas/v2/MANIFEST.md`; implements_entries -> `knowledge/skvi/schemas/v1/entry.schema.json`; implemented_by -> `modules/skvi-engine/SPEC.md`
 - consumers: qxctl project presentation, conformance tests, graph/search planners, validator
 - deferred_projections: JSONL, search, analytical, and graph projections after separate authorization

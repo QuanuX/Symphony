@@ -9744,7 +9744,7 @@
     "records": [
       {
         "path": "cmake/mvp-release-identities.json",
-        "sha256": "8dc8321b071792fe3a2debef3ceb36cc87b27eb42b268ff8c9d78f5febad5ba9",
+        "sha256": "ee6bd25e8f17ab42124a11dd4b0f1af061eeb1a90d0eaceadb3bf7c88a23814e",
         "schema_ids": [],
         "schema_dialect": null,
         "protocol": "symphony.mvp.release-identities.v1",
@@ -12649,7 +12649,7 @@
       },
       {
         "path": "knowledge/skvi/schemas/v2/MANIFEST.md",
-        "sha256": "fea9bd3662757cfe6bfae043e8823d73be23da489a73bfa5db69ee94816cf823",
+        "sha256": "eced36d65ac601d3a0b3515f9c07f0be0566e9c0b1ab429cb4644658aa2c78e0",
         "schema_ids": [],
         "schema_dialect": null,
         "protocol": null,
@@ -12661,7 +12661,7 @@
       },
       {
         "path": "knowledge/skvi/schemas/v2/check-result.schema.json",
-        "sha256": "5562255d998a74c59fc0481afe3da8e877edfde8086757f6fab12dc1cc726f53",
+        "sha256": "c62a26ef74de6450a5e7e1a7c9c18582631eeca1fd6d4a81adc8035d6d90cbf6",
         "schema_ids": [
           {
             "json_pointer": "/$id",
@@ -12678,7 +12678,7 @@
       },
       {
         "path": "knowledge/skvi/schemas/v2/projection.schema.json",
-        "sha256": "805da86da0063fbb21a312e8ef3e74a16e9b75ba0eb67e9ef7ac2685a0e429ac",
+        "sha256": "b41b64fb40c5743f6d50c9c976beb4177214edd13578f7a498a799a4c0b556f0",
         "schema_ids": [
           {
             "json_pointer": "/$id",
@@ -18568,7 +18568,7 @@
     },
     {
       "path": "cmake/mvp-release-identities.json",
-      "sha256": "8dc8321b071792fe3a2debef3ceb36cc87b27eb42b268ff8c9d78f5febad5ba9"
+      "sha256": "ee6bd25e8f17ab42124a11dd4b0f1af061eeb1a90d0eaceadb3bf7c88a23814e"
     },
     {
       "path": "cmake/notices/CaptureExternal.cmake",
@@ -19312,15 +19312,15 @@
     },
     {
       "path": "knowledge/skvi/schemas/v2/MANIFEST.md",
-      "sha256": "fea9bd3662757cfe6bfae043e8823d73be23da489a73bfa5db69ee94816cf823"
+      "sha256": "eced36d65ac601d3a0b3515f9c07f0be0566e9c0b1ab429cb4644658aa2c78e0"
     },
     {
       "path": "knowledge/skvi/schemas/v2/check-result.schema.json",
-      "sha256": "5562255d998a74c59fc0481afe3da8e877edfde8086757f6fab12dc1cc726f53"
+      "sha256": "c62a26ef74de6450a5e7e1a7c9c18582631eeca1fd6d4a81adc8035d6d90cbf6"
     },
     {
       "path": "knowledge/skvi/schemas/v2/projection.schema.json",
-      "sha256": "805da86da0063fbb21a312e8ef3e74a16e9b75ba0eb67e9ef7ac2685a0e429ac"
+      "sha256": "b41b64fb40c5743f6d50c9c976beb4177214edd13578f7a498a799a4c0b556f0"
     },
     {
       "path": "knowledge/sodv/ARTIFACT-RELEASES.json",
@@ -21480,7 +21480,7 @@
     },
     {
       "path": "tools/qxctl/cmd/qxctl/main.go",
-      "sha256": "6ee23f513eec0949b3334cbe6af71bddaaf691a83d439b876626e9de90139673"
+      "sha256": "42c1a77db3acd315e7eadb2de956faed234c63b73302ee29584e426474514395"
     },
     {
       "path": "tools/qxctl/cmd/qxctl/named_version.go",

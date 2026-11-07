@@ -90,3 +90,29 @@ Focused local results on macOS amd64 with Go 1.26.5, CMake 4.4.3 and Apple Clang
 The installed native executable is byte-identical to the reviewed journal-hardening artifact: `sha256:16f7e15e6ad38655d2760e935b921821ce430ca173131580fe2b512a8b87615c`. Its receipt, including updated installation documentation, is `sha256:6c24898f4b861e900d3f132ec3aaeb2a6b7080d1782e9bf6825f06680df53b15`. The existing real-CLI evidence retains its original stated identity and scope; no new provider or real-CLI execution is claimed here.
 
 A local shared Go-cache checksum mismatch was resolved by using a fresh task module cache and normal public-proxy/checksum verification. No checksums or dependency pins were relaxed or changed. Evidence is retained separately in the workspace's `implementation/cloudflare-c0-i1/ci-repair/` directory. Full SCV/SHV, complete installed-group and fresh remote campaigns are deferred. Remote checks are not awaited after pushing this corrective increment. I2 remains unstarted.
+
+## SKVI capacity and registration repair — November 7, 2026
+
+The next inspected head, `d806924161c1e29103196d3627fe646f2763f843`, completed with 37 successful and 17 failed checks. All six CodeQL jobs, the dedicated Cloudflare foundation jobs and all four installed cloud SDK jobs passed. Nine jobs stopped at the separate release identity catalog, four knowledge jobs exceeded the SKVI entry quota, and four quantitative jobs rejected the Cloudflare feature-file envelope during SBV administration validation.
+
+The adapter is now registered in the candidate identity catalog with its existing `0.1.0-dev` package identity and no invented SDK export. Its feature-file envelope now includes the required top-level `source_scope`; the normalized feature record and registry digest are unchanged. Reviewed source and schema hashes in the dependency projection are refreshed.
+
+SKVI v2 no longer imposes an index-entry count ceiling in native parsing, result schemas or qxctl admission. The original quota budgeted a complete projection and initially matched the snapshot-file limit. SKVI now snapshots owner manifests separately. Check/proposal admission can therefore follow the index-file byte bound independently of whether a complete projection fits one process response. The 4 MiB index/response byte bounds, 65,536 process JSON-event bound, field/evidence/manifest/path limits and deadlines remain. Oversized projections fail explicitly without truncation. Legacy SKVI v1 schemas and its qxctl 1,024-entry limit remain unchanged.
+
+Focused local verification on macOS amd64:
+
+| Boundary | Result |
+| --- | --- |
+| Candidate identity catalog | Passed: 71 roots, six Go commands and 24 owner declarations. |
+| Dependency and release-test projections | Passed: 59 native components, 1,110 reviewed source hashes, and exact release selections. |
+| Native SKVI, built against the installed foundation | Both CTests passed. A 2,500-entry projection round-trips; 3,000-entry check/proposal succeeds while an over-budget projection is refused. Independent index-byte and response-byte refusals pass. |
+| Actual SKVI process and installed qxctl | Check and project pass for all 2,049 repository entries. The installed receipt-backed check reports zero violations and four retained warnings; projection is complete, noncanonical and rebuildable. |
+| Native SSFV and feature administration | Fresh SSFV process smoke and validator feature-administration test passed. |
+| SBV administration | Fresh current-source native target built; the single affected `sbv-administration-contract` CTest passed. |
+| Go client and SSH regression | Race-enabled SKVI, JSON-bound, SSH/SOVSSH and command-registry selections passed in the qxctl command, knowledgeengine and sovremote packages. |
+| Cloudflare installation | Fresh receipt-owned install and native installed consumer passed. Corrected feature metadata is covered by the new receipt. |
+| Source validation | Passed with zero violations and four retained historical-reference warnings. |
+
+The Cloudflare executable remains byte-identical to the reviewed I1 executable (`sha256:16f7e15e6ad38655d2760e935b921821ce430ca173131580fe2b512a8b87615c`). Its new receipt digest is `sha256:66ec5b6703cbd2ab0f918a5d75acf585d24ae68e69afab792528a8e7047da0f8`. The exact installed SKVI executable is `sha256:d00c4bf413972669a6db3d874611dd7ed240a7f9bd63ce28588539a8122d0bb2`; its receipt file hash is `sha256:d6d655cf1bbf51510adb04c906f9acf8214360124b3715ecf735da769db8f7d2`. The current qxctl integration binary is `sha256:2352320fba66d83b6ad78c0a2cd43b9caf2b53a69ea46f7d93ee26f29dd59343`.
+
+SSH v1 adapter/consumer/command source remains unchanged from `3d32f149`. Evidence is retained under the workspace's `implementation/cloudflare-c0-i1/index-repair/`, `ci-repair/skvi-build/` and `ci-repair-2/` directories. These are focused local results, not a fresh full SCV/SHV or installed-group campaign. No new provider calls, transport-profile implementation or live SSH qualification occurred. I2 remains on hold; remote checks are not awaited after push.

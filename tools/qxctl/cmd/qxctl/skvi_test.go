@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"testing"
 )
 
@@ -10,12 +11,12 @@ func TestValidateSKVIResultHonorsVersionedEntryCapacity(t *testing.T) {
 		version   string
 		operation string
 		protocol  string
-		limit     int
+		counts    []int
 	}{
-		{version: "0.1.0-dev", operation: "check", protocol: "symphony.skvi.check-result.v1", limit: 1024},
-		{version: "0.2.0-dev", operation: "check", protocol: "symphony.skvi.check-result.v2", limit: 2048},
-		{version: "0.1.0-dev", operation: "project", protocol: "symphony.skvi.projection.v1", limit: 1024},
-		{version: "0.2.0-dev", operation: "project", protocol: "symphony.skvi.projection.v2", limit: 2048},
+		{version: "0.1.0-dev", operation: "check", protocol: "symphony.skvi.check-result.v1", counts: []int{1024}},
+		{version: "0.2.0-dev", operation: "check", protocol: "symphony.skvi.check-result.v2", counts: []int{2048, 2049, 4096}},
+		{version: "0.1.0-dev", operation: "project", protocol: "symphony.skvi.projection.v1", counts: []int{1024}},
+		{version: "0.2.0-dev", operation: "project", protocol: "symphony.skvi.projection.v2", counts: []int{2048, 2049, 4096}},
 	} {
 		t.Run(item.protocol, func(t *testing.T) {
 			makeResult := func(count int) json.RawMessage {
@@ -45,18 +46,38 @@ func TestValidateSKVIResultHonorsVersionedEntryCapacity(t *testing.T) {
 				}
 				return encoded
 			}
-			if _, err := validateSKVIResult(item.version, item.operation, makeResult(item.limit)); err != nil {
-				t.Fatalf("accepted ceiling %d rejected: %v", item.limit, err)
+			for _, count := range item.counts {
+				t.Run(fmt.Sprint(count), func(t *testing.T) {
+					if _, err := validateSKVIResult(item.version, item.operation, makeResult(count)); err != nil {
+						t.Fatalf("accepted count %d rejected: %v", count, err)
+					}
+				})
 			}
-			if _, err := validateSKVIResult(item.version, item.operation, makeResult(item.limit+1)); err == nil {
-				t.Fatalf("over-ceiling count %d accepted", item.limit+1)
+			if item.version == "0.1.0-dev" {
+				if _, err := validateSKVIResult(item.version, item.operation, makeResult(1025)); err == nil {
+					t.Fatal("retained v1 result above its 1024 entry limit accepted")
+				}
 			}
 			otherVersion := "0.1.0-dev"
 			if item.version == otherVersion {
 				otherVersion = "0.2.0-dev"
 			}
-			if _, err := validateSKVIResult(otherVersion, item.operation, makeResult(item.limit)); err == nil {
+			if _, err := validateSKVIResult(otherVersion, item.operation, makeResult(item.counts[0])); err == nil {
 				t.Fatalf("result protocol %s accepted for installed SKVI %s", item.protocol, otherVersion)
+			}
+			if item.operation == "project" {
+				var mismatched map[string]any
+				if err := json.Unmarshal(makeResult(item.counts[0]), &mismatched); err != nil {
+					t.Fatal(err)
+				}
+				mismatched["entry_count"] = item.counts[0] + 1
+				encoded, err := json.Marshal(mismatched)
+				if err != nil {
+					t.Fatal(err)
+				}
+				if _, err := validateSKVIResult(item.version, item.operation, encoded); err == nil {
+					t.Fatal("projection entry count differs from actual entries but was accepted")
+				}
 			}
 		})
 	}
