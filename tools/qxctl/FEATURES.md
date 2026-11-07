@@ -1486,25 +1486,20 @@
       "cross_vector_references": [
         {
           "applicability": "applicable",
-          "reason": "SRRAPIV owns the dedicated native Rithmic integration under SQV.",
-          "reference": "knowledge/sqv/srrapiv/SPEC.md",
-          "vector": "sqv"
+          "reason": "Material source change closes append-only after verification.",
+          "reference": "knowledge/sclv/SPEC.md",
+          "vector": "sclv"
         },
         {
           "applicability": "applicable",
           "reason": "Source contract discovery and exact closure traceability.",
           "reference": "knowledge/skvi/INDEX.md",
           "vector": "skvi"
-        },
-        {
-          "applicability": "applicable",
-          "reason": "Material source change closes append-only after verification.",
-          "reference": "knowledge/sclv/SPEC.md",
-          "vector": "sclv"
         }
       ],
       "distinctions": [],
       "evidence": [
+        "knowledge/sqv/srrapiv/SPEC.md",
         "tools/qxctl/cmd/qxctl/srrapiv_test.go",
         "tools/qxctl/internal/knowledgeengine/srrapiv_test.go"
       ],

@@ -2,7 +2,7 @@
 
 ## Status
 
-Canonical SSFV feature-routing registry. The partial catalog routes 142 experimental records across the platform governance scope and 64 owner scopes enumerated by `COVERAGE.md`.
+Canonical SSFV feature-routing registry. The partial catalog routes 149 experimental records across 67 owner scopes enumerated by `COVERAGE.md`.
 
 ## Purpose
 
@@ -1363,22 +1363,6 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - record_digest: `sha256:9b54b07e4d0eeab75d399f98b9c66ce5286cd0d3787896aa1d9160fc9dbec404`
 - notes: Optional scoped SSH implementation; actual two-host deployment remains unqualified.
 
-## Prohibited Entries
-
-Do not register:
-
-- proposals or planned behavior as present application truth;
-- generated inventories, graph projections, summaries, documentation, or marketing pages;
-- a directory merely because it exists;
-- a language, source file, or symbol without the full feature-worthiness gate;
-- an owner record using implicit globs or traversal;
-- proposal-only modules such as hotpath-runtime before implementation exists, or retired module identities such as node-troll and bus-troll;
-- a record not covered by SKVI and an owner contract.
-
-## Non-Authorization Statement
-
-This 145-record registry is an explicitly partial catalog governed by `COVERAGE.md`. It does not authorize an unratified feature record, an unregistered distributed file, repository-wide or installed-host completeness, complete legacy-invariant coverage, engine-decided feature-worthiness, or canonical mutation.
-
 - feature_id: `ssfv:symphony:srrapiv-runtime-cpp`
 - feature_file: `modules/srrapiv-runtime-cpp/FEATURES.md`
 - owner_contract: `modules/srrapiv-runtime-cpp/SPEC.md`
@@ -1394,5 +1378,21 @@ This 145-record registry is an explicitly partial catalog governed by `COVERAGE.
 - source_scope: `tools/qxctl`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:qxctl`
-- record_digest: `sha256:2b4974fa9d043bac5703b39272e25f5a20a6cc9f7b7d0d87f9a536ac87d9f174`
+- record_digest: `sha256:04dd4aca66a0dad09317987fa401b6c79b0630d246866e5d6f3ecef792b004fa`
 - notes: Exact native SRRAPIV discovery, immutable binding checks, explicit resident lifecycle and recovery; no provider qualification or SSIAG readiness claim.
+
+## Prohibited Entries
+
+Do not register:
+
+- proposals or planned behavior as present application truth;
+- generated inventories, graph projections, summaries, documentation, or marketing pages;
+- a directory merely because it exists;
+- a language, source file, or symbol without the full feature-worthiness gate;
+- an owner record using implicit globs or traversal;
+- proposal-only modules such as hotpath-runtime before implementation exists, or retired module identities such as node-troll and bus-troll;
+- a record not covered by SKVI and an owner contract.
+
+## Non-Authorization Statement
+
+This 149-record registry is an explicitly partial catalog governed by `COVERAGE.md`. It does not authorize an unratified feature record, an unregistered distributed file, repository-wide or installed-host completeness, complete legacy-invariant coverage, engine-decided feature-worthiness, or canonical mutation.

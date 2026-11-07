@@ -3,8 +3,8 @@
 <!-- symphony:ssfv:feature-file:v1:begin -->
 ```json
 {
-  "protocol": "symphony.ssfv.feature-file.v1",
   "owner_contract": "modules/srrapiv-runtime-cpp/SPEC.md",
+  "protocol": "symphony.ssfv.feature-file.v1",
   "records": [
     {
       "cross_vector_references": [

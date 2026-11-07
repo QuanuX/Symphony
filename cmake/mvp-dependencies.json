@@ -9715,7 +9715,7 @@
       },
       {
         "path": "knowledge/FEATURE-ADMINISTRATION-PROFILE.json",
-        "sha256": "bcfaee59bf13b95848fd9e9c01a17ba3f1ad1d8e57172d638444b59e18204571",
+        "sha256": "95f50da9c7f02311d196e5c0ab19b4d296e4e2f929f379d5c5ebc92a6a5b9327",
         "schema_ids": [],
         "schema_dialect": null,
         "protocol": "symphony.knowledge.feature-administration-profile.v1",
@@ -17656,7 +17656,7 @@
     },
     {
       "path": "knowledge/FEATURE-ADMINISTRATION-PROFILE.json",
-      "sha256": "bcfaee59bf13b95848fd9e9c01a17ba3f1ad1d8e57172d638444b59e18204571"
+      "sha256": "95f50da9c7f02311d196e5c0ab19b4d296e4e2f929f379d5c5ebc92a6a5b9327"
     },
     {
       "path": "knowledge/INVARIANT-OWNERSHIP.json",

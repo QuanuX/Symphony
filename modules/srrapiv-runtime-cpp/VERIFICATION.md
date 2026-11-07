@@ -41,3 +41,18 @@ The initial PR revision `1c688724` passed the dedicated SRRAPIV workflow on Ubun
 The correction registers the native dependency, owner, source identities, release candidate and SDK-free native/installed test selections. Its installed build requires SymphonyKnowledgeVectorEngine 0.2.0 EXACT and rejects source fallback. The resident-lifecycle Go test now creates its own synthetic offline binding from local binary discovery: its prior extra configuration requirement could silently skip this test in the dedicated workflow. Provider/trading admission is disabled and no credentials are supplied.
 
 Focused follow-up checks passed on Darwin Intel: all three SDK-free native tests; ten top-level SRRAPIV Go tests and six subtests under the race detector with zero skips; the three release-result regression tests; exact imported-SDK proof, missing-SDK refusal, installed receipt validation and CTest discovery. Dependency-source, release-manifest and candidate-identity verification passed with 70 roots and 24 owner declarations. The repository validator retained 18,211 passes, zero violations and four historical-path warnings. This follow-up used Clang 23.1.2 and Go 1.27.1 locally; hosted jobs retain their declared Go 1.26.5 toolchain. The complete shared campaigns and hosted reruns are not claimed by these focused checks.
+
+## Native feature-registration follow-up
+
+Completed hosted runs for revision `f5c3f3b0dd1730ab65d53f349e5931788c6e4e61` passed eight of nine workflows. The remaining dependency-map workflow passed six jobs and failed eight: four knowledge jobs failed SSFV checks, and four quantitative jobs failed the SBV administration contract. Each failure reached the same native feature-registry validation path.
+
+Three metadata defects affected the new SRRAPIV records. The qxctl record used `sqv` in the governance-only cross-vector vocabulary, causing rejection of the entire qxctl feature file and 90 cascading validation errors. Both SRRAPIV registry entries were outside the canonical-entries section. The native feature-file envelope also used noncanonical JSON key ordering. The correction uses the existing native-owner dependency relationship and evidence reference for SQV ownership, moves the entries into the canonical section, and canonicalizes the envelope. Record, registry, administration-profile and dependency-map digests were refreshed; registry prose now reflects 149 records across 67 owner scopes. No runtime behavior or accepted cross-vector vocabulary was changed.
+
+Focused local verification on Darwin Intel with Clang 23.1.2 passed:
+
+- A fresh build of the current SSFV engine and its two CTest checks: engine tests and process smoke.
+- The SBV administration contract against the corrected current repository, using a retained SBV 0.33 test binary. Its administration test and SSFV reader sources match the current sources; this is not a fresh full SBV build or a complete SBV campaign.
+- Dependency-source verification: 70 roots, 58 native components and 1,031 source hashes, including Go, Swift, interface and schema identities.
+- Repository validation: 18,211 passes, zero violations and four existing historical-path warnings. The generated README projection remained current.
+
+These checks establish the corrected native registration locally. Hosted results for the correction are not claimed, and no provider session or trading operation was performed.
