@@ -1,0 +1,621 @@
+[
+  {
+    "path": "node_modules/@cloudflare/build-output-utils/package.json",
+    "name": "@cloudflare/build-output-utils",
+    "version": "0.9.10",
+    "license": "MIT",
+    "scripts": {
+      "build": "tsdown",
+      "check:type": "tsc",
+      "dev": "tsdown --watch",
+      "test:ci": "vitest run",
+      "test:watch": "vitest"
+    }
+  },
+  {
+    "path": "node_modules/@cloudflare/config/package.json",
+    "name": "@cloudflare/config",
+    "version": "0.30.2",
+    "license": "MIT",
+    "scripts": {
+      "build": "tsdown",
+      "check:type": "tsc",
+      "dev": "tsdown --watch",
+      "test:ci": "vitest run",
+      "test:watch": "vitest"
+    }
+  },
+  {
+    "path": "node_modules/@cloudflare/runtime-types/package.json",
+    "name": "@cloudflare/runtime-types",
+    "version": "0.1.23",
+    "license": "MIT",
+    "scripts": {
+      "build": "tsdown",
+      "check:type": "tsc",
+      "dev": "tsdown --watch",
+      "test:ci": "vitest run",
+      "test:watch": "vitest"
+    }
+  },
+  {
+    "path": "node_modules/@cloudflare/workerd-darwin-64/package.json",
+    "name": "@cloudflare/workerd-darwin-64",
+    "version": "1.20261104.1",
+    "license": "Apache-2.0",
+    "scripts": {}
+  },
+  {
+    "path": "node_modules/@cspotcode/source-map-support/package.json",
+    "name": "@cspotcode/source-map-support",
+    "version": "0.8.1",
+    "license": "MIT",
+    "scripts": {
+      "build": "node build.js",
+      "serve-tests": "http-server -p 1336",
+      "test": "mocha"
+    }
+  },
+  {
+    "path": "node_modules/@img/colour/package.json",
+    "name": "@img/colour",
+    "version": "1.1.0",
+    "license": "MIT",
+    "scripts": {
+      "build:cjs": "esbuild node_modules/color/index.js --bundle --platform=node --outfile=color.cjs",
+      "build:dts": "dts-bundle-generator ./dts-src.ts -o index.d.ts --project tsconfig.build.json --external-inlines color --external-inlines color-convert --export-referenced-types=false",
+      "build": "npm run build:cjs && npm run build:dts",
+      "test": "node --test"
+    }
+  },
+  {
+    "path": "node_modules/@img/sharp-darwin-x64/package.json",
+    "name": "@img/sharp-darwin-x64",
+    "version": "0.35.5",
+    "license": "Apache-2.0",
+    "scripts": {}
+  },
+  {
+    "path": "node_modules/@img/sharp-libvips-darwin-x64/package.json",
+    "name": "@img/sharp-libvips-darwin-x64",
+    "version": "1.3.4",
+    "license": "LGPL-3.0-or-later",
+    "scripts": {}
+  },
+  {
+    "path": "node_modules/@jridgewell/resolve-uri/package.json",
+    "name": "@jridgewell/resolve-uri",
+    "version": "3.1.2",
+    "license": "MIT",
+    "scripts": {
+      "prebuild": "rm -rf dist",
+      "build": "run-s -n build:*",
+      "build:rollup": "rollup -c rollup.config.js",
+      "build:ts": "tsc --project tsconfig.build.json",
+      "lint": "run-s -n lint:*",
+      "lint:prettier": "npm run test:lint:prettier -- --write",
+      "lint:ts": "npm run test:lint:ts -- --fix",
+      "pretest": "run-s build:rollup",
+      "test": "run-s -n test:lint test:only",
+      "test:debug": "mocha --inspect-brk",
+      "test:lint": "run-s -n test:lint:*",
+      "test:lint:prettier": "prettier --check '{src,test}/**/*.ts'",
+      "test:lint:ts": "eslint '{src,test}/**/*.ts'",
+      "test:only": "mocha",
+      "test:coverage": "c8 mocha",
+      "test:watch": "mocha --watch",
+      "prepublishOnly": "npm run preversion",
+      "preversion": "run-s test build"
+    }
+  },
+  {
+    "path": "node_modules/@jridgewell/sourcemap-codec/package.json",
+    "name": "@jridgewell/sourcemap-codec",
+    "version": "1.6.0",
+    "license": "MIT",
+    "scripts": {
+      "benchmark": "run-s build:code benchmark:*",
+      "benchmark:install": "cd benchmark && npm install",
+      "benchmark:only": "node --expose-gc benchmark/index.js",
+      "build": "run-s -n build:code build:types",
+      "build:code": "node ../../esbuild.mjs sourcemap-codec.ts",
+      "build:types": "run-s build:types:force build:types:emit build:types:mts",
+      "build:types:force": "rimraf tsconfig.build.tsbuildinfo",
+      "build:types:emit": "tsc --project tsconfig.build.json",
+      "build:types:mts": "node ../../mts-types.mjs",
+      "clean": "run-s -n clean:code clean:types",
+      "clean:code": "tsc --build --clean tsconfig.build.json",
+      "clean:types": "rimraf dist types",
+      "test": "run-s -n test:types test:only test:format",
+      "test:format": "prettier --check '{src,test}/**/*.ts'",
+      "test:only": "mocha",
+      "test:types": "eslint '{src,test}/**/*.ts'",
+      "test:watch": "mocha --watch",
+      "lint": "run-s -n lint:types lint:format",
+      "lint:format": "npm run test:format -- --write",
+      "lint:types": "npm run test:types -- --fix",
+      "prepublishOnly": "npm run-s -n build test"
+    }
+  },
+  {
+    "path": "node_modules/@jridgewell/trace-mapping/package.json",
+    "name": "@jridgewell/trace-mapping",
+    "version": "0.3.9",
+    "license": "MIT",
+    "scripts": {
+      "benchmark": "run-s build:rollup benchmark:*",
+      "benchmark:install": "cd benchmark && npm install",
+      "benchmark:only": "node benchmark/index.mjs",
+      "build": "run-s -n build:*",
+      "build:rollup": "rollup -c rollup.config.js",
+      "build:ts": "tsc --project tsconfig.build.json",
+      "lint": "run-s -n lint:*",
+      "lint:prettier": "npm run test:lint:prettier -- --write",
+      "lint:ts": "npm run test:lint:ts -- --fix",
+      "prebuild": "rm -rf dist",
+      "prepublishOnly": "npm run preversion",
+      "preversion": "run-s test build",
+      "test": "run-s -n test:lint test:only",
+      "test:debug": "ava debug",
+      "test:lint": "run-s -n test:lint:*",
+      "test:lint:prettier": "prettier --check '{src,test}/**/*.ts' '**/*.md'",
+      "test:lint:ts": "eslint '{src,test}/**/*.ts'",
+      "test:only": "c8 ava",
+      "test:watch": "ava --watch"
+    }
+  },
+  {
+    "path": "node_modules/@poppinss/colors/package.json",
+    "name": "@poppinss/colors",
+    "version": "4.1.6",
+    "license": "MIT",
+    "scripts": {
+      "pretest": "npm run lint",
+      "test": "c8 npm run quick:test",
+      "lint": "eslint .",
+      "format": "prettier --write .",
+      "typecheck": "tsc --noEmit",
+      "precompile": "npm run lint && npm run clean",
+      "compile": "tsdown && tsc --emitDeclarationOnly --declaration",
+      "clean": "del-cli build",
+      "build": "npm run compile",
+      "version": "npm run build",
+      "prepublishOnly": "npm run build",
+      "release": "release-it",
+      "quick:test": "node --import=@poppinss/ts-exec --enable-source-maps bin/test.ts"
+    }
+  },
+  {
+    "path": "node_modules/@poppinss/dumper/package.json",
+    "name": "@poppinss/dumper",
+    "version": "0.6.5",
+    "license": "MIT",
+    "scripts": {
+      "pretest": "npm run lint",
+      "test": "npm run quick:test",
+      "lint": "eslint .",
+      "format": "prettier --write .",
+      "clean": "del-cli build",
+      "typecheck": "tsc --noEmit",
+      "precompile": "npm run lint && npm run clean",
+      "compile": "tsup-node && tsc --emitDeclarationOnly --declaration",
+      "build": "npm run compile",
+      "version": "npm run build",
+      "prepublishOnly": "npm run build",
+      "release": "release-it",
+      "quick:test": "node --import @poppinss/ts-exec --enable-source-maps bin/test.js"
+    }
+  },
+  {
+    "path": "node_modules/@poppinss/exception/package.json",
+    "name": "@poppinss/exception",
+    "version": "1.2.3",
+    "license": "MIT",
+    "scripts": {
+      "pretest": "npm run lint",
+      "test": "c8 npm run quick:test",
+      "lint": "eslint .",
+      "format": "prettier --write .",
+      "typecheck": "tsc --noEmit",
+      "precompile": "npm run lint",
+      "compile": "tsdown && tsc --emitDeclarationOnly --declaration",
+      "build": "npm run compile",
+      "version": "npm run build",
+      "prepublishOnly": "npm run build",
+      "release": "release-it",
+      "quick:test": "node --import=@poppinss/ts-exec --enable-source-maps bin/test.ts"
+    }
+  },
+  {
+    "path": "node_modules/@sindresorhus/is/package.json",
+    "name": "@sindresorhus/is",
+    "version": "7.2.0",
+    "license": "MIT",
+    "scripts": {
+      "build": "del distribution && tsc",
+      "test": "tsc --noEmit && xo && ava",
+      "prepare": "npm run build"
+    }
+  },
+  {
+    "path": "node_modules/@speed-highlight/core/dist/node/package.json",
+    "name": null,
+    "version": null,
+    "license": null,
+    "scripts": {}
+  },
+  {
+    "path": "node_modules/@speed-highlight/core/package.json",
+    "name": "@speed-highlight/core",
+    "version": "1.2.24",
+    "license": "CC0-1.0",
+    "scripts": {
+      "build": "bash .github/workflows/build.sh"
+    }
+  },
+  {
+    "path": "node_modules/blake3-wasm/dist/wasm/browser/package.json",
+    "name": "blake3-js",
+    "version": "0.1.0",
+    "license": null,
+    "scripts": {}
+  },
+  {
+    "path": "node_modules/blake3-wasm/dist/wasm/nodejs/package.json",
+    "name": "blake3-js",
+    "version": "0.1.0",
+    "license": null,
+    "scripts": {}
+  },
+  {
+    "path": "node_modules/blake3-wasm/dist/wasm/web/package.json",
+    "name": "blake3-js",
+    "version": "0.1.0",
+    "license": null,
+    "scripts": {}
+  },
+  {
+    "path": "node_modules/blake3-wasm/package.json",
+    "name": "blake3-wasm",
+    "version": "2.1.5",
+    "license": "MIT",
+    "scripts": {
+      "prepack": "make clean && make MODE=release && npm test && rimraf dist/native.node",
+      "test": "mocha --require source-map-support/register --recursive \"dist/**/*.test.js\" --timeout 5000",
+      "fmt": "make fmt",
+      "compile": "tsc && tsc -p tsconfig.esm.json && node dist/build/add-js-extensions",
+      "watch": "tsc --watch"
+    }
+  },
+  {
+    "path": "node_modules/cf/package.json",
+    "name": "cf",
+    "version": "1.0.0-beta.28",
+    "license": "MIT OR Apache-2.0",
+    "scripts": {
+      "generate": "vp run task:generate",
+      "dev": "vp run task:dev",
+      "build": "vp run task:build",
+      "build:test": "vp run task:build:test",
+      "check:type": "vp run task:check:type",
+      "test": "vp run task:test",
+      "test:watch": "vp run task:test:watch",
+      "test:imports": "vp run task:test:imports"
+    }
+  },
+  {
+    "path": "node_modules/cookie/package.json",
+    "name": "cookie",
+    "version": "1.1.1",
+    "license": "MIT",
+    "scripts": {
+      "bench": "vitest bench",
+      "build": "ts-scripts build",
+      "format": "ts-scripts format",
+      "prepare": "ts-scripts install",
+      "prepublishOnly": "npm run build",
+      "specs": "ts-scripts specs",
+      "test": "ts-scripts test"
+    }
+  },
+  {
+    "path": "node_modules/detect-libc/package.json",
+    "name": "detect-libc",
+    "version": "2.1.2",
+    "license": "Apache-2.0",
+    "scripts": {
+      "test": "semistandard && nyc --reporter=text --check-coverage --branches=100 ava test/unit.js",
+      "changelog": "conventional-changelog -i CHANGELOG.md -s",
+      "bench": "node benchmark/detect-libc",
+      "bench:calls": "node benchmark/call-familySync.js && sleep 1 && node benchmark/call-isNonGlibcLinuxSync.js && sleep 1 && node benchmark/call-versionSync.js"
+    }
+  },
+  {
+    "path": "node_modules/error-stack-parser-es/package.json",
+    "name": "error-stack-parser-es",
+    "version": "1.0.5",
+    "license": "MIT",
+    "scripts": {
+      "build": "unbuild",
+      "dev": "unbuild --stub",
+      "lint": "eslint .",
+      "prepublishOnly": "nr build",
+      "release": "bumpp && npm publish",
+      "start": "esno src/index.ts",
+      "test": "vitest",
+      "typecheck": "tsc --noEmit"
+    }
+  },
+  {
+    "path": "node_modules/kleur/package.json",
+    "name": "kleur",
+    "version": "4.1.5",
+    "license": "MIT",
+    "scripts": {
+      "build": "node build",
+      "test": "uvu -r esm -i utils -i xyz"
+    }
+  },
+  {
+    "path": "node_modules/miniflare/package.json",
+    "name": "miniflare",
+    "version": "5.20261104.0-beta",
+    "license": "MIT",
+    "scripts": {
+      "build": "node scripts/build.mjs && pnpm run types:build",
+      "capnp:workerd": "capnp-es node_modules/workerd/workerd.capnp -ots:src/runtime/config/generated --src-prefix=node_modules/workerd",
+      "check:generate-api": "node -r esbuild-register scripts/check-generate-api.ts",
+      "check:type": "tsc",
+      "clean": "node -r esbuild-register ../../tools/clean/clean.ts ./dist ./dist-types",
+      "dev": "concurrently -n esbuild,typechk,typewrk -c yellow,blue,blue.dim \"node scripts/build.mjs --watch\" \"node scripts/types.mjs tsconfig.json --bundle --watch\" \"node scripts/types.mjs src/workers/tsconfig.json --watch\"",
+      "generate:api": "pnpm generate:openapi && pnpm generate:types",
+      "generate:openapi": "node -r esbuild-register scripts/filter-openapi.ts -i $OPENAPI_INPUT_PATH",
+      "generate:types": "openapi-ts && oxfmt src/workers/local-explorer/openapi.local.json src/workers/local-explorer/generated",
+      "test": "vitest run",
+      "posttest": "node -r esbuild-register ../../tools/clean/clean.ts ./.tmp",
+      "test:ci": "pnpm run test",
+      "types:build": "node scripts/types.mjs tsconfig.json --bundle && node scripts/types.mjs src/workers/tsconfig.json"
+    }
+  },
+  {
+    "path": "node_modules/semver/package.json",
+    "name": "semver",
+    "version": "7.8.6",
+    "license": "ISC",
+    "scripts": {
+      "test": "tap",
+      "snap": "tap",
+      "lint": "npm run eslint",
+      "postlint": "template-oss-check",
+      "lintfix": "npm run eslint -- --fix",
+      "posttest": "npm run lint",
+      "template-oss-apply": "template-oss-apply --force",
+      "eslint": "eslint \"**/*.{js,cjs,ts,mjs,jsx,tsx}\""
+    }
+  },
+  {
+    "path": "node_modules/sharp/package.json",
+    "name": "sharp",
+    "version": "0.35.5",
+    "license": "Apache-2.0",
+    "scripts": {
+      "build": "node install/build.js",
+      "build:dist": "node scripts/build.mjs",
+      "clean": "rm -rf src/build/ test/fixtures/output.*",
+      "test": "npm run lint && npm run test-unit",
+      "lint": "npm run lint-cpp && npm run lint-js && npm run lint-types && npm run lint-publish",
+      "lint-cpp": "cpplint --quiet src/*.h src/*.cc",
+      "lint-js": "biome lint",
+      "lint-publish": "publint --strict",
+      "lint-types": "tsd --files ./test/types/sharp.test-d.{cts,mts}",
+      "test-leak": "./test/leak/leak.sh",
+      "test-unit": "node --experimental-test-coverage test/unit.mjs",
+      "package-from-local-build": "node npm/from-local-build.js",
+      "package-wasm-wrappers": "node npm/wasm-wrappers.js",
+      "package-release-notes": "node npm/release-notes.js",
+      "docs-build": "node docs/build.mjs",
+      "docs-serve": "cd docs && npm start",
+      "docs-publish": "cd docs && npm run build && npx firebase-tools deploy --project pixelplumbing --only hosting:pixelplumbing-sharp"
+    }
+  },
+  {
+    "path": "node_modules/supports-color/package.json",
+    "name": "supports-color",
+    "version": "10.2.2",
+    "license": "MIT",
+    "scripts": {
+      "test": "xo && ava && tsd"
+    }
+  },
+  {
+    "path": "node_modules/undici/package.json",
+    "name": "undici",
+    "version": "7.30.1",
+    "license": "MIT",
+    "scripts": {
+      "build:node": "esbuild index-fetch.js --bundle --platform=node --outfile=undici-fetch.js --define:esbuildDetection=1 --keep-names && node scripts/strip-comments.js",
+      "build:wasm": "node build/wasm.js --docker",
+      "generate-pem": "node scripts/generate-pem.js",
+      "lint": "eslint --cache",
+      "lint:fix": "eslint --fix --cache",
+      "test": "npm run test:javascript && cross-env NODE_V8_COVERAGE= npm run test:typescript",
+      "test:javascript": "npm run test:javascript:no-jest && npm run test:jest",
+      "test:javascript:no-jest": "npm run generate-pem && npm run test:unit && npm run test:fetch && npm run test:node-fetch && npm run test:infra && npm run test:cache && npm run test:cache-interceptor && npm run test:interceptors && npm run test:cookies && npm run test:eventsource && npm run test:subresource-integrity && npm run test:wpt && npm run test:websocket && npm run test:node-test && npm run test:cache-tests",
+      "test:javascript:without-intl": "npm run test:javascript:no-jest",
+      "test:busboy": "borp --timeout 180000 -p \"test/busboy/*.js\"",
+      "test:cache": "borp --timeout 180000 -p \"test/cache/*.js\"",
+      "test:cache-interceptor": "borp --timeout 180000 -p \"test/cache-interceptor/*.js\"",
+      "test:cache-interceptor:sqlite": "cross-env NODE_OPTIONS=--experimental-sqlite npm run test:cache-interceptor",
+      "test:cookies": "borp --timeout 180000 -p \"test/cookie/*.js\"",
+      "test:eventsource": "npm run build:node && borp --timeout 180000 --expose-gc -p \"test/eventsource/*.js\"",
+      "test:fuzzing": "node test/fuzzing/fuzzing.test.js",
+      "test:fetch": "npm run build:node && borp --timeout 180000 --expose-gc --concurrency 1 -p \"test/fetch/*.js\" && npm run test:webidl && npm run test:busboy",
+      "test:subresource-integrity": "borp --timeout 180000 -p \"test/subresource-integrity/*.js\"",
+      "test:h2": "npm run test:h2:core && npm run test:h2:fetch",
+      "test:h2:core": "borp --timeout 180000 -p \"test/+(http2|h2)*.js\"",
+      "test:h2:fetch": "npm run build:node && borp --timeout 180000 -p \"test/fetch/http2*.js\"",
+      "test:infra": "borp --timeout 180000 -p \"test/infra/*.js\"",
+      "test:interceptors": "borp --timeout 180000 -p \"test/interceptors/*.js\"",
+      "test:jest": "cross-env NODE_V8_COVERAGE= jest",
+      "test:unit": "borp --timeout 180000 --expose-gc -p \"test/*.js\"",
+      "test:node-fetch": "borp --timeout 180000 -p \"test/node-fetch/**/*.js\"",
+      "test:node-test": "borp --timeout 180000 -p \"test/node-test/**/*.js\"",
+      "test:tdd": "borp --timeout 180000 --expose-gc -p \"test/*.js\"",
+      "test:tdd:node-test": "borp --timeout 180000 -p \"test/node-test/**/*.js\" -w",
+      "test:typescript": "tsd && tsc test/imports/undici-import.ts --typeRoots ./types --noEmit && tsc ./types/*.d.ts --noEmit --typeRoots ./types",
+      "test:webidl": "borp --timeout 180000 -p \"test/webidl/*.js\"",
+      "test:websocket": "borp --timeout 180000 -p \"test/websocket/**/*.js\"",
+      "test:websocket:autobahn": "node test/autobahn/client.js",
+      "test:websocket:autobahn:report": "node test/autobahn/report.js",
+      "test:wpt:setup": "node test/web-platform-tests/wpt-runner.mjs setup",
+      "test:wpt": "npm run test:wpt:setup && node test/web-platform-tests/wpt-runner.mjs run /fetch /mimesniff /xhr /websockets /serviceWorkers /eventsource",
+      "test:cache-tests": "node test/cache-interceptor/cache-tests.mjs --ci",
+      "coverage": "npm run coverage:clean && cross-env NODE_V8_COVERAGE=./coverage/tmp npm run test:javascript && npm run coverage:report",
+      "coverage:ci": "npm run coverage:clean && cross-env NODE_V8_COVERAGE=./coverage/tmp npm run test:javascript && npm run coverage:report:ci",
+      "coverage:clean": "node ./scripts/clean-coverage.js",
+      "coverage:report": "cross-env NODE_V8_COVERAGE= c8 report",
+      "coverage:report:ci": "c8 report",
+      "bench": "echo \"Error: Benchmarks have been moved to '/benchmarks'\" && exit 1",
+      "serve:website": "echo \"Error: Documentation has been moved to '/docs'\" && exit 1",
+      "prepare": "husky && node ./scripts/platform-shell.js"
+    }
+  },
+  {
+    "path": "node_modules/workerd/package.json",
+    "name": "workerd",
+    "version": "1.20261104.1",
+    "license": "Apache-2.0",
+    "scripts": {
+      "postinstall": "node install.js"
+    }
+  },
+  {
+    "path": "node_modules/ws/package.json",
+    "name": "ws",
+    "version": "8.21.0",
+    "license": "MIT",
+    "scripts": {
+      "test": "nyc --reporter=lcov --reporter=text mocha --throw-deprecation test/*.test.js",
+      "integration": "mocha --throw-deprecation test/*.integration.js",
+      "lint": "eslint . && prettier --check --ignore-path .gitignore \"**/*.{json,md,yaml,yml}\""
+    }
+  },
+  {
+    "path": "node_modules/youch/package.json",
+    "name": "youch",
+    "version": "4.1.0-beta.10",
+    "license": "MIT",
+    "scripts": {
+      "pretest": "npm run lint",
+      "test": "c8 npm run quick:test",
+      "lint": "eslint .",
+      "format": "prettier --write .",
+      "typecheck": "tsc --noEmit",
+      "precompile": "npm run lint",
+      "copy:assets": "copyfiles --up=1 src/public/**/* build",
+      "compile": "tsup-node && tsc --emitDeclarationOnly --declaration",
+      "build": "npm run compile && npm run copy:assets",
+      "version": "npm run build",
+      "prepublishOnly": "npm run build",
+      "release": "release-it",
+      "quick:test": "node --import=@poppinss/ts-exec --enable-source-maps bin/test.ts"
+    }
+  },
+  {
+    "path": "node_modules/youch-core/package.json",
+    "name": "youch-core",
+    "version": "0.3.3",
+    "license": "MIT",
+    "scripts": {
+      "pretest": "npm run lint",
+      "test": "c8 npm run quick:test",
+      "lint": "eslint .",
+      "format": "prettier --write .",
+      "typecheck": "tsc --noEmit",
+      "precompile": "npm run lint",
+      "compile": "tsup-node && tsc --emitDeclarationOnly --declaration",
+      "build": "npm run compile",
+      "version": "npm run build",
+      "prepublishOnly": "npm run build",
+      "release": "release-it",
+      "quick:test": "node --import=@poppinss/ts-exec --enable-source-maps bin/test.ts"
+    }
+  },
+  {
+    "path": "node_modules/zod/locales/package.json",
+    "name": null,
+    "version": null,
+    "license": null,
+    "scripts": {}
+  },
+  {
+    "path": "node_modules/zod/mini/package.json",
+    "name": null,
+    "version": null,
+    "license": null,
+    "scripts": {}
+  },
+  {
+    "path": "node_modules/zod/package.json",
+    "name": "zod",
+    "version": "4.6.6",
+    "license": "MIT",
+    "scripts": {
+      "clean": "git clean -xdf . -e node_modules",
+      "build": "nub exec --node zshy --project tsconfig.build.json",
+      "postbuild": "nub ../../scripts/write-stub-package-jsons.ts && nub exec --node biome check --write .",
+      "test:watch": "nub exec --node vitest",
+      "test": "nub exec --node vitest run",
+      "prepublishOnly": "nub ../../scripts/check-versions.ts"
+    }
+  },
+  {
+    "path": "node_modules/zod/v3/package.json",
+    "name": null,
+    "version": null,
+    "license": null,
+    "scripts": {}
+  },
+  {
+    "path": "node_modules/zod/v4/classic/package.json",
+    "name": null,
+    "version": null,
+    "license": null,
+    "scripts": {}
+  },
+  {
+    "path": "node_modules/zod/v4/core/package.json",
+    "name": null,
+    "version": null,
+    "license": null,
+    "scripts": {}
+  },
+  {
+    "path": "node_modules/zod/v4/locales/package.json",
+    "name": null,
+    "version": null,
+    "license": null,
+    "scripts": {}
+  },
+  {
+    "path": "node_modules/zod/v4/mini/package.json",
+    "name": null,
+    "version": null,
+    "license": null,
+    "scripts": {}
+  },
+  {
+    "path": "node_modules/zod/v4/package.json",
+    "name": null,
+    "version": null,
+    "license": null,
+    "scripts": {}
+  },
+  {
+    "path": "node_modules/zod/v4-mini/package.json",
+    "name": null,
+    "version": null,
+    "license": null,
+    "scripts": {}
+  }
+]

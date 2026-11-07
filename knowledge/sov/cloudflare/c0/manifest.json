@@ -1,0 +1,101 @@
+{
+  "protocol": "symphony.sov.cloudflare-c0-manifest.v1",
+  "recorded_at": "2026-11-07",
+  "source_baseline": "3d32f149ef554dd4695edf3dc3fd326d05f29324",
+  "source_refreshed_main": "3d32f149ef554dd4695edf3dc3fd326d05f29324",
+  "branch": "codex/cloudflare-native-c0-i1",
+  "cf": {
+    "version": "1.0.0-beta.28",
+    "registry": "https://registry.npmjs.org/cf/-/cf-1.0.0-beta.28.tgz",
+    "integrity": "sha512-sMt4G50Mvz0+wvp6ScckPmmJSrEtfN3BeYJbtJ9yN5wAgECgFUGy0twoup1KySG9Md4Ow4ifSkllPLBFQV9ePw==",
+    "license": "MIT OR Apache-2.0",
+    "install_scripts": false,
+    "lock_digest": "sha256:07aefa1e36bd78c04a1e1315a4ba866109300c056b60ac4ef74458fbdcf9d7df"
+  },
+  "node": {
+    "version": "26.12.0",
+    "archive_url": "https://nodejs.org/dist/v26.12.0/node-v26.12.0-darwin-x64.tar.gz",
+    "archive_digest": "sha256:878ecede191c7abc1bff01d3fb81f7ed81aa1161040dba18776b8ff8593614b1",
+    "executable_digest": "sha256:7c9cb31a1a9d7a2448b8e9bb2dd022f48a9b02ce5d13cdec43145bd8a002ce3e",
+    "license_digest": "sha256:8e603aa87c70d36e497004f0dec63111511cb61b7d65ace12e10ea791599286c"
+  },
+  "cloudflared": {
+    "version": "2026.10.7",
+    "archive_url": "https://github.com/cloudflare/cloudflared/releases/download/2026.10.7/cloudflared-darwin-amd64.tgz",
+    "archive_digest": "sha256:02f3edfd87684dd5b705607688e4eb4b323f6e777b81e7b3a85af556aa356848",
+    "executable_digest": "sha256:5c55e77da7012cebca19170357e196176c48c9647cc2ead404702fa125ddbd86",
+    "license": "Apache-2.0",
+    "qualification": "version probe only; no tunnel or transport execution"
+  },
+  "ssh": {
+    "version": "OpenSSH_10.3p1, LibreSSL 3.3.6",
+    "executable_digest": "sha256:e22a8f3069beddf378d24f6b747831491345ee2e7b4e7e4599c4ca61f6f38064",
+    "selection": "unchanged system OpenSSH; no connection"
+  },
+  "build_tools": {
+    "go": "go version go1.27.1 darwin/amd64",
+    "cmake": "cmake version 4.4.3",
+    "clang": "Apple clang version 21.0.0 (clang-2100.1.1.101)",
+    "python": "3.14.5"
+  },
+  "adapter": "0.1.0-dev",
+  "qxctl": {
+    "source_baseline": "3d32f149ef554dd4695edf3dc3fd326d05f29324",
+    "build_digest": "recorded in I1 verification after build"
+  },
+  "platform": {
+    "qualified_local": "macos-amd64",
+    "os": "macOS-26.7.1-x86_64-i386-64bit-Mach-O",
+    "intended_unqualified": [
+      "macos-arm64",
+      "linux-amd64",
+      "linux-arm64"
+    ]
+  },
+  "toolchain_bundle_digest": "sha256:02dd198aa1fc6a3e8e7a8ec1b6a26ef75b4f47619428085aed6306060d4dc813",
+  "unresolved_live_inputs": [
+    "isolated Cloudflare account and zone",
+    "exact permissions and entitlements",
+    "SSIAG export/import channels and admitted credential references",
+    "SSH host key, client key, target identity and SSIAG/STAV deployment",
+    "approved test resource names, cost bounds and cleanup scope",
+    "selected Access authentication topology"
+  ],
+  "milestone_scope": {
+    "M1-01": {
+      "required": true,
+      "gate": "I6",
+      "status": "open"
+    },
+    "M1-02": {
+      "required": true,
+      "gate": "I6",
+      "status": "open"
+    },
+    "M1-03": {
+      "required": true,
+      "gate": "I6",
+      "status": "open"
+    },
+    "M1-04": {
+      "required": true,
+      "gate": "I6",
+      "status": "open"
+    },
+    "M1-05": {
+      "required": true,
+      "gate": "I6",
+      "status": "open"
+    },
+    "M1-06": {
+      "required": true,
+      "gate": "I6",
+      "status": "open"
+    },
+    "M1-07": {
+      "required": true,
+      "gate": "I6",
+      "status": "open"
+    }
+  }
+}
