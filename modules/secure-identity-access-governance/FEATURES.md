@@ -860,10 +860,11 @@
       ],
       "evidence": [
         "Producer and server tests cover the closed event vocabulary, safe-field validation, endpoint authentication, committed receipt binding, and transport or rejection failure.",
-        "Focused native-owner and closed bridge regressions verify pre-mutation intent commitment, distinct observed-outcome receipts, mismatched receipt refusal, lost-reply replay, restart reconciliation, and interrupted native-close recovery without re-execution. The private-fixture real STAV process plus SSIAG bridge and native owner regression recovers a lost outcome reply after restart with exactly two ledger events and no repeated enrollment mutation."
+        "Focused native-owner and closed bridge regressions verify pre-mutation intent commitment, distinct observed-outcome receipts, mismatched receipt refusal, lost-reply replay, restart reconciliation, and interrupted native-close recovery without re-execution. The private-fixture real STAV process plus SSIAG bridge and native owner regression recovers a lost outcome reply after restart with exactly two ledger events and no repeated enrollment mutation.",
+        "modules/secure-identity-access-governance/internal/server/transport_profile_audit_test.go verifies system/root/TOPS and independently committed receipt bindings for I2 profile intent/outcome audit."
       ],
       "feature_id": "ssfv:symphony:ssiag-foundation.safe-audit-production",
-      "how": "Maps typed event kinds and allowed outcomes to fixed event-class, operation, intent, and reason tuples; accepts only safe actor, target, and configuration references; validates the candidate through the STAV kernel; authenticates the append endpoint; and rejects transport failure, invalid response, or non-commitment. Ordinary foundational mutations require an exact committed intent receipt before execution; the observed native outcome is persisted independently and receives a distinct committed receipt, with unavailable outcomes explicitly pending recovery.",
+      "how": "Maps typed event kinds and allowed outcomes to fixed event-class, operation, intent, and reason tuples; accepts only safe actor, target, and configuration references; validates the candidate through the STAV kernel; authenticates the append endpoint; and rejects transport failure, invalid response, or non-commitment. Ordinary foundational mutations require an exact committed intent receipt before execution; the observed native outcome is persisted independently and receives a distinct committed receipt, with unavailable outcomes explicitly pending recovery. The I2 profile bridge independently requires system mode, a kernel-root peer, the selected TOPS, and exact committed profile candidate receipts.",
       "implementation_languages": [
         {
           "language": "Go",
@@ -881,8 +882,10 @@
         "modules/secure-identity-access-governance/internal/server/foundation_audit.go",
         "modules/secure-identity-access-governance/internal/server/foundation_audit_test.go",
         "modules/secure-identity-access-governance/internal/server/server.go",
+        "modules/secure-identity-access-governance/internal/server/transport_profile_audit.go",
         "modules/secure-identity-access-governance/internal/stavproducer/producer.go",
-        "modules/secure-identity-access-governance/internal/stavproducer/producer_test.go"
+        "modules/secure-identity-access-governance/internal/stavproducer/producer_test.go",
+        "modules/secure-identity-access-governance/internal/transportaudit/contract.go"
       ],
       "kind": "subfeature",
       "non_claims": [

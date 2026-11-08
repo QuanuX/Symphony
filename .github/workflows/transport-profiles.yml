@@ -1,0 +1,89 @@
+name: Protected transport profiles
+
+on:
+  pull_request:
+    branches: [main, 'codex/**']
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: transport-profile-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  profiles:
+    name: Profile administration (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, ubuntu-24.04-arm, macos-15, macos-15-intel]
+    env:
+      GOWORK: 'off'
+      GOTOOLCHAIN: local
+      GOENV: 'off'
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6
+        with:
+          go-version-file: tools/sov-transport-profile-admin/go.mod
+          cache: false
+      - name: Check exact generated contracts
+        working-directory: tools/sov-transport-profile-admin
+        run: go run ./scripts/generate_contract.go --check
+      - name: Test protected store and authenticated audit client
+        working-directory: tools/sov-transport-profile-admin
+        run: go test -mod=readonly -race -count=1 ./...
+      - name: Test SSIAG audit owner
+        working-directory: modules/secure-identity-access-governance
+        run: go test -mod=readonly -race -count=1 ./internal/server ./internal/stavproducer -run 'TestTransportProfile|TestCandidate'
+      - name: Test qxctl and preserved SSH v1
+        working-directory: tools/qxctl
+        run: go test -mod=readonly -count=1 ./internal/transportprofile/... ./internal/invariantregistry ./internal/sovremote ./cmd/qxctl -run 'TestFixedInvocation|TestIndependentProfile|TestProfileResult|TestTransportProfile|TestV5|TestCommandRegistry|TestCheckedInExpected|TestSSH|TestSOVSSH'
+      - name: Test unchanged direct carrier
+        working-directory: tools/sov-ssh-adapter
+        run: go test -mod=readonly -count=1 ./...
+      - name: Build exact helper and disposable installed-process test
+        working-directory: tools/sov-transport-profile-admin
+        run: |
+          go build -mod=readonly -trimpath -o "$RUNNER_TEMP/sov-transport-profile-admin" .
+          go test -mod=readonly -c -o "$RUNNER_TEMP/profile-installed.test" .
+      - name: Exercise protected helper on disposable host
+        shell: bash
+        run: |
+          set -euo pipefail
+          case "$RUNNER_OS" in
+            Linux)
+              profile_prefix=/opt/symphony
+              profile_helper_dir=/opt/symphony/libexec/sov-transport-profile-admin/0.1.0-dev
+              # Hosted Ubuntu images intentionally make /opt world-writable.
+              # Provision protected ancestry only on this disposable runner.
+              sudo chmod go-w /opt
+              ;;
+            macOS)
+              profile_prefix='/Library/Application Support/Symphony'
+              profile_helper_dir='/Library/Application Support/Symphony/libexec/sov-transport-profile-admin/0.1.0-dev'
+              # macOS defaults /private/var/run to group-writable (daemon).
+              # The system audit socket contract requires protected ancestry.
+              sudo chmod go-w /private/var/run
+              ;;
+            *) exit 2 ;;
+          esac
+          # Do not inherit the hosted runner's permissive directory defaults.
+          # Set every helper ancestor explicitly, including existing directories.
+          for profile_dir in "$profile_prefix" "$profile_prefix/libexec" \
+            "$profile_prefix/libexec/sov-transport-profile-admin" "$profile_helper_dir"; do
+            sudo install -d -o 0 -g 0 -m 0755 "$profile_dir"
+          done
+          sudo install -m 0755 "$RUNNER_TEMP/sov-transport-profile-admin" "$profile_helper_dir/sov-transport-profile-admin"
+          sudo env SYMPHONY_PROFILE_ROOT_FIXTURE=1 "$RUNNER_TEMP/profile-installed.test" -test.v -test.run '^TestProtectedProfileInstalledProcess$'
+      - name: Report qualification boundary
+        if: always()
+        run: echo 'Local and disposable-root fixtures only. The installed helper uses a simulated committed append sink over kernel-authenticated Unix IPC. No host sudoers changes, deployed SSIAG/STAV grant, Cloudflare session or SSH connection.' >> "$GITHUB_STEP_SUMMARY"

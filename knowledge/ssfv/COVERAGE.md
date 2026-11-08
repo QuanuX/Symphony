@@ -205,3 +205,7 @@ The dedicated C++ runtime is the sovereign Rithmic integration owner under SQV. 
 | `modules/sov-cloudflare-adapter` | registered | `ssfv:symphony:sov-cloudflare-adapter` | `modules/sov-cloudflare-adapter/FEATURES.md` |
 
 qxctl additionally owns `ssfv:symphony:qxctl.sov-cloudflare-administration`; this increment adds local operations, not general Cloudflare product support.
+
+| `tools/sov-transport-profile-admin` | registered | `ssfv:symphony:sov-transport-profile-admin` | `tools/sov-transport-profile-admin/FEATURES.md` |
+
+qxctl additionally owns `ssfv:symphony:qxctl.sov-transport-profile-administration` for the complete I2 surface.

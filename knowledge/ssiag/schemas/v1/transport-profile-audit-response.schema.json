@@ -1,0 +1,23 @@
+{
+  "$id": "symphony.ssiag.transport-profile-audit-response.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "protocol": {
+      "const": "symphony.ssiag.transport-profile-audit.v1"
+    },
+    "receipt": {
+      "$ref": "../../../stav/schemas/v1/receipt.schema.json"
+    },
+    "request_digest": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "type": "string"
+    }
+  },
+  "required": [
+    "protocol",
+    "request_digest",
+    "receipt"
+  ],
+  "type": "object"
+}

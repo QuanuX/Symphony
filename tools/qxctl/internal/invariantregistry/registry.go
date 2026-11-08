@@ -19,6 +19,7 @@ import (
 const (
 	Protocol       = "symphony.knowledge.invariant-ownership-registry.v1"
 	ProtocolV2     = "symphony.knowledge.invariant-ownership-registry.v2"
+	ProtocolV5     = "symphony.knowledge.invariant-ownership-registry.v5"
 	ProtocolV4     = "symphony.knowledge.invariant-ownership-registry.v4"
 	ProtocolV3     = "symphony.knowledge.invariant-ownership-registry.v3"
 	QueryProtocol  = "symphony.knowledge.invariant-query-result.v1"
@@ -261,7 +262,7 @@ func setResultDigest(value any, target *string) error {
 }
 
 func validate(registry Registry) error {
-	if !(registry.Protocol == Protocol && registry.FormatVersion == 1 || registry.Protocol == ProtocolV2 && registry.FormatVersion == 2 || registry.Protocol == ProtocolV3 && registry.FormatVersion == 3 || registry.Protocol == ProtocolV4 && registry.FormatVersion == 4) ||
+	if !(registry.Protocol == Protocol && registry.FormatVersion == 1 || registry.Protocol == ProtocolV2 && registry.FormatVersion == 2 || registry.Protocol == ProtocolV3 && registry.FormatVersion == 3 || registry.Protocol == ProtocolV4 && registry.FormatVersion == 4 || registry.Protocol == ProtocolV5 && registry.FormatVersion == 5) ||
 		registry.Scope != "common_lowest_authoritative_layer" ||
 		registry.CatalogScope != "registered_incremental" || registry.CatalogComplete ||
 		registry.ForwardGate != "enforce_new_or_modified" || !digestPattern.MatchString(registry.RegistryDigest) {
@@ -317,7 +318,24 @@ func validateAdapter(adapter Adapter) error {
 }
 
 func validateAdapterVersion(adapter Adapter, registryVersion uint64) error {
-	if registryVersion >= 3 && adapter.FormatVersion == 3 || registryVersion == 4 && adapter.FormatVersion == 4 {
+	if registryVersion == 5 && adapter.FormatVersion == 5 {
+		if adapter.Component != "sov-transport-profile-admin" || adapter.EntryPointID != "sov.transport-profile-admin" ||
+			adapter.AdapterID != "adapter:symphony:sov.transport-profile-admin.v1" ||
+			adapter.CommandProtocol != "symphony.sov.transport-profile-request.v1" ||
+			adapter.OwnerContract != "tools/sov-transport-profile-admin/SPEC.md" ||
+			adapter.ImplementationPath != "tools/sov-transport-profile-admin" ||
+			adapter.VersionPolicy != "exact_protected_executable_and_scope" {
+			return fmt.Errorf("protected administrator adapter shape is invalid")
+		}
+		expected := []string{"engop:symphony:sov.transport.profile.apply", "engop:symphony:sov.transport.profile.inspect", "engop:symphony:sov.transport.profile.list", "engop:symphony:sov.transport.profile.plan", "engop:symphony:sov.transport.profile.recover", "engop:symphony:sov.transport.profile.schema", "engop:symphony:sov.transport.profile.status", "engop:symphony:sov.transport.profile.template"}
+		a, _ := json.Marshal(adapter.OperationIDs)
+		b, _ := json.Marshal(expected)
+		if !bytes.Equal(a, b) {
+			return fmt.Errorf("protected administrator operation set differs")
+		}
+		return nil
+	}
+	if registryVersion >= 3 && adapter.FormatVersion == 3 || registryVersion >= 4 && adapter.FormatVersion == 4 {
 		if len(adapter.Component) > 256 || !regexp.MustCompile(`^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$`).MatchString(adapter.Component) || !tokenPattern.MatchString(adapter.EntryPointID) ||
 			!strings.HasPrefix(adapter.EntryPointID, "symphony-") || len(adapter.EntryPointID) <= len("symphony-") ||
 			adapter.OwnerContract != "modules/"+adapter.Component+"/SPEC.md" ||

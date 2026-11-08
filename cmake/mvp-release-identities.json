@@ -951,6 +951,17 @@
       "public_go_source_identities": [],
       "publication_status": "not_authorized_by_this_catalog",
       "qualification_scope": "required_ci_profiles_sdk_free; licensed SDK and live-provider qualification separate"
+    },
+    {
+      "component_id": "sov-transport-profile-admin",
+      "path": "tools/sov-transport-profile-admin",
+      "kind": "go_command",
+      "package_version": "0.1.0-dev",
+      "sdk_versions": [],
+      "source_runtime_version": "0.1.0-dev",
+      "public_go_source_identities": [],
+      "publication_status": "not_authorized_by_this_catalog",
+      "qualification_scope": "focused_local_and_disposable_root_fixture; no deployed host or provider claim"
     }
   ],
   "go_artifacts": [
@@ -1024,6 +1035,18 @@
       "source_runtime_version": "0.1.0-dev",
       "version_symbol": null,
       "version_output_prefix": "sov-stdio-adapter version ",
+      "recipe": "go-candidate"
+    },
+    {
+      "component_id": "sov-transport-profile-admin",
+      "path": "tools/sov-transport-profile-admin",
+      "main_package": ".",
+      "entrypoint": "tools/sov-transport-profile-admin/main.go",
+      "binary_name": "sov-transport-profile-admin",
+      "package_version": "0.1.0-dev",
+      "source_runtime_version": "0.1.0-dev",
+      "version_symbol": null,
+      "version_output_prefix": "sov-transport-profile-admin version ",
       "recipe": "go-candidate"
     }
   ],

@@ -11,7 +11,7 @@ namespace fs = std::filesystem;
 bool is_authorized_canonical_json(const std::string& relative_path) {
     // Exact, Architect-ratified STAV v1, common SKV, SKVI, SCLV, SACV, SODV, SSFV, SAV, and SEV protocol artifacts. Directory-prefix
     // allowlisting would silently admit unreviewed JSON and is prohibited.
-    static const std::array<std::string, 345> authorized_paths = {
+    static const auto authorized_paths = std::to_array<std::string>({
         "knowledge/stav/schemas/v1/common.schema.json",
         "knowledge/stav/schemas/v1/candidate.schema.json",
         "knowledge/stav/schemas/v1/event.schema.json",
@@ -127,6 +127,10 @@ bool is_authorized_canonical_json(const std::string& relative_path) {
         "knowledge/schemas/v2/invariant-ownership-registry.schema.json",
         "knowledge/schemas/v3/invariant-ownership-registry.schema.json",
         "knowledge/schemas/v4/invariant-ownership-registry.schema.json",
+        "knowledge/schemas/v5/invariant-ownership-registry.schema.json",
+        "knowledge/sov/transport-profiles/schemas.json",
+        "knowledge/ssiag/schemas/v1/transport-profile-audit-request.schema.json",
+        "knowledge/ssiag/schemas/v1/transport-profile-audit-response.schema.json",
         "knowledge/scv/schemas/v1/source.schema.json",
         "knowledge/scv/schemas/v1/capture.schema.json",
         "knowledge/scv/schemas/v1/capture-index.schema.json",
@@ -357,7 +361,7 @@ bool is_authorized_canonical_json(const std::string& relative_path) {
         "knowledge/sov/cloudflare/schemas/resource.list.request_schema.json",
         "knowledge/sov/cloudflare/schemas/resource.list.result_schema.json",
         "knowledge/sov/cloudflare/c0/schema-catalogue.json"
-    };
+    });
     return std::find(authorized_paths.begin(), authorized_paths.end(), relative_path) != authorized_paths.end();
 }
 

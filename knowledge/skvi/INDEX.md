@@ -27330,3 +27330,759 @@ automatic nested fitting and cross-run holdout history remain unimplemented.
 - deferred_projections: Remote CI results, merge closure and live provider/transport qualification
 - notes: No remote-test completion or live-provider authority is asserted.
 - status: canonical
+
+### Protected transport profile I2 .github/workflows/transport-profiles.yml
+
+- path: `.github/workflows/transport-profiles.yml`
+- title: Protected transport profile I2 transport-profiles.yml
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV profile and SSIAG maintainers
+- scope: Protected local administration, exact audit and explicit recovery.
+- relationships: governed_by -> `tools/sov-transport-profile-admin/SPEC.md`
+- consumers: qxctl, local administrators and maintainers
+- deferred_projections: I3 admission, I5 Cloudflare sessions and integrated live qualification
+- notes: Source presence does not establish installed root or provider acceptance.
+- status: canonical
+
+### Protected transport profile I2 knowledge/schemas/v5/invariant-ownership-registry.schema.json
+
+- path: `knowledge/schemas/v5/invariant-ownership-registry.schema.json`
+- title: Protected transport profile I2 invariant-ownership-registry.schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV profile and SSIAG maintainers
+- scope: Protected local administration, exact audit and explicit recovery.
+- relationships: governed_by -> `tools/sov-transport-profile-admin/SPEC.md`
+- consumers: qxctl, local administrators and maintainers
+- deferred_projections: I3 admission, I5 Cloudflare sessions and integrated live qualification
+- notes: Source presence does not establish installed root or provider acceptance.
+- status: canonical
+
+### Protected transport profile I2 knowledge/sov/transport-profiles/INTENT.md
+
+- path: `knowledge/sov/transport-profiles/INTENT.md`
+- title: Protected transport profile I2 INTENT.md
+- surface_type: source contract
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV profile and SSIAG maintainers
+- scope: Protected local administration, exact audit and explicit recovery.
+- relationships: governed_by -> `tools/sov-transport-profile-admin/SPEC.md`
+- consumers: qxctl, local administrators and maintainers
+- deferred_projections: I3 admission, I5 Cloudflare sessions and integrated live qualification
+- notes: Source presence does not establish installed root or provider acceptance.
+- status: canonical
+
+### Protected transport profile I2 knowledge/sov/transport-profiles/MANIFEST.md
+
+- path: `knowledge/sov/transport-profiles/MANIFEST.md`
+- title: Protected transport profile I2 MANIFEST.md
+- surface_type: source contract
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV profile and SSIAG maintainers
+- scope: Protected local administration, exact audit and explicit recovery.
+- relationships: governed_by -> `tools/sov-transport-profile-admin/SPEC.md`
+- consumers: qxctl, local administrators and maintainers
+- deferred_projections: I3 admission, I5 Cloudflare sessions and integrated live qualification
+- notes: Source presence does not establish installed root or provider acceptance.
+- status: canonical
+
+### Protected transport profile I2 knowledge/sov/transport-profiles/SKILL.md
+
+- path: `knowledge/sov/transport-profiles/SKILL.md`
+- title: Protected transport profile I2 SKILL.md
+- surface_type: source contract
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV profile and SSIAG maintainers
+- scope: Protected local administration, exact audit and explicit recovery.
+- relationships: governed_by -> `tools/sov-transport-profile-admin/SPEC.md`
+- consumers: qxctl, local administrators and maintainers
+- deferred_projections: I3 admission, I5 Cloudflare sessions and integrated live qualification
+- notes: Source presence does not establish installed root or provider acceptance.
+- status: canonical
+
+### Protected transport profile I2 knowledge/sov/transport-profiles/SPEC.md
+
+- path: `knowledge/sov/transport-profiles/SPEC.md`
+- title: Protected transport profile I2 SPEC.md
+- surface_type: source contract
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV profile and SSIAG maintainers
+- scope: Protected local administration, exact audit and explicit recovery.
+- relationships: governed_by -> `tools/sov-transport-profile-admin/SPEC.md`
+- consumers: qxctl, local administrators and maintainers
+- deferred_projections: I3 admission, I5 Cloudflare sessions and integrated live qualification
+- notes: Source presence does not establish installed root or provider acceptance.
+- status: canonical
+
+### Protected transport profile I2 knowledge/sov/transport-profiles/schemas.json
+
+- path: `knowledge/sov/transport-profiles/schemas.json`
+- title: Protected transport profile I2 schemas.json
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV profile and SSIAG maintainers
+- scope: Protected local administration, exact audit and explicit recovery.
+- relationships: governed_by -> `tools/sov-transport-profile-admin/SPEC.md`
+- consumers: qxctl, local administrators and maintainers
+- deferred_projections: I3 admission, I5 Cloudflare sessions and integrated live qualification
+- notes: Source presence does not establish installed root or provider acceptance.
+- status: canonical
+
+### Protected transport profile I2 modules/secure-identity-access-governance/internal/server/transport_profile_audit.go
+
+- path: `modules/secure-identity-access-governance/internal/server/transport_profile_audit.go`
+- title: Protected transport profile I2 transport_profile_audit.go
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV profile and SSIAG maintainers
+- scope: Protected local administration, exact audit and explicit recovery.
+- relationships: governed_by -> `tools/sov-transport-profile-admin/SPEC.md`
+- consumers: qxctl, local administrators and maintainers
+- deferred_projections: I3 admission, I5 Cloudflare sessions and integrated live qualification
+- notes: Source presence does not establish installed root or provider acceptance.
+- status: canonical
+
+### Protected transport profile I2 modules/secure-identity-access-governance/internal/server/transport_profile_audit_test.go
+
+- path: `modules/secure-identity-access-governance/internal/server/transport_profile_audit_test.go`
+- title: Protected transport profile I2 transport_profile_audit_test.go
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV profile and SSIAG maintainers
+- scope: Protected local administration, exact audit and explicit recovery.
+- relationships: governed_by -> `tools/sov-transport-profile-admin/SPEC.md`
+- consumers: qxctl, local administrators and maintainers
+- deferred_projections: I3 admission, I5 Cloudflare sessions and integrated live qualification
+- notes: Source presence does not establish installed root or provider acceptance.
+- status: canonical
+
+### Protected transport profile I2 modules/secure-identity-access-governance/internal/transportaudit/contract.go
+
+- path: `modules/secure-identity-access-governance/internal/transportaudit/contract.go`
+- title: Protected transport profile I2 contract.go
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV profile and SSIAG maintainers
+- scope: Protected local administration, exact audit and explicit recovery.
+- relationships: governed_by -> `tools/sov-transport-profile-admin/SPEC.md`
+- consumers: qxctl, local administrators and maintainers
+- deferred_projections: I3 admission, I5 Cloudflare sessions and integrated live qualification
+- notes: Source presence does not establish installed root or provider acceptance.
+- status: canonical
+
+### Protected transport profile I2 tools/qxctl/cmd/qxctl/sov_transport_profile.go
+
+- path: `tools/qxctl/cmd/qxctl/sov_transport_profile.go`
+- title: Protected transport profile I2 sov_transport_profile.go
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV profile and SSIAG maintainers
+- scope: Protected local administration, exact audit and explicit recovery.
+- relationships: governed_by -> `tools/sov-transport-profile-admin/SPEC.md`
+- consumers: qxctl, local administrators and maintainers
+- deferred_projections: I3 admission, I5 Cloudflare sessions and integrated live qualification
+- notes: Source presence does not establish installed root or provider acceptance.
+- status: canonical
+
+### Protected transport profile I2 tools/qxctl/cmd/qxctl/sov_transport_profile_test.go
+
+- path: `tools/qxctl/cmd/qxctl/sov_transport_profile_test.go`
+- title: Protected transport profile I2 sov_transport_profile_test.go
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV profile and SSIAG maintainers
+- scope: Protected local administration, exact audit and explicit recovery.
+- relationships: governed_by -> `tools/sov-transport-profile-admin/SPEC.md`
+- consumers: qxctl, local administrators and maintainers
+- deferred_projections: I3 admission, I5 Cloudflare sessions and integrated live qualification
+- notes: Source presence does not establish installed root or provider acceptance.
+- status: canonical
+
+### Protected transport profile I2 tools/qxctl/internal/transportprofile/client_test.go
+
+- path: `tools/qxctl/internal/transportprofile/client_test.go`
+- title: Protected transport profile I2 client_test.go
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV profile and SSIAG maintainers
+- scope: Protected local administration, exact audit and explicit recovery.
+- relationships: governed_by -> `tools/sov-transport-profile-admin/SPEC.md`
+- consumers: qxctl, local administrators and maintainers
+- deferred_projections: I3 admission, I5 Cloudflare sessions and integrated live qualification
+- notes: Source presence does not establish installed root or provider acceptance.
+- status: canonical
+
+### Protected transport profile I2 tools/qxctl/internal/transportprofile/client_unix.go
+
+- path: `tools/qxctl/internal/transportprofile/client_unix.go`
+- title: Protected transport profile I2 client_unix.go
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV profile and SSIAG maintainers
+- scope: Protected local administration, exact audit and explicit recovery.
+- relationships: governed_by -> `tools/sov-transport-profile-admin/SPEC.md`
+- consumers: qxctl, local administrators and maintainers
+- deferred_projections: I3 admission, I5 Cloudflare sessions and integrated live qualification
+- notes: Source presence does not establish installed root or provider acceptance.
+- status: canonical
+
+### Protected transport profile I2 tools/qxctl/internal/transportprofile/wire/codec_generated.go
+
+- path: `tools/qxctl/internal/transportprofile/wire/codec_generated.go`
+- title: Protected transport profile I2 codec_generated.go
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV profile and SSIAG maintainers
+- scope: Protected local administration, exact audit and explicit recovery.
+- relationships: governed_by -> `tools/sov-transport-profile-admin/SPEC.md`
+- consumers: qxctl, local administrators and maintainers
+- deferred_projections: I3 admission, I5 Cloudflare sessions and integrated live qualification
+- notes: Source presence does not establish installed root or provider acceptance.
+- status: canonical
+
+### Protected transport profile I2 tools/qxctl/internal/transportprofile/wire/presentation_generated.go
+
+- path: `tools/qxctl/internal/transportprofile/wire/presentation_generated.go`
+- title: Protected transport profile I2 presentation_generated.go
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV profile and SSIAG maintainers
+- scope: Protected local administration, exact audit and explicit recovery.
+- relationships: governed_by -> `tools/sov-transport-profile-admin/SPEC.md`
+- consumers: qxctl, local administrators and maintainers
+- deferred_projections: I3 admission, I5 Cloudflare sessions and integrated live qualification
+- notes: Source presence does not establish installed root or provider acceptance.
+- status: canonical
+
+### Protected transport profile I2 tools/qxctl/internal/transportprofile/wire/schema_generated.go
+
+- path: `tools/qxctl/internal/transportprofile/wire/schema_generated.go`
+- title: Protected transport profile I2 schema_generated.go
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV profile and SSIAG maintainers
+- scope: Protected local administration, exact audit and explicit recovery.
+- relationships: governed_by -> `tools/sov-transport-profile-admin/SPEC.md`
+- consumers: qxctl, local administrators and maintainers
+- deferred_projections: I3 admission, I5 Cloudflare sessions and integrated live qualification
+- notes: Source presence does not establish installed root or provider acceptance.
+- status: canonical
+
+### Protected transport profile I2 tools/qxctl/internal/transportprofile/wire/types_generated.go
+
+- path: `tools/qxctl/internal/transportprofile/wire/types_generated.go`
+- title: Protected transport profile I2 types_generated.go
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV profile and SSIAG maintainers
+- scope: Protected local administration, exact audit and explicit recovery.
+- relationships: governed_by -> `tools/sov-transport-profile-admin/SPEC.md`
+- consumers: qxctl, local administrators and maintainers
+- deferred_projections: I3 admission, I5 Cloudflare sessions and integrated live qualification
+- notes: Source presence does not establish installed root or provider acceptance.
+- status: canonical
+
+### Protected transport profile I2 tools/qxctl/internal/transportprofile/wire/validate_generated.go
+
+- path: `tools/qxctl/internal/transportprofile/wire/validate_generated.go`
+- title: Protected transport profile I2 validate_generated.go
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV profile and SSIAG maintainers
+- scope: Protected local administration, exact audit and explicit recovery.
+- relationships: governed_by -> `tools/sov-transport-profile-admin/SPEC.md`
+- consumers: qxctl, local administrators and maintainers
+- deferred_projections: I3 admission, I5 Cloudflare sessions and integrated live qualification
+- notes: Source presence does not establish installed root or provider acceptance.
+- status: canonical
+
+### Protected transport profile I2 tools/sov-transport-profile-admin/FEATURES.md
+
+- path: `tools/sov-transport-profile-admin/FEATURES.md`
+- title: Protected transport profile I2 FEATURES.md
+- surface_type: source contract
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV profile and SSIAG maintainers
+- scope: Protected local administration, exact audit and explicit recovery.
+- relationships: governed_by -> `tools/sov-transport-profile-admin/SPEC.md`
+- consumers: qxctl, local administrators and maintainers
+- deferred_projections: I3 admission, I5 Cloudflare sessions and integrated live qualification
+- notes: Source presence does not establish installed root or provider acceptance.
+- status: canonical
+
+### Protected transport profile I2 tools/sov-transport-profile-admin/INSTALL.md
+
+- path: `tools/sov-transport-profile-admin/INSTALL.md`
+- title: Protected transport profile I2 INSTALL.md
+- surface_type: source contract
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV profile and SSIAG maintainers
+- scope: Protected local administration, exact audit and explicit recovery.
+- relationships: governed_by -> `tools/sov-transport-profile-admin/SPEC.md`
+- consumers: qxctl, local administrators and maintainers
+- deferred_projections: I3 admission, I5 Cloudflare sessions and integrated live qualification
+- notes: Source presence does not establish installed root or provider acceptance.
+- status: canonical
+
+### Protected transport profile I2 tools/sov-transport-profile-admin/INTENT.md
+
+- path: `tools/sov-transport-profile-admin/INTENT.md`
+- title: Protected transport profile I2 INTENT.md
+- surface_type: source contract
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV profile and SSIAG maintainers
+- scope: Protected local administration, exact audit and explicit recovery.
+- relationships: governed_by -> `tools/sov-transport-profile-admin/SPEC.md`
+- consumers: qxctl, local administrators and maintainers
+- deferred_projections: I3 admission, I5 Cloudflare sessions and integrated live qualification
+- notes: Source presence does not establish installed root or provider acceptance.
+- status: canonical
+
+### Protected transport profile I2 tools/sov-transport-profile-admin/MANIFEST.md
+
+- path: `tools/sov-transport-profile-admin/MANIFEST.md`
+- title: Protected transport profile I2 MANIFEST.md
+- surface_type: source contract
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV profile and SSIAG maintainers
+- scope: Protected local administration, exact audit and explicit recovery.
+- relationships: governed_by -> `tools/sov-transport-profile-admin/SPEC.md`
+- consumers: qxctl, local administrators and maintainers
+- deferred_projections: I3 admission, I5 Cloudflare sessions and integrated live qualification
+- notes: Source presence does not establish installed root or provider acceptance.
+- status: canonical
+
+### Protected transport profile I2 tools/sov-transport-profile-admin/README.md
+
+- path: `tools/sov-transport-profile-admin/README.md`
+- title: Protected transport profile I2 README.md
+- surface_type: source contract
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV profile and SSIAG maintainers
+- scope: Protected local administration, exact audit and explicit recovery.
+- relationships: governed_by -> `tools/sov-transport-profile-admin/SPEC.md`
+- consumers: qxctl, local administrators and maintainers
+- deferred_projections: I3 admission, I5 Cloudflare sessions and integrated live qualification
+- notes: Source presence does not establish installed root or provider acceptance.
+- status: canonical
+
+### Protected transport profile I2 tools/sov-transport-profile-admin/SKILL.md
+
+- path: `tools/sov-transport-profile-admin/SKILL.md`
+- title: Protected transport profile I2 SKILL.md
+- surface_type: source contract
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV profile and SSIAG maintainers
+- scope: Protected local administration, exact audit and explicit recovery.
+- relationships: governed_by -> `tools/sov-transport-profile-admin/SPEC.md`
+- consumers: qxctl, local administrators and maintainers
+- deferred_projections: I3 admission, I5 Cloudflare sessions and integrated live qualification
+- notes: Source presence does not establish installed root or provider acceptance.
+- status: canonical
+
+### Protected transport profile I2 tools/sov-transport-profile-admin/SPEC.md
+
+- path: `tools/sov-transport-profile-admin/SPEC.md`
+- title: Protected transport profile I2 SPEC.md
+- surface_type: source contract
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV profile and SSIAG maintainers
+- scope: Protected local administration, exact audit and explicit recovery.
+- relationships: governed_by -> `tools/sov-transport-profile-admin/SPEC.md`
+- consumers: qxctl, local administrators and maintainers
+- deferred_projections: I3 admission, I5 Cloudflare sessions and integrated live qualification
+- notes: Source presence does not establish installed root or provider acceptance.
+- status: canonical
+
+### Protected transport profile I2 tools/sov-transport-profile-admin/contract/codec.go
+
+- path: `tools/sov-transport-profile-admin/contract/codec.go`
+- title: Protected transport profile I2 codec.go
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV profile and SSIAG maintainers
+- scope: Protected local administration, exact audit and explicit recovery.
+- relationships: governed_by -> `tools/sov-transport-profile-admin/SPEC.md`
+- consumers: qxctl, local administrators and maintainers
+- deferred_projections: I3 admission, I5 Cloudflare sessions and integrated live qualification
+- notes: Source presence does not establish installed root or provider acceptance.
+- status: canonical
+
+### Protected transport profile I2 tools/sov-transport-profile-admin/contract/contract_test.go
+
+- path: `tools/sov-transport-profile-admin/contract/contract_test.go`
+- title: Protected transport profile I2 contract_test.go
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV profile and SSIAG maintainers
+- scope: Protected local administration, exact audit and explicit recovery.
+- relationships: governed_by -> `tools/sov-transport-profile-admin/SPEC.md`
+- consumers: qxctl, local administrators and maintainers
+- deferred_projections: I3 admission, I5 Cloudflare sessions and integrated live qualification
+- notes: Source presence does not establish installed root or provider acceptance.
+- status: canonical
+
+### Protected transport profile I2 tools/sov-transport-profile-admin/contract/presentation.go
+
+- path: `tools/sov-transport-profile-admin/contract/presentation.go`
+- title: Protected transport profile I2 presentation.go
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV profile and SSIAG maintainers
+- scope: Protected local administration, exact audit and explicit recovery.
+- relationships: governed_by -> `tools/sov-transport-profile-admin/SPEC.md`
+- consumers: qxctl, local administrators and maintainers
+- deferred_projections: I3 admission, I5 Cloudflare sessions and integrated live qualification
+- notes: Source presence does not establish installed root or provider acceptance.
+- status: canonical
+
+### Protected transport profile I2 tools/sov-transport-profile-admin/contract/schema_generated.go
+
+- path: `tools/sov-transport-profile-admin/contract/schema_generated.go`
+- title: Protected transport profile I2 schema_generated.go
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV profile and SSIAG maintainers
+- scope: Protected local administration, exact audit and explicit recovery.
+- relationships: governed_by -> `tools/sov-transport-profile-admin/SPEC.md`
+- consumers: qxctl, local administrators and maintainers
+- deferred_projections: I3 admission, I5 Cloudflare sessions and integrated live qualification
+- notes: Source presence does not establish installed root or provider acceptance.
+- status: canonical
+
+### Protected transport profile I2 tools/sov-transport-profile-admin/contract/types.go
+
+- path: `tools/sov-transport-profile-admin/contract/types.go`
+- title: Protected transport profile I2 types.go
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV profile and SSIAG maintainers
+- scope: Protected local administration, exact audit and explicit recovery.
+- relationships: governed_by -> `tools/sov-transport-profile-admin/SPEC.md`
+- consumers: qxctl, local administrators and maintainers
+- deferred_projections: I3 admission, I5 Cloudflare sessions and integrated live qualification
+- notes: Source presence does not establish installed root or provider acceptance.
+- status: canonical
+
+### Protected transport profile I2 tools/sov-transport-profile-admin/contract/validate.go
+
+- path: `tools/sov-transport-profile-admin/contract/validate.go`
+- title: Protected transport profile I2 validate.go
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV profile and SSIAG maintainers
+- scope: Protected local administration, exact audit and explicit recovery.
+- relationships: governed_by -> `tools/sov-transport-profile-admin/SPEC.md`
+- consumers: qxctl, local administrators and maintainers
+- deferred_projections: I3 admission, I5 Cloudflare sessions and integrated live qualification
+- notes: Source presence does not establish installed root or provider acceptance.
+- status: canonical
+
+### Protected transport profile I2 tools/sov-transport-profile-admin/go.mod
+
+- path: `tools/sov-transport-profile-admin/go.mod`
+- title: Protected transport profile I2 go.mod
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV profile and SSIAG maintainers
+- scope: Protected local administration, exact audit and explicit recovery.
+- relationships: governed_by -> `tools/sov-transport-profile-admin/SPEC.md`
+- consumers: qxctl, local administrators and maintainers
+- deferred_projections: I3 admission, I5 Cloudflare sessions and integrated live qualification
+- notes: Source presence does not establish installed root or provider acceptance.
+- status: canonical
+
+### Protected transport profile I2 tools/sov-transport-profile-admin/go.sum
+
+- path: `tools/sov-transport-profile-admin/go.sum`
+- title: Protected transport profile I2 go.sum
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV profile and SSIAG maintainers
+- scope: Protected local administration, exact audit and explicit recovery.
+- relationships: governed_by -> `tools/sov-transport-profile-admin/SPEC.md`
+- consumers: qxctl, local administrators and maintainers
+- deferred_projections: I3 admission, I5 Cloudflare sessions and integrated live qualification
+- notes: Source presence does not establish installed root or provider acceptance.
+- status: canonical
+
+### Protected transport profile I2 tools/sov-transport-profile-admin/installed_test.go
+
+- path: `tools/sov-transport-profile-admin/installed_test.go`
+- title: Protected transport profile I2 installed_test.go
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV profile and SSIAG maintainers
+- scope: Protected local administration, exact audit and explicit recovery.
+- relationships: governed_by -> `tools/sov-transport-profile-admin/SPEC.md`
+- consumers: qxctl, local administrators and maintainers
+- deferred_projections: I3 admission, I5 Cloudflare sessions and integrated live qualification
+- notes: Source presence does not establish installed root or provider acceptance.
+- status: canonical
+
+### Protected transport profile I2 tools/sov-transport-profile-admin/internal/auditclient/client.go
+
+- path: `tools/sov-transport-profile-admin/internal/auditclient/client.go`
+- title: Protected transport profile I2 client.go
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV profile and SSIAG maintainers
+- scope: Protected local administration, exact audit and explicit recovery.
+- relationships: governed_by -> `tools/sov-transport-profile-admin/SPEC.md`
+- consumers: qxctl, local administrators and maintainers
+- deferred_projections: I3 admission, I5 Cloudflare sessions and integrated live qualification
+- notes: Source presence does not establish installed root or provider acceptance.
+- status: canonical
+
+### Protected transport profile I2 tools/sov-transport-profile-admin/internal/auditclient/client_test.go
+
+- path: `tools/sov-transport-profile-admin/internal/auditclient/client_test.go`
+- title: Protected transport profile I2 client_test.go
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV profile and SSIAG maintainers
+- scope: Protected local administration, exact audit and explicit recovery.
+- relationships: governed_by -> `tools/sov-transport-profile-admin/SPEC.md`
+- consumers: qxctl, local administrators and maintainers
+- deferred_projections: I3 admission, I5 Cloudflare sessions and integrated live qualification
+- notes: Source presence does not establish installed root or provider acceptance.
+- status: canonical
+
+### Protected transport profile I2 tools/sov-transport-profile-admin/internal/auditclient/peerauth_darwin.go
+
+- path: `tools/sov-transport-profile-admin/internal/auditclient/peerauth_darwin.go`
+- title: Protected transport profile I2 peerauth_darwin.go
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV profile and SSIAG maintainers
+- scope: Protected local administration, exact audit and explicit recovery.
+- relationships: governed_by -> `tools/sov-transport-profile-admin/SPEC.md`
+- consumers: qxctl, local administrators and maintainers
+- deferred_projections: I3 admission, I5 Cloudflare sessions and integrated live qualification
+- notes: Source presence does not establish installed root or provider acceptance.
+- status: canonical
+
+### Protected transport profile I2 tools/sov-transport-profile-admin/internal/auditclient/peerauth_linux.go
+
+- path: `tools/sov-transport-profile-admin/internal/auditclient/peerauth_linux.go`
+- title: Protected transport profile I2 peerauth_linux.go
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV profile and SSIAG maintainers
+- scope: Protected local administration, exact audit and explicit recovery.
+- relationships: governed_by -> `tools/sov-transport-profile-admin/SPEC.md`
+- consumers: qxctl, local administrators and maintainers
+- deferred_projections: I3 admission, I5 Cloudflare sessions and integrated live qualification
+- notes: Source presence does not establish installed root or provider acceptance.
+- status: canonical
+
+### Protected transport profile I2 tools/sov-transport-profile-admin/internal/auditclient/peerauth_unsupported.go
+
+- path: `tools/sov-transport-profile-admin/internal/auditclient/peerauth_unsupported.go`
+- title: Protected transport profile I2 peerauth_unsupported.go
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV profile and SSIAG maintainers
+- scope: Protected local administration, exact audit and explicit recovery.
+- relationships: governed_by -> `tools/sov-transport-profile-admin/SPEC.md`
+- consumers: qxctl, local administrators and maintainers
+- deferred_projections: I3 admission, I5 Cloudflare sessions and integrated live qualification
+- notes: Source presence does not establish installed root or provider acceptance.
+- status: canonical
+
+### Protected transport profile I2 tools/sov-transport-profile-admin/internal/store/files_unix.go
+
+- path: `tools/sov-transport-profile-admin/internal/store/files_unix.go`
+- title: Protected transport profile I2 files_unix.go
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV profile and SSIAG maintainers
+- scope: Protected local administration, exact audit and explicit recovery.
+- relationships: governed_by -> `tools/sov-transport-profile-admin/SPEC.md`
+- consumers: qxctl, local administrators and maintainers
+- deferred_projections: I3 admission, I5 Cloudflare sessions and integrated live qualification
+- notes: Source presence does not establish installed root or provider acceptance.
+- status: canonical
+
+### Protected transport profile I2 tools/sov-transport-profile-admin/internal/store/packages_test.go
+
+- path: `tools/sov-transport-profile-admin/internal/store/packages_test.go`
+- title: Protected transport profile I2 packages_test.go
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV profile and SSIAG maintainers
+- scope: Protected local administration, exact audit and explicit recovery.
+- relationships: governed_by -> `tools/sov-transport-profile-admin/SPEC.md`
+- consumers: qxctl, local administrators and maintainers
+- deferred_projections: I3 admission, I5 Cloudflare sessions and integrated live qualification
+- notes: Source presence does not establish installed root or provider acceptance.
+- status: canonical
+
+### Protected transport profile I2 tools/sov-transport-profile-admin/internal/store/packages_unix.go
+
+- path: `tools/sov-transport-profile-admin/internal/store/packages_unix.go`
+- title: Protected transport profile I2 packages_unix.go
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV profile and SSIAG maintainers
+- scope: Protected local administration, exact audit and explicit recovery.
+- relationships: governed_by -> `tools/sov-transport-profile-admin/SPEC.md`
+- consumers: qxctl, local administrators and maintainers
+- deferred_projections: I3 admission, I5 Cloudflare sessions and integrated live qualification
+- notes: Source presence does not establish installed root or provider acceptance.
+- status: canonical
+
+### Protected transport profile I2 tools/sov-transport-profile-admin/internal/store/receipt.go
+
+- path: `tools/sov-transport-profile-admin/internal/store/receipt.go`
+- title: Protected transport profile I2 receipt.go
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV profile and SSIAG maintainers
+- scope: Protected local administration, exact audit and explicit recovery.
+- relationships: governed_by -> `tools/sov-transport-profile-admin/SPEC.md`
+- consumers: qxctl, local administrators and maintainers
+- deferred_projections: I3 admission, I5 Cloudflare sessions and integrated live qualification
+- notes: Source presence does not establish installed root or provider acceptance.
+- status: canonical
+
+### Protected transport profile I2 tools/sov-transport-profile-admin/internal/store/store_test.go
+
+- path: `tools/sov-transport-profile-admin/internal/store/store_test.go`
+- title: Protected transport profile I2 store_test.go
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV profile and SSIAG maintainers
+- scope: Protected local administration, exact audit and explicit recovery.
+- relationships: governed_by -> `tools/sov-transport-profile-admin/SPEC.md`
+- consumers: qxctl, local administrators and maintainers
+- deferred_projections: I3 admission, I5 Cloudflare sessions and integrated live qualification
+- notes: Source presence does not establish installed root or provider acceptance.
+- status: canonical
+
+### Protected transport profile I2 tools/sov-transport-profile-admin/internal/store/store_unix.go
+
+- path: `tools/sov-transport-profile-admin/internal/store/store_unix.go`
+- title: Protected transport profile I2 store_unix.go
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV profile and SSIAG maintainers
+- scope: Protected local administration, exact audit and explicit recovery.
+- relationships: governed_by -> `tools/sov-transport-profile-admin/SPEC.md`
+- consumers: qxctl, local administrators and maintainers
+- deferred_projections: I3 admission, I5 Cloudflare sessions and integrated live qualification
+- notes: Source presence does not establish installed root or provider acceptance.
+- status: canonical
+
+### Protected transport profile I2 tools/sov-transport-profile-admin/internal/transportaudit/contract.go
+
+- path: `tools/sov-transport-profile-admin/internal/transportaudit/contract.go`
+- title: Protected transport profile I2 contract.go
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV profile and SSIAG maintainers
+- scope: Protected local administration, exact audit and explicit recovery.
+- relationships: governed_by -> `tools/sov-transport-profile-admin/SPEC.md`
+- consumers: qxctl, local administrators and maintainers
+- deferred_projections: I3 admission, I5 Cloudflare sessions and integrated live qualification
+- notes: Source presence does not establish installed root or provider acceptance.
+- status: canonical
+
+### Protected transport profile I2 tools/sov-transport-profile-admin/main.go
+
+- path: `tools/sov-transport-profile-admin/main.go`
+- title: Protected transport profile I2 main.go
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV profile and SSIAG maintainers
+- scope: Protected local administration, exact audit and explicit recovery.
+- relationships: governed_by -> `tools/sov-transport-profile-admin/SPEC.md`
+- consumers: qxctl, local administrators and maintainers
+- deferred_projections: I3 admission, I5 Cloudflare sessions and integrated live qualification
+- notes: Source presence does not establish installed root or provider acceptance.
+- status: canonical
+
+### Protected transport profile I2 tools/sov-transport-profile-admin/main_test.go
+
+- path: `tools/sov-transport-profile-admin/main_test.go`
+- title: Protected transport profile I2 main_test.go
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV profile and SSIAG maintainers
+- scope: Protected local administration, exact audit and explicit recovery.
+- relationships: governed_by -> `tools/sov-transport-profile-admin/SPEC.md`
+- consumers: qxctl, local administrators and maintainers
+- deferred_projections: I3 admission, I5 Cloudflare sessions and integrated live qualification
+- notes: Source presence does not establish installed root or provider acceptance.
+- status: canonical
+
+### Protected transport profile I2 tools/sov-transport-profile-admin/scripts/generate_contract.go
+
+- path: `tools/sov-transport-profile-admin/scripts/generate_contract.go`
+- title: Protected transport profile I2 generate_contract.go
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV profile and SSIAG maintainers
+- scope: Protected local administration, exact audit and explicit recovery.
+- relationships: governed_by -> `tools/sov-transport-profile-admin/SPEC.md`
+- consumers: qxctl, local administrators and maintainers
+- deferred_projections: I3 admission, I5 Cloudflare sessions and integrated live qualification
+- notes: Source presence does not establish installed root or provider acceptance.
+- status: canonical
+
+### Protected transport profile I2 knowledge/ssiag/schemas/v1/transport-profile-audit-request.schema.json
+
+- path: `knowledge/ssiag/schemas/v1/transport-profile-audit-request.schema.json`
+- title: Protected transport profile I2 transport-profile-audit-request.schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV profile and SSIAG maintainers
+- scope: Protected local administration, exact audit and explicit recovery.
+- relationships: governed_by -> `tools/sov-transport-profile-admin/SPEC.md`
+- consumers: qxctl, local administrators and maintainers
+- deferred_projections: I3 admission, I5 Cloudflare sessions and integrated live qualification
+- notes: Source presence does not establish installed root or provider acceptance.
+- status: canonical
+
+### Protected transport profile I2 knowledge/ssiag/schemas/v1/transport-profile-audit-response.schema.json
+
+- path: `knowledge/ssiag/schemas/v1/transport-profile-audit-response.schema.json`
+- title: Protected transport profile I2 transport-profile-audit-response.schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV profile and SSIAG maintainers
+- scope: Protected local administration, exact audit and explicit recovery.
+- relationships: governed_by -> `tools/sov-transport-profile-admin/SPEC.md`
+- consumers: qxctl, local administrators and maintainers
+- deferred_projections: I3 admission, I5 Cloudflare sessions and integrated live qualification
+- notes: Source presence does not establish installed root or provider acceptance.
+- status: canonical
+
+### Protected transport profile I2 modules/secure-identity-access-governance/internal/transportaudit/contract_test.go
+
+- path: `modules/secure-identity-access-governance/internal/transportaudit/contract_test.go`
+- title: Protected transport profile I2 contract_test.go
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV profile and SSIAG maintainers
+- scope: Protected local administration, exact audit and explicit recovery.
+- relationships: governed_by -> `tools/sov-transport-profile-admin/SPEC.md`
+- consumers: qxctl, local administrators and maintainers
+- deferred_projections: I3 admission, I5 Cloudflare sessions and integrated live qualification
+- notes: Source presence does not establish installed root or provider acceptance.
+- status: canonical
+
+### Protected transport profile I2 tools/sov-transport-profile-admin/internal/transportaudit/contract_test.go
+
+- path: `tools/sov-transport-profile-admin/internal/transportaudit/contract_test.go`
+- title: Protected transport profile I2 contract_test.go
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV profile and SSIAG maintainers
+- scope: Protected local administration, exact audit and explicit recovery.
+- relationships: governed_by -> `tools/sov-transport-profile-admin/SPEC.md`
+- consumers: qxctl, local administrators and maintainers
+- deferred_projections: I3 admission, I5 Cloudflare sessions and integrated live qualification
+- notes: Source presence does not establish installed root or provider acceptance.
+- status: canonical

@@ -1,0 +1,85 @@
+{
+  "$id": "symphony.ssiag.transport-profile-audit-request.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "action": {
+      "enum": [
+        "create",
+        "replace",
+        "enable",
+        "disable",
+        "remove",
+        "policy"
+      ]
+    },
+    "desired_digest": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "host_id": {
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+      "type": "string"
+    },
+    "observed_digest": {
+      "pattern": "^(sha256:[0-9a-f]{64})?$",
+      "type": "string"
+    },
+    "operation_id": {
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[47][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+      "type": "string"
+    },
+    "phase": {
+      "enum": [
+        "intent",
+        "outcome"
+      ]
+    },
+    "plan_digest": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "prior_digest": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "profile_id": {
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+      "type": "string"
+    },
+    "protocol": {
+      "const": "symphony.ssiag.transport-profile-audit.v1"
+    },
+    "request_id": {
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[47][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+      "type": "string"
+    },
+    "resolution": {
+      "enum": [
+        "pending",
+        "published",
+        "aborted"
+      ]
+    },
+    "tops_id": {
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+      "type": "string"
+    }
+  },
+  "required": [
+    "protocol",
+    "request_id",
+    "operation_id",
+    "host_id",
+    "tops_id",
+    "profile_id",
+    "action",
+    "plan_digest",
+    "prior_digest",
+    "desired_digest",
+    "phase",
+    "resolution",
+    "observed_digest"
+  ],
+  "type": "object"
+}

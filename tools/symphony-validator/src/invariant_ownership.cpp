@@ -597,7 +597,8 @@ std::map<std::string, AdapterEvidence> check_adapters(
             (adapter.at("format_version").get<unsigned>() != 1U &&
              !((registry_version >= 2U && adapter.at("format_version").get<unsigned>() == 2U) ||
                (registry_version >= 3U && adapter.at("format_version").get<unsigned>() == 3U) ||
-               (registry_version == 4U && adapter.at("format_version").get<unsigned>() == 4U))) ||
+               (registry_version >= 4U && adapter.at("format_version").get<unsigned>() == 4U) ||
+               (registry_version == 5U && adapter.at("format_version").get<unsigned>() == 5U))) ||
             !path_token(adapter.value("owner_contract", Json{})) ||
             !path_token(adapter.value("implementation_path", Json{})) ||
             !adapter.at("command_protocol").is_string() ||
@@ -606,11 +607,13 @@ std::map<std::string, AdapterEvidence> check_adapters(
                 const auto format = adapter.at("format_version").get<unsigned>();
                 if (protocol == "symphony.foundation.lifecycle-command.v1" || protocol == "symphony.ssiag.provider.control.v1") return true;
                 if (((registry_version >= 2U && format == 2U) || (registry_version >= 3U && format == 3U)) && protocol == "symphony.knowledge.engine-process.v1") return true;
-                return registry_version == 4U && format == 4U && std::regex_match(protocol, std::regex(R"(^symphony\.[a-z0-9]+([.-][a-z0-9]+)*\.v1$)"));
+                if (registry_version == 5U && format == 5U) return protocol == "symphony.sov.transport-profile-request.v1";
+                return registry_version >= 4U && format == 4U && std::regex_match(protocol, std::regex(R"(^symphony\.[a-z0-9]+([.-][a-z0-9]+)*\.v1$)"));
             }()) ||
             !adapter.at("version_policy").is_string() ||
-            adapter.at("version_policy").get<std::string>() !=
-                "exact_receipt_v2_entry_point_and_capability_compatible") {
+            (adapter.at("format_version") == 5U
+                ? adapter.at("version_policy") != "exact_protected_executable_and_scope"
+                : adapter.at("version_policy") != "exact_receipt_v2_entry_point_and_capability_compatible")) {
             finding(result, EvidenceCategory::Violation, "invariant_ownership.adapter_shape",
                 "reason=field_set_type_or_value");
             continue;
@@ -633,12 +636,27 @@ std::map<std::string, AdapterEvidence> check_adapters(
             component == entry_point.substr(9U) + "-engine";
         const bool explicit_pair = ((registry_version >= 3U && adapter.at("format_version").get<unsigned>() == 3U &&
             command_protocol == "symphony.knowledge.engine-process.v1") ||
-            (registry_version == 4U && adapter.at("format_version").get<unsigned>() == 4U &&
+            (registry_version >= 4U && adapter.at("format_version").get<unsigned>() == 4U &&
              std::regex_match(command_protocol, std::regex(R"(^symphony\.[a-z0-9]+([.-][a-z0-9]+)*\.v1$)")))) &&
             invariant_or_adapter_identifier(component, "") &&
             invariant_or_adapter_identifier(entry_point, "symphony-");
+        const bool protected_pair = registry_version == 5U && adapter.at("format_version") == 5U &&
+            component == "sov-transport-profile-admin" && entry_point == "sov.transport-profile-admin" &&
+            command_protocol == "symphony.sov.transport-profile-request.v1" &&
+            adapter.at("owner_contract") == "tools/sov-transport-profile-admin/SPEC.md" &&
+            adapter.at("implementation_path") == "tools/sov-transport-profile-admin";
+        if (protected_pair) {
+            const Json expected_operations = Json::array({
+                "engop:symphony:sov.transport.profile.apply", "engop:symphony:sov.transport.profile.inspect",
+                "engop:symphony:sov.transport.profile.list", "engop:symphony:sov.transport.profile.plan",
+                "engop:symphony:sov.transport.profile.recover", "engop:symphony:sov.transport.profile.schema",
+                "engop:symphony:sov.transport.profile.status", "engop:symphony:sov.transport.profile.template"});
+            if (adapter.at("operation_ids") != expected_operations) {
+                finding(result, EvidenceCategory::Violation, "invariant_ownership.adapter_operations", "reason=protected_operation_set");
+            }
+        }
         const auto expected_id = "adapter:symphony:" + entry_point + ".v1";
-        if ((!legacy_pair && !generic_pair && !explicit_pair) || id != expected_id) {
+        if ((!legacy_pair && !generic_pair && !explicit_pair && !protected_pair) || id != expected_id) {
             finding(result, EvidenceCategory::Violation, "invariant_ownership.adapter_identity",
                 "adapter_id=" + id + " component=" + component + " entry_point_id=" + entry_point);
         }
@@ -897,7 +915,8 @@ InvariantOwnershipCheckResult check_invariant_ownership(const std::string& repo_
          (registry->at("protocol") == "symphony.knowledge.invariant-ownership-registry.v3" &&
           registry->at("format_version") == 3U) ||
          (registry->at("protocol") == "symphony.knowledge.invariant-ownership-registry.v4" &&
-          registry->at("format_version") == 4U));
+          registry->at("format_version") == 4U) ||
+         (registry->at("protocol") == "symphony.knowledge.invariant-ownership-registry.v5" && registry->at("format_version") == 5U));
     if (!exact_fields(*registry, {"adapters", "catalog_complete", "catalog_scope", "format_version",
             "forward_gate", "invariants", "protocol", "registry_digest", "scope", "test_policy"}) ||
         !known_version ||

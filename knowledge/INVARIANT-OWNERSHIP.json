@@ -1,6 +1,26 @@
 {
   "adapters": [
     {
+      "adapter_id": "adapter:symphony:sov.transport-profile-admin.v1",
+      "command_protocol": "symphony.sov.transport-profile-request.v1",
+      "component": "sov-transport-profile-admin",
+      "entry_point_id": "sov.transport-profile-admin",
+      "format_version": 5,
+      "implementation_path": "tools/sov-transport-profile-admin",
+      "operation_ids": [
+        "engop:symphony:sov.transport.profile.apply",
+        "engop:symphony:sov.transport.profile.inspect",
+        "engop:symphony:sov.transport.profile.list",
+        "engop:symphony:sov.transport.profile.plan",
+        "engop:symphony:sov.transport.profile.recover",
+        "engop:symphony:sov.transport.profile.schema",
+        "engop:symphony:sov.transport.profile.status",
+        "engop:symphony:sov.transport.profile.template"
+      ],
+      "owner_contract": "tools/sov-transport-profile-admin/SPEC.md",
+      "version_policy": "exact_protected_executable_and_scope"
+    },
+    {
       "adapter_id": "adapter:symphony:ssiag.foundation-lifecycle.v1",
       "command_protocol": "symphony.foundation.lifecycle-command.v1",
       "component": "ssiag",
@@ -728,7 +748,7 @@
   ],
   "catalog_complete": false,
   "catalog_scope": "registered_incremental",
-  "format_version": 4,
+  "format_version": 5,
   "forward_gate": "enforce_new_or_modified",
   "invariants": [
     {
@@ -2806,6 +2826,56 @@
     },
     {
       "allowed_adapter_ids": [
+        "adapter:symphony:sov.transport-profile-admin.v1"
+      ],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "TestFixedInvocationAndClosedInput",
+            "TestIndependentProfileConsumerGolden",
+            "TestProfileResultBindingAndCompleteEvidence"
+          ],
+          "path": "tools/qxctl/internal/transportprofile/client_test.go"
+        }
+      ],
+      "invariant_id": "invariant:symphony:sov.protected-profile-publication",
+      "ipc_boundary": true,
+      "owner_component": "sov-transport-profile-admin",
+      "owner_contract": "tools/sov-transport-profile-admin/SPEC.md",
+      "producer_implementations": [
+        "modules/secure-identity-access-governance/internal/server/transport_profile_audit.go",
+        "tools/sov-transport-profile-admin/internal/store/store_unix.go",
+        "tools/sov-transport-profile-admin/main.go"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "TestProtectedPackageClosureAndRecoveryDrift"
+          ],
+          "path": "tools/sov-transport-profile-admin/internal/store/packages_test.go"
+        },
+        {
+          "cases": [
+            "TestAuditMissingOrForgedNeverPublishes",
+            "TestPublicationFaultsRequireExplicitRecovery"
+          ],
+          "path": "tools/sov-transport-profile-admin/internal/store/store_test.go"
+        }
+      ],
+      "real_process_regressions": [
+        {
+          "cases": [
+            "TestProtectedProfileInstalledProcess"
+          ],
+          "path": "tools/sov-transport-profile-admin/installed_test.go"
+        }
+      ],
+      "statement": "The fixed protected helper alone publishes coherent profile/policy generations after kernel-root authority, expected-state and package verification and authenticated committed audit. Pending evidence blocks further mutation until exact explicit recovery. qxctl reads/plans as the user; no SSH v1 or connection behavior is changed.",
+      "status": "active",
+      "title": "Protected profile changes require exact root authority and committed audit"
+    },
+    {
+      "allowed_adapter_ids": [
         "adapter:symphony:symphony-sqav-attempt.v1"
       ],
       "consumer_boundary_rejections": [
@@ -4335,8 +4405,8 @@
       "title": "Provider readiness evidence cannot become operational authority"
     }
   ],
-  "protocol": "symphony.knowledge.invariant-ownership-registry.v4",
-  "registry_digest": "sha256:9b88fbb2aebbe6a3738ba67e44a9ca2a29f787046d16f8cb97b4b1ebbb4507a6",
+  "protocol": "symphony.knowledge.invariant-ownership-registry.v5",
+  "registry_digest": "sha256:d3d5e6b3a8eeefea8009244d2ef027b73a5fbd9af29b7ecab2d4ca98976a212a",
   "scope": "common_lowest_authoritative_layer",
   "test_policy": {
     "consumer_boundary_rejection_required": true,

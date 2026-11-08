@@ -4,7 +4,6 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
-	"fmt"
 	"os"
 	"path/filepath"
 	"sort"
@@ -18,7 +17,7 @@ func TestLoadAndDeterministicQueryProjections(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if (registry.Protocol != Protocol && registry.Protocol != ProtocolV2 && registry.Protocol != ProtocolV3 && registry.Protocol != ProtocolV4) || len(registry.Invariants) == 0 || len(registry.Adapters) == 0 {
+	if (registry.Protocol != Protocol && registry.Protocol != ProtocolV2 && registry.Protocol != ProtocolV3 && registry.Protocol != ProtocolV4 && registry.Protocol != ProtocolV5) || len(registry.Invariants) == 0 || len(registry.Adapters) == 0 {
 		t.Fatalf("registry identity or counts = %#v", registry)
 	}
 
@@ -279,7 +278,7 @@ func TestV3ResealedRegistryRejectsCrossAdapterOperationOwnership(t *testing.T) {
 	removed := map[string]bool{}
 	for _, raw := range object["adapters"].([]any) {
 		a := raw.(map[string]any)
-		if fmt.Sprint(a["format_version"]) == "4" {
+		if a["format_version"].(float64) > 3 {
 			removed[a["adapter_id"].(string)] = true
 		} else {
 			adapters = append(adapters, raw)
@@ -336,5 +335,26 @@ func TestV4OwnerProtocolKeepsOlderFormatsExact(t *testing.T) {
 	a.ImplementationPath = "modules/foreign"
 	if err := validateAdapterVersion(a, 4); err == nil {
 		t.Fatal("foreign implementation owner accepted")
+	}
+}
+
+func TestV5ProtectedAdministratorDoesNotBroadenPriorFormats(t *testing.T) {
+	a := Adapter{AdapterID: "adapter:symphony:sov.transport-profile-admin.v1", Component: "sov-transport-profile-admin", EntryPointID: "sov.transport-profile-admin", CommandProtocol: "symphony.sov.transport-profile-request.v1", FormatVersion: 5, OwnerContract: "tools/sov-transport-profile-admin/SPEC.md", ImplementationPath: "tools/sov-transport-profile-admin", VersionPolicy: "exact_protected_executable_and_scope", OperationIDs: []string{"engop:symphony:sov.transport.profile.apply", "engop:symphony:sov.transport.profile.inspect", "engop:symphony:sov.transport.profile.list", "engop:symphony:sov.transport.profile.plan", "engop:symphony:sov.transport.profile.recover", "engop:symphony:sov.transport.profile.schema", "engop:symphony:sov.transport.profile.status", "engop:symphony:sov.transport.profile.template"}}
+	if e := validateAdapterVersion(a, 5); e != nil {
+		t.Fatal(e)
+	}
+	for _, version := range []uint64{1, 2, 3, 4} {
+		if validateAdapterVersion(a, version) == nil {
+			t.Fatal("older contract widened")
+		}
+	}
+	a.ImplementationPath = "tools/foreign"
+	if validateAdapterVersion(a, 5) == nil {
+		t.Fatal("unrelated privileged owner accepted")
+	}
+	a.ImplementationPath = "tools/sov-transport-profile-admin"
+	a.OperationIDs = append(a.OperationIDs, "engop:symphony:sov.transport.profile.shell")
+	if validateAdapterVersion(a, 5) == nil {
+		t.Fatal("arbitrary privileged operation accepted")
 	}
 }

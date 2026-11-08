@@ -9,6 +9,7 @@ use (
 	./tools/qxctl
 	./tools/sov-stdio-adapter
 	./tools/sov-ssh-adapter
+	./tools/sov-transport-profile-admin
 )
 
 replace (
