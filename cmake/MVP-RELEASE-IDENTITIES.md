@@ -1,6 +1,6 @@
 # MVP candidate release identities
 
-[mvp-release-identities.json](mvp-release-identities.json) selects candidate identities for all 70 current component roots and all six production Go commands. The dependency projection remains authoritative for current SDK exports, receipts, owner interfaces and immutable public Go source pins. Run `cmake -P cmake/VerifyMVPReleaseIdentities.cmake` to verify their correspondence and retained owner versions.
+[mvp-release-identities.json](mvp-release-identities.json) selects candidate identities for all 71 current component roots and all six production Go commands, including the independently versioned `sov-cloudflare-adapter` package (`0.1.0-dev`, no exported SDK). The dependency projection remains authoritative for current SDK exports, receipts, owner interfaces and immutable public Go source pins. Run `cmake -P cmake/VerifyMVPReleaseIdentities.cmake` to verify their correspondence and retained owner versions.
 
 The catalog selects identities for build qualification. L01 still approves the shipped capability set; it does not publish a tag or binary, approve a download channel, or activate a provider. A proposal and shared authoring source need no invented runtime package version. The DuckDB recipes select exact upstream files for macOS arm64/amd64 and Linux arm64/amd64. `mvp-platform-profiles.json` records the four required sprint profiles; physical DGX Spark remains optional future evidence.
 

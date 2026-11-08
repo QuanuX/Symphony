@@ -1,0 +1,180 @@
+[
+  {
+    "path": "login-DG5ebyab.mjs",
+    "sha256": "8ca8f9905b33c4356af07dc0617640e19bbfb8e5be78b012706aaf96fa447e0e",
+    "pattern": "CLOUDFLARE_API_TOKEN",
+    "occurrences": 3,
+    "excerpts": [
+      "f auth ${t}\\`.${r}`)}function v(){if(t({allowGlobalAuthKey:!1})!==void 0)throw Error(`Cannot manage auth profiles while CLOUDFLARE_API_TOKEN is set. Unset CLOUDFLARE_API_TOKEN and try again.`)}const y={command:`create <name>`,describe:`Create or re-authenticate a named auth profile`,builder:e=>e.positional(`name`,{type:`string`,descriptio",
+      "f(t({allowGlobalAuthKey:!1})!==void 0)throw Error(`Cannot manage auth profiles while CLOUDFLARE_API_TOKEN is set. Unset CLOUDFLARE_API_TOKEN and try again.`)}const y={command:`create <name>`,describe:`Create or re-authenticate a named auth profile`,builder:e=>e.positional(`name`,{type:`string`,description:`Name for the auth profile`,deman",
+      "reate ${a}`),s(`default`),n.useKeyring!==void 0&&c(n.useKeyring),t({allowGlobalAuthKey:!1})!==void 0){r.warn(`${e.code(`CLOUDFLARE_API_TOKEN`)} is set and takes precedence. Unset it to log in via OAuth.`);return}if(!n.force&&i()){if(await f()){let t=o(),n=[`You are already logged in.`,`${e.info(`Config file:`)} ${e.muted(l())}`];t?.expira"
+    ]
+  },
+  {
+    "path": "delegate-CcL6RoGw.mjs",
+    "sha256": "17008cf5c88c1c2ea2d3fde2a622289867f79a41a21d26c959f8ebc7177d95ea",
+    "pattern": "CF_DELEGATION",
+    "occurrences": 3,
+    "excerpts": [
+      "leURLToPath as s}from\"node:url\";import{constants as c}from\"node:os\";import{spawn as l}from\"node:child_process\";const u=`CF_DELEGATION`,d=`CF_DELEGATING_CLI_VERSION`,f=`CF_DELEGATION_PID`;function p(e){if(e.env.CF_DELEGATION||b(e.ownPackageJsonPath))return null;let i;try{i=t(o(e.cwd,`package.json`)).resolve(`cf/package.json`)}catch{return ",
+      " as c}from\"node:os\";import{spawn as l}from\"node:child_process\";const u=`CF_DELEGATION`,d=`CF_DELEGATING_CLI_VERSION`,f=`CF_DELEGATION_PID`;function p(e){if(e.env.CF_DELEGATION||b(e.ownPackageJsonPath))return null;let i;try{i=t(o(e.cwd,`package.json`)).resolve(`cf/package.json`)}catch{return null}if(e.ownPackageJsonPath&&y(i,e.ownPackageJs",
+      "\"node:child_process\";const u=`CF_DELEGATION`,d=`CF_DELEGATING_CLI_VERSION`,f=`CF_DELEGATION_PID`;function p(e){if(e.env.CF_DELEGATION||b(e.ownPackageJsonPath))return null;let i;try{i=t(o(e.cwd,`package.json`)).resolve(`cf/package.json`)}catch{return null}if(e.ownPackageJsonPath&&y(i,e.ownPackageJsonPath))return null;let s;try{s=JSON.parse"
+    ]
+  },
+  {
+    "path": "dist-D-ihn_mV.mjs",
+    "sha256": "747677c5083c37ef25dbeb738bf7df0bd2c2a666dffd3ab2c938be53224a616b",
+    "pattern": "maxRetries",
+    "occurrences": 5,
+    "excerpts": [
+      "Directory()??!1}a(eb,`isDirectory`);function tb(e,{fireAndForget:t=!1}={}){let n=M.promises.rm(e,{recursive:!0,force:!0,maxRetries:5,retryDelay:100});if(t)n.catch(()=>{});else return n}a(tb,`removeDir`);function nb(e){M.rmSync(e,{recursive:!0,force:!0,maxRetries:5,retryDelay:100})}a(nb,`removeDirSync`),k(import.meta.url||(typeof __filenam",
+      ",retryDelay:100});if(t)n.catch(()=>{});else return n}a(tb,`removeDir`);function nb(e){M.rmSync(e,{recursive:!0,force:!0,maxRetries:5,retryDelay:100})}a(nb,`removeDirSync`),k(import.meta.url||(typeof __filename==`string`?__filename:`/`));function rb(){return/^win/i.test(process.platform)}a(rb,`isWindows`);function ib(){return/^darwin$/i.te",
+      "&&(this.#t.rawTrailers=e)}};n.exports=class e{constructor(t,{dispatch:n,handler:r}){let{retryOptions:a,...s}=t,{retry:c,maxRetries:u,maxTimeout:d,minTimeout:p,timeoutFactor:m,methods:h,errorCodes:g,retryAfter:_,statusCodes:v,throwOnError:y}=a??{};this.error=null,this.dispatch=n,this.handler=o.wrap(r),this.opts={...s,body:l(t.body)},this.r",
+      "his.retryOpts={throwOnError:y??!0,retry:c??e[i],retryAfter:_??!0,maxTimeout:d??3e4,minTimeout:p??500,timeoutFactor:m??2,maxRetries:u??5,methods:h??[`GET`,`HEAD`,`OPTIONS`,`PUT`,`DELETE`,`TRACE`],statusCodes:v??[500,502,503,504,429],errorCodes:g??[`ECONNRESET`,`ECONNREFUSED`,`ENOTFOUND`,`ENETDOWN`,`ENETUNREACH`,`EHOSTDOWN`,`EHOSTUNREACH`,`",
+      "ontrollerProxy,t,n,r)}static[i](e,{state:t,opts:n},r){let{statusCode:i,code:a,headers:o}=e,{method:s,retryOptions:c}=n,{maxRetries:l,minTimeout:d,maxTimeout:f,timeoutFactor:p,statusCodes:m,errorCodes:h,methods:g}=c,{counter:_}=t;if(a&&a!==`UND_ERR_REQ_RETRY`&&!h.includes(a)||Array.isArray(g)&&!g.includes(s)||i!=null&&Array.isArray(m)&&!m."
+    ]
+  },
+  {
+    "path": "ai-Csl_QNwv.mjs",
+    "sha256": "1179ce7cff30193b56d960457c55c1a39994d0483f6b0ee0f9fe5492d67d0175",
+    "pattern": "maxRetries",
+    "occurrences": 1,
+    "excerpts": [
+      "();if(n<=0)return{ok:!1,reason:`the request timed out`};a=await i.send(q,{account_id:t,model:e},{timeoutInSeconds:n/1e3,maxRetries:0})}}catch(e){return{ok:!1,reason:ae(e)}}let o=y(a,`input`);return o?(re(Y,[t,e],o),{ok:!0,schema:o}):{ok:!1,reason:`the API returned no input schema`}}const Z=\"Run `cf ai models list` to see the models you ca"
+    ]
+  },
+  {
+    "path": "dotenv-DKRemNCH.mjs",
+    "sha256": "4ce00dc11720f99158316b572ada08f28a4a795b0319cb57949c337d5bce6f83",
+    "pattern": "CLOUDFLARE_API_TOKEN",
+    "occurrences": 1,
+    "excerpts": [
+      "nst E=/* @__PURE__ */ new Set([`CLOUDFLARE_ACCESS_CLIENT_ID`,`CLOUDFLARE_ACCESS_CLIENT_SECRET`,`CLOUDFLARE_ACCOUNT_ID`,`CLOUDFLARE_API_TOKEN`,`CLOUDFLARE_COMPLIANCE_REGION`,w,`CLOUDFLARE_ZONE_ID`,`WRANGLER_API_ENVIRONMENT`]);function D(e){return E.has(e)}async function O(e={}){if(e.local)return()=>{};let t=await y(process.cwd(),e.mode),n="
+    ]
+  },
+  {
+    "path": "cf-BQ_LRiut.mjs",
+    "sha256": "0adcc9197ea525f0aada701816e865444718d80ac4afdd94dfbc51b3c74d1d3e",
+    "pattern": "CLOUDFLARE_API_TOKEN",
+    "occurrences": 7,
+    "excerpts": [
+      "on-interactive\":`Could not authenticate because no credentials were found and the environment is non-interactive. Set a CLOUDFLARE_API_TOKEN environment variable or run \\`${e}\\` in an interactive terminal first.`,\"no-credentials-login-failed\":`No credentials were found and the login attempt was unsuccessful. Run \\`${e}\\` to try again.`,\"t",
+      "ed and could not be refreshed, and the environment is non-interactive. Run \\`${e}\\` in an interactive terminal or set a CLOUDFLARE_API_TOKEN.`,\"token-expired-login-failed\":`Your auth token has expired and could not be refreshed, and the login attempt was unsuccessful. Run \\`${e}\\` to try again.`,\"token-refresh-unreachable\":`Your auth toke",
+      "nt IDs for the logged in user.\nYou may have incorrect permissions on your API token, or an environment variable such as CLOUDFLARE_API_TOKEN, CLOUDFLARE_API_KEY, or CLOUDFLARE_EMAIL may be set to an invalid value.\nCheck your environment and unset or correct any Cloudflare credential variables, or run \\`${o.commands.login}\\` to re-authenti",
+      "w accounts are only for unauthenticated use. Either remove \\`${h}\\` to use your existing account, or log out (and unset CLOUDFLARE_API_TOKEN) first.`,{telemetryMessage:`user temporary account already authenticated`});let{account:r,cached:i}=await b.activateTemporaryAccount();return Ee(f,r,i),r.account.id}let t=await j(e);if(!t.loggedIn)th",
+      "teractive`||t.reason===`token-expired-non-interactive`?new d(`In a non-interactive environment, it's necessary to set a CLOUDFLARE_API_TOKEN environment variable for ${m} to work. Please go to https://developers.cloudflare.com/fundamentals/api/get-started/create-token/ for instructions on how to create an api token, and assign its value t",
+      ".com/fundamentals/api/get-started/create-token/ for instructions on how to create an api token, and assign its value to CLOUDFLARE_API_TOKEN.`,{telemetryMessage:`user auth missing api token non interactive`}):t.reason===`token-refresh-unreachable`?new d(g[t.reason],{telemetryMessage:`user auth token refresh unreachable`}):new d(`Did not l",
+      "d. You must grant consent to cf in order to login.\\nIf you don't want to do this consider passing an API token via the `CLOUDFLARE_API_TOKEN` environment variable\"}},Ie=c({variableName:`CLOUDFLARE_CLIENT_ID`,defaultValue:/* @__PURE__ */ p(()=>`cbca97e7-c331-4cdd-8fd8-e25a451b98bf`,`defaultValue`)});function Z(){return o({appName:`cloudfla"
+    ]
+  },
+  {
+    "path": "blocks-BFulF68V.mjs",
+    "sha256": "fa605fddac73cf95dbe23dba766a9001db338d35c646efd4a509d63d12027f73",
+    "pattern": "CF_DELEGATION",
+    "occurrences": 1,
+    "excerpts": [
+      "${t.warning(e.warning)} ${n}`}function a(n){return`${t.muted(e.arrow)} ${t.muted(n)}`}function o(e,r){let a=process.env.CF_DELEGATION?` ${t.muted(`\u00b7`)} ${t.muted(`local version`)}`:``,o=r?` ${t.muted(`\u00b7`)} ${t.warning(`update available: v${r.latestVersion}`)}`:``,s=`\ud83c\udf4a\u2601\ufe0f  ${t.brand(t.bold(`cf`))} ${t.muted(`\u00b7`)} ${t.muted(`v${e}`)}${a}${o}"
+    ]
+  },
+  {
+    "path": "schema-cache-5NkOj7Y3.mjs",
+    "sha256": "ea5ac79200f5cd0b0eb941a1ffdccd68519f88d0155da929c14fb92f03c53c47",
+    "pattern": "CLOUDFLARE_API_TOKEN",
+    "occurrences": 1,
+    "excerpts": [
+      "Code;if(t===404)return`not found, or this account can't access it`;if(t===401)return\"credentials were rejected; update `CLOUDFLARE_API_TOKEN` or run `cf auth login`\";if(t===403)return`these credentials can't read it \u2014 check your API token permissions`;let n=e.message;if(!n)return`the request failed`;let r=(n.split(`\n`)[0]??``).replace(/\\."
+    ]
+  },
+  {
+    "path": "chunk-SOBRPAPT-QTjnHSNs.mjs",
+    "sha256": "23d42e63897cdeb990cc265479a2a0f7984099af34dee8f601dee984a993d702",
+    "pattern": "CLOUDFLARE_API_TOKEN",
+    "occurrences": 6,
+    "excerpts": [
+      "longer supported in the current version of Wrangler.\nIf you wish to authenticate via an API token then please set the \\`CLOUDFLARE_API_TOKEN\\` environment variable.`)),{deprecatedApiToken:c}):{}}C(T,`readStoredAuthState`);var le=i({variableName:`CLOUDFLARE_API_TOKEN`,deprecatedName:`CF_API_TOKEN`}),ue=i({variableName:`CLOUDFLARE_API_KEY`,",
+      "LARE_API_TOKEN\\` environment variable.`)),{deprecatedApiToken:c}):{}}C(T,`readStoredAuthState`);var le=i({variableName:`CLOUDFLARE_API_TOKEN`,deprecatedName:`CF_API_TOKEN`}),ue=i({variableName:`CLOUDFLARE_API_KEY`,deprecatedName:`CF_API_KEY`}),de=i({variableName:`CLOUDFLARE_EMAIL`,deprecatedName:`CF_EMAIL`});function fe(e){if(e?.allowGlob",
+      " consent to ${t.cliDisplayName} in order to login.\nIf you don't want to do this consider passing an API token via the \\`CLOUDFLARE_API_TOKEN\\` environment variable.`,{telemetryMessage:`user device-flow consent denied`});case`expired_token`:throw new u(`Device code expired before the request was approved. Please run \\`${t.deviceLoginComman",
+      "ort);async function m(i){if(e.hasEnvCredentials())return e.logger.error(`You are logged in with an API Token. Unset the CLOUDFLARE_API_TOKEN in the environment to log in via OAuth.`),!1;let c=n(i.complianceConfig);if(c===`fedramp_high`){let e=i.complianceConfig?.compliance_region?\"`compliance_region` configuration property\":\"`CLOUDFLARE_A",
+      " new u(st`\n\t\t\t\tOAuth login is not supported in the \\`${c}\\` compliance region.\n\t\t\t\tPlease use a Cloudflare API token (\\`CLOUDFLARE_API_TOKEN\\` environment variable) or remove the ${e}.\n\t\t\t`,{telemetryMessage:`user login unsupported compliance region`})}let l;return i.device?(e.logger.log(`Attempting to login via OAuth Device Authorization",
+      "`);async function v(t){let n=b();if(e.hasEnvCredentials()){e.logger.log(`You are logged in with an API Token. Unset the CLOUDFLARE_API_TOKEN in the environment to log out.`);return}let r=T({warningLogger:e.logger,storage:a(t)}).refreshToken;if(!r){e.logger.log(n?`Cleared temporary preview account.`:`Not logged in, exiting...`);return}let "
+    ]
+  },
+  {
+    "path": "run-BOKI1uWa.mjs",
+    "sha256": "b3bac31920e636c2a67625aaa9f0ebf76e4fb7d31b0e41525aaf16babed2d146",
+    "pattern": "CF_DELEGATION",
+    "occurrences": 2,
+    "excerpts": [
+      "n`)?`yarn`:e.startsWith(`bun`)?`bun`:e.startsWith(`npm`)?`npm`:`unknown`}function R(e=process.env,t=process.ppid){if(!e.CF_DELEGATION)return!1;let n=e[a];return n===void 0||n===String(t)}function z(e=process.env,t=process.ppid){if(!e.CF_DELEGATION_PID||!R(e,t))return;let n=e[i];if(!(typeof n!=`string`||n.length>64||!M.test(n)))return n}fu",
+      "if(!e.CF_DELEGATION)return!1;let n=e[a];return n===void 0||n===String(t)}function z(e=process.env,t=process.ppid){if(!e.CF_DELEGATION_PID||!R(e,t))return;let n=e[i];if(!(typeof n!=`string`||n.length>64||!M.test(n)))return n}function B(e,t,n){return g(`sha256`).update(`cf-agent-session-v1\\0`).update(e).update(`\\0`).update(t).update(`\\0`).u"
+    ]
+  },
+  {
+    "path": "api-Dnt6lRJG.mjs",
+    "sha256": "dc4538dbb867cbf9b62ca5a305039cb74ec0835f23f2f6053501aadbda58e54c",
+    "pattern": "maxRetries",
+    "occurrences": 7,
+    "excerpts": [
+      "**t,6e4)*(1+(Math.random()-.5)*.2)}async function E(e,t,n,r){let i=await C(e,t,n,r.timeoutMs,r.signal);for(let a=0;a<(r.maxRetries??2)&&w.includes(i.status);a++)await new Promise(e=>setTimeout(e,T(i,a))),i=await C(e,t,n,r.timeoutMs,r.signal);return i}function D(...e){let t={};for(let n of e)if(n!=null)for(let[e,r]of Object.entries(n)){let",
+      "eoutInSeconds??60,O=c?.abortSignal,k;try{let t=await E(this.#e.fetch??fetch,b?`${v}?${b}`:v,w,{timeoutMs:T*1e3,signal:O,maxRetries:c?.maxRetries??this.#e.maxRetries}),n=e(t);if(t.status<200||t.status>=400){let e=await x(t),a=r.errors?.[String(t.status)];throw a===void 0?new i({statusCode:t.status,body:e,rawResponse:n}):o(a,t.status,e,n)}k",
+      "?60,O=c?.abortSignal,k;try{let t=await E(this.#e.fetch??fetch,b?`${v}?${b}`:v,w,{timeoutMs:T*1e3,signal:O,maxRetries:c?.maxRetries??this.#e.maxRetries}),n=e(t);if(t.status<200||t.status>=400){let e=await x(t),a=r.errors?.[String(t.status)];throw a===void 0?new i({statusCode:t.status,body:e,rawResponse:n}):o(a,t.status,e,n)}k=await y(t,r.r",
+      ",k;try{let t=await E(this.#e.fetch??fetch,b?`${v}?${b}`:v,w,{timeoutMs:T*1e3,signal:O,maxRetries:c?.maxRetries??this.#e.maxRetries}),n=e(t);if(t.status<200||t.status>=400){let e=await x(t),a=r.errors?.[String(t.status)];throw a===void 0?new i({statusCode:t.status,body:e,rawResponse:n}):o(a,t.status,e,n)}k=await y(t,r.response===!1?void 0:",
+      "&(s.body=t.body),E(this.#e.fetch??fetch,i,s,{timeoutMs:o===void 0?void 0:o*1e3,signal:n?.abortSignal??t?.signal??void 0,maxRetries:n?.maxRetries??this.#e.maxRetries})}};export{i,l as n,c as r,O as t};",
+      "y),E(this.#e.fetch??fetch,i,s,{timeoutMs:o===void 0?void 0:o*1e3,signal:n?.abortSignal??t?.signal??void 0,maxRetries:n?.maxRetries??this.#e.maxRetries})}};export{i,l as n,c as r,O as t};",
+      "fetch,i,s,{timeoutMs:o===void 0?void 0:o*1e3,signal:n?.abortSignal??t?.signal??void 0,maxRetries:n?.maxRetries??this.#e.maxRetries})}};export{i,l as n,c as r,O as t};"
+    ]
+  },
+  {
+    "path": "auth-clmqFEWU.mjs",
+    "sha256": "d0f2c3025c52b0b1347ec5521c4ab43841e4f08e02a060112fbc410dc234ac7a",
+    "pattern": "CLOUDFLARE_API_TOKEN",
+    "occurrences": 3,
+    "excerpts": [
+      "count and --event-code are not supported by cf auth scopes.`);if(n({allowGlobalAuthKey:!1})!==void 0){a.warn(`${e.code(`CLOUDFLARE_API_TOKEN`)} is set, so its own permissions apply rather than OAuth scopes.`);return}let r=s();if(r?.oauth_token===void 0){a.info(`Not logged in. Run ${e.code(q(!1))} to log in.`);return}let{scopes:i}=r;if(!i)",
+      "e`]!==void 0)throw Error(`--temporary-account and --event-code are not supported by cf auth whoami.`);let n=process.env.CLOUDFLARE_API_TOKEN,i=s(),a;a=n?`CLOUDFLARE_API_TOKEN environment variable`:i?.oauth_token?`OAuth token from ${c()}`:`none`;try{await d()}catch{f({authenticated:!1,error:`Not logged in`}),a===`none`&&t().isAgentic&&cons",
+      "ary-account and --event-code are not supported by cf auth whoami.`);let n=process.env.CLOUDFLARE_API_TOKEN,i=s(),a;a=n?`CLOUDFLARE_API_TOKEN environment variable`:i?.oauth_token?`OAuth token from ${c()}`:`none`;try{await d()}catch{f({authenticated:!1,error:`Not logged in`}),a===`none`&&t().isAgentic&&console.error(r('Ask the user: \"I can "
+    ]
+  },
+  {
+    "path": "auth-token-DW4dJVdj.mjs",
+    "sha256": "96661375edc6398a64eb65428eb440954430b08697a5a32c2b4440b0bb36c1b9",
+    "pattern": "CLOUDFLARE_API_TOKEN",
+    "occurrences": 1,
+    "excerpts": [
+      "th login' to authenticate again.`):new t(`No authentication token found.\n\nPlease set one of the following:\n  1. Set the CLOUDFLARE_API_TOKEN environment variable\n  2. Run 'cf auth login' to authenticate via OAuth\n\nFor API tokens, visit: https://dash.cloudflare.com/profile/api-tokens`)}export{o as t};"
+    ]
+  },
+  {
+    "path": "wrangler-migration-6E6wT_LZ.mjs",
+    "sha256": "5bfcc95cfb8d7fa3ae9cc3799e10f32cec2fa7f3243a49712415c71d79088965",
+    "pattern": "maxRetries",
+    "occurrences": 6,
+    "excerpts": [
+      "exports=class e{static{d(this,`RetryHandler`)}constructor(t,{dispatch:n,handler:i}){let{retryOptions:a,...s}=t,{retry:c,maxRetries:u,maxTimeout:d,minTimeout:f,timeoutFactor:m,methods:h,errorCodes:g,retryAfter:_,statusCodes:v,throwOnError:y}=a??{};this.error=null,this.dispatch=n,this.handler=o.wrap(i),this.opts={...s,body:l(t.body)},this.r",
+      "his.retryOpts={throwOnError:y??!0,retry:c??e[r],retryAfter:_??!0,maxTimeout:d??3e4,minTimeout:f??500,timeoutFactor:m??2,maxRetries:u??5,methods:h??[`GET`,`HEAD`,`OPTIONS`,`PUT`,`DELETE`,`TRACE`],statusCodes:v??[500,502,503,504,429],errorCodes:g??[`ECONNRESET`,`ECONNREFUSED`,`ENOTFOUND`,`ENETDOWN`,`ENETUNREACH`,`EHOSTDOWN`,`EHOSTUNREACH`,`",
+      "ontrollerProxy,t,n,r)}static[r](e,{state:t,opts:n},r){let{statusCode:i,code:a,headers:o}=e,{method:s,retryOptions:c}=n,{maxRetries:l,minTimeout:d,maxTimeout:f,timeoutFactor:p,statusCodes:m,errorCodes:h,methods:g}=c,{counter:_}=t;if(a&&a!==`UND_ERR_REQ_RETRY`&&!h.includes(a)||Array.isArray(g)&&!g.includes(s)||i!=null&&Array.isArray(m)&&!m.",
+      "atch_size`,`maxBatchSize`],[`max_batch_timeout`,`maxBatchTimeout`],[`max_concurrency`,`maxConcurrency`],[`max_retries`,`maxRetries`],[`queue`,`name`],[`retry_delay`,`retryDelay`],[`visibility_timeout_ms`,`visibilityTimeoutMs`]])));for(let t of Zo(e,`connect`))n.add(`triggers`),a.push(is(`triggers.connect`,rs(t)));let l=Qo(e,`addresses`);r",
+      ",`isDirectory`),p(Sk,`isDirectory`);function Ck(e,{fireAndForget:t=!1}={}){let n=F.promises.rm(e,{recursive:!0,force:!0,maxRetries:5,retryDelay:100});if(t)n.catch(()=>{});else return n}d(Ck,`removeDir`),p(Ck,`removeDir`);function wk(e){F.rmSync(e,{recursive:!0,force:!0,maxRetries:5,retryDelay:100})}d(wk,`removeDirSync`),p(wk,`removeDirSyn",
+      "if(t)n.catch(()=>{});else return n}d(Ck,`removeDir`),p(Ck,`removeDir`);function wk(e){F.rmSync(e,{recursive:!0,force:!0,maxRetries:5,retryDelay:100})}d(wk,`removeDirSync`),p(wk,`removeDirSync`),g(import.meta.url||(typeof __filename==`string`?__filename:`/`));function Tk(){return/^win/i.test(process.platform)}d(Tk,`isWindows`),p(Tk,`isWind"
+    ]
+  },
+  {
+    "path": "auth-B-h0BHg7.mjs",
+    "sha256": "b9606102828abfb8b2c6f8415009f1ac626c8aa851d1dab0b8e9144eaf9e8704",
+    "pattern": "maxRetries",
+    "occurrences": 2,
+    "excerpts": [
+      "nc()=>({headers:{Authorization:`Bearer ${e.apiToken}`}}),headers:e.defaultHeaders,timeoutInSeconds:(e.timeout??6e4)/1e3,maxRetries:0,fetch:e.fetch??globalThis.fetch},n=new r(t);return y.set(n,e.timeout??6e4),e.timeout===void 0&&b.set(n,new r({...t,timeoutInSeconds:void 0})),n}async function C(t){if(o())return;let n=await i();if(n)return n",
+      ":await a()}),i=t-Date.now();if(i<=0)return;let o=S({apiToken:n,baseURL:r,defaultHeaders:c()}),l={timeoutInSeconds:i/1e3,maxRetries:0},[u,p]=await Promise.allSettled([o.send(d,{per_page:50},l),o.send(f,{per_page:50},l)]);if(u.status===`rejected`)return;let m=u.value;if((m.result_info?.total_count??m.result.length)>m.result.length)return;le"
+    ]
+  },
+  {
+    "path": "registrar-D23gfKBi.mjs",
+    "sha256": "0175315cc127f07a2f1ce5f3d9ec214aa306964cd1e32b1e6fea707ff81bb1f6",
+    "pattern": "maxRetries",
+    "occurrences": 1,
+    "excerpts": [
+      "r===void 0?await n.send(P,{account_id:t,extension:e}):await n.send(P,{account_id:t,extension:e},{timeoutInSeconds:r/1e3,maxRetries:0})}catch(e){return{ok:!1,reason:T(e)}}let a=E(i,`registration_schema`);return a?{ok:!0,extension:e,schema:a}:{ok:!1,reason:`the API returned no registration schema for .${e}`}}async function Ue(e,t,n,r,i){let"
+    ]
+  }
+]

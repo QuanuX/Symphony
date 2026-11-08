@@ -124,3 +124,5 @@ Rename, supersession, deprecation, retirement, and removal follow the identity o
 ## Non-Authorization Statement
 
 This companion allocates no individual identity, external name, account, permission, package coordinate, network address, or runtime principal. It creates no global name service, parser, database, lookup API, qxctl command, engine operation, compatibility judgment, or hot/warm dependency. It does not make independent identity families interchangeable.
+
+SOV Cloudflare owns the exact `symphony.sov.cloudflare-*` v1 control, owner, bundle, state, context, plan, attempt and result protocols declared in `knowledge/sov/cloudflare/owner.json` and SPEC.md. It uses existing engop/qxcmd/ssfv delegated families; no new colon namespace or provider authority is implied. Invariant registry v4 explicitly declares the independent process protocol without broadening an existing engine protocol.

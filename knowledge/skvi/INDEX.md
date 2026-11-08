@@ -3897,7 +3897,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - path: `knowledge/skvi/schemas/v2/MANIFEST.md`
 - title: SKVI Schemas v2
 - surface_type: vector-specific protocol schema manifest
-- truth_role: canonical inventory and boundary for SKVI 2,048-entry result schemas
+- truth_role: canonical inventory and boundary for SKVI v2 result schemas without a separate entry-count quota
 - owner: SKVI maintainers
 - scope: Declares versioned check and projection results; v1 entry and operation payloads remain in force.
 - relationships: depends_on -> `knowledge/skvi/SPEC.md`; reuses -> `knowledge/skvi/schemas/v1/entry.schema.json`; implemented_by -> `modules/skvi-engine/SPEC.md`
@@ -3912,7 +3912,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: JSON Schema Draft 2020-12 contract
 - truth_role: canonical deterministic structural evidence shape
 - owner: SKVI maintainers
-- scope: Raises checked-entry count to 2,048 while preserving independent snapshot and evidence bounds.
+- scope: Admits a nonnegative checked-entry count without a separate quota while preserving independent file, snapshot and evidence bounds.
 - relationships: depends_on -> `knowledge/skvi/schemas/v2/MANIFEST.md`; implemented_by -> `modules/skvi-engine/SPEC.md`
 - consumers: qxctl check presentation, conformance tests, validator, reviewers
 - deferred_projections: check reports and analytical evidence
@@ -3925,7 +3925,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: JSON Schema Draft 2020-12 contract
 - truth_role: canonical disposable projection-result shape
 - owner: SKVI maintainers
-- scope: Raises the full result to 2,048 normalized entries under an engine-specific 65,536 JSON event budget.
+- scope: Admits normalized entries without a separate array quota; complete responses remain subject to the engine-specific 65,536 JSON event and 4 MiB byte budgets.
 - relationships: depends_on -> `knowledge/skvi/schemas/v2/MANIFEST.md`; implements_entries -> `knowledge/skvi/schemas/v1/entry.schema.json`; implemented_by -> `modules/skvi-engine/SPEC.md`
 - consumers: qxctl project presentation, conformance tests, graph/search planners, validator
 - deferred_projections: JSONL, search, analytical, and graph projections after separate authorization
@@ -25873,4 +25873,1460 @@ automatic nested fitting and cross-run holdout history remain unimplemented.
 - consumers: Maintainers, reviewers and qualification tools
 - deferred_projections: Unexercised target builds, hosted CI and live provider qualification
 - notes: Local source and fixture evidence does not establish provider conformance.
+- status: canonical
+
+### Cloudflare C0/I1 invariant-ownership-registry.schema.json
+- path: `knowledge/schemas/v4/invariant-ownership-registry.schema.json`
+- title: Cloudflare native local foundation invariant-ownership-registry.schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped dated evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local toolchain lifecycle, offline discovery and context proposals.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Provider credentials, resource operations, profiles and live transport qualification
+- notes: Presence is not proof of a passing test or live provider authority.
+- status: canonical
+
+### Cloudflare C0/I1 INTENT.md
+- path: `knowledge/sov/cloudflare/INTENT.md`
+- title: Cloudflare native local foundation INTENT.md
+- surface_type: source contract
+- truth_role: Exact source definition or explicitly scoped dated evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local toolchain lifecycle, offline discovery and context proposals.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Provider credentials, resource operations, profiles and live transport qualification
+- notes: Presence is not proof of a passing test or live provider authority.
+- status: canonical
+
+### Cloudflare C0/I1 MANIFEST.md
+- path: `knowledge/sov/cloudflare/MANIFEST.md`
+- title: Cloudflare native local foundation MANIFEST.md
+- surface_type: source contract
+- truth_role: Exact source definition or explicitly scoped dated evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local toolchain lifecycle, offline discovery and context proposals.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Provider credentials, resource operations, profiles and live transport qualification
+- notes: Presence is not proof of a passing test or live provider authority.
+- status: canonical
+
+### Cloudflare C0/I1 SKILL.md
+- path: `knowledge/sov/cloudflare/SKILL.md`
+- title: Cloudflare native local foundation SKILL.md
+- surface_type: source contract
+- truth_role: Exact source definition or explicitly scoped dated evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local toolchain lifecycle, offline discovery and context proposals.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Provider credentials, resource operations, profiles and live transport qualification
+- notes: Presence is not proof of a passing test or live provider authority.
+- status: canonical
+
+### Cloudflare C0/I1 SPEC.md
+- path: `knowledge/sov/cloudflare/SPEC.md`
+- title: Cloudflare native local foundation SPEC.md
+- surface_type: source contract
+- truth_role: Exact source definition or explicitly scoped dated evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local toolchain lifecycle, offline discovery and context proposals.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Provider credentials, resource operations, profiles and live transport qualification
+- notes: Presence is not proof of a passing test or live provider authority.
+- status: canonical
+
+### Cloudflare C0/I1 README.md
+- path: `knowledge/sov/cloudflare/c0/README.md`
+- title: Cloudflare native local foundation README.md
+- surface_type: source contract
+- truth_role: Exact source definition or explicitly scoped dated evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local toolchain lifecycle, offline discovery and context proposals.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Provider credentials, resource operations, profiles and live transport qualification
+- notes: Presence is not proof of a passing test or live provider authority.
+- status: canonical
+
+### Cloudflare C0/I1 cf-package.json
+- path: `knowledge/sov/cloudflare/c0/cf-package.json`
+- title: Cloudflare native local foundation cf-package.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped dated evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local toolchain lifecycle, offline discovery and context proposals.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Provider credentials, resource operations, profiles and live transport qualification
+- notes: Presence is not proof of a passing test or live provider authority.
+- status: canonical
+
+### Cloudflare C0/I1 cli-captures.json
+- path: `knowledge/sov/cloudflare/c0/cli-captures.json`
+- title: Cloudflare native local foundation cli-captures.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped dated evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local toolchain lifecycle, offline discovery and context proposals.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Provider credentials, resource operations, profiles and live transport qualification
+- notes: Presence is not proof of a passing test or live provider authority.
+- status: canonical
+
+### Cloudflare C0/I1 dependency-licenses.json
+- path: `knowledge/sov/cloudflare/c0/dependency-licenses.json`
+- title: Cloudflare native local foundation dependency-licenses.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped dated evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local toolchain lifecycle, offline discovery and context proposals.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Provider credentials, resource operations, profiles and live transport qualification
+- notes: Presence is not proof of a passing test or live provider authority.
+- status: canonical
+
+### Cloudflare C0/I1 manifest.json
+- path: `knowledge/sov/cloudflare/c0/manifest.json`
+- title: Cloudflare native local foundation manifest.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped dated evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local toolchain lifecycle, offline discovery and context proposals.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Provider credentials, resource operations, profiles and live transport qualification
+- notes: Presence is not proof of a passing test or live provider authority.
+- status: canonical
+
+### Cloudflare C0/I1 package-lock.json
+- path: `knowledge/sov/cloudflare/c0/package-lock.json`
+- title: Cloudflare native local foundation package-lock.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped dated evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local toolchain lifecycle, offline discovery and context proposals.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Provider credentials, resource operations, profiles and live transport qualification
+- notes: Presence is not proof of a passing test or live provider authority.
+- status: canonical
+
+### Cloudflare C0/I1 retry-auth-delegation.json
+- path: `knowledge/sov/cloudflare/c0/retry-auth-delegation.json`
+- title: Cloudflare native local foundation retry-auth-delegation.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped dated evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local toolchain lifecycle, offline discovery and context proposals.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Provider credentials, resource operations, profiles and live transport qualification
+- notes: Presence is not proof of a passing test or live provider authority.
+- status: canonical
+
+### Cloudflare C0/I1 owner.json
+- path: `knowledge/sov/cloudflare/owner.json`
+- title: Cloudflare native local foundation owner.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped dated evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local toolchain lifecycle, offline discovery and context proposals.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Provider credentials, resource operations, profiles and live transport qualification
+- notes: Presence is not proof of a passing test or live provider authority.
+- status: canonical
+
+### Cloudflare C0/I1 capability.describe.input_schema.json
+- path: `knowledge/sov/cloudflare/schemas/capability.describe.input_schema.json`
+- title: Cloudflare native local foundation capability.describe.input_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped dated evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local toolchain lifecycle, offline discovery and context proposals.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Provider credentials, resource operations, profiles and live transport qualification
+- notes: Presence is not proof of a passing test or live provider authority.
+- status: canonical
+
+### Cloudflare C0/I1 capability.describe.template.json
+- path: `knowledge/sov/cloudflare/schemas/capability.describe.template.json`
+- title: Cloudflare native local foundation capability.describe.template.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped dated evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local toolchain lifecycle, offline discovery and context proposals.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Provider credentials, resource operations, profiles and live transport qualification
+- notes: Presence is not proof of a passing test or live provider authority.
+- status: canonical
+
+### Cloudflare C0/I1 capability.list.input_schema.json
+- path: `knowledge/sov/cloudflare/schemas/capability.list.input_schema.json`
+- title: Cloudflare native local foundation capability.list.input_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped dated evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local toolchain lifecycle, offline discovery and context proposals.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Provider credentials, resource operations, profiles and live transport qualification
+- notes: Presence is not proof of a passing test or live provider authority.
+- status: canonical
+
+### Cloudflare C0/I1 capability.list.template.json
+- path: `knowledge/sov/cloudflare/schemas/capability.list.template.json`
+- title: Cloudflare native local foundation capability.list.template.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped dated evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local toolchain lifecycle, offline discovery and context proposals.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Provider credentials, resource operations, profiles and live transport qualification
+- notes: Presence is not proof of a passing test or live provider authority.
+- status: canonical
+
+### Cloudflare C0/I1 capability.schema.input_schema.json
+- path: `knowledge/sov/cloudflare/schemas/capability.schema.input_schema.json`
+- title: Cloudflare native local foundation capability.schema.input_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped dated evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local toolchain lifecycle, offline discovery and context proposals.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Provider credentials, resource operations, profiles and live transport qualification
+- notes: Presence is not proof of a passing test or live provider authority.
+- status: canonical
+
+### Cloudflare C0/I1 capability.schema.template.json
+- path: `knowledge/sov/cloudflare/schemas/capability.schema.template.json`
+- title: Cloudflare native local foundation capability.schema.template.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped dated evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local toolchain lifecycle, offline discovery and context proposals.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Provider credentials, resource operations, profiles and live transport qualification
+- notes: Presence is not proof of a passing test or live provider authority.
+- status: canonical
+
+### Cloudflare C0/I1 capability.template.input_schema.json
+- path: `knowledge/sov/cloudflare/schemas/capability.template.input_schema.json`
+- title: Cloudflare native local foundation capability.template.input_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped dated evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local toolchain lifecycle, offline discovery and context proposals.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Provider credentials, resource operations, profiles and live transport qualification
+- notes: Presence is not proof of a passing test or live provider authority.
+- status: canonical
+
+### Cloudflare C0/I1 capability.template.template.json
+- path: `knowledge/sov/cloudflare/schemas/capability.template.template.json`
+- title: Cloudflare native local foundation capability.template.template.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped dated evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local toolchain lifecycle, offline discovery and context proposals.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Provider credentials, resource operations, profiles and live transport qualification
+- notes: Presence is not proof of a passing test or live provider authority.
+- status: canonical
+
+### Cloudflare C0/I1 connector.start.input_schema.json
+- path: `knowledge/sov/cloudflare/schemas/connector.start.input_schema.json`
+- title: Cloudflare native local foundation connector.start.input_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped dated evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local toolchain lifecycle, offline discovery and context proposals.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Provider credentials, resource operations, profiles and live transport qualification
+- notes: Presence is not proof of a passing test or live provider authority.
+- status: canonical
+
+### Cloudflare C0/I1 connector.start.template.json
+- path: `knowledge/sov/cloudflare/schemas/connector.start.template.json`
+- title: Cloudflare native local foundation connector.start.template.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped dated evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local toolchain lifecycle, offline discovery and context proposals.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Provider credentials, resource operations, profiles and live transport qualification
+- notes: Presence is not proof of a passing test or live provider authority.
+- status: canonical
+
+### Cloudflare C0/I1 context.apply.input_schema.json
+- path: `knowledge/sov/cloudflare/schemas/context.apply.input_schema.json`
+- title: Cloudflare native local foundation context.apply.input_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped dated evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local toolchain lifecycle, offline discovery and context proposals.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Provider credentials, resource operations, profiles and live transport qualification
+- notes: Presence is not proof of a passing test or live provider authority.
+- status: canonical
+
+### Cloudflare C0/I1 context.apply.template.json
+- path: `knowledge/sov/cloudflare/schemas/context.apply.template.json`
+- title: Cloudflare native local foundation context.apply.template.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped dated evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local toolchain lifecycle, offline discovery and context proposals.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Provider credentials, resource operations, profiles and live transport qualification
+- notes: Presence is not proof of a passing test or live provider authority.
+- status: canonical
+
+### Cloudflare C0/I1 context.inspect.input_schema.json
+- path: `knowledge/sov/cloudflare/schemas/context.inspect.input_schema.json`
+- title: Cloudflare native local foundation context.inspect.input_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped dated evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local toolchain lifecycle, offline discovery and context proposals.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Provider credentials, resource operations, profiles and live transport qualification
+- notes: Presence is not proof of a passing test or live provider authority.
+- status: canonical
+
+### Cloudflare C0/I1 context.inspect.template.json
+- path: `knowledge/sov/cloudflare/schemas/context.inspect.template.json`
+- title: Cloudflare native local foundation context.inspect.template.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped dated evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local toolchain lifecycle, offline discovery and context proposals.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Provider credentials, resource operations, profiles and live transport qualification
+- notes: Presence is not proof of a passing test or live provider authority.
+- status: canonical
+
+### Cloudflare C0/I1 context.plan.input_schema.json
+- path: `knowledge/sov/cloudflare/schemas/context.plan.input_schema.json`
+- title: Cloudflare native local foundation context.plan.input_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped dated evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local toolchain lifecycle, offline discovery and context proposals.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Provider credentials, resource operations, profiles and live transport qualification
+- notes: Presence is not proof of a passing test or live provider authority.
+- status: canonical
+
+### Cloudflare C0/I1 context.plan.template.json
+- path: `knowledge/sov/cloudflare/schemas/context.plan.template.json`
+- title: Cloudflare native local foundation context.plan.template.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped dated evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local toolchain lifecycle, offline discovery and context proposals.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Provider credentials, resource operations, profiles and live transport qualification
+- notes: Presence is not proof of a passing test or live provider authority.
+- status: canonical
+
+### Cloudflare C0/I1 installation.apply.input_schema.json
+- path: `knowledge/sov/cloudflare/schemas/installation.apply.input_schema.json`
+- title: Cloudflare native local foundation installation.apply.input_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped dated evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local toolchain lifecycle, offline discovery and context proposals.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Provider credentials, resource operations, profiles and live transport qualification
+- notes: Presence is not proof of a passing test or live provider authority.
+- status: canonical
+
+### Cloudflare C0/I1 installation.apply.template.json
+- path: `knowledge/sov/cloudflare/schemas/installation.apply.template.json`
+- title: Cloudflare native local foundation installation.apply.template.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped dated evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local toolchain lifecycle, offline discovery and context proposals.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Provider credentials, resource operations, profiles and live transport qualification
+- notes: Presence is not proof of a passing test or live provider authority.
+- status: canonical
+
+### Cloudflare C0/I1 installation.inspect.input_schema.json
+- path: `knowledge/sov/cloudflare/schemas/installation.inspect.input_schema.json`
+- title: Cloudflare native local foundation installation.inspect.input_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped dated evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local toolchain lifecycle, offline discovery and context proposals.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Provider credentials, resource operations, profiles and live transport qualification
+- notes: Presence is not proof of a passing test or live provider authority.
+- status: canonical
+
+### Cloudflare C0/I1 installation.inspect.template.json
+- path: `knowledge/sov/cloudflare/schemas/installation.inspect.template.json`
+- title: Cloudflare native local foundation installation.inspect.template.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped dated evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local toolchain lifecycle, offline discovery and context proposals.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Provider credentials, resource operations, profiles and live transport qualification
+- notes: Presence is not proof of a passing test or live provider authority.
+- status: canonical
+
+### Cloudflare C0/I1 installation.list.input_schema.json
+- path: `knowledge/sov/cloudflare/schemas/installation.list.input_schema.json`
+- title: Cloudflare native local foundation installation.list.input_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped dated evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local toolchain lifecycle, offline discovery and context proposals.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Provider credentials, resource operations, profiles and live transport qualification
+- notes: Presence is not proof of a passing test or live provider authority.
+- status: canonical
+
+### Cloudflare C0/I1 installation.list.template.json
+- path: `knowledge/sov/cloudflare/schemas/installation.list.template.json`
+- title: Cloudflare native local foundation installation.list.template.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped dated evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local toolchain lifecycle, offline discovery and context proposals.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Provider credentials, resource operations, profiles and live transport qualification
+- notes: Presence is not proof of a passing test or live provider authority.
+- status: canonical
+
+### Cloudflare C0/I1 installation.plan.input_schema.json
+- path: `knowledge/sov/cloudflare/schemas/installation.plan.input_schema.json`
+- title: Cloudflare native local foundation installation.plan.input_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped dated evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local toolchain lifecycle, offline discovery and context proposals.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Provider credentials, resource operations, profiles and live transport qualification
+- notes: Presence is not proof of a passing test or live provider authority.
+- status: canonical
+
+### Cloudflare C0/I1 installation.plan.template.json
+- path: `knowledge/sov/cloudflare/schemas/installation.plan.template.json`
+- title: Cloudflare native local foundation installation.plan.template.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped dated evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local toolchain lifecycle, offline discovery and context proposals.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Provider credentials, resource operations, profiles and live transport qualification
+- notes: Presence is not proof of a passing test or live provider authority.
+- status: canonical
+
+### Cloudflare C0/I1 installation.reconcile.input_schema.json
+- path: `knowledge/sov/cloudflare/schemas/installation.reconcile.input_schema.json`
+- title: Cloudflare native local foundation installation.reconcile.input_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped dated evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local toolchain lifecycle, offline discovery and context proposals.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Provider credentials, resource operations, profiles and live transport qualification
+- notes: Presence is not proof of a passing test or live provider authority.
+- status: canonical
+
+### Cloudflare C0/I1 installation.reconcile.template.json
+- path: `knowledge/sov/cloudflare/schemas/installation.reconcile.template.json`
+- title: Cloudflare native local foundation installation.reconcile.template.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped dated evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local toolchain lifecycle, offline discovery and context proposals.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Provider credentials, resource operations, profiles and live transport qualification
+- notes: Presence is not proof of a passing test or live provider authority.
+- status: canonical
+
+### Cloudflare C0/I1 installation.status.input_schema.json
+- path: `knowledge/sov/cloudflare/schemas/installation.status.input_schema.json`
+- title: Cloudflare native local foundation installation.status.input_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped dated evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local toolchain lifecycle, offline discovery and context proposals.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Provider credentials, resource operations, profiles and live transport qualification
+- notes: Presence is not proof of a passing test or live provider authority.
+- status: canonical
+
+### Cloudflare C0/I1 installation.status.template.json
+- path: `knowledge/sov/cloudflare/schemas/installation.status.template.json`
+- title: Cloudflare native local foundation installation.status.template.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped dated evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local toolchain lifecycle, offline discovery and context proposals.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Provider credentials, resource operations, profiles and live transport qualification
+- notes: Presence is not proof of a passing test or live provider authority.
+- status: canonical
+
+### Cloudflare C0/I1 project.deploy.input_schema.json
+- path: `knowledge/sov/cloudflare/schemas/project.deploy.input_schema.json`
+- title: Cloudflare native local foundation project.deploy.input_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped dated evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local toolchain lifecycle, offline discovery and context proposals.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Provider credentials, resource operations, profiles and live transport qualification
+- notes: Presence is not proof of a passing test or live provider authority.
+- status: canonical
+
+### Cloudflare C0/I1 project.deploy.template.json
+- path: `knowledge/sov/cloudflare/schemas/project.deploy.template.json`
+- title: Cloudflare native local foundation project.deploy.template.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped dated evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local toolchain lifecycle, offline discovery and context proposals.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Provider credentials, resource operations, profiles and live transport qualification
+- notes: Presence is not proof of a passing test or live provider authority.
+- status: canonical
+
+### Cloudflare C0/I1 resource.apply.input_schema.json
+- path: `knowledge/sov/cloudflare/schemas/resource.apply.input_schema.json`
+- title: Cloudflare native local foundation resource.apply.input_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped dated evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local toolchain lifecycle, offline discovery and context proposals.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Provider credentials, resource operations, profiles and live transport qualification
+- notes: Presence is not proof of a passing test or live provider authority.
+- status: canonical
+
+### Cloudflare C0/I1 resource.apply.template.json
+- path: `knowledge/sov/cloudflare/schemas/resource.apply.template.json`
+- title: Cloudflare native local foundation resource.apply.template.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped dated evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local toolchain lifecycle, offline discovery and context proposals.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Provider credentials, resource operations, profiles and live transport qualification
+- notes: Presence is not proof of a passing test or live provider authority.
+- status: canonical
+
+### Cloudflare C0/I1 resource.inspect.input_schema.json
+- path: `knowledge/sov/cloudflare/schemas/resource.inspect.input_schema.json`
+- title: Cloudflare native local foundation resource.inspect.input_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped dated evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local toolchain lifecycle, offline discovery and context proposals.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Provider credentials, resource operations, profiles and live transport qualification
+- notes: Presence is not proof of a passing test or live provider authority.
+- status: canonical
+
+### Cloudflare C0/I1 resource.inspect.template.json
+- path: `knowledge/sov/cloudflare/schemas/resource.inspect.template.json`
+- title: Cloudflare native local foundation resource.inspect.template.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped dated evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local toolchain lifecycle, offline discovery and context proposals.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Provider credentials, resource operations, profiles and live transport qualification
+- notes: Presence is not proof of a passing test or live provider authority.
+- status: canonical
+
+### Cloudflare C0/I1 resource.list.input_schema.json
+- path: `knowledge/sov/cloudflare/schemas/resource.list.input_schema.json`
+- title: Cloudflare native local foundation resource.list.input_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped dated evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local toolchain lifecycle, offline discovery and context proposals.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Provider credentials, resource operations, profiles and live transport qualification
+- notes: Presence is not proof of a passing test or live provider authority.
+- status: canonical
+
+### Cloudflare C0/I1 resource.list.template.json
+- path: `knowledge/sov/cloudflare/schemas/resource.list.template.json`
+- title: Cloudflare native local foundation resource.list.template.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped dated evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local toolchain lifecycle, offline discovery and context proposals.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Provider credentials, resource operations, profiles and live transport qualification
+- notes: Presence is not proof of a passing test or live provider authority.
+- status: canonical
+
+### Cloudflare C0/I1 CMakeLists.txt
+- path: `modules/sov-cloudflare-adapter/CMakeLists.txt`
+- title: Cloudflare native local foundation CMakeLists.txt
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped dated evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local toolchain lifecycle, offline discovery and context proposals.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Provider credentials, resource operations, profiles and live transport qualification
+- notes: Presence is not proof of a passing test or live provider authority.
+- status: canonical
+
+### Cloudflare C0/I1 FEATURES.md
+- path: `modules/sov-cloudflare-adapter/FEATURES.md`
+- title: Cloudflare native local foundation FEATURES.md
+- surface_type: source contract
+- truth_role: Exact source definition or explicitly scoped dated evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local toolchain lifecycle, offline discovery and context proposals.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Provider credentials, resource operations, profiles and live transport qualification
+- notes: Presence is not proof of a passing test or live provider authority.
+- status: canonical
+
+### Cloudflare C0/I1 INSTALL.md
+- path: `modules/sov-cloudflare-adapter/INSTALL.md`
+- title: Cloudflare native local foundation INSTALL.md
+- surface_type: source contract
+- truth_role: Exact source definition or explicitly scoped dated evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local toolchain lifecycle, offline discovery and context proposals.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Provider credentials, resource operations, profiles and live transport qualification
+- notes: Presence is not proof of a passing test or live provider authority.
+- status: canonical
+
+### Cloudflare C0/I1 INTENT.md
+- path: `modules/sov-cloudflare-adapter/INTENT.md`
+- title: Cloudflare native local foundation INTENT.md
+- surface_type: source contract
+- truth_role: Exact source definition or explicitly scoped dated evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local toolchain lifecycle, offline discovery and context proposals.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Provider credentials, resource operations, profiles and live transport qualification
+- notes: Presence is not proof of a passing test or live provider authority.
+- status: canonical
+
+### Cloudflare C0/I1 MANIFEST.md
+- path: `modules/sov-cloudflare-adapter/MANIFEST.md`
+- title: Cloudflare native local foundation MANIFEST.md
+- surface_type: source contract
+- truth_role: Exact source definition or explicitly scoped dated evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local toolchain lifecycle, offline discovery and context proposals.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Provider credentials, resource operations, profiles and live transport qualification
+- notes: Presence is not proof of a passing test or live provider authority.
+- status: canonical
+
+### Cloudflare C0/I1 SKILL.md
+- path: `modules/sov-cloudflare-adapter/SKILL.md`
+- title: Cloudflare native local foundation SKILL.md
+- surface_type: source contract
+- truth_role: Exact source definition or explicitly scoped dated evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local toolchain lifecycle, offline discovery and context proposals.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Provider credentials, resource operations, profiles and live transport qualification
+- notes: Presence is not proof of a passing test or live provider authority.
+- status: canonical
+
+### Cloudflare C0/I1 SPEC.md
+- path: `modules/sov-cloudflare-adapter/SPEC.md`
+- title: Cloudflare native local foundation SPEC.md
+- surface_type: source contract
+- truth_role: Exact source definition or explicitly scoped dated evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local toolchain lifecycle, offline discovery and context proposals.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Provider credentials, resource operations, profiles and live transport qualification
+- notes: Presence is not proof of a passing test or live provider authority.
+- status: canonical
+
+### Cloudflare C0/I1 adapter.cpp
+- path: `modules/sov-cloudflare-adapter/src/adapter.cpp`
+- title: Cloudflare native local foundation adapter.cpp
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped dated evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local toolchain lifecycle, offline discovery and context proposals.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Provider credentials, resource operations, profiles and live transport qualification
+- notes: Presence is not proof of a passing test or live provider authority.
+- status: canonical
+
+### Cloudflare C0/I1 adapter.hpp
+- path: `modules/sov-cloudflare-adapter/src/adapter.hpp`
+- title: Cloudflare native local foundation adapter.hpp
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped dated evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local toolchain lifecycle, offline discovery and context proposals.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Provider credentials, resource operations, profiles and live transport qualification
+- notes: Presence is not proof of a passing test or live provider authority.
+- status: canonical
+
+### Cloudflare C0/I1 main.cpp
+- path: `modules/sov-cloudflare-adapter/src/main.cpp`
+- title: Cloudflare native local foundation main.cpp
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped dated evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local toolchain lifecycle, offline discovery and context proposals.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Provider credentials, resource operations, profiles and live transport qualification
+- notes: Presence is not proof of a passing test or live provider authority.
+- status: canonical
+
+### Cloudflare C0/I1 contract.py
+- path: `modules/sov-cloudflare-adapter/tests/contract.cpp`
+- title: Cloudflare native local foundation contract.py
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped dated evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local toolchain lifecycle, offline discovery and context proposals.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Provider credentials, resource operations, profiles and live transport qualification
+- notes: Presence is not proof of a passing test or live provider authority.
+- status: canonical
+
+### Cloudflare C0/I1 installed.cpp
+- path: `modules/sov-cloudflare-adapter/tests/installed.cpp`
+- title: Cloudflare native local foundation installed.cpp
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped dated evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local toolchain lifecycle, offline discovery and context proposals.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Provider credentials, resource operations, profiles and live transport qualification
+- notes: Presence is not proof of a passing test or live provider authority.
+- status: canonical
+
+### Cloudflare C0/I1 generate.py
+- path: `modules/sov-cloudflare-adapter/tools/generate.cpp`
+- title: Cloudflare native local foundation generate.py
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped dated evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local toolchain lifecycle, offline discovery and context proposals.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Provider credentials, resource operations, profiles and live transport qualification
+- notes: Presence is not proof of a passing test or live provider authority.
+- status: canonical
+
+### Cloudflare C0/I1 prepare_bundle.py
+- path: `modules/sov-cloudflare-adapter/tools/prepare_bundle.cpp`
+- title: Cloudflare native local foundation prepare_bundle.py
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped dated evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local toolchain lifecycle, offline discovery and context proposals.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Provider credentials, resource operations, profiles and live transport qualification
+- notes: Presence is not proof of a passing test or live provider authority.
+- status: canonical
+
+### Cloudflare C0/I1 sov_cloudflare.go
+- path: `tools/qxctl/cmd/qxctl/sov_cloudflare.go`
+- title: Cloudflare native local foundation sov_cloudflare.go
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped dated evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local toolchain lifecycle, offline discovery and context proposals.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Provider credentials, resource operations, profiles and live transport qualification
+- notes: Presence is not proof of a passing test or live provider authority.
+- status: canonical
+
+### Cloudflare C0/I1 cloudflare.go
+- path: `tools/qxctl/internal/sovcloudflare/cloudflare.go`
+- title: Cloudflare native local foundation cloudflare.go
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped dated evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local toolchain lifecycle, offline discovery and context proposals.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Provider credentials, resource operations, profiles and live transport qualification
+- notes: Presence is not proof of a passing test or live provider authority.
+- status: canonical
+
+### Cloudflare C0/I1 cloudflare_test.go
+- path: `tools/qxctl/internal/sovcloudflare/cloudflare_test.go`
+- title: Cloudflare native local foundation cloudflare_test.go
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped dated evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local toolchain lifecycle, offline discovery and context proposals.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Provider credentials, resource operations, profiles and live transport qualification
+- notes: Presence is not proof of a passing test or live provider authority.
+- status: canonical
+
+### Cloudflare C0/I1 operations_generated.go
+- path: `tools/qxctl/internal/sovcloudflare/operations_generated.go`
+- title: Cloudflare native local foundation operations_generated.go
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped dated evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local toolchain lifecycle, offline discovery and context proposals.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Provider credentials, resource operations, profiles and live transport qualification
+- notes: Presence is not proof of a passing test or live provider authority.
+- status: canonical
+
+### Cloudflare C0/I1 process_other.go
+- path: `tools/qxctl/internal/sovcloudflare/process_other.go`
+- title: Cloudflare native local foundation process_other.go
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped dated evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local toolchain lifecycle, offline discovery and context proposals.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Provider credentials, resource operations, profiles and live transport qualification
+- notes: Presence is not proof of a passing test or live provider authority.
+- status: canonical
+
+### Cloudflare C0/I1 process_unix.go
+- path: `tools/qxctl/internal/sovcloudflare/process_unix.go`
+- title: Cloudflare native local foundation process_unix.go
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped dated evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local toolchain lifecycle, offline discovery and context proposals.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Provider credentials, resource operations, profiles and live transport qualification
+- notes: Presence is not proof of a passing test or live provider authority.
+- status: canonical
+
+### Cloudflare C0/I1 digests.json
+- path: `tools/qxctl/internal/sovcloudflare/testdata/digests.json`
+- title: Cloudflare native local foundation digests.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped dated evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local toolchain lifecycle, offline discovery and context proposals.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Provider credentials, resource operations, profiles and live transport qualification
+- notes: Presence is not proof of a passing test or live provider authority.
+- status: canonical
+
+### Cloudflare source cloudflare-native.yml
+- path: `.github/workflows/cloudflare-native.yml`
+- title: Cloudflare native local foundation cloudflare-native.yml
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local native administration and isolated qualification.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider, profile and transport qualification
+- notes: Source presence does not establish live provider acceptance.
+- status: canonical
+
+### Cloudflare source schema-catalogue.json
+- path: `knowledge/sov/cloudflare/c0/schema-catalogue.json`
+- title: Cloudflare native local foundation schema-catalogue.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local native administration and isolated qualification.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider, profile and transport qualification
+- notes: Source presence does not establish live provider acceptance.
+- status: canonical
+
+### Cloudflare source capability.describe.request_schema.json
+- path: `knowledge/sov/cloudflare/schemas/capability.describe.request_schema.json`
+- title: Cloudflare native local foundation capability.describe.request_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local native administration and isolated qualification.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider, profile and transport qualification
+- notes: Source presence does not establish live provider acceptance.
+- status: canonical
+
+### Cloudflare source capability.describe.result_schema.json
+- path: `knowledge/sov/cloudflare/schemas/capability.describe.result_schema.json`
+- title: Cloudflare native local foundation capability.describe.result_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local native administration and isolated qualification.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider, profile and transport qualification
+- notes: Source presence does not establish live provider acceptance.
+- status: canonical
+
+### Cloudflare source capability.list.request_schema.json
+- path: `knowledge/sov/cloudflare/schemas/capability.list.request_schema.json`
+- title: Cloudflare native local foundation capability.list.request_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local native administration and isolated qualification.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider, profile and transport qualification
+- notes: Source presence does not establish live provider acceptance.
+- status: canonical
+
+### Cloudflare source capability.list.result_schema.json
+- path: `knowledge/sov/cloudflare/schemas/capability.list.result_schema.json`
+- title: Cloudflare native local foundation capability.list.result_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local native administration and isolated qualification.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider, profile and transport qualification
+- notes: Source presence does not establish live provider acceptance.
+- status: canonical
+
+### Cloudflare source capability.schema.request_schema.json
+- path: `knowledge/sov/cloudflare/schemas/capability.schema.request_schema.json`
+- title: Cloudflare native local foundation capability.schema.request_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local native administration and isolated qualification.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider, profile and transport qualification
+- notes: Source presence does not establish live provider acceptance.
+- status: canonical
+
+### Cloudflare source capability.schema.result_schema.json
+- path: `knowledge/sov/cloudflare/schemas/capability.schema.result_schema.json`
+- title: Cloudflare native local foundation capability.schema.result_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local native administration and isolated qualification.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider, profile and transport qualification
+- notes: Source presence does not establish live provider acceptance.
+- status: canonical
+
+### Cloudflare source capability.template.request_schema.json
+- path: `knowledge/sov/cloudflare/schemas/capability.template.request_schema.json`
+- title: Cloudflare native local foundation capability.template.request_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local native administration and isolated qualification.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider, profile and transport qualification
+- notes: Source presence does not establish live provider acceptance.
+- status: canonical
+
+### Cloudflare source capability.template.result_schema.json
+- path: `knowledge/sov/cloudflare/schemas/capability.template.result_schema.json`
+- title: Cloudflare native local foundation capability.template.result_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local native administration and isolated qualification.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider, profile and transport qualification
+- notes: Source presence does not establish live provider acceptance.
+- status: canonical
+
+### Cloudflare source connector.start.request_schema.json
+- path: `knowledge/sov/cloudflare/schemas/connector.start.request_schema.json`
+- title: Cloudflare native local foundation connector.start.request_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local native administration and isolated qualification.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider, profile and transport qualification
+- notes: Source presence does not establish live provider acceptance.
+- status: canonical
+
+### Cloudflare source connector.start.result_schema.json
+- path: `knowledge/sov/cloudflare/schemas/connector.start.result_schema.json`
+- title: Cloudflare native local foundation connector.start.result_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local native administration and isolated qualification.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider, profile and transport qualification
+- notes: Source presence does not establish live provider acceptance.
+- status: canonical
+
+### Cloudflare source context.apply.request_schema.json
+- path: `knowledge/sov/cloudflare/schemas/context.apply.request_schema.json`
+- title: Cloudflare native local foundation context.apply.request_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local native administration and isolated qualification.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider, profile and transport qualification
+- notes: Source presence does not establish live provider acceptance.
+- status: canonical
+
+### Cloudflare source context.apply.result_schema.json
+- path: `knowledge/sov/cloudflare/schemas/context.apply.result_schema.json`
+- title: Cloudflare native local foundation context.apply.result_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local native administration and isolated qualification.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider, profile and transport qualification
+- notes: Source presence does not establish live provider acceptance.
+- status: canonical
+
+### Cloudflare source context.inspect.request_schema.json
+- path: `knowledge/sov/cloudflare/schemas/context.inspect.request_schema.json`
+- title: Cloudflare native local foundation context.inspect.request_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local native administration and isolated qualification.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider, profile and transport qualification
+- notes: Source presence does not establish live provider acceptance.
+- status: canonical
+
+### Cloudflare source context.inspect.result_schema.json
+- path: `knowledge/sov/cloudflare/schemas/context.inspect.result_schema.json`
+- title: Cloudflare native local foundation context.inspect.result_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local native administration and isolated qualification.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider, profile and transport qualification
+- notes: Source presence does not establish live provider acceptance.
+- status: canonical
+
+### Cloudflare source context.plan.request_schema.json
+- path: `knowledge/sov/cloudflare/schemas/context.plan.request_schema.json`
+- title: Cloudflare native local foundation context.plan.request_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local native administration and isolated qualification.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider, profile and transport qualification
+- notes: Source presence does not establish live provider acceptance.
+- status: canonical
+
+### Cloudflare source context.plan.result_schema.json
+- path: `knowledge/sov/cloudflare/schemas/context.plan.result_schema.json`
+- title: Cloudflare native local foundation context.plan.result_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local native administration and isolated qualification.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider, profile and transport qualification
+- notes: Source presence does not establish live provider acceptance.
+- status: canonical
+
+### Cloudflare source installation.apply.request_schema.json
+- path: `knowledge/sov/cloudflare/schemas/installation.apply.request_schema.json`
+- title: Cloudflare native local foundation installation.apply.request_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local native administration and isolated qualification.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider, profile and transport qualification
+- notes: Source presence does not establish live provider acceptance.
+- status: canonical
+
+### Cloudflare source installation.apply.result_schema.json
+- path: `knowledge/sov/cloudflare/schemas/installation.apply.result_schema.json`
+- title: Cloudflare native local foundation installation.apply.result_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local native administration and isolated qualification.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider, profile and transport qualification
+- notes: Source presence does not establish live provider acceptance.
+- status: canonical
+
+### Cloudflare source installation.inspect.request_schema.json
+- path: `knowledge/sov/cloudflare/schemas/installation.inspect.request_schema.json`
+- title: Cloudflare native local foundation installation.inspect.request_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local native administration and isolated qualification.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider, profile and transport qualification
+- notes: Source presence does not establish live provider acceptance.
+- status: canonical
+
+### Cloudflare source installation.inspect.result_schema.json
+- path: `knowledge/sov/cloudflare/schemas/installation.inspect.result_schema.json`
+- title: Cloudflare native local foundation installation.inspect.result_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local native administration and isolated qualification.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider, profile and transport qualification
+- notes: Source presence does not establish live provider acceptance.
+- status: canonical
+
+### Cloudflare source installation.list.request_schema.json
+- path: `knowledge/sov/cloudflare/schemas/installation.list.request_schema.json`
+- title: Cloudflare native local foundation installation.list.request_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local native administration and isolated qualification.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider, profile and transport qualification
+- notes: Source presence does not establish live provider acceptance.
+- status: canonical
+
+### Cloudflare source installation.list.result_schema.json
+- path: `knowledge/sov/cloudflare/schemas/installation.list.result_schema.json`
+- title: Cloudflare native local foundation installation.list.result_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local native administration and isolated qualification.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider, profile and transport qualification
+- notes: Source presence does not establish live provider acceptance.
+- status: canonical
+
+### Cloudflare source installation.plan.request_schema.json
+- path: `knowledge/sov/cloudflare/schemas/installation.plan.request_schema.json`
+- title: Cloudflare native local foundation installation.plan.request_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local native administration and isolated qualification.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider, profile and transport qualification
+- notes: Source presence does not establish live provider acceptance.
+- status: canonical
+
+### Cloudflare source installation.plan.result_schema.json
+- path: `knowledge/sov/cloudflare/schemas/installation.plan.result_schema.json`
+- title: Cloudflare native local foundation installation.plan.result_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local native administration and isolated qualification.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider, profile and transport qualification
+- notes: Source presence does not establish live provider acceptance.
+- status: canonical
+
+### Cloudflare source installation.reconcile.request_schema.json
+- path: `knowledge/sov/cloudflare/schemas/installation.reconcile.request_schema.json`
+- title: Cloudflare native local foundation installation.reconcile.request_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local native administration and isolated qualification.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider, profile and transport qualification
+- notes: Source presence does not establish live provider acceptance.
+- status: canonical
+
+### Cloudflare source installation.reconcile.result_schema.json
+- path: `knowledge/sov/cloudflare/schemas/installation.reconcile.result_schema.json`
+- title: Cloudflare native local foundation installation.reconcile.result_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local native administration and isolated qualification.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider, profile and transport qualification
+- notes: Source presence does not establish live provider acceptance.
+- status: canonical
+
+### Cloudflare source installation.status.request_schema.json
+- path: `knowledge/sov/cloudflare/schemas/installation.status.request_schema.json`
+- title: Cloudflare native local foundation installation.status.request_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local native administration and isolated qualification.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider, profile and transport qualification
+- notes: Source presence does not establish live provider acceptance.
+- status: canonical
+
+### Cloudflare source installation.status.result_schema.json
+- path: `knowledge/sov/cloudflare/schemas/installation.status.result_schema.json`
+- title: Cloudflare native local foundation installation.status.result_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local native administration and isolated qualification.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider, profile and transport qualification
+- notes: Source presence does not establish live provider acceptance.
+- status: canonical
+
+### Cloudflare source project.deploy.request_schema.json
+- path: `knowledge/sov/cloudflare/schemas/project.deploy.request_schema.json`
+- title: Cloudflare native local foundation project.deploy.request_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local native administration and isolated qualification.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider, profile and transport qualification
+- notes: Source presence does not establish live provider acceptance.
+- status: canonical
+
+### Cloudflare source project.deploy.result_schema.json
+- path: `knowledge/sov/cloudflare/schemas/project.deploy.result_schema.json`
+- title: Cloudflare native local foundation project.deploy.result_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local native administration and isolated qualification.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider, profile and transport qualification
+- notes: Source presence does not establish live provider acceptance.
+- status: canonical
+
+### Cloudflare source resource.apply.request_schema.json
+- path: `knowledge/sov/cloudflare/schemas/resource.apply.request_schema.json`
+- title: Cloudflare native local foundation resource.apply.request_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local native administration and isolated qualification.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider, profile and transport qualification
+- notes: Source presence does not establish live provider acceptance.
+- status: canonical
+
+### Cloudflare source resource.apply.result_schema.json
+- path: `knowledge/sov/cloudflare/schemas/resource.apply.result_schema.json`
+- title: Cloudflare native local foundation resource.apply.result_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local native administration and isolated qualification.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider, profile and transport qualification
+- notes: Source presence does not establish live provider acceptance.
+- status: canonical
+
+### Cloudflare source resource.inspect.request_schema.json
+- path: `knowledge/sov/cloudflare/schemas/resource.inspect.request_schema.json`
+- title: Cloudflare native local foundation resource.inspect.request_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local native administration and isolated qualification.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider, profile and transport qualification
+- notes: Source presence does not establish live provider acceptance.
+- status: canonical
+
+### Cloudflare source resource.inspect.result_schema.json
+- path: `knowledge/sov/cloudflare/schemas/resource.inspect.result_schema.json`
+- title: Cloudflare native local foundation resource.inspect.result_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local native administration and isolated qualification.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider, profile and transport qualification
+- notes: Source presence does not establish live provider acceptance.
+- status: canonical
+
+### Cloudflare source resource.list.request_schema.json
+- path: `knowledge/sov/cloudflare/schemas/resource.list.request_schema.json`
+- title: Cloudflare native local foundation resource.list.request_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local native administration and isolated qualification.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider, profile and transport qualification
+- notes: Source presence does not establish live provider acceptance.
+- status: canonical
+
+### Cloudflare source resource.list.result_schema.json
+- path: `knowledge/sov/cloudflare/schemas/resource.list.result_schema.json`
+- title: Cloudflare native local foundation resource.list.result_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local native administration and isolated qualification.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider, profile and transport qualification
+- notes: Source presence does not establish live provider acceptance.
+- status: canonical
+
+### Cloudflare source qualification.cpp
+- path: `modules/sov-cloudflare-adapter/tests/qualification.cpp`
+- title: Cloudflare native local foundation qualification.cpp
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local native administration and isolated qualification.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider, profile and transport qualification
+- notes: Source presence does not establish live provider acceptance.
+- status: canonical
+
+### Cloudflare source schema.go
+- path: `tools/qxctl/internal/sovcloudflare/schema.go`
+- title: Cloudflare native local foundation schema.go
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped evidence
+- owner: SOV Cloudflare maintainers
+- scope: Local native administration and isolated qualification.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider, profile and transport qualification
+- notes: Source presence does not establish live provider acceptance.
+- status: canonical
+
+### Cloudflare C0/I1 verification
+- path: `knowledge/sov/cloudflare/VERIFICATION.md`
+- title: Cloudflare C0/I1 local qualification record
+- surface_type: bounded verification evidence
+- truth_role: Dated observed local source and installation checks
+- owner: SOV Cloudflare maintainers
+- scope: Exact C0/I1 local increments and explicit deferred gates.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Maintainers and reviewers
+- deferred_projections: Remote CI results, merge closure and live provider/transport qualification
+- notes: No remote-test completion or live-provider authority is asserted.
+- status: canonical
+
+### Cloudflare C0/I1 verification
+- path: `modules/sov-cloudflare-adapter/VERIFICATION.md`
+- title: Cloudflare C0/I1 local qualification record
+- surface_type: bounded verification evidence
+- truth_role: Dated observed local source and installation checks
+- owner: SOV Cloudflare maintainers
+- scope: Exact C0/I1 local increments and explicit deferred gates.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Maintainers and reviewers
+- deferred_projections: Remote CI results, merge closure and live provider/transport qualification
+- notes: No remote-test completion or live-provider authority is asserted.
 - status: canonical

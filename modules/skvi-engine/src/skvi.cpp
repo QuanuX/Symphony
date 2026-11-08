@@ -24,11 +24,6 @@ namespace fs = std::filesystem;
 
 namespace {
 
-constexpr std::size_t normalized_projected_entry_fields = 12;
-constexpr std::size_t projection_values_per_entry = 1U + (2U * normalized_projected_entry_fields);
-constexpr std::size_t projection_values_per_manifest = 7;
-constexpr std::size_t projection_envelope_value_reserve = 1024;
-constexpr std::size_t max_entries = 2048;
 constexpr std::size_t max_evidence = 1024;
 constexpr std::size_t max_field_bytes = 64U * 1024U;
 constexpr const char* index_path = "knowledge/skvi/INDEX.md";
@@ -41,11 +36,6 @@ constexpr std::array<const char*, 10> entry_fields = {
     "relationships", "consumers", "deferred_projections", "notes",
 };
 
-static_assert(entry_fields.size() + 2U == normalized_projected_entry_fields);
-static_assert(
-    (max_entries * projection_values_per_entry) +
-    (engine::Limits::max_manifest_files * projection_values_per_manifest) +
-    projection_envelope_value_reserve <= max_json_values);
 static_assert(engine::Limits::max_manifest_files <= engine::Limits::max_snapshot_files);
 
 struct Entry final {
@@ -271,9 +261,6 @@ std::vector<Entry> parse_entries(const std::string& contents, IndexState& state)
     finish_entry();
     if (entries.empty()) {
         add_finding(state, Finding{"violation", "skvi.entry.none", index_path, "no entries detected"});
-    }
-    if (entries.size() > max_entries) {
-        throw engine::Error("skvi.entry_limit", "SKVI entry-count limit exceeded", 5);
     }
     return entries;
 }

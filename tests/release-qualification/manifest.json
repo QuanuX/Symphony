@@ -281,6 +281,10 @@
     {
       "path": "modules/srrapiv-runtime-cpp",
       "disposition": "native_cmake_root"
+    },
+    {
+      "path": "modules/sov-cloudflare-adapter",
+      "disposition": "native_cmake_root"
     }
   ],
   "native_suites": [
@@ -1491,6 +1495,33 @@
         }
       ],
       "known_internal_skips": []
+    },
+    {
+      "path": "modules/sov-cloudflare-adapter",
+      "group": "cloud",
+      "configure_options": {
+        "SYMPHONY_CLOUDFLARE_INSTALLED": "ON",
+        "BUILD_TESTING": true
+      },
+      "ctests": [
+        "cloudflare-owner-projections",
+        "cloudflare-native-contract"
+      ],
+      "direct_tests": [
+        {
+          "target": "cloudflare-installed-tests",
+          "arguments": [
+            "${PREFIX}"
+          ]
+        }
+      ],
+      "excluded_direct_tests": [
+        {
+          "target": "cloudflare-qualification-tests",
+          "reason": "Requires the separately prepared exact C0 cf/Node bundle and qxctl binary; real-CLI offline qualification remains separately recorded and is not inferred from shared fixtures."
+        }
+      ],
+      "known_internal_skips": []
     }
   ],
   "native_exclusions": [],
@@ -2579,6 +2610,17 @@
       ],
       "source": "tools/qxctl/cmd/qxctl/srrapiv_test.go",
       "line": 64
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./internal/sovcloudflare",
+      "test": "TestCloudflareInstalledReceiptProcess",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "Requires the exact installed native Cloudflare adapter via SYMPHONY_CLOUDFLARE_TEST_PREFIX; mandatory without skips in cloud installed qualification."
+      ],
+      "source": "tools/qxctl/internal/sovcloudflare/cloudflare_test.go",
+      "line": 78
     }
   ],
   "installed_go_suites": [
@@ -2624,6 +2666,17 @@
       "prefix_environment": [
         "SRRAPIV_TEST_PREFIX"
       ]
+    },
+    {
+      "group": "cloud",
+      "module": "tools/qxctl",
+      "package": "./internal/sovcloudflare",
+      "tests": [
+        "TestCloudflareInstalledReceiptProcess"
+      ],
+      "prefix_environment": [
+        "SYMPHONY_CLOUDFLARE_TEST_PREFIX"
+      ]
     }
   ],
   "required_go_tests": [
@@ -2649,9 +2702,9 @@
     "Source-only prototypes and operational/provider activation are not admitted by this manifest."
   ],
   "native_totals": {
-    "roots": 57,
-    "ctests": 167,
-    "direct_tests": 16
+    "roots": 59,
+    "ctests": 172,
+    "direct_tests": 17
   },
   "duckdb_installed_campaign": {
     "harness": "tests/duckdb-connectors/installed.cmake",

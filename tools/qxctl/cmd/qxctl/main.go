@@ -1334,20 +1334,20 @@ func validateSKVIResult(version, operation string, result json.RawMessage) (bool
 }
 
 func validSKVIEntryCount(version, protocol, operation string, count uint64) bool {
-	var ceiling uint64
 	switch {
 	case version == "0.1.0-dev" && operation == "check" && protocol == "symphony.skvi.check-result.v1":
-		ceiling = 1024
+		return count <= 1024
 	case version == "0.2.0-dev" && operation == "check" && protocol == "symphony.skvi.check-result.v2":
-		ceiling = 2048
+		return true
 	case version == "0.1.0-dev" && operation == "project" && protocol == "symphony.skvi.projection.v1":
-		ceiling = 1024
+		return count <= 1024
 	case version == "0.2.0-dev" && operation == "project" && protocol == "symphony.skvi.projection.v2":
-		ceiling = 2048
+		// The current index has no entry-count ceiling. The process client
+		// independently enforces the response byte and JSON-value bounds.
+		return true
 	default:
 		return false
 	}
-	return count <= ceiling
 }
 
 func explicitFalse(value *bool) bool { return value != nil && !*value }

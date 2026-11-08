@@ -1,0 +1,32 @@
+[
+  {
+    "domain": "symphony.sov.cloudflare-golden.v1",
+    "value": {
+      "z": null,
+      "a": [
+        "é",
+        " ",
+        "\\u2028",
+        "\b\n\t",
+        9007199254740991,
+        -7,
+        true
+      ]
+    },
+    "digest": "sha256:8ceadb3bd69a9bee671d7c8ef27329a743f95fa120dd7cafd609b2bcf457bdc2"
+  },
+  {
+    "domain": "symphony.sov.cloudflare-golden.v1",
+    "value": {
+      "protocol": "symphony.sov.cloudflare-context.v1",
+      "account": "0123456789abcdef",
+      "optional": null
+    },
+    "digest": "sha256:3d80d8fa567b71a52f83b61812535302193c61472274034196ed94aca22e2443"
+  },
+  {
+    "domain": "symphony.sov.cloudflare-golden.v1",
+    "value": {},
+    "digest": "sha256:6f0c337012d33545842b985d9862d8a5a7a7a7274f00e123b33f708a348174fd"
+  }
+]

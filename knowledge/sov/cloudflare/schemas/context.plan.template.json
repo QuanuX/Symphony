@@ -1,0 +1,12 @@
+{
+  "context": {
+    "account_id": "00000000000000000000000000000000",
+    "credential_ref": null,
+    "host_ref": "host:example",
+    "principal_uid": "501",
+    "toolchain_id": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+    "zone_id": null
+  },
+  "expected_context_ref": null,
+  "store": "/absolute/private/cloudflare-store"
+}

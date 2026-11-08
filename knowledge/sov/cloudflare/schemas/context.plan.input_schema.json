@@ -1,0 +1,86 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "context": {
+      "additionalProperties": false,
+      "properties": {
+        "account_id": {
+          "maxLength": 4096,
+          "pattern": "^[a-f0-9]{32}$",
+          "type": "string"
+        },
+        "credential_ref": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "maxLength": 4096,
+              "pattern": "^ssiag:[A-Za-z0-9._:-]{1,128}$",
+              "type": "string"
+            }
+          ]
+        },
+        "host_ref": {
+          "maxLength": 4096,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+          "type": "string"
+        },
+        "principal_uid": {
+          "maxLength": 4096,
+          "pattern": "^[1-9][0-9]{0,9}$",
+          "type": "string"
+        },
+        "toolchain_id": {
+          "maxLength": 4096,
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "zone_id": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "maxLength": 4096,
+              "pattern": "^[a-f0-9]{32}$",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "required": [
+        "host_ref",
+        "principal_uid",
+        "account_id",
+        "zone_id",
+        "credential_ref",
+        "toolchain_id"
+      ],
+      "type": "object"
+    },
+    "expected_context_ref": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "maxLength": 4096,
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "type": "string"
+        }
+      ]
+    },
+    "store": {
+      "maxLength": 4096,
+      "pattern": "^/[^\\x00-\\x1f]*$",
+      "type": "string"
+    }
+  },
+  "required": [
+    "store",
+    "context",
+    "expected_context_ref"
+  ],
+  "type": "object"
+}

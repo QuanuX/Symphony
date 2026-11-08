@@ -1399,6 +1399,54 @@
       "cross_vector_references": [
         {
           "applicability": "applicable",
+          "reason": "Source evolution and scope claims remain reviewable through SCLV.",
+          "reference": "knowledge/sclv/SPEC.md",
+          "vector": "sclv"
+        },
+        {
+          "applicability": "applicable",
+          "reason": "The exact module contract, implementation and focused evidence have independent indexed routes.",
+          "reference": "knowledge/skvi/INDEX.md",
+          "vector": "skvi"
+        }
+      ],
+      "distinctions": [],
+      "evidence": [
+        "tools/qxctl/internal/sovcloudflare/cloudflare_test.go"
+      ],
+      "feature_id": "ssfv:symphony:qxctl.sov-cloudflare-administration",
+      "how": "Receipt-owned schemas and descriptors, content-bound plans, strict process frames and user-owned durable lifecycle.",
+      "implementation_languages": [
+        {
+          "language": "Go",
+          "role": "Selects exact native receipt and presents complete safe results."
+        }
+      ],
+      "implementation_paths": [
+        "tools/qxctl/cmd/qxctl/sov_cloudflare.go",
+        "tools/qxctl/internal/sovcloudflare/cloudflare.go"
+      ],
+      "kind": "subfeature",
+      "non_claims": [
+        "No provider credentials, resource mutation, protected profile changes, connector operation or SSH exception. Local fixture qualification is not live Cloudflare acceptance."
+      ],
+      "owner_contract": "tools/qxctl/MANIFEST.md",
+      "parent_feature_id": "ssfv:symphony:qxctl",
+      "record_version": 2,
+      "relationships": [],
+      "source_scope": "tools/qxctl",
+      "status": "experimental",
+      "title": "qxctl native Cloudflare administration",
+      "what": "Exact local cf/Node lifecycle, bounded offline discovery and nonsecret context proposals.",
+      "when": "Explicit local administration or offline discovery request.",
+      "where": "Selected independently installed native adapter and private local store.",
+      "who": "Humans, agents and independent native consumers.",
+      "why": "Administer an independent Cloudflare CLI without ambient selection or premature provider authority."
+    },
+    {
+      "cross_vector_references": [
+        {
+          "applicability": "applicable",
           "reason": "Material source change closes append-only after verification.",
           "reference": "knowledge/sclv/SPEC.md",
           "vector": "sclv"

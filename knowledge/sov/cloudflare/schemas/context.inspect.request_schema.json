@@ -1,0 +1,172 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "context_ref": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "maxLength": 4096,
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "type": "string"
+        }
+      ]
+    },
+    "correlation_id": {
+      "maxLength": 4096,
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+      "type": "string"
+    },
+    "descriptor_ref": {
+      "maxLength": 4096,
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "input": {
+      "additionalProperties": false,
+      "properties": {
+        "context": {
+          "additionalProperties": false,
+          "properties": {
+            "account_id": {
+              "maxLength": 4096,
+              "pattern": "^[a-f0-9]{32}$",
+              "type": "string"
+            },
+            "credential_ref": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "maxLength": 4096,
+                  "pattern": "^ssiag:[A-Za-z0-9._:-]{1,128}$",
+                  "type": "string"
+                }
+              ]
+            },
+            "host_ref": {
+              "maxLength": 4096,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+              "type": "string"
+            },
+            "principal_uid": {
+              "maxLength": 4096,
+              "pattern": "^[1-9][0-9]{0,9}$",
+              "type": "string"
+            },
+            "toolchain_id": {
+              "maxLength": 4096,
+              "pattern": "^sha256:[0-9a-f]{64}$",
+              "type": "string"
+            },
+            "zone_id": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "maxLength": 4096,
+                  "pattern": "^[a-f0-9]{32}$",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "required": [
+            "host_ref",
+            "principal_uid",
+            "account_id",
+            "zone_id",
+            "credential_ref",
+            "toolchain_id"
+          ],
+          "type": "object"
+        },
+        "expected_context_ref": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "maxLength": 4096,
+              "pattern": "^sha256:[0-9a-f]{64}$",
+              "type": "string"
+            }
+          ]
+        },
+        "store": {
+          "maxLength": 4096,
+          "pattern": "^/[^\\x00-\\x1f]*$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "store",
+        "context",
+        "expected_context_ref"
+      ],
+      "type": "object"
+    },
+    "installation_ref": {
+      "additionalProperties": false,
+      "properties": {
+        "executable_digest": {
+          "maxLength": 4096,
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "receipt_digest": {
+          "maxLength": 4096,
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "version": {
+          "const": "0.1.0-dev"
+        }
+      },
+      "required": [
+        "version",
+        "executable_digest",
+        "receipt_digest"
+      ],
+      "type": "object"
+    },
+    "operation": {
+      "const": "context.inspect"
+    },
+    "plan_ref": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "maxLength": 4096,
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "type": "string"
+        }
+      ]
+    },
+    "protocol": {
+      "const": "symphony.sov.cloudflare-request.v1"
+    },
+    "request_id": {
+      "maxLength": 4096,
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+      "type": "string"
+    }
+  },
+  "required": [
+    "protocol",
+    "request_id",
+    "correlation_id",
+    "operation",
+    "descriptor_ref",
+    "installation_ref",
+    "context_ref",
+    "plan_ref",
+    "input"
+  ],
+  "type": "object"
+}

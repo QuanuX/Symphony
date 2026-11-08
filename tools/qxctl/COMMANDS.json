@@ -18197,6 +18197,474 @@
       "json_output": true
     },
     {
+      "command_id": "qxcmd:symphony:sov.cloudflare.cf.capability.describe",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl sov cloudflare cf capability describe [--adapter-prefix VALUE] [--adapter-version VALUE] [--format VALUE] [--input VALUE] [--json]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.sov-cloudflare-administration",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sov-cloudflare-adapter",
+          "interaction": "discover"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:sov.cloudflare.capability.describe"
+      ],
+      "mutability": "read_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.sov.cloudflare-request.v1"
+      ],
+      "output_protocols": [
+        "symphony.sov.cloudflare-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.sov.cloudflare-result.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:sov.cloudflare.cf.capability.list",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl sov cloudflare cf capability list [--adapter-prefix VALUE] [--adapter-version VALUE] [--format VALUE] [--input VALUE] [--json]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.sov-cloudflare-administration",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sov-cloudflare-adapter",
+          "interaction": "discover"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:sov.cloudflare.capability.list"
+      ],
+      "mutability": "read_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.sov.cloudflare-request.v1"
+      ],
+      "output_protocols": [
+        "symphony.sov.cloudflare-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.sov.cloudflare-result.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:sov.cloudflare.cf.capability.schema",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl sov cloudflare cf capability schema [--adapter-prefix VALUE] [--adapter-version VALUE] [--format VALUE] [--input VALUE] [--json]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.sov-cloudflare-administration",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sov-cloudflare-adapter",
+          "interaction": "discover"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:sov.cloudflare.capability.schema"
+      ],
+      "mutability": "read_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.sov.cloudflare-request.v1"
+      ],
+      "output_protocols": [
+        "symphony.sov.cloudflare-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.sov.cloudflare-result.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:sov.cloudflare.cf.capability.template",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl sov cloudflare cf capability template [--adapter-prefix VALUE] [--adapter-version VALUE] [--format VALUE] [--input VALUE] [--json]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.sov-cloudflare-administration",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sov-cloudflare-adapter",
+          "interaction": "discover"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:sov.cloudflare.capability.template"
+      ],
+      "mutability": "read_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.sov.cloudflare-request.v1"
+      ],
+      "output_protocols": [
+        "symphony.sov.cloudflare-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.sov.cloudflare-result.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:sov.cloudflare.cf.context.inspect",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl sov cloudflare cf context inspect [--adapter-prefix VALUE] [--adapter-version VALUE] [--format VALUE] [--input VALUE] [--json]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.sov-cloudflare-administration",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:sov-cloudflare-adapter",
+          "interaction": "inspect"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:sov.cloudflare.context.inspect"
+      ],
+      "mutability": "read_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.sov.cloudflare-request.v1"
+      ],
+      "output_protocols": [
+        "symphony.sov.cloudflare-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.sov.cloudflare-result.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:sov.cloudflare.cf.context.plan",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl sov cloudflare cf context plan [--adapter-prefix VALUE] [--adapter-version VALUE] [--format VALUE] [--input VALUE] [--json]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.sov-cloudflare-administration",
+          "interaction": "propose"
+        },
+        {
+          "feature_id": "ssfv:symphony:sov-cloudflare-adapter",
+          "interaction": "propose"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:sov.cloudflare.context.plan"
+      ],
+      "mutability": "proposal_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.sov.cloudflare-request.v1"
+      ],
+      "output_protocols": [
+        "symphony.sov.cloudflare-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.sov.cloudflare-result.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:sov.cloudflare.cf.installation.apply",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl sov cloudflare cf installation apply [--adapter-prefix VALUE] [--adapter-version VALUE] [--format VALUE] [--input VALUE] [--json]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.sov-cloudflare-administration",
+          "interaction": "apply"
+        },
+        {
+          "feature_id": "ssfv:symphony:sov-cloudflare-adapter",
+          "interaction": "apply"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:sov.cloudflare.installation.apply"
+      ],
+      "mutability": "permission_backed_mutation",
+      "authority_mode": "target_host_permission",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.sov.cloudflare-request.v1"
+      ],
+      "output_protocols": [
+        "symphony.sov.cloudflare-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.sov.cloudflare-result.v1"
+      ],
+      "recovery_command_id": "qxcmd:symphony:sov.cloudflare.cf.installation.reconcile",
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:sov.cloudflare.cf.installation.inspect",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl sov cloudflare cf installation inspect [--adapter-prefix VALUE] [--adapter-version VALUE] [--format VALUE] [--input VALUE] [--json]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.sov-cloudflare-administration",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:sov-cloudflare-adapter",
+          "interaction": "inspect"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:sov.cloudflare.installation.inspect"
+      ],
+      "mutability": "read_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.sov.cloudflare-request.v1"
+      ],
+      "output_protocols": [
+        "symphony.sov.cloudflare-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.sov.cloudflare-result.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:sov.cloudflare.cf.installation.list",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl sov cloudflare cf installation list [--adapter-prefix VALUE] [--adapter-version VALUE] [--format VALUE] [--input VALUE] [--json]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.sov-cloudflare-administration",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:sov-cloudflare-adapter",
+          "interaction": "inspect"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:sov.cloudflare.installation.list"
+      ],
+      "mutability": "read_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.sov.cloudflare-request.v1"
+      ],
+      "output_protocols": [
+        "symphony.sov.cloudflare-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.sov.cloudflare-result.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:sov.cloudflare.cf.installation.plan",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl sov cloudflare cf installation plan [--adapter-prefix VALUE] [--adapter-version VALUE] [--format VALUE] [--input VALUE] [--json]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.sov-cloudflare-administration",
+          "interaction": "propose"
+        },
+        {
+          "feature_id": "ssfv:symphony:sov-cloudflare-adapter",
+          "interaction": "propose"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:sov.cloudflare.installation.plan"
+      ],
+      "mutability": "proposal_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.sov.cloudflare-request.v1"
+      ],
+      "output_protocols": [
+        "symphony.sov.cloudflare-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.sov.cloudflare-result.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:sov.cloudflare.cf.installation.reconcile",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl sov cloudflare cf installation reconcile [--adapter-prefix VALUE] [--adapter-version VALUE] [--format VALUE] [--input VALUE] [--json]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.sov-cloudflare-administration",
+          "interaction": "recover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sov-cloudflare-adapter",
+          "interaction": "recover"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:sov.cloudflare.installation.reconcile"
+      ],
+      "mutability": "permission_backed_mutation",
+      "authority_mode": "target_host_permission",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.sov.cloudflare-request.v1"
+      ],
+      "output_protocols": [
+        "symphony.sov.cloudflare-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.sov.cloudflare-result.v1"
+      ],
+      "recovery_command_id": "qxcmd:symphony:sov.cloudflare.cf.installation.reconcile",
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:sov.cloudflare.cf.installation.status",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl sov cloudflare cf installation status [--adapter-prefix VALUE] [--adapter-version VALUE] [--format VALUE] [--input VALUE] [--json]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.sov-cloudflare-administration",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:sov-cloudflare-adapter",
+          "interaction": "inspect"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:sov.cloudflare.installation.status"
+      ],
+      "mutability": "read_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.sov.cloudflare-request.v1"
+      ],
+      "output_protocols": [
+        "symphony.sov.cloudflare-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.sov.cloudflare-result.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
       "command_id": "qxcmd:symphony:sov.remote.assess",
       "status": "experimental",
       "introduced_in": "0.1.0-dev",
@@ -22068,5 +22536,5 @@
       "json_output": true
     }
   ],
-  "registry_digest": "sha256:c99468bb69ed28ba1ba6c7ab3506f9e7608adcdc43db5a5c2a110752e070cd46"
+  "registry_digest": "sha256:0e3c319f145f775bfa6aff80da8045f8e84cc320b38a170cbb5285e3a40b297e"
 }

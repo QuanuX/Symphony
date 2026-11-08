@@ -201,3 +201,7 @@ Six experimental owner scopes expose seven additional non-live actions. Metadata
 ## SRRAPIV Administration Review
 
 The dedicated C++ runtime is the sovereign Rithmic integration owner under SQV. Its qxctl adapter receives one administration subfeature exposing thirteen commands: eleven native operations plus exact schema/template discovery. The generic SDK invocation method and version-specific typed inventory form one complete control surface; individual SDK overloads, codec fields and callback methods are facets, not new semantic features. Native binding rules, runtime generations, protected local permissions, provider dispatch and uncertain-attempt records remain with SRRAPIV. Local structural or SDK-linked build evidence does not establish live-provider acceptance, and this increment does not claim SSIAG integration or catalog completeness.
+
+| `modules/sov-cloudflare-adapter` | registered | `ssfv:symphony:sov-cloudflare-adapter` | `modules/sov-cloudflare-adapter/FEATURES.md` |
+
+qxctl additionally owns `ssfv:symphony:qxctl.sov-cloudflare-administration`; this increment adds local operations, not general Cloudflare product support.

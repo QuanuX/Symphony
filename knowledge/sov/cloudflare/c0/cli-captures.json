@@ -1,0 +1,337 @@
+[
+  {
+    "argv": [
+      "--version"
+    ],
+    "exit_code": 0,
+    "stdout": "1.0.0-beta.28\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "--help"
+    ],
+    "exit_code": 0,
+    "stdout": "cf <command> [options]\n\nThe Cloudflare CLI - manage your Cloudflare resources\n\nCommands\n  cf abuse-reports                  Submit and track abuse reports for phishing,\n                                    malware, and other policy violations on\n                                    Cloudflare-proxied sites\n  cf access                         Access protected applications and services\n  cf accounts                       Account settings, members, roles,\n                                    subscriptions, and API tokens for your\n                                    Cloudflare account\n  cf acm                            acm\n  cf addressing                     addressing\n  cf agent-memory                   agent-memory\n  cf ai                             ai\n  cf ai-audit                       ai-audit\n  cf ai-gateway                     Proxy, cache, rate-limit, and observe\n                                    requests to AI providers \u2014 OpenAI,\n                                    Anthropic, Workers AI, and more\n  cf ai-search                      Managed search-as-a-service: crawl, index,\n                                    and query content with AI-powered relevance\n                                    and chat completions\n  cf ai-security                    Detect prompt injection, PII, and unsafe\n                                    topics in traffic to your AI applications\n  cf alerting                       alerting\n  cf analytics                      Zone-level traffic analytics \u2014 dashboard\n                                    summaries, per-colo breakdowns, and Argo\n                                    latency metrics\n  cf analytics-engine               analytics-engine\n  cf api-security                   api-security\n  cf argo                           Network optimization features that speed up\n                                    and improve reliability of traffic to your\n                                    origins\n  cf artifacts                      artifacts\n  cf audit-logs                     audit-logs\n  cf auth                           Manage authentication and profiles\n  cf basin-catalog                  Iceberg-compatible data catalog for R2 \u2014\n                                    organize objects into tables and namespaces\n                                    for SQL query engines\n  cf billing                        Account billing profiles and usage data for\n                                    Cloudflare subscriptions and add-on services\n  cf bot-management                 bot-management\n  cf botnet-feed                    Botnet threat intelligence feeds \u2014 IP and\n                                    ASN-level data on known command-and-control\n                                    infrastructure\n  cf brand-protection               brand-protection\n  cf browser-run                    browser-run\n  cf build                          Build a project for Cloudflare\n  cf builds                         Build and deploy Workers from connected\n                                    repositories, then inspect build status and\n                                    logs.\n  cf cache                          Purge cached content and configure Cache\n                                    Reserve, tiered caching, and variant serving\n  cf cli                            Discover commands and configure the cf CLI\n  cf client-side-security           Client-Side Security \u2014 monitor JavaScript,\n                                    connections, and cookies on your pages for\n                                    supply-chain attacks\n  cf cloud-connector                Route traffic from Cloudflare directly to\n                                    cloud provider services (AWS, Azure, GCP)\n                                    without origin servers\n  cf cloudforce-one                 Detection rule management APIs\n  cf complete [shell]               Generate and handle shell completions\n  cf connector-interrupts           connector-interrupts\n  cf connector-telemetry-events     connector-telemetry-events\n  cf connector-telemetry-snapshots  connector-telemetry-snapshots\n  cf connectors                     connectors\n  cf containers                     Deploy and manage Containers applications on\n                                    Cloudflare's global network\n  cf content-scan                   Malicious uploads detection, scan uploaded\n                                    content in HTTP requests for malware and\n                                    malicious payloads\n  cf cps                            cps\n  cf csam-scanner                   csam-scanner\n  cf custom-csrs                    custom-csrs\n  cf custom-hostnames               custom-hostnames\n  cf custom-nameservers             custom-nameservers\n  cf custom-pages                   Manage custom error and challenge pages and\n                                    their assets for accounts and zones\n  cf d1                             D1 is Cloudflare's managed, serverless\n                                    database with SQLite's SQL semantics,\n                                    built-in disaster recovery, and Worker and\n                                    HTTP API access.\n  cf deploy                         Deploy a Worker, static site, or full-stack\n                                    application to Cloudflare\n  cf dev [implArgs..]               Run the project's Cloudflare dev server\n  cf diagnostics                    Network diagnostic tools \u2014 traceroutes from\n                                    Cloudflare's edge and endpoint health checks\n  cf dls                            dls\n  cf dns                            dns\n  cf dns-firewall                   dns-firewall\n  cf docs                           Search live Cloudflare documentation\n  cf durable-objects                Stateful serverless objects with\n                                    transactional storage, ideal for\n                                    coordination, sessions, and real-time\n                                    collaboration\n  cf email-auth                     email-auth\n  cf email-domains                  email-domains\n  cf email-routing                  Route incoming email to verified destination\n                                    addresses or Workers with routing rules,\n                                    catch-all behavior, and managed DNS records\n  cf email-security                 Cloud email security \u2014 investigate threats,\n                                    manage allow/block policies, and detect\n                                    phishing\n  cf email-sending                  Send transactional email and manage sending\n                                    subdomains and their DNS configuration\n  cf field-extractors               field-extractors\n  cf firewall                       Legacy firewall rules, zone lockdowns,\n                                    access rules, user-agent blocking, and WAF\n                                    packages\n  cf flagship                       flagship\n  cf fraud                          fraud\n  cf google-tag-gateway             Google Tag Gateway operations\n  cf healthchecks                   Standalone health checks that monitor origin\n                                    server availability from Cloudflare's edge\n  cf hyperdrive                     Accelerate access to existing databases by\n                                    caching queries and pooling connections at\n                                    the edge\n  cf iam                            Identity and access management \u2014 permission\n                                    groups, resource groups, user groups, and\n                                    SSO connectors\n  cf images                         Store, resize, and deliver optimized images\n                                    globally \u2014 variants, signing keys, and\n                                    direct uploads\n  cf init [directory]               Create a new Cloudflare project or set up an\n                                    existing one\n  cf intel                          Threat intelligence lookups \u2014 IP reputation,\n                                    domain info, ASN details, WHOIS, and\n                                    indicator feeds\n  cf k2                             Durable, ordered event streams that you\n                                    produce records to and consume from with\n                                    subscriptions\n  cf kv                             kv\n  cf leaked-credential-checks       Detect compromised credentials in login\n                                    requests by checking against known breach\n                                    databases\n  cf load-balancers                 Distribute traffic across origin pools with\n                                    health monitoring, geo-steering, and\n                                    failover\n  cf logpush                        logpush\n  cf logs                           Log control, retention, and raw log access \u2014\n                                    CMB config, ray ID lookups, and received\n                                    fields\n  cf magic-transit                  DDoS-protected network transit \u2014 GRE/IPsec\n                                    tunnels, static routes, Magic WAN sites,\n                                    connectors, and packet captures\n  cf managed-defense                managed-defense\n  cf managed-transforms             managed-transforms\n  cf mcp                            Manage MCP portals and upstream MCP servers\n                                    for Cloudflare Access AI controls\n  cf mesh                           mesh\n  cf migrate [path]                 Migrate a Wrangler project to cf\n  cf monetization                   monetization\n  cf network                        network\n  cf network-interconnects          Physical and virtual private interconnects\n                                    between your infrastructure and Cloudflare's\n                                    network\n  cf o11y                           o11y\n  cf observability                  observability\n  cf ohttp-gateway                  ohttp-gateway\n  cf organizations                  Multi-user organizations that group\n                                    accounts, members, and shared settings under\n                                    a single entity\n  cf page-rules                     page-rules\n  cf pages                          Full-stack application hosting with\n                                    Git-integrated builds, preview deployments,\n                                    and custom domains\n  cf pay-per-crawl                  pay-per-crawl\n  cf pay-per-use                    pay-per-use\n  cf pipelines                      Ingest, transform, and route event streams\n                                    into R2, analytics, or other destinations in\n                                    real time\n  cf precursor                      Precursor settings for a zone\n  cf previews                       Manage Worker Previews\n  cf queues                         Reliable message queuing between Workers \u2014\n                                    produce, consume, and batch-process messages\n                                    at scale\n  cf r2                             S3-compatible object storage with zero\n                                    egress fees \u2014 buckets, lifecycle rules,\n                                    event notifications, and data migration\n  cf radar                          Internet-wide traffic intelligence \u2014 BGP,\n                                    DNS, HTTP trends, attack data, and network\n                                    quality insights\n  cf realtime                       Real-time audio, video, and data services on\n                                    Cloudflare's global network\n  cf registrar                      registrar\n  cf registrar-sandbox              registrar-sandbox\n  cf reporting                      reporting\n  cf request-tracers                Trace how a request would be processed\n                                    through Cloudflare's rules and configuration\n                                    pipeline\n  cf resource-sharing               Share account-level resources (WAF custom\n                                    rulesets, Gateway policies and settings,\n                                    Access IdP federation grants) with other\n                                    accounts in the same organization\n  cf rules                          Resources used by Cloudflare rules and\n                                    rulesets\n  cf rulesets                       rulesets\n  cf schema [command..]             Show API schema details for a command\n  cf scim                           SCIM 2.0 provisioning \u2014 manage users,\n                                    groups, and identity provider sync for your\n                                    account\n  cf secrets-store                  Centralized secret management \u2014 store API\n                                    keys, tokens, and credentials for use across\n                                    Workers and other products\n  cf security-insights              security-insights\n  cf security-txt                   Manage the /.well-known/security.txt file\n                                    that tells security researchers how to\n                                    report vulnerabilities\n  cf smart-shield                   Smart Shield settings, health checks, and\n                                    cache reserve management\n  cf snippets                       snippets\n  cf spectrum                       Proxy and protect arbitrary TCP/UDP\n                                    applications through Cloudflare's network\n                                    with DDoS mitigation\n  cf speed                          Observatory speed tests \u2014 run Lighthouse\n                                    audits, track performance trends, and\n                                    schedule recurring tests\n  cf sql                            sql\n  cf ssl                            SSL/TLS certificate management \u2014 certificate\n                                    packs, Universal SSL, verification, and TLS\n                                    mode recommendations\n  cf stream                         Video encoding, storage, and delivery \u2014\n                                    upload, live-stream, clip, caption, and\n                                    embed video at scale\n  cf tags                           tags\n  cf tenant-custom-nameservers      tenant-custom-nameservers\n  cf tenants                        Multi-tenant account management\n  cf tunnels                        tunnels\n  cf turnstile                      CAPTCHA-free bot verification widgets that\n                                    protect forms and APIs without degrading\n                                    user experience\n  cf url-normalization              url-normalization\n  cf url-scanner                    Scan URLs for phishing, malware, and other\n                                    threats \u2014 submit scans and retrieve detailed\n                                    results\n  cf user                           Your Cloudflare user profile, invitations,\n                                    organizations, billing, and personal API\n                                    tokens\n  cf vectorize                      Globally distributed vector database for\n                                    building semantic search, recommendations,\n                                    and RAG applications on Workers\n  cf waiting-rooms                  Virtual queues that throttle traffic to your\n                                    site during peak demand with customizable\n                                    waiting pages\n  cf web-assets                     web-assets\n  cf workers                        Deploy and manage serverless JavaScript/WASM\n                                    applications on Cloudflare's global network\n  cf workers-builds                 workers-builds\n  cf workers-for-platforms          Workers for Platforms uses dispatch\n                                    namespaces to isolate and route requests to\n                                    many individual user Workers, letting\n                                    platforms run untrusted customer or\n                                    AI-generated code at scale with per-tenant\n                                    bindings, limits, and observability\n  cf workers-vpc                    workers-vpc\n  cf workflows                      Durable, multi-step workflows that run on\n                                    Workers with automatic retries and state\n                                    persistence\n  cf zaraz                          Server-side tag manager \u2014 load third-party\n                                    tools (analytics, pixels, etc.) from\n                                    Cloudflare's edge without client-side JS\n  cf zero-trust                     Cloudflare's SASE platform \u2014 secure access,\n                                    device posture, DLP, tunnels, gateway\n                                    policies, and network segmentation\n  cf zones                          Zones are domains on Cloudflare \u2014 list,\n                                    create, and configure domain settings\n\nGlobal flags\n  -q, --quiet       Suppress non-essential output     [boolean] [default: false]\n  -z, --zone        Zone ID or domain name (overrides CLOUDFLARE_ZONE_ID)\n                                                                        [string]\n      --profile     Use a specific auth profile                         [string]\n  -m, --mode        Mode used to evaluate project configuration         [string]\n      --local       Use local resource simulations    [boolean] [default: false]\n      --persist-to  Directory holding local persisted state (default:\n                    ~/.config/cloudflare/state)                         [string]\n  -h, --help        Show help                                          [boolean]\n  -v, --version     Show version number                                [boolean]\n\nFor more information, visit https://developers.cloudflare.com/\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "cli",
+      "search",
+      "tunnel"
+    ],
+    "exit_code": 0,
+    "stdout": "[\n  {\n    \"command\": \"cf tunnels delete\",\n    \"summary\": \"Delete a Cloudflare Tunnel\"\n  },\n  {\n    \"command\": \"cf tunnels get\",\n    \"summary\": \"Get a Cloudflare Tunnel\"\n  },\n  {\n    \"command\": \"cf tunnels config get\",\n    \"summary\": \"Get Tunnel configuration\"\n  },\n  {\n    \"command\": \"cf tunnels edit\",\n    \"summary\": \"Update a Cloudflare Tunnel\"\n  },\n  {\n    \"command\": \"cf tunnels config update\",\n    \"summary\": \"Update Tunnel configuration\"\n  }\n]\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "cli",
+      "search",
+      "DNS records"
+    ],
+    "exit_code": 0,
+    "stdout": "[\n  {\n    \"command\": \"cf dns records list\",\n    \"summary\": \"List DNS Records\"\n  },\n  {\n    \"command\": \"cf dns records batch\",\n    \"summary\": \"Batch DNS Records\"\n  },\n  {\n    \"command\": \"cf dns records export\",\n    \"summary\": \"Export DNS Records\"\n  },\n  {\n    \"command\": \"cf dns records import\",\n    \"summary\": \"Import DNS Records\"\n  },\n  {\n    \"command\": \"cf dns records scan\",\n    \"summary\": \"Scan DNS Records\"\n  }\n]\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "cli",
+      "search",
+      "access applications"
+    ],
+    "exit_code": 0,
+    "stdout": "[\n  {\n    \"command\": \"cf zero-trust access applications list\",\n    \"summary\": \"List Access applications\"\n  },\n  {\n    \"command\": \"cf zero-trust access applications update\",\n    \"summary\": \"Update an Access application\"\n  },\n  {\n    \"command\": \"cf zero-trust access applications delete\",\n    \"summary\": \"Delete an Access application\"\n  },\n  {\n    \"command\": \"cf zero-trust access applications get\",\n    \"summary\": \"Get an Access application\"\n  },\n  {\n    \"command\": \"cf zero-trust access applications create\",\n    \"summary\": \"Add an Access application\"\n  }\n]\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "cli",
+      "search",
+      "access policies"
+    ],
+    "exit_code": 0,
+    "stdout": "[\n  {\n    \"command\": \"cf zero-trust access policies list\",\n    \"summary\": \"List Access reusable policies\"\n  },\n  {\n    \"command\": \"cf zero-trust access policies delete\",\n    \"summary\": \"Delete an Access reusable policy\"\n  },\n  {\n    \"command\": \"cf zero-trust access policies get\",\n    \"summary\": \"Get an Access reusable policy\"\n  },\n  {\n    \"command\": \"cf zero-trust access policies update\",\n    \"summary\": \"Update an Access reusable policy\"\n  },\n  {\n    \"command\": \"cf zero-trust access policies create\",\n    \"summary\": \"Create an Access reusable policy\"\n  }\n]\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "tunnels",
+      "token",
+      "--help"
+    ],
+    "exit_code": 0,
+    "stdout": "cf tunnels token\n\nOperations for token\n\nCommands\n  cf tunnels token get <tunnel-id>  Get a Cloudflare Tunnel token\n\nGlobal flags\n  -q, --quiet       Suppress non-essential output     [boolean] [default: false]\n  -z, --zone        Zone ID or domain name (overrides CLOUDFLARE_ZONE_ID)\n                                                                        [string]\n      --profile     Use a specific auth profile                         [string]\n  -m, --mode        Mode used to evaluate project configuration         [string]\n      --local       Use local resource simulations    [boolean] [default: false]\n      --persist-to  Directory holding local persisted state (default:\n                    ~/.config/cloudflare/state)                         [string]\n  -h, --help        Show help                                          [boolean]\n  -v, --version     Show version number                                [boolean]\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "schema",
+      "tunnels",
+      "list"
+    ],
+    "exit_code": 0,
+    "stdout": "{\n  \"operationId\": \"tunnels.list\",\n  \"httpMethod\": \"GET\",\n  \"path\": \"/accounts/{account_id}/tunnels\",\n  \"pathParams\": [\n    {\n      \"name\": \"account_id\",\n      \"type\": \"string\",\n      \"required\": true\n    }\n  ],\n  \"queryParams\": [\n    {\n      \"name\": \"name\",\n      \"flag\": \"name\",\n      \"type\": \"string\",\n      \"required\": false\n    },\n    {\n      \"name\": \"is_deleted\",\n      \"flag\": \"is-deleted\",\n      \"type\": \"boolean\",\n      \"required\": false\n    },\n    {\n      \"name\": \"existed_at\",\n      \"flag\": \"existed-at\",\n      \"type\": \"string\",\n      \"required\": false\n    },\n    {\n      \"name\": \"uuid\",\n      \"flag\": \"uuid\",\n      \"type\": \"string\",\n      \"required\": false\n    },\n    {\n      \"name\": \"was_active_at\",\n      \"flag\": \"was-active-at\",\n      \"type\": \"string\",\n      \"required\": false\n    },\n    {\n      \"name\": \"was_inactive_at\",\n      \"flag\": \"was-inactive-at\",\n      \"type\": \"string\",\n      \"required\": false\n    },\n    {\n      \"name\": \"include_prefix\",\n      \"flag\": \"include-prefix\",\n      \"type\": \"string\",\n      \"required\": false\n    },\n    {\n      \"name\": \"exclude_prefix\",\n      \"flag\": \"exclude-prefix\",\n      \"type\": \"string\",\n      \"required\": false\n    },\n    {\n      \"name\": \"tun_types\",\n      \"flag\": \"tun-types\",\n      \"type\": \"array\",\n      \"required\": false\n    },\n    {\n      \"name\": \"status\",\n      \"flag\": \"status\",\n      \"type\": \"string\",\n      \"required\": false\n    },\n    {\n      \"name\": \"per_page\",\n      \"flag\": \"per-page\",\n      \"type\": \"number\",\n      \"required\": false\n    },\n    {\n      \"name\": \"page\",\n      \"flag\": \"page\",\n      \"type\": \"number\",\n      \"required\": false\n    }\n  ],\n  \"hasRequestBody\": false,\n  \"requestBodyFields\": []\n}\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "schema",
+      "tunnels",
+      "get"
+    ],
+    "exit_code": 0,
+    "stdout": "{\n  \"operationId\": \"tunnels.get\",\n  \"httpMethod\": \"GET\",\n  \"path\": \"/accounts/{account_id}/cfd_tunnel/{tunnel_id}\",\n  \"pathParams\": [\n    {\n      \"name\": \"account_id\",\n      \"type\": \"string\",\n      \"required\": true\n    },\n    {\n      \"name\": \"tunnel_id\",\n      \"flag\": \"tunnel-id\",\n      \"positional\": true,\n      \"type\": \"string\",\n      \"required\": true\n    }\n  ],\n  \"queryParams\": [],\n  \"hasRequestBody\": false,\n  \"requestBodyFields\": []\n}\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "schema",
+      "tunnels",
+      "create"
+    ],
+    "exit_code": 0,
+    "stdout": "{\n  \"operationId\": \"tunnels.create\",\n  \"httpMethod\": \"POST\",\n  \"path\": \"/accounts/{account_id}/cfd_tunnel\",\n  \"pathParams\": [\n    {\n      \"name\": \"account_id\",\n      \"type\": \"string\",\n      \"required\": true\n    }\n  ],\n  \"queryParams\": [],\n  \"hasRequestBody\": true,\n  \"requestBodyFields\": [\n    {\n      \"name\": \"config-source\",\n      \"type\": \"string\",\n      \"required\": false,\n      \"description\": \"Indicates if this is a locally or remotely configured tunnel. If `local`, manage the tunnel using a YAML file on the origin machine. If `cloudflare`, manage the tunnel on the Zero Trust dashboard.\"\n    },\n    {\n      \"name\": \"name\",\n      \"type\": \"string\",\n      \"required\": true,\n      \"description\": \"A user-friendly name for a tunnel.\"\n    },\n    {\n      \"name\": \"tunnel-secret\",\n      \"type\": \"string\",\n      \"required\": false,\n      \"description\": \"Sets the password required to run a locally-managed tunnel. Must be at least 32 bytes and encoded as a base64 string.\"\n    }\n  ]\n}\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "schema",
+      "tunnels",
+      "edit"
+    ],
+    "exit_code": 0,
+    "stdout": "{\n  \"operationId\": \"tunnels.edit\",\n  \"httpMethod\": \"PATCH\",\n  \"path\": \"/accounts/{account_id}/cfd_tunnel/{tunnel_id}\",\n  \"pathParams\": [\n    {\n      \"name\": \"account_id\",\n      \"type\": \"string\",\n      \"required\": true\n    },\n    {\n      \"name\": \"tunnel_id\",\n      \"flag\": \"tunnel-id\",\n      \"positional\": true,\n      \"type\": \"string\",\n      \"required\": true\n    }\n  ],\n  \"queryParams\": [],\n  \"hasRequestBody\": true,\n  \"requestBodyFields\": [\n    {\n      \"name\": \"name\",\n      \"type\": \"string\",\n      \"required\": false,\n      \"description\": \"A user-friendly name for a tunnel.\"\n    },\n    {\n      \"name\": \"tunnel-secret\",\n      \"type\": \"string\",\n      \"required\": false,\n      \"description\": \"Sets the password required to run a locally-managed tunnel. Must be at least 32 bytes and encoded as a base64 string.\"\n    }\n  ]\n}\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "schema",
+      "tunnels",
+      "delete"
+    ],
+    "exit_code": 0,
+    "stdout": "{\n  \"operationId\": \"tunnels.delete\",\n  \"httpMethod\": \"DELETE\",\n  \"path\": \"/accounts/{account_id}/cfd_tunnel/{tunnel_id}\",\n  \"pathParams\": [\n    {\n      \"name\": \"account_id\",\n      \"type\": \"string\",\n      \"required\": true\n    },\n    {\n      \"name\": \"tunnel_id\",\n      \"flag\": \"tunnel-id\",\n      \"positional\": true,\n      \"type\": \"string\",\n      \"required\": true\n    }\n  ],\n  \"queryParams\": [],\n  \"hasRequestBody\": false,\n  \"requestBodyFields\": []\n}\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "schema",
+      "tunnels",
+      "config",
+      "get"
+    ],
+    "exit_code": 0,
+    "stdout": "{\n  \"operationId\": \"tunnels.config.get\",\n  \"httpMethod\": \"GET\",\n  \"path\": \"/accounts/{account_id}/cfd_tunnel/{tunnel_id}/configurations\",\n  \"pathParams\": [\n    {\n      \"name\": \"account_id\",\n      \"type\": \"string\",\n      \"required\": true\n    },\n    {\n      \"name\": \"tunnel_id\",\n      \"flag\": \"tunnel-id\",\n      \"positional\": true,\n      \"type\": \"string\",\n      \"required\": true\n    }\n  ],\n  \"queryParams\": [],\n  \"hasRequestBody\": false,\n  \"requestBodyFields\": []\n}\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "schema",
+      "tunnels",
+      "config",
+      "update"
+    ],
+    "exit_code": 0,
+    "stdout": "{\n  \"operationId\": \"tunnels.config.update\",\n  \"httpMethod\": \"PUT\",\n  \"path\": \"/accounts/{account_id}/cfd_tunnel/{tunnel_id}/configurations\",\n  \"pathParams\": [\n    {\n      \"name\": \"account_id\",\n      \"type\": \"string\",\n      \"required\": true\n    },\n    {\n      \"name\": \"tunnel_id\",\n      \"flag\": \"tunnel-id\",\n      \"positional\": true,\n      \"type\": \"string\",\n      \"required\": true\n    }\n  ],\n  \"queryParams\": [],\n  \"hasRequestBody\": true,\n  \"requestBodyFields\": [\n    {\n      \"name\": \"tunnel-config-ingress\",\n      \"type\": \"string\",\n      \"required\": false,\n      \"description\": \"List of public hostname definitions. At least one ingress rule needs to be defined for the tunnel. Provide as a JSON array of objects or @path/to/file.json.\"\n    },\n    {\n      \"name\": \"tunnel-config-origin-request-access-aud-tag\",\n      \"type\": \"string\",\n      \"required\": false,\n      \"description\": \"Access applications that are allowed to reach this hostname for this Tunnel. Audience tags can be identified in the dashboard or via the List Access policies API.\"\n    },\n    {\n      \"name\": \"tunnel-config-origin-request-access-required\",\n      \"type\": \"boolean\",\n      \"required\": false,\n      \"description\": \"Deny traffic that has not fulfilled Access authorization.\"\n    },\n    {\n      \"name\": \"tunnel-config-origin-request-access-team-name\",\n      \"type\": \"string\",\n      \"required\": false,\n      \"description\": \"The config.originRequest.access.teamName field\"\n    },\n    {\n      \"name\": \"tunnel-config-origin-request-ca-pool\",\n      \"type\": \"string\",\n      \"required\": false,\n      \"description\": \"Path to the certificate authority (CA) for the certificate of your origin. This option should be used only if your certificate is not signed by Cloudflare.\"\n    },\n    {\n      \"name\": \"tunnel-config-origin-request-connect-timeout\",\n      \"type\": \"number\",\n      \"required\": false,\n      \"description\": \"Timeout for establishing a new TCP connection to your origin server. This excludes the time taken to establish TLS, which is controlled by tlsTimeout.\"\n    },\n    {\n      \"name\": \"tunnel-config-origin-request-disable-chunked-encoding\",\n      \"type\": \"boolean\",\n      \"required\": false,\n      \"description\": \"Disables chunked transfer encoding. Useful if you are running a WSGI server.\"\n    },\n    {\n      \"name\": \"tunnel-config-origin-request-http2origin\",\n      \"type\": \"boolean\",\n      \"required\": false,\n      \"description\": \"Attempt to connect to origin using HTTP2. Origin must be configured as https.\"\n    },\n    {\n      \"name\": \"tunnel-config-origin-request-http-host-header\",\n      \"type\": \"string\",\n      \"required\": false,\n      \"description\": \"Sets the HTTP Host header on requests sent to the local service.\"\n    },\n    {\n      \"name\": \"tunnel-config-origin-request-keep-alive-connections\",\n      \"type\": \"number\",\n      \"required\": false,\n      \"description\": \"Maximum number of idle keepalive connections between Tunnel and your origin. This does not restrict the total number of concurrent connections.\"\n    },\n    {\n      \"name\": \"tunnel-config-origin-request-keep-alive-timeout\",\n      \"type\": \"number\",\n      \"required\": false,\n      \"description\": \"Timeout after which an idle keepalive connection can be discarded.\"\n    },\n    {\n      \"name\": \"tunnel-config-origin-request-match-snito-host\",\n      \"type\": \"boolean\",\n      \"required\": false,\n      \"description\": \"Auto configure the Hostname on the origin server certificate.\"\n    },\n    {\n      \"name\": \"tunnel-config-origin-request-no-happy-eyeballs\",\n      \"type\": \"boolean\",\n      \"required\": false,\n      \"description\": \"Disable the \u201chappy eyeballs\u201d algorithm for IPv4/IPv6 fallback if your local network has misconfigured one of the protocols.\"\n    },\n    {\n      \"name\": \"tunnel-config-origin-request-no-tlsverify\",\n      \"type\": \"boolean\",\n      \"required\": false,\n      \"description\": \"Disables TLS verification of the certificate presented by your origin. Will allow any certificate from the origin to be accepted.\"\n    },\n    {\n      \"name\": \"tunnel-config-origin-request-origin-server-name\",\n      \"type\": \"string\",\n      \"required\": false,\n      \"description\": \"Hostname that cloudflared should expect from your origin server certificate.\"\n    },\n    {\n      \"name\": \"tunnel-config-origin-request-proxy-type\",\n      \"type\": \"string\",\n      \"required\": false,\n      \"description\": \"cloudflared starts a proxy server to translate HTTP traffic into TCP when proxying, for example, SSH or RDP. This configures what type of proxy will be started. Valid options are: \\\"\\\" for the regular proxy and \\\"socks\\\" for a SOCKS5 proxy.\\n\"\n    },\n    {\n      \"name\": \"tunnel-config-origin-request-tcp-keep-alive\",\n      \"type\": \"number\",\n      \"required\": false,\n      \"description\": \"The timeout after which a TCP keepalive packet is sent on a connection between Tunnel and the origin server.\"\n    },\n    {\n      \"name\": \"tunnel-config-origin-request-tls-timeout\",\n      \"type\": \"number\",\n      \"required\": false,\n      \"description\": \"Timeout for completing a TLS handshake to your origin server, if you have chosen to connect Tunnel to an HTTPS server.\"\n    }\n  ]\n}\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "schema",
+      "tunnels",
+      "token",
+      "get"
+    ],
+    "exit_code": 0,
+    "stdout": "{\n  \"operationId\": \"tunnels.token.get\",\n  \"httpMethod\": \"GET\",\n  \"path\": \"/accounts/{account_id}/cfd_tunnel/{tunnel_id}/token\",\n  \"pathParams\": [\n    {\n      \"name\": \"account_id\",\n      \"type\": \"string\",\n      \"required\": true\n    },\n    {\n      \"name\": \"tunnel_id\",\n      \"flag\": \"tunnel-id\",\n      \"positional\": true,\n      \"type\": \"string\",\n      \"required\": true\n    }\n  ],\n  \"queryParams\": [],\n  \"hasRequestBody\": false,\n  \"requestBodyFields\": []\n}\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "schema",
+      "tunnels",
+      "token",
+      "rotate"
+    ],
+    "exit_code": 1,
+    "stdout": "",
+    "stderr": "Schema not found for \"tunnels token rotate\". Use --list to see available schemas.\n"
+  },
+  {
+    "argv": [
+      "schema",
+      "dns",
+      "records",
+      "list"
+    ],
+    "exit_code": 0,
+    "stdout": "{\n  \"operationId\": \"dns.records.list\",\n  \"httpMethod\": \"GET\",\n  \"path\": \"/zones/{zone_id}/dns_records\",\n  \"pathParams\": [\n    {\n      \"name\": \"zone_id\",\n      \"flag\": \"zone\",\n      \"type\": \"string\",\n      \"required\": true\n    }\n  ],\n  \"queryParams\": [\n    {\n      \"name\": \"name\",\n      \"flag\": \"name\",\n      \"type\": \"string\",\n      \"required\": false\n    },\n    {\n      \"name\": \"name.exact\",\n      \"flag\": \"name-exact\",\n      \"type\": \"string\",\n      \"required\": false\n    },\n    {\n      \"name\": \"name.contains\",\n      \"flag\": \"name-contains\",\n      \"type\": \"string\",\n      \"required\": false\n    },\n    {\n      \"name\": \"name.startswith\",\n      \"flag\": \"name-startswith\",\n      \"type\": \"string\",\n      \"required\": false\n    },\n    {\n      \"name\": \"name.endswith\",\n      \"flag\": \"name-endswith\",\n      \"type\": \"string\",\n      \"required\": false\n    },\n    {\n      \"name\": \"type\",\n      \"flag\": \"type\",\n      \"type\": \"string\",\n      \"required\": false\n    },\n    {\n      \"name\": \"content\",\n      \"flag\": \"content\",\n      \"type\": \"string\",\n      \"required\": false\n    },\n    {\n      \"name\": \"content.exact\",\n      \"flag\": \"content-exact\",\n      \"type\": \"string\",\n      \"required\": false\n    },\n    {\n      \"name\": \"content.contains\",\n      \"flag\": \"content-contains\",\n      \"type\": \"string\",\n      \"required\": false\n    },\n    {\n      \"name\": \"content.startswith\",\n      \"flag\": \"content-startswith\",\n      \"type\": \"string\",\n      \"required\": false\n    },\n    {\n      \"name\": \"content.endswith\",\n      \"flag\": \"content-endswith\",\n      \"type\": \"string\",\n      \"required\": false\n    },\n    {\n      \"name\": \"proxied\",\n      \"flag\": \"proxied\",\n      \"type\": \"boolean\",\n      \"required\": false\n    },\n    {\n      \"name\": \"match\",\n      \"flag\": \"match\",\n      \"type\": \"string\",\n      \"required\": false\n    },\n    {\n      \"name\": \"comment\",\n      \"flag\": \"comment\",\n      \"type\": \"string\",\n      \"required\": false\n    },\n    {\n      \"name\": \"comment.present\",\n      \"flag\": \"comment-present\",\n      \"type\": \"string\",\n      \"required\": false\n    },\n    {\n      \"name\": \"comment.absent\",\n      \"flag\": \"comment-absent\",\n      \"type\": \"string\",\n      \"required\": false\n    },\n    {\n      \"name\": \"comment.exact\",\n      \"flag\": \"comment-exact\",\n      \"type\": \"string\",\n      \"required\": false\n    },\n    {\n      \"name\": \"comment.contains\",\n      \"flag\": \"comment-contains\",\n      \"type\": \"string\",\n      \"required\": false\n    },\n    {\n      \"name\": \"comment.startswith\",\n      \"flag\": \"comment-startswith\",\n      \"type\": \"string\",\n      \"required\": false\n    },\n    {\n      \"name\": \"comment.endswith\",\n      \"flag\": \"comment-endswith\",\n      \"type\": \"string\",\n      \"required\": false\n    },\n    {\n      \"name\": \"tag\",\n      \"flag\": \"tag\",\n      \"type\": \"string\",\n      \"required\": false\n    },\n    {\n      \"name\": \"tag.present\",\n      \"flag\": \"tag-present\",\n      \"type\": \"string\",\n      \"required\": false\n    },\n    {\n      \"name\": \"tag.absent\",\n      \"flag\": \"tag-absent\",\n      \"type\": \"string\",\n      \"required\": false\n    },\n    {\n      \"name\": \"tag.exact\",\n      \"flag\": \"tag-exact\",\n      \"type\": \"string\",\n      \"required\": false\n    },\n    {\n      \"name\": \"tag.contains\",\n      \"flag\": \"tag-contains\",\n      \"type\": \"string\",\n      \"required\": false\n    },\n    {\n      \"name\": \"tag.startswith\",\n      \"flag\": \"tag-startswith\",\n      \"type\": \"string\",\n      \"required\": false\n    },\n    {\n      \"name\": \"tag.endswith\",\n      \"flag\": \"tag-endswith\",\n      \"type\": \"string\",\n      \"required\": false\n    },\n    {\n      \"name\": \"search\",\n      \"flag\": \"search\",\n      \"type\": \"string\",\n      \"required\": false\n    },\n    {\n      \"name\": \"tag_match\",\n      \"flag\": \"tag-match\",\n      \"type\": \"string\",\n      \"required\": false\n    },\n    {\n      \"name\": \"page\",\n      \"flag\": \"page\",\n      \"type\": \"number\",\n      \"required\": false\n    },\n    {\n      \"name\": \"per_page\",\n      \"flag\": \"per-page\",\n      \"type\": \"number\",\n      \"required\": false\n    },\n    {\n      \"name\": \"order\",\n      \"flag\": \"order\",\n      \"type\": \"string\",\n      \"required\": false\n    },\n    {\n      \"name\": \"direction\",\n      \"flag\": \"direction\",\n      \"type\": \"string\",\n      \"required\": false\n    },\n    {\n      \"name\": \"include_shadow_metadata\",\n      \"flag\": \"include-shadow-metadata\",\n      \"type\": \"boolean\",\n      \"required\": false\n    },\n    {\n      \"name\": \"shadowed_by_name\",\n      \"flag\": \"shadowed-by-name\",\n      \"type\": \"string\",\n      \"required\": false\n    },\n    {\n      \"name\": \"shadowing_name\",\n      \"flag\": \"shadowing-name\",\n      \"type\": \"string\",\n      \"required\": false\n    }\n  ],\n  \"hasRequestBody\": false,\n  \"requestBodyFields\": []\n}\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "schema",
+      "dns",
+      "records",
+      "get"
+    ],
+    "exit_code": 0,
+    "stdout": "{\n  \"operationId\": \"dns.records.get\",\n  \"httpMethod\": \"GET\",\n  \"path\": \"/zones/{zone_id}/dns_records/{dns_record_id}\",\n  \"pathParams\": [\n    {\n      \"name\": \"zone_id\",\n      \"flag\": \"zone\",\n      \"type\": \"string\",\n      \"required\": true\n    },\n    {\n      \"name\": \"dns_record_id\",\n      \"flag\": \"dns-record-id\",\n      \"positional\": true,\n      \"type\": \"string\",\n      \"required\": true\n    }\n  ],\n  \"queryParams\": [\n    {\n      \"name\": \"include_shadow_metadata\",\n      \"flag\": \"include-shadow-metadata\",\n      \"type\": \"boolean\",\n      \"required\": false\n    }\n  ],\n  \"hasRequestBody\": false,\n  \"requestBodyFields\": []\n}\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "schema",
+      "dns",
+      "records",
+      "create"
+    ],
+    "exit_code": 0,
+    "stdout": "{\n  \"operationId\": \"dns.records.create\",\n  \"httpMethod\": \"POST\",\n  \"path\": \"/zones/{zone_id}/dns_records\",\n  \"pathParams\": [\n    {\n      \"name\": \"zone_id\",\n      \"flag\": \"zone\",\n      \"type\": \"string\",\n      \"required\": true\n    }\n  ],\n  \"queryParams\": [\n    {\n      \"name\": \"include_shadow_metadata\",\n      \"flag\": \"include-shadow-metadata\",\n      \"type\": \"boolean\",\n      \"required\": false\n    }\n  ],\n  \"hasRequestBody\": true,\n  \"requestBodyFields\": []\n}\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "schema",
+      "dns",
+      "records",
+      "update"
+    ],
+    "exit_code": 0,
+    "stdout": "{\n  \"operationId\": \"dns.records.update\",\n  \"httpMethod\": \"PUT\",\n  \"path\": \"/zones/{zone_id}/dns_records/{dns_record_id}\",\n  \"pathParams\": [\n    {\n      \"name\": \"zone_id\",\n      \"flag\": \"zone\",\n      \"type\": \"string\",\n      \"required\": true\n    },\n    {\n      \"name\": \"dns_record_id\",\n      \"flag\": \"dns-record-id\",\n      \"positional\": true,\n      \"type\": \"string\",\n      \"required\": true\n    }\n  ],\n  \"queryParams\": [\n    {\n      \"name\": \"include_shadow_metadata\",\n      \"flag\": \"include-shadow-metadata\",\n      \"type\": \"boolean\",\n      \"required\": false\n    }\n  ],\n  \"hasRequestBody\": true,\n  \"requestBodyFields\": []\n}\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "schema",
+      "dns",
+      "records",
+      "delete"
+    ],
+    "exit_code": 0,
+    "stdout": "{\n  \"operationId\": \"dns.records.delete\",\n  \"httpMethod\": \"DELETE\",\n  \"path\": \"/zones/{zone_id}/dns_records/{dns_record_id}\",\n  \"pathParams\": [\n    {\n      \"name\": \"zone_id\",\n      \"flag\": \"zone\",\n      \"type\": \"string\",\n      \"required\": true\n    },\n    {\n      \"name\": \"dns_record_id\",\n      \"flag\": \"dns-record-id\",\n      \"positional\": true,\n      \"type\": \"string\",\n      \"required\": true\n    }\n  ],\n  \"queryParams\": [],\n  \"hasRequestBody\": false,\n  \"requestBodyFields\": []\n}\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "schema",
+      "zero-trust",
+      "access",
+      "applications",
+      "list"
+    ],
+    "exit_code": 0,
+    "stdout": "{\n  \"operationId\": \"zero-trust.access.applications.list\",\n  \"httpMethod\": \"GET\",\n  \"path\": \"/{account_or_zone}/{account_or_zone_id}/access/apps\",\n  \"pathParams\": [\n    {\n      \"name\": \"account_or_zone\",\n      \"type\": \"string\",\n      \"required\": true\n    },\n    {\n      \"name\": \"account_or_zone_id\",\n      \"type\": \"string\",\n      \"required\": true\n    }\n  ],\n  \"queryParams\": [\n    {\n      \"name\": \"name\",\n      \"flag\": \"name\",\n      \"type\": \"string\",\n      \"required\": false\n    },\n    {\n      \"name\": \"domain\",\n      \"flag\": \"domain\",\n      \"type\": \"string\",\n      \"required\": false\n    },\n    {\n      \"name\": \"aud\",\n      \"flag\": \"aud\",\n      \"type\": \"string\",\n      \"required\": false\n    },\n    {\n      \"name\": \"target_attributes\",\n      \"flag\": \"target-attributes\",\n      \"type\": \"string\",\n      \"required\": false\n    },\n    {\n      \"name\": \"exact\",\n      \"flag\": \"exact\",\n      \"type\": \"boolean\",\n      \"required\": false\n    },\n    {\n      \"name\": \"search\",\n      \"flag\": \"search\",\n      \"type\": \"string\",\n      \"required\": false\n    },\n    {\n      \"name\": \"page\",\n      \"flag\": \"page\",\n      \"type\": \"number\",\n      \"required\": false\n    },\n    {\n      \"name\": \"per_page\",\n      \"flag\": \"per-page\",\n      \"type\": \"number\",\n      \"required\": false\n    }\n  ],\n  \"hasRequestBody\": false,\n  \"requestBodyFields\": []\n}\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "schema",
+      "zero-trust",
+      "access",
+      "applications",
+      "get"
+    ],
+    "exit_code": 0,
+    "stdout": "{\n  \"operationId\": \"zero-trust.access.applications.get\",\n  \"httpMethod\": \"GET\",\n  \"path\": \"/{account_or_zone}/{account_or_zone_id}/access/apps/{app_id}\",\n  \"pathParams\": [\n    {\n      \"name\": \"account_or_zone\",\n      \"type\": \"string\",\n      \"required\": true\n    },\n    {\n      \"name\": \"account_or_zone_id\",\n      \"type\": \"string\",\n      \"required\": true\n    },\n    {\n      \"name\": \"app_id\",\n      \"flag\": \"app-id\",\n      \"positional\": true,\n      \"type\": \"string\",\n      \"required\": true\n    }\n  ],\n  \"queryParams\": [],\n  \"hasRequestBody\": false,\n  \"requestBodyFields\": []\n}\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "schema",
+      "zero-trust",
+      "access",
+      "applications",
+      "create"
+    ],
+    "exit_code": 0,
+    "stdout": "{\n  \"operationId\": \"zero-trust.access.applications.create\",\n  \"httpMethod\": \"POST\",\n  \"path\": \"/{account_or_zone}/{account_or_zone_id}/access/apps\",\n  \"pathParams\": [\n    {\n      \"name\": \"account_or_zone\",\n      \"type\": \"string\",\n      \"required\": true\n    },\n    {\n      \"name\": \"account_or_zone_id\",\n      \"type\": \"string\",\n      \"required\": true\n    }\n  ],\n  \"queryParams\": [],\n  \"hasRequestBody\": true,\n  \"requestBodyFields\": []\n}\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "schema",
+      "zero-trust",
+      "access",
+      "applications",
+      "update"
+    ],
+    "exit_code": 0,
+    "stdout": "{\n  \"operationId\": \"zero-trust.access.applications.update\",\n  \"httpMethod\": \"PUT\",\n  \"path\": \"/{account_or_zone}/{account_or_zone_id}/access/apps/{app_id}\",\n  \"pathParams\": [\n    {\n      \"name\": \"account_or_zone\",\n      \"type\": \"string\",\n      \"required\": true\n    },\n    {\n      \"name\": \"account_or_zone_id\",\n      \"type\": \"string\",\n      \"required\": true\n    },\n    {\n      \"name\": \"app_id\",\n      \"flag\": \"app-id\",\n      \"positional\": true,\n      \"type\": \"string\",\n      \"required\": true\n    }\n  ],\n  \"queryParams\": [],\n  \"hasRequestBody\": true,\n  \"requestBodyFields\": []\n}\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "schema",
+      "zero-trust",
+      "access",
+      "applications",
+      "delete"
+    ],
+    "exit_code": 0,
+    "stdout": "{\n  \"operationId\": \"zero-trust.access.applications.delete\",\n  \"httpMethod\": \"DELETE\",\n  \"path\": \"/{account_or_zone}/{account_or_zone_id}/access/apps/{app_id}\",\n  \"pathParams\": [\n    {\n      \"name\": \"account_or_zone\",\n      \"type\": \"string\",\n      \"required\": true\n    },\n    {\n      \"name\": \"account_or_zone_id\",\n      \"type\": \"string\",\n      \"required\": true\n    },\n    {\n      \"name\": \"app_id\",\n      \"flag\": \"app-id\",\n      \"positional\": true,\n      \"type\": \"string\",\n      \"required\": true\n    }\n  ],\n  \"queryParams\": [],\n  \"hasRequestBody\": false,\n  \"requestBodyFields\": []\n}\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "schema",
+      "zero-trust",
+      "access",
+      "policies",
+      "list"
+    ],
+    "exit_code": 0,
+    "stdout": "{\n  \"operationId\": \"zero-trust.access.policies.list\",\n  \"httpMethod\": \"GET\",\n  \"path\": \"/accounts/{account_id}/access/policies\",\n  \"pathParams\": [\n    {\n      \"name\": \"account_id\",\n      \"type\": \"string\",\n      \"required\": true\n    }\n  ],\n  \"queryParams\": [\n    {\n      \"name\": \"page\",\n      \"flag\": \"page\",\n      \"type\": \"number\",\n      \"required\": false\n    },\n    {\n      \"name\": \"per_page\",\n      \"flag\": \"per-page\",\n      \"type\": \"number\",\n      \"required\": false\n    }\n  ],\n  \"hasRequestBody\": false,\n  \"requestBodyFields\": []\n}\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "schema",
+      "zero-trust",
+      "access",
+      "policies",
+      "get"
+    ],
+    "exit_code": 0,
+    "stdout": "{\n  \"operationId\": \"zero-trust.access.policies.get\",\n  \"httpMethod\": \"GET\",\n  \"path\": \"/accounts/{account_id}/access/policies/{policy_id}\",\n  \"pathParams\": [\n    {\n      \"name\": \"account_id\",\n      \"type\": \"string\",\n      \"required\": true\n    },\n    {\n      \"name\": \"policy_id\",\n      \"flag\": \"policy-id\",\n      \"positional\": true,\n      \"type\": \"string\",\n      \"required\": true\n    }\n  ],\n  \"queryParams\": [],\n  \"hasRequestBody\": false,\n  \"requestBodyFields\": []\n}\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "schema",
+      "zero-trust",
+      "access",
+      "policies",
+      "create"
+    ],
+    "exit_code": 0,
+    "stdout": "{\n  \"operationId\": \"zero-trust.access.policies.create\",\n  \"httpMethod\": \"POST\",\n  \"path\": \"/accounts/{account_id}/access/policies\",\n  \"pathParams\": [\n    {\n      \"name\": \"account_id\",\n      \"type\": \"string\",\n      \"required\": true\n    }\n  ],\n  \"queryParams\": [],\n  \"hasRequestBody\": true,\n  \"requestBodyFields\": [\n    {\n      \"name\": \"approval-groups\",\n      \"type\": \"string\",\n      \"required\": false,\n      \"description\": \"Administrators who can approve a temporary authentication request. Provide as a JSON array of objects or @path/to/file.json.\"\n    },\n    {\n      \"name\": \"approval-required\",\n      \"type\": \"boolean\",\n      \"required\": false,\n      \"description\": \"Requires the user to request access from an administrator at the start of each session.\"\n    },\n    {\n      \"name\": \"connection-rules-rdp-allowed-clipboard-local-to-remote-formats\",\n      \"type\": \"string\",\n      \"required\": false,\n      \"description\": \"Clipboard formats allowed when copying from local machine to remote RDP session.\"\n    },\n    {\n      \"name\": \"connection-rules-rdp-allowed-clipboard-remote-to-local-formats\",\n      \"type\": \"string\",\n      \"required\": false,\n      \"description\": \"Clipboard formats allowed when copying from remote RDP session to local machine.\"\n    },\n    {\n      \"name\": \"isolation-required\",\n      \"type\": \"boolean\",\n      \"required\": false,\n      \"description\": \"Require this application to be served in an isolated browser for users matching this policy. 'Client Web Isolation' must be on for the account in order to use this feature.\"\n    },\n    {\n      \"name\": \"mfa-config-allowed-authenticators\",\n      \"type\": \"string\",\n      \"required\": false,\n      \"description\": \"Lists the MFA methods that users can authenticate with.\"\n    },\n    {\n      \"name\": \"mfa-config-mfa-disabled\",\n      \"type\": \"boolean\",\n      \"required\": false,\n      \"description\": \"Indicates whether to disable MFA for this resource. This option is available at the application and policy level.\"\n    },\n    {\n      \"name\": \"mfa-config-session-duration\",\n      \"type\": \"string\",\n      \"required\": false,\n      \"description\": \"Defines the duration of an MFA session. Must be in minutes (m) or hours (h). Minimum: 0m. Maximum: 720h (30 days). Examples:`5m` or `24h`.\"\n    },\n    {\n      \"name\": \"purpose-justification-prompt\",\n      \"type\": \"string\",\n      \"required\": false,\n      \"description\": \"A custom message that will appear on the purpose justification screen.\"\n    },\n    {\n      \"name\": \"purpose-justification-required\",\n      \"type\": \"boolean\",\n      \"required\": false,\n      \"description\": \"Require users to enter a justification when they log in to the application.\"\n    },\n    {\n      \"name\": \"session-duration\",\n      \"type\": \"string\",\n      \"required\": false,\n      \"description\": \"The amount of time that tokens issued for the application will be valid. Must be in the format `300ms` or `2h45m`. Valid time units are: ns, us (or \u00b5s), ms, s, m, h.\"\n    },\n    {\n      \"name\": \"decision\",\n      \"type\": \"string\",\n      \"required\": true,\n      \"description\": \"The action Access will take if a user matches this policy. Infrastructure application policies can only use the Allow action.\"\n    },\n    {\n      \"name\": \"exclude\",\n      \"type\": \"string\",\n      \"required\": false,\n      \"description\": \"Rules evaluated with a NOT logical operator. To match the policy, a user cannot meet any of the Exclude rules. Provide as a JSON array of objects or @path/to/file.json.\"\n    },\n    {\n      \"name\": \"include\",\n      \"type\": \"string\",\n      \"required\": true,\n      \"description\": \"Rules evaluated with an OR logical operator. A user needs to meet only one of the Include rules. Provide as a JSON array of objects or @path/to/file.json.\"\n    },\n    {\n      \"name\": \"name\",\n      \"type\": \"string\",\n      \"required\": true,\n      \"description\": \"The name of the Access policy.\"\n    },\n    {\n      \"name\": \"policy-resolution-account-id\",\n      \"type\": \"string\",\n      \"required\": false,\n      \"description\": \"The account ID used to resolve policy resources and identity for cross-account WARP authentication. The account must be trusted by the account that owns this policy.\"\n    },\n    {\n      \"name\": \"require\",\n      \"type\": \"string\",\n      \"required\": false,\n      \"description\": \"Rules evaluated with an AND logical operator. To match the policy, a user must meet all of the Require rules. Provide as a JSON array of objects or @path/to/file.json.\"\n    }\n  ]\n}\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "schema",
+      "zero-trust",
+      "access",
+      "policies",
+      "update"
+    ],
+    "exit_code": 0,
+    "stdout": "{\n  \"operationId\": \"zero-trust.access.policies.update\",\n  \"httpMethod\": \"PUT\",\n  \"path\": \"/accounts/{account_id}/access/policies/{policy_id}\",\n  \"pathParams\": [\n    {\n      \"name\": \"account_id\",\n      \"type\": \"string\",\n      \"required\": true\n    },\n    {\n      \"name\": \"policy_id\",\n      \"flag\": \"policy-id\",\n      \"positional\": true,\n      \"type\": \"string\",\n      \"required\": true\n    }\n  ],\n  \"queryParams\": [],\n  \"hasRequestBody\": true,\n  \"requestBodyFields\": [\n    {\n      \"name\": \"approval-groups\",\n      \"type\": \"string\",\n      \"required\": false,\n      \"description\": \"Administrators who can approve a temporary authentication request. Provide as a JSON array of objects or @path/to/file.json.\"\n    },\n    {\n      \"name\": \"approval-required\",\n      \"type\": \"boolean\",\n      \"required\": false,\n      \"description\": \"Requires the user to request access from an administrator at the start of each session.\"\n    },\n    {\n      \"name\": \"connection-rules-rdp-allowed-clipboard-local-to-remote-formats\",\n      \"type\": \"string\",\n      \"required\": false,\n      \"description\": \"Clipboard formats allowed when copying from local machine to remote RDP session.\"\n    },\n    {\n      \"name\": \"connection-rules-rdp-allowed-clipboard-remote-to-local-formats\",\n      \"type\": \"string\",\n      \"required\": false,\n      \"description\": \"Clipboard formats allowed when copying from remote RDP session to local machine.\"\n    },\n    {\n      \"name\": \"isolation-required\",\n      \"type\": \"boolean\",\n      \"required\": false,\n      \"description\": \"Require this application to be served in an isolated browser for users matching this policy. 'Client Web Isolation' must be on for the account in order to use this feature.\"\n    },\n    {\n      \"name\": \"mfa-config-allowed-authenticators\",\n      \"type\": \"string\",\n      \"required\": false,\n      \"description\": \"Lists the MFA methods that users can authenticate with.\"\n    },\n    {\n      \"name\": \"mfa-config-mfa-disabled\",\n      \"type\": \"boolean\",\n      \"required\": false,\n      \"description\": \"Indicates whether to disable MFA for this resource. This option is available at the application and policy level.\"\n    },\n    {\n      \"name\": \"mfa-config-session-duration\",\n      \"type\": \"string\",\n      \"required\": false,\n      \"description\": \"Defines the duration of an MFA session. Must be in minutes (m) or hours (h). Minimum: 0m. Maximum: 720h (30 days). Examples:`5m` or `24h`.\"\n    },\n    {\n      \"name\": \"purpose-justification-prompt\",\n      \"type\": \"string\",\n      \"required\": false,\n      \"description\": \"A custom message that will appear on the purpose justification screen.\"\n    },\n    {\n      \"name\": \"purpose-justification-required\",\n      \"type\": \"boolean\",\n      \"required\": false,\n      \"description\": \"Require users to enter a justification when they log in to the application.\"\n    },\n    {\n      \"name\": \"session-duration\",\n      \"type\": \"string\",\n      \"required\": false,\n      \"description\": \"The amount of time that tokens issued for the application will be valid. Must be in the format `300ms` or `2h45m`. Valid time units are: ns, us (or \u00b5s), ms, s, m, h.\"\n    },\n    {\n      \"name\": \"decision\",\n      \"type\": \"string\",\n      \"required\": true,\n      \"description\": \"The action Access will take if a user matches this policy. Infrastructure application policies can only use the Allow action.\"\n    },\n    {\n      \"name\": \"exclude\",\n      \"type\": \"string\",\n      \"required\": false,\n      \"description\": \"Rules evaluated with a NOT logical operator. To match the policy, a user cannot meet any of the Exclude rules. Provide as a JSON array of objects or @path/to/file.json.\"\n    },\n    {\n      \"name\": \"include\",\n      \"type\": \"string\",\n      \"required\": true,\n      \"description\": \"Rules evaluated with an OR logical operator. A user needs to meet only one of the Include rules. Provide as a JSON array of objects or @path/to/file.json.\"\n    },\n    {\n      \"name\": \"name\",\n      \"type\": \"string\",\n      \"required\": true,\n      \"description\": \"The name of the Access policy.\"\n    },\n    {\n      \"name\": \"policy-resolution-account-id\",\n      \"type\": \"string\",\n      \"required\": false,\n      \"description\": \"The account ID used to resolve policy resources and identity for cross-account WARP authentication. The account must be trusted by the account that owns this policy.\"\n    },\n    {\n      \"name\": \"require\",\n      \"type\": \"string\",\n      \"required\": false,\n      \"description\": \"Rules evaluated with an AND logical operator. To match the policy, a user must meet all of the Require rules. Provide as a JSON array of objects or @path/to/file.json.\"\n    }\n  ]\n}\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "schema",
+      "zero-trust",
+      "access",
+      "policies",
+      "delete"
+    ],
+    "exit_code": 0,
+    "stdout": "{\n  \"operationId\": \"zero-trust.access.policies.delete\",\n  \"httpMethod\": \"DELETE\",\n  \"path\": \"/accounts/{account_id}/access/policies/{policy_id}\",\n  \"pathParams\": [\n    {\n      \"name\": \"account_id\",\n      \"type\": \"string\",\n      \"required\": true\n    },\n    {\n      \"name\": \"policy_id\",\n      \"flag\": \"policy-id\",\n      \"positional\": true,\n      \"type\": \"string\",\n      \"required\": true\n    }\n  ],\n  \"queryParams\": [],\n  \"hasRequestBody\": false,\n  \"requestBodyFields\": []\n}\n",
+    "stderr": ""
+  }
+]

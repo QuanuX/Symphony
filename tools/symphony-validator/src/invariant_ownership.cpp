@@ -596,15 +596,18 @@ std::map<std::string, AdapterEvidence> check_adapters(
             !adapter.at("format_version").is_number_unsigned() ||
             (adapter.at("format_version").get<unsigned>() != 1U &&
              !((registry_version >= 2U && adapter.at("format_version").get<unsigned>() == 2U) ||
-               (registry_version == 3U && adapter.at("format_version").get<unsigned>() == 3U))) ||
+               (registry_version >= 3U && adapter.at("format_version").get<unsigned>() == 3U) ||
+               (registry_version == 4U && adapter.at("format_version").get<unsigned>() == 4U))) ||
             !path_token(adapter.value("owner_contract", Json{})) ||
             !path_token(adapter.value("implementation_path", Json{})) ||
             !adapter.at("command_protocol").is_string() ||
-            (adapter.at("command_protocol").get<std::string>() != "symphony.foundation.lifecycle-command.v1" &&
-             adapter.at("command_protocol").get<std::string>() != "symphony.ssiag.provider.control.v1" &&
-             !(((registry_version >= 2U && adapter.at("format_version").get<unsigned>() == 2U) ||
-                (registry_version == 3U && adapter.at("format_version").get<unsigned>() == 3U)) &&
-               adapter.at("command_protocol").get<std::string>() == "symphony.knowledge.engine-process.v1")) ||
+            !([&] {
+                const auto protocol = adapter.at("command_protocol").get<std::string>();
+                const auto format = adapter.at("format_version").get<unsigned>();
+                if (protocol == "symphony.foundation.lifecycle-command.v1" || protocol == "symphony.ssiag.provider.control.v1") return true;
+                if (((registry_version >= 2U && format == 2U) || (registry_version >= 3U && format == 3U)) && protocol == "symphony.knowledge.engine-process.v1") return true;
+                return registry_version == 4U && format == 4U && std::regex_match(protocol, std::regex(R"(^symphony\.[a-z0-9]+([.-][a-z0-9]+)*\.v1$)"));
+            }()) ||
             !adapter.at("version_policy").is_string() ||
             adapter.at("version_policy").get<std::string>() !=
                 "exact_receipt_v2_entry_point_and_capability_compatible") {
@@ -628,9 +631,10 @@ std::map<std::string, AdapterEvidence> check_adapters(
             command_protocol == "symphony.knowledge.engine-process.v1" &&
             component.ends_with("-engine") && entry_point.starts_with("symphony-") &&
             component == entry_point.substr(9U) + "-engine";
-        const bool explicit_pair = registry_version == 3U &&
-            adapter.at("format_version").get<unsigned>() == 3U &&
-            command_protocol == "symphony.knowledge.engine-process.v1" &&
+        const bool explicit_pair = ((registry_version >= 3U && adapter.at("format_version").get<unsigned>() == 3U &&
+            command_protocol == "symphony.knowledge.engine-process.v1") ||
+            (registry_version == 4U && adapter.at("format_version").get<unsigned>() == 4U &&
+             std::regex_match(command_protocol, std::regex(R"(^symphony\.[a-z0-9]+([.-][a-z0-9]+)*\.v1$)")))) &&
             invariant_or_adapter_identifier(component, "") &&
             invariant_or_adapter_identifier(entry_point, "symphony-");
         const auto expected_id = "adapter:symphony:" + entry_point + ".v1";
@@ -891,7 +895,9 @@ InvariantOwnershipCheckResult check_invariant_ownership(const std::string& repo_
          (registry->at("protocol") == "symphony.knowledge.invariant-ownership-registry.v2" &&
           registry->at("format_version") == 2U) ||
          (registry->at("protocol") == "symphony.knowledge.invariant-ownership-registry.v3" &&
-          registry->at("format_version") == 3U));
+          registry->at("format_version") == 3U) ||
+         (registry->at("protocol") == "symphony.knowledge.invariant-ownership-registry.v4" &&
+          registry->at("format_version") == 4U));
     if (!exact_fields(*registry, {"adapters", "catalog_complete", "catalog_scope", "format_version",
             "forward_gate", "invariants", "protocol", "registry_digest", "scope", "test_policy"}) ||
         !known_version ||

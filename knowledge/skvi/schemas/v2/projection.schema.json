@@ -19,10 +19,9 @@
     "vector_id": {"const": "skvi"},
     "canonical_index": {"$ref": "#/$defs/file"},
     "contract_snapshot": {"$ref": "#/$defs/snapshot"},
-    "entry_count": {"type": "integer", "minimum": 0, "maximum": 2048},
+    "entry_count": {"type": "integer", "minimum": 0},
     "entries": {
       "type": "array",
-      "maxItems": 2048,
       "items": {"$ref": "urn:symphony:skvi:entry:v1"}
     },
     "noncanonical": {"const": true},

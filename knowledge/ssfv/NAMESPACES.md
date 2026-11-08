@@ -39,3 +39,5 @@ Removing or reusing an allocated prefix is prohibited. Deprecated and retired na
 ## Non-Authorization Statement
 
 This registry allocates identifiers only. It does not declare any feature implemented, create a runtime principal, reserve an external name, or authorize engine installation.
+
+The existing `ssfv:symphony` namespace additionally admits `sov-cloudflare-adapter` and `qxctl.sov-cloudflare-administration`, limited to their actual local implementation and evidence. Vendor schemas do not constitute supported features.

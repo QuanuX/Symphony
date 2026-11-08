@@ -203,6 +203,28 @@ engine::Json generic_registry_fixture(const fs::path &destination) {
                {"status", "active"}}})}};
 }
 
+void test_v4_owner_protocol() {
+    TemporaryDirectory temporary;
+    auto fixture = generic_registry_fixture(temporary.path());
+    fixture["protocol"] = "symphony.knowledge.invariant-ownership-registry.v4";
+    fixture["format_version"] = 4U;
+    fixture["adapters"][0]["format_version"] = 4U;
+    fixture["adapters"][0]["command_protocol"] = "symphony.sov.cloudflare-request.v1";
+    write_registry(temporary.path(), fixture);
+    auto result = check_invariant_ownership(temporary.path().string());
+    require(result.success, "v4 explicit owner protocol rejected:" + messages(result));
+    for (const auto v : {1U, 2U, 3U}) {
+        auto old = fixture;
+        old["protocol"] = "symphony.knowledge.invariant-ownership-registry.v" + std::to_string(v);
+        old["format_version"] = v;
+        write_registry(temporary.path(), old);
+        require(!check_invariant_ownership(temporary.path().string()).success, "owner format widened older registry");
+    }
+    fixture["adapters"][0]["format_version"] = 3U;
+    write_registry(temporary.path(), fixture);
+    require(!check_invariant_ownership(temporary.path().string()).success, "format 3 accepted new owner protocol");
+}
+
 void test_v3_explicit_adapter_ownership() {
     TemporaryDirectory temporary;
     auto fixture = generic_registry_fixture(temporary.path());
@@ -684,6 +706,7 @@ int main(int argc, char** argv) {
         test_absent();
         test_v2_generic_adapter();
         test_v3_explicit_adapter_ownership();
+        test_v4_owner_protocol();
         test_canonical(repository);
         test_registered_shv_owner_inventory(repository);
         test_cpp_header_traceability(repository);

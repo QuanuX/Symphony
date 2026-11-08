@@ -4,6 +4,7 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
+	"fmt"
 	"os"
 	"path/filepath"
 	"sort"
@@ -17,7 +18,7 @@ func TestLoadAndDeterministicQueryProjections(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if (registry.Protocol != Protocol && registry.Protocol != ProtocolV2 && registry.Protocol != ProtocolV3) || len(registry.Invariants) == 0 || len(registry.Adapters) == 0 {
+	if (registry.Protocol != Protocol && registry.Protocol != ProtocolV2 && registry.Protocol != ProtocolV3 && registry.Protocol != ProtocolV4) || len(registry.Invariants) == 0 || len(registry.Adapters) == 0 {
 		t.Fatalf("registry identity or counts = %#v", registry)
 	}
 
@@ -272,7 +273,32 @@ func TestV3ExplicitAdapterIdentityAndFrozenOlderContracts(t *testing.T) {
 func TestV3ResealedRegistryRejectsCrossAdapterOperationOwnership(t *testing.T) {
 	object := canonicalRegistryObject(t)
 	object["protocol"], object["format_version"] = ProtocolV3, 3
-	adapters := object["adapters"].([]any)
+	// Project the current inventory into the old format under test; new owner
+	// adapters must not mask the duplicate-operation rejection being exercised.
+	var adapters []any
+	removed := map[string]bool{}
+	for _, raw := range object["adapters"].([]any) {
+		a := raw.(map[string]any)
+		if fmt.Sprint(a["format_version"]) == "4" {
+			removed[a["adapter_id"].(string)] = true
+		} else {
+			adapters = append(adapters, raw)
+		}
+	}
+	var invariants []any
+	for _, raw := range object["invariants"].([]any) {
+		inv := raw.(map[string]any)
+		keep := true
+		for _, id := range inv["allowed_adapter_ids"].([]any) {
+			if removed[id.(string)] {
+				keep = false
+			}
+		}
+		if keep {
+			invariants = append(invariants, raw)
+		}
+	}
+	object["invariants"] = invariants
 	existing := adapters[0].(map[string]any)["operation_ids"].([]any)[0]
 	adapters = append(adapters, map[string]any{"adapter_id": "adapter:symphony:zz-index-worker.v1", "component": "storage-adapter",
 		"entry_point_id": "zz-index-worker", "command_protocol": "symphony.knowledge.engine-process.v1", "format_version": 3,
@@ -289,5 +315,26 @@ func TestV3ResealedRegistryRejectsCrossAdapterOperationOwnership(t *testing.T) {
 	_, err := Load(writeRepository(t, encodeRegistry(t, object)))
 	if err == nil || !strings.Contains(err.Error(), "multiple adapters") {
 		t.Fatalf("duplicate operation ownership: %v", err)
+	}
+}
+
+func TestV4OwnerProtocolKeepsOlderFormatsExact(t *testing.T) {
+	a := Adapter{AdapterID: "adapter:symphony:symphony-sov-cloudflare-adapter.v1", Component: "sov-cloudflare-adapter", EntryPointID: "symphony-sov-cloudflare-adapter", CommandProtocol: "symphony.sov.cloudflare-request.v1", FormatVersion: 4, OwnerContract: "modules/sov-cloudflare-adapter/SPEC.md", ImplementationPath: "modules/sov-cloudflare-adapter", VersionPolicy: "exact_receipt_v2_entry_point_and_capability_compatible", OperationIDs: []string{"engop:symphony:sov.cloudflare.capability.list"}}
+	if err := validateAdapterVersion(a, 4); err != nil {
+		t.Fatal(err)
+	}
+	for _, v := range []uint64{1, 2, 3} {
+		if err := validateAdapterVersion(a, v); err == nil {
+			t.Fatalf("format 4 widened registry %d", v)
+		}
+	}
+	a.FormatVersion = 3
+	if err := validateAdapterVersion(a, 4); err == nil {
+		t.Fatal("format 3 accepted new protocol")
+	}
+	a.FormatVersion = 4
+	a.ImplementationPath = "modules/foreign"
+	if err := validateAdapterVersion(a, 4); err == nil {
+		t.Fatal("foreign implementation owner accepted")
 	}
 }

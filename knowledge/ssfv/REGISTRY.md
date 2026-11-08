@@ -1381,6 +1381,25 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - record_digest: `sha256:04dd4aca66a0dad09317987fa401b6c79b0630d246866e5d6f3ecef792b004fa`
 - notes: Exact native SRRAPIV discovery, immutable binding checks, explicit resident lifecycle and recovery; no provider qualification or SSIAG readiness claim.
 
+
+- feature_id: `ssfv:symphony:sov-cloudflare-adapter`
+- feature_file: `modules/sov-cloudflare-adapter/FEATURES.md`
+- owner_contract: `modules/sov-cloudflare-adapter/SPEC.md`
+- source_scope: `modules/sov-cloudflare-adapter`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:platform`
+- record_digest: `sha256:42218a121c9260cffee9df0e34aebbea414a6a0540aa374f4eab45c3223779a7`
+- notes: C0/I1 local foundation only; provider and transport qualification remain open.
+
+- feature_id: `ssfv:symphony:qxctl.sov-cloudflare-administration`
+- feature_file: `tools/qxctl/FEATURES.md`
+- owner_contract: `tools/qxctl/MANIFEST.md`
+- source_scope: `tools/qxctl`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:qxctl`
+- record_digest: `sha256:99836e65c34706c5b070f3ed88a79dca75b570e2d5ab9f797b79b8b2b8fc5056`
+- notes: C0/I1 local foundation only; provider and transport qualification remain open.
+
 ## Prohibited Entries
 
 Do not register:
@@ -1395,4 +1414,4 @@ Do not register:
 
 ## Non-Authorization Statement
 
-This 149-record registry is an explicitly partial catalog governed by `COVERAGE.md`. It does not authorize an unratified feature record, an unregistered distributed file, repository-wide or installed-host completeness, complete legacy-invariant coverage, engine-decided feature-worthiness, or canonical mutation.
+This 151-record registry is an explicitly partial catalog governed by `COVERAGE.md`. It does not authorize an unratified feature record, an unregistered distributed file, repository-wide or installed-host completeness, complete legacy-invariant coverage, engine-decided feature-worthiness, or canonical mutation.

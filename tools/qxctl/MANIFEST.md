@@ -457,3 +457,7 @@ remote dispatch, resource reservation or deployed SSIAG authority is implied.
 The selected executable local process profile is now defined by `knowledge/sov/PROCESS-EXECUTION.md` and the independent `tools/sov-stdio-adapter/MANIFEST.md`. It adds explicit qxctl invocation and target configuration; earlier planning-only status remains historical. Real remote deployment remains unqualified.
 
 Optional scoped SSH carrier selection and invocation are defined in `knowledge/sov/SSH-CARRIER.md`; all endpoint fields, templates and schemas are qxctl accessible. Target-side setup remains explicit, and two-host deployment is not inferred.
+
+## SOV Cloudflare C0/I1
+
+Twelve `sov cloudflare cf` leaves administer installation list/inspect/plan/apply/status/reconcile, capability list/describe/schema/template and context inspect/plan through the exact independent native receipt. Full safe results are preserved across text and JSON. There is no raw cf passthrough, implicit version/account, provider secret handling or SSH behavior change. Source semantics remain owned by `knowledge/sov/cloudflare/MANIFEST.md`.
