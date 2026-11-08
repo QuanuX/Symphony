@@ -437,10 +437,13 @@
       "evidence": [
         "tools/qxctl/cmd/qxctl/sov_ssh_test.go",
         "tools/qxctl/internal/sovremote/ssh_test.go",
-        "knowledge/sov/SSH-CARRIER.md"
+        "knowledge/sov/SSH-CARRIER.md",
+        "tools/qxctl/internal/sovremote/ssh_profile_test.go",
+        "tools/qxctl/internal/sshprofile/golden_test.go",
+        "knowledge/sov/SSH-PROFILE-CARRIER.md"
       ],
       "feature_id": "ssfv:symphony:qxctl-sov-ssh-carrier",
-      "how": "Digest-bound public endpoint selection, staged carrier executable and complete typed native response validation with conservative lost-response outcomes.",
+      "how": "Complete direct v1 or explicitly planned protected v2 endpoint selection, exact carrier invocation and independent typed native response validation with conservative lost-response outcomes.",
       "implementation_languages": [
         {
           "language": "Go",
@@ -449,12 +452,16 @@
       ],
       "implementation_paths": [
         "tools/qxctl/cmd/qxctl/sov_ssh.go",
-        "tools/qxctl/internal/sovremote/ssh.go"
+        "tools/qxctl/internal/sovremote/ssh.go",
+        "tools/qxctl/internal/sovremote/ssh_profile.go",
+        "tools/qxctl/internal/sshprofile/store.go",
+        "tools/qxctl/internal/sshprofile/wire.go"
       ],
       "kind": "subfeature",
       "non_claims": [
         "No qualified two-host deployment, deployed SSIAG allow/expiry/revocation, cluster scheduling or remote provisioning.",
-        "No native checkpoint resume, automatic retry, private-key extraction or proof of remote termination from disconnection."
+        "No native checkpoint resume, automatic retry, private-key extraction or proof of remote termination from disconnection.",
+        "No qualified Cloudflare session or live provider transport; I3 establishes local protected-carrier behavior only."
       ],
       "owner_contract": "tools/qxctl/MANIFEST.md",
       "parent_feature_id": "ssfv:symphony:qxctl",

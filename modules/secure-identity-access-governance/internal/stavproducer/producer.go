@@ -14,6 +14,7 @@ import (
 type Kind string
 
 const (
+	TransportConnectionIntent Kind = "transport_connection_intent"
 	FoundationIntent          Kind = "foundation_intent"
 	FoundationOutcome         Kind = "foundation_outcome"
 	TransportProfileIntent    Kind = "transport_profile_intent"
@@ -37,6 +38,7 @@ type eventContract struct {
 }
 
 var contracts = map[Kind]eventContract{
+	TransportConnectionIntent: {eventClass: "symphony.sov.transport.connection.intent", operationID: "symphony.sov.transport.connection.prepare", intentID: "symphony.sov.transport.connection.prepare", reasons: map[string]string{"allowed": "symphony.sov.transport.connection.intent.allowed"}},
 	TransportProfileIntent: {
 		eventClass: "symphony.sov.transport.profile.intent", operationID: "symphony.sov.transport.profile.prepare", intentID: "symphony.sov.transport.profile.prepare",
 		reasons: map[string]string{"allowed": "symphony.sov.transport.profile.intent.allowed"},

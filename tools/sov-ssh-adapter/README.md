@@ -37,3 +37,5 @@ mutable through `qxctl sov target configure|inspect|remove` on the target.
 
 The complete [contract](../../knowledge/sov/SSH-CARRIER.md) explains identity,
 timeouts, cancellation, result framing, qxctl coverage and remaining qualification.
+
+For explicit protected profiles, use the [v2 carrier contract](../../knowledge/sov/SSH-PROFILE-CARRIER.md). Profile changes remain sudo gated; connections run as the admitted non-root user. Live Cloudflare sessions remain I5 qualification.

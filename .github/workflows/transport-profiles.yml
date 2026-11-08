@@ -43,11 +43,17 @@ jobs:
         run: go test -mod=readonly -race -count=1 ./...
       - name: Test SSIAG audit owner
         working-directory: modules/secure-identity-access-governance
-        run: go test -mod=readonly -race -count=1 ./internal/server ./internal/stavproducer -run 'TestTransportProfile|TestCandidate'
+        run: go test -mod=readonly -race -count=1 ./internal/server ./internal/stavproducer -run 'TestTransport|Test.*Candidate|Test.*Producer|Test.*Receipt'
       - name: Test qxctl and preserved SSH v1
         working-directory: tools/qxctl
         run: go test -mod=readonly -count=1 ./internal/transportprofile/... ./internal/invariantregistry ./internal/sovremote ./cmd/qxctl -run 'TestFixedInvocation|TestIndependentProfile|TestProfileResult|TestTransportProfile|TestV5|TestCommandRegistry|TestCheckedInExpected|TestSSH|TestSOVSSH'
-      - name: Test unchanged direct carrier
+      - name: Check independent carrier contracts
+        working-directory: tools/sov-ssh-adapter
+        run: go run ./scripts/generate_profile.go --check
+      - name: Test independent qxctl profile digest
+        working-directory: tools/qxctl
+        run: go test -mod=readonly -count=1 ./internal/sshprofile
+      - name: Test direct and protected profile carrier
         working-directory: tools/sov-ssh-adapter
         run: go test -mod=readonly -count=1 ./...
       - name: Build exact helper and disposable installed-process test
@@ -84,6 +90,18 @@ jobs:
           done
           sudo install -m 0755 "$RUNNER_TEMP/sov-transport-profile-admin" "$profile_helper_dir/sov-transport-profile-admin"
           sudo env SYMPHONY_PROFILE_ROOT_FIXTURE=1 "$RUNNER_TEMP/profile-installed.test" -test.v -test.run '^TestProtectedProfileInstalledProcess$'
+      - name: Build installed SSH profile fixture
+        if: runner.os == 'Linux'
+        working-directory: tools/sov-ssh-adapter
+        run: |
+          CGO_ENABLED=0 go build -mod=readonly -trimpath -o "$RUNNER_TEMP/i3-carrier" .
+          CGO_ENABLED=0 go test -mod=readonly -c -o "$RUNNER_TEMP/i3-carrier.test" .
+      - name: Exercise actual OpenSSH as an unprivileged user
+        if: runner.os == 'Linux'
+        run: |
+          docker run --rm -e SYMPHONY_I3_DISPOSABLE_HOST=1 \
+            -v "$RUNNER_TEMP:/evidence:ro" -v "$GITHUB_WORKSPACE:/source:ro" \
+            ubuntu:24.04 sh /source/tools/sov-ssh-adapter/tests/installed-profile.sh /evidence
       - name: Report qualification boundary
         if: always()
-        run: echo 'Local and disposable-root fixtures only. The installed helper uses a simulated committed append sink over kernel-authenticated Unix IPC. No host sudoers changes, deployed SSIAG/STAV grant, Cloudflare session or SSH connection.' >> "$GITHUB_STEP_SUMMARY"
+        run: echo 'Local and disposable-root fixtures only. The installed helper uses a simulated committed append sink over kernel-authenticated Unix IPC. The Linux profile carrier fixture uses real OpenSSH and a controlled local proxy as UID/GID 1001. No host sudoers changes, deployed SSIAG/STAV grant or Cloudflare session.' >> "$GITHUB_STEP_SUMMARY"

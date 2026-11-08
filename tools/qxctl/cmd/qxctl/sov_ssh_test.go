@@ -48,3 +48,47 @@ func TestSOVSSHEndpointCompleteSurface(t *testing.T) {
 		}
 	}
 }
+
+func TestSOVSSHProfileDiscoveryAndCompleteFailureSurface(t *testing.T) {
+	for _, op := range []string{"ssh_profile_selection", "ssh_endpoint_v2", "ssh_invoke_v2"} {
+		for _, command := range []string{"schema", "template"} {
+			machine, err := sovCommand(t, "sov", "remote", command, "--operation", op, "--json")
+			if err != nil || !json.Valid(machine) {
+				t.Fatal(command, op, err)
+			}
+		}
+	}
+	if newSOVSSH("ssh-invoke").Flags().Lookup("transport-profile") != nil {
+		t.Fatal("invocation override admitted")
+	}
+	if newSOVSSH("ssh-endpoint").Flags().Lookup("transport-profile") == nil {
+		t.Fatal("planning selection missing")
+	}
+	if os.Geteuid() == 0 {
+		t.Skip("non-root presentation of missing installation")
+	}
+	value, err := sovremote.Template("ssh_invoke_v2")
+	if err != nil {
+		t.Fatal(err)
+	}
+	raw, _ := json.Marshal(value)
+	path := filepath.Join(t.TempDir(), "invocation.json")
+	if err = os.WriteFile(path, raw, 0600); err != nil {
+		t.Fatal(err)
+	}
+	machine, err := sovCommand(t, "sov", "remote", "ssh-invoke", "--input", path, "--json")
+	if err == nil || !json.Valid(machine) {
+		t.Fatal("missing protected store must return complete refusal", err, string(machine))
+	}
+	text, err := sovCommand(t, "sov", "remote", "ssh-invoke", "--input", path)
+	if err == nil {
+		t.Fatal("missing failure exit")
+	}
+	var rendered bytes.Buffer
+	if err = renderCompleteData(&rendered, machine, "text", "SOV SSH"); err != nil {
+		t.Fatal(err)
+	}
+	if !bytes.Equal(text, rendered.Bytes()) {
+		t.Fatal("profile machine/text projection drift")
+	}
+}

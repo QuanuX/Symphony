@@ -2642,6 +2642,17 @@
       ],
       "source": "tools/sov-transport-profile-admin/installed_test.go",
       "line": 30
+    },
+    {
+      "module": "tools/sov-ssh-adapter",
+      "package": ".",
+      "test": "TestInstalledProfileRealOpenSSH",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "explicit disposable Linux host with sshd and fixture user required"
+      ],
+      "source": "tools/sov-ssh-adapter/installed_profile_test.go",
+      "line": 127
     }
   ],
   "installed_go_suites": [

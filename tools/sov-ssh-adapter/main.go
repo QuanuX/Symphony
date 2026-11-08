@@ -88,6 +88,9 @@ func run(ctx context.Context, args []string, input io.Reader, output io.Writer) 
 	if err != nil {
 		return 2
 	}
+	if isProfileInput(raw) {
+		return runProfile(ctx, raw, output)
+	}
 	in, err := contract.DecodeInput(raw)
 	if err != nil {
 		return 2

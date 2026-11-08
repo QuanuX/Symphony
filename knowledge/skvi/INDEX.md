@@ -28086,3 +28086,633 @@ automatic nested fitting and cross-run holdout history remain unimplemented.
 - deferred_projections: I3 admission, I5 Cloudflare sessions and integrated live qualification
 - notes: Source presence does not establish installed root or provider acceptance.
 - status: canonical
+
+### Protected SSH profile I3 knowledge/sov/SSH-PROFILE-CARRIER.md
+
+- path: `knowledge/sov/SSH-PROFILE-CARRIER.md`
+- title: Protected SSH profile I3 SSH-PROFILE-CARRIER.md
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV carrier and SSIAG maintainers
+- scope: Unprivileged protected-profile admission and fixed SSH proxy transport.
+- relationships: governed_by -> `knowledge/sov/SSH-PROFILE-CARRIER.md`
+- consumers: qxctl, carrier and maintainers
+- deferred_projections: I5 Cloudflare session and live qualification
+- notes: Fixtures do not establish live provider acceptance.
+- status: canonical
+
+### Protected SSH profile I3 modules/secure-identity-access-governance/internal/connectionaudit/contract.go
+
+- path: `modules/secure-identity-access-governance/internal/connectionaudit/contract.go`
+- title: Protected SSH profile I3 contract.go
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV carrier and SSIAG maintainers
+- scope: Unprivileged protected-profile admission and fixed SSH proxy transport.
+- relationships: governed_by -> `knowledge/sov/SSH-PROFILE-CARRIER.md`
+- consumers: qxctl, carrier and maintainers
+- deferred_projections: I5 Cloudflare session and live qualification
+- notes: Fixtures do not establish live provider acceptance.
+- status: canonical
+
+### Protected SSH profile I3 modules/secure-identity-access-governance/internal/server/transport_connection_audit.go
+
+- path: `modules/secure-identity-access-governance/internal/server/transport_connection_audit.go`
+- title: Protected SSH profile I3 transport_connection_audit.go
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV carrier and SSIAG maintainers
+- scope: Unprivileged protected-profile admission and fixed SSH proxy transport.
+- relationships: governed_by -> `knowledge/sov/SSH-PROFILE-CARRIER.md`
+- consumers: qxctl, carrier and maintainers
+- deferred_projections: I5 Cloudflare session and live qualification
+- notes: Fixtures do not establish live provider acceptance.
+- status: canonical
+
+### Protected SSH profile I3 modules/secure-identity-access-governance/internal/server/transport_connection_audit_test.go
+
+- path: `modules/secure-identity-access-governance/internal/server/transport_connection_audit_test.go`
+- title: Protected SSH profile I3 transport_connection_audit_test.go
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV carrier and SSIAG maintainers
+- scope: Unprivileged protected-profile admission and fixed SSH proxy transport.
+- relationships: governed_by -> `knowledge/sov/SSH-PROFILE-CARRIER.md`
+- consumers: qxctl, carrier and maintainers
+- deferred_projections: I5 Cloudflare session and live qualification
+- notes: Fixtures do not establish live provider acceptance.
+- status: canonical
+
+### Protected SSH profile I3 tools/qxctl/internal/sovremote/ssh_profile.go
+
+- path: `tools/qxctl/internal/sovremote/ssh_profile.go`
+- title: Protected SSH profile I3 ssh_profile.go
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV carrier and SSIAG maintainers
+- scope: Unprivileged protected-profile admission and fixed SSH proxy transport.
+- relationships: governed_by -> `knowledge/sov/SSH-PROFILE-CARRIER.md`
+- consumers: qxctl, carrier and maintainers
+- deferred_projections: I5 Cloudflare session and live qualification
+- notes: Fixtures do not establish live provider acceptance.
+- status: canonical
+
+### Protected SSH profile I3 tools/qxctl/internal/sshprofile/files_unix.go
+
+- path: `tools/qxctl/internal/sshprofile/files_unix.go`
+- title: Protected SSH profile I3 files_unix.go
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV carrier and SSIAG maintainers
+- scope: Unprivileged protected-profile admission and fixed SSH proxy transport.
+- relationships: governed_by -> `knowledge/sov/SSH-PROFILE-CARRIER.md`
+- consumers: qxctl, carrier and maintainers
+- deferred_projections: I5 Cloudflare session and live qualification
+- notes: Fixtures do not establish live provider acceptance.
+- status: canonical
+
+### Protected SSH profile I3 tools/qxctl/internal/sshprofile/packages_unix.go
+
+- path: `tools/qxctl/internal/sshprofile/packages_unix.go`
+- title: Protected SSH profile I3 packages_unix.go
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV carrier and SSIAG maintainers
+- scope: Unprivileged protected-profile admission and fixed SSH proxy transport.
+- relationships: governed_by -> `knowledge/sov/SSH-PROFILE-CARRIER.md`
+- consumers: qxctl, carrier and maintainers
+- deferred_projections: I5 Cloudflare session and live qualification
+- notes: Fixtures do not establish live provider acceptance.
+- status: canonical
+
+### Protected SSH profile I3 tools/qxctl/internal/sshprofile/private.go
+
+- path: `tools/qxctl/internal/sshprofile/private.go`
+- title: Protected SSH profile I3 private.go
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV carrier and SSIAG maintainers
+- scope: Unprivileged protected-profile admission and fixed SSH proxy transport.
+- relationships: governed_by -> `knowledge/sov/SSH-PROFILE-CARRIER.md`
+- consumers: qxctl, carrier and maintainers
+- deferred_projections: I5 Cloudflare session and live qualification
+- notes: Fixtures do not establish live provider acceptance.
+- status: canonical
+
+### Protected SSH profile I3 tools/qxctl/internal/sshprofile/receipt.go
+
+- path: `tools/qxctl/internal/sshprofile/receipt.go`
+- title: Protected SSH profile I3 receipt.go
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV carrier and SSIAG maintainers
+- scope: Unprivileged protected-profile admission and fixed SSH proxy transport.
+- relationships: governed_by -> `knowledge/sov/SSH-PROFILE-CARRIER.md`
+- consumers: qxctl, carrier and maintainers
+- deferred_projections: I5 Cloudflare session and live qualification
+- notes: Fixtures do not establish live provider acceptance.
+- status: canonical
+
+### Protected SSH profile I3 tools/qxctl/internal/sshprofile/store.go
+
+- path: `tools/qxctl/internal/sshprofile/store.go`
+- title: Protected SSH profile I3 store.go
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV carrier and SSIAG maintainers
+- scope: Unprivileged protected-profile admission and fixed SSH proxy transport.
+- relationships: governed_by -> `knowledge/sov/SSH-PROFILE-CARRIER.md`
+- consumers: qxctl, carrier and maintainers
+- deferred_projections: I5 Cloudflare session and live qualification
+- notes: Fixtures do not establish live provider acceptance.
+- status: canonical
+
+### Protected SSH profile I3 tools/qxctl/internal/sshprofile/wire.go
+
+- path: `tools/qxctl/internal/sshprofile/wire.go`
+- title: Protected SSH profile I3 wire.go
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV carrier and SSIAG maintainers
+- scope: Unprivileged protected-profile admission and fixed SSH proxy transport.
+- relationships: governed_by -> `knowledge/sov/SSH-PROFILE-CARRIER.md`
+- consumers: qxctl, carrier and maintainers
+- deferred_projections: I5 Cloudflare session and live qualification
+- notes: Fixtures do not establish live provider acceptance.
+- status: canonical
+
+### Protected SSH profile I3 tools/qxctl/internal/sshprofilewire/codec.go
+
+- path: `tools/qxctl/internal/sshprofilewire/codec.go`
+- title: Protected SSH profile I3 codec.go
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV carrier and SSIAG maintainers
+- scope: Unprivileged protected-profile admission and fixed SSH proxy transport.
+- relationships: governed_by -> `knowledge/sov/SSH-PROFILE-CARRIER.md`
+- consumers: qxctl, carrier and maintainers
+- deferred_projections: I5 Cloudflare session and live qualification
+- notes: Fixtures do not establish live provider acceptance.
+- status: canonical
+
+### Protected SSH profile I3 tools/qxctl/internal/sshprofilewire/presentation.go
+
+- path: `tools/qxctl/internal/sshprofilewire/presentation.go`
+- title: Protected SSH profile I3 presentation.go
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV carrier and SSIAG maintainers
+- scope: Unprivileged protected-profile admission and fixed SSH proxy transport.
+- relationships: governed_by -> `knowledge/sov/SSH-PROFILE-CARRIER.md`
+- consumers: qxctl, carrier and maintainers
+- deferred_projections: I5 Cloudflare session and live qualification
+- notes: Fixtures do not establish live provider acceptance.
+- status: canonical
+
+### Protected SSH profile I3 tools/qxctl/internal/sshprofilewire/types.go
+
+- path: `tools/qxctl/internal/sshprofilewire/types.go`
+- title: Protected SSH profile I3 types.go
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV carrier and SSIAG maintainers
+- scope: Unprivileged protected-profile admission and fixed SSH proxy transport.
+- relationships: governed_by -> `knowledge/sov/SSH-PROFILE-CARRIER.md`
+- consumers: qxctl, carrier and maintainers
+- deferred_projections: I5 Cloudflare session and live qualification
+- notes: Fixtures do not establish live provider acceptance.
+- status: canonical
+
+### Protected SSH profile I3 tools/qxctl/internal/sshprofilewire/validate.go
+
+- path: `tools/qxctl/internal/sshprofilewire/validate.go`
+- title: Protected SSH profile I3 validate.go
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV carrier and SSIAG maintainers
+- scope: Unprivileged protected-profile admission and fixed SSH proxy transport.
+- relationships: governed_by -> `knowledge/sov/SSH-PROFILE-CARRIER.md`
+- consumers: qxctl, carrier and maintainers
+- deferred_projections: I5 Cloudflare session and live qualification
+- notes: Fixtures do not establish live provider acceptance.
+- status: canonical
+
+### Protected SSH profile I3 tools/sov-ssh-adapter/auditclient/client.go
+
+- path: `tools/sov-ssh-adapter/auditclient/client.go`
+- title: Protected SSH profile I3 client.go
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV carrier and SSIAG maintainers
+- scope: Unprivileged protected-profile admission and fixed SSH proxy transport.
+- relationships: governed_by -> `knowledge/sov/SSH-PROFILE-CARRIER.md`
+- consumers: qxctl, carrier and maintainers
+- deferred_projections: I5 Cloudflare session and live qualification
+- notes: Fixtures do not establish live provider acceptance.
+- status: canonical
+
+### Protected SSH profile I3 tools/sov-ssh-adapter/auditclient/peerauth_darwin.go
+
+- path: `tools/sov-ssh-adapter/auditclient/peerauth_darwin.go`
+- title: Protected SSH profile I3 peerauth_darwin.go
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV carrier and SSIAG maintainers
+- scope: Unprivileged protected-profile admission and fixed SSH proxy transport.
+- relationships: governed_by -> `knowledge/sov/SSH-PROFILE-CARRIER.md`
+- consumers: qxctl, carrier and maintainers
+- deferred_projections: I5 Cloudflare session and live qualification
+- notes: Fixtures do not establish live provider acceptance.
+- status: canonical
+
+### Protected SSH profile I3 tools/sov-ssh-adapter/auditclient/peerauth_linux.go
+
+- path: `tools/sov-ssh-adapter/auditclient/peerauth_linux.go`
+- title: Protected SSH profile I3 peerauth_linux.go
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV carrier and SSIAG maintainers
+- scope: Unprivileged protected-profile admission and fixed SSH proxy transport.
+- relationships: governed_by -> `knowledge/sov/SSH-PROFILE-CARRIER.md`
+- consumers: qxctl, carrier and maintainers
+- deferred_projections: I5 Cloudflare session and live qualification
+- notes: Fixtures do not establish live provider acceptance.
+- status: canonical
+
+### Protected SSH profile I3 tools/sov-ssh-adapter/auditclient/peerauth_unsupported.go
+
+- path: `tools/sov-ssh-adapter/auditclient/peerauth_unsupported.go`
+- title: Protected SSH profile I3 peerauth_unsupported.go
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV carrier and SSIAG maintainers
+- scope: Unprivileged protected-profile admission and fixed SSH proxy transport.
+- relationships: governed_by -> `knowledge/sov/SSH-PROFILE-CARRIER.md`
+- consumers: qxctl, carrier and maintainers
+- deferred_projections: I5 Cloudflare session and live qualification
+- notes: Fixtures do not establish live provider acceptance.
+- status: canonical
+
+### Protected SSH profile I3 tools/sov-ssh-adapter/connectionaudit/contract.go
+
+- path: `tools/sov-ssh-adapter/connectionaudit/contract.go`
+- title: Protected SSH profile I3 contract.go
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV carrier and SSIAG maintainers
+- scope: Unprivileged protected-profile admission and fixed SSH proxy transport.
+- relationships: governed_by -> `knowledge/sov/SSH-PROFILE-CARRIER.md`
+- consumers: qxctl, carrier and maintainers
+- deferred_projections: I5 Cloudflare session and live qualification
+- notes: Fixtures do not establish live provider acceptance.
+- status: canonical
+
+### Protected SSH profile I3 tools/sov-ssh-adapter/connectionaudit/contract_test.go
+
+- path: `tools/sov-ssh-adapter/connectionaudit/contract_test.go`
+- title: Protected SSH profile I3 contract_test.go
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV carrier and SSIAG maintainers
+- scope: Unprivileged protected-profile admission and fixed SSH proxy transport.
+- relationships: governed_by -> `knowledge/sov/SSH-PROFILE-CARRIER.md`
+- consumers: qxctl, carrier and maintainers
+- deferred_projections: I5 Cloudflare session and live qualification
+- notes: Fixtures do not establish live provider acceptance.
+- status: canonical
+
+### Protected SSH profile I3 tools/sov-ssh-adapter/go.sum
+
+- path: `tools/sov-ssh-adapter/go.sum`
+- title: Protected SSH profile I3 go.sum
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV carrier and SSIAG maintainers
+- scope: Unprivileged protected-profile admission and fixed SSH proxy transport.
+- relationships: governed_by -> `knowledge/sov/SSH-PROFILE-CARRIER.md`
+- consumers: qxctl, carrier and maintainers
+- deferred_projections: I5 Cloudflare session and live qualification
+- notes: Fixtures do not establish live provider acceptance.
+- status: canonical
+
+### Protected SSH profile I3 tools/sov-ssh-adapter/installed_profile_test.go
+
+- path: `tools/sov-ssh-adapter/installed_profile_test.go`
+- title: Protected SSH profile I3 installed_profile_test.go
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV carrier and SSIAG maintainers
+- scope: Unprivileged protected-profile admission and fixed SSH proxy transport.
+- relationships: governed_by -> `knowledge/sov/SSH-PROFILE-CARRIER.md`
+- consumers: qxctl, carrier and maintainers
+- deferred_projections: I5 Cloudflare session and live qualification
+- notes: Fixtures do not establish live provider acceptance.
+- status: canonical
+
+### Protected SSH profile I3 tools/sov-ssh-adapter/profile/files_unix.go
+
+- path: `tools/sov-ssh-adapter/profile/files_unix.go`
+- title: Protected SSH profile I3 files_unix.go
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV carrier and SSIAG maintainers
+- scope: Unprivileged protected-profile admission and fixed SSH proxy transport.
+- relationships: governed_by -> `knowledge/sov/SSH-PROFILE-CARRIER.md`
+- consumers: qxctl, carrier and maintainers
+- deferred_projections: I5 Cloudflare session and live qualification
+- notes: Fixtures do not establish live provider acceptance.
+- status: canonical
+
+### Protected SSH profile I3 tools/sov-ssh-adapter/profile/packages_unix.go
+
+- path: `tools/sov-ssh-adapter/profile/packages_unix.go`
+- title: Protected SSH profile I3 packages_unix.go
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV carrier and SSIAG maintainers
+- scope: Unprivileged protected-profile admission and fixed SSH proxy transport.
+- relationships: governed_by -> `knowledge/sov/SSH-PROFILE-CARRIER.md`
+- consumers: qxctl, carrier and maintainers
+- deferred_projections: I5 Cloudflare session and live qualification
+- notes: Fixtures do not establish live provider acceptance.
+- status: canonical
+
+### Protected SSH profile I3 tools/sov-ssh-adapter/profile/private.go
+
+- path: `tools/sov-ssh-adapter/profile/private.go`
+- title: Protected SSH profile I3 private.go
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV carrier and SSIAG maintainers
+- scope: Unprivileged protected-profile admission and fixed SSH proxy transport.
+- relationships: governed_by -> `knowledge/sov/SSH-PROFILE-CARRIER.md`
+- consumers: qxctl, carrier and maintainers
+- deferred_projections: I5 Cloudflare session and live qualification
+- notes: Fixtures do not establish live provider acceptance.
+- status: canonical
+
+### Protected SSH profile I3 tools/sov-ssh-adapter/profile/profile_test.go
+
+- path: `tools/sov-ssh-adapter/profile/profile_test.go`
+- title: Protected SSH profile I3 profile_test.go
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV carrier and SSIAG maintainers
+- scope: Unprivileged protected-profile admission and fixed SSH proxy transport.
+- relationships: governed_by -> `knowledge/sov/SSH-PROFILE-CARRIER.md`
+- consumers: qxctl, carrier and maintainers
+- deferred_projections: I5 Cloudflare session and live qualification
+- notes: Fixtures do not establish live provider acceptance.
+- status: canonical
+
+### Protected SSH profile I3 tools/sov-ssh-adapter/profile/receipt.go
+
+- path: `tools/sov-ssh-adapter/profile/receipt.go`
+- title: Protected SSH profile I3 receipt.go
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV carrier and SSIAG maintainers
+- scope: Unprivileged protected-profile admission and fixed SSH proxy transport.
+- relationships: governed_by -> `knowledge/sov/SSH-PROFILE-CARRIER.md`
+- consumers: qxctl, carrier and maintainers
+- deferred_projections: I5 Cloudflare session and live qualification
+- notes: Fixtures do not establish live provider acceptance.
+- status: canonical
+
+### Protected SSH profile I3 tools/sov-ssh-adapter/profile/store.go
+
+- path: `tools/sov-ssh-adapter/profile/store.go`
+- title: Protected SSH profile I3 store.go
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV carrier and SSIAG maintainers
+- scope: Unprivileged protected-profile admission and fixed SSH proxy transport.
+- relationships: governed_by -> `knowledge/sov/SSH-PROFILE-CARRIER.md`
+- consumers: qxctl, carrier and maintainers
+- deferred_projections: I5 Cloudflare session and live qualification
+- notes: Fixtures do not establish live provider acceptance.
+- status: canonical
+
+### Protected SSH profile I3 tools/sov-ssh-adapter/profile/wire.go
+
+- path: `tools/sov-ssh-adapter/profile/wire.go`
+- title: Protected SSH profile I3 wire.go
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV carrier and SSIAG maintainers
+- scope: Unprivileged protected-profile admission and fixed SSH proxy transport.
+- relationships: governed_by -> `knowledge/sov/SSH-PROFILE-CARRIER.md`
+- consumers: qxctl, carrier and maintainers
+- deferred_projections: I5 Cloudflare session and live qualification
+- notes: Fixtures do not establish live provider acceptance.
+- status: canonical
+
+### Protected SSH profile I3 tools/sov-ssh-adapter/profile_run.go
+
+- path: `tools/sov-ssh-adapter/profile_run.go`
+- title: Protected SSH profile I3 profile_run.go
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV carrier and SSIAG maintainers
+- scope: Unprivileged protected-profile admission and fixed SSH proxy transport.
+- relationships: governed_by -> `knowledge/sov/SSH-PROFILE-CARRIER.md`
+- consumers: qxctl, carrier and maintainers
+- deferred_projections: I5 Cloudflare session and live qualification
+- notes: Fixtures do not establish live provider acceptance.
+- status: canonical
+
+### Protected SSH profile I3 tools/sov-ssh-adapter/profilewire/codec.go
+
+- path: `tools/sov-ssh-adapter/profilewire/codec.go`
+- title: Protected SSH profile I3 codec.go
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV carrier and SSIAG maintainers
+- scope: Unprivileged protected-profile admission and fixed SSH proxy transport.
+- relationships: governed_by -> `knowledge/sov/SSH-PROFILE-CARRIER.md`
+- consumers: qxctl, carrier and maintainers
+- deferred_projections: I5 Cloudflare session and live qualification
+- notes: Fixtures do not establish live provider acceptance.
+- status: canonical
+
+### Protected SSH profile I3 tools/sov-ssh-adapter/profilewire/presentation.go
+
+- path: `tools/sov-ssh-adapter/profilewire/presentation.go`
+- title: Protected SSH profile I3 presentation.go
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV carrier and SSIAG maintainers
+- scope: Unprivileged protected-profile admission and fixed SSH proxy transport.
+- relationships: governed_by -> `knowledge/sov/SSH-PROFILE-CARRIER.md`
+- consumers: qxctl, carrier and maintainers
+- deferred_projections: I5 Cloudflare session and live qualification
+- notes: Fixtures do not establish live provider acceptance.
+- status: canonical
+
+### Protected SSH profile I3 tools/sov-ssh-adapter/profilewire/types.go
+
+- path: `tools/sov-ssh-adapter/profilewire/types.go`
+- title: Protected SSH profile I3 types.go
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV carrier and SSIAG maintainers
+- scope: Unprivileged protected-profile admission and fixed SSH proxy transport.
+- relationships: governed_by -> `knowledge/sov/SSH-PROFILE-CARRIER.md`
+- consumers: qxctl, carrier and maintainers
+- deferred_projections: I5 Cloudflare session and live qualification
+- notes: Fixtures do not establish live provider acceptance.
+- status: canonical
+
+### Protected SSH profile I3 tools/sov-ssh-adapter/profilewire/validate.go
+
+- path: `tools/sov-ssh-adapter/profilewire/validate.go`
+- title: Protected SSH profile I3 validate.go
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV carrier and SSIAG maintainers
+- scope: Unprivileged protected-profile admission and fixed SSH proxy transport.
+- relationships: governed_by -> `knowledge/sov/SSH-PROFILE-CARRIER.md`
+- consumers: qxctl, carrier and maintainers
+- deferred_projections: I5 Cloudflare session and live qualification
+- notes: Fixtures do not establish live provider acceptance.
+- status: canonical
+
+### Protected SSH profile I3 tools/sov-ssh-adapter/scripts/generate_profile.go
+
+- path: `tools/sov-ssh-adapter/scripts/generate_profile.go`
+- title: Protected SSH profile I3 generate_profile.go
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV carrier and SSIAG maintainers
+- scope: Unprivileged protected-profile admission and fixed SSH proxy transport.
+- relationships: governed_by -> `knowledge/sov/SSH-PROFILE-CARRIER.md`
+- consumers: qxctl, carrier and maintainers
+- deferred_projections: I5 Cloudflare session and live qualification
+- notes: Fixtures do not establish live provider acceptance.
+- status: canonical
+
+### Protected SSH profile I3 tools/qxctl/internal/sovremote/ssh_profile_test.go
+
+- path: `tools/qxctl/internal/sovremote/ssh_profile_test.go`
+- title: Protected SSH profile I3 ssh_profile_test.go
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV carrier and SSIAG maintainers
+- scope: Unprivileged protected-profile admission and fixed SSH proxy transport.
+- relationships: governed_by -> `knowledge/sov/SSH-PROFILE-CARRIER.md`
+- consumers: qxctl, carrier and maintainers
+- deferred_projections: I5 Cloudflare session and live qualification
+- notes: Fixtures do not establish live provider acceptance.
+- status: canonical
+
+### Protected SSH profile I3 tools/qxctl/internal/sshprofile/golden_test.go
+
+- path: `tools/qxctl/internal/sshprofile/golden_test.go`
+- title: Protected SSH profile I3 golden_test.go
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV carrier and SSIAG maintainers
+- scope: Unprivileged protected-profile admission and fixed SSH proxy transport.
+- relationships: governed_by -> `knowledge/sov/SSH-PROFILE-CARRIER.md`
+- consumers: qxctl, carrier and maintainers
+- deferred_projections: I5 Cloudflare session and live qualification
+- notes: Fixtures do not establish live provider acceptance.
+- status: canonical
+
+### Protected SSH profile I3 tools/sov-ssh-adapter/auditclient/client_test.go
+
+- path: `tools/sov-ssh-adapter/auditclient/client_test.go`
+- title: Protected SSH profile I3 client_test.go
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV carrier and SSIAG maintainers
+- scope: Unprivileged protected-profile admission and fixed SSH proxy transport.
+- relationships: governed_by -> `knowledge/sov/SSH-PROFILE-CARRIER.md`
+- consumers: qxctl, carrier and maintainers
+- deferred_projections: I5 Cloudflare session and live qualification
+- notes: Fixtures do not establish live provider acceptance.
+- status: canonical
+
+### Protected SSH profile I3 tools/sov-ssh-adapter/profile/golden_test.go
+
+- path: `tools/sov-ssh-adapter/profile/golden_test.go`
+- title: Protected SSH profile I3 golden_test.go
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV carrier and SSIAG maintainers
+- scope: Unprivileged protected-profile admission and fixed SSH proxy transport.
+- relationships: governed_by -> `knowledge/sov/SSH-PROFILE-CARRIER.md`
+- consumers: qxctl, carrier and maintainers
+- deferred_projections: I5 Cloudflare session and live qualification
+- notes: Fixtures do not establish live provider acceptance.
+- status: canonical
+
+### Protected SSH profile I3 tools/sov-ssh-adapter/testdata/endpoint-v2.json
+
+- path: `tools/sov-ssh-adapter/testdata/endpoint-v2.json`
+- title: Protected SSH profile I3 endpoint-v2.json
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV carrier and SSIAG maintainers
+- scope: Unprivileged protected-profile admission and fixed SSH proxy transport.
+- relationships: governed_by -> `knowledge/sov/SSH-PROFILE-CARRIER.md`
+- consumers: qxctl, carrier and maintainers
+- deferred_projections: I5 Cloudflare session and live qualification
+- notes: Fixtures do not establish live provider acceptance.
+- status: canonical
+
+### Protected SSH profile I3 tools/sov-ssh-adapter/testdata/endpoint-v2.sha256
+
+- path: `tools/sov-ssh-adapter/testdata/endpoint-v2.sha256`
+- title: Protected SSH profile I3 endpoint-v2.sha256
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV carrier and SSIAG maintainers
+- scope: Unprivileged protected-profile admission and fixed SSH proxy transport.
+- relationships: governed_by -> `knowledge/sov/SSH-PROFILE-CARRIER.md`
+- consumers: qxctl, carrier and maintainers
+- deferred_projections: I5 Cloudflare session and live qualification
+- notes: Fixtures do not establish live provider acceptance.
+- status: canonical
+
+### Protected SSH profile I3 tools/sov-ssh-adapter/tests/installed-profile.sh
+
+- path: `tools/sov-ssh-adapter/tests/installed-profile.sh`
+- title: Protected SSH profile I3 installed-profile.sh
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV carrier and SSIAG maintainers
+- scope: Unprivileged protected-profile admission and fixed SSH proxy transport.
+- relationships: governed_by -> `knowledge/sov/SSH-PROFILE-CARRIER.md`
+- consumers: qxctl, carrier and maintainers
+- deferred_projections: I5 Cloudflare session and live qualification
+- notes: Fixtures do not establish live provider acceptance.
+- status: canonical
+
+### Protected SSH profile I3 tools/qxctl/internal/sshprofile/testdata/endpoint-v2.json
+
+- path: `tools/qxctl/internal/sshprofile/testdata/endpoint-v2.json`
+- title: Protected SSH profile I3 endpoint-v2.json
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV carrier and SSIAG maintainers
+- scope: Unprivileged protected-profile admission and fixed SSH proxy transport.
+- relationships: governed_by -> `knowledge/sov/SSH-PROFILE-CARRIER.md`
+- consumers: qxctl, carrier and maintainers
+- deferred_projections: I5 Cloudflare session and live qualification
+- notes: Fixtures do not establish live provider acceptance.
+- status: canonical
+
+### Protected SSH profile I3 tools/qxctl/internal/sshprofile/testdata/endpoint-v2.sha256
+
+- path: `tools/qxctl/internal/sshprofile/testdata/endpoint-v2.sha256`
+- title: Protected SSH profile I3 endpoint-v2.sha256
+- surface_type: implementation or conformance source
+- truth_role: Exact owner definition or explicitly scoped implementation evidence
+- owner: SOV carrier and SSIAG maintainers
+- scope: Unprivileged protected-profile admission and fixed SSH proxy transport.
+- relationships: governed_by -> `knowledge/sov/SSH-PROFILE-CARRIER.md`
+- consumers: qxctl, carrier and maintainers
+- deferred_projections: I5 Cloudflare session and live qualification
+- notes: Fixtures do not establish live provider acceptance.
+- status: canonical

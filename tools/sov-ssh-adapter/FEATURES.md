@@ -25,10 +25,13 @@
       "evidence": [
         "tools/sov-ssh-adapter/main_test.go",
         "tools/sov-ssh-adapter/contract/contract_test.go",
-        "knowledge/sov/SSH-CARRIER.md"
+        "knowledge/sov/SSH-CARRIER.md",
+        "tools/sov-ssh-adapter/profile/profile_test.go",
+        "tools/sov-ssh-adapter/installed_profile_test.go",
+        "knowledge/sov/SSH-PROFILE-CARRIER.md"
       ],
       "feature_id": "ssfv:symphony:sov-ssh-adapter",
-      "how": "Digest-bound public endpoint selection, staged carrier executable and complete typed native response validation with conservative lost-response outcomes.",
+      "how": "Exact v1 remains direct. Explicit v2 uses a protected snapshot and package closure, kernel-principal admission under the shared lock, authenticated committed intent, private dispatch evidence and a fixed quoted proxy wrapper.",
       "implementation_languages": [
         {
           "language": "Go",
@@ -36,13 +39,19 @@
         }
       ],
       "implementation_paths": [
+        "tools/sov-ssh-adapter/auditclient/client.go",
         "tools/sov-ssh-adapter/contract/contract.go",
-        "tools/sov-ssh-adapter/main.go"
+        "tools/sov-ssh-adapter/main.go",
+        "tools/sov-ssh-adapter/profile/private.go",
+        "tools/sov-ssh-adapter/profile/store.go",
+        "tools/sov-ssh-adapter/profile/wire.go",
+        "tools/sov-ssh-adapter/profile_run.go"
       ],
       "kind": "feature",
       "non_claims": [
         "No qualified two-host deployment, deployed SSIAG allow/expiry/revocation, cluster scheduling or remote provisioning.",
-        "No native checkpoint resume, automatic retry, private-key extraction or proof of remote termination from disconnection."
+        "No native checkpoint resume, automatic retry, private-key extraction or proof of remote termination from disconnection.",
+        "No qualified Cloudflare session or live provider transport; I3 establishes local protected-carrier behavior only."
       ],
       "owner_contract": "tools/sov-ssh-adapter/MANIFEST.md",
       "parent_feature_id": "ssfv:symphony:platform",

@@ -1,0 +1,116 @@
+{
+  "protocol": "symphony.sov.ssh-endpoint.v2",
+  "direct": {
+    "protocol": "symphony.sov.ssh-endpoint.v1",
+    "ssh": {
+      "path": "/usr/bin/ssh",
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    "ssh_execution": "protected_system_path",
+    "host": "example.invalid",
+    "port": "22",
+    "user": "example",
+    "host_public_key": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+    "client_public_key": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+    "agent_socket": "/example/agent.sock",
+    "connect_timeout_seconds": null,
+    "target_launcher": {
+      "path": "/example/sov-stdio-adapter",
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+    }
+  },
+  "scope": {
+    "host_id": "11111111-1111-4111-8111-111111111111",
+    "tops_id": "22222222-2222-4222-8222-222222222222"
+  },
+  "application": "access.example.invalid",
+  "session_directory": "/example/private-session",
+  "journal_directory": "/example/private-dispatch",
+  "snapshot": {
+    "protocol": "symphony.sov.transport-profile-snapshot.v1",
+    "profile": {
+      "protocol": "symphony.sov.ssh-transport-profile.v1",
+      "scope": {
+        "host_id": "11111111-1111-4111-8111-111111111111",
+        "tops_id": "22222222-2222-4222-8222-222222222222"
+      },
+      "profile_id": "33333333-3333-4333-8333-333333333333",
+      "generation": "1",
+      "state": "enabled",
+      "policy": {
+        "generation": "1",
+        "digest": "sha256:0d1ae730b5554adfb855a11a585b143860014fedcb915215f1233159dc2e7343"
+      },
+      "configuration": {
+        "name": "example",
+        "transport_kind": "cloudflare-access",
+        "platform": "darwin-amd64",
+        "execution_profile": "cloudflare-access-user-session.v1",
+        "adapter": {
+          "package_id": "66666666-6666-4666-8666-666666666666",
+          "version": "0.1.0-dev",
+          "manifest_digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+          "receipt_digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+          "executable_digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+        },
+        "ssh": {
+          "package_id": "66666666-6666-4666-8666-666666666666",
+          "version": "0.1.0-dev",
+          "manifest_digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+          "receipt_digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+          "executable_digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+        },
+        "helper": {
+          "package_id": "66666666-6666-4666-8666-666666666666",
+          "version": "0.1.0-dev",
+          "manifest_digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+          "receipt_digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+          "executable_digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+        },
+        "applications": [
+          "access.example.invalid"
+        ],
+        "endpoints": [
+          {
+            "host": "example.invalid",
+            "port": "22",
+            "user": "example",
+            "host_key_digest": "sha256:92661cbdd8b61a43de5b107a5cb8eb641f091eccb61e6f25b87305a7d18cbea9"
+          }
+        ],
+        "authentication_mode": "user_session",
+        "session_ref": "session:example",
+        "limits": {
+          "control_bytes": "8388608",
+          "captured_bytes": "1048576",
+          "cleanup_seconds": "5",
+          "caller_timeout": true
+        },
+        "compatibility": [
+          "symphony.sov.ssh-endpoint.v2",
+          "symphony.sov.ssh-invoke-input.v2",
+          "symphony.sov.ssh-carrier-result.v2"
+        ]
+      },
+      "digest": "sha256:b6d9ccfd59c5484e72d2e16f525daee2f3b557b4f1cdba13dbeaf2dd0c966e0b"
+    },
+    "policy": {
+      "protocol": "symphony.sov.ssh-transport-policy.v1",
+      "scope": {
+        "host_id": "11111111-1111-4111-8111-111111111111",
+        "tops_id": "22222222-2222-4222-8222-222222222222"
+      },
+      "profile_id": "33333333-3333-4333-8333-333333333333",
+      "profile_generation": "1",
+      "generation": "1",
+      "permitted": [
+        {
+          "uid": "501",
+          "gid": "20"
+        }
+      ],
+      "digest": "sha256:0d1ae730b5554adfb855a11a585b143860014fedcb915215f1233159dc2e7343"
+    },
+    "digest": "sha256:2ad5a54e32e43d1d9554ca381ebdf7de3bef4b257b72e97dbc9e8b710165ddbc"
+  }
+}

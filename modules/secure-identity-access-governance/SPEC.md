@@ -117,3 +117,5 @@ Local peer authentication, exact UID/GID subject resolution, target-host-owner d
 ## Protected transport profile audit bridge (I2)
 
 `POST /v1/transport-profile/audit` accepts the closed `symphony.ssiag.transport-profile-audit.v1` contract only from kernel UID 0 on system-mode SSIAG for its exact TOPS. It projects the declared profile prepare/observe STAV pairs, requires the existing authenticated append channel and independently checks exact committed receipt binding. It grants no local-v1 capability transfer or remote authority. See `tools/sov-transport-profile-admin/SPEC.md` for journal ordering and the separately provisioned producer grant. No host policy, package, profile or grant is installed by this endpoint.
+
+The system `/v1/transport-connection/audit` endpoint records a non-root kernel peer's exact transport dispatch intent through STAV. See `knowledge/sov/SSH-PROFILE-CARRIER.md`. The receipt supplies no profile or remote-target authority.

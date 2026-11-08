@@ -946,7 +946,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `modules/secure-identity-access-governance`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:ssiag-foundation`
-- record_digest: `sha256:44efe5e3e90ece174702d7c0084e516f8b7ab60cecea917669b2bfd2b0ffa965`
+- record_digest: `sha256:0110c00e1098c2e3256aa045d4a1048bb9691481e4df5409518d15ec04651511`
 - notes: Architect-ratified F2 subfeature for closed safe SSIAG audit production; coverage remains partial.
 
 - feature_id: `ssfv:symphony:ssiag-foundation.tops-enrollment`
@@ -1351,7 +1351,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `tools/qxctl`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:qxctl`
-- record_digest: `sha256:149f7c7db2cbe911547da34172e782d121ccb6884a832a9ad52d277090a8e9d4`
+- record_digest: `sha256:9dcf456713f2763b12e205bbe765f26b5ecfc15b81aba4a05762d8d22b35c5bd`
 - notes: Optional scoped SSH implementation; actual two-host deployment remains unqualified.
 
 - feature_id: `ssfv:symphony:sov-ssh-adapter`
@@ -1360,7 +1360,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `tools/sov-ssh-adapter`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:platform`
-- record_digest: `sha256:9b54b07e4d0eeab75d399f98b9c66ce5286cd0d3787896aa1d9160fc9dbec404`
+- record_digest: `sha256:3737e5d0f4105e21114854548597a2dab410a443242106788f83f6d61091f3b0`
 - notes: Optional scoped SSH implementation; actual two-host deployment remains unqualified.
 
 - feature_id: `ssfv:symphony:srrapiv-runtime-cpp`

@@ -46,3 +46,5 @@ The subordinate owner at `knowledge/sov/cloudflare/MANIFEST.md` assigns C0/I1 lo
 ## Protected transport profiles (I2)
 
 `knowledge/sov/transport-profiles/MANIFEST.md` assigns protected local administration to `tools/sov-transport-profile-admin`. This later increment supersedes the I1 statement that all profile administration is pending. qxctl reads/plans as the user and invokes the exact sudo helper only for apply/recover. SSIAG/STAV authenticate local root audit; I3/I5 transport execution/session qualification remain unavailable.
+
+- `knowledge/sov/SSH-PROFILE-CARRIER.md`: optional v2 protected admission, private dispatch evidence and fixed proxy-wrapper contract; v1 unchanged.

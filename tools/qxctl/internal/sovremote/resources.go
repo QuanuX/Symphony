@@ -3,6 +3,7 @@ package sovremote
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/QuanuX/Symphony/tools/qxctl/internal/sshprofile"
 	ssh "github.com/QuanuX/Symphony/tools/sov-ssh-adapter/contract"
 	"reflect"
 	"strings"
@@ -12,6 +13,9 @@ import (
 
 // Template contains deliberately synthetic references, not a discovered host.
 func Template(operation string) (any, error) {
+	if operation == "ssh_profile_selection" || operation == "ssh_endpoint_v2" || operation == "ssh_invoke_v2" {
+		return sshProfileTemplate(operation)
+	}
 	if operation == "ssh_endpoint" || operation == "ssh_invoke" {
 		return sshTemplate(operation)
 	}
@@ -46,6 +50,12 @@ func Template(operation string) (any, error) {
 func Schema(operation string) (any, error) {
 	var in, out any
 	switch operation {
+	case "ssh_profile_selection":
+		in, out = sshprofile.Selection{}, ProfileEndpointResult{}
+	case "ssh_endpoint_v2":
+		in, out = sshprofile.Endpoint{}, ProfileEndpointResult{}
+	case "ssh_invoke_v2":
+		in, out = sshprofile.Input{}, ProfileInvocationResult{}
 	case "ssh_endpoint":
 		in, out = ssh.Endpoint{}, SSHEndpointResult{}
 	case "ssh_invoke":
@@ -62,10 +72,17 @@ func Schema(operation string) (any, error) {
 		return nil, fmt.Errorf("unknown SOV remote operation")
 	}
 	owner := "knowledge/sov/REMOTE-HANDOFF.md"
-	if operation == "ssh_endpoint" || operation == "ssh_invoke" {
+	if strings.HasPrefix(operation, "ssh_") {
 		owner = "knowledge/sov/SSH-CARRIER.md"
 	}
-	return map[string]any{"$schema": "https://json-schema.org/draft/2020-12/schema", "request": shape(reflect.TypeOf(in), ""), "result": shape(reflect.TypeOf(out), ""), "semantic_contract": owner, "control_document_max_bytes": MaxDocumentBytes}, nil
+	result := map[string]any{"$schema": "https://json-schema.org/draft/2020-12/schema", "request": shape(reflect.TypeOf(in), ""), "result": shape(reflect.TypeOf(out), ""), "semantic_contract": owner, "control_document_max_bytes": MaxDocumentBytes}
+	if operation == "ssh_profile_selection" || operation == "ssh_endpoint_v2" || operation == "ssh_invoke_v2" {
+		result["semantic_contract"] = "knowledge/sov/SSH-PROFILE-CARRIER.md"
+	}
+	if operation == "ssh_invoke_v2" {
+		result["carrier_result"] = shape(reflect.TypeOf(sshprofile.Reply{}), "")
+	}
+	return result, nil
 }
 func shape(t reflect.Type, name string) map[string]any {
 	if t == reflect.TypeOf(json.RawMessage{}) {
@@ -91,10 +108,20 @@ func shape(t reflect.Type, name string) map[string]any {
 			properties["protocol"] = map[string]any{"const": protocol}
 		}
 		sshProtocol := map[reflect.Type]string{reflect.TypeOf(ssh.Endpoint{}): ssh.EndpointProtocol, reflect.TypeOf(SSHEndpointResult{}): "symphony.sov.ssh-endpoint-result.v1", reflect.TypeOf(SSHInvocation{}): ssh.InputProtocol, reflect.TypeOf(SSHInvocationResult{}): "symphony.sov.ssh-invoke.v1"}[t]
+		v2 := map[reflect.Type]string{reflect.TypeOf(sshprofile.Reply{}): sshprofile.ReplyProtocol, reflect.TypeOf(sshprofile.Selection{}): sshprofile.SelectionProtocol, reflect.TypeOf(sshprofile.Endpoint{}): sshprofile.EndpointProtocol, reflect.TypeOf(sshprofile.Input{}): sshprofile.InputProtocol, reflect.TypeOf(ProfileEndpointResult{}): "symphony.sov.ssh-endpoint-result.v2", reflect.TypeOf(ProfileInvocationResult{}): "symphony.sov.ssh-invoke.v2"}[t]
+		if v2 != "" {
+			properties["protocol"] = map[string]any{"const": v2}
+		}
 		if sshProtocol != "" {
 			properties["protocol"] = map[string]any{"const": sshProtocol}
 		}
-		if t == reflect.TypeOf(SSHInvocationResult{}) {
+		if t == reflect.TypeOf(sshprofile.Input{}) {
+			properties["invocation"] = shape(reflect.TypeOf(Invocation{}), "invocation")
+		}
+		if t == reflect.TypeOf(sshprofile.Reply{}) || t == reflect.TypeOf(ProfileInvocationResult{}) {
+			properties["reason_code"] = map[string]any{"enum": []string{"transport_profile.admission_refused", "transport_profile.interaction_required", "transport_profile.response_uncertain", "transport_profile.response_received"}}
+		}
+		if t == reflect.TypeOf(SSHInvocationResult{}) || t == reflect.TypeOf(ProfileInvocationResult{}) {
 			properties["origin_verification"] = map[string]any{"enum": []string{"not_verified", "selected_adapter_authenticated_ssh_host"}}
 		}
 		if t == reflect.TypeOf(TargetResult{}) {

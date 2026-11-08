@@ -18812,7 +18812,7 @@
       "introduced_in": "0.1.0-dev",
       "deprecated_in": null,
       "replacement_ids": [],
-      "grammar": "qxctl sov remote ssh-endpoint [--input VALUE] [--json]",
+      "grammar": "qxctl sov remote ssh-endpoint [--input VALUE] [--json] [--transport-profile VALUE]",
       "aliases": [],
       "visibility": "public",
       "feature_bindings": [
@@ -18827,13 +18827,16 @@
       "authority_mode": "none",
       "target_scope": "local",
       "input_protocols": [
-        "symphony.sov.ssh-endpoint.v1"
+        "symphony.sov.ssh-endpoint.v1",
+        "symphony.sov.ssh-profile-selection.v1"
       ],
       "output_protocols": [
-        "symphony.sov.ssh-endpoint-result.v1"
+        "symphony.sov.ssh-endpoint-result.v1",
+        "symphony.sov.ssh-endpoint-result.v2"
       ],
       "result_validation_protocols": [
-        "symphony.sov.ssh-endpoint-result.v1"
+        "symphony.sov.ssh-endpoint-result.v1",
+        "symphony.sov.ssh-endpoint-result.v2"
       ],
       "recovery_command_id": null,
       "noninteractive": true,
@@ -18864,13 +18867,16 @@
       "authority_mode": "target_host_permission",
       "target_scope": "target_host",
       "input_protocols": [
-        "symphony.sov.ssh-invoke-input.v1"
+        "symphony.sov.ssh-invoke-input.v1",
+        "symphony.sov.ssh-invoke-input.v2"
       ],
       "output_protocols": [
-        "symphony.sov.ssh-invoke.v1"
+        "symphony.sov.ssh-invoke.v1",
+        "symphony.sov.ssh-invoke.v2"
       ],
       "result_validation_protocols": [
-        "symphony.sov.ssh-invoke.v1"
+        "symphony.sov.ssh-invoke.v1",
+        "symphony.sov.ssh-invoke.v2"
       ],
       "recovery_command_id": "qxcmd:symphony:sov.remote.ssh-invoke",
       "noninteractive": true,
@@ -22844,5 +22850,5 @@
       "json_output": true
     }
   ],
-  "registry_digest": "sha256:bccaaf389946a8c43cb40549c41108bd49def445366e839d24eb2f91d19c34e9"
+  "registry_digest": "sha256:95c5c64d9aac9a341ecb74a333f4abcdf3641719f2475b2560077f84424d9ad0"
 }

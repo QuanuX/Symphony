@@ -71,7 +71,7 @@ func newSOVRemoteLeaf(op string) *cobra.Command {
 	c.Flags().StringVar(&format, "format", "text", "complete text or JSON output")
 	c.Flags().BoolVar(&machine, "json", false, "complete portable JSON output")
 	if resource {
-		c.Flags().StringVar(&operation, "operation", "", "plan, assess, invoke, target_configure, ssh_endpoint or ssh_invoke")
+		c.Flags().StringVar(&operation, "operation", "", "plan, assess, invoke, target_configure, ssh_endpoint, ssh_invoke, ssh_profile_selection, ssh_endpoint_v2 or ssh_invoke_v2")
 		_ = c.MarkFlagRequired("operation")
 	} else {
 		c.Flags().StringVar(&input, "input", "", "local control JSON; no endpoint is contacted")
