@@ -2503,20 +2503,28 @@
       "expectations": [
         {
           "command_ids": [
-            "qxcmd:symphony:sov.cloudflare.cf.installation.apply"
+            "qxcmd:symphony:sov.cloudflare.cf.context.apply",
+            "qxcmd:symphony:sov.cloudflare.cf.installation.apply",
+            "qxcmd:symphony:sov.cloudflare.cf.resource.apply",
+            "qxcmd:symphony:sov.cloudflare.connector.installation.apply",
+            "qxcmd:symphony:sov.cloudflare.connector.instance.apply"
           ],
           "delivery": "direct",
           "engine_operation_ids": [
-            "engop:symphony:sov.cloudflare.installation.apply"
+            "engop:symphony:sov.cloudflare.connector.installation.apply",
+            "engop:symphony:sov.cloudflare.connector.instance.apply",
+            "engop:symphony:sov.cloudflare.context.apply",
+            "engop:symphony:sov.cloudflare.installation.apply",
+            "engop:symphony:sov.cloudflare.resource.apply"
           ],
           "evidence": [
             "knowledge/sov/cloudflare/owner.json",
-            "tools/qxctl/COMMANDS.json",
-            "tools/qxctl/MANIFEST.md"
+            "modules/sov-cloudflare-adapter/SPEC.md",
+            "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "apply",
-          "rationale": "Exact native local owner operation; no provider or SSH authority.",
+          "rationale": "Explicit native administration and credential-reference composition; authority, result safety and live qualification remain independently checked.",
           "requirement": "required"
         },
         {
@@ -2535,76 +2543,108 @@
           ],
           "evidence": [
             "knowledge/sov/cloudflare/owner.json",
-            "tools/qxctl/COMMANDS.json",
-            "tools/qxctl/MANIFEST.md"
+            "modules/sov-cloudflare-adapter/SPEC.md",
+            "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "discover",
-          "rationale": "Exact native local owner operation; no provider or SSH authority.",
+          "rationale": "Explicit native administration and credential-reference composition; authority, result safety and live qualification remain independently checked.",
           "requirement": "required"
         },
         {
           "command_ids": [
             "qxcmd:symphony:sov.cloudflare.cf.context.inspect",
+            "qxcmd:symphony:sov.cloudflare.cf.context.status",
             "qxcmd:symphony:sov.cloudflare.cf.installation.inspect",
             "qxcmd:symphony:sov.cloudflare.cf.installation.list",
-            "qxcmd:symphony:sov.cloudflare.cf.installation.status"
+            "qxcmd:symphony:sov.cloudflare.cf.installation.status",
+            "qxcmd:symphony:sov.cloudflare.cf.resource.inspect",
+            "qxcmd:symphony:sov.cloudflare.cf.resource.list",
+            "qxcmd:symphony:sov.cloudflare.cf.resource.status",
+            "qxcmd:symphony:sov.cloudflare.connector.installation.inspect",
+            "qxcmd:symphony:sov.cloudflare.connector.installation.list",
+            "qxcmd:symphony:sov.cloudflare.connector.installation.status",
+            "qxcmd:symphony:sov.cloudflare.connector.instance.inspect",
+            "qxcmd:symphony:sov.cloudflare.connector.instance.list",
+            "qxcmd:symphony:sov.cloudflare.connector.instance.status"
           ],
           "delivery": "direct",
           "engine_operation_ids": [
+            "engop:symphony:sov.cloudflare.connector.installation.inspect",
+            "engop:symphony:sov.cloudflare.connector.installation.list",
+            "engop:symphony:sov.cloudflare.connector.installation.status",
+            "engop:symphony:sov.cloudflare.connector.instance.inspect",
+            "engop:symphony:sov.cloudflare.connector.instance.list",
+            "engop:symphony:sov.cloudflare.connector.instance.status",
             "engop:symphony:sov.cloudflare.context.inspect",
+            "engop:symphony:sov.cloudflare.context.status",
             "engop:symphony:sov.cloudflare.installation.inspect",
             "engop:symphony:sov.cloudflare.installation.list",
-            "engop:symphony:sov.cloudflare.installation.status"
+            "engop:symphony:sov.cloudflare.installation.status",
+            "engop:symphony:sov.cloudflare.resource.inspect",
+            "engop:symphony:sov.cloudflare.resource.list",
+            "engop:symphony:sov.cloudflare.resource.status"
           ],
           "evidence": [
             "knowledge/sov/cloudflare/owner.json",
-            "tools/qxctl/COMMANDS.json",
-            "tools/qxctl/MANIFEST.md"
+            "modules/sov-cloudflare-adapter/SPEC.md",
+            "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "inspect",
-          "rationale": "Exact native local owner operation; no provider or SSH authority.",
+          "rationale": "Explicit native administration and credential-reference composition; authority, result safety and live qualification remain independently checked.",
           "requirement": "required"
         },
         {
           "command_ids": [
             "qxcmd:symphony:sov.cloudflare.cf.context.plan",
             "qxcmd:symphony:sov.cloudflare.cf.installation.plan",
-            "qxcmd:symphony:sov.cloudflare.cf.resource.plan"
+            "qxcmd:symphony:sov.cloudflare.cf.resource.plan",
+            "qxcmd:symphony:sov.cloudflare.connector.installation.plan",
+            "qxcmd:symphony:sov.cloudflare.connector.instance.plan"
           ],
           "delivery": "direct",
           "engine_operation_ids": [
+            "engop:symphony:sov.cloudflare.connector.installation.plan",
+            "engop:symphony:sov.cloudflare.connector.instance.plan",
             "engop:symphony:sov.cloudflare.context.plan",
             "engop:symphony:sov.cloudflare.installation.plan",
             "engop:symphony:sov.cloudflare.resource.plan"
           ],
           "evidence": [
             "knowledge/sov/cloudflare/owner.json",
-            "tools/qxctl/COMMANDS.json",
-            "tools/qxctl/MANIFEST.md"
+            "modules/sov-cloudflare-adapter/SPEC.md",
+            "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "propose",
-          "rationale": "Exact local lifecycle, nonsecret context and typed resource proposals bind their inputs without provider dispatch or execution authority.",
+          "rationale": "Explicit native administration and credential-reference composition; authority, result safety and live qualification remain independently checked.",
           "requirement": "required"
         },
         {
           "command_ids": [
-            "qxcmd:symphony:sov.cloudflare.cf.installation.reconcile"
+            "qxcmd:symphony:sov.cloudflare.cf.context.reconcile",
+            "qxcmd:symphony:sov.cloudflare.cf.installation.reconcile",
+            "qxcmd:symphony:sov.cloudflare.cf.resource.reconcile",
+            "qxcmd:symphony:sov.cloudflare.connector.installation.reconcile",
+            "qxcmd:symphony:sov.cloudflare.connector.instance.reconcile"
           ],
           "delivery": "direct",
           "engine_operation_ids": [
-            "engop:symphony:sov.cloudflare.installation.reconcile"
+            "engop:symphony:sov.cloudflare.connector.installation.reconcile",
+            "engop:symphony:sov.cloudflare.connector.instance.reconcile",
+            "engop:symphony:sov.cloudflare.context.reconcile",
+            "engop:symphony:sov.cloudflare.installation.reconcile",
+            "engop:symphony:sov.cloudflare.resource.reconcile"
           ],
           "evidence": [
             "knowledge/sov/cloudflare/owner.json",
-            "tools/qxctl/COMMANDS.json",
-            "tools/qxctl/MANIFEST.md"
+            "modules/sov-cloudflare-adapter/SPEC.md",
+            "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "recover",
-          "rationale": "Exact native local owner operation; no provider or SSH authority.",
+          "rationale": "Explicit native administration and credential-reference composition; authority, result safety and live qualification remain independently checked.",
           "requirement": "required"
         }
       ],
@@ -8663,11 +8703,19 @@
       "expectations": [
         {
           "command_ids": [
-            "qxcmd:symphony:sov.cloudflare.cf.installation.apply"
+            "qxcmd:symphony:sov.cloudflare.cf.context.apply",
+            "qxcmd:symphony:sov.cloudflare.cf.installation.apply",
+            "qxcmd:symphony:sov.cloudflare.cf.resource.apply",
+            "qxcmd:symphony:sov.cloudflare.connector.installation.apply",
+            "qxcmd:symphony:sov.cloudflare.connector.instance.apply"
           ],
           "delivery": "direct",
           "engine_operation_ids": [
-            "engop:symphony:sov.cloudflare.installation.apply"
+            "engop:symphony:sov.cloudflare.connector.installation.apply",
+            "engop:symphony:sov.cloudflare.connector.instance.apply",
+            "engop:symphony:sov.cloudflare.context.apply",
+            "engop:symphony:sov.cloudflare.installation.apply",
+            "engop:symphony:sov.cloudflare.resource.apply"
           ],
           "evidence": [
             "knowledge/sov/cloudflare/owner.json",
@@ -8676,7 +8724,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "apply",
-          "rationale": "Exact native local owner operation; no provider or SSH authority.",
+          "rationale": "Explicit native administration and credential-reference composition; authority, result safety and live qualification remain independently checked.",
           "requirement": "required"
         },
         {
@@ -8700,22 +8748,42 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "discover",
-          "rationale": "Exact native local owner operation; no provider or SSH authority.",
+          "rationale": "Explicit native administration and credential-reference composition; authority, result safety and live qualification remain independently checked.",
           "requirement": "required"
         },
         {
           "command_ids": [
             "qxcmd:symphony:sov.cloudflare.cf.context.inspect",
+            "qxcmd:symphony:sov.cloudflare.cf.context.status",
             "qxcmd:symphony:sov.cloudflare.cf.installation.inspect",
             "qxcmd:symphony:sov.cloudflare.cf.installation.list",
-            "qxcmd:symphony:sov.cloudflare.cf.installation.status"
+            "qxcmd:symphony:sov.cloudflare.cf.installation.status",
+            "qxcmd:symphony:sov.cloudflare.cf.resource.inspect",
+            "qxcmd:symphony:sov.cloudflare.cf.resource.list",
+            "qxcmd:symphony:sov.cloudflare.cf.resource.status",
+            "qxcmd:symphony:sov.cloudflare.connector.installation.inspect",
+            "qxcmd:symphony:sov.cloudflare.connector.installation.list",
+            "qxcmd:symphony:sov.cloudflare.connector.installation.status",
+            "qxcmd:symphony:sov.cloudflare.connector.instance.inspect",
+            "qxcmd:symphony:sov.cloudflare.connector.instance.list",
+            "qxcmd:symphony:sov.cloudflare.connector.instance.status"
           ],
           "delivery": "direct",
           "engine_operation_ids": [
+            "engop:symphony:sov.cloudflare.connector.installation.inspect",
+            "engop:symphony:sov.cloudflare.connector.installation.list",
+            "engop:symphony:sov.cloudflare.connector.installation.status",
+            "engop:symphony:sov.cloudflare.connector.instance.inspect",
+            "engop:symphony:sov.cloudflare.connector.instance.list",
+            "engop:symphony:sov.cloudflare.connector.instance.status",
             "engop:symphony:sov.cloudflare.context.inspect",
+            "engop:symphony:sov.cloudflare.context.status",
             "engop:symphony:sov.cloudflare.installation.inspect",
             "engop:symphony:sov.cloudflare.installation.list",
-            "engop:symphony:sov.cloudflare.installation.status"
+            "engop:symphony:sov.cloudflare.installation.status",
+            "engop:symphony:sov.cloudflare.resource.inspect",
+            "engop:symphony:sov.cloudflare.resource.list",
+            "engop:symphony:sov.cloudflare.resource.status"
           ],
           "evidence": [
             "knowledge/sov/cloudflare/owner.json",
@@ -8724,17 +8792,21 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "inspect",
-          "rationale": "Exact native local owner operation; no provider or SSH authority.",
+          "rationale": "Explicit native administration and credential-reference composition; authority, result safety and live qualification remain independently checked.",
           "requirement": "required"
         },
         {
           "command_ids": [
             "qxcmd:symphony:sov.cloudflare.cf.context.plan",
             "qxcmd:symphony:sov.cloudflare.cf.installation.plan",
-            "qxcmd:symphony:sov.cloudflare.cf.resource.plan"
+            "qxcmd:symphony:sov.cloudflare.cf.resource.plan",
+            "qxcmd:symphony:sov.cloudflare.connector.installation.plan",
+            "qxcmd:symphony:sov.cloudflare.connector.instance.plan"
           ],
           "delivery": "direct",
           "engine_operation_ids": [
+            "engop:symphony:sov.cloudflare.connector.installation.plan",
+            "engop:symphony:sov.cloudflare.connector.instance.plan",
             "engop:symphony:sov.cloudflare.context.plan",
             "engop:symphony:sov.cloudflare.installation.plan",
             "engop:symphony:sov.cloudflare.resource.plan"
@@ -8746,16 +8818,24 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "propose",
-          "rationale": "Exact local lifecycle, nonsecret context and typed resource proposals bind their inputs without provider dispatch or execution authority.",
+          "rationale": "Explicit native administration and credential-reference composition; authority, result safety and live qualification remain independently checked.",
           "requirement": "required"
         },
         {
           "command_ids": [
-            "qxcmd:symphony:sov.cloudflare.cf.installation.reconcile"
+            "qxcmd:symphony:sov.cloudflare.cf.context.reconcile",
+            "qxcmd:symphony:sov.cloudflare.cf.installation.reconcile",
+            "qxcmd:symphony:sov.cloudflare.cf.resource.reconcile",
+            "qxcmd:symphony:sov.cloudflare.connector.installation.reconcile",
+            "qxcmd:symphony:sov.cloudflare.connector.instance.reconcile"
           ],
           "delivery": "direct",
           "engine_operation_ids": [
-            "engop:symphony:sov.cloudflare.installation.reconcile"
+            "engop:symphony:sov.cloudflare.connector.installation.reconcile",
+            "engop:symphony:sov.cloudflare.connector.instance.reconcile",
+            "engop:symphony:sov.cloudflare.context.reconcile",
+            "engop:symphony:sov.cloudflare.installation.reconcile",
+            "engop:symphony:sov.cloudflare.resource.reconcile"
           ],
           "evidence": [
             "knowledge/sov/cloudflare/owner.json",
@@ -8764,7 +8844,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "recover",
-          "rationale": "Exact native local owner operation; no provider or SSH authority.",
+          "rationale": "Explicit native administration and credential-reference composition; authority, result safety and live qualification remain independently checked.",
           "requirement": "required"
         }
       ],
@@ -10333,6 +10413,69 @@
     {
       "expectations": [
         {
+          "command_ids": [
+            "qxcmd:symphony:sov.cloudflare.cf.resource.apply",
+            "qxcmd:symphony:sov.cloudflare.connector.instance.apply"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+            "engop:symphony:sov.cloudflare.connector.instance.apply",
+            "engop:symphony:sov.cloudflare.resource.apply"
+          ],
+          "evidence": [
+            "knowledge/sov/cloudflare/owner.json",
+            "modules/ssiag-provider-private-store/SPEC.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "apply",
+          "rationale": "Explicit native administration and credential-reference composition; authority, result safety and live qualification remain independently checked.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:sov.cloudflare.cf.resource.inspect",
+            "qxcmd:symphony:sov.cloudflare.cf.resource.list"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+            "engop:symphony:sov.cloudflare.resource.inspect",
+            "engop:symphony:sov.cloudflare.resource.list"
+          ],
+          "evidence": [
+            "knowledge/sov/cloudflare/owner.json",
+            "modules/ssiag-provider-private-store/SPEC.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "inspect",
+          "rationale": "Explicit native administration and credential-reference composition; authority, result safety and live qualification remain independently checked.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:sov.cloudflare.cf.resource.reconcile"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+            "engop:symphony:sov.cloudflare.resource.reconcile"
+          ],
+          "evidence": [
+            "knowledge/sov/cloudflare/owner.json",
+            "modules/ssiag-provider-private-store/SPEC.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "recover",
+          "rationale": "Explicit native administration and credential-reference composition; authority, result safety and live qualification remain independently checked.",
+          "requirement": "required"
+        }
+      ],
+      "feature_id": "ssfv:symphony:ssiag-provider-private-store"
+    },
+    {
+      "expectations": [
+        {
           "command_ids": [],
           "delivery": "none",
           "engine_operation_ids": [],
@@ -10742,9 +10885,9 @@
   ],
   "format_version": 1,
   "forward_gate": "enforce_new_records",
-  "profile_digest": "sha256:b80cca0698a6d4ee269fcc025619ad43e8b5f36e9698ab5aba394a08edf6cfab",
+  "profile_digest": "sha256:b08c5da86b7accbc235a2e00a68888f9d3e9edeb58535880e54c32c4d8a50a66",
   "profile_id": "symphony.registered-features.administration.v1",
   "protocol": "symphony.knowledge.feature-administration-profile.v1",
-  "registered_feature_count": 153,
-  "ssfv_registry_digest": "sha256:7a79c72f55d9975b88eb48dbbf46eef944351cd95a6ef8d2e2a33463dfe96914"
+  "registered_feature_count": 154,
+  "ssfv_registry_digest": "sha256:564fa52d6ada528d8621c5ac486b0c2dfa130d11384838f989f393d0a6ef159c"
 }

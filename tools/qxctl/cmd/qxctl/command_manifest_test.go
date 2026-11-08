@@ -24,8 +24,8 @@ func TestCommandRegistryCobraParityAndStableIdentity(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(manifest.Commands) != 496 {
-		t.Fatalf("registered command count = %d, want 496", len(manifest.Commands))
+	if len(manifest.Commands) != 516 {
+		t.Fatalf("registered command count = %d, want 516", len(manifest.Commands))
 	}
 	seen := make(map[string]*string, len(manifest.Commands))
 	for _, command := range manifest.Commands {
@@ -603,6 +603,29 @@ func TestObservedRegistryRecordsExistingNonJSONDebt(t *testing.T) {
 	}, ",")
 	if got != want {
 		t.Fatalf("non-JSON observed commands = %s, want %s", got, want)
+	}
+}
+
+func TestCloudflareProviderReadAuthority(t *testing.T) {
+	root, err := newRootCommand()
+	if err != nil {
+		t.Fatal(err)
+	}
+	manifest, err := commandregistry.BuildExpected(root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	seen := 0
+	for _, command := range manifest.Commands {
+		if command.CommandID == "qxcmd:symphony:sov.cloudflare.cf.resource.list" || command.CommandID == "qxcmd:symphony:sov.cloudflare.cf.resource.inspect" {
+			seen++
+			if command.AuthorityMode != "target_host_permission" || command.Mutability != "read_only" {
+				t.Fatalf("provider read must retain authority without claiming provider mutation: %+v", command)
+			}
+		}
+	}
+	if seen != 2 {
+		t.Fatalf("provider read commands = %d, want 2", seen)
 	}
 }
 

@@ -2791,6 +2791,7 @@
       "consumer_boundary_rejections": [
         {
           "cases": [
+            "TestCloudflareResourceAndConnectorLostBindings",
             "TestCloudflareStrictConsumerAndDigest"
           ],
           "path": "tools/qxctl/internal/sovcloudflare/cloudflare_test.go"
@@ -2802,9 +2803,19 @@
       "owner_contract": "modules/sov-cloudflare-adapter/SPEC.md",
       "producer_implementations": [
         "modules/sov-cloudflare-adapter/src/adapter.cpp",
-        "modules/sov-cloudflare-adapter/src/main.cpp"
+        "modules/sov-cloudflare-adapter/src/credential_channel.cpp",
+        "modules/sov-cloudflare-adapter/src/execution.cpp",
+        "modules/sov-cloudflare-adapter/src/main.cpp",
+        "modules/ssiag-provider-private-store/src/main.cpp"
       ],
       "producer_regressions": [
+        {
+          "cases": [
+            "TestCloudflareUsePinsPolicyAndAuditsLostCompletion",
+            "TestCloudflareUseRequiresExactGrantAndCommittedAudit"
+          ],
+          "path": "modules/secure-identity-access-governance/internal/server/cloudflare_use_test.go"
+        },
         {
           "cases": [
             "test_cloudflare_owner_rejects_unknown_fields"
@@ -2820,7 +2831,7 @@
           "path": "modules/sov-cloudflare-adapter/tests/installed.cpp"
         }
       ],
-      "statement": "The native Cloudflare owner independently rejects unbound or unknown controls; qxctl verifies the complete exact receipt and correlated result. Offline discovery cannot acquire provider credentials or an SSH exception.",
+      "statement": "The native Cloudflare owner independently rejects unbound controls; qxctl verifies complete receipts and plan/context correlation. Credentialed execution requires native purpose-bound delivery, SSIAG admission and committed audit; provider retries and uncertain mutation replay are refused. SSH authority remains separate.",
       "status": "active",
       "title": "Cloudflare exact native owner and offline boundary"
     },
@@ -4406,7 +4417,7 @@
     }
   ],
   "protocol": "symphony.knowledge.invariant-ownership-registry.v5",
-  "registry_digest": "sha256:d3d5e6b3a8eeefea8009244d2ef027b73a5fbd9af29b7ecab2d4ca98976a212a",
+  "registry_digest": "sha256:0496dae07cb58adeb21bdf39bf89ba6849c1a88f0ecaf07418ee75a79d3381fc",
   "scope": "common_lowest_authoritative_layer",
   "test_policy": {
     "consumer_boundary_rejection_required": true,

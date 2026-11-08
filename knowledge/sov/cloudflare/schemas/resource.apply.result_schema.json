@@ -37,7 +37,1597 @@
       "type": "string"
     },
     "data": {
-      "type": "null"
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "attempt": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "additionalProperties": false,
+                  "properties": {
+                    "audit_ref": {
+                      "oneOf": [
+                        {
+                          "type": "null"
+                        },
+                        {
+                          "maxLength": 71,
+                          "pattern": "^sha256:[a-f0-9]{64}$",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "authority_ref": {
+                      "oneOf": [
+                        {
+                          "type": "null"
+                        },
+                        {
+                          "maxLength": 77,
+                          "pattern": "^ssiag:sha256:[a-f0-9]{64}$",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "credential_ref": {
+                      "oneOf": [
+                        {
+                          "type": "null"
+                        },
+                        {
+                          "maxLength": 80,
+                          "pattern": "^ssiag-native:[a-z0-9][a-z0-9_-]{0,63}$",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "effect_state": {
+                      "enum": [
+                        "not_applied",
+                        "not_applicable",
+                        "applied_verified",
+                        "unresolved"
+                      ]
+                    },
+                    "observation_ref": {
+                      "oneOf": [
+                        {
+                          "type": "null"
+                        },
+                        {
+                          "maxLength": 71,
+                          "pattern": "^sha256:[a-f0-9]{64}$",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "outcome": {
+                      "enum": [
+                        "completed",
+                        "rejected",
+                        "aborted",
+                        "failed",
+                        "unknown"
+                      ]
+                    },
+                    "plan_digest": {
+                      "maxLength": 71,
+                      "pattern": "^sha256:[a-f0-9]{64}$",
+                      "type": "string"
+                    },
+                    "protocol": {
+                      "const": "symphony.sov.cloudflare-resource-attempt.v1"
+                    },
+                    "resource_id": {
+                      "oneOf": [
+                        {
+                          "type": "null"
+                        },
+                        {
+                          "maxLength": 36,
+                          "pattern": "^[a-f0-9-]{32,36}$",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "stage": {
+                      "enum": [
+                        "prepared",
+                        "admitted",
+                        "dispatch_started",
+                        "observed",
+                        "settled"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "protocol",
+                    "plan_digest",
+                    "stage",
+                    "outcome",
+                    "effect_state",
+                    "resource_id",
+                    "credential_ref",
+                    "authority_ref",
+                    "audit_ref",
+                    "observation_ref"
+                  ],
+                  "type": "object"
+                }
+              ]
+            },
+            "automatic_retry": {
+              "const": false
+            },
+            "credential_ref": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "maxLength": 80,
+                  "pattern": "^ssiag-native:[a-z0-9][a-z0-9_-]{0,63}$",
+                  "type": "string"
+                }
+              ]
+            },
+            "observation": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "additionalProperties": false,
+                  "properties": {
+                    "coverage": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "complete": {
+                          "type": "boolean"
+                        },
+                        "first_page": {
+                          "minimum": 1,
+                          "type": "integer"
+                        },
+                        "last_page": {
+                          "minimum": 1,
+                          "type": "integer"
+                        },
+                        "next_page": {
+                          "oneOf": [
+                            {
+                              "type": "null"
+                            },
+                            {
+                              "minimum": 1,
+                              "type": "integer"
+                            }
+                          ]
+                        }
+                      },
+                      "required": [
+                        "first_page",
+                        "last_page",
+                        "complete",
+                        "next_page"
+                      ],
+                      "type": "object"
+                    },
+                    "observed_unix_ms": {
+                      "maxLength": 19,
+                      "pattern": "^(0|[1-9][0-9]{0,18})$",
+                      "type": "string"
+                    },
+                    "protocol": {
+                      "const": "symphony.sov.cloudflare-observation.v1"
+                    },
+                    "snapshot": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "data": {
+                          "items": {
+                            "additionalProperties": false,
+                            "properties": {
+                              "config_src": {
+                                "const": "cloudflare"
+                              },
+                              "id": {
+                                "maxLength": 36,
+                                "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$",
+                                "type": "string"
+                              },
+                              "name": {
+                                "maxLength": 128,
+                                "pattern": "^[A-Za-z0-9][A-Za-z0-9 ._-]{0,127}$",
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "id"
+                            ],
+                            "type": "object"
+                          },
+                          "maxItems": 100000,
+                          "type": "array"
+                        },
+                        "scope": {
+                          "additionalProperties": false,
+                          "properties": {
+                            "account_id": {
+                              "maxLength": 32,
+                              "pattern": "^[a-f0-9]{32}$",
+                              "type": "string"
+                            },
+                            "operation": {
+                              "const": "tunnels.list"
+                            },
+                            "resource_id": {
+                              "type": "null"
+                            },
+                            "toolchain_id": {
+                              "maxLength": 71,
+                              "pattern": "^sha256:[a-f0-9]{64}$",
+                              "type": "string"
+                            },
+                            "zone_id": {
+                              "oneOf": [
+                                {
+                                  "type": "null"
+                                },
+                                {
+                                  "maxLength": 32,
+                                  "pattern": "^[a-f0-9]{32}$",
+                                  "type": "string"
+                                }
+                              ]
+                            }
+                          },
+                          "required": [
+                            "operation",
+                            "account_id",
+                            "zone_id",
+                            "resource_id",
+                            "toolchain_id"
+                          ],
+                          "type": "object"
+                        }
+                      },
+                      "required": [
+                        "scope",
+                        "data"
+                      ],
+                      "type": "object"
+                    },
+                    "state_digest": {
+                      "maxLength": 71,
+                      "pattern": "^sha256:[a-f0-9]{64}$",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "protocol",
+                    "observed_unix_ms",
+                    "snapshot",
+                    "state_digest",
+                    "coverage"
+                  ],
+                  "type": "object"
+                },
+                {
+                  "additionalProperties": false,
+                  "properties": {
+                    "coverage": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "complete": {
+                          "type": "boolean"
+                        },
+                        "first_page": {
+                          "minimum": 1,
+                          "type": "integer"
+                        },
+                        "last_page": {
+                          "minimum": 1,
+                          "type": "integer"
+                        },
+                        "next_page": {
+                          "oneOf": [
+                            {
+                              "type": "null"
+                            },
+                            {
+                              "minimum": 1,
+                              "type": "integer"
+                            }
+                          ]
+                        }
+                      },
+                      "required": [
+                        "first_page",
+                        "last_page",
+                        "complete",
+                        "next_page"
+                      ],
+                      "type": "object"
+                    },
+                    "observed_unix_ms": {
+                      "maxLength": 19,
+                      "pattern": "^(0|[1-9][0-9]{0,18})$",
+                      "type": "string"
+                    },
+                    "protocol": {
+                      "const": "symphony.sov.cloudflare-observation.v1"
+                    },
+                    "snapshot": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "data": {
+                          "oneOf": [
+                            {
+                              "type": "null"
+                            },
+                            {
+                              "additionalProperties": false,
+                              "properties": {
+                                "config_src": {
+                                  "const": "cloudflare"
+                                },
+                                "id": {
+                                  "maxLength": 36,
+                                  "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$",
+                                  "type": "string"
+                                },
+                                "name": {
+                                  "maxLength": 128,
+                                  "pattern": "^[A-Za-z0-9][A-Za-z0-9 ._-]{0,127}$",
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "id"
+                              ],
+                              "type": "object"
+                            }
+                          ]
+                        },
+                        "scope": {
+                          "additionalProperties": false,
+                          "properties": {
+                            "account_id": {
+                              "maxLength": 32,
+                              "pattern": "^[a-f0-9]{32}$",
+                              "type": "string"
+                            },
+                            "operation": {
+                              "const": "tunnels.get"
+                            },
+                            "resource_id": {
+                              "maxLength": 36,
+                              "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$",
+                              "type": "string"
+                            },
+                            "toolchain_id": {
+                              "maxLength": 71,
+                              "pattern": "^sha256:[a-f0-9]{64}$",
+                              "type": "string"
+                            },
+                            "zone_id": {
+                              "oneOf": [
+                                {
+                                  "type": "null"
+                                },
+                                {
+                                  "maxLength": 32,
+                                  "pattern": "^[a-f0-9]{32}$",
+                                  "type": "string"
+                                }
+                              ]
+                            }
+                          },
+                          "required": [
+                            "operation",
+                            "account_id",
+                            "zone_id",
+                            "resource_id",
+                            "toolchain_id"
+                          ],
+                          "type": "object"
+                        }
+                      },
+                      "required": [
+                        "scope",
+                        "data"
+                      ],
+                      "type": "object"
+                    },
+                    "state_digest": {
+                      "maxLength": 71,
+                      "pattern": "^sha256:[a-f0-9]{64}$",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "protocol",
+                    "observed_unix_ms",
+                    "snapshot",
+                    "state_digest",
+                    "coverage"
+                  ],
+                  "type": "object"
+                },
+                {
+                  "additionalProperties": false,
+                  "properties": {
+                    "coverage": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "complete": {
+                          "type": "boolean"
+                        },
+                        "first_page": {
+                          "minimum": 1,
+                          "type": "integer"
+                        },
+                        "last_page": {
+                          "minimum": 1,
+                          "type": "integer"
+                        },
+                        "next_page": {
+                          "oneOf": [
+                            {
+                              "type": "null"
+                            },
+                            {
+                              "minimum": 1,
+                              "type": "integer"
+                            }
+                          ]
+                        }
+                      },
+                      "required": [
+                        "first_page",
+                        "last_page",
+                        "complete",
+                        "next_page"
+                      ],
+                      "type": "object"
+                    },
+                    "observed_unix_ms": {
+                      "maxLength": 19,
+                      "pattern": "^(0|[1-9][0-9]{0,18})$",
+                      "type": "string"
+                    },
+                    "protocol": {
+                      "const": "symphony.sov.cloudflare-observation.v1"
+                    },
+                    "snapshot": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "data": {
+                          "oneOf": [
+                            {
+                              "type": "null"
+                            },
+                            {
+                              "additionalProperties": false,
+                              "properties": {
+                                "config": {
+                                  "additionalProperties": false,
+                                  "properties": {
+                                    "ingress": {
+                                      "items": {
+                                        "additionalProperties": false,
+                                        "properties": {
+                                          "hostname": {
+                                            "oneOf": [
+                                              {
+                                                "type": "null"
+                                              },
+                                              {
+                                                "maxLength": 253,
+                                                "pattern": "^[a-z0-9][a-z0-9.-]{0,251}[a-z0-9]$",
+                                                "type": "string"
+                                              }
+                                            ]
+                                          },
+                                          "service": {
+                                            "maxLength": 300,
+                                            "pattern": "^(https?|ssh)://[A-Za-z0-9.-]+:[1-9][0-9]{0,4}$|^http_status:404$",
+                                            "type": "string"
+                                          }
+                                        },
+                                        "required": [
+                                          "hostname",
+                                          "service"
+                                        ],
+                                        "type": "object"
+                                      },
+                                      "maxItems": 100,
+                                      "minItems": 1,
+                                      "type": "array"
+                                    }
+                                  },
+                                  "required": [
+                                    "ingress"
+                                  ],
+                                  "type": "object"
+                                }
+                              },
+                              "required": [
+                                "config"
+                              ],
+                              "type": "object"
+                            }
+                          ]
+                        },
+                        "scope": {
+                          "additionalProperties": false,
+                          "properties": {
+                            "account_id": {
+                              "maxLength": 32,
+                              "pattern": "^[a-f0-9]{32}$",
+                              "type": "string"
+                            },
+                            "operation": {
+                              "const": "tunnels.config.get"
+                            },
+                            "resource_id": {
+                              "maxLength": 36,
+                              "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$",
+                              "type": "string"
+                            },
+                            "toolchain_id": {
+                              "maxLength": 71,
+                              "pattern": "^sha256:[a-f0-9]{64}$",
+                              "type": "string"
+                            },
+                            "zone_id": {
+                              "oneOf": [
+                                {
+                                  "type": "null"
+                                },
+                                {
+                                  "maxLength": 32,
+                                  "pattern": "^[a-f0-9]{32}$",
+                                  "type": "string"
+                                }
+                              ]
+                            }
+                          },
+                          "required": [
+                            "operation",
+                            "account_id",
+                            "zone_id",
+                            "resource_id",
+                            "toolchain_id"
+                          ],
+                          "type": "object"
+                        }
+                      },
+                      "required": [
+                        "scope",
+                        "data"
+                      ],
+                      "type": "object"
+                    },
+                    "state_digest": {
+                      "maxLength": 71,
+                      "pattern": "^sha256:[a-f0-9]{64}$",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "protocol",
+                    "observed_unix_ms",
+                    "snapshot",
+                    "state_digest",
+                    "coverage"
+                  ],
+                  "type": "object"
+                },
+                {
+                  "additionalProperties": false,
+                  "properties": {
+                    "coverage": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "complete": {
+                          "type": "boolean"
+                        },
+                        "first_page": {
+                          "minimum": 1,
+                          "type": "integer"
+                        },
+                        "last_page": {
+                          "minimum": 1,
+                          "type": "integer"
+                        },
+                        "next_page": {
+                          "oneOf": [
+                            {
+                              "type": "null"
+                            },
+                            {
+                              "minimum": 1,
+                              "type": "integer"
+                            }
+                          ]
+                        }
+                      },
+                      "required": [
+                        "first_page",
+                        "last_page",
+                        "complete",
+                        "next_page"
+                      ],
+                      "type": "object"
+                    },
+                    "observed_unix_ms": {
+                      "maxLength": 19,
+                      "pattern": "^(0|[1-9][0-9]{0,18})$",
+                      "type": "string"
+                    },
+                    "protocol": {
+                      "const": "symphony.sov.cloudflare-observation.v1"
+                    },
+                    "snapshot": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "data": {
+                          "items": {
+                            "additionalProperties": false,
+                            "properties": {
+                              "content": {
+                                "maxLength": 253,
+                                "pattern": "^[A-Za-z0-9:.][A-Za-z0-9:.-]{0,252}$",
+                                "type": "string"
+                              },
+                              "id": {
+                                "maxLength": 36,
+                                "pattern": "^[a-f0-9]{32}$",
+                                "type": "string"
+                              },
+                              "name": {
+                                "maxLength": 253,
+                                "pattern": "^[a-z0-9][a-z0-9.-]{0,251}[a-z0-9]$",
+                                "type": "string"
+                              },
+                              "proxied": {
+                                "type": "boolean"
+                              },
+                              "ttl": {
+                                "oneOf": [
+                                  {
+                                    "const": 1
+                                  },
+                                  {
+                                    "maximum": 86400,
+                                    "minimum": 60,
+                                    "type": "integer"
+                                  }
+                                ]
+                              },
+                              "type": {
+                                "enum": [
+                                  "A",
+                                  "AAAA",
+                                  "CNAME"
+                                ]
+                              }
+                            },
+                            "required": [
+                              "id"
+                            ],
+                            "type": "object"
+                          },
+                          "maxItems": 100000,
+                          "type": "array"
+                        },
+                        "scope": {
+                          "additionalProperties": false,
+                          "properties": {
+                            "account_id": {
+                              "maxLength": 32,
+                              "pattern": "^[a-f0-9]{32}$",
+                              "type": "string"
+                            },
+                            "operation": {
+                              "const": "dns.records.list"
+                            },
+                            "resource_id": {
+                              "type": "null"
+                            },
+                            "toolchain_id": {
+                              "maxLength": 71,
+                              "pattern": "^sha256:[a-f0-9]{64}$",
+                              "type": "string"
+                            },
+                            "zone_id": {
+                              "oneOf": [
+                                {
+                                  "type": "null"
+                                },
+                                {
+                                  "maxLength": 32,
+                                  "pattern": "^[a-f0-9]{32}$",
+                                  "type": "string"
+                                }
+                              ]
+                            }
+                          },
+                          "required": [
+                            "operation",
+                            "account_id",
+                            "zone_id",
+                            "resource_id",
+                            "toolchain_id"
+                          ],
+                          "type": "object"
+                        }
+                      },
+                      "required": [
+                        "scope",
+                        "data"
+                      ],
+                      "type": "object"
+                    },
+                    "state_digest": {
+                      "maxLength": 71,
+                      "pattern": "^sha256:[a-f0-9]{64}$",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "protocol",
+                    "observed_unix_ms",
+                    "snapshot",
+                    "state_digest",
+                    "coverage"
+                  ],
+                  "type": "object"
+                },
+                {
+                  "additionalProperties": false,
+                  "properties": {
+                    "coverage": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "complete": {
+                          "type": "boolean"
+                        },
+                        "first_page": {
+                          "minimum": 1,
+                          "type": "integer"
+                        },
+                        "last_page": {
+                          "minimum": 1,
+                          "type": "integer"
+                        },
+                        "next_page": {
+                          "oneOf": [
+                            {
+                              "type": "null"
+                            },
+                            {
+                              "minimum": 1,
+                              "type": "integer"
+                            }
+                          ]
+                        }
+                      },
+                      "required": [
+                        "first_page",
+                        "last_page",
+                        "complete",
+                        "next_page"
+                      ],
+                      "type": "object"
+                    },
+                    "observed_unix_ms": {
+                      "maxLength": 19,
+                      "pattern": "^(0|[1-9][0-9]{0,18})$",
+                      "type": "string"
+                    },
+                    "protocol": {
+                      "const": "symphony.sov.cloudflare-observation.v1"
+                    },
+                    "snapshot": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "data": {
+                          "oneOf": [
+                            {
+                              "type": "null"
+                            },
+                            {
+                              "additionalProperties": false,
+                              "properties": {
+                                "content": {
+                                  "maxLength": 253,
+                                  "pattern": "^[A-Za-z0-9:.][A-Za-z0-9:.-]{0,252}$",
+                                  "type": "string"
+                                },
+                                "id": {
+                                  "maxLength": 36,
+                                  "pattern": "^[a-f0-9]{32}$",
+                                  "type": "string"
+                                },
+                                "name": {
+                                  "maxLength": 253,
+                                  "pattern": "^[a-z0-9][a-z0-9.-]{0,251}[a-z0-9]$",
+                                  "type": "string"
+                                },
+                                "proxied": {
+                                  "type": "boolean"
+                                },
+                                "ttl": {
+                                  "oneOf": [
+                                    {
+                                      "const": 1
+                                    },
+                                    {
+                                      "maximum": 86400,
+                                      "minimum": 60,
+                                      "type": "integer"
+                                    }
+                                  ]
+                                },
+                                "type": {
+                                  "enum": [
+                                    "A",
+                                    "AAAA",
+                                    "CNAME"
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "id"
+                              ],
+                              "type": "object"
+                            }
+                          ]
+                        },
+                        "scope": {
+                          "additionalProperties": false,
+                          "properties": {
+                            "account_id": {
+                              "maxLength": 32,
+                              "pattern": "^[a-f0-9]{32}$",
+                              "type": "string"
+                            },
+                            "operation": {
+                              "const": "dns.records.get"
+                            },
+                            "resource_id": {
+                              "maxLength": 32,
+                              "pattern": "^[a-f0-9]{32}$",
+                              "type": "string"
+                            },
+                            "toolchain_id": {
+                              "maxLength": 71,
+                              "pattern": "^sha256:[a-f0-9]{64}$",
+                              "type": "string"
+                            },
+                            "zone_id": {
+                              "oneOf": [
+                                {
+                                  "type": "null"
+                                },
+                                {
+                                  "maxLength": 32,
+                                  "pattern": "^[a-f0-9]{32}$",
+                                  "type": "string"
+                                }
+                              ]
+                            }
+                          },
+                          "required": [
+                            "operation",
+                            "account_id",
+                            "zone_id",
+                            "resource_id",
+                            "toolchain_id"
+                          ],
+                          "type": "object"
+                        }
+                      },
+                      "required": [
+                        "scope",
+                        "data"
+                      ],
+                      "type": "object"
+                    },
+                    "state_digest": {
+                      "maxLength": 71,
+                      "pattern": "^sha256:[a-f0-9]{64}$",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "protocol",
+                    "observed_unix_ms",
+                    "snapshot",
+                    "state_digest",
+                    "coverage"
+                  ],
+                  "type": "object"
+                },
+                {
+                  "additionalProperties": false,
+                  "properties": {
+                    "coverage": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "complete": {
+                          "type": "boolean"
+                        },
+                        "first_page": {
+                          "minimum": 1,
+                          "type": "integer"
+                        },
+                        "last_page": {
+                          "minimum": 1,
+                          "type": "integer"
+                        },
+                        "next_page": {
+                          "oneOf": [
+                            {
+                              "type": "null"
+                            },
+                            {
+                              "minimum": 1,
+                              "type": "integer"
+                            }
+                          ]
+                        }
+                      },
+                      "required": [
+                        "first_page",
+                        "last_page",
+                        "complete",
+                        "next_page"
+                      ],
+                      "type": "object"
+                    },
+                    "observed_unix_ms": {
+                      "maxLength": 19,
+                      "pattern": "^(0|[1-9][0-9]{0,18})$",
+                      "type": "string"
+                    },
+                    "protocol": {
+                      "const": "symphony.sov.cloudflare-observation.v1"
+                    },
+                    "snapshot": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "data": {
+                          "items": {
+                            "additionalProperties": false,
+                            "properties": {
+                              "domain": {
+                                "maxLength": 253,
+                                "pattern": "^[a-z0-9][a-z0-9.-]{0,251}[a-z0-9]$",
+                                "type": "string"
+                              },
+                              "id": {
+                                "maxLength": 36,
+                                "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$",
+                                "type": "string"
+                              },
+                              "name": {
+                                "maxLength": 128,
+                                "pattern": "^[A-Za-z0-9][A-Za-z0-9 ._-]{0,127}$",
+                                "type": "string"
+                              },
+                              "session_duration": {
+                                "enum": [
+                                  "1h",
+                                  "8h",
+                                  "24h"
+                                ]
+                              },
+                              "type": {
+                                "const": "self_hosted"
+                              }
+                            },
+                            "required": [
+                              "id"
+                            ],
+                            "type": "object"
+                          },
+                          "maxItems": 100000,
+                          "type": "array"
+                        },
+                        "scope": {
+                          "additionalProperties": false,
+                          "properties": {
+                            "account_id": {
+                              "maxLength": 32,
+                              "pattern": "^[a-f0-9]{32}$",
+                              "type": "string"
+                            },
+                            "operation": {
+                              "const": "zero-trust.access.applications.list"
+                            },
+                            "resource_id": {
+                              "type": "null"
+                            },
+                            "toolchain_id": {
+                              "maxLength": 71,
+                              "pattern": "^sha256:[a-f0-9]{64}$",
+                              "type": "string"
+                            },
+                            "zone_id": {
+                              "oneOf": [
+                                {
+                                  "type": "null"
+                                },
+                                {
+                                  "maxLength": 32,
+                                  "pattern": "^[a-f0-9]{32}$",
+                                  "type": "string"
+                                }
+                              ]
+                            }
+                          },
+                          "required": [
+                            "operation",
+                            "account_id",
+                            "zone_id",
+                            "resource_id",
+                            "toolchain_id"
+                          ],
+                          "type": "object"
+                        }
+                      },
+                      "required": [
+                        "scope",
+                        "data"
+                      ],
+                      "type": "object"
+                    },
+                    "state_digest": {
+                      "maxLength": 71,
+                      "pattern": "^sha256:[a-f0-9]{64}$",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "protocol",
+                    "observed_unix_ms",
+                    "snapshot",
+                    "state_digest",
+                    "coverage"
+                  ],
+                  "type": "object"
+                },
+                {
+                  "additionalProperties": false,
+                  "properties": {
+                    "coverage": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "complete": {
+                          "type": "boolean"
+                        },
+                        "first_page": {
+                          "minimum": 1,
+                          "type": "integer"
+                        },
+                        "last_page": {
+                          "minimum": 1,
+                          "type": "integer"
+                        },
+                        "next_page": {
+                          "oneOf": [
+                            {
+                              "type": "null"
+                            },
+                            {
+                              "minimum": 1,
+                              "type": "integer"
+                            }
+                          ]
+                        }
+                      },
+                      "required": [
+                        "first_page",
+                        "last_page",
+                        "complete",
+                        "next_page"
+                      ],
+                      "type": "object"
+                    },
+                    "observed_unix_ms": {
+                      "maxLength": 19,
+                      "pattern": "^(0|[1-9][0-9]{0,18})$",
+                      "type": "string"
+                    },
+                    "protocol": {
+                      "const": "symphony.sov.cloudflare-observation.v1"
+                    },
+                    "snapshot": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "data": {
+                          "oneOf": [
+                            {
+                              "type": "null"
+                            },
+                            {
+                              "additionalProperties": false,
+                              "properties": {
+                                "domain": {
+                                  "maxLength": 253,
+                                  "pattern": "^[a-z0-9][a-z0-9.-]{0,251}[a-z0-9]$",
+                                  "type": "string"
+                                },
+                                "id": {
+                                  "maxLength": 36,
+                                  "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$",
+                                  "type": "string"
+                                },
+                                "name": {
+                                  "maxLength": 128,
+                                  "pattern": "^[A-Za-z0-9][A-Za-z0-9 ._-]{0,127}$",
+                                  "type": "string"
+                                },
+                                "session_duration": {
+                                  "enum": [
+                                    "1h",
+                                    "8h",
+                                    "24h"
+                                  ]
+                                },
+                                "type": {
+                                  "const": "self_hosted"
+                                }
+                              },
+                              "required": [
+                                "id"
+                              ],
+                              "type": "object"
+                            }
+                          ]
+                        },
+                        "scope": {
+                          "additionalProperties": false,
+                          "properties": {
+                            "account_id": {
+                              "maxLength": 32,
+                              "pattern": "^[a-f0-9]{32}$",
+                              "type": "string"
+                            },
+                            "operation": {
+                              "const": "zero-trust.access.applications.get"
+                            },
+                            "resource_id": {
+                              "maxLength": 36,
+                              "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$",
+                              "type": "string"
+                            },
+                            "toolchain_id": {
+                              "maxLength": 71,
+                              "pattern": "^sha256:[a-f0-9]{64}$",
+                              "type": "string"
+                            },
+                            "zone_id": {
+                              "oneOf": [
+                                {
+                                  "type": "null"
+                                },
+                                {
+                                  "maxLength": 32,
+                                  "pattern": "^[a-f0-9]{32}$",
+                                  "type": "string"
+                                }
+                              ]
+                            }
+                          },
+                          "required": [
+                            "operation",
+                            "account_id",
+                            "zone_id",
+                            "resource_id",
+                            "toolchain_id"
+                          ],
+                          "type": "object"
+                        }
+                      },
+                      "required": [
+                        "scope",
+                        "data"
+                      ],
+                      "type": "object"
+                    },
+                    "state_digest": {
+                      "maxLength": 71,
+                      "pattern": "^sha256:[a-f0-9]{64}$",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "protocol",
+                    "observed_unix_ms",
+                    "snapshot",
+                    "state_digest",
+                    "coverage"
+                  ],
+                  "type": "object"
+                },
+                {
+                  "additionalProperties": false,
+                  "properties": {
+                    "coverage": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "complete": {
+                          "type": "boolean"
+                        },
+                        "first_page": {
+                          "minimum": 1,
+                          "type": "integer"
+                        },
+                        "last_page": {
+                          "minimum": 1,
+                          "type": "integer"
+                        },
+                        "next_page": {
+                          "oneOf": [
+                            {
+                              "type": "null"
+                            },
+                            {
+                              "minimum": 1,
+                              "type": "integer"
+                            }
+                          ]
+                        }
+                      },
+                      "required": [
+                        "first_page",
+                        "last_page",
+                        "complete",
+                        "next_page"
+                      ],
+                      "type": "object"
+                    },
+                    "observed_unix_ms": {
+                      "maxLength": 19,
+                      "pattern": "^(0|[1-9][0-9]{0,18})$",
+                      "type": "string"
+                    },
+                    "protocol": {
+                      "const": "symphony.sov.cloudflare-observation.v1"
+                    },
+                    "snapshot": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "data": {
+                          "items": {
+                            "additionalProperties": false,
+                            "properties": {
+                              "decision": {
+                                "enum": [
+                                  "allow",
+                                  "deny"
+                                ]
+                              },
+                              "id": {
+                                "maxLength": 36,
+                                "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$",
+                                "type": "string"
+                              },
+                              "include": {
+                                "items": {
+                                  "additionalProperties": false,
+                                  "properties": {
+                                    "email": {
+                                      "additionalProperties": false,
+                                      "properties": {
+                                        "email": {
+                                          "maxLength": 254,
+                                          "pattern": "^[A-Za-z0-9._+-]+@[a-z0-9][a-z0-9.-]+$",
+                                          "type": "string"
+                                        }
+                                      },
+                                      "required": [
+                                        "email"
+                                      ],
+                                      "type": "object"
+                                    }
+                                  },
+                                  "required": [
+                                    "email"
+                                  ],
+                                  "type": "object"
+                                },
+                                "maxItems": 100,
+                                "minItems": 1,
+                                "type": "array"
+                              },
+                              "name": {
+                                "maxLength": 128,
+                                "pattern": "^[A-Za-z0-9][A-Za-z0-9 ._-]{0,127}$",
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "id"
+                            ],
+                            "type": "object"
+                          },
+                          "maxItems": 100000,
+                          "type": "array"
+                        },
+                        "scope": {
+                          "additionalProperties": false,
+                          "properties": {
+                            "account_id": {
+                              "maxLength": 32,
+                              "pattern": "^[a-f0-9]{32}$",
+                              "type": "string"
+                            },
+                            "operation": {
+                              "const": "zero-trust.access.policies.list"
+                            },
+                            "resource_id": {
+                              "type": "null"
+                            },
+                            "toolchain_id": {
+                              "maxLength": 71,
+                              "pattern": "^sha256:[a-f0-9]{64}$",
+                              "type": "string"
+                            },
+                            "zone_id": {
+                              "oneOf": [
+                                {
+                                  "type": "null"
+                                },
+                                {
+                                  "maxLength": 32,
+                                  "pattern": "^[a-f0-9]{32}$",
+                                  "type": "string"
+                                }
+                              ]
+                            }
+                          },
+                          "required": [
+                            "operation",
+                            "account_id",
+                            "zone_id",
+                            "resource_id",
+                            "toolchain_id"
+                          ],
+                          "type": "object"
+                        }
+                      },
+                      "required": [
+                        "scope",
+                        "data"
+                      ],
+                      "type": "object"
+                    },
+                    "state_digest": {
+                      "maxLength": 71,
+                      "pattern": "^sha256:[a-f0-9]{64}$",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "protocol",
+                    "observed_unix_ms",
+                    "snapshot",
+                    "state_digest",
+                    "coverage"
+                  ],
+                  "type": "object"
+                },
+                {
+                  "additionalProperties": false,
+                  "properties": {
+                    "coverage": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "complete": {
+                          "type": "boolean"
+                        },
+                        "first_page": {
+                          "minimum": 1,
+                          "type": "integer"
+                        },
+                        "last_page": {
+                          "minimum": 1,
+                          "type": "integer"
+                        },
+                        "next_page": {
+                          "oneOf": [
+                            {
+                              "type": "null"
+                            },
+                            {
+                              "minimum": 1,
+                              "type": "integer"
+                            }
+                          ]
+                        }
+                      },
+                      "required": [
+                        "first_page",
+                        "last_page",
+                        "complete",
+                        "next_page"
+                      ],
+                      "type": "object"
+                    },
+                    "observed_unix_ms": {
+                      "maxLength": 19,
+                      "pattern": "^(0|[1-9][0-9]{0,18})$",
+                      "type": "string"
+                    },
+                    "protocol": {
+                      "const": "symphony.sov.cloudflare-observation.v1"
+                    },
+                    "snapshot": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "data": {
+                          "oneOf": [
+                            {
+                              "type": "null"
+                            },
+                            {
+                              "additionalProperties": false,
+                              "properties": {
+                                "decision": {
+                                  "enum": [
+                                    "allow",
+                                    "deny"
+                                  ]
+                                },
+                                "id": {
+                                  "maxLength": 36,
+                                  "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$",
+                                  "type": "string"
+                                },
+                                "include": {
+                                  "items": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                      "email": {
+                                        "additionalProperties": false,
+                                        "properties": {
+                                          "email": {
+                                            "maxLength": 254,
+                                            "pattern": "^[A-Za-z0-9._+-]+@[a-z0-9][a-z0-9.-]+$",
+                                            "type": "string"
+                                          }
+                                        },
+                                        "required": [
+                                          "email"
+                                        ],
+                                        "type": "object"
+                                      }
+                                    },
+                                    "required": [
+                                      "email"
+                                    ],
+                                    "type": "object"
+                                  },
+                                  "maxItems": 100,
+                                  "minItems": 1,
+                                  "type": "array"
+                                },
+                                "name": {
+                                  "maxLength": 128,
+                                  "pattern": "^[A-Za-z0-9][A-Za-z0-9 ._-]{0,127}$",
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "id"
+                              ],
+                              "type": "object"
+                            }
+                          ]
+                        },
+                        "scope": {
+                          "additionalProperties": false,
+                          "properties": {
+                            "account_id": {
+                              "maxLength": 32,
+                              "pattern": "^[a-f0-9]{32}$",
+                              "type": "string"
+                            },
+                            "operation": {
+                              "const": "zero-trust.access.policies.get"
+                            },
+                            "resource_id": {
+                              "maxLength": 36,
+                              "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$",
+                              "type": "string"
+                            },
+                            "toolchain_id": {
+                              "maxLength": 71,
+                              "pattern": "^sha256:[a-f0-9]{64}$",
+                              "type": "string"
+                            },
+                            "zone_id": {
+                              "oneOf": [
+                                {
+                                  "type": "null"
+                                },
+                                {
+                                  "maxLength": 32,
+                                  "pattern": "^[a-f0-9]{32}$",
+                                  "type": "string"
+                                }
+                              ]
+                            }
+                          },
+                          "required": [
+                            "operation",
+                            "account_id",
+                            "zone_id",
+                            "resource_id",
+                            "toolchain_id"
+                          ],
+                          "type": "object"
+                        }
+                      },
+                      "required": [
+                        "scope",
+                        "data"
+                      ],
+                      "type": "object"
+                    },
+                    "state_digest": {
+                      "maxLength": 71,
+                      "pattern": "^sha256:[a-f0-9]{64}$",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "protocol",
+                    "observed_unix_ms",
+                    "snapshot",
+                    "state_digest",
+                    "coverage"
+                  ],
+                  "type": "object"
+                }
+              ]
+            },
+            "plan_digest": {
+              "maxLength": 71,
+              "pattern": "^sha256:[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "precondition_mode": {
+              "enum": [
+                "none",
+                "preflight_only"
+              ]
+            }
+          },
+          "required": [
+            "plan_digest",
+            "attempt",
+            "observation",
+            "credential_ref",
+            "precondition_mode",
+            "automatic_retry"
+          ],
+          "type": "object"
+        }
+      ]
     },
     "descriptor_ref": {
       "maxLength": 4096,
@@ -124,7 +1714,8 @@
             "inspect_plan",
             "reconcile",
             "new_plan",
-            "implement_I4"
+            "implement_I4",
+            "inspect_native_import"
           ],
           "type": "string"
         }

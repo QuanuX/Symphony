@@ -209,3 +209,5 @@ qxctl additionally owns `ssfv:symphony:qxctl.sov-cloudflare-administration`; thi
 | `tools/sov-transport-profile-admin` | registered | `ssfv:symphony:sov-transport-profile-admin` | `tools/sov-transport-profile-admin/FEATURES.md` |
 
 qxctl additionally owns `ssfv:symphony:qxctl.sov-transport-profile-administration` for the complete I2 surface.
+
+| `modules/ssiag-provider-private-store` | registered | `ssfv:symphony:ssiag-provider-private-store` | `modules/ssiag-provider-private-store/FEATURES.md` |

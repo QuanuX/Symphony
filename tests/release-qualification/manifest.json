@@ -289,6 +289,10 @@
     {
       "path": "tools/sov-transport-profile-admin",
       "disposition": "go_module"
+    },
+    {
+      "path": "modules/ssiag-provider-private-store",
+      "disposition": "native_cmake_root"
     }
   ],
   "native_suites": [
@@ -1509,7 +1513,9 @@
       },
       "ctests": [
         "cloudflare-owner-projections",
-        "cloudflare-native-contract"
+        "cloudflare-native-contract",
+        "cloudflare-resource-execution",
+        "cloudflare-connector-lifecycle"
       ],
       "direct_tests": [
         {
@@ -1523,8 +1529,30 @@
         {
           "target": "cloudflare-qualification-tests",
           "reason": "Requires the separately prepared exact C0 cf/Node bundle and qxctl binary; real-CLI offline qualification remains separately recorded and is not inferred from shared fixtures."
+        },
+        {
+          "target": "cloudflare-connector-child",
+          "reason": "Inert child fixture invoked only by cloudflare-connector-lifecycle; not a standalone conformance test."
+        },
+        {
+          "target": "cloudflare-http_runner-tests",
+          "reason": "Requires the exact external C0 cf/Node bundle; offline production-runner qualification is separately recorded."
         }
       ],
+      "known_internal_skips": []
+    },
+    {
+      "path": "modules/ssiag-provider-private-store",
+      "group": "cloud",
+      "configure_options": {
+        "SYMPHONY_SSIAG_PRIVATE_INSTALLED": "ON",
+        "BUILD_TESTING": true
+      },
+      "ctests": [
+        "ssiag-private-store-contract"
+      ],
+      "direct_tests": [],
+      "excluded_direct_tests": [],
       "known_internal_skips": []
     }
   ],
@@ -2734,8 +2762,8 @@
     "Source-only prototypes and operational/provider activation are not admitted by this manifest."
   ],
   "native_totals": {
-    "roots": 59,
-    "ctests": 172,
+    "roots": 60,
+    "ctests": 175,
     "direct_tests": 17
   },
   "duckdb_installed_campaign": {

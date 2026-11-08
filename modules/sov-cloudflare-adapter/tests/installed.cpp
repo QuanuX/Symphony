@@ -20,6 +20,7 @@ void test_cloudflare_installed_process(const fs::path& prefix) {
     const auto descriptor = native_test::run({adapter.string(), "--describe"});
     NT_REQUIRE(descriptor.returncode == 0);
     const auto owner = Json::parse(descriptor.stdout_text);
+    NT_REQUIRE(owner == read_json(prefix / "share/symphony/schemas/sov-cloudflare-adapter/0.1.0-dev/owner.json"));
     Json request{{"protocol", "symphony.sov.cloudflare-request.v1"}, {"request_id", "12345678-1234-4234-8234-123456789abc"}, {"correlation_id", "23456789-2345-4345-8345-23456789abcd"}, {"operation", "capability.list"}, {"descriptor_ref", cloudflare::digest(owner, "symphony.sov.cloudflare-owner.v1")}, {"installation_ref", {{"version", "0.1.0-dev"}, {"executable_digest", digest(read(adapter))}, {"receipt_digest", receipt.at("receipt_digest")}}}, {"context_ref", nullptr}, {"plan_ref", nullptr}, {"input", {{"store", nullptr}, {"toolchain_id", nullptr}, {"query", nullptr}}}};
     const auto response = native_test::run({adapter.string()}, request.dump());
     NT_REQUIRE(response.returncode == 0);

@@ -56,6 +56,12 @@ jobs:
             -DCMAKE_INSTALL_PREFIX="$RUNNER_TEMP/cloudflare-install"
           cmake --build "$RUNNER_TEMP/cloudflare-foundation-build" --parallel 2
           cmake --install "$RUNNER_TEMP/cloudflare-foundation-build"
+          cmake -S modules/ssiag-provider-private-store -B "$RUNNER_TEMP/cloudflare-provider-build" \
+            -DCMAKE_BUILD_TYPE=Release -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DCMAKE_INSTALL_PREFIX="$RUNNER_TEMP/cloudflare-install" \
+            -DSYMPHONY_SSIAG_PRIVATE_INSTALLED=ON -DCMAKE_PREFIX_PATH="$RUNNER_TEMP/cloudflare-install"
+          cmake --build "$RUNNER_TEMP/cloudflare-provider-build" --parallel 2
+          ctest --test-dir "$RUNNER_TEMP/cloudflare-provider-build" --output-on-failure
+          cmake --install "$RUNNER_TEMP/cloudflare-provider-build"
           cmake -S modules/sov-cloudflare-adapter -B "$RUNNER_TEMP/cloudflare-build" \
             -DCMAKE_BUILD_TYPE=Release -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DCMAKE_INSTALL_PREFIX="$RUNNER_TEMP/cloudflare-install" \
             -DSYMPHONY_CLOUDFLARE_INSTALLED=ON -DCMAKE_PREFIX_PATH="$RUNNER_TEMP/cloudflare-install"

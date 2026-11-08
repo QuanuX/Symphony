@@ -1,0 +1,14 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "store": {
+      "maxLength": 4096,
+      "pattern": "^/[^\\x00-\\x1f]*$",
+      "type": "string"
+    }
+  },
+  "required": [
+    "store"
+  ],
+  "type": "object"
+}

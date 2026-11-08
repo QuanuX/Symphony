@@ -962,6 +962,22 @@
       "public_go_source_identities": [],
       "publication_status": "not_authorized_by_this_catalog",
       "qualification_scope": "focused_local_and_disposable_root_fixture; no deployed host or provider claim"
+    },
+    {
+      "component_id": "ssiag-provider-private-store",
+      "path": "modules/ssiag-provider-private-store",
+      "kind": "native_package",
+      "package_version": "0.1.0-dev",
+      "sdk_versions": [
+        {
+          "package": "SymphonySSIAGPrivateStore",
+          "version": "0.1.0"
+        }
+      ],
+      "source_runtime_version": null,
+      "public_go_source_identities": [],
+      "publication_status": "not_authorized_by_this_catalog",
+      "qualification_scope": "required_ci_profiles"
     }
   ],
   "go_artifacts": [

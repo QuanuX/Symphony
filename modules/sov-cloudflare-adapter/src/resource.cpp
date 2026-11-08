@@ -72,6 +72,6 @@ Json resource_preview(const Json& input) {
     Json preview{{"command", command}, {"method", p.at("method")}, {"url", "https://api.cloudflare.com/client/v4" + path}, {"pathParams", paths}, {"bodyKind", body.is_null() ? "none" : "json"}};
     if (!parameters.at("page").is_null() || (operation.starts_with("dns.") && p.at("method") != "DELETE")) preview["query"] = query;
     if (!body.is_null()) preview["body"] = body;
-    return Json{{"request", preview}, {"preview_argv", argv}, {"nonsecret_environment", {{"CLOUDFLARE_ACCOUNT_ID", account}}}, {"profile_digest", digest(p, "symphony.sov.cloudflare-resource-profile.v1")}, {"output_class", p.at("output_class")}, {"required_credential_channel", p.at("required_credential_channel")}, {"required_result_channel", p.at("required_result_channel")}, {"retry_qualification", p.at("retry_qualification")}, {"precondition_mode", p.at("precondition_mode")}, {"execution_available", false}};
+    return Json{{"request", preview}, {"preview_argv", argv}, {"nonsecret_environment", {{"CLOUDFLARE_ACCOUNT_ID", account}}}, {"profile_digest", digest(p, "symphony.sov.cloudflare-resource-profile.v1")}, {"output_class", p.at("output_class")}, {"required_credential_channel", p.at("required_credential_channel")}, {"required_result_channel", p.at("required_result_channel")}, {"retry_qualification", p.at("retry_qualification")}, {"precondition_mode", p.at("precondition_mode")}, {"execution_available", input.contains("execution") && !input.at("execution").is_null()}};
 }
 }

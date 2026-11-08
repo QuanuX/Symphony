@@ -139,3 +139,17 @@ func TestCloudflareInstalledReceiptProcess(t *testing.T) {
 		t.Fatalf("tampered receipt-owned schema accepted: %v", err)
 	}
 }
+
+func TestCloudflareResourceAndConnectorLostBindings(t *testing.T) {
+	for _, op := range []string{"resource.apply", "resource.reconcile", "context.apply", "connector.instance.apply", "connector.installation.reconcile"} {
+		request := map[string]any{"operation": op, "context_ref": "sha256:" + strings.Repeat("a", 64), "plan_ref": "sha256:" + strings.Repeat("b", 64)}
+		decoded, err := Decode(lost(request))
+		if err != nil {
+			t.Fatal(err)
+		}
+		r := decoded.(map[string]any)
+		if r["outcome"] != "unknown" || r["effect_state"] != "unresolved" || r["context_ref"] != request["context_ref"] || r["plan_ref"] != request["plan_ref"] {
+			t.Fatal("lost mutation bindings", op, r)
+		}
+	}
+}

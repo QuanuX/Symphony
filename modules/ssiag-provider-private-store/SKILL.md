@@ -1,0 +1,3 @@
+# Native private credential provider administration
+
+Use only after the operator explicitly selects this private-file backend and exact installation. Inspect its receipt and SPEC.md before configuring. Prepare nonsecret metadata separately from raw FD 3 material. Keep actual user identity, target restrictions, purpose, expiry and generation explicit. Configure the exact native adapter/toolchain and authenticated SSIAG service; require permission and committed audit for each provider use. Never retrieve or print a stored secret to diagnose an error. Report uncertainty and inspect private journal metadata without replaying an operation. This component does not authorize live account tests, root service installation or SSH profile changes.

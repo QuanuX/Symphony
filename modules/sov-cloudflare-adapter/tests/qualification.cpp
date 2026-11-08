@@ -51,7 +51,7 @@ int main(int argc, char** argv) {
         std::map<std::string,std::string> clean{{"PATH","/usr/bin:/bin"},{"HOME",scratch.path.string()},{"XDG_CONFIG_HOME",scratch.path.string()},{"XDG_CACHE_HOME",scratch.path.string()},{"TMPDIR",scratch.path.string()},{"CI","1"},{"CF_SEND_TELEMETRY","false"},{"CF_DELEGATION","1"},{"DO_NOT_TRACK","1"},{"NO_COLOR","1"},{"CLOUDFLARE_ACCOUNT_ID",std::string(32,'0')}};
         std::size_t previews=0;
         for(const auto& profile:owner.at("resource_profiles")) {
-            Json input{{"store",store.string()},{"context",context},{"expected_context_ref",cloudflare::digest(context,"symphony.sov.cloudflare-context.v1")},{"expected_state",state.at("state_digest")},{"resource_operation",profile.at("operation")},{"parameters",profile.at("template")},{"expected_observation",nullptr}};
+            Json input{{"store",store.string()},{"context",context},{"expected_context_ref",cloudflare::digest(context,"symphony.sov.cloudflare-context.v1")},{"expected_state",state.at("state_digest")},{"resource_operation",profile.at("operation")},{"parameters",profile.at("template")},{"expected_observation",nullptr},{"execution",nullptr}};
             auto planned=invoke("resource","plan",input);const auto& data=planned.at("data");const auto& resource=data.at("plan");const auto& preview=resource.at("preview");
             NT_REQUIRE(planned.at("dispatch_state")=="not_dispatched" && data.at("provider_dispatch")==false && data.at("execution_available")==false);
             NT_REQUIRE(data.at("plan_digest")==cloudflare::digest(resource,"symphony.sov.cloudflare-resource-plan.v1"));

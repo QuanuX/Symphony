@@ -61,7 +61,7 @@ void descriptor_projection(const fs::path& exe) {
         NT_REQUIRE(h.call("capability.template", {{"operation", op.at("operation")}}).at("data").at("input") == op.at("template"));
         NT_REQUIRE(h.call("capability.schema", {{"operation", op.at("operation")}, {"kind", "input"}, {"store", nullptr}, {"toolchain_id", nullptr}}).at("data").at("schema") == op.at("input_schema"));
     }
-    NT_REQUIRE(h.call("resource.list", Json::object(), nullptr, false).at("error_code") == "unavailable_contract");
+    NT_REQUIRE(h.call("resource.list", Json::object(), nullptr, false).at("error_code") == "invalid_control");
     h.call("made.up", Json::object(), nullptr, false);
 }
 void lifecycle(const fs::path& exe) {
@@ -87,7 +87,8 @@ void context_and_no_unqualified_execution(const fs::path& exe) {
     Harness h(exe); auto [path,id] = h.fixture(); h.apply(h.plan("install", id, path));
     Json c{{"host_ref", "host:fixture"}, {"principal_uid", std::to_string(::getuid())}, {"account_id", std::string(32,'0')}, {"zone_id", nullptr}, {"credential_ref", "ssiag:fixture"}, {"toolchain_id", id}};
     auto out = h.call("context.plan", {{"store", h.store.string()}, {"context", c}, {"expected_context_ref", nullptr}});
-    NT_REQUIRE(out.at("data").at("context_ref") == cloudflare::digest(c, "symphony.sov.cloudflare-context.v1") && out.at("data").at("authority_readiness") == "unavailable_contract");
+    NT_REQUIRE(out.at("data").at("context_ref") == cloudflare::digest(c, "symphony.sov.cloudflare-context.v1") && out.at("data").at("authority_readiness") == "nonroot_local_owner");
+    auto pd=out.at("data").at("plan_digest");auto applied=h.call("context.apply",{{"store",h.store.string()},{"plan_digest",pd}},pd);NT_REQUIRE(applied.at("effect_state")=="applied_verified");h.call("context.apply",{{"store",h.store.string()},{"plan_digest",pd}},pd,false);NT_REQUIRE(h.call("context.reconcile",{{"store",h.store.string()},{"plan_digest",pd}},pd).at("effect_state")=="applied_verified");
     c["principal_uid"] = std::to_string(::getuid()+1); h.call("context.inspect", {{"store", h.store.string()}, {"context", c}, {"expected_context_ref", nullptr}}, nullptr, false);
     NT_REQUIRE(h.call("capability.list", {{"store", h.store.string()}, {"toolchain_id", id}, {"query", "DNS"}}, nullptr, false).at("error_code") == "unavailable_contract");
 }
@@ -113,7 +114,7 @@ void store_and_plan_substitution(const fs::path& exe) {
 void resource_planning(const fs::path& exe) {
     Harness h(exe); auto [source,id]=h.fixture();h.apply(h.plan("install",id,source));
     Json context{{"host_ref","host:fixture"},{"principal_uid",std::to_string(::getuid())},{"account_id",std::string(32,'0')},{"zone_id",std::string(32,'2')},{"credential_ref","ssiag:fixture-api-token"},{"toolchain_id",id}};
-    auto input=[&](const Json& profile) { return Json{{"store",h.store.string()},{"context",context},{"expected_context_ref",cloudflare::digest(context,"symphony.sov.cloudflare-context.v1")},{"expected_state",h.state().at("state_digest")},{"resource_operation",profile.at("operation")},{"parameters",profile.at("template")},{"expected_observation",nullptr}}; };
+    auto input=[&](const Json& profile) { return Json{{"store",h.store.string()},{"context",context},{"expected_context_ref",cloudflare::digest(context,"symphony.sov.cloudflare-context.v1")},{"expected_state",h.state().at("state_digest")},{"resource_operation",profile.at("operation")},{"parameters",profile.at("template")},{"expected_observation",nullptr},{"execution",nullptr}}; };
     h.call("resource.plan",input(h.owner.at("resource_profiles").at(0)),nullptr,false);
     h.apply(h.plan("select",id,{},h.state().at("state_digest")));
     for(const auto& profile:h.owner.at("resource_profiles")) {

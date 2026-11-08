@@ -2,7 +2,7 @@
 
 ## Status
 
-Canonical SSFV feature-routing registry. The partial catalog routes 153 experimental records across 68 owner scopes enumerated by `COVERAGE.md`.
+Canonical SSFV feature-routing registry. The partial catalog routes 154 experimental records across 69 owner scopes enumerated by `COVERAGE.md`.
 
 ## Purpose
 
@@ -1388,8 +1388,8 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `modules/sov-cloudflare-adapter`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:platform`
-- record_digest: `sha256:2a58db47942d422e75447ccc6a065ba86bd570ada8a68b36c4987215cdd5bd0d`
-- notes: C0/I1 local foundation and I4 typed resource proposals; credentialed provider execution remains open.
+- record_digest: `sha256:83da46bb1b7f90e6cdf885b4ce58dffb6248b7dcb740f241726e110917fd505b`
+- notes: I4 native credential channels and bounded Cloudflare administration; fixture evidence does not establish live provider qualification.
 
 - feature_id: `ssfv:symphony:qxctl.sov-cloudflare-administration`
 - feature_file: `tools/qxctl/FEATURES.md`
@@ -1397,8 +1397,8 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `tools/qxctl`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:qxctl`
-- record_digest: `sha256:cb5e19ec58b6d79ddc162f44addd60a03c7eca31d30b237d87166fed53e4e9f0`
-- notes: C0/I1 local foundation and I4 typed resource proposals; credentialed provider execution remains open.
+- record_digest: `sha256:be9a642b69b62fb2197e9b192d293fb69ff6097a4f4423f816c3f42eefae6c61`
+- notes: I4 native credential channels and bounded Cloudflare administration; fixture evidence does not establish live provider qualification.
 
 
 - feature_id: `ssfv:symphony:sov-transport-profile-admin`
@@ -1419,6 +1419,15 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - record_digest: `sha256:b239b1d0ee5bee713f9ab6ac095245edfa5ac86037a4c53b19482357aa3cd209`
 - notes: I2 protected local administration; live transport and deployed host qualification remain separate.
 
+- feature_id: `ssfv:symphony:ssiag-provider-private-store`
+- feature_file: `modules/ssiag-provider-private-store/FEATURES.md`
+- owner_contract: `modules/ssiag-provider-private-store/SPEC.md`
+- source_scope: `modules/ssiag-provider-private-store`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:platform`
+- record_digest: `sha256:7afbf990eac0231463b61cb1ddb9df79dc95872df9fac199240b97e1b2a2b4ed`
+- notes: I4 native credential channels and bounded Cloudflare administration; fixture evidence does not establish live provider qualification.
+
 ## Prohibited Entries
 
 Do not register:
@@ -1433,4 +1442,4 @@ Do not register:
 
 ## Non-Authorization Statement
 
-This 151-record registry is an explicitly partial catalog governed by `COVERAGE.md`. It does not authorize an unratified feature record, an unregistered distributed file, repository-wide or installed-host completeness, complete legacy-invariant coverage, engine-decided feature-worthiness, or canonical mutation.
+This 154-record registry is an explicitly partial catalog governed by `COVERAGE.md`. It does not authorize an unratified feature record, an unregistered distributed file, repository-wide or installed-host completeness, complete legacy-invariant coverage, engine-decided feature-worthiness, or canonical mutation.

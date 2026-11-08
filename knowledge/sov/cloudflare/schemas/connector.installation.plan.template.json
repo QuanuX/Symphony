@@ -1,0 +1,7 @@
+{
+  "action": "install",
+  "expected_state": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+  "package_digest": "sha256:5c55e77da7012cebca19170357e196176c48c9647cc2ead404702fa125ddbd86",
+  "source": "/absolute/cloudflared",
+  "store": "/absolute/private/cloudflare-store"
+}

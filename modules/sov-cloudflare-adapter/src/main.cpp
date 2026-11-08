@@ -1,9 +1,13 @@
 #include "adapter.hpp"
+#include "connector.hpp"
 #include <symphony/knowledge/engine/protocol.hpp>
 #include <iostream>
+#include <sys/resource.h>
 
 int main(int argc, char** argv) {
+    rlimit core{0,0}; if (::setrlimit(RLIMIT_CORE, &core) != 0) return 2;
     try {
+        if(argc==2 && std::string(argv[1])=="--connector-supervise") return cloudflare::connector_supervise();
         if (argc == 2 && std::string(argv[1]) == "--describe") {
             std::cout << cloudflare::owner().dump() << '\n';
             return 0;

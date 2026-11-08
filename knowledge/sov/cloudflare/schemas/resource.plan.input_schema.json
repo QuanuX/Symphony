@@ -18,7 +18,7 @@
                 },
                 {
                   "maxLength": 4096,
-                  "pattern": "^ssiag:[A-Za-z0-9._:-]{1,128}$",
+                  "pattern": "^(ssiag:[A-Za-z0-9._:-]{1,128}|ssiag-native:[a-z0-9][a-z0-9_-]{0,63})$",
                   "type": "string"
                 }
               ]
@@ -60,6 +60,74 @@
             "toolchain_id"
           ],
           "type": "object"
+        },
+        "execution": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "config_digest": {
+                  "maxLength": 71,
+                  "pattern": "^sha256:[a-f0-9]{64}$",
+                  "type": "string"
+                },
+                "credential_generation": {
+                  "maxLength": 19,
+                  "pattern": "^[1-9][0-9]{0,18}$",
+                  "type": "string"
+                },
+                "max_pages": {
+                  "maximum": 1000,
+                  "minimum": 1,
+                  "type": "integer"
+                },
+                "provider_prefix": {
+                  "maxLength": 4096,
+                  "pattern": "^/[^\\x00-\\x1f]*$",
+                  "type": "string"
+                },
+                "provider_receipt": {
+                  "maxLength": 71,
+                  "pattern": "^sha256:[a-f0-9]{64}$",
+                  "type": "string"
+                },
+                "provider_version": {
+                  "const": "0.1.0-dev"
+                },
+                "result_ref": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "maxLength": 80,
+                      "pattern": "^ssiag-native:[a-z0-9][a-z0-9_-]{0,63}$",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "vault": {
+                  "maxLength": 4096,
+                  "pattern": "^/[^\\x00-\\x1f]*$",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "provider_prefix",
+                "provider_version",
+                "provider_receipt",
+                "vault",
+                "config_digest",
+                "credential_generation",
+                "result_ref",
+                "max_pages"
+              ],
+              "type": "object"
+            }
+          ]
         },
         "expected_context_ref": {
           "maxLength": 71,
@@ -140,7 +208,8 @@
         "expected_state",
         "resource_operation",
         "parameters",
-        "expected_observation"
+        "expected_observation",
+        "execution"
       ],
       "type": "object"
     },
@@ -162,7 +231,7 @@
                 },
                 {
                   "maxLength": 4096,
-                  "pattern": "^ssiag:[A-Za-z0-9._:-]{1,128}$",
+                  "pattern": "^(ssiag:[A-Za-z0-9._:-]{1,128}|ssiag-native:[a-z0-9][a-z0-9_-]{0,63})$",
                   "type": "string"
                 }
               ]
@@ -204,6 +273,74 @@
             "toolchain_id"
           ],
           "type": "object"
+        },
+        "execution": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "config_digest": {
+                  "maxLength": 71,
+                  "pattern": "^sha256:[a-f0-9]{64}$",
+                  "type": "string"
+                },
+                "credential_generation": {
+                  "maxLength": 19,
+                  "pattern": "^[1-9][0-9]{0,18}$",
+                  "type": "string"
+                },
+                "max_pages": {
+                  "maximum": 1000,
+                  "minimum": 1,
+                  "type": "integer"
+                },
+                "provider_prefix": {
+                  "maxLength": 4096,
+                  "pattern": "^/[^\\x00-\\x1f]*$",
+                  "type": "string"
+                },
+                "provider_receipt": {
+                  "maxLength": 71,
+                  "pattern": "^sha256:[a-f0-9]{64}$",
+                  "type": "string"
+                },
+                "provider_version": {
+                  "const": "0.1.0-dev"
+                },
+                "result_ref": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "maxLength": 80,
+                      "pattern": "^ssiag-native:[a-z0-9][a-z0-9_-]{0,63}$",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "vault": {
+                  "maxLength": 4096,
+                  "pattern": "^/[^\\x00-\\x1f]*$",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "provider_prefix",
+                "provider_version",
+                "provider_receipt",
+                "vault",
+                "config_digest",
+                "credential_generation",
+                "result_ref",
+                "max_pages"
+              ],
+              "type": "object"
+            }
+          ]
         },
         "expected_context_ref": {
           "maxLength": 71,
@@ -269,7 +406,8 @@
         "expected_state",
         "resource_operation",
         "parameters",
-        "expected_observation"
+        "expected_observation",
+        "execution"
       ],
       "type": "object"
     },
@@ -291,7 +429,7 @@
                 },
                 {
                   "maxLength": 4096,
-                  "pattern": "^ssiag:[A-Za-z0-9._:-]{1,128}$",
+                  "pattern": "^(ssiag:[A-Za-z0-9._:-]{1,128}|ssiag-native:[a-z0-9][a-z0-9_-]{0,63})$",
                   "type": "string"
                 }
               ]
@@ -333,6 +471,74 @@
             "toolchain_id"
           ],
           "type": "object"
+        },
+        "execution": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "config_digest": {
+                  "maxLength": 71,
+                  "pattern": "^sha256:[a-f0-9]{64}$",
+                  "type": "string"
+                },
+                "credential_generation": {
+                  "maxLength": 19,
+                  "pattern": "^[1-9][0-9]{0,18}$",
+                  "type": "string"
+                },
+                "max_pages": {
+                  "maximum": 1000,
+                  "minimum": 1,
+                  "type": "integer"
+                },
+                "provider_prefix": {
+                  "maxLength": 4096,
+                  "pattern": "^/[^\\x00-\\x1f]*$",
+                  "type": "string"
+                },
+                "provider_receipt": {
+                  "maxLength": 71,
+                  "pattern": "^sha256:[a-f0-9]{64}$",
+                  "type": "string"
+                },
+                "provider_version": {
+                  "const": "0.1.0-dev"
+                },
+                "result_ref": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "maxLength": 80,
+                      "pattern": "^ssiag-native:[a-z0-9][a-z0-9_-]{0,63}$",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "vault": {
+                  "maxLength": 4096,
+                  "pattern": "^/[^\\x00-\\x1f]*$",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "provider_prefix",
+                "provider_version",
+                "provider_receipt",
+                "vault",
+                "config_digest",
+                "credential_generation",
+                "result_ref",
+                "max_pages"
+              ],
+              "type": "object"
+            }
+          ]
         },
         "expected_context_ref": {
           "maxLength": 71,
@@ -411,7 +617,8 @@
         "expected_state",
         "resource_operation",
         "parameters",
-        "expected_observation"
+        "expected_observation",
+        "execution"
       ],
       "type": "object"
     },
@@ -433,7 +640,7 @@
                 },
                 {
                   "maxLength": 4096,
-                  "pattern": "^ssiag:[A-Za-z0-9._:-]{1,128}$",
+                  "pattern": "^(ssiag:[A-Za-z0-9._:-]{1,128}|ssiag-native:[a-z0-9][a-z0-9_-]{0,63})$",
                   "type": "string"
                 }
               ]
@@ -475,6 +682,74 @@
             "toolchain_id"
           ],
           "type": "object"
+        },
+        "execution": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "config_digest": {
+                  "maxLength": 71,
+                  "pattern": "^sha256:[a-f0-9]{64}$",
+                  "type": "string"
+                },
+                "credential_generation": {
+                  "maxLength": 19,
+                  "pattern": "^[1-9][0-9]{0,18}$",
+                  "type": "string"
+                },
+                "max_pages": {
+                  "maximum": 1000,
+                  "minimum": 1,
+                  "type": "integer"
+                },
+                "provider_prefix": {
+                  "maxLength": 4096,
+                  "pattern": "^/[^\\x00-\\x1f]*$",
+                  "type": "string"
+                },
+                "provider_receipt": {
+                  "maxLength": 71,
+                  "pattern": "^sha256:[a-f0-9]{64}$",
+                  "type": "string"
+                },
+                "provider_version": {
+                  "const": "0.1.0-dev"
+                },
+                "result_ref": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "maxLength": 80,
+                      "pattern": "^ssiag-native:[a-z0-9][a-z0-9_-]{0,63}$",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "vault": {
+                  "maxLength": 4096,
+                  "pattern": "^/[^\\x00-\\x1f]*$",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "provider_prefix",
+                "provider_version",
+                "provider_receipt",
+                "vault",
+                "config_digest",
+                "credential_generation",
+                "result_ref",
+                "max_pages"
+              ],
+              "type": "object"
+            }
+          ]
         },
         "expected_context_ref": {
           "maxLength": 71,
@@ -551,7 +826,8 @@
         "expected_state",
         "resource_operation",
         "parameters",
-        "expected_observation"
+        "expected_observation",
+        "execution"
       ],
       "type": "object"
     },
@@ -573,7 +849,7 @@
                 },
                 {
                   "maxLength": 4096,
-                  "pattern": "^ssiag:[A-Za-z0-9._:-]{1,128}$",
+                  "pattern": "^(ssiag:[A-Za-z0-9._:-]{1,128}|ssiag-native:[a-z0-9][a-z0-9_-]{0,63})$",
                   "type": "string"
                 }
               ]
@@ -615,6 +891,74 @@
             "toolchain_id"
           ],
           "type": "object"
+        },
+        "execution": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "config_digest": {
+                  "maxLength": 71,
+                  "pattern": "^sha256:[a-f0-9]{64}$",
+                  "type": "string"
+                },
+                "credential_generation": {
+                  "maxLength": 19,
+                  "pattern": "^[1-9][0-9]{0,18}$",
+                  "type": "string"
+                },
+                "max_pages": {
+                  "maximum": 1000,
+                  "minimum": 1,
+                  "type": "integer"
+                },
+                "provider_prefix": {
+                  "maxLength": 4096,
+                  "pattern": "^/[^\\x00-\\x1f]*$",
+                  "type": "string"
+                },
+                "provider_receipt": {
+                  "maxLength": 71,
+                  "pattern": "^sha256:[a-f0-9]{64}$",
+                  "type": "string"
+                },
+                "provider_version": {
+                  "const": "0.1.0-dev"
+                },
+                "result_ref": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "maxLength": 80,
+                      "pattern": "^ssiag-native:[a-z0-9][a-z0-9_-]{0,63}$",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "vault": {
+                  "maxLength": 4096,
+                  "pattern": "^/[^\\x00-\\x1f]*$",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "provider_prefix",
+                "provider_version",
+                "provider_receipt",
+                "vault",
+                "config_digest",
+                "credential_generation",
+                "result_ref",
+                "max_pages"
+              ],
+              "type": "object"
+            }
+          ]
         },
         "expected_context_ref": {
           "maxLength": 71,
@@ -680,7 +1024,8 @@
         "expected_state",
         "resource_operation",
         "parameters",
-        "expected_observation"
+        "expected_observation",
+        "execution"
       ],
       "type": "object"
     },
@@ -702,7 +1047,7 @@
                 },
                 {
                   "maxLength": 4096,
-                  "pattern": "^ssiag:[A-Za-z0-9._:-]{1,128}$",
+                  "pattern": "^(ssiag:[A-Za-z0-9._:-]{1,128}|ssiag-native:[a-z0-9][a-z0-9_-]{0,63})$",
                   "type": "string"
                 }
               ]
@@ -744,6 +1089,74 @@
             "toolchain_id"
           ],
           "type": "object"
+        },
+        "execution": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "config_digest": {
+                  "maxLength": 71,
+                  "pattern": "^sha256:[a-f0-9]{64}$",
+                  "type": "string"
+                },
+                "credential_generation": {
+                  "maxLength": 19,
+                  "pattern": "^[1-9][0-9]{0,18}$",
+                  "type": "string"
+                },
+                "max_pages": {
+                  "maximum": 1000,
+                  "minimum": 1,
+                  "type": "integer"
+                },
+                "provider_prefix": {
+                  "maxLength": 4096,
+                  "pattern": "^/[^\\x00-\\x1f]*$",
+                  "type": "string"
+                },
+                "provider_receipt": {
+                  "maxLength": 71,
+                  "pattern": "^sha256:[a-f0-9]{64}$",
+                  "type": "string"
+                },
+                "provider_version": {
+                  "const": "0.1.0-dev"
+                },
+                "result_ref": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "maxLength": 80,
+                      "pattern": "^ssiag-native:[a-z0-9][a-z0-9_-]{0,63}$",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "vault": {
+                  "maxLength": 4096,
+                  "pattern": "^/[^\\x00-\\x1f]*$",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "provider_prefix",
+                "provider_version",
+                "provider_receipt",
+                "vault",
+                "config_digest",
+                "credential_generation",
+                "result_ref",
+                "max_pages"
+              ],
+              "type": "object"
+            }
+          ]
         },
         "expected_context_ref": {
           "maxLength": 71,
@@ -809,7 +1222,8 @@
         "expected_state",
         "resource_operation",
         "parameters",
-        "expected_observation"
+        "expected_observation",
+        "execution"
       ],
       "type": "object"
     },
@@ -831,7 +1245,7 @@
                 },
                 {
                   "maxLength": 4096,
-                  "pattern": "^ssiag:[A-Za-z0-9._:-]{1,128}$",
+                  "pattern": "^(ssiag:[A-Za-z0-9._:-]{1,128}|ssiag-native:[a-z0-9][a-z0-9_-]{0,63})$",
                   "type": "string"
                 }
               ]
@@ -873,6 +1287,74 @@
             "toolchain_id"
           ],
           "type": "object"
+        },
+        "execution": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "config_digest": {
+                  "maxLength": 71,
+                  "pattern": "^sha256:[a-f0-9]{64}$",
+                  "type": "string"
+                },
+                "credential_generation": {
+                  "maxLength": 19,
+                  "pattern": "^[1-9][0-9]{0,18}$",
+                  "type": "string"
+                },
+                "max_pages": {
+                  "maximum": 1000,
+                  "minimum": 1,
+                  "type": "integer"
+                },
+                "provider_prefix": {
+                  "maxLength": 4096,
+                  "pattern": "^/[^\\x00-\\x1f]*$",
+                  "type": "string"
+                },
+                "provider_receipt": {
+                  "maxLength": 71,
+                  "pattern": "^sha256:[a-f0-9]{64}$",
+                  "type": "string"
+                },
+                "provider_version": {
+                  "const": "0.1.0-dev"
+                },
+                "result_ref": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "maxLength": 80,
+                      "pattern": "^ssiag-native:[a-z0-9][a-z0-9_-]{0,63}$",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "vault": {
+                  "maxLength": 4096,
+                  "pattern": "^/[^\\x00-\\x1f]*$",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "provider_prefix",
+                "provider_version",
+                "provider_receipt",
+                "vault",
+                "config_digest",
+                "credential_generation",
+                "result_ref",
+                "max_pages"
+              ],
+              "type": "object"
+            }
+          ]
         },
         "expected_context_ref": {
           "maxLength": 71,
@@ -985,7 +1467,8 @@
         "expected_state",
         "resource_operation",
         "parameters",
-        "expected_observation"
+        "expected_observation",
+        "execution"
       ],
       "type": "object"
     },
@@ -1007,7 +1490,7 @@
                 },
                 {
                   "maxLength": 4096,
-                  "pattern": "^ssiag:[A-Za-z0-9._:-]{1,128}$",
+                  "pattern": "^(ssiag:[A-Za-z0-9._:-]{1,128}|ssiag-native:[a-z0-9][a-z0-9_-]{0,63})$",
                   "type": "string"
                 }
               ]
@@ -1049,6 +1532,74 @@
             "toolchain_id"
           ],
           "type": "object"
+        },
+        "execution": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "config_digest": {
+                  "maxLength": 71,
+                  "pattern": "^sha256:[a-f0-9]{64}$",
+                  "type": "string"
+                },
+                "credential_generation": {
+                  "maxLength": 19,
+                  "pattern": "^[1-9][0-9]{0,18}$",
+                  "type": "string"
+                },
+                "max_pages": {
+                  "maximum": 1000,
+                  "minimum": 1,
+                  "type": "integer"
+                },
+                "provider_prefix": {
+                  "maxLength": 4096,
+                  "pattern": "^/[^\\x00-\\x1f]*$",
+                  "type": "string"
+                },
+                "provider_receipt": {
+                  "maxLength": 71,
+                  "pattern": "^sha256:[a-f0-9]{64}$",
+                  "type": "string"
+                },
+                "provider_version": {
+                  "const": "0.1.0-dev"
+                },
+                "result_ref": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "maxLength": 80,
+                      "pattern": "^ssiag-native:[a-z0-9][a-z0-9_-]{0,63}$",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "vault": {
+                  "maxLength": 4096,
+                  "pattern": "^/[^\\x00-\\x1f]*$",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "provider_prefix",
+                "provider_version",
+                "provider_receipt",
+                "vault",
+                "config_digest",
+                "credential_generation",
+                "result_ref",
+                "max_pages"
+              ],
+              "type": "object"
+            }
+          ]
         },
         "expected_context_ref": {
           "maxLength": 71,
@@ -1114,7 +1665,8 @@
         "expected_state",
         "resource_operation",
         "parameters",
-        "expected_observation"
+        "expected_observation",
+        "execution"
       ],
       "type": "object"
     },
@@ -1136,7 +1688,7 @@
                 },
                 {
                   "maxLength": 4096,
-                  "pattern": "^ssiag:[A-Za-z0-9._:-]{1,128}$",
+                  "pattern": "^(ssiag:[A-Za-z0-9._:-]{1,128}|ssiag-native:[a-z0-9][a-z0-9_-]{0,63})$",
                   "type": "string"
                 }
               ]
@@ -1178,6 +1730,74 @@
             "toolchain_id"
           ],
           "type": "object"
+        },
+        "execution": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "config_digest": {
+                  "maxLength": 71,
+                  "pattern": "^sha256:[a-f0-9]{64}$",
+                  "type": "string"
+                },
+                "credential_generation": {
+                  "maxLength": 19,
+                  "pattern": "^[1-9][0-9]{0,18}$",
+                  "type": "string"
+                },
+                "max_pages": {
+                  "maximum": 1000,
+                  "minimum": 1,
+                  "type": "integer"
+                },
+                "provider_prefix": {
+                  "maxLength": 4096,
+                  "pattern": "^/[^\\x00-\\x1f]*$",
+                  "type": "string"
+                },
+                "provider_receipt": {
+                  "maxLength": 71,
+                  "pattern": "^sha256:[a-f0-9]{64}$",
+                  "type": "string"
+                },
+                "provider_version": {
+                  "const": "0.1.0-dev"
+                },
+                "result_ref": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "maxLength": 80,
+                      "pattern": "^ssiag-native:[a-z0-9][a-z0-9_-]{0,63}$",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "vault": {
+                  "maxLength": 4096,
+                  "pattern": "^/[^\\x00-\\x1f]*$",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "provider_prefix",
+                "provider_version",
+                "provider_receipt",
+                "vault",
+                "config_digest",
+                "credential_generation",
+                "result_ref",
+                "max_pages"
+              ],
+              "type": "object"
+            }
+          ]
         },
         "expected_context_ref": {
           "maxLength": 71,
@@ -1258,7 +1878,8 @@
         "expected_state",
         "resource_operation",
         "parameters",
-        "expected_observation"
+        "expected_observation",
+        "execution"
       ],
       "type": "object"
     },
@@ -1280,7 +1901,7 @@
                 },
                 {
                   "maxLength": 4096,
-                  "pattern": "^ssiag:[A-Za-z0-9._:-]{1,128}$",
+                  "pattern": "^(ssiag:[A-Za-z0-9._:-]{1,128}|ssiag-native:[a-z0-9][a-z0-9_-]{0,63})$",
                   "type": "string"
                 }
               ]
@@ -1322,6 +1943,74 @@
             "toolchain_id"
           ],
           "type": "object"
+        },
+        "execution": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "config_digest": {
+                  "maxLength": 71,
+                  "pattern": "^sha256:[a-f0-9]{64}$",
+                  "type": "string"
+                },
+                "credential_generation": {
+                  "maxLength": 19,
+                  "pattern": "^[1-9][0-9]{0,18}$",
+                  "type": "string"
+                },
+                "max_pages": {
+                  "maximum": 1000,
+                  "minimum": 1,
+                  "type": "integer"
+                },
+                "provider_prefix": {
+                  "maxLength": 4096,
+                  "pattern": "^/[^\\x00-\\x1f]*$",
+                  "type": "string"
+                },
+                "provider_receipt": {
+                  "maxLength": 71,
+                  "pattern": "^sha256:[a-f0-9]{64}$",
+                  "type": "string"
+                },
+                "provider_version": {
+                  "const": "0.1.0-dev"
+                },
+                "result_ref": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "maxLength": 80,
+                      "pattern": "^ssiag-native:[a-z0-9][a-z0-9_-]{0,63}$",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "vault": {
+                  "maxLength": 4096,
+                  "pattern": "^/[^\\x00-\\x1f]*$",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "provider_prefix",
+                "provider_version",
+                "provider_receipt",
+                "vault",
+                "config_digest",
+                "credential_generation",
+                "result_ref",
+                "max_pages"
+              ],
+              "type": "object"
+            }
+          ]
         },
         "expected_context_ref": {
           "maxLength": 71,
@@ -1387,7 +2076,8 @@
         "expected_state",
         "resource_operation",
         "parameters",
-        "expected_observation"
+        "expected_observation",
+        "execution"
       ],
       "type": "object"
     },
@@ -1409,7 +2099,7 @@
                 },
                 {
                   "maxLength": 4096,
-                  "pattern": "^ssiag:[A-Za-z0-9._:-]{1,128}$",
+                  "pattern": "^(ssiag:[A-Za-z0-9._:-]{1,128}|ssiag-native:[a-z0-9][a-z0-9_-]{0,63})$",
                   "type": "string"
                 }
               ]
@@ -1451,6 +2141,74 @@
             "toolchain_id"
           ],
           "type": "object"
+        },
+        "execution": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "config_digest": {
+                  "maxLength": 71,
+                  "pattern": "^sha256:[a-f0-9]{64}$",
+                  "type": "string"
+                },
+                "credential_generation": {
+                  "maxLength": 19,
+                  "pattern": "^[1-9][0-9]{0,18}$",
+                  "type": "string"
+                },
+                "max_pages": {
+                  "maximum": 1000,
+                  "minimum": 1,
+                  "type": "integer"
+                },
+                "provider_prefix": {
+                  "maxLength": 4096,
+                  "pattern": "^/[^\\x00-\\x1f]*$",
+                  "type": "string"
+                },
+                "provider_receipt": {
+                  "maxLength": 71,
+                  "pattern": "^sha256:[a-f0-9]{64}$",
+                  "type": "string"
+                },
+                "provider_version": {
+                  "const": "0.1.0-dev"
+                },
+                "result_ref": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "maxLength": 80,
+                      "pattern": "^ssiag-native:[a-z0-9][a-z0-9_-]{0,63}$",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "vault": {
+                  "maxLength": 4096,
+                  "pattern": "^/[^\\x00-\\x1f]*$",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "provider_prefix",
+                "provider_version",
+                "provider_receipt",
+                "vault",
+                "config_digest",
+                "credential_generation",
+                "result_ref",
+                "max_pages"
+              ],
+              "type": "object"
+            }
+          ]
         },
         "expected_context_ref": {
           "maxLength": 71,
@@ -1556,7 +2314,8 @@
         "expected_state",
         "resource_operation",
         "parameters",
-        "expected_observation"
+        "expected_observation",
+        "execution"
       ],
       "type": "object"
     },
@@ -1578,7 +2337,7 @@
                 },
                 {
                   "maxLength": 4096,
-                  "pattern": "^ssiag:[A-Za-z0-9._:-]{1,128}$",
+                  "pattern": "^(ssiag:[A-Za-z0-9._:-]{1,128}|ssiag-native:[a-z0-9][a-z0-9_-]{0,63})$",
                   "type": "string"
                 }
               ]
@@ -1620,6 +2379,74 @@
             "toolchain_id"
           ],
           "type": "object"
+        },
+        "execution": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "config_digest": {
+                  "maxLength": 71,
+                  "pattern": "^sha256:[a-f0-9]{64}$",
+                  "type": "string"
+                },
+                "credential_generation": {
+                  "maxLength": 19,
+                  "pattern": "^[1-9][0-9]{0,18}$",
+                  "type": "string"
+                },
+                "max_pages": {
+                  "maximum": 1000,
+                  "minimum": 1,
+                  "type": "integer"
+                },
+                "provider_prefix": {
+                  "maxLength": 4096,
+                  "pattern": "^/[^\\x00-\\x1f]*$",
+                  "type": "string"
+                },
+                "provider_receipt": {
+                  "maxLength": 71,
+                  "pattern": "^sha256:[a-f0-9]{64}$",
+                  "type": "string"
+                },
+                "provider_version": {
+                  "const": "0.1.0-dev"
+                },
+                "result_ref": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "maxLength": 80,
+                      "pattern": "^ssiag-native:[a-z0-9][a-z0-9_-]{0,63}$",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "vault": {
+                  "maxLength": 4096,
+                  "pattern": "^/[^\\x00-\\x1f]*$",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "provider_prefix",
+                "provider_version",
+                "provider_receipt",
+                "vault",
+                "config_digest",
+                "credential_generation",
+                "result_ref",
+                "max_pages"
+              ],
+              "type": "object"
+            }
+          ]
         },
         "expected_context_ref": {
           "maxLength": 71,
@@ -1727,7 +2554,8 @@
         "expected_state",
         "resource_operation",
         "parameters",
-        "expected_observation"
+        "expected_observation",
+        "execution"
       ],
       "type": "object"
     },
@@ -1749,7 +2577,7 @@
                 },
                 {
                   "maxLength": 4096,
-                  "pattern": "^ssiag:[A-Za-z0-9._:-]{1,128}$",
+                  "pattern": "^(ssiag:[A-Za-z0-9._:-]{1,128}|ssiag-native:[a-z0-9][a-z0-9_-]{0,63})$",
                   "type": "string"
                 }
               ]
@@ -1791,6 +2619,74 @@
             "toolchain_id"
           ],
           "type": "object"
+        },
+        "execution": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "config_digest": {
+                  "maxLength": 71,
+                  "pattern": "^sha256:[a-f0-9]{64}$",
+                  "type": "string"
+                },
+                "credential_generation": {
+                  "maxLength": 19,
+                  "pattern": "^[1-9][0-9]{0,18}$",
+                  "type": "string"
+                },
+                "max_pages": {
+                  "maximum": 1000,
+                  "minimum": 1,
+                  "type": "integer"
+                },
+                "provider_prefix": {
+                  "maxLength": 4096,
+                  "pattern": "^/[^\\x00-\\x1f]*$",
+                  "type": "string"
+                },
+                "provider_receipt": {
+                  "maxLength": 71,
+                  "pattern": "^sha256:[a-f0-9]{64}$",
+                  "type": "string"
+                },
+                "provider_version": {
+                  "const": "0.1.0-dev"
+                },
+                "result_ref": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "maxLength": 80,
+                      "pattern": "^ssiag-native:[a-z0-9][a-z0-9_-]{0,63}$",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "vault": {
+                  "maxLength": 4096,
+                  "pattern": "^/[^\\x00-\\x1f]*$",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "provider_prefix",
+                "provider_version",
+                "provider_receipt",
+                "vault",
+                "config_digest",
+                "credential_generation",
+                "result_ref",
+                "max_pages"
+              ],
+              "type": "object"
+            }
+          ]
         },
         "expected_context_ref": {
           "maxLength": 71,
@@ -1856,7 +2752,8 @@
         "expected_state",
         "resource_operation",
         "parameters",
-        "expected_observation"
+        "expected_observation",
+        "execution"
       ],
       "type": "object"
     },
@@ -1878,7 +2775,7 @@
                 },
                 {
                   "maxLength": 4096,
-                  "pattern": "^ssiag:[A-Za-z0-9._:-]{1,128}$",
+                  "pattern": "^(ssiag:[A-Za-z0-9._:-]{1,128}|ssiag-native:[a-z0-9][a-z0-9_-]{0,63})$",
                   "type": "string"
                 }
               ]
@@ -1920,6 +2817,74 @@
             "toolchain_id"
           ],
           "type": "object"
+        },
+        "execution": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "config_digest": {
+                  "maxLength": 71,
+                  "pattern": "^sha256:[a-f0-9]{64}$",
+                  "type": "string"
+                },
+                "credential_generation": {
+                  "maxLength": 19,
+                  "pattern": "^[1-9][0-9]{0,18}$",
+                  "type": "string"
+                },
+                "max_pages": {
+                  "maximum": 1000,
+                  "minimum": 1,
+                  "type": "integer"
+                },
+                "provider_prefix": {
+                  "maxLength": 4096,
+                  "pattern": "^/[^\\x00-\\x1f]*$",
+                  "type": "string"
+                },
+                "provider_receipt": {
+                  "maxLength": 71,
+                  "pattern": "^sha256:[a-f0-9]{64}$",
+                  "type": "string"
+                },
+                "provider_version": {
+                  "const": "0.1.0-dev"
+                },
+                "result_ref": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "maxLength": 80,
+                      "pattern": "^ssiag-native:[a-z0-9][a-z0-9_-]{0,63}$",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "vault": {
+                  "maxLength": 4096,
+                  "pattern": "^/[^\\x00-\\x1f]*$",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "provider_prefix",
+                "provider_version",
+                "provider_receipt",
+                "vault",
+                "config_digest",
+                "credential_generation",
+                "result_ref",
+                "max_pages"
+              ],
+              "type": "object"
+            }
+          ]
         },
         "expected_context_ref": {
           "maxLength": 71,
@@ -2000,7 +2965,8 @@
         "expected_state",
         "resource_operation",
         "parameters",
-        "expected_observation"
+        "expected_observation",
+        "execution"
       ],
       "type": "object"
     },
@@ -2022,7 +2988,7 @@
                 },
                 {
                   "maxLength": 4096,
-                  "pattern": "^ssiag:[A-Za-z0-9._:-]{1,128}$",
+                  "pattern": "^(ssiag:[A-Za-z0-9._:-]{1,128}|ssiag-native:[a-z0-9][a-z0-9_-]{0,63})$",
                   "type": "string"
                 }
               ]
@@ -2064,6 +3030,74 @@
             "toolchain_id"
           ],
           "type": "object"
+        },
+        "execution": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "config_digest": {
+                  "maxLength": 71,
+                  "pattern": "^sha256:[a-f0-9]{64}$",
+                  "type": "string"
+                },
+                "credential_generation": {
+                  "maxLength": 19,
+                  "pattern": "^[1-9][0-9]{0,18}$",
+                  "type": "string"
+                },
+                "max_pages": {
+                  "maximum": 1000,
+                  "minimum": 1,
+                  "type": "integer"
+                },
+                "provider_prefix": {
+                  "maxLength": 4096,
+                  "pattern": "^/[^\\x00-\\x1f]*$",
+                  "type": "string"
+                },
+                "provider_receipt": {
+                  "maxLength": 71,
+                  "pattern": "^sha256:[a-f0-9]{64}$",
+                  "type": "string"
+                },
+                "provider_version": {
+                  "const": "0.1.0-dev"
+                },
+                "result_ref": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "maxLength": 80,
+                      "pattern": "^ssiag-native:[a-z0-9][a-z0-9_-]{0,63}$",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "vault": {
+                  "maxLength": 4096,
+                  "pattern": "^/[^\\x00-\\x1f]*$",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "provider_prefix",
+                "provider_version",
+                "provider_receipt",
+                "vault",
+                "config_digest",
+                "credential_generation",
+                "result_ref",
+                "max_pages"
+              ],
+              "type": "object"
+            }
+          ]
         },
         "expected_context_ref": {
           "maxLength": 71,
@@ -2129,7 +3163,8 @@
         "expected_state",
         "resource_operation",
         "parameters",
-        "expected_observation"
+        "expected_observation",
+        "execution"
       ],
       "type": "object"
     },
@@ -2151,7 +3186,7 @@
                 },
                 {
                   "maxLength": 4096,
-                  "pattern": "^ssiag:[A-Za-z0-9._:-]{1,128}$",
+                  "pattern": "^(ssiag:[A-Za-z0-9._:-]{1,128}|ssiag-native:[a-z0-9][a-z0-9_-]{0,63})$",
                   "type": "string"
                 }
               ]
@@ -2193,6 +3228,74 @@
             "toolchain_id"
           ],
           "type": "object"
+        },
+        "execution": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "config_digest": {
+                  "maxLength": 71,
+                  "pattern": "^sha256:[a-f0-9]{64}$",
+                  "type": "string"
+                },
+                "credential_generation": {
+                  "maxLength": 19,
+                  "pattern": "^[1-9][0-9]{0,18}$",
+                  "type": "string"
+                },
+                "max_pages": {
+                  "maximum": 1000,
+                  "minimum": 1,
+                  "type": "integer"
+                },
+                "provider_prefix": {
+                  "maxLength": 4096,
+                  "pattern": "^/[^\\x00-\\x1f]*$",
+                  "type": "string"
+                },
+                "provider_receipt": {
+                  "maxLength": 71,
+                  "pattern": "^sha256:[a-f0-9]{64}$",
+                  "type": "string"
+                },
+                "provider_version": {
+                  "const": "0.1.0-dev"
+                },
+                "result_ref": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "maxLength": 80,
+                      "pattern": "^ssiag-native:[a-z0-9][a-z0-9_-]{0,63}$",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "vault": {
+                  "maxLength": 4096,
+                  "pattern": "^/[^\\x00-\\x1f]*$",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "provider_prefix",
+                "provider_version",
+                "provider_receipt",
+                "vault",
+                "config_digest",
+                "credential_generation",
+                "result_ref",
+                "max_pages"
+              ],
+              "type": "object"
+            }
+          ]
         },
         "expected_context_ref": {
           "maxLength": 71,
@@ -2285,7 +3388,8 @@
         "expected_state",
         "resource_operation",
         "parameters",
-        "expected_observation"
+        "expected_observation",
+        "execution"
       ],
       "type": "object"
     },
@@ -2307,7 +3411,7 @@
                 },
                 {
                   "maxLength": 4096,
-                  "pattern": "^ssiag:[A-Za-z0-9._:-]{1,128}$",
+                  "pattern": "^(ssiag:[A-Za-z0-9._:-]{1,128}|ssiag-native:[a-z0-9][a-z0-9_-]{0,63})$",
                   "type": "string"
                 }
               ]
@@ -2349,6 +3453,74 @@
             "toolchain_id"
           ],
           "type": "object"
+        },
+        "execution": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "config_digest": {
+                  "maxLength": 71,
+                  "pattern": "^sha256:[a-f0-9]{64}$",
+                  "type": "string"
+                },
+                "credential_generation": {
+                  "maxLength": 19,
+                  "pattern": "^[1-9][0-9]{0,18}$",
+                  "type": "string"
+                },
+                "max_pages": {
+                  "maximum": 1000,
+                  "minimum": 1,
+                  "type": "integer"
+                },
+                "provider_prefix": {
+                  "maxLength": 4096,
+                  "pattern": "^/[^\\x00-\\x1f]*$",
+                  "type": "string"
+                },
+                "provider_receipt": {
+                  "maxLength": 71,
+                  "pattern": "^sha256:[a-f0-9]{64}$",
+                  "type": "string"
+                },
+                "provider_version": {
+                  "const": "0.1.0-dev"
+                },
+                "result_ref": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "maxLength": 80,
+                      "pattern": "^ssiag-native:[a-z0-9][a-z0-9_-]{0,63}$",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "vault": {
+                  "maxLength": 4096,
+                  "pattern": "^/[^\\x00-\\x1f]*$",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "provider_prefix",
+                "provider_version",
+                "provider_receipt",
+                "vault",
+                "config_digest",
+                "credential_generation",
+                "result_ref",
+                "max_pages"
+              ],
+              "type": "object"
+            }
+          ]
         },
         "expected_context_ref": {
           "maxLength": 71,
@@ -2443,7 +3615,8 @@
         "expected_state",
         "resource_operation",
         "parameters",
-        "expected_observation"
+        "expected_observation",
+        "execution"
       ],
       "type": "object"
     },
@@ -2465,7 +3638,7 @@
                 },
                 {
                   "maxLength": 4096,
-                  "pattern": "^ssiag:[A-Za-z0-9._:-]{1,128}$",
+                  "pattern": "^(ssiag:[A-Za-z0-9._:-]{1,128}|ssiag-native:[a-z0-9][a-z0-9_-]{0,63})$",
                   "type": "string"
                 }
               ]
@@ -2507,6 +3680,74 @@
             "toolchain_id"
           ],
           "type": "object"
+        },
+        "execution": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "config_digest": {
+                  "maxLength": 71,
+                  "pattern": "^sha256:[a-f0-9]{64}$",
+                  "type": "string"
+                },
+                "credential_generation": {
+                  "maxLength": 19,
+                  "pattern": "^[1-9][0-9]{0,18}$",
+                  "type": "string"
+                },
+                "max_pages": {
+                  "maximum": 1000,
+                  "minimum": 1,
+                  "type": "integer"
+                },
+                "provider_prefix": {
+                  "maxLength": 4096,
+                  "pattern": "^/[^\\x00-\\x1f]*$",
+                  "type": "string"
+                },
+                "provider_receipt": {
+                  "maxLength": 71,
+                  "pattern": "^sha256:[a-f0-9]{64}$",
+                  "type": "string"
+                },
+                "provider_version": {
+                  "const": "0.1.0-dev"
+                },
+                "result_ref": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "maxLength": 80,
+                      "pattern": "^ssiag-native:[a-z0-9][a-z0-9_-]{0,63}$",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "vault": {
+                  "maxLength": 4096,
+                  "pattern": "^/[^\\x00-\\x1f]*$",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "provider_prefix",
+                "provider_version",
+                "provider_receipt",
+                "vault",
+                "config_digest",
+                "credential_generation",
+                "result_ref",
+                "max_pages"
+              ],
+              "type": "object"
+            }
+          ]
         },
         "expected_context_ref": {
           "maxLength": 71,
@@ -2572,7 +3813,8 @@
         "expected_state",
         "resource_operation",
         "parameters",
-        "expected_observation"
+        "expected_observation",
+        "execution"
       ],
       "type": "object"
     },
@@ -2594,7 +3836,7 @@
                 },
                 {
                   "maxLength": 4096,
-                  "pattern": "^ssiag:[A-Za-z0-9._:-]{1,128}$",
+                  "pattern": "^(ssiag:[A-Za-z0-9._:-]{1,128}|ssiag-native:[a-z0-9][a-z0-9_-]{0,63})$",
                   "type": "string"
                 }
               ]
@@ -2636,6 +3878,74 @@
             "toolchain_id"
           ],
           "type": "object"
+        },
+        "execution": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "config_digest": {
+                  "maxLength": 71,
+                  "pattern": "^sha256:[a-f0-9]{64}$",
+                  "type": "string"
+                },
+                "credential_generation": {
+                  "maxLength": 19,
+                  "pattern": "^[1-9][0-9]{0,18}$",
+                  "type": "string"
+                },
+                "max_pages": {
+                  "maximum": 1000,
+                  "minimum": 1,
+                  "type": "integer"
+                },
+                "provider_prefix": {
+                  "maxLength": 4096,
+                  "pattern": "^/[^\\x00-\\x1f]*$",
+                  "type": "string"
+                },
+                "provider_receipt": {
+                  "maxLength": 71,
+                  "pattern": "^sha256:[a-f0-9]{64}$",
+                  "type": "string"
+                },
+                "provider_version": {
+                  "const": "0.1.0-dev"
+                },
+                "result_ref": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "maxLength": 80,
+                      "pattern": "^ssiag-native:[a-z0-9][a-z0-9_-]{0,63}$",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "vault": {
+                  "maxLength": 4096,
+                  "pattern": "^/[^\\x00-\\x1f]*$",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "provider_prefix",
+                "provider_version",
+                "provider_receipt",
+                "vault",
+                "config_digest",
+                "credential_generation",
+                "result_ref",
+                "max_pages"
+              ],
+              "type": "object"
+            }
+          ]
         },
         "expected_context_ref": {
           "maxLength": 71,
@@ -2716,7 +4026,8 @@
         "expected_state",
         "resource_operation",
         "parameters",
-        "expected_observation"
+        "expected_observation",
+        "execution"
       ],
       "type": "object"
     },
@@ -2738,7 +4049,7 @@
                 },
                 {
                   "maxLength": 4096,
-                  "pattern": "^ssiag:[A-Za-z0-9._:-]{1,128}$",
+                  "pattern": "^(ssiag:[A-Za-z0-9._:-]{1,128}|ssiag-native:[a-z0-9][a-z0-9_-]{0,63})$",
                   "type": "string"
                 }
               ]
@@ -2780,6 +4091,74 @@
             "toolchain_id"
           ],
           "type": "object"
+        },
+        "execution": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "config_digest": {
+                  "maxLength": 71,
+                  "pattern": "^sha256:[a-f0-9]{64}$",
+                  "type": "string"
+                },
+                "credential_generation": {
+                  "maxLength": 19,
+                  "pattern": "^[1-9][0-9]{0,18}$",
+                  "type": "string"
+                },
+                "max_pages": {
+                  "maximum": 1000,
+                  "minimum": 1,
+                  "type": "integer"
+                },
+                "provider_prefix": {
+                  "maxLength": 4096,
+                  "pattern": "^/[^\\x00-\\x1f]*$",
+                  "type": "string"
+                },
+                "provider_receipt": {
+                  "maxLength": 71,
+                  "pattern": "^sha256:[a-f0-9]{64}$",
+                  "type": "string"
+                },
+                "provider_version": {
+                  "const": "0.1.0-dev"
+                },
+                "result_ref": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "maxLength": 80,
+                      "pattern": "^ssiag-native:[a-z0-9][a-z0-9_-]{0,63}$",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "vault": {
+                  "maxLength": 4096,
+                  "pattern": "^/[^\\x00-\\x1f]*$",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "provider_prefix",
+                "provider_version",
+                "provider_receipt",
+                "vault",
+                "config_digest",
+                "credential_generation",
+                "result_ref",
+                "max_pages"
+              ],
+              "type": "object"
+            }
+          ]
         },
         "expected_context_ref": {
           "maxLength": 71,
@@ -2845,7 +4224,8 @@
         "expected_state",
         "resource_operation",
         "parameters",
-        "expected_observation"
+        "expected_observation",
+        "execution"
       ],
       "type": "object"
     },
@@ -2867,7 +4247,7 @@
                 },
                 {
                   "maxLength": 4096,
-                  "pattern": "^ssiag:[A-Za-z0-9._:-]{1,128}$",
+                  "pattern": "^(ssiag:[A-Za-z0-9._:-]{1,128}|ssiag-native:[a-z0-9][a-z0-9_-]{0,63})$",
                   "type": "string"
                 }
               ]
@@ -2909,6 +4289,74 @@
             "toolchain_id"
           ],
           "type": "object"
+        },
+        "execution": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "config_digest": {
+                  "maxLength": 71,
+                  "pattern": "^sha256:[a-f0-9]{64}$",
+                  "type": "string"
+                },
+                "credential_generation": {
+                  "maxLength": 19,
+                  "pattern": "^[1-9][0-9]{0,18}$",
+                  "type": "string"
+                },
+                "max_pages": {
+                  "maximum": 1000,
+                  "minimum": 1,
+                  "type": "integer"
+                },
+                "provider_prefix": {
+                  "maxLength": 4096,
+                  "pattern": "^/[^\\x00-\\x1f]*$",
+                  "type": "string"
+                },
+                "provider_receipt": {
+                  "maxLength": 71,
+                  "pattern": "^sha256:[a-f0-9]{64}$",
+                  "type": "string"
+                },
+                "provider_version": {
+                  "const": "0.1.0-dev"
+                },
+                "result_ref": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "maxLength": 80,
+                      "pattern": "^ssiag-native:[a-z0-9][a-z0-9_-]{0,63}$",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "vault": {
+                  "maxLength": 4096,
+                  "pattern": "^/[^\\x00-\\x1f]*$",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "provider_prefix",
+                "provider_version",
+                "provider_receipt",
+                "vault",
+                "config_digest",
+                "credential_generation",
+                "result_ref",
+                "max_pages"
+              ],
+              "type": "object"
+            }
+          ]
         },
         "expected_context_ref": {
           "maxLength": 71,
@@ -3019,7 +4467,8 @@
         "expected_state",
         "resource_operation",
         "parameters",
-        "expected_observation"
+        "expected_observation",
+        "execution"
       ],
       "type": "object"
     },
@@ -3041,7 +4490,7 @@
                 },
                 {
                   "maxLength": 4096,
-                  "pattern": "^ssiag:[A-Za-z0-9._:-]{1,128}$",
+                  "pattern": "^(ssiag:[A-Za-z0-9._:-]{1,128}|ssiag-native:[a-z0-9][a-z0-9_-]{0,63})$",
                   "type": "string"
                 }
               ]
@@ -3083,6 +4532,74 @@
             "toolchain_id"
           ],
           "type": "object"
+        },
+        "execution": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "config_digest": {
+                  "maxLength": 71,
+                  "pattern": "^sha256:[a-f0-9]{64}$",
+                  "type": "string"
+                },
+                "credential_generation": {
+                  "maxLength": 19,
+                  "pattern": "^[1-9][0-9]{0,18}$",
+                  "type": "string"
+                },
+                "max_pages": {
+                  "maximum": 1000,
+                  "minimum": 1,
+                  "type": "integer"
+                },
+                "provider_prefix": {
+                  "maxLength": 4096,
+                  "pattern": "^/[^\\x00-\\x1f]*$",
+                  "type": "string"
+                },
+                "provider_receipt": {
+                  "maxLength": 71,
+                  "pattern": "^sha256:[a-f0-9]{64}$",
+                  "type": "string"
+                },
+                "provider_version": {
+                  "const": "0.1.0-dev"
+                },
+                "result_ref": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "maxLength": 80,
+                      "pattern": "^ssiag-native:[a-z0-9][a-z0-9_-]{0,63}$",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "vault": {
+                  "maxLength": 4096,
+                  "pattern": "^/[^\\x00-\\x1f]*$",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "provider_prefix",
+                "provider_version",
+                "provider_receipt",
+                "vault",
+                "config_digest",
+                "credential_generation",
+                "result_ref",
+                "max_pages"
+              ],
+              "type": "object"
+            }
+          ]
         },
         "expected_context_ref": {
           "maxLength": 71,
@@ -3195,7 +4712,8 @@
         "expected_state",
         "resource_operation",
         "parameters",
-        "expected_observation"
+        "expected_observation",
+        "execution"
       ],
       "type": "object"
     },
@@ -3217,7 +4735,7 @@
                 },
                 {
                   "maxLength": 4096,
-                  "pattern": "^ssiag:[A-Za-z0-9._:-]{1,128}$",
+                  "pattern": "^(ssiag:[A-Za-z0-9._:-]{1,128}|ssiag-native:[a-z0-9][a-z0-9_-]{0,63})$",
                   "type": "string"
                 }
               ]
@@ -3259,6 +4777,74 @@
             "toolchain_id"
           ],
           "type": "object"
+        },
+        "execution": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "config_digest": {
+                  "maxLength": 71,
+                  "pattern": "^sha256:[a-f0-9]{64}$",
+                  "type": "string"
+                },
+                "credential_generation": {
+                  "maxLength": 19,
+                  "pattern": "^[1-9][0-9]{0,18}$",
+                  "type": "string"
+                },
+                "max_pages": {
+                  "maximum": 1000,
+                  "minimum": 1,
+                  "type": "integer"
+                },
+                "provider_prefix": {
+                  "maxLength": 4096,
+                  "pattern": "^/[^\\x00-\\x1f]*$",
+                  "type": "string"
+                },
+                "provider_receipt": {
+                  "maxLength": 71,
+                  "pattern": "^sha256:[a-f0-9]{64}$",
+                  "type": "string"
+                },
+                "provider_version": {
+                  "const": "0.1.0-dev"
+                },
+                "result_ref": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "maxLength": 80,
+                      "pattern": "^ssiag-native:[a-z0-9][a-z0-9_-]{0,63}$",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "vault": {
+                  "maxLength": 4096,
+                  "pattern": "^/[^\\x00-\\x1f]*$",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "provider_prefix",
+                "provider_version",
+                "provider_receipt",
+                "vault",
+                "config_digest",
+                "credential_generation",
+                "result_ref",
+                "max_pages"
+              ],
+              "type": "object"
+            }
+          ]
         },
         "expected_context_ref": {
           "maxLength": 71,
@@ -3324,7 +4910,8 @@
         "expected_state",
         "resource_operation",
         "parameters",
-        "expected_observation"
+        "expected_observation",
+        "execution"
       ],
       "type": "object"
     }
