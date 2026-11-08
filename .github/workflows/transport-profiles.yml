@@ -61,12 +61,14 @@ jobs:
           set -euo pipefail
           case "$RUNNER_OS" in
             Linux)
+              profile_prefix=/opt/symphony
               profile_helper_dir=/opt/symphony/libexec/sov-transport-profile-admin/0.1.0-dev
               # Hosted Ubuntu images intentionally make /opt world-writable.
               # Provision protected ancestry only on this disposable runner.
               sudo chmod go-w /opt
               ;;
             macOS)
+              profile_prefix='/Library/Application Support/Symphony'
               profile_helper_dir='/Library/Application Support/Symphony/libexec/sov-transport-profile-admin/0.1.0-dev'
               # macOS defaults /private/var/run to group-writable (daemon).
               # The system audit socket contract requires protected ancestry.
@@ -74,7 +76,12 @@ jobs:
               ;;
             *) exit 2 ;;
           esac
-          sudo mkdir -p "$profile_helper_dir"
+          # Do not inherit the hosted runner's permissive directory defaults.
+          # Set every helper ancestor explicitly, including existing directories.
+          for profile_dir in "$profile_prefix" "$profile_prefix/libexec" \
+            "$profile_prefix/libexec/sov-transport-profile-admin" "$profile_helper_dir"; do
+            sudo install -d -o 0 -g 0 -m 0755 "$profile_dir"
+          done
           sudo install -m 0755 "$RUNNER_TEMP/sov-transport-profile-admin" "$profile_helper_dir/sov-transport-profile-admin"
           sudo env SYMPHONY_PROFILE_ROOT_FIXTURE=1 "$RUNNER_TEMP/profile-installed.test" -test.v -test.run '^TestProtectedProfileInstalledProcess$'
       - name: Report qualification boundary
