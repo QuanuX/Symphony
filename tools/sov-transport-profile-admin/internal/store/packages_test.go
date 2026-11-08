@@ -190,3 +190,110 @@ func TestCarrierReceiptCannotClaimV2FromV1(t *testing.T) {
 		t.Fatal("v1-only carrier admitted for v2 profile")
 	}
 }
+
+func TestConnectionSnapshotLockAndRefusals(t *testing.T) {
+	for _, scenario := range []string{"allowed", "root", "wrong-uid", "wrong-gid", "uid-sentinel", "gid-sentinel", "negative-gid", "stale", "scope", "disabled", "pending", "corrupt-pending", "package-drift", "callback-error"} {
+		t.Run(scenario, func(t *testing.T) {
+			s, plan, root := enableFixture(t)
+			if err := s.apply(context.Background(), plan); err != nil {
+				t.Fatal(err)
+			}
+			scope, digest := s.scope, plan.Desired.Digest
+			uid, gid := 501, 20
+			switch scenario {
+			case "root":
+				uid = 0
+			case "wrong-uid":
+				uid = 502
+			case "wrong-gid":
+				gid = 21
+			case "uid-sentinel":
+				uid = int(^uint32(0))
+			case "gid-sentinel":
+				gid = int(^uint32(0))
+			case "negative-gid":
+				gid = -1
+			case "stale":
+				digest = "sha256:" + strings.Repeat("f", 64)
+			case "scope":
+				scope.HostID = "ffffffff-ffff-4fff-8fff-ffffffffffff"
+			case "disabled":
+				p, e := c.MakePlan(s.scope, plan.ProfileID, "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa", s.administrator, &plan.Desired, c.Change{Action: "disable"}, s.now())
+				if e != nil {
+					t.Fatal(e)
+				}
+				if e = s.apply(context.Background(), p); e != nil {
+					t.Fatal(e)
+				}
+				digest = p.Desired.Digest
+			case "pending":
+				p, e := c.MakePlan(s.scope, plan.ProfileID, "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa", s.administrator, &plan.Desired, c.Change{Action: "disable"}, s.now())
+				if e != nil {
+					t.Fatal(e)
+				}
+				s.fault = func(stage string) error {
+					if stage == "intent_prepared" {
+						return errors.New("interrupted")
+					}
+					return nil
+				}
+				if e = s.apply(context.Background(), p); e == nil {
+					t.Fatal("fault not observed")
+				}
+			case "corrupt-pending":
+				if e := s.dir.write("pending.json", []byte("corrupt interrupted state")); e != nil {
+					t.Fatal(e)
+				}
+			case "package-drift":
+				ref := plan.Desired.Profile.Configuration.Helper
+				if e := os.WriteFile(filepath.Join(root, ref.PackageID, ref.Version, "binary"), []byte("drifted"), 0755); e != nil {
+					t.Fatal(e)
+				}
+			}
+			called := false
+			callbackErr := errors.New("dispatch intent refused")
+			err := s.withConnectionSnapshot(scope, plan.ProfileID, digest, uid, gid, func(snapshot c.Snapshot) error {
+				called = true
+				if snapshot.Digest != plan.Desired.Digest {
+					t.Fatal("snapshot changed")
+				}
+				if release, e := s.dir.lock(true); e == nil {
+					release()
+					t.Fatal("writer admitted during read callback")
+				}
+				if scenario == "callback-error" {
+					return callbackErr
+				}
+				return nil
+			})
+			wantCall := scenario == "allowed" || scenario == "callback-error"
+			if called != wantCall || (err == nil) != (scenario == "allowed") {
+				t.Fatalf("called=%v error=%v", called, err)
+			}
+			if scenario == "callback-error" && !errors.Is(err, callbackErr) {
+				t.Fatal("callback failure lost")
+			}
+			release, e := s.dir.lock(true)
+			if e != nil {
+				t.Fatal("read lock leaked", e)
+			}
+			release()
+		})
+	}
+}
+
+func TestConnectionSnapshotUsesKernelIdentity(t *testing.T) {
+	s, p, _ := enableFixture(t)
+	if e := s.apply(context.Background(), p); e != nil {
+		t.Fatal(e)
+	}
+	t.Setenv("SUDO_UID", "501")
+	t.Setenv("SUDO_GID", "20")
+	t.Setenv("SUDO_USER", "permitted-user")
+	called := false
+	err := s.WithConnectionSnapshot(s.scope, p.ProfileID, p.Desired.Digest, func(c.Snapshot) error { called = true; return nil })
+	expected := os.Geteuid() == 501 && os.Getegid() == 20
+	if called != expected || (err == nil) != expected {
+		t.Fatalf("environment changed kernel identity admission: called=%v error=%v", called, err)
+	}
+}

@@ -580,3 +580,59 @@ func randomID() (string, error) {
 	b[8] = b[8]&63 | 0x80
 	return fmt.Sprintf("%x-%x-%x-%x-%x", b[:4], b[4:6], b[6:8], b[8:10], b[10:]), nil
 }
+
+// WithConnectionSnapshot is the store-side read boundary for future I3 carrier
+// admission. It grants no connection authority: the carrier must still bind the
+// endpoint, persist/audit dispatch intent and start its child while this callback
+// holds the shared lock. No profile command exposes this internal operation.
+// The callback must return after launch observation, not after connection exit.
+func (s *Store) WithConnectionSnapshot(scope c.Scope, profileID, snapshotDigest string, use func(c.Snapshot) error) error {
+	return s.withConnectionSnapshot(scope, profileID, snapshotDigest, os.Geteuid(), os.Getegid(), use)
+}
+
+// Identity injection is private to package tests; public callers always use the
+// kernel identity. Supplementary groups and SUDO_* never grant profile access.
+func (s *Store) withConnectionSnapshot(scope c.Scope, profileID, snapshotDigest string, uid, gid int, use func(c.Snapshot) error) error {
+	if uid <= 0 || uint64(uid) >= uint64(^uint32(0)) || gid < 0 || uint64(gid) >= uint64(^uint32(0)) || use == nil {
+		return errors.New("transport_profile.principal_refused")
+	}
+	if scope != s.scope || !c.ValidUUID(profileID) || !c.ValidDigest(snapshotDigest) {
+		return c.ErrBinding
+	}
+	unlock, err := s.dir.lock(false)
+	if err != nil {
+		return err
+	}
+	defer unlock()
+	// Any unsettled operation in this scope blocks new connections, including
+	// mutations of a different profile. Corrupt journals also fail closed.
+	p, err := s.readPending("pending.json", s.dir)
+	if err != nil {
+		return err
+	}
+	if p != nil {
+		return errPending
+	}
+	snapshot, err := s.current(profileID)
+	if err != nil {
+		return err
+	}
+	if snapshot == nil || snapshot.Profile.State != "enabled" || snapshot.Digest != snapshotDigest {
+		return errCAS
+	}
+	principal := c.Principal{UID: fmt.Sprint(uid), GID: fmt.Sprint(gid)}
+	permitted := false
+	for _, candidate := range snapshot.Policy.Permitted {
+		if candidate == principal {
+			permitted = true
+			break
+		}
+	}
+	if !permitted {
+		return errors.New("transport_profile.principal_refused")
+	}
+	if err := s.verifyTrust(*snapshot); err != nil {
+		return err
+	}
+	return use(*snapshot)
+}
