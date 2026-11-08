@@ -286,7 +286,7 @@
       "depends_on": "L01,L18",
       "completion_criteria": "Choose a bounded real source corpus with exact revisions, captures, mappings, coverage and freshness; demonstrate replay and unresolved facts. Keep synthetic fixtures labeled. A comprehensive atlas or minimum coverage policy is not required for caller-supplied tools.",
       "implementation_state": "merged_source_qualification_verified",
-      "qualification_guide": "examples/mvp-hardware/README.md",
+      "qualification_guide": "tests/shv-release-qualification/examples/mvp-hardware/README.md",
       "qualification_boundary": "Optional one-lineage AMD documentary starter reuses the pinned installed recipe. Actual selected-platform execution is separate from the other required target results; no atlas or publication approval.",
       "qualification_evidence": {
         "pull_request": 184,
