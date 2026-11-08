@@ -225,6 +225,40 @@ void test_v4_owner_protocol() {
     require(!check_invariant_ownership(temporary.path().string()).success, "format 3 accepted new owner protocol");
 }
 
+void test_v5_protected_tool_ownership() {
+    TemporaryDirectory temporary;
+    auto fixture = generic_registry_fixture(temporary.path());
+    const auto owner = std::string("tools/sov-transport-profile-admin");
+    fs::create_directories(temporary.path() / "tools");
+    fs::rename(temporary.path() / "modules/example-engine", temporary.path() / owner);
+    auto encoded = fixture.dump();
+    for (const auto& [before, after] : std::vector<std::pair<std::string, std::string>>{
+        {"modules/example-engine", owner}, {"example-engine", "sov-transport-profile-admin"},
+        {"adapter:symphony:symphony-example.v1", "adapter:symphony:sov.transport-profile-admin.v1"}}) {
+        std::size_t at = 0;
+        while ((at = encoded.find(before, at)) != std::string::npos) { encoded.replace(at, before.size(), after); at += after.size(); }
+    }
+    fixture = engine::Json::parse(encoded);
+    fixture["protocol"] = "symphony.knowledge.invariant-ownership-registry.v5";
+    fixture["format_version"] = 5U;
+    auto& adapter = fixture["adapters"][0];
+    adapter["format_version"] = 5U;
+    adapter["entry_point_id"] = "sov.transport-profile-admin";
+    adapter["command_protocol"] = "symphony.sov.transport-profile-request.v1";
+    adapter["version_policy"] = "exact_protected_executable_and_scope";
+    adapter["operation_ids"] = engine::Json::array({
+        "engop:symphony:sov.transport.profile.apply", "engop:symphony:sov.transport.profile.inspect",
+        "engop:symphony:sov.transport.profile.list", "engop:symphony:sov.transport.profile.plan",
+        "engop:symphony:sov.transport.profile.recover", "engop:symphony:sov.transport.profile.schema",
+        "engop:symphony:sov.transport.profile.status", "engop:symphony:sov.transport.profile.template"});
+    write_registry(temporary.path(), fixture);
+    const auto result = check_invariant_ownership(temporary.path().string());
+    require(result.success, "v5 protected tool rejected:" + messages(result));
+    fixture["adapters"][0]["operation_ids"].push_back("engop:symphony:sov.transport.profile.shell");
+    write_registry(temporary.path(), fixture);
+    require(!check_invariant_ownership(temporary.path().string()).success, "protected tool accepted shell operation");
+}
+
 void test_v3_explicit_adapter_ownership() {
     TemporaryDirectory temporary;
     auto fixture = generic_registry_fixture(temporary.path());
@@ -707,6 +741,7 @@ int main(int argc, char** argv) {
         test_v2_generic_adapter();
         test_v3_explicit_adapter_ownership();
         test_v4_owner_protocol();
+        test_v5_protected_tool_ownership();
         test_canonical(repository);
         test_registered_shv_owner_inventory(repository);
         test_cpp_header_traceability(repository);

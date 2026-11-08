@@ -2612,6 +2612,107 @@
       "expectations": [
         {
           "command_ids": [
+            "qxcmd:symphony:sov.transport.profile.apply"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:sov.transport.profile.apply"
+          ],
+          "evidence": [
+            "knowledge/sov/transport-profiles/schemas.json",
+            "tools/qxctl/COMMANDS.json",
+            "tools/sov-transport-profile-admin/SPEC.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "apply",
+          "rationale": "Exact protected local profile owner; sudo gates mutation while reads and future connections remain unprivileged.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:sov.transport.profile.schema",
+            "qxcmd:symphony:sov.transport.profile.template"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:sov.transport.profile.schema",
+            "engop:symphony:sov.transport.profile.template"
+          ],
+          "evidence": [
+            "knowledge/sov/transport-profiles/schemas.json",
+            "tools/qxctl/COMMANDS.json",
+            "tools/sov-transport-profile-admin/SPEC.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "discover",
+          "rationale": "Exact protected local profile owner; sudo gates mutation while reads and future connections remain unprivileged.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:sov.transport.profile.inspect",
+            "qxcmd:symphony:sov.transport.profile.list",
+            "qxcmd:symphony:sov.transport.profile.status"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:sov.transport.profile.inspect",
+            "engop:symphony:sov.transport.profile.list",
+            "engop:symphony:sov.transport.profile.status"
+          ],
+          "evidence": [
+            "knowledge/sov/transport-profiles/schemas.json",
+            "tools/qxctl/COMMANDS.json",
+            "tools/sov-transport-profile-admin/SPEC.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "inspect",
+          "rationale": "Exact protected local profile owner; sudo gates mutation while reads and future connections remain unprivileged.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:sov.transport.profile.plan"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:sov.transport.profile.plan"
+          ],
+          "evidence": [
+            "knowledge/sov/transport-profiles/schemas.json",
+            "tools/qxctl/COMMANDS.json",
+            "tools/sov-transport-profile-admin/SPEC.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "propose",
+          "rationale": "Exact protected local profile owner; sudo gates mutation while reads and future connections remain unprivileged.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:sov.transport.profile.recover"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:sov.transport.profile.recover"
+          ],
+          "evidence": [
+            "knowledge/sov/transport-profiles/schemas.json",
+            "tools/qxctl/COMMANDS.json",
+            "tools/sov-transport-profile-admin/SPEC.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "recover",
+          "rationale": "Exact protected local profile owner; sudo gates mutation while reads and future connections remain unprivileged.",
+          "requirement": "required"
+        }
+      ],
+      "feature_id": "ssfv:symphony:qxctl.sov-transport-profile-administration"
+    },
+    {
+      "expectations": [
+        {
+          "command_ids": [
             "qxcmd:symphony:sqv.schema",
             "qxcmd:symphony:sqv.template"
           ],
@@ -8712,6 +8813,107 @@
       "expectations": [
         {
           "command_ids": [
+            "qxcmd:symphony:sov.transport.profile.apply"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:sov.transport.profile.apply"
+          ],
+          "evidence": [
+            "knowledge/sov/transport-profiles/schemas.json",
+            "tools/qxctl/COMMANDS.json",
+            "tools/sov-transport-profile-admin/SPEC.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "apply",
+          "rationale": "Exact protected local profile owner; sudo gates mutation while reads and future connections remain unprivileged.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:sov.transport.profile.schema",
+            "qxcmd:symphony:sov.transport.profile.template"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:sov.transport.profile.schema",
+            "engop:symphony:sov.transport.profile.template"
+          ],
+          "evidence": [
+            "knowledge/sov/transport-profiles/schemas.json",
+            "tools/qxctl/COMMANDS.json",
+            "tools/sov-transport-profile-admin/SPEC.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "discover",
+          "rationale": "Exact protected local profile owner; sudo gates mutation while reads and future connections remain unprivileged.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:sov.transport.profile.inspect",
+            "qxcmd:symphony:sov.transport.profile.list",
+            "qxcmd:symphony:sov.transport.profile.status"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:sov.transport.profile.inspect",
+            "engop:symphony:sov.transport.profile.list",
+            "engop:symphony:sov.transport.profile.status"
+          ],
+          "evidence": [
+            "knowledge/sov/transport-profiles/schemas.json",
+            "tools/qxctl/COMMANDS.json",
+            "tools/sov-transport-profile-admin/SPEC.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "inspect",
+          "rationale": "Exact protected local profile owner; sudo gates mutation while reads and future connections remain unprivileged.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:sov.transport.profile.plan"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:sov.transport.profile.plan"
+          ],
+          "evidence": [
+            "knowledge/sov/transport-profiles/schemas.json",
+            "tools/qxctl/COMMANDS.json",
+            "tools/sov-transport-profile-admin/SPEC.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "propose",
+          "rationale": "Exact protected local profile owner; sudo gates mutation while reads and future connections remain unprivileged.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:sov.transport.profile.recover"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:sov.transport.profile.recover"
+          ],
+          "evidence": [
+            "knowledge/sov/transport-profiles/schemas.json",
+            "tools/qxctl/COMMANDS.json",
+            "tools/sov-transport-profile-admin/SPEC.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "recover",
+          "rationale": "Exact protected local profile owner; sudo gates mutation while reads and future connections remain unprivileged.",
+          "requirement": "required"
+        }
+      ],
+      "feature_id": "ssfv:symphony:sov-transport-profile-admin"
+    },
+    {
+      "expectations": [
+        {
+          "command_ids": [
             "qxcmd:symphony:sqv.schema",
             "qxcmd:symphony:sqv.template"
           ],
@@ -10536,9 +10738,9 @@
   ],
   "format_version": 1,
   "forward_gate": "enforce_new_records",
-  "profile_digest": "sha256:35ac1f008bb43b9526dcc6917b76b89b659517a68ec294f8a44744d27257124d",
+  "profile_digest": "sha256:be294d62e333475641270b4da3626e6bb54902c84da6ce8f3b29aa41979f8081",
   "profile_id": "symphony.registered-features.administration.v1",
   "protocol": "symphony.knowledge.feature-administration-profile.v1",
-  "registered_feature_count": 151,
-  "ssfv_registry_digest": "sha256:3906357bef306518aadeb7555de1fa6a311038b4dc967b457bedcf93113dde75"
+  "registered_feature_count": 153,
+  "ssfv_registry_digest": "sha256:4fdaba564b9e0e8e7f885340cf78869ddaeb759c9503e8191fbcfefc47909650"
 }

@@ -113,3 +113,7 @@ records retain duplicate suppression and migrate only during protected recovery.
 Unknown delivery remains indeterminate even after its audit commits.
 
 Local peer authentication, exact UID/GID subject resolution, target-host-owner derivation, endpoint verification, native supervision, receipt-v2 identity, transactional recovery, exact-grant authorization, protected policy administration, typed SSIAG STAV submission, metadata-only provider mutual trust, and exact provider-binding lifecycle are implemented. General safeguards, lease issuance, credential delivery, operational provider operations, secret delivery, and canonical knowledge apply remain disabled.
+
+## Protected transport profile audit bridge (I2)
+
+`POST /v1/transport-profile/audit` accepts the closed `symphony.ssiag.transport-profile-audit.v1` contract only from kernel UID 0 on system-mode SSIAG for its exact TOPS. It projects the declared profile prepare/observe STAV pairs, requires the existing authenticated append channel and independently checks exact committed receipt binding. It grants no local-v1 capability transfer or remote authority. See `tools/sov-transport-profile-admin/SPEC.md` for journal ordering and the separately provisioned producer grant. No host policy, package, profile or grant is installed by this endpoint.

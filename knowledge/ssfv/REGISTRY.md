@@ -946,7 +946,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `modules/secure-identity-access-governance`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:ssiag-foundation`
-- record_digest: `sha256:bc7d0711d8ac9dc46e7907a3a07dc51292f80dd30731d63589ca34275d472616`
+- record_digest: `sha256:44efe5e3e90ece174702d7c0084e516f8b7ab60cecea917669b2bfd2b0ffa965`
 - notes: Architect-ratified F2 subfeature for closed safe SSIAG audit production; coverage remains partial.
 
 - feature_id: `ssfv:symphony:ssiag-foundation.tops-enrollment`
@@ -1399,6 +1399,25 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - parent_feature_id: `ssfv:symphony:qxctl`
 - record_digest: `sha256:99836e65c34706c5b070f3ed88a79dca75b570e2d5ab9f797b79b8b2b8fc5056`
 - notes: C0/I1 local foundation only; provider and transport qualification remain open.
+
+
+- feature_id: `ssfv:symphony:sov-transport-profile-admin`
+- feature_file: `tools/sov-transport-profile-admin/FEATURES.md`
+- owner_contract: `tools/sov-transport-profile-admin/SPEC.md`
+- source_scope: `tools/sov-transport-profile-admin`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:platform`
+- record_digest: `sha256:085d80af08b99ba129e23d2e7c0975e82a37baa657ebd6314c1c4daa68328fd5`
+- notes: I2 protected local administration; live transport and deployed host qualification remain separate.
+
+- feature_id: `ssfv:symphony:qxctl.sov-transport-profile-administration`
+- feature_file: `tools/qxctl/FEATURES.md`
+- owner_contract: `tools/qxctl/MANIFEST.md`
+- source_scope: `tools/qxctl`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:qxctl`
+- record_digest: `sha256:b239b1d0ee5bee713f9ab6ac095245edfa5ac86037a4c53b19482357aa3cd209`
+- notes: I2 protected local administration; live transport and deployed host qualification remain separate.
 
 ## Prohibited Entries
 

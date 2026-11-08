@@ -20,7 +20,7 @@ func newSOVCommand() *cobra.Command {
 	}
 	remote.AddCommand(newSOVInvoke())
 	remote.AddCommand(newSOVSSH("ssh-endpoint"), newSOVSSH("ssh-invoke"))
-	root.AddCommand(remote, newSOVTarget(), newSOVCloudflare())
+	root.AddCommand(remote, newSOVTarget(), newSOVCloudflare(), newSOVTransport())
 	return root
 }
 func newSOVRemoteLeaf(op string) *cobra.Command {

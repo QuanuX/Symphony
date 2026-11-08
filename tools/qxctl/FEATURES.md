@@ -1447,6 +1447,62 @@
       "cross_vector_references": [
         {
           "applicability": "applicable",
+          "reason": "Indexes the exact SOV handoff contract and implementation paths; SOV is not an admitted cross-vector enum in this selected SSFV v1 schema.",
+          "reference": "knowledge/skvi/INDEX.md",
+          "vector": "skvi"
+        },
+        {
+          "applicability": "applicable",
+          "reason": "Optional target-local fresh authority; controller decisions never grant access.",
+          "reference": "knowledge/ssiag/SPEC.md",
+          "vector": "ssiag"
+        }
+      ],
+      "distinctions": [],
+      "evidence": [
+        "tools/qxctl/cmd/qxctl/sov_transport_profile_test.go",
+        "tools/qxctl/internal/transportprofile/client_test.go"
+      ],
+      "feature_id": "ssfv:symphony:qxctl.sov-transport-profile-administration",
+      "how": "Presents owner-generated schema/template and complete results; calls only the fixed protected helper, elevating apply/recover alone.",
+      "implementation_languages": [
+        {
+          "language": "Go",
+          "role": "Owns protected local administration and validates exact authenticated audit."
+        }
+      ],
+      "implementation_paths": [
+        "tools/qxctl/cmd/qxctl/sov_transport_profile.go",
+        "tools/qxctl/internal/transportprofile/client_unix.go"
+      ],
+      "kind": "subfeature",
+      "non_claims": [
+        "No I3 connection admission, endpoint-v2 execution, live Cloudflare session or provider resource operations.",
+        "No deployed sudo/SSIAG/STAV qualification follows from local fixtures; no host policy is installed automatically."
+      ],
+      "owner_contract": "tools/qxctl/MANIFEST.md",
+      "parent_feature_id": "ssfv:symphony:qxctl",
+      "record_version": 2,
+      "relationships": [
+        {
+          "rationale": "The independent helper owns profile mutation and protected state.",
+          "target_feature_id": "ssfv:symphony:sov-transport-profile-admin",
+          "type": "depends_on"
+        }
+      ],
+      "source_scope": "tools/qxctl",
+      "status": "experimental",
+      "title": "qxctl protected transport profile administration",
+      "what": "Closed local profile/policy changes with exact generations, protected package trust, authenticated audit and explicit recovery.",
+      "when": "Explicit local profile inspection, planning, mutation or recovery.",
+      "where": "Selected local host and TOPS protected store.",
+      "who": "Humans, agents and external consumers without caller-class distinctions.",
+      "why": "Permit optional transport composition while keeping privilege limited to protected administration."
+    },
+    {
+      "cross_vector_references": [
+        {
+          "applicability": "applicable",
           "reason": "Material source change closes append-only after verification.",
           "reference": "knowledge/sclv/SPEC.md",
           "vector": "sclv"

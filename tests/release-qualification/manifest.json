@@ -285,6 +285,10 @@
     {
       "path": "modules/sov-cloudflare-adapter",
       "disposition": "native_cmake_root"
+    },
+    {
+      "path": "tools/sov-transport-profile-admin",
+      "disposition": "go_module"
     }
   ],
   "native_suites": [
@@ -1573,6 +1577,12 @@
       "packages": [
         "./..."
       ]
+    },
+    {
+      "path": "tools/sov-transport-profile-admin",
+      "packages": [
+        "./..."
+      ]
     }
   ],
   "optional_go_tests": [
@@ -2621,6 +2631,17 @@
       ],
       "source": "tools/qxctl/internal/sovcloudflare/cloudflare_test.go",
       "line": 78
+    },
+    {
+      "module": "tools/sov-transport-profile-admin",
+      "package": ".",
+      "test": "TestProtectedProfileInstalledProcess",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "requires explicit disposable-root installed-helper fixture"
+      ],
+      "source": "tools/sov-transport-profile-admin/installed_test.go",
+      "line": 30
     }
   ],
   "installed_go_suites": [

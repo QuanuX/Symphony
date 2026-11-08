@@ -3,15 +3,15 @@
   "baseline_commit": "4499b25170fc958d9f15f2c8d9446878060d3b78",
   "baseline_note": "Prior main commit before this dependency-alignment change; source_inputs binds the projected source bytes. This is not a claim to be the final commit or a release authorization.",
   "scope": {
-    "component_root_count": 70,
-    "module_root_count": 59,
+    "component_root_count": 72,
+    "module_root_count": 60,
     "library_root_count": 4,
-    "tool_root_count": 7,
-    "native_component_count": 58,
-    "native_installable_count": 57,
-    "required_profile_native_package_count": 55,
+    "tool_root_count": 8,
+    "native_component_count": 59,
+    "native_installable_count": 58,
+    "required_profile_native_package_count": 56,
     "legacy_duckdb_package_count": 2,
-    "go_module_count": 8,
+    "go_module_count": 9,
     "owner_interface_count": 24,
     "release_approval": "L01 remains separate; this inventory includes implemented components, authoring/shared support and an unimplemented proposal.",
     "required_platforms": [
@@ -449,6 +449,12 @@
       "category": "modules",
       "disposition": "native_cmake_root",
       "evidence": "modules/sov-cloudflare-adapter/CMakeLists.txt"
+    },
+    {
+      "path": "tools/sov-transport-profile-admin",
+      "category": "tools",
+      "disposition": "go_module",
+      "evidence": "tools/sov-transport-profile-admin/go.mod"
     }
   ],
   "native_components": [
@@ -4903,40 +4909,6 @@
       "evidence": "tools/qxctl/go.mod"
     },
     {
-      "path": "tools/sov-stdio-adapter",
-      "module": "github.com/QuanuX/Symphony/tools/sov-stdio-adapter",
-      "go": "1.26.5",
-      "executable_packages": [
-        {
-          "package": ".",
-          "binary_name": "sov-stdio-adapter",
-          "entrypoint": "tools/sov-stdio-adapter/main.go",
-          "source_identity": "0.1.0-dev",
-          "source_identity_evidence": "tools/sov-stdio-adapter/main.go:22",
-          "installation_scope": "production_command; release approval and final artifact identity remain L01/L06"
-        }
-      ],
-      "example_executable_packages": [],
-      "component_kind": "command_module",
-      "direct_requirements": [],
-      "module_replacements": [],
-      "resolved_graph": [
-        {
-          "Path": "github.com/QuanuX/Symphony/tools/sov-stdio-adapter",
-          "Main": true,
-          "GoVersion": "1.26.5"
-        }
-      ],
-      "origins": [],
-      "resolved_graph_scope": "Sum and GoModSum are present where reported by go list; this resolves selected module metadata, not a claim that every selected archive was downloaded or built.",
-      "source_runtime_version": "0.1.0-dev",
-      "source_version_evidence": "tools/sov-stdio-adapter/main.go:22",
-      "verified_public_release_identities": [],
-      "public_identity_scope": "No public release in the verified direct-dependency pin set; this is not an assertion about all remote tags",
-      "native_engine_pin": null,
-      "evidence": "tools/sov-stdio-adapter/go.mod"
-    },
-    {
       "path": "tools/sov-ssh-adapter",
       "module": "github.com/QuanuX/Symphony/tools/sov-ssh-adapter",
       "go": "1.26.5",
@@ -4977,6 +4949,105 @@
       "public_identity_scope": "Exact public dependency pin verified during L03/L04; no new tag or publication",
       "native_engine_pin": null,
       "evidence": "tools/sov-ssh-adapter/go.mod"
+    },
+    {
+      "path": "tools/sov-stdio-adapter",
+      "module": "github.com/QuanuX/Symphony/tools/sov-stdio-adapter",
+      "go": "1.26.5",
+      "executable_packages": [
+        {
+          "package": ".",
+          "binary_name": "sov-stdio-adapter",
+          "entrypoint": "tools/sov-stdio-adapter/main.go",
+          "source_identity": "0.1.0-dev",
+          "source_identity_evidence": "tools/sov-stdio-adapter/main.go:22",
+          "installation_scope": "production_command; release approval and final artifact identity remain L01/L06"
+        }
+      ],
+      "example_executable_packages": [],
+      "component_kind": "command_module",
+      "direct_requirements": [],
+      "module_replacements": [],
+      "resolved_graph": [
+        {
+          "Path": "github.com/QuanuX/Symphony/tools/sov-stdio-adapter",
+          "Main": true,
+          "GoVersion": "1.26.5"
+        }
+      ],
+      "origins": [],
+      "resolved_graph_scope": "Sum and GoModSum are present where reported by go list; this resolves selected module metadata, not a claim that every selected archive was downloaded or built.",
+      "source_runtime_version": "0.1.0-dev",
+      "source_version_evidence": "tools/sov-stdio-adapter/main.go:22",
+      "verified_public_release_identities": [],
+      "public_identity_scope": "No public release in the verified direct-dependency pin set; this is not an assertion about all remote tags",
+      "native_engine_pin": null,
+      "evidence": "tools/sov-stdio-adapter/go.mod"
+    },
+    {
+      "path": "tools/sov-transport-profile-admin",
+      "module": "github.com/QuanuX/Symphony/tools/sov-transport-profile-admin",
+      "go": "1.26.5",
+      "executable_packages": [
+        {
+          "package": ".",
+          "binary_name": "sov-transport-profile-admin",
+          "entrypoint": "tools/sov-transport-profile-admin/main.go",
+          "source_identity": "0.1.0-dev",
+          "source_identity_evidence": "tools/sov-transport-profile-admin/contract/types.go:5",
+          "installation_scope": "production_command; protected installation and release qualification remain separate"
+        }
+      ],
+      "example_executable_packages": [],
+      "component_kind": "command_module",
+      "direct_requirements": [
+        {
+          "module": "github.com/QuanuX/Symphony/libraries/stav-protocol-go",
+          "version": "v0.2.0",
+          "indirect": false,
+          "internal": true,
+          "evidence": "tools/sov-transport-profile-admin/go.mod"
+        },
+        {
+          "module": "golang.org/x/sys",
+          "version": "v0.47.0",
+          "indirect": false,
+          "internal": false,
+          "evidence": "tools/sov-transport-profile-admin/go.mod"
+        }
+      ],
+      "module_replacements": [],
+      "resolved_graph": [
+        {
+          "Path": "github.com/QuanuX/Symphony/tools/sov-transport-profile-admin",
+          "Main": true,
+          "GoVersion": "1.26.5"
+        },
+        {
+          "Path": "github.com/QuanuX/Symphony/libraries/stav-protocol-go",
+          "Version": "v0.2.0",
+          "Time": "2026-07-16T22:47:37Z",
+          "GoVersion": "1.26.5",
+          "Sum": "h1:DGVd771sqzeRpEkTUuuF+9TOK1JVQtyMh2GYR840g70=",
+          "GoModSum": "h1:kYeJSvzp7ezK+0CJzHD4v2euyRqXuAfXocYxRACrxoM="
+        },
+        {
+          "Path": "golang.org/x/sys",
+          "Version": "v0.47.0",
+          "Time": "2026-06-30T17:07:31Z",
+          "GoVersion": "1.25.0",
+          "Sum": "h1:o7XGOvZQCADBQQ4Y7VNq2dRWQR7JmOUW8Kxx4ZsNgWs=",
+          "GoModSum": "h1:4GL1E5IUh+htKOUEOaiffhrAeqysfVGipDYzABqnCmw="
+        }
+      ],
+      "origins": [],
+      "resolved_graph_scope": "Sum and GoModSum are present where reported by go list; this resolves selected module metadata, not a claim that every selected archive was downloaded or built.",
+      "source_runtime_version": "0.1.0-dev",
+      "source_version_evidence": "tools/sov-transport-profile-admin/contract/types.go:5",
+      "verified_public_release_identities": [],
+      "public_identity_scope": "No public release in the verified direct-dependency pin set; this is not an assertion about all remote tags",
+      "native_engine_pin": null,
+      "evidence": "tools/sov-transport-profile-admin/go.mod"
     }
   ],
   "runtime_source_identities": [
@@ -5033,6 +5104,12 @@
       "name": "NativeVersion",
       "value": "0.33.0-dev",
       "evidence": "libraries/sbv-go/client.go:23"
+    },
+    {
+      "path": "tools/sov-transport-profile-admin/contract/types.go",
+      "name": "Version",
+      "value": "0.1.0-dev",
+      "evidence": "tools/sov-transport-profile-admin/contract/types.go:5"
     }
   ],
   "go_source_protocol_literals": {
@@ -17672,6 +17749,74 @@
         "test_fixture": false,
         "historical_or_example": false,
         "installation_scope": "source_catalog_not_installation_assertion"
+      },
+      {
+        "path": "knowledge/schemas/v5/invariant-ownership-registry.schema.json",
+        "sha256": "3850905e02f2c16384628ba14e19b85898f67696418da8c43da69acca8dae815",
+        "schema_ids": [
+          {
+            "json_pointer": "/$id",
+            "id": "urn:symphony:knowledge:invariant-ownership-registry:v5"
+          }
+        ],
+        "schema_dialect": "https://json-schema.org/draft/2020-12/schema",
+        "protocol": null,
+        "format_version": null,
+        "kind": "schema",
+        "test_fixture": false,
+        "historical_or_example": false,
+        "installation_scope": "source_catalog_not_installation_assertion"
+      },
+      {
+        "path": "knowledge/sov/transport-profiles/schemas.json",
+        "sha256": "4e9fdf81294166a455ba8222ff035911099a49970da3405db55888fe77d77ba4",
+        "schema_ids": [
+          {
+            "json_pointer": "/$id",
+            "id": "symphony.sov.transport-profile.schemas.v1"
+          }
+        ],
+        "schema_dialect": "https://json-schema.org/draft/2020-12/schema",
+        "protocol": null,
+        "format_version": null,
+        "kind": "schema",
+        "test_fixture": false,
+        "historical_or_example": false,
+        "installation_scope": "source_catalog_not_installation_assertion"
+      },
+      {
+        "path": "knowledge/ssiag/schemas/v1/transport-profile-audit-request.schema.json",
+        "sha256": "b31e124e7f7d4865c1b8e627a53b641e1e3e74d3af02fa97d47e17524a6a9f59",
+        "schema_ids": [
+          {
+            "json_pointer": "/$id",
+            "id": "symphony.ssiag.transport-profile-audit-request.v1"
+          }
+        ],
+        "schema_dialect": "https://json-schema.org/draft/2020-12/schema",
+        "protocol": null,
+        "format_version": null,
+        "kind": "schema",
+        "test_fixture": false,
+        "historical_or_example": false,
+        "installation_scope": "source_catalog_not_installation_assertion"
+      },
+      {
+        "path": "knowledge/ssiag/schemas/v1/transport-profile-audit-response.schema.json",
+        "sha256": "d4d4af7e51faa3e2911cce92c57d17a114ff99ff55ee9d966efe6cf4b9ae735f",
+        "schema_ids": [
+          {
+            "json_pointer": "/$id",
+            "id": "symphony.ssiag.transport-profile-audit-response.v1"
+          }
+        ],
+        "schema_dialect": "https://json-schema.org/draft/2020-12/schema",
+        "protocol": null,
+        "format_version": null,
+        "kind": "schema",
+        "test_fixture": false,
+        "historical_or_example": false,
+        "installation_scope": "source_catalog_not_installation_assertion"
       }
     ],
     "nonparseable_source_files": [
@@ -18568,7 +18713,7 @@
     },
     {
       "path": "cmake/mvp-release-identities.json",
-      "sha256": "ee6bd25e8f17ab42124a11dd4b0f1af061eeb1a90d0eaceadb3bf7c88a23814e"
+      "sha256": "01d671e148baf09b639bda0d331c1b55d1cb9720a9f151f2b7e18acecd2eb29f"
     },
     {
       "path": "cmake/notices/CaptureExternal.cmake",
@@ -18612,15 +18757,15 @@
     },
     {
       "path": "go.work",
-      "sha256": "73a9ee240809e259dc45d0c4156107ba197a62de70c1222db1a3616903a7e4a4"
+      "sha256": "a80bde0ddc46cbbbb13c8ed2546c6a6ab8a06ac6ceda5b984a613abb748e4c23"
     },
     {
       "path": "knowledge/FEATURE-ADMINISTRATION-PROFILE.json",
-      "sha256": "b8d455080692b8337999b5dcb167db71ebbf95f6497b6c459ba05d65dc2bb917"
+      "sha256": "1147d817dc29ed2975211cd50a41c0bd27e4b6fd544c1b6ac935bc5164fc2f6a"
     },
     {
       "path": "knowledge/INVARIANT-OWNERSHIP.json",
-      "sha256": "35015c641e290affbf8564e3fcc6f6a03fea8e39a5dc0993be08f8c7652f1634"
+      "sha256": "92ec15c14e4559ad0f3787fc17309f5a63bb14d86c744dde01145e018f3b7935"
     },
     {
       "path": "knowledge/sacv/schemas/v1/MANIFEST.md",
@@ -20352,7 +20497,7 @@
     },
     {
       "path": "modules/secure-identity-access-governance/internal/server/server.go",
-      "sha256": "9062be8608be0a5441be6e575d27e1fa2f0f6e2e86d1667cdda660607ebdd2ea"
+      "sha256": "62a519f92f2888ff11cdfa4dd5b4850d33d96b3d515a0f44ccad858f811a547c"
     },
     {
       "path": "modules/secure-identity-access-governance/internal/server/server_test.go",
@@ -20360,7 +20505,7 @@
     },
     {
       "path": "modules/secure-identity-access-governance/internal/stavproducer/producer.go",
-      "sha256": "f6da623eb30744665c6fcc1180f32cea518036fd9911875fa33c893a37c316ea"
+      "sha256": "9e071bb6f65b6abc6a629c6109afd1c65a3944ceafd190a1ebb61a42ab18e2fa"
     },
     {
       "path": "modules/secure-identity-access-governance/internal/stavproducer/producer_test.go",
@@ -21440,7 +21585,7 @@
     },
     {
       "path": "tools/qxctl/COMMANDS.json",
-      "sha256": "79199fc8b8824776068d6ac39bbd48b14a25896391b3f6781288106abca48c6d"
+      "sha256": "28cd2d096d9269c127e246b3fe911db5f43fc44bbbb17a5750a971789dfdd6cf"
     },
     {
       "path": "tools/qxctl/cmd/qxctl/accordare_host.go",
@@ -21728,7 +21873,7 @@
     },
     {
       "path": "tools/qxctl/internal/invariantregistry/registry.go",
-      "sha256": "7dd6e4b5d7310ebb19250f98c4294f0fb9fca011897c372a3ae8febf5bcfe76d"
+      "sha256": "af3bad8735683cd26cc8a472584ce4f10e0f52ea79d101a1ff91a8a314761c58"
     },
     {
       "path": "tools/qxctl/internal/knowledgebinding/registry.go",
@@ -22857,6 +23002,194 @@
     {
       "path": "knowledge/sov/cloudflare/c0/package-lock.json",
       "sha256": "07aefa1e36bd78c04a1e1315a4ba866109300c056b60ac4ef74458fbdcf9d7df"
+    },
+    {
+      "path": "tools/sov-transport-profile-admin/FEATURES.md",
+      "sha256": "ee41bb280c6ac4e65b53cdbdc4778d718a136f32d3257902b6f5f44ec779cb6b"
+    },
+    {
+      "path": "tools/sov-transport-profile-admin/INSTALL.md",
+      "sha256": "4718b2323b770f6c7324b436938d94ddd971a8cf03a1cf8243333296e6ad79c4"
+    },
+    {
+      "path": "tools/sov-transport-profile-admin/INTENT.md",
+      "sha256": "24c5c0b75d2fbd1cd2eccfc8ad860d7ab97a1c5c0650574adf4b05ce1e8a7387"
+    },
+    {
+      "path": "tools/sov-transport-profile-admin/MANIFEST.md",
+      "sha256": "ef4b18c028508fbd9225d1dcf2bb6585d383a9bc1f3ceb795a2721678f73fdf9"
+    },
+    {
+      "path": "tools/sov-transport-profile-admin/README.md",
+      "sha256": "f20ad813dbd7a5a50cadf96cf12727d4442e53b2e4899d9393d492b587fd6857"
+    },
+    {
+      "path": "tools/sov-transport-profile-admin/SKILL.md",
+      "sha256": "b0462bbd3605960a3d44ec8d4812529efd03cc213afea1e1e158a2295cfced8d"
+    },
+    {
+      "path": "tools/sov-transport-profile-admin/SPEC.md",
+      "sha256": "cb4c1ffe6d295cb405ea35c0b2282d3c2b5653b0ad6a959ccc68c720ac405e7e"
+    },
+    {
+      "path": "tools/sov-transport-profile-admin/contract/codec.go",
+      "sha256": "ffeb8b0c555dac9a0dca107a61a5400f5327a131bea12183190f057a0d16548c"
+    },
+    {
+      "path": "tools/sov-transport-profile-admin/contract/contract_test.go",
+      "sha256": "466764fcbaff3f28b3e52f0f85d511e1513ebdd7a686aa4ff6e43c8c7cdeabbf"
+    },
+    {
+      "path": "tools/sov-transport-profile-admin/contract/presentation.go",
+      "sha256": "83f09c5b0845262dc6c48055cac2740ccffb92e0d0140b7e3c955ded618133db"
+    },
+    {
+      "path": "tools/sov-transport-profile-admin/contract/schema_generated.go",
+      "sha256": "e62b6298fa332b412a529e9543f2258dc3daa25963cfd236ce8f591fd7686950"
+    },
+    {
+      "path": "tools/sov-transport-profile-admin/contract/types.go",
+      "sha256": "48834c02f7c7472b65858a7541c0c2d96a81aaa6ffb88cf9276fbef34ed7acac"
+    },
+    {
+      "path": "tools/sov-transport-profile-admin/contract/validate.go",
+      "sha256": "faec9c31ce6855e87a45d41b46b66ad7d30835278c508b92315808ffaeec9cec"
+    },
+    {
+      "path": "tools/sov-transport-profile-admin/go.mod",
+      "sha256": "ac57620cf11f64706efabeebd9f36b321aca2fcec65dd6c05f791d3bcf506e0d"
+    },
+    {
+      "path": "tools/sov-transport-profile-admin/go.sum",
+      "sha256": "c7cda3173deb371d7ebe7f820385ceb1809a4a6c0074f6ac3154888d776ca613"
+    },
+    {
+      "path": "tools/sov-transport-profile-admin/installed_test.go",
+      "sha256": "4a2f00f345dafdaa5f61892b290ac10a6b59681ac76abdec33a5d965839c6558"
+    },
+    {
+      "path": "tools/sov-transport-profile-admin/internal/auditclient/client.go",
+      "sha256": "e23d8e77039ddb8f1f2a026276ef635c8ed933f2e9061b1242c3ae120d08dd96"
+    },
+    {
+      "path": "tools/sov-transport-profile-admin/internal/auditclient/client_test.go",
+      "sha256": "4776872b16d9cecd796ed09fcae708c9406d5633363a4a65327572407fb22060"
+    },
+    {
+      "path": "tools/sov-transport-profile-admin/internal/auditclient/peerauth_darwin.go",
+      "sha256": "c5713e078d421d77f65b3824d7adf3db17be178894974224340f81993b30e5c8"
+    },
+    {
+      "path": "tools/sov-transport-profile-admin/internal/auditclient/peerauth_linux.go",
+      "sha256": "d1666d7f1cd1087ac9a819dc901ae90591d209775ad9f892bd94290717c0bf3a"
+    },
+    {
+      "path": "tools/sov-transport-profile-admin/internal/auditclient/peerauth_unsupported.go",
+      "sha256": "98ed83de2ac60f0b8cdbd0db312c9a684d5ebe246daeddce00162df88529696f"
+    },
+    {
+      "path": "tools/sov-transport-profile-admin/internal/store/files_unix.go",
+      "sha256": "4a1bcef339c297709b004e2ccaee52eb1d9a594a6a1f732af8228cdc5d1a6ea3"
+    },
+    {
+      "path": "tools/sov-transport-profile-admin/internal/store/packages_test.go",
+      "sha256": "2e8f82fac93958aba0332e31d888eb408b8dee766d1968efde470d405fac3945"
+    },
+    {
+      "path": "tools/sov-transport-profile-admin/internal/store/packages_unix.go",
+      "sha256": "1f746cd285e853d48013f0df24abdce63b97d624d1296d0c54acf3a918e3f73c"
+    },
+    {
+      "path": "tools/sov-transport-profile-admin/internal/store/receipt.go",
+      "sha256": "e263581894f5f94486c31b93d0070b2283b058712424a8cea7e81453ac9b3968"
+    },
+    {
+      "path": "tools/sov-transport-profile-admin/internal/store/store_test.go",
+      "sha256": "ffc555fb118bd39f6de062b13c8866741093466cddefd323078df38b2ce8b770"
+    },
+    {
+      "path": "tools/sov-transport-profile-admin/internal/store/store_unix.go",
+      "sha256": "6accc109031937dd4805cfb752af01bf777893e83f1891bcf492b140b6500ed3"
+    },
+    {
+      "path": "tools/sov-transport-profile-admin/internal/transportaudit/contract.go",
+      "sha256": "53424f9648ab7bdafc554b07e26e40deef861ddad7fa950c47b5bd80d4a20d30"
+    },
+    {
+      "path": "tools/sov-transport-profile-admin/main.go",
+      "sha256": "59fd2f2baab585ec80d10af4ff7e876c1eeba73d51fa8dd4ad1f204e9dc1f8e8"
+    },
+    {
+      "path": "tools/sov-transport-profile-admin/main_test.go",
+      "sha256": "5aecc7045042d4e3406b6529d52a483eb0c039d170cc2777968a09917baebe41"
+    },
+    {
+      "path": "tools/sov-transport-profile-admin/scripts/generate_contract.go",
+      "sha256": "c742a17cbca61f4aaac7f9142dd837080083c44331f1fcc723b38f906ac2af3f"
+    },
+    {
+      "path": "knowledge/schemas/v5/invariant-ownership-registry.schema.json",
+      "sha256": "3850905e02f2c16384628ba14e19b85898f67696418da8c43da69acca8dae815"
+    },
+    {
+      "path": "knowledge/sov/transport-profiles/schemas.json",
+      "sha256": "4e9fdf81294166a455ba8222ff035911099a49970da3405db55888fe77d77ba4"
+    },
+    {
+      "path": "modules/secure-identity-access-governance/internal/server/transport_profile_audit.go",
+      "sha256": "6d334dfc0301feefa31a22004e1ccf4a5894b175d98a7f5946f49c48fbb35583"
+    },
+    {
+      "path": "modules/secure-identity-access-governance/internal/transportaudit/contract.go",
+      "sha256": "53424f9648ab7bdafc554b07e26e40deef861ddad7fa950c47b5bd80d4a20d30"
+    },
+    {
+      "path": "tools/qxctl/cmd/qxctl/sov_transport_profile.go",
+      "sha256": "26412d3a99524532e7a1ccc2111fd62a2745b5831c11a0ea7a2f4ce2516f1f5a"
+    },
+    {
+      "path": "tools/qxctl/internal/transportprofile/client_unix.go",
+      "sha256": "e4d86626cf13ef7c2c2550edb8c8466b9b8d72f5635660cb5666b0a178e2d1e9"
+    },
+    {
+      "path": "tools/sov-transport-profile-admin/internal/transportaudit/contract_test.go",
+      "sha256": "d17ecda202c615f57a13d1060652fa7cfd5256c9cd6112aae083e6320f7d7986"
+    },
+    {
+      "path": "modules/secure-identity-access-governance/internal/transportaudit/contract_test.go",
+      "sha256": "d17ecda202c615f57a13d1060652fa7cfd5256c9cd6112aae083e6320f7d7986"
+    },
+    {
+      "path": "tools/qxctl/internal/transportprofile/client_test.go",
+      "sha256": "8a21e254997857a134956a1b0be91ec22319e7bdb2baf02b053c9a040933624a"
+    },
+    {
+      "path": "tools/qxctl/internal/transportprofile/wire/schema_generated.go",
+      "sha256": "d7cbe428759bcbd8a6cb488760abbc063105863fcb84b686ab994aabeee9274a"
+    },
+    {
+      "path": "tools/qxctl/internal/transportprofile/wire/codec_generated.go",
+      "sha256": "f593ac6cbb2318d1673356f4b52e35e32a27d82049c99febf398db47cd9b4d96"
+    },
+    {
+      "path": "tools/qxctl/internal/transportprofile/wire/types_generated.go",
+      "sha256": "158e88e3315a301f2429b85aad781ef5b7646fe55f8f50581f4bad9ee46ae83b"
+    },
+    {
+      "path": "tools/qxctl/internal/transportprofile/wire/validate_generated.go",
+      "sha256": "f6412adec5c4e594573d6f5a2a77e248a5ed8a4cef10a82d613ce4c4cc3e2045"
+    },
+    {
+      "path": "tools/qxctl/internal/transportprofile/wire/presentation_generated.go",
+      "sha256": "1a634beeb21c8250accf7c639a307c413e0dd82a2a8aa7cc109fa1bdef7e5eba"
+    },
+    {
+      "path": "knowledge/ssiag/schemas/v1/transport-profile-audit-response.schema.json",
+      "sha256": "d4d4af7e51faa3e2911cce92c57d17a114ff99ff55ee9d966efe6cf4b9ae735f"
+    },
+    {
+      "path": "knowledge/ssiag/schemas/v1/transport-profile-audit-request.schema.json",
+      "sha256": "b31e124e7f7d4865c1b8e627a53b641e1e3e74d3af02fa97d47e17524a6a9f59"
     }
   ],
   "platform_profile_catalog": "cmake/mvp-platform-profiles.json",

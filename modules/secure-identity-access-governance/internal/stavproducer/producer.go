@@ -14,16 +14,19 @@ import (
 type Kind string
 
 const (
-	FoundationIntent         Kind = "foundation_intent"
-	FoundationOutcome        Kind = "foundation_outcome"
-	AuthenticationDecision   Kind = "authentication_decision"
-	PolicyDecision           Kind = "policy_decision"
-	ProviderOperation        Kind = "provider_operation"
-	ProviderBindingLifecycle Kind = "provider_binding_lifecycle"
-	CredentialRotation       Kind = "credential_rotation"
-	EnrollmentLifecycle      Kind = "enrollment_lifecycle"
-	LeaseIssuance            Kind = "lease_issuance"
-	LeaseRevocation          Kind = "lease_revocation"
+	FoundationIntent          Kind = "foundation_intent"
+	FoundationOutcome         Kind = "foundation_outcome"
+	TransportProfileIntent    Kind = "transport_profile_intent"
+	TransportProfilePublished Kind = "transport_profile_published"
+	TransportProfileAborted   Kind = "transport_profile_aborted"
+	AuthenticationDecision    Kind = "authentication_decision"
+	PolicyDecision            Kind = "policy_decision"
+	ProviderOperation         Kind = "provider_operation"
+	ProviderBindingLifecycle  Kind = "provider_binding_lifecycle"
+	CredentialRotation        Kind = "credential_rotation"
+	EnrollmentLifecycle       Kind = "enrollment_lifecycle"
+	LeaseIssuance             Kind = "lease_issuance"
+	LeaseRevocation           Kind = "lease_revocation"
 )
 
 type eventContract struct {
@@ -34,6 +37,18 @@ type eventContract struct {
 }
 
 var contracts = map[Kind]eventContract{
+	TransportProfileIntent: {
+		eventClass: "symphony.sov.transport.profile.intent", operationID: "symphony.sov.transport.profile.prepare", intentID: "symphony.sov.transport.profile.prepare",
+		reasons: map[string]string{"allowed": "symphony.sov.transport.profile.intent.allowed"},
+	},
+	TransportProfilePublished: {
+		eventClass: "symphony.sov.transport.profile.outcome", operationID: "symphony.sov.transport.profile.observe", intentID: "symphony.sov.transport.profile.observe",
+		reasons: map[string]string{"succeeded": "symphony.sov.transport.profile.published"},
+	},
+	TransportProfileAborted: {
+		eventClass: "symphony.sov.transport.profile.outcome", operationID: "symphony.sov.transport.profile.observe", intentID: "symphony.sov.transport.profile.observe",
+		reasons: map[string]string{"succeeded": "symphony.sov.transport.profile.aborted"},
+	},
 	FoundationIntent: {
 		eventClass: "symphony.ssiag.foundation.intent", operationID: "symphony.ssiag.foundation.prepare", intentID: "symphony.ssiag.foundation.prepare",
 		reasons: map[string]string{"allowed": "symphony.ssiag.foundation.intent.allowed"},

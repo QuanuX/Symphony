@@ -19056,6 +19056,314 @@
       "json_output": true
     },
     {
+      "command_id": "qxcmd:symphony:sov.transport.profile.apply",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl sov transport profile apply [--format VALUE] [--input VALUE] [--json]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.sov-transport-profile-administration",
+          "interaction": "apply"
+        },
+        {
+          "feature_id": "ssfv:symphony:sov-transport-profile-admin",
+          "interaction": "apply"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:sov.transport.profile.apply"
+      ],
+      "mutability": "permission_backed_mutation",
+      "authority_mode": "target_host_permission",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.sov.transport-profile-request.v1"
+      ],
+      "output_protocols": [
+        "symphony.sov.transport-profile-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.sov.transport-profile-result.v1"
+      ],
+      "recovery_command_id": "qxcmd:symphony:sov.transport.profile.recover",
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:sov.transport.profile.inspect",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl sov transport profile inspect [--format VALUE] [--input VALUE] [--json]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.sov-transport-profile-administration",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:sov-transport-profile-admin",
+          "interaction": "inspect"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:sov.transport.profile.inspect"
+      ],
+      "mutability": "read_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.sov.transport-profile-request.v1"
+      ],
+      "output_protocols": [
+        "symphony.sov.transport-profile-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.sov.transport-profile-result.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:sov.transport.profile.list",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl sov transport profile list [--format VALUE] [--input VALUE] [--json]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.sov-transport-profile-administration",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:sov-transport-profile-admin",
+          "interaction": "inspect"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:sov.transport.profile.list"
+      ],
+      "mutability": "read_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.sov.transport-profile-request.v1"
+      ],
+      "output_protocols": [
+        "symphony.sov.transport-profile-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.sov.transport-profile-result.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:sov.transport.profile.plan",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl sov transport profile plan [--format VALUE] [--input VALUE] [--json]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.sov-transport-profile-administration",
+          "interaction": "propose"
+        },
+        {
+          "feature_id": "ssfv:symphony:sov-transport-profile-admin",
+          "interaction": "propose"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:sov.transport.profile.plan"
+      ],
+      "mutability": "proposal_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.sov.transport-profile-request.v1"
+      ],
+      "output_protocols": [
+        "symphony.sov.transport-profile-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.sov.transport-profile-result.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:sov.transport.profile.recover",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl sov transport profile recover [--format VALUE] [--input VALUE] [--json]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.sov-transport-profile-administration",
+          "interaction": "recover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sov-transport-profile-admin",
+          "interaction": "recover"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:sov.transport.profile.recover"
+      ],
+      "mutability": "permission_backed_mutation",
+      "authority_mode": "target_host_permission",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.sov.transport-profile-request.v1"
+      ],
+      "output_protocols": [
+        "symphony.sov.transport-profile-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.sov.transport-profile-result.v1"
+      ],
+      "recovery_command_id": "qxcmd:symphony:sov.transport.profile.recover",
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:sov.transport.profile.schema",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl sov transport profile schema [--format VALUE] [--json]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.sov-transport-profile-administration",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sov-transport-profile-admin",
+          "interaction": "discover"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:sov.transport.profile.schema"
+      ],
+      "mutability": "read_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [],
+      "output_protocols": [
+        "symphony.sov.transport-profile.schemas.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.sov.transport-profile.schemas.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:sov.transport.profile.status",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl sov transport profile status [--format VALUE] [--input VALUE] [--json]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.sov-transport-profile-administration",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:sov-transport-profile-admin",
+          "interaction": "inspect"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:sov.transport.profile.status"
+      ],
+      "mutability": "read_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.sov.transport-profile-request.v1"
+      ],
+      "output_protocols": [
+        "symphony.sov.transport-profile-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.sov.transport-profile-result.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:sov.transport.profile.template",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl sov transport profile template [--format VALUE] [--json]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.sov-transport-profile-administration",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sov-transport-profile-admin",
+          "interaction": "discover"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:sov.transport.profile.template"
+      ],
+      "mutability": "read_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [],
+      "output_protocols": [
+        "symphony.sov.transport-profile-request.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.sov.transport-profile-request.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
       "command_id": "qxcmd:symphony:sqv.acquisition.attempts",
       "status": "experimental",
       "introduced_in": "0.1.0-dev",
@@ -22536,5 +22844,5 @@
       "json_output": true
     }
   ],
-  "registry_digest": "sha256:0e3c319f145f775bfa6aff80da8045f8e84cc320b38a170cbb5285e3a40b297e"
+  "registry_digest": "sha256:bccaaf389946a8c43cb40549c41108bd49def445366e839d24eb2f91d19c34e9"
 }

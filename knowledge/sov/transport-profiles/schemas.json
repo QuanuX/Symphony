@@ -1,0 +1,835 @@
+{
+  "$comment": "Generated closed wire shapes. Contract validators additionally enforce state, digest, generation, package and authority bindings.",
+  "$defs": {
+    "Attempt": {
+      "additionalProperties": false,
+      "properties": {
+        "audit_intent_digest": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string"
+            }
+          ]
+        },
+        "audit_outcome_digest": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string"
+            }
+          ]
+        },
+        "operation_id": {
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[47][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+          "type": "string"
+        },
+        "outcome": {
+          "type": "string"
+        },
+        "pending_digest": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string"
+            }
+          ]
+        },
+        "plan_digest": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "stage": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "operation_id",
+        "plan_digest",
+        "stage",
+        "pending_digest",
+        "outcome",
+        "audit_intent_digest",
+        "audit_outcome_digest"
+      ],
+      "type": "object"
+    },
+    "Change": {
+      "additionalProperties": false,
+      "properties": {
+        "action": {
+          "enum": [
+            "create",
+            "replace",
+            "enable",
+            "disable",
+            "remove",
+            "policy"
+          ]
+        },
+        "configuration": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/Configuration"
+            }
+          ]
+        },
+        "permitted": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "items": {
+                "$ref": "#/$defs/Principal"
+              },
+              "type": "array"
+            }
+          ]
+        }
+      },
+      "required": [
+        "action",
+        "configuration",
+        "permitted"
+      ],
+      "type": "object"
+    },
+    "Configuration": {
+      "additionalProperties": false,
+      "properties": {
+        "adapter": {
+          "$ref": "#/$defs/PackageRef"
+        },
+        "applications": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "authentication_mode": {
+          "type": "string"
+        },
+        "compatibility": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "endpoints": {
+          "items": {
+            "$ref": "#/$defs/EndpointConstraint"
+          },
+          "type": "array"
+        },
+        "execution_profile": {
+          "type": "string"
+        },
+        "helper": {
+          "$ref": "#/$defs/PackageRef"
+        },
+        "limits": {
+          "$ref": "#/$defs/Limits"
+        },
+        "name": {
+          "type": "string"
+        },
+        "platform": {
+          "type": "string"
+        },
+        "session_ref": {
+          "type": "string"
+        },
+        "ssh": {
+          "$ref": "#/$defs/PackageRef"
+        },
+        "transport_kind": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "transport_kind",
+        "platform",
+        "execution_profile",
+        "adapter",
+        "ssh",
+        "helper",
+        "applications",
+        "endpoints",
+        "authentication_mode",
+        "session_ref",
+        "limits",
+        "compatibility"
+      ],
+      "type": "object"
+    },
+    "EndpointConstraint": {
+      "additionalProperties": false,
+      "properties": {
+        "host": {
+          "type": "string"
+        },
+        "host_key_digest": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "port": {
+          "pattern": "^[1-9][0-9]*$",
+          "type": "string"
+        },
+        "user": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "host",
+        "port",
+        "user",
+        "host_key_digest"
+      ],
+      "type": "object"
+    },
+    "Expected": {
+      "additionalProperties": false,
+      "properties": {
+        "policy_generation": {
+          "type": "string"
+        },
+        "profile_generation": {
+          "pattern": "^[1-9][0-9]*$",
+          "type": "string"
+        },
+        "snapshot_digest": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "profile_generation",
+        "policy_generation",
+        "snapshot_digest"
+      ],
+      "type": "object"
+    },
+    "Limits": {
+      "additionalProperties": false,
+      "properties": {
+        "caller_timeout": {
+          "type": "boolean"
+        },
+        "captured_bytes": {
+          "pattern": "^[1-9][0-9]*$",
+          "type": "string"
+        },
+        "cleanup_seconds": {
+          "pattern": "^[1-9][0-9]*$",
+          "type": "string"
+        },
+        "control_bytes": {
+          "pattern": "^[1-9][0-9]*$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "control_bytes",
+        "captured_bytes",
+        "cleanup_seconds",
+        "caller_timeout"
+      ],
+      "type": "object"
+    },
+    "PackageFile": {
+      "additionalProperties": false,
+      "properties": {
+        "digest": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "executable": {
+          "type": "boolean"
+        },
+        "path": {
+          "type": "string"
+        },
+        "size": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "path",
+        "digest",
+        "size",
+        "executable"
+      ],
+      "type": "object"
+    },
+    "PackageManifest": {
+      "additionalProperties": false,
+      "properties": {
+        "digest": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "executable": {
+          "type": "string"
+        },
+        "files": {
+          "items": {
+            "$ref": "#/$defs/PackageFile"
+          },
+          "type": "array"
+        },
+        "package_id": {
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+          "type": "string"
+        },
+        "platform": {
+          "type": "string"
+        },
+        "protocol": {
+          "const": "symphony.sov.transport-package.v1"
+        },
+        "qualification_path": {
+          "type": "string"
+        },
+        "qualification_ref": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "receipt_component_id": {
+          "type": "string"
+        },
+        "receipt_digest": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "receipt_entry_point_id": {
+          "type": "string"
+        },
+        "receipt_path": {
+          "type": "string"
+        },
+        "receipt_version": {
+          "type": "string"
+        },
+        "role": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "protocol",
+        "package_id",
+        "version",
+        "role",
+        "platform",
+        "executable",
+        "receipt_path",
+        "receipt_digest",
+        "files",
+        "qualification_ref",
+        "qualification_path",
+        "receipt_component_id",
+        "receipt_version",
+        "receipt_entry_point_id",
+        "digest"
+      ],
+      "type": "object"
+    },
+    "PackageRef": {
+      "additionalProperties": false,
+      "properties": {
+        "executable_digest": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "manifest_digest": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "package_id": {
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+          "type": "string"
+        },
+        "receipt_digest": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "package_id",
+        "version",
+        "manifest_digest",
+        "receipt_digest",
+        "executable_digest"
+      ],
+      "type": "object"
+    },
+    "Plan": {
+      "additionalProperties": false,
+      "properties": {
+        "administrator_digest": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "change": {
+          "$ref": "#/$defs/Change"
+        },
+        "created_at": {
+          "type": "string"
+        },
+        "desired": {
+          "$ref": "#/$defs/Snapshot"
+        },
+        "digest": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "expected": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/Expected"
+            }
+          ]
+        },
+        "expires_at": {
+          "type": "string"
+        },
+        "operation_id": {
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[47][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+          "type": "string"
+        },
+        "profile_id": {
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+          "type": "string"
+        },
+        "protocol": {
+          "const": "symphony.sov.transport-profile-plan.v1"
+        },
+        "scope": {
+          "$ref": "#/$defs/Scope"
+        }
+      },
+      "required": [
+        "protocol",
+        "administrator_digest",
+        "operation_id",
+        "scope",
+        "profile_id",
+        "expected",
+        "change",
+        "desired",
+        "created_at",
+        "expires_at",
+        "digest"
+      ],
+      "type": "object"
+    },
+    "Policy": {
+      "additionalProperties": false,
+      "properties": {
+        "digest": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "generation": {
+          "pattern": "^[1-9][0-9]*$",
+          "type": "string"
+        },
+        "permitted": {
+          "items": {
+            "$ref": "#/$defs/Principal"
+          },
+          "type": "array"
+        },
+        "profile_generation": {
+          "pattern": "^[1-9][0-9]*$",
+          "type": "string"
+        },
+        "profile_id": {
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+          "type": "string"
+        },
+        "protocol": {
+          "const": "symphony.sov.ssh-transport-policy.v1"
+        },
+        "scope": {
+          "$ref": "#/$defs/Scope"
+        }
+      },
+      "required": [
+        "protocol",
+        "scope",
+        "profile_id",
+        "profile_generation",
+        "generation",
+        "permitted",
+        "digest"
+      ],
+      "type": "object"
+    },
+    "PolicyRef": {
+      "additionalProperties": false,
+      "properties": {
+        "digest": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "generation": {
+          "pattern": "^[1-9][0-9]*$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "generation",
+        "digest"
+      ],
+      "type": "object"
+    },
+    "Principal": {
+      "additionalProperties": false,
+      "properties": {
+        "gid": {
+          "pattern": "^[1-9][0-9]*$",
+          "type": "string"
+        },
+        "uid": {
+          "pattern": "^[1-9][0-9]*$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "uid",
+        "gid"
+      ],
+      "type": "object"
+    },
+    "Profile": {
+      "additionalProperties": false,
+      "properties": {
+        "configuration": {
+          "$ref": "#/$defs/Configuration"
+        },
+        "digest": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "generation": {
+          "pattern": "^[1-9][0-9]*$",
+          "type": "string"
+        },
+        "policy": {
+          "$ref": "#/$defs/PolicyRef"
+        },
+        "profile_id": {
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+          "type": "string"
+        },
+        "protocol": {
+          "const": "symphony.sov.ssh-transport-profile.v1"
+        },
+        "scope": {
+          "$ref": "#/$defs/Scope"
+        },
+        "state": {
+          "enum": [
+            "enabled",
+            "disabled",
+            "removed"
+          ]
+        }
+      },
+      "required": [
+        "protocol",
+        "scope",
+        "profile_id",
+        "generation",
+        "state",
+        "policy",
+        "configuration",
+        "digest"
+      ],
+      "type": "object"
+    },
+    "Recovery": {
+      "additionalProperties": false,
+      "properties": {
+        "action": {
+          "enum": [
+            "complete",
+            "abort"
+          ]
+        },
+        "expected_pending_digest": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "operation_id": {
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[47][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+          "type": "string"
+        },
+        "plan_digest": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "operation_id",
+        "plan_digest",
+        "expected_pending_digest",
+        "action"
+      ],
+      "type": "object"
+    },
+    "Request": {
+      "additionalProperties": false,
+      "properties": {
+        "change": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/Change"
+            }
+          ]
+        },
+        "operation": {
+          "enum": [
+            "list",
+            "inspect",
+            "plan",
+            "apply",
+            "status",
+            "recover"
+          ]
+        },
+        "operation_id": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string"
+            }
+          ]
+        },
+        "plan": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/Plan"
+            }
+          ]
+        },
+        "profile_id": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string"
+            }
+          ]
+        },
+        "protocol": {
+          "const": "symphony.sov.transport-profile-request.v1"
+        },
+        "recovery": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/Recovery"
+            }
+          ]
+        },
+        "request_id": {
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[47][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+          "type": "string"
+        },
+        "scope": {
+          "$ref": "#/$defs/Scope"
+        }
+      },
+      "required": [
+        "protocol",
+        "request_id",
+        "operation",
+        "scope",
+        "profile_id",
+        "operation_id",
+        "change",
+        "plan",
+        "recovery"
+      ],
+      "type": "object"
+    },
+    "Result": {
+      "additionalProperties": false,
+      "properties": {
+        "attempt": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/Attempt"
+            }
+          ]
+        },
+        "code": {
+          "type": "string"
+        },
+        "completed": {
+          "type": "boolean"
+        },
+        "next_action": {
+          "type": "string"
+        },
+        "operation": {
+          "type": "string"
+        },
+        "plan": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/Plan"
+            }
+          ]
+        },
+        "profiles": {
+          "items": {
+            "$ref": "#/$defs/Snapshot"
+          },
+          "type": "array"
+        },
+        "protocol": {
+          "const": "symphony.sov.transport-profile-result.v1"
+        },
+        "request_id": {
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[47][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+          "type": "string"
+        },
+        "scope": {
+          "$ref": "#/$defs/Scope"
+        },
+        "snapshot": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/Snapshot"
+            }
+          ]
+        }
+      },
+      "required": [
+        "protocol",
+        "request_id",
+        "operation",
+        "scope",
+        "completed",
+        "code",
+        "profiles",
+        "snapshot",
+        "plan",
+        "attempt",
+        "next_action"
+      ],
+      "type": "object"
+    },
+    "Scope": {
+      "additionalProperties": false,
+      "properties": {
+        "host_id": {
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+          "type": "string"
+        },
+        "tops_id": {
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "host_id",
+        "tops_id"
+      ],
+      "type": "object"
+    },
+    "Snapshot": {
+      "additionalProperties": false,
+      "properties": {
+        "digest": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "policy": {
+          "$ref": "#/$defs/Policy"
+        },
+        "profile": {
+          "$ref": "#/$defs/Profile"
+        },
+        "protocol": {
+          "const": "symphony.sov.transport-profile-snapshot.v1"
+        }
+      },
+      "required": [
+        "protocol",
+        "profile",
+        "policy",
+        "digest"
+      ],
+      "type": "object"
+    }
+  },
+  "$id": "symphony.sov.transport-profile.schemas.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/Request"
+    },
+    {
+      "$ref": "#/$defs/Result"
+    },
+    {
+      "$ref": "#/$defs/Plan"
+    },
+    {
+      "$ref": "#/$defs/Snapshot"
+    },
+    {
+      "$ref": "#/$defs/Profile"
+    },
+    {
+      "$ref": "#/$defs/Policy"
+    },
+    {
+      "$ref": "#/$defs/PackageManifest"
+    }
+  ]
+}
