@@ -1,0 +1,24 @@
+{
+  "context": {
+    "account_id": "00000000000000000000000000000000",
+    "credential_ref": "ssiag:example-api-token",
+    "host_ref": "host:example",
+    "principal_uid": "501",
+    "toolchain_id": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+    "zone_id": null
+  },
+  "expected_context_ref": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+  "expected_observation": null,
+  "expected_state": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+  "parameters": {
+    "body": null,
+    "confirm_delete": false,
+    "page": {
+      "page": 1,
+      "per_page": 25
+    },
+    "resource_id": null
+  },
+  "resource_operation": "tunnels.list",
+  "store": "/absolute/private/cloudflare-store"
+}

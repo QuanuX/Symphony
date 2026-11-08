@@ -413,6 +413,24 @@ Json process(const Json& request, const fs::path& executable) {
             Store store(input.at("store"), op == "installation.plan"); result["data"] = lifecycle(store, request, started);
             if (op == "installation.plan") result["next_action"] = "inspect_plan";
             if (op == "installation.apply" || op == "installation.reconcile") result["effect_state"] = result.at("data").at("attempt").at("effect_state");
+        } else if (op == "resource.plan") {
+            Store store(input.at("store")); no_unsettled(store);
+            const auto context = input.at("context");
+            require(context.at("principal_uid") == std::to_string(::geteuid()), "binding_mismatch");
+            require(input.at("expected_context_ref") == digest(context, "symphony.sov.cloudflare-context.v1"), "binding_mismatch");
+            const auto state = store.state();
+            require(input.at("expected_state") == digest(state, state_protocol), "state_conflict");
+            require(state.at("selected") == context.at("toolchain_id"), "binding_mismatch");
+            static_cast<void>(installed(store, str(context.at("toolchain_id"))));
+            const auto preview = resource_preview(input);
+            const auto now = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+            Json p{{"protocol", "symphony.sov.cloudflare-resource-plan.v1"}, {"request_id", request.at("request_id")}, {"uid", std::to_string(::geteuid())}, {"descriptor_ref", request.at("descriptor_ref")}, {"installation_ref", request.at("installation_ref")}, {"input", input}, {"preview", preview}, {"expires_unix_ms", std::to_string(now + 3600000)}, {"provider_dispatch", false}, {"execution_available", false}, {"authority_readiness", "unavailable_contract"}};
+            const auto d = digest(p, "symphony.sov.cloudflare-resource-plan.v1");
+            const auto record = store.record("plans", d);
+            if (fs::exists(record)) require(parse(read_file(record, frame_limit)) == p, "binding_mismatch");
+            else { write_file(record, p.dump()+"\n"); sync_dir(store.path / "plans"); }
+            result["data"] = Json{{"plan", p}, {"plan_digest", d}, {"provider_dispatch", false}, {"authority_readiness", "unavailable_contract"}, {"execution_available", false}};
+            result["next_action"] = "implement_I4";
         } else if (op.starts_with("context.")) {
             Store store(input.at("store")); auto c = input.at("context");
             require(c.at("principal_uid") == std::to_string(::geteuid()), "binding_mismatch");

@@ -2570,12 +2570,14 @@
         {
           "command_ids": [
             "qxcmd:symphony:sov.cloudflare.cf.context.plan",
-            "qxcmd:symphony:sov.cloudflare.cf.installation.plan"
+            "qxcmd:symphony:sov.cloudflare.cf.installation.plan",
+            "qxcmd:symphony:sov.cloudflare.cf.resource.plan"
           ],
           "delivery": "direct",
           "engine_operation_ids": [
             "engop:symphony:sov.cloudflare.context.plan",
-            "engop:symphony:sov.cloudflare.installation.plan"
+            "engop:symphony:sov.cloudflare.installation.plan",
+            "engop:symphony:sov.cloudflare.resource.plan"
           ],
           "evidence": [
             "knowledge/sov/cloudflare/owner.json",
@@ -2584,7 +2586,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "propose",
-          "rationale": "Exact native local owner operation; no provider or SSH authority.",
+          "rationale": "Exact local lifecycle, nonsecret context and typed resource proposals bind their inputs without provider dispatch or execution authority.",
           "requirement": "required"
         },
         {
@@ -8728,12 +8730,14 @@
         {
           "command_ids": [
             "qxcmd:symphony:sov.cloudflare.cf.context.plan",
-            "qxcmd:symphony:sov.cloudflare.cf.installation.plan"
+            "qxcmd:symphony:sov.cloudflare.cf.installation.plan",
+            "qxcmd:symphony:sov.cloudflare.cf.resource.plan"
           ],
           "delivery": "direct",
           "engine_operation_ids": [
             "engop:symphony:sov.cloudflare.context.plan",
-            "engop:symphony:sov.cloudflare.installation.plan"
+            "engop:symphony:sov.cloudflare.installation.plan",
+            "engop:symphony:sov.cloudflare.resource.plan"
           ],
           "evidence": [
             "knowledge/sov/cloudflare/owner.json",
@@ -8742,7 +8746,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "propose",
-          "rationale": "Exact native local owner operation; no provider or SSH authority.",
+          "rationale": "Exact local lifecycle, nonsecret context and typed resource proposals bind their inputs without provider dispatch or execution authority.",
           "requirement": "required"
         },
         {
@@ -10738,9 +10742,9 @@
   ],
   "format_version": 1,
   "forward_gate": "enforce_new_records",
-  "profile_digest": "sha256:a774f842999c8bbeffe0b221348a95b8d394fcd5368a9d4b40afeaef2923f4bd",
+  "profile_digest": "sha256:b80cca0698a6d4ee269fcc025619ad43e8b5f36e9698ab5aba394a08edf6cfab",
   "profile_id": "symphony.registered-features.administration.v1",
   "protocol": "symphony.knowledge.feature-administration-profile.v1",
   "registered_feature_count": 153,
-  "ssfv_registry_digest": "sha256:92e4b10b4f7c3c1c6c62a497f4a72a841d93c91b2f245efe866c6888e9ef8248"
+  "ssfv_registry_digest": "sha256:7a79c72f55d9975b88eb48dbbf46eef944351cd95a6ef8d2e2a33463dfe96914"
 }

@@ -17848,6 +17848,54 @@
         "test_fixture": false,
         "historical_or_example": false,
         "installation_scope": "source_catalog_not_installation_assertion"
+      },
+      {
+        "path": "knowledge/sov/cloudflare/schemas/resource.plan.input_schema.json",
+        "sha256": "27321b2d784d182c7abec4ab4180c90188d886affa0fe2fbd6cfc258301cdadb",
+        "schema_ids": [],
+        "schema_dialect": null,
+        "protocol": null,
+        "format_version": null,
+        "kind": "resource",
+        "test_fixture": false,
+        "historical_or_example": false,
+        "installation_scope": "source_catalog_not_installation_assertion"
+      },
+      {
+        "path": "knowledge/sov/cloudflare/schemas/resource.plan.request_schema.json",
+        "sha256": "3b83e0e5e52a2672504d8c6f6fb7af04de6bb0558f94ba5a58c6d9015f97184d",
+        "schema_ids": [],
+        "schema_dialect": null,
+        "protocol": null,
+        "format_version": null,
+        "kind": "resource",
+        "test_fixture": false,
+        "historical_or_example": false,
+        "installation_scope": "source_catalog_not_installation_assertion"
+      },
+      {
+        "path": "knowledge/sov/cloudflare/schemas/resource.plan.result_schema.json",
+        "sha256": "2c3c2e6f02a7bd2408dd89d74b2f5e5bf25d9bcb39c865794ade0d487bf15c7c",
+        "schema_ids": [],
+        "schema_dialect": null,
+        "protocol": null,
+        "format_version": null,
+        "kind": "resource",
+        "test_fixture": false,
+        "historical_or_example": false,
+        "installation_scope": "source_catalog_not_installation_assertion"
+      },
+      {
+        "path": "knowledge/sov/cloudflare/schemas/resource.plan.template.json",
+        "sha256": "a3080ed5bb9a53ddaf4839b2b3b54a8f61db82eb394f857acff1ca34b58d8673",
+        "schema_ids": [],
+        "schema_dialect": null,
+        "protocol": null,
+        "format_version": null,
+        "kind": "resource",
+        "test_fixture": false,
+        "historical_or_example": false,
+        "installation_scope": "source_catalog_not_installation_assertion"
       }
     ],
     "nonparseable_source_files": [
@@ -18792,7 +18840,7 @@
     },
     {
       "path": "knowledge/FEATURE-ADMINISTRATION-PROFILE.json",
-      "sha256": "2dea1042d91ffc02d47ddbf1e69fc21a465c2aa31e8572a67ace050bbb42203e"
+      "sha256": "0763fa79571d3021c129f81a4197ea7dc0705d3be5f8a4eb94eb306ff28617e1"
     },
     {
       "path": "knowledge/INVARIANT-OWNERSHIP.json",
@@ -21616,7 +21664,7 @@
     },
     {
       "path": "tools/qxctl/COMMANDS.json",
-      "sha256": "f61b54302da1df47afe6dd12944370574c289491d370e9d94bba3e9b07d3d737"
+      "sha256": "6de44a6a06eaffbac71a4060bfcf2418d44e86ed93a734cee67c2ee98c6b0ef3"
     },
     {
       "path": "tools/qxctl/cmd/qxctl/accordare_host.go",
@@ -22720,11 +22768,11 @@
     },
     {
       "path": "modules/sov-cloudflare-adapter/CMakeLists.txt",
-      "sha256": "2be27d6ad010d99599b5c8f79996ae04cf7528c15c0ea03b97be90aa782356c5"
+      "sha256": "d397c0d40680327e9d7672416a3fb67e288ef131da3cf3d47370f5b7bca9aa21"
     },
     {
       "path": "knowledge/sov/cloudflare/owner.json",
-      "sha256": "86e35cdc7e997e5e92168792e9a980ca187e16c1ac346f159dd7743be11ad21e"
+      "sha256": "fe200975dc649aafd599ff41fd900541047b562f15db08c42297a62bbbd09b8d"
     },
     {
       "path": "knowledge/sov/cloudflare/schemas/capability.describe.input_schema.json",
@@ -23020,7 +23068,7 @@
     },
     {
       "path": "tools/qxctl/internal/sovcloudflare/operations_generated.go",
-      "sha256": "744d56af10b961324f2fd70c1e7bc02748cc2c1508edc72a01695db114260acb"
+      "sha256": "4c8a40e848ba66613d6ed762382a0ef1849c24b7b1c1c9702e2cb4522a1ccf55"
     },
     {
       "path": "tools/qxctl/internal/sovcloudflare/cloudflare.go",
@@ -23401,6 +23449,26 @@
     {
       "path": "tools/sov-ssh-adapter/tests/installed-profile.sh",
       "sha256": "08864c5a49ffb61c880acfc318a577a24d75f217ecf70978ddc143488209d242"
+    },
+    {
+      "path": "knowledge/sov/cloudflare/schemas/resource.plan.input_schema.json",
+      "sha256": "27321b2d784d182c7abec4ab4180c90188d886affa0fe2fbd6cfc258301cdadb"
+    },
+    {
+      "path": "knowledge/sov/cloudflare/schemas/resource.plan.request_schema.json",
+      "sha256": "3b83e0e5e52a2672504d8c6f6fb7af04de6bb0558f94ba5a58c6d9015f97184d"
+    },
+    {
+      "path": "knowledge/sov/cloudflare/schemas/resource.plan.result_schema.json",
+      "sha256": "2c3c2e6f02a7bd2408dd89d74b2f5e5bf25d9bcb39c865794ade0d487bf15c7c"
+    },
+    {
+      "path": "knowledge/sov/cloudflare/schemas/resource.plan.template.json",
+      "sha256": "a3080ed5bb9a53ddaf4839b2b3b54a8f61db82eb394f857acff1ca34b58d8673"
+    },
+    {
+      "path": "modules/sov-cloudflare-adapter/src/resource.cpp",
+      "sha256": "115e5b884800b30b7cd50619228271d802d21ad0548df2a7fd8e9ba928ca1e3e"
     }
   ],
   "platform_profile_catalog": "cmake/mvp-platform-profiles.json",

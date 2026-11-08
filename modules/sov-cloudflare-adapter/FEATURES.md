@@ -24,10 +24,11 @@
       "distinctions": [],
       "evidence": [
         "modules/sov-cloudflare-adapter/tests/installed.cpp",
-        "modules/sov-cloudflare-adapter/tests/contract.cpp"
+        "modules/sov-cloudflare-adapter/tests/contract.cpp",
+        "modules/sov-cloudflare-adapter/tests/qualification.cpp"
       ],
       "feature_id": "ssfv:symphony:sov-cloudflare-adapter",
-      "how": "Receipt-owned schemas and descriptors, content-bound plans, strict process frames and user-owned durable lifecycle.",
+      "how": "Receipt-owned schemas and descriptors, content-bound plans, strict process frames and user-owned durable local state; resource plans never dispatch provider operations.",
       "implementation_languages": [
         {
           "language": "C++26",
@@ -36,7 +37,8 @@
       ],
       "implementation_paths": [
         "modules/sov-cloudflare-adapter/src/adapter.cpp",
-        "modules/sov-cloudflare-adapter/src/main.cpp"
+        "modules/sov-cloudflare-adapter/src/main.cpp",
+        "modules/sov-cloudflare-adapter/src/resource.cpp"
       ],
       "kind": "feature",
       "non_claims": [
@@ -49,7 +51,7 @@
       "source_scope": "modules/sov-cloudflare-adapter",
       "status": "experimental",
       "title": "Native Cloudflare local administration",
-      "what": "Exact local cf/Node lifecycle, bounded offline discovery and nonsecret context proposals.",
+      "what": "Exact local cf/Node lifecycle, bounded offline discovery, nonsecret context proposals and typed resource planning.",
       "when": "Explicit local administration or offline discovery request.",
       "where": "Selected independently installed native adapter and private local store.",
       "who": "Humans, agents and independent native consumers.",

@@ -18665,6 +18665,45 @@
       "json_output": true
     },
     {
+      "command_id": "qxcmd:symphony:sov.cloudflare.cf.resource.plan",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl sov cloudflare cf resource plan [--adapter-prefix VALUE] [--adapter-version VALUE] [--format VALUE] [--input VALUE] [--json]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.sov-cloudflare-administration",
+          "interaction": "propose"
+        },
+        {
+          "feature_id": "ssfv:symphony:sov-cloudflare-adapter",
+          "interaction": "propose"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:sov.cloudflare.resource.plan"
+      ],
+      "mutability": "proposal_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.sov.cloudflare-request.v1"
+      ],
+      "output_protocols": [
+        "symphony.sov.cloudflare-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.sov.cloudflare-result.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
       "command_id": "qxcmd:symphony:sov.remote.assess",
       "status": "experimental",
       "introduced_in": "0.1.0-dev",
@@ -22850,5 +22889,5 @@
       "json_output": true
     }
   ],
-  "registry_digest": "sha256:95c5c64d9aac9a341ecb74a333f4abcdf3641719f2475b2560077f84424d9ad0"
+  "registry_digest": "sha256:049c5c5d8c1b1e66a350e4bcee3a569d8128091e744bf7a27461373c574a1e8c"
 }

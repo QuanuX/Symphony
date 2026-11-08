@@ -15,7 +15,9 @@ struct Harness {
     }
     ProcessResult raw(const std::string& data) { return native_test::run({executable.string()}, data, 40, {{"CLOUDFLARE_API_TOKEN", "SECRET-SENTINEL"}, {"NODE_OPTIONS", "--invalid-ambient-option"}}); }
     Json call(const std::string& op, const Json& input, Json plan = nullptr, bool ok = true) {
-        auto req = request(op, input, plan); auto response = raw(req.dump()); NT_REQUIRE(response.returncode == (ok ? 0 : 5));
+        auto req = request(op, input, plan); auto response = raw(req.dump());
+        if (response.returncode != (ok ? 0 : 5)) std::cerr << "operation=" << op << " expected=" << (ok ? 0 : 5) << " actual=" << response.returncode << " stdout=" << response.stdout_text << " stderr=" << response.stderr_text << "\n";
+        NT_REQUIRE(response.returncode == (ok ? 0 : 5));
         NT_REQUIRE(response.stdout_text.find("SENTINEL") == std::string::npos && response.stderr_text.find("SENTINEL") == std::string::npos);
         auto result = Json::parse(response.stdout_text); NT_REQUIRE(result.at("request_ref") == cloudflare::digest(req, "symphony.sov.cloudflare-request.v1")); return result;
     }
@@ -108,8 +110,43 @@ void store_and_plan_substitution(const fs::path& exe) {
     NT_REQUIRE(h.call("installation.status",{{"store",h.store.string()},{"plan_digest",d}},nullptr,false).at("error_code")=="integrity_failure");
     h.call("installation.reconcile",{{"store",h.store.string()},{"plan_digest",d}},d,false);
 }
+void resource_planning(const fs::path& exe) {
+    Harness h(exe); auto [source,id]=h.fixture();h.apply(h.plan("install",id,source));
+    Json context{{"host_ref","host:fixture"},{"principal_uid",std::to_string(::getuid())},{"account_id",std::string(32,'0')},{"zone_id",std::string(32,'2')},{"credential_ref","ssiag:fixture-api-token"},{"toolchain_id",id}};
+    auto input=[&](const Json& profile) { return Json{{"store",h.store.string()},{"context",context},{"expected_context_ref",cloudflare::digest(context,"symphony.sov.cloudflare-context.v1")},{"expected_state",h.state().at("state_digest")},{"resource_operation",profile.at("operation")},{"parameters",profile.at("template")},{"expected_observation",nullptr}}; };
+    h.call("resource.plan",input(h.owner.at("resource_profiles").at(0)),nullptr,false);
+    h.apply(h.plan("select",id,{},h.state().at("state_digest")));
+    for(const auto& profile:h.owner.at("resource_profiles")) {
+        auto in=input(profile);auto result=h.call("resource.plan",in);const auto& data=result.at("data");const auto& plan=data.at("plan");
+        NT_REQUIRE(result.at("dispatch_state")=="not_dispatched" && data.at("provider_dispatch")==false && data.at("execution_available")==false);
+        NT_REQUIRE(plan.at("input")==in && plan.at("uid")==std::to_string(::getuid()) && plan.at("authority_readiness")=="unavailable_contract");
+        NT_REQUIRE(data.at("plan_digest")==cloudflare::digest(plan,"symphony.sov.cloudflare-resource-plan.v1"));
+        const auto& request=plan.at("preview").at("request");
+        NT_REQUIRE(request.at("method")==profile.at("method") && plan.at("preview").at("preview_argv").back()=="--dry-run");
+        NT_REQUIRE(request.at("url").get<std::string>().starts_with("https://api.cloudflare.com/client/v4/"));
+        if(profile.at("operation")=="dns.records.get") NT_REQUIRE(request.at("url")=="https://api.cloudflare.com/client/v4/zones/22222222222222222222222222222222/dns_records/11111111111111111111111111111111");
+        const auto pd=data.at("plan_digest").get<std::string>();NT_REQUIRE(read_json(h.store/"plans"/(pd.substr(7)+".json"))==plan);
+        h.call("installation.apply",{{"store",h.store.string()},{"plan_digest",pd}},pd,false);
+        auto extra=in;extra["parameters"]["token"]="SECRET-SENTINEL";h.call("resource.plan",extra,nullptr,false);
+        if(!in.at("parameters").at("page").is_null()) {
+            for(const auto* field:{"page","per_page"}) {auto bad=in;bad["parameters"]["page"][field]=0;h.call("resource.plan",bad,nullptr,false);}
+            auto bad=in;bad["parameters"]["page"]["per_page"]=101;h.call("resource.plan",bad,nullptr,false);
+        }
+        if(profile.at("method")=="DELETE") {auto bad=in;bad["parameters"]["confirm_delete"]=false;h.call("resource.plan",bad,nullptr,false);}
+    }
+    auto in=input(h.owner.at("resource_profiles").at(0));
+    for(const auto* field:{"expected_state","expected_context_ref"}) {auto bad=in;bad[field]="sha256:"+std::string(64,'f');h.call("resource.plan",bad,nullptr,false);}
+    auto bad=in;bad["context"]["principal_uid"]=std::to_string(::getuid()+1);bad["expected_context_ref"]=cloudflare::digest(bad.at("context"),"symphony.sov.cloudflare-context.v1");h.call("resource.plan",bad,nullptr,false);
+    bad=in;bad["resource_operation"]="tunnels.token.rotate";h.call("resource.plan",bad,nullptr,false);
+    for(const auto& profile:h.owner.at("resource_profiles")) {
+        if(profile.at("operation")=="dns.records.create") {bad=input(profile);bad["parameters"]["body"]["type"]="A";bad["parameters"]["body"]["content"]="999.2.3.4";h.call("resource.plan",bad,nullptr,false);bad=input(profile);bad["context"]["zone_id"]=nullptr;bad["expected_context_ref"]=cloudflare::digest(bad.at("context"),"symphony.sov.cloudflare-context.v1");h.call("resource.plan",bad,nullptr,false);}
+        if(profile.at("operation")=="tunnels.create") {bad=input(profile);bad["parameters"]["body"]["tunnel_secret"]="SECRET-SENTINEL";h.call("resource.plan",bad,nullptr,false);}
+        if(profile.at("operation")=="tunnels.config.update") {bad=input(profile);bad["parameters"]["body"]["config"]["ingress"][0]["service"]="ssh://localhost:22";h.call("resource.plan",bad,nullptr,false);}
+    }
+}
+
 }
 int main(int argc, char** argv) {
-    try { NT_REQUIRE(argc == 2);auto exe=fs::canonical(argv[1]);closed_frames(exe);descriptor_projection(exe);lifecycle(exe);integrity(exe);context_and_no_unqualified_execution(exe);reconciliation(exe);store_and_plan_substitution(exe);std::cout << "7 native contract groups passed (strict controls, discovery, lifecycle, integrity, context, recovery, substitution)\n";return 0; }
+    try { NT_REQUIRE(argc == 2);auto exe=fs::canonical(argv[1]);closed_frames(exe);descriptor_projection(exe);lifecycle(exe);integrity(exe);context_and_no_unqualified_execution(exe);reconciliation(exe);store_and_plan_substitution(exe);resource_planning(exe);std::cout << "8 native contract groups passed (strict controls, discovery, lifecycle, integrity, context, recovery, substitution, 23 typed resource profiles)\n";return 0; }
     catch(const std::exception& e) { std::cerr << e.what() << '\n';return 1; }
 }

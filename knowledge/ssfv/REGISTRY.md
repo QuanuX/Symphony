@@ -2,7 +2,7 @@
 
 ## Status
 
-Canonical SSFV feature-routing registry. The partial catalog routes 149 experimental records across 67 owner scopes enumerated by `COVERAGE.md`.
+Canonical SSFV feature-routing registry. The partial catalog routes 153 experimental records across 68 owner scopes enumerated by `COVERAGE.md`.
 
 ## Purpose
 
@@ -1388,8 +1388,8 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `modules/sov-cloudflare-adapter`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:platform`
-- record_digest: `sha256:42218a121c9260cffee9df0e34aebbea414a6a0540aa374f4eab45c3223779a7`
-- notes: C0/I1 local foundation only; provider and transport qualification remain open.
+- record_digest: `sha256:2a58db47942d422e75447ccc6a065ba86bd570ada8a68b36c4987215cdd5bd0d`
+- notes: C0/I1 local foundation and I4 typed resource proposals; credentialed provider execution remains open.
 
 - feature_id: `ssfv:symphony:qxctl.sov-cloudflare-administration`
 - feature_file: `tools/qxctl/FEATURES.md`
@@ -1397,8 +1397,8 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `tools/qxctl`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:qxctl`
-- record_digest: `sha256:99836e65c34706c5b070f3ed88a79dca75b570e2d5ab9f797b79b8b2b8fc5056`
-- notes: C0/I1 local foundation only; provider and transport qualification remain open.
+- record_digest: `sha256:cb5e19ec58b6d79ddc162f44addd60a03c7eca31d30b237d87166fed53e4e9f0`
+- notes: C0/I1 local foundation and I4 typed resource proposals; credentialed provider execution remains open.
 
 
 - feature_id: `ssfv:symphony:sov-transport-profile-admin`

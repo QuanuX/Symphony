@@ -1,0 +1,3418 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "context_ref": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "maxLength": 4096,
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "type": "string"
+        }
+      ]
+    },
+    "correlation_id": {
+      "maxLength": 4096,
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+      "type": "string"
+    },
+    "descriptor_ref": {
+      "maxLength": 4096,
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "input": {
+      "oneOf": [
+        {
+          "additionalProperties": false,
+          "properties": {
+            "context": {
+              "additionalProperties": false,
+              "properties": {
+                "account_id": {
+                  "maxLength": 4096,
+                  "pattern": "^[a-f0-9]{32}$",
+                  "type": "string"
+                },
+                "credential_ref": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "maxLength": 4096,
+                      "pattern": "^ssiag:[A-Za-z0-9._:-]{1,128}$",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "host_ref": {
+                  "maxLength": 4096,
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+                  "type": "string"
+                },
+                "principal_uid": {
+                  "maxLength": 4096,
+                  "pattern": "^[1-9][0-9]{0,9}$",
+                  "type": "string"
+                },
+                "toolchain_id": {
+                  "maxLength": 4096,
+                  "pattern": "^sha256:[0-9a-f]{64}$",
+                  "type": "string"
+                },
+                "zone_id": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "maxLength": 4096,
+                      "pattern": "^[a-f0-9]{32}$",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "host_ref",
+                "principal_uid",
+                "account_id",
+                "zone_id",
+                "credential_ref",
+                "toolchain_id"
+              ],
+              "type": "object"
+            },
+            "expected_context_ref": {
+              "maxLength": 71,
+              "pattern": "^sha256:[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "expected_observation": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "maxLength": 71,
+                  "pattern": "^sha256:[a-f0-9]{64}$",
+                  "type": "string"
+                }
+              ]
+            },
+            "expected_state": {
+              "maxLength": 71,
+              "pattern": "^sha256:[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "parameters": {
+              "additionalProperties": false,
+              "properties": {
+                "body": {
+                  "type": "null"
+                },
+                "confirm_delete": {
+                  "const": false
+                },
+                "page": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "page": {
+                      "maximum": 2147483647,
+                      "minimum": 1,
+                      "type": "integer"
+                    },
+                    "per_page": {
+                      "maximum": 100,
+                      "minimum": 1,
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "page",
+                    "per_page"
+                  ],
+                  "type": "object"
+                },
+                "resource_id": {
+                  "type": "null"
+                }
+              },
+              "required": [
+                "resource_id",
+                "page",
+                "body",
+                "confirm_delete"
+              ],
+              "type": "object"
+            },
+            "resource_operation": {
+              "const": "tunnels.list"
+            },
+            "store": {
+              "maxLength": 4096,
+              "pattern": "^/[^\\x00-\\x1f]*$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "store",
+            "context",
+            "expected_context_ref",
+            "expected_state",
+            "resource_operation",
+            "parameters",
+            "expected_observation"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "context": {
+              "additionalProperties": false,
+              "properties": {
+                "account_id": {
+                  "maxLength": 4096,
+                  "pattern": "^[a-f0-9]{32}$",
+                  "type": "string"
+                },
+                "credential_ref": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "maxLength": 4096,
+                      "pattern": "^ssiag:[A-Za-z0-9._:-]{1,128}$",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "host_ref": {
+                  "maxLength": 4096,
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+                  "type": "string"
+                },
+                "principal_uid": {
+                  "maxLength": 4096,
+                  "pattern": "^[1-9][0-9]{0,9}$",
+                  "type": "string"
+                },
+                "toolchain_id": {
+                  "maxLength": 4096,
+                  "pattern": "^sha256:[0-9a-f]{64}$",
+                  "type": "string"
+                },
+                "zone_id": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "maxLength": 4096,
+                      "pattern": "^[a-f0-9]{32}$",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "host_ref",
+                "principal_uid",
+                "account_id",
+                "zone_id",
+                "credential_ref",
+                "toolchain_id"
+              ],
+              "type": "object"
+            },
+            "expected_context_ref": {
+              "maxLength": 71,
+              "pattern": "^sha256:[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "expected_observation": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "maxLength": 71,
+                  "pattern": "^sha256:[a-f0-9]{64}$",
+                  "type": "string"
+                }
+              ]
+            },
+            "expected_state": {
+              "maxLength": 71,
+              "pattern": "^sha256:[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "parameters": {
+              "additionalProperties": false,
+              "properties": {
+                "body": {
+                  "type": "null"
+                },
+                "confirm_delete": {
+                  "const": false
+                },
+                "page": {
+                  "type": "null"
+                },
+                "resource_id": {
+                  "maxLength": 36,
+                  "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "resource_id",
+                "page",
+                "body",
+                "confirm_delete"
+              ],
+              "type": "object"
+            },
+            "resource_operation": {
+              "const": "tunnels.get"
+            },
+            "store": {
+              "maxLength": 4096,
+              "pattern": "^/[^\\x00-\\x1f]*$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "store",
+            "context",
+            "expected_context_ref",
+            "expected_state",
+            "resource_operation",
+            "parameters",
+            "expected_observation"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "context": {
+              "additionalProperties": false,
+              "properties": {
+                "account_id": {
+                  "maxLength": 4096,
+                  "pattern": "^[a-f0-9]{32}$",
+                  "type": "string"
+                },
+                "credential_ref": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "maxLength": 4096,
+                      "pattern": "^ssiag:[A-Za-z0-9._:-]{1,128}$",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "host_ref": {
+                  "maxLength": 4096,
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+                  "type": "string"
+                },
+                "principal_uid": {
+                  "maxLength": 4096,
+                  "pattern": "^[1-9][0-9]{0,9}$",
+                  "type": "string"
+                },
+                "toolchain_id": {
+                  "maxLength": 4096,
+                  "pattern": "^sha256:[0-9a-f]{64}$",
+                  "type": "string"
+                },
+                "zone_id": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "maxLength": 4096,
+                      "pattern": "^[a-f0-9]{32}$",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "host_ref",
+                "principal_uid",
+                "account_id",
+                "zone_id",
+                "credential_ref",
+                "toolchain_id"
+              ],
+              "type": "object"
+            },
+            "expected_context_ref": {
+              "maxLength": 71,
+              "pattern": "^sha256:[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "expected_observation": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "maxLength": 71,
+                  "pattern": "^sha256:[a-f0-9]{64}$",
+                  "type": "string"
+                }
+              ]
+            },
+            "expected_state": {
+              "maxLength": 71,
+              "pattern": "^sha256:[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "parameters": {
+              "additionalProperties": false,
+              "properties": {
+                "body": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "config_src": {
+                      "const": "cloudflare"
+                    },
+                    "name": {
+                      "maxLength": 128,
+                      "pattern": "^[A-Za-z0-9][A-Za-z0-9 ._-]{0,127}$",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "config_src"
+                  ],
+                  "type": "object"
+                },
+                "confirm_delete": {
+                  "const": false
+                },
+                "page": {
+                  "type": "null"
+                },
+                "resource_id": {
+                  "type": "null"
+                }
+              },
+              "required": [
+                "resource_id",
+                "page",
+                "body",
+                "confirm_delete"
+              ],
+              "type": "object"
+            },
+            "resource_operation": {
+              "const": "tunnels.create"
+            },
+            "store": {
+              "maxLength": 4096,
+              "pattern": "^/[^\\x00-\\x1f]*$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "store",
+            "context",
+            "expected_context_ref",
+            "expected_state",
+            "resource_operation",
+            "parameters",
+            "expected_observation"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "context": {
+              "additionalProperties": false,
+              "properties": {
+                "account_id": {
+                  "maxLength": 4096,
+                  "pattern": "^[a-f0-9]{32}$",
+                  "type": "string"
+                },
+                "credential_ref": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "maxLength": 4096,
+                      "pattern": "^ssiag:[A-Za-z0-9._:-]{1,128}$",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "host_ref": {
+                  "maxLength": 4096,
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+                  "type": "string"
+                },
+                "principal_uid": {
+                  "maxLength": 4096,
+                  "pattern": "^[1-9][0-9]{0,9}$",
+                  "type": "string"
+                },
+                "toolchain_id": {
+                  "maxLength": 4096,
+                  "pattern": "^sha256:[0-9a-f]{64}$",
+                  "type": "string"
+                },
+                "zone_id": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "maxLength": 4096,
+                      "pattern": "^[a-f0-9]{32}$",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "host_ref",
+                "principal_uid",
+                "account_id",
+                "zone_id",
+                "credential_ref",
+                "toolchain_id"
+              ],
+              "type": "object"
+            },
+            "expected_context_ref": {
+              "maxLength": 71,
+              "pattern": "^sha256:[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "expected_observation": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "maxLength": 71,
+                  "pattern": "^sha256:[a-f0-9]{64}$",
+                  "type": "string"
+                }
+              ]
+            },
+            "expected_state": {
+              "maxLength": 71,
+              "pattern": "^sha256:[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "parameters": {
+              "additionalProperties": false,
+              "properties": {
+                "body": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "name": {
+                      "maxLength": 128,
+                      "pattern": "^[A-Za-z0-9][A-Za-z0-9 ._-]{0,127}$",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "name"
+                  ],
+                  "type": "object"
+                },
+                "confirm_delete": {
+                  "const": false
+                },
+                "page": {
+                  "type": "null"
+                },
+                "resource_id": {
+                  "maxLength": 36,
+                  "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "resource_id",
+                "page",
+                "body",
+                "confirm_delete"
+              ],
+              "type": "object"
+            },
+            "resource_operation": {
+              "const": "tunnels.edit"
+            },
+            "store": {
+              "maxLength": 4096,
+              "pattern": "^/[^\\x00-\\x1f]*$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "store",
+            "context",
+            "expected_context_ref",
+            "expected_state",
+            "resource_operation",
+            "parameters",
+            "expected_observation"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "context": {
+              "additionalProperties": false,
+              "properties": {
+                "account_id": {
+                  "maxLength": 4096,
+                  "pattern": "^[a-f0-9]{32}$",
+                  "type": "string"
+                },
+                "credential_ref": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "maxLength": 4096,
+                      "pattern": "^ssiag:[A-Za-z0-9._:-]{1,128}$",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "host_ref": {
+                  "maxLength": 4096,
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+                  "type": "string"
+                },
+                "principal_uid": {
+                  "maxLength": 4096,
+                  "pattern": "^[1-9][0-9]{0,9}$",
+                  "type": "string"
+                },
+                "toolchain_id": {
+                  "maxLength": 4096,
+                  "pattern": "^sha256:[0-9a-f]{64}$",
+                  "type": "string"
+                },
+                "zone_id": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "maxLength": 4096,
+                      "pattern": "^[a-f0-9]{32}$",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "host_ref",
+                "principal_uid",
+                "account_id",
+                "zone_id",
+                "credential_ref",
+                "toolchain_id"
+              ],
+              "type": "object"
+            },
+            "expected_context_ref": {
+              "maxLength": 71,
+              "pattern": "^sha256:[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "expected_observation": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "maxLength": 71,
+                  "pattern": "^sha256:[a-f0-9]{64}$",
+                  "type": "string"
+                }
+              ]
+            },
+            "expected_state": {
+              "maxLength": 71,
+              "pattern": "^sha256:[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "parameters": {
+              "additionalProperties": false,
+              "properties": {
+                "body": {
+                  "type": "null"
+                },
+                "confirm_delete": {
+                  "const": true
+                },
+                "page": {
+                  "type": "null"
+                },
+                "resource_id": {
+                  "maxLength": 36,
+                  "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "resource_id",
+                "page",
+                "body",
+                "confirm_delete"
+              ],
+              "type": "object"
+            },
+            "resource_operation": {
+              "const": "tunnels.delete"
+            },
+            "store": {
+              "maxLength": 4096,
+              "pattern": "^/[^\\x00-\\x1f]*$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "store",
+            "context",
+            "expected_context_ref",
+            "expected_state",
+            "resource_operation",
+            "parameters",
+            "expected_observation"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "context": {
+              "additionalProperties": false,
+              "properties": {
+                "account_id": {
+                  "maxLength": 4096,
+                  "pattern": "^[a-f0-9]{32}$",
+                  "type": "string"
+                },
+                "credential_ref": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "maxLength": 4096,
+                      "pattern": "^ssiag:[A-Za-z0-9._:-]{1,128}$",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "host_ref": {
+                  "maxLength": 4096,
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+                  "type": "string"
+                },
+                "principal_uid": {
+                  "maxLength": 4096,
+                  "pattern": "^[1-9][0-9]{0,9}$",
+                  "type": "string"
+                },
+                "toolchain_id": {
+                  "maxLength": 4096,
+                  "pattern": "^sha256:[0-9a-f]{64}$",
+                  "type": "string"
+                },
+                "zone_id": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "maxLength": 4096,
+                      "pattern": "^[a-f0-9]{32}$",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "host_ref",
+                "principal_uid",
+                "account_id",
+                "zone_id",
+                "credential_ref",
+                "toolchain_id"
+              ],
+              "type": "object"
+            },
+            "expected_context_ref": {
+              "maxLength": 71,
+              "pattern": "^sha256:[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "expected_observation": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "maxLength": 71,
+                  "pattern": "^sha256:[a-f0-9]{64}$",
+                  "type": "string"
+                }
+              ]
+            },
+            "expected_state": {
+              "maxLength": 71,
+              "pattern": "^sha256:[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "parameters": {
+              "additionalProperties": false,
+              "properties": {
+                "body": {
+                  "type": "null"
+                },
+                "confirm_delete": {
+                  "const": false
+                },
+                "page": {
+                  "type": "null"
+                },
+                "resource_id": {
+                  "maxLength": 36,
+                  "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "resource_id",
+                "page",
+                "body",
+                "confirm_delete"
+              ],
+              "type": "object"
+            },
+            "resource_operation": {
+              "const": "tunnels.config.get"
+            },
+            "store": {
+              "maxLength": 4096,
+              "pattern": "^/[^\\x00-\\x1f]*$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "store",
+            "context",
+            "expected_context_ref",
+            "expected_state",
+            "resource_operation",
+            "parameters",
+            "expected_observation"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "context": {
+              "additionalProperties": false,
+              "properties": {
+                "account_id": {
+                  "maxLength": 4096,
+                  "pattern": "^[a-f0-9]{32}$",
+                  "type": "string"
+                },
+                "credential_ref": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "maxLength": 4096,
+                      "pattern": "^ssiag:[A-Za-z0-9._:-]{1,128}$",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "host_ref": {
+                  "maxLength": 4096,
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+                  "type": "string"
+                },
+                "principal_uid": {
+                  "maxLength": 4096,
+                  "pattern": "^[1-9][0-9]{0,9}$",
+                  "type": "string"
+                },
+                "toolchain_id": {
+                  "maxLength": 4096,
+                  "pattern": "^sha256:[0-9a-f]{64}$",
+                  "type": "string"
+                },
+                "zone_id": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "maxLength": 4096,
+                      "pattern": "^[a-f0-9]{32}$",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "host_ref",
+                "principal_uid",
+                "account_id",
+                "zone_id",
+                "credential_ref",
+                "toolchain_id"
+              ],
+              "type": "object"
+            },
+            "expected_context_ref": {
+              "maxLength": 71,
+              "pattern": "^sha256:[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "expected_observation": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "maxLength": 71,
+                  "pattern": "^sha256:[a-f0-9]{64}$",
+                  "type": "string"
+                }
+              ]
+            },
+            "expected_state": {
+              "maxLength": 71,
+              "pattern": "^sha256:[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "parameters": {
+              "additionalProperties": false,
+              "properties": {
+                "body": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "config": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "ingress": {
+                          "items": {
+                            "additionalProperties": false,
+                            "properties": {
+                              "hostname": {
+                                "oneOf": [
+                                  {
+                                    "type": "null"
+                                  },
+                                  {
+                                    "maxLength": 253,
+                                    "pattern": "^[a-z0-9][a-z0-9.-]{0,251}[a-z0-9]$",
+                                    "type": "string"
+                                  }
+                                ]
+                              },
+                              "service": {
+                                "maxLength": 300,
+                                "pattern": "^(https?|ssh)://[A-Za-z0-9.-]+:[1-9][0-9]{0,4}$|^http_status:404$",
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "hostname",
+                              "service"
+                            ],
+                            "type": "object"
+                          },
+                          "maxItems": 100,
+                          "minItems": 1,
+                          "type": "array"
+                        }
+                      },
+                      "required": [
+                        "ingress"
+                      ],
+                      "type": "object"
+                    }
+                  },
+                  "required": [
+                    "config"
+                  ],
+                  "type": "object"
+                },
+                "confirm_delete": {
+                  "const": false
+                },
+                "page": {
+                  "type": "null"
+                },
+                "resource_id": {
+                  "maxLength": 36,
+                  "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "resource_id",
+                "page",
+                "body",
+                "confirm_delete"
+              ],
+              "type": "object"
+            },
+            "resource_operation": {
+              "const": "tunnels.config.update"
+            },
+            "store": {
+              "maxLength": 4096,
+              "pattern": "^/[^\\x00-\\x1f]*$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "store",
+            "context",
+            "expected_context_ref",
+            "expected_state",
+            "resource_operation",
+            "parameters",
+            "expected_observation"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "context": {
+              "additionalProperties": false,
+              "properties": {
+                "account_id": {
+                  "maxLength": 4096,
+                  "pattern": "^[a-f0-9]{32}$",
+                  "type": "string"
+                },
+                "credential_ref": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "maxLength": 4096,
+                      "pattern": "^ssiag:[A-Za-z0-9._:-]{1,128}$",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "host_ref": {
+                  "maxLength": 4096,
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+                  "type": "string"
+                },
+                "principal_uid": {
+                  "maxLength": 4096,
+                  "pattern": "^[1-9][0-9]{0,9}$",
+                  "type": "string"
+                },
+                "toolchain_id": {
+                  "maxLength": 4096,
+                  "pattern": "^sha256:[0-9a-f]{64}$",
+                  "type": "string"
+                },
+                "zone_id": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "maxLength": 4096,
+                      "pattern": "^[a-f0-9]{32}$",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "host_ref",
+                "principal_uid",
+                "account_id",
+                "zone_id",
+                "credential_ref",
+                "toolchain_id"
+              ],
+              "type": "object"
+            },
+            "expected_context_ref": {
+              "maxLength": 71,
+              "pattern": "^sha256:[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "expected_observation": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "maxLength": 71,
+                  "pattern": "^sha256:[a-f0-9]{64}$",
+                  "type": "string"
+                }
+              ]
+            },
+            "expected_state": {
+              "maxLength": 71,
+              "pattern": "^sha256:[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "parameters": {
+              "additionalProperties": false,
+              "properties": {
+                "body": {
+                  "type": "null"
+                },
+                "confirm_delete": {
+                  "const": false
+                },
+                "page": {
+                  "type": "null"
+                },
+                "resource_id": {
+                  "maxLength": 36,
+                  "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "resource_id",
+                "page",
+                "body",
+                "confirm_delete"
+              ],
+              "type": "object"
+            },
+            "resource_operation": {
+              "const": "tunnels.token.get"
+            },
+            "store": {
+              "maxLength": 4096,
+              "pattern": "^/[^\\x00-\\x1f]*$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "store",
+            "context",
+            "expected_context_ref",
+            "expected_state",
+            "resource_operation",
+            "parameters",
+            "expected_observation"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "context": {
+              "additionalProperties": false,
+              "properties": {
+                "account_id": {
+                  "maxLength": 4096,
+                  "pattern": "^[a-f0-9]{32}$",
+                  "type": "string"
+                },
+                "credential_ref": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "maxLength": 4096,
+                      "pattern": "^ssiag:[A-Za-z0-9._:-]{1,128}$",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "host_ref": {
+                  "maxLength": 4096,
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+                  "type": "string"
+                },
+                "principal_uid": {
+                  "maxLength": 4096,
+                  "pattern": "^[1-9][0-9]{0,9}$",
+                  "type": "string"
+                },
+                "toolchain_id": {
+                  "maxLength": 4096,
+                  "pattern": "^sha256:[0-9a-f]{64}$",
+                  "type": "string"
+                },
+                "zone_id": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "maxLength": 4096,
+                      "pattern": "^[a-f0-9]{32}$",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "host_ref",
+                "principal_uid",
+                "account_id",
+                "zone_id",
+                "credential_ref",
+                "toolchain_id"
+              ],
+              "type": "object"
+            },
+            "expected_context_ref": {
+              "maxLength": 71,
+              "pattern": "^sha256:[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "expected_observation": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "maxLength": 71,
+                  "pattern": "^sha256:[a-f0-9]{64}$",
+                  "type": "string"
+                }
+              ]
+            },
+            "expected_state": {
+              "maxLength": 71,
+              "pattern": "^sha256:[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "parameters": {
+              "additionalProperties": false,
+              "properties": {
+                "body": {
+                  "type": "null"
+                },
+                "confirm_delete": {
+                  "const": false
+                },
+                "page": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "page": {
+                      "maximum": 2147483647,
+                      "minimum": 1,
+                      "type": "integer"
+                    },
+                    "per_page": {
+                      "maximum": 100,
+                      "minimum": 1,
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "page",
+                    "per_page"
+                  ],
+                  "type": "object"
+                },
+                "resource_id": {
+                  "type": "null"
+                }
+              },
+              "required": [
+                "resource_id",
+                "page",
+                "body",
+                "confirm_delete"
+              ],
+              "type": "object"
+            },
+            "resource_operation": {
+              "const": "dns.records.list"
+            },
+            "store": {
+              "maxLength": 4096,
+              "pattern": "^/[^\\x00-\\x1f]*$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "store",
+            "context",
+            "expected_context_ref",
+            "expected_state",
+            "resource_operation",
+            "parameters",
+            "expected_observation"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "context": {
+              "additionalProperties": false,
+              "properties": {
+                "account_id": {
+                  "maxLength": 4096,
+                  "pattern": "^[a-f0-9]{32}$",
+                  "type": "string"
+                },
+                "credential_ref": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "maxLength": 4096,
+                      "pattern": "^ssiag:[A-Za-z0-9._:-]{1,128}$",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "host_ref": {
+                  "maxLength": 4096,
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+                  "type": "string"
+                },
+                "principal_uid": {
+                  "maxLength": 4096,
+                  "pattern": "^[1-9][0-9]{0,9}$",
+                  "type": "string"
+                },
+                "toolchain_id": {
+                  "maxLength": 4096,
+                  "pattern": "^sha256:[0-9a-f]{64}$",
+                  "type": "string"
+                },
+                "zone_id": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "maxLength": 4096,
+                      "pattern": "^[a-f0-9]{32}$",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "host_ref",
+                "principal_uid",
+                "account_id",
+                "zone_id",
+                "credential_ref",
+                "toolchain_id"
+              ],
+              "type": "object"
+            },
+            "expected_context_ref": {
+              "maxLength": 71,
+              "pattern": "^sha256:[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "expected_observation": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "maxLength": 71,
+                  "pattern": "^sha256:[a-f0-9]{64}$",
+                  "type": "string"
+                }
+              ]
+            },
+            "expected_state": {
+              "maxLength": 71,
+              "pattern": "^sha256:[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "parameters": {
+              "additionalProperties": false,
+              "properties": {
+                "body": {
+                  "type": "null"
+                },
+                "confirm_delete": {
+                  "const": false
+                },
+                "page": {
+                  "type": "null"
+                },
+                "resource_id": {
+                  "maxLength": 32,
+                  "pattern": "^[a-f0-9]{32}$",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "resource_id",
+                "page",
+                "body",
+                "confirm_delete"
+              ],
+              "type": "object"
+            },
+            "resource_operation": {
+              "const": "dns.records.get"
+            },
+            "store": {
+              "maxLength": 4096,
+              "pattern": "^/[^\\x00-\\x1f]*$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "store",
+            "context",
+            "expected_context_ref",
+            "expected_state",
+            "resource_operation",
+            "parameters",
+            "expected_observation"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "context": {
+              "additionalProperties": false,
+              "properties": {
+                "account_id": {
+                  "maxLength": 4096,
+                  "pattern": "^[a-f0-9]{32}$",
+                  "type": "string"
+                },
+                "credential_ref": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "maxLength": 4096,
+                      "pattern": "^ssiag:[A-Za-z0-9._:-]{1,128}$",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "host_ref": {
+                  "maxLength": 4096,
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+                  "type": "string"
+                },
+                "principal_uid": {
+                  "maxLength": 4096,
+                  "pattern": "^[1-9][0-9]{0,9}$",
+                  "type": "string"
+                },
+                "toolchain_id": {
+                  "maxLength": 4096,
+                  "pattern": "^sha256:[0-9a-f]{64}$",
+                  "type": "string"
+                },
+                "zone_id": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "maxLength": 4096,
+                      "pattern": "^[a-f0-9]{32}$",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "host_ref",
+                "principal_uid",
+                "account_id",
+                "zone_id",
+                "credential_ref",
+                "toolchain_id"
+              ],
+              "type": "object"
+            },
+            "expected_context_ref": {
+              "maxLength": 71,
+              "pattern": "^sha256:[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "expected_observation": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "maxLength": 71,
+                  "pattern": "^sha256:[a-f0-9]{64}$",
+                  "type": "string"
+                }
+              ]
+            },
+            "expected_state": {
+              "maxLength": 71,
+              "pattern": "^sha256:[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "parameters": {
+              "additionalProperties": false,
+              "properties": {
+                "body": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "content": {
+                      "maxLength": 253,
+                      "pattern": "^[A-Za-z0-9:.][A-Za-z0-9:.-]{0,252}$",
+                      "type": "string"
+                    },
+                    "name": {
+                      "maxLength": 253,
+                      "pattern": "^[a-z0-9][a-z0-9.-]{0,251}[a-z0-9]$",
+                      "type": "string"
+                    },
+                    "proxied": {
+                      "type": "boolean"
+                    },
+                    "ttl": {
+                      "oneOf": [
+                        {
+                          "const": 1
+                        },
+                        {
+                          "maximum": 86400,
+                          "minimum": 60,
+                          "type": "integer"
+                        }
+                      ]
+                    },
+                    "type": {
+                      "enum": [
+                        "A",
+                        "AAAA",
+                        "CNAME"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "type",
+                    "name",
+                    "content",
+                    "ttl",
+                    "proxied"
+                  ],
+                  "type": "object"
+                },
+                "confirm_delete": {
+                  "const": false
+                },
+                "page": {
+                  "type": "null"
+                },
+                "resource_id": {
+                  "type": "null"
+                }
+              },
+              "required": [
+                "resource_id",
+                "page",
+                "body",
+                "confirm_delete"
+              ],
+              "type": "object"
+            },
+            "resource_operation": {
+              "const": "dns.records.create"
+            },
+            "store": {
+              "maxLength": 4096,
+              "pattern": "^/[^\\x00-\\x1f]*$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "store",
+            "context",
+            "expected_context_ref",
+            "expected_state",
+            "resource_operation",
+            "parameters",
+            "expected_observation"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "context": {
+              "additionalProperties": false,
+              "properties": {
+                "account_id": {
+                  "maxLength": 4096,
+                  "pattern": "^[a-f0-9]{32}$",
+                  "type": "string"
+                },
+                "credential_ref": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "maxLength": 4096,
+                      "pattern": "^ssiag:[A-Za-z0-9._:-]{1,128}$",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "host_ref": {
+                  "maxLength": 4096,
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+                  "type": "string"
+                },
+                "principal_uid": {
+                  "maxLength": 4096,
+                  "pattern": "^[1-9][0-9]{0,9}$",
+                  "type": "string"
+                },
+                "toolchain_id": {
+                  "maxLength": 4096,
+                  "pattern": "^sha256:[0-9a-f]{64}$",
+                  "type": "string"
+                },
+                "zone_id": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "maxLength": 4096,
+                      "pattern": "^[a-f0-9]{32}$",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "host_ref",
+                "principal_uid",
+                "account_id",
+                "zone_id",
+                "credential_ref",
+                "toolchain_id"
+              ],
+              "type": "object"
+            },
+            "expected_context_ref": {
+              "maxLength": 71,
+              "pattern": "^sha256:[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "expected_observation": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "maxLength": 71,
+                  "pattern": "^sha256:[a-f0-9]{64}$",
+                  "type": "string"
+                }
+              ]
+            },
+            "expected_state": {
+              "maxLength": 71,
+              "pattern": "^sha256:[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "parameters": {
+              "additionalProperties": false,
+              "properties": {
+                "body": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "content": {
+                      "maxLength": 253,
+                      "pattern": "^[A-Za-z0-9:.][A-Za-z0-9:.-]{0,252}$",
+                      "type": "string"
+                    },
+                    "name": {
+                      "maxLength": 253,
+                      "pattern": "^[a-z0-9][a-z0-9.-]{0,251}[a-z0-9]$",
+                      "type": "string"
+                    },
+                    "proxied": {
+                      "type": "boolean"
+                    },
+                    "ttl": {
+                      "oneOf": [
+                        {
+                          "const": 1
+                        },
+                        {
+                          "maximum": 86400,
+                          "minimum": 60,
+                          "type": "integer"
+                        }
+                      ]
+                    },
+                    "type": {
+                      "enum": [
+                        "A",
+                        "AAAA",
+                        "CNAME"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "type",
+                    "name",
+                    "content",
+                    "ttl",
+                    "proxied"
+                  ],
+                  "type": "object"
+                },
+                "confirm_delete": {
+                  "const": false
+                },
+                "page": {
+                  "type": "null"
+                },
+                "resource_id": {
+                  "maxLength": 32,
+                  "pattern": "^[a-f0-9]{32}$",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "resource_id",
+                "page",
+                "body",
+                "confirm_delete"
+              ],
+              "type": "object"
+            },
+            "resource_operation": {
+              "const": "dns.records.update"
+            },
+            "store": {
+              "maxLength": 4096,
+              "pattern": "^/[^\\x00-\\x1f]*$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "store",
+            "context",
+            "expected_context_ref",
+            "expected_state",
+            "resource_operation",
+            "parameters",
+            "expected_observation"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "context": {
+              "additionalProperties": false,
+              "properties": {
+                "account_id": {
+                  "maxLength": 4096,
+                  "pattern": "^[a-f0-9]{32}$",
+                  "type": "string"
+                },
+                "credential_ref": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "maxLength": 4096,
+                      "pattern": "^ssiag:[A-Za-z0-9._:-]{1,128}$",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "host_ref": {
+                  "maxLength": 4096,
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+                  "type": "string"
+                },
+                "principal_uid": {
+                  "maxLength": 4096,
+                  "pattern": "^[1-9][0-9]{0,9}$",
+                  "type": "string"
+                },
+                "toolchain_id": {
+                  "maxLength": 4096,
+                  "pattern": "^sha256:[0-9a-f]{64}$",
+                  "type": "string"
+                },
+                "zone_id": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "maxLength": 4096,
+                      "pattern": "^[a-f0-9]{32}$",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "host_ref",
+                "principal_uid",
+                "account_id",
+                "zone_id",
+                "credential_ref",
+                "toolchain_id"
+              ],
+              "type": "object"
+            },
+            "expected_context_ref": {
+              "maxLength": 71,
+              "pattern": "^sha256:[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "expected_observation": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "maxLength": 71,
+                  "pattern": "^sha256:[a-f0-9]{64}$",
+                  "type": "string"
+                }
+              ]
+            },
+            "expected_state": {
+              "maxLength": 71,
+              "pattern": "^sha256:[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "parameters": {
+              "additionalProperties": false,
+              "properties": {
+                "body": {
+                  "type": "null"
+                },
+                "confirm_delete": {
+                  "const": true
+                },
+                "page": {
+                  "type": "null"
+                },
+                "resource_id": {
+                  "maxLength": 32,
+                  "pattern": "^[a-f0-9]{32}$",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "resource_id",
+                "page",
+                "body",
+                "confirm_delete"
+              ],
+              "type": "object"
+            },
+            "resource_operation": {
+              "const": "dns.records.delete"
+            },
+            "store": {
+              "maxLength": 4096,
+              "pattern": "^/[^\\x00-\\x1f]*$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "store",
+            "context",
+            "expected_context_ref",
+            "expected_state",
+            "resource_operation",
+            "parameters",
+            "expected_observation"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "context": {
+              "additionalProperties": false,
+              "properties": {
+                "account_id": {
+                  "maxLength": 4096,
+                  "pattern": "^[a-f0-9]{32}$",
+                  "type": "string"
+                },
+                "credential_ref": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "maxLength": 4096,
+                      "pattern": "^ssiag:[A-Za-z0-9._:-]{1,128}$",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "host_ref": {
+                  "maxLength": 4096,
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+                  "type": "string"
+                },
+                "principal_uid": {
+                  "maxLength": 4096,
+                  "pattern": "^[1-9][0-9]{0,9}$",
+                  "type": "string"
+                },
+                "toolchain_id": {
+                  "maxLength": 4096,
+                  "pattern": "^sha256:[0-9a-f]{64}$",
+                  "type": "string"
+                },
+                "zone_id": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "maxLength": 4096,
+                      "pattern": "^[a-f0-9]{32}$",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "host_ref",
+                "principal_uid",
+                "account_id",
+                "zone_id",
+                "credential_ref",
+                "toolchain_id"
+              ],
+              "type": "object"
+            },
+            "expected_context_ref": {
+              "maxLength": 71,
+              "pattern": "^sha256:[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "expected_observation": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "maxLength": 71,
+                  "pattern": "^sha256:[a-f0-9]{64}$",
+                  "type": "string"
+                }
+              ]
+            },
+            "expected_state": {
+              "maxLength": 71,
+              "pattern": "^sha256:[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "parameters": {
+              "additionalProperties": false,
+              "properties": {
+                "body": {
+                  "type": "null"
+                },
+                "confirm_delete": {
+                  "const": false
+                },
+                "page": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "page": {
+                      "maximum": 2147483647,
+                      "minimum": 1,
+                      "type": "integer"
+                    },
+                    "per_page": {
+                      "maximum": 100,
+                      "minimum": 1,
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "page",
+                    "per_page"
+                  ],
+                  "type": "object"
+                },
+                "resource_id": {
+                  "type": "null"
+                }
+              },
+              "required": [
+                "resource_id",
+                "page",
+                "body",
+                "confirm_delete"
+              ],
+              "type": "object"
+            },
+            "resource_operation": {
+              "const": "zero-trust.access.applications.list"
+            },
+            "store": {
+              "maxLength": 4096,
+              "pattern": "^/[^\\x00-\\x1f]*$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "store",
+            "context",
+            "expected_context_ref",
+            "expected_state",
+            "resource_operation",
+            "parameters",
+            "expected_observation"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "context": {
+              "additionalProperties": false,
+              "properties": {
+                "account_id": {
+                  "maxLength": 4096,
+                  "pattern": "^[a-f0-9]{32}$",
+                  "type": "string"
+                },
+                "credential_ref": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "maxLength": 4096,
+                      "pattern": "^ssiag:[A-Za-z0-9._:-]{1,128}$",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "host_ref": {
+                  "maxLength": 4096,
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+                  "type": "string"
+                },
+                "principal_uid": {
+                  "maxLength": 4096,
+                  "pattern": "^[1-9][0-9]{0,9}$",
+                  "type": "string"
+                },
+                "toolchain_id": {
+                  "maxLength": 4096,
+                  "pattern": "^sha256:[0-9a-f]{64}$",
+                  "type": "string"
+                },
+                "zone_id": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "maxLength": 4096,
+                      "pattern": "^[a-f0-9]{32}$",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "host_ref",
+                "principal_uid",
+                "account_id",
+                "zone_id",
+                "credential_ref",
+                "toolchain_id"
+              ],
+              "type": "object"
+            },
+            "expected_context_ref": {
+              "maxLength": 71,
+              "pattern": "^sha256:[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "expected_observation": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "maxLength": 71,
+                  "pattern": "^sha256:[a-f0-9]{64}$",
+                  "type": "string"
+                }
+              ]
+            },
+            "expected_state": {
+              "maxLength": 71,
+              "pattern": "^sha256:[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "parameters": {
+              "additionalProperties": false,
+              "properties": {
+                "body": {
+                  "type": "null"
+                },
+                "confirm_delete": {
+                  "const": false
+                },
+                "page": {
+                  "type": "null"
+                },
+                "resource_id": {
+                  "maxLength": 36,
+                  "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "resource_id",
+                "page",
+                "body",
+                "confirm_delete"
+              ],
+              "type": "object"
+            },
+            "resource_operation": {
+              "const": "zero-trust.access.applications.get"
+            },
+            "store": {
+              "maxLength": 4096,
+              "pattern": "^/[^\\x00-\\x1f]*$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "store",
+            "context",
+            "expected_context_ref",
+            "expected_state",
+            "resource_operation",
+            "parameters",
+            "expected_observation"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "context": {
+              "additionalProperties": false,
+              "properties": {
+                "account_id": {
+                  "maxLength": 4096,
+                  "pattern": "^[a-f0-9]{32}$",
+                  "type": "string"
+                },
+                "credential_ref": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "maxLength": 4096,
+                      "pattern": "^ssiag:[A-Za-z0-9._:-]{1,128}$",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "host_ref": {
+                  "maxLength": 4096,
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+                  "type": "string"
+                },
+                "principal_uid": {
+                  "maxLength": 4096,
+                  "pattern": "^[1-9][0-9]{0,9}$",
+                  "type": "string"
+                },
+                "toolchain_id": {
+                  "maxLength": 4096,
+                  "pattern": "^sha256:[0-9a-f]{64}$",
+                  "type": "string"
+                },
+                "zone_id": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "maxLength": 4096,
+                      "pattern": "^[a-f0-9]{32}$",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "host_ref",
+                "principal_uid",
+                "account_id",
+                "zone_id",
+                "credential_ref",
+                "toolchain_id"
+              ],
+              "type": "object"
+            },
+            "expected_context_ref": {
+              "maxLength": 71,
+              "pattern": "^sha256:[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "expected_observation": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "maxLength": 71,
+                  "pattern": "^sha256:[a-f0-9]{64}$",
+                  "type": "string"
+                }
+              ]
+            },
+            "expected_state": {
+              "maxLength": 71,
+              "pattern": "^sha256:[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "parameters": {
+              "additionalProperties": false,
+              "properties": {
+                "body": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "domain": {
+                      "maxLength": 253,
+                      "pattern": "^[a-z0-9][a-z0-9.-]{0,251}[a-z0-9]$",
+                      "type": "string"
+                    },
+                    "name": {
+                      "maxLength": 128,
+                      "pattern": "^[A-Za-z0-9][A-Za-z0-9 ._-]{0,127}$",
+                      "type": "string"
+                    },
+                    "session_duration": {
+                      "enum": [
+                        "1h",
+                        "8h",
+                        "24h"
+                      ]
+                    },
+                    "type": {
+                      "const": "self_hosted"
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "type",
+                    "domain",
+                    "session_duration"
+                  ],
+                  "type": "object"
+                },
+                "confirm_delete": {
+                  "const": false
+                },
+                "page": {
+                  "type": "null"
+                },
+                "resource_id": {
+                  "type": "null"
+                }
+              },
+              "required": [
+                "resource_id",
+                "page",
+                "body",
+                "confirm_delete"
+              ],
+              "type": "object"
+            },
+            "resource_operation": {
+              "const": "zero-trust.access.applications.create"
+            },
+            "store": {
+              "maxLength": 4096,
+              "pattern": "^/[^\\x00-\\x1f]*$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "store",
+            "context",
+            "expected_context_ref",
+            "expected_state",
+            "resource_operation",
+            "parameters",
+            "expected_observation"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "context": {
+              "additionalProperties": false,
+              "properties": {
+                "account_id": {
+                  "maxLength": 4096,
+                  "pattern": "^[a-f0-9]{32}$",
+                  "type": "string"
+                },
+                "credential_ref": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "maxLength": 4096,
+                      "pattern": "^ssiag:[A-Za-z0-9._:-]{1,128}$",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "host_ref": {
+                  "maxLength": 4096,
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+                  "type": "string"
+                },
+                "principal_uid": {
+                  "maxLength": 4096,
+                  "pattern": "^[1-9][0-9]{0,9}$",
+                  "type": "string"
+                },
+                "toolchain_id": {
+                  "maxLength": 4096,
+                  "pattern": "^sha256:[0-9a-f]{64}$",
+                  "type": "string"
+                },
+                "zone_id": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "maxLength": 4096,
+                      "pattern": "^[a-f0-9]{32}$",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "host_ref",
+                "principal_uid",
+                "account_id",
+                "zone_id",
+                "credential_ref",
+                "toolchain_id"
+              ],
+              "type": "object"
+            },
+            "expected_context_ref": {
+              "maxLength": 71,
+              "pattern": "^sha256:[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "expected_observation": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "maxLength": 71,
+                  "pattern": "^sha256:[a-f0-9]{64}$",
+                  "type": "string"
+                }
+              ]
+            },
+            "expected_state": {
+              "maxLength": 71,
+              "pattern": "^sha256:[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "parameters": {
+              "additionalProperties": false,
+              "properties": {
+                "body": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "domain": {
+                      "maxLength": 253,
+                      "pattern": "^[a-z0-9][a-z0-9.-]{0,251}[a-z0-9]$",
+                      "type": "string"
+                    },
+                    "name": {
+                      "maxLength": 128,
+                      "pattern": "^[A-Za-z0-9][A-Za-z0-9 ._-]{0,127}$",
+                      "type": "string"
+                    },
+                    "session_duration": {
+                      "enum": [
+                        "1h",
+                        "8h",
+                        "24h"
+                      ]
+                    },
+                    "type": {
+                      "const": "self_hosted"
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "type",
+                    "domain",
+                    "session_duration"
+                  ],
+                  "type": "object"
+                },
+                "confirm_delete": {
+                  "const": false
+                },
+                "page": {
+                  "type": "null"
+                },
+                "resource_id": {
+                  "maxLength": 36,
+                  "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "resource_id",
+                "page",
+                "body",
+                "confirm_delete"
+              ],
+              "type": "object"
+            },
+            "resource_operation": {
+              "const": "zero-trust.access.applications.update"
+            },
+            "store": {
+              "maxLength": 4096,
+              "pattern": "^/[^\\x00-\\x1f]*$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "store",
+            "context",
+            "expected_context_ref",
+            "expected_state",
+            "resource_operation",
+            "parameters",
+            "expected_observation"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "context": {
+              "additionalProperties": false,
+              "properties": {
+                "account_id": {
+                  "maxLength": 4096,
+                  "pattern": "^[a-f0-9]{32}$",
+                  "type": "string"
+                },
+                "credential_ref": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "maxLength": 4096,
+                      "pattern": "^ssiag:[A-Za-z0-9._:-]{1,128}$",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "host_ref": {
+                  "maxLength": 4096,
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+                  "type": "string"
+                },
+                "principal_uid": {
+                  "maxLength": 4096,
+                  "pattern": "^[1-9][0-9]{0,9}$",
+                  "type": "string"
+                },
+                "toolchain_id": {
+                  "maxLength": 4096,
+                  "pattern": "^sha256:[0-9a-f]{64}$",
+                  "type": "string"
+                },
+                "zone_id": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "maxLength": 4096,
+                      "pattern": "^[a-f0-9]{32}$",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "host_ref",
+                "principal_uid",
+                "account_id",
+                "zone_id",
+                "credential_ref",
+                "toolchain_id"
+              ],
+              "type": "object"
+            },
+            "expected_context_ref": {
+              "maxLength": 71,
+              "pattern": "^sha256:[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "expected_observation": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "maxLength": 71,
+                  "pattern": "^sha256:[a-f0-9]{64}$",
+                  "type": "string"
+                }
+              ]
+            },
+            "expected_state": {
+              "maxLength": 71,
+              "pattern": "^sha256:[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "parameters": {
+              "additionalProperties": false,
+              "properties": {
+                "body": {
+                  "type": "null"
+                },
+                "confirm_delete": {
+                  "const": true
+                },
+                "page": {
+                  "type": "null"
+                },
+                "resource_id": {
+                  "maxLength": 36,
+                  "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "resource_id",
+                "page",
+                "body",
+                "confirm_delete"
+              ],
+              "type": "object"
+            },
+            "resource_operation": {
+              "const": "zero-trust.access.applications.delete"
+            },
+            "store": {
+              "maxLength": 4096,
+              "pattern": "^/[^\\x00-\\x1f]*$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "store",
+            "context",
+            "expected_context_ref",
+            "expected_state",
+            "resource_operation",
+            "parameters",
+            "expected_observation"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "context": {
+              "additionalProperties": false,
+              "properties": {
+                "account_id": {
+                  "maxLength": 4096,
+                  "pattern": "^[a-f0-9]{32}$",
+                  "type": "string"
+                },
+                "credential_ref": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "maxLength": 4096,
+                      "pattern": "^ssiag:[A-Za-z0-9._:-]{1,128}$",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "host_ref": {
+                  "maxLength": 4096,
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+                  "type": "string"
+                },
+                "principal_uid": {
+                  "maxLength": 4096,
+                  "pattern": "^[1-9][0-9]{0,9}$",
+                  "type": "string"
+                },
+                "toolchain_id": {
+                  "maxLength": 4096,
+                  "pattern": "^sha256:[0-9a-f]{64}$",
+                  "type": "string"
+                },
+                "zone_id": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "maxLength": 4096,
+                      "pattern": "^[a-f0-9]{32}$",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "host_ref",
+                "principal_uid",
+                "account_id",
+                "zone_id",
+                "credential_ref",
+                "toolchain_id"
+              ],
+              "type": "object"
+            },
+            "expected_context_ref": {
+              "maxLength": 71,
+              "pattern": "^sha256:[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "expected_observation": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "maxLength": 71,
+                  "pattern": "^sha256:[a-f0-9]{64}$",
+                  "type": "string"
+                }
+              ]
+            },
+            "expected_state": {
+              "maxLength": 71,
+              "pattern": "^sha256:[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "parameters": {
+              "additionalProperties": false,
+              "properties": {
+                "body": {
+                  "type": "null"
+                },
+                "confirm_delete": {
+                  "const": false
+                },
+                "page": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "page": {
+                      "maximum": 2147483647,
+                      "minimum": 1,
+                      "type": "integer"
+                    },
+                    "per_page": {
+                      "maximum": 100,
+                      "minimum": 1,
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "page",
+                    "per_page"
+                  ],
+                  "type": "object"
+                },
+                "resource_id": {
+                  "type": "null"
+                }
+              },
+              "required": [
+                "resource_id",
+                "page",
+                "body",
+                "confirm_delete"
+              ],
+              "type": "object"
+            },
+            "resource_operation": {
+              "const": "zero-trust.access.policies.list"
+            },
+            "store": {
+              "maxLength": 4096,
+              "pattern": "^/[^\\x00-\\x1f]*$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "store",
+            "context",
+            "expected_context_ref",
+            "expected_state",
+            "resource_operation",
+            "parameters",
+            "expected_observation"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "context": {
+              "additionalProperties": false,
+              "properties": {
+                "account_id": {
+                  "maxLength": 4096,
+                  "pattern": "^[a-f0-9]{32}$",
+                  "type": "string"
+                },
+                "credential_ref": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "maxLength": 4096,
+                      "pattern": "^ssiag:[A-Za-z0-9._:-]{1,128}$",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "host_ref": {
+                  "maxLength": 4096,
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+                  "type": "string"
+                },
+                "principal_uid": {
+                  "maxLength": 4096,
+                  "pattern": "^[1-9][0-9]{0,9}$",
+                  "type": "string"
+                },
+                "toolchain_id": {
+                  "maxLength": 4096,
+                  "pattern": "^sha256:[0-9a-f]{64}$",
+                  "type": "string"
+                },
+                "zone_id": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "maxLength": 4096,
+                      "pattern": "^[a-f0-9]{32}$",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "host_ref",
+                "principal_uid",
+                "account_id",
+                "zone_id",
+                "credential_ref",
+                "toolchain_id"
+              ],
+              "type": "object"
+            },
+            "expected_context_ref": {
+              "maxLength": 71,
+              "pattern": "^sha256:[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "expected_observation": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "maxLength": 71,
+                  "pattern": "^sha256:[a-f0-9]{64}$",
+                  "type": "string"
+                }
+              ]
+            },
+            "expected_state": {
+              "maxLength": 71,
+              "pattern": "^sha256:[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "parameters": {
+              "additionalProperties": false,
+              "properties": {
+                "body": {
+                  "type": "null"
+                },
+                "confirm_delete": {
+                  "const": false
+                },
+                "page": {
+                  "type": "null"
+                },
+                "resource_id": {
+                  "maxLength": 36,
+                  "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "resource_id",
+                "page",
+                "body",
+                "confirm_delete"
+              ],
+              "type": "object"
+            },
+            "resource_operation": {
+              "const": "zero-trust.access.policies.get"
+            },
+            "store": {
+              "maxLength": 4096,
+              "pattern": "^/[^\\x00-\\x1f]*$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "store",
+            "context",
+            "expected_context_ref",
+            "expected_state",
+            "resource_operation",
+            "parameters",
+            "expected_observation"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "context": {
+              "additionalProperties": false,
+              "properties": {
+                "account_id": {
+                  "maxLength": 4096,
+                  "pattern": "^[a-f0-9]{32}$",
+                  "type": "string"
+                },
+                "credential_ref": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "maxLength": 4096,
+                      "pattern": "^ssiag:[A-Za-z0-9._:-]{1,128}$",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "host_ref": {
+                  "maxLength": 4096,
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+                  "type": "string"
+                },
+                "principal_uid": {
+                  "maxLength": 4096,
+                  "pattern": "^[1-9][0-9]{0,9}$",
+                  "type": "string"
+                },
+                "toolchain_id": {
+                  "maxLength": 4096,
+                  "pattern": "^sha256:[0-9a-f]{64}$",
+                  "type": "string"
+                },
+                "zone_id": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "maxLength": 4096,
+                      "pattern": "^[a-f0-9]{32}$",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "host_ref",
+                "principal_uid",
+                "account_id",
+                "zone_id",
+                "credential_ref",
+                "toolchain_id"
+              ],
+              "type": "object"
+            },
+            "expected_context_ref": {
+              "maxLength": 71,
+              "pattern": "^sha256:[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "expected_observation": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "maxLength": 71,
+                  "pattern": "^sha256:[a-f0-9]{64}$",
+                  "type": "string"
+                }
+              ]
+            },
+            "expected_state": {
+              "maxLength": 71,
+              "pattern": "^sha256:[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "parameters": {
+              "additionalProperties": false,
+              "properties": {
+                "body": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "decision": {
+                      "enum": [
+                        "allow",
+                        "deny"
+                      ]
+                    },
+                    "include": {
+                      "items": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "email": {
+                            "additionalProperties": false,
+                            "properties": {
+                              "email": {
+                                "maxLength": 254,
+                                "pattern": "^[A-Za-z0-9._+-]+@[a-z0-9][a-z0-9.-]+$",
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "email"
+                            ],
+                            "type": "object"
+                          }
+                        },
+                        "required": [
+                          "email"
+                        ],
+                        "type": "object"
+                      },
+                      "maxItems": 100,
+                      "minItems": 1,
+                      "type": "array"
+                    },
+                    "name": {
+                      "maxLength": 128,
+                      "pattern": "^[A-Za-z0-9][A-Za-z0-9 ._-]{0,127}$",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "decision",
+                    "include"
+                  ],
+                  "type": "object"
+                },
+                "confirm_delete": {
+                  "const": false
+                },
+                "page": {
+                  "type": "null"
+                },
+                "resource_id": {
+                  "type": "null"
+                }
+              },
+              "required": [
+                "resource_id",
+                "page",
+                "body",
+                "confirm_delete"
+              ],
+              "type": "object"
+            },
+            "resource_operation": {
+              "const": "zero-trust.access.policies.create"
+            },
+            "store": {
+              "maxLength": 4096,
+              "pattern": "^/[^\\x00-\\x1f]*$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "store",
+            "context",
+            "expected_context_ref",
+            "expected_state",
+            "resource_operation",
+            "parameters",
+            "expected_observation"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "context": {
+              "additionalProperties": false,
+              "properties": {
+                "account_id": {
+                  "maxLength": 4096,
+                  "pattern": "^[a-f0-9]{32}$",
+                  "type": "string"
+                },
+                "credential_ref": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "maxLength": 4096,
+                      "pattern": "^ssiag:[A-Za-z0-9._:-]{1,128}$",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "host_ref": {
+                  "maxLength": 4096,
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+                  "type": "string"
+                },
+                "principal_uid": {
+                  "maxLength": 4096,
+                  "pattern": "^[1-9][0-9]{0,9}$",
+                  "type": "string"
+                },
+                "toolchain_id": {
+                  "maxLength": 4096,
+                  "pattern": "^sha256:[0-9a-f]{64}$",
+                  "type": "string"
+                },
+                "zone_id": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "maxLength": 4096,
+                      "pattern": "^[a-f0-9]{32}$",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "host_ref",
+                "principal_uid",
+                "account_id",
+                "zone_id",
+                "credential_ref",
+                "toolchain_id"
+              ],
+              "type": "object"
+            },
+            "expected_context_ref": {
+              "maxLength": 71,
+              "pattern": "^sha256:[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "expected_observation": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "maxLength": 71,
+                  "pattern": "^sha256:[a-f0-9]{64}$",
+                  "type": "string"
+                }
+              ]
+            },
+            "expected_state": {
+              "maxLength": 71,
+              "pattern": "^sha256:[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "parameters": {
+              "additionalProperties": false,
+              "properties": {
+                "body": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "decision": {
+                      "enum": [
+                        "allow",
+                        "deny"
+                      ]
+                    },
+                    "include": {
+                      "items": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "email": {
+                            "additionalProperties": false,
+                            "properties": {
+                              "email": {
+                                "maxLength": 254,
+                                "pattern": "^[A-Za-z0-9._+-]+@[a-z0-9][a-z0-9.-]+$",
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "email"
+                            ],
+                            "type": "object"
+                          }
+                        },
+                        "required": [
+                          "email"
+                        ],
+                        "type": "object"
+                      },
+                      "maxItems": 100,
+                      "minItems": 1,
+                      "type": "array"
+                    },
+                    "name": {
+                      "maxLength": 128,
+                      "pattern": "^[A-Za-z0-9][A-Za-z0-9 ._-]{0,127}$",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "decision",
+                    "include"
+                  ],
+                  "type": "object"
+                },
+                "confirm_delete": {
+                  "const": false
+                },
+                "page": {
+                  "type": "null"
+                },
+                "resource_id": {
+                  "maxLength": 36,
+                  "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "resource_id",
+                "page",
+                "body",
+                "confirm_delete"
+              ],
+              "type": "object"
+            },
+            "resource_operation": {
+              "const": "zero-trust.access.policies.update"
+            },
+            "store": {
+              "maxLength": 4096,
+              "pattern": "^/[^\\x00-\\x1f]*$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "store",
+            "context",
+            "expected_context_ref",
+            "expected_state",
+            "resource_operation",
+            "parameters",
+            "expected_observation"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "context": {
+              "additionalProperties": false,
+              "properties": {
+                "account_id": {
+                  "maxLength": 4096,
+                  "pattern": "^[a-f0-9]{32}$",
+                  "type": "string"
+                },
+                "credential_ref": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "maxLength": 4096,
+                      "pattern": "^ssiag:[A-Za-z0-9._:-]{1,128}$",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "host_ref": {
+                  "maxLength": 4096,
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+                  "type": "string"
+                },
+                "principal_uid": {
+                  "maxLength": 4096,
+                  "pattern": "^[1-9][0-9]{0,9}$",
+                  "type": "string"
+                },
+                "toolchain_id": {
+                  "maxLength": 4096,
+                  "pattern": "^sha256:[0-9a-f]{64}$",
+                  "type": "string"
+                },
+                "zone_id": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "maxLength": 4096,
+                      "pattern": "^[a-f0-9]{32}$",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "host_ref",
+                "principal_uid",
+                "account_id",
+                "zone_id",
+                "credential_ref",
+                "toolchain_id"
+              ],
+              "type": "object"
+            },
+            "expected_context_ref": {
+              "maxLength": 71,
+              "pattern": "^sha256:[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "expected_observation": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "maxLength": 71,
+                  "pattern": "^sha256:[a-f0-9]{64}$",
+                  "type": "string"
+                }
+              ]
+            },
+            "expected_state": {
+              "maxLength": 71,
+              "pattern": "^sha256:[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "parameters": {
+              "additionalProperties": false,
+              "properties": {
+                "body": {
+                  "type": "null"
+                },
+                "confirm_delete": {
+                  "const": true
+                },
+                "page": {
+                  "type": "null"
+                },
+                "resource_id": {
+                  "maxLength": 36,
+                  "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "resource_id",
+                "page",
+                "body",
+                "confirm_delete"
+              ],
+              "type": "object"
+            },
+            "resource_operation": {
+              "const": "zero-trust.access.policies.delete"
+            },
+            "store": {
+              "maxLength": 4096,
+              "pattern": "^/[^\\x00-\\x1f]*$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "store",
+            "context",
+            "expected_context_ref",
+            "expected_state",
+            "resource_operation",
+            "parameters",
+            "expected_observation"
+          ],
+          "type": "object"
+        }
+      ]
+    },
+    "installation_ref": {
+      "additionalProperties": false,
+      "properties": {
+        "executable_digest": {
+          "maxLength": 4096,
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "receipt_digest": {
+          "maxLength": 4096,
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "version": {
+          "const": "0.1.0-dev"
+        }
+      },
+      "required": [
+        "version",
+        "executable_digest",
+        "receipt_digest"
+      ],
+      "type": "object"
+    },
+    "operation": {
+      "const": "resource.plan"
+    },
+    "plan_ref": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "maxLength": 4096,
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "type": "string"
+        }
+      ]
+    },
+    "protocol": {
+      "const": "symphony.sov.cloudflare-request.v1"
+    },
+    "request_id": {
+      "maxLength": 4096,
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+      "type": "string"
+    }
+  },
+  "required": [
+    "protocol",
+    "request_id",
+    "correlation_id",
+    "operation",
+    "descriptor_ref",
+    "installation_ref",
+    "context_ref",
+    "plan_ref",
+    "input"
+  ],
+  "type": "object"
+}

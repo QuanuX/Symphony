@@ -1419,10 +1419,11 @@
       ],
       "distinctions": [],
       "evidence": [
-        "tools/qxctl/internal/sovcloudflare/cloudflare_test.go"
+        "tools/qxctl/internal/sovcloudflare/cloudflare_test.go",
+        "modules/sov-cloudflare-adapter/tests/qualification.cpp"
       ],
       "feature_id": "ssfv:symphony:qxctl.sov-cloudflare-administration",
-      "how": "Receipt-owned schemas and descriptors, content-bound plans, strict process frames and user-owned durable lifecycle.",
+      "how": "Receipt-owned schemas and descriptors, content-bound plans, strict process frames and user-owned durable local state; resource plans never dispatch provider operations.",
       "implementation_languages": [
         {
           "language": "Go",
@@ -1430,6 +1431,7 @@
         }
       ],
       "implementation_paths": [
+        "modules/sov-cloudflare-adapter/src/resource.cpp",
         "tools/qxctl/cmd/qxctl/sov_cloudflare.go",
         "tools/qxctl/internal/sovcloudflare/cloudflare.go"
       ],
@@ -1444,7 +1446,7 @@
       "source_scope": "tools/qxctl",
       "status": "experimental",
       "title": "qxctl native Cloudflare administration",
-      "what": "Exact local cf/Node lifecycle, bounded offline discovery and nonsecret context proposals.",
+      "what": "Exact local cf/Node lifecycle, bounded offline discovery, nonsecret context proposals and typed resource planning.",
       "when": "Explicit local administration or offline discovery request.",
       "where": "Selected independently installed native adapter and private local store.",
       "who": "Humans, agents and independent native consumers.",

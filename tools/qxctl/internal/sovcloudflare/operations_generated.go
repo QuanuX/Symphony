@@ -14,4 +14,5 @@ var Operations = []string{
 	"capability.template",
 	"context.inspect",
 	"context.plan",
+	"resource.plan",
 }

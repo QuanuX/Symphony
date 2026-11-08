@@ -28716,3 +28716,68 @@ automatic nested fitting and cross-run holdout history remain unimplemented.
 - deferred_projections: I5 Cloudflare session and live qualification
 - notes: Fixtures do not establish live provider acceptance.
 - status: canonical
+
+### Cloudflare typed resource planning resource.plan.input_schema.json
+- path: `knowledge/sov/cloudflare/schemas/resource.plan.input_schema.json`
+- title: Cloudflare typed resource planning resource.plan.input_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped evidence
+- owner: SOV Cloudflare maintainers
+- scope: Noncredentialed resource planning with no provider dispatch.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Credential channels, resource execution and provider qualification
+- notes: Offline plans do not establish provider authority or live acceptance.
+- status: canonical
+
+### Cloudflare typed resource planning resource.plan.request_schema.json
+- path: `knowledge/sov/cloudflare/schemas/resource.plan.request_schema.json`
+- title: Cloudflare typed resource planning resource.plan.request_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped evidence
+- owner: SOV Cloudflare maintainers
+- scope: Noncredentialed resource planning with no provider dispatch.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Credential channels, resource execution and provider qualification
+- notes: Offline plans do not establish provider authority or live acceptance.
+- status: canonical
+
+### Cloudflare typed resource planning resource.plan.result_schema.json
+- path: `knowledge/sov/cloudflare/schemas/resource.plan.result_schema.json`
+- title: Cloudflare typed resource planning resource.plan.result_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped evidence
+- owner: SOV Cloudflare maintainers
+- scope: Noncredentialed resource planning with no provider dispatch.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Credential channels, resource execution and provider qualification
+- notes: Offline plans do not establish provider authority or live acceptance.
+- status: canonical
+
+### Cloudflare typed resource planning resource.plan.template.json
+- path: `knowledge/sov/cloudflare/schemas/resource.plan.template.json`
+- title: Cloudflare typed resource planning resource.plan.template.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped evidence
+- owner: SOV Cloudflare maintainers
+- scope: Noncredentialed resource planning with no provider dispatch.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Credential channels, resource execution and provider qualification
+- notes: Offline plans do not establish provider authority or live acceptance.
+- status: canonical
+
+### Cloudflare typed resource planning resource.cpp
+- path: `modules/sov-cloudflare-adapter/src/resource.cpp`
+- title: Cloudflare typed resource planning resource.cpp
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped evidence
+- owner: SOV Cloudflare maintainers
+- scope: Noncredentialed resource planning with no provider dispatch.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Credential channels, resource execution and provider qualification
+- notes: Offline plans do not establish provider authority or live acceptance.
+- status: canonical
