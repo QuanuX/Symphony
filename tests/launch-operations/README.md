@@ -4,7 +4,7 @@ These are source qualification and operator procedures, not final-download accep
 
 - [Capacity, export and recovery](RETENTION.md) binds store limits and quiescent backup/restore to the implemented owners.
 - [Accounts and authority](AUTHORIZATION.md) separates local user boundaries, policy decisions and resulting filesystem effects.
-- [Hardware starter](../../examples/mvp-hardware/README.md) selects one real documentary lineage without promising an atlas.
+- [Hardware starter](../../tests/shv-release-qualification/examples/mvp-hardware/README.md) selects one real documentary lineage without promising an atlas.
 - [SACV parser example](../../modules/sacv-engine/tests/fixtures/README.md) exercises the shipped JSON/internal-reference subset without registering an API.
 
 ## Focused store and authority regressions
