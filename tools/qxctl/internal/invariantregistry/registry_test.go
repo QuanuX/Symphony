@@ -4,7 +4,6 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
-	"fmt"
 	"os"
 	"path/filepath"
 	"sort"
@@ -279,7 +278,7 @@ func TestV3ResealedRegistryRejectsCrossAdapterOperationOwnership(t *testing.T) {
 	removed := map[string]bool{}
 	for _, raw := range object["adapters"].([]any) {
 		a := raw.(map[string]any)
-		if fmt.Sprint(a["format_version"]) == "4" {
+		if a["format_version"].(float64) > 3 {
 			removed[a["adapter_id"].(string)] = true
 		} else {
 			adapters = append(adapters, raw)

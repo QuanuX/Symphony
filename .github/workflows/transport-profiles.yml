@@ -60,8 +60,18 @@ jobs:
         run: |
           set -euo pipefail
           case "$RUNNER_OS" in
-            Linux) profile_helper_dir=/opt/symphony/libexec/sov-transport-profile-admin/0.1.0-dev ;;
-            macOS) profile_helper_dir='/Library/Application Support/Symphony/libexec/sov-transport-profile-admin/0.1.0-dev' ;;
+            Linux)
+              profile_helper_dir=/opt/symphony/libexec/sov-transport-profile-admin/0.1.0-dev
+              # Hosted Ubuntu images intentionally make /opt world-writable.
+              # Provision protected ancestry only on this disposable runner.
+              sudo chmod go-w /opt
+              ;;
+            macOS)
+              profile_helper_dir='/Library/Application Support/Symphony/libexec/sov-transport-profile-admin/0.1.0-dev'
+              # macOS defaults /private/var/run to group-writable (daemon).
+              # The system audit socket contract requires protected ancestry.
+              sudo chmod go-w /private/var/run
+              ;;
             *) exit 2 ;;
           esac
           sudo mkdir -p "$profile_helper_dir"

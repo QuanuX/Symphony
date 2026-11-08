@@ -11,6 +11,8 @@ The versioned executable destination is:
 
 Create all destination ancestors as root-owned directories without group/other write permission. Install a reviewed regular single-link binary, mode 0755, and verify its bytes against the selected SHA256. Do not run an installer from a user-writable tree as root or preserve unreviewed ownership/modes. The process verifies all ancestors from `/`; symlinked convenience paths are not supported. A normal unprivileged prefix installation is insufficient.
 
+Check operating-system defaults as well as newly created directories. Hosted Ubuntu CI images make `/opt` world-writable; macOS commonly makes `/private/var/run` group-writable. Both fail this contract. The disposable CI workflow explicitly removes group/other write permission from those ancestors. Production administrators must review the impact on other software before provisioning compatible ancestry; the helper never changes ancestor permissions itself.
+
 Provision one store at `<profile-store>/<host-UUID>/<TOPS-UUID>` with root-owned 0755 `profiles`, `history`, and `attempts` directories, a stable root-owned 0644 empty `LOCK`, and a root-owned 0644 `scope.json` containing exactly:
 
 ```json

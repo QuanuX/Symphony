@@ -31,6 +31,28 @@ func TestProtectedProfileInstalledProcess(t *testing.T) {
 	if os.Getenv("SYMPHONY_PROFILE_ROOT_FIXTURE") != "1" || os.Geteuid() != 0 {
 		t.Skip("requires explicit disposable-root installed-helper fixture")
 	}
+	// Diagnose fixture provisioning before a subprocess returns a deliberately
+	// opaque production refusal. Never relax or repair permissions in this test.
+	checkAncestors := func(path string) {
+		t.Helper()
+		for p := filepath.Dir(path); ; p = filepath.Dir(p) {
+			info, err := os.Lstat(p)
+			if err != nil {
+				t.Fatalf("fixture ancestor %s: %v", p, err)
+			}
+			stat, ok := info.Sys().(*syscall.Stat_t)
+			if !ok || stat.Uid != 0 || !info.IsDir() || info.Mode().Perm()&0022 != 0 {
+				t.Fatalf("fixture ancestor %s must be a root-owned nonwritable directory (mode %s)", p, info.Mode())
+			}
+			if p == "/" {
+				break
+			}
+		}
+	}
+	checkAncestors(store.HelperPath())
+	if _, err := store.AdministratorIdentity(); err != nil {
+		t.Fatalf("fixture administrator installation: %v", err)
+	}
 	id := func() string {
 		var b [16]byte
 		if _, e := rand.Read(b[:]); e != nil {
@@ -68,6 +90,7 @@ func TestProtectedProfileInstalledProcess(t *testing.T) {
 		t.Fatal(e)
 	}
 	defer os.RemoveAll(socketRoot)
+	checkAncestors(socket)
 	listener, e := net.Listen("unix", socket)
 	if e != nil {
 		t.Fatal(e)
