@@ -20209,6 +20209,267 @@
       "json_output": true
     },
     {
+      "command_id": "qxcmd:symphony:sov.transport.session.authenticate",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl sov transport session authenticate [--format VALUE] [--input VALUE] [--json]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.sov-cloudflare-administration",
+          "interaction": "apply"
+        },
+        {
+          "feature_id": "ssfv:symphony:sov-cloudflare-adapter",
+          "interaction": "apply"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:sov.transport.session.authenticate"
+      ],
+      "mutability": "permission_backed_mutation",
+      "authority_mode": "target_host_permission",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.sov.transport-session-request.v1"
+      ],
+      "output_protocols": [
+        "symphony.sov.transport-session-native-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.sov.transport-session-native-result.v1"
+      ],
+      "recovery_command_id": "qxcmd:symphony:sov.transport.session.inspect",
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:sov.transport.session.clear",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl sov transport session clear [--format VALUE] [--input VALUE] [--json]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.sov-cloudflare-administration",
+          "interaction": "apply"
+        },
+        {
+          "feature_id": "ssfv:symphony:sov-cloudflare-adapter",
+          "interaction": "apply"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:sov.transport.session.clear"
+      ],
+      "mutability": "permission_backed_mutation",
+      "authority_mode": "target_host_permission",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.sov.transport-session-request.v1"
+      ],
+      "output_protocols": [
+        "symphony.sov.transport-session-native-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.sov.transport-session-native-result.v1"
+      ],
+      "recovery_command_id": "qxcmd:symphony:sov.transport.session.inspect",
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:sov.transport.session.inspect",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl sov transport session inspect [--format VALUE] [--input VALUE] [--json]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.sov-cloudflare-administration",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:sov-cloudflare-adapter",
+          "interaction": "inspect"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:sov.transport.session.inspect"
+      ],
+      "mutability": "read_only",
+      "authority_mode": "target_host_permission",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.sov.transport-session-request.v1"
+      ],
+      "output_protocols": [
+        "symphony.sov.transport-session-native-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.sov.transport-session-native-result.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:sov.transport.session.plan",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl sov transport session plan [--format VALUE] [--input VALUE] [--json]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.sov-cloudflare-administration",
+          "interaction": "propose"
+        },
+        {
+          "feature_id": "ssfv:symphony:sov-cloudflare-adapter",
+          "interaction": "propose"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:sov.transport.session.plan"
+      ],
+      "mutability": "proposal_only",
+      "authority_mode": "target_host_permission",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.sov.transport-session-request.v1"
+      ],
+      "output_protocols": [
+        "symphony.sov.transport-session-native-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.sov.transport-session-native-result.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:sov.transport.session.renew",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl sov transport session renew [--format VALUE] [--input VALUE] [--json]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.sov-cloudflare-administration",
+          "interaction": "apply"
+        },
+        {
+          "feature_id": "ssfv:symphony:sov-cloudflare-adapter",
+          "interaction": "apply"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:sov.transport.session.renew"
+      ],
+      "mutability": "permission_backed_mutation",
+      "authority_mode": "target_host_permission",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.sov.transport-session-request.v1"
+      ],
+      "output_protocols": [
+        "symphony.sov.transport-session-native-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.sov.transport-session-native-result.v1"
+      ],
+      "recovery_command_id": "qxcmd:symphony:sov.transport.session.inspect",
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:sov.transport.session.schema",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl sov transport session schema [--format VALUE] [--json]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.sov-cloudflare-administration",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sov-cloudflare-adapter",
+          "interaction": "discover"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [],
+      "mutability": "read_only",
+      "authority_mode": "target_host_permission",
+      "target_scope": "local",
+      "input_protocols": [],
+      "output_protocols": [
+        "symphony.sov.transport-session.schemas.v1"
+      ],
+      "result_validation_protocols": [],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:sov.transport.session.template",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl sov transport session template [--format VALUE] [--json]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.sov-cloudflare-administration",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sov-cloudflare-adapter",
+          "interaction": "discover"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [],
+      "mutability": "read_only",
+      "authority_mode": "target_host_permission",
+      "target_scope": "local",
+      "input_protocols": [],
+      "output_protocols": [
+        "symphony.sov.transport-session-request.v1"
+      ],
+      "result_validation_protocols": [],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
       "command_id": "qxcmd:symphony:sqv.acquisition.attempts",
       "status": "experimental",
       "introduced_in": "0.1.0-dev",
@@ -23689,5 +23950,5 @@
       "json_output": true
     }
   ],
-  "registry_digest": "sha256:ab71fab8d48a169e6982702bddf192582fccd47f3912834427c7fe4459286dab"
+  "registry_digest": "sha256:00384fc1733e24c3faf2a70fa12680d8caf96459c5de67ffee22c6f4e4ef9869"
 }

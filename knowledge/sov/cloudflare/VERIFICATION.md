@@ -167,3 +167,56 @@ The completed PR runs for `4a1c9a83b72614e5e5cdac9aaee13633f75a3533` included su
 The deadline comparison now explicitly selects `int64_t`. The test-only canonical file reader retains its four-MiB byte bound while admitting the complete catalog; engine protocol limits remain unchanged. The credential SDK now ships an independent installed consumer and is registered for copied-consumer distribution coverage. A focused inventory regression checks all current SDK registrations without running a distribution campaign.
 
 Focused local checks: the previously failing SSFV target passes; the affected resource-execution target passes; the exact installed private-store SDK consumer configures, builds and runs successfully, including transitive foundation hashing and strict duplicate-key rejection; canonical SDK coverage passes. Dependency projection reports 73 roots, 60 native components and 1,313 source hashes. No unchanged SSH tests or complete installed-release campaigns were rerun. Linux qualification remains the remote runner's responsibility; no new remote result is asserted or awaited. Evidence: workspace `implementation/cloudflare-i5/evidence/`.
+
+## I5 local implementation — November 11, 2026
+
+Base: I4 repair commit `96db8a7240c019a30f17dd1d6d9e0939123e9244` on PR #192.
+I5 is isolated on `codex/cloudflare-i5-sessions`. Seven qxctl session leaves bring
+the registry to 523 commands; 154 registered features and 73 component roots remain.
+The new native helper is independently receipt-owned, with an exact optional runtime
+configuration and no default provider activation. SSH v1 code and remote-operation
+contracts are unchanged; only the carrier's separate `--session` dispatch is added.
+
+Focused local evidence (macOS amd64, Go 1.26.5, LLVM 23.1.2):
+
+- `cloudflare-access-sessions` passes, covering explicit login, token/identity/expiry
+  checks, one-use plans and stale state, renewal failure/success, bounded child
+  cancellation, private clear, nonblocking special-file rejection, and a connection
+  cache that cannot create a lock/remove its token and contains no organization
+  token. The inert child attempts ambient credential/proxy use and emits secret
+  sentinels; the test captures both output streams and requires no output.
+- Both independent Go session contracts pass malformed controls, unknown/duplicate
+  fields, result identity/semantic binding, and uncertain dispatch tests. Protected
+  carrier tests reject login after disable/removal while permitting private cleanup.
+  Separate dispatch refusal and the changed carrier's SSH v1 options test pass.
+- Installed native receipt/hash checks, helper schema parity and refusal without a
+  protected runtime pass. qxctl discovery/text parity, command authority, registry
+  count, checked-in registry parity and invariant registry consumption pass.
+- The existing generated-profile check now also verifies the independent session
+  consumer and installed schema projection. SSFV canonical administration passes
+  with the changed features/command catalog. Dependency and release-manifest checks
+  pass at 73 roots, 60 native components and 1,329 source hashes.
+- Source validation reports zero violations and four pre-existing historical
+  warnings. Broad release/SDK campaigns and unchanged SSH transport campaigns were
+  deferred under the focused increment testing direction. Remote checks are not
+  awaited or represented as local evidence.
+
+Live I5/TR02–TR05 acceptance is **not complete**. `symphony-i5.quanux.dev` in the
+existing `quanux.dev` zone is the selected test hostname; an isolated temporary
+Linux SSH target is the selected target approach. No tunnel, DNS record, Access
+application/policy, live session or protected profile was created. Read-only
+inventory found no existing test tunnel or SSH Access app, and no suitable running
+Symphony test container. The existing connected Symphony installation is an older
+read-only demo and was left untouched. The local Mac has no provisioned protected
+profile store; `sudo -n -l` reported that a password is required. Live execution
+therefore needs administrator-provisioned carrier/helper packages and SSIAG/STAV
+scope, an exact target/host key/agent selection, and interactive Access browser
+completion. Neither ordinary prefix installation nor fixture receipts substitute
+for those trust gates. Other runtime platforms, unattended service-token Access
+mode, provider policy-denial tests and I6 token rotation remain unqualified.
+
+Retained local logs: workspace `implementation/cloudflare-i5/evidence/`, including
+`access-final-test.log`, `access-final-installed-test.log`, `qxctl-sessions.log`,
+`carrier-sessions-final.log`, `registry-final.log`, `generated-contracts.log`,
+`ssfv-i5.log`, `dependency-verify.log`, `release-manifest.log`, and
+`validator-final.json`. No credential material is included in this evidence.

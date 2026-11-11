@@ -3541,7 +3541,9 @@
         "sov-cloudflare-core",
         "symphony-sov-cloudflare-adapter",
         "cloudflare-generate",
-        "cloudflare-prepare_bundle"
+        "cloudflare-prepare_bundle",
+        "cloudflare-access-core",
+        "symphony-cloudflare-access"
       ],
       "first_party_sdk_dependencies": [
         {
@@ -19632,11 +19634,11 @@
     },
     {
       "path": "knowledge/FEATURE-ADMINISTRATION-PROFILE.json",
-      "sha256": "b8a94a7db72c50e854167985e0c5c138e6e2bbad393e25af40b3818620215cbc"
+      "sha256": "3d073dc2ef2f16ccbb18a0ebb85711770d54e3eb15c4b314915950ff0eb6ede0"
     },
     {
       "path": "knowledge/INVARIANT-OWNERSHIP.json",
-      "sha256": "faf37c0dca094792b0a0b129ecc171ac6f235e27097afad6bfd1167a5135fbf5"
+      "sha256": "6d9998602da7508ac111a37e5c56a2d806ef3c042d010b1c59a0e776b39c9b3a"
     },
     {
       "path": "knowledge/sacv/schemas/v1/MANIFEST.md",
@@ -22456,7 +22458,7 @@
     },
     {
       "path": "tools/qxctl/COMMANDS.json",
-      "sha256": "a43e2aa0aa482241a1277ded775e806076d604a81b623ed7ccbc616daf46b027"
+      "sha256": "c072ce50590ea5f81ebc39989f01f300f1af272aa01a8dcf17fa2a201e252e78"
     },
     {
       "path": "tools/qxctl/cmd/qxctl/accordare_host.go",
@@ -23252,7 +23254,7 @@
     },
     {
       "path": "tools/sov-ssh-adapter/main.go",
-      "sha256": "a66e951a0576babe2c26fd9827df04d1f02ded177c515f61042ae17b525f3f9c"
+      "sha256": "d664cc38fcf8c19713a83b0e1c17eea99a230f68a8459c3dbf5c0612b8ffc7dd"
     },
     {
       "path": "tools/sov-stdio-adapter/go.mod",
@@ -23560,7 +23562,7 @@
     },
     {
       "path": "modules/sov-cloudflare-adapter/CMakeLists.txt",
-      "sha256": "9e6a6939f483f7b4d3d95ac5bac3843e37c1b02ed0d0407141d2586537053a24"
+      "sha256": "ed3aca24a703c7962ba2aaf0b2e8e76a601fe267e6a378936123c3b30f902a1b"
     },
     {
       "path": "knowledge/sov/cloudflare/owner.json",
@@ -24000,7 +24002,7 @@
     },
     {
       "path": "tools/qxctl/cmd/qxctl/sov_transport_profile.go",
-      "sha256": "26412d3a99524532e7a1ccc2111fd62a2745b5831c11a0ea7a2f4ce2516f1f5a"
+      "sha256": "842b863ebfc71a7a2cd4f93276b519a2e89e98a5403c4e841de7b683b98449c5"
     },
     {
       "path": "tools/qxctl/internal/transportprofile/client_unix.go",
@@ -24048,7 +24050,7 @@
     },
     {
       "path": "knowledge/sov/SSH-PROFILE-CARRIER.md",
-      "sha256": "1dff4eac3fbee376d32925fb54d905cd199c1048144d7f3ae8564a2feb952ef7"
+      "sha256": "29db150337e6b5314d47a842cea89289070f8be2ee583687bff43a7f9124d69e"
     },
     {
       "path": "modules/secure-identity-access-governance/internal/connectionaudit/contract.go",
@@ -24092,7 +24094,7 @@
     },
     {
       "path": "tools/qxctl/internal/sshprofile/store.go",
-      "sha256": "57ba183f9b2412282756559dc9f4db7e74744c7e46c5346a095d9070e5395286"
+      "sha256": "1875d169f410305956a4a553486ce706fa9395074a240b4378c3cd09e3ddb299"
     },
     {
       "path": "tools/qxctl/internal/sshprofile/wire.go",
@@ -24168,7 +24170,7 @@
     },
     {
       "path": "tools/sov-ssh-adapter/profile/profile_test.go",
-      "sha256": "9e6663327f5a4c759cfcb7dcbfcbd1820b72eec4d1e5c6dabe01e1b62f9b2649"
+      "sha256": "eaebb5f436e5f8043c7ff120f65e5503fe5987c89aa36e9c36f9f7c243b890ae"
     },
     {
       "path": "tools/sov-ssh-adapter/profile/receipt.go",
@@ -24176,7 +24178,7 @@
     },
     {
       "path": "tools/sov-ssh-adapter/profile/store.go",
-      "sha256": "8c730ebfbabf62338570ffbac1a36a9290534682224028cb8d5108b37268ef0b"
+      "sha256": "3b420a9577de692b44f615fd14269624d205f550abb1b37cb7db1acd45034513"
     },
     {
       "path": "tools/sov-ssh-adapter/profile/wire.go",
@@ -24204,7 +24206,7 @@
     },
     {
       "path": "tools/sov-ssh-adapter/scripts/generate_profile.go",
-      "sha256": "f527ac7e329030716409f3d3f5174308710a1316974d70fb3c73d005f3707820"
+      "sha256": "e0f3f2c5c5839c6bb011fe9105d1a9db2d42f3fba5038a8a746a9836e8d2b574"
     },
     {
       "path": "tools/qxctl/internal/sshprofile/testdata/endpoint-v2.json",
@@ -24516,27 +24518,27 @@
     },
     {
       "path": "modules/sov-cloudflare-adapter/FEATURES.md",
-      "sha256": "81a66a1f948836ea6788675c38936cd36399b22344d00162e2644182df036c83"
+      "sha256": "5516c1c14c4308e868ba7136e8aa3ae97e993bf5d2e34bf48ca4947238d60054"
     },
     {
       "path": "modules/sov-cloudflare-adapter/INSTALL.md",
-      "sha256": "eac7e33276844ba9370f3eb123124a45d9e1c12fc2115fc4488929c9ec9e3e76"
+      "sha256": "325d5e24d667cd1bb51f4e2641972ea0e76173496f1523f94e83a21df41d4f0d"
     },
     {
       "path": "modules/sov-cloudflare-adapter/INTENT.md",
-      "sha256": "49b52d4dccecb0d50bf568bae7774a2507215ca011c04dbd5056c856e1dc7257"
+      "sha256": "c37f4a42f6f07a8626e61144fbd10c0d48a3f5e18c3055fe77d4abb0afde9bcf"
     },
     {
       "path": "modules/sov-cloudflare-adapter/MANIFEST.md",
-      "sha256": "92618fa41a067ecfe532b72336263202635e1f2bdf03634b0ca8ea28876e7a5c"
+      "sha256": "f8f1e52a5ddc6f56559848b0fdac6e89944be5c0ef0abeaafc4a2f9a13f6dd79"
     },
     {
       "path": "modules/sov-cloudflare-adapter/SKILL.md",
-      "sha256": "4c31d24a916d5a9b42880abfb10f1bf74eba7894a05e0a4c136ea8897267c162"
+      "sha256": "16cd404209b3f514fe55b2c496dc0e093fa53f29b771cbbddd6976afacd5cb4a"
     },
     {
       "path": "modules/sov-cloudflare-adapter/SPEC.md",
-      "sha256": "73864be6865cb4264d5ca8a77b4efcab74c2667de7a15bd21e1c4cf52b39523f"
+      "sha256": "6bf0e0a92d9ca90a204f87352a2c233cea79e092bd1566195d7dd4f13a24c8d7"
     },
     {
       "path": "modules/sov-cloudflare-adapter/VERIFICATION.md",
@@ -24608,7 +24610,7 @@
     },
     {
       "path": "modules/sov-cloudflare-adapter/tests/installed.cpp",
-      "sha256": "f2139f78ea90cff8976965312e19a2ae7db7f5ec45787d1906eace527d258644"
+      "sha256": "a34d9a1b06abc691b1f1a15b748523e9076526afc61cda443fe6b001e8ea9b46"
     },
     {
       "path": "modules/sov-cloudflare-adapter/tests/qualification.cpp",
@@ -24685,6 +24687,70 @@
     {
       "path": "modules/ssiag-provider-private-store/tests/sdk-consumer/main.cpp",
       "sha256": "dcd50e76a2a9bd6368ffefee2e6dee4aa6b9d180d5ac1eca30d4ad7654cf770a"
+    },
+    {
+      "path": "knowledge/sov/cloudflare/access-sessions.json",
+      "sha256": "013c6b49af26a6b19af37741d99ffa55c55a829bc08346008b56c2392f0f7e13"
+    },
+    {
+      "path": "modules/sov-cloudflare-adapter/src/access.cpp",
+      "sha256": "070ed9fbd76a9012488ac371671d555939e4de8e874bbdc23f56b68590a4fd42"
+    },
+    {
+      "path": "modules/sov-cloudflare-adapter/src/access.hpp",
+      "sha256": "e2ab4f90639c32213f793efe5d80b3f028dbe57a4f75de3fb6b8419f1794fab8"
+    },
+    {
+      "path": "modules/sov-cloudflare-adapter/src/access_main.cpp",
+      "sha256": "49b619e9fd64f58970d6a07ed53f55582c765b90015de4d3ca9e3868aec45b23"
+    },
+    {
+      "path": "modules/sov-cloudflare-adapter/tests/access.cpp",
+      "sha256": "95305b329799ae290fdbee7218a57b721d31bdbff2511bb773be77347c993ed6"
+    },
+    {
+      "path": "modules/sov-cloudflare-adapter/tests/access_child.cpp",
+      "sha256": "4de18146db4aa85b9a24479b7fa56067886333e417b6a77737096b7db62e894e"
+    },
+    {
+      "path": "tools/qxctl/cmd/qxctl/sov_transport_session.go",
+      "sha256": "4ee6e31db01e4cff489f2a0fde8b5de6e31af5bf587b3fef0f35b2ddfe56aac4"
+    },
+    {
+      "path": "tools/qxctl/cmd/qxctl/sov_transport_session_test.go",
+      "sha256": "95790cd8c458786d079ac83a42784e7f273ad49d24343bb9b609a3f238578633"
+    },
+    {
+      "path": "tools/qxctl/internal/transportsession/client.go",
+      "sha256": "6b38f4e3c4ebbc16d3374d45122628f6005f833d31e989d78681b8bada4a8f97"
+    },
+    {
+      "path": "tools/qxctl/internal/transportsession/presentation.go",
+      "sha256": "11a54d10bde87a5f43ba83a65813dabf3169bc7d6733cafa1a630a4ea678779c"
+    },
+    {
+      "path": "tools/qxctl/internal/transportsession/wire.go",
+      "sha256": "449644e5e7abef8bdd74d5e472ebf9b4ddc23d8880fadd25de106bca3f1e85ae"
+    },
+    {
+      "path": "tools/qxctl/internal/transportsession/wire_test.go",
+      "sha256": "7ece8aea9972f6efc8358586650f1ebaf03ecca07474a1ac5f33e57dbb0fb18d"
+    },
+    {
+      "path": "tools/sov-ssh-adapter/session_run.go",
+      "sha256": "d5d08ebb52e81539583f0e7bf949e58af749269a6b964ee2225f83abdd61c60e"
+    },
+    {
+      "path": "tools/sov-ssh-adapter/sessionwire/presentation.go",
+      "sha256": "e0d348d356745033a2ac92430c70e51987378c16d912aae115140baafaa3646b"
+    },
+    {
+      "path": "tools/sov-ssh-adapter/sessionwire/wire.go",
+      "sha256": "f86c174359b3785179631a71af8c6f38b384c39991483868de0fe25f8a618993"
+    },
+    {
+      "path": "tools/sov-ssh-adapter/sessionwire/wire_test.go",
+      "sha256": "2e4f0b1611cb32adf1072df20975e00d5d347bbb9331ea07a8a3839e14061ab0"
     }
   ],
   "platform_profile_catalog": "cmake/mvp-platform-profiles.json",

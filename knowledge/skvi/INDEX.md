@@ -29938,3 +29938,224 @@ automatic nested fitting and cross-run holdout history remain unimplemented.
 - deferred_projections: Live provider qualification
 - notes: Synthetic digest and strict parsing checks; no credentials or provider calls.
 - status: canonical
+
+### I5 Access session CLOUDFLARE-ACCESS-SESSIONS.md
+- path: `knowledge/sov/CLOUDFLARE-ACCESS-SESSIONS.md`
+- title: I5 explicit Access session CLOUDFLARE-ACCESS-SESSIONS.md
+- surface_type: contract, implementation or conformance source
+- truth_role: Exact local implementation and bounded fixture evidence
+- owner: SOV maintainers
+- scope: Private user session lifecycle and protected carrier integration
+- relationships: governed_by -> `knowledge/sov/CLOUDFLARE-ACCESS-SESSIONS.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live Access SSH and unqualified runtime platforms
+- notes: No fixture establishes live provider or target authority.
+- status: canonical
+
+### I5 Access session access-sessions.json
+- path: `knowledge/sov/cloudflare/access-sessions.json`
+- title: I5 explicit Access session access-sessions.json
+- surface_type: contract, implementation or conformance source
+- truth_role: Exact local implementation and bounded fixture evidence
+- owner: SOV maintainers
+- scope: Private user session lifecycle and protected carrier integration
+- relationships: governed_by -> `knowledge/sov/CLOUDFLARE-ACCESS-SESSIONS.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live Access SSH and unqualified runtime platforms
+- notes: No fixture establishes live provider or target authority.
+- status: canonical
+
+### I5 Access session access.cpp
+- path: `modules/sov-cloudflare-adapter/src/access.cpp`
+- title: I5 explicit Access session access.cpp
+- surface_type: contract, implementation or conformance source
+- truth_role: Exact local implementation and bounded fixture evidence
+- owner: SOV maintainers
+- scope: Private user session lifecycle and protected carrier integration
+- relationships: governed_by -> `knowledge/sov/CLOUDFLARE-ACCESS-SESSIONS.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live Access SSH and unqualified runtime platforms
+- notes: No fixture establishes live provider or target authority.
+- status: canonical
+
+### I5 Access session access.hpp
+- path: `modules/sov-cloudflare-adapter/src/access.hpp`
+- title: I5 explicit Access session access.hpp
+- surface_type: contract, implementation or conformance source
+- truth_role: Exact local implementation and bounded fixture evidence
+- owner: SOV maintainers
+- scope: Private user session lifecycle and protected carrier integration
+- relationships: governed_by -> `knowledge/sov/CLOUDFLARE-ACCESS-SESSIONS.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live Access SSH and unqualified runtime platforms
+- notes: No fixture establishes live provider or target authority.
+- status: canonical
+
+### I5 Access session access_main.cpp
+- path: `modules/sov-cloudflare-adapter/src/access_main.cpp`
+- title: I5 explicit Access session access_main.cpp
+- surface_type: contract, implementation or conformance source
+- truth_role: Exact local implementation and bounded fixture evidence
+- owner: SOV maintainers
+- scope: Private user session lifecycle and protected carrier integration
+- relationships: governed_by -> `knowledge/sov/CLOUDFLARE-ACCESS-SESSIONS.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live Access SSH and unqualified runtime platforms
+- notes: No fixture establishes live provider or target authority.
+- status: canonical
+
+### I5 Access session access.cpp
+- path: `modules/sov-cloudflare-adapter/tests/access.cpp`
+- title: I5 explicit Access session access.cpp
+- surface_type: contract, implementation or conformance source
+- truth_role: Exact local implementation and bounded fixture evidence
+- owner: SOV maintainers
+- scope: Private user session lifecycle and protected carrier integration
+- relationships: governed_by -> `knowledge/sov/CLOUDFLARE-ACCESS-SESSIONS.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live Access SSH and unqualified runtime platforms
+- notes: No fixture establishes live provider or target authority.
+- status: canonical
+
+### I5 Access session access_child.cpp
+- path: `modules/sov-cloudflare-adapter/tests/access_child.cpp`
+- title: I5 explicit Access session access_child.cpp
+- surface_type: contract, implementation or conformance source
+- truth_role: Exact local implementation and bounded fixture evidence
+- owner: SOV maintainers
+- scope: Private user session lifecycle and protected carrier integration
+- relationships: governed_by -> `knowledge/sov/CLOUDFLARE-ACCESS-SESSIONS.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live Access SSH and unqualified runtime platforms
+- notes: No fixture establishes live provider or target authority.
+- status: canonical
+
+### I5 Access session sov_transport_session.go
+- path: `tools/qxctl/cmd/qxctl/sov_transport_session.go`
+- title: I5 explicit Access session sov_transport_session.go
+- surface_type: contract, implementation or conformance source
+- truth_role: Exact local implementation and bounded fixture evidence
+- owner: SOV maintainers
+- scope: Private user session lifecycle and protected carrier integration
+- relationships: governed_by -> `knowledge/sov/CLOUDFLARE-ACCESS-SESSIONS.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live Access SSH and unqualified runtime platforms
+- notes: No fixture establishes live provider or target authority.
+- status: canonical
+
+### I5 Access session sov_transport_session_test.go
+- path: `tools/qxctl/cmd/qxctl/sov_transport_session_test.go`
+- title: I5 explicit Access session sov_transport_session_test.go
+- surface_type: contract, implementation or conformance source
+- truth_role: Exact local implementation and bounded fixture evidence
+- owner: SOV maintainers
+- scope: Private user session lifecycle and protected carrier integration
+- relationships: governed_by -> `knowledge/sov/CLOUDFLARE-ACCESS-SESSIONS.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live Access SSH and unqualified runtime platforms
+- notes: No fixture establishes live provider or target authority.
+- status: canonical
+
+### I5 Access session client.go
+- path: `tools/qxctl/internal/transportsession/client.go`
+- title: I5 explicit Access session client.go
+- surface_type: contract, implementation or conformance source
+- truth_role: Exact local implementation and bounded fixture evidence
+- owner: SOV maintainers
+- scope: Private user session lifecycle and protected carrier integration
+- relationships: governed_by -> `knowledge/sov/CLOUDFLARE-ACCESS-SESSIONS.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live Access SSH and unqualified runtime platforms
+- notes: No fixture establishes live provider or target authority.
+- status: canonical
+
+### I5 Access session presentation.go
+- path: `tools/qxctl/internal/transportsession/presentation.go`
+- title: I5 explicit Access session presentation.go
+- surface_type: contract, implementation or conformance source
+- truth_role: Exact local implementation and bounded fixture evidence
+- owner: SOV maintainers
+- scope: Private user session lifecycle and protected carrier integration
+- relationships: governed_by -> `knowledge/sov/CLOUDFLARE-ACCESS-SESSIONS.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live Access SSH and unqualified runtime platforms
+- notes: No fixture establishes live provider or target authority.
+- status: canonical
+
+### I5 Access session wire.go
+- path: `tools/qxctl/internal/transportsession/wire.go`
+- title: I5 explicit Access session wire.go
+- surface_type: contract, implementation or conformance source
+- truth_role: Exact local implementation and bounded fixture evidence
+- owner: SOV maintainers
+- scope: Private user session lifecycle and protected carrier integration
+- relationships: governed_by -> `knowledge/sov/CLOUDFLARE-ACCESS-SESSIONS.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live Access SSH and unqualified runtime platforms
+- notes: No fixture establishes live provider or target authority.
+- status: canonical
+
+### I5 Access session wire_test.go
+- path: `tools/qxctl/internal/transportsession/wire_test.go`
+- title: I5 explicit Access session wire_test.go
+- surface_type: contract, implementation or conformance source
+- truth_role: Exact local implementation and bounded fixture evidence
+- owner: SOV maintainers
+- scope: Private user session lifecycle and protected carrier integration
+- relationships: governed_by -> `knowledge/sov/CLOUDFLARE-ACCESS-SESSIONS.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live Access SSH and unqualified runtime platforms
+- notes: No fixture establishes live provider or target authority.
+- status: canonical
+
+### I5 Access session session_run.go
+- path: `tools/sov-ssh-adapter/session_run.go`
+- title: I5 explicit Access session session_run.go
+- surface_type: contract, implementation or conformance source
+- truth_role: Exact local implementation and bounded fixture evidence
+- owner: SOV maintainers
+- scope: Private user session lifecycle and protected carrier integration
+- relationships: governed_by -> `knowledge/sov/CLOUDFLARE-ACCESS-SESSIONS.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live Access SSH and unqualified runtime platforms
+- notes: No fixture establishes live provider or target authority.
+- status: canonical
+
+### I5 Access session presentation.go
+- path: `tools/sov-ssh-adapter/sessionwire/presentation.go`
+- title: I5 explicit Access session presentation.go
+- surface_type: contract, implementation or conformance source
+- truth_role: Exact local implementation and bounded fixture evidence
+- owner: SOV maintainers
+- scope: Private user session lifecycle and protected carrier integration
+- relationships: governed_by -> `knowledge/sov/CLOUDFLARE-ACCESS-SESSIONS.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live Access SSH and unqualified runtime platforms
+- notes: No fixture establishes live provider or target authority.
+- status: canonical
+
+### I5 Access session wire.go
+- path: `tools/sov-ssh-adapter/sessionwire/wire.go`
+- title: I5 explicit Access session wire.go
+- surface_type: contract, implementation or conformance source
+- truth_role: Exact local implementation and bounded fixture evidence
+- owner: SOV maintainers
+- scope: Private user session lifecycle and protected carrier integration
+- relationships: governed_by -> `knowledge/sov/CLOUDFLARE-ACCESS-SESSIONS.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live Access SSH and unqualified runtime platforms
+- notes: No fixture establishes live provider or target authority.
+- status: canonical
+
+### I5 Access session wire_test.go
+- path: `tools/sov-ssh-adapter/sessionwire/wire_test.go`
+- title: I5 explicit Access session wire_test.go
+- surface_type: contract, implementation or conformance source
+- truth_role: Exact local implementation and bounded fixture evidence
+- owner: SOV maintainers
+- scope: Private user session lifecycle and protected carrier integration
+- relationships: governed_by -> `knowledge/sov/CLOUDFLARE-ACCESS-SESSIONS.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live Access SSH and unqualified runtime platforms
+- notes: No fixture establishes live provider or target authority.
+- status: canonical

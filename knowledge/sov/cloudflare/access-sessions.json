@@ -1,0 +1,765 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "control_document_max_bytes": 65536,
+  "native_request": {
+    "additionalProperties": false,
+    "properties": {
+      "binding": {
+        "additionalProperties": false,
+        "properties": {
+          "application": {
+            "type": "string"
+          },
+          "endpoint_ref": {
+            "type": "string"
+          },
+          "profile_digest": {
+            "type": "string"
+          },
+          "session_directory": {
+            "type": "string"
+          },
+          "session_ref": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "application",
+          "session_ref",
+          "session_directory",
+          "profile_digest",
+          "endpoint_ref"
+        ],
+        "type": "object"
+      },
+      "deadline_unix_ms": {
+        "type": "string"
+      },
+      "intent": {
+        "anyOf": [
+          {
+            "additionalProperties": false,
+            "properties": {
+              "action": {
+                "type": "string"
+              },
+              "identity": {
+                "anyOf": [
+                  {
+                    "additionalProperties": false,
+                    "properties": {
+                      "audience": {
+                        "type": "string"
+                      },
+                      "issuer": {
+                        "type": "string"
+                      },
+                      "subject": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "audience",
+                      "issuer",
+                      "subject"
+                    ],
+                    "type": "object"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "action",
+              "identity"
+            ],
+            "type": "object"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "operation": {
+        "enum": [
+          "inspect",
+          "plan",
+          "authenticate",
+          "renew",
+          "clear"
+        ]
+      },
+      "plan_digest": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "protocol": {
+        "const": "symphony.sov.transport-session-native-request.v1"
+      },
+      "request_id": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "protocol",
+      "request_id",
+      "operation",
+      "binding",
+      "intent",
+      "plan_digest",
+      "deadline_unix_ms"
+    ],
+    "type": "object"
+  },
+  "protocol": "symphony.sov.transport-session.schemas.v1",
+  "request": {
+    "additionalProperties": false,
+    "properties": {
+      "deadline_unix_ms": {
+        "type": "string"
+      },
+      "endpoint": {
+        "additionalProperties": false,
+        "properties": {
+          "application": {
+            "type": "string"
+          },
+          "direct": {
+            "additionalProperties": false,
+            "properties": {
+              "agent_socket": {
+                "type": "string"
+              },
+              "client_public_key": {
+                "type": "string"
+              },
+              "connect_timeout_seconds": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "host": {
+                "type": "string"
+              },
+              "host_public_key": {
+                "type": "string"
+              },
+              "port": {
+                "type": "string"
+              },
+              "protocol": {
+                "type": "string"
+              },
+              "ssh": {
+                "additionalProperties": false,
+                "properties": {
+                  "path": {
+                    "type": "string"
+                  },
+                  "sha256": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "path",
+                  "sha256"
+                ],
+                "type": "object"
+              },
+              "ssh_execution": {
+                "type": "string"
+              },
+              "target_launcher": {
+                "additionalProperties": false,
+                "properties": {
+                  "path": {
+                    "type": "string"
+                  },
+                  "sha256": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "path",
+                  "sha256"
+                ],
+                "type": "object"
+              },
+              "user": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "protocol",
+              "ssh",
+              "ssh_execution",
+              "host",
+              "port",
+              "user",
+              "host_public_key",
+              "client_public_key",
+              "agent_socket",
+              "connect_timeout_seconds",
+              "target_launcher"
+            ],
+            "type": "object"
+          },
+          "journal_directory": {
+            "type": "string"
+          },
+          "protocol": {
+            "const": "symphony.sov.ssh-endpoint.v2"
+          },
+          "scope": {
+            "additionalProperties": false,
+            "properties": {
+              "host_id": {
+                "type": "string"
+              },
+              "tops_id": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "host_id",
+              "tops_id"
+            ],
+            "type": "object"
+          },
+          "session_directory": {
+            "type": "string"
+          },
+          "snapshot": {
+            "additionalProperties": false,
+            "properties": {
+              "digest": {
+                "type": "string"
+              },
+              "policy": {
+                "additionalProperties": false,
+                "properties": {
+                  "digest": {
+                    "type": "string"
+                  },
+                  "generation": {
+                    "type": "string"
+                  },
+                  "permitted": {
+                    "items": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "gid": {
+                          "type": "string"
+                        },
+                        "uid": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "uid",
+                        "gid"
+                      ],
+                      "type": "object"
+                    },
+                    "type": "array"
+                  },
+                  "profile_generation": {
+                    "type": "string"
+                  },
+                  "profile_id": {
+                    "type": "string"
+                  },
+                  "protocol": {
+                    "type": "string"
+                  },
+                  "scope": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "host_id": {
+                        "type": "string"
+                      },
+                      "tops_id": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "host_id",
+                      "tops_id"
+                    ],
+                    "type": "object"
+                  }
+                },
+                "required": [
+                  "protocol",
+                  "scope",
+                  "profile_id",
+                  "profile_generation",
+                  "generation",
+                  "permitted",
+                  "digest"
+                ],
+                "type": "object"
+              },
+              "profile": {
+                "additionalProperties": false,
+                "properties": {
+                  "configuration": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "adapter": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "executable_digest": {
+                            "type": "string"
+                          },
+                          "manifest_digest": {
+                            "type": "string"
+                          },
+                          "package_id": {
+                            "type": "string"
+                          },
+                          "receipt_digest": {
+                            "type": "string"
+                          },
+                          "version": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "package_id",
+                          "version",
+                          "manifest_digest",
+                          "receipt_digest",
+                          "executable_digest"
+                        ],
+                        "type": "object"
+                      },
+                      "applications": {
+                        "items": {
+                          "type": "string"
+                        },
+                        "type": "array"
+                      },
+                      "authentication_mode": {
+                        "type": "string"
+                      },
+                      "compatibility": {
+                        "items": {
+                          "type": "string"
+                        },
+                        "type": "array"
+                      },
+                      "endpoints": {
+                        "items": {
+                          "additionalProperties": false,
+                          "properties": {
+                            "host": {
+                              "type": "string"
+                            },
+                            "host_key_digest": {
+                              "type": "string"
+                            },
+                            "port": {
+                              "type": "string"
+                            },
+                            "user": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "host",
+                            "port",
+                            "user",
+                            "host_key_digest"
+                          ],
+                          "type": "object"
+                        },
+                        "type": "array"
+                      },
+                      "execution_profile": {
+                        "type": "string"
+                      },
+                      "helper": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "executable_digest": {
+                            "type": "string"
+                          },
+                          "manifest_digest": {
+                            "type": "string"
+                          },
+                          "package_id": {
+                            "type": "string"
+                          },
+                          "receipt_digest": {
+                            "type": "string"
+                          },
+                          "version": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "package_id",
+                          "version",
+                          "manifest_digest",
+                          "receipt_digest",
+                          "executable_digest"
+                        ],
+                        "type": "object"
+                      },
+                      "limits": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "caller_timeout": {
+                            "type": "boolean"
+                          },
+                          "captured_bytes": {
+                            "type": "string"
+                          },
+                          "cleanup_seconds": {
+                            "type": "string"
+                          },
+                          "control_bytes": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "control_bytes",
+                          "captured_bytes",
+                          "cleanup_seconds",
+                          "caller_timeout"
+                        ],
+                        "type": "object"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "platform": {
+                        "type": "string"
+                      },
+                      "session_ref": {
+                        "type": "string"
+                      },
+                      "ssh": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "executable_digest": {
+                            "type": "string"
+                          },
+                          "manifest_digest": {
+                            "type": "string"
+                          },
+                          "package_id": {
+                            "type": "string"
+                          },
+                          "receipt_digest": {
+                            "type": "string"
+                          },
+                          "version": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "package_id",
+                          "version",
+                          "manifest_digest",
+                          "receipt_digest",
+                          "executable_digest"
+                        ],
+                        "type": "object"
+                      },
+                      "transport_kind": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "name",
+                      "transport_kind",
+                      "platform",
+                      "execution_profile",
+                      "adapter",
+                      "ssh",
+                      "helper",
+                      "applications",
+                      "endpoints",
+                      "authentication_mode",
+                      "session_ref",
+                      "limits",
+                      "compatibility"
+                    ],
+                    "type": "object"
+                  },
+                  "digest": {
+                    "type": "string"
+                  },
+                  "generation": {
+                    "type": "string"
+                  },
+                  "policy": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "digest": {
+                        "type": "string"
+                      },
+                      "generation": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "generation",
+                      "digest"
+                    ],
+                    "type": "object"
+                  },
+                  "profile_id": {
+                    "type": "string"
+                  },
+                  "protocol": {
+                    "type": "string"
+                  },
+                  "scope": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "host_id": {
+                        "type": "string"
+                      },
+                      "tops_id": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "host_id",
+                      "tops_id"
+                    ],
+                    "type": "object"
+                  },
+                  "state": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "protocol",
+                  "scope",
+                  "profile_id",
+                  "generation",
+                  "state",
+                  "policy",
+                  "configuration",
+                  "digest"
+                ],
+                "type": "object"
+              },
+              "protocol": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "protocol",
+              "profile",
+              "policy",
+              "digest"
+            ],
+            "type": "object"
+          }
+        },
+        "required": [
+          "protocol",
+          "direct",
+          "scope",
+          "application",
+          "session_directory",
+          "journal_directory",
+          "snapshot"
+        ],
+        "type": "object"
+      },
+      "intent": {
+        "anyOf": [
+          {
+            "additionalProperties": false,
+            "properties": {
+              "action": {
+                "type": "string"
+              },
+              "identity": {
+                "anyOf": [
+                  {
+                    "additionalProperties": false,
+                    "properties": {
+                      "audience": {
+                        "type": "string"
+                      },
+                      "issuer": {
+                        "type": "string"
+                      },
+                      "subject": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "audience",
+                      "issuer",
+                      "subject"
+                    ],
+                    "type": "object"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "action",
+              "identity"
+            ],
+            "type": "object"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "operation": {
+        "enum": [
+          "inspect",
+          "plan",
+          "authenticate",
+          "renew",
+          "clear"
+        ]
+      },
+      "plan_digest": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "protocol": {
+        "const": "symphony.sov.transport-session-request.v1"
+      },
+      "request_id": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "protocol",
+      "request_id",
+      "operation",
+      "endpoint",
+      "intent",
+      "plan_digest",
+      "deadline_unix_ms"
+    ],
+    "type": "object"
+  },
+  "result": {
+    "additionalProperties": false,
+    "properties": {
+      "binding": {
+        "additionalProperties": false,
+        "properties": {
+          "application": {
+            "type": "string"
+          },
+          "endpoint_ref": {
+            "type": "string"
+          },
+          "profile_digest": {
+            "type": "string"
+          },
+          "session_directory": {
+            "type": "string"
+          },
+          "session_ref": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "application",
+          "session_ref",
+          "session_directory",
+          "profile_digest",
+          "endpoint_ref"
+        ],
+        "type": "object"
+      },
+      "code": {
+        "type": "string"
+      },
+      "completed": {
+        "type": "boolean"
+      },
+      "expires_unix_ms": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "helper_digest": {
+        "type": "string"
+      },
+      "operation": {
+        "type": "string"
+      },
+      "plan_digest": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "protocol": {
+        "const": "symphony.sov.transport-session-native-result.v1"
+      },
+      "provider_authorization": {
+        "const": "not_proven"
+      },
+      "request_id": {
+        "type": "string"
+      },
+      "state": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "protocol",
+      "request_id",
+      "operation",
+      "binding",
+      "helper_digest",
+      "completed",
+      "code",
+      "state",
+      "plan_digest",
+      "expires_unix_ms",
+      "provider_authorization"
+    ],
+    "type": "object"
+  },
+  "semantic_contract": "knowledge/sov/CLOUDFLARE-ACCESS-SESSIONS.md"
+}

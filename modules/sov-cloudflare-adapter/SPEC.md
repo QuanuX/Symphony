@@ -57,3 +57,10 @@ A successful start proves local process liveness and admitted credential use, no
 ## I4 qualification boundary
 
 The code implements the bounded administration surface and both native credential channels. Source/fixture qualification is separate from actual Cloudflare operations: no live account/zone, real token, provider mutation, Access session or SSH connection is used by local tests. cf 1.0.0-beta.28 / Node 26.12.0 and cloudflared 2026.10.7 retain exact selected identities. Concrete runtime digest qualification currently selects the C0 macOS amd64 artifacts; additional binaries/platforms require separate admission. Connector lifecycle fixtures use an inert native child and cannot establish Cloudflare connectivity. Token rotation, live I6 acceptance and I5 Access SSH sessions remain explicitly open. Direct SSH v1 and protected v2 profile publication/admission are unchanged.
+
+I5 adds the receipt-owned `symphony-cloudflare-access` native entry point under the
+same SOV component. The normative subordinate contract is
+`knowledge/sov/CLOUDFLARE-ACCESS-SESSIONS.md`; the closed schema projection is
+`knowledge/sov/cloudflare/access-sessions.json`. Local same-user session semantics
+and the explicit protected runtime are implemented. Actual pinned-binary/live
+Access SSH qualification is separately required; installation does not assert it.

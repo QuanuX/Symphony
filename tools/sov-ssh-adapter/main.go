@@ -81,6 +81,13 @@ func run(ctx context.Context, args []string, input io.Reader, output io.Writer) 
 		}
 		return 0
 	}
+	if len(args) == 1 && args[0] == "--session" {
+		raw, err := io.ReadAll(io.LimitReader(input, 65537))
+		if err != nil || len(raw) > 65536 {
+			return 2
+		}
+		return runSession(ctx, raw, output)
+	}
 	if len(args) != 0 {
 		return 2
 	}
