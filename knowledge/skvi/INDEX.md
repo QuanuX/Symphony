@@ -29912,3 +29912,29 @@ automatic nested fitting and cross-run holdout history remain unimplemented.
 - deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
 - notes: Fixture evidence is not live Cloudflare acceptance.
 - status: canonical
+
+### SSIAG private credential SDK consumer
+- path: `modules/ssiag-provider-private-store/tests/sdk-consumer/CMakeLists.txt`
+- title: Independent installed SSIAG private credential SDK consumer
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG maintainers
+- scope: Independent installed header and transitive SDK consumption
+- relationships: governed_by -> `modules/ssiag-provider-private-store/SPEC.md`
+- consumers: Native consumers and maintainers
+- deferred_projections: Live provider qualification
+- notes: Synthetic digest and strict parsing checks; no credentials or provider calls.
+- status: canonical
+
+### SSIAG private credential SDK consumer
+- path: `modules/ssiag-provider-private-store/tests/sdk-consumer/main.cpp`
+- title: Independent installed SSIAG private credential SDK consumer
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG maintainers
+- scope: Independent installed header and transitive SDK consumption
+- relationships: governed_by -> `modules/ssiag-provider-private-store/SPEC.md`
+- consumers: Native consumers and maintainers
+- deferred_projections: Live provider qualification
+- notes: Synthetic digest and strict parsing checks; no credentials or provider calls.
+- status: canonical

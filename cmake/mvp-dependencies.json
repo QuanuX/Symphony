@@ -3510,7 +3510,21 @@
         }
       ],
       "installable": true,
-      "installed_sdk_consumer_checks": [],
+      "installed_sdk_consumer_checks": [
+        {
+          "path": "modules/ssiag-provider-private-store/tests/sdk-consumer/CMakeLists.txt",
+          "find_packages": [
+            {
+              "path": "modules/ssiag-provider-private-store/tests/sdk-consumer/CMakeLists.txt",
+              "line": 3,
+              "command": "find_package",
+              "arguments": "SymphonySSIAGPrivateStore 0.1.0 EXACT REQUIRED CONFIG",
+              "conditions": []
+            }
+          ],
+          "source_additions": []
+        }
+      ],
       "allowed_shared_implementation_sources": [],
       "allowed_test_implementation_sources": [],
       "qualification_group": "cloud"
@@ -24554,7 +24568,7 @@
     },
     {
       "path": "modules/sov-cloudflare-adapter/src/execution.cpp",
-      "sha256": "0b2bc84a4b9977818caf1065f741dbac42e2a408fb2365e927b7fe6f6bebfbeb"
+      "sha256": "995f2af0c05fb9996bb3ed2ffc9d795358a8956b581123db5e137c3f37414b7a"
     },
     {
       "path": "modules/sov-cloudflare-adapter/src/execution.hpp",
@@ -24663,6 +24677,14 @@
     {
       "path": "modules/secure-identity-access-governance/SPEC.md",
       "sha256": "e72ad3f070a663369aa732fff2dc8f66ab08d2af53827a6ac7982d6cce21e963"
+    },
+    {
+      "path": "modules/ssiag-provider-private-store/tests/sdk-consumer/CMakeLists.txt",
+      "sha256": "6b43493427c43dec8a85e22845d0f4fb30e75d0f531764cbbd41efa7a9dd0d1a"
+    },
+    {
+      "path": "modules/ssiag-provider-private-store/tests/sdk-consumer/main.cpp",
+      "sha256": "dcd50e76a2a9bd6368ffefee2e6dee4aa6b9d180d5ac1eca30d4ad7654cf770a"
     }
   ],
   "platform_profile_catalog": "cmake/mvp-platform-profiles.json",

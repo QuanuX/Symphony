@@ -332,7 +332,7 @@ Json execute_resource(const Json &request, const Json &plan,
                 {"resource_id", journal.at("resource_id")},
                 {"deadline_unix_ms", std::to_string(deadline)}};
     credentials = std::make_unique<CredentialSession>(e, intent);
-    deadline = std::min(
+    deadline = std::min<std::int64_t>(
         deadline,
         std::stoll(
             credentials->grant.at("deadline_unix_ms").get<std::string>()));

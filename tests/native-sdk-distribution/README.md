@@ -19,9 +19,9 @@ runtime DAG order. This gate consumes those final artifacts and completed
 consumer logs; it does not rebuild the production graph or count test-only
 cycles as runtime dependencies.
 
-`manifest.json` accounts for all 23 native SDK producers. The inventory refuses
+`manifest.json` accounts for all 24 native SDK producers. The inventory refuses
 new/unclassified exports or shipped consumer directories. Existing MVP gates
-already copy and execute all 14 ordinary SDK consumers, including the native
+already copy and execute all 15 ordinary SDK consumers, including the native
 source adapters whose examples are outside CTest. Their copied source bytes and
 successful configure/build/run steps are required here. The special SBV C ABI,
 C++ SDK/interop and loader gates remain required; the five-owner SNV/observer
