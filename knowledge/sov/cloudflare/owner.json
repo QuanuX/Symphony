@@ -27774,6 +27774,692 @@
         ]
       },
       "qualification": "Exact cloudflared 2026.10.7 macOS amd64 binary; local process lifetime is distinct from live Tunnel connectivity. No root service installation; no automatic update."
+    },
+    {
+      "operation": "project.inspect",
+      "implemented": true,
+      "support_state": "local_qualified_candidate",
+      "authority_readiness": "nonroot_local_owner",
+      "effects": "selected_local_file_reads",
+      "network": "none",
+      "automatic_retry": false,
+      "context_nullable": true,
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "root": {
+            "type": "string",
+            "maxLength": 4096,
+            "pattern": "^/[ -~]+$"
+          },
+          "configuration_kind": {
+            "type": "string",
+            "maxLength": 4096,
+            "enum": [
+              "cf",
+              "wrangler"
+            ]
+          },
+          "configuration": {
+            "type": "string",
+            "maxLength": 4096,
+            "pattern": "^[ -~]+$"
+          },
+          "files": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 4096,
+            "items": {
+              "type": "string",
+              "maxLength": 4096,
+              "pattern": "^[ -~]+$"
+            }
+          }
+        },
+        "required": [
+          "root",
+          "configuration_kind",
+          "configuration",
+          "files"
+        ]
+      },
+      "template": {
+        "root": "/absolute/project",
+        "configuration_kind": "cf",
+        "configuration": "cloudflare.config.ts",
+        "files": [
+          "cloudflare.config.ts",
+          "package.json",
+          "package-lock.json",
+          "src/index.ts"
+        ]
+      },
+      "qualification": "I7a selected-file observation and exact persisted proposal only; no sealed source, configuration evaluation, preparation, build, migration or deployment",
+      "data_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "manifest": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "protocol": {
+                "const": "symphony.sov.cloudflare-project-manifest.v1"
+              },
+              "root": {
+                "type": "string",
+                "maxLength": 4096,
+                "pattern": "^/[ -~]+$"
+              },
+              "configuration_kind": {
+                "type": "string",
+                "maxLength": 4096,
+                "enum": [
+                  "cf",
+                  "wrangler"
+                ]
+              },
+              "configuration": {
+                "type": "string",
+                "maxLength": 4096,
+                "pattern": "^[ -~]+$"
+              },
+              "files": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 4096,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "path": {
+                      "type": "string",
+                      "maxLength": 4096,
+                      "pattern": "^[ -~]+$"
+                    },
+                    "digest": {
+                      "type": "string",
+                      "maxLength": 71,
+                      "pattern": "sha256:[0-9a-f]{64}"
+                    },
+                    "size": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 16777216
+                    },
+                    "executable": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "path",
+                    "digest",
+                    "size",
+                    "executable"
+                  ]
+                }
+              },
+              "total_bytes": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 67108864
+              }
+            },
+            "required": [
+              "protocol",
+              "root",
+              "configuration_kind",
+              "configuration",
+              "files",
+              "total_bytes"
+            ]
+          },
+          "snapshot_digest": {
+            "type": "string",
+            "maxLength": 71,
+            "pattern": "sha256:[0-9a-f]{64}"
+          },
+          "completeness": {
+            "const": "selected_files_only"
+          },
+          "content_retained": {
+            "const": false
+          },
+          "configuration_evaluated": {
+            "const": false
+          },
+          "migration_required": {
+            "type": "boolean"
+          },
+          "provider_dispatch": {
+            "const": false
+          },
+          "execution_available": {
+            "const": false
+          }
+        },
+        "required": [
+          "manifest",
+          "snapshot_digest",
+          "completeness",
+          "content_retained",
+          "configuration_evaluated",
+          "migration_required",
+          "provider_dispatch",
+          "execution_available"
+        ]
+      }
+    },
+    {
+      "operation": "project.plan",
+      "implemented": true,
+      "support_state": "local_qualified_candidate",
+      "authority_readiness": "nonroot_local_owner",
+      "effects": "private_plan_write",
+      "network": "none",
+      "automatic_retry": false,
+      "context_nullable": true,
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "store": {
+            "type": "string",
+            "maxLength": 4096,
+            "pattern": "^/[ -~]+$"
+          },
+          "project": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "root": {
+                "type": "string",
+                "maxLength": 4096,
+                "pattern": "^/[ -~]+$"
+              },
+              "configuration_kind": {
+                "type": "string",
+                "maxLength": 4096,
+                "enum": [
+                  "cf",
+                  "wrangler"
+                ]
+              },
+              "configuration": {
+                "type": "string",
+                "maxLength": 4096,
+                "pattern": "^[ -~]+$"
+              },
+              "files": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 4096,
+                "items": {
+                  "type": "string",
+                  "maxLength": 4096,
+                  "pattern": "^[ -~]+$"
+                }
+              }
+            },
+            "required": [
+              "root",
+              "configuration_kind",
+              "configuration",
+              "files"
+            ]
+          },
+          "action": {
+            "type": "string",
+            "maxLength": 4096,
+            "enum": [
+              "prepare",
+              "migrate"
+            ]
+          },
+          "expected_snapshot_digest": {
+            "type": "string",
+            "maxLength": 71,
+            "pattern": "sha256:[0-9a-f]{64}"
+          },
+          "toolchain_id": {
+            "type": "string",
+            "maxLength": 71,
+            "pattern": "sha256:[0-9a-f]{64}"
+          },
+          "expected_state": {
+            "type": "string",
+            "maxLength": 71,
+            "pattern": "sha256:[0-9a-f]{64}"
+          }
+        },
+        "required": [
+          "store",
+          "project",
+          "action",
+          "expected_snapshot_digest",
+          "toolchain_id",
+          "expected_state"
+        ]
+      },
+      "template": {
+        "store": "/absolute/private/cloudflare-store",
+        "project": {
+          "root": "/absolute/project",
+          "configuration_kind": "cf",
+          "configuration": "cloudflare.config.ts",
+          "files": [
+            "cloudflare.config.ts",
+            "package.json",
+            "package-lock.json",
+            "src/index.ts"
+          ]
+        },
+        "action": "prepare",
+        "expected_snapshot_digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+        "toolchain_id": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+        "expected_state": "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+      },
+      "qualification": "I7a selected-file observation and exact persisted proposal only; no sealed source, configuration evaluation, preparation, build, migration or deployment",
+      "data_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "plan": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "protocol": {
+                "const": "symphony.sov.cloudflare-project-plan.v1"
+              },
+              "uid": {
+                "type": "string",
+                "maxLength": 20,
+                "pattern": "0|[1-9][0-9]{0,19}"
+              },
+              "request_id": {
+                "type": "string",
+                "maxLength": 4096,
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+              },
+              "descriptor_ref": {
+                "type": "string",
+                "maxLength": 71,
+                "pattern": "sha256:[0-9a-f]{64}"
+              },
+              "installation_ref": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "version": {
+                    "const": "0.1.0-dev"
+                  },
+                  "executable_digest": {
+                    "type": "string",
+                    "maxLength": 4096,
+                    "pattern": "^sha256:[0-9a-f]{64}$"
+                  },
+                  "receipt_digest": {
+                    "type": "string",
+                    "maxLength": 4096,
+                    "pattern": "^sha256:[0-9a-f]{64}$"
+                  }
+                },
+                "required": [
+                  "version",
+                  "executable_digest",
+                  "receipt_digest"
+                ]
+              },
+              "input": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "store": {
+                    "type": "string",
+                    "maxLength": 4096,
+                    "pattern": "^/[ -~]+$"
+                  },
+                  "project": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "root": {
+                        "type": "string",
+                        "maxLength": 4096,
+                        "pattern": "^/[ -~]+$"
+                      },
+                      "configuration_kind": {
+                        "type": "string",
+                        "maxLength": 4096,
+                        "enum": [
+                          "cf",
+                          "wrangler"
+                        ]
+                      },
+                      "configuration": {
+                        "type": "string",
+                        "maxLength": 4096,
+                        "pattern": "^[ -~]+$"
+                      },
+                      "files": {
+                        "type": "array",
+                        "minItems": 1,
+                        "maxItems": 4096,
+                        "items": {
+                          "type": "string",
+                          "maxLength": 4096,
+                          "pattern": "^[ -~]+$"
+                        }
+                      }
+                    },
+                    "required": [
+                      "root",
+                      "configuration_kind",
+                      "configuration",
+                      "files"
+                    ]
+                  },
+                  "action": {
+                    "type": "string",
+                    "maxLength": 4096,
+                    "enum": [
+                      "prepare",
+                      "migrate"
+                    ]
+                  },
+                  "expected_snapshot_digest": {
+                    "type": "string",
+                    "maxLength": 71,
+                    "pattern": "sha256:[0-9a-f]{64}"
+                  },
+                  "toolchain_id": {
+                    "type": "string",
+                    "maxLength": 71,
+                    "pattern": "sha256:[0-9a-f]{64}"
+                  },
+                  "expected_state": {
+                    "type": "string",
+                    "maxLength": 71,
+                    "pattern": "sha256:[0-9a-f]{64}"
+                  }
+                },
+                "required": [
+                  "store",
+                  "project",
+                  "action",
+                  "expected_snapshot_digest",
+                  "toolchain_id",
+                  "expected_state"
+                ]
+              },
+              "observation": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "manifest": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "protocol": {
+                        "const": "symphony.sov.cloudflare-project-manifest.v1"
+                      },
+                      "root": {
+                        "type": "string",
+                        "maxLength": 4096,
+                        "pattern": "^/[ -~]+$"
+                      },
+                      "configuration_kind": {
+                        "type": "string",
+                        "maxLength": 4096,
+                        "enum": [
+                          "cf",
+                          "wrangler"
+                        ]
+                      },
+                      "configuration": {
+                        "type": "string",
+                        "maxLength": 4096,
+                        "pattern": "^[ -~]+$"
+                      },
+                      "files": {
+                        "type": "array",
+                        "minItems": 1,
+                        "maxItems": 4096,
+                        "items": {
+                          "type": "object",
+                          "additionalProperties": false,
+                          "properties": {
+                            "path": {
+                              "type": "string",
+                              "maxLength": 4096,
+                              "pattern": "^[ -~]+$"
+                            },
+                            "digest": {
+                              "type": "string",
+                              "maxLength": 71,
+                              "pattern": "sha256:[0-9a-f]{64}"
+                            },
+                            "size": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 16777216
+                            },
+                            "executable": {
+                              "type": "boolean"
+                            }
+                          },
+                          "required": [
+                            "path",
+                            "digest",
+                            "size",
+                            "executable"
+                          ]
+                        }
+                      },
+                      "total_bytes": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 67108864
+                      }
+                    },
+                    "required": [
+                      "protocol",
+                      "root",
+                      "configuration_kind",
+                      "configuration",
+                      "files",
+                      "total_bytes"
+                    ]
+                  },
+                  "snapshot_digest": {
+                    "type": "string",
+                    "maxLength": 71,
+                    "pattern": "sha256:[0-9a-f]{64}"
+                  },
+                  "completeness": {
+                    "const": "selected_files_only"
+                  },
+                  "content_retained": {
+                    "const": false
+                  },
+                  "configuration_evaluated": {
+                    "const": false
+                  },
+                  "migration_required": {
+                    "type": "boolean"
+                  },
+                  "provider_dispatch": {
+                    "const": false
+                  },
+                  "execution_available": {
+                    "const": false
+                  }
+                },
+                "required": [
+                  "manifest",
+                  "snapshot_digest",
+                  "completeness",
+                  "content_retained",
+                  "configuration_evaluated",
+                  "migration_required",
+                  "provider_dispatch",
+                  "execution_available"
+                ]
+              },
+              "expires_unix_ms": {
+                "type": "string",
+                "maxLength": 20,
+                "pattern": "[1-9][0-9]{0,19}"
+              },
+              "execution_available": {
+                "const": false
+              },
+              "authority_readiness": {
+                "const": "unavailable_contract"
+              }
+            },
+            "required": [
+              "protocol",
+              "uid",
+              "request_id",
+              "descriptor_ref",
+              "installation_ref",
+              "input",
+              "observation",
+              "expires_unix_ms",
+              "execution_available",
+              "authority_readiness"
+            ]
+          },
+          "plan_digest": {
+            "type": "string",
+            "maxLength": 71,
+            "pattern": "sha256:[0-9a-f]{64}"
+          },
+          "provider_dispatch": {
+            "const": false
+          },
+          "execution_available": {
+            "const": false
+          },
+          "persistence": {
+            "const": "persisted_plan"
+          }
+        },
+        "required": [
+          "plan",
+          "plan_digest",
+          "provider_dispatch",
+          "execution_available",
+          "persistence"
+        ]
+      }
+    },
+    {
+      "operation": "project.prepare",
+      "implemented": false,
+      "support_state": "unavailable_contract",
+      "authority_readiness": "unavailable_contract",
+      "effects": "unavailable",
+      "network": "none",
+      "automatic_retry": false,
+      "context_nullable": true,
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {},
+        "required": []
+      },
+      "template": {},
+      "qualification": "I7 follow-on: unavailable until exact project execution and artifact authority are qualified",
+      "data_schema": {
+        "type": "null"
+      }
+    },
+    {
+      "operation": "project.build",
+      "implemented": false,
+      "support_state": "unavailable_contract",
+      "authority_readiness": "unavailable_contract",
+      "effects": "unavailable",
+      "network": "none",
+      "automatic_retry": false,
+      "context_nullable": true,
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {},
+        "required": []
+      },
+      "template": {},
+      "qualification": "I7 follow-on: unavailable until exact project execution and artifact authority are qualified",
+      "data_schema": {
+        "type": "null"
+      }
+    },
+    {
+      "operation": "project.status",
+      "implemented": false,
+      "support_state": "unavailable_contract",
+      "authority_readiness": "unavailable_contract",
+      "effects": "unavailable",
+      "network": "none",
+      "automatic_retry": false,
+      "context_nullable": true,
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {},
+        "required": []
+      },
+      "template": {},
+      "qualification": "I7 follow-on: unavailable until exact project execution and artifact authority are qualified",
+      "data_schema": {
+        "type": "null"
+      }
+    },
+    {
+      "operation": "project.reconcile",
+      "implemented": false,
+      "support_state": "unavailable_contract",
+      "authority_readiness": "unavailable_contract",
+      "effects": "unavailable",
+      "network": "none",
+      "automatic_retry": false,
+      "context_nullable": true,
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {},
+        "required": []
+      },
+      "template": {},
+      "qualification": "I7 follow-on: unavailable until exact project execution and artifact authority are qualified",
+      "data_schema": {
+        "type": "null"
+      }
+    },
+    {
+      "operation": "project.migrate",
+      "implemented": false,
+      "support_state": "unavailable_contract",
+      "authority_readiness": "unavailable_contract",
+      "effects": "unavailable",
+      "network": "none",
+      "automatic_retry": false,
+      "context_nullable": true,
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {},
+        "required": []
+      },
+      "template": {},
+      "qualification": "I7 follow-on: unavailable until exact project execution and artifact authority are qualified",
+      "data_schema": {
+        "type": "null"
+      }
     }
   ],
   "vendor_candidates": [

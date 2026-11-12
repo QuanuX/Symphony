@@ -64,3 +64,40 @@ same SOV component. The normative subordinate contract is
 `knowledge/sov/cloudflare/access-sessions.json`. Local same-user session semantics
 and the explicit protected runtime are implemented. Actual pinned-binary/live
 Access SSH qualification is separately required; installation does not assert it.
+
+
+## I7a project source observation and preparation proposals
+
+`project.inspect` reads only an explicit absolute root, configuration kind/path
+and selected relative files. Configuration is data: it is neither evaluated nor
+imported. The result binds sorted file paths, byte counts, executable bits and
+SHA-256 digests to the root and configuration identity. It is a selected-files
+observation, not a complete dependency inventory, atomic filesystem snapshot or
+retained/sealed Build Output. Unselected files are neither discovered nor read.
+Each selected file is bounded to 16 MiB, the total to 64 MiB and the selection to
+4,096 files. Every path component is opened relative to an existing directory
+with symlink refusal. Duplicate/traversing paths, hard links, special files,
+known credential paths, VCS state, dependency trees and generated output reject.
+The returned records contain no file contents. This does not detect arbitrary
+credentials embedded in user-selected source; callers supply nonsecret inputs.
+
+`project.plan` reobserves the selection and requires the expected manifest digest,
+selected installation state and exact installed toolchain. It persists a private,
+UID/owner/adapter/request-bound, expiring proposal for explicit preparation or
+Wrangler migration. It does not retain source bytes or authorize execution.
+A cf configuration admits a preparation proposal; a Wrangler configuration
+requires an explicit migration proposal. No automatic conversion or setup occurs.
+Plans cannot be applied using installation, context or resource mutation paths.
+
+`project.prepare`, `build`, `deploy`, `status`, `reconcile` and `migrate` remain
+unavailable in this increment. Next: transactional immutable source preparation,
+separately pinned credentialless build tools and dependency closure, sealed Build
+Output, then fresh-authority deployment without rebuilding/config evaluation and
+observation-only recovery. Migration receives a separate explicit local change
+plan. No I6 acceptance gap is waived by starting this follow-on. cf 1.0.0-beta.28,
+Node 26.12.0 and cloudflared 2026.10.7 selections are unchanged.
+
+Current [project documentation](https://developers.cloudflare.com/cf/projects/)
+and [Wrangler guidance](https://developers.cloudflare.com/cf/wrangler/) were
+consulted November 12, 2026. They identify automatic configuration and build
+handoff risks, not qualification of those behaviors in the pinned release.

@@ -109,6 +109,8 @@ jobs:
         run: sh tests/sbv-launch-boundary/run.sh "$RUNNER_TEMP/mvp-installed/prefix" "$RUNNER_TEMP/sbv-launch-boundary"
       - name: Qualify installed SNV supplied-record and observer boundary
         if: matrix.group == 'knowledge'
+        env:
+          GOMODCACHE: ${{ runner.temp }}/mvp-installed/go/modules
         run: sh tests/snv-qualification/run.sh "$RUNNER_TEMP/mvp-installed/prefix" "$RUNNER_TEMP/snv-qualification" "$RUNNER_TEMP/mvp-installed/qxctl"
       - name: Qualify installed SHV PDF and catalogue boundary
         if: matrix.group == 'knowledge'

@@ -1516,7 +1516,8 @@
         "cloudflare-native-contract",
         "cloudflare-resource-execution",
         "cloudflare-connector-lifecycle",
-        "cloudflare-access-sessions"
+        "cloudflare-access-sessions",
+        "cloudflare-project-source"
       ],
       "direct_tests": [
         {
@@ -2768,7 +2769,7 @@
   ],
   "native_totals": {
     "roots": 60,
-    "ctests": 175,
+    "ctests": 176,
     "direct_tests": 17
   },
   "duckdb_installed_campaign": {

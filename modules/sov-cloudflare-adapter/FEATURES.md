@@ -48,6 +48,7 @@
         "modules/sov-cloudflare-adapter/src/execution.cpp",
         "modules/sov-cloudflare-adapter/src/http_runner.cpp",
         "modules/sov-cloudflare-adapter/src/main.cpp",
+        "modules/sov-cloudflare-adapter/src/project.cpp",
         "modules/sov-cloudflare-adapter/src/resource.cpp"
       ],
       "kind": "feature",
@@ -61,7 +62,7 @@
       "source_scope": "modules/sov-cloudflare-adapter",
       "status": "experimental",
       "title": "Native Cloudflare administration",
-      "what": "Exact cf/Node lifecycle, typed Tunnel/DNS/Access operations, native credential channels, persisted contexts and user-mode connector lifecycle. Explicit private Access user-session lifecycle and fixed SSH proxy helper.",
+      "what": "Exact cf/Node lifecycle, typed Tunnel/DNS/Access operations, native credential channels, persisted contexts and user-mode connector lifecycle. Explicit private Access user-session lifecycle and fixed SSH proxy helper. Selected project file observations and exact persisted preparation/migration proposals without configuration execution.",
       "when": "Explicitly planned user-owned Cloudflare administration.",
       "where": "Selected independently installed native adapter and private local store.",
       "who": "Humans, agents and independent native consumers.",

@@ -1451,7 +1451,7 @@
       "source_scope": "tools/qxctl",
       "status": "experimental",
       "title": "qxctl native Cloudflare administration",
-      "what": "Typed native Cloudflare lifecycle, context, resource and connector administration through exact installed descriptors. Explicit same-user Access session administration through the protected carrier.",
+      "what": "Typed native Cloudflare lifecycle, context, resource and connector administration through exact installed descriptors. Explicit same-user Access session administration through the protected carrier. Selected project file observations and exact persisted preparation/migration proposals without configuration execution.",
       "when": "Explicit local administration or offline discovery request.",
       "where": "Selected independently installed native adapter and private local store.",
       "who": "Humans, agents and independent native consumers.",

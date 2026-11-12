@@ -301,7 +301,10 @@ Json runtime_operation(const std::string &operation,const Json &p,std::int64_t d
   require(operation=="runtime_status"||request.contains("expected_generation"));
   try { return rpc(dir,request); }
   catch(const engine::Error &error) {
-    if(operation!="runtime_status"||error.code()!="srrapiv.runtime.unavailable")throw;
+    // Shutdown can close an already connected status client before replying.
+    // Inspect retained evidence without retrying RPC or resolving mutation loss.
+    if(operation!="runtime_status"||(error.code()!="srrapiv.runtime.unavailable"&&
+        error.code()!="srrapiv.transport.uncertain"))throw;
     Json retained,failure;
     if(std::filesystem::exists(dir+"/runtime.json"))retained=io::read_json(dir+"/runtime.json");
     if(std::filesystem::exists(dir+"/runtime-failure.json")) {
@@ -313,7 +316,7 @@ Json runtime_operation(const std::string &operation,const Json &p,std::int64_t d
         retained.at("generation")!=p.at("expected_generation")));
     if(selected_failure)retained={{"ok",true},{"protocol","symphony.srrapiv.runtime.v1"},
       {"generation",failure.at("generation")},{"state","startup_failed"}};
-    require(!retained.is_null(),"srrapiv.runtime.unavailable");
+    if(retained.is_null())throw;
     if(p.contains("expected_generation"))require(retained.at("generation")==p.at("expected_generation"),"srrapiv.generation.stale");
     if(!failure.is_null()&&failure.at("generation")==retained.at("generation"))retained["failure"]=failure;
     if(!selected_failure)retained["state"]="unreachable";

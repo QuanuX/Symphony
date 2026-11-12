@@ -451,7 +451,31 @@ Json process(const Json& request, const fs::path& executable) {
         validate(input, d.at("input_schema")); require(d.at("implemented").get<bool>(), "unavailable_contract");
         if (!op.starts_with("resource.") || op == "resource.plan") require(request.at("context_ref").is_null(), "binding_mismatch");
         if (!op.ends_with(".apply") && !op.ends_with(".reconcile") && !op.ends_with(".status") && (!op.starts_with("resource.") || op == "resource.plan")) require(request.at("plan_ref").is_null(), "binding_mismatch");
-        if(op.starts_with("connector.")){
+        if (op == "project.inspect" || op == "project.plan") {
+            const auto observation = project_inspect(op == "project.inspect" ? input : input.at("project"));
+            if (op == "project.inspect") result["data"] = observation;
+            else {
+                require(observation.at("snapshot_digest") == input.at("expected_snapshot_digest"), "state_conflict");
+                Store store(input.at("store")); no_unsettled(store);
+                const auto state = store.state();
+                require(input.at("expected_state") == digest(state, state_protocol), "state_conflict");
+                require(state.at("selected") == input.at("toolchain_id"), "binding_mismatch");
+                static_cast<void>(installed(store, str(input.at("toolchain_id"))));
+                require((input.at("action") == "migrate") == observation.at("migration_required").get<bool>(), "binding_mismatch");
+                Json p{{"protocol", "symphony.sov.cloudflare-project-plan.v1"}, {"uid", std::to_string(::geteuid())},
+                       {"request_id", request.at("request_id")}, {"descriptor_ref", request.at("descriptor_ref")},
+                       {"installation_ref", request.at("installation_ref")}, {"input", input}, {"observation", observation},
+                       {"expires_unix_ms", std::to_string(symphony::ssiag::native::now() + 3600000)},
+                       {"execution_available", false}, {"authority_readiness", "unavailable_contract"}};
+                auto pd = digest(p, "symphony.sov.cloudflare-project-plan.v1");
+                auto path = store.record("plans", pd);
+                if (fs::exists(path)) require(parse(read_file(path, frame_limit)) == p, "binding_mismatch");
+                else { write_file(path, p.dump() + "\n"); sync_dir(path.parent_path()); }
+                result["data"] = Json{{"plan", p}, {"plan_digest", pd}, {"provider_dispatch", false},
+                                       {"execution_available", false}, {"persistence", "persisted_plan"}};
+                result["next_action"] = "inspect_plan";
+            }
+        } else if(op.starts_with("connector.")){
             Store store(input.at("store"),true);result["data"]=connector_admin(request,executable,result,started);
         } else if (op.starts_with("installation.")) {
             Store store(input.at("store"), op == "installation.plan"); result["data"] = lifecycle(store, request, started);
