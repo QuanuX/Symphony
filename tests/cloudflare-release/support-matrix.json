@@ -1,0 +1,363 @@
+{
+  "format_version": 1,
+  "owner_sha256": "8c566800bf47abaca6e7f59351ef4d0ba6f73c5e7d45cd18e1859142d7e5ba6a",
+  "selected_cf": "1.0.0-beta.28",
+  "selected_node": "26.12.0",
+  "selected_cloudflared": "2026.10.7",
+  "admitted_vendor_runtime_platforms": [
+    "darwin-amd64"
+  ],
+  "resource_operations": [
+    {
+      "operation": "tunnels.list",
+      "method": "GET",
+      "path": "/accounts/{account_id}/tunnels",
+      "vendor_command": [
+        "tunnels",
+        "list"
+      ],
+      "output_class": "closed_nonsecret_projection",
+      "implementation": "local_fixture_qualified",
+      "live": "unqualified"
+    },
+    {
+      "operation": "tunnels.get",
+      "method": "GET",
+      "path": "/accounts/{account_id}/cfd_tunnel/{tunnel_id}",
+      "vendor_command": [
+        "tunnels",
+        "get"
+      ],
+      "output_class": "sensitive_result_channel",
+      "implementation": "local_fixture_qualified",
+      "live": "unqualified"
+    },
+    {
+      "operation": "tunnels.create",
+      "method": "POST",
+      "path": "/accounts/{account_id}/cfd_tunnel",
+      "vendor_command": [
+        "tunnels",
+        "create"
+      ],
+      "output_class": "sensitive_result_channel",
+      "implementation": "local_fixture_qualified",
+      "live": "unqualified"
+    },
+    {
+      "operation": "tunnels.edit",
+      "method": "PATCH",
+      "path": "/accounts/{account_id}/cfd_tunnel/{tunnel_id}",
+      "vendor_command": [
+        "tunnels",
+        "edit"
+      ],
+      "output_class": "closed_nonsecret_projection",
+      "implementation": "local_fixture_qualified",
+      "live": "unqualified"
+    },
+    {
+      "operation": "tunnels.delete",
+      "method": "DELETE",
+      "path": "/accounts/{account_id}/cfd_tunnel/{tunnel_id}",
+      "vendor_command": [
+        "tunnels",
+        "delete"
+      ],
+      "output_class": "closed_nonsecret_projection",
+      "implementation": "local_fixture_qualified",
+      "live": "unqualified"
+    },
+    {
+      "operation": "tunnels.config.get",
+      "method": "GET",
+      "path": "/accounts/{account_id}/cfd_tunnel/{tunnel_id}/configurations",
+      "vendor_command": [
+        "tunnels",
+        "config",
+        "get"
+      ],
+      "output_class": "closed_nonsecret_projection",
+      "implementation": "local_fixture_qualified",
+      "live": "unqualified"
+    },
+    {
+      "operation": "tunnels.config.update",
+      "method": "PUT",
+      "path": "/accounts/{account_id}/cfd_tunnel/{tunnel_id}/configurations",
+      "vendor_command": [
+        "tunnels",
+        "config",
+        "update"
+      ],
+      "output_class": "closed_nonsecret_projection",
+      "implementation": "local_fixture_qualified",
+      "live": "unqualified"
+    },
+    {
+      "operation": "tunnels.token.get",
+      "method": "GET",
+      "path": "/accounts/{account_id}/cfd_tunnel/{tunnel_id}/token",
+      "vendor_command": [
+        "tunnels",
+        "token",
+        "get"
+      ],
+      "output_class": "sensitive_result_channel",
+      "implementation": "local_fixture_qualified",
+      "live": "unqualified"
+    },
+    {
+      "operation": "dns.records.list",
+      "method": "GET",
+      "path": "/zones/{zone_id}/dns_records",
+      "vendor_command": [
+        "dns",
+        "records",
+        "list"
+      ],
+      "output_class": "closed_nonsecret_projection",
+      "implementation": "local_fixture_qualified",
+      "live": "unqualified"
+    },
+    {
+      "operation": "dns.records.get",
+      "method": "GET",
+      "path": "/zones/{zone_id}/dns_records/{dns_record_id}",
+      "vendor_command": [
+        "dns",
+        "records",
+        "get"
+      ],
+      "output_class": "closed_nonsecret_projection",
+      "implementation": "local_fixture_qualified",
+      "live": "unqualified"
+    },
+    {
+      "operation": "dns.records.create",
+      "method": "POST",
+      "path": "/zones/{zone_id}/dns_records",
+      "vendor_command": [
+        "dns",
+        "records",
+        "create"
+      ],
+      "output_class": "closed_nonsecret_projection",
+      "implementation": "local_fixture_qualified",
+      "live": "unqualified"
+    },
+    {
+      "operation": "dns.records.update",
+      "method": "PUT",
+      "path": "/zones/{zone_id}/dns_records/{dns_record_id}",
+      "vendor_command": [
+        "dns",
+        "records",
+        "update"
+      ],
+      "output_class": "closed_nonsecret_projection",
+      "implementation": "local_fixture_qualified",
+      "live": "unqualified"
+    },
+    {
+      "operation": "dns.records.delete",
+      "method": "DELETE",
+      "path": "/zones/{zone_id}/dns_records/{dns_record_id}",
+      "vendor_command": [
+        "dns",
+        "records",
+        "delete"
+      ],
+      "output_class": "closed_nonsecret_projection",
+      "implementation": "local_fixture_qualified",
+      "live": "unqualified"
+    },
+    {
+      "operation": "zero-trust.access.applications.list",
+      "method": "GET",
+      "path": "/{account_or_zone}/{account_or_zone_id}/access/apps",
+      "vendor_command": [
+        "zero-trust",
+        "access",
+        "applications",
+        "list"
+      ],
+      "output_class": "closed_nonsecret_projection",
+      "implementation": "local_fixture_qualified",
+      "live": "unqualified"
+    },
+    {
+      "operation": "zero-trust.access.applications.get",
+      "method": "GET",
+      "path": "/{account_or_zone}/{account_or_zone_id}/access/apps/{app_id}",
+      "vendor_command": [
+        "zero-trust",
+        "access",
+        "applications",
+        "get"
+      ],
+      "output_class": "closed_nonsecret_projection",
+      "implementation": "local_fixture_qualified",
+      "live": "unqualified"
+    },
+    {
+      "operation": "zero-trust.access.applications.create",
+      "method": "POST",
+      "path": "/{account_or_zone}/{account_or_zone_id}/access/apps",
+      "vendor_command": [
+        "zero-trust",
+        "access",
+        "applications",
+        "create"
+      ],
+      "output_class": "closed_nonsecret_projection",
+      "implementation": "local_fixture_qualified",
+      "live": "unqualified"
+    },
+    {
+      "operation": "zero-trust.access.applications.update",
+      "method": "PUT",
+      "path": "/{account_or_zone}/{account_or_zone_id}/access/apps/{app_id}",
+      "vendor_command": [
+        "zero-trust",
+        "access",
+        "applications",
+        "update"
+      ],
+      "output_class": "closed_nonsecret_projection",
+      "implementation": "local_fixture_qualified",
+      "live": "unqualified"
+    },
+    {
+      "operation": "zero-trust.access.applications.delete",
+      "method": "DELETE",
+      "path": "/{account_or_zone}/{account_or_zone_id}/access/apps/{app_id}",
+      "vendor_command": [
+        "zero-trust",
+        "access",
+        "applications",
+        "delete"
+      ],
+      "output_class": "closed_nonsecret_projection",
+      "implementation": "local_fixture_qualified",
+      "live": "unqualified"
+    },
+    {
+      "operation": "zero-trust.access.policies.list",
+      "method": "GET",
+      "path": "/accounts/{account_id}/access/policies",
+      "vendor_command": [
+        "zero-trust",
+        "access",
+        "policies",
+        "list"
+      ],
+      "output_class": "closed_nonsecret_projection",
+      "implementation": "local_fixture_qualified",
+      "live": "unqualified"
+    },
+    {
+      "operation": "zero-trust.access.policies.get",
+      "method": "GET",
+      "path": "/accounts/{account_id}/access/policies/{policy_id}",
+      "vendor_command": [
+        "zero-trust",
+        "access",
+        "policies",
+        "get"
+      ],
+      "output_class": "closed_nonsecret_projection",
+      "implementation": "local_fixture_qualified",
+      "live": "unqualified"
+    },
+    {
+      "operation": "zero-trust.access.policies.create",
+      "method": "POST",
+      "path": "/accounts/{account_id}/access/policies",
+      "vendor_command": [
+        "zero-trust",
+        "access",
+        "policies",
+        "create"
+      ],
+      "output_class": "closed_nonsecret_projection",
+      "implementation": "local_fixture_qualified",
+      "live": "unqualified"
+    },
+    {
+      "operation": "zero-trust.access.policies.update",
+      "method": "PUT",
+      "path": "/accounts/{account_id}/access/policies/{policy_id}",
+      "vendor_command": [
+        "zero-trust",
+        "access",
+        "policies",
+        "update"
+      ],
+      "output_class": "closed_nonsecret_projection",
+      "implementation": "local_fixture_qualified",
+      "live": "unqualified"
+    },
+    {
+      "operation": "zero-trust.access.policies.delete",
+      "method": "DELETE",
+      "path": "/accounts/{account_id}/access/policies/{policy_id}",
+      "vendor_command": [
+        "zero-trust",
+        "access",
+        "policies",
+        "delete"
+      ],
+      "output_class": "closed_nonsecret_projection",
+      "implementation": "local_fixture_qualified",
+      "live": "unqualified"
+    }
+  ],
+  "mandatory_requirements": [
+    {
+      "id": "M1-01",
+      "state": "local_evidence_only",
+      "remaining": "Integrated exact lifecycle/retained rollback and clean removal evidence review."
+    },
+    {
+      "id": "M1-02",
+      "state": "incomplete_implementation",
+      "remaining": "Private secret rotation via pinned tunnels.edit; token import and uncertain-outcome recovery; live Tunnel lifecycle."
+    },
+    {
+      "id": "M1-03",
+      "state": "local_evidence_only",
+      "remaining": "Live isolated DNS and Access application/policy lifecycle and cleanup."
+    },
+    {
+      "id": "M1-04",
+      "state": "local_evidence_only",
+      "remaining": "Actual cloudflared connector start/stop/update/retire and observed non-root identity."
+    },
+    {
+      "id": "M1-05",
+      "state": "local_evidence_only",
+      "remaining": "Selected protected installation and deployed SSIAG/STAV profile publication; privileged host evidence."
+    },
+    {
+      "id": "M1-06",
+      "state": "local_evidence_only",
+      "remaining": "Actual Access session and nine remote operations, independent denial, expiry and loss/reconciliation."
+    },
+    {
+      "id": "M1-07",
+      "state": "open",
+      "remaining": "All mandatory acceptance, exact platform/topology, residual-resource and final closure evidence."
+    }
+  ],
+  "rotation": {
+    "semantic_operation": "Tunnel connector-token rotation",
+    "pinned_cli_primitive": [
+      "tunnels",
+      "edit"
+    ],
+    "field": "tunnel_secret",
+    "adapter_state": "unavailable_contract",
+    "reason": "Ordinary parameters currently admit only name. Private secret-bearing request body, sensitive-result import and verified recovery are not yet admitted."
+  }
+}

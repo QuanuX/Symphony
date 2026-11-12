@@ -24538,7 +24538,7 @@
     },
     {
       "path": "modules/sov-cloudflare-adapter/SPEC.md",
-      "sha256": "6bf0e0a92d9ca90a204f87352a2c233cea79e092bd1566195d7dd4f13a24c8d7"
+      "sha256": "07404ad08dd4a3b65a47bbd8a59491a55cd950d872b5a4193341948135e9edfa"
     },
     {
       "path": "modules/sov-cloudflare-adapter/VERIFICATION.md",
@@ -24614,7 +24614,7 @@
     },
     {
       "path": "modules/sov-cloudflare-adapter/tests/qualification.cpp",
-      "sha256": "5e47f5b9f49167068c28c2d1aee9977e9736ee96c3ad3463b282594a8aef5c20"
+      "sha256": "21429b5fb75068aabe297d6d8cad12b5b8aa3e1c94360340c4fb5618ee0798f7"
     },
     {
       "path": "modules/sov-cloudflare-adapter/tools/generate.cpp",
@@ -24751,6 +24751,30 @@
     {
       "path": "tools/sov-ssh-adapter/sessionwire/wire_test.go",
       "sha256": "2e4f0b1611cb32adf1072df20975e00d5d347bbb9331ea07a8a3839e14061ab0"
+    },
+    {
+      "path": "tests/cloudflare-release/README.md",
+      "sha256": "116f33b8a9e987e14b84860dd0ad87970fa5a745209e8e21e3cf4f7ff822baf3"
+    },
+    {
+      "path": "tests/cloudflare-release/gate.go",
+      "sha256": "ae552e0c48d16998929bf706de0adabf0dc0ee5b4e17f6e4c627fb6a5c82ed00"
+    },
+    {
+      "path": "tests/cloudflare-release/gate_test.go",
+      "sha256": "c33a7536e928a91cca47cd6a87420440d90b91fafd8639f0edc29f20b1182981"
+    },
+    {
+      "path": "tests/cloudflare-release/manifest.json",
+      "sha256": "8b9d8cb622a5a4490567ea618fd302585710a910fa9e6a286099e94912c29510"
+    },
+    {
+      "path": "tests/cloudflare-release/support-matrix.json",
+      "sha256": "f5580b10da7b36dec17bb807af236b0a5f120ac72e83421c1565d36337cf608f"
+    },
+    {
+      "path": "knowledge/sov/cloudflare/I6-QUALIFICATION.md",
+      "sha256": "e2551f563c9f3c774cc0c1f74a253713ca5720f76c81325601f85f24eb3bcd91"
     }
   ],
   "platform_profile_catalog": "cmake/mvp-platform-profiles.json",

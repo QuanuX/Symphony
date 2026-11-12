@@ -20,7 +20,11 @@ int main(int argc, char** argv) {
         auto catalogue=invoke("capability","list",{{"store",nullptr},{"toolchain_id",nullptr},{"query",nullptr}});auto owner=catalogue.at("data").at("owner");
         auto adapter=prefix/"libexec/symphony/sov-cloudflare-adapter/0.1.0-dev/symphony-sov-cloudflare-adapter";
         NT_REQUIRE(owner==Json::parse(native_test::run({adapter.string(),"--describe"}).stdout_text));checks.push_back("native/qxctl owner parity");
-        auto text=invoke("capability","describe",{{"operation","resource.list"}},true,"text").get<std::string>();NT_REQUIRE(text.find("unavailable_contract")!=std::string::npos && text.find("qualification")!=std::string::npos);checks.push_back("complete safe text presentation");
+        auto text=invoke("capability","describe",{{"operation","resource.list"}},true,"text").get<std::string>();
+        const auto described=Json::parse(text.substr(text.find('\n')+1)).at("data").at("descriptor");
+        NT_REQUIRE(described.at("implemented")==true && described.at("authority_readiness")=="ssiag_required");
+        bool exact_descriptor=false;for(const auto& operation:owner.at("operations")) if(operation.at("operation")=="resource.list") exact_descriptor=described==operation;
+        NT_REQUIRE(exact_descriptor);checks.push_back("complete safe text presentation preserves implementation and required SSIAG authority");
         auto bundle=read_json(bundle_path/"bundle.json");auto id=cloudflare::digest(bundle,"symphony.sov.cloudflare-bundle.v1");
         NT_REQUIRE(std::find(owner.at("qualified_offline_toolchains").begin(),owner.at("qualified_offline_toolchains").end(),Json(id))!=owner.at("qualified_offline_toolchains").end());
         auto plan=invoke("installation","plan",{{"store",store.string()},{"action","install"},{"bundle_path",bundle_path.string()},{"bundle_digest",id},{"installation_id",nullptr},{"expected_state",nullptr}});
@@ -41,7 +45,7 @@ int main(int argc, char** argv) {
         checks.push_back("dependency/runtime drift refused before child dispatch");
         Json context{{"host_ref","host:qualification"},{"principal_uid",std::to_string(::getuid())},{"account_id",std::string(32,'0')},{"zone_id",nullptr},{"credential_ref",nullptr},{"toolchain_id",id}};
         auto proposal=invoke("context","plan",{{"store",store.string()},{"context",context},{"expected_context_ref",nullptr}});
-        NT_REQUIRE(proposal.at("data").at("authority_readiness")=="unavailable_contract" && proposal.at("data").at("context_ref")==cloudflare::digest(context,"symphony.sov.cloudflare-context.v1"));checks.push_back("exact context proposal without provider authority");
+        NT_REQUIRE(proposal.at("data").at("authority_readiness")=="nonroot_local_owner" && proposal.at("data").at("provider_dispatch")==false && proposal.at("data").at("persistence")=="persisted_plan" && proposal.at("data").at("context_ref")==cloudflare::digest(context,"symphony.sov.cloudflare-context.v1"));checks.push_back("exact context proposal without provider authority");
         auto state=invoke("installation","list",{{"store",store.string()}}).at("data");
         auto selection=invoke("installation","plan",{{"store",store.string()},{"action","select"},{"bundle_path",nullptr},{"bundle_digest",nullptr},{"installation_id",id},{"expected_state",state.at("state_digest")}});
         invoke("installation","apply",{{"store",store.string()},{"plan_digest",selection.at("data").at("plan_digest")}});
