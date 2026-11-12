@@ -167,3 +167,34 @@ The completed PR runs for `4a1c9a83b72614e5e5cdac9aaee13633f75a3533` included su
 The deadline comparison now explicitly selects `int64_t`. The test-only canonical file reader retains its four-MiB byte bound while admitting the complete catalog; engine protocol limits remain unchanged. The credential SDK now ships an independent installed consumer and is registered for copied-consumer distribution coverage. A focused inventory regression checks all current SDK registrations without running a distribution campaign.
 
 Focused local checks: the previously failing SSFV target passes; the affected resource-execution target passes; the exact installed private-store SDK consumer configures, builds and runs successfully, including transitive foundation hashing and strict duplicate-key rejection; canonical SDK coverage passes. Dependency projection reports 73 roots, 60 native components and 1,313 source hashes. No unchanged SSH tests or complete installed-release campaigns were rerun. Linux qualification remains the remote runner's responsibility; no new remote result is asserted or awaited. Evidence: workspace `implementation/cloudflare-i5/evidence/`.
+
+## I4 Clang 18 CI repair — November 11, 2026
+
+PR #192 head `96db8a7240c019a30f17dd1d6d9e0939123e9244` had four failed
+Ubuntu 24.04 jobs (amd64/arm64) across
+[Cloudflare native local foundation](https://github.com/QuanuX/Symphony/actions/runs/43115145864)
+and [MVP dependency map](https://github.com/QuanuX/Symphony/actions/runs/43115145663).
+Each failed `cloudflare-resource-execution` with `profile`. The other nine
+workflows, including CodeQL and protected transport profiles, passed.
+
+The owner JSON temporary was destroyed before iteration on Clang 18. Three
+loops now retain a named declaration for resource profile selection, connector
+plan validation and the fixture. This applies the code repair from PR #193
+commit `08a8f16d` independently to I4. Its regression also rejects a malformed
+connector plan with a recomputed digest and requires unchanged installation
+state. No I5 session implementation or SSH v1 change is included.
+
+Retained Clang 18.1.3 / Ubuntu 24.04 amd64 evidence from the PR #193 repair
+shows both failures before the fix and both focused tests passing afterward.
+Input comparison confirms 62 shared native source, fixture, provider, foundation
+and owner files are byte-identical; this is reused evidence, not a new I4 Linux
+run. Evidence: workspace `implementation/cloudflare-i4/ci-repair/` and
+`implementation/cloudflare-i5/ci-repair/`. Live-provider and runtime-admission
+qualification remain unchanged. Remote results for this repair are not awaited.
+
+Fresh I4 verification on macOS amd64 / LLVM 23.1.2 with installed foundation
+and credential SDKs: `cloudflare-resource-execution` and
+`cloudflare-connector-lifecycle` both pass (2/2). Dependency verification passes
+at 73 roots, 60 native components and 1,313 source hashes; only the four changed
+source hashes were refreshed. Unchanged SSH tests and broad campaigns were
+not rerun. No new Linux arm64 result is claimed.

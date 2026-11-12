@@ -212,7 +212,9 @@ Json connector_admin(const Json &request, const fs::path &executable,
   n::need(request.at("plan_ref") == d);
   auto p = parse(
       n::read(root / "plans" / (d.substr(7) + ".json"), frame_limit, true));
-  for (const auto &descriptor : owner().at("operations"))
+  // Keep the declaration alive on compilers without range-for temporary extension.
+  const auto declaration = owner();
+  for (const auto &descriptor : declaration.at("operations"))
     if (descriptor.at("operation") ==
         std::string("connector.") +
             (installation ? "installation" : "instance") + ".plan")
