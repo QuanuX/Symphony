@@ -23166,7 +23166,7 @@
     },
     {
       "path": "tools/qxctl/internal/sovremote/ssh_test.go",
-      "sha256": "9142c5b343329e66d7ed775e7658a89ec3921b069e8b05284a316ac0a5e8735f"
+      "sha256": "27a95746e6693a618e58eb802ea84b3717a471407d23ea68d1e5c5a02b8a2b42"
     },
     {
       "path": "tools/qxctl/internal/ssiagclient/client.go",

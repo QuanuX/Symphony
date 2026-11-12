@@ -6,6 +6,7 @@ import (
 	ssh "github.com/QuanuX/Symphony/tools/sov-ssh-adapter/contract"
 	"io"
 	"os"
+	"path/filepath"
 	"strings"
 	"testing"
 	"time"
@@ -22,7 +23,10 @@ func sshFixtureMain() {
 		os.Exit(0)
 	}
 	if mode == "wait" {
-		time.Sleep(10 * time.Second)
+		if err := os.WriteFile(os.Getenv("SOV_SSH_FIXTURE_READY"), []byte("ready"), 0600); err != nil {
+			os.Exit(2)
+		}
+		time.Sleep(time.Minute)
 		os.Exit(1)
 	}
 	d, _ := InvocationDigest(in.Invocation)
@@ -63,14 +67,42 @@ func TestSSHProcessReplyBindingAndLoss(t *testing.T) {
 			in.Invocation.Selection.Transport.AdapterSHA256 = in.Invocation.Adapter.SHA256
 			replan(t, &in.Invocation)
 			ctx := context.Background()
+			var readyResult chan error
 			if mode == "wait" {
+				ready := filepath.Join(t.TempDir(), "ready")
+				t.Setenv("SOV_SSH_FIXTURE_READY", ready)
 				var cancel context.CancelFunc
-				ctx, cancel = context.WithTimeout(ctx, 250*time.Millisecond)
+				ctx, cancel = context.WithTimeout(ctx, 30*time.Second)
 				defer cancel()
+				readyResult = make(chan error, 1)
+				go func() {
+					defer cancel()
+					ticker := time.NewTicker(10 * time.Millisecond)
+					defer ticker.Stop()
+					for {
+						select {
+						case <-ctx.Done():
+							readyResult <- ctx.Err()
+							return
+						case <-ticker.C:
+							if _, err := os.Stat(ready); !os.IsNotExist(err) {
+								readyResult <- err
+								return
+							}
+						}
+					}
+				}()
 			}
+			// Cancel only after the child decoded its invocation. Executable staging
+			// can exceed a short fixed deadline on a loaded runner.
 			r, err := RunSSH(ctx, encoded(t, in))
 			if err != nil {
 				t.Fatal(err)
+			}
+			if readyResult != nil {
+				if err := <-readyResult; err != nil || ctx.Err() != context.Canceled {
+					t.Fatalf("fixture did not reach cancellation after dispatch: ready=%v context=%v", err, ctx.Err())
+				}
 			}
 			if r.AutomaticRetry {
 				t.Fatal("automatic retry")

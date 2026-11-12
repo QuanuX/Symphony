@@ -337,3 +337,21 @@ read-only live preflight and exact next actions. No live resource was created,
 no profile was privilegedly published, and no canonical SCLV closure is claimed.
 Retained evidence: workspace `implementation/cloudflare-i6/evidence/`. Remote
 results for this increment are not awaited.
+
+### PR #194 focused SSH fixture repair — November 12, 2026
+
+Protected transport profile run `43168157246` failed only on macOS Intel in
+`TestSSHProcessReplyBindingAndLoss/wait`. Its 250 ms deadline started before
+the selected executable was copied and hashed; the 380 ms invocation reached
+process start with an expired context instead of exercising reply loss.
+
+The fixture now acknowledges successful invocation decoding through a private
+ready marker before the test cancels. A separate 30-second watchdog bounds
+startup failure; the assertions require acknowledged startup, explicit
+cancellation, an unverified lost reply, no target result and no automatic retry.
+Production SSH v1 code and workflow coverage are unchanged.
+
+Only `TestSSHProcessReplyBindingAndLoss/wait` was rerun, using Go 1.26.5 on
+macOS amd64 with the repository source workspace and `-mod=readonly -count=1`:
+pass, 0.43 seconds. No other test or full suite was rerun. Only the changed test's
+dependency source hash was refreshed. Remote results are not awaited.
