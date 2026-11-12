@@ -1,6 +1,7 @@
 package sovcloudflare
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"os"
@@ -99,6 +100,36 @@ func TestCloudflareInstalledReceiptProcess(t *testing.T) {
 	if err != nil || ok {
 		t.Fatalf("unknown native input did not reject: %v", err)
 	}
+	t.Run("project-source", func(t *testing.T) {
+		root, err := filepath.EvalSymlinks(t.TempDir())
+		if err != nil {
+			t.Fatal(err)
+		}
+		if err = os.WriteFile(filepath.Join(root, "cloudflare.config.ts"), []byte("throw new Error('PROJECT-CONTENT-SENTINEL');"), 0600); err != nil {
+			t.Fatal(err)
+		}
+		input := map[string]any{"root": root, "configuration_kind": "cf", "configuration": "cloudflare.config.ts", "files": []any{"cloudflare.config.ts"}}
+		raw, ok, err := Run(context.Background(), prefix, "0.1.0-dev", "project.inspect", Canonical(input))
+		if err != nil || !ok || bytes.Contains(raw, []byte("PROJECT-CONTENT-SENTINEL")) {
+			t.Fatalf("installed project inspection failed: %v %s", err, raw)
+		}
+		value, err := Decode(raw)
+		if err != nil {
+			t.Fatal(err)
+		}
+		data := value.(map[string]any)["data"].(map[string]any)
+		if data["snapshot_digest"] != Digest(data["manifest"], "symphony.sov.cloudflare-project-manifest.v1") {
+			t.Fatal("native project manifest digest differs from independent Go projection")
+		}
+		if data["configuration_evaluated"] != false || data["content_retained"] != false || data["execution_available"] != false || data["completeness"] != "selected_files_only" {
+			t.Fatal(data)
+		}
+		input["files"] = []any{"cloudflare.config.ts", "../outside"}
+		_, ok, err = Run(context.Background(), prefix, "0.1.0-dev", "project.inspect", Canonical(input))
+		if err != nil || ok {
+			t.Fatalf("project traversal was not rejected: %v", err)
+		}
+	})
 	// A copied prefix lets the consumer prove schema tampering rejects before
 	// process dispatch without changing the selected qualification installation.
 	tmp := t.TempDir()

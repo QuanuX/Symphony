@@ -1,0 +1,40 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "configuration": {
+      "maxLength": 4096,
+      "pattern": "^[ -~]+$",
+      "type": "string"
+    },
+    "configuration_kind": {
+      "enum": [
+        "cf",
+        "wrangler"
+      ],
+      "maxLength": 4096,
+      "type": "string"
+    },
+    "files": {
+      "items": {
+        "maxLength": 4096,
+        "pattern": "^[ -~]+$",
+        "type": "string"
+      },
+      "maxItems": 4096,
+      "minItems": 1,
+      "type": "array"
+    },
+    "root": {
+      "maxLength": 4096,
+      "pattern": "^/[ -~]+$",
+      "type": "string"
+    }
+  },
+  "required": [
+    "root",
+    "configuration_kind",
+    "configuration",
+    "files"
+  ],
+  "type": "object"
+}

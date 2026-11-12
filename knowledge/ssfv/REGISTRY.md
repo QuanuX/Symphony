@@ -1388,7 +1388,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `modules/sov-cloudflare-adapter`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:platform`
-- record_digest: `sha256:a9e2ce7773fcbf77378248f8a41a94de6513295cb35da63daf6846ed4d51e8be`
+- record_digest: `sha256:46685e6c7c13f0953cda2abed7c3c3396abc7a33a00bea78a0210566ed607992`
 - notes: I4 native credential channels and bounded Cloudflare administration; fixture evidence does not establish live provider qualification.
 
 - feature_id: `ssfv:symphony:qxctl.sov-cloudflare-administration`
@@ -1397,7 +1397,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `tools/qxctl`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:qxctl`
-- record_digest: `sha256:e39db6afc7fb40cc6d421ff8083231aa47aae002a9d6ea4d45ab995192720127`
+- record_digest: `sha256:fbeda70f806daf7ef6bd8f6cb8ed7a7c34467756d482ceb1f3b61154babc6fc4`
 - notes: I4 native credential channels and bounded Cloudflare administration; fixture evidence does not establish live provider qualification.
 
 

@@ -35,4 +35,6 @@ var Operations = []string{
 	"connector.instance.apply",
 	"connector.instance.status",
 	"connector.instance.reconcile",
+	"project.inspect",
+	"project.plan",
 }

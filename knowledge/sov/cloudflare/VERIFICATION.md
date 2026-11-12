@@ -355,3 +355,50 @@ Only `TestSSHProcessReplyBindingAndLoss/wait` was rerun, using Go 1.26.5 on
 macOS amd64 with the repository source workspace and `-mod=readonly -count=1`:
 pass, 0.43 seconds. No other test or full suite was rerun. Only the changed test's
 dependency source hash was refreshed. Remote results are not awaited.
+
+## I7a project source observation and proposals — November 12, 2026
+
+Isolated from PR #194 at `1e150187`, this first I7 increment implements native
+`project.inspect` and `project.plan`, exposed through qxctl's existing installed
+owner dispatch. It fingerprints an explicit source-file selection without
+evaluating configuration and persists exact preparation/migration proposals.
+The plan binds the observed file manifest, selected toolchain/install state,
+adapter/owner, UID, request and expiry. Source bytes are not retained; this is
+neither an atomic filesystem snapshot nor a sealed deployable artifact.
+
+Fresh focused macOS amd64 / LLVM 23.1.2 / Go 1.26.5 source-workspace evidence:
+
+- `cloudflare-project-source` passes: deterministic ordering, independent file
+  digest expectation, unselected-file isolation, config/source changes,
+  executable-bit binding, duplicate/traversing/noncanonical paths, symlinks,
+  hard links, FIFO/directory/oversized-file refusal, known credential paths,
+  exact persisted plan and stale snapshot/state/toolchain refusal, explicit
+  Wrangler migration selection and unavailable execution refusal.
+- Owner projections pass. Native installed receipt/owner/helper checks pass.
+- Installed Go project inspection passes, including independently computed
+  Go/native manifest digest parity, content-sentinel exclusion and traversal
+  denial. The existing receipt-tampering rejection also passes.
+- Three focused command registry/expected-inventory tests pass: 525 commands.
+  The changed owner-bound support-matrix inventory test passes.
+- Native SSFV source check passes: 154 features, zero violations or warnings.
+  The rebuilt source validator passes with zero violations and four existing
+  historical warnings. Exact schema authorization, feature registry/profile,
+  generated root summary, SKVI and dependency/release projections are updated.
+  Dependency projection: 73 roots, 60 native components, 1,364 source hashes.
+
+The new path test exposed C++ path equality accepting repeated separators;
+canonical spelling is now checked explicitly and the affected test passes.
+The candidate was removed with its exact uninstaller and reinstalled after that
+fix; the receipt correctly refused an in-place overwrite. Failed intermediate
+attempts remain separate from final passing evidence under workspace
+`implementation/cloudflare-i7/evidence/`.
+
+No vendor/project code, credential acquisition, provider request, SSH connection,
+profile mutation or broad historical test suite was run for this increment.
+Production SSH v1 code is unchanged. Exact pinned vendor versions are unchanged.
+Preparation/build/deploy/status/reconciliation/migration execution is explicitly
+unavailable. CF-11 and I7 completion require immutable source preparation,
+credentialless qualified build tools/dependencies, sealed Build Output and fresh
+deployment authority without rebuilding/config execution, followed by recovery
+and live evidence. I6's private rotation and live acceptance gaps remain open.
+No milestone or canonical SCLV closure is claimed; remote checks are not awaited.

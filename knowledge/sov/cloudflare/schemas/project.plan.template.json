@@ -1,0 +1,18 @@
+{
+  "action": "prepare",
+  "expected_snapshot_digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+  "expected_state": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+  "project": {
+    "configuration": "cloudflare.config.ts",
+    "configuration_kind": "cf",
+    "files": [
+      "cloudflare.config.ts",
+      "package.json",
+      "package-lock.json",
+      "src/index.ts"
+    ],
+    "root": "/absolute/project"
+  },
+  "store": "/absolute/private/cloudflare-store",
+  "toolchain_id": "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+}

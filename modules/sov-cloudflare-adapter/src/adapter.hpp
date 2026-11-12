@@ -11,6 +11,7 @@ Json parse(const std::string& text);
 std::string digest(const Json& value, const std::string& domain);
 Json owner();
 Json resource_preview(const Json& input);
+Json project_inspect(const Json& input);
 Json process(const Json& request, const fs::path& executable);
 void validate(const Json& value, const Json& schema);
 std::string file_digest(const fs::path& path);

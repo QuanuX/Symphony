@@ -1,0 +1,92 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "context_ref": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "maxLength": 4096,
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "type": "string"
+        }
+      ]
+    },
+    "correlation_id": {
+      "maxLength": 4096,
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+      "type": "string"
+    },
+    "descriptor_ref": {
+      "maxLength": 4096,
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "input": {
+      "additionalProperties": false,
+      "properties": {},
+      "required": [],
+      "type": "object"
+    },
+    "installation_ref": {
+      "additionalProperties": false,
+      "properties": {
+        "executable_digest": {
+          "maxLength": 4096,
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "receipt_digest": {
+          "maxLength": 4096,
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "version": {
+          "const": "0.1.0-dev"
+        }
+      },
+      "required": [
+        "version",
+        "executable_digest",
+        "receipt_digest"
+      ],
+      "type": "object"
+    },
+    "operation": {
+      "const": "project.reconcile"
+    },
+    "plan_ref": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "maxLength": 4096,
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "type": "string"
+        }
+      ]
+    },
+    "protocol": {
+      "const": "symphony.sov.cloudflare-request.v1"
+    },
+    "request_id": {
+      "maxLength": 4096,
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+      "type": "string"
+    }
+  },
+  "required": [
+    "protocol",
+    "request_id",
+    "correlation_id",
+    "operation",
+    "descriptor_ref",
+    "installation_ref",
+    "context_ref",
+    "plan_ref",
+    "input"
+  ],
+  "type": "object"
+}

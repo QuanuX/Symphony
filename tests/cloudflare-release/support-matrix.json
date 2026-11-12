@@ -1,6 +1,6 @@
 {
   "format_version": 1,
-  "owner_sha256": "8c566800bf47abaca6e7f59351ef4d0ba6f73c5e7d45cd18e1859142d7e5ba6a",
+  "owner_sha256": "14b667dca8ea7414507431a47183254fe9e5634fcb687ae63ddff73badfc4f74",
   "selected_cf": "1.0.0-beta.28",
   "selected_node": "26.12.0",
   "selected_cloudflared": "2026.10.7",

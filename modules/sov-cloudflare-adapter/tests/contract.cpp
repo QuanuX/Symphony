@@ -146,8 +146,74 @@ void resource_planning(const fs::path& exe) {
     }
 }
 
+void project_source(const fs::path& exe) {
+    Harness h(exe); const auto root=h.temporary.path/"project";
+    write(root/"cloudflare.config.ts", "throw new Error('SECRET-SENTINEL: configuration must not execute');\n");
+    write(root/"src/index.ts", "export default {};\n");
+    write(root/".env", "SECRET-SENTINEL");
+    write(root/"wrangler.jsonc", "{ /* explicit migration only */ }\n");
+    Json input{{"root",root.string()},{"configuration_kind","cf"},{"configuration","cloudflare.config.ts"},{"files",Json::array({"src/index.ts","cloudflare.config.ts"})}};
+    auto inspect=[&](const Json& v, bool ok=true){ return h.call("project.inspect",v,nullptr,ok).at("data"); };
+    auto observed=inspect(input);
+    NT_REQUIRE(observed.at("content_retained")==false && observed.at("configuration_evaluated")==false && observed.at("execution_available")==false && observed.at("provider_dispatch")==false);
+    NT_REQUIRE(observed.at("completeness")=="selected_files_only" && observed.at("migration_required")==false);
+    NT_REQUIRE(observed.at("manifest").at("files").size()==2);
+    NT_REQUIRE(observed.at("manifest").at("files").at(1).at("digest")==digest("export default {};\n"));
+    NT_REQUIRE(observed.at("snapshot_digest")==cloudflare::digest(observed.at("manifest"),"symphony.sov.cloudflare-project-manifest.v1"));
+    auto reordered=input; reordered["files"]=Json::array({"cloudflare.config.ts","src/index.ts"});
+    NT_REQUIRE(inspect(reordered)==observed);
+    write(root/"unselected.txt", "SECRET-SENTINEL: unselected content");
+    NT_REQUIRE(inspect(input)==observed);
+    auto bad=input;bad["token"]="SECRET-SENTINEL";inspect(bad,false);
+    bad=input;bad["configuration"]="missing.ts";inspect(bad,false);
+    bad=input;bad["configuration_kind"]="wrangler";inspect(bad,false);
+    for(const auto& path:std::vector<std::string>{"../outside","/etc/passwd","src/../src/index.ts","src//index.ts",".env",".dev.vars.test",".npmrc","node_modules/p/index.js",".git/config",".cloudflare/output/v0/a","missing.ts"}) {
+        bad=input;bad["files"].push_back(path);inspect(bad,false);
+    }
+    bad=input;bad["files"].push_back("src/index.ts");inspect(bad,false);
+    bad=input;bad["files"]=Json::array();inspect(bad,false);
+    fs::create_symlink(root/"src/index.ts", root/"link.ts");
+    fs::create_directory_symlink(root/"src",root/"linked-dir");
+    fs::create_directory_symlink(root,h.temporary.path/"linked-root");
+    NT_REQUIRE(::mkfifo((root/"fifo").c_str(),0600)==0);
+    for(const auto* path:{"link.ts","linked-dir/index.ts","fifo","src"}) {bad=input;bad["files"].push_back(path);inspect(bad,false);}
+    bad=input;bad["root"]=(h.temporary.path/"linked-root").string();inspect(bad,false);
+    fs::create_hard_link(root/"src/index.ts",root/"hard.ts");inspect(input,false);fs::remove(root/"hard.ts");
+    write(root/"large", "");fs::resize_file(root/"large",16*1024*1024+1);
+    bad=input;bad["files"].push_back("large");inspect(bad,false);
+    NT_REQUIRE(::chmod((root/"src/index.ts").c_str(),0700)==0);
+    NT_REQUIRE(inspect(input).at("snapshot_digest")!=observed.at("snapshot_digest"));
+    NT_REQUIRE(::chmod((root/"src/index.ts").c_str(),0600)==0);
+    NT_REQUIRE(inspect(input)==observed);
+    auto [bundle,id]=h.fixture();h.apply(h.plan("install",id,bundle));
+    h.apply(h.plan("select",id,{},h.state().at("state_digest")));
+    Json plan_input{{"store",h.store.string()},{"project",input},{"action","prepare"},{"expected_snapshot_digest",observed.at("snapshot_digest")},{"toolchain_id",id},{"expected_state",h.state().at("state_digest")}};
+    auto planned=h.call("project.plan",plan_input).at("data");
+    NT_REQUIRE(planned.at("provider_dispatch")==false && planned.at("execution_available")==false && planned.at("persistence")=="persisted_plan");
+    auto pd=planned.at("plan_digest").get<std::string>();
+    NT_REQUIRE(read_json(h.store/"plans"/(pd.substr(7)+".json"))==planned.at("plan"));
+    NT_REQUIRE(pd==cloudflare::digest(planned.at("plan"),"symphony.sov.cloudflare-project-plan.v1"));
+    NT_REQUIRE(planned.at("plan").at("observation")==observed && planned.at("plan").at("uid")==std::to_string(::geteuid()));
+    for(const auto* field:{"expected_snapshot_digest","toolchain_id","expected_state"}) {
+        bad=plan_input;bad[field]="sha256:"+std::string(64,'f');h.call("project.plan",bad,nullptr,false);
+    }
+    write(root/"src/index.ts","changed\n");h.call("project.plan",plan_input,nullptr,false);
+    write(root/"src/index.ts","export default {};\n");
+    bad=plan_input;bad["action"]="migrate";h.call("project.plan",bad,nullptr,false);
+    bad=plan_input;bad["action"]="deploy";h.call("project.plan",bad,nullptr,false);
+    auto wrangler=input;wrangler["configuration_kind"]="wrangler";wrangler["configuration"]="wrangler.jsonc";wrangler["files"]=Json::array({"wrangler.jsonc","src/index.ts"});
+    auto migrated=inspect(wrangler);NT_REQUIRE(migrated.at("migration_required")==true);
+    bad=plan_input;bad["project"]=wrangler;bad["expected_snapshot_digest"]=migrated.at("snapshot_digest");
+    h.call("project.plan",bad,nullptr,false);bad["action"]="migrate";h.call("project.plan",bad);
+    for(const auto* op:{"project.prepare","project.build","project.deploy","project.status","project.reconcile","project.migrate"}) {
+        auto r=h.call(op,Json::object(),nullptr,false);NT_REQUIRE(r.at("error_code")=="unavailable_contract" && r.at("dispatch_state")=="not_dispatched");
+    }
+    NT_REQUIRE(read(root/"wrangler.jsonc")=="{ /* explicit migration only */ }\n");
+    NT_REQUIRE(!fs::exists(root/".cloudflare") && fs::is_empty(h.store/"staging"));
+}
+
 }
 int main(int argc, char** argv) {
-    try { NT_REQUIRE(argc == 2);auto exe=fs::canonical(argv[1]);closed_frames(exe);descriptor_projection(exe);lifecycle(exe);integrity(exe);context_and_no_unqualified_execution(exe);reconciliation(exe);store_and_plan_substitution(exe);resource_planning(exe);std::cout << "8 native contract groups passed (strict controls, discovery, lifecycle, integrity, context, recovery, substitution, 23 typed resource profiles)\n";return 0; }
+    try { NT_REQUIRE(argc == 2 || argc == 3);auto exe=fs::canonical(argv[1]);if(argc==3){NT_REQUIRE(std::string(argv[2])=="--project-only");project_source(exe);std::cout << "Project source observation and planning checks passed\n";return 0;}closed_frames(exe);descriptor_projection(exe);lifecycle(exe);integrity(exe);context_and_no_unqualified_execution(exe);reconciliation(exe);store_and_plan_substitution(exe);resource_planning(exe);std::cout << "8 native contract groups passed (strict controls, discovery, lifecycle, integrity, context, recovery, substitution, 23 typed resource profiles)\n";return 0; }
     catch(const std::exception& e) { std::cerr << e.what() << '\n';return 1; }
 }

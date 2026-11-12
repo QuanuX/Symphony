@@ -30237,3 +30237,380 @@ automatic nested fitting and cross-run holdout history remain unimplemented.
 - deferred_projections: Live provider acceptance and unqualified runtime platforms
 - notes: Local evidence cannot close the live milestone.
 - status: canonical
+
+### Cloudflare project preparation boundary: project.build.input_schema.json
+- path: `knowledge/sov/cloudflare/schemas/project.build.input_schema.json`
+- title: Cloudflare project source observation and proposal project.build.input_schema.json
+- surface_type: Native implementation or generated closed schema
+- truth_role: Exact local project observation and explicit proposal boundary
+- owner: SOV maintainers
+- scope: I7 selected source files; no project execution
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native adapter, qxctl and qualification tooling
+- deferred_projections: Credentialless builds, sealed outputs and live deployment
+- notes: No configuration evaluation or implicit migration; unavailable operations remain explicit.
+- status: canonical
+
+### Cloudflare project preparation boundary: project.build.request_schema.json
+- path: `knowledge/sov/cloudflare/schemas/project.build.request_schema.json`
+- title: Cloudflare project source observation and proposal project.build.request_schema.json
+- surface_type: Native implementation or generated closed schema
+- truth_role: Exact local project observation and explicit proposal boundary
+- owner: SOV maintainers
+- scope: I7 selected source files; no project execution
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native adapter, qxctl and qualification tooling
+- deferred_projections: Credentialless builds, sealed outputs and live deployment
+- notes: No configuration evaluation or implicit migration; unavailable operations remain explicit.
+- status: canonical
+
+### Cloudflare project preparation boundary: project.build.result_schema.json
+- path: `knowledge/sov/cloudflare/schemas/project.build.result_schema.json`
+- title: Cloudflare project source observation and proposal project.build.result_schema.json
+- surface_type: Native implementation or generated closed schema
+- truth_role: Exact local project observation and explicit proposal boundary
+- owner: SOV maintainers
+- scope: I7 selected source files; no project execution
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native adapter, qxctl and qualification tooling
+- deferred_projections: Credentialless builds, sealed outputs and live deployment
+- notes: No configuration evaluation or implicit migration; unavailable operations remain explicit.
+- status: canonical
+
+### Cloudflare project preparation boundary: project.build.template.json
+- path: `knowledge/sov/cloudflare/schemas/project.build.template.json`
+- title: Cloudflare project source observation and proposal project.build.template.json
+- surface_type: Native implementation or generated closed schema
+- truth_role: Exact local project observation and explicit proposal boundary
+- owner: SOV maintainers
+- scope: I7 selected source files; no project execution
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native adapter, qxctl and qualification tooling
+- deferred_projections: Credentialless builds, sealed outputs and live deployment
+- notes: No configuration evaluation or implicit migration; unavailable operations remain explicit.
+- status: canonical
+
+### Cloudflare project preparation boundary: project.inspect.input_schema.json
+- path: `knowledge/sov/cloudflare/schemas/project.inspect.input_schema.json`
+- title: Cloudflare project source observation and proposal project.inspect.input_schema.json
+- surface_type: Native implementation or generated closed schema
+- truth_role: Exact local project observation and explicit proposal boundary
+- owner: SOV maintainers
+- scope: I7 selected source files; no project execution
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native adapter, qxctl and qualification tooling
+- deferred_projections: Credentialless builds, sealed outputs and live deployment
+- notes: No configuration evaluation or implicit migration; unavailable operations remain explicit.
+- status: canonical
+
+### Cloudflare project preparation boundary: project.inspect.request_schema.json
+- path: `knowledge/sov/cloudflare/schemas/project.inspect.request_schema.json`
+- title: Cloudflare project source observation and proposal project.inspect.request_schema.json
+- surface_type: Native implementation or generated closed schema
+- truth_role: Exact local project observation and explicit proposal boundary
+- owner: SOV maintainers
+- scope: I7 selected source files; no project execution
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native adapter, qxctl and qualification tooling
+- deferred_projections: Credentialless builds, sealed outputs and live deployment
+- notes: No configuration evaluation or implicit migration; unavailable operations remain explicit.
+- status: canonical
+
+### Cloudflare project preparation boundary: project.inspect.result_schema.json
+- path: `knowledge/sov/cloudflare/schemas/project.inspect.result_schema.json`
+- title: Cloudflare project source observation and proposal project.inspect.result_schema.json
+- surface_type: Native implementation or generated closed schema
+- truth_role: Exact local project observation and explicit proposal boundary
+- owner: SOV maintainers
+- scope: I7 selected source files; no project execution
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native adapter, qxctl and qualification tooling
+- deferred_projections: Credentialless builds, sealed outputs and live deployment
+- notes: No configuration evaluation or implicit migration; unavailable operations remain explicit.
+- status: canonical
+
+### Cloudflare project preparation boundary: project.inspect.template.json
+- path: `knowledge/sov/cloudflare/schemas/project.inspect.template.json`
+- title: Cloudflare project source observation and proposal project.inspect.template.json
+- surface_type: Native implementation or generated closed schema
+- truth_role: Exact local project observation and explicit proposal boundary
+- owner: SOV maintainers
+- scope: I7 selected source files; no project execution
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native adapter, qxctl and qualification tooling
+- deferred_projections: Credentialless builds, sealed outputs and live deployment
+- notes: No configuration evaluation or implicit migration; unavailable operations remain explicit.
+- status: canonical
+
+### Cloudflare project preparation boundary: project.migrate.input_schema.json
+- path: `knowledge/sov/cloudflare/schemas/project.migrate.input_schema.json`
+- title: Cloudflare project source observation and proposal project.migrate.input_schema.json
+- surface_type: Native implementation or generated closed schema
+- truth_role: Exact local project observation and explicit proposal boundary
+- owner: SOV maintainers
+- scope: I7 selected source files; no project execution
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native adapter, qxctl and qualification tooling
+- deferred_projections: Credentialless builds, sealed outputs and live deployment
+- notes: No configuration evaluation or implicit migration; unavailable operations remain explicit.
+- status: canonical
+
+### Cloudflare project preparation boundary: project.migrate.request_schema.json
+- path: `knowledge/sov/cloudflare/schemas/project.migrate.request_schema.json`
+- title: Cloudflare project source observation and proposal project.migrate.request_schema.json
+- surface_type: Native implementation or generated closed schema
+- truth_role: Exact local project observation and explicit proposal boundary
+- owner: SOV maintainers
+- scope: I7 selected source files; no project execution
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native adapter, qxctl and qualification tooling
+- deferred_projections: Credentialless builds, sealed outputs and live deployment
+- notes: No configuration evaluation or implicit migration; unavailable operations remain explicit.
+- status: canonical
+
+### Cloudflare project preparation boundary: project.migrate.result_schema.json
+- path: `knowledge/sov/cloudflare/schemas/project.migrate.result_schema.json`
+- title: Cloudflare project source observation and proposal project.migrate.result_schema.json
+- surface_type: Native implementation or generated closed schema
+- truth_role: Exact local project observation and explicit proposal boundary
+- owner: SOV maintainers
+- scope: I7 selected source files; no project execution
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native adapter, qxctl and qualification tooling
+- deferred_projections: Credentialless builds, sealed outputs and live deployment
+- notes: No configuration evaluation or implicit migration; unavailable operations remain explicit.
+- status: canonical
+
+### Cloudflare project preparation boundary: project.migrate.template.json
+- path: `knowledge/sov/cloudflare/schemas/project.migrate.template.json`
+- title: Cloudflare project source observation and proposal project.migrate.template.json
+- surface_type: Native implementation or generated closed schema
+- truth_role: Exact local project observation and explicit proposal boundary
+- owner: SOV maintainers
+- scope: I7 selected source files; no project execution
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native adapter, qxctl and qualification tooling
+- deferred_projections: Credentialless builds, sealed outputs and live deployment
+- notes: No configuration evaluation or implicit migration; unavailable operations remain explicit.
+- status: canonical
+
+### Cloudflare project preparation boundary: project.plan.input_schema.json
+- path: `knowledge/sov/cloudflare/schemas/project.plan.input_schema.json`
+- title: Cloudflare project source observation and proposal project.plan.input_schema.json
+- surface_type: Native implementation or generated closed schema
+- truth_role: Exact local project observation and explicit proposal boundary
+- owner: SOV maintainers
+- scope: I7 selected source files; no project execution
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native adapter, qxctl and qualification tooling
+- deferred_projections: Credentialless builds, sealed outputs and live deployment
+- notes: No configuration evaluation or implicit migration; unavailable operations remain explicit.
+- status: canonical
+
+### Cloudflare project preparation boundary: project.plan.request_schema.json
+- path: `knowledge/sov/cloudflare/schemas/project.plan.request_schema.json`
+- title: Cloudflare project source observation and proposal project.plan.request_schema.json
+- surface_type: Native implementation or generated closed schema
+- truth_role: Exact local project observation and explicit proposal boundary
+- owner: SOV maintainers
+- scope: I7 selected source files; no project execution
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native adapter, qxctl and qualification tooling
+- deferred_projections: Credentialless builds, sealed outputs and live deployment
+- notes: No configuration evaluation or implicit migration; unavailable operations remain explicit.
+- status: canonical
+
+### Cloudflare project preparation boundary: project.plan.result_schema.json
+- path: `knowledge/sov/cloudflare/schemas/project.plan.result_schema.json`
+- title: Cloudflare project source observation and proposal project.plan.result_schema.json
+- surface_type: Native implementation or generated closed schema
+- truth_role: Exact local project observation and explicit proposal boundary
+- owner: SOV maintainers
+- scope: I7 selected source files; no project execution
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native adapter, qxctl and qualification tooling
+- deferred_projections: Credentialless builds, sealed outputs and live deployment
+- notes: No configuration evaluation or implicit migration; unavailable operations remain explicit.
+- status: canonical
+
+### Cloudflare project preparation boundary: project.plan.template.json
+- path: `knowledge/sov/cloudflare/schemas/project.plan.template.json`
+- title: Cloudflare project source observation and proposal project.plan.template.json
+- surface_type: Native implementation or generated closed schema
+- truth_role: Exact local project observation and explicit proposal boundary
+- owner: SOV maintainers
+- scope: I7 selected source files; no project execution
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native adapter, qxctl and qualification tooling
+- deferred_projections: Credentialless builds, sealed outputs and live deployment
+- notes: No configuration evaluation or implicit migration; unavailable operations remain explicit.
+- status: canonical
+
+### Cloudflare project preparation boundary: project.prepare.input_schema.json
+- path: `knowledge/sov/cloudflare/schemas/project.prepare.input_schema.json`
+- title: Cloudflare project source observation and proposal project.prepare.input_schema.json
+- surface_type: Native implementation or generated closed schema
+- truth_role: Exact local project observation and explicit proposal boundary
+- owner: SOV maintainers
+- scope: I7 selected source files; no project execution
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native adapter, qxctl and qualification tooling
+- deferred_projections: Credentialless builds, sealed outputs and live deployment
+- notes: No configuration evaluation or implicit migration; unavailable operations remain explicit.
+- status: canonical
+
+### Cloudflare project preparation boundary: project.prepare.request_schema.json
+- path: `knowledge/sov/cloudflare/schemas/project.prepare.request_schema.json`
+- title: Cloudflare project source observation and proposal project.prepare.request_schema.json
+- surface_type: Native implementation or generated closed schema
+- truth_role: Exact local project observation and explicit proposal boundary
+- owner: SOV maintainers
+- scope: I7 selected source files; no project execution
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native adapter, qxctl and qualification tooling
+- deferred_projections: Credentialless builds, sealed outputs and live deployment
+- notes: No configuration evaluation or implicit migration; unavailable operations remain explicit.
+- status: canonical
+
+### Cloudflare project preparation boundary: project.prepare.result_schema.json
+- path: `knowledge/sov/cloudflare/schemas/project.prepare.result_schema.json`
+- title: Cloudflare project source observation and proposal project.prepare.result_schema.json
+- surface_type: Native implementation or generated closed schema
+- truth_role: Exact local project observation and explicit proposal boundary
+- owner: SOV maintainers
+- scope: I7 selected source files; no project execution
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native adapter, qxctl and qualification tooling
+- deferred_projections: Credentialless builds, sealed outputs and live deployment
+- notes: No configuration evaluation or implicit migration; unavailable operations remain explicit.
+- status: canonical
+
+### Cloudflare project preparation boundary: project.prepare.template.json
+- path: `knowledge/sov/cloudflare/schemas/project.prepare.template.json`
+- title: Cloudflare project source observation and proposal project.prepare.template.json
+- surface_type: Native implementation or generated closed schema
+- truth_role: Exact local project observation and explicit proposal boundary
+- owner: SOV maintainers
+- scope: I7 selected source files; no project execution
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native adapter, qxctl and qualification tooling
+- deferred_projections: Credentialless builds, sealed outputs and live deployment
+- notes: No configuration evaluation or implicit migration; unavailable operations remain explicit.
+- status: canonical
+
+### Cloudflare project preparation boundary: project.reconcile.input_schema.json
+- path: `knowledge/sov/cloudflare/schemas/project.reconcile.input_schema.json`
+- title: Cloudflare project source observation and proposal project.reconcile.input_schema.json
+- surface_type: Native implementation or generated closed schema
+- truth_role: Exact local project observation and explicit proposal boundary
+- owner: SOV maintainers
+- scope: I7 selected source files; no project execution
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native adapter, qxctl and qualification tooling
+- deferred_projections: Credentialless builds, sealed outputs and live deployment
+- notes: No configuration evaluation or implicit migration; unavailable operations remain explicit.
+- status: canonical
+
+### Cloudflare project preparation boundary: project.reconcile.request_schema.json
+- path: `knowledge/sov/cloudflare/schemas/project.reconcile.request_schema.json`
+- title: Cloudflare project source observation and proposal project.reconcile.request_schema.json
+- surface_type: Native implementation or generated closed schema
+- truth_role: Exact local project observation and explicit proposal boundary
+- owner: SOV maintainers
+- scope: I7 selected source files; no project execution
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native adapter, qxctl and qualification tooling
+- deferred_projections: Credentialless builds, sealed outputs and live deployment
+- notes: No configuration evaluation or implicit migration; unavailable operations remain explicit.
+- status: canonical
+
+### Cloudflare project preparation boundary: project.reconcile.result_schema.json
+- path: `knowledge/sov/cloudflare/schemas/project.reconcile.result_schema.json`
+- title: Cloudflare project source observation and proposal project.reconcile.result_schema.json
+- surface_type: Native implementation or generated closed schema
+- truth_role: Exact local project observation and explicit proposal boundary
+- owner: SOV maintainers
+- scope: I7 selected source files; no project execution
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native adapter, qxctl and qualification tooling
+- deferred_projections: Credentialless builds, sealed outputs and live deployment
+- notes: No configuration evaluation or implicit migration; unavailable operations remain explicit.
+- status: canonical
+
+### Cloudflare project preparation boundary: project.reconcile.template.json
+- path: `knowledge/sov/cloudflare/schemas/project.reconcile.template.json`
+- title: Cloudflare project source observation and proposal project.reconcile.template.json
+- surface_type: Native implementation or generated closed schema
+- truth_role: Exact local project observation and explicit proposal boundary
+- owner: SOV maintainers
+- scope: I7 selected source files; no project execution
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native adapter, qxctl and qualification tooling
+- deferred_projections: Credentialless builds, sealed outputs and live deployment
+- notes: No configuration evaluation or implicit migration; unavailable operations remain explicit.
+- status: canonical
+
+### Cloudflare project preparation boundary: project.status.input_schema.json
+- path: `knowledge/sov/cloudflare/schemas/project.status.input_schema.json`
+- title: Cloudflare project source observation and proposal project.status.input_schema.json
+- surface_type: Native implementation or generated closed schema
+- truth_role: Exact local project observation and explicit proposal boundary
+- owner: SOV maintainers
+- scope: I7 selected source files; no project execution
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native adapter, qxctl and qualification tooling
+- deferred_projections: Credentialless builds, sealed outputs and live deployment
+- notes: No configuration evaluation or implicit migration; unavailable operations remain explicit.
+- status: canonical
+
+### Cloudflare project preparation boundary: project.status.request_schema.json
+- path: `knowledge/sov/cloudflare/schemas/project.status.request_schema.json`
+- title: Cloudflare project source observation and proposal project.status.request_schema.json
+- surface_type: Native implementation or generated closed schema
+- truth_role: Exact local project observation and explicit proposal boundary
+- owner: SOV maintainers
+- scope: I7 selected source files; no project execution
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native adapter, qxctl and qualification tooling
+- deferred_projections: Credentialless builds, sealed outputs and live deployment
+- notes: No configuration evaluation or implicit migration; unavailable operations remain explicit.
+- status: canonical
+
+### Cloudflare project preparation boundary: project.status.result_schema.json
+- path: `knowledge/sov/cloudflare/schemas/project.status.result_schema.json`
+- title: Cloudflare project source observation and proposal project.status.result_schema.json
+- surface_type: Native implementation or generated closed schema
+- truth_role: Exact local project observation and explicit proposal boundary
+- owner: SOV maintainers
+- scope: I7 selected source files; no project execution
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native adapter, qxctl and qualification tooling
+- deferred_projections: Credentialless builds, sealed outputs and live deployment
+- notes: No configuration evaluation or implicit migration; unavailable operations remain explicit.
+- status: canonical
+
+### Cloudflare project preparation boundary: project.status.template.json
+- path: `knowledge/sov/cloudflare/schemas/project.status.template.json`
+- title: Cloudflare project source observation and proposal project.status.template.json
+- surface_type: Native implementation or generated closed schema
+- truth_role: Exact local project observation and explicit proposal boundary
+- owner: SOV maintainers
+- scope: I7 selected source files; no project execution
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native adapter, qxctl and qualification tooling
+- deferred_projections: Credentialless builds, sealed outputs and live deployment
+- notes: No configuration evaluation or implicit migration; unavailable operations remain explicit.
+- status: canonical
+
+### Cloudflare project preparation boundary: project.cpp
+- path: `modules/sov-cloudflare-adapter/src/project.cpp`
+- title: Cloudflare project source observation and proposal project.cpp
+- surface_type: Native implementation or generated closed schema
+- truth_role: Exact local project observation and explicit proposal boundary
+- owner: SOV maintainers
+- scope: I7 selected source files; no project execution
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native adapter, qxctl and qualification tooling
+- deferred_projections: Credentialless builds, sealed outputs and live deployment
+- notes: No configuration evaluation or implicit migration; unavailable operations remain explicit.
+- status: canonical
