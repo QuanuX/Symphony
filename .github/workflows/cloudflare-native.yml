@@ -47,6 +47,8 @@ jobs:
       - name: Select Apple C++26 toolchain
         if: runner.os == 'macOS'
         run: echo 'DEVELOPER_DIR=/Applications/Xcode_26.3.app/Contents/Developer' >> "$GITHUB_ENV"
+      - name: Check local qualification evidence handling
+        run: go test tests/cloudflare-release/gate.go tests/cloudflare-release/gate_test.go
       - name: Build and verify the independent local owner
         shell: bash
         run: |

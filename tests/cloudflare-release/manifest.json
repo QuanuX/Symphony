@@ -1,0 +1,116 @@
+{
+  "format_version": 1,
+  "suites": [
+    {
+      "id": "native",
+      "format": "ctest-junit",
+      "required_tests": [
+        "cloudflare-access-sessions",
+        "cloudflare-owner-projections",
+        "cloudflare-native-contract",
+        "cloudflare-resource-execution",
+        "cloudflare-connector-lifecycle"
+      ],
+      "acceptance_coverage": [
+        "CF-01",
+        "CF-03",
+        "CF-04",
+        "CF-05",
+        "CF-06",
+        "CF-08",
+        "CF-09",
+        "CF-10",
+        "PR-05"
+      ]
+    },
+    {
+      "id": "provider",
+      "format": "ctest-junit",
+      "required_tests": [
+        "ssiag-private-store-contract"
+      ],
+      "acceptance_coverage": [
+        "CF-04"
+      ]
+    },
+    {
+      "id": "profiles",
+      "format": "go-json",
+      "required_tests": [
+        "TestProtectedProfileInstalledProcess"
+      ],
+      "acceptance_coverage": [
+        "PR-01",
+        "PR-02",
+        "PR-05"
+      ]
+    },
+    {
+      "id": "carrier",
+      "format": "go-json",
+      "required_tests": [
+        "TestSSHOptionsExactAndNoninteractive",
+        "TestInstalledProfileRealOpenSSH",
+        "TestSessionModeNeverFallsBackToSSH"
+      ],
+      "acceptance_coverage": [
+        "PR-03",
+        "PR-04",
+        "PR-05",
+        "TR-01",
+        "TR-02",
+        "TR-05"
+      ]
+    },
+    {
+      "id": "qxctl",
+      "format": "go-json",
+      "required_tests": [
+        "TestCloudflareInstalledReceiptProcess",
+        "TestTargetInstalledAuthorityAndBinding",
+        "TestSessionStrictResultAndUncertainDispatch",
+        "TestSSHBindingAndCanonicalParity"
+      ],
+      "acceptance_coverage": [
+        "CF-01",
+        "CF-03",
+        "PR-04",
+        "TR-01",
+        "TR-04",
+        "TR-05"
+      ]
+    },
+    {
+      "id": "discovery",
+      "format": "go-json",
+      "required_tests": [
+        "TestCommandRegistryCobraParityAndStableIdentity",
+        "TestCommandRegistryUniqueSemanticSurfaces"
+      ],
+      "acceptance_coverage": [
+        "CF-01"
+      ]
+    },
+    {
+      "id": "ssiag",
+      "format": "go-json",
+      "required_tests": [
+        "TestCloudflareUseRequiresExactGrantAndCommittedAudit",
+        "TestCloudflareUseRejectsForgedAndExpiredControls",
+        "TestTransportProfileAuditExactProducerAndReceipt",
+        "TestTransportConnectionAuditKernelAndReceipt"
+      ],
+      "acceptance_coverage": [
+        "CF-04",
+        "PR-01",
+        "TR-04"
+      ]
+    }
+  ],
+  "open_requirements": [
+    "M1-02: private Tunnel secret rotation and sensitive-result import are not implemented; pinned tunnels.edit supports the underlying PATCH.",
+    "M1-06: LIVE-01 and TR-02 through TR-05 need actual selected Access SSH and target authority evidence.",
+    "M1-07: provider lifecycle, privileged installed profile, exact runtime/platform, cleanup and live denial/recovery evidence must be reviewed separately.",
+    "SCLV closure follows completed and ratified work; this local report is not milestone closure."
+  ]
+}

@@ -30159,3 +30159,81 @@ automatic nested fitting and cross-run holdout history remain unimplemented.
 - deferred_projections: Live Access SSH and unqualified runtime platforms
 - notes: No fixture establishes live provider or target authority.
 - status: canonical
+
+### Cloudflare I6 tests/cloudflare-release/README.md
+- path: `tests/cloudflare-release/README.md`
+- title: Cloudflare I6 local qualification README.md
+- surface_type: qualification implementation or evidence contract
+- truth_role: Bounded local coverage and explicit open live requirements
+- owner: SOV maintainers
+- scope: Integrated Cloudflare administration and optional transport qualification
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Maintainers and qualification tooling
+- deferred_projections: Live provider acceptance and unqualified runtime platforms
+- notes: Local evidence cannot close the live milestone.
+- status: canonical
+
+### Cloudflare I6 tests/cloudflare-release/gate.go
+- path: `tests/cloudflare-release/gate.go`
+- title: Cloudflare I6 local qualification gate.go
+- surface_type: qualification implementation or evidence contract
+- truth_role: Bounded local coverage and explicit open live requirements
+- owner: SOV maintainers
+- scope: Integrated Cloudflare administration and optional transport qualification
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Maintainers and qualification tooling
+- deferred_projections: Live provider acceptance and unqualified runtime platforms
+- notes: Local evidence cannot close the live milestone.
+- status: canonical
+
+### Cloudflare I6 tests/cloudflare-release/gate_test.go
+- path: `tests/cloudflare-release/gate_test.go`
+- title: Cloudflare I6 local qualification gate_test.go
+- surface_type: qualification implementation or evidence contract
+- truth_role: Bounded local coverage and explicit open live requirements
+- owner: SOV maintainers
+- scope: Integrated Cloudflare administration and optional transport qualification
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Maintainers and qualification tooling
+- deferred_projections: Live provider acceptance and unqualified runtime platforms
+- notes: Local evidence cannot close the live milestone.
+- status: canonical
+
+### Cloudflare I6 tests/cloudflare-release/manifest.json
+- path: `tests/cloudflare-release/manifest.json`
+- title: Cloudflare I6 local qualification manifest.json
+- surface_type: qualification implementation or evidence contract
+- truth_role: Bounded local coverage and explicit open live requirements
+- owner: SOV maintainers
+- scope: Integrated Cloudflare administration and optional transport qualification
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Maintainers and qualification tooling
+- deferred_projections: Live provider acceptance and unqualified runtime platforms
+- notes: Local evidence cannot close the live milestone.
+- status: canonical
+
+### Cloudflare I6 tests/cloudflare-release/support-matrix.json
+- path: `tests/cloudflare-release/support-matrix.json`
+- title: Cloudflare I6 local qualification support-matrix.json
+- surface_type: qualification implementation or evidence contract
+- truth_role: Bounded local coverage and explicit open live requirements
+- owner: SOV maintainers
+- scope: Integrated Cloudflare administration and optional transport qualification
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Maintainers and qualification tooling
+- deferred_projections: Live provider acceptance and unqualified runtime platforms
+- notes: Local evidence cannot close the live milestone.
+- status: canonical
+
+### Cloudflare I6 knowledge/sov/cloudflare/I6-QUALIFICATION.md
+- path: `knowledge/sov/cloudflare/I6-QUALIFICATION.md`
+- title: Cloudflare I6 local qualification I6-QUALIFICATION.md
+- surface_type: qualification implementation or evidence contract
+- truth_role: Bounded local coverage and explicit open live requirements
+- owner: SOV maintainers
+- scope: Integrated Cloudflare administration and optional transport qualification
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Maintainers and qualification tooling
+- deferred_projections: Live provider acceptance and unqualified runtime platforms
+- notes: Local evidence cannot close the live milestone.
+- status: canonical

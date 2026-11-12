@@ -284,3 +284,74 @@ and credential SDKs: `cloudflare-resource-execution` and
 at 73 roots, 60 native components and 1,313 source hashes; only the four changed
 source hashes were refreshed. Unchanged SSH tests and broad campaigns were
 not rerun. No new Linux arm64 result is claimed.
+
+## I6 local integrated gate — November 12, 2026
+
+I6 starts from integration `73829980`, retaining both I4/I5 repair records.
+Runtime code and SSH v1 are unchanged. The new local evidence reducer validates
+hashed CTest/Go artifacts, complete events and required test names; missing,
+skipped, malformed or failed coverage cannot pass. Its five regression tests
+pass, and its support matrix binds all 23 current resource profiles and M1-01
+through M1-07. It explicitly cannot certify live acceptance or release authority.
+
+Fresh macOS amd64 evidence with LLVM 23.1.2 and explicitly selected Go 1.26.5:
+
+- Native administration/Access CTests: 5/5; native credential contract: 1/1.
+- Profile suite: 40 passing test events and one explicit installed-root skip.
+- Carrier suite: 43 passing test events; the Linux-only installed OpenSSH case
+  is not compiled on macOS. The generated wire package has no test files.
+- qxctl consumer/boundary suites: 181 passing test events and one installed SBV
+  target skip; the generated wire package has no test files. Discovery: 22
+  passing events. SSIAG/audit: 16 passing events. Parent/subtest events are not
+  summed into independent acceptance-case totals.
+- Installed receipt/owner/helper-schema and default-runtime refusal pass.
+  Disposable removal removes all 148 owned files and its receipt, preserving
+  an unrelated sentinel. Generated profile/carrier contracts, native SCV
+  installed-process integration and native SSFV projection pass.
+- The pinned CLI guard passes 23 profiles in 28 processes and 26 synthetic API
+  attempts, with zero real provider calls. Production runner framing, target
+  refusal before network and scratch cleanup pass. Installed real-CLI
+  qualification passes all 11 checks, including all 23 typed plans against
+  pinned CLI dry runs, hostile ambient settings, runtime-drift refusal and
+  cleanup, with zero provider calls or SSH connections.
+- Dependency/release validation passes: 73 roots, 60 native components and
+  1,335 source hashes. Source validation has zero violations and four existing
+  historical warnings. Commands/features remain 523/154.
+
+The broader offline qualification exposed two pre-I4 assertions that still
+expected resource administration/local context persistence to be unavailable.
+Those assertions now verify the exact implemented descriptor's required SSIAG
+authority and credentialless local context planning without provider dispatch.
+The retained runtime copy stalled on filesystem reads. A fresh copy reconstructed
+from the pinned lock and retained Node artifact matches all 2,337 file hashes;
+versions are unchanged and no package scripts ran. Earlier PATH-Go exploratory
+runs and failed environment/probe attempts are separate from the exact-toolchain
+results above.
+
+The local reducer correctly reports **incomplete** for the required skipped or
+platform-missing cases. I6 remains **open**, including native private Tunnel token
+rotation and LIVE-01/TR02–TR05. The pinned CLI has the underlying `tunnels edit`
+PATCH primitive: the missing piece is native secret-body/result/recovery handling,
+not an upstream absence. See `I6-QUALIFICATION.md` for this correction, current
+read-only live preflight and exact next actions. No live resource was created,
+no profile was privilegedly published, and no canonical SCLV closure is claimed.
+Retained evidence: workspace `implementation/cloudflare-i6/evidence/`. Remote
+results for this increment are not awaited.
+
+### PR #194 focused SSH fixture repair — November 12, 2026
+
+Protected transport profile run `43168157246` failed only on macOS Intel in
+`TestSSHProcessReplyBindingAndLoss/wait`. Its 250 ms deadline started before
+the selected executable was copied and hashed; the 380 ms invocation reached
+process start with an expired context instead of exercising reply loss.
+
+The fixture now acknowledges successful invocation decoding through a private
+ready marker before the test cancels. A separate 30-second watchdog bounds
+startup failure; the assertions require acknowledged startup, explicit
+cancellation, an unverified lost reply, no target result and no automatic retry.
+Production SSH v1 code and workflow coverage are unchanged.
+
+Only `TestSSHProcessReplyBindingAndLoss/wait` was rerun, using Go 1.26.5 on
+macOS amd64 with the repository source workspace and `-mod=readonly -count=1`:
+pass, 0.43 seconds. No other test or full suite was rerun. Only the changed test's
+dependency source hash was refreshed. Remote results are not awaited.
