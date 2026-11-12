@@ -1,7 +1,12 @@
 #include "catalog_fixture.hpp"
 #include "private_io.hpp"
+#include <cstring>
 #include <filesystem>
+#include <future>
 #include <iostream>
+#include <poll.h>
+#include <sys/socket.h>
+#include <sys/un.h>
 #include <sys/wait.h>
 #include <thread>
 
@@ -37,6 +42,39 @@ Json good(const Json &response) {
   check(true,"native operation accepted");return response.at("result").at("result");
 }
 void refused(const Json &response,const char *code) {check(response.at("outcome")=="error","expected native refusal");check(response.at("error").at("code")==code,"wrong refusal");}
+// Model a connected owner exiting after receiving a request, before its reply.
+// Retained status must be readable; a lost mutation reply must remain uncertain.
+Json lost_reply(const std::string &exe,const std::string &operation,const Json &payload) {
+  const auto path=payload.at("runtime_dir").get<std::string>()+"/control.sock";
+  io::Fd listener(::socket(AF_UNIX,SOCK_STREAM,0));
+  check(listener.value>=0,"lost-reply socket");
+  check(::fcntl(listener.value,F_SETFD,FD_CLOEXEC)==0,"lost-reply close on exec");
+  sockaddr_un address{};address.sun_family=AF_UNIX;
+  check(path.size()<sizeof address.sun_path,"lost-reply socket path");
+  std::memcpy(address.sun_path,path.c_str(),path.size()+1);
+  check(::bind(listener.value,reinterpret_cast<sockaddr*>(&address),sizeof address)==0,"lost-reply bind");
+  check(::chmod(path.c_str(),0600)==0&&::listen(listener.value,1)==0,"lost-reply listen");
+  auto peer=std::async(std::launch::async,[&] {
+    pollfd ready{listener.value,POLLIN,0};
+    io::require(::poll(&ready,1,5000)>0,"test.peer.accept_timeout");
+    io::Fd client(::accept(listener.value,nullptr,nullptr));
+    io::require(client.value>=0,"test.peer.accept_failed");
+    timeval timeout{};timeout.tv_sec=3;
+    io::require(::setsockopt(client.value,SOL_SOCKET,SO_RCVTIMEO,&timeout,sizeof timeout)==0,"test.peer.timeout_failed");
+    std::string request;char buffer[8192];
+    while(request.find('\n')==std::string::npos) {
+      auto count=::recv(client.value,buffer,sizeof buffer,0);
+      if(count<0&&errno==EINTR)continue;
+      io::require(count>0,"test.peer.request_missing");
+      request.append(buffer,static_cast<std::size_t>(count));
+      io::require(request.size()<=1048576,"test.peer.request_bound");
+    }
+    io::require(Json::parse(request).at("operation")==operation,"test.peer.operation_mismatch");
+    // Closing without a response deterministically exercises receive uncertainty.
+  });
+  auto response=call(exe,operation,payload);peer.get();
+  check(::unlink(path.c_str())==0,"lost-reply socket cleanup");return response;
+}
 }
 int main(int argc,char **argv) {
   std::string base,exe;std::vector<std::pair<std::string,std::string>> active;
@@ -170,6 +208,24 @@ int main(int argc,char **argv) {
       }
     }
     active.clear();
+    if(slow) {
+      const auto dropped=base+"/dropped-reply";io::directory(dropped,true);
+      const auto stopped_record=io::read_json(a+"/runtime.json");
+      check(stopped_record.at("stop_result").at("state")=="stopped","retained shutdown completed");
+      io::write(dropped+"/runtime.json",stopped_record);
+      Json selection={{"runtime_dir",dropped},{"expected_generation",generation}};
+      auto observed=good(lost_reply(exe,"runtime_status",selection));
+      check(observed.at("generation")==generation&&observed.at("state")=="unreachable","lost status reply returns retained generation as unreachable");
+      check(observed.at("provider_readiness")=="unknown"&&observed.at("recovery")=="inspect_attempts_no_automatic_takeover","retained status does not claim live readiness or takeover");
+      check(observed.at("stop_result")==stopped_record.at("stop_result"),"lost status reply preserves shutdown evidence");
+      auto stale=selection;stale["expected_generation"]=second_generation;
+      refused(lost_reply(exe,"runtime_status",stale),"srrapiv.generation.stale");
+      refused(lost_reply(exe,"runtime_stop",selection),"srrapiv.transport.uncertain");
+      auto lost_invocation=invocation;lost_invocation["runtime_dir"]=dropped;
+      refused(lost_reply(exe,"runtime_invoke",lost_invocation),"srrapiv.transport.uncertain");
+      check(std::filesystem::remove(dropped+"/runtime.json"),"remove retained status fixture");
+      refused(lost_reply(exe,"runtime_status",selection),"srrapiv.transport.uncertain");
+    }
     auto retained=good(call(exe,"runtime_attempts",{{"runtime_dir",a},{"attempt_id","attempt-one"}}));check(retained.at("state")=="outcome_unknown","offline recovery survives stop");
     std::filesystem::remove_all(base);std::cout<<assertions<<" runtime assertions passed; no provider initialization or login\n";return 0;
   }catch(const std::exception &error) {
