@@ -195,7 +195,8 @@
             "inspect_plan",
             "reconcile",
             "new_plan",
-            "implement_I4"
+            "implement_I4",
+            "inspect_native_import"
           ],
           "type": "string"
         }

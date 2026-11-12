@@ -26148,32 +26148,6 @@ automatic nested fitting and cross-run holdout history remain unimplemented.
 - notes: Presence is not proof of a passing test or live provider authority.
 - status: canonical
 
-### Cloudflare C0/I1 connector.start.input_schema.json
-- path: `knowledge/sov/cloudflare/schemas/connector.start.input_schema.json`
-- title: Cloudflare native local foundation connector.start.input_schema.json
-- surface_type: implementation or conformance source
-- truth_role: Exact source definition or explicitly scoped dated evidence
-- owner: SOV Cloudflare maintainers
-- scope: Local toolchain lifecycle, offline discovery and context proposals.
-- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
-- consumers: Native consumers, qxctl and maintainers
-- deferred_projections: Provider credentials, resource operations, profiles and live transport qualification
-- notes: Presence is not proof of a passing test or live provider authority.
-- status: canonical
-
-### Cloudflare C0/I1 connector.start.template.json
-- path: `knowledge/sov/cloudflare/schemas/connector.start.template.json`
-- title: Cloudflare native local foundation connector.start.template.json
-- surface_type: implementation or conformance source
-- truth_role: Exact source definition or explicitly scoped dated evidence
-- owner: SOV Cloudflare maintainers
-- scope: Local toolchain lifecycle, offline discovery and context proposals.
-- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
-- consumers: Native consumers, qxctl and maintainers
-- deferred_projections: Provider credentials, resource operations, profiles and live transport qualification
-- notes: Presence is not proof of a passing test or live provider authority.
-- status: canonical
-
 ### Cloudflare C0/I1 context.apply.input_schema.json
 - path: `knowledge/sov/cloudflare/schemas/context.apply.input_schema.json`
 - title: Cloudflare native local foundation context.apply.input_schema.json
@@ -26905,32 +26879,6 @@ automatic nested fitting and cross-run holdout history remain unimplemented.
 ### Cloudflare source capability.template.result_schema.json
 - path: `knowledge/sov/cloudflare/schemas/capability.template.result_schema.json`
 - title: Cloudflare native local foundation capability.template.result_schema.json
-- surface_type: implementation or conformance source
-- truth_role: Exact source definition or explicitly scoped evidence
-- owner: SOV Cloudflare maintainers
-- scope: Local native administration and isolated qualification.
-- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
-- consumers: Native consumers, qxctl and maintainers
-- deferred_projections: Live provider, profile and transport qualification
-- notes: Source presence does not establish live provider acceptance.
-- status: canonical
-
-### Cloudflare source connector.start.request_schema.json
-- path: `knowledge/sov/cloudflare/schemas/connector.start.request_schema.json`
-- title: Cloudflare native local foundation connector.start.request_schema.json
-- surface_type: implementation or conformance source
-- truth_role: Exact source definition or explicitly scoped evidence
-- owner: SOV Cloudflare maintainers
-- scope: Local native administration and isolated qualification.
-- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
-- consumers: Native consumers, qxctl and maintainers
-- deferred_projections: Live provider, profile and transport qualification
-- notes: Source presence does not establish live provider acceptance.
-- status: canonical
-
-### Cloudflare source connector.start.result_schema.json
-- path: `knowledge/sov/cloudflare/schemas/connector.start.result_schema.json`
-- title: Cloudflare native local foundation connector.start.result_schema.json
 - surface_type: implementation or conformance source
 - truth_role: Exact source definition or explicitly scoped evidence
 - owner: SOV Cloudflare maintainers
@@ -28715,4 +28663,1278 @@ automatic nested fitting and cross-run holdout history remain unimplemented.
 - consumers: qxctl, carrier and maintainers
 - deferred_projections: I5 Cloudflare session and live qualification
 - notes: Fixtures do not establish live provider acceptance.
+- status: canonical
+
+### Cloudflare typed resource planning resource.plan.input_schema.json
+- path: `knowledge/sov/cloudflare/schemas/resource.plan.input_schema.json`
+- title: Cloudflare typed resource planning resource.plan.input_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped evidence
+- owner: SOV Cloudflare maintainers
+- scope: Noncredentialed resource planning with no provider dispatch.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Credential channels, resource execution and provider qualification
+- notes: Offline plans do not establish provider authority or live acceptance.
+- status: canonical
+
+### Cloudflare typed resource planning resource.plan.request_schema.json
+- path: `knowledge/sov/cloudflare/schemas/resource.plan.request_schema.json`
+- title: Cloudflare typed resource planning resource.plan.request_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped evidence
+- owner: SOV Cloudflare maintainers
+- scope: Noncredentialed resource planning with no provider dispatch.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Credential channels, resource execution and provider qualification
+- notes: Offline plans do not establish provider authority or live acceptance.
+- status: canonical
+
+### Cloudflare typed resource planning resource.plan.result_schema.json
+- path: `knowledge/sov/cloudflare/schemas/resource.plan.result_schema.json`
+- title: Cloudflare typed resource planning resource.plan.result_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped evidence
+- owner: SOV Cloudflare maintainers
+- scope: Noncredentialed resource planning with no provider dispatch.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Credential channels, resource execution and provider qualification
+- notes: Offline plans do not establish provider authority or live acceptance.
+- status: canonical
+
+### Cloudflare typed resource planning resource.plan.template.json
+- path: `knowledge/sov/cloudflare/schemas/resource.plan.template.json`
+- title: Cloudflare typed resource planning resource.plan.template.json
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped evidence
+- owner: SOV Cloudflare maintainers
+- scope: Noncredentialed resource planning with no provider dispatch.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Credential channels, resource execution and provider qualification
+- notes: Offline plans do not establish provider authority or live acceptance.
+- status: canonical
+
+### Cloudflare typed resource planning resource.cpp
+- path: `modules/sov-cloudflare-adapter/src/resource.cpp`
+- title: Cloudflare typed resource planning resource.cpp
+- surface_type: implementation or conformance source
+- truth_role: Exact source definition or explicitly scoped evidence
+- owner: SOV Cloudflare maintainers
+- scope: Noncredentialed resource planning with no provider dispatch.
+- relationships: governed_by -> `knowledge/sov/cloudflare/MANIFEST.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Credential channels, resource execution and provider qualification
+- notes: Offline plans do not establish provider authority or live acceptance.
+- status: canonical
+
+### I4 native administration connector.installation.apply.input_schema.json
+- path: `knowledge/sov/cloudflare/schemas/connector.installation.apply.input_schema.json`
+- title: I4 native Cloudflare administration connector.installation.apply.input_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration connector.installation.apply.request_schema.json
+- path: `knowledge/sov/cloudflare/schemas/connector.installation.apply.request_schema.json`
+- title: I4 native Cloudflare administration connector.installation.apply.request_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration connector.installation.apply.result_schema.json
+- path: `knowledge/sov/cloudflare/schemas/connector.installation.apply.result_schema.json`
+- title: I4 native Cloudflare administration connector.installation.apply.result_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration connector.installation.apply.template.json
+- path: `knowledge/sov/cloudflare/schemas/connector.installation.apply.template.json`
+- title: I4 native Cloudflare administration connector.installation.apply.template.json
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration connector.installation.inspect.input_schema.json
+- path: `knowledge/sov/cloudflare/schemas/connector.installation.inspect.input_schema.json`
+- title: I4 native Cloudflare administration connector.installation.inspect.input_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration connector.installation.inspect.request_schema.json
+- path: `knowledge/sov/cloudflare/schemas/connector.installation.inspect.request_schema.json`
+- title: I4 native Cloudflare administration connector.installation.inspect.request_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration connector.installation.inspect.result_schema.json
+- path: `knowledge/sov/cloudflare/schemas/connector.installation.inspect.result_schema.json`
+- title: I4 native Cloudflare administration connector.installation.inspect.result_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration connector.installation.inspect.template.json
+- path: `knowledge/sov/cloudflare/schemas/connector.installation.inspect.template.json`
+- title: I4 native Cloudflare administration connector.installation.inspect.template.json
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration connector.installation.list.input_schema.json
+- path: `knowledge/sov/cloudflare/schemas/connector.installation.list.input_schema.json`
+- title: I4 native Cloudflare administration connector.installation.list.input_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration connector.installation.list.request_schema.json
+- path: `knowledge/sov/cloudflare/schemas/connector.installation.list.request_schema.json`
+- title: I4 native Cloudflare administration connector.installation.list.request_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration connector.installation.list.result_schema.json
+- path: `knowledge/sov/cloudflare/schemas/connector.installation.list.result_schema.json`
+- title: I4 native Cloudflare administration connector.installation.list.result_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration connector.installation.list.template.json
+- path: `knowledge/sov/cloudflare/schemas/connector.installation.list.template.json`
+- title: I4 native Cloudflare administration connector.installation.list.template.json
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration connector.installation.plan.input_schema.json
+- path: `knowledge/sov/cloudflare/schemas/connector.installation.plan.input_schema.json`
+- title: I4 native Cloudflare administration connector.installation.plan.input_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration connector.installation.plan.request_schema.json
+- path: `knowledge/sov/cloudflare/schemas/connector.installation.plan.request_schema.json`
+- title: I4 native Cloudflare administration connector.installation.plan.request_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration connector.installation.plan.result_schema.json
+- path: `knowledge/sov/cloudflare/schemas/connector.installation.plan.result_schema.json`
+- title: I4 native Cloudflare administration connector.installation.plan.result_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration connector.installation.plan.template.json
+- path: `knowledge/sov/cloudflare/schemas/connector.installation.plan.template.json`
+- title: I4 native Cloudflare administration connector.installation.plan.template.json
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration connector.installation.reconcile.input_schema.json
+- path: `knowledge/sov/cloudflare/schemas/connector.installation.reconcile.input_schema.json`
+- title: I4 native Cloudflare administration connector.installation.reconcile.input_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration connector.installation.reconcile.request_schema.json
+- path: `knowledge/sov/cloudflare/schemas/connector.installation.reconcile.request_schema.json`
+- title: I4 native Cloudflare administration connector.installation.reconcile.request_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration connector.installation.reconcile.result_schema.json
+- path: `knowledge/sov/cloudflare/schemas/connector.installation.reconcile.result_schema.json`
+- title: I4 native Cloudflare administration connector.installation.reconcile.result_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration connector.installation.reconcile.template.json
+- path: `knowledge/sov/cloudflare/schemas/connector.installation.reconcile.template.json`
+- title: I4 native Cloudflare administration connector.installation.reconcile.template.json
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration connector.installation.status.input_schema.json
+- path: `knowledge/sov/cloudflare/schemas/connector.installation.status.input_schema.json`
+- title: I4 native Cloudflare administration connector.installation.status.input_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration connector.installation.status.request_schema.json
+- path: `knowledge/sov/cloudflare/schemas/connector.installation.status.request_schema.json`
+- title: I4 native Cloudflare administration connector.installation.status.request_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration connector.installation.status.result_schema.json
+- path: `knowledge/sov/cloudflare/schemas/connector.installation.status.result_schema.json`
+- title: I4 native Cloudflare administration connector.installation.status.result_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration connector.installation.status.template.json
+- path: `knowledge/sov/cloudflare/schemas/connector.installation.status.template.json`
+- title: I4 native Cloudflare administration connector.installation.status.template.json
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration connector.instance.apply.input_schema.json
+- path: `knowledge/sov/cloudflare/schemas/connector.instance.apply.input_schema.json`
+- title: I4 native Cloudflare administration connector.instance.apply.input_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration connector.instance.apply.request_schema.json
+- path: `knowledge/sov/cloudflare/schemas/connector.instance.apply.request_schema.json`
+- title: I4 native Cloudflare administration connector.instance.apply.request_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration connector.instance.apply.result_schema.json
+- path: `knowledge/sov/cloudflare/schemas/connector.instance.apply.result_schema.json`
+- title: I4 native Cloudflare administration connector.instance.apply.result_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration connector.instance.apply.template.json
+- path: `knowledge/sov/cloudflare/schemas/connector.instance.apply.template.json`
+- title: I4 native Cloudflare administration connector.instance.apply.template.json
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration connector.instance.inspect.input_schema.json
+- path: `knowledge/sov/cloudflare/schemas/connector.instance.inspect.input_schema.json`
+- title: I4 native Cloudflare administration connector.instance.inspect.input_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration connector.instance.inspect.request_schema.json
+- path: `knowledge/sov/cloudflare/schemas/connector.instance.inspect.request_schema.json`
+- title: I4 native Cloudflare administration connector.instance.inspect.request_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration connector.instance.inspect.result_schema.json
+- path: `knowledge/sov/cloudflare/schemas/connector.instance.inspect.result_schema.json`
+- title: I4 native Cloudflare administration connector.instance.inspect.result_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration connector.instance.inspect.template.json
+- path: `knowledge/sov/cloudflare/schemas/connector.instance.inspect.template.json`
+- title: I4 native Cloudflare administration connector.instance.inspect.template.json
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration connector.instance.list.input_schema.json
+- path: `knowledge/sov/cloudflare/schemas/connector.instance.list.input_schema.json`
+- title: I4 native Cloudflare administration connector.instance.list.input_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration connector.instance.list.request_schema.json
+- path: `knowledge/sov/cloudflare/schemas/connector.instance.list.request_schema.json`
+- title: I4 native Cloudflare administration connector.instance.list.request_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration connector.instance.list.result_schema.json
+- path: `knowledge/sov/cloudflare/schemas/connector.instance.list.result_schema.json`
+- title: I4 native Cloudflare administration connector.instance.list.result_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration connector.instance.list.template.json
+- path: `knowledge/sov/cloudflare/schemas/connector.instance.list.template.json`
+- title: I4 native Cloudflare administration connector.instance.list.template.json
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration connector.instance.plan.input_schema.json
+- path: `knowledge/sov/cloudflare/schemas/connector.instance.plan.input_schema.json`
+- title: I4 native Cloudflare administration connector.instance.plan.input_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration connector.instance.plan.request_schema.json
+- path: `knowledge/sov/cloudflare/schemas/connector.instance.plan.request_schema.json`
+- title: I4 native Cloudflare administration connector.instance.plan.request_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration connector.instance.plan.result_schema.json
+- path: `knowledge/sov/cloudflare/schemas/connector.instance.plan.result_schema.json`
+- title: I4 native Cloudflare administration connector.instance.plan.result_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration connector.instance.plan.template.json
+- path: `knowledge/sov/cloudflare/schemas/connector.instance.plan.template.json`
+- title: I4 native Cloudflare administration connector.instance.plan.template.json
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration connector.instance.reconcile.input_schema.json
+- path: `knowledge/sov/cloudflare/schemas/connector.instance.reconcile.input_schema.json`
+- title: I4 native Cloudflare administration connector.instance.reconcile.input_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration connector.instance.reconcile.request_schema.json
+- path: `knowledge/sov/cloudflare/schemas/connector.instance.reconcile.request_schema.json`
+- title: I4 native Cloudflare administration connector.instance.reconcile.request_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration connector.instance.reconcile.result_schema.json
+- path: `knowledge/sov/cloudflare/schemas/connector.instance.reconcile.result_schema.json`
+- title: I4 native Cloudflare administration connector.instance.reconcile.result_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration connector.instance.reconcile.template.json
+- path: `knowledge/sov/cloudflare/schemas/connector.instance.reconcile.template.json`
+- title: I4 native Cloudflare administration connector.instance.reconcile.template.json
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration connector.instance.status.input_schema.json
+- path: `knowledge/sov/cloudflare/schemas/connector.instance.status.input_schema.json`
+- title: I4 native Cloudflare administration connector.instance.status.input_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration connector.instance.status.request_schema.json
+- path: `knowledge/sov/cloudflare/schemas/connector.instance.status.request_schema.json`
+- title: I4 native Cloudflare administration connector.instance.status.request_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration connector.instance.status.result_schema.json
+- path: `knowledge/sov/cloudflare/schemas/connector.instance.status.result_schema.json`
+- title: I4 native Cloudflare administration connector.instance.status.result_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration connector.instance.status.template.json
+- path: `knowledge/sov/cloudflare/schemas/connector.instance.status.template.json`
+- title: I4 native Cloudflare administration connector.instance.status.template.json
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration context.reconcile.input_schema.json
+- path: `knowledge/sov/cloudflare/schemas/context.reconcile.input_schema.json`
+- title: I4 native Cloudflare administration context.reconcile.input_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration context.reconcile.request_schema.json
+- path: `knowledge/sov/cloudflare/schemas/context.reconcile.request_schema.json`
+- title: I4 native Cloudflare administration context.reconcile.request_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration context.reconcile.result_schema.json
+- path: `knowledge/sov/cloudflare/schemas/context.reconcile.result_schema.json`
+- title: I4 native Cloudflare administration context.reconcile.result_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration context.reconcile.template.json
+- path: `knowledge/sov/cloudflare/schemas/context.reconcile.template.json`
+- title: I4 native Cloudflare administration context.reconcile.template.json
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration context.status.input_schema.json
+- path: `knowledge/sov/cloudflare/schemas/context.status.input_schema.json`
+- title: I4 native Cloudflare administration context.status.input_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration context.status.request_schema.json
+- path: `knowledge/sov/cloudflare/schemas/context.status.request_schema.json`
+- title: I4 native Cloudflare administration context.status.request_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration context.status.result_schema.json
+- path: `knowledge/sov/cloudflare/schemas/context.status.result_schema.json`
+- title: I4 native Cloudflare administration context.status.result_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration context.status.template.json
+- path: `knowledge/sov/cloudflare/schemas/context.status.template.json`
+- title: I4 native Cloudflare administration context.status.template.json
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration resource.reconcile.input_schema.json
+- path: `knowledge/sov/cloudflare/schemas/resource.reconcile.input_schema.json`
+- title: I4 native Cloudflare administration resource.reconcile.input_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration resource.reconcile.request_schema.json
+- path: `knowledge/sov/cloudflare/schemas/resource.reconcile.request_schema.json`
+- title: I4 native Cloudflare administration resource.reconcile.request_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration resource.reconcile.result_schema.json
+- path: `knowledge/sov/cloudflare/schemas/resource.reconcile.result_schema.json`
+- title: I4 native Cloudflare administration resource.reconcile.result_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration resource.reconcile.template.json
+- path: `knowledge/sov/cloudflare/schemas/resource.reconcile.template.json`
+- title: I4 native Cloudflare administration resource.reconcile.template.json
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration resource.status.input_schema.json
+- path: `knowledge/sov/cloudflare/schemas/resource.status.input_schema.json`
+- title: I4 native Cloudflare administration resource.status.input_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration resource.status.request_schema.json
+- path: `knowledge/sov/cloudflare/schemas/resource.status.request_schema.json`
+- title: I4 native Cloudflare administration resource.status.request_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration resource.status.result_schema.json
+- path: `knowledge/sov/cloudflare/schemas/resource.status.result_schema.json`
+- title: I4 native Cloudflare administration resource.status.result_schema.json
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration resource.status.template.json
+- path: `knowledge/sov/cloudflare/schemas/resource.status.template.json`
+- title: I4 native Cloudflare administration resource.status.template.json
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration contract.go
+- path: `modules/secure-identity-access-governance/internal/cloudflareuse/contract.go`
+- title: I4 native Cloudflare administration contract.go
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `modules/secure-identity-access-governance/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration cloudflare_use.go
+- path: `modules/secure-identity-access-governance/internal/server/cloudflare_use.go`
+- title: I4 native Cloudflare administration cloudflare_use.go
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `modules/secure-identity-access-governance/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration cloudflare_use_test.go
+- path: `modules/secure-identity-access-governance/internal/server/cloudflare_use_test.go`
+- title: I4 native Cloudflare administration cloudflare_use_test.go
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `modules/secure-identity-access-governance/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration request-guard.mjs
+- path: `modules/sov-cloudflare-adapter/runtime/request-guard.mjs`
+- title: I4 native Cloudflare administration request-guard.mjs
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration connector.cpp
+- path: `modules/sov-cloudflare-adapter/src/connector.cpp`
+- title: I4 native Cloudflare administration connector.cpp
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration connector.hpp
+- path: `modules/sov-cloudflare-adapter/src/connector.hpp`
+- title: I4 native Cloudflare administration connector.hpp
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration credential_channel.cpp
+- path: `modules/sov-cloudflare-adapter/src/credential_channel.cpp`
+- title: I4 native Cloudflare administration credential_channel.cpp
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration execution.cpp
+- path: `modules/sov-cloudflare-adapter/src/execution.cpp`
+- title: I4 native Cloudflare administration execution.cpp
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration execution.hpp
+- path: `modules/sov-cloudflare-adapter/src/execution.hpp`
+- title: I4 native Cloudflare administration execution.hpp
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration http_runner.cpp
+- path: `modules/sov-cloudflare-adapter/src/http_runner.cpp`
+- title: I4 native Cloudflare administration http_runner.cpp
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration connector.cpp
+- path: `modules/sov-cloudflare-adapter/tests/connector.cpp`
+- title: I4 native Cloudflare administration connector.cpp
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration connector_child.cpp
+- path: `modules/sov-cloudflare-adapter/tests/connector_child.cpp`
+- title: I4 native Cloudflare administration connector_child.cpp
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration execution.cpp
+- path: `modules/sov-cloudflare-adapter/tests/execution.cpp`
+- title: I4 native Cloudflare administration execution.cpp
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration execution_fixture.hpp
+- path: `modules/sov-cloudflare-adapter/tests/execution_fixture.hpp`
+- title: I4 native Cloudflare administration execution_fixture.hpp
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration guard.mjs
+- path: `modules/sov-cloudflare-adapter/tests/guard.mjs`
+- title: I4 native Cloudflare administration guard.mjs
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration CMakeLists.txt
+- path: `modules/ssiag-provider-private-store/CMakeLists.txt`
+- title: I4 native Cloudflare administration CMakeLists.txt
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `modules/ssiag-provider-private-store/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration FEATURES.md
+- path: `modules/ssiag-provider-private-store/FEATURES.md`
+- title: I4 native Cloudflare administration FEATURES.md
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `modules/ssiag-provider-private-store/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration INSTALL.md
+- path: `modules/ssiag-provider-private-store/INSTALL.md`
+- title: I4 native Cloudflare administration INSTALL.md
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `modules/ssiag-provider-private-store/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration INTENT.md
+- path: `modules/ssiag-provider-private-store/INTENT.md`
+- title: I4 native Cloudflare administration INTENT.md
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `modules/ssiag-provider-private-store/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration MANIFEST.md
+- path: `modules/ssiag-provider-private-store/MANIFEST.md`
+- title: I4 native Cloudflare administration MANIFEST.md
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `modules/ssiag-provider-private-store/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration SKILL.md
+- path: `modules/ssiag-provider-private-store/SKILL.md`
+- title: I4 native Cloudflare administration SKILL.md
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `modules/ssiag-provider-private-store/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration SPEC.md
+- path: `modules/ssiag-provider-private-store/SPEC.md`
+- title: I4 native Cloudflare administration SPEC.md
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `modules/ssiag-provider-private-store/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration SymphonySSIAGPrivateStoreConfig.cmake.in
+- path: `modules/ssiag-provider-private-store/cmake/SymphonySSIAGPrivateStoreConfig.cmake.in`
+- title: I4 native Cloudflare administration SymphonySSIAGPrivateStoreConfig.cmake.in
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `modules/ssiag-provider-private-store/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration private_channel.hpp
+- path: `modules/ssiag-provider-private-store/include/symphony/ssiag/private_channel.hpp`
+- title: I4 native Cloudflare administration private_channel.hpp
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `modules/ssiag-provider-private-store/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration main.cpp
+- path: `modules/ssiag-provider-private-store/src/main.cpp`
+- title: I4 native Cloudflare administration main.cpp
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `modules/ssiag-provider-private-store/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration contract.cpp
+- path: `modules/ssiag-provider-private-store/tests/contract.cpp`
+- title: I4 native Cloudflare administration contract.cpp
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `modules/ssiag-provider-private-store/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### I4 native administration http_runner.cpp
+- path: `modules/sov-cloudflare-adapter/tests/http_runner.cpp`
+- title: I4 native Cloudflare administration http_runner.cpp
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG and SOV maintainers
+- scope: Native credential channels, typed resource execution and user-mode connector lifecycle
+- relationships: governed_by -> `knowledge/sov/cloudflare/SPEC.md`
+- consumers: Native consumers, qxctl and maintainers
+- deferred_projections: Live provider/platform qualification, token rotation and Access SSH sessions
+- notes: Fixture evidence is not live Cloudflare acceptance.
+- status: canonical
+
+### SSIAG private credential SDK consumer
+- path: `modules/ssiag-provider-private-store/tests/sdk-consumer/CMakeLists.txt`
+- title: Independent installed SSIAG private credential SDK consumer
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG maintainers
+- scope: Independent installed header and transitive SDK consumption
+- relationships: governed_by -> `modules/ssiag-provider-private-store/SPEC.md`
+- consumers: Native consumers and maintainers
+- deferred_projections: Live provider qualification
+- notes: Synthetic digest and strict parsing checks; no credentials or provider calls.
+- status: canonical
+
+### SSIAG private credential SDK consumer
+- path: `modules/ssiag-provider-private-store/tests/sdk-consumer/main.cpp`
+- title: Independent installed SSIAG private credential SDK consumer
+- surface_type: implementation or conformance source
+- truth_role: Exact implementation or explicitly bounded fixture evidence
+- owner: SSIAG maintainers
+- scope: Independent installed header and transitive SDK consumption
+- relationships: governed_by -> `modules/ssiag-provider-private-store/SPEC.md`
+- consumers: Native consumers and maintainers
+- deferred_projections: Live provider qualification
+- notes: Synthetic digest and strict parsing checks; no credentials or provider calls.
 - status: canonical

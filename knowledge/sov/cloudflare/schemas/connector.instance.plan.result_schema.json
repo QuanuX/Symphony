@@ -1,0 +1,730 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "artifacts": {
+      "maxItems": 0,
+      "type": "array"
+    },
+    "audit_ref": {
+      "type": "null"
+    },
+    "authority_ref": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "maxLength": 4096,
+          "type": "string"
+        }
+      ]
+    },
+    "context_ref": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "maxLength": 4096,
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "type": "string"
+        }
+      ]
+    },
+    "correlation_id": {
+      "maxLength": 4096,
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+      "type": "string"
+    },
+    "data": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "plan": {
+              "additionalProperties": false,
+              "properties": {
+                "after": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "configuration": {
+                      "oneOf": [
+                        {
+                          "type": "null"
+                        },
+                        {
+                          "additionalProperties": false,
+                          "properties": {
+                            "account_id": {
+                              "maxLength": 32,
+                              "pattern": "^[a-f0-9]{32}$",
+                              "type": "string"
+                            },
+                            "credential_ref": {
+                              "maxLength": 80,
+                              "pattern": "^ssiag-native:[a-z0-9][a-z0-9_-]{0,63}$",
+                              "type": "string"
+                            },
+                            "execution": {
+                              "additionalProperties": false,
+                              "properties": {
+                                "config_digest": {
+                                  "maxLength": 71,
+                                  "pattern": "^sha256:[a-f0-9]{64}$",
+                                  "type": "string"
+                                },
+                                "credential_generation": {
+                                  "maxLength": 19,
+                                  "pattern": "^[1-9][0-9]{0,18}$",
+                                  "type": "string"
+                                },
+                                "max_pages": {
+                                  "maximum": 1000,
+                                  "minimum": 1,
+                                  "type": "integer"
+                                },
+                                "provider_prefix": {
+                                  "maxLength": 4096,
+                                  "pattern": "^/[^\\x00-\\x1f]*$",
+                                  "type": "string"
+                                },
+                                "provider_receipt": {
+                                  "maxLength": 71,
+                                  "pattern": "^sha256:[a-f0-9]{64}$",
+                                  "type": "string"
+                                },
+                                "provider_version": {
+                                  "const": "0.1.0-dev"
+                                },
+                                "result_ref": {
+                                  "oneOf": [
+                                    {
+                                      "type": "null"
+                                    },
+                                    {
+                                      "maxLength": 80,
+                                      "pattern": "^ssiag-native:[a-z0-9][a-z0-9_-]{0,63}$",
+                                      "type": "string"
+                                    }
+                                  ]
+                                },
+                                "vault": {
+                                  "maxLength": 4096,
+                                  "pattern": "^/[^\\x00-\\x1f]*$",
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "provider_prefix",
+                                "provider_version",
+                                "provider_receipt",
+                                "vault",
+                                "config_digest",
+                                "credential_generation",
+                                "result_ref",
+                                "max_pages"
+                              ],
+                              "type": "object"
+                            },
+                            "package_digest": {
+                              "maxLength": 71,
+                              "pattern": "^sha256:[a-f0-9]{64}$",
+                              "type": "string"
+                            },
+                            "tunnel_id": {
+                              "maxLength": 36,
+                              "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$",
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "account_id",
+                            "tunnel_id",
+                            "package_digest",
+                            "credential_ref",
+                            "execution"
+                          ],
+                          "type": "object"
+                        }
+                      ]
+                    },
+                    "generation": {
+                      "maxLength": 19,
+                      "pattern": "^(0|[1-9][0-9]{0,18})$",
+                      "type": "string"
+                    },
+                    "packages": {
+                      "items": {
+                        "maxLength": 71,
+                        "pattern": "^sha256:[a-f0-9]{64}$",
+                        "type": "string"
+                      },
+                      "maxItems": 100,
+                      "type": "array"
+                    },
+                    "protocol": {
+                      "const": "symphony.sov.cloudflare-connector-state.v1"
+                    },
+                    "run_id": {
+                      "oneOf": [
+                        {
+                          "type": "null"
+                        },
+                        {
+                          "maxLength": 36,
+                          "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "selected": {
+                      "oneOf": [
+                        {
+                          "type": "null"
+                        },
+                        {
+                          "maxLength": 71,
+                          "pattern": "^sha256:[a-f0-9]{64}$",
+                          "type": "string"
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "protocol",
+                    "generation",
+                    "selected",
+                    "packages",
+                    "configuration",
+                    "run_id"
+                  ],
+                  "type": "object"
+                },
+                "before": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "configuration": {
+                      "oneOf": [
+                        {
+                          "type": "null"
+                        },
+                        {
+                          "additionalProperties": false,
+                          "properties": {
+                            "account_id": {
+                              "maxLength": 32,
+                              "pattern": "^[a-f0-9]{32}$",
+                              "type": "string"
+                            },
+                            "credential_ref": {
+                              "maxLength": 80,
+                              "pattern": "^ssiag-native:[a-z0-9][a-z0-9_-]{0,63}$",
+                              "type": "string"
+                            },
+                            "execution": {
+                              "additionalProperties": false,
+                              "properties": {
+                                "config_digest": {
+                                  "maxLength": 71,
+                                  "pattern": "^sha256:[a-f0-9]{64}$",
+                                  "type": "string"
+                                },
+                                "credential_generation": {
+                                  "maxLength": 19,
+                                  "pattern": "^[1-9][0-9]{0,18}$",
+                                  "type": "string"
+                                },
+                                "max_pages": {
+                                  "maximum": 1000,
+                                  "minimum": 1,
+                                  "type": "integer"
+                                },
+                                "provider_prefix": {
+                                  "maxLength": 4096,
+                                  "pattern": "^/[^\\x00-\\x1f]*$",
+                                  "type": "string"
+                                },
+                                "provider_receipt": {
+                                  "maxLength": 71,
+                                  "pattern": "^sha256:[a-f0-9]{64}$",
+                                  "type": "string"
+                                },
+                                "provider_version": {
+                                  "const": "0.1.0-dev"
+                                },
+                                "result_ref": {
+                                  "oneOf": [
+                                    {
+                                      "type": "null"
+                                    },
+                                    {
+                                      "maxLength": 80,
+                                      "pattern": "^ssiag-native:[a-z0-9][a-z0-9_-]{0,63}$",
+                                      "type": "string"
+                                    }
+                                  ]
+                                },
+                                "vault": {
+                                  "maxLength": 4096,
+                                  "pattern": "^/[^\\x00-\\x1f]*$",
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "provider_prefix",
+                                "provider_version",
+                                "provider_receipt",
+                                "vault",
+                                "config_digest",
+                                "credential_generation",
+                                "result_ref",
+                                "max_pages"
+                              ],
+                              "type": "object"
+                            },
+                            "package_digest": {
+                              "maxLength": 71,
+                              "pattern": "^sha256:[a-f0-9]{64}$",
+                              "type": "string"
+                            },
+                            "tunnel_id": {
+                              "maxLength": 36,
+                              "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$",
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "account_id",
+                            "tunnel_id",
+                            "package_digest",
+                            "credential_ref",
+                            "execution"
+                          ],
+                          "type": "object"
+                        }
+                      ]
+                    },
+                    "generation": {
+                      "maxLength": 19,
+                      "pattern": "^(0|[1-9][0-9]{0,18})$",
+                      "type": "string"
+                    },
+                    "packages": {
+                      "items": {
+                        "maxLength": 71,
+                        "pattern": "^sha256:[a-f0-9]{64}$",
+                        "type": "string"
+                      },
+                      "maxItems": 100,
+                      "type": "array"
+                    },
+                    "protocol": {
+                      "const": "symphony.sov.cloudflare-connector-state.v1"
+                    },
+                    "run_id": {
+                      "oneOf": [
+                        {
+                          "type": "null"
+                        },
+                        {
+                          "maxLength": 36,
+                          "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "selected": {
+                      "oneOf": [
+                        {
+                          "type": "null"
+                        },
+                        {
+                          "maxLength": 71,
+                          "pattern": "^sha256:[a-f0-9]{64}$",
+                          "type": "string"
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "protocol",
+                    "generation",
+                    "selected",
+                    "packages",
+                    "configuration",
+                    "run_id"
+                  ],
+                  "type": "object"
+                },
+                "descriptor_ref": {
+                  "maxLength": 71,
+                  "pattern": "^sha256:[a-f0-9]{64}$",
+                  "type": "string"
+                },
+                "expires_unix_ms": {
+                  "maxLength": 19,
+                  "pattern": "^(0|[1-9][0-9]{0,18})$",
+                  "type": "string"
+                },
+                "family": {
+                  "const": "instance"
+                },
+                "input": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "action": {
+                      "enum": [
+                        "configure",
+                        "start",
+                        "stop",
+                        "update",
+                        "retire"
+                      ]
+                    },
+                    "configuration": {
+                      "oneOf": [
+                        {
+                          "type": "null"
+                        },
+                        {
+                          "additionalProperties": false,
+                          "properties": {
+                            "account_id": {
+                              "maxLength": 32,
+                              "pattern": "^[a-f0-9]{32}$",
+                              "type": "string"
+                            },
+                            "credential_ref": {
+                              "maxLength": 80,
+                              "pattern": "^ssiag-native:[a-z0-9][a-z0-9_-]{0,63}$",
+                              "type": "string"
+                            },
+                            "execution": {
+                              "additionalProperties": false,
+                              "properties": {
+                                "config_digest": {
+                                  "maxLength": 71,
+                                  "pattern": "^sha256:[a-f0-9]{64}$",
+                                  "type": "string"
+                                },
+                                "credential_generation": {
+                                  "maxLength": 19,
+                                  "pattern": "^[1-9][0-9]{0,18}$",
+                                  "type": "string"
+                                },
+                                "max_pages": {
+                                  "maximum": 1000,
+                                  "minimum": 1,
+                                  "type": "integer"
+                                },
+                                "provider_prefix": {
+                                  "maxLength": 4096,
+                                  "pattern": "^/[^\\x00-\\x1f]*$",
+                                  "type": "string"
+                                },
+                                "provider_receipt": {
+                                  "maxLength": 71,
+                                  "pattern": "^sha256:[a-f0-9]{64}$",
+                                  "type": "string"
+                                },
+                                "provider_version": {
+                                  "const": "0.1.0-dev"
+                                },
+                                "result_ref": {
+                                  "oneOf": [
+                                    {
+                                      "type": "null"
+                                    },
+                                    {
+                                      "maxLength": 80,
+                                      "pattern": "^ssiag-native:[a-z0-9][a-z0-9_-]{0,63}$",
+                                      "type": "string"
+                                    }
+                                  ]
+                                },
+                                "vault": {
+                                  "maxLength": 4096,
+                                  "pattern": "^/[^\\x00-\\x1f]*$",
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "provider_prefix",
+                                "provider_version",
+                                "provider_receipt",
+                                "vault",
+                                "config_digest",
+                                "credential_generation",
+                                "result_ref",
+                                "max_pages"
+                              ],
+                              "type": "object"
+                            },
+                            "package_digest": {
+                              "maxLength": 71,
+                              "pattern": "^sha256:[a-f0-9]{64}$",
+                              "type": "string"
+                            },
+                            "tunnel_id": {
+                              "maxLength": 36,
+                              "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$",
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "account_id",
+                            "tunnel_id",
+                            "package_digest",
+                            "credential_ref",
+                            "execution"
+                          ],
+                          "type": "object"
+                        }
+                      ]
+                    },
+                    "expected_state": {
+                      "maxLength": 71,
+                      "pattern": "^sha256:[a-f0-9]{64}$",
+                      "type": "string"
+                    },
+                    "store": {
+                      "maxLength": 4096,
+                      "pattern": "^/[^\\x00-\\x1f]*$",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "store",
+                    "action",
+                    "expected_state",
+                    "configuration"
+                  ],
+                  "type": "object"
+                },
+                "installation_ref": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "executable_digest": {
+                      "maxLength": 4096,
+                      "pattern": "^sha256:[0-9a-f]{64}$",
+                      "type": "string"
+                    },
+                    "receipt_digest": {
+                      "maxLength": 4096,
+                      "pattern": "^sha256:[0-9a-f]{64}$",
+                      "type": "string"
+                    },
+                    "version": {
+                      "const": "0.1.0-dev"
+                    }
+                  },
+                  "required": [
+                    "version",
+                    "executable_digest",
+                    "receipt_digest"
+                  ],
+                  "type": "object"
+                },
+                "protocol": {
+                  "const": "symphony.sov.cloudflare-connector-plan.v1"
+                },
+                "request_id": {
+                  "maxLength": 36,
+                  "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$",
+                  "type": "string"
+                },
+                "uid": {
+                  "maxLength": 19,
+                  "pattern": "^(0|[1-9][0-9]{0,18})$",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "protocol",
+                "uid",
+                "request_id",
+                "descriptor_ref",
+                "installation_ref",
+                "input",
+                "family",
+                "before",
+                "after",
+                "expires_unix_ms"
+              ],
+              "type": "object"
+            },
+            "plan_digest": {
+              "maxLength": 71,
+              "pattern": "^sha256:[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "provider_readiness": {
+              "const": "not_proven"
+            }
+          },
+          "required": [
+            "plan",
+            "plan_digest",
+            "provider_readiness"
+          ],
+          "type": "object"
+        }
+      ]
+    },
+    "descriptor_ref": {
+      "maxLength": 4096,
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "dispatch_state": {
+      "enum": [
+        "not_dispatched",
+        "dispatch_started",
+        "response_received"
+      ],
+      "type": "string"
+    },
+    "effect_state": {
+      "enum": [
+        "not_applicable",
+        "not_applied",
+        "applied_verified",
+        "partial_verified",
+        "unresolved"
+      ],
+      "type": "string"
+    },
+    "error_code": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "enum": [
+            "invalid_control",
+            "unavailable_contract",
+            "binding_mismatch",
+            "integrity_failure",
+            "state_conflict",
+            "local_failure",
+            "child_failure",
+            "unresolved_attempt"
+          ],
+          "type": "string"
+        }
+      ]
+    },
+    "evidence": {
+      "items": {
+        "maxLength": 4096,
+        "pattern": "^sha256:[0-9a-f]{64}$",
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "installation_ref": {
+      "additionalProperties": false,
+      "properties": {
+        "executable_digest": {
+          "maxLength": 4096,
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "receipt_digest": {
+          "maxLength": 4096,
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "version": {
+          "const": "0.1.0-dev"
+        }
+      },
+      "required": [
+        "version",
+        "executable_digest",
+        "receipt_digest"
+      ],
+      "type": "object"
+    },
+    "next_action": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "enum": [
+            "inspect_plan",
+            "reconcile",
+            "new_plan",
+            "implement_I4",
+            "inspect_native_import"
+          ],
+          "type": "string"
+        }
+      ]
+    },
+    "operation": {
+      "const": "connector.instance.plan"
+    },
+    "outcome": {
+      "enum": [
+        "completed",
+        "rejected",
+        "aborted",
+        "failed",
+        "unknown"
+      ],
+      "type": "string"
+    },
+    "plan_ref": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "maxLength": 4096,
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "type": "string"
+        }
+      ]
+    },
+    "protocol": {
+      "const": "symphony.sov.cloudflare-result.v1"
+    },
+    "request_id": {
+      "maxLength": 4096,
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+      "type": "string"
+    },
+    "request_ref": {
+      "maxLength": 4096,
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "type": "string"
+    }
+  },
+  "required": [
+    "protocol",
+    "request_id",
+    "correlation_id",
+    "operation",
+    "request_ref",
+    "descriptor_ref",
+    "installation_ref",
+    "context_ref",
+    "plan_ref",
+    "dispatch_state",
+    "outcome",
+    "effect_state",
+    "error_code",
+    "authority_ref",
+    "audit_ref",
+    "evidence",
+    "artifacts",
+    "next_action",
+    "data"
+  ],
+  "type": "object"
+}

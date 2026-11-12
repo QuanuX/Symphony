@@ -181,9 +181,9 @@ The following generated snapshot is validated against the owning source contract
 
 This bounded summary is derived from canonical SSFV coverage and routing, the feature-administration profile, the qxctl command registry, and completed SODV publication records. Edit its source contracts, then regenerate; do not hand-edit the values below.
 
-- SSFV catalog state: `partial`; registered features: **153**; registered owner scopes: **68**; ratified nested features: **79**.
-- Feature-administration expectations: **424** reviewed surfaces; **413** required, **29** evidence-backed exemptions, **9** prohibitions, **0** unreviewed.
-- qxctl stable command identities: **495**.
+- SSFV catalog state: `partial`; registered features: **154**; registered owner scopes: **69**; ratified nested features: **79**.
+- Feature-administration expectations: **427** reviewed surfaces; **416** required, **29** evidence-backed exemptions, **9** prohibitions, **0** unreviewed.
+- qxctl stable command identities: **516**.
 - Registered owner capabilities:
   - `ssfv:symphony:accordare-stav-producer`
   - `ssfv:symphony:knowledge-session-coordinator`
@@ -249,6 +249,7 @@ This bounded summary is derived from canonical SSFV coverage and routing, the fe
   - `ssfv:symphony:srrapiv-runtime-cpp`
   - `ssfv:symphony:ssfv-engine`
   - `ssfv:symphony:ssiag-foundation`
+  - `ssfv:symphony:ssiag-provider-private-store`
   - `ssfv:symphony:ssiag.macos-keychain-metadata`
   - `ssfv:symphony:stav-append-authority`
   - `ssfv:symphony:stav-protocol-kernel`
@@ -260,7 +261,7 @@ This bounded summary is derived from canonical SSFV coverage and routing, the fe
   - `github.com/QuanuX/Symphony/modules/stav-append-authority` `v0.2.0` (tag `modules/stav-append-authority/v0.2.0`, source `ed7484d70607aa96e64916dd4e59d3972a61980b`)
   - `github.com/QuanuX/Symphony/modules/stav-append-authority` `v0.2.1` (tag `modules/stav-append-authority/v0.2.1`, source `967c005e21a8f153ed453c79baa09fe2ab549f01`)
   - `github.com/QuanuX/Symphony/tools/sov-ssh-adapter` `v0.1.0-dev` (tag `tools/sov-ssh-adapter/v0.1.0-dev`, source `967c005e21a8f153ed453c79baa09fe2ab549f01`)
-- Snapshot digest: `sha256:48f831eb32e0f55cdcdf3999d9449be4bc6996f668cd5418b38ae24027a3c234`
+- Snapshot digest: `sha256:8438378397ed51e13d3c26e7ebc9919faaadd3938ce72ebf68c94a43cb12ef86`
 <!-- symphony:root-summary:v1:end -->
 
 </details>

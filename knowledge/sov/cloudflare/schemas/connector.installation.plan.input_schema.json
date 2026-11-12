@@ -1,0 +1,49 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "action": {
+      "enum": [
+        "install",
+        "select",
+        "update",
+        "rollback",
+        "remove"
+      ]
+    },
+    "expected_state": {
+      "maxLength": 71,
+      "pattern": "^sha256:[a-f0-9]{64}$",
+      "type": "string"
+    },
+    "package_digest": {
+      "maxLength": 71,
+      "pattern": "^sha256:[a-f0-9]{64}$",
+      "type": "string"
+    },
+    "source": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "maxLength": 4096,
+          "pattern": "^/[^\\x00-\\x1f]*$",
+          "type": "string"
+        }
+      ]
+    },
+    "store": {
+      "maxLength": 4096,
+      "pattern": "^/[^\\x00-\\x1f]*$",
+      "type": "string"
+    }
+  },
+  "required": [
+    "store",
+    "action",
+    "expected_state",
+    "source",
+    "package_digest"
+  ],
+  "type": "object"
+}

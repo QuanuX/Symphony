@@ -30,3 +30,6 @@ The native authoring tools are build-tree tools, not runtime provider entrypoint
 ```
 
 The preparer never downloads or executes a dependency. Supply an already verified official Node distribution and the exact npm tree prepared with scripts disabled. It copies their complete file closure, removes unused npm .bin launch links, rejects remaining special files, and emits the content identity. Only bundles explicitly qualified in the owner declaration can execute offline cf commands; other integrity-valid local imports do not acquire that qualification.
+
+
+I4 installed-only builds also require the independently installed `SymphonySSIAGPrivateStore 0.1.0 EXACT` SDK. Install `modules/ssiag-provider-private-store` after the foundation and before this adapter. Provider installation does not create or select credentials. Native backend bootstrap is explicit; see its INSTALL.md/SPEC.md.

@@ -37,7 +37,121 @@
       "type": "string"
     },
     "data": {
-      "type": "null"
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "attempt": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "object"
+                }
+              ]
+            },
+            "plan_digest": {
+              "maxLength": 71,
+              "pattern": "^sha256:[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "provider_dispatch": {
+              "const": false
+            },
+            "selected": {
+              "additionalProperties": false,
+              "properties": {
+                "context": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "additionalProperties": false,
+                      "properties": {
+                        "account_id": {
+                          "maxLength": 4096,
+                          "pattern": "^[a-f0-9]{32}$",
+                          "type": "string"
+                        },
+                        "credential_ref": {
+                          "oneOf": [
+                            {
+                              "type": "null"
+                            },
+                            {
+                              "maxLength": 4096,
+                              "pattern": "^(ssiag:[A-Za-z0-9._:-]{1,128}|ssiag-native:[a-z0-9][a-z0-9_-]{0,63})$",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "host_ref": {
+                          "maxLength": 4096,
+                          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+                          "type": "string"
+                        },
+                        "principal_uid": {
+                          "maxLength": 4096,
+                          "pattern": "^[1-9][0-9]{0,9}$",
+                          "type": "string"
+                        },
+                        "toolchain_id": {
+                          "maxLength": 4096,
+                          "pattern": "^sha256:[0-9a-f]{64}$",
+                          "type": "string"
+                        },
+                        "zone_id": {
+                          "oneOf": [
+                            {
+                              "type": "null"
+                            },
+                            {
+                              "maxLength": 4096,
+                              "pattern": "^[a-f0-9]{32}$",
+                              "type": "string"
+                            }
+                          ]
+                        }
+                      },
+                      "required": [
+                        "host_ref",
+                        "principal_uid",
+                        "account_id",
+                        "zone_id",
+                        "credential_ref",
+                        "toolchain_id"
+                      ],
+                      "type": "object"
+                    }
+                  ]
+                },
+                "generation": {
+                  "maxLength": 19,
+                  "pattern": "^(0|[1-9][0-9]{0,18})$",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "generation",
+                "context"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "plan_digest",
+            "attempt",
+            "selected",
+            "provider_dispatch"
+          ],
+          "type": "object"
+        }
+      ]
     },
     "descriptor_ref": {
       "maxLength": 4096,
@@ -124,7 +238,8 @@
             "inspect_plan",
             "reconcile",
             "new_plan",
-            "implement_I4"
+            "implement_I4",
+            "inspect_native_import"
           ],
           "type": "string"
         }

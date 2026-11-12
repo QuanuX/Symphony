@@ -1,0 +1,6 @@
+{
+  "action": "configure",
+  "configuration": null,
+  "expected_state": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+  "store": "/absolute/private/cloudflare-store"
+}

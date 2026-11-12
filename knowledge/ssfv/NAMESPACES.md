@@ -43,3 +43,5 @@ This registry allocates identifiers only. It does not declare any feature implem
 The existing `ssfv:symphony` namespace additionally admits `sov-cloudflare-adapter` and `qxctl.sov-cloudflare-administration`, limited to their actual local implementation and evidence. Vendor schemas do not constitute supported features.
 
 I2 admits `sov-transport-profile-admin` and `qxctl.sov-transport-profile-administration` in the existing Symphony feature namespace, limited to protected local administration.
+
+The existing `ssfv:symphony` namespace additionally admits `ssiag-provider-private-store` for the explicit native credential boundary; no OS-keychain or live-provider acceptance is inferred.

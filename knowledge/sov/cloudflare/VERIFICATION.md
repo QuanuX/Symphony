@@ -116,3 +116,85 @@ Focused local verification on macOS amd64:
 The Cloudflare executable remains byte-identical to the reviewed I1 executable (`sha256:16f7e15e6ad38655d2760e935b921821ce430ca173131580fe2b512a8b87615c`). Its new receipt digest is `sha256:66ec5b6703cbd2ab0f918a5d75acf585d24ae68e69afab792528a8e7047da0f8`. The exact installed SKVI executable is `sha256:d00c4bf413972669a6db3d874611dd7ed240a7f9bd63ce28588539a8122d0bb2`; its receipt file hash is `sha256:d6d655cf1bbf51510adb04c906f9acf8214360124b3715ecf735da769db8f7d2`. The current qxctl integration binary is `sha256:2352320fba66d83b6ad78c0a2cd43b9caf2b53a69ea46f7d93ee26f29dd59343`.
 
 SSH v1 adapter/consumer/command source remains unchanged from `3d32f149`. Evidence is retained under the workspace's `implementation/cloudflare-c0-i1/index-repair/`, `ci-repair/skvi-build/` and `ci-repair-2/` directories. These are focused local results, not a fresh full SCV/SHV or installed-group campaign. No new provider calls, transport-profile implementation or live SSH qualification occurred. I2 remains on hold; remote checks are not awaited after push.
+
+
+## I3 remote gate and I4 planning increment — November 8, 2026
+
+Before I4, main and the inspected push were both `38d3ee8593d8943a36fc7b429213ced5c2054a69`. All 12 workflows, 58 jobs and 58 commit checks completed successfully. The complete job-ID and check-ID sets match exactly; all six CodeQL jobs passed. The installed real-OpenSSH profile fixture passed on Linux amd64 and ARM64. The latest chronological workflow was dependency graph submission; it also passed on that same commit. Workflow details: [CodeQL](https://github.com/QuanuX/Symphony/actions/runs/42461083975), [transport profiles](https://github.com/QuanuX/Symphony/actions/runs/42461084020). I3's observed counts agree: 72 component roots, 59 native components, 1,202 source hashes, seven Go commands, 24 owner declarations, 153 features and 495 qxctl commands. An outdated SSFV registry introduction (149 features/67 scopes) was corrected to the machine-checked 153/68; the earlier canonical registry already contained 153 features.
+
+The first I4 increment adds `qxctl sov cloudflare cf resource plan`. This is typed, credential-free planning for 23 named Tunnel, DNS and account-scoped Access profiles. Plans bind the actual non-root principal, full context, selected exact bundle, adapter identity, store state and expiry. No resource plan is executable; the local installer rejects its separate protocol and digest domain. Closed templates exclude API-token and tunnel-secret bytes, and sensitive result classes explicitly identify their required future channel. The selected cf version remains 1.0.0-beta.28 with Node 26.12.0; no provider version or pin changed.
+
+Focused results on macOS amd64:
+
+- Both native CTests pass, including eight contract groups with 23 profiles, unselected-toolchain rejection, context/state/UID mismatch, secret-bearing or unknown fields, page bounds, delete confirmation, DNS/address and tunnel ingress validation, and installer/resource-plan separation.
+- Independently installed receipt and native consumer pass. Receipt-backed Go Cloudflare consumer, command registry and affected SSH consumer tests pass with the race detector. Direct SSH carrier option/protected-path regressions pass; SSH v1 source is unchanged.
+- Exact real bundle `sha256:02dd198aa1fc6a3e8e7a8ec1b6a26ef75b4f47619428085aed6306060d4dc813` passes 11 offline qualification groups: all 23 native request previews exactly match the pinned CLI's dry-run JSON, and all 23 complete qxctl text results retain unavailable execution/authority. Node permissions deny network, writes and subprocess creation. Ambient project/token/proxy/Node settings are excluded. Provider calls: zero; SSH connections in this local qualification: zero.
+- SSFV/source validation has zero violations and four retained historical warnings. Registries, root summary and release selections agree: 496 qxctl commands, 153 features, 72 component roots, 59 native components and 1,207 source hashes.
+
+This completes only the typed planning increment, not I4 or M1. Remaining I4 work includes native credential export/import, authenticated private secret-use and sensitive-result channels, user-only provider execution, actual request-count/retry qualification, bounded provider observations and pagination, admitted mutation journals/reconciliation, Tunnel token rotation resolution and connector lifecycle. expected_observation is a caller reference, not a verified provider observation. No live-provider, full SCV/SHV or full installed-release campaign was run. I3's remote results do not qualify this later increment. Existing C0/I1 evidence above retains its original identities and scope.
+
+
+## I4 native credential channels and provider execution — November 8, 2026
+
+This increment completes the implemented I4 administration surface: 33 native operations, including the 23 typed provider profiles, local context CAS, bounded provider reads/mutations and separate connector installation/instance lifecycle. An independently installed C++ SSIAG private-store provider supplies purpose-bound export and sensitive-result import over private inherited descriptors. Go qxctl and SSIAG handle only nonsecret control metadata. SSIAG holds the exact mapped-principal policy decision through bounded use and requires committed STAV intent before export; outcome uses its own audit request identity. This explicit private-file backend is opt-in and is not an encrypted vault or protection against hostile same-UID/root processes.
+
+Provider execution requires the selected exact bundle and native provider configuration. It excludes inherited credentials/proxies/Node settings, checks deadline immediately before dispatch, admits only the planned URL/method/body and permits one API attempt per child. Lists report page bounds and coverage. Mutations require a retained complete observation, perform a fresh preflight, journal before dispatch and independently observe the result. Preflight is not atomic provider CAS. Status/reconcile never replay a mutation. An uncertain sensitive-result import acknowledgment remains unresolved for native metadata inspection; it cannot silently complete or replay token retrieval. Connector start runs as the actual user through a retained exact supervisor; authenticated local control stops only its own process group. A running process does not establish provider connectivity.
+
+Focused local results on macOS amd64:
+
+| Changed boundary | Result |
+| --- | --- |
+| Native credential store and exact SDK | Contract fixtures passed configuration CAS, FD-only import/export, purpose/scope/generation/expiry admission, duplicate refusal, private result import and local revocation. Independent source and installed-foundation builds passed. Exact package uninstall preserved unrelated prefix content. |
+| SSIAG use admission | Three focused tests passed exact grant/committed audit, forged and expired controls, policy pinning and lost-completion outcome. Fixtures exercise a real Unix admission server with synthetic audit receipts; they do not claim a live STAV deployment. |
+| Resource execution and recovery | Native fixtures passed typed execution, bounded pagination, mutation preflight/readback, replay refusal, stale/scope refusal, revoked credentials, lost-after-effect observation, sensitive import and uncertain-import recovery. Unpublished atomic temporary files do not block future work. |
+| Connector lifecycle | Native provider/synthetic-authority/inert-child fixture passed install/configure/start/status/stop/recovery boundaries, with zero provider calls. |
+| Pinned CLI request guard | All 23 profiles passed across 28 real CLI processes and 26 synthetic API attempts; zero real provider calls. Exact request matching, delete force flags, wrong-target/expired-use refusal, 429/500/network-error one-attempt behavior and error-body exclusion passed. |
+| Production HTTP runner | Real pinned CLI passed private-FD framing, pre-network target refusal, raw-output exclusion and scratch cleanup; zero API attempts. |
+| Installed native/Go boundary | Exact receipt, embedded/installed owner equality, native consumer and receipt-backed Go consumer passed. Final owner projection and native contract checks passed. |
+| qxctl integration | Changed Cloudflare consumer tests and command-registry tests passed. Provider reads retain explicit authority metadata. The catalog reader admits the expanded inventory within its existing one-MiB byte bound; engine request bounds are unchanged. |
+| Repository integration | Source validation reports zero violations and four historical-reference warnings. Dependency/release selections agree: 73 roots, 60 native components, 1,311 source hashes, seven Go commands and 24 owner declarations. SSFV and command inventories agree at 154 features, 69 owner scopes and 516 qxctl commands. |
+
+Final review also corrected CMake dependency tracking for the embedded owner and request guard, so an incremental build cannot retain stale declarations. The installed-consumer regression explicitly compares the embedded and receipt-owned owner. Feature-administration parsing uses its existing four-MiB file budget instead of the smaller generic value-count default.
+
+Exact runtime selection remains cf 1.0.0-beta.28 with Node 26.12.0, bundle `sha256:02dd198aa1fc6a3e8e7a8ec1b6a26ef75b4f47619428085aed6306060d4dc813`, and cloudflared 2026.10.7, executable `sha256:5c55e77da7012cebca19170357e196176c48c9647cc2ead404702fa125ddbd86`. Only the retained C0 macOS amd64 runtime artifacts are admitted; source portability and remote build coverage do not qualify other runtime digests. No real credentials, live account/zone mutations or Cloudflare tunnel/Access sessions were used. Token rotation is absent from the pinned CLI and remains explicitly unsupported with M1-02/I6 open. I5 SSH session qualification, I6 live acceptance and I7 project deployment remain later work.
+
+SSH v1 adapter, consumer and command files are unchanged from the successful first pass; their tests were not rerun. Full SCV/SHV and full release campaigns were not run. Earlier successful checks were retained unless code or an affected contract changed. Evidence is retained separately under the workspace's `implementation/cloudflare-i4/execution/`. Remote results for this commit are not awaited or asserted.
+
+## I4 CI prerequisite repairs before I5 — November 11, 2026
+
+The completed PR runs for `4a1c9a83b72614e5e5cdac9aaee13633f75a3533` included successful CodeQL and protected-transport workflows, but the Cloudflare and dependency workflows failed. Three causes were identified in retained job logs/artifacts: Linux could not deduce a common `std::min` type from `int64_t` and `stoll`; the SSFV canonical-administration test reader applied the generic JSON value limit to the expanded command catalog; and native SDK distribution had no classification for the new private-store SDK.
+
+The deadline comparison now explicitly selects `int64_t`. The test-only canonical file reader retains its four-MiB byte bound while admitting the complete catalog; engine protocol limits remain unchanged. The credential SDK now ships an independent installed consumer and is registered for copied-consumer distribution coverage. A focused inventory regression checks all current SDK registrations without running a distribution campaign.
+
+Focused local checks: the previously failing SSFV target passes; the affected resource-execution target passes; the exact installed private-store SDK consumer configures, builds and runs successfully, including transitive foundation hashing and strict duplicate-key rejection; canonical SDK coverage passes. Dependency projection reports 73 roots, 60 native components and 1,313 source hashes. No unchanged SSH tests or complete installed-release campaigns were rerun. Linux qualification remains the remote runner's responsibility; no new remote result is asserted or awaited. Evidence: workspace `implementation/cloudflare-i5/evidence/`.
+
+## I4 Clang 18 CI repair — November 11, 2026
+
+PR #192 head `96db8a7240c019a30f17dd1d6d9e0939123e9244` had four failed
+Ubuntu 24.04 jobs (amd64/arm64) across
+[Cloudflare native local foundation](https://github.com/QuanuX/Symphony/actions/runs/43115145864)
+and [MVP dependency map](https://github.com/QuanuX/Symphony/actions/runs/43115145663).
+Each failed `cloudflare-resource-execution` with `profile`. The other nine
+workflows, including CodeQL and protected transport profiles, passed.
+
+The owner JSON temporary was destroyed before iteration on Clang 18. Three
+loops now retain a named declaration for resource profile selection, connector
+plan validation and the fixture. This applies the code repair from PR #193
+commit `08a8f16d` independently to I4. Its regression also rejects a malformed
+connector plan with a recomputed digest and requires unchanged installation
+state. No I5 session implementation or SSH v1 change is included.
+
+Retained Clang 18.1.3 / Ubuntu 24.04 amd64 evidence from the PR #193 repair
+shows both failures before the fix and both focused tests passing afterward.
+Input comparison confirms 62 shared native source, fixture, provider, foundation
+and owner files are byte-identical; this is reused evidence, not a new I4 Linux
+run. Evidence: workspace `implementation/cloudflare-i4/ci-repair/` and
+`implementation/cloudflare-i5/ci-repair/`. Live-provider and runtime-admission
+qualification remain unchanged. Remote results for this repair are not awaited.
+
+Fresh I4 verification on macOS amd64 / LLVM 23.1.2 with installed foundation
+and credential SDKs: `cloudflare-resource-execution` and
+`cloudflare-connector-lifecycle` both pass (2/2). Dependency verification passes
+at 73 roots, 60 native components and 1,313 source hashes; only the four changed
+source hashes were refreshed. Unchanged SSH tests and broad campaigns were
+not rerun. No new Linux arm64 result is claimed.

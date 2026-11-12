@@ -289,13 +289,12 @@ func Run(ctx context.Context, prefix, version, operation string, raw []byte) ([]
 	if !known {
 		return nil, false, fmt.Errorf("unsupported Cloudflare command")
 	}
-	planRef := any(nil)
-	if operation == "installation.apply" || operation == "installation.reconcile" {
-		if m, ok := input.(map[string]any); ok {
-			planRef = m["plan_digest"]
-		}
+	planRef, contextRef := any(nil), any(nil)
+	if m, ok := input.(map[string]any); ok {
+		planRef = m["plan_digest"]
+		contextRef = m["context_ref"]
 	}
-	request := map[string]any{"protocol": RequestProtocol, "request_id": uuid(), "correlation_id": uuid(), "operation": operation, "descriptor_ref": Digest(owner, OwnerProtocol), "installation_ref": map[string]any{"version": version, "executable_digest": entry.ExecutableDigest, "receipt_digest": entry.ReceiptDigest}, "context_ref": nil, "plan_ref": planRef, "input": input}
+	request := map[string]any{"protocol": RequestProtocol, "request_id": uuid(), "correlation_id": uuid(), "operation": operation, "descriptor_ref": Digest(owner, OwnerProtocol), "installation_ref": map[string]any{"version": version, "executable_digest": entry.ExecutableDigest, "receipt_digest": entry.ReceiptDigest}, "context_ref": contextRef, "plan_ref": planRef, "input": input}
 	requestBytes := Canonical(request)
 	if len(requestBytes) >= Limit {
 		return nil, false, fmt.Errorf("request exceeds control bound")
@@ -336,7 +335,7 @@ func Run(ctx context.Context, prefix, version, operation string, raw []byte) ([]
 		return lost(request), false, nil
 	}
 	m, ok := result.(map[string]any)
-	if !ok || len(m) != 19 || m["protocol"] != ResultProtocol || m["request_id"] != request["request_id"] || m["correlation_id"] != request["correlation_id"] || m["operation"] != operation || m["request_ref"] != Digest(request, RequestProtocol) || m["descriptor_ref"] != request["descriptor_ref"] || !bytes.Equal(Canonical(m["installation_ref"]), Canonical(request["installation_ref"])) || !bytes.Equal(Canonical(m["plan_ref"]), Canonical(planRef)) || m["context_ref"] != nil {
+	if !ok || len(m) != 19 || m["protocol"] != ResultProtocol || m["request_id"] != request["request_id"] || m["correlation_id"] != request["correlation_id"] || m["operation"] != operation || m["request_ref"] != Digest(request, RequestProtocol) || m["descriptor_ref"] != request["descriptor_ref"] || !bytes.Equal(Canonical(m["installation_ref"]), Canonical(request["installation_ref"])) || !bytes.Equal(Canonical(m["plan_ref"]), Canonical(planRef)) || !bytes.Equal(Canonical(m["context_ref"]), Canonical(request["context_ref"])) {
 		return lost(request), false, nil
 	}
 	if !validResult(m) {
@@ -387,10 +386,11 @@ func validResult(m map[string]any) bool {
 	return true
 }
 func lost(request map[string]any) []byte {
-	mutation := request["operation"] == "installation.apply" || request["operation"] == "installation.reconcile"
+	op, _ := request["operation"].(string)
+	mutation := strings.HasSuffix(op, ".apply") || strings.HasSuffix(op, ".reconcile")
 	outcome, effect := "failed", "not_applied"
 	if mutation {
 		outcome, effect = "unknown", "unresolved"
 	}
-	return Canonical(map[string]any{"protocol": ResultProtocol, "request_id": request["request_id"], "correlation_id": request["correlation_id"], "operation": request["operation"], "request_ref": Digest(request, RequestProtocol), "descriptor_ref": request["descriptor_ref"], "installation_ref": request["installation_ref"], "context_ref": nil, "plan_ref": request["plan_ref"], "dispatch_state": "dispatch_started", "outcome": outcome, "effect_state": effect, "error_code": "local_failure", "authority_ref": nil, "audit_ref": nil, "evidence": []any{}, "artifacts": []any{}, "next_action": "reconcile", "data": nil})
+	return Canonical(map[string]any{"protocol": ResultProtocol, "request_id": request["request_id"], "correlation_id": request["correlation_id"], "operation": request["operation"], "request_ref": Digest(request, RequestProtocol), "descriptor_ref": request["descriptor_ref"], "installation_ref": request["installation_ref"], "context_ref": request["context_ref"], "plan_ref": request["plan_ref"], "dispatch_state": "dispatch_started", "outcome": outcome, "effect_state": effect, "error_code": "local_failure", "authority_ref": nil, "audit_ref": nil, "evidence": []any{}, "artifacts": []any{}, "next_action": "reconcile", "data": nil})
 }

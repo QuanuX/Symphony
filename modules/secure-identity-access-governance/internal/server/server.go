@@ -139,6 +139,7 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("/v1/foundation-lifecycle/audit", s.handleFoundationAudit)
 	mux.HandleFunc("/v1/transport-profile/audit", s.handleTransportProfileAudit)
 	mux.HandleFunc("/v1/transport-connection/audit", s.handleTransportConnectionAudit)
+	mux.HandleFunc("/v1/cloudflare/use", s.handleCloudflareUse)
 	mux.HandleFunc("/v1/providers", s.handleProviders)
 	mux.HandleFunc("/v1/authorization/decisions", s.handleAuthorization)
 	if s.admin != nil {

@@ -1,4 +1,6 @@
 #include "adapter.hpp"
+#include "execution.hpp"
+#include "connector.hpp"
 #include "owner_data.hpp"
 #include <symphony/knowledge/engine/digest.hpp>
 #include <symphony/knowledge/engine/protocol.hpp>
@@ -230,6 +232,8 @@ Json load_plan(Store& store, const std::string& d, const Json& request) {
     return p;
 }
 void no_unsettled(Store& store) {
+    resource_barrier(store.path);
+    connector_barrier(store.path);
     for (const auto& e : fs::directory_iterator(store.path / "attempts")) {
         if (e.path().extension() != ".json") continue; // Unpublished atomic-write temporaries are not journals.
         auto j = journal(e.path(), "sha256:" + e.path().stem().string());
@@ -365,6 +369,43 @@ Json vendor(Store& store, const std::string& id, const std::vector<std::string>&
     } else require(value.is_object() && value.contains("operationId") && value.contains("httpMethod") && value.contains("path"), "child_failure");
     return Json{{"vendor_result", value}, {"toolchain_id", id}, {"completeness", args.at(0) == "cli" ? "bounded_search_not_inventory" : "generated_schema_may_be_incomplete"}, {"provider_dispatch", false}};
 }
+Json context_state(Store& store) {
+    auto path=store.path/"context.json";
+    auto state=fs::exists(path)?parse(read_file(path,frame_limit)):Json{{"generation","0"},{"context",nullptr}};
+    require(state.is_object()&&state.size()==2&&state.contains("context")&&state.contains("generation"));
+    require(std::regex_match(str(state.at("generation")),std::regex("0|[1-9][0-9]{0,18}")));
+    if(!state.at("context").is_null())validate(state.at("context"),descriptor(owner(),"context.plan").at("input_schema").at("properties").at("context"));
+    return state;
+}
+Json context_admin(Store& store,const Json& request,bool& started) {
+    const auto& in=request.at("input");auto op=str(request.at("operation"));auto state=context_state(store);
+    if(op=="context.inspect"||op=="context.plan") {
+        no_unsettled(store);auto c=in.at("context");require(c.at("principal_uid")==std::to_string(::geteuid()),"binding_mismatch");
+        static_cast<void>(installed(store,str(c.at("toolchain_id"))));auto cd=digest(c,"symphony.sov.cloudflare-context.v1");
+        require(in.at("expected_context_ref").is_null()||in.at("expected_context_ref")==cd,"binding_mismatch");
+        Json p=nullptr,pd=nullptr;
+        if(op=="context.plan") {
+            auto generation=std::stoull(str(state.at("generation")));require(generation<999999999999999999ULL);
+            p=Json{{"protocol","symphony.sov.cloudflare-context-plan.v1"},{"uid",std::to_string(::geteuid())},{"request_id",request.at("request_id")},{"descriptor_ref",request.at("descriptor_ref")},{"installation_ref",request.at("installation_ref")},{"store",store.path.string()},{"before",state},{"after",Json{{"generation",std::to_string(generation+1)},{"context",c}}},{"expires_unix_ms",std::to_string(symphony::ssiag::native::now()+3600000)}};
+            pd=digest(p,"symphony.sov.cloudflare-context-plan.v1");auto path=store.record("plans",str(pd));if(!fs::exists(path))write_file(path,p.dump());sync_dir(path.parent_path());
+        }
+        return Json{{"context",c},{"context_ref",cd},{"selected",state},{"plan",p},{"plan_digest",pd},{"authority_readiness","nonroot_local_owner"},{"provider_dispatch",false},{"persistence",op=="context.plan"?"persisted_plan":"inspection"}};
+    }
+    auto d=str(in.at("plan_digest"));require(request.at("plan_ref")==d,"binding_mismatch");auto p=parse(read_file(store.record("plans",d),frame_limit));
+    validate(p,descriptor(owner(),"context.plan").at("data_schema").at("properties").at("plan"));
+    require(digest(p,"symphony.sov.cloudflare-context-plan.v1")==d&&p.at("uid")==std::to_string(::geteuid())&&p.at("store")==store.path.string()&&p.at("descriptor_ref")==request.at("descriptor_ref")&&p.at("installation_ref")==request.at("installation_ref"),"binding_mismatch");
+    auto path=store.record("attempts",d);auto j=fs::exists(path)?journal(path,d):Json(nullptr);
+    if(op=="context.apply") {
+        no_unsettled(store);require(j.is_null()&&state==p.at("before"),"state_conflict");require(std::stoll(str(p.at("expires_unix_ms")))>symphony::ssiag::native::now(),"state_conflict");
+        static_cast<void>(installed(store,str(p.at("after").at("context").at("toolchain_id"))));
+        j=Json{{"protocol","symphony.sov.cloudflare-attempt.v1"},{"plan_digest",d},{"stage","prepared"},{"effect_state","not_applied"}};atomic(path,j);j["stage"]="dispatch_started";j["effect_state"]="unresolved";atomic(path,j);started=true;
+        atomic(store.path/"context.json",p.at("after"));state=context_state(store);require(state==p.at("after"),"state_conflict");j["stage"]="settled";j["effect_state"]="applied_verified";atomic(path,j);
+    } else if(op=="context.reconcile") {
+        require(!j.is_null(),"state_conflict");require(state==p.at("before")||state==p.at("after"),"unresolved_attempt");started=true;j["stage"]="settled";j["effect_state"]=state==p.at("after")?"applied_verified":"not_applied";atomic(path,j);
+    }
+    return Json{{"plan_digest",d},{"attempt",j},{"selected",state},{"provider_dispatch",false}};
+}
+
 }
 
 Json parse(const std::string& text) { return symphony::knowledge::engine::parse_bounded_json(text, frame_limit, 500000); }
@@ -402,25 +443,65 @@ Json process(const Json& request, const fs::path& executable) {
     auto declaration = owner(); validate(request, declaration.at("request_schema"));
     Json result{{"protocol", "symphony.sov.cloudflare-result.v1"}, {"request_id", request.at("request_id")}, {"correlation_id", request.at("correlation_id")}, {"operation", request.at("operation")}, {"request_ref", digest(request, "symphony.sov.cloudflare-request.v1")}, {"descriptor_ref", request.at("descriptor_ref")}, {"installation_ref", request.at("installation_ref")}, {"context_ref", request.at("context_ref")}, {"plan_ref", request.at("plan_ref")}, {"dispatch_state", "not_dispatched"}, {"outcome", "completed"}, {"effect_state", "not_applicable"}, {"error_code", nullptr}, {"authority_ref", "os-uid:" + std::to_string(::geteuid())}, {"audit_ref", nullptr}, {"evidence", Json::array()}, {"artifacts", Json::array()}, {"next_action", nullptr}, {"data", nullptr}};
     bool started = false;
-    const bool mutation = request.at("operation") == "installation.apply" || request.at("operation") == "installation.reconcile";
+    const auto operation_name=str(request.at("operation"));
+    const bool mutation=operation_name.ends_with(".apply")||operation_name.ends_with(".reconcile");
     try {
         require(request.at("descriptor_ref") == digest(declaration, "symphony.sov.cloudflare-owner.v1") && request.at("installation_ref").at("executable_digest") == file_digest(executable), "binding_mismatch");
         auto op = str(request.at("operation")); const auto& d = descriptor(declaration, op); const auto& input = request.at("input");
         validate(input, d.at("input_schema")); require(d.at("implemented").get<bool>(), "unavailable_contract");
-        require(request.at("context_ref").is_null(), "binding_mismatch");
-        if (op != "installation.apply" && op != "installation.reconcile") require(request.at("plan_ref").is_null(), "binding_mismatch");
-        if (op.starts_with("installation.")) {
+        if (!op.starts_with("resource.") || op == "resource.plan") require(request.at("context_ref").is_null(), "binding_mismatch");
+        if (!op.ends_with(".apply") && !op.ends_with(".reconcile") && !op.ends_with(".status") && (!op.starts_with("resource.") || op == "resource.plan")) require(request.at("plan_ref").is_null(), "binding_mismatch");
+        if(op.starts_with("connector.")){
+            Store store(input.at("store"),true);result["data"]=connector_admin(request,executable,result,started);
+        } else if (op.starts_with("installation.")) {
             Store store(input.at("store"), op == "installation.plan"); result["data"] = lifecycle(store, request, started);
             if (op == "installation.plan") result["next_action"] = "inspect_plan";
             if (op == "installation.apply" || op == "installation.reconcile") result["effect_state"] = result.at("data").at("attempt").at("effect_state");
+        } else if (op == "resource.plan") {
+            Store store(input.at("store")); no_unsettled(store);
+            const auto context = input.at("context");
+            require(context.at("principal_uid") == std::to_string(::geteuid()), "binding_mismatch");
+            require(input.at("expected_context_ref") == digest(context, "symphony.sov.cloudflare-context.v1"), "binding_mismatch");
+            const auto state = store.state();
+            require(input.at("expected_state") == digest(state, state_protocol), "state_conflict");
+            require(state.at("selected") == context.at("toolchain_id"), "binding_mismatch");
+            static_cast<void>(installed(store, str(context.at("toolchain_id"))));
+            Json binding = nullptr;
+            if (!input.at("execution").is_null()) {
+                auto qualified = declaration.at("qualified_resource_toolchains");
+                require(std::find(qualified.begin(), qualified.end(), context.at("toolchain_id")) != qualified.end(), "unavailable_contract");
+                binding = execution_binding(input.at("execution"));
+                require(binding.at("config").at("consumer_digest") == request.at("installation_ref").at("executable_digest") && binding.at("config").at("toolchain_digest") == context.at("toolchain_id"), "binding_mismatch");
+                require(!context.at("credential_ref").is_null(), "unavailable_contract");
+            }
+            const auto preview = resource_preview(input);
+            const auto now = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+            Json p{{"protocol", "symphony.sov.cloudflare-resource-plan.v1"}, {"request_id", request.at("request_id")}, {"uid", std::to_string(::geteuid())}, {"descriptor_ref", request.at("descriptor_ref")}, {"installation_ref", request.at("installation_ref")}, {"input", input}, {"preview", preview}, {"execution_binding", binding}, {"expires_unix_ms", std::to_string(now + 3600000)}, {"provider_dispatch", false}, {"execution_available", !binding.is_null()}, {"authority_readiness", binding.is_null() ? "unavailable_contract" : "requires_ssiag_admission"}};
+            const auto d = digest(p, "symphony.sov.cloudflare-resource-plan.v1");
+            const auto record = store.record("plans", d);
+            if (fs::exists(record)) require(parse(read_file(record, frame_limit)) == p, "binding_mismatch");
+            else { write_file(record, p.dump()+"\n"); sync_dir(store.path / "plans"); }
+            result["data"] = Json{{"plan", p}, {"plan_digest", d}, {"provider_dispatch", false}, {"authority_readiness", p.at("authority_readiness")}, {"execution_available", p.at("execution_available")}};
+            result["next_action"] = "inspect_plan";
+        } else if (op.starts_with("resource.")) {
+            Store store(input.at("store")); auto d = str(input.at("plan_digest"));
+            require(request.at("plan_ref") == d && request.at("context_ref") == input.at("context_ref"), "binding_mismatch");
+            auto p = parse(read_file(store.record("plans", d), frame_limit));
+            validate(p, descriptor(declaration, "resource.plan").at("data_schema").at("properties").at("plan"));
+            require(digest(p, "symphony.sov.cloudflare-resource-plan.v1") == d && p.at("uid") == std::to_string(::geteuid()) && p.at("input").at("store") == input.at("store"), "binding_mismatch");
+            require(input.at("context_ref") == digest(p.at("input").at("context"), "symphony.sov.cloudflare-context.v1"), "binding_mismatch");
+            if (op != "resource.status") {
+                if(op!="resource.reconcile")no_unsettled(store);
+                require(p.at("descriptor_ref") == request.at("descriptor_ref") && p.at("installation_ref") == request.at("installation_ref"), "binding_mismatch");
+                require(store.state().at("selected") == p.at("input").at("context").at("toolchain_id") && p.at("input").at("expected_state") == digest(store.state(), state_protocol), "state_conflict");
+                static_cast<void>(installed(store, str(p.at("input").at("context").at("toolchain_id"))));
+                require(p.at("execution_binding") == execution_binding(p.at("input").at("execution")), "binding_mismatch");
+            }
+            result["data"] = execute_resource(request, p, store.package(str(p.at("input").at("context").at("toolchain_id"))), result, started);
+            if(op!="resource.status")static_cast<void>(installed(store,str(p.at("input").at("context").at("toolchain_id"))));
         } else if (op.starts_with("context.")) {
-            Store store(input.at("store")); auto c = input.at("context");
-            require(c.at("principal_uid") == std::to_string(::geteuid()), "binding_mismatch");
-            static_cast<void>(installed(store, str(c.at("toolchain_id"))));
-            auto cd = digest(c, "symphony.sov.cloudflare-context.v1");
-            require(input.at("expected_context_ref").is_null() || input.at("expected_context_ref") == cd, "binding_mismatch");
-            result["data"] = Json{{"context", c}, {"context_ref", cd}, {"authority_readiness", "unavailable_contract"}, {"provider_dispatch", false}, {"persistence", "proposal_only"}};
-            result["next_action"] = "implement_I4";
+            Store store(input.at("store")); result["data"]=context_admin(store,request,started);
+            if(mutation) result["effect_state"]=result.at("data").at("attempt").at("effect_state");
         } else if (op == "capability.list") {
             if (input.at("query").is_null()) {
                 require(input.at("store").is_null() && input.at("toolchain_id").is_null());

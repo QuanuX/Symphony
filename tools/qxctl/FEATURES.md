@@ -1419,10 +1419,11 @@
       ],
       "distinctions": [],
       "evidence": [
-        "tools/qxctl/internal/sovcloudflare/cloudflare_test.go"
+        "tools/qxctl/internal/sovcloudflare/cloudflare_test.go",
+        "modules/sov-cloudflare-adapter/tests/qualification.cpp"
       ],
       "feature_id": "ssfv:symphony:qxctl.sov-cloudflare-administration",
-      "how": "Receipt-owned schemas and descriptors, content-bound plans, strict process frames and user-owned durable lifecycle.",
+      "how": "Exact receipt and native owner binding, closed controls/results, explicit plan/context correlation and conservative lost-mutation outcomes.",
       "implementation_languages": [
         {
           "language": "Go",
@@ -1430,12 +1431,13 @@
         }
       ],
       "implementation_paths": [
+        "modules/sov-cloudflare-adapter/src/resource.cpp",
         "tools/qxctl/cmd/qxctl/sov_cloudflare.go",
         "tools/qxctl/internal/sovcloudflare/cloudflare.go"
       ],
       "kind": "subfeature",
       "non_claims": [
-        "No provider credentials, resource mutation, protected profile changes, connector operation or SSH exception. Local fixture qualification is not live Cloudflare acceptance."
+        "No raw credentials enter qxctl; no live provider qualification, token rotation or SSH transport authority is implied."
       ],
       "owner_contract": "tools/qxctl/MANIFEST.md",
       "parent_feature_id": "ssfv:symphony:qxctl",
@@ -1444,7 +1446,7 @@
       "source_scope": "tools/qxctl",
       "status": "experimental",
       "title": "qxctl native Cloudflare administration",
-      "what": "Exact local cf/Node lifecycle, bounded offline discovery and nonsecret context proposals.",
+      "what": "Typed native Cloudflare lifecycle, context, resource and connector administration through exact installed descriptors.",
       "when": "Explicit local administration or offline discovery request.",
       "where": "Selected independently installed native adapter and private local store.",
       "who": "Humans, agents and independent native consumers.",
@@ -1835,12 +1837,3 @@
 }
 ```
 <!-- symphony:ssfv:feature-file:v1:end -->
-
-SCV index transfer adds exact-plan execution, journal-only inspection and recoverable replay under `knowledge/scv/INDEX-TRANSFER.md`. Native C++ prepare/commit owners remain unchanged; qxctl retains only durable copy progress and independently checks target evidence.
-
-`scv graph-index schema` lists or returns exact native receipt-owned and separately embedded qxctl orchestration definitions. Discovery labels ownership and file digests and never substitutes a newer connector profile.
-
-`qxctl sbv queue-scenarios` selects the native 0.26 latency/queue model, all
-scientific/evidence/resource choices, and legacy or partitioned output through
-the exact installed request contract. Its schema/template and complete
-text/JSON/NDJSON results share the existing native result access paths.

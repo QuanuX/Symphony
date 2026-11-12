@@ -1,6 +1,20 @@
 {
   "additionalProperties": false,
-  "properties": {},
-  "required": [],
+  "properties": {
+    "plan_digest": {
+      "maxLength": 71,
+      "pattern": "^sha256:[a-f0-9]{64}$",
+      "type": "string"
+    },
+    "store": {
+      "maxLength": 4096,
+      "pattern": "^/[^\\x00-\\x1f]*$",
+      "type": "string"
+    }
+  },
+  "required": [
+    "store",
+    "plan_digest"
+  ],
   "type": "object"
 }

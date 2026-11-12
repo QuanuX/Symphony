@@ -566,6 +566,7 @@ void test_descriptor_and_actual_repository(const fs::path& repository_root) {
         require(input.good(), "canonical administration input is unreadable");
         return engine::parse_bounded_json(
             engine::read_bounded(input, engine::Limits::max_response_bytes),
+            engine::Limits::max_response_bytes,
             engine::Limits::max_response_bytes);
     };
     const auto canonical_administration = ssfv::handle_request(request(

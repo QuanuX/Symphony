@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"os"
 	"os/exec"
@@ -147,4 +148,34 @@ func TestRunnerSeparatesRefusalFromSetupAndProtectsStatusDescriptor(t *testing.T
 	if err != nil {
 		t.Fatalf("supervisor status descriptor escaped: %v", err)
 	}
+}
+
+func TestCanonicalSDKCoverage(t *testing.T) {
+	repo, err := os.Getwd()
+	if err != nil {
+		t.Fatal(err)
+	}
+	for {
+		if _, err = os.Stat(filepath.Join(repo, "cmake", "mvp-dependencies.json")); err == nil {
+			break
+		}
+		parent := filepath.Dir(repo)
+		if parent == repo {
+			t.Fatal("repository not found")
+		}
+		repo = parent
+	}
+	var p projection
+	var m manifest
+	if err = json.Unmarshal(read(filepath.Join(repo, "cmake/mvp-dependencies.json")), &p); err != nil {
+		t.Fatal(err)
+	}
+	if err = json.Unmarshal(read(filepath.Join(repo, "tests/native-sdk-distribution/manifest.json")), &m); err != nil {
+		t.Fatal(err)
+	}
+	c := campaign{repo: repo, components: map[string]component{}, evidence: object{}}
+	for _, component := range p.Components {
+		c.components[component.Path] = component
+	}
+	c.covered(nil, m)
 }

@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"path/filepath"
 	"strings"
 
 	"github.com/QuanuX/Symphony/tools/qxctl/internal/commandregistry"
@@ -123,7 +124,17 @@ func commandProtocolVersion() string { return strings.TrimPrefix(version.Version
 
 func readExpectedRegistry(path string) (commandregistry.Manifest, error) {
 	var registry commandregistry.Manifest
-	data, err := knowledgeengine.ReadPayload(path)
+	if path == "" {
+		return registry, fmt.Errorf("expected command registry path is required")
+	}
+	abs, err := filepath.Abs(path)
+	if err != nil {
+		return registry, err
+	}
+	// The complete command inventory exceeds the generic request value count.
+	// Keep its one-MiB file bound and strict no-follow JSON validation; this
+	// catalog-specific allowance does not alter any engine request contract.
+	data, err := knowledgeengine.ReadRepositoryJSONObject(filepath.Dir(abs), filepath.Base(abs), 1<<20, 262144)
 	if err != nil {
 		return registry, fmt.Errorf("read expected command registry: %w", err)
 	}

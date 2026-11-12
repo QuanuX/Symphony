@@ -19,13 +19,23 @@ func newSOVCloudflare() *cobra.Command {
 	families := map[string]*cobra.Command{}
 	for _, op := range sovcloudflare.Operations {
 		parts := strings.Split(op, ".")
-		family := families[parts[0]]
-		if family == nil {
-			family = structural(parts[0], errUsageOnly)
-			families[parts[0]] = family
-			cf.AddCommand(family)
+		parent := cf
+		key := "cf"
+		if parts[0] == "connector" {
+			parent = root
+			key = ""
 		}
-		family.AddCommand(newSOVCloudflareLeaf(op, parts[1]))
+		for _, part := range parts[:len(parts)-1] {
+			key += "." + part
+			family := families[key]
+			if family == nil {
+				family = structural(part, errUsageOnly)
+				families[key] = family
+				parent.AddCommand(family)
+			}
+			parent = family
+		}
+		parent.AddCommand(newSOVCloudflareLeaf(op, parts[len(parts)-1]))
 	}
 	return root
 }
@@ -80,8 +90,15 @@ func newSOVCloudflareLeaf(operation, leaf string) *cobra.Command {
 	if leaf == "reconcile" {
 		interaction = "recover"
 	}
-	s := commandSpec("sov.cloudflare.cf."+operation, featureCloudflare, interaction)
+	commandPath := "sov.cloudflare.cf." + operation
+	if strings.HasPrefix(operation, "connector.") {
+		commandPath = "sov.cloudflare." + operation
+	}
+	s := commandSpec(commandPath, featureCloudflare, interaction)
 	s.FeatureBindings = append(s.FeatureBindings, commandregistry.FeatureBinding{FeatureID: "ssfv:symphony:sov-cloudflare-adapter", Interaction: interaction})
+	if strings.HasPrefix(operation, "resource.") && operation != "resource.plan" && operation != "resource.status" || operation == "connector.instance.apply" {
+		s.FeatureBindings = append(s.FeatureBindings, commandregistry.FeatureBinding{FeatureID: "ssfv:symphony:ssiag-provider-private-store", Interaction: interaction})
+	}
 	s.BackendOperationIDs = []string{"engop:symphony:sov.cloudflare." + operation}
 	s.InputProtocols = []string{sovcloudflare.RequestProtocol}
 	s.OutputProtocols = []string{sovcloudflare.ResultProtocol}
@@ -89,10 +106,13 @@ func newSOVCloudflareLeaf(operation, leaf string) *cobra.Command {
 	if leaf == "plan" {
 		s.Mutability = "proposal_only"
 	}
+	if operation == "resource.list" || operation == "resource.inspect" {
+		s.AuthorityMode = "target_host_permission"
+	}
 	if leaf == "apply" || leaf == "reconcile" {
 		s.Mutability = "permission_backed_mutation"
 		s.AuthorityMode = "target_host_permission"
-		s.RecoveryCommandID = stringPointer("qxcmd:symphony:sov.cloudflare.cf.installation.reconcile")
+		s.RecoveryCommandID = stringPointer("qxcmd:symphony:" + commandPath[:strings.LastIndex(commandPath, ".")] + ".reconcile")
 	}
 	commandregistry.Attach(c, s)
 	return c

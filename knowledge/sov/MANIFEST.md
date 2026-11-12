@@ -41,7 +41,7 @@ This manifest authorizes no cloud account access, provider action, remote shell,
 
 ## Native Cloudflare local foundation
 
-The subordinate owner at `knowledge/sov/cloudflare/MANIFEST.md` assigns C0/I1 local CLI lifecycle and offline discovery to the independently installed C++26 `modules/sov-cloudflare-adapter`. qxctl implements exact Go presentation and dispatch. Provider credentials/resources and optional SSH profiles remain unavailable pending I2–I6. This addition does not broaden the SBV receiver or direct SSH v1 carrier.
+The subordinate owner at `knowledge/sov/cloudflare/MANIFEST.md` assigns C0/I1 local CLI lifecycle, offline discovery and I4 typed resource planning to the independently installed C++26 `modules/sov-cloudflare-adapter`. qxctl implements exact Go presentation and dispatch. Credentialed provider resources remain unavailable pending the remaining I4–I6 work. Protected profile administration and the optional carrier are separately assigned to their I2/I3 owners. This addition does not broaden the SBV receiver or direct SSH v1 carrier.
 
 ## Protected transport profiles (I2)
 

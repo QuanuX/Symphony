@@ -45,7 +45,7 @@
           "additionalProperties": false,
           "properties": {
             "authority_readiness": {
-              "const": "unavailable_contract"
+              "const": "nonroot_local_owner"
             },
             "context": {
               "additionalProperties": false,
@@ -62,7 +62,7 @@
                     },
                     {
                       "maxLength": 4096,
-                      "pattern": "^ssiag:[A-Za-z0-9._:-]{1,128}$",
+                      "pattern": "^(ssiag:[A-Za-z0-9._:-]{1,128}|ssiag-native:[a-z0-9][a-z0-9_-]{0,63})$",
                       "type": "string"
                     }
                   ]
@@ -106,18 +106,354 @@
               "type": "object"
             },
             "context_ref": {
+              "maxLength": 71,
+              "pattern": "^sha256:[a-f0-9]{64}$",
               "type": "string"
             },
             "persistence": {
-              "const": "proposal_only"
+              "enum": [
+                "persisted_plan",
+                "inspection"
+              ]
+            },
+            "plan": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "additionalProperties": false,
+                  "properties": {
+                    "after": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "context": {
+                          "oneOf": [
+                            {
+                              "type": "null"
+                            },
+                            {
+                              "additionalProperties": false,
+                              "properties": {
+                                "account_id": {
+                                  "maxLength": 4096,
+                                  "pattern": "^[a-f0-9]{32}$",
+                                  "type": "string"
+                                },
+                                "credential_ref": {
+                                  "oneOf": [
+                                    {
+                                      "type": "null"
+                                    },
+                                    {
+                                      "maxLength": 4096,
+                                      "pattern": "^(ssiag:[A-Za-z0-9._:-]{1,128}|ssiag-native:[a-z0-9][a-z0-9_-]{0,63})$",
+                                      "type": "string"
+                                    }
+                                  ]
+                                },
+                                "host_ref": {
+                                  "maxLength": 4096,
+                                  "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+                                  "type": "string"
+                                },
+                                "principal_uid": {
+                                  "maxLength": 4096,
+                                  "pattern": "^[1-9][0-9]{0,9}$",
+                                  "type": "string"
+                                },
+                                "toolchain_id": {
+                                  "maxLength": 4096,
+                                  "pattern": "^sha256:[0-9a-f]{64}$",
+                                  "type": "string"
+                                },
+                                "zone_id": {
+                                  "oneOf": [
+                                    {
+                                      "type": "null"
+                                    },
+                                    {
+                                      "maxLength": 4096,
+                                      "pattern": "^[a-f0-9]{32}$",
+                                      "type": "string"
+                                    }
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "host_ref",
+                                "principal_uid",
+                                "account_id",
+                                "zone_id",
+                                "credential_ref",
+                                "toolchain_id"
+                              ],
+                              "type": "object"
+                            }
+                          ]
+                        },
+                        "generation": {
+                          "maxLength": 19,
+                          "pattern": "^(0|[1-9][0-9]{0,18})$",
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "generation",
+                        "context"
+                      ],
+                      "type": "object"
+                    },
+                    "before": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "context": {
+                          "oneOf": [
+                            {
+                              "type": "null"
+                            },
+                            {
+                              "additionalProperties": false,
+                              "properties": {
+                                "account_id": {
+                                  "maxLength": 4096,
+                                  "pattern": "^[a-f0-9]{32}$",
+                                  "type": "string"
+                                },
+                                "credential_ref": {
+                                  "oneOf": [
+                                    {
+                                      "type": "null"
+                                    },
+                                    {
+                                      "maxLength": 4096,
+                                      "pattern": "^(ssiag:[A-Za-z0-9._:-]{1,128}|ssiag-native:[a-z0-9][a-z0-9_-]{0,63})$",
+                                      "type": "string"
+                                    }
+                                  ]
+                                },
+                                "host_ref": {
+                                  "maxLength": 4096,
+                                  "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+                                  "type": "string"
+                                },
+                                "principal_uid": {
+                                  "maxLength": 4096,
+                                  "pattern": "^[1-9][0-9]{0,9}$",
+                                  "type": "string"
+                                },
+                                "toolchain_id": {
+                                  "maxLength": 4096,
+                                  "pattern": "^sha256:[0-9a-f]{64}$",
+                                  "type": "string"
+                                },
+                                "zone_id": {
+                                  "oneOf": [
+                                    {
+                                      "type": "null"
+                                    },
+                                    {
+                                      "maxLength": 4096,
+                                      "pattern": "^[a-f0-9]{32}$",
+                                      "type": "string"
+                                    }
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "host_ref",
+                                "principal_uid",
+                                "account_id",
+                                "zone_id",
+                                "credential_ref",
+                                "toolchain_id"
+                              ],
+                              "type": "object"
+                            }
+                          ]
+                        },
+                        "generation": {
+                          "maxLength": 19,
+                          "pattern": "^(0|[1-9][0-9]{0,18})$",
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "generation",
+                        "context"
+                      ],
+                      "type": "object"
+                    },
+                    "descriptor_ref": {
+                      "maxLength": 71,
+                      "pattern": "^sha256:[a-f0-9]{64}$",
+                      "type": "string"
+                    },
+                    "expires_unix_ms": {
+                      "maxLength": 19,
+                      "pattern": "^[1-9][0-9]{0,18}$",
+                      "type": "string"
+                    },
+                    "installation_ref": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "executable_digest": {
+                          "maxLength": 4096,
+                          "pattern": "^sha256:[0-9a-f]{64}$",
+                          "type": "string"
+                        },
+                        "receipt_digest": {
+                          "maxLength": 4096,
+                          "pattern": "^sha256:[0-9a-f]{64}$",
+                          "type": "string"
+                        },
+                        "version": {
+                          "const": "0.1.0-dev"
+                        }
+                      },
+                      "required": [
+                        "version",
+                        "executable_digest",
+                        "receipt_digest"
+                      ],
+                      "type": "object"
+                    },
+                    "protocol": {
+                      "const": "symphony.sov.cloudflare-context-plan.v1"
+                    },
+                    "request_id": {
+                      "maxLength": 36,
+                      "pattern": "^[a-f0-9-]{36}$",
+                      "type": "string"
+                    },
+                    "store": {
+                      "maxLength": 4096,
+                      "pattern": "^/[^\\x00-\\x1f]*$",
+                      "type": "string"
+                    },
+                    "uid": {
+                      "maxLength": 19,
+                      "pattern": "^[1-9][0-9]{0,18}$",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "protocol",
+                    "uid",
+                    "request_id",
+                    "descriptor_ref",
+                    "installation_ref",
+                    "store",
+                    "before",
+                    "after",
+                    "expires_unix_ms"
+                  ],
+                  "type": "object"
+                }
+              ]
+            },
+            "plan_digest": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "maxLength": 71,
+                  "pattern": "^sha256:[a-f0-9]{64}$",
+                  "type": "string"
+                }
+              ]
             },
             "provider_dispatch": {
               "const": false
+            },
+            "selected": {
+              "additionalProperties": false,
+              "properties": {
+                "context": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "additionalProperties": false,
+                      "properties": {
+                        "account_id": {
+                          "maxLength": 4096,
+                          "pattern": "^[a-f0-9]{32}$",
+                          "type": "string"
+                        },
+                        "credential_ref": {
+                          "oneOf": [
+                            {
+                              "type": "null"
+                            },
+                            {
+                              "maxLength": 4096,
+                              "pattern": "^(ssiag:[A-Za-z0-9._:-]{1,128}|ssiag-native:[a-z0-9][a-z0-9_-]{0,63})$",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "host_ref": {
+                          "maxLength": 4096,
+                          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+                          "type": "string"
+                        },
+                        "principal_uid": {
+                          "maxLength": 4096,
+                          "pattern": "^[1-9][0-9]{0,9}$",
+                          "type": "string"
+                        },
+                        "toolchain_id": {
+                          "maxLength": 4096,
+                          "pattern": "^sha256:[0-9a-f]{64}$",
+                          "type": "string"
+                        },
+                        "zone_id": {
+                          "oneOf": [
+                            {
+                              "type": "null"
+                            },
+                            {
+                              "maxLength": 4096,
+                              "pattern": "^[a-f0-9]{32}$",
+                              "type": "string"
+                            }
+                          ]
+                        }
+                      },
+                      "required": [
+                        "host_ref",
+                        "principal_uid",
+                        "account_id",
+                        "zone_id",
+                        "credential_ref",
+                        "toolchain_id"
+                      ],
+                      "type": "object"
+                    }
+                  ]
+                },
+                "generation": {
+                  "maxLength": 19,
+                  "pattern": "^(0|[1-9][0-9]{0,18})$",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "generation",
+                "context"
+              ],
+              "type": "object"
             }
           },
           "required": [
             "context",
             "context_ref",
+            "selected",
+            "plan",
+            "plan_digest",
             "authority_readiness",
             "provider_dispatch",
             "persistence"
@@ -211,7 +547,8 @@
             "inspect_plan",
             "reconcile",
             "new_plan",
-            "implement_I4"
+            "implement_I4",
+            "inspect_native_import"
           ],
           "type": "string"
         }

@@ -107,7 +107,9 @@ std::optional<Json> bounded_json(
     const std::string& path,
     FeatureAdministrationCheckResult& result) {
     try {
-        return engine::parse_bounded_json(contents, maximum_file_bytes);
+        // Source catalogs already have a strict byte budget and nesting limit.
+        // A second small value ceiling must not reject a valid growing command catalog.
+        return engine::parse_bounded_json(contents, maximum_file_bytes, maximum_file_bytes);
     } catch (const engine::Error& error) {
         finding(result, EvidenceCategory::Violation, "feature_administration.invalid_json",
             "path=" + path + " code=" + error.code());

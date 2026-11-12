@@ -14,6 +14,8 @@ import (
 type Kind string
 
 const (
+	CloudflareUseIntent       Kind = "cloudflare_use_intent"
+	CloudflareUseOutcome      Kind = "cloudflare_use_outcome"
 	TransportConnectionIntent Kind = "transport_connection_intent"
 	FoundationIntent          Kind = "foundation_intent"
 	FoundationOutcome         Kind = "foundation_outcome"
@@ -38,6 +40,8 @@ type eventContract struct {
 }
 
 var contracts = map[Kind]eventContract{
+	CloudflareUseIntent:       {eventClass: "symphony.sov.cloudflare.use.intent", operationID: "symphony.sov.cloudflare.use.prepare", intentID: "symphony.sov.cloudflare.use.prepare", reasons: map[string]string{"allowed": "symphony.sov.cloudflare.use.allowed"}},
+	CloudflareUseOutcome:      {eventClass: "symphony.sov.cloudflare.use.outcome", operationID: "symphony.sov.cloudflare.use.observe", intentID: "symphony.sov.cloudflare.use.observe", reasons: map[string]string{"succeeded": "symphony.sov.cloudflare.use.completed", "failed": "symphony.sov.cloudflare.use.failed", "unavailable": "symphony.sov.cloudflare.use.unknown"}},
 	TransportConnectionIntent: {eventClass: "symphony.sov.transport.connection.intent", operationID: "symphony.sov.transport.connection.prepare", intentID: "symphony.sov.transport.connection.prepare", reasons: map[string]string{"allowed": "symphony.sov.transport.connection.intent.allowed"}},
 	TransportProfileIntent: {
 		eventClass: "symphony.sov.transport.profile.intent", operationID: "symphony.sov.transport.profile.prepare", intentID: "symphony.sov.transport.profile.prepare",

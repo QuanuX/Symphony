@@ -1,0 +1,132 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "action": {
+      "enum": [
+        "configure",
+        "start",
+        "stop",
+        "update",
+        "retire"
+      ]
+    },
+    "configuration": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "account_id": {
+              "maxLength": 32,
+              "pattern": "^[a-f0-9]{32}$",
+              "type": "string"
+            },
+            "credential_ref": {
+              "maxLength": 80,
+              "pattern": "^ssiag-native:[a-z0-9][a-z0-9_-]{0,63}$",
+              "type": "string"
+            },
+            "execution": {
+              "additionalProperties": false,
+              "properties": {
+                "config_digest": {
+                  "maxLength": 71,
+                  "pattern": "^sha256:[a-f0-9]{64}$",
+                  "type": "string"
+                },
+                "credential_generation": {
+                  "maxLength": 19,
+                  "pattern": "^[1-9][0-9]{0,18}$",
+                  "type": "string"
+                },
+                "max_pages": {
+                  "maximum": 1000,
+                  "minimum": 1,
+                  "type": "integer"
+                },
+                "provider_prefix": {
+                  "maxLength": 4096,
+                  "pattern": "^/[^\\x00-\\x1f]*$",
+                  "type": "string"
+                },
+                "provider_receipt": {
+                  "maxLength": 71,
+                  "pattern": "^sha256:[a-f0-9]{64}$",
+                  "type": "string"
+                },
+                "provider_version": {
+                  "const": "0.1.0-dev"
+                },
+                "result_ref": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "maxLength": 80,
+                      "pattern": "^ssiag-native:[a-z0-9][a-z0-9_-]{0,63}$",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "vault": {
+                  "maxLength": 4096,
+                  "pattern": "^/[^\\x00-\\x1f]*$",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "provider_prefix",
+                "provider_version",
+                "provider_receipt",
+                "vault",
+                "config_digest",
+                "credential_generation",
+                "result_ref",
+                "max_pages"
+              ],
+              "type": "object"
+            },
+            "package_digest": {
+              "maxLength": 71,
+              "pattern": "^sha256:[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "tunnel_id": {
+              "maxLength": 36,
+              "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "account_id",
+            "tunnel_id",
+            "package_digest",
+            "credential_ref",
+            "execution"
+          ],
+          "type": "object"
+        }
+      ]
+    },
+    "expected_state": {
+      "maxLength": 71,
+      "pattern": "^sha256:[a-f0-9]{64}$",
+      "type": "string"
+    },
+    "store": {
+      "maxLength": 4096,
+      "pattern": "^/[^\\x00-\\x1f]*$",
+      "type": "string"
+    }
+  },
+  "required": [
+    "store",
+    "action",
+    "expected_state",
+    "configuration"
+  ],
+  "type": "object"
+}

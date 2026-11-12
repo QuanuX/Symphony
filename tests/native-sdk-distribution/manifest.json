@@ -163,6 +163,13 @@
       "exports": [
         "SymphonySqtvIntegerConversion"
       ]
+    },
+    {
+      "path": "modules/ssiag-provider-private-store",
+      "coverage": "mvp_copied_consumer",
+      "exports": [
+        "SymphonySSIAGPrivateStore"
+      ]
     }
   ],
   "explicit_external_exclusions": [

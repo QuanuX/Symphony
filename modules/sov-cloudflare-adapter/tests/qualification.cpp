@@ -42,6 +42,31 @@ int main(int argc, char** argv) {
         Json context{{"host_ref","host:qualification"},{"principal_uid",std::to_string(::getuid())},{"account_id",std::string(32,'0')},{"zone_id",nullptr},{"credential_ref",nullptr},{"toolchain_id",id}};
         auto proposal=invoke("context","plan",{{"store",store.string()},{"context",context},{"expected_context_ref",nullptr}});
         NT_REQUIRE(proposal.at("data").at("authority_readiness")=="unavailable_contract" && proposal.at("data").at("context_ref")==cloudflare::digest(context,"symphony.sov.cloudflare-context.v1"));checks.push_back("exact context proposal without provider authority");
+        auto state=invoke("installation","list",{{"store",store.string()}}).at("data");
+        auto selection=invoke("installation","plan",{{"store",store.string()},{"action","select"},{"bundle_path",nullptr},{"bundle_digest",nullptr},{"installation_id",id},{"expected_state",state.at("state_digest")}});
+        invoke("installation","apply",{{"store",store.string()},{"plan_digest",selection.at("data").at("plan_digest")}});
+        state=invoke("installation","list",{{"store",store.string()}}).at("data");
+        context["zone_id"]=std::string(32,'2');context["credential_ref"]="ssiag:qualification-api-token";
+        TempDir scratch("cf-resource-preview-");
+        std::map<std::string,std::string> clean{{"PATH","/usr/bin:/bin"},{"HOME",scratch.path.string()},{"XDG_CONFIG_HOME",scratch.path.string()},{"XDG_CACHE_HOME",scratch.path.string()},{"TMPDIR",scratch.path.string()},{"CI","1"},{"CF_SEND_TELEMETRY","false"},{"CF_DELEGATION","1"},{"DO_NOT_TRACK","1"},{"NO_COLOR","1"},{"CLOUDFLARE_ACCOUNT_ID",std::string(32,'0')}};
+        std::size_t previews=0;
+        for(const auto& profile:owner.at("resource_profiles")) {
+            Json input{{"store",store.string()},{"context",context},{"expected_context_ref",cloudflare::digest(context,"symphony.sov.cloudflare-context.v1")},{"expected_state",state.at("state_digest")},{"resource_operation",profile.at("operation")},{"parameters",profile.at("template")},{"expected_observation",nullptr},{"execution",nullptr}};
+            auto planned=invoke("resource","plan",input);const auto& data=planned.at("data");const auto& resource=data.at("plan");const auto& preview=resource.at("preview");
+            NT_REQUIRE(planned.at("dispatch_state")=="not_dispatched" && data.at("provider_dispatch")==false && data.at("execution_available")==false);
+            NT_REQUIRE(data.at("plan_digest")==cloudflare::digest(resource,"symphony.sov.cloudflare-resource-plan.v1"));
+            std::vector<std::string> args{(package/"node/bin/node").string(),"--permission","--allow-fs-read="+(package/"cf").string(),"--allow-fs-read="+scratch.path.string(),(package/"cf/node_modules/cf/bin/cf").string()};
+            for(const auto& arg:preview.at("preview_argv")) args.push_back(arg.get<std::string>());
+            auto actual=native_test::run(args,"",20,clean,scratch.path,true);
+            NT_REQUIRE(actual.returncode==0 && actual.stderr_text.empty());
+            NT_REQUIRE(Json::parse(actual.stdout_text)==preview.at("request"));
+            NT_REQUIRE(actual.stdout_text.find("SENTINEL")==std::string::npos && actual.stdout_text.find("ssiag:")==std::string::npos);
+            auto presented=invoke("resource","plan",input,true,"text").get<std::string>();
+            NT_REQUIRE(presented.find("unavailable_contract")!=std::string::npos && Json::parse(presented.substr(presented.find('\n')+1)).at("data").at("execution_available")==false);
+            ++previews;
+        }
+        NT_REQUIRE(previews==23 && fs::is_empty(scratch.path));checks.push_back("23 typed native request plans match pinned CLI dry runs with network disabled");
+        checks.push_back("23 complete qxctl text plans preserve unavailable execution and authority");
         NT_REQUIRE(fs::is_empty(store/"staging") && !fs::exists(project/".cloudflare"));checks.push_back("probe cleanup without ambient project preparation");
         std::cout<<Json{{"qualification","offline_real_cli_only"},{"bundle_digest",id},{"checks",checks},{"passed",checks.size()},{"provider_calls",0},{"ssh_connections",0}}.dump(2)<<'\n';return 0;
     } catch(const std::exception& e) { std::cerr<<e.what()<<'\n';return 1; }
