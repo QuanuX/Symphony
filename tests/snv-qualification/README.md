@@ -15,6 +15,14 @@ for a local reproduction; its receipt digests and the harness source revision
 are recorded separately. Passing against an older prefix does not certify that
 its binaries were rebuilt from the current checkout.
 
+An explicit `GOMODCACHE` reuses already downloaded dependencies. The knowledge
+jobs select the same job's `mvp-installed/go/modules` cache populated when
+building qxctl, avoiding another download during installed tests. Without that
+selection the harness creates its own private module cache. Compilation outputs
+remain in the fresh work directory; exact module versions, checksum policy and
+test/skip requirements are unchanged. `logs/go-environment.json` records the
+selected cache and Go environment.
+
 The fail-closed sequence verifies eight exact receipts (foundation, neutral
 common SDK, five semantic owners, and optional observer), compiles a copied
 consumer using only their imported SDKs, replays all five owners, and runs actual
@@ -53,3 +61,23 @@ service, provisions infrastructure, assigns names, or invokes a provider. Its
 retention mutations are limited to the fresh private fixture directory. Protected
 selection/recovery and different-account deployment require their own admitted
 qualification; read-only or synthetic results do not substitute for them.
+
+## CI cache follow-up, 2026-11-12
+
+At PR #195 revision `a4f21218`, the [macOS knowledge job](https://github.com/QuanuX/Symphony/actions/runs/43296337941/job/131455552928)
+passed all four installed SNV tests and 23 subtests in the initial native gate.
+The later SNV harness replaced the populated module cache, then stopped before
+any Go test executed: downloads of `stav-protocol-go@v0.2.0` and
+`golang.org/x/sys@v0.47.0` hit DNS lookup timeouts at `proxy.golang.org`.
+The correction reuses the same job's cache; test failures are never retried or
+suppressed, and dependency versions and verification policy remain unchanged.
+
+Focused local validation used the actual wrapper and exact Go 1.26.5, replacing
+only the unrelated native qualification stage with a compile of those two
+pinned imports under `GOPROXY=off`. The original wrapper failed because it
+discarded the supplied cache; the corrected wrapper passed. A standalone run
+without a supplied cache retained the private default and correctly refused
+uncached imports offline. Private build-cache selection, recorded environment,
+shell syntax and workflow YAML syntax also passed. These are cache-boundary
+checks, not a new installed-native campaign. Runtime and SSH v1 code are
+unchanged; remote results for the repair are not awaited.

@@ -23,7 +23,9 @@ work=$(CDPATH= cd -- "$work" && pwd -P)
 mkdir "$work/logs" "$work/outputs" "$work/tmp" "$work/metadata"
 export TMPDIR="$work/tmp" SYMPHONY_TEST_TMPDIR="$work/tmp"
 export GOWORK=off GOTOOLCHAIN=local GOENV=off GOPROXY=https://proxy.golang.org GOSUMDB=sum.golang.org
-export GOMODCACHE="$work/go/modules" GOCACHE="$work/go/build" GOPATH="$work/go/path"
+# CI can reuse the exact module cache populated by its preceding qxctl build.
+# Standalone runs still default to a fresh private cache; build outputs stay private.
+export GOMODCACHE="${GOMODCACHE:-$work/go/modules}" GOCACHE="$work/go/build" GOPATH="$work/go/path"
 export GOAUTH=off GOVCS='*:off' GOPRIVATE= GONOPROXY= GONOSUMDB= GOINSECURE= GOFLAGS=
 {
   uname -srm
@@ -49,6 +51,7 @@ export GOAUTH=off GOVCS='*:off' GOPRIVATE= GONOPROXY= GONOSUMDB= GOINSECURE= GOF
   git -C "$repo" rev-parse HEAD
   git -C "$repo" status --short
 } > "$work/logs/host-info.log"
+go env -json GOVERSION GOOS GOARCH GOWORK GOTOOLCHAIN GOMODCACHE GOCACHE GOPROXY GOSUMDB > "$work/logs/go-environment.json"
 cmake -P "$repo/tests/release-qualification/require-go-toolchain.cmake"
 cmake -DMVP_REPOSITORY="$repo" -DMVP_WORK="$work" -DMVP_SELECTED_PREFIX="$prefix" \
   -DSNV_QXCTL="$qxctl" -P "$harness/qualify.cmake"
