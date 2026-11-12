@@ -18,7 +18,7 @@ func newSOVTransport() *cobra.Command {
 	for _, operation := range w.Operations {
 		profile.AddCommand(newSOVTransportProfileLeaf(operation))
 	}
-	root.AddCommand(profile)
+	root.AddCommand(profile, newSOVTransportSession())
 	return root
 }
 func newSOVTransportProfileLeaf(operation string) *cobra.Command {

@@ -461,3 +461,9 @@ Optional scoped SSH carrier selection and invocation are defined in `knowledge/s
 ## SOV Cloudflare C0/I1
 
 Twelve `sov cloudflare cf` leaves administer installation list/inspect/plan/apply/status/reconcile, capability list/describe/schema/template and context inspect/plan through the exact independent native receipt. Full safe results are preserved across text and JSON. There is no raw cf passthrough, implicit version/account, provider secret handling or SSH behavior change. Source semantics remain owned by `knowledge/sov/cloudflare/MANIFEST.md`.
+
+I5 adds `sov transport session schema|template|inspect|plan|authenticate|renew|clear`.
+Go carries only closed nonsecret controls to the protected carrier and independently
+validates the native reply; C++ owns session bytes. Profile writes remain sudo gated,
+login/renewal and connections run as the user, and local readiness is never provider
+authorization. See `knowledge/sov/CLOUDFLARE-ACCESS-SESSIONS.md`.

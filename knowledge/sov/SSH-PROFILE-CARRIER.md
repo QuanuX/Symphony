@@ -98,3 +98,7 @@ generations, unavailable audit/readiness, replay and cancellation cleanup.
 macOS received local Go/quoting checks; no installed macOS proxy or provider
 qualification is claimed. CI retains the same bounded Linux fixture. Broad
 SCV/SHV and live-provider campaigns remain deferred to their milestone gates.
+
+The optional I5 native Access helper and explicit session controls are assigned by
+`knowledge/sov/CLOUDFLARE-ACCESS-SESSIONS.md`. They preserve this carrier contract
+and its target authority; local implementation is not live Access qualification.

@@ -73,10 +73,10 @@ jobs:
         working-directory: tools/qxctl
         env:
           SYMPHONY_CLOUDFLARE_TEST_PREFIX: ${{ runner.temp }}/cloudflare-install
-        run: go test -count=1 ./internal/sovcloudflare ./internal/invariantregistry ./internal/sovremote ./cmd/qxctl -run 'TestCloudflare|TestV4Owner|TestSSH|TestCommandRegistry'
+        run: go test -count=1 ./internal/sovcloudflare ./internal/transportsession ./internal/invariantregistry ./internal/sovremote ./cmd/qxctl -run 'TestCloudflare|TestV4Owner|TestSSH|TestCommandRegistry|TestSession'
       - name: Check independent direct SSH carrier
         working-directory: tools/sov-ssh-adapter
-        run: go test -count=1 ./... -run 'TestSSHOptionsExactAndNoninteractive|TestProtectedSystemPathRefusesCallerWritableTree'
+        run: go test -count=1 ./... -run 'TestSSHOptionsExactAndNoninteractive|TestProtectedSystemPathRefusesCallerWritableTree|TestSession'
       - name: Report scope
         if: always()
         run: echo 'Local fixtures and installed receipt boundaries only. No Cloudflare credentials, resource operations, tunnel, SSH connection or profile privilege change. Real cf/Node offline probes require the separately selected pinned bundle.' >> "$GITHUB_STEP_SUMMARY"

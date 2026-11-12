@@ -207,3 +207,27 @@ func Plan(raw []byte, name string) (Endpoint, error) {
 func safeAbsolute(p string) bool {
 	return filepath.IsAbs(p) && filepath.Clean(p) == p && p != "/" && !strings.ContainsAny(p, "%\r\n\x00")
 }
+
+// WithSession admits authentication under the same protected dispatch lock.
+// Private inspection/clear can use a retained snapshot after profile removal;
+// the native owner still enforces the kernel UID and exact session ownership.
+func (s *Store) WithSession(e Endpoint, cleanup bool, fn func(string, string, string) error) error {
+	if !cleanup {
+		return s.With(e, fn)
+	}
+	if Validate(e) != nil || e.Scope != s.scope || fn == nil {
+		return c.ErrBinding
+	}
+	if err := s.verifyTrust(e.Snapshot); err != nil {
+		return err
+	}
+	paths := []string{}
+	for _, ref := range []c.PackageRef{e.Snapshot.Profile.Configuration.Adapter, e.Snapshot.Profile.Configuration.SSH, e.Snapshot.Profile.Configuration.Helper} {
+		p, err := s.executable(ref)
+		if err != nil {
+			return err
+		}
+		paths = append(paths, p)
+	}
+	return fn(paths[0], paths[1], paths[2])
+}

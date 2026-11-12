@@ -242,3 +242,23 @@ func TestPrivateSessionAndJournalNoReplay(t *testing.T) {
 		t.Fatal("expired readiness")
 	}
 }
+
+func TestSessionCleanupAfterDisableDoesNotAdmitLogin(t *testing.T) {
+	for _, state := range []string{"disabled", "removed"} {
+		t.Run(state, func(t *testing.T) {
+			s, e, _ := fixture(t)
+			v := e.Snapshot
+			v.Profile.State = state
+			c.SealSnapshot(&v)
+			save(t, s, v)
+			called := false
+			callback := func(_, _, _ string) error { called = true; return nil }
+			if s.WithSession(e, false, callback) == nil || called {
+				t.Fatal("login admitted after profile removal")
+			}
+			if err := s.WithSession(e, true, callback); err != nil || !called {
+				t.Fatal("private cleanup refused", err)
+			}
+		})
+	}
+}

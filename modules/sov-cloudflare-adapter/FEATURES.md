@@ -28,7 +28,8 @@
         "modules/sov-cloudflare-adapter/tests/qualification.cpp",
         "modules/sov-cloudflare-adapter/tests/execution.cpp",
         "modules/sov-cloudflare-adapter/tests/connector.cpp",
-        "modules/sov-cloudflare-adapter/tests/guard.mjs"
+        "modules/sov-cloudflare-adapter/tests/guard.mjs",
+        "modules/sov-cloudflare-adapter/tests/access.cpp"
       ],
       "feature_id": "ssfv:symphony:sov-cloudflare-adapter",
       "how": "Closed receipt-owned schemas, exact runtime selection, SSIAG pinned admission and committed audit, one-request guard, private journals and observation-only recovery.",
@@ -39,6 +40,8 @@
         }
       ],
       "implementation_paths": [
+        "modules/sov-cloudflare-adapter/src/access.cpp",
+        "modules/sov-cloudflare-adapter/src/access_main.cpp",
         "modules/sov-cloudflare-adapter/src/adapter.cpp",
         "modules/sov-cloudflare-adapter/src/connector.cpp",
         "modules/sov-cloudflare-adapter/src/credential_channel.cpp",
@@ -58,7 +61,7 @@
       "source_scope": "modules/sov-cloudflare-adapter",
       "status": "experimental",
       "title": "Native Cloudflare administration",
-      "what": "Exact cf/Node lifecycle, typed Tunnel/DNS/Access operations, native credential channels, persisted contexts and user-mode connector lifecycle.",
+      "what": "Exact cf/Node lifecycle, typed Tunnel/DNS/Access operations, native credential channels, persisted contexts and user-mode connector lifecycle. Explicit private Access user-session lifecycle and fixed SSH proxy helper.",
       "when": "Explicitly planned user-owned Cloudflare administration.",
       "where": "Selected independently installed native adapter and private local store.",
       "who": "Humans, agents and independent native consumers.",

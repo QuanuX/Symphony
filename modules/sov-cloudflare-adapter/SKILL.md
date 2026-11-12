@@ -3,3 +3,10 @@
 Inspect the exact installed owner declaration, schema and safe template. Select the intended operation/profile and exact non-root runtime. Prepare and inspect a persisted plan with explicit account, zone/resource, credential reference, expected observation and provider selection; never supply raw credentials through qxctl. Use native SSIAG bootstrap only after the operator selects that backend. Require current exact permission and committed audit for credential use.
 
 Execute the persisted plan once. Preserve all result axes and read completeness. Inspect status after loss; reconcile through independent observation instead of replaying a mutation. Stop a connector through authenticated instance control before update or retirement. Do not interpret process liveness as Cloudflare connectivity. Missing credentials, incompatible runtime, absent permission/audit, or unsupported token rotation remain explicit unavailability. Source fixtures do not authorize live operations or create a new SSH exception. Profile administration remains separately sudo-gated and connections remain user-mode.
+
+For I5 sessions, use `qxctl sov transport session schema|template` before preparing
+closed nonsecret controls. Authentication/renewal are explicit browser-capable
+same-user actions; never place token bytes in qxctl input or use sudo for login or
+connection. Inspect a lost attempt before forming another plan. Clear is local
+private cleanup, not provider revocation. The subordinate Access session contract
+records installed trust requirements and uncompleted live qualification gates.

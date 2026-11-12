@@ -81,6 +81,23 @@
       "version_policy": "exact_receipt_v2_entry_point_and_capability_compatible"
     },
     {
+      "adapter_id": "adapter:symphony:symphony-cloudflare-access.v1",
+      "command_protocol": "symphony.sov.transport-session-native-request.v1",
+      "component": "sov-cloudflare-adapter",
+      "entry_point_id": "symphony-cloudflare-access",
+      "format_version": 4,
+      "implementation_path": "modules/sov-cloudflare-adapter",
+      "operation_ids": [
+        "engop:symphony:sov.transport.session.authenticate",
+        "engop:symphony:sov.transport.session.clear",
+        "engop:symphony:sov.transport.session.inspect",
+        "engop:symphony:sov.transport.session.plan",
+        "engop:symphony:sov.transport.session.renew"
+      ],
+      "owner_contract": "modules/sov-cloudflare-adapter/SPEC.md",
+      "version_policy": "exact_receipt_v2_entry_point_and_capability_compatible"
+    },
+    {
       "adapter_id": "adapter:symphony:symphony-scev-cf.v1",
       "command_protocol": "symphony.knowledge.engine-process.v1",
       "component": "scev-cf-engine",
@@ -2786,6 +2803,47 @@
     },
     {
       "allowed_adapter_ids": [
+        "adapter:symphony:symphony-cloudflare-access.v1"
+      ],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "TestSessionClosedControls",
+            "TestSessionStrictResultAndUncertainDispatch"
+          ],
+          "path": "tools/qxctl/internal/transportsession/wire_test.go"
+        }
+      ],
+      "invariant_id": "invariant:symphony:sov.cloudflare-access-private-session",
+      "ipc_boundary": true,
+      "owner_component": "sov-cloudflare-adapter",
+      "owner_contract": "modules/sov-cloudflare-adapter/SPEC.md",
+      "producer_implementations": [
+        "modules/sov-cloudflare-adapter/src/access.cpp",
+        "modules/sov-cloudflare-adapter/src/access_main.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "test_access_native_sessions"
+          ],
+          "path": "modules/sov-cloudflare-adapter/tests/access.cpp"
+        }
+      ],
+      "real_process_regressions": [
+        {
+          "cases": [
+            "test_access_installed_process"
+          ],
+          "path": "modules/sov-cloudflare-adapter/tests/installed.cpp"
+        }
+      ],
+      "statement": "The native Access owner keeps credential bytes private and enforces exact user/runtime/application/identity/plan bindings. Protected carrier admission gates authentication and renewal; user cleanup never re-admits a connection. Local readiness is not provider authorization; connection attempts cannot implicitly login. Installed refusal and local child fixtures do not qualify live Cloudflare transport.",
+      "status": "active",
+      "title": "Cloudflare private Access session and explicit login boundary"
+    },
+    {
+      "allowed_adapter_ids": [
         "adapter:symphony:symphony-sov-cloudflare-adapter.v1"
       ],
       "consumer_boundary_rejections": [
@@ -4417,11 +4475,11 @@
     }
   ],
   "protocol": "symphony.knowledge.invariant-ownership-registry.v5",
-  "registry_digest": "sha256:0496dae07cb58adeb21bdf39bf89ba6849c1a88f0ecaf07418ee75a79d3381fc",
   "scope": "common_lowest_authoritative_layer",
   "test_policy": {
     "consumer_boundary_rejection_required": true,
     "owner_producer_regression_required": true,
     "real_process_required_for_ipc": true
-  }
+  },
+  "registry_digest": "sha256:ba8dabc29930ba792809cae63048d50240df8a26b4c836d9076b0089e8f609c1"
 }

@@ -28,10 +28,11 @@
         "knowledge/sov/SSH-CARRIER.md",
         "tools/sov-ssh-adapter/profile/profile_test.go",
         "tools/sov-ssh-adapter/installed_profile_test.go",
-        "knowledge/sov/SSH-PROFILE-CARRIER.md"
+        "knowledge/sov/SSH-PROFILE-CARRIER.md",
+        "tools/sov-ssh-adapter/sessionwire/wire_test.go"
       ],
       "feature_id": "ssfv:symphony:sov-ssh-adapter",
-      "how": "Exact v1 remains direct. Explicit v2 uses a protected snapshot and package closure, kernel-principal admission under the shared lock, authenticated committed intent, private dispatch evidence and a fixed quoted proxy wrapper.",
+      "how": "Exact v1 remains direct. Explicit v2 uses a protected snapshot and package closure, kernel-principal admission under the shared lock, authenticated committed intent, private dispatch evidence and a fixed quoted proxy wrapper. Separate session mode rechecks profile admission and invokes the pinned native owner; private inspect/clear permit retained snapshots after profile disable.",
       "implementation_languages": [
         {
           "language": "Go",
@@ -45,7 +46,9 @@
         "tools/sov-ssh-adapter/profile/private.go",
         "tools/sov-ssh-adapter/profile/store.go",
         "tools/sov-ssh-adapter/profile/wire.go",
-        "tools/sov-ssh-adapter/profile_run.go"
+        "tools/sov-ssh-adapter/profile_run.go",
+        "tools/sov-ssh-adapter/session_run.go",
+        "tools/sov-ssh-adapter/sessionwire/wire.go"
       ],
       "kind": "feature",
       "non_claims": [

@@ -4,8 +4,10 @@
 package main
 
 import (
+	"encoding/json"
 	"flag"
 	"fmt"
+	session "github.com/QuanuX/Symphony/tools/sov-ssh-adapter/sessionwire"
 	"go/format"
 	"os"
 	"path/filepath"
@@ -22,7 +24,7 @@ func main() {
 		must(e)
 		outputs[filepath.Join(root, "tools/qxctl/internal/sshprofile/testdata", name)] = raw
 	}
-	for _, pair := range [][2]string{{"profile", "sshprofile"}, {"profilewire", "sshprofilewire"}} {
+	for _, pair := range [][2]string{{"profile", "sshprofile"}, {"profilewire", "sshprofilewire"}, {"sessionwire", "transportsession"}} {
 		entries, e := os.ReadDir(pair[0])
 		must(e)
 		for _, f := range entries {
@@ -34,6 +36,7 @@ func main() {
 			s := string(raw)
 			s = strings.Replace(s, "package "+pair[0], "package "+pair[1], 1)
 			s = strings.ReplaceAll(s, "github.com/QuanuX/Symphony/tools/sov-ssh-adapter/profilewire", "github.com/QuanuX/Symphony/tools/qxctl/internal/sshprofilewire")
+			s = strings.ReplaceAll(s, `"github.com/QuanuX/Symphony/tools/sov-ssh-adapter/profile"`, `profile "github.com/QuanuX/Symphony/tools/qxctl/internal/sshprofile"`)
 			b, e := format.Source([]byte(s))
 			must(e)
 			outputs[filepath.Join(root, "tools/qxctl/internal", pair[1], f.Name())] = b
@@ -51,6 +54,9 @@ func main() {
 	raw, e := os.ReadFile("connectionaudit/contract.go")
 	must(e)
 	outputs[filepath.Join(root, "modules/secure-identity-access-governance/internal/connectionaudit/contract.go")] = raw
+	schema, err := json.MarshalIndent(session.Schema(), "", "  ")
+	must(err)
+	outputs[filepath.Join(root, "knowledge/sov/cloudflare/access-sessions.json")] = append(schema, '\n')
 	for p, b := range outputs {
 		if *check {
 			actual, e := os.ReadFile(p)

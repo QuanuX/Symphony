@@ -1420,7 +1420,9 @@
       "distinctions": [],
       "evidence": [
         "tools/qxctl/internal/sovcloudflare/cloudflare_test.go",
-        "modules/sov-cloudflare-adapter/tests/qualification.cpp"
+        "modules/sov-cloudflare-adapter/tests/qualification.cpp",
+        "tools/qxctl/internal/transportsession/wire_test.go",
+        "tools/qxctl/cmd/qxctl/sov_transport_session_test.go"
       ],
       "feature_id": "ssfv:symphony:qxctl.sov-cloudflare-administration",
       "how": "Exact receipt and native owner binding, closed controls/results, explicit plan/context correlation and conservative lost-mutation outcomes.",
@@ -1433,7 +1435,10 @@
       "implementation_paths": [
         "modules/sov-cloudflare-adapter/src/resource.cpp",
         "tools/qxctl/cmd/qxctl/sov_cloudflare.go",
-        "tools/qxctl/internal/sovcloudflare/cloudflare.go"
+        "tools/qxctl/cmd/qxctl/sov_transport_session.go",
+        "tools/qxctl/internal/sovcloudflare/cloudflare.go",
+        "tools/qxctl/internal/transportsession/client.go",
+        "tools/qxctl/internal/transportsession/wire.go"
       ],
       "kind": "subfeature",
       "non_claims": [
@@ -1446,7 +1451,7 @@
       "source_scope": "tools/qxctl",
       "status": "experimental",
       "title": "qxctl native Cloudflare administration",
-      "what": "Typed native Cloudflare lifecycle, context, resource and connector administration through exact installed descriptors.",
+      "what": "Typed native Cloudflare lifecycle, context, resource and connector administration through exact installed descriptors. Explicit same-user Access session administration through the protected carrier.",
       "when": "Explicit local administration or offline discovery request.",
       "where": "Selected independently installed native adapter and private local store.",
       "who": "Humans, agents and independent native consumers.",

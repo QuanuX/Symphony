@@ -33,3 +33,37 @@ The preparer never downloads or executes a dependency. Supply an already verifie
 
 
 I4 installed-only builds also require the independently installed `SymphonySSIAGPrivateStore 0.1.0 EXACT` SDK. Install `modules/ssiag-provider-private-store` after the foundation and before this adapter. Provider installation does not create or select credentials. Native backend bootstrap is explicit; see its INSTALL.md/SPEC.md.
+
+## Optional I5 Access session package
+
+The default receipt includes `symphony-cloudflare-access` and `access-sessions.json`.
+It supports offline `--describe` but refuses session/connection execution until a
+protected runtime is explicitly selected. This does not install host policy or
+change SSH v1.
+
+For an approved protected helper package, supply both absolute CMake inputs
+`SYMPHONY_ACCESS_CLOUDFLARED` and `SYMPHONY_ACCESS_RUNTIME_CONFIG`. They install as
+receipt-owned sibling files `cloudflared` and `access-runtime.json`. The latter is:
+
+```json
+{"protocol":"symphony.sov.cloudflare-access-runtime.v1","cloudflared_version":"2026.10.7","cloudflared_digest":"sha256:5c55e77da7012cebca19170357e196176c48c9647cc2ead404702fa125ddbd86","carrier_digest":"sha256:<actual protected carrier digest>","ssh_digest":"sha256:<actual protected OpenSSH digest>"}
+```
+
+Placeholders are deliberately invalid. Current runtime admission is macOS amd64
+only, matching the exact C0 artifact. Linux fixtures do not authorize a Linux vendor
+binary. Use the I2 receipt/package installation contract for the helper's `proxy`
+role, selecting receipt entry point `symphony-cloudflare-access` and preserving its
+sibling layout. Select exact carrier and SSH packages in the profile. All runtime
+files and their ancestors must be root-owned, nonsymlink and not group/world
+writable; no user prefix, environment override or PATH discovery grants trust.
+Profile create/enable/policy changes use the existing sudo-gated administrator and
+its SSIAG/STAV admission. Do not replace a protected executable in place.
+
+As the admitted ordinary user, create a private session directory, select the
+Access application and independent SSH endpoint through I3, then use
+`qxctl sov transport session template --json` and
+`qxctl sov transport session schema --json`. Replace the expired template deadline
+and synthetic endpoint. Inspect, plan explicit authentication with audience/issuer/
+subject, and authenticate using its exact plan digest. Browser completion may be
+required. See `knowledge/sov/CLOUDFLARE-ACCESS-SESSIONS.md` for renewal, clearing,
+uncertain-outcome recovery and the pending live qualification gate.

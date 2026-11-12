@@ -2507,7 +2507,10 @@
             "qxcmd:symphony:sov.cloudflare.cf.installation.apply",
             "qxcmd:symphony:sov.cloudflare.cf.resource.apply",
             "qxcmd:symphony:sov.cloudflare.connector.installation.apply",
-            "qxcmd:symphony:sov.cloudflare.connector.instance.apply"
+            "qxcmd:symphony:sov.cloudflare.connector.instance.apply",
+            "qxcmd:symphony:sov.transport.session.authenticate",
+            "qxcmd:symphony:sov.transport.session.clear",
+            "qxcmd:symphony:sov.transport.session.renew"
           ],
           "delivery": "direct",
           "engine_operation_ids": [
@@ -2515,9 +2518,13 @@
             "engop:symphony:sov.cloudflare.connector.instance.apply",
             "engop:symphony:sov.cloudflare.context.apply",
             "engop:symphony:sov.cloudflare.installation.apply",
-            "engop:symphony:sov.cloudflare.resource.apply"
+            "engop:symphony:sov.cloudflare.resource.apply",
+            "engop:symphony:sov.transport.session.authenticate",
+            "engop:symphony:sov.transport.session.clear",
+            "engop:symphony:sov.transport.session.renew"
           ],
           "evidence": [
+            "knowledge/sov/CLOUDFLARE-ACCESS-SESSIONS.md",
             "knowledge/sov/cloudflare/owner.json",
             "modules/sov-cloudflare-adapter/SPEC.md",
             "tools/qxctl/COMMANDS.json"
@@ -2532,7 +2539,9 @@
             "qxcmd:symphony:sov.cloudflare.cf.capability.describe",
             "qxcmd:symphony:sov.cloudflare.cf.capability.list",
             "qxcmd:symphony:sov.cloudflare.cf.capability.schema",
-            "qxcmd:symphony:sov.cloudflare.cf.capability.template"
+            "qxcmd:symphony:sov.cloudflare.cf.capability.template",
+            "qxcmd:symphony:sov.transport.session.schema",
+            "qxcmd:symphony:sov.transport.session.template"
           ],
           "delivery": "direct",
           "engine_operation_ids": [
@@ -2542,6 +2551,7 @@
             "engop:symphony:sov.cloudflare.capability.template"
           ],
           "evidence": [
+            "knowledge/sov/CLOUDFLARE-ACCESS-SESSIONS.md",
             "knowledge/sov/cloudflare/owner.json",
             "modules/sov-cloudflare-adapter/SPEC.md",
             "tools/qxctl/COMMANDS.json"
@@ -2566,7 +2576,8 @@
             "qxcmd:symphony:sov.cloudflare.connector.installation.status",
             "qxcmd:symphony:sov.cloudflare.connector.instance.inspect",
             "qxcmd:symphony:sov.cloudflare.connector.instance.list",
-            "qxcmd:symphony:sov.cloudflare.connector.instance.status"
+            "qxcmd:symphony:sov.cloudflare.connector.instance.status",
+            "qxcmd:symphony:sov.transport.session.inspect"
           ],
           "delivery": "direct",
           "engine_operation_ids": [
@@ -2583,9 +2594,11 @@
             "engop:symphony:sov.cloudflare.installation.status",
             "engop:symphony:sov.cloudflare.resource.inspect",
             "engop:symphony:sov.cloudflare.resource.list",
-            "engop:symphony:sov.cloudflare.resource.status"
+            "engop:symphony:sov.cloudflare.resource.status",
+            "engop:symphony:sov.transport.session.inspect"
           ],
           "evidence": [
+            "knowledge/sov/CLOUDFLARE-ACCESS-SESSIONS.md",
             "knowledge/sov/cloudflare/owner.json",
             "modules/sov-cloudflare-adapter/SPEC.md",
             "tools/qxctl/COMMANDS.json"
@@ -2601,7 +2614,8 @@
             "qxcmd:symphony:sov.cloudflare.cf.installation.plan",
             "qxcmd:symphony:sov.cloudflare.cf.resource.plan",
             "qxcmd:symphony:sov.cloudflare.connector.installation.plan",
-            "qxcmd:symphony:sov.cloudflare.connector.instance.plan"
+            "qxcmd:symphony:sov.cloudflare.connector.instance.plan",
+            "qxcmd:symphony:sov.transport.session.plan"
           ],
           "delivery": "direct",
           "engine_operation_ids": [
@@ -2609,9 +2623,11 @@
             "engop:symphony:sov.cloudflare.connector.instance.plan",
             "engop:symphony:sov.cloudflare.context.plan",
             "engop:symphony:sov.cloudflare.installation.plan",
-            "engop:symphony:sov.cloudflare.resource.plan"
+            "engop:symphony:sov.cloudflare.resource.plan",
+            "engop:symphony:sov.transport.session.plan"
           ],
           "evidence": [
+            "knowledge/sov/CLOUDFLARE-ACCESS-SESSIONS.md",
             "knowledge/sov/cloudflare/owner.json",
             "modules/sov-cloudflare-adapter/SPEC.md",
             "tools/qxctl/COMMANDS.json"
@@ -8707,7 +8723,10 @@
             "qxcmd:symphony:sov.cloudflare.cf.installation.apply",
             "qxcmd:symphony:sov.cloudflare.cf.resource.apply",
             "qxcmd:symphony:sov.cloudflare.connector.installation.apply",
-            "qxcmd:symphony:sov.cloudflare.connector.instance.apply"
+            "qxcmd:symphony:sov.cloudflare.connector.instance.apply",
+            "qxcmd:symphony:sov.transport.session.authenticate",
+            "qxcmd:symphony:sov.transport.session.clear",
+            "qxcmd:symphony:sov.transport.session.renew"
           ],
           "delivery": "direct",
           "engine_operation_ids": [
@@ -8715,9 +8734,13 @@
             "engop:symphony:sov.cloudflare.connector.instance.apply",
             "engop:symphony:sov.cloudflare.context.apply",
             "engop:symphony:sov.cloudflare.installation.apply",
-            "engop:symphony:sov.cloudflare.resource.apply"
+            "engop:symphony:sov.cloudflare.resource.apply",
+            "engop:symphony:sov.transport.session.authenticate",
+            "engop:symphony:sov.transport.session.clear",
+            "engop:symphony:sov.transport.session.renew"
           ],
           "evidence": [
+            "knowledge/sov/CLOUDFLARE-ACCESS-SESSIONS.md",
             "knowledge/sov/cloudflare/owner.json",
             "modules/sov-cloudflare-adapter/SPEC.md",
             "tools/qxctl/COMMANDS.json"
@@ -8732,7 +8755,9 @@
             "qxcmd:symphony:sov.cloudflare.cf.capability.describe",
             "qxcmd:symphony:sov.cloudflare.cf.capability.list",
             "qxcmd:symphony:sov.cloudflare.cf.capability.schema",
-            "qxcmd:symphony:sov.cloudflare.cf.capability.template"
+            "qxcmd:symphony:sov.cloudflare.cf.capability.template",
+            "qxcmd:symphony:sov.transport.session.schema",
+            "qxcmd:symphony:sov.transport.session.template"
           ],
           "delivery": "direct",
           "engine_operation_ids": [
@@ -8742,6 +8767,7 @@
             "engop:symphony:sov.cloudflare.capability.template"
           ],
           "evidence": [
+            "knowledge/sov/CLOUDFLARE-ACCESS-SESSIONS.md",
             "knowledge/sov/cloudflare/owner.json",
             "modules/sov-cloudflare-adapter/SPEC.md",
             "tools/qxctl/COMMANDS.json"
@@ -8766,7 +8792,8 @@
             "qxcmd:symphony:sov.cloudflare.connector.installation.status",
             "qxcmd:symphony:sov.cloudflare.connector.instance.inspect",
             "qxcmd:symphony:sov.cloudflare.connector.instance.list",
-            "qxcmd:symphony:sov.cloudflare.connector.instance.status"
+            "qxcmd:symphony:sov.cloudflare.connector.instance.status",
+            "qxcmd:symphony:sov.transport.session.inspect"
           ],
           "delivery": "direct",
           "engine_operation_ids": [
@@ -8783,9 +8810,11 @@
             "engop:symphony:sov.cloudflare.installation.status",
             "engop:symphony:sov.cloudflare.resource.inspect",
             "engop:symphony:sov.cloudflare.resource.list",
-            "engop:symphony:sov.cloudflare.resource.status"
+            "engop:symphony:sov.cloudflare.resource.status",
+            "engop:symphony:sov.transport.session.inspect"
           ],
           "evidence": [
+            "knowledge/sov/CLOUDFLARE-ACCESS-SESSIONS.md",
             "knowledge/sov/cloudflare/owner.json",
             "modules/sov-cloudflare-adapter/SPEC.md",
             "tools/qxctl/COMMANDS.json"
@@ -8801,7 +8830,8 @@
             "qxcmd:symphony:sov.cloudflare.cf.installation.plan",
             "qxcmd:symphony:sov.cloudflare.cf.resource.plan",
             "qxcmd:symphony:sov.cloudflare.connector.installation.plan",
-            "qxcmd:symphony:sov.cloudflare.connector.instance.plan"
+            "qxcmd:symphony:sov.cloudflare.connector.instance.plan",
+            "qxcmd:symphony:sov.transport.session.plan"
           ],
           "delivery": "direct",
           "engine_operation_ids": [
@@ -8809,9 +8839,11 @@
             "engop:symphony:sov.cloudflare.connector.instance.plan",
             "engop:symphony:sov.cloudflare.context.plan",
             "engop:symphony:sov.cloudflare.installation.plan",
-            "engop:symphony:sov.cloudflare.resource.plan"
+            "engop:symphony:sov.cloudflare.resource.plan",
+            "engop:symphony:sov.transport.session.plan"
           ],
           "evidence": [
+            "knowledge/sov/CLOUDFLARE-ACCESS-SESSIONS.md",
             "knowledge/sov/cloudflare/owner.json",
             "modules/sov-cloudflare-adapter/SPEC.md",
             "tools/qxctl/COMMANDS.json"
@@ -10885,9 +10917,9 @@
   ],
   "format_version": 1,
   "forward_gate": "enforce_new_records",
-  "profile_digest": "sha256:b08c5da86b7accbc235a2e00a68888f9d3e9edeb58535880e54c32c4d8a50a66",
   "profile_id": "symphony.registered-features.administration.v1",
   "protocol": "symphony.knowledge.feature-administration-profile.v1",
   "registered_feature_count": 154,
-  "ssfv_registry_digest": "sha256:564fa52d6ada528d8621c5ac486b0c2dfa130d11384838f989f393d0a6ef159c"
+  "ssfv_registry_digest": "sha256:1f8855f571a26bc969aa0408e406393dd4108ef6a50c881442694a51011f8110",
+  "profile_digest": "sha256:26010e76bf898c3a10254b0b2a7f95626187e832c4431e7e3d162a561d46a4b6"
 }

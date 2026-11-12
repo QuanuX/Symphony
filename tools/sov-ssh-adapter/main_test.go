@@ -84,3 +84,12 @@ func TestProtectedSystemPathRefusesCallerWritableTree(t *testing.T) {
 		t.Fatal("caller path accepted as protected system client")
 	}
 }
+
+func TestSessionModeNeverFallsBackToSSH(t *testing.T) {
+	for _, raw := range []string{`{}`, `{"protocol":"symphony.sov.ssh-invoke-input.v1"}`, `{"protocol":"symphony.sov.transport-session-request.v1","token":"SECRET"}`} {
+		var out bytes.Buffer
+		if status := run(context.Background(), []string{"--session"}, strings.NewReader(raw), &out); status != 2 || out.Len() != 0 {
+			t.Fatalf("invalid session escaped closed mode: %d", status)
+		}
+	}
+}

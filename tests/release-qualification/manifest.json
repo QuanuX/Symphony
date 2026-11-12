@@ -1515,7 +1515,8 @@
         "cloudflare-owner-projections",
         "cloudflare-native-contract",
         "cloudflare-resource-execution",
-        "cloudflare-connector-lifecycle"
+        "cloudflare-connector-lifecycle",
+        "cloudflare-access-sessions"
       ],
       "direct_tests": [
         {
@@ -1537,6 +1538,10 @@
         {
           "target": "cloudflare-http_runner-tests",
           "reason": "Requires the exact external C0 cf/Node bundle; offline production-runner qualification is separately recorded."
+        },
+        {
+          "target": "cloudflare-access_child-tests",
+          "reason": "Inert provider child called only by cloudflare-access-sessions; no standalone vendor acceptance."
         }
       ],
       "known_internal_skips": []

@@ -288,6 +288,7 @@ bool is_authorized_canonical_json(const std::string& relative_path) {
         "knowledge/sov/cloudflare/c0/package-lock.json",
         "knowledge/sov/cloudflare/c0/retry-auth-delegation.json",
         "knowledge/sov/cloudflare/owner.json",
+        "knowledge/sov/cloudflare/access-sessions.json",
 
 
         "knowledge/sov/cloudflare/schemas/connector.installation.apply.input_schema.json",

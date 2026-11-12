@@ -39,3 +39,10 @@ The complete [contract](../../knowledge/sov/SSH-CARRIER.md) explains identity,
 timeouts, cancellation, result framing, qxctl coverage and remaining qualification.
 
 For explicit protected profiles, use the [v2 carrier contract](../../knowledge/sov/SSH-PROFILE-CARRIER.md). Profile changes remain sudo gated; connections run as the admitted non-root user. Live Cloudflare sessions remain I5 qualification.
+
+I5 adds the independent `--session` control mode. It rechecks protected profile
+admission before starting the native session owner as the caller; private
+inspection/clear remain possible after profile removal. Normal invocation and
+SSH v1 options are unchanged. See
+[Access sessions](../../knowledge/sov/CLOUDFLARE-ACCESS-SESSIONS.md) for exact runtime
+requirements and explicit browser-capable login. Session outputs contain no tokens.

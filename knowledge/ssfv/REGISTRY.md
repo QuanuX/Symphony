@@ -1360,7 +1360,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `tools/sov-ssh-adapter`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:platform`
-- record_digest: `sha256:3737e5d0f4105e21114854548597a2dab410a443242106788f83f6d61091f3b0`
+- record_digest: `sha256:4d87c23e6f0b0707a7c91cd08216ce68769edf9175a1910c8709b2900a0ba516`
 - notes: Optional scoped SSH implementation; actual two-host deployment remains unqualified.
 
 - feature_id: `ssfv:symphony:srrapiv-runtime-cpp`
@@ -1388,7 +1388,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `modules/sov-cloudflare-adapter`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:platform`
-- record_digest: `sha256:83da46bb1b7f90e6cdf885b4ce58dffb6248b7dcb740f241726e110917fd505b`
+- record_digest: `sha256:a9e2ce7773fcbf77378248f8a41a94de6513295cb35da63daf6846ed4d51e8be`
 - notes: I4 native credential channels and bounded Cloudflare administration; fixture evidence does not establish live provider qualification.
 
 - feature_id: `ssfv:symphony:qxctl.sov-cloudflare-administration`
@@ -1397,7 +1397,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `tools/qxctl`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:qxctl`
-- record_digest: `sha256:be9a642b69b62fb2197e9b192d293fb69ff6097a4f4423f816c3f42eefae6c61`
+- record_digest: `sha256:e39db6afc7fb40cc6d421ff8083231aa47aae002a9d6ea4d45ab995192720127`
 - notes: I4 native credential channels and bounded Cloudflare administration; fixture evidence does not establish live provider qualification.
 
 
