@@ -220,3 +220,36 @@ Retained local logs: workspace `implementation/cloudflare-i5/evidence/`, includi
 `carrier-sessions-final.log`, `registry-final.log`, `generated-contracts.log`,
 `ssfv-i5.log`, `dependency-verify.log`, `release-manifest.log`, and
 `validator-final.json`. No credential material is included in this evidence.
+
+## I5 CI portability repair — November 11, 2026
+
+Completed runs for `5970b38471a32bfb53ee660714a39f5975efe360` had four
+failed jobs across [Cloudflare native local foundation](https://github.com/QuanuX/Symphony/actions/runs/43120351184)
+and [MVP dependency map](https://github.com/QuanuX/Symphony/actions/runs/43120351103).
+All four failed `cloudflare-resource-execution` on Ubuntu 24.04 (amd64/arm64)
+with `profile`; the other nine workflows, including CodeQL, passed.
+
+Clang 18 does not extend the lifetime of the temporary owner JSON through a
+range-for loop over its nested array. Three loops now retain a named owner
+declaration: resource profile selection, connector plan validation and the
+resource fixture. A new regression requires rejection of a malformed connector
+plan even when its digest is recomputed, and verifies that rejection preserves
+the installation state. This covers the related validation bypass that the
+earlier connector fixture did not exercise. SSH v1 code is unchanged.
+
+Focused verification:
+
+- Ubuntu 24.04 amd64, Clang 18.1.3: the original resource test reproduces
+  `profile`; the new connector regression fails against the original production
+  code. After the repair, both resource execution and connector lifecycle pass
+  as an ordinary user against local inert fixtures.
+- macOS amd64, LLVM 23.1.2, installed-foundation configuration: both affected
+  tests pass. The connector regression's initial fixture-path error was corrected
+  before its final passing run.
+- Dependency verification passes at 73 roots, 60 native components and 1,329
+  source hashes. Only the four changed source hashes were refreshed.
+
+Unchanged SSH/session tests and broad campaigns were not rerun. Linux arm64
+was not tested locally; remote results for the repair are not awaited or asserted.
+Retained repair evidence: workspace `implementation/cloudflare-i5/ci-repair/`.
+These local fixture checks make no new live-provider or runtime-admission claim.

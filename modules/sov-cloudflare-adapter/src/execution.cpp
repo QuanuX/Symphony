@@ -6,7 +6,9 @@ namespace {
 const char *attempt_protocol = "symphony.sov.cloudflare-resource-attempt.v1";
 const char *observation_protocol = "symphony.sov.cloudflare-observation.v1";
 Json profile(const std::string &op) {
-  for (const auto &p : owner().at("resource_profiles"))
+  // Keep the declaration alive on compilers without range-for temporary extension.
+  const auto declaration = owner();
+  for (const auto &p : declaration.at("resource_profiles"))
     if (p.at("operation") == op)
       return p;
   n::need(false);

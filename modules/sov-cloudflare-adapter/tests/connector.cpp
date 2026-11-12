@@ -65,7 +65,23 @@ int main(int argc, char **argv) {
       auto d = p.at("plan_digest");
       return invoke(family, "apply", {{"plan_digest", d}}, d);
     };
-    apply("installation", invoke("installation", "plan", install));
+    auto install_plan = invoke("installation", "plan", install);
+    // Re-sealing a malformed plan must not bypass descriptor validation.
+    // This also catches a descriptor loop over an already-destroyed owner JSON.
+    auto malformed = install_plan.at("plan");
+    malformed["unexpected"] = true;
+    auto malformed_digest = cloudflare::digest(
+        malformed, "symphony.sov.cloudflare-connector-plan.v1");
+    n::put(h.root / "connector/plans" / (malformed_digest.substr(7) + ".json"),
+           malformed.dump());
+    bool malformed_refused = false;
+    try {
+      apply("installation", Json{{"plan_digest", malformed_digest}});
+    } catch (...) {
+      malformed_refused = true;
+    }
+    NT_REQUIRE(malformed_refused && current() == install.at("expected_state"));
+    apply("installation", install_plan);
     apply("installation", invoke("installation", "plan",
                                  {{"action", "select"},
                                   {"expected_state", current()},

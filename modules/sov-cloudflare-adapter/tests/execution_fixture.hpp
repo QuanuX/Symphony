@@ -152,7 +152,9 @@ struct Harness {
                .dump());
   }
   Json input(const std::string &op) {
-    for (auto p : cloudflare::owner().at("resource_profiles"))
+    // Keep the declaration alive on compilers without range-for temporary extension.
+    const auto declaration = cloudflare::owner();
+    for (auto p : declaration.at("resource_profiles"))
       if (p.at("operation") == op)
         return Json{
             {"store", root.string()},
