@@ -402,3 +402,69 @@ credentialless qualified build tools/dependencies, sealed Build Output and fresh
 deployment authority without rebuilding/config execution, followed by recovery
 and live evidence. I6's private rotation and live acceptance gaps remain open.
 No milestone or canonical SCLV closure is claimed; remote checks are not awaited.
+
+## Public beta stabilization — November 12, 2026
+
+This corrective increment starts from frozen main
+`51d4806a60bceca1f47513f90206155d9775d510`. It fixes three reproduced P1
+defects without adding an operation or changing package/dependency versions:
+
+- DELETE reconciliation now requests the list operation and collection scope
+  that its absence observation actually uses. Object-get permission alone
+  cannot dispatch that collection request.
+- Object observations reject a different resource ID before projection or
+  retention. This covers inspection, mutation preconditions, create/update
+  readback and reconciliation. Tunnel configuration responses retain their
+  endpoint-specific identity contract, including optional tunnel/account checks.
+- A supervisor refusal proven to precede any connector-child fork is durably
+  bound to its plan, executable and run. It can settle `not_applied`, including
+  after reply loss, while consuming the original plan. Missing proof, ambiguous
+  launch and lost post-launch audit completion remain unresolved.
+
+The README, SSIAG handoff/specification and release gates now distinguish the
+implemented opt-in Cloudflare private-store route from incomplete general L14,
+Apple/Linux and native-consumer integration. The release checklist records the
+feature freeze; existing broader release responsibilities remain open.
+
+### Focused local results
+
+macOS amd64; LLVM 23.1.2; exact Go 1.26.5 with the repository workspace explicitly
+selected for source integration. The adapter was configured with
+`SYMPHONY_CLOUDFLARE_INSTALLED=ON` against independently installed exact
+KnowledgeVectorEngine 0.2.0 and SSIAGPrivateStore 0.1.0 SDKs.
+
+| Boundary | Result |
+| --- | --- |
+| Baseline defect probes | Each P1 reproduces against the unfixed main implementation in isolation. |
+| Native owner projections and contract | 2/2 CTests passed. |
+| Resource execution | Passed: denied collection permission performs no HTTP; authorized recovery does not replay deletion; wrong object/configuration identities cannot verify an effect. |
+| Connector lifecycle | Passed in 52.21 seconds under the unchanged 90-second limit: expiry, revocation, denied admission, absent/mismatched refusal proof, lost refusal reply, actual live-child recovery, early exit combined with audit-reply loss, and audit-reply loss alone. |
+| Installed native consumer | Passed receipt/file digests, executable/owner identity, capability response and default Access refusal checks. |
+| SSIAG source integration | 3 top-level Cloudflare permission/audit tests passed with `-race`; zero skips. |
+| qxctl source integration and installed adapter | 5 top-level Cloudflare tests passed with `-race`, including the explicitly selected installed receipt/process; zero skips. |
+| Dependency/release projections | Passed: 73 roots, 60 native components and 1,364 source hashes; release manifest validation passed. Source hashes were refreshed without semantic dependency changes. |
+
+The connector fixture starts its authority listener immediately before each
+expected exchange and waits at most three seconds for its child-effect markers.
+These checks distinguish process liveness from completed fixture startup, and
+retain authenticated cleanup on test failure. Production timeout limits were
+not changed. Intermediate fixture failures are retained separately from the
+final passing evidence under workspace `implementation/beta-stabilization/evidence/`.
+
+Installed adapter: `sha256:8b2517bfd9827d3edfaeba09e2da6cbcdfe32a60739645320c122172186c1677`.
+Installed receipt: `sha256:82b59f07f2f26ec314a763a24299a6d142eacd5981c51346f524304702b6195a`.
+
+The native selection is `cloudflare-owner-projections`,
+`cloudflare-native-contract`, `cloudflare-resource-execution` and
+`cloudflare-connector-lifecycle`. Go selections are `^TestCloudflareUse` in
+SSIAG `./internal/server` and `^TestCloudflare` in qxctl
+`./internal/sovcloudflare`, both with `-race -count=1` and an explicit source
+`GOWORK`; the latter selects the exact adapter install prefix. These are not
+standalone Go module-graph or full release-suite results.
+
+Older unresolved connector attempts without the new bound refusal receipt stay
+unresolved; absence of a runtime file is never retroactive proof of non-start.
+Existing owner/capability declarations, pinned vendor versions and direct SSH v1
+source are unchanged. No real credential, provider request or publication was
+performed. Cross-platform CI, live-provider acceptance and release approval
+remain separate from these local checks.

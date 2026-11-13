@@ -24874,7 +24874,7 @@
     },
     {
       "path": "modules/sov-cloudflare-adapter/SPEC.md",
-      "sha256": "9aadac88194993b85aba3c3d239d69e871f43871ca203d1e076d6ff56a59c307"
+      "sha256": "4dc601d07bcefb036122756cbfeca239fcf50e81956385afc90d678a0590afd5"
     },
     {
       "path": "modules/sov-cloudflare-adapter/VERIFICATION.md",
@@ -24894,7 +24894,7 @@
     },
     {
       "path": "modules/sov-cloudflare-adapter/src/connector.cpp",
-      "sha256": "703464cf855bb1e4162fd4594eff66de5c8352337d63ce555144c60443f9f5c4"
+      "sha256": "4e84ec529a724cb3c17046c65e6106c360656219af599b17f3a028f3e7368503"
     },
     {
       "path": "modules/sov-cloudflare-adapter/src/connector.hpp",
@@ -24906,7 +24906,7 @@
     },
     {
       "path": "modules/sov-cloudflare-adapter/src/execution.cpp",
-      "sha256": "87064ea993a12a0cb89636b57b1270f3a603c3db83d0c4d598337ba1cba798dd"
+      "sha256": "35ef687a8d6d416517be6508b68b5274934f87ec6d5cc772c43e20fe4a1ad74b"
     },
     {
       "path": "modules/sov-cloudflare-adapter/src/execution.hpp",
@@ -24922,11 +24922,11 @@
     },
     {
       "path": "modules/sov-cloudflare-adapter/tests/connector.cpp",
-      "sha256": "841fe278f786ff992549e066b6ba763915bb23b00c3569ec2f8befe50ebfc75c"
+      "sha256": "d191a84b29f87394b24824ee8f5205674e12b262e4af4f21c5d45ee67535f1d6"
     },
     {
       "path": "modules/sov-cloudflare-adapter/tests/connector_child.cpp",
-      "sha256": "c9aeced022ae4de09fdb0cec2414c7ae6c546cb90d9e8a716166cf12f6e4fb57"
+      "sha256": "05c9ea61cf568b0955c0ac2c15ccf62aa1c86d672faccb9a07e2108079bbb425"
     },
     {
       "path": "modules/sov-cloudflare-adapter/tests/contract.cpp",
@@ -24934,11 +24934,11 @@
     },
     {
       "path": "modules/sov-cloudflare-adapter/tests/execution.cpp",
-      "sha256": "f86021308d0c469b367eb00d1d974469720bc93b28aa42357f20e6c325a69126"
+      "sha256": "1400d529f5bfce35a1a6c2c9c4af84ecec357237af461f57750466317f6049d8"
     },
     {
       "path": "modules/sov-cloudflare-adapter/tests/execution_fixture.hpp",
-      "sha256": "917660df10dedd7f184343cb1edfb453787b1b365ec05f6b248dd32970729d74"
+      "sha256": "6a9ae3df942288a0f37d1cbb2969d72693cdd0404a7ccdf366ad336224fc5b7a"
     },
     {
       "path": "modules/sov-cloudflare-adapter/tests/guard.mjs",
@@ -25014,7 +25014,7 @@
     },
     {
       "path": "modules/secure-identity-access-governance/SPEC.md",
-      "sha256": "e72ad3f070a663369aa732fff2dc8f66ab08d2af53827a6ac7982d6cce21e963"
+      "sha256": "b97eace53eb1ab9723172c71c65035567b02e42c6771ae19eb999f9087127e43"
     },
     {
       "path": "modules/ssiag-provider-private-store/tests/sdk-consumer/CMakeLists.txt",

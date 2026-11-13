@@ -94,7 +94,7 @@ SSIAG submits only the closed safe outcome vocabulary defined by `knowledge/ssia
 
 ## Implemented and Disabled Gates
 
-The internal credential-use guard described in `CREDENTIAL-USE.md` binds one
+The general L14 credential-use guard described in `CREDENTIAL-USE.md` binds one
 attempt to exact metadata, generation and a bounded deadline, and burns that
 attempt on success or refusal. It is not connected to an endpoint or provider,
 does not verify authority itself, and admits no operational credential capability.
@@ -104,15 +104,17 @@ trusted provider admission interface. `CREDENTIAL-JOURNAL.md` defines the requir
 internal durable request reservation, preparation, outcome and recovery boundary.
 `CREDENTIAL-ADMISSION.md` defines the implemented process-local resource/lease
 snapshot pin, complete-snapshot CAS and native evidence checks. The native
-provider/recipient backend and protected delivery remain unimplemented; no route
-is enabled. Local execution records do not replace committed STAV evidence. The dispatcher
+provider/recipient backend and protected delivery for this general dispatcher remain
+unimplemented; no general provider-v1 route is enabled. The separate Cloudflare I4
+route below does not complete these paths. Local execution records do not replace
+committed STAV evidence. The dispatcher
 now commits a separate safe provider-outcome event after persisting its observed
 result, retains the exact verified receipt, and reconciles missing outcome
 receipts under fresh authorization without another delivery. Internal format-1
 records retain duplicate suppression and migrate only during protected recovery.
 Unknown delivery remains indeterminate even after its audit commits.
 
-Local peer authentication, exact UID/GID subject resolution, target-host-owner derivation, endpoint verification, native supervision, receipt-v2 identity, transactional recovery, exact-grant authorization, protected policy administration, typed SSIAG STAV submission, metadata-only provider mutual trust, and exact provider-binding lifecycle are implemented. General safeguards, lease issuance, credential delivery, operational provider operations, secret delivery, and canonical knowledge apply remain disabled.
+Local peer authentication, exact UID/GID subject resolution, target-host-owner derivation, endpoint verification, native supervision, receipt-v2 identity, transactional recovery, exact-grant authorization, protected policy administration, typed SSIAG STAV submission, metadata-only provider mutual trust, and exact provider-binding lifecycle are implemented. General safeguards, general lease issuance, provider-v1 credential delivery/operations, and canonical knowledge apply remain disabled. Cloudflare-specific native use is implemented through the separately scoped I4 route below; local source/fixture qualification does not establish live-provider acceptance.
 
 ## Protected transport profile audit bridge (I2)
 
@@ -123,3 +125,11 @@ The system `/v1/transport-connection/audit` endpoint records a non-root kernel p
 ## Native Cloudflare use admission (I4)
 
 `POST /v1/cloudflare/use` upgrades the authenticated Unix connection to bounded frames. `internal/cloudflareuse` owns the closed flat nonsecret envelope; null optional selections are explicit. The mapped non-root caller needs an exact `symphony.sov.cloudflare.<profile>` grant for `cloudflare:<account>:<zone-or-account>:<resource-or-collection>`, audience `sov-cloudflare`, scope `tops:<TOPS UUID>`. The intent binds plan, consumer, toolchain, credential/result references and a maximum 60-second deadline. Committed STAV intent precedes the grant; the policy snapshot remains pinned through native completion/deadline. Separate deterministic outcome request IDs avoid STAV deduplication collisions while retaining correlation. Loss is audited as unavailable. The endpoint sees no raw credentials or raw provider responses and grants no reusable capability. Native export/import ownership and bootstrap remain at `modules/ssiag-provider-private-store/SPEC.md`.
+
+The opt-in private-store provider implements the native credential/result channels
+for this composition, with local native fixtures and actual SSIAG peer/policy tests.
+It is a user-owned private-file store, not an OS keychain, encryption service or
+hostile same-UID/root boundary. Its local generation revocation does not revoke a
+Cloudflare token or terminate an existing connector. Deployment and live-provider
+qualification remain separate. This route does not complete Apple Keychain, Linux
+Secret Service or the general L14 native consumers.

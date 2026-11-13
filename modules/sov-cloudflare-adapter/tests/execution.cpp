@@ -1,7 +1,227 @@
 #include "execution_fixture.hpp"
+#include <atomic>
+
+namespace {
+cloudflare::HTTPResult response(const Json &data) {
+  return {true, 200, {{"success", true}, {"result", data}}, true};
+}
+void no_observation(const Json &out) {
+  NT_REQUIRE(out.at("data").at("observation").is_null() &&
+             out.at("data").at("attempt").at("observation_ref").is_null());
+}
+void delete_recovery_authority(const fs::path &provider, const fs::path &self) {
+  Harness h(provider, self);
+  std::atomic<bool> allow_collection{false};
+  Authority authority(h.temp.path / "a.sock", 4, [&](const Json &intent) {
+    if (intent.at("operation") == "dns.records.list")
+      return allow_collection.load() && intent.at("resource_id").is_null();
+    return (intent.at("operation") == "dns.records.get" ||
+            intent.at("operation") == "dns.records.delete") &&
+           intent.at("resource_id") == std::string(32, '1');
+  });
+  auto row = h.input("dns.records.update").at("parameters").at("body");
+  row["id"] = std::string(32, '1');
+  unsigned calls = 0, mutations = 0;
+  bool deleted = false;
+  RuntimeHooks hooks;
+  hooks.http = [&](const Json &preview, const std::string &, const fs::path &,
+                   const fs::path &, std::int64_t) {
+    ++calls;
+    const auto &request = preview.at("request");
+    if (request.at("method") == "DELETE") {
+      ++mutations;
+      deleted = true;
+      throw std::runtime_error("reply lost after delete");
+    }
+    if (request.at("command").get<std::string>().ends_with(" list")) {
+      NT_REQUIRE(deleted && allow_collection.load());
+      return response(Json::array());
+    }
+    return response(row);
+  };
+  auto before = h.run(h.input("dns.records.get"), hooks);
+  auto remove = h.input("dns.records.delete");
+  remove["expected_observation"] = before.at("data").at("attempt").at("observation_ref");
+  auto uncertain = h.run(remove, hooks);
+  NT_REQUIRE(uncertain.at("result").at("effect_state") == "unresolved" &&
+             mutations == 1);
+  const auto before_denial = calls;
+  auto denied = h.run(remove, hooks, "resource.reconcile", uncertain.at("plan"));
+  NT_REQUIRE(denied.at("result").at("effect_state") == "unresolved" &&
+             calls == before_denial && mutations == 1);
+  allow_collection = true;
+  auto accepted = h.run(remove, hooks, "resource.reconcile", uncertain.at("plan"));
+  NT_REQUIRE(accepted.at("result").at("effect_state") == "applied_verified" &&
+             calls == before_denial + 1 && mutations == 1);
+  authority.check();
+  NT_REQUIRE(authority.intents.size() == 4);
+  for (std::size_t i : {2U, 3U}) {
+    NT_REQUIRE(authority.intents[i].at("operation") == "dns.records.list" &&
+               authority.intents[i].at("resource_id").is_null() &&
+               authority.intents[i].at("account_id") == h.context.at("account_id") &&
+               authority.intents[i].at("zone_id") == h.context.at("zone_id"));
+  }
+}
+void object_identity(const fs::path &provider, const fs::path &self) {
+  Harness h(provider, self);
+  Authority authority(h.temp.path / "a.sock", 6);
+  auto current = h.input("dns.records.update").at("parameters").at("body");
+  current["id"] = std::string(32, '1');
+  bool wrong = true, wrong_after_mutation = false;
+  unsigned mutations = 0;
+  RuntimeHooks hooks;
+  hooks.http = [&](const Json &preview, const std::string &, const fs::path &,
+                   const fs::path &, std::int64_t) {
+    const auto &request = preview.at("request");
+    if (request.at("method") != "GET") {
+      ++mutations;
+      current = request.at("body");
+      current["id"] = std::string(32, '1');
+      wrong = wrong_after_mutation;
+      return response(current);
+    }
+    auto observed = current;
+    if (wrong)
+      observed["id"] = std::string(32, '2');
+    return response(observed);
+  };
+  auto bad_read = h.run(h.input("dns.records.get"), hooks);
+  NT_REQUIRE(bad_read.at("result").at("outcome") == "failed");
+  no_observation(bad_read);
+  wrong = false;
+  auto before = h.run(h.input("dns.records.get"), hooks);
+  auto update = h.input("dns.records.update");
+  update["parameters"]["body"]["content"] = "changed.example.test";
+  update["expected_observation"] = before.at("data").at("attempt").at("observation_ref");
+  wrong = true;
+  auto bad_precondition = h.run(update, hooks);
+  NT_REQUIRE(bad_precondition.at("result").at("effect_state") == "not_applied" &&
+             mutations == 0);
+  no_observation(bad_precondition);
+  wrong = false;
+  wrong_after_mutation = true;
+  auto uncertain = h.run(update, hooks);
+  NT_REQUIRE(uncertain.at("result").at("effect_state") == "unresolved" &&
+             mutations == 1);
+  no_observation(uncertain);
+  auto bad_recovery = h.run(update, hooks, "resource.reconcile", uncertain.at("plan"));
+  NT_REQUIRE(bad_recovery.at("result").at("effect_state") == "unresolved" &&
+             mutations == 1);
+  no_observation(bad_recovery);
+  wrong = false;
+  auto recovered = h.run(update, hooks, "resource.reconcile", uncertain.at("plan"));
+  NT_REQUIRE(recovered.at("result").at("effect_state") == "applied_verified" &&
+             recovered.at("data").at("observation").at("snapshot").at("data").at("id") ==
+                 update.at("parameters").at("resource_id") &&
+             mutations == 1);
+  authority.check();
+}
+void created_identity(const fs::path &provider, const fs::path &self) {
+  Harness h(provider, self);
+  Authority authority(h.temp.path / "a.sock", 3);
+  Json created = nullptr;
+  bool wrong = true;
+  unsigned mutations = 0;
+  RuntimeHooks hooks;
+  hooks.http = [&](const Json &preview, const std::string &, const fs::path &,
+                   const fs::path &, std::int64_t) {
+    const auto &request = preview.at("request");
+    if (request.at("method") == "POST") {
+      ++mutations;
+      created = request.at("body");
+      created["id"] = std::string(32, '1');
+      return response(created);
+    }
+    if (request.at("command").get<std::string>().ends_with(" list"))
+      return response(Json::array());
+    auto observed = created;
+    if (wrong)
+      observed["id"] = std::string(32, '2');
+    return response(observed);
+  };
+  auto before = h.run(h.input("dns.records.list"), hooks);
+  auto create = h.input("dns.records.create");
+  create["expected_observation"] = before.at("data").at("attempt").at("observation_ref");
+  auto uncertain = h.run(create, hooks);
+  NT_REQUIRE(uncertain.at("result").at("effect_state") == "unresolved" &&
+             uncertain.at("data").at("attempt").at("resource_id") == std::string(32, '1') &&
+             mutations == 1);
+  no_observation(uncertain);
+  wrong = false;
+  auto recovered = h.run(create, hooks, "resource.reconcile", uncertain.at("plan"));
+  NT_REQUIRE(recovered.at("result").at("effect_state") == "applied_verified" &&
+             mutations == 1);
+  authority.check();
+}
+void configuration_identity(const fs::path &provider, const fs::path &self) {
+  Harness h(provider, self);
+  Authority authority(h.temp.path / "a.sock", 6);
+  auto update = h.input("tunnels.config.update");
+  Json current = update.at("parameters").at("body");
+  const auto tunnel = update.at("parameters").at("resource_id");
+  bool identities = false, wrong_tunnel = false, wrong_account = false;
+  unsigned mutations = 0;
+  RuntimeHooks hooks;
+  hooks.http = [&](const Json &preview, const std::string &, const fs::path &,
+                   const fs::path &, std::int64_t) {
+    const auto &request = preview.at("request");
+    if (request.at("method") == "PUT") {
+      ++mutations;
+      current = request.at("body");
+      wrong_tunnel = true;
+      return response(current);
+    }
+    auto observed = current;
+    if (identities) {
+      observed["tunnel_id"] = wrong_tunnel
+          ? Json("22222222-2222-4222-8222-222222222222") : tunnel;
+      observed["account_id"] = wrong_account
+          ? Json(std::string(32, '3')) : h.context.at("account_id");
+    }
+    return response(observed);
+  };
+  // Configuration responses have no generic id. The endpoint's optional
+  // identities may be absent, but contradictory identities are not accepted.
+  auto omitted = h.run(h.input("tunnels.config.get"), hooks);
+  NT_REQUIRE(omitted.at("result").at("outcome") == "completed");
+  identities = true;
+  auto before = h.run(h.input("tunnels.config.get"), hooks);
+  NT_REQUIRE(before.at("result").at("outcome") == "completed");
+  wrong_tunnel = true;
+  auto bad_tunnel = h.run(h.input("tunnels.config.get"), hooks);
+  NT_REQUIRE(bad_tunnel.at("result").at("outcome") == "failed");
+  no_observation(bad_tunnel);
+  wrong_tunnel = false;
+  wrong_account = true;
+  auto bad_account = h.run(h.input("tunnels.config.get"), hooks);
+  NT_REQUIRE(bad_account.at("result").at("outcome") == "failed");
+  no_observation(bad_account);
+  wrong_account = false;
+  update["expected_observation"] = before.at("data").at("attempt").at("observation_ref");
+  update["parameters"]["body"]["config"]["ingress"].insert(
+      update["parameters"]["body"]["config"]["ingress"].begin(),
+      Json{{"hostname", "ssh.example.invalid"}, {"service", "ssh://localhost:22"}});
+  auto uncertain = h.run(update, hooks);
+  NT_REQUIRE(uncertain.at("result").at("effect_state") == "unresolved" &&
+             mutations == 1);
+  no_observation(uncertain);
+  wrong_tunnel = false;
+  auto recovered = h.run(update, hooks, "resource.reconcile", uncertain.at("plan"));
+  NT_REQUIRE(recovered.at("result").at("effect_state") == "applied_verified" &&
+             mutations == 1);
+  authority.check();
+}
+} // namespace
+
 int main(int argc, char **argv) {
   try {
     NT_REQUIRE(argc == 2);
+    const auto provider = fs::canonical(argv[1]);
+    const auto self = n::executable(::getpid());
+    delete_recovery_authority(provider, self);
+    object_identity(provider, self);
+    created_identity(provider, self);
+    configuration_identity(provider, self);
     Harness h(fs::canonical(argv[1]), n::executable(::getpid()));
     Authority authority(h.temp.path / "a.sock", 12);
     int calls = 0;
@@ -170,9 +390,10 @@ int main(int argc, char **argv) {
                pending_import.at("result").at("effect_state") == "unresolved" &&
                count_uses() == uses);
     std::cout
-        << "Native credential/export/import and resource execution: 12 "
-           "admitted uses; mutation readback, replay refusal, stale/scope "
-           "refusal, pagination and secret exclusion passed\n";
+        << "Native credential/export/import and resource execution: exact "
+           "recovery permission, object/configuration identity, mutation "
+           "readback, replay refusal, stale/scope refusal, pagination and "
+           "secret exclusion passed\n";
     return 0;
   } catch (const std::exception &e) {
     std::cerr << e.what() << '\n';

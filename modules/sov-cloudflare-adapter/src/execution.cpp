@@ -136,9 +136,22 @@ Json observe(const Json &in, const HTTPRunner &run, const std::string &token,
             r.body.contains("result"));
     auto data = r.body.at("result");
     if (!listing) {
+      n::need(data.is_object());
+      const auto &id = in.at("parameters").at("resource_id");
+      if (op == "tunnels.config.get") {
+        // This endpoint identifies the tunnel in its guarded request path.
+        // Its response has optional tunnel_id/account_id, not a generic id.
+        // Any supplied identity must agree before the projection drops it.
+        if (data.contains("tunnel_id"))
+          n::need(data.at("tunnel_id") == id);
+        if (data.contains("account_id"))
+          n::need(data.at("account_id") == in.at("context").at("account_id"));
+      } else {
+        n::need(!id.is_null() && data.at("id") == id);
+      }
       if (sensitive)
         *sensitive = data.dump();
-      rows = data.is_null() ? Json(nullptr) : projection(data, op, token);
+      rows = projection(data, op, token);
       break;
     }
     n::need(data.is_array());
@@ -315,9 +328,16 @@ Json execute_resource(const Json &request, const Json &plan,
     auto deadline = n::now() + 55000;
     // Reconciliation is an independently authorized observation, never the
     // original mutation.
+    // Delete recovery proves absence by listing the collection. Its fresh
+    // permission and credential scope must cover that actual observation,
+    // rather than reuse the deleted object's get permission.
+    const auto authority_resource =
+        recovery && profile(op).at("method") == "DELETE"
+            ? Json(nullptr)
+            : journal.at("resource_id");
     auto authority_op =
-        recovery ? (journal.at("resource_id").is_null() ? list_operation(op)
-                                                        : get_operation(op))
+        recovery ? (authority_resource.is_null() ? list_operation(op)
+                                                 : get_operation(op))
                  : op;
     Json intent{{"protocol", "symphony.ssiag.cloudflare-use.v1"},
                 {"request_id", n::uuid()},
@@ -331,7 +351,7 @@ Json execute_resource(const Json &request, const Json &plan,
                 {"operation", authority_op},
                 {"account_id", in.at("context").at("account_id")},
                 {"zone_id", in.at("context").at("zone_id")},
-                {"resource_id", journal.at("resource_id")},
+                {"resource_id", authority_resource},
                 {"deadline_unix_ms", std::to_string(deadline)}};
     credentials = std::make_unique<CredentialSession>(e, intent);
     deadline = std::min<std::int64_t>(

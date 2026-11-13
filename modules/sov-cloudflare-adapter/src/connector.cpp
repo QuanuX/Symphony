@@ -1,5 +1,6 @@
 #include "connector.hpp"
 #include "execution.hpp"
+#include <exception>
 #include <signal.h>
 #include <sys/wait.h>
 namespace cloudflare {
@@ -83,6 +84,43 @@ Json load_journal(const fs::path &path, const std::string &d) {
           j.at("effect_state") == "unresolved");
   return j;
 }
+Json startup_refusal(const Json &p, const std::string &d) {
+  return Json{{"protocol", "symphony.sov.cloudflare-connector-start-refusal.v1"},
+              {"plan_digest", d},
+              {"supervisor_digest",
+               p.at("installation_ref").at("executable_digest")},
+              {"run_id", p.at("after").at("run_id")},
+              {"state", "not_started"}};
+}
+bool refused_before_launch(const fs::path &root, const Json &p,
+                           const std::string &d) {
+  auto path = root / "runs" / p.at("after").at("run_id").get<std::string>() /
+              "startup-refusal.json";
+  if (!fs::exists(path))
+    return false;
+  n::need(parse(n::read(path, 32768, true)) == startup_refusal(p, d));
+  return true;
+}
+// Only the authenticated native supervisor can reach this guard. Its durable
+// negative receipt is positive evidence that it never attempted a child launch;
+// missing runtime files or an absent reply are not such evidence.
+struct StartupRefusal {
+  fs::path path;
+  Json record;
+  int exceptions = std::uncaught_exceptions();
+  bool before_fork = true;
+  ~StartupRefusal() {
+    if (before_fork && std::uncaught_exceptions() > exceptions) {
+      try {
+        n::put(path, record.dump());
+        n::frame(3, record.dump());
+      } catch (...) {
+        // A lost reply can be reconciled from the durable receipt. Failure to
+        // retain the receipt leaves the attempt unresolved, never retryable.
+      }
+    }
+  }
+};
 } // namespace
 void connector_barrier(const fs::path &store) {
   auto folder = store / "connector/attempts";
@@ -232,7 +270,10 @@ Json connector_admin(const Json &request, const fs::path &executable,
     return Json{{"plan_digest", d}, {"attempt", j}, {"current", status()}};
   if (op.ends_with(".reconcile")) {
     n::need(!j.is_null());
-    if (s == p.at("after")) {
+    if (action == "start" && refused_before_launch(root, p, d)) {
+      n::need(s == p.at("before"));
+      j["effect_state"] = "not_applied";
+    } else if (s == p.at("after")) {
       if (action == "start")
         n::need(control(root, s.at("run_id"), "status").at("state") ==
                 "running");
@@ -333,6 +374,17 @@ Json connector_admin(const Json &request, const fs::path &executable,
                Json{{"plan", p}, {"plan_digest", d}, {"root", root.string()}}
                    .dump());
       auto ack = parse(n::frame(parent.n));
+      if (ack == startup_refusal(p, d)) {
+        n::need(refused_before_launch(root, p, d));
+        j["stage"] = "settled";
+        j["effect_state"] = "not_applied";
+        n::atomic(jp, j);
+        result["outcome"] = "rejected";
+        result["error_code"] = "child_failure";
+        result["next_action"] = "new_plan";
+        result["effect_state"] = "not_applied";
+        return Json{{"plan_digest", d}, {"attempt", j}, {"current", status()}};
+      }
       n::need(ack.at("state") == "running");
       result["authority_ref"] = ack.at("authority_ref");
       result["audit_ref"] = ack.at("audit_ref");
@@ -370,11 +422,12 @@ int connector_supervise(bool fixture_binary) {
   n::need(root ==
           fs::path(p.at("input").at("store").get<std::string>()) / "connector");
   n::private_dir(root);
+  auto run = root / "runs" / p.at("after").at("run_id").get<std::string>();
+  n::private_dir(run);
+  StartupRefusal refusal{run / "startup-refusal.json", startup_refusal(p, d)};
   auto cfg = p.at("after").at("configuration");
   qualified(cfg.at("package_digest"), fixture_binary);
   auto exe = binary(root, cfg.at("package_digest"));
-  auto run = root / "runs" / p.at("after").at("run_id").get<std::string>();
-  n::private_dir(run);
   auto binding = execution_binding(cfg.at("execution"));
   Json intent{{"protocol", "symphony.ssiag.cloudflare-use.v1"},
               {"request_id", n::uuid()},
@@ -432,6 +485,9 @@ int connector_supervise(bool fixture_binary) {
   n::need(
       n::now() <
       std::stoll(credential.grant.at("deadline_unix_ms").get<std::string>()));
+  // Disarm before fork: once launch may have been attempted, only actual runtime
+  // observation can settle the outcome, even if startup acknowledgement is lost.
+  refusal.before_fork = false;
   auto child = ::fork();
   n::need(child >= 0);
   if (child == 0) {
