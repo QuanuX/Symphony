@@ -139,3 +139,9 @@ pass. The [W12 assessment](W12-REVIEW.md) and [campaign handoff](CAMPAIGN-HANDOF
 retain final-candidate, Anaconda/trust, host, provider, recovery and human decisions.
 This is preparation and an incomplete engineering assessment, not full W01–W12
 operational acceptance. The clean-commit CLI integration is recorded separately.
+
+The [clean-source integration](increment-08-integration.json) ran from `2fa892bc`
+and produced the [retained W12 JSON packet](w12-review/README.md). Both real
+checkers returned expected incomplete exit 2; output reuse refused exit 1 without
+changing any packet bytes. Full local logs/tools remain digest-bound in the
+retained evidence directory. The report commit adds records only.

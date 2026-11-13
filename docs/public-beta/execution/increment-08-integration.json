@@ -1,0 +1,32 @@
+{
+  "protocol": "symphony.public-beta.execution-integration.v1",
+  "increment": 8,
+  "tested_source": {
+    "commit": "2fa892bcd41a701f15b5bdced7feb7700ecf5cb7",
+    "tree": "ea2d0985aee7738b666f3b528490114f94375231"
+  },
+  "scope": "Actual clean-source W12 preparation with exact Go 1.26.5 and native source-map checks",
+  "result": "incomplete_no_go_for_public_beta",
+  "expected_exit": 2,
+  "core_missing_entries": 108,
+  "companion_missing_entries": 138,
+  "missing_count_note": "Checker missing entries include selections, inputs, observations and review metadata; these are not counts of independent defects and are not added together.",
+  "counts": {
+    "profiles": 4,
+    "native_units_per_core": 51,
+    "go_commands_per_core": 6,
+    "core_cells": 36,
+    "paper_criteria": 58,
+    "supplemental": 31
+  },
+  "output_reuse_refusal": "Actual repeated CLI refused exit 1 before tool execution; every existing packet JSON byte unchanged",
+  "review_sha256": "18a14a3c3aa8a6929145b35a1c5f1e7cd9e9b285b64482db22d40df0fc023c3f",
+  "refusal_log_sha256": "51806df88593e0ba29774d7fdc8441eed8a4441f4a905733dbde99ee9a0d52f3",
+  "retained_full_evidence_location": "implementation/beta-execution-2026-11-13/w12-review-01",
+  "repository_copy": "docs/public-beta/execution/w12-review: exact generated JSON inputs, worklists and reports; raw logs and compiled tools retained in local evidence location",
+  "hosted_ci": "not awaited; no hosted pass asserted",
+  "feature_freeze_in_force": true,
+  "human_release_decision": null,
+  "release_acceptance_complete": false,
+  "publication_authorized": false
+}

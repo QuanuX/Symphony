@@ -1,0 +1,9 @@
+{
+  "protocol": "symphony.release.delivery-targets.v1",
+  "profiles": {
+    "macos15-arm64": null,
+    "ubuntu24.04-amd64": null,
+    "ubuntu24.04-arm64": null,
+    "ubuntu26.04-amd64": null
+  }
+}
