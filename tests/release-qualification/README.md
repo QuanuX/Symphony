@@ -26,7 +26,7 @@ On macOS, run the provider's tests with:
 sh tests/release-qualification/swift-tests.sh /absolute/fresh-work
 ```
 
-The test runner selects the binary built in that scratch directory through a test-only environment variable. It requires actual Swift Testing execution and retains JUnit and logs. The tests exercise local protocol, peer trust and readiness contracts; they do not activate a provider or perform operational credential access.
+The test runner selects the binary built in that scratch directory through a test-only environment variable. It requires actual Swift Testing execution and retains JUnit and logs. The evidence checker accepts SwiftPM's `results.xml` and `results-swift-testing.xml` names, requires at least one nonempty report with executed cases, and rejects missing/malformed XML, count mismatches, failures and skips across either file. `sh tests/release-qualification/swift-evidence-tests.sh` exercises these refusal paths. The tests exercise local protocol, peer trust and readiness contracts; they do not activate a provider or perform operational credential access.
 
 `release-qualification.yml` runs the eight Go suites on Ubuntu 24.04 x86_64, Ubuntu 26.04 x86_64, Ubuntu 24.04 ARM64 and macOS 15 ARM64. It then records the five non-qxctl Go candidate identities. Swift tests run on macOS. The existing MVP workflow supplies the same four native profiles, and the separate qxctl standalone workflow owns its reproducible build gate. These checks do not qualify physical DGX hardware, relocatable distribution archives, mirrors, native Windows, or live provider credentials.
 

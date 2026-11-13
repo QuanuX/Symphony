@@ -1,0 +1,102 @@
+{
+  "protocol": "symphony.public-beta.execution-increment.v1",
+  "increment": 6,
+  "scope": "W03/W04/W05/W11 existing-boundary source qualification; harden Swift release evidence filename and failure/skip admission; no product feature",
+  "parent_commit": "e1e02f988a556af9d73844c09e000caf842e69fc",
+  "tested_product_source_tree": "4dcaff09e48e49c146062c2f4588012f698f8ea0",
+  "product_source_binding_file_count": 248,
+  "product_source_bindings_sha256": "7c37d875792b6da6226ab2157c88f8bcb995c354f7d0994f9718eb7c1ceaf540",
+  "go_named_results": {
+    "w03-credential-final.jsonl": {
+      "pass": 193,
+      "fail": 0,
+      "skip": 0
+    },
+    "w03-authority-final.jsonl": {
+      "pass": 16,
+      "fail": 0,
+      "skip": 0
+    },
+    "w11-source-initial.jsonl": {
+      "pass": 139,
+      "fail": 0,
+      "skip": 5
+    },
+    "w11-socket-final.jsonl": {
+      "pass": 3,
+      "fail": 0,
+      "skip": 0
+    },
+    "w11-history-final.jsonl": {
+      "pass": 1,
+      "fail": 0,
+      "skip": 0
+    }
+  },
+  "native_results": {
+    "private_store_contract": "1/1 passed",
+    "cloudflare": "5/7 initially passed; two socket-blocked cases passed in targeted rerun, 7/7 resolved",
+    "srrapiv_sdk_free": "catalog passed; two socket-blocked runtime cases passed in targeted rerun, 3/3 resolved"
+  },
+  "swift_protocol_readiness": "41 tests in 2 suites passed; original results-swift-testing.xml verified as 41 actual test cases; no operational Keychain item access claim",
+  "swift_evidence_defect": {
+    "problem": "SwiftPM emitted results-swift-testing.xml; old grep referenced absent results.xml and treated grep exit 2 as no skip. Actual XML was retained, but its contents were not checked.",
+    "fix": "Accept either supported filename, require present nonempty reports with executed cases, validate XML/counts, and refuse every error/failure/skip across both reports. Preserve raw framework output.",
+    "focused_regression_cases": 18,
+    "actual_xml_revalidated": true,
+    "upstream_context": "https://github.com/swiftlang/swift-package-manager/issues/9960",
+    "native_swift_tests_rerun_after_checker_edit": false,
+    "reason": "Only evidence admission changed; focused refusal tests plus the actual retained 41-test XML exercise the changed boundary."
+  },
+  "retained_environment_failures": [
+    "Initial credential run lacked the exact isolated module cache; no dependency hash was changed",
+    "Local socket binding denied by sandbox; affected tests rerun with socket access, no production admission changes",
+    "SwiftPM nested sandbox application denied; fresh scratch rerun passed with normal compiler sandbox availability"
+  ],
+  "w11_skip_disposition": "Initial 139 named passes and 5 skips; 3 socket cases and explicit 2000-entry history fixture passed in focused reruns. TestSNVCompetingWriterProcess is a parent-driven helper: its top-level skip remains reported; passing TestSNVConcurrentWriterAndUnsafeLockPreservation executes and asserts its subprocess PASS. No operational acceptance inferred.",
+  "evidence_files_sha256": {
+    "w03-credential.jsonl": "a45372f73812c1df1af6587c99fb71ae9d76bfa2db7be07e5cb3fb3d48d6c180",
+    "w03-credential-02.jsonl": "f19ab8fd1a613d04c7973679a2e3e17fbc1f79166b7c2e967787ebf551c5b606",
+    "w03-authority.jsonl": "1d8ccdd86b20744381dbec368e681e57afd2939746a5540d2be86a152964f48c",
+    "w03-credential-final.jsonl": "c3b25fac5b88241971987bdae4520a324aa03244c790f2181a1cd00796277180",
+    "w03-authority-final.jsonl": "98c8de734e3272c51256103983bd0cdae86499370026b3865243c6a9078a59ad",
+    "w03-private.xml": "378b0a058bf3ff2f0abb5075ded7d6eb184c07e5badd40b9a80084238d9994b1",
+    "w03-private-configure.log": "02587f33110bbacec4c9de3c4ace889c676a9a9db60f28c46cef8cb281941647",
+    "w03-private-build.log": "a80c23d0ab7ddf0e3b24b569f68314e5d81af3c43720025dff1cea565fb68205",
+    "w03-swift-01/logs/build.log": "14e2f0ab69714a8b032b6d3db8595f2c591d16db055086707a5bfdca7ffaff72",
+    "w03-swift-02/logs/tests.log": "e50893d762cea94f083f5a91ba6462ddcb113d53d40b44a4a8234438129daa4d",
+    "w03-swift-02/logs/results-swift-testing.xml": "ff5b640f7396a4615d772d6ac678670e0d7d5f137326b8e1f7accd4ad3217d71",
+    "w03-swift-evidence-tests.log": "2f8fabc0914ea6c3d1d1a649aaa113e233009533ee3e04689b2041fb0cf3c2de",
+    "w03-swift-evidence-final.log": "aabe6464279c9c29e4288ed58edc6cb112ff18ac55ab1a66adf467362ba99cd8",
+    "w04-cloudflare-configure.log": "e49dfe3c6df4b15818c1dbf951add6a1b7087c0a290eee1741d2a5259bbea925",
+    "w04-cloudflare-build.log": "e71170a1bc0e3fc0c07af597f1b23c406a168cd73b8c2bc13f5dc6e22344f63c",
+    "w04-cloudflare.xml": "b01dc739e9d3f71d3916a77b9bd535d805ee8366da1178a37b08e7688253d49d",
+    "w04-cloudflare-socket-final.xml": "96c7664ef0b7ed83abf664f13401d77f881cfd4c287e322225851d7923c96926",
+    "w05-srrapiv-configure.log": "6e340da4dde533d62adf9b459b358c43062dd2ad713a4fde87a96db13c82749a",
+    "w05-srrapiv-build.log": "39d9f180cf72025d6e95380a93d22d2598f68e14b8a7efe3bba6510fde3dce36",
+    "w05-srrapiv.xml": "9119012a8b98b3988b591e8e2d238e3c8f1ba38dac5f81b2a0b90ac105a1f486",
+    "w05-srrapiv-socket-final.xml": "58d3918e444854d92849f9c065fbc863d73a6150d634e49e509e99a4d98875e8",
+    "w11-source-initial.jsonl": "ab39c82735be4f80919d1bb5e5367c9e15e6ee60e5350434f630dd68d7c09379",
+    "w11-socket-final.jsonl": "80fb34fc90ed84a28745f999d7aec87232e57393e495dff7b78050e7b344fc8b",
+    "w11-history-final.jsonl": "3c6b78c4275225b81e89d53493ae1ee21642386f85ffe11530d4de3d6a6cc9bb"
+  },
+  "required_missing_promises": [
+    "General L14 credential wiring and provider/recipient backend",
+    "Operational Apple Keychain and Linux Secret Service",
+    "Native source/Databento operational SSIAG bridge",
+    "IBKR TWS vendor bridge/conformance",
+    "Economic account/risk enforcement and lossless provider reconciliation owner",
+    "Cloudflare project deployment and Tunnel rotation"
+  ],
+  "final_campaigns": "Actual Anaconda downloads, 4 core hosts, exact Intel supplemental toolchain, user-led provider scope and independent recovery/reviewer roles remain pending. No live calls, orders, resource effects, user-state restore, support message or publication.",
+  "changed_source_paths_sha256": {
+    "docs/public-beta/execution/EXISTING-BOUNDARIES.md": "919d6342af2da50da4f9c54e33b6826bed73b369f4da2e82a3f461e355a1eb90",
+    "tests/release-qualification/swift-tests.sh": "d0df58430cfc542fdd21ec5be06eb4026a752c7ca07d78333af22d303b321a94",
+    "tests/release-qualification/verify-swift-evidence.sh": "cc6df31c8f15c347ef1101015f5ceceee388ace03ba2f2f469df2ff4e1226622",
+    "tests/release-qualification/swift-evidence-tests.sh": "0d6b889a576cbd20a70f1075dfb926cad2e15f4922c7eddef65e22657946f288",
+    "tests/release-qualification/README.md": "72ca063f6a6332e216dd2aef5cc983a4a3488ebee3d4a96d46fede6fbf56203a",
+    ".github/workflows/release-qualification.yml": "c160d57e52c55fdc57806a1c525845389882bf6f88c1c1c2347f21cd348afc58"
+  },
+  "release_acceptance_complete": false,
+  "publication_authorized": false
+}

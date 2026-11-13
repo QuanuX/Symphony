@@ -28,10 +28,5 @@ test -x "$SYMPHONY_SSIAG_TEST_EXECUTABLE"
 swift test --package-path "$package" --scratch-path "$work/build" -c debug \
   --xunit-output "$work/logs/results.xml" > "$work/logs/tests.log" 2>&1
 cat "$work/logs/tests.log"
-grep -Eq 'Test run with [1-9][0-9]* tests?( in [1-9][0-9]* suites?)? passed' "$work/logs/tests.log" || {
-  echo 'Swift Testing did not report executed passing tests' >&2; exit 1;
-}
-if grep -Eq 'Test .* skipped|<skipped[ >]' "$work/logs/tests.log" "$work/logs/results.xml"; then
-  echo 'Selected Swift tests skipped' >&2; exit 1
-fi
+sh "$here/verify-swift-evidence.sh" "$work/logs"
 git -C "$repo" diff --exit-code

@@ -25319,6 +25319,14 @@
     {
       "path": "cmake/release/delivery-acceptance-v1.schema.json",
       "sha256": "2e8b8b4cf44fc17a8b0cf6592b1e464bef09705d10473ca7ee33994372cc4ab8"
+    },
+    {
+      "path": "tests/release-qualification/verify-swift-evidence.sh",
+      "sha256": "cc6df31c8f15c347ef1101015f5ceceee388ace03ba2f2f469df2ff4e1226622"
+    },
+    {
+      "path": "tests/release-qualification/swift-evidence-tests.sh",
+      "sha256": "0d6b889a576cbd20a70f1075dfb926cad2e15f4922c7eddef65e22657946f288"
     }
   ],
   "platform_profile_catalog": "cmake/mvp-platform-profiles.json",

@@ -87,6 +87,8 @@ jobs:
           persist-credentials: false
       - name: Select Swift toolchain
         run: echo 'DEVELOPER_DIR=/Applications/Xcode_26.3.app/Contents/Developer' >> "$GITHUB_ENV"
+      - name: Verify Swift evidence refusal handling
+        run: sh tests/release-qualification/swift-evidence-tests.sh
       - name: Run the selected scratch-built provider tests
         run: sh tests/release-qualification/swift-tests.sh "$RUNNER_TEMP/release-swift"
       - name: Retain Swift execution evidence

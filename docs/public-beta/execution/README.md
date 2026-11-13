@@ -93,6 +93,18 @@ explicitly synthetic fixture; structural readiness cannot certify observer truth
 or reviewer independence. All acceptance and publication flags remain false.
 See the [operator procedure](../../../tests/launch-acceptance/DELIVERY-ACCEPTANCE.md).
 
+## Increment 6 — existing authority, provider and recovery boundaries
+
+[Source qualification](increment-06.json) records 209 focused credential/authority
+cases, the native private-store/Cloudflare/SRRAPIV suites, 41 Swift protocol tests
+and state/transfer/client regressions with explicit skip resolution. Original
+failed sandbox attempts are retained. Swift evidence admission now handles both
+framework XML filenames and rejects missing/failed/skipped reports; 18 focused
+refusal checks and actual 41-case XML verification pass.
+[Boundary and handoff tables](EXISTING-BOUNDARIES.md) keep missing credential,
+bridge, risk/reconciliation and Cloudflare promises blocked under the freeze.
+These checks authorize no provider effect or final-host/backup acceptance.
+
 Next: independent public-SDK engine campaign and remaining staged gates.
 Record completed increments and push them; inspect CI later when needed for an
 actual candidate decision.
