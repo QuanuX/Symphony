@@ -1679,7 +1679,7 @@ func validateLegacySubcommand(args []string) error {
 		return nil
 	}
 	switch args[1] {
-	case "status", "verify", "query", "doctor", "append", "enrollment", "supervisor", "--help", "-h":
+	case "status", "verify", "query", "doctor", "append", "enrollment", "supervisor", "accordare", "accordare-grant", "--help", "-h":
 		return nil
 	default:
 		return fmt.Errorf("unknown STAV subcommand %q", args[1])
