@@ -1,0 +1,3249 @@
+{
+  "format_version": 1,
+  "source_commit": "887e074780e1d0633bd6e6f57c3d4e07ca3925fc",
+  "state": "proposed_campaign_mapping_not_acceptance_packet",
+  "release_acceptance_complete": false,
+  "publication_authorized": false,
+  "required_profiles": [
+    "macos15-arm64",
+    "ubuntu24.04-amd64",
+    "ubuntu24.04-arm64",
+    "ubuntu26.04-amd64"
+  ],
+  "required_scenarios": [
+    "verified_download_and_tamper_refusal",
+    "fresh_install_discovery_version_loader",
+    "bounded_offline_quantitative_result",
+    "source_hardware_knowledge_workflow",
+    "protected_administration_denial_and_success",
+    "every_promised_provider_operation_and_refusal",
+    "timeout_cancellation_uncertainty_reconciliation",
+    "side_by_side_upgrade_and_compatible_rollback",
+    "removal_preserving_user_data"
+  ],
+  "required_inputs": {
+    "approved_capability_manifest": null,
+    "authorized_provider_profiles": null,
+    "authorized_tws_sdk_provenance": null,
+    "candidate_url_and_digest": null,
+    "independent_signer_policy": null,
+    "named_acceptance_reviewer": null,
+    "native_credential_provider_implementation_evidence": null,
+    "runtime_and_notice_closure": null
+  },
+  "report_fields": [
+    "source_commit",
+    "artifact_digest",
+    "manifest_digest",
+    "signer_policy_digest",
+    "retrieval_url_and_time",
+    "host_image_kernel_arch_runtime_filesystem",
+    "clean_host_inventory",
+    "receipt_digests",
+    "scenario_commands_input_output_digests",
+    "expected_and_actual_outcomes",
+    "skips",
+    "before_after_user_data_digests",
+    "reviewer_and_review_time"
+  ],
+  "core_cell_count": 36,
+  "paper_criterion_count": 58,
+  "campaigns": [
+    {
+      "id": "S01",
+      "scenario": "verified_download_and_tamper_refusal",
+      "owner_role": "platform_operator",
+      "work_packages": [
+        "W06",
+        "W07",
+        "W08"
+      ],
+      "existing_harnesses": [
+        "tests/package-release/README.md",
+        "tests/launch-acceptance/candidate-host.go"
+      ],
+      "planned_method": "Retrieve exact bytes on a clean host; compare independent publisher policy, signed manifest/profile, inventory and receipts before execution. Exercise wrong signer, wrong profile, altered bytes, substitution, unsafe archive and corrupt/missing members in disposable directories.",
+      "independent_oracle_and_expected_outcome": "Untampered exact candidate verifies; each negative case refuses without executing payload or changing unrelated paths.",
+      "required_decisions": [
+        "D01",
+        "D02",
+        "D04"
+      ],
+      "execution_status": "not_run",
+      "acceptance_status": "pending"
+    },
+    {
+      "id": "S02",
+      "scenario": "fresh_install_discovery_version_loader",
+      "owner_role": "platform_operator",
+      "work_packages": [
+        "W07",
+        "W08"
+      ],
+      "existing_harnesses": [
+        "tests/native-sdk-distribution/run.sh",
+        "tests/mvp-dependencies/run.sh"
+      ],
+      "planned_method": "Install the selected receipt units and separate Go/Swift owner formats on a host without developer prefixes. Inspect all advertised versions/interfaces and resolve actual recursive libraries/TLS. Build an external SDK consumer using only delivered imports.",
+      "independent_oracle_and_expected_outcome": "Every advertised selected file/version/loader resolves from approved candidate or declared OS runtime; no source-tree/cache fallback; missing required capability remains incomplete.",
+      "required_decisions": [
+        "D01",
+        "D02",
+        "D04"
+      ],
+      "execution_status": "not_run",
+      "acceptance_status": "pending"
+    },
+    {
+      "id": "S03",
+      "scenario": "bounded_offline_quantitative_result",
+      "owner_role": "sdk_research_owner",
+      "work_packages": [
+        "W02",
+        "W09"
+      ],
+      "existing_harnesses": [
+        "tests/sbv-launch-boundary/run.sh",
+        "tests/sqv-research-prototype/README.md"
+      ],
+      "planned_method": "Run the bounded deterministic corpus and external engine through native SDK, installed CLI and selected adapter routes. Retain full outputs, input/SDK hashes, arithmetic tolerances, replay/correction/ordering and cancellation observations.",
+      "independent_oracle_and_expected_outcome": "Independent complete-result oracle agrees within declared tolerances; unsupported semantics remain refused; killed/lost responses never fabricate completion.",
+      "required_decisions": [
+        "D01",
+        "D03",
+        "D07"
+      ],
+      "execution_status": "not_run",
+      "acceptance_status": "pending"
+    },
+    {
+      "id": "S04",
+      "scenario": "source_hardware_knowledge_workflow",
+      "owner_role": "sdk_research_owner",
+      "work_packages": [
+        "W08",
+        "W09"
+      ],
+      "existing_harnesses": [
+        "tests/shv-release-qualification/run.sh",
+        "tests/snv-qualification/run.sh",
+        "tests/shv-release-qualification/examples/mvp-hardware/run.sh"
+      ],
+      "planned_method": "Execute installed SCV/SHV/SNV acquisition, retention, native replay, publication and evidence queries using the documented example; retain source/document provenance and reject malformed/conflicting identities.",
+      "independent_oracle_and_expected_outcome": "Documentary lineage and native output match the selected source; no universal atlas, vendor alias, physical GPU or host capability inferred.",
+      "required_decisions": [
+        "D01",
+        "D02"
+      ],
+      "execution_status": "not_run",
+      "acceptance_status": "pending"
+    },
+    {
+      "id": "S05",
+      "scenario": "protected_administration_denial_and_success",
+      "owner_role": "authority_security_owner",
+      "work_packages": [
+        "W03",
+        "W08",
+        "W09",
+        "W10"
+      ],
+      "existing_harnesses": [
+        "tests/launch-operations/AUTHORIZATION.md",
+        "modules/secure-identity-access-governance/CREDENTIAL-QUALIFICATION.md",
+        "tests/cloudflare-release/README.md"
+      ],
+      "planned_method": "For every selected consequential operation exercise exact authority/owner/recipient identity, request binding, denial, expiry/revocation, unavailable audit, output bounds and outcome acknowledgement. Use real final-installed owner boundaries; live effects only in later authorized provider campaigns.",
+      "independent_oracle_and_expected_outcome": "Denied or mismatched requests have no authorized effect; selected successful routes have matching effect evidence. Admission receipts, local revocation and process liveness are not substituted for downstream outcomes.",
+      "required_decisions": [
+        "D01",
+        "D03",
+        "D05"
+      ],
+      "execution_status": "not_run",
+      "acceptance_status": "pending"
+    },
+    {
+      "id": "S06",
+      "scenario": "every_promised_provider_operation_and_refusal",
+      "owner_role": "provider_review_owner",
+      "work_packages": [
+        "W04",
+        "W10"
+      ],
+      "existing_harnesses": [
+        "tests/cloudflare-release/support-matrix.json",
+        "tests/cloudflare-release/README.md",
+        "modules/secure-identity-access-governance/CREDENTIAL-QUALIFICATION.md"
+      ],
+      "planned_method": "After packaging, users execute selected exact provider/SDK/account/environment/operation cells, bounded success and refusals; retain redacted independent endpoint observations. No paid data/order/resource mutation follows from this preparation.",
+      "independent_oracle_and_expected_outcome": "Actual authorized endpoint evidence matches local request/result identity; each mandatory supported cell passes or remains explicitly blocked. Generic fixtures and absent bridges never count as live success.",
+      "required_decisions": [
+        "D01",
+        "D02",
+        "D03",
+        "D05",
+        "D07"
+      ],
+      "execution_status": "not_run",
+      "acceptance_status": "pending"
+    },
+    {
+      "id": "S07",
+      "scenario": "timeout_cancellation_uncertainty_reconciliation",
+      "owner_role": "state_recovery_owner",
+      "work_packages": [
+        "W05",
+        "W09",
+        "W10",
+        "W11"
+      ],
+      "existing_harnesses": [
+        "tests/launch-operations/RETENTION.md",
+        "tests/sbv-launch-boundary/run.sh",
+        "tests/cloudflare-release/README.md"
+      ],
+      "planned_method": "Inject failure before and after admission, persistence, dispatch and result acknowledgement. Exercise restart, duplicate/conflicting events, capacity/full-storage refusal, lost transport and audit; retain unknown effects until authoritative owner reconciliation.",
+      "independent_oracle_and_expected_outcome": "No duplicate effect from blind retry; a terminal outcome requires sufficient owner evidence. PR196 regressions preserve exact-object verification and proven pre-spawn non-start, with uncertain launches still unknown.",
+      "required_decisions": [
+        "D01",
+        "D03",
+        "D05"
+      ],
+      "execution_status": "not_run",
+      "acceptance_status": "pending"
+    },
+    {
+      "id": "S08",
+      "scenario": "side_by_side_upgrade_and_compatible_rollback",
+      "owner_role": "rollback_backup",
+      "work_packages": [
+        "W08",
+        "W11"
+      ],
+      "existing_harnesses": [
+        "tests/package-release/README.md",
+        "tests/launch-operations/RETENTION.md"
+      ],
+      "planned_method": "Use real installed current and selected compatible predecessor receipts. Install side by side, explicitly select, interrupt transitions, refuse incompatible dependencies and modified files; backup operator performs documented rollback.",
+      "independent_oracle_and_expected_outcome": "Exact selected identity is recovered with complete before/after data hashes and preserved uncertain work; unrelated owners survive; no unsupported cross-version migration claim.",
+      "required_decisions": [
+        "D01",
+        "D02",
+        "D05"
+      ],
+      "execution_status": "not_run",
+      "acceptance_status": "pending"
+    },
+    {
+      "id": "S09",
+      "scenario": "removal_preserving_user_data",
+      "owner_role": "platform_operator",
+      "work_packages": [
+        "W08",
+        "W11"
+      ],
+      "existing_harnesses": [
+        "tests/native-sdk-distribution/README.md",
+        "tests/package-release/README.md"
+      ],
+      "planned_method": "Run each actual owner uninstaller with retained receipts and foreign/unrelated files. Exercise modified headers/executables, interrupted removal and external-engine removal in disposable installed prefixes.",
+      "independent_oracle_and_expected_outcome": "Only admitted owned files are removed according to contract; unrelated packages/SDKs and user data remain; partial removal is reported/recoverable, never silently accepted.",
+      "required_decisions": [
+        "D01",
+        "D02"
+      ],
+      "execution_status": "not_run",
+      "acceptance_status": "pending"
+    }
+  ],
+  "core_cells": [
+    {
+      "id": "macos15-arm64::verified_download_and_tamper_refusal",
+      "profile": "macos15-arm64",
+      "scenario": "verified_download_and_tamper_refusal",
+      "campaign_id": "S01",
+      "owner_role": "platform_operator",
+      "candidate_sha256": null,
+      "evidence": [],
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "mandatory": true,
+      "skips": null
+    },
+    {
+      "id": "macos15-arm64::fresh_install_discovery_version_loader",
+      "profile": "macos15-arm64",
+      "scenario": "fresh_install_discovery_version_loader",
+      "campaign_id": "S02",
+      "owner_role": "platform_operator",
+      "candidate_sha256": null,
+      "evidence": [],
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "mandatory": true,
+      "skips": null
+    },
+    {
+      "id": "macos15-arm64::bounded_offline_quantitative_result",
+      "profile": "macos15-arm64",
+      "scenario": "bounded_offline_quantitative_result",
+      "campaign_id": "S03",
+      "owner_role": "sdk_research_owner",
+      "candidate_sha256": null,
+      "evidence": [],
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "mandatory": true,
+      "skips": null
+    },
+    {
+      "id": "macos15-arm64::source_hardware_knowledge_workflow",
+      "profile": "macos15-arm64",
+      "scenario": "source_hardware_knowledge_workflow",
+      "campaign_id": "S04",
+      "owner_role": "sdk_research_owner",
+      "candidate_sha256": null,
+      "evidence": [],
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "mandatory": true,
+      "skips": null
+    },
+    {
+      "id": "macos15-arm64::protected_administration_denial_and_success",
+      "profile": "macos15-arm64",
+      "scenario": "protected_administration_denial_and_success",
+      "campaign_id": "S05",
+      "owner_role": "authority_security_owner",
+      "candidate_sha256": null,
+      "evidence": [],
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "mandatory": true,
+      "skips": null
+    },
+    {
+      "id": "macos15-arm64::every_promised_provider_operation_and_refusal",
+      "profile": "macos15-arm64",
+      "scenario": "every_promised_provider_operation_and_refusal",
+      "campaign_id": "S06",
+      "owner_role": "provider_review_owner",
+      "candidate_sha256": null,
+      "evidence": [],
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "mandatory": true,
+      "skips": null
+    },
+    {
+      "id": "macos15-arm64::timeout_cancellation_uncertainty_reconciliation",
+      "profile": "macos15-arm64",
+      "scenario": "timeout_cancellation_uncertainty_reconciliation",
+      "campaign_id": "S07",
+      "owner_role": "state_recovery_owner",
+      "candidate_sha256": null,
+      "evidence": [],
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "mandatory": true,
+      "skips": null
+    },
+    {
+      "id": "macos15-arm64::side_by_side_upgrade_and_compatible_rollback",
+      "profile": "macos15-arm64",
+      "scenario": "side_by_side_upgrade_and_compatible_rollback",
+      "campaign_id": "S08",
+      "owner_role": "rollback_backup",
+      "candidate_sha256": null,
+      "evidence": [],
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "mandatory": true,
+      "skips": null
+    },
+    {
+      "id": "macos15-arm64::removal_preserving_user_data",
+      "profile": "macos15-arm64",
+      "scenario": "removal_preserving_user_data",
+      "campaign_id": "S09",
+      "owner_role": "platform_operator",
+      "candidate_sha256": null,
+      "evidence": [],
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "mandatory": true,
+      "skips": null
+    },
+    {
+      "id": "ubuntu24.04-amd64::verified_download_and_tamper_refusal",
+      "profile": "ubuntu24.04-amd64",
+      "scenario": "verified_download_and_tamper_refusal",
+      "campaign_id": "S01",
+      "owner_role": "platform_operator",
+      "candidate_sha256": null,
+      "evidence": [],
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "mandatory": true,
+      "skips": null
+    },
+    {
+      "id": "ubuntu24.04-amd64::fresh_install_discovery_version_loader",
+      "profile": "ubuntu24.04-amd64",
+      "scenario": "fresh_install_discovery_version_loader",
+      "campaign_id": "S02",
+      "owner_role": "platform_operator",
+      "candidate_sha256": null,
+      "evidence": [],
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "mandatory": true,
+      "skips": null
+    },
+    {
+      "id": "ubuntu24.04-amd64::bounded_offline_quantitative_result",
+      "profile": "ubuntu24.04-amd64",
+      "scenario": "bounded_offline_quantitative_result",
+      "campaign_id": "S03",
+      "owner_role": "sdk_research_owner",
+      "candidate_sha256": null,
+      "evidence": [],
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "mandatory": true,
+      "skips": null
+    },
+    {
+      "id": "ubuntu24.04-amd64::source_hardware_knowledge_workflow",
+      "profile": "ubuntu24.04-amd64",
+      "scenario": "source_hardware_knowledge_workflow",
+      "campaign_id": "S04",
+      "owner_role": "sdk_research_owner",
+      "candidate_sha256": null,
+      "evidence": [],
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "mandatory": true,
+      "skips": null
+    },
+    {
+      "id": "ubuntu24.04-amd64::protected_administration_denial_and_success",
+      "profile": "ubuntu24.04-amd64",
+      "scenario": "protected_administration_denial_and_success",
+      "campaign_id": "S05",
+      "owner_role": "authority_security_owner",
+      "candidate_sha256": null,
+      "evidence": [],
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "mandatory": true,
+      "skips": null
+    },
+    {
+      "id": "ubuntu24.04-amd64::every_promised_provider_operation_and_refusal",
+      "profile": "ubuntu24.04-amd64",
+      "scenario": "every_promised_provider_operation_and_refusal",
+      "campaign_id": "S06",
+      "owner_role": "provider_review_owner",
+      "candidate_sha256": null,
+      "evidence": [],
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "mandatory": true,
+      "skips": null
+    },
+    {
+      "id": "ubuntu24.04-amd64::timeout_cancellation_uncertainty_reconciliation",
+      "profile": "ubuntu24.04-amd64",
+      "scenario": "timeout_cancellation_uncertainty_reconciliation",
+      "campaign_id": "S07",
+      "owner_role": "state_recovery_owner",
+      "candidate_sha256": null,
+      "evidence": [],
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "mandatory": true,
+      "skips": null
+    },
+    {
+      "id": "ubuntu24.04-amd64::side_by_side_upgrade_and_compatible_rollback",
+      "profile": "ubuntu24.04-amd64",
+      "scenario": "side_by_side_upgrade_and_compatible_rollback",
+      "campaign_id": "S08",
+      "owner_role": "rollback_backup",
+      "candidate_sha256": null,
+      "evidence": [],
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "mandatory": true,
+      "skips": null
+    },
+    {
+      "id": "ubuntu24.04-amd64::removal_preserving_user_data",
+      "profile": "ubuntu24.04-amd64",
+      "scenario": "removal_preserving_user_data",
+      "campaign_id": "S09",
+      "owner_role": "platform_operator",
+      "candidate_sha256": null,
+      "evidence": [],
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "mandatory": true,
+      "skips": null
+    },
+    {
+      "id": "ubuntu24.04-arm64::verified_download_and_tamper_refusal",
+      "profile": "ubuntu24.04-arm64",
+      "scenario": "verified_download_and_tamper_refusal",
+      "campaign_id": "S01",
+      "owner_role": "platform_operator",
+      "candidate_sha256": null,
+      "evidence": [],
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "mandatory": true,
+      "skips": null
+    },
+    {
+      "id": "ubuntu24.04-arm64::fresh_install_discovery_version_loader",
+      "profile": "ubuntu24.04-arm64",
+      "scenario": "fresh_install_discovery_version_loader",
+      "campaign_id": "S02",
+      "owner_role": "platform_operator",
+      "candidate_sha256": null,
+      "evidence": [],
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "mandatory": true,
+      "skips": null
+    },
+    {
+      "id": "ubuntu24.04-arm64::bounded_offline_quantitative_result",
+      "profile": "ubuntu24.04-arm64",
+      "scenario": "bounded_offline_quantitative_result",
+      "campaign_id": "S03",
+      "owner_role": "sdk_research_owner",
+      "candidate_sha256": null,
+      "evidence": [],
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "mandatory": true,
+      "skips": null
+    },
+    {
+      "id": "ubuntu24.04-arm64::source_hardware_knowledge_workflow",
+      "profile": "ubuntu24.04-arm64",
+      "scenario": "source_hardware_knowledge_workflow",
+      "campaign_id": "S04",
+      "owner_role": "sdk_research_owner",
+      "candidate_sha256": null,
+      "evidence": [],
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "mandatory": true,
+      "skips": null
+    },
+    {
+      "id": "ubuntu24.04-arm64::protected_administration_denial_and_success",
+      "profile": "ubuntu24.04-arm64",
+      "scenario": "protected_administration_denial_and_success",
+      "campaign_id": "S05",
+      "owner_role": "authority_security_owner",
+      "candidate_sha256": null,
+      "evidence": [],
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "mandatory": true,
+      "skips": null
+    },
+    {
+      "id": "ubuntu24.04-arm64::every_promised_provider_operation_and_refusal",
+      "profile": "ubuntu24.04-arm64",
+      "scenario": "every_promised_provider_operation_and_refusal",
+      "campaign_id": "S06",
+      "owner_role": "provider_review_owner",
+      "candidate_sha256": null,
+      "evidence": [],
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "mandatory": true,
+      "skips": null
+    },
+    {
+      "id": "ubuntu24.04-arm64::timeout_cancellation_uncertainty_reconciliation",
+      "profile": "ubuntu24.04-arm64",
+      "scenario": "timeout_cancellation_uncertainty_reconciliation",
+      "campaign_id": "S07",
+      "owner_role": "state_recovery_owner",
+      "candidate_sha256": null,
+      "evidence": [],
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "mandatory": true,
+      "skips": null
+    },
+    {
+      "id": "ubuntu24.04-arm64::side_by_side_upgrade_and_compatible_rollback",
+      "profile": "ubuntu24.04-arm64",
+      "scenario": "side_by_side_upgrade_and_compatible_rollback",
+      "campaign_id": "S08",
+      "owner_role": "rollback_backup",
+      "candidate_sha256": null,
+      "evidence": [],
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "mandatory": true,
+      "skips": null
+    },
+    {
+      "id": "ubuntu24.04-arm64::removal_preserving_user_data",
+      "profile": "ubuntu24.04-arm64",
+      "scenario": "removal_preserving_user_data",
+      "campaign_id": "S09",
+      "owner_role": "platform_operator",
+      "candidate_sha256": null,
+      "evidence": [],
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "mandatory": true,
+      "skips": null
+    },
+    {
+      "id": "ubuntu26.04-amd64::verified_download_and_tamper_refusal",
+      "profile": "ubuntu26.04-amd64",
+      "scenario": "verified_download_and_tamper_refusal",
+      "campaign_id": "S01",
+      "owner_role": "platform_operator",
+      "candidate_sha256": null,
+      "evidence": [],
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "mandatory": true,
+      "skips": null
+    },
+    {
+      "id": "ubuntu26.04-amd64::fresh_install_discovery_version_loader",
+      "profile": "ubuntu26.04-amd64",
+      "scenario": "fresh_install_discovery_version_loader",
+      "campaign_id": "S02",
+      "owner_role": "platform_operator",
+      "candidate_sha256": null,
+      "evidence": [],
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "mandatory": true,
+      "skips": null
+    },
+    {
+      "id": "ubuntu26.04-amd64::bounded_offline_quantitative_result",
+      "profile": "ubuntu26.04-amd64",
+      "scenario": "bounded_offline_quantitative_result",
+      "campaign_id": "S03",
+      "owner_role": "sdk_research_owner",
+      "candidate_sha256": null,
+      "evidence": [],
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "mandatory": true,
+      "skips": null
+    },
+    {
+      "id": "ubuntu26.04-amd64::source_hardware_knowledge_workflow",
+      "profile": "ubuntu26.04-amd64",
+      "scenario": "source_hardware_knowledge_workflow",
+      "campaign_id": "S04",
+      "owner_role": "sdk_research_owner",
+      "candidate_sha256": null,
+      "evidence": [],
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "mandatory": true,
+      "skips": null
+    },
+    {
+      "id": "ubuntu26.04-amd64::protected_administration_denial_and_success",
+      "profile": "ubuntu26.04-amd64",
+      "scenario": "protected_administration_denial_and_success",
+      "campaign_id": "S05",
+      "owner_role": "authority_security_owner",
+      "candidate_sha256": null,
+      "evidence": [],
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "mandatory": true,
+      "skips": null
+    },
+    {
+      "id": "ubuntu26.04-amd64::every_promised_provider_operation_and_refusal",
+      "profile": "ubuntu26.04-amd64",
+      "scenario": "every_promised_provider_operation_and_refusal",
+      "campaign_id": "S06",
+      "owner_role": "provider_review_owner",
+      "candidate_sha256": null,
+      "evidence": [],
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "mandatory": true,
+      "skips": null
+    },
+    {
+      "id": "ubuntu26.04-amd64::timeout_cancellation_uncertainty_reconciliation",
+      "profile": "ubuntu26.04-amd64",
+      "scenario": "timeout_cancellation_uncertainty_reconciliation",
+      "campaign_id": "S07",
+      "owner_role": "state_recovery_owner",
+      "candidate_sha256": null,
+      "evidence": [],
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "mandatory": true,
+      "skips": null
+    },
+    {
+      "id": "ubuntu26.04-amd64::side_by_side_upgrade_and_compatible_rollback",
+      "profile": "ubuntu26.04-amd64",
+      "scenario": "side_by_side_upgrade_and_compatible_rollback",
+      "campaign_id": "S08",
+      "owner_role": "rollback_backup",
+      "candidate_sha256": null,
+      "evidence": [],
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "mandatory": true,
+      "skips": null
+    },
+    {
+      "id": "ubuntu26.04-amd64::removal_preserving_user_data",
+      "profile": "ubuntu26.04-amd64",
+      "scenario": "removal_preserving_user_data",
+      "campaign_id": "S09",
+      "owner_role": "platform_operator",
+      "candidate_sha256": null,
+      "evidence": [],
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "mandatory": true,
+      "skips": null
+    }
+  ],
+  "paper_criteria": [
+    {
+      "criterion_id": "UE1",
+      "paper_page": 5,
+      "work_packages": [
+        "W02",
+        "W09"
+      ],
+      "owner_role": "sdk_research_owner",
+      "campaign_ids": [
+        "S02",
+        "S03",
+        "S05",
+        "S07",
+        "S08",
+        "S09"
+      ],
+      "planned_method": "W02/W09 external source, installed native SDK and selected SBV/admin route; two independent compositions, lifecycle and documentation-only agent exercise.",
+      "criterion_specific_expected_outcome": "Create a separate source tree with its own engine identity and a small useful implementation. Build against installed public SDKs only, without private headers, source-tree includes, a sibling Symphony checkout, source fallback or a hidden development workspace.",
+      "independent_oracle": "Independent engine source and mathematical oracle; exact public imports and full lifecycle/output transcripts.",
+      "profile_expansion": "All core profiles for selected applicable claims, plus explicitly admitted component profiles; each selected claim/operation/SDK/channel must receive its own executed evidence record.",
+      "required_decisions": [
+        "D01",
+        "D02",
+        "D03",
+        "D07"
+      ],
+      "freeze_rule": "Qualification of existing behavior allowed after continuation approval; missing implementation stays blocked pending explicit scope/freeze decision.",
+      "applicability": "proposed_pending_manual_scope_review",
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": [],
+      "scope_exclusion_decision": null
+    },
+    {
+      "criterion_id": "UE2",
+      "paper_page": 5,
+      "work_packages": [
+        "W02",
+        "W09"
+      ],
+      "owner_role": "sdk_research_owner",
+      "campaign_ids": [
+        "S02",
+        "S03",
+        "S05",
+        "S07",
+        "S08",
+        "S09"
+      ],
+      "planned_method": "W02/W09 external source, installed native SDK and selected SBV/admin route; two independent compositions, lifecycle and documentation-only agent exercise.",
+      "criterion_specific_expected_outcome": "Verify the engine's output using an independently calculated oracle. Include two materially different compositions: direct native SDK execution and the documented administrative or research- provider integration appropriate to that engine. If the second path requires explicit registration or a new adapter, implement and qualify it; do not imply automatic discovery.",
+      "independent_oracle": "Independent engine source and mathematical oracle; exact public imports and full lifecycle/output transcripts.",
+      "profile_expansion": "All core profiles for selected applicable claims, plus explicitly admitted component profiles; each selected claim/operation/SDK/channel must receive its own executed evidence record.",
+      "required_decisions": [
+        "D01",
+        "D02",
+        "D03",
+        "D07"
+      ],
+      "freeze_rule": "Qualification of existing behavior allowed after continuation approval; missing implementation stays blocked pending explicit scope/freeze decision.",
+      "applicability": "proposed_pending_manual_scope_review",
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": [],
+      "scope_exclusion_decision": null
+    },
+    {
+      "criterion_id": "UE3",
+      "paper_page": 5,
+      "work_packages": [
+        "W02",
+        "W09"
+      ],
+      "owner_role": "sdk_research_owner",
+      "campaign_ids": [
+        "S02",
+        "S03",
+        "S05",
+        "S07",
+        "S08",
+        "S09"
+      ],
+      "planned_method": "W02/W09 external source, installed native SDK and selected SBV/admin route; two independent compositions, lifecycle and documentation-only agent exercise.",
+      "criterion_specific_expected_outcome": "Install, inspect, explicitly select, upgrade and remove the engine using the supported component ownership model. Test a compatible change, an incompatible dependency, a changed executable, an interrupted transition and preservation of unrelated user data.",
+      "independent_oracle": "Independent engine source and mathematical oracle; exact public imports and full lifecycle/output transcripts.",
+      "profile_expansion": "All core profiles for selected applicable claims, plus explicitly admitted component profiles; each selected claim/operation/SDK/channel must receive its own executed evidence record.",
+      "required_decisions": [
+        "D01",
+        "D02",
+        "D03",
+        "D07"
+      ],
+      "freeze_rule": "Qualification of existing behavior allowed after continuation approval; missing implementation stays blocked pending explicit scope/freeze decision.",
+      "applicability": "proposed_pending_manual_scope_review",
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": [],
+      "scope_exclusion_decision": null
+    },
+    {
+      "criterion_id": "UE4",
+      "paper_page": 5,
+      "work_packages": [
+        "W02",
+        "W09"
+      ],
+      "owner_role": "sdk_research_owner",
+      "campaign_ids": [
+        "S02",
+        "S03",
+        "S05",
+        "S07",
+        "S08",
+        "S09"
+      ],
+      "planned_method": "W02/W09 external source, installed native SDK and selected SBV/admin route; two independent compositions, lifecycle and documentation-only agent exercise.",
+      "criterion_specific_expected_outcome": "Have an agent use shipped documentation and machine-readable interfaces to complete the applicable discovery, configuration, authorized action, observation and recovery journey. Every administrative surface needs an exact identity or an evidence-backed runtime-only, prohibited or not- applicable disposition.",
+      "independent_oracle": "Independent engine source and mathematical oracle; exact public imports and full lifecycle/output transcripts.",
+      "profile_expansion": "All core profiles for selected applicable claims, plus explicitly admitted component profiles; each selected claim/operation/SDK/channel must receive its own executed evidence record.",
+      "required_decisions": [
+        "D01",
+        "D02",
+        "D03",
+        "D07"
+      ],
+      "freeze_rule": "Qualification of existing behavior allowed after continuation approval; missing implementation stays blocked pending explicit scope/freeze decision.",
+      "applicability": "proposed_pending_manual_scope_review",
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": [],
+      "scope_exclusion_decision": null
+    },
+    {
+      "criterion_id": "UE5",
+      "paper_page": 5,
+      "work_packages": [
+        "W02",
+        "W09"
+      ],
+      "owner_role": "sdk_research_owner",
+      "campaign_ids": [
+        "S02",
+        "S03",
+        "S05",
+        "S07",
+        "S08",
+        "S09"
+      ],
+      "planned_method": "W02/W09 external source, installed native SDK and selected SBV/admin route; two independent compositions, lifecycle and documentation-only agent exercise.",
+      "criterion_specific_expected_outcome": "Where the composition declares no synchronous administrative runtime dependency, stop or stall those administrative processes and verify the native workload's stated behavior and performance. Operations that require authority or audit must separately refuse or preserve uncertainty when those dependencies are unavailable.",
+      "independent_oracle": "Independent engine source and mathematical oracle; exact public imports and full lifecycle/output transcripts.",
+      "profile_expansion": "All core profiles for selected applicable claims, plus explicitly admitted component profiles; each selected claim/operation/SDK/channel must receive its own executed evidence record.",
+      "required_decisions": [
+        "D01",
+        "D02",
+        "D03",
+        "D07"
+      ],
+      "freeze_rule": "Qualification of existing behavior allowed after continuation approval; missing implementation stays blocked pending explicit scope/freeze decision.",
+      "applicability": "proposed_pending_manual_scope_review",
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": [],
+      "scope_exclusion_decision": null
+    },
+    {
+      "criterion_id": "UE6",
+      "paper_page": 6,
+      "work_packages": [
+        "W02",
+        "W09"
+      ],
+      "owner_role": "sdk_research_owner",
+      "campaign_ids": [
+        "S02",
+        "S03",
+        "S05",
+        "S07",
+        "S08",
+        "S09"
+      ],
+      "planned_method": "W02/W09 external source, installed native SDK and selected SBV/admin route; two independent compositions, lifecycle and documentation-only agent exercise.",
+      "criterion_specific_expected_outcome": "Retain the external source, installed SDK and executable identities, build recipe, test oracle, final outputs, lifecycle evidence and limitations. Repeat the required subset for every target on which user-built engines are advertised.",
+      "independent_oracle": "Independent engine source and mathematical oracle; exact public imports and full lifecycle/output transcripts.",
+      "profile_expansion": "All core profiles for selected applicable claims, plus explicitly admitted component profiles; each selected claim/operation/SDK/channel must receive its own executed evidence record.",
+      "required_decisions": [
+        "D01",
+        "D02",
+        "D03",
+        "D07"
+      ],
+      "freeze_rule": "Qualification of existing behavior allowed after continuation approval; missing implementation stays blocked pending explicit scope/freeze decision.",
+      "applicability": "proposed_pending_manual_scope_review",
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": [],
+      "scope_exclusion_decision": null
+    },
+    {
+      "criterion_id": "C01.1",
+      "paper_page": 7,
+      "work_packages": [
+        "W01",
+        "W02",
+        "W09"
+      ],
+      "owner_role": "release_coordinator",
+      "campaign_ids": [
+        "S02",
+        "S03",
+        "S04",
+        "S05",
+        "S07"
+      ],
+      "planned_method": "W01 selection review plus W02/W09 external-engine and administrative-stall campaign.",
+      "criterion_specific_expected_outcome": "Publish the beta capability and dependency matrix, with exact semantic owners, supported integration paths and explicit implemented, experimental and unsupported states. Reconcile public documentation with actual descriptors and package contents.",
+      "independent_oracle": "Compare exact owners/descriptors/versions/receipts with observed public integration paths; native behavior under required and absent dependencies.",
+      "profile_expansion": "All core profiles for selected applicable claims, plus explicitly admitted component profiles; each selected claim/operation/SDK/channel must receive its own executed evidence record.",
+      "required_decisions": [
+        "D01",
+        "D02",
+        "D03",
+        "D07"
+      ],
+      "freeze_rule": "Qualification of existing behavior allowed after continuation approval; missing implementation stays blocked pending explicit scope/freeze decision.",
+      "applicability": "proposed_pending_manual_scope_review",
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": [],
+      "scope_exclusion_decision": null
+    },
+    {
+      "criterion_id": "C01.2",
+      "paper_page": 7,
+      "work_packages": [
+        "W01",
+        "W02",
+        "W09"
+      ],
+      "owner_role": "release_coordinator",
+      "campaign_ids": [
+        "S02",
+        "S03",
+        "S04",
+        "S05",
+        "S07"
+      ],
+      "planned_method": "W01 selection review plus W02/W09 external-engine and administrative-stall campaign.",
+      "criterion_specific_expected_outcome": "Complete UE1 through UE6 for the reference custom engine. Distinguish native SDK consumption, a user-provided SBV research model and a newly admitted platform owner; each has different integration requirements.",
+      "independent_oracle": "Compare exact owners/descriptors/versions/receipts with observed public integration paths; native behavior under required and absent dependencies.",
+      "profile_expansion": "All core profiles for selected applicable claims, plus explicitly admitted component profiles; each selected claim/operation/SDK/channel must receive its own executed evidence record.",
+      "required_decisions": [
+        "D01",
+        "D02",
+        "D03",
+        "D07"
+      ],
+      "freeze_rule": "Qualification of existing behavior allowed after continuation approval; missing implementation stays blocked pending explicit scope/freeze decision.",
+      "applicability": "proposed_pending_manual_scope_review",
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": [],
+      "scope_exclusion_decision": null
+    },
+    {
+      "criterion_id": "C01.3",
+      "paper_page": 7,
+      "work_packages": [
+        "W01",
+        "W02",
+        "W09"
+      ],
+      "owner_role": "release_coordinator",
+      "campaign_ids": [
+        "S02",
+        "S03",
+        "S04",
+        "S05",
+        "S07"
+      ],
+      "planned_method": "W01 selection review plus W02/W09 external-engine and administrative-stall campaign.",
+      "criterion_specific_expected_outcome": "Enumerate the selected beta package inventory and verify its receipts, descriptors and administrative dispositions. This proves completeness only for that declared set; do not claim universal installed-host discovery.",
+      "independent_oracle": "Compare exact owners/descriptors/versions/receipts with observed public integration paths; native behavior under required and absent dependencies.",
+      "profile_expansion": "All core profiles for selected applicable claims, plus explicitly admitted component profiles; each selected claim/operation/SDK/channel must receive its own executed evidence record.",
+      "required_decisions": [
+        "D01",
+        "D02",
+        "D03",
+        "D07"
+      ],
+      "freeze_rule": "Qualification of existing behavior allowed after continuation approval; missing implementation stays blocked pending explicit scope/freeze decision.",
+      "applicability": "proposed_pending_manual_scope_review",
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": [],
+      "scope_exclusion_decision": null
+    },
+    {
+      "criterion_id": "C01.4",
+      "paper_page": 7,
+      "work_packages": [
+        "W01",
+        "W02",
+        "W09"
+      ],
+      "owner_role": "release_coordinator",
+      "campaign_ids": [
+        "S02",
+        "S03",
+        "S04",
+        "S05",
+        "S07"
+      ],
+      "planned_method": "W01 selection review plus W02/W09 external-engine and administrative-stall campaign.",
+      "criterion_specific_expected_outcome": "Demonstrate the declared thermal and authority separation under administrative failure. Record the components intentionally required for a supported operation and the components absent from its native execution path.",
+      "independent_oracle": "Compare exact owners/descriptors/versions/receipts with observed public integration paths; native behavior under required and absent dependencies.",
+      "profile_expansion": "All core profiles for selected applicable claims, plus explicitly admitted component profiles; each selected claim/operation/SDK/channel must receive its own executed evidence record.",
+      "required_decisions": [
+        "D01",
+        "D02",
+        "D03",
+        "D07"
+      ],
+      "freeze_rule": "Qualification of existing behavior allowed after continuation approval; missing implementation stays blocked pending explicit scope/freeze decision.",
+      "applicability": "proposed_pending_manual_scope_review",
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": [],
+      "scope_exclusion_decision": null
+    },
+    {
+      "criterion_id": "C02.1",
+      "paper_page": 8,
+      "work_packages": [
+        "W02",
+        "W08",
+        "W09",
+        "W13"
+      ],
+      "owner_role": "sdk_research_owner",
+      "campaign_ids": [
+        "S02",
+        "S03",
+        "S05",
+        "S07"
+      ],
+      "planned_method": "Use shipped documentation and installed qxctl only; enumerate advertised operations and exercise malformed input, stale state, drift and lost response; conditional W13 clients are separately bound.",
+      "criterion_specific_expected_outcome": "Run shipped agent instructions against a clean installation and complete the applicable UE4 journey, including exact discovery, input construction, authorization, result interpretation and recovery. No undisclosed source checkout or manual correction may rescue the run.",
+      "independent_oracle": "Independent command/owner schema census, complete transcript and expected refusal/domain-result comparison; no hidden repair.",
+      "profile_expansion": "All core profiles for selected applicable claims, plus explicitly admitted component profiles; each selected claim/operation/SDK/channel must receive its own executed evidence record.",
+      "required_decisions": [
+        "D01",
+        "D06",
+        "D07"
+      ],
+      "freeze_rule": "Qualification of existing behavior allowed after continuation approval; missing implementation stays blocked pending explicit scope/freeze decision.",
+      "applicability": "proposed_pending_manual_scope_review",
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": [],
+      "scope_exclusion_decision": null
+    },
+    {
+      "criterion_id": "C02.2",
+      "paper_page": 8,
+      "work_packages": [
+        "W02",
+        "W08",
+        "W09",
+        "W13"
+      ],
+      "owner_role": "sdk_research_owner",
+      "campaign_ids": [
+        "S02",
+        "S03",
+        "S05",
+        "S07"
+      ],
+      "planned_method": "Use shipped documentation and installed qxctl only; enumerate advertised operations and exercise malformed input, stale state, drift and lost response; conditional W13 clients are separately bound.",
+      "criterion_specific_expected_outcome": "For every advertised administrative interaction, verify command and operation identities, input/output schema, mutation classification, prerequisites and error semantics against the installed executable and owner.",
+      "independent_oracle": "Independent command/owner schema census, complete transcript and expected refusal/domain-result comparison; no hidden repair.",
+      "profile_expansion": "All core profiles for selected applicable claims, plus explicitly admitted component profiles; each selected claim/operation/SDK/channel must receive its own executed evidence record.",
+      "required_decisions": [
+        "D01",
+        "D06",
+        "D07"
+      ],
+      "freeze_rule": "Qualification of existing behavior allowed after continuation approval; missing implementation stays blocked pending explicit scope/freeze decision.",
+      "applicability": "proposed_pending_manual_scope_review",
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": [],
+      "scope_exclusion_decision": null
+    },
+    {
+      "criterion_id": "C02.3",
+      "paper_page": 8,
+      "work_packages": [
+        "W02",
+        "W08",
+        "W09",
+        "W13"
+      ],
+      "owner_role": "sdk_research_owner",
+      "campaign_ids": [
+        "S02",
+        "S03",
+        "S05",
+        "S07"
+      ],
+      "planned_method": "Use shipped documentation and installed qxctl only; enumerate advertised operations and exercise malformed input, stale state, drift and lost response; conditional W13 clients are separately bound.",
+      "criterion_specific_expected_outcome": "Inject malformed input, stale state, missing owners, incompatible versions, bounded-output failures, cancellation and lost responses. Verify that transport success never overrides a domain failure and that uncertain mutations are observed before retry.",
+      "independent_oracle": "Independent command/owner schema census, complete transcript and expected refusal/domain-result comparison; no hidden repair.",
+      "profile_expansion": "All core profiles for selected applicable claims, plus explicitly admitted component profiles; each selected claim/operation/SDK/channel must receive its own executed evidence record.",
+      "required_decisions": [
+        "D01",
+        "D06",
+        "D07"
+      ],
+      "freeze_rule": "Qualification of existing behavior allowed after continuation approval; missing implementation stays blocked pending explicit scope/freeze decision.",
+      "applicability": "proposed_pending_manual_scope_review",
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": [],
+      "scope_exclusion_decision": null
+    },
+    {
+      "criterion_id": "C02.4",
+      "paper_page": 8,
+      "work_packages": [
+        "W02",
+        "W08",
+        "W09",
+        "W13"
+      ],
+      "owner_role": "sdk_research_owner",
+      "campaign_ids": [
+        "S02",
+        "S03",
+        "S05",
+        "S07"
+      ],
+      "planned_method": "Use shipped documentation and installed qxctl only; enumerate advertised operations and exercise malformed input, stale state, drift and lost response; conditional W13 clients are separately bound.",
+      "criterion_specific_expected_outcome": "For every advertised MCP or client channel, qualify the actual package, pinned catalogue and chosen qxctl together. Exercise pagination and representative read, preview and apply paths, plus generated metadata coverage checks across the full exposed catalogue. Unknown commands and contract drift must fail visibly.",
+      "independent_oracle": "Independent command/owner schema census, complete transcript and expected refusal/domain-result comparison; no hidden repair.",
+      "profile_expansion": "All core profiles for selected applicable claims, plus explicitly admitted component profiles; each selected claim/operation/SDK/channel must receive its own executed evidence record.",
+      "required_decisions": [
+        "D01",
+        "D06",
+        "D07"
+      ],
+      "freeze_rule": "Qualification of existing behavior allowed after continuation approval; missing implementation stays blocked pending explicit scope/freeze decision.",
+      "applicability": "proposed_pending_manual_scope_review",
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": [],
+      "scope_exclusion_decision": null
+    },
+    {
+      "criterion_id": "C03.1",
+      "paper_page": 9,
+      "work_packages": [
+        "W03",
+        "W05",
+        "W09",
+        "W10",
+        "W12"
+      ],
+      "owner_role": "state_recovery_owner",
+      "campaign_ids": [
+        "S03",
+        "S05",
+        "S06",
+        "S07"
+      ],
+      "planned_method": "Bind each selected consequential operation to its owner attempt/audit and complete research/provider dossier; inject retained-record and acknowledgement faults and inspect export/redaction.",
+      "criterion_specific_expected_outcome": "Define the evidence boundary for each consequential beta action: requested operation, caller and authority, exact input/configuration, admitted attempt, actual observed outcome and its authoritative owner. Include the external engine's supported administrative actions.",
+      "independent_oracle": "Reconstruct requested/admitted/observed state from independent retained evidence; exact source/artifact/config/data/result hashes; uncertainty never inferred away.",
+      "profile_expansion": "All core profiles for selected applicable claims, plus explicitly admitted component profiles; each selected claim/operation/SDK/channel must receive its own executed evidence record.",
+      "required_decisions": [
+        "D01",
+        "D03",
+        "D07"
+      ],
+      "freeze_rule": "Qualification of existing behavior allowed after continuation approval; missing implementation stays blocked pending explicit scope/freeze decision.",
+      "applicability": "proposed_pending_manual_scope_review",
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": [],
+      "scope_exclusion_decision": null
+    },
+    {
+      "criterion_id": "C03.2",
+      "paper_page": 9,
+      "work_packages": [
+        "W03",
+        "W05",
+        "W09",
+        "W10",
+        "W12"
+      ],
+      "owner_role": "state_recovery_owner",
+      "campaign_ids": [
+        "S03",
+        "S05",
+        "S06",
+        "S07"
+      ],
+      "planned_method": "Bind each selected consequential operation to its owner attempt/audit and complete research/provider dossier; inject retained-record and acknowledgement faults and inspect export/redaction.",
+      "criterion_specific_expected_outcome": "Produce one reconstructable dossier for the research and execution campaigns, binding source, artifact, SDK, configuration, data/fixture and result identities. Identify every unavailable or inferred fact instead of inventing a complete chain.",
+      "independent_oracle": "Reconstruct requested/admitted/observed state from independent retained evidence; exact source/artifact/config/data/result hashes; uncertainty never inferred away.",
+      "profile_expansion": "All core profiles for selected applicable claims, plus explicitly admitted component profiles; each selected claim/operation/SDK/channel must receive its own executed evidence record.",
+      "required_decisions": [
+        "D01",
+        "D03",
+        "D07"
+      ],
+      "freeze_rule": "Qualification of existing behavior allowed after continuation approval; missing implementation stays blocked pending explicit scope/freeze decision.",
+      "applicability": "proposed_pending_manual_scope_review",
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": [],
+      "scope_exclusion_decision": null
+    },
+    {
+      "criterion_id": "C03.3",
+      "paper_page": 9,
+      "work_packages": [
+        "W03",
+        "W05",
+        "W09",
+        "W10",
+        "W12"
+      ],
+      "owner_role": "state_recovery_owner",
+      "campaign_ids": [
+        "S03",
+        "S05",
+        "S06",
+        "S07"
+      ],
+      "planned_method": "Bind each selected consequential operation to its owner attempt/audit and complete research/provider dossier; inject retained-record and acknowledgement faults and inspect export/redaction.",
+      "criterion_specific_expected_outcome": "Test acknowledgement loss, audit outage, process restart, changed inputs, duplicate requests, corrupted records and conflicting recovery evidence. Require original outcome recovery without duplicate effects where that is the owner contract; otherwise preserve uncertainty.",
+      "independent_oracle": "Reconstruct requested/admitted/observed state from independent retained evidence; exact source/artifact/config/data/result hashes; uncertainty never inferred away.",
+      "profile_expansion": "All core profiles for selected applicable claims, plus explicitly admitted component profiles; each selected claim/operation/SDK/channel must receive its own executed evidence record.",
+      "required_decisions": [
+        "D01",
+        "D03",
+        "D07"
+      ],
+      "freeze_rule": "Qualification of existing behavior allowed after continuation approval; missing implementation stays blocked pending explicit scope/freeze decision.",
+      "applicability": "proposed_pending_manual_scope_review",
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": [],
+      "scope_exclusion_decision": null
+    },
+    {
+      "criterion_id": "C03.4",
+      "paper_page": 9,
+      "work_packages": [
+        "W03",
+        "W05",
+        "W09",
+        "W10",
+        "W12"
+      ],
+      "owner_role": "state_recovery_owner",
+      "campaign_ids": [
+        "S03",
+        "S05",
+        "S06",
+        "S07"
+      ],
+      "planned_method": "Bind each selected consequential operation to its owner attempt/audit and complete research/provider dossier; inject retained-record and acknowledgement faults and inspect export/redaction.",
+      "criterion_specific_expected_outcome": "Verify retention, export and redaction against the actual artifact formats. A hash establishes byte correspondence; signer identity and observed behavior require their own evidence. Never report an authorization receipt as proof of execution.",
+      "independent_oracle": "Reconstruct requested/admitted/observed state from independent retained evidence; exact source/artifact/config/data/result hashes; uncertainty never inferred away.",
+      "profile_expansion": "All core profiles for selected applicable claims, plus explicitly admitted component profiles; each selected claim/operation/SDK/channel must receive its own executed evidence record.",
+      "required_decisions": [
+        "D01",
+        "D03",
+        "D07"
+      ],
+      "freeze_rule": "Qualification of existing behavior allowed after continuation approval; missing implementation stays blocked pending explicit scope/freeze decision.",
+      "applicability": "proposed_pending_manual_scope_review",
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": [],
+      "scope_exclusion_decision": null
+    },
+    {
+      "criterion_id": "C04.1",
+      "paper_page": 10,
+      "work_packages": [
+        "W02",
+        "W09"
+      ],
+      "owner_role": "sdk_research_owner",
+      "campaign_ids": [
+        "S03",
+        "S04",
+        "S07"
+      ],
+      "planned_method": "Prepare complete quantitative corpus and run each supported ordering/replay/correction/worker mode on final installed routes; inject cancellation and restart.",
+      "criterion_specific_expected_outcome": "Package a reproducible research corpus with independently calculated expected cash, positions, fees, settlement, partial-result populations and rejected-event behavior. Use exact arithmetic or an explicitly selected numerical tolerance with a justified oracle.",
+      "independent_oracle": "Exact arithmetic or predeclared tolerances for cash, positions, fees, settlement, populations and rejected events; compare complete outputs, not only terminal counts.",
+      "profile_expansion": "All core profiles for selected applicable claims, plus explicitly admitted component profiles; each selected claim/operation/SDK/channel must receive its own executed evidence record.",
+      "required_decisions": [
+        "D01",
+        "D03",
+        "D07"
+      ],
+      "freeze_rule": "Qualification of existing behavior allowed after continuation approval; missing implementation stays blocked pending explicit scope/freeze decision.",
+      "applicability": "proposed_pending_manual_scope_review",
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": [],
+      "scope_exclusion_decision": null
+    },
+    {
+      "criterion_id": "C04.2",
+      "paper_page": 10,
+      "work_packages": [
+        "W02",
+        "W09"
+      ],
+      "owner_role": "sdk_research_owner",
+      "campaign_ids": [
+        "S03",
+        "S04",
+        "S07"
+      ],
+      "planned_method": "Prepare complete quantitative corpus and run each supported ordering/replay/correction/worker mode on final installed routes; inject cancellation and restart.",
+      "criterion_specific_expected_outcome": "Exercise causal ordering, declared timestamp semantics, temporal partitions and leakage cases. Test missing, duplicated, corrupted, out-of-order and revision/correction data where supported. Unsupported semantics must remain unavailable.",
+      "independent_oracle": "Exact arithmetic or predeclared tolerances for cash, positions, fees, settlement, populations and rejected events; compare complete outputs, not only terminal counts.",
+      "profile_expansion": "All core profiles for selected applicable claims, plus explicitly admitted component profiles; each selected claim/operation/SDK/channel must receive its own executed evidence record.",
+      "required_decisions": [
+        "D01",
+        "D03",
+        "D07"
+      ],
+      "freeze_rule": "Qualification of existing behavior allowed after continuation approval; missing implementation stays blocked pending explicit scope/freeze decision.",
+      "applicability": "proposed_pending_manual_scope_review",
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": [],
+      "scope_exclusion_decision": null
+    },
+    {
+      "criterion_id": "C04.3",
+      "paper_page": 10,
+      "work_packages": [
+        "W02",
+        "W09"
+      ],
+      "owner_role": "sdk_research_owner",
+      "campaign_ids": [
+        "S03",
+        "S04",
+        "S07"
+      ],
+      "planned_method": "Prepare complete quantitative corpus and run each supported ordering/replay/correction/worker mode on final installed routes; inject cancellation and restart.",
+      "criterion_specific_expected_outcome": "Verify replay, snapshot branching and continuation for the semantics actually supported. Compare complete scientific outputs across selected storage and worker modes; disclose any topology-dependent provider state instead of asserting universal determinism.",
+      "independent_oracle": "Exact arithmetic or predeclared tolerances for cash, positions, fees, settlement, populations and rejected events; compare complete outputs, not only terminal counts.",
+      "profile_expansion": "All core profiles for selected applicable claims, plus explicitly admitted component profiles; each selected claim/operation/SDK/channel must receive its own executed evidence record.",
+      "required_decisions": [
+        "D01",
+        "D03",
+        "D07"
+      ],
+      "freeze_rule": "Qualification of existing behavior allowed after continuation approval; missing implementation stays blocked pending explicit scope/freeze decision.",
+      "applicability": "proposed_pending_manual_scope_review",
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": [],
+      "scope_exclusion_decision": null
+    },
+    {
+      "criterion_id": "C04.4",
+      "paper_page": 10,
+      "work_packages": [
+        "W02",
+        "W09"
+      ],
+      "owner_role": "sdk_research_owner",
+      "campaign_ids": [
+        "S03",
+        "S04",
+        "S07"
+      ],
+      "planned_method": "Prepare complete quantitative corpus and run each supported ordering/replay/correction/worker mode on final installed routes; inject cancellation and restart.",
+      "criterion_specific_expected_outcome": "Run the corpus through the final CLI, installed native SDK and applicable language adapter, including a user-authored model or engine. Kill and cancel work, recover completed receipts, preserve unknown outcomes and verify no automatic duplicate execution.",
+      "independent_oracle": "Exact arithmetic or predeclared tolerances for cash, positions, fees, settlement, populations and rejected events; compare complete outputs, not only terminal counts.",
+      "profile_expansion": "All core profiles for selected applicable claims, plus explicitly admitted component profiles; each selected claim/operation/SDK/channel must receive its own executed evidence record.",
+      "required_decisions": [
+        "D01",
+        "D03",
+        "D07"
+      ],
+      "freeze_rule": "Qualification of existing behavior allowed after continuation approval; missing implementation stays blocked pending explicit scope/freeze decision.",
+      "applicability": "proposed_pending_manual_scope_review",
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": [],
+      "scope_exclusion_decision": null
+    },
+    {
+      "criterion_id": "C05.1",
+      "paper_page": 10,
+      "work_packages": [
+        "W07",
+        "W08",
+        "W12"
+      ],
+      "owner_role": "acceptance_reviewer",
+      "campaign_ids": [
+        "S01",
+        "S02",
+        "S03",
+        "S04",
+        "S05",
+        "S06",
+        "S07",
+        "S08",
+        "S09"
+      ],
+      "planned_method": "Use claim-to-test bindings for candidate source and final artifacts; retain failures/skips/corrective reruns and independent security/authority review.",
+      "criterion_specific_expected_outcome": "Enumerate every selected component, platform and mandatory scenario in a claim-to-test map. Require affected source, race, sanitizer, native, installed-consumer, ownership, generated- interface and package tests on the final candidate source.",
+      "independent_oracle": "All selected mandatory cells have exact identities and observed passing evidence; distinguish helper skips from missing coverage and hosted static-analysis limits.",
+      "profile_expansion": "All core profiles for selected applicable claims, plus explicitly admitted component profiles; each selected claim/operation/SDK/channel must receive its own executed evidence record.",
+      "required_decisions": [
+        "D01",
+        "D02",
+        "D05",
+        "D07"
+      ],
+      "freeze_rule": "Qualification of existing behavior allowed after continuation approval; missing implementation stays blocked pending explicit scope/freeze decision.",
+      "applicability": "proposed_pending_manual_scope_review",
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": [],
+      "scope_exclusion_decision": null
+    },
+    {
+      "criterion_id": "C05.2",
+      "paper_page": 10,
+      "work_packages": [
+        "W07",
+        "W08",
+        "W12"
+      ],
+      "owner_role": "acceptance_reviewer",
+      "campaign_ids": [
+        "S01",
+        "S02",
+        "S03",
+        "S04",
+        "S05",
+        "S06",
+        "S07",
+        "S08",
+        "S09"
+      ],
+      "planned_method": "Use claim-to-test bindings for candidate source and final artifacts; retain failures/skips/corrective reruns and independent security/authority review.",
+      "criterion_specific_expected_outcome": "Treat skipped or unperformed mandatory cases as incomplete. Distinguish helper-process skips from missing feature coverage. Retain failed runs and the exact corrective reruns rather than replacing them with an unexplained green summary.",
+      "independent_oracle": "All selected mandatory cells have exact identities and observed passing evidence; distinguish helper skips from missing coverage and hosted static-analysis limits.",
+      "profile_expansion": "All core profiles for selected applicable claims, plus explicitly admitted component profiles; each selected claim/operation/SDK/channel must receive its own executed evidence record.",
+      "required_decisions": [
+        "D01",
+        "D02",
+        "D05",
+        "D07"
+      ],
+      "freeze_rule": "Qualification of existing behavior allowed after continuation approval; missing implementation stays blocked pending explicit scope/freeze decision.",
+      "applicability": "proposed_pending_manual_scope_review",
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": [],
+      "scope_exclusion_decision": null
+    },
+    {
+      "criterion_id": "C05.3",
+      "paper_page": 10,
+      "work_packages": [
+        "W07",
+        "W08",
+        "W12"
+      ],
+      "owner_role": "acceptance_reviewer",
+      "campaign_ids": [
+        "S01",
+        "S02",
+        "S03",
+        "S04",
+        "S05",
+        "S06",
+        "S07",
+        "S08",
+        "S09"
+      ],
+      "planned_method": "Use claim-to-test bindings for candidate source and final artifacts; retain failures/skips/corrective reruns and independent security/authority review.",
+      "criterion_specific_expected_outcome": "Bind build recipes, toolchains, dependencies, artifact hashes and test results. Run the distribution and user-engine campaigns against final artifacts rather than rebuilding implicitly from a source tree during acceptance.",
+      "independent_oracle": "All selected mandatory cells have exact identities and observed passing evidence; distinguish helper skips from missing coverage and hosted static-analysis limits.",
+      "profile_expansion": "All core profiles for selected applicable claims, plus explicitly admitted component profiles; each selected claim/operation/SDK/channel must receive its own executed evidence record.",
+      "required_decisions": [
+        "D01",
+        "D02",
+        "D05",
+        "D07"
+      ],
+      "freeze_rule": "Qualification of existing behavior allowed after continuation approval; missing implementation stays blocked pending explicit scope/freeze decision.",
+      "applicability": "proposed_pending_manual_scope_review",
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": [],
+      "scope_exclusion_decision": null
+    },
+    {
+      "criterion_id": "C05.4",
+      "paper_page": 10,
+      "work_packages": [
+        "W07",
+        "W08",
+        "W12"
+      ],
+      "owner_role": "acceptance_reviewer",
+      "campaign_ids": [
+        "S01",
+        "S02",
+        "S03",
+        "S04",
+        "S05",
+        "S06",
+        "S07",
+        "S08",
+        "S09"
+      ],
+      "planned_method": "Use claim-to-test bindings for candidate source and final artifacts; retain failures/skips/corrective reruns and independent security/authority review.",
+      "criterion_specific_expected_outcome": "Review the critical authority, parser, credential, order-state and recovery paths independently of their implementer. Compensate for identified static-analysis gaps with focused code review, sanitizers and adverse-input tests appropriate to the actual code.",
+      "independent_oracle": "All selected mandatory cells have exact identities and observed passing evidence; distinguish helper skips from missing coverage and hosted static-analysis limits.",
+      "profile_expansion": "All core profiles for selected applicable claims, plus explicitly admitted component profiles; each selected claim/operation/SDK/channel must receive its own executed evidence record.",
+      "required_decisions": [
+        "D01",
+        "D02",
+        "D05",
+        "D07"
+      ],
+      "freeze_rule": "Qualification of existing behavior allowed after continuation approval; missing implementation stays blocked pending explicit scope/freeze decision.",
+      "applicability": "proposed_pending_manual_scope_review",
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": [],
+      "scope_exclusion_decision": null
+    },
+    {
+      "criterion_id": "C06.1",
+      "paper_page": 11,
+      "work_packages": [
+        "W02",
+        "W06",
+        "W08",
+        "W09"
+      ],
+      "owner_role": "platform_operator",
+      "campaign_ids": [
+        "S02",
+        "S03",
+        "S08",
+        "S09"
+      ],
+      "planned_method": "Run all selected receipt units and owner-specific lifecycle installers on admitted targets, including public external engine; introduce dependency/file drift and interrupted transitions.",
+      "criterion_specific_expected_outcome": "Run each advertised module on its declared OS/architecture cells using the actual delivered artifacts. Validate installed headers, libraries, runtime loaders, receipts and interfaces without source or developer-prefix fallback.",
+      "independent_oracle": "Public SDK/header/export/loader/receipt correspondence and before/after hashes prove owner-scoped mutation and user-data preservation.",
+      "profile_expansion": "All core profiles for selected applicable claims, plus explicitly admitted component profiles; each selected claim/operation/SDK/channel must receive its own executed evidence record.",
+      "required_decisions": [
+        "D01",
+        "D02",
+        "D07"
+      ],
+      "freeze_rule": "Qualification of existing behavior allowed after continuation approval; missing implementation stays blocked pending explicit scope/freeze decision.",
+      "applicability": "proposed_pending_manual_scope_review",
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": [],
+      "scope_exclusion_decision": null
+    },
+    {
+      "criterion_id": "C06.2",
+      "paper_page": 11,
+      "work_packages": [
+        "W02",
+        "W06",
+        "W08",
+        "W09"
+      ],
+      "owner_role": "platform_operator",
+      "campaign_ids": [
+        "S02",
+        "S03",
+        "S08",
+        "S09"
+      ],
+      "planned_method": "Run all selected receipt units and owner-specific lifecycle installers on admitted targets, including public external engine; introduce dependency/file drift and interrupted transitions.",
+      "criterion_specific_expected_outcome": "Exercise install, discovery, explicit version selection, side-by-side update, compatible rollback and removal. Interrupt each meaningful transition and verify the owner's recorded recovery behavior.",
+      "independent_oracle": "Public SDK/header/export/loader/receipt correspondence and before/after hashes prove owner-scoped mutation and user-data preservation.",
+      "profile_expansion": "All core profiles for selected applicable claims, plus explicitly admitted component profiles; each selected claim/operation/SDK/channel must receive its own executed evidence record.",
+      "required_decisions": [
+        "D01",
+        "D02",
+        "D07"
+      ],
+      "freeze_rule": "Qualification of existing behavior allowed after continuation approval; missing implementation stays blocked pending explicit scope/freeze decision.",
+      "applicability": "proposed_pending_manual_scope_review",
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": [],
+      "scope_exclusion_decision": null
+    },
+    {
+      "criterion_id": "C06.3",
+      "paper_page": 11,
+      "work_packages": [
+        "W02",
+        "W06",
+        "W08",
+        "W09"
+      ],
+      "owner_role": "platform_operator",
+      "campaign_ids": [
+        "S02",
+        "S03",
+        "S08",
+        "S09"
+      ],
+      "planned_method": "Run all selected receipt units and owner-specific lifecycle installers on admitted targets, including public external engine; introduce dependency/file drift and interrupted transitions.",
+      "criterion_specific_expected_outcome": "Test dependency mismatch, changed executable/header/export bytes, foreign files and partial removal. Preserve unrelated packages and user data; removal must not infer ownership from a filename or directory location alone.",
+      "independent_oracle": "Public SDK/header/export/loader/receipt correspondence and before/after hashes prove owner-scoped mutation and user-data preservation.",
+      "profile_expansion": "All core profiles for selected applicable claims, plus explicitly admitted component profiles; each selected claim/operation/SDK/channel must receive its own executed evidence record.",
+      "required_decisions": [
+        "D01",
+        "D02",
+        "D07"
+      ],
+      "freeze_rule": "Qualification of existing behavior allowed after continuation approval; missing implementation stays blocked pending explicit scope/freeze decision.",
+      "applicability": "proposed_pending_manual_scope_review",
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": [],
+      "scope_exclusion_decision": null
+    },
+    {
+      "criterion_id": "C06.4",
+      "paper_page": 11,
+      "work_packages": [
+        "W02",
+        "W06",
+        "W08",
+        "W09"
+      ],
+      "owner_role": "platform_operator",
+      "campaign_ids": [
+        "S02",
+        "S03",
+        "S08",
+        "S09"
+      ],
+      "planned_method": "Run all selected receipt units and owner-specific lifecycle installers on admitted targets, including public external engine; introduce dependency/file drift and interrupted transitions.",
+      "criterion_specific_expected_outcome": "Apply the same public ownership and compatibility rules to the UE reference engine. Demonstrate that removing the example engine does not remove the SDKs or other user engines except through an explicit, valid dependency action.",
+      "independent_oracle": "Public SDK/header/export/loader/receipt correspondence and before/after hashes prove owner-scoped mutation and user-data preservation.",
+      "profile_expansion": "All core profiles for selected applicable claims, plus explicitly admitted component profiles; each selected claim/operation/SDK/channel must receive its own executed evidence record.",
+      "required_decisions": [
+        "D01",
+        "D02",
+        "D07"
+      ],
+      "freeze_rule": "Qualification of existing behavior allowed after continuation approval; missing implementation stays blocked pending explicit scope/freeze decision.",
+      "applicability": "proposed_pending_manual_scope_review",
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": [],
+      "scope_exclusion_decision": null
+    },
+    {
+      "criterion_id": "C07.1",
+      "paper_page": 12,
+      "work_packages": [
+        "W03",
+        "W10"
+      ],
+      "owner_role": "authority_security_owner",
+      "campaign_ids": [
+        "S05",
+        "S06",
+        "S07"
+      ],
+      "planned_method": "Audit selected credential promises before qualification; exercise implemented Cloudflare private delivery and exact refusal/revocation/persistence limits. General L14/OS/native gaps remain decision-blocked.",
+      "criterion_specific_expected_outcome": "Complete every promised native credential path: permission-backed lease issuance/revocation, actual recipient/provider identity, protected one-shot delivery, selected OS provider operations and the native consumer bridge. Prove use with a real selected provider or accepted test environment.",
+      "independent_oracle": "Actual recipient/provider/account/generation and effect observations; descriptor cleanup/child termination and documented revocation boundary; no same-user tenant-isolation inference.",
+      "profile_expansion": "All core profiles for selected applicable claims, plus explicitly admitted component profiles; each selected claim/operation/SDK/channel must receive its own executed evidence record.",
+      "required_decisions": [
+        "D01",
+        "D02",
+        "D03",
+        "D07"
+      ],
+      "freeze_rule": "Qualification of existing behavior allowed after continuation approval; missing implementation stays blocked pending explicit scope/freeze decision.",
+      "applicability": "proposed_pending_manual_scope_review",
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": [],
+      "scope_exclusion_decision": null
+    },
+    {
+      "criterion_id": "C07.2",
+      "paper_page": 12,
+      "work_packages": [
+        "W03",
+        "W10"
+      ],
+      "owner_role": "authority_security_owner",
+      "campaign_ids": [
+        "S05",
+        "S06",
+        "S07"
+      ],
+      "planned_method": "Audit selected credential promises before qualification; exercise implemented Cloudflare private delivery and exact refusal/revocation/persistence limits. General L14/OS/native gaps remain decision-blocked.",
+      "criterion_specific_expected_outcome": "Exercise wrong executable, account, resource, reference and generation; expired and revoked grants; unavailable audit; cancellation; lost outcome acknowledgement; and failed persistence. Verify native byte limits, descriptor cleanup and child termination where promised.",
+      "independent_oracle": "Actual recipient/provider/account/generation and effect observations; descriptor cleanup/child termination and documented revocation boundary; no same-user tenant-isolation inference.",
+      "profile_expansion": "All core profiles for selected applicable claims, plus explicitly admitted component profiles; each selected claim/operation/SDK/channel must receive its own executed evidence record.",
+      "required_decisions": [
+        "D01",
+        "D02",
+        "D03",
+        "D07"
+      ],
+      "freeze_rule": "Qualification of existing behavior allowed after continuation approval; missing implementation stays blocked pending explicit scope/freeze decision.",
+      "applicability": "proposed_pending_manual_scope_review",
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": [],
+      "scope_exclusion_decision": null
+    },
+    {
+      "criterion_id": "C07.3",
+      "paper_page": 12,
+      "work_packages": [
+        "W03",
+        "W10"
+      ],
+      "owner_role": "authority_security_owner",
+      "campaign_ids": [
+        "S05",
+        "S06",
+        "S07"
+      ],
+      "planned_method": "Audit selected credential promises before qualification; exercise implemented Cloudflare private delivery and exact refusal/revocation/persistence limits. General L14/OS/native gaps remain decision-blocked.",
+      "criterion_specific_expected_outcome": "Publish and test the exact beta account and trust model. Trusted same-user code must not be described as tenant isolation. Distinct-account or headless-provider operation needs its own qualified profile wherever advertised.",
+      "independent_oracle": "Actual recipient/provider/account/generation and effect observations; descriptor cleanup/child termination and documented revocation boundary; no same-user tenant-isolation inference.",
+      "profile_expansion": "All core profiles for selected applicable claims, plus explicitly admitted component profiles; each selected claim/operation/SDK/channel must receive its own executed evidence record.",
+      "required_decisions": [
+        "D01",
+        "D02",
+        "D03",
+        "D07"
+      ],
+      "freeze_rule": "Qualification of existing behavior allowed after continuation approval; missing implementation stays blocked pending explicit scope/freeze decision.",
+      "applicability": "proposed_pending_manual_scope_review",
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": [],
+      "scope_exclusion_decision": null
+    },
+    {
+      "criterion_id": "C07.4",
+      "paper_page": 12,
+      "work_packages": [
+        "W03",
+        "W10"
+      ],
+      "owner_role": "authority_security_owner",
+      "campaign_ids": [
+        "S05",
+        "S06",
+        "S07"
+      ],
+      "planned_method": "Audit selected credential promises before qualification; exercise implemented Cloudflare private delivery and exact refusal/revocation/persistence limits. General L14/OS/native gaps remain decision-blocked.",
+      "criterion_specific_expected_outcome": "Define revocation and authorization-to-effect semantics per operation and prove the stated boundary. Admission-time authorization may be a deliberate contract; a promise of immediate revocation requires stronger implementation. Record the remaining race explicitly and do not claim atomicity from a final pre-effect check.",
+      "independent_oracle": "Actual recipient/provider/account/generation and effect observations; descriptor cleanup/child termination and documented revocation boundary; no same-user tenant-isolation inference.",
+      "profile_expansion": "All core profiles for selected applicable claims, plus explicitly admitted component profiles; each selected claim/operation/SDK/channel must receive its own executed evidence record.",
+      "required_decisions": [
+        "D01",
+        "D02",
+        "D03",
+        "D07"
+      ],
+      "freeze_rule": "Qualification of existing behavior allowed after continuation approval; missing implementation stays blocked pending explicit scope/freeze decision.",
+      "applicability": "proposed_pending_manual_scope_review",
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": [],
+      "scope_exclusion_decision": null
+    },
+    {
+      "criterion_id": "C08.1",
+      "paper_page": 12,
+      "work_packages": [
+        "W06",
+        "W07",
+        "W08",
+        "W13"
+      ],
+      "owner_role": "packaging_engineer",
+      "campaign_ids": [
+        "S01",
+        "S02",
+        "S08",
+        "S09"
+      ],
+      "planned_method": "Review selected payload/closure and independent publisher policy; build immutable packages and execute real final-download host and lifecycle qualification.",
+      "criterion_specific_expected_outcome": "Approve an exact capability manifest and selected immutable packages. Bind source, build recipe, toolchain, dependencies, module versions, interfaces and receipts without flattening independent ownership.",
+      "independent_oracle": "Actual file/recipe/toolchain/dependency/receipt hashes, recursive loader/TLS inventory, reviewed notices/source/vendor rights and signer/OS trust observations.",
+      "profile_expansion": "All core profiles for selected applicable claims, plus explicitly admitted component profiles; each selected claim/operation/SDK/channel must receive its own executed evidence record.",
+      "required_decisions": [
+        "D01",
+        "D02",
+        "D04",
+        "D06",
+        "D07"
+      ],
+      "freeze_rule": "Qualification of existing behavior allowed after continuation approval; missing implementation stays blocked pending explicit scope/freeze decision.",
+      "applicability": "proposed_pending_manual_scope_review",
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": [],
+      "scope_exclusion_decision": null
+    },
+    {
+      "criterion_id": "C08.2",
+      "paper_page": 13,
+      "work_packages": [
+        "W06",
+        "W07",
+        "W08",
+        "W13"
+      ],
+      "owner_role": "packaging_engineer",
+      "campaign_ids": [
+        "S01",
+        "S02",
+        "S08",
+        "S09"
+      ],
+      "planned_method": "Review selected payload/closure and independent publisher policy; build immutable packages and execute real final-download host and lifecycle qualification.",
+      "criterion_specific_expected_outcome": "Close recursive runtime, loader and TLS dependencies plus notices, source correspondence and vendor redistribution conditions for the actual payload. Verify OS trust and signing/notarization behavior where selected or promised.",
+      "independent_oracle": "Actual file/recipe/toolchain/dependency/receipt hashes, recursive loader/TLS inventory, reviewed notices/source/vendor rights and signer/OS trust observations.",
+      "profile_expansion": "All core profiles for selected applicable claims, plus explicitly admitted component profiles; each selected claim/operation/SDK/channel must receive its own executed evidence record.",
+      "required_decisions": [
+        "D01",
+        "D02",
+        "D04",
+        "D06",
+        "D07"
+      ],
+      "freeze_rule": "Qualification of existing behavior allowed after continuation approval; missing implementation stays blocked pending explicit scope/freeze decision.",
+      "applicability": "proposed_pending_manual_scope_review",
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": [],
+      "scope_exclusion_decision": null
+    },
+    {
+      "criterion_id": "C08.3",
+      "paper_page": 13,
+      "work_packages": [
+        "W06",
+        "W07",
+        "W08",
+        "W13"
+      ],
+      "owner_role": "packaging_engineer",
+      "campaign_ids": [
+        "S01",
+        "S02",
+        "S08",
+        "S09"
+      ],
+      "planned_method": "Review selected payload/closure and independent publisher policy; build immutable packages and execute real final-download host and lifecycle qualification.",
+      "criterion_specific_expected_outcome": "Establish production publisher identity and a verification policy obtained independently of the untrusted payload. Verify hashes and signatures; exercise wrong signer, tampering, incompatible profile, unsafe archive and substitution cases.",
+      "independent_oracle": "Actual file/recipe/toolchain/dependency/receipt hashes, recursive loader/TLS inventory, reviewed notices/source/vendor rights and signer/OS trust observations.",
+      "profile_expansion": "All core profiles for selected applicable claims, plus explicitly admitted component profiles; each selected claim/operation/SDK/channel must receive its own executed evidence record.",
+      "required_decisions": [
+        "D01",
+        "D02",
+        "D04",
+        "D06",
+        "D07"
+      ],
+      "freeze_rule": "Qualification of existing behavior allowed after continuation approval; missing implementation stays blocked pending explicit scope/freeze decision.",
+      "applicability": "proposed_pending_manual_scope_review",
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": [],
+      "scope_exclusion_decision": null
+    },
+    {
+      "criterion_id": "C08.4",
+      "paper_page": 13,
+      "work_packages": [
+        "W06",
+        "W07",
+        "W08",
+        "W13"
+      ],
+      "owner_role": "packaging_engineer",
+      "campaign_ids": [
+        "S01",
+        "S02",
+        "S08",
+        "S09"
+      ],
+      "planned_method": "Review selected payload/closure and independent publisher policy; build immutable packages and execute real final-download host and lifecycle qualification.",
+      "criterion_specific_expected_outcome": "Download the actual candidate bytes onto clean hosts for every advertised profile and run installation, functional, external-engine, recovery, upgrade/rollback and removal scenarios. Retain the exact retrieval URL, artifact identity and host inventory. Publication requires the named publisher's explicit decision.",
+      "independent_oracle": "Actual file/recipe/toolchain/dependency/receipt hashes, recursive loader/TLS inventory, reviewed notices/source/vendor rights and signer/OS trust observations.",
+      "profile_expansion": "All core profiles for selected applicable claims, plus explicitly admitted component profiles; each selected claim/operation/SDK/channel must receive its own executed evidence record.",
+      "required_decisions": [
+        "D01",
+        "D02",
+        "D04",
+        "D06",
+        "D07"
+      ],
+      "freeze_rule": "Qualification of existing behavior allowed after continuation approval; missing implementation stays blocked pending explicit scope/freeze decision.",
+      "applicability": "proposed_pending_manual_scope_review",
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": [],
+      "scope_exclusion_decision": null
+    },
+    {
+      "criterion_id": "C09.1",
+      "paper_page": 13,
+      "work_packages": [
+        "W05",
+        "W10",
+        "W11"
+      ],
+      "owner_role": "state_recovery_owner",
+      "campaign_ids": [
+        "S07",
+        "S08",
+        "S09"
+      ],
+      "planned_method": "Predeclare owner-specific recovery/data-loss limits; inject faults, restore actual campaign data on a clean host and perform backup-operated rollback.",
+      "criterion_specific_expected_outcome": "Declare recovery time, acceptable data loss, backup method and uncertainty handling for each supported state owner and beta topology. Targets must have measured scenarios and explicit limits; do not impose invented universal latency or retention guarantees.",
+      "independent_oracle": "Independent expected owner states and measured recovery; quiescent-copy scope remains distinct from power-loss/live-snapshot durability.",
+      "profile_expansion": "All core profiles for selected applicable claims, plus explicitly admitted component profiles; each selected claim/operation/SDK/channel must receive its own executed evidence record.",
+      "required_decisions": [
+        "D01",
+        "D03",
+        "D05",
+        "D07"
+      ],
+      "freeze_rule": "Qualification of existing behavior allowed after continuation approval; missing implementation stays blocked pending explicit scope/freeze decision.",
+      "applicability": "proposed_pending_manual_scope_review",
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": [],
+      "scope_exclusion_decision": null
+    },
+    {
+      "criterion_id": "C09.2",
+      "paper_page": 13,
+      "work_packages": [
+        "W05",
+        "W10",
+        "W11"
+      ],
+      "owner_role": "state_recovery_owner",
+      "campaign_ids": [
+        "S07",
+        "S08",
+        "S09"
+      ],
+      "planned_method": "Predeclare owner-specific recovery/data-loss limits; inject faults, restore actual campaign data on a clean host and perform backup-operated rollback.",
+      "criterion_specific_expected_outcome": "Inject worker, controller, adapter and connection failure at the relevant operation boundaries. Include lost acknowledgement, malformed retained evidence, interrupted installation, full storage or bounded-capacity refusal and unavailable authority/audit.",
+      "independent_oracle": "Independent expected owner states and measured recovery; quiescent-copy scope remains distinct from power-loss/live-snapshot durability.",
+      "profile_expansion": "All core profiles for selected applicable claims, plus explicitly admitted component profiles; each selected claim/operation/SDK/channel must receive its own executed evidence record.",
+      "required_decisions": [
+        "D01",
+        "D03",
+        "D05",
+        "D07"
+      ],
+      "freeze_rule": "Qualification of existing behavior allowed after continuation approval; missing implementation stays blocked pending explicit scope/freeze decision.",
+      "applicability": "proposed_pending_manual_scope_review",
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": [],
+      "scope_exclusion_decision": null
+    },
+    {
+      "criterion_id": "C09.3",
+      "paper_page": 13,
+      "work_packages": [
+        "W05",
+        "W10",
+        "W11"
+      ],
+      "owner_role": "state_recovery_owner",
+      "campaign_ids": [
+        "S07",
+        "S08",
+        "S09"
+      ],
+      "planned_method": "Predeclare owner-specific recovery/data-loss limits; inject faults, restore actual campaign data on a clean host and perform backup-operated rollback.",
+      "criterion_specific_expected_outcome": "Restore actual campaign data to a clean installation through the supported backup procedure and reconcile outstanding work. Quiescent-copy proof is sufficient only for an explicitly quiescent- backup promise; stronger durability or live-snapshot claims need their own tests.",
+      "independent_oracle": "Independent expected owner states and measured recovery; quiescent-copy scope remains distinct from power-loss/live-snapshot durability.",
+      "profile_expansion": "All core profiles for selected applicable claims, plus explicitly admitted component profiles; each selected claim/operation/SDK/channel must receive its own executed evidence record.",
+      "required_decisions": [
+        "D01",
+        "D03",
+        "D05",
+        "D07"
+      ],
+      "freeze_rule": "Qualification of existing behavior allowed after continuation approval; missing implementation stays blocked pending explicit scope/freeze decision.",
+      "applicability": "proposed_pending_manual_scope_review",
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": [],
+      "scope_exclusion_decision": null
+    },
+    {
+      "criterion_id": "C09.4",
+      "paper_page": 13,
+      "work_packages": [
+        "W05",
+        "W10",
+        "W11"
+      ],
+      "owner_role": "state_recovery_owner",
+      "campaign_ids": [
+        "S07",
+        "S08",
+        "S09"
+      ],
+      "planned_method": "Predeclare owner-specific recovery/data-loss limits; inject faults, restore actual campaign data on a clean host and perform backup-operated rollback.",
+      "criterion_specific_expected_outcome": "Measure recovery against the declared targets and verify that unknown effects do not become successful or safely failed by assumption. Exercise a backup operator's handoff and preserve user data through rollback.",
+      "independent_oracle": "Independent expected owner states and measured recovery; quiescent-copy scope remains distinct from power-loss/live-snapshot durability.",
+      "profile_expansion": "All core profiles for selected applicable claims, plus explicitly admitted component profiles; each selected claim/operation/SDK/channel must receive its own executed evidence record.",
+      "required_decisions": [
+        "D01",
+        "D03",
+        "D05",
+        "D07"
+      ],
+      "freeze_rule": "Qualification of existing behavior allowed after continuation approval; missing implementation stays blocked pending explicit scope/freeze decision.",
+      "applicability": "proposed_pending_manual_scope_review",
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": [],
+      "scope_exclusion_decision": null
+    },
+    {
+      "criterion_id": "C10.1",
+      "paper_page": 14,
+      "work_packages": [
+        "W03",
+        "W04",
+        "W10"
+      ],
+      "owner_role": "provider_review_owner",
+      "campaign_ids": [
+        "S05",
+        "S06",
+        "S07"
+      ],
+      "planned_method": "Map exact SDK/profile/operation and implementation first; after packaging collect user-run authorized endpoint success/refusal/fault evidence against selected production adapter.",
+      "criterion_specific_expected_outcome": "Create an exact provider, SDK, operation and target matrix. Complete the native bridges and credential/session paths for all supported cells. Establish the provenance and rights to use required SDK material; fixture substitutes remain clearly separate.",
+      "independent_oracle": "Independent endpoint/account/order/result observations matched to local attempts; absent SDK/credential/bridge cells remain blocked, not replaced with generic simulation.",
+      "profile_expansion": "All core profiles for selected applicable claims, plus explicitly admitted component profiles; each selected claim/operation/SDK/channel must receive its own executed evidence record.",
+      "required_decisions": [
+        "D01",
+        "D02",
+        "D03",
+        "D05",
+        "D07"
+      ],
+      "freeze_rule": "Qualification of existing behavior allowed after continuation approval; missing implementation stays blocked pending explicit scope/freeze decision.",
+      "applicability": "proposed_pending_manual_scope_review",
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": [],
+      "scope_exclusion_decision": null
+    },
+    {
+      "criterion_id": "C10.2",
+      "paper_page": 14,
+      "work_packages": [
+        "W03",
+        "W04",
+        "W10"
+      ],
+      "owner_role": "provider_review_owner",
+      "campaign_ids": [
+        "S05",
+        "S06",
+        "S07"
+      ],
+      "planned_method": "Map exact SDK/profile/operation and implementation first; after packaging collect user-run authorized endpoint success/refusal/fault evidence against selected production adapter.",
+      "criterion_specific_expected_outcome": "For each promised operational path, exercise the actual production adapter against its authorized provider environment or a qualifying protocol endpoint. Prove initialization, session/account admission, bounded data or order operations and safe shutdown as applicable.",
+      "independent_oracle": "Independent endpoint/account/order/result observations matched to local attempts; absent SDK/credential/bridge cells remain blocked, not replaced with generic simulation.",
+      "profile_expansion": "All core profiles for selected applicable claims, plus explicitly admitted component profiles; each selected claim/operation/SDK/channel must receive its own executed evidence record.",
+      "required_decisions": [
+        "D01",
+        "D02",
+        "D03",
+        "D05",
+        "D07"
+      ],
+      "freeze_rule": "Qualification of existing behavior allowed after continuation approval; missing implementation stays blocked pending explicit scope/freeze decision.",
+      "applicability": "proposed_pending_manual_scope_review",
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": [],
+      "scope_exclusion_decision": null
+    },
+    {
+      "criterion_id": "C10.3",
+      "paper_page": 14,
+      "work_packages": [
+        "W03",
+        "W04",
+        "W10"
+      ],
+      "owner_role": "provider_review_owner",
+      "campaign_ids": [
+        "S05",
+        "S06",
+        "S07"
+      ],
+      "planned_method": "Map exact SDK/profile/operation and implementation first; after packaging collect user-run authorized endpoint success/refusal/fault evidence against selected production adapter.",
+      "criterion_specific_expected_outcome": "Test expiry, denial, pacing, cancellation, disconnect/reconnect, delayed and duplicate events, callback gaps and uncertain requests. Verify the actual selected account and environment rather than trusting a correlation label.",
+      "independent_oracle": "Independent endpoint/account/order/result observations matched to local attempts; absent SDK/credential/bridge cells remain blocked, not replaced with generic simulation.",
+      "profile_expansion": "All core profiles for selected applicable claims, plus explicitly admitted component profiles; each selected claim/operation/SDK/channel must receive its own executed evidence record.",
+      "required_decisions": [
+        "D01",
+        "D02",
+        "D03",
+        "D05",
+        "D07"
+      ],
+      "freeze_rule": "Qualification of existing behavior allowed after continuation approval; missing implementation stays blocked pending explicit scope/freeze decision.",
+      "applicability": "proposed_pending_manual_scope_review",
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": [],
+      "scope_exclusion_decision": null
+    },
+    {
+      "criterion_id": "C10.4",
+      "paper_page": 14,
+      "work_packages": [
+        "W03",
+        "W04",
+        "W10"
+      ],
+      "owner_role": "provider_review_owner",
+      "campaign_ids": [
+        "S05",
+        "S06",
+        "S07"
+      ],
+      "planned_method": "Map exact SDK/profile/operation and implementation first; after packaging collect user-run authorized endpoint success/refusal/fault evidence against selected production adapter.",
+      "criterion_specific_expected_outcome": "Compare provider/simulator observations with local request, order and result records. Retain independent endpoint evidence and unresolved limitations. If an advertised SDK path cannot be exercised, that cell remains blocked; a different generic simulator cannot qualify it.",
+      "independent_oracle": "Independent endpoint/account/order/result observations matched to local attempts; absent SDK/credential/bridge cells remain blocked, not replaced with generic simulation.",
+      "profile_expansion": "All core profiles for selected applicable claims, plus explicitly admitted component profiles; each selected claim/operation/SDK/channel must receive its own executed evidence record.",
+      "required_decisions": [
+        "D01",
+        "D02",
+        "D03",
+        "D05",
+        "D07"
+      ],
+      "freeze_rule": "Qualification of existing behavior allowed after continuation approval; missing implementation stays blocked pending explicit scope/freeze decision.",
+      "applicability": "proposed_pending_manual_scope_review",
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": [],
+      "scope_exclusion_decision": null
+    },
+    {
+      "criterion_id": "C11.1",
+      "paper_page": 15,
+      "work_packages": [
+        "W09",
+        "W10"
+      ],
+      "owner_role": "performance_owner",
+      "campaign_ids": [
+        "S03",
+        "S06",
+        "S07"
+      ],
+      "planned_method": "Predeclare workload envelope, scientific oracle, budgets and clock policy; retain nominal/burst, cache/warm-up, complete loading/computation/I/O/publication/export and administrative-stall samples.",
+      "criterion_specific_expected_outcome": "Publish the beta workload envelope, correctness oracle and acceptance budgets before testing. Identify input size, event rate, output fidelity, host, compiler, storage state, worker model, resource settings and all excluded work.",
+      "independent_oracle": "Complete correct outputs plus all latency/throughput/backlog/loss/resource samples with comparable clock origins; no invented universal budget or cherry-picked best run.",
+      "profile_expansion": "All core profiles for selected applicable claims, plus explicitly admitted component profiles; each selected claim/operation/SDK/channel must receive its own executed evidence record.",
+      "required_decisions": [
+        "D01",
+        "D02",
+        "D05",
+        "D07"
+      ],
+      "freeze_rule": "Qualification of existing behavior allowed after continuation approval; missing implementation stays blocked pending explicit scope/freeze decision.",
+      "applicability": "proposed_pending_manual_scope_review",
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": [],
+      "scope_exclusion_decision": null
+    },
+    {
+      "criterion_id": "C11.2",
+      "paper_page": 15,
+      "work_packages": [
+        "W09",
+        "W10"
+      ],
+      "owner_role": "performance_owner",
+      "campaign_ids": [
+        "S03",
+        "S06",
+        "S07"
+      ],
+      "planned_method": "Predeclare workload envelope, scientific oracle, budgets and clock policy; retain nominal/burst, cache/warm-up, complete loading/computation/I/O/publication/export and administrative-stall samples.",
+      "criterion_specific_expected_outcome": "Measure complete research work including loading, decoding, computation, scratch I/O, publication and result verification/export. Use repetitions and explicit warm-up/cache policy, with fresh processes where peak-memory comparison requires them.",
+      "independent_oracle": "Complete correct outputs plus all latency/throughput/backlog/loss/resource samples with comparable clock origins; no invented universal budget or cherry-picked best run.",
+      "profile_expansion": "All core profiles for selected applicable claims, plus explicitly admitted component profiles; each selected claim/operation/SDK/channel must receive its own executed evidence record.",
+      "required_decisions": [
+        "D01",
+        "D02",
+        "D05",
+        "D07"
+      ],
+      "freeze_rule": "Qualification of existing behavior allowed after continuation approval; missing implementation stays blocked pending explicit scope/freeze decision.",
+      "applicability": "proposed_pending_manual_scope_review",
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": [],
+      "scope_exclusion_decision": null
+    },
+    {
+      "criterion_id": "C11.3",
+      "paper_page": 15,
+      "work_packages": [
+        "W09",
+        "W10"
+      ],
+      "owner_role": "performance_owner",
+      "campaign_ids": [
+        "S03",
+        "S06",
+        "S07"
+      ],
+      "planned_method": "Predeclare workload envelope, scientific oracle, budgets and clock policy; retain nominal/burst, cache/warm-up, complete loading/computation/I/O/publication/export and administrative-stall samples.",
+      "criterion_specific_expected_outcome": "For real-time profiles, measure event-to-decision and submission latency distributions, throughput, backlog, dropped/gapped observations, resource saturation and recovery. Declare clock origin and synchronization limits; avoid combining incomparable clocks.",
+      "independent_oracle": "Complete correct outputs plus all latency/throughput/backlog/loss/resource samples with comparable clock origins; no invented universal budget or cherry-picked best run.",
+      "profile_expansion": "All core profiles for selected applicable claims, plus explicitly admitted component profiles; each selected claim/operation/SDK/channel must receive its own executed evidence record.",
+      "required_decisions": [
+        "D01",
+        "D02",
+        "D05",
+        "D07"
+      ],
+      "freeze_rule": "Qualification of existing behavior allowed after continuation approval; missing implementation stays blocked pending explicit scope/freeze decision.",
+      "applicability": "proposed_pending_manual_scope_review",
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": [],
+      "scope_exclusion_decision": null
+    },
+    {
+      "criterion_id": "C11.4",
+      "paper_page": 15,
+      "work_packages": [
+        "W09",
+        "W10"
+      ],
+      "owner_role": "performance_owner",
+      "campaign_ids": [
+        "S03",
+        "S06",
+        "S07"
+      ],
+      "planned_method": "Predeclare workload envelope, scientific oracle, budgets and clock policy; retain nominal/burst, cache/warm-up, complete loading/computation/I/O/publication/export and administrative-stall samples.",
+      "criterion_specific_expected_outcome": "Run nominal and burst workloads from final artifacts, including the user-authored engine and the declared administrative-failure case. Meet the predeclared budgets with scientific/result correctness intact; record slow and failed samples rather than reporting only the best result.",
+      "independent_oracle": "Complete correct outputs plus all latency/throughput/backlog/loss/resource samples with comparable clock origins; no invented universal budget or cherry-picked best run.",
+      "profile_expansion": "All core profiles for selected applicable claims, plus explicitly admitted component profiles; each selected claim/operation/SDK/channel must receive its own executed evidence record.",
+      "required_decisions": [
+        "D01",
+        "D02",
+        "D05",
+        "D07"
+      ],
+      "freeze_rule": "Qualification of existing behavior allowed after continuation approval; missing implementation stays blocked pending explicit scope/freeze decision.",
+      "applicability": "proposed_pending_manual_scope_review",
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": [],
+      "scope_exclusion_decision": null
+    },
+    {
+      "criterion_id": "C12.1",
+      "paper_page": 15,
+      "work_packages": [
+        "W04",
+        "W05",
+        "W10"
+      ],
+      "owner_role": "state_recovery_owner",
+      "campaign_ids": [
+        "S05",
+        "S06",
+        "S07"
+      ],
+      "planned_method": "Select actual supplied/user/external risk and state owners for the acceptance composition; review existing order routes before campaign; missing economic enforcement/reconciliation is a D03 scope/freeze conflict.",
+      "criterion_specific_expected_outcome": "Name the risk and execution-state owners for the acceptance composition, whether supplied, user-built or external. Enforce actual account/environment selection and the chosen economic limits at every supported order route within the declared trust boundary.",
+      "independent_oracle": "Independent account/order/execution/position state machine and endpoint truth after every adverse case; distinguish inhibit, cancel request and optional flatten; process stop is neither cancel nor flat.",
+      "profile_expansion": "All core profiles for selected applicable claims, plus explicitly admitted component profiles; each selected claim/operation/SDK/channel must receive its own executed evidence record.",
+      "required_decisions": [
+        "D01",
+        "D03",
+        "D05",
+        "D07"
+      ],
+      "freeze_rule": "Qualification of existing behavior allowed after continuation approval; missing implementation stays blocked pending explicit scope/freeze decision.",
+      "applicability": "proposed_pending_manual_scope_review",
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": [],
+      "scope_exclusion_decision": null
+    },
+    {
+      "criterion_id": "C12.2",
+      "paper_page": 16,
+      "work_packages": [
+        "W04",
+        "W05",
+        "W10"
+      ],
+      "owner_role": "state_recovery_owner",
+      "campaign_ids": [
+        "S05",
+        "S06",
+        "S07"
+      ],
+      "planned_method": "Select actual supplied/user/external risk and state owners for the acceptance composition; review existing order routes before campaign; missing economic enforcement/reconciliation is a D03 scope/freeze conflict.",
+      "criterion_specific_expected_outcome": "Exercise wrong-account attempts, over-limit requests, stale data, conflicting request identities, lost acknowledgements, duplicate/out-of-order executions, partial fills, cancel/replace races, callback gaps and process death. Bound exposure under the selected policy and verify an independent expected-state oracle.",
+      "independent_oracle": "Independent account/order/execution/position state machine and endpoint truth after every adverse case; distinguish inhibit, cancel request and optional flatten; process stop is neither cancel nor flat.",
+      "profile_expansion": "All core profiles for selected applicable claims, plus explicitly admitted component profiles; each selected claim/operation/SDK/channel must receive its own executed evidence record.",
+      "required_decisions": [
+        "D01",
+        "D03",
+        "D05",
+        "D07"
+      ],
+      "freeze_rule": "Qualification of existing behavior allowed after continuation approval; missing implementation stays blocked pending explicit scope/freeze decision.",
+      "applicability": "proposed_pending_manual_scope_review",
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": [],
+      "scope_exclusion_decision": null
+    },
+    {
+      "criterion_id": "C12.3",
+      "paper_page": 16,
+      "work_packages": [
+        "W04",
+        "W05",
+        "W10"
+      ],
+      "owner_role": "state_recovery_owner",
+      "campaign_ids": [
+        "S05",
+        "S06",
+        "S07"
+      ],
+      "planned_method": "Select actual supplied/user/external risk and state owners for the acceptance composition; review existing order routes before campaign; missing economic enforcement/reconciliation is a D03 scope/freeze conflict.",
+      "criterion_specific_expected_outcome": "Reconcile authoritative order, execution and position records after every consequential fault. Distinguish unknown submission, accepted order, partial execution, pending cancellation and confirmed terminal state. Never treat SDK return, callback-buffer contents or a local receipt alone as complete provider truth.",
+      "independent_oracle": "Independent account/order/execution/position state machine and endpoint truth after every adverse case; distinguish inhibit, cancel request and optional flatten; process stop is neither cancel nor flat.",
+      "profile_expansion": "All core profiles for selected applicable claims, plus explicitly admitted component profiles; each selected claim/operation/SDK/channel must receive its own executed evidence record.",
+      "required_decisions": [
+        "D01",
+        "D03",
+        "D05",
+        "D07"
+      ],
+      "freeze_rule": "Qualification of existing behavior allowed after continuation approval; missing implementation stays blocked pending explicit scope/freeze decision.",
+      "applicability": "proposed_pending_manual_scope_review",
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": [],
+      "scope_exclusion_decision": null
+    },
+    {
+      "criterion_id": "C12.4",
+      "paper_page": 16,
+      "work_packages": [
+        "W04",
+        "W05",
+        "W10"
+      ],
+      "owner_role": "state_recovery_owner",
+      "campaign_ids": [
+        "S05",
+        "S06",
+        "S07"
+      ],
+      "planned_method": "Select actual supplied/user/external risk and state owners for the acceptance composition; review existing order routes before campaign; missing economic enforcement/reconciliation is a D03 scope/freeze conflict.",
+      "criterion_specific_expected_outcome": "Demonstrate separately the controls for inhibiting new submissions, requesting cancellation and optionally flattening under user policy. Verify provider/simulator outcomes and the declared response when reconciliation is unavailable. Stopping a process is never evidence of cancellation or a flat account.",
+      "independent_oracle": "Independent account/order/execution/position state machine and endpoint truth after every adverse case; distinguish inhibit, cancel request and optional flatten; process stop is neither cancel nor flat.",
+      "profile_expansion": "All core profiles for selected applicable claims, plus explicitly admitted component profiles; each selected claim/operation/SDK/channel must receive its own executed evidence record.",
+      "required_decisions": [
+        "D01",
+        "D03",
+        "D05",
+        "D07"
+      ],
+      "freeze_rule": "Qualification of existing behavior allowed after continuation approval; missing implementation stays blocked pending explicit scope/freeze decision.",
+      "applicability": "proposed_pending_manual_scope_review",
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": [],
+      "scope_exclusion_decision": null
+    },
+    {
+      "criterion_id": "C13.1",
+      "paper_page": 16,
+      "work_packages": [
+        "W01",
+        "W11",
+        "W12"
+      ],
+      "owner_role": "rollback_backup",
+      "campaign_ids": [
+        "S07",
+        "S08",
+        "S09"
+      ],
+      "planned_method": "Assign primary/backup/escalation/security/acceptance coverage, publish limitations, authorize private support drill, and execute shipped incident/restore/rollback runbooks.",
+      "criterion_specific_expected_outcome": "Assign named primary and backup release/rollback owners, component escalation owners, an acceptance reviewer and a security-response owner. Record coverage, handoff and escalation without treating proposed roles as assignments.",
+      "independent_oracle": "Named assignments and complete drill timeline/access/routing/acknowledgement/recovery evidence; no test message sent without applicable authorization.",
+      "profile_expansion": "All core profiles for selected applicable claims, plus explicitly admitted component profiles; each selected claim/operation/SDK/channel must receive its own executed evidence record.",
+      "required_decisions": [
+        "D01",
+        "D05",
+        "D06",
+        "D07"
+      ],
+      "freeze_rule": "Qualification of existing behavior allowed after continuation approval; missing implementation stays blocked pending explicit scope/freeze decision.",
+      "applicability": "proposed_pending_manual_scope_review",
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": [],
+      "scope_exclusion_decision": null
+    },
+    {
+      "criterion_id": "C13.2",
+      "paper_page": 16,
+      "work_packages": [
+        "W01",
+        "W11",
+        "W12"
+      ],
+      "owner_role": "rollback_backup",
+      "campaign_ids": [
+        "S07",
+        "S08",
+        "S09"
+      ],
+      "planned_method": "Assign primary/backup/escalation/security/acceptance coverage, publish limitations, authorize private support drill, and execute shipped incident/restore/rollback runbooks.",
+      "criterion_specific_expected_outcome": "Publish supported beta versions and profiles, known limitations, support channels and realistic response expectations. Distinguish privately operated installations and user responsibility from QuanuX's promised support behavior.",
+      "independent_oracle": "Named assignments and complete drill timeline/access/routing/acknowledgement/recovery evidence; no test message sent without applicable authorization.",
+      "profile_expansion": "All core profiles for selected applicable claims, plus explicitly admitted component profiles; each selected claim/operation/SDK/channel must receive its own executed evidence record.",
+      "required_decisions": [
+        "D01",
+        "D05",
+        "D06",
+        "D07"
+      ],
+      "freeze_rule": "Qualification of existing behavior allowed after continuation approval; missing implementation stays blocked pending explicit scope/freeze decision.",
+      "applicability": "proposed_pending_manual_scope_review",
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": [],
+      "scope_exclusion_decision": null
+    },
+    {
+      "criterion_id": "C13.3",
+      "paper_page": 16,
+      "work_packages": [
+        "W01",
+        "W11",
+        "W12"
+      ],
+      "owner_role": "rollback_backup",
+      "campaign_ids": [
+        "S07",
+        "S08",
+        "S09"
+      ],
+      "planned_method": "Assign primary/backup/escalation/security/acceptance coverage, publish limitations, authorize private support drill, and execute shipped incident/restore/rollback runbooks.",
+      "criterion_specific_expected_outcome": "Verify support-ticket privacy, access, routing and acknowledgement through an authorized internal drill, including a security report. Check that private payloads and credentials are not requested in public issues or automatically uploaded.",
+      "independent_oracle": "Named assignments and complete drill timeline/access/routing/acknowledgement/recovery evidence; no test message sent without applicable authorization.",
+      "profile_expansion": "All core profiles for selected applicable claims, plus explicitly admitted component profiles; each selected claim/operation/SDK/channel must receive its own executed evidence record.",
+      "required_decisions": [
+        "D01",
+        "D05",
+        "D06",
+        "D07"
+      ],
+      "freeze_rule": "Qualification of existing behavior allowed after continuation approval; missing implementation stays blocked pending explicit scope/freeze decision.",
+      "applicability": "proposed_pending_manual_scope_review",
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": [],
+      "scope_exclusion_decision": null
+    },
+    {
+      "criterion_id": "C13.4",
+      "paper_page": 17,
+      "work_packages": [
+        "W01",
+        "W11",
+        "W12"
+      ],
+      "owner_role": "rollback_backup",
+      "campaign_ids": [
+        "S07",
+        "S08",
+        "S09"
+      ],
+      "planned_method": "Assign primary/backup/escalation/security/acceptance coverage, publish limitations, authorize private support drill, and execute shipped incident/restore/rollback runbooks.",
+      "criterion_specific_expected_outcome": "Run an incident and rollback exercise with the backup operator using the shipped procedures. Record detection, decision, communication route, evidence preservation, recovery and closure. No customer case is required to perform this internal exercise.",
+      "independent_oracle": "Named assignments and complete drill timeline/access/routing/acknowledgement/recovery evidence; no test message sent without applicable authorization.",
+      "profile_expansion": "All core profiles for selected applicable claims, plus explicitly admitted component profiles; each selected claim/operation/SDK/channel must receive its own executed evidence record.",
+      "required_decisions": [
+        "D01",
+        "D05",
+        "D06",
+        "D07"
+      ],
+      "freeze_rule": "Qualification of existing behavior allowed after continuation approval; missing implementation stays blocked pending explicit scope/freeze decision.",
+      "applicability": "proposed_pending_manual_scope_review",
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": [],
+      "scope_exclusion_decision": null
+    }
+  ],
+  "cloudflare_operation_cells": [
+    {
+      "id": "CF::tunnels.list",
+      "component": "sov-cloudflare-adapter",
+      "operation": "tunnels.list",
+      "http_method": "GET",
+      "provider_path_template": "/accounts/{account_id}/tunnels",
+      "runtime_platform": "darwin-amd64",
+      "exact_host_profile": null,
+      "host_profile_decision": "D02",
+      "implementation_at_baseline": "local_fixture_qualified",
+      "live_at_baseline": "unqualified",
+      "owner_role": "provider_review_owner",
+      "campaign_ids": [
+        "S05",
+        "S06",
+        "S07"
+      ],
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": [],
+      "timing": "User-led after packaging; each promised operation needs bounded success and applicable refusal/recovery evidence."
+    },
+    {
+      "id": "CF::tunnels.get",
+      "component": "sov-cloudflare-adapter",
+      "operation": "tunnels.get",
+      "http_method": "GET",
+      "provider_path_template": "/accounts/{account_id}/cfd_tunnel/{tunnel_id}",
+      "runtime_platform": "darwin-amd64",
+      "exact_host_profile": null,
+      "host_profile_decision": "D02",
+      "implementation_at_baseline": "local_fixture_qualified",
+      "live_at_baseline": "unqualified",
+      "owner_role": "provider_review_owner",
+      "campaign_ids": [
+        "S05",
+        "S06",
+        "S07"
+      ],
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": [],
+      "timing": "User-led after packaging; each promised operation needs bounded success and applicable refusal/recovery evidence."
+    },
+    {
+      "id": "CF::tunnels.create",
+      "component": "sov-cloudflare-adapter",
+      "operation": "tunnels.create",
+      "http_method": "POST",
+      "provider_path_template": "/accounts/{account_id}/cfd_tunnel",
+      "runtime_platform": "darwin-amd64",
+      "exact_host_profile": null,
+      "host_profile_decision": "D02",
+      "implementation_at_baseline": "local_fixture_qualified",
+      "live_at_baseline": "unqualified",
+      "owner_role": "provider_review_owner",
+      "campaign_ids": [
+        "S05",
+        "S06",
+        "S07"
+      ],
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": [],
+      "timing": "User-led after packaging; each promised operation needs bounded success and applicable refusal/recovery evidence."
+    },
+    {
+      "id": "CF::tunnels.edit",
+      "component": "sov-cloudflare-adapter",
+      "operation": "tunnels.edit",
+      "http_method": "PATCH",
+      "provider_path_template": "/accounts/{account_id}/cfd_tunnel/{tunnel_id}",
+      "runtime_platform": "darwin-amd64",
+      "exact_host_profile": null,
+      "host_profile_decision": "D02",
+      "implementation_at_baseline": "local_fixture_qualified",
+      "live_at_baseline": "unqualified",
+      "owner_role": "provider_review_owner",
+      "campaign_ids": [
+        "S05",
+        "S06",
+        "S07"
+      ],
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": [],
+      "timing": "User-led after packaging; each promised operation needs bounded success and applicable refusal/recovery evidence."
+    },
+    {
+      "id": "CF::tunnels.delete",
+      "component": "sov-cloudflare-adapter",
+      "operation": "tunnels.delete",
+      "http_method": "DELETE",
+      "provider_path_template": "/accounts/{account_id}/cfd_tunnel/{tunnel_id}",
+      "runtime_platform": "darwin-amd64",
+      "exact_host_profile": null,
+      "host_profile_decision": "D02",
+      "implementation_at_baseline": "local_fixture_qualified",
+      "live_at_baseline": "unqualified",
+      "owner_role": "provider_review_owner",
+      "campaign_ids": [
+        "S05",
+        "S06",
+        "S07"
+      ],
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": [],
+      "timing": "User-led after packaging; each promised operation needs bounded success and applicable refusal/recovery evidence."
+    },
+    {
+      "id": "CF::tunnels.config.get",
+      "component": "sov-cloudflare-adapter",
+      "operation": "tunnels.config.get",
+      "http_method": "GET",
+      "provider_path_template": "/accounts/{account_id}/cfd_tunnel/{tunnel_id}/configurations",
+      "runtime_platform": "darwin-amd64",
+      "exact_host_profile": null,
+      "host_profile_decision": "D02",
+      "implementation_at_baseline": "local_fixture_qualified",
+      "live_at_baseline": "unqualified",
+      "owner_role": "provider_review_owner",
+      "campaign_ids": [
+        "S05",
+        "S06",
+        "S07"
+      ],
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": [],
+      "timing": "User-led after packaging; each promised operation needs bounded success and applicable refusal/recovery evidence."
+    },
+    {
+      "id": "CF::tunnels.config.update",
+      "component": "sov-cloudflare-adapter",
+      "operation": "tunnels.config.update",
+      "http_method": "PUT",
+      "provider_path_template": "/accounts/{account_id}/cfd_tunnel/{tunnel_id}/configurations",
+      "runtime_platform": "darwin-amd64",
+      "exact_host_profile": null,
+      "host_profile_decision": "D02",
+      "implementation_at_baseline": "local_fixture_qualified",
+      "live_at_baseline": "unqualified",
+      "owner_role": "provider_review_owner",
+      "campaign_ids": [
+        "S05",
+        "S06",
+        "S07"
+      ],
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": [],
+      "timing": "User-led after packaging; each promised operation needs bounded success and applicable refusal/recovery evidence."
+    },
+    {
+      "id": "CF::tunnels.token.get",
+      "component": "sov-cloudflare-adapter",
+      "operation": "tunnels.token.get",
+      "http_method": "GET",
+      "provider_path_template": "/accounts/{account_id}/cfd_tunnel/{tunnel_id}/token",
+      "runtime_platform": "darwin-amd64",
+      "exact_host_profile": null,
+      "host_profile_decision": "D02",
+      "implementation_at_baseline": "local_fixture_qualified",
+      "live_at_baseline": "unqualified",
+      "owner_role": "provider_review_owner",
+      "campaign_ids": [
+        "S05",
+        "S06",
+        "S07"
+      ],
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": [],
+      "timing": "User-led after packaging; each promised operation needs bounded success and applicable refusal/recovery evidence."
+    },
+    {
+      "id": "CF::dns.records.list",
+      "component": "sov-cloudflare-adapter",
+      "operation": "dns.records.list",
+      "http_method": "GET",
+      "provider_path_template": "/zones/{zone_id}/dns_records",
+      "runtime_platform": "darwin-amd64",
+      "exact_host_profile": null,
+      "host_profile_decision": "D02",
+      "implementation_at_baseline": "local_fixture_qualified",
+      "live_at_baseline": "unqualified",
+      "owner_role": "provider_review_owner",
+      "campaign_ids": [
+        "S05",
+        "S06",
+        "S07"
+      ],
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": [],
+      "timing": "User-led after packaging; each promised operation needs bounded success and applicable refusal/recovery evidence."
+    },
+    {
+      "id": "CF::dns.records.get",
+      "component": "sov-cloudflare-adapter",
+      "operation": "dns.records.get",
+      "http_method": "GET",
+      "provider_path_template": "/zones/{zone_id}/dns_records/{dns_record_id}",
+      "runtime_platform": "darwin-amd64",
+      "exact_host_profile": null,
+      "host_profile_decision": "D02",
+      "implementation_at_baseline": "local_fixture_qualified",
+      "live_at_baseline": "unqualified",
+      "owner_role": "provider_review_owner",
+      "campaign_ids": [
+        "S05",
+        "S06",
+        "S07"
+      ],
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": [],
+      "timing": "User-led after packaging; each promised operation needs bounded success and applicable refusal/recovery evidence."
+    },
+    {
+      "id": "CF::dns.records.create",
+      "component": "sov-cloudflare-adapter",
+      "operation": "dns.records.create",
+      "http_method": "POST",
+      "provider_path_template": "/zones/{zone_id}/dns_records",
+      "runtime_platform": "darwin-amd64",
+      "exact_host_profile": null,
+      "host_profile_decision": "D02",
+      "implementation_at_baseline": "local_fixture_qualified",
+      "live_at_baseline": "unqualified",
+      "owner_role": "provider_review_owner",
+      "campaign_ids": [
+        "S05",
+        "S06",
+        "S07"
+      ],
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": [],
+      "timing": "User-led after packaging; each promised operation needs bounded success and applicable refusal/recovery evidence."
+    },
+    {
+      "id": "CF::dns.records.update",
+      "component": "sov-cloudflare-adapter",
+      "operation": "dns.records.update",
+      "http_method": "PUT",
+      "provider_path_template": "/zones/{zone_id}/dns_records/{dns_record_id}",
+      "runtime_platform": "darwin-amd64",
+      "exact_host_profile": null,
+      "host_profile_decision": "D02",
+      "implementation_at_baseline": "local_fixture_qualified",
+      "live_at_baseline": "unqualified",
+      "owner_role": "provider_review_owner",
+      "campaign_ids": [
+        "S05",
+        "S06",
+        "S07"
+      ],
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": [],
+      "timing": "User-led after packaging; each promised operation needs bounded success and applicable refusal/recovery evidence."
+    },
+    {
+      "id": "CF::dns.records.delete",
+      "component": "sov-cloudflare-adapter",
+      "operation": "dns.records.delete",
+      "http_method": "DELETE",
+      "provider_path_template": "/zones/{zone_id}/dns_records/{dns_record_id}",
+      "runtime_platform": "darwin-amd64",
+      "exact_host_profile": null,
+      "host_profile_decision": "D02",
+      "implementation_at_baseline": "local_fixture_qualified",
+      "live_at_baseline": "unqualified",
+      "owner_role": "provider_review_owner",
+      "campaign_ids": [
+        "S05",
+        "S06",
+        "S07"
+      ],
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": [],
+      "timing": "User-led after packaging; each promised operation needs bounded success and applicable refusal/recovery evidence."
+    },
+    {
+      "id": "CF::zero-trust.access.applications.list",
+      "component": "sov-cloudflare-adapter",
+      "operation": "zero-trust.access.applications.list",
+      "http_method": "GET",
+      "provider_path_template": "/{account_or_zone}/{account_or_zone_id}/access/apps",
+      "runtime_platform": "darwin-amd64",
+      "exact_host_profile": null,
+      "host_profile_decision": "D02",
+      "implementation_at_baseline": "local_fixture_qualified",
+      "live_at_baseline": "unqualified",
+      "owner_role": "provider_review_owner",
+      "campaign_ids": [
+        "S05",
+        "S06",
+        "S07"
+      ],
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": [],
+      "timing": "User-led after packaging; each promised operation needs bounded success and applicable refusal/recovery evidence."
+    },
+    {
+      "id": "CF::zero-trust.access.applications.get",
+      "component": "sov-cloudflare-adapter",
+      "operation": "zero-trust.access.applications.get",
+      "http_method": "GET",
+      "provider_path_template": "/{account_or_zone}/{account_or_zone_id}/access/apps/{app_id}",
+      "runtime_platform": "darwin-amd64",
+      "exact_host_profile": null,
+      "host_profile_decision": "D02",
+      "implementation_at_baseline": "local_fixture_qualified",
+      "live_at_baseline": "unqualified",
+      "owner_role": "provider_review_owner",
+      "campaign_ids": [
+        "S05",
+        "S06",
+        "S07"
+      ],
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": [],
+      "timing": "User-led after packaging; each promised operation needs bounded success and applicable refusal/recovery evidence."
+    },
+    {
+      "id": "CF::zero-trust.access.applications.create",
+      "component": "sov-cloudflare-adapter",
+      "operation": "zero-trust.access.applications.create",
+      "http_method": "POST",
+      "provider_path_template": "/{account_or_zone}/{account_or_zone_id}/access/apps",
+      "runtime_platform": "darwin-amd64",
+      "exact_host_profile": null,
+      "host_profile_decision": "D02",
+      "implementation_at_baseline": "local_fixture_qualified",
+      "live_at_baseline": "unqualified",
+      "owner_role": "provider_review_owner",
+      "campaign_ids": [
+        "S05",
+        "S06",
+        "S07"
+      ],
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": [],
+      "timing": "User-led after packaging; each promised operation needs bounded success and applicable refusal/recovery evidence."
+    },
+    {
+      "id": "CF::zero-trust.access.applications.update",
+      "component": "sov-cloudflare-adapter",
+      "operation": "zero-trust.access.applications.update",
+      "http_method": "PUT",
+      "provider_path_template": "/{account_or_zone}/{account_or_zone_id}/access/apps/{app_id}",
+      "runtime_platform": "darwin-amd64",
+      "exact_host_profile": null,
+      "host_profile_decision": "D02",
+      "implementation_at_baseline": "local_fixture_qualified",
+      "live_at_baseline": "unqualified",
+      "owner_role": "provider_review_owner",
+      "campaign_ids": [
+        "S05",
+        "S06",
+        "S07"
+      ],
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": [],
+      "timing": "User-led after packaging; each promised operation needs bounded success and applicable refusal/recovery evidence."
+    },
+    {
+      "id": "CF::zero-trust.access.applications.delete",
+      "component": "sov-cloudflare-adapter",
+      "operation": "zero-trust.access.applications.delete",
+      "http_method": "DELETE",
+      "provider_path_template": "/{account_or_zone}/{account_or_zone_id}/access/apps/{app_id}",
+      "runtime_platform": "darwin-amd64",
+      "exact_host_profile": null,
+      "host_profile_decision": "D02",
+      "implementation_at_baseline": "local_fixture_qualified",
+      "live_at_baseline": "unqualified",
+      "owner_role": "provider_review_owner",
+      "campaign_ids": [
+        "S05",
+        "S06",
+        "S07"
+      ],
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": [],
+      "timing": "User-led after packaging; each promised operation needs bounded success and applicable refusal/recovery evidence."
+    },
+    {
+      "id": "CF::zero-trust.access.policies.list",
+      "component": "sov-cloudflare-adapter",
+      "operation": "zero-trust.access.policies.list",
+      "http_method": "GET",
+      "provider_path_template": "/accounts/{account_id}/access/policies",
+      "runtime_platform": "darwin-amd64",
+      "exact_host_profile": null,
+      "host_profile_decision": "D02",
+      "implementation_at_baseline": "local_fixture_qualified",
+      "live_at_baseline": "unqualified",
+      "owner_role": "provider_review_owner",
+      "campaign_ids": [
+        "S05",
+        "S06",
+        "S07"
+      ],
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": [],
+      "timing": "User-led after packaging; each promised operation needs bounded success and applicable refusal/recovery evidence."
+    },
+    {
+      "id": "CF::zero-trust.access.policies.get",
+      "component": "sov-cloudflare-adapter",
+      "operation": "zero-trust.access.policies.get",
+      "http_method": "GET",
+      "provider_path_template": "/accounts/{account_id}/access/policies/{policy_id}",
+      "runtime_platform": "darwin-amd64",
+      "exact_host_profile": null,
+      "host_profile_decision": "D02",
+      "implementation_at_baseline": "local_fixture_qualified",
+      "live_at_baseline": "unqualified",
+      "owner_role": "provider_review_owner",
+      "campaign_ids": [
+        "S05",
+        "S06",
+        "S07"
+      ],
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": [],
+      "timing": "User-led after packaging; each promised operation needs bounded success and applicable refusal/recovery evidence."
+    },
+    {
+      "id": "CF::zero-trust.access.policies.create",
+      "component": "sov-cloudflare-adapter",
+      "operation": "zero-trust.access.policies.create",
+      "http_method": "POST",
+      "provider_path_template": "/accounts/{account_id}/access/policies",
+      "runtime_platform": "darwin-amd64",
+      "exact_host_profile": null,
+      "host_profile_decision": "D02",
+      "implementation_at_baseline": "local_fixture_qualified",
+      "live_at_baseline": "unqualified",
+      "owner_role": "provider_review_owner",
+      "campaign_ids": [
+        "S05",
+        "S06",
+        "S07"
+      ],
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": [],
+      "timing": "User-led after packaging; each promised operation needs bounded success and applicable refusal/recovery evidence."
+    },
+    {
+      "id": "CF::zero-trust.access.policies.update",
+      "component": "sov-cloudflare-adapter",
+      "operation": "zero-trust.access.policies.update",
+      "http_method": "PUT",
+      "provider_path_template": "/accounts/{account_id}/access/policies/{policy_id}",
+      "runtime_platform": "darwin-amd64",
+      "exact_host_profile": null,
+      "host_profile_decision": "D02",
+      "implementation_at_baseline": "local_fixture_qualified",
+      "live_at_baseline": "unqualified",
+      "owner_role": "provider_review_owner",
+      "campaign_ids": [
+        "S05",
+        "S06",
+        "S07"
+      ],
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": [],
+      "timing": "User-led after packaging; each promised operation needs bounded success and applicable refusal/recovery evidence."
+    },
+    {
+      "id": "CF::zero-trust.access.policies.delete",
+      "component": "sov-cloudflare-adapter",
+      "operation": "zero-trust.access.policies.delete",
+      "http_method": "DELETE",
+      "provider_path_template": "/accounts/{account_id}/access/policies/{policy_id}",
+      "runtime_platform": "darwin-amd64",
+      "exact_host_profile": null,
+      "host_profile_decision": "D02",
+      "implementation_at_baseline": "local_fixture_qualified",
+      "live_at_baseline": "unqualified",
+      "owner_role": "provider_review_owner",
+      "campaign_ids": [
+        "S05",
+        "S06",
+        "S07"
+      ],
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": [],
+      "timing": "User-led after packaging; each promised operation needs bounded success and applicable refusal/recovery evidence."
+    }
+  ],
+  "additional_campaigns": [
+    {
+      "id": "CF-CONNECTOR-ACCESS",
+      "scope": "Cloudflare connector lifecycle, installed OpenSSH/Access transport and deployed target authority",
+      "source_contract": "tests/cloudflare-release/README.md",
+      "campaign_ids": [
+        "S02",
+        "S05",
+        "S06",
+        "S07"
+      ],
+      "required_decisions": [
+        "D02",
+        "D03"
+      ],
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": []
+    },
+    {
+      "id": "CF-PROJECT-PLAN",
+      "scope": "Project inspection/planning only; no project execution/rotation claim",
+      "source_contract": "knowledge/sov/cloudflare/SPEC.md",
+      "campaign_ids": [
+        "S02",
+        "S05",
+        "S07"
+      ],
+      "required_decisions": [
+        "D03"
+      ],
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": []
+    },
+    {
+      "id": "PROVIDER-EXACT-CELLS",
+      "scope": "Each selected FRED/ALFRED, Databento, Rithmic13.7.0.0, TWS10.45, Client Portal and news ingress operation/target/SDK/session cell",
+      "source_contract": "README.md",
+      "campaign_ids": [
+        "S05",
+        "S06",
+        "S07"
+      ],
+      "required_decisions": [
+        "D01",
+        "D02",
+        "D03"
+      ],
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": []
+    },
+    {
+      "id": "PUBLIC-ENGINE",
+      "scope": "UE1-UE6 per target advertising public user-engine support",
+      "source_contract": "tests/native-sdk-distribution/README.md",
+      "campaign_ids": [
+        "S02",
+        "S03",
+        "S05",
+        "S07",
+        "S08",
+        "S09"
+      ],
+      "required_decisions": [
+        "D01",
+        "D03"
+      ],
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": []
+    },
+    {
+      "id": "SEPARATE-OWNER-PACKAGES",
+      "scope": "Go command and Swift metadata-only installation/trust/lifecycle, preserving independent receipt formats",
+      "source_contract": "cmake/mvp-dependencies.json",
+      "campaign_ids": [
+        "S01",
+        "S02",
+        "S08",
+        "S09"
+      ],
+      "required_decisions": [
+        "D01",
+        "D02",
+        "D04"
+      ],
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": []
+    },
+    {
+      "id": "OPTIONAL-RUNTIMES",
+      "scope": "Selected DuckDB/PDFium/vendor runtime or SDK package actual-byte closure and licensing",
+      "source_contract": "cmake/notices/PUBLISHER-REVIEW.md",
+      "campaign_ids": [
+        "S01",
+        "S02",
+        "S08",
+        "S09"
+      ],
+      "required_decisions": [
+        "D01",
+        "D02",
+        "D04"
+      ],
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": []
+    },
+    {
+      "id": "MCP-CHANNELS",
+      "scope": "Every explicitly selected client/catalogue/package channel; separate repository and channel approval",
+      "source_contract": "README.md",
+      "campaign_ids": [
+        "S02",
+        "S05",
+        "S07",
+        "S08",
+        "S09"
+      ],
+      "required_decisions": [
+        "D06"
+      ],
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": []
+    },
+    {
+      "id": "PERFORMANCE-RECOVERY",
+      "scope": "Predeclared performance envelopes and backup-operated state restore/rollback",
+      "source_contract": "tests/launch-operations/README.md",
+      "campaign_ids": [
+        "S03",
+        "S06",
+        "S07",
+        "S08"
+      ],
+      "required_decisions": [
+        "D01",
+        "D03",
+        "D05"
+      ],
+      "execution_status": "not_run",
+      "review_status": "not_accepted",
+      "evidence": []
+    }
+  ],
+  "execution_packet_note": "This mapping is not the acceptance-gates.go packet schema. At W07/W08 initialize the existing packet from tests/launch-acceptance/plan.json; expand selected component/operation/criterion cases in separate exact-identity evidence. Do not fabricate envelopes or erase mandatory cells.",
+  "sequence": "Package preparation and candidate creation precede user-led live-provider qualification. W12 complete acceptance requires every retained mandatory applicable promise; testing-candidate permission does not mark W12 complete."
+}

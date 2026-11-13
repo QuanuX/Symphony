@@ -50,3 +50,7 @@ jobs:
             ./modules/secure-identity-access-governance/cmd/symphony-ssiag \
             ./tools/qxctl/internal/foundationlifecycle
           go test -race -count=1 ./tools/qxctl/cmd/qxctl -run 'TestFoundationLifecycle'
+          go test -race -count=1 \
+            ./modules/secure-identity-access-governance/tests/release-owner \
+            ./modules/stav-append-authority/tests/release-owner \
+            ./modules/accordare-stav-producer/tests/release-owner

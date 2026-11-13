@@ -1,5 +1,10 @@
 # Final-download MVP acceptance
 
+The [multi-artifact delivery index](DELIVERY-SET.md) separately binds selected
+native/Go/Swift/vendor/source artifacts and independent signer policy. Its first
+increment verifies bytes and index signatures only; existing native candidate
+and acceptance-v1 contracts remain unchanged.
+
 Live-provider qualification is user-led **after packaging**. Candidate preparation and build/package verification may proceed while live profiles, SDK material and live results are unavailable. The selected testing candidate must identify supported operations, disabled or unimplemented native paths, exact artifacts and trust evidence. This sequencing decision does not complete native credential/provider implementation or authorize publication automatically.
 
 This L26 plan describes full acceptance of the resulting downloads. Its live-provider scenarios are performed by users with their own authorized profiles after the packages are available; users return redacted, artifact-bound observations for review. Runtime/notice and publisher/trust decisions still apply to the actual payload. Current CI builds and packaging fixtures remain development evidence. Run the final-download scenarios on fresh selected hosts; never relabel source checkout/cached fixture results as final-download acceptance.
@@ -93,7 +98,7 @@ executes a packet's commands, imports credentials, or approves publication.
 
 ```sh
 GOWORK=off GOTOOLCHAIN=local go build -trimpath \
-  -o /absolute/private-tools/acceptance-gates tests/launch-acceptance/acceptance-gates.go
+  -o /absolute/private-tools/acceptance-gates tests/launch-acceptance/acceptance-gates.go tests/launch-acceptance/acceptance-gates-main.go
 /absolute/private-tools/acceptance-gates -mode init \
   -plan /absolute/reviewed-source/tests/launch-acceptance/plan.json \
   -packet /absolute/private-evidence/packet.json
@@ -160,3 +165,8 @@ through the existing release authority. Complete structure never changes that
 boundary. The package CI matrix runs fixture regressions for missing coverage,
 changed hashes, wrong identities, duplicate/unknown fields, unsafe paths, skips,
 failed/fixture results and overwrite refusal.
+
+The [multi-artifact acceptance companion](DELIVERY-ACCEPTANCE.md) now binds the
+unchanged v1 gate to independently selected signed delivery sets, every selected
+artifact and the full public-beta acceptance mapping. It preserves incomplete
+results and never grants release/publication approval.

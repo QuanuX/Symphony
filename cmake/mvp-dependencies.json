@@ -22750,7 +22750,7 @@
     },
     {
       "path": "tests/launch-acceptance/acceptance-gates.go",
-      "sha256": "2531373371c466e561feecc107056acb6f4336c979eb11baebe0830fa3c28194"
+      "sha256": "25a2a729261c697d0b54e972a2ed26c6a07da08a540215560b7f95d24a098434"
     },
     {
       "path": "tests/launch-acceptance/acceptance-gates_test.go",
@@ -22770,7 +22770,7 @@
     },
     {
       "path": "tests/package-release/run.cmake",
-      "sha256": "8a22da2a4a068c151438a084dc6deab8774a73186ac97296c275a560c1b2d03c"
+      "sha256": "d66038f5a408dc11f0dc2a069ddd4fc342a2457a00cec4f7d33dfce02df23557"
     },
     {
       "path": "tests/sqv-administration/CMakeLists.txt",
@@ -25227,6 +25227,194 @@
     {
       "path": "modules/sov-cloudflare-adapter/src/project.cpp",
       "sha256": "97ec84d040a1a2536cf376e6f3b3adcb120288dc4310fabe135942b3032f65df"
+    },
+    {
+      "path": "cmake/release/SignDeliverySet.cmake",
+      "sha256": "73f94ccb47988e38d8f22a3a14e79e178f0ffb0cc9c94c6e20ff3b3b2f899d94"
+    },
+    {
+      "path": "cmake/release/delivery-definition-v1.schema.json",
+      "sha256": "56d6bea23a1d24544b5258f9b57115915a0b98ed959590ed6832b59443b2977d"
+    },
+    {
+      "path": "cmake/release/delivery-selection-v1.schema.json",
+      "sha256": "6c6939d1515028720df93c714fbd146f3dd87af6c1d9e9b25ba73e4c6adee599"
+    },
+    {
+      "path": "cmake/release/delivery-set-v1.schema.json",
+      "sha256": "6c7014aea955305c0162214631e3afafed36f6becadc4e134e8639fde229422a"
+    },
+    {
+      "path": "tests/launch-acceptance/DELIVERY-SET.md",
+      "sha256": "fe3b4d78ceede7a60931437c65ee72518eeb32885716e6ec06b13edcc1b02ee0"
+    },
+    {
+      "path": "tests/launch-acceptance/delivery-set.go",
+      "sha256": "65f1f0fc2ee86b63d6ea7ccee89ca16009e75dc715e130ea6e3fc9d2732240d3"
+    },
+    {
+      "path": "tests/launch-acceptance/delivery-set_test.go",
+      "sha256": "bb22003881401210a178963e356b12896896cbf5110655e708bd326e06b4d41a"
+    },
+    {
+      "path": "modules/secure-identity-access-governance/tests/release-owner/main.go",
+      "sha256": "b6fcab1883003026535ad8010be46de113746846b7e8f5cb35c8e0291b99422e"
+    },
+    {
+      "path": "modules/secure-identity-access-governance/tests/release-owner/main_test.go",
+      "sha256": "cf57684cd70025a3caa83c0e4b2c878ab4d213fd8e947a8ac8c562ef2f25782a"
+    },
+    {
+      "path": "modules/accordare-stav-producer/tests/release-owner/main.go",
+      "sha256": "552f90f8190f78065b46794b8ff6b0701f29f6e0db96a4b24d5ab45f21becd0f"
+    },
+    {
+      "path": "modules/accordare-stav-producer/tests/release-owner/main_test.go",
+      "sha256": "86e60d2bd26abd52a606425c6a2ca5dfe2657747174633181b846c282c263257"
+    },
+    {
+      "path": "modules/stav-append-authority/tests/release-owner/main.go",
+      "sha256": "be9c275d8fde211080a0427e4cefa63405e0706075f08f739e8a9d33f4b21bad"
+    },
+    {
+      "path": "modules/stav-append-authority/tests/release-owner/main_test.go",
+      "sha256": "1afe95fe528c3a79191f0109a6739e2a5d25442308bd7c2a9b0dffd88743b2b8"
+    },
+    {
+      "path": "cmake/release/immutable-files-v1.schema.json",
+      "sha256": "8cf28ae912094487eed97cd248cbde94ae3ed69ee2f389cbfc01354627d2717c"
+    },
+    {
+      "path": "tests/launch-acceptance/delivery-set-main.go",
+      "sha256": "2e7db1f271a18b99e5417a03aa2ff3cc964ae7dfd340d07471da29d191d168b9"
+    },
+    {
+      "path": "tests/launch-acceptance/acceptance-gates-main.go",
+      "sha256": "96db2a2cf004b7fd34c82d1e49d6461126e8941937359eca4b6e6f885b37b9e2"
+    },
+    {
+      "path": "tests/launch-acceptance/delivery-acceptance.go",
+      "sha256": "b4560e903d3c7c6aa7bb307e835d9a09652191a6f5ff15b179a9347e21dac650"
+    },
+    {
+      "path": "tests/launch-acceptance/delivery-acceptance_test.go",
+      "sha256": "fba0ff1f0dcf1cd0befbf4be902c91bf42849229f070b9600c5e48185e6056e7"
+    },
+    {
+      "path": "tests/launch-acceptance/DELIVERY-ACCEPTANCE.md",
+      "sha256": "1b65bef2ddd261b697b4f5aa94d2d137a2e1c7a748fee95e97fecc481c9d7220"
+    },
+    {
+      "path": "cmake/release/delivery-acceptance-v1.schema.json",
+      "sha256": "2e8b8b4cf44fc17a8b0cf6592b1e464bef09705d10473ca7ee33994372cc4ab8"
+    },
+    {
+      "path": "tests/release-qualification/verify-swift-evidence.sh",
+      "sha256": "cc6df31c8f15c347ef1101015f5ceceee388ace03ba2f2f469df2ff4e1226622"
+    },
+    {
+      "path": "tests/release-qualification/swift-evidence-tests.sh",
+      "sha256": "0d6b889a576cbd20a70f1075dfb926cad2e15f4922c7eddef65e22657946f288"
+    },
+    {
+      "path": "tests/external-engine/CMakeLists.txt",
+      "sha256": "810bae0b43eb0e90aa57684b9ce47d421706e49e711db2ffac5885eb1d9ff734"
+    },
+    {
+      "path": "tests/external-engine/README.md",
+      "sha256": "18039a2e6e43f1c4cfe50511a48bc1c47ef4c00565e1d8f0adf3cb67958d8948"
+    },
+    {
+      "path": "tests/external-engine/calculation.hpp",
+      "sha256": "1dab9313f244d56f87795a0eca1b96efa44a5277d3f528fd1ae25de018802f10"
+    },
+    {
+      "path": "tests/external-engine/engine.cpp",
+      "sha256": "c463a00568691dae48ef8a6259948e818b454c7ea3c29ed515bd070087160494"
+    },
+    {
+      "path": "tests/external-engine/fixture.cpp",
+      "sha256": "c0cb3bcb30467aaf41d322f14c1ddcf46ffb34dec4f09a7165bdb69b95f7dfdc"
+    },
+    {
+      "path": "tests/external-engine/fixtures/ATTRIBUTION.md",
+      "sha256": "0413c2566f19b49749420023f5bed0da7808c8ccfdb9c57c14fcd27b21b3e5d5"
+    },
+    {
+      "path": "tests/external-engine/fixtures/LICENSE.Apache-2.0",
+      "sha256": "d3174ad63e721d4c9dccb8ad4320848992d314369bc46319720b5802c9153fe9"
+    },
+    {
+      "path": "tests/external-engine/fixtures/public_fixture.hpp",
+      "sha256": "9f4011316ed1f97055dc4eda90c1b4233f930630a1fb7a548828ed48b2a711aa"
+    },
+    {
+      "path": "tests/external-engine/provider-probe.cpp",
+      "sha256": "62056bc8f6d8a8b32eca16cd122cbc79f5c4dc92276177fcab85e232c76f6f8c"
+    },
+    {
+      "path": "tests/external-engine/provider.cpp",
+      "sha256": "86e0a2be749bf4929ab590a1acec5c7a476ed44a521e58dba5c64ab0aad82cc9"
+    },
+    {
+      "path": "tests/external-engine/sdk-client.cpp",
+      "sha256": "861b0494dc2b538578582beb424ee69431a55346f35c20d868825c4cab37310b"
+    },
+    {
+      "path": "tests/public-beta/execution/CAMPAIGN-HANDOFF.md",
+      "sha256": "a247028db18e953aebb1ebb9e1ca1fb89c087fd13674d488fc5e50f179db2b7a"
+    },
+    {
+      "path": "tests/public-beta/execution/W12-REVIEW.md",
+      "sha256": "3ea5ccce9ce403e4f5c025fc7e50dcb53a74319a9636e2a2aecec22be25dd79b"
+    },
+    {
+      "path": "tests/beta-readiness/README.md",
+      "sha256": "70dc47fb788ef6c08b41c1df0d082ed4060cd80e65c1b32eaf735763a65c477f"
+    },
+    {
+      "path": "tests/beta-readiness/prepare.go",
+      "sha256": "b70ee2f1daa0f230499fefcf03b9db0c202fa383d849af38476c3052383a4cdc"
+    },
+    {
+      "path": "tests/beta-readiness/prepare_test.go",
+      "sha256": "2ea2ee2e0af7a6d3acdc74eff19241b8887b4fa74394f37fff437f1311d9525f"
+    },
+    {
+      "path": "tests/external-engine/qualify.go",
+      "sha256": "473c03d1d60a9c4ce89766fff724e21b34ab7356e96584ec7de929104831f694"
+    },
+    {
+      "path": "tests/external-engine/qualify_test.go",
+      "sha256": "068c387c867834f532065c69f4a03db291afa0635328dc68c0ed3280b652225a"
+    },
+    {
+      "path": "tests/launch-acceptance/qualification-common.go",
+      "sha256": "d91c270d41da9b4502f033b1cf02289823be20bd6df607aa4d00ffe9cf233d99"
+    },
+    {
+      "path": "tests/launch-acceptance/qualification-common_test.go",
+      "sha256": "e55f90fde3069f1361406826e0f8cd30ecda979d11987be7c374db29b3149106"
+    },
+    {
+      "path": "tests/launch-acceptance/qualify-executable-delivery.go",
+      "sha256": "c258ba56eb8f39225dc1632c792a464d078bcf333dba8364660ec785c43d5650"
+    },
+    {
+      "path": "tests/launch-acceptance/qualify-go-owners.go",
+      "sha256": "031b4dec63fbe23fff467b968a696768b7d5d150ac7b74f4018eb82b090b40c7"
+    },
+    {
+      "path": "tests/launch-acceptance/qualify-native-delivery.go",
+      "sha256": "9db094f520b76c837e799701a3e20aa6f79af9d15d4392da67b4799b6e622afd"
+    },
+    {
+      "path": "tests/public-beta/validate.go",
+      "sha256": "a1268b7cedadee606ccce4eb0c90442e4b425e62ad1a26b412b2ab022f0e09fc"
+    },
+    {
+      "path": "tests/public-beta/validate_test.go",
+      "sha256": "d0c7d9ca7842ad2518f698b53a0c5477b0fe5c023d12d7a53a5779c34f3106e4"
     }
   ],
   "platform_profile_catalog": "cmake/mvp-platform-profiles.json",
@@ -25245,6 +25433,81 @@
       "cmake/release/VerifyCandidate.cmake"
     ],
     "signing_scheme": "SSHSIG namespace symphony-release over exact candidate inventory bytes",
-    "publication_authorized": false
+    "publication_authorized": false,
+    "delivery_set": {
+      "protocol": "symphony.release.delivery-set.v1",
+      "selection_protocol": "symphony.release.delivery-selection.v1",
+      "verification_protocol": "symphony.release.delivery-verification.v1",
+      "scope": "Explicit selected multi-artifact inventory and index signatures; owner verification, installed-host/provider qualification and publication remain separate.",
+      "signing_scheme": "SSHSIG namespace symphony-delivery-set over exact index bytes; independent selection and signer policy",
+      "source_paths": [
+        "cmake/release/SignDeliverySet.cmake",
+        "cmake/release/delivery-definition-v1.schema.json",
+        "cmake/release/delivery-selection-v1.schema.json",
+        "cmake/release/delivery-set-v1.schema.json",
+        "tests/launch-acceptance/delivery-set.go",
+        "tests/launch-acceptance/delivery-set_test.go",
+        "tests/launch-acceptance/DELIVERY-SET.md",
+        "tests/launch-acceptance/delivery-set-main.go"
+      ],
+      "publication_authorized": false,
+      "owner_inspection": {
+        "adapters": [
+          "ssiag-receipt-v2",
+          "stav-receipt-v2",
+          "accordare-receipt-v2"
+        ],
+        "source_paths": [
+          "modules/secure-identity-access-governance/tests/release-owner/main.go",
+          "modules/secure-identity-access-governance/tests/release-owner/main_test.go",
+          "modules/accordare-stav-producer/tests/release-owner/main.go",
+          "modules/accordare-stav-producer/tests/release-owner/main_test.go",
+          "modules/stav-append-authority/tests/release-owner/main.go",
+          "modules/stav-append-authority/tests/release-owner/main_test.go",
+          "tests/launch-acceptance/qualify-go-owners.py"
+        ],
+        "build_recipe": "cmake/SymphonyGoCandidateIdentities.cmake",
+        "scope": "Read-only actual owner receipt inspection of one signed artifact in a private user-owned prefix. No set-wide, fresh-host, provider or release acceptance."
+      },
+      "native_verification": {
+        "adapter": "native-candidate-v1",
+        "source_paths": [
+          "tests/launch-acceptance/qualify-native-delivery.py",
+          "tests/launch-acceptance/candidate-host.go",
+          "cmake/release/VerifyCandidate.cmake",
+          "cmake/release/Support.cmake",
+          "cmake/release/StrictJSON.cmake",
+          "cmake/SymphonyReceiptV2Support.cmake"
+        ],
+        "scope": "Existing bounded extraction and receipt verification with exact native/index/source/profile/component/map/policy bindings; no payload execution or fresh-host acceptance."
+      },
+      "executable_identity": {
+        "adapters": [
+          "qxctl-files-v1",
+          "sov-executable-v1"
+        ],
+        "components": [
+          "qxctl",
+          "sov-stdio-adapter",
+          "sov-ssh-adapter"
+        ],
+        "source_paths": [
+          "tests/launch-acceptance/qualify-executable-delivery.py",
+          "cmake/release/immutable-files-v1.schema.json"
+        ],
+        "scope": "Authenticated executable identity and fixed version query only; no invented receipt, protected-profile or installation acceptance."
+      },
+      "acceptance_companion": {
+        "protocol": "symphony.release.delivery-acceptance.v1",
+        "source_paths": [
+          "tests/launch-acceptance/acceptance-gates-main.go",
+          "tests/launch-acceptance/delivery-acceptance.go",
+          "tests/launch-acceptance/delivery-acceptance_test.go",
+          "tests/launch-acceptance/DELIVERY-ACCEPTANCE.md",
+          "cmake/release/delivery-acceptance-v1.schema.json"
+        ],
+        "scope": "Compose unchanged v1 semantics with independently signed whole sets and artifact-bound observations. Full mapping retained; structural readiness is not release acceptance."
+      }
+    }
   }
 }

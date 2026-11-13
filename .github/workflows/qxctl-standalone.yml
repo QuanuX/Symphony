@@ -39,6 +39,16 @@ jobs:
         run: sh tools/qxctl/tests/reproducible_build.sh "$RUNNER_TEMP/qxctl-reproducible"
       - name: Exercise documented source first run
         run: sh tests/launch-acceptance/source-smoke.sh "$RUNNER_TEMP/qxctl-reproducible/first/bin/qxctl" "$GITHUB_WORKSPACE" "$RUNNER_TEMP/source-first-run"
+      - name: Qualify qxctl in a fixture-signed delivery set
+        run: |
+          GOWORK=off GOENV=off GOTOOLCHAIN=local go build -trimpath \
+            -o "$RUNNER_TEMP/delivery-set" tests/launch-acceptance/delivery-set.go tests/launch-acceptance/delivery-set-main.go
+          GOWORK=off GOENV=off GOTOOLCHAIN=local go build -trimpath \
+            -o "$RUNNER_TEMP/qualify-executable-delivery" tests/launch-acceptance/qualification-common.go tests/launch-acceptance/qualify-executable-delivery.go
+          "$RUNNER_TEMP/qualify-executable-delivery" \
+            --binary "$RUNNER_TEMP/qxctl-reproducible/first/bin/qxctl" \
+            --identity "$RUNNER_TEMP/qxctl-reproducible/artifact-identity.json" \
+            --delivery-tool "$RUNNER_TEMP/delivery-set" --work "$RUNNER_TEMP/qxctl-delivery"
       - name: Retain qxctl identity evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
@@ -49,6 +59,9 @@ jobs:
             ${{ runner.temp }}/qxctl-reproducible/logs
             ${{ runner.temp }}/qxctl-reproducible/*-build-info.json
             ${{ runner.temp }}/qxctl-reproducible/artifact-identity.json
+            ${{ runner.temp }}/qxctl-delivery/logs
+            ${{ runner.temp }}/qxctl-delivery/evidence.json
+            ${{ runner.temp }}/qxctl-delivery/executable-owner.json
           retention-days: 14
       - name: Check SSIAG public dependency build and server regressions
         working-directory: modules/secure-identity-access-governance

@@ -8,7 +8,7 @@ another platform's results. All jobs use the `security-extended` query suite.
 | Language | Runner | Extraction |
 | --- | --- | --- |
 | C/C++ | Ubuntu 24.04 and macOS 15 Intel | Source-only (`build-mode: none`) |
-| Go | Ubuntu 24.04 and macOS 15 Intel | Explicit build of every module declared in `go.work` |
+| Go | Ubuntu 24.04 and macOS 15 Intel | Explicit workspace-module and standalone release-tool builds |
 | Swift | macOS 15 Intel | Release build of `modules/ssiag-provider-macos-keychain` |
 | GitHub Actions | Ubuntu 24.04 | Workflow analysis |
 
@@ -33,7 +33,13 @@ must not be described as scanning every native project.
 Go uses the version declared by `go.work`, currently 1.26.5. The module list comes
 from that file rather than a duplicated list. The fresh cache and `go build -a`
 ensure compilation occurs after CodeQL initialization. Separate Linux and macOS
-jobs cover their respective build-tagged implementations. Other operating
+jobs cover their respective build-tagged implementations. The workflow also builds
+standalone delivery/acceptance tools, the dossier validator, beta review generator,
+external SDK qualifier and all three delivery fixture drivers explicitly after
+CodeQL initialization. These files live outside workspace modules; a workspace
+build alone does not establish their extraction. This addition compiles them
+without running qualification, providers or publication. Hosted extraction and
+analysis results must still be checked for the new head. Other operating
 systems, custom build tags, and test-only Go code are outside this configuration.
 
 The Swift job compiles the provider without executing it, running its integration

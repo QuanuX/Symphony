@@ -1,0 +1,276 @@
+{
+  "format_version": 1,
+  "plan_sha256": "64175c90cef16e5ddb714c1a9b99756718312b85aacdab9b737647ae7ff12603",
+  "inputs": {
+    "approved_capability_manifest": null,
+    "authorized_provider_profiles": null,
+    "authorized_tws_sdk_provenance": null,
+    "candidate_url_and_digest": null,
+    "independent_signer_policy": null,
+    "named_acceptance_reviewer": null,
+    "native_credential_provider_implementation_evidence": null,
+    "runtime_and_notice_closure": null
+  },
+  "profiles": {
+    "macos15-arm64": {
+      "source_commit": "",
+      "artifact_sha256": "",
+      "manifest_sha256": "",
+      "signer_policy_sha256": "",
+      "verified_payload": null,
+      "fresh_host_inventory": null,
+      "runtime_notice_review": null,
+      "scenarios": {
+        "bounded_offline_quantitative_result": {
+          "result": "pending",
+          "scope": "unqualified",
+          "skips": 0,
+          "record": null
+        },
+        "every_promised_provider_operation_and_refusal": {
+          "result": "pending",
+          "scope": "unqualified",
+          "skips": 0,
+          "record": null
+        },
+        "fresh_install_discovery_version_loader": {
+          "result": "pending",
+          "scope": "unqualified",
+          "skips": 0,
+          "record": null
+        },
+        "protected_administration_denial_and_success": {
+          "result": "pending",
+          "scope": "unqualified",
+          "skips": 0,
+          "record": null
+        },
+        "removal_preserving_user_data": {
+          "result": "pending",
+          "scope": "unqualified",
+          "skips": 0,
+          "record": null
+        },
+        "side_by_side_upgrade_and_compatible_rollback": {
+          "result": "pending",
+          "scope": "unqualified",
+          "skips": 0,
+          "record": null
+        },
+        "source_hardware_knowledge_workflow": {
+          "result": "pending",
+          "scope": "unqualified",
+          "skips": 0,
+          "record": null
+        },
+        "timeout_cancellation_uncertainty_reconciliation": {
+          "result": "pending",
+          "scope": "unqualified",
+          "skips": 0,
+          "record": null
+        },
+        "verified_download_and_tamper_refusal": {
+          "result": "pending",
+          "scope": "unqualified",
+          "skips": 0,
+          "record": null
+        }
+      }
+    },
+    "ubuntu24.04-amd64": {
+      "source_commit": "",
+      "artifact_sha256": "",
+      "manifest_sha256": "",
+      "signer_policy_sha256": "",
+      "verified_payload": null,
+      "fresh_host_inventory": null,
+      "runtime_notice_review": null,
+      "scenarios": {
+        "bounded_offline_quantitative_result": {
+          "result": "pending",
+          "scope": "unqualified",
+          "skips": 0,
+          "record": null
+        },
+        "every_promised_provider_operation_and_refusal": {
+          "result": "pending",
+          "scope": "unqualified",
+          "skips": 0,
+          "record": null
+        },
+        "fresh_install_discovery_version_loader": {
+          "result": "pending",
+          "scope": "unqualified",
+          "skips": 0,
+          "record": null
+        },
+        "protected_administration_denial_and_success": {
+          "result": "pending",
+          "scope": "unqualified",
+          "skips": 0,
+          "record": null
+        },
+        "removal_preserving_user_data": {
+          "result": "pending",
+          "scope": "unqualified",
+          "skips": 0,
+          "record": null
+        },
+        "side_by_side_upgrade_and_compatible_rollback": {
+          "result": "pending",
+          "scope": "unqualified",
+          "skips": 0,
+          "record": null
+        },
+        "source_hardware_knowledge_workflow": {
+          "result": "pending",
+          "scope": "unqualified",
+          "skips": 0,
+          "record": null
+        },
+        "timeout_cancellation_uncertainty_reconciliation": {
+          "result": "pending",
+          "scope": "unqualified",
+          "skips": 0,
+          "record": null
+        },
+        "verified_download_and_tamper_refusal": {
+          "result": "pending",
+          "scope": "unqualified",
+          "skips": 0,
+          "record": null
+        }
+      }
+    },
+    "ubuntu24.04-arm64": {
+      "source_commit": "",
+      "artifact_sha256": "",
+      "manifest_sha256": "",
+      "signer_policy_sha256": "",
+      "verified_payload": null,
+      "fresh_host_inventory": null,
+      "runtime_notice_review": null,
+      "scenarios": {
+        "bounded_offline_quantitative_result": {
+          "result": "pending",
+          "scope": "unqualified",
+          "skips": 0,
+          "record": null
+        },
+        "every_promised_provider_operation_and_refusal": {
+          "result": "pending",
+          "scope": "unqualified",
+          "skips": 0,
+          "record": null
+        },
+        "fresh_install_discovery_version_loader": {
+          "result": "pending",
+          "scope": "unqualified",
+          "skips": 0,
+          "record": null
+        },
+        "protected_administration_denial_and_success": {
+          "result": "pending",
+          "scope": "unqualified",
+          "skips": 0,
+          "record": null
+        },
+        "removal_preserving_user_data": {
+          "result": "pending",
+          "scope": "unqualified",
+          "skips": 0,
+          "record": null
+        },
+        "side_by_side_upgrade_and_compatible_rollback": {
+          "result": "pending",
+          "scope": "unqualified",
+          "skips": 0,
+          "record": null
+        },
+        "source_hardware_knowledge_workflow": {
+          "result": "pending",
+          "scope": "unqualified",
+          "skips": 0,
+          "record": null
+        },
+        "timeout_cancellation_uncertainty_reconciliation": {
+          "result": "pending",
+          "scope": "unqualified",
+          "skips": 0,
+          "record": null
+        },
+        "verified_download_and_tamper_refusal": {
+          "result": "pending",
+          "scope": "unqualified",
+          "skips": 0,
+          "record": null
+        }
+      }
+    },
+    "ubuntu26.04-amd64": {
+      "source_commit": "",
+      "artifact_sha256": "",
+      "manifest_sha256": "",
+      "signer_policy_sha256": "",
+      "verified_payload": null,
+      "fresh_host_inventory": null,
+      "runtime_notice_review": null,
+      "scenarios": {
+        "bounded_offline_quantitative_result": {
+          "result": "pending",
+          "scope": "unqualified",
+          "skips": 0,
+          "record": null
+        },
+        "every_promised_provider_operation_and_refusal": {
+          "result": "pending",
+          "scope": "unqualified",
+          "skips": 0,
+          "record": null
+        },
+        "fresh_install_discovery_version_loader": {
+          "result": "pending",
+          "scope": "unqualified",
+          "skips": 0,
+          "record": null
+        },
+        "protected_administration_denial_and_success": {
+          "result": "pending",
+          "scope": "unqualified",
+          "skips": 0,
+          "record": null
+        },
+        "removal_preserving_user_data": {
+          "result": "pending",
+          "scope": "unqualified",
+          "skips": 0,
+          "record": null
+        },
+        "side_by_side_upgrade_and_compatible_rollback": {
+          "result": "pending",
+          "scope": "unqualified",
+          "skips": 0,
+          "record": null
+        },
+        "source_hardware_knowledge_workflow": {
+          "result": "pending",
+          "scope": "unqualified",
+          "skips": 0,
+          "record": null
+        },
+        "timeout_cancellation_uncertainty_reconciliation": {
+          "result": "pending",
+          "scope": "unqualified",
+          "skips": 0,
+          "record": null
+        },
+        "verified_download_and_tamper_refusal": {
+          "result": "pending",
+          "scope": "unqualified",
+          "skips": 0,
+          "record": null
+        }
+      }
+    }
+  }
+}

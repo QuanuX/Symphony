@@ -13,6 +13,11 @@ promise that needs missing implementation requires an explicit scope/freeze
 decision; the freeze neither completes that work nor silently removes the promise.
 This records project direction, not enforced GitHub branch rules or release approval.
 
+The [source-bound Public Beta dossier](../tests/public-beta/README.md) prepares
+W01/W06 against the PR #196 main revision and supplies the full W01–W12 plan for
+manual review. Its proposed selections, pending trust/owner inputs and acceptance
+mapping do not authorize new features or establish final-candidate acceptance.
+
 ## Verified source baseline
 
 PRs [#185](https://github.com/QuanuX/Symphony/pull/185) and [#186](https://github.com/QuanuX/Symphony/pull/186) subsequently passed all eight workflows and 48 checks each. They merged as `4e697a80950b5a9146f29ec80f061eee5b3ba811` and `cbb201920bed3447502bf72254602bf6ac5978cf`; each merge retained its tested source tree. The earlier L27–L30 baseline is retained below.

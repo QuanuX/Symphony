@@ -15,6 +15,45 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  beta-review-preparation:
+    name: Beta scope and incomplete-review preparation
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+          # The dossier validates historical source files and baseline ancestry.
+          fetch-depth: 0
+      - uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6
+        with:
+          go-version-file: tools/qxctl/go.mod
+          cache: false
+      - name: Refuse scope and recipe drift
+        run: |
+          GOWORK=off GOENV=off GOTOOLCHAIN=local go test -count=1 tests/beta-readiness/prepare.go tests/beta-readiness/prepare_test.go
+          GOWORK=off GOENV=off GOTOOLCHAIN=local go test -count=1 tests/public-beta/validate.go tests/public-beta/validate_test.go
+      - name: Prepare explicitly incomplete source-bound review
+        run: |
+          GOWORK=off GOENV=off GOTOOLCHAIN=local go build -trimpath -o "$RUNNER_TEMP/beta-prepare" tests/beta-readiness/prepare.go
+          if "$RUNNER_TEMP/beta-prepare" --repo "$GITHUB_WORKSPACE" \
+            --go "$(command -v go)" --work "$RUNNER_TEMP/beta-review"; then
+            echo 'Expected incomplete exit 2, never release acceptance' >&2
+            exit 1
+          else
+            result=$?
+            test "$result" -eq 2
+          fi
+      - name: Retain incomplete review and construction worklists
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: beta-review-preparation
+          path: |
+            ${{ runner.temp }}/beta-review/*.json
+            ${{ runner.temp }}/beta-review/logs
+          retention-days: 14
+
   standalone-go-tests:
     name: Go module race suites (${{ matrix.os }})
     runs-on: ${{ matrix.os }}
@@ -35,8 +74,27 @@ jobs:
         run: sh tests/release-qualification/go-tests.sh "$RUNNER_TEMP/release-go"
       - name: Verify the complete release identity catalog
         run: cmake -P cmake/VerifyMVPReleaseIdentities.cmake
-      - name: Verify five candidate Go artifact identities
+      - name: Verify six candidate Go artifact identities and owner tools
         run: sh .github/scripts/build-mvp-go-identities.sh "$RUNNER_TEMP/release-go-identities"
+      - name: Qualify real Go receipt packages through the signed delivery set
+        run: |
+          GOWORK=off GOENV=off GOTOOLCHAIN=local go build -trimpath \
+            -o "$RUNNER_TEMP/delivery-set" tests/launch-acceptance/delivery-set.go tests/launch-acceptance/delivery-set-main.go
+          GOWORK=off GOENV=off GOTOOLCHAIN=local go test -race -count=1 tests/launch-acceptance/qualification-common.go tests/launch-acceptance/qualification-common_test.go
+          GOWORK=off GOENV=off GOTOOLCHAIN=local go build -trimpath \
+            -o "$RUNNER_TEMP/qualify-go-owners" tests/launch-acceptance/qualification-common.go tests/launch-acceptance/qualify-go-owners.go
+          GOWORK=off GOENV=off GOTOOLCHAIN=local go build -trimpath \
+            -o "$RUNNER_TEMP/qualify-executable-delivery" tests/launch-acceptance/qualification-common.go tests/launch-acceptance/qualify-executable-delivery.go
+          "$RUNNER_TEMP/qualify-go-owners" \
+            --build-root "$RUNNER_TEMP/release-go-identities" \
+            --work "$RUNNER_TEMP/release-go-owner-qualification" \
+            --delivery-tool "$RUNNER_TEMP/delivery-set"
+          for component in sov-stdio-adapter sov-ssh-adapter; do
+            "$RUNNER_TEMP/qualify-executable-delivery" \
+              --binary "$RUNNER_TEMP/release-go-identities/$component/bin/$component" \
+              --identity "$RUNNER_TEMP/release-go-identities/identities/$component.json" \
+              --delivery-tool "$RUNNER_TEMP/delivery-set" --work "$RUNNER_TEMP/$component-delivery"
+          done
       - name: Retain executed tests, explicit skips and candidate identities
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
@@ -48,6 +106,16 @@ jobs:
             ${{ runner.temp }}/release-go-identities/logs
             ${{ runner.temp }}/release-go-identities/identities
             ${{ runner.temp }}/release-go-identities/*.json
+            ${{ runner.temp }}/release-go-identities/*/owner-tool-build.json
+            ${{ runner.temp }}/release-go-owner-qualification/logs
+            ${{ runner.temp }}/release-go-owner-qualification/evidence.json
+            ${{ runner.temp }}/release-go-owner-qualification/*-owner.json
+            ${{ runner.temp }}/sov-stdio-adapter-delivery/logs
+            ${{ runner.temp }}/sov-stdio-adapter-delivery/evidence.json
+            ${{ runner.temp }}/sov-stdio-adapter-delivery/executable-owner.json
+            ${{ runner.temp }}/sov-ssh-adapter-delivery/logs
+            ${{ runner.temp }}/sov-ssh-adapter-delivery/evidence.json
+            ${{ runner.temp }}/sov-ssh-adapter-delivery/executable-owner.json
           retention-days: 14
       - name: Report evidence boundary
         if: always()
@@ -63,6 +131,8 @@ jobs:
           persist-credentials: false
       - name: Select Swift toolchain
         run: echo 'DEVELOPER_DIR=/Applications/Xcode_26.3.app/Contents/Developer' >> "$GITHUB_ENV"
+      - name: Verify Swift evidence refusal handling
+        run: sh tests/release-qualification/swift-evidence-tests.sh
       - name: Run the selected scratch-built provider tests
         run: sh tests/release-qualification/swift-tests.sh "$RUNNER_TEMP/release-swift"
       - name: Retain Swift execution evidence

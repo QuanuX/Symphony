@@ -1,0 +1,61 @@
+{
+  "protocol": "symphony.public-beta.w12-review.v1",
+  "source": {
+    "commit": "2fa892bcd41a701f15b5bdced7feb7700ecf5cb7",
+    "tree": "ea2d0985aee7738b666f3b528490114f94375231"
+  },
+  "state": "incomplete_no_go_for_public_beta",
+  "human_release_decision": null,
+  "distribution_channel": "Anaconda",
+  "end_W12_inputs": [
+    "publisher signing identity and independent trust policy",
+    "fresh-host targets/availability",
+    "independent acceptance and backup reviewer assignments"
+  ],
+  "scope": "local engineering and qualification preparation; no final candidate or operational acceptance",
+  "source_inputs_sha256": {
+    "docs/public-beta/package-plan.json": "2cef5f8d646583282170503f0912827c889a7a9ea74a600d16ca3971a902649a",
+    "docs/public-beta/acceptance-mapping.json": "a12eb6fe15130c503ff906241cd69c7ab85cd9b234ea8840e4a1d1e41d0d153f",
+    "docs/public-beta/capability-groups.json": "601f360b30a546e02ba1de71a5238059f0985f523db514de7abcc2d30181ca96",
+    "docs/public-beta/owners.json": "e3591e34829b9abffdc957d076413057f87eea98ebf2f460b190e673093b930d",
+    "docs/public-beta/execution/authorization.json": "c1cee9d1c4341f3a634e91091a2eff73ee5ae1667058648a18468eba6b801f76",
+    "cmake/mvp-dependencies.json": "33a1c2f86e27ac03408cc2e4ab26fd8c4ffa45c378817155f409442b20de6c25",
+    "cmake/mvp-release-identities.json": "1e0965f3083df1c61122085ff99994fce15206719d99aa76cba6e050fabe81f3",
+    "cmake/mvp-platform-profiles.json": "5919db98185207278845d1d63c5c2a77b4daff032d44ebb0f4889b8785173bd5",
+    "tests/launch-acceptance/plan.json": "64175c90cef16e5ddb714c1a9b99756718312b85aacdab9b737647ae7ff12603"
+  },
+  "go_driver_sha256": "21ddfdbc069184f97abf82e00003d990120b274968133f0a5e59af0a2df62ac2",
+  "files_sha256": {
+    "acceptance-mapping.json": "a12eb6fe15130c503ff906241cd69c7ab85cd9b234ea8840e4a1d1e41d0d153f",
+    "companion-packet.json": "588ac6fabef211d90586c99bbf7a3db016a08f75a9ab5760ac029f30fb177a52",
+    "companion-report.json": "4fb66e3c85fc4ba0e88bb8a70ae35bddd78e79e6cb89890e544d34538d55b4ab",
+    "construction.json": "471792ebad02ea0dfb59eb6a678de4f7f06823316404bf24d30ecca63ea5c86e",
+    "core-packet.json": "ad00d27256fa1c466cc36d7a24ca1b9c1395ccf572e5c9fe4b0f80abecf1a808",
+    "core-plan.json": "64175c90cef16e5ddb714c1a9b99756718312b85aacdab9b737647ae7ff12603",
+    "core-report.json": "9ecd7a445e221cf8d077124272868c6a128838b4f04470b7ad5f1de60a2d96a2",
+    "logs/build-acceptance-gates.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "logs/build-delivery-acceptance.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "logs/check-companion.log": "4fb66e3c85fc4ba0e88bb8a70ae35bddd78e79e6cb89890e544d34538d55b4ab",
+    "logs/check-core.log": "317cb60cfbc44033d138492cdd0b8a574da4bb33755d6bb1a9406a522b2f42dc",
+    "logs/init-companion.log": "e2b375d471aafc0095961b9a8b150554e344bf2ddb65193ea4e1dbfcbd176cbc",
+    "logs/init-core.log": "b6fd84ab079e5728328e947e4f72a092e1bea02a3fab1ee1f5ce2148653d6a52",
+    "logs/init-requirements.log": "e2b375d471aafc0095961b9a8b150554e344bf2ddb65193ea4e1dbfcbd176cbc",
+    "logs/mvp-dependencies.log": "1ddf7356b59c3bb511a55f6cf023f86e5a1aa055bc90213058f49af8c740272c",
+    "logs/release-qualification.log": "159f84e0a0a1cd2e6f6da8b79529e35dc8f30e5da3f9563306738417a700c3c8",
+    "requirements.json": "e518ff8ffa1a67476078beeafc464d593aa434a8826d6684a71d7cb29e5c69fc",
+    "targets.json": "67d7a98dafe83d6ca1a4bd9a6073ed82e26ea3594cf6daaafa67e47b98421896",
+    "tools/acceptance-gates": "05addeaaea8e91487dcc46a06922ccfbbf9dc80e96290449fd422d13d8af9198",
+    "tools/delivery-acceptance": "c3abc7c9b94ccff389e2f74317c322b0a7496c4ea567f05deec247639674c7ea",
+    "workorders.json": "8781c68bd817e7e405ad4505900d774b44c54de8156aefca5da4e4bedeaa815d"
+  },
+  "counts": {
+    "profiles": 4,
+    "native_units_per_core": 51,
+    "go_commands_per_core": 6,
+    "core_cells": 36,
+    "paper_criteria": 58,
+    "supplemental": 31
+  },
+  "release_acceptance_complete": false,
+  "publication_authorized": false
+}

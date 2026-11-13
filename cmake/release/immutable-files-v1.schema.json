@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "symphony.release.immutable-files.v1",
+  "title": "Release-only immutable executable files",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "protocol",
+    "files"
+  ],
+  "properties": {
+    "protocol": {
+      "const": "symphony.release.immutable-files.v1"
+    },
+    "files": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 65535,
+      "items": {
+        "$ref": "#/$defs/file"
+      }
+    }
+  },
+  "$defs": {
+    "file": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "sha256",
+        "size",
+        "mode"
+      ],
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2048,
+          "description": "Clean relative slash path; Go validator additionally rejects traversal, reserved index names, controls, CMake delimiters, links and ambiguous paths."
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "size": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 17179869184
+        },
+        "mode": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 511,
+          "description": "POSIX permissions in decimal; group/other write and special mode bits refused by Go."
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,567 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://quanux.org/symphony/schemas/delivery-acceptance-v1.schema.json",
+  "title": "Symphony delivery acceptance companion inputs",
+  "description": "Structural schema; the Go checker additionally enforces the independent plan, full source mapping, artifact requirements, signatures, owner and evidence bindings. No release authorization.",
+  "$defs": {
+    "reference": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      },
+      "required": [
+        "path",
+        "sha256"
+      ],
+      "additionalProperties": false
+    },
+    "source": {
+      "type": "object",
+      "properties": {
+        "commit": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "tree": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        }
+      },
+      "required": [
+        "commit",
+        "tree"
+      ],
+      "additionalProperties": false
+    },
+    "file": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "size": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "mode": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 511
+        }
+      },
+      "required": [
+        "path",
+        "sha256",
+        "size",
+        "mode"
+      ],
+      "additionalProperties": false
+    },
+    "requiredProfile": {
+      "type": "object",
+      "properties": {
+        "artifact_ids": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "scenario_artifacts": {
+          "type": "object",
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        }
+      },
+      "required": [
+        "artifact_ids",
+        "scenario_artifacts"
+      ],
+      "additionalProperties": false
+    },
+    "requirements": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.release.artifact-requirements.v1"
+        },
+        "core_plan_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "acceptance_mapping_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "profiles": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/requiredProfile"
+          }
+        },
+        "supplemental": {
+          "type": "object",
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        }
+      },
+      "required": [
+        "protocol",
+        "core_plan_sha256",
+        "acceptance_mapping_sha256",
+        "profiles",
+        "supplemental"
+      ],
+      "additionalProperties": false
+    },
+    "target": {
+      "type": "object",
+      "properties": {
+        "root": {
+          "type": "string"
+        },
+        "selection": {
+          "type": "string"
+        },
+        "allowed_signers": {
+          "type": "string"
+        },
+        "signer": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "root",
+        "selection",
+        "allowed_signers",
+        "signer"
+      ],
+      "additionalProperties": false
+    },
+    "targets": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.release.delivery-targets.v1"
+        },
+        "profiles": {
+          "type": "object",
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/target"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        }
+      },
+      "required": [
+        "protocol",
+        "profiles"
+      ],
+      "additionalProperties": false
+    },
+    "owner": {
+      "type": "object",
+      "properties": {
+        "report": {
+          "$ref": "#/$defs/reference"
+        },
+        "support": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/reference"
+          }
+        }
+      },
+      "required": [
+        "report",
+        "support"
+      ],
+      "additionalProperties": false
+    },
+    "artifactEvidence": {
+      "type": "object",
+      "properties": {
+        "owner": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/owner"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "installation": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/reference"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "loader": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/reference"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "trust": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/reference"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "owner",
+        "installation",
+        "loader",
+        "trust"
+      ],
+      "additionalProperties": false
+    },
+    "profileEvidence": {
+      "type": "object",
+      "properties": {
+        "delivery_index": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/reference"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "primary_native_artifact_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "artifacts": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/artifactEvidence"
+          }
+        },
+        "scenarios": {
+          "type": "object",
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/reference"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        }
+      },
+      "required": [
+        "delivery_index",
+        "primary_native_artifact_id",
+        "artifacts",
+        "scenarios"
+      ],
+      "additionalProperties": false
+    },
+    "packet": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.release.delivery-acceptance.v1"
+        },
+        "core_packet_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "core_plan_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "acceptance_mapping_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "artifact_requirements_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "profiles": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/profileEvidence"
+          }
+        },
+        "paper_criteria": {
+          "type": "object",
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/reference"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "supplemental": {
+          "type": "object",
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/reference"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "release_acceptance_complete": {
+          "const": false
+        },
+        "publication_authorized": {
+          "const": false
+        }
+      },
+      "required": [
+        "protocol",
+        "core_packet_sha256",
+        "core_plan_sha256",
+        "acceptance_mapping_sha256",
+        "artifact_requirements_sha256",
+        "profiles",
+        "paper_criteria",
+        "supplemental",
+        "release_acceptance_complete",
+        "publication_authorized"
+      ],
+      "additionalProperties": false
+    },
+    "identity": {
+      "type": "object",
+      "properties": {
+        "primary": {
+          "$ref": "#/$defs/file"
+        },
+        "inventory": {
+          "$ref": "#/$defs/file"
+        },
+        "receipts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/file"
+          }
+        },
+        "artifact_signer_policy_sha256": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "primary",
+        "inventory",
+        "receipts",
+        "artifact_signer_policy_sha256"
+      ],
+      "additionalProperties": false
+    },
+    "binding": {
+      "type": "object",
+      "properties": {
+        "source": {
+          "$ref": "#/$defs/source"
+        },
+        "delivery_index_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "artifacts": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/identity"
+          }
+        }
+      },
+      "required": [
+        "source",
+        "delivery_index_sha256",
+        "artifacts"
+      ],
+      "additionalProperties": false
+    },
+    "observation": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.release.delivery-observation.v1"
+        },
+        "id": {
+          "type": "string"
+        },
+        "result": {
+          "enum": [
+            "pending",
+            "failed",
+            "passed"
+          ]
+        },
+        "scope": {
+          "enum": [
+            "unqualified",
+            "fixture",
+            "operational"
+          ]
+        },
+        "skips": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "bindings": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/binding"
+          }
+        },
+        "core_cells": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/reference"
+          },
+          "minItems": 1,
+          "maxItems": 128
+        },
+        "observer": {
+          "type": "string",
+          "minLength": 1
+        },
+        "observed_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "expected_outcome": {
+          "type": "string",
+          "minLength": 1
+        },
+        "actual_outcome": {
+          "type": "string",
+          "minLength": 1
+        },
+        "release_acceptance_complete": {
+          "const": false
+        },
+        "publication_authorized": {
+          "const": false
+        }
+      },
+      "required": [
+        "protocol",
+        "id",
+        "result",
+        "scope",
+        "skips",
+        "bindings",
+        "core_cells",
+        "evidence",
+        "observer",
+        "observed_at",
+        "expected_outcome",
+        "actual_outcome",
+        "release_acceptance_complete",
+        "publication_authorized"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "oneOf": [
+    {
+      "$ref": "#/$defs/requirements"
+    },
+    {
+      "$ref": "#/$defs/targets"
+    },
+    {
+      "$ref": "#/$defs/packet"
+    },
+    {
+      "$ref": "#/$defs/observation"
+    }
+  ]
+}

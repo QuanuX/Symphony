@@ -1,0 +1,59 @@
+{
+  "protocol": "symphony.public-beta.execution-integration.v1",
+  "task": "PR 197 Go preparation repair",
+  "tested_source": {
+    "commit": "8566a33dcfb7eb26ce349fe88be723444491d929",
+    "tree": "cfac7fd0331fa3ab87017ea84fcba86be4bea9db"
+  },
+  "expected_exit": 2,
+  "observed_exit": 2,
+  "result": "incomplete_no_go_for_public_beta",
+  "counts": {
+    "core_cells": 36,
+    "go_commands_per_core": 6,
+    "native_units_per_core": 51,
+    "paper_criteria": 58,
+    "profiles": 4,
+    "supplemental": 31
+  },
+  "core_missing_entries": 108,
+  "companion_missing_entries": 138,
+  "missing_count_note": "Checker missing entries include selections, inputs, observations and review metadata; these are not counts of independent defects and are not added together.",
+  "output_reuse_refusal": {
+    "exit": 1,
+    "packet_json_bytes_unchanged": true
+  },
+  "evidence_location": "/Users/Duncan/Documents/ChatGPT/Symphony p2-p8/implementation/beta-pr197-ci-repair-2026-11-13/w12-go-review-01",
+  "review_sha256": "db554785b4b2a0cfa719b6bc6e2f015589c20ac7b0be10fbaaeb1f64a2292ad9",
+  "driver_sha256": "da091a0fd4efe2ea931e38ad2c6056b96cab1b85212eecb82c706839c31adadd",
+  "log_sha256": "b6fd7c90c5344f22849222ecc369cda31cf93ca94694d1c01e8f5169410a544a",
+  "refusal_log_sha256": "51806df88593e0ba29774d7fdc8441eed8a4441f4a905733dbde99ee9a0d52f3",
+  "source_inputs_sha256": {
+    "cmake/mvp-dependencies.json": "7dc5fa50933655ad7cd84bc5a70790595e412c9fefa9c58adcabd1f43aff08f2",
+    "cmake/mvp-platform-profiles.json": "5919db98185207278845d1d63c5c2a77b4daff032d44ebb0f4889b8785173bd5",
+    "cmake/mvp-release-identities.json": "1e0965f3083df1c61122085ff99994fce15206719d99aa76cba6e050fabe81f3",
+    "tests/launch-acceptance/plan.json": "64175c90cef16e5ddb714c1a9b99756718312b85aacdab9b737647ae7ff12603",
+    "tests/public-beta/acceptance-mapping.json": "a12eb6fe15130c503ff906241cd69c7ab85cd9b234ea8840e4a1d1e41d0d153f",
+    "tests/public-beta/capability-groups.json": "5d8d281346602351d7e4ae75a007364fc0abee551034219d34fc2440afc6cfae",
+    "tests/public-beta/execution/authorization.json": "c1cee9d1c4341f3a634e91091a2eff73ee5ae1667058648a18468eba6b801f76",
+    "tests/public-beta/owners.json": "e3591e34829b9abffdc957d076413057f87eea98ebf2f460b190e673093b930d",
+    "tests/public-beta/package-plan.json": "2cef5f8d646583282170503f0912827c889a7a9ea74a600d16ca3971a902649a"
+  },
+  "packet_files_sha256": {
+    "requirements.json": "90a154d0bfa0034c9dbde4252e7f747d610ea266636905f35a70926d9eaf7c5c",
+    "acceptance-mapping.json": "1fdda29192ffefbbe8d38ef1c53147ec8e3b5b9aaf1c58d8cdced8a12da23ddc",
+    "companion-packet.json": "cc47340b54f2a0d5062a0437f086724684db3ef160dfecdb667f178b425f36b7",
+    "workorders.json": "1b26403392a0f22ed4040e953ae089fc11b5e0b829319be7096ff9659868c78c",
+    "targets.json": "097f80ba6a6074fb98443b71cd44f9e171d5e0aaf1e76c6251cdde6a3438ceff",
+    "core-plan.json": "eed9dce0b19644f1f7b548af905b2dadb74529fe64e3924477e94bd2c6ad2221",
+    "companion-report.json": "7f6ba8366e7db9aaee32580f621f1752d68c5646c0328fab2e8d5a06dde1c440",
+    "core-report.json": "6b845704f06d6cd55bbb4c42d441810971319c18aa3c549c8bebd393f8a5b318",
+    "construction.json": "6d03f449402438768c9aedd48d63979806c87ace5d84681dbb77d8d1fc012fe5",
+    "review.json": "db554785b4b2a0cfa719b6bc6e2f015589c20ac7b0be10fbaaeb1f64a2292ad9",
+    "core-packet.json": "311f8e694f60885cc5d9142d4e022961ed129df84fd86514cb12315f7f9412df"
+  },
+  "hosted_ci": "New repair results not awaited or claimed",
+  "feature_freeze_in_force": true,
+  "release_acceptance_complete": false,
+  "publication_authorized": false
+}

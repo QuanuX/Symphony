@@ -1,0 +1,381 @@
+{
+  "protocol": "symphony.public-beta.ci-repair.v1",
+  "pr": 197,
+  "failed_source_commit": "d43506cecebdeaf8ec46cf8cbe9c3d9a79419367",
+  "failure_diagnosis": {
+    "workflow": 43401497996,
+    "source": "d43506cecebdeaf8ec46cf8cbe9c3d9a79419367",
+    "failure_boundary": "release-installed-validator",
+    "jobs": [
+      {
+        "job_id": 131805176007,
+        "job_url": "https://github.com/QuanuX/Symphony/actions/runs/43401497996/job/131805176007",
+        "violations": [
+          {
+            "path": "tests/launch-acceptance/qualify-executable-delivery.py",
+            "rule": "repository_policy.python_source_or_dependency"
+          },
+          {
+            "path": "tests/launch-acceptance/qualify-go-owners.py",
+            "rule": "repository_policy.python_source_or_dependency"
+          },
+          {
+            "path": "tests/launch-acceptance/qualify-native-delivery.py",
+            "rule": "repository_policy.python_source_or_dependency"
+          },
+          {
+            "path": "tests/package-release/run.cmake",
+            "rule": "repository_policy.python_build_dependency"
+          },
+          {
+            "path": "tests/external-engine/qualify.py",
+            "rule": "repository_policy.python_source_or_dependency"
+          },
+          {
+            "path": "tests/beta-readiness/test_prepare.py",
+            "rule": "repository_policy.python_source_or_dependency"
+          },
+          {
+            "path": "tests/beta-readiness/prepare.py",
+            "rule": "repository_policy.python_source_or_dependency"
+          },
+          {
+            "path": "docs/public-beta/validate.py",
+            "rule": "repository_policy.python_source_or_dependency"
+          },
+          {
+            "path": ".github/workflows/qxctl-standalone.yml",
+            "rule": "repository_policy.python_build_dependency"
+          },
+          {
+            "path": ".github/workflows/release-qualification.yml",
+            "rule": "repository_policy.python_build_dependency"
+          },
+          {
+            "path": ".github/workflows/mvp-dependencies.yml",
+            "rule": "repository_policy.python_build_dependency"
+          }
+        ]
+      },
+      {
+        "job_id": 131805176069,
+        "job_url": "https://github.com/QuanuX/Symphony/actions/runs/43401497996/job/131805176069",
+        "violations": [
+          {
+            "path": "docs/public-beta/validate.py",
+            "rule": "repository_policy.python_source_or_dependency"
+          },
+          {
+            "path": ".github/workflows/mvp-dependencies.yml",
+            "rule": "repository_policy.python_build_dependency"
+          },
+          {
+            "path": ".github/workflows/release-qualification.yml",
+            "rule": "repository_policy.python_build_dependency"
+          },
+          {
+            "path": ".github/workflows/qxctl-standalone.yml",
+            "rule": "repository_policy.python_build_dependency"
+          },
+          {
+            "path": "tests/package-release/run.cmake",
+            "rule": "repository_policy.python_build_dependency"
+          },
+          {
+            "path": "tests/launch-acceptance/qualify-native-delivery.py",
+            "rule": "repository_policy.python_source_or_dependency"
+          },
+          {
+            "path": "tests/launch-acceptance/qualify-go-owners.py",
+            "rule": "repository_policy.python_source_or_dependency"
+          },
+          {
+            "path": "tests/launch-acceptance/qualify-executable-delivery.py",
+            "rule": "repository_policy.python_source_or_dependency"
+          },
+          {
+            "path": "tests/external-engine/qualify.py",
+            "rule": "repository_policy.python_source_or_dependency"
+          },
+          {
+            "path": "tests/beta-readiness/prepare.py",
+            "rule": "repository_policy.python_source_or_dependency"
+          },
+          {
+            "path": "tests/beta-readiness/test_prepare.py",
+            "rule": "repository_policy.python_source_or_dependency"
+          }
+        ]
+      },
+      {
+        "job_id": 131805176109,
+        "job_url": "https://github.com/QuanuX/Symphony/actions/runs/43401497996/job/131805176109",
+        "violations": [
+          {
+            "path": "tests/launch-acceptance/qualify-native-delivery.py",
+            "rule": "repository_policy.python_source_or_dependency"
+          },
+          {
+            "path": "tests/launch-acceptance/qualify-go-owners.py",
+            "rule": "repository_policy.python_source_or_dependency"
+          },
+          {
+            "path": "tests/launch-acceptance/qualify-executable-delivery.py",
+            "rule": "repository_policy.python_source_or_dependency"
+          },
+          {
+            "path": "tests/external-engine/qualify.py",
+            "rule": "repository_policy.python_source_or_dependency"
+          },
+          {
+            "path": "tests/beta-readiness/test_prepare.py",
+            "rule": "repository_policy.python_source_or_dependency"
+          },
+          {
+            "path": "tests/beta-readiness/prepare.py",
+            "rule": "repository_policy.python_source_or_dependency"
+          },
+          {
+            "path": "tests/package-release/run.cmake",
+            "rule": "repository_policy.python_build_dependency"
+          },
+          {
+            "path": "docs/public-beta/validate.py",
+            "rule": "repository_policy.python_source_or_dependency"
+          },
+          {
+            "path": ".github/workflows/release-qualification.yml",
+            "rule": "repository_policy.python_build_dependency"
+          },
+          {
+            "path": ".github/workflows/qxctl-standalone.yml",
+            "rule": "repository_policy.python_build_dependency"
+          },
+          {
+            "path": ".github/workflows/mvp-dependencies.yml",
+            "rule": "repository_policy.python_build_dependency"
+          }
+        ]
+      },
+      {
+        "job_id": 131805176151,
+        "job_url": "https://github.com/QuanuX/Symphony/actions/runs/43401497996/job/131805176151",
+        "violations": [
+          {
+            "path": "tests/beta-readiness/prepare.py",
+            "rule": "repository_policy.python_source_or_dependency"
+          },
+          {
+            "path": "tests/beta-readiness/test_prepare.py",
+            "rule": "repository_policy.python_source_or_dependency"
+          },
+          {
+            "path": "tests/launch-acceptance/qualify-go-owners.py",
+            "rule": "repository_policy.python_source_or_dependency"
+          },
+          {
+            "path": "tests/launch-acceptance/qualify-native-delivery.py",
+            "rule": "repository_policy.python_source_or_dependency"
+          },
+          {
+            "path": "tests/launch-acceptance/qualify-executable-delivery.py",
+            "rule": "repository_policy.python_source_or_dependency"
+          },
+          {
+            "path": "tests/package-release/run.cmake",
+            "rule": "repository_policy.python_build_dependency"
+          },
+          {
+            "path": "tests/external-engine/qualify.py",
+            "rule": "repository_policy.python_source_or_dependency"
+          },
+          {
+            "path": "docs/public-beta/validate.py",
+            "rule": "repository_policy.python_source_or_dependency"
+          },
+          {
+            "path": ".github/workflows/mvp-dependencies.yml",
+            "rule": "repository_policy.python_build_dependency"
+          },
+          {
+            "path": ".github/workflows/release-qualification.yml",
+            "rule": "repository_policy.python_build_dependency"
+          },
+          {
+            "path": ".github/workflows/qxctl-standalone.yml",
+            "rule": "repository_policy.python_build_dependency"
+          }
+        ]
+      }
+    ]
+  },
+  "other_hosted_results": {
+    "pr": 197,
+    "head_sha": "d43506cecebdeaf8ec46cf8cbe9c3d9a79419367",
+    "cancelled_job": {
+      "id": 131805175554,
+      "run_id": 43401497706,
+      "name": "Profile administration (macos-15)",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "runner_id": 0,
+      "runner_name": "",
+      "runner_group_id": 0,
+      "steps": [
+
+      ],
+      "labels": [
+        "macos-15"
+      ],
+      "url": "https://github.com/QuanuX/Symphony/actions/runs/43401497706/job/131805175554",
+      "failure_annotation": "The job was not acquired by Runner of type hosted even after multiple attempts",
+      "notice": "Due to capacity constraints, jobs targeting macOS arm64 runners may experience longer queue times.",
+      "classification": "hosted_runner_acquisition_failure",
+      "source_change_required": false,
+      "rerun_performed": false
+    },
+    "codeql": {
+      "run_id": 43401497828,
+      "run_attempt": 1,
+      "head_sha": "d43506cecebdeaf8ec46cf8cbe9c3d9a79419367",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/QuanuX/Symphony/actions/runs/43401497828",
+      "jobs": [
+        {
+          "id": 131805175027,
+          "name": "Analyze c-cpp (ubuntu-24.04)",
+          "status": "completed",
+          "conclusion": "success",
+          "analyze_and_upload": "success",
+          "extraction_evidence": "success"
+        },
+        {
+          "id": 131805175275,
+          "name": "Analyze go (macos-15-intel)",
+          "status": "completed",
+          "conclusion": "success",
+          "analyze_and_upload": "success",
+          "extraction_evidence": "success"
+        },
+        {
+          "id": 131805175278,
+          "name": "Analyze c-cpp (macos-15-intel)",
+          "status": "completed",
+          "conclusion": "success",
+          "analyze_and_upload": "success",
+          "extraction_evidence": "success"
+        },
+        {
+          "id": 131805175370,
+          "name": "Analyze swift (macos-15-intel)",
+          "status": "completed",
+          "conclusion": "success",
+          "analyze_and_upload": "success",
+          "extraction_evidence": "success"
+        },
+        {
+          "id": 131805175377,
+          "name": "Analyze go (ubuntu-24.04)",
+          "status": "completed",
+          "conclusion": "success",
+          "analyze_and_upload": "success",
+          "extraction_evidence": "success"
+        },
+        {
+          "id": 131805175677,
+          "name": "Analyze actions (ubuntu-24.04)",
+          "status": "completed",
+          "conclusion": "success",
+          "analyze_and_upload": "success",
+          "extraction_evidence": "success"
+        }
+      ],
+      "all_six_passed": true,
+      "scope": "Hosted job/upload success only; no new audit of SARIF contents or alert disposition performed."
+    }
+  },
+  "changes": [
+    "Replace first-party Python acceptance helpers with standard-library Go; preserve independent oracle and refusal boundaries",
+    "Move preparation dossier from reserved docs publication surface to tests/public-beta; update active references while retaining historical evidence",
+    "Compile standalone release tools explicitly during Go CodeQL extraction",
+    "Refresh dependency-map source membership and hashes without changing repository policy or product features"
+  ],
+  "focused_named_passes": {
+    "dossier": 16,
+    "beta_preparation": 23,
+    "delivery_helpers": 20,
+    "acceptance_companion": 64,
+    "external_helper_unique_across_initial_and_followup": 18
+  },
+  "external_helper_test_names": [
+    "TestCompleteSDKByteBinding",
+    "TestEvidenceOutputIsExclusive",
+    "TestExactOracleIndependentArithmetic",
+    "TestExpectedRefusalNeedsExecutedCommand",
+    "TestJSONRefusesInvalidUTF8",
+    "TestJSONUnicodePreservesCanonicalBytes",
+    "TestOracleCanonicalDigestAndIntegers",
+    "TestOracleRefusesEmpty",
+    "TestOracleTotalCannotOverflowInt64",
+    "TestRemovalPreflightsAllOwnedBytes",
+    "TestRemovalRefusesSymlink",
+    "TestSDKOwnedByteTamper",
+    "TestSDKReceiptDigestTamper",
+    "TestSDKSymlinkedMemberRefused",
+    "TestSDKUnsafeReceiptPath",
+    "TestSDKUnsafeReceiptPath/../outside",
+    "TestSDKUnsafeReceiptPath//absolute/outside",
+    "TestSDKWrongSealedIdentity"
+  ],
+  "installed_sdk_campaign_checks_passed": 119,
+  "validator": {
+    "exit_code": 0,
+    "outcome": "pass",
+    "summary": {
+      "other": 0,
+      "pass": 19843,
+      "total": 19847,
+      "violation": 0,
+      "warning": 4
+    }
+  },
+  "evidence_directory": "/Users/Duncan/Documents/ChatGPT/Symphony p2-p8/implementation/beta-pr197-ci-repair-2026-11-13",
+  "evidence_sha256": {
+    "dossier-moved-fixed-tests.jsonl": "7721a20324e700110a8a5a0499c915d44efcc30fe543e7161560049e045eb25f",
+    "beta-readiness-go-tests-moved.log": "71f3f91009aaa65899c483c23c38aa0cd9a90547122c5e247d8204be4d2dce49",
+    "external-go-tests.jsonl": "f7ba0cb1d57a486a5d8e2dd5b4ba8a91650198823f470f6b9cc98554fe612071",
+    "external-json-refusal-tests.jsonl": "030e8a03edf96615af01ab6c017b9323ece24ef714b2506732bb73a44caec02a",
+    "qualification-common-tests-utf8.jsonl": "31899732aac90254797e4d09dc266f43535e7ad42edd5c3ac3e8c97c3df88d3d",
+    "acceptance-moved-tests.jsonl": "e9556cebfa4208e30b136444285ee3ae409abcb2a94cbab73a5c58a213a4f662",
+    "validator-final-source.json": "28752f0ea56b193547ff5aa323878e233ec9e03401570e8953212fc7dd5870ba",
+    "validator-policy-regressions.log": "71e0dd333fa741f879fbf2f1611341ddbbc4a56903427fcdd959ecad78396ca9",
+    "external-go-campaign-01/evidence.json": "62b6d8956a2396b70d4ca3e92770d223bd25fd5438b5bfc944b2cb7e5738cbc0",
+    "delivery-go-port-evidence.json": "65317dee1b474c4738c4440f93b5dd3be933d600999e0e3425374b0a3d2d65a5",
+    "delivery-go-port-utf8-evidence.json": "8773487f77dff09937c1d257f39c09352235b21e601dd24ee72bc2665061b60c",
+    "codeql-standalone-builds-local.log": "3675a72ff1a37d659e1a450b751b397ba70cd58039a58deaed43706453a748ef",
+    "codeql-standalone-builds-source.sh": "f93ffd40519382532091627db7889453719688711de2c1c5a554257dbc3e576e",
+    "validator-final-repair.json": "28752f0ea56b193547ff5aa323878e233ec9e03401570e8953212fc7dd5870ba",
+    "dependency-map-final.log": "d470419a33132a82f6afa6af4c822c274bf6cd61627efe58eaf6f8ffb441c82f",
+    "release-map-final.log": "159f84e0a0a1cd2e6f6da8b79529e35dc8f30e5da3f9563306738417a700c3c8"
+  },
+  "integration_scope": "Local source and private fixtures only. Successful SDK/delivery integrations preceded final stricter JSON admission changes, verified by focused follow-up parser tests. Original failure logs retained.",
+  "clean_source_integration": "ci-repair-197-integration.json: actual clean source 8566a33d, expected incomplete exit 2; output reuse refuses without changing existing packet bytes",
+  "hosted_repair_results": "not_awaited",
+  "feature_freeze_in_force": true,
+  "new_features_authorized": false,
+  "release_acceptance_complete": false,
+  "publication_authorized": false,
+  "race_instrumentation": {
+    "enabled": [
+      "dossier",
+      "delivery_helpers",
+      "acceptance_companion",
+      "external_helper"
+    ],
+    "not_enabled": [
+      "beta_preparation"
+    ]
+  }
+}

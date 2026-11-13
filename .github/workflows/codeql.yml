@@ -85,6 +85,27 @@ jobs:
           GOWORK=off GOTOOLCHAIN=local GOPROXY=off go build -a \
             -o "$RUNNER_TEMP/codeql-evidence-collector" .github/codeql/collect_evidence.go
 
+      - name: Build standalone release and qualification tools for extraction
+        if: matrix.language == 'go'
+        shell: bash
+        env:
+          GOCACHE: ${{ runner.temp }}/codeql-go-cache
+          GOWORK: 'off'
+          GOENV: 'off'
+          GOTOOLCHAIN: local
+          GOPROXY: 'off'
+        run: |
+          go build -a -o "$RUNNER_TEMP/codeql-beta-dossier" tests/public-beta/validate.go
+          go build -a -o "$RUNNER_TEMP/codeql-beta-review" tests/beta-readiness/prepare.go
+          go build -a -o "$RUNNER_TEMP/codeql-external-engine" tests/external-engine/qualify.go
+          go build -a -o "$RUNNER_TEMP/codeql-candidate-host" tests/launch-acceptance/candidate-host.go
+          go build -a -o "$RUNNER_TEMP/codeql-delivery-set" tests/launch-acceptance/delivery-set.go tests/launch-acceptance/delivery-set-main.go
+          go build -a -o "$RUNNER_TEMP/codeql-acceptance-gates" tests/launch-acceptance/acceptance-gates.go tests/launch-acceptance/acceptance-gates-main.go
+          go build -a -o "$RUNNER_TEMP/codeql-delivery-acceptance" tests/launch-acceptance/delivery-set.go tests/launch-acceptance/acceptance-gates.go tests/launch-acceptance/delivery-acceptance.go
+          for driver in go-owners native-delivery executable-delivery; do
+            go build -a -o "$RUNNER_TEMP/codeql-qualify-$driver" tests/launch-acceptance/qualification-common.go "tests/launch-acceptance/qualify-$driver.go"
+          done
+
       - name: Build the macOS Keychain provider for extraction
         if: matrix.language == 'swift'
         shell: bash

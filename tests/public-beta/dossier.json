@@ -1,0 +1,146 @@
+{
+  "format_version": 1,
+  "state": "prepared_for_manual_review",
+  "prepared_on": "2026-11-13",
+  "source_commit": "887e074780e1d0633bd6e6f57c3d4e07ca3925fc",
+  "source_tree": "3c989eb589bc2e84eff012aa5428a7e93170d81d",
+  "feature_freeze": {
+    "in_force": true,
+    "feature_baseline": "51d4806a60bceca1f47513f90206155d9775d510",
+    "allowed": "Existing-behavior fixes, focused qualification, documentation, packaging and release preparation.",
+    "new_features_authorized": false
+  },
+  "scope_approved": false,
+  "implementation_continuation_approved": false,
+  "release_acceptance_complete": false,
+  "publication_authorized": false,
+  "current_authorization": "Prepare W01/W06 dossier and full W01-W12 implementation plan; commit and push a new branch without waiting for CI. User will manually approve next implementation and switch to Astra Extra High.",
+  "source_binding_note": "This source is the reviewed product baseline, not a self-reference to the future documentation commit. Any product/source/map change requires regenerating the source inventory and reconciling the dossier before candidate creation.",
+  "source_inventory": {
+    "path": "source-inventory.json",
+    "sha256": "5ab032c9a98d7bde0872b0cd8fa4009cfb17caa6558b716961d6dfaa6423d135",
+    "producer": "cmake -DRELEASE_REVIEW_OUTPUT=<new absolute file outside clean checkout> -P tests/launch-acceptance/prepare-review.cmake",
+    "validation": "Dependency and release-map checks passed at the bound clean source; no package built.",
+    "raw_helper_output_sha256": "9090550f15f61fb0b715e2db839720f4695f7d0777a78a43d606e13ec08f86ca",
+    "normalization": "Trailing spaces and tabs removed from JSON lines for repository whitespace rules; parsed JSON equality verified. Original helper output remains unchanged outside checkout."
+  },
+  "source_fingerprints": {
+    "cmake/mvp-dependencies.json": "a39b08f4a6c54d8e73f9b28a8010ac2d0f0ace02df0d65225fee267576c812de",
+    "cmake/mvp-release-identities.json": "1e0965f3083df1c61122085ff99994fce15206719d99aa76cba6e050fabe81f3",
+    "cmake/mvp-platform-profiles.json": "5919db98185207278845d1d63c5c2a77b4daff032d44ebb0f4889b8785173bd5",
+    "tests/launch-acceptance/plan.json": "64175c90cef16e5ddb714c1a9b99756718312b85aacdab9b737647ae7ff12603",
+    "tests/release-qualification/manifest.json": "3d2e6ba2886d25cde547d27ddd563d092cebe156bddf6e0b122dac2035c406ab",
+    "tests/cloudflare-release/support-matrix.json": "ad9c3efd56bdf4f50df860914c3bb16fc6beb4bc7d588fcbcf2b13bd74b01c03",
+    "tests/package-release/README.md": "f37af83e5f602379c324a0b42e920af41dc399f121cd3f5de40b4ff82d3c55e2",
+    "tests/launch-acceptance/README.md": "40718408e2d5163aa6dd2a881a52c3f5222d4c819ed574ffeaca93460410153c",
+    ".github/RELEASE-GATES.md": "4ff493b475364fade953b324d100954f7b4cbdfadeb4eefdd67fe0c2ef669bc5",
+    ".github/LAUNCH.md": "7b7ab7ab523d703038d3f962c4f243b7643dda7490d4e40701574ac98f217da3",
+    "modules/secure-identity-access-governance/CREDENTIAL-QUALIFICATION.md": "e81cca7bea7862d0e761d1c0247bf9387ffe94d326d936baa00c50fce347f6c1",
+    "knowledge/sov/cloudflare/SPEC.md": "d5f60a7ae91468cadc69da3c67f05ddd3852a720d9f6256e6dbbc2890b6a5147",
+    "knowledge/sov/cloudflare/I6-QUALIFICATION.md": "e2551f563c9f3c774cc0c1f74a253713ca5720f76c81325601f85f24eb3bcd91",
+    "cmake/notices/PUBLISHER-REVIEW.md": "eb0b85020b6e12c9803402a5740f652a3e81c1b2a0b1c31e7354813b491210ec"
+  },
+  "decisions": [
+    {
+      "id": "D01",
+      "title": "Exact beta capability and payload selection",
+      "decision_owner_role": "release_approver",
+      "needed_before": "W07",
+      "recommendation": "Approve the proposed independently versioned core/SDK component closure and explicit optional payloads. Preserve every retained promise until an explicit disposition is recorded.",
+      "references": [
+        "capability-groups.json",
+        "package-plan.json"
+      ],
+      "state": "pending_manual_review",
+      "approved_by": null,
+      "approved_at": null
+    },
+    {
+      "id": "D02",
+      "title": "Core and Cloudflare platform applicability",
+      "decision_owner_role": "release_approver",
+      "needed_before": "W07",
+      "recommendation": "Retain all four core profiles. Treat Cloudflare vendor runtime as a separately qualified Intel macOS closure; select its exact OS/profile. Other vendor artifact targets remain unadmitted; resolve any all-platform promise explicitly.",
+      "references": [
+        "capability-groups.json",
+        "source-inventory.json"
+      ],
+      "state": "pending_manual_review",
+      "approved_by": null,
+      "approved_at": null
+    },
+    {
+      "id": "D03",
+      "title": "Retained promises needing missing implementation",
+      "decision_owner_role": "release_approver",
+      "needed_before": "dependent_capability_acceptance",
+      "recommendation": "Keep general L14/OS providers/native consumers, TWS bridge, CF rotation/project execution and any missing risk/state composition visible as blocked promises. Freeze remains; choose an explicit scope disposition or narrowly approved exception before new capability work.",
+      "references": [
+        "CAPABILITY-MATRIX.md",
+        "IMPLEMENTATION-PLAN.md"
+      ],
+      "state": "pending_manual_review",
+      "approved_by": null,
+      "approved_at": null
+    },
+    {
+      "id": "D04",
+      "title": "Publisher trust and actual payload review",
+      "decision_owner_role": "release_approver",
+      "needed_before": "candidate_signing_and_distribution",
+      "recommendation": "Select independently obtained trust roots, custody/recovery, native OS trust expectations and payload reviewer. Actual bytes, loader/TLS closure and source/notices remain review requirements.",
+      "references": [
+        "PACKAGE-AND-TRUST.md"
+      ],
+      "state": "pending_manual_review",
+      "approved_by": null,
+      "approved_at": null
+    },
+    {
+      "id": "D05",
+      "title": "Named engineering and operational ownership",
+      "decision_owner_role": "release_approver",
+      "needed_before": "dependent_execution_and_W12",
+      "recommendation": "Assign the currently null roles and per-component/profile coverage; preserve @quantDIY as release/rollback primary. Proposed roles and agents are not personnel assignments.",
+      "references": [
+        "owners.json"
+      ],
+      "state": "pending_manual_review",
+      "approved_by": null,
+      "approved_at": null
+    },
+    {
+      "id": "D06",
+      "title": "Delivery channels and separate MCP dependency",
+      "decision_owner_role": "release_approver",
+      "needed_before": "channel_build_or_publication",
+      "recommendation": "Propose verified direct candidate downloads first; select any MCPB/registry/OpenAI directory or other distribution explicitly. Version/catalogue/client acceptance and external approvals remain separate.",
+      "references": [
+        "IMPLEMENTATION-PLAN.md"
+      ],
+      "state": "pending_manual_review",
+      "approved_by": null,
+      "approved_at": null
+    },
+    {
+      "id": "D07",
+      "title": "Paper criteria applicability and score policy",
+      "decision_owner_role": "release_approver",
+      "needed_before": "W12",
+      "recommendation": "Review all58 proposed criteria alongside the36 existing core cells. Preserve user-led live qualification after packaging. Adopt any score threshold and simulator substitution only explicitly; no current score/date is inferred.",
+      "references": [
+        "paper-criteria.json",
+        "acceptance-mapping.json"
+      ],
+      "state": "pending_manual_review",
+      "approved_by": null,
+      "approved_at": null
+    }
+  ],
+  "completion": {
+    "W01": "prepared_selection_and_mapping_pending_approval",
+    "W06": "prepared_payload_and_trust_plan_pending_actual_bytes_and_review",
+    "W02_through_W12": "planned_not_executed_by_this_increment"
+  },
+  "evidence_policy": "No credentials, private keys, licensed SDK bytes or private provider payloads in Git. Public dossier retains nonsecret identities and redacted evidence pointers only."
+}
