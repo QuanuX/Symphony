@@ -64,3 +64,38 @@ func TestCLIHelpShowsScopedCommandsAndActualFlagDefaults(t *testing.T) {
 		t.Fatalf("leaf help does not show exact flags/defaults: %d\n%s", status, output)
 	}
 }
+
+func TestCLIRegisteredSTAVFamiliesReachDispatcher(t *testing.T) {
+	root, err := newRootCommand()
+	if err != nil {
+		t.Fatal(err)
+	}
+	manifest, err := commandregistry.BuildExpected(root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, entry := range manifest.Commands {
+		if entry.Grammar == nil || !strings.HasPrefix(*entry.Grammar, "qxctl stav ") {
+			continue
+		}
+		args := strings.Fields(strings.TrimPrefix(*entry.Grammar, "qxctl "))
+		if err := validateLegacySubcommand(args); err != nil {
+			t.Errorf("registered %s blocked: %v", entry.CommandID, err)
+		}
+	}
+	for _, route := range []string{"accordare status", "accordare reconcile", "accordare supervisor-install", "accordare supervisor-uninstall", "accordare-grant install", "accordare-grant remove"} {
+		t.Run(route, func(t *testing.T) {
+			args := append([]string{"stav"}, strings.Fields(route)...)
+			output, status := invokeCLI(t, append(args, "--help")...)
+			if status != 0 || !strings.Contains(output, "qxctl stav "+route) || !strings.Contains(output, "--tops-id") {
+				t.Fatalf("native help blocked: %d\n%s", status, output)
+			}
+			// Missing authority inputs must reach the existing owner validation,
+			// without touching enrollment, services or a grant store.
+			output, status = invokeCLI(t, args...)
+			if status != 1 || !strings.Contains(output, "requires --tops-id") {
+				t.Fatalf("owner validation not reached: %d\n%s", status, output)
+			}
+		})
+	}
+}
