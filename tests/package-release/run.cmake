@@ -201,11 +201,15 @@ run(acceptance-gates-regressions pass ${host_go_env} "${host_go}" test -race -co
   "${repository}/tests/launch-acceptance/acceptance-gates_test.go")
 run(delivery-set-regressions pass ${host_go_env} "${host_go}" test -race -count=1
   "${repository}/tests/launch-acceptance/delivery-set.go"
-  "${repository}/tests/launch-acceptance/delivery-set_test.go")
+  "${repository}/tests/launch-acceptance/delivery-set_test.go"
+  "${repository}/tests/launch-acceptance/acceptance-gates.go"
+  "${repository}/tests/launch-acceptance/delivery-acceptance.go"
+  "${repository}/tests/launch-acceptance/delivery-acceptance_test.go")
 run(host-extraction-build pass ${host_go_env} "${host_go}" build -trimpath
   -o "${work}/candidate-host" "${repository}/tests/launch-acceptance/candidate-host.go")
 run(delivery-tool-build pass ${host_go_env} "${host_go}" build -trimpath
-  -o "${work}/delivery-set" "${repository}/tests/launch-acceptance/delivery-set.go")
+  -o "${work}/delivery-set" "${repository}/tests/launch-acceptance/delivery-set.go"
+  "${repository}/tests/launch-acceptance/delivery-set-main.go")
 # Each selected native artifact carries one version of each selected component;
 # side-by-side versions remain independently selectable artifacts.
 file(COPY "${stage}/" DESTINATION "${work}/delivery-stage")

@@ -78,8 +78,22 @@ both SOV executables. These fixture source revisions are separate; combining the
 would violate the single-source candidate rule. Final core construction awaits
 the clean source selected after the remaining engineering increments.
 
-Next: the v1-compatible multi-artifact acceptance
-companion, independent public-SDK engine campaign and remaining staged gates.
+## Increment 5 — multi-artifact acceptance companion
+
+The companion calls the unchanged v1 check logic and verifies all retained signed
+sets against independent selections and trust policies. It binds every selected
+artifact's owner, installation, loader and trust evidence, all 36 scenarios/cells,
+58 criteria and 31 supplemental entries. Native primary digests remain v1 digests;
+no artifact ID substitutes for them. Missing implementations, unsupported owner
+adapters, absent inputs, fixtures and skips remain incomplete.
+
+[Increment 5](increment-05.json) records the focused release-tool suite, source
+bindings and actual template/CLI results. The positive checker packet is an
+explicitly synthetic fixture; structural readiness cannot certify observer truth
+or reviewer independence. All acceptance and publication flags remain false.
+See the [operator procedure](../../../tests/launch-acceptance/DELIVERY-ACCEPTANCE.md).
+
+Next: independent public-SDK engine campaign and remaining staged gates.
 Record completed increments and push them; inspect CI later when needed for an
 actual candidate decision.
 

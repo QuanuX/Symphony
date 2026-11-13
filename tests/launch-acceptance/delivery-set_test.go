@@ -452,7 +452,7 @@ func TestDeliveryCMakeSignerUsesValidatedIndexAndIndependentPolicy(t *testing.T)
 	_, file, _, _ := runtime.Caller(0)
 	root := filepath.Clean(filepath.Join(filepath.Dir(file), "../.."))
 	tool := filepath.Join(work, "delivery-set")
-	build := exec.Command(filepath.Join(runtime.GOROOT(), "bin/go"), "build", "-trimpath", "-o", tool, filepath.Join(filepath.Dir(file), "delivery-set.go"))
+	build := exec.Command(filepath.Join(runtime.GOROOT(), "bin/go"), "build", "-trimpath", "-o", tool, filepath.Join(filepath.Dir(file), "delivery-set.go"), filepath.Join(filepath.Dir(file), "delivery-set-main.go"))
 	if b, e := build.CombinedOutput(); e != nil {
 		t.Fatalf("build release tool: %v %s", e, b)
 	}

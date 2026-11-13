@@ -1,0 +1,90 @@
+{
+  "protocol": "symphony.public-beta.execution-increment.v1",
+  "increment": 5,
+  "parent_commit": "fea1e77660f79fe7b38f4f0004bb75c3b49d21df",
+  "scope": "V1-compatible complete delivery acceptance companion, independent artifact requirements, whole signed sets, owner and operational observation bindings. Feature freeze retained.",
+  "toolchain": "go1.26.5",
+  "focused_cases": {
+    "pass": 246,
+    "fail": 0,
+    "skip": 0
+  },
+  "new_companion_named_cases": 64,
+  "focused_log_sha256": "daee16cc334c3081b6fa30086e79aecf2141deea21f380068bf776bd16df2cd1",
+  "initial_attempt": {
+    "log_sha256": "68c12ab692dad7454095f4ef4eb660422f3aa49d3f442ed69ea99a5162382cbb",
+    "finding": "The group-write negative fixture was masked by the shell umask. Explicit chmod now establishes the unsafe mode before testing refusal; production admission was not weakened."
+  },
+  "actual_cli_fixture": {
+    "protocol": "symphony.public-beta.acceptance-companion-fixture.v1",
+    "core_profiles": 4,
+    "core_cells": 36,
+    "paper_criteria": 58,
+    "supplemental": 31,
+    "result": "valid_incomplete",
+    "missing": 138,
+    "release_acceptance_complete": false,
+    "publication_authorized": false,
+    "files_sha256": {
+      "requirements.json": "e518ff8ffa1a67476078beeafc464d593aa434a8826d6684a71d7cb29e5c69fc",
+      "core-init.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "result.json": "4fb66e3c85fc4ba0e88bb8a70ae35bddd78e79e6cb89890e544d34538d55b4ab",
+      "targets.json": "67d7a98dafe83d6ca1a4bd9a6073ed82e26ea3594cf6daaafa67e47b98421896",
+      "packet.json": "588ac6fabef211d90586c99bbf7a3db016a08f75a9ab5760ac029f30fb177a52",
+      "core-init.stdout": "b6fd84ab079e5728328e947e4f72a092e1bea02a3fab1ee1f5ce2148653d6a52",
+      "companion-init.stdout": "e2b375d471aafc0095961b9a8b150554e344bf2ddb65193ea4e1dbfcbd176cbc",
+      "incomplete-check.stdout": "4fb66e3c85fc4ba0e88bb8a70ae35bddd78e79e6cb89890e544d34538d55b4ab",
+      "core.json": "ad00d27256fa1c466cc36d7a24ca1b9c1395ccf572e5c9fe4b0f80abecf1a808",
+      "requirements-init.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "immutable-output-refusal.stderr": "16eb0a189409e3fada31bb09500a016b275999a2744cf3c3cc95b537a8f83a98",
+      "immutable-output-refusal.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "requirements-init.stdout": "e2b375d471aafc0095961b9a8b150554e344bf2ddb65193ea4e1dbfcbd176cbc",
+      "incomplete-check.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "companion-init.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "builds": {
+    "increment05-acceptance-gates": "05addeaaea8e91487dcc46a06922ccfbbf9dc80e96290449fd422d13d8af9198",
+    "increment05-delivery-acceptance": "c3abc7c9b94ccff389e2f74317c322b0a7496c4ea567f05deec247639674c7ea",
+    "increment05-delivery-acceptance-linux-arm64": "fa6871d07f13f7a9d528ad9a255aa7b9890322130eef415861dcb1e921a247e9",
+    "increment05-delivery-acceptance-darwin-arm64": "f1a440c6ebd08872abcef61692e662410661431ea06a71a3744d651962f604bf",
+    "increment05-delivery-acceptance-linux-amd64": "71042acd15e253aad3d84f1cfe18c915cde1a5303186a2015a08a0e598a052e3",
+    "increment05-delivery-set": "d0f41aefc3daef134dd1ae8f40cc3bb5e2196ce2d443c7585e670f6006d5d4a5"
+  },
+  "verification": [
+    "Go race suite: 246 named passes including 64 new companion cases; zero failures/skips",
+    "go vet passed for the shared release tooling and tests",
+    "Darwin amd64 CLI builds and Linux amd64/arm64 plus Darwin arm64 companion cross-builds passed; cross-builds not executed",
+    "Actual CLI initializes all 36 cells/58 criteria/31 supplemental entries, returns incomplete exit 2, and refuses output reuse with exit 1",
+    "Dependency/release maps passed with 1387 source hashes",
+    "Ruby Psych parsed affected workflows; git whitespace check passed",
+    "Historical dossier validator passed with current_product_source_verified=false"
+  ],
+  "source_paths_sha256": {
+    ".github/workflows/qxctl-standalone.yml": "16d08d06c46bfe5e7f740e73f9247e0c43af10106b39f8fd5571785483612a01",
+    ".github/workflows/release-qualification.yml": "e1e0f16eb2b3a3b20cbf28469589e43df30234b8aa34ead5b33f3072bdae87e3",
+    "cmake/release/delivery-acceptance-v1.schema.json": "2e8b8b4cf44fc17a8b0cf6592b1e464bef09705d10473ca7ee33994372cc4ab8",
+    "docs/public-beta/IMPLEMENTATION-PLAN.md": "da7515fca1d1a4032e30b2c1426fc63d573fc1f502b05dc85379fc450af82234",
+    "docs/public-beta/execution/README.md": "fb7b470e443812d903238181e21a529f044ea147178c207faebbd49e95228de8",
+    "tests/launch-acceptance/DELIVERY-ACCEPTANCE.md": "54c8fab22f3a5553715ff7a07bd7bd78765b682c81ae6c7357a79cadd9e537ee",
+    "tests/launch-acceptance/DELIVERY-SET.md": "9fb64673c8239bc55da6be9abd3373963945d9667db0740ceee5c67975ba9570",
+    "tests/launch-acceptance/README.md": "58d03fd82816ddc953e3871d90e30fcc1fbb5d845dee5f660cdd6970a9f5bce3",
+    "tests/launch-acceptance/acceptance-gates-main.go": "96db2a2cf004b7fd34c82d1e49d6461126e8941937359eca4b6e6f885b37b9e2",
+    "tests/launch-acceptance/acceptance-gates.go": "25a2a729261c697d0b54e972a2ed26c6a07da08a540215560b7f95d24a098434",
+    "tests/launch-acceptance/delivery-acceptance.go": "b4560e903d3c7c6aa7bb307e835d9a09652191a6f5ff15b179a9347e21dac650",
+    "tests/launch-acceptance/delivery-acceptance_test.go": "2ad0d9e906bfbfe2cbc10b45ffe10e7c568955b2aaa361b887cb7fdcd49956e7",
+    "tests/launch-acceptance/delivery-set-main.go": "2e7db1f271a18b99e5417a03aa2ff3cc964ae7dfd340d07471da29d191d168b9",
+    "tests/launch-acceptance/delivery-set.go": "65f1f0fc2ee86b63d6ea7ccee89ca16009e75dc715e130ea6e3fc9d2732240d3",
+    "tests/launch-acceptance/delivery-set_test.go": "bb22003881401210a178963e356b12896896cbf5110655e708bd326e06b4d41a",
+    "tests/package-release/run.cmake": "c2c2b6dd698e752338353984117ee3f16d326b6c3dd3618d527bee211d43136a"
+  },
+  "limits": [
+    "Synthetic complete packet exercises structural review readiness only; no final-host, Anaconda, live-provider, independent-review or release acceptance",
+    "Original v1 logic and packet semantics preserved; CLI mains extracted so the same functions are reused without duplication",
+    "Required original missing implementations and unsupported optional owner readers remain incomplete",
+    "Broad native packaging campaign was not repeated for this evidence-only/tool-entry-point increment; focused shared Go tests cover the changed boundary",
+    "No CI result awaited or claimed"
+  ],
+  "release_acceptance_complete": false,
+  "publication_authorized": false
+}

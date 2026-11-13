@@ -40,7 +40,7 @@ jobs:
       - name: Qualify real Go receipt packages through the signed delivery set
         run: |
           GOWORK=off GOENV=off GOTOOLCHAIN=local go build -trimpath \
-            -o "$RUNNER_TEMP/delivery-set" tests/launch-acceptance/delivery-set.go
+            -o "$RUNNER_TEMP/delivery-set" tests/launch-acceptance/delivery-set.go tests/launch-acceptance/delivery-set-main.go
           python3 tests/launch-acceptance/qualify-go-owners.py \
             --build-root "$RUNNER_TEMP/release-go-identities" \
             --work "$RUNNER_TEMP/release-go-owner-qualification" \

@@ -42,7 +42,7 @@ jobs:
       - name: Qualify qxctl in a fixture-signed delivery set
         run: |
           GOWORK=off GOENV=off GOTOOLCHAIN=local go build -trimpath \
-            -o "$RUNNER_TEMP/delivery-set" tests/launch-acceptance/delivery-set.go
+            -o "$RUNNER_TEMP/delivery-set" tests/launch-acceptance/delivery-set.go tests/launch-acceptance/delivery-set-main.go
           python3 tests/launch-acceptance/qualify-executable-delivery.py \
             --binary "$RUNNER_TEMP/qxctl-reproducible/first/bin/qxctl" \
             --identity "$RUNNER_TEMP/qxctl-reproducible/artifact-identity.json" \

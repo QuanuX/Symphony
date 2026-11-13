@@ -72,7 +72,7 @@ The tool needs no Go modules or provider credentials.
 
 ```sh
 GOWORK=off GOENV=off GOTOOLCHAIN=local go build -trimpath \
-  -o "$private_tools/delivery-set" tests/launch-acceptance/delivery-set.go
+  -o "$private_tools/delivery-set" tests/launch-acceptance/delivery-set.go tests/launch-acceptance/delivery-set-main.go
 
 "$private_tools/delivery-set" -mode prepare -root "$delivery_root" \
   -definition "$definition" -selection "$selection" \

@@ -98,7 +98,7 @@ executes a packet's commands, imports credentials, or approves publication.
 
 ```sh
 GOWORK=off GOTOOLCHAIN=local go build -trimpath \
-  -o /absolute/private-tools/acceptance-gates tests/launch-acceptance/acceptance-gates.go
+  -o /absolute/private-tools/acceptance-gates tests/launch-acceptance/acceptance-gates.go tests/launch-acceptance/acceptance-gates-main.go
 /absolute/private-tools/acceptance-gates -mode init \
   -plan /absolute/reviewed-source/tests/launch-acceptance/plan.json \
   -packet /absolute/private-evidence/packet.json
@@ -165,3 +165,8 @@ through the existing release authority. Complete structure never changes that
 boundary. The package CI matrix runs fixture regressions for missing coverage,
 changed hashes, wrong identities, duplicate/unknown fields, unsafe paths, skips,
 failed/fixture results and overwrite refusal.
+
+The [multi-artifact acceptance companion](DELIVERY-ACCEPTANCE.md) now binds the
+unchanged v1 gate to independently selected signed delivery sets, every selected
+artifact and the full public-beta acceptance mapping. It preserves incomplete
+results and never grants release/publication approval.

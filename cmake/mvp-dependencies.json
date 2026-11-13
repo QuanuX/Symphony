@@ -22750,7 +22750,7 @@
     },
     {
       "path": "tests/launch-acceptance/acceptance-gates.go",
-      "sha256": "2531373371c466e561feecc107056acb6f4336c979eb11baebe0830fa3c28194"
+      "sha256": "25a2a729261c697d0b54e972a2ed26c6a07da08a540215560b7f95d24a098434"
     },
     {
       "path": "tests/launch-acceptance/acceptance-gates_test.go",
@@ -22770,7 +22770,7 @@
     },
     {
       "path": "tests/package-release/run.cmake",
-      "sha256": "638072cfcc479563e60decaec1f08380ffd745788b5c5b659592fcfab18c3869"
+      "sha256": "c2c2b6dd698e752338353984117ee3f16d326b6c3dd3618d527bee211d43136a"
     },
     {
       "path": "tests/sqv-administration/CMakeLists.txt",
@@ -25246,15 +25246,15 @@
     },
     {
       "path": "tests/launch-acceptance/DELIVERY-SET.md",
-      "sha256": "fb5b0c2b29e5d0085a5329753e068e7cdfdcc357416c4bbf80804798bd8fb165"
+      "sha256": "9fb64673c8239bc55da6be9abd3373963945d9667db0740ceee5c67975ba9570"
     },
     {
       "path": "tests/launch-acceptance/delivery-set.go",
-      "sha256": "773c52f2521f81bb2cf1092319197b0a8fa04f94ffc7c91938881a3b8e08bfc3"
+      "sha256": "65f1f0fc2ee86b63d6ea7ccee89ca16009e75dc715e130ea6e3fc9d2732240d3"
     },
     {
       "path": "tests/launch-acceptance/delivery-set_test.go",
-      "sha256": "5ca5121b5508a1399209d478d252427dbc61a76fa40f8c5680dc4dabccf34db7"
+      "sha256": "bb22003881401210a178963e356b12896896cbf5110655e708bd326e06b4d41a"
     },
     {
       "path": "modules/secure-identity-access-governance/tests/release-owner/main.go",
@@ -25295,6 +25295,30 @@
     {
       "path": "cmake/release/immutable-files-v1.schema.json",
       "sha256": "8cf28ae912094487eed97cd248cbde94ae3ed69ee2f389cbfc01354627d2717c"
+    },
+    {
+      "path": "tests/launch-acceptance/delivery-set-main.go",
+      "sha256": "2e7db1f271a18b99e5417a03aa2ff3cc964ae7dfd340d07471da29d191d168b9"
+    },
+    {
+      "path": "tests/launch-acceptance/acceptance-gates-main.go",
+      "sha256": "96db2a2cf004b7fd34c82d1e49d6461126e8941937359eca4b6e6f885b37b9e2"
+    },
+    {
+      "path": "tests/launch-acceptance/delivery-acceptance.go",
+      "sha256": "b4560e903d3c7c6aa7bb307e835d9a09652191a6f5ff15b179a9347e21dac650"
+    },
+    {
+      "path": "tests/launch-acceptance/delivery-acceptance_test.go",
+      "sha256": "2ad0d9e906bfbfe2cbc10b45ffe10e7c568955b2aaa361b887cb7fdcd49956e7"
+    },
+    {
+      "path": "tests/launch-acceptance/DELIVERY-ACCEPTANCE.md",
+      "sha256": "54c8fab22f3a5553715ff7a07bd7bd78765b682c81ae6c7357a79cadd9e537ee"
+    },
+    {
+      "path": "cmake/release/delivery-acceptance-v1.schema.json",
+      "sha256": "2e8b8b4cf44fc17a8b0cf6592b1e464bef09705d10473ca7ee33994372cc4ab8"
     }
   ],
   "platform_profile_catalog": "cmake/mvp-platform-profiles.json",
@@ -25327,7 +25351,8 @@
         "cmake/release/delivery-set-v1.schema.json",
         "tests/launch-acceptance/delivery-set.go",
         "tests/launch-acceptance/delivery-set_test.go",
-        "tests/launch-acceptance/DELIVERY-SET.md"
+        "tests/launch-acceptance/DELIVERY-SET.md",
+        "tests/launch-acceptance/delivery-set-main.go"
       ],
       "publication_authorized": false,
       "owner_inspection": {
@@ -25375,6 +25400,17 @@
           "cmake/release/immutable-files-v1.schema.json"
         ],
         "scope": "Authenticated executable identity and fixed version query only; no invented receipt, protected-profile or installation acceptance."
+      },
+      "acceptance_companion": {
+        "protocol": "symphony.release.delivery-acceptance.v1",
+        "source_paths": [
+          "tests/launch-acceptance/acceptance-gates-main.go",
+          "tests/launch-acceptance/delivery-acceptance.go",
+          "tests/launch-acceptance/delivery-acceptance_test.go",
+          "tests/launch-acceptance/DELIVERY-ACCEPTANCE.md",
+          "cmake/release/delivery-acceptance-v1.schema.json"
+        ],
+        "scope": "Compose unchanged v1 semantics with independently signed whole sets and artifact-bound observations. Full mapping retained; structural readiness is not release acceptance."
       }
     }
   }

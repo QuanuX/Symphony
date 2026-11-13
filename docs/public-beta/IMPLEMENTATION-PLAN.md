@@ -415,7 +415,8 @@ Retain verification-tool identity separately. The helper performs no network ret
 
 ```sh
 GOWORK=off GOTOOLCHAIN=local go build -trimpath \
-  -o "$tools/acceptance-gates" tests/launch-acceptance/acceptance-gates.go
+  -o "$tools/acceptance-gates" tests/launch-acceptance/acceptance-gates.go \
+  tests/launch-acceptance/acceptance-gates-main.go
 "$tools/acceptance-gates" -mode init \
   -plan "$repository/tests/launch-acceptance/plan.json" -packet "$packet"
 "$tools/acceptance-gates" -mode check \
