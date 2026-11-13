@@ -16,7 +16,14 @@ struct Authority {
   std::string error;
   fs::path socket;
   int expected = 0;
-  Authority(const fs::path &path, int calls) : socket(path), expected(calls) {
+  std::vector<Json> intents;
+  std::function<bool(const Json &)> permitted;
+  std::function<bool(const Json &)> completion_loss;
+  Authority(const fs::path &path, int calls,
+            std::function<bool(const Json &)> allow = {},
+            std::function<bool(const Json &)> lose_completion = {})
+      : socket(path), expected(calls), permitted(std::move(allow)),
+        completion_loss(std::move(lose_completion)) {
     listener.n = ::socket(AF_UNIX, SOCK_STREAM, 0);
     NT_REQUIRE(listener.n >= 0);
     sockaddr_un a{};
@@ -48,6 +55,11 @@ struct Authority {
           std::string body(size, '\0');
           n::exact_read(c.n, body.data(), body.size());
           auto intent = n::parse(body);
+          intents.push_back(intent);
+          if (permitted && !permitted(intent)) {
+            n::write_all(c.n, "HTTP/1.1 403 Forbidden\r\nContent-Length: 0\r\n\r\n");
+            continue;
+          }
           auto d = n::seal(intent, "symphony.ssiag.cloudflare-use.v1");
           Json receipt{
               {"disposition", "committed"},
@@ -61,11 +73,20 @@ struct Authority {
                         {"policy_digest", "sha256:" + std::string(64, 'b')},
                         {"receipt", receipt}}
                        .dump());
-          auto completion = n::parse(n::frame(c.n));
-          n::frame(c.n, Json{{"request_digest", d},
-                             {"outcome", completion.at("outcome")},
-                             {"receipt", receipt}}
-                            .dump());
+          const bool lose = completion_loss && completion_loss(intent);
+          try {
+            auto completion = n::parse(n::frame(c.n));
+            if (!lose)
+              n::frame(c.n, Json{{"request_digest", d},
+                                 {"outcome", completion.at("outcome")},
+                                 {"receipt", receipt}}
+                                .dump());
+          } catch (...) {
+            // An explicitly selected fault may end at peer loss instead of
+            // completion. Normal fixture calls still require the full exchange.
+            if (!lose)
+              throw;
+          }
         }
       } catch (const std::exception &e) {
         error = e.what();

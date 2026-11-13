@@ -4,6 +4,14 @@ This is the L14 integration handoff. Test profiles and an authorized TWS SDK
 were unavailable when this increment was prepared. It is not operational
 credential qualification or permission to retrieve a real secret.
 
+Scope clarification: this handoff retains the general L14/provider-v1 integration
+gaps and its recorded test boundary. The later Cloudflare I4 route implements
+separate native use through `/v1/cloudflare/use` and the opt-in
+[`ssiag-provider-private-store`](../ssiag-provider-private-store/SPEC.md), with
+local native/SSIAG fixture qualification. It does not complete the general
+dispatcher, Apple Keychain, Linux Secret Service or native source/Databento
+consumers listed below, and it does not establish live Cloudflare acceptance.
+
 ## Implemented owner sequence
 
 The cgo-free dispatcher authenticates the kernel peer, pins exact current policy,
