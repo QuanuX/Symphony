@@ -1,5 +1,10 @@
 # Final-download MVP acceptance
 
+The [multi-artifact delivery index](DELIVERY-SET.md) separately binds selected
+native/Go/Swift/vendor/source artifacts and independent signer policy. Its first
+increment verifies bytes and index signatures only; existing native candidate
+and acceptance-v1 contracts remain unchanged.
+
 Live-provider qualification is user-led **after packaging**. Candidate preparation and build/package verification may proceed while live profiles, SDK material and live results are unavailable. The selected testing candidate must identify supported operations, disabled or unimplemented native paths, exact artifacts and trust evidence. This sequencing decision does not complete native credential/provider implementation or authorize publication automatically.
 
 This L26 plan describes full acceptance of the resulting downloads. Its live-provider scenarios are performed by users with their own authorized profiles after the packages are available; users return redacted, artifact-bound observations for review. Runtime/notice and publisher/trust decisions still apply to the actual payload. Current CI builds and packaging fixtures remain development evidence. Run the final-download scenarios on fresh selected hosts; never relabel source checkout/cached fixture results as final-download acceptance.

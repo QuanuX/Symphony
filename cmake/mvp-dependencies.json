@@ -22770,7 +22770,7 @@
     },
     {
       "path": "tests/package-release/run.cmake",
-      "sha256": "8a22da2a4a068c151438a084dc6deab8774a73186ac97296c275a560c1b2d03c"
+      "sha256": "9b2d4087959ab390c0c9de5f2165c1ef56b16b6d053ed7fef6e8f61e1107c162"
     },
     {
       "path": "tests/sqv-administration/CMakeLists.txt",
@@ -25227,6 +25227,34 @@
     {
       "path": "modules/sov-cloudflare-adapter/src/project.cpp",
       "sha256": "97ec84d040a1a2536cf376e6f3b3adcb120288dc4310fabe135942b3032f65df"
+    },
+    {
+      "path": "cmake/release/SignDeliverySet.cmake",
+      "sha256": "73f94ccb47988e38d8f22a3a14e79e178f0ffb0cc9c94c6e20ff3b3b2f899d94"
+    },
+    {
+      "path": "cmake/release/delivery-definition-v1.schema.json",
+      "sha256": "56d6bea23a1d24544b5258f9b57115915a0b98ed959590ed6832b59443b2977d"
+    },
+    {
+      "path": "cmake/release/delivery-selection-v1.schema.json",
+      "sha256": "6c6939d1515028720df93c714fbd146f3dd87af6c1d9e9b25ba73e4c6adee599"
+    },
+    {
+      "path": "cmake/release/delivery-set-v1.schema.json",
+      "sha256": "6c7014aea955305c0162214631e3afafed36f6becadc4e134e8639fde229422a"
+    },
+    {
+      "path": "tests/launch-acceptance/DELIVERY-SET.md",
+      "sha256": "ed707ce951e0fe86fb131e3850362ff8dc1152c5094f7384d05d921b63a21289"
+    },
+    {
+      "path": "tests/launch-acceptance/delivery-set.go",
+      "sha256": "e0d10ba6274d5cb57c22555d662643030dd83773636ce0f3ecf82eda66f6e653"
+    },
+    {
+      "path": "tests/launch-acceptance/delivery-set_test.go",
+      "sha256": "7468b138c584f3a874755730246c51917c2642069dd809d7f9e9e70e435c78ac"
     }
   ],
   "platform_profile_catalog": "cmake/mvp-platform-profiles.json",
@@ -25245,6 +25273,23 @@
       "cmake/release/VerifyCandidate.cmake"
     ],
     "signing_scheme": "SSHSIG namespace symphony-release over exact candidate inventory bytes",
-    "publication_authorized": false
+    "publication_authorized": false,
+    "delivery_set": {
+      "protocol": "symphony.release.delivery-set.v1",
+      "selection_protocol": "symphony.release.delivery-selection.v1",
+      "verification_protocol": "symphony.release.delivery-verification.v1",
+      "scope": "Explicit selected multi-artifact inventory and index signatures; owner verification, installed-host/provider qualification and publication remain separate.",
+      "signing_scheme": "SSHSIG namespace symphony-delivery-set over exact index bytes; independent selection and signer policy",
+      "source_paths": [
+        "cmake/release/SignDeliverySet.cmake",
+        "cmake/release/delivery-definition-v1.schema.json",
+        "cmake/release/delivery-selection-v1.schema.json",
+        "cmake/release/delivery-set-v1.schema.json",
+        "tests/launch-acceptance/delivery-set.go",
+        "tests/launch-acceptance/delivery-set_test.go",
+        "tests/launch-acceptance/DELIVERY-SET.md"
+      ],
+      "publication_authorized": false
+    }
   }
 }

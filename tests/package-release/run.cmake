@@ -199,6 +199,9 @@ run(host-extraction-regressions pass ${host_go_env} "${host_go}" test -race -cou
 run(acceptance-gates-regressions pass ${host_go_env} "${host_go}" test -race -count=1
   "${repository}/tests/launch-acceptance/acceptance-gates.go"
   "${repository}/tests/launch-acceptance/acceptance-gates_test.go")
+run(delivery-set-regressions pass ${host_go_env} "${host_go}" test -race -count=1
+  "${repository}/tests/launch-acceptance/delivery-set.go"
+  "${repository}/tests/launch-acceptance/delivery-set_test.go")
 run(host-extraction-build pass ${host_go_env} "${host_go}" build -trimpath
   -o "${work}/candidate-host" "${repository}/tests/launch-acceptance/candidate-host.go")
 run(host-extraction pass "${work}/candidate-host" -repository "${repository}"

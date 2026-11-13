@@ -1,5 +1,10 @@
 # Source-bound Public Beta dossier
 
+**Execution update:** the user approved W01–W12 continuation and selected Anaconda,
+with final signing/host/reviewer inputs deferred to the end of W12. See the
+[execution record](execution/README.md). The preparation snapshot below remains
+historical; approval does not fabricate acceptance results.
+
 Prepared November 13, 2026 for manual review before the requested switch to **Astra Extra High**. This increment prepares W01 and W06 and a full execution plan through W12. It does not execute that later plan, approve scope, build a candidate, sign a package or authorize publication. The feature freeze remains in force.
 
 The reviewed product source is [`887e074780e1d0633bd6e6f57c3d4e07ca3925fc`](https://github.com/QuanuX/Symphony/commit/887e074780e1d0633bd6e6f57c3d4e07ca3925fc), tree `3c989eb589bc2e84eff012aa5428a7e93170d81d`. This is the main revision containing PR #196's three P1 repairs and credential-documentation correction. The future commit containing this dossier has a different identity; no self-referential source hash is implied.

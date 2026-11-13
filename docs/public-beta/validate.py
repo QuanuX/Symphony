@@ -45,7 +45,7 @@ def unique(values, label):
     return set(values)
 
 
-def validate(repo, folder):
+def validate(repo, folder, historical=False):
     def git(*args):
         return subprocess.check_output(
             ["git", "-C", str(repo), *args], stderr=subprocess.PIPE
@@ -82,13 +82,14 @@ def validate(repo, folder):
     for path, digest in d["source_fingerprints"].items():
         require(not Path(path).is_absolute() and ".." not in Path(path).parts, "unsafe source fingerprint path")
         require(sha(git("show", f"{base}:{path}")) == digest, f"historical fingerprint mismatch: {path}")
-        if path != allowed_tracking_file:
+        if not historical and path != allowed_tracking_file:
             require(sha((repo / path).read_bytes()) == digest, f"working source drift: {path}")
     changed = git("diff", "--name-only", base, "--").decode().splitlines()
     untracked = git("ls-files", "--others", "--exclude-standard").decode().splitlines()
-    for path in changed + untracked:
-        require(path.startswith("docs/public-beta/") or path == allowed_tracking_file,
-                f"source outside dossier changed; regenerate/review source binding: {path}")
+    if not historical:
+        for path in changed + untracked:
+            require(path.startswith("docs/public-beta/") or path == allowed_tracking_file,
+                    f"source outside dossier changed; regenerate/review source binding: {path}")
 
     def source_json(path):
         return parse_json(git("show", f"{base}:{path}"))
@@ -221,7 +222,8 @@ def validate(repo, folder):
         require(row["execution_status"] == "not_run" and row["review_status"] == "not_accepted" and row["evidence"] == [], "prepared mapping asserts acceptance evidence")
         if "campaign_ids" in row:
             require(set(row["campaign_ids"]) <= campaign_ids, "unknown supplemental campaign")
-    return {"status": "valid_preparation_only", "source_commit": base,
+    return {"status": "valid_historical_preparation_only" if historical else "valid_preparation_only", "source_commit": base,
+            "current_product_source_verified": not historical,
             "component_roots": len(roots), "native_components": len(inventory["native_components"]),
             "capability_groups": len(capabilities["groups"]), "core_cells": len(cells),
             "paper_criteria": len(required_criteria), "cloudflare_operations": len(cf_cells),
@@ -232,10 +234,12 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--dossier", type=Path, default=Path(__file__).resolve().parent,
                         help="alternate copy for validation; source always binds to this script's repository")
+    parser.add_argument("--historical", action="store_true",
+                        help="validate the preserved preparation against its Git source, not current implementation files")
     args = parser.parse_args()
     repo = Path(__file__).resolve().parents[2]
     try:
-        result = validate(repo, args.dossier.resolve())
+        result = validate(repo, args.dossier.resolve(), args.historical)
     except (InvalidDossier, OSError, ValueError, KeyError, TypeError, subprocess.CalledProcessError) as error:
         print(f"INVALID preparation dossier: {error}", file=sys.stderr)
         return 1
