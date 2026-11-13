@@ -170,3 +170,13 @@ Focused tests include real owner install/inspect/removal with unrelated-file
 sentinels and no operational state, plus an explicitly inert subprocess fixture
 for signature, dispatch, identity, omission and post-inspection drift boundaries.
 Those are source/fixture results, not final-host or provider acceptance.
+
+`qualify-go-owners.py` consumes the clean candidate recipe's actual binaries and
+owner tools, stages all three via their existing install CLIs in a new private
+prefix, signs the set with a disposable fixture key, runs all owner adapters,
+rejects a tampered receipt and removes a disposable copy while preserving a
+sentinel. Its home/config/state/runtime paths are private; no service is started.
+The key is destroyed, and safe logs/results remain. The release-qualification
+workflow runs this after candidate identity builds on its four source-test lanes.
+The observed target uses an explicit local-fixture profile and never satisfies a
+core final-host acceptance cell merely because the machine has the same CPU.

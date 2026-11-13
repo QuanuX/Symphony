@@ -25246,7 +25246,7 @@
     },
     {
       "path": "tests/launch-acceptance/DELIVERY-SET.md",
-      "sha256": "d28afa474ab8357575b5e0f954e773a315e460c272b7c5750542145950f75f6a"
+      "sha256": "14dba2744d30dab5ddd33e46fe94c4ee8b348e1209d0b01de07ff221b01ab46e"
     },
     {
       "path": "tests/launch-acceptance/delivery-set.go",
@@ -25279,6 +25279,10 @@
     {
       "path": "modules/stav-append-authority/tests/release-owner/main_test.go",
       "sha256": "1afe95fe528c3a79191f0109a6739e2a5d25442308bd7c2a9b0dffd88743b2b8"
+    },
+    {
+      "path": "tests/launch-acceptance/qualify-go-owners.py",
+      "sha256": "d6ab3e8bcf8f62e4b0188ce6d98a7d6482e21399f1f43363391f68df9e364a1b"
     }
   ],
   "platform_profile_catalog": "cmake/mvp-platform-profiles.json",
@@ -25326,7 +25330,8 @@
           "modules/accordare-stav-producer/tests/release-owner/main.go",
           "modules/accordare-stav-producer/tests/release-owner/main_test.go",
           "modules/stav-append-authority/tests/release-owner/main.go",
-          "modules/stav-append-authority/tests/release-owner/main_test.go"
+          "modules/stav-append-authority/tests/release-owner/main_test.go",
+          "tests/launch-acceptance/qualify-go-owners.py"
         ],
         "build_recipe": "cmake/SymphonyGoCandidateIdentities.cmake",
         "scope": "Read-only actual owner receipt inspection of one signed artifact in a private user-owned prefix. No set-wide, fresh-host, provider or release acceptance."

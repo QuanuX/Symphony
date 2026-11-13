@@ -1,0 +1,51 @@
+{
+  "protocol": "symphony.public-beta.local-qualification.v1",
+  "increment": 2,
+  "source_commit": "50f3272242d4223db81927cbd06677d6ca093029",
+  "source_tree": "abf06123af6c5953dee4405bbd95f330239366a7",
+  "profile": {
+    "profile_id": "local-owner-macos-amd64",
+    "os": "macos",
+    "architecture": "amd64"
+  },
+  "candidate_builds": 6,
+  "owner_tools": 3,
+  "result": "passed_local_source_qualification",
+  "evidence_sha256": "69deeb3dd9c0f5969e3561364fc74ea3f3f151fa7ce41cc0650c746c4c93410f",
+  "script_sha256": "d6ab3e8bcf8f62e4b0188ce6d98a7d6482e21399f1f43363391f68df9e364a1b",
+  "artifact_and_owner_identities": [
+    {
+      "component_id": "secure-identity-access-governance",
+      "report_sha256": "524dea2fde91a95fd7f2123a7664667e3d48950c415067b830db51f5938a0e59",
+      "tool_build_sha256": "84586d6f2f2c3e20237ff6a53cd279f936f53fa33f6e60e6d88dc14f1e708906"
+    },
+    {
+      "component_id": "stav-append-authority",
+      "report_sha256": "3cfbfc0507931d3c582bf9b3bd657412cea6da6e6780292d1ed34aebf60d1837",
+      "tool_build_sha256": "517ad68129c26f483cd490b8b808591150788ed17ba37255a348ac8b9e68386f"
+    },
+    {
+      "component_id": "accordare-stav-producer",
+      "report_sha256": "1dfdc1cbc46e27d8d2de0a1f0a9875c2e9f22c5b758fb4afe9937bfefc5dbd91",
+      "tool_build_sha256": "929f27dd76b83b3d02f7f3c575be86aa2938108ede9e853b129ebab2242d8144"
+    }
+  ],
+  "checks": [
+    "Clean-source archived builds with Go 1.26.5 and public module verification",
+    "Actual package install and owner receipt inspection through fixture-signed index",
+    "Tampered receipt refusal and restored signed-set verification",
+    "Reverse owner removal preserving only caller sentinel",
+    "No operational state created in isolated home",
+    "Disposable fixture signing key destroyed"
+  ],
+  "remaining": [
+    "Host is development macOS amd64, not one of the four core acceptance profiles",
+    "Notice/rights review and production signing remain pending",
+    "Native and other artifact adapters and acceptance companion remain pending"
+  ],
+  "feature_freeze": true,
+  "fresh_host_qualified": false,
+  "provider_qualified": false,
+  "release_acceptance_complete": false,
+  "publication_authorized": false
+}

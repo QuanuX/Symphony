@@ -35,8 +35,16 @@ jobs:
         run: sh tests/release-qualification/go-tests.sh "$RUNNER_TEMP/release-go"
       - name: Verify the complete release identity catalog
         run: cmake -P cmake/VerifyMVPReleaseIdentities.cmake
-      - name: Verify five candidate Go artifact identities
+      - name: Verify six candidate Go artifact identities and owner tools
         run: sh .github/scripts/build-mvp-go-identities.sh "$RUNNER_TEMP/release-go-identities"
+      - name: Qualify real Go receipt packages through the signed delivery set
+        run: |
+          GOWORK=off GOENV=off GOTOOLCHAIN=local go build -trimpath \
+            -o "$RUNNER_TEMP/delivery-set" tests/launch-acceptance/delivery-set.go
+          python3 tests/launch-acceptance/qualify-go-owners.py \
+            --build-root "$RUNNER_TEMP/release-go-identities" \
+            --work "$RUNNER_TEMP/release-go-owner-qualification" \
+            --delivery-tool "$RUNNER_TEMP/delivery-set"
       - name: Retain executed tests, explicit skips and candidate identities
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
@@ -48,6 +56,10 @@ jobs:
             ${{ runner.temp }}/release-go-identities/logs
             ${{ runner.temp }}/release-go-identities/identities
             ${{ runner.temp }}/release-go-identities/*.json
+            ${{ runner.temp }}/release-go-identities/*/owner-tool-build.json
+            ${{ runner.temp }}/release-go-owner-qualification/logs
+            ${{ runner.temp }}/release-go-owner-qualification/evidence.json
+            ${{ runner.temp }}/release-go-owner-qualification/*-owner.json
           retention-days: 14
       - name: Report evidence boundary
         if: always()

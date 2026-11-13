@@ -42,7 +42,12 @@ recipe also builds source-bound owner tools; no installed product CLI was added.
 
 [Increment 2](increment-02.json) records 157 passing named focused cases and the
 initial cache/fixture refusals. Clean-source recipe and real staged-binary
-integration evidence will be appended as separate records after its commit.
+integration passed from commit `50f32722`: six isolated Go candidates, three owner
+tools, actual installation and signed-set inspection, tampered-receipt refusal,
+and sentinel-preserving removal with no operational state. The separate
+[integration record](increment-02-integration.json) retains exact identities and
+scope. The existing four-profile release workflow now repeats this private
+fixture campaign; its hosted results have not been awaited or claimed.
 
 Next: complete owner-adapter evidence, the v1-compatible multi-artifact acceptance
 companion, independent public-SDK engine campaign and remaining staged gates.
