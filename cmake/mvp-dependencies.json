@@ -25327,6 +25327,54 @@
     {
       "path": "tests/release-qualification/swift-evidence-tests.sh",
       "sha256": "0d6b889a576cbd20a70f1075dfb926cad2e15f4922c7eddef65e22657946f288"
+    },
+    {
+      "path": "tests/external-engine/CMakeLists.txt",
+      "sha256": "810bae0b43eb0e90aa57684b9ce47d421706e49e711db2ffac5885eb1d9ff734"
+    },
+    {
+      "path": "tests/external-engine/README.md",
+      "sha256": "74b6a78a2fbc9313410da1456b8e26351e18e1d034a5732bfbb2ef44ca7c67e9"
+    },
+    {
+      "path": "tests/external-engine/calculation.hpp",
+      "sha256": "1dab9313f244d56f87795a0eca1b96efa44a5277d3f528fd1ae25de018802f10"
+    },
+    {
+      "path": "tests/external-engine/engine.cpp",
+      "sha256": "c463a00568691dae48ef8a6259948e818b454c7ea3c29ed515bd070087160494"
+    },
+    {
+      "path": "tests/external-engine/fixture.cpp",
+      "sha256": "c0cb3bcb30467aaf41d322f14c1ddcf46ffb34dec4f09a7165bdb69b95f7dfdc"
+    },
+    {
+      "path": "tests/external-engine/fixtures/ATTRIBUTION.md",
+      "sha256": "0413c2566f19b49749420023f5bed0da7808c8ccfdb9c57c14fcd27b21b3e5d5"
+    },
+    {
+      "path": "tests/external-engine/fixtures/LICENSE.Apache-2.0",
+      "sha256": "d3174ad63e721d4c9dccb8ad4320848992d314369bc46319720b5802c9153fe9"
+    },
+    {
+      "path": "tests/external-engine/fixtures/public_fixture.hpp",
+      "sha256": "9f4011316ed1f97055dc4eda90c1b4233f930630a1fb7a548828ed48b2a711aa"
+    },
+    {
+      "path": "tests/external-engine/provider-probe.cpp",
+      "sha256": "62056bc8f6d8a8b32eca16cd122cbc79f5c4dc92276177fcab85e232c76f6f8c"
+    },
+    {
+      "path": "tests/external-engine/provider.cpp",
+      "sha256": "86e0a2be749bf4929ab590a1acec5c7a476ed44a521e58dba5c64ab0aad82cc9"
+    },
+    {
+      "path": "tests/external-engine/qualify.py",
+      "sha256": "64394d9169e61bfefbf8a0ddd9ab81b43f74dd96fbbe9656afef845f0f8b9b1f"
+    },
+    {
+      "path": "tests/external-engine/sdk-client.cpp",
+      "sha256": "861b0494dc2b538578582beb424ee69431a55346f35c20d868825c4cab37310b"
     }
   ],
   "platform_profile_catalog": "cmake/mvp-platform-profiles.json",

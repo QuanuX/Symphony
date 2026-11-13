@@ -114,3 +114,17 @@ Validate the preserved dossier with `python3 docs/public-beta/validate.py
 current implementation source is not covered. Run current dependency/release-map
 checks separately, and regenerate a new clean source inventory when selecting a
 candidate. Do not substitute historical inventory for a later product tree.
+
+## Increment 7 — external public SDK example
+
+The [independent example project](../../../tests/external-engine/README.md) builds
+outside the checkout against complete installed public foundation and SBV SDK
+receipts. Its standalone engine and native SBV provider execute the same bounded
+empirical calculation with a separate Python rational-arithmetic oracle. Two
+compatible versions, exact complete model outcomes, ABI/refusal/interruption,
+rollback and sentinel-preserving removal passed 119 checks. The existing installed
+SDK workflow now includes this campaign; hosted results have not been awaited.
+
+[Increment 7](increment-07.json) retains exact example/SDK/log hashes and the first
+development failures. This same-author local fixture does not close the final
+independent author/agent journey, final host/relocation or operational fault gates.
