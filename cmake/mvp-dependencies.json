@@ -22814,7 +22814,7 @@
     },
     {
       "path": "tools/qxctl/cmd/qxctl/commands.go",
-      "sha256": "defb4187c263ee70b9d6d4ef7cea19aa27e697cb155de4d42fdf7a5ed4561a5c"
+      "sha256": "3f3a14c1e563f2b3647d13c394ca098e64bf1f4bf67bd77f0a7728796d7480b2"
     },
     {
       "path": "tools/qxctl/cmd/qxctl/lifecycle.go",
