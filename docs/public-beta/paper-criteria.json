@@ -1,0 +1,880 @@
+{
+  "format_version": 1,
+  "state": "historical_proposed_criteria_not_execution_instructions",
+  "paper": {
+    "filename": "Symphony_Public_Beta_Readiness_White_Paper.pdf",
+    "version": "1.0",
+    "date": "2026-11-07",
+    "sha256": "9a5fd92bd6a561f7895383d781534301238f67635bb87ad4a989af7bb752f436"
+  },
+  "transcription": {
+    "review_date": "2026-11-12",
+    "register_sha256": "03a405772ea27e4b793305fdcbe3aea72f2ae53b85f100cf5ead4333897c08e7",
+    "inspection_baseline": "38d3ee8593d8943a36fc7b429213ced5c2054a69"
+  },
+  "policy": "Later explicit feature-freeze and post-packaging user qualification decisions govern. Preserve every criterion; do not execute embedded implementation suggestions as authority. D07 decides adoption/applicability.",
+  "categories": [
+    {
+      "id": "C01",
+      "name": "Architecture and ownership",
+      "paper_prior_score": 9,
+      "current_accepted_score": null,
+      "current_score_status": "not_reassessed",
+      "paper_proposed_minimum": 8.5
+    },
+    {
+      "id": "C02",
+      "name": "Agent operation and qxctl",
+      "paper_prior_score": 8.5,
+      "current_accepted_score": null,
+      "current_score_status": "not_reassessed",
+      "paper_proposed_minimum": 8.5
+    },
+    {
+      "id": "C03",
+      "name": "Auditability and provenance",
+      "paper_prior_score": 8.5,
+      "current_accepted_score": null,
+      "current_score_status": "not_reassessed",
+      "paper_proposed_minimum": 8.5
+    },
+    {
+      "id": "C04",
+      "name": "Quantitative data and research",
+      "paper_prior_score": 7.5,
+      "current_accepted_score": null,
+      "current_score_status": "not_reassessed",
+      "paper_proposed_minimum": 8.5
+    },
+    {
+      "id": "C05",
+      "name": "Testing and CI",
+      "paper_prior_score": 8.5,
+      "current_accepted_score": null,
+      "current_score_status": "not_reassessed",
+      "paper_proposed_minimum": 8.5
+    },
+    {
+      "id": "C06",
+      "name": "Modularity and lifecycle",
+      "paper_prior_score": 7.5,
+      "current_accepted_score": null,
+      "current_score_status": "not_reassessed",
+      "paper_proposed_minimum": 8.5
+    },
+    {
+      "id": "C07",
+      "name": "Security and native credentials",
+      "paper_prior_score": 6,
+      "current_accepted_score": null,
+      "current_score_status": "not_reassessed",
+      "paper_proposed_minimum": 8.5
+    },
+    {
+      "id": "C08",
+      "name": "Distribution and release",
+      "paper_prior_score": 5.5,
+      "current_accepted_score": null,
+      "current_score_status": "not_reassessed",
+      "paper_proposed_minimum": 8.5
+    },
+    {
+      "id": "C09",
+      "name": "Resilience and recovery",
+      "paper_prior_score": 6.5,
+      "current_accepted_score": null,
+      "current_score_status": "not_reassessed",
+      "paper_proposed_minimum": 8.5
+    },
+    {
+      "id": "C10",
+      "name": "Provider connectivity",
+      "paper_prior_score": 4.5,
+      "current_accepted_score": null,
+      "current_score_status": "not_reassessed",
+      "paper_proposed_minimum": 8.5
+    },
+    {
+      "id": "C11",
+      "name": "Performance and scale",
+      "paper_prior_score": 6,
+      "current_accepted_score": null,
+      "current_score_status": "not_reassessed",
+      "paper_proposed_minimum": 8.5
+    },
+    {
+      "id": "C12",
+      "name": "Risk and trading lifecycle",
+      "paper_prior_score": 3.5,
+      "current_accepted_score": null,
+      "current_score_status": "not_reassessed",
+      "paper_proposed_minimum": 8.5
+    },
+    {
+      "id": "C13",
+      "name": "Operating and support readiness",
+      "paper_prior_score": 4.5,
+      "current_accepted_score": null,
+      "current_score_status": "not_reassessed",
+      "paper_proposed_minimum": 8.5
+    }
+  ],
+  "criteria": [
+    {
+      "criterion_id": "UE1",
+      "paper_page": 5,
+      "paper_criterion_text": "Create a separate source tree with its own engine identity and a small useful implementation. Build against installed public SDKs only, without private headers, source-tree includes, a sibling Symphony checkout, source fallback or a hidden development workspace.",
+      "criterion_origin": "Paper v1.0 proposed acceptance criterion; not adopted by this review",
+      "required_under_paper_proposal": true,
+      "proposed_work_packages": [
+        "W02",
+        "W09"
+      ],
+      "evidence_requirement": "E2 final-installed SDK/user-engine campaign with independently verified output"
+    },
+    {
+      "criterion_id": "UE2",
+      "paper_page": 5,
+      "paper_criterion_text": "Verify the engine's output using an independently calculated oracle. Include two materially different compositions: direct native SDK execution and the documented administrative or research- provider integration appropriate to that engine. If the second path requires explicit registration or a new adapter, implement and qualify it; do not imply automatic discovery.",
+      "criterion_origin": "Paper v1.0 proposed acceptance criterion; not adopted by this review",
+      "required_under_paper_proposal": true,
+      "proposed_work_packages": [
+        "W02",
+        "W09"
+      ],
+      "evidence_requirement": "E2 final-installed SDK/user-engine campaign with independently verified output"
+    },
+    {
+      "criterion_id": "UE3",
+      "paper_page": 5,
+      "paper_criterion_text": "Install, inspect, explicitly select, upgrade and remove the engine using the supported component ownership model. Test a compatible change, an incompatible dependency, a changed executable, an interrupted transition and preservation of unrelated user data.",
+      "criterion_origin": "Paper v1.0 proposed acceptance criterion; not adopted by this review",
+      "required_under_paper_proposal": true,
+      "proposed_work_packages": [
+        "W02",
+        "W09"
+      ],
+      "evidence_requirement": "E2 final-installed SDK/user-engine campaign with independently verified output"
+    },
+    {
+      "criterion_id": "UE4",
+      "paper_page": 5,
+      "paper_criterion_text": "Have an agent use shipped documentation and machine-readable interfaces to complete the applicable discovery, configuration, authorized action, observation and recovery journey. Every administrative surface needs an exact identity or an evidence-backed runtime-only, prohibited or not- applicable disposition.",
+      "criterion_origin": "Paper v1.0 proposed acceptance criterion; not adopted by this review",
+      "required_under_paper_proposal": true,
+      "proposed_work_packages": [
+        "W02",
+        "W09"
+      ],
+      "evidence_requirement": "E2 final-installed SDK/user-engine campaign with independently verified output"
+    },
+    {
+      "criterion_id": "UE5",
+      "paper_page": 5,
+      "paper_criterion_text": "Where the composition declares no synchronous administrative runtime dependency, stop or stall those administrative processes and verify the native workload's stated behavior and performance. Operations that require authority or audit must separately refuse or preserve uncertainty when those dependencies are unavailable.",
+      "criterion_origin": "Paper v1.0 proposed acceptance criterion; not adopted by this review",
+      "required_under_paper_proposal": true,
+      "proposed_work_packages": [
+        "W02",
+        "W09"
+      ],
+      "evidence_requirement": "E2 final-installed SDK/user-engine campaign with independently verified output"
+    },
+    {
+      "criterion_id": "UE6",
+      "paper_page": 6,
+      "paper_criterion_text": "Retain the external source, installed SDK and executable identities, build recipe, test oracle, final outputs, lifecycle evidence and limitations. Repeat the required subset for every target on which user-built engines are advertised.",
+      "criterion_origin": "Paper v1.0 proposed acceptance criterion; not adopted by this review",
+      "required_under_paper_proposal": true,
+      "proposed_work_packages": [
+        "W02",
+        "W09"
+      ],
+      "evidence_requirement": "E2 final-installed SDK/user-engine campaign with independently verified output"
+    },
+    {
+      "criterion_id": "C01.1",
+      "paper_page": 7,
+      "paper_criterion_text": "Publish the beta capability and dependency matrix, with exact semantic owners, supported integration paths and explicit implemented, experimental and unsupported states. Reconcile public documentation with actual descriptors and package contents.",
+      "criterion_origin": "Paper v1.0 proposed acceptance criterion; not adopted by this review",
+      "required_under_paper_proposal": true,
+      "proposed_work_packages": [
+        "W01",
+        "W02",
+        "W09"
+      ],
+      "evidence_requirement": "E0 owner/scope records plus E2 final-installed external-engine evidence"
+    },
+    {
+      "criterion_id": "C01.2",
+      "paper_page": 7,
+      "paper_criterion_text": "Complete UE1 through UE6 for the reference custom engine. Distinguish native SDK consumption, a user-provided SBV research model and a newly admitted platform owner; each has different integration requirements.",
+      "criterion_origin": "Paper v1.0 proposed acceptance criterion; not adopted by this review",
+      "required_under_paper_proposal": true,
+      "proposed_work_packages": [
+        "W01",
+        "W02",
+        "W09"
+      ],
+      "evidence_requirement": "E0 owner/scope records plus E2 final-installed external-engine evidence"
+    },
+    {
+      "criterion_id": "C01.3",
+      "paper_page": 7,
+      "paper_criterion_text": "Enumerate the selected beta package inventory and verify its receipts, descriptors and administrative dispositions. This proves completeness only for that declared set; do not claim universal installed-host discovery.",
+      "criterion_origin": "Paper v1.0 proposed acceptance criterion; not adopted by this review",
+      "required_under_paper_proposal": true,
+      "proposed_work_packages": [
+        "W01",
+        "W02",
+        "W09"
+      ],
+      "evidence_requirement": "E0 owner/scope records plus E2 final-installed external-engine evidence"
+    },
+    {
+      "criterion_id": "C01.4",
+      "paper_page": 7,
+      "paper_criterion_text": "Demonstrate the declared thermal and authority separation under administrative failure. Record the components intentionally required for a supported operation and the components absent from its native execution path.",
+      "criterion_origin": "Paper v1.0 proposed acceptance criterion; not adopted by this review",
+      "required_under_paper_proposal": true,
+      "proposed_work_packages": [
+        "W01",
+        "W02",
+        "W09"
+      ],
+      "evidence_requirement": "E0 owner/scope records plus E2 final-installed external-engine evidence"
+    },
+    {
+      "criterion_id": "C02.1",
+      "paper_page": 8,
+      "paper_criterion_text": "Run shipped agent instructions against a clean installation and complete the applicable UE4 journey, including exact discovery, input construction, authorization, result interpretation and recovery. No undisclosed source checkout or manual correction may rescue the run.",
+      "criterion_origin": "Paper v1.0 proposed acceptance criterion; not adopted by this review",
+      "required_under_paper_proposal": true,
+      "proposed_work_packages": [
+        "W02",
+        "W08",
+        "W09",
+        "W13"
+      ],
+      "evidence_requirement": "E2 final-installed CLI/client journeys; exhaustive metadata coverage for advertised operations"
+    },
+    {
+      "criterion_id": "C02.2",
+      "paper_page": 8,
+      "paper_criterion_text": "For every advertised administrative interaction, verify command and operation identities, input/output schema, mutation classification, prerequisites and error semantics against the installed executable and owner.",
+      "criterion_origin": "Paper v1.0 proposed acceptance criterion; not adopted by this review",
+      "required_under_paper_proposal": true,
+      "proposed_work_packages": [
+        "W02",
+        "W08",
+        "W09",
+        "W13"
+      ],
+      "evidence_requirement": "E2 final-installed CLI/client journeys; exhaustive metadata coverage for advertised operations"
+    },
+    {
+      "criterion_id": "C02.3",
+      "paper_page": 8,
+      "paper_criterion_text": "Inject malformed input, stale state, missing owners, incompatible versions, bounded-output failures, cancellation and lost responses. Verify that transport success never overrides a domain failure and that uncertain mutations are observed before retry.",
+      "criterion_origin": "Paper v1.0 proposed acceptance criterion; not adopted by this review",
+      "required_under_paper_proposal": true,
+      "proposed_work_packages": [
+        "W02",
+        "W08",
+        "W09",
+        "W13"
+      ],
+      "evidence_requirement": "E2 final-installed CLI/client journeys; exhaustive metadata coverage for advertised operations"
+    },
+    {
+      "criterion_id": "C02.4",
+      "paper_page": 8,
+      "paper_criterion_text": "For every advertised MCP or client channel, qualify the actual package, pinned catalogue and chosen qxctl together. Exercise pagination and representative read, preview and apply paths, plus generated metadata coverage checks across the full exposed catalogue. Unknown commands and contract drift must fail visibly.",
+      "criterion_origin": "Paper v1.0 proposed acceptance criterion; not adopted by this review",
+      "required_under_paper_proposal": true,
+      "proposed_work_packages": [
+        "W02",
+        "W08",
+        "W09",
+        "W13"
+      ],
+      "evidence_requirement": "E2 final-installed CLI/client journeys; exhaustive metadata coverage for advertised operations"
+    },
+    {
+      "criterion_id": "C03.1",
+      "paper_page": 9,
+      "paper_criterion_text": "Define the evidence boundary for each consequential beta action: requested operation, caller and authority, exact input/configuration, admitted attempt, actual observed outcome and its authoritative owner. Include the external engine's supported administrative actions.",
+      "criterion_origin": "Paper v1.0 proposed acceptance criterion; not adopted by this review",
+      "required_under_paper_proposal": true,
+      "proposed_work_packages": [
+        "W03",
+        "W05",
+        "W09",
+        "W10",
+        "W12"
+      ],
+      "evidence_requirement": "E2 actual owner recovery; E3/E4 endpoint evidence for the proposed execution campaign"
+    },
+    {
+      "criterion_id": "C03.2",
+      "paper_page": 9,
+      "paper_criterion_text": "Produce one reconstructable dossier for the research and execution campaigns, binding source, artifact, SDK, configuration, data/fixture and result identities. Identify every unavailable or inferred fact instead of inventing a complete chain.",
+      "criterion_origin": "Paper v1.0 proposed acceptance criterion; not adopted by this review",
+      "required_under_paper_proposal": true,
+      "proposed_work_packages": [
+        "W03",
+        "W05",
+        "W09",
+        "W10",
+        "W12"
+      ],
+      "evidence_requirement": "E2 actual owner recovery; E3/E4 endpoint evidence for the proposed execution campaign"
+    },
+    {
+      "criterion_id": "C03.3",
+      "paper_page": 9,
+      "paper_criterion_text": "Test acknowledgement loss, audit outage, process restart, changed inputs, duplicate requests, corrupted records and conflicting recovery evidence. Require original outcome recovery without duplicate effects where that is the owner contract; otherwise preserve uncertainty.",
+      "criterion_origin": "Paper v1.0 proposed acceptance criterion; not adopted by this review",
+      "required_under_paper_proposal": true,
+      "proposed_work_packages": [
+        "W03",
+        "W05",
+        "W09",
+        "W10",
+        "W12"
+      ],
+      "evidence_requirement": "E2 actual owner recovery; E3/E4 endpoint evidence for the proposed execution campaign"
+    },
+    {
+      "criterion_id": "C03.4",
+      "paper_page": 9,
+      "paper_criterion_text": "Verify retention, export and redaction against the actual artifact formats. A hash establishes byte correspondence; signer identity and observed behavior require their own evidence. Never report an authorization receipt as proof of execution.",
+      "criterion_origin": "Paper v1.0 proposed acceptance criterion; not adopted by this review",
+      "required_under_paper_proposal": true,
+      "proposed_work_packages": [
+        "W03",
+        "W05",
+        "W09",
+        "W10",
+        "W12"
+      ],
+      "evidence_requirement": "E2 actual owner recovery; E3/E4 endpoint evidence for the proposed execution campaign"
+    },
+    {
+      "criterion_id": "C04.1",
+      "paper_page": 10,
+      "paper_criterion_text": "Package a reproducible research corpus with independently calculated expected cash, positions, fees, settlement, partial-result populations and rejected-event behavior. Use exact arithmetic or an explicitly selected numerical tolerance with a justified oracle.",
+      "criterion_origin": "Paper v1.0 proposed acceptance criterion; not adopted by this review",
+      "required_under_paper_proposal": true,
+      "proposed_work_packages": [
+        "W02",
+        "W09"
+      ],
+      "evidence_requirement": "E1 independent numerical/temporal oracle plus E2 final-artifact research campaign"
+    },
+    {
+      "criterion_id": "C04.2",
+      "paper_page": 10,
+      "paper_criterion_text": "Exercise causal ordering, declared timestamp semantics, temporal partitions and leakage cases. Test missing, duplicated, corrupted, out-of-order and revision/correction data where supported. Unsupported semantics must remain unavailable.",
+      "criterion_origin": "Paper v1.0 proposed acceptance criterion; not adopted by this review",
+      "required_under_paper_proposal": true,
+      "proposed_work_packages": [
+        "W02",
+        "W09"
+      ],
+      "evidence_requirement": "E1 independent numerical/temporal oracle plus E2 final-artifact research campaign"
+    },
+    {
+      "criterion_id": "C04.3",
+      "paper_page": 10,
+      "paper_criterion_text": "Verify replay, snapshot branching and continuation for the semantics actually supported. Compare complete scientific outputs across selected storage and worker modes; disclose any topology-dependent provider state instead of asserting universal determinism.",
+      "criterion_origin": "Paper v1.0 proposed acceptance criterion; not adopted by this review",
+      "required_under_paper_proposal": true,
+      "proposed_work_packages": [
+        "W02",
+        "W09"
+      ],
+      "evidence_requirement": "E1 independent numerical/temporal oracle plus E2 final-artifact research campaign"
+    },
+    {
+      "criterion_id": "C04.4",
+      "paper_page": 10,
+      "paper_criterion_text": "Run the corpus through the final CLI, installed native SDK and applicable language adapter, including a user-authored model or engine. Kill and cancel work, recover completed receipts, preserve unknown outcomes and verify no automatic duplicate execution.",
+      "criterion_origin": "Paper v1.0 proposed acceptance criterion; not adopted by this review",
+      "required_under_paper_proposal": true,
+      "proposed_work_packages": [
+        "W02",
+        "W09"
+      ],
+      "evidence_requirement": "E1 independent numerical/temporal oracle plus E2 final-artifact research campaign"
+    },
+    {
+      "criterion_id": "C05.1",
+      "paper_page": 10,
+      "paper_criterion_text": "Enumerate every selected component, platform and mandatory scenario in a claim-to-test map. Require affected source, race, sanitizer, native, installed-consumer, ownership, generated- interface and package tests on the final candidate source.",
+      "criterion_origin": "Paper v1.0 proposed acceptance criterion; not adopted by this review",
+      "required_under_paper_proposal": true,
+      "proposed_work_packages": [
+        "W07",
+        "W08",
+        "W12"
+      ],
+      "evidence_requirement": "E0/E1 source review and focused tests plus E2 candidate bindings; review applicable E3/E4 evidence"
+    },
+    {
+      "criterion_id": "C05.2",
+      "paper_page": 10,
+      "paper_criterion_text": "Treat skipped or unperformed mandatory cases as incomplete. Distinguish helper-process skips from missing feature coverage. Retain failed runs and the exact corrective reruns rather than replacing them with an unexplained green summary.",
+      "criterion_origin": "Paper v1.0 proposed acceptance criterion; not adopted by this review",
+      "required_under_paper_proposal": true,
+      "proposed_work_packages": [
+        "W07",
+        "W08",
+        "W12"
+      ],
+      "evidence_requirement": "E0/E1 source review and focused tests plus E2 candidate bindings; review applicable E3/E4 evidence"
+    },
+    {
+      "criterion_id": "C05.3",
+      "paper_page": 10,
+      "paper_criterion_text": "Bind build recipes, toolchains, dependencies, artifact hashes and test results. Run the distribution and user-engine campaigns against final artifacts rather than rebuilding implicitly from a source tree during acceptance.",
+      "criterion_origin": "Paper v1.0 proposed acceptance criterion; not adopted by this review",
+      "required_under_paper_proposal": true,
+      "proposed_work_packages": [
+        "W07",
+        "W08",
+        "W12"
+      ],
+      "evidence_requirement": "E0/E1 source review and focused tests plus E2 candidate bindings; review applicable E3/E4 evidence"
+    },
+    {
+      "criterion_id": "C05.4",
+      "paper_page": 10,
+      "paper_criterion_text": "Review the critical authority, parser, credential, order-state and recovery paths independently of their implementer. Compensate for identified static-analysis gaps with focused code review, sanitizers and adverse-input tests appropriate to the actual code.",
+      "criterion_origin": "Paper v1.0 proposed acceptance criterion; not adopted by this review",
+      "required_under_paper_proposal": true,
+      "proposed_work_packages": [
+        "W07",
+        "W08",
+        "W12"
+      ],
+      "evidence_requirement": "E0/E1 source review and focused tests plus E2 candidate bindings; review applicable E3/E4 evidence"
+    },
+    {
+      "criterion_id": "C06.1",
+      "paper_page": 11,
+      "paper_criterion_text": "Run each advertised module on its declared OS/architecture cells using the actual delivered artifacts. Validate installed headers, libraries, runtime loaders, receipts and interfaces without source or developer-prefix fallback.",
+      "criterion_origin": "Paper v1.0 proposed acceptance criterion; not adopted by this review",
+      "required_under_paper_proposal": true,
+      "proposed_work_packages": [
+        "W02",
+        "W06",
+        "W08",
+        "W09"
+      ],
+      "evidence_requirement": "E2 per-advertised-component target and lifecycle evidence"
+    },
+    {
+      "criterion_id": "C06.2",
+      "paper_page": 11,
+      "paper_criterion_text": "Exercise install, discovery, explicit version selection, side-by-side update, compatible rollback and removal. Interrupt each meaningful transition and verify the owner's recorded recovery behavior.",
+      "criterion_origin": "Paper v1.0 proposed acceptance criterion; not adopted by this review",
+      "required_under_paper_proposal": true,
+      "proposed_work_packages": [
+        "W02",
+        "W06",
+        "W08",
+        "W09"
+      ],
+      "evidence_requirement": "E2 per-advertised-component target and lifecycle evidence"
+    },
+    {
+      "criterion_id": "C06.3",
+      "paper_page": 11,
+      "paper_criterion_text": "Test dependency mismatch, changed executable/header/export bytes, foreign files and partial removal. Preserve unrelated packages and user data; removal must not infer ownership from a filename or directory location alone.",
+      "criterion_origin": "Paper v1.0 proposed acceptance criterion; not adopted by this review",
+      "required_under_paper_proposal": true,
+      "proposed_work_packages": [
+        "W02",
+        "W06",
+        "W08",
+        "W09"
+      ],
+      "evidence_requirement": "E2 per-advertised-component target and lifecycle evidence"
+    },
+    {
+      "criterion_id": "C06.4",
+      "paper_page": 11,
+      "paper_criterion_text": "Apply the same public ownership and compatibility rules to the UE reference engine. Demonstrate that removing the example engine does not remove the SDKs or other user engines except through an explicit, valid dependency action.",
+      "criterion_origin": "Paper v1.0 proposed acceptance criterion; not adopted by this review",
+      "required_under_paper_proposal": true,
+      "proposed_work_packages": [
+        "W02",
+        "W06",
+        "W08",
+        "W09"
+      ],
+      "evidence_requirement": "E2 per-advertised-component target and lifecycle evidence"
+    },
+    {
+      "criterion_id": "C07.1",
+      "paper_page": 12,
+      "paper_criterion_text": "Complete every promised native credential path: permission-backed lease issuance/revocation, actual recipient/provider identity, protected one-shot delivery, selected OS provider operations and the native consumer bridge. Prove use with a real selected provider or accepted test environment.",
+      "criterion_origin": "Paper v1.0 proposed acceptance criterion; not adopted by this review",
+      "required_under_paper_proposal": true,
+      "proposed_work_packages": [
+        "W03",
+        "W10"
+      ],
+      "evidence_requirement": "E2 operational native delivery on each promised profile; actual selected provider or accepted test environment where required"
+    },
+    {
+      "criterion_id": "C07.2",
+      "paper_page": 12,
+      "paper_criterion_text": "Exercise wrong executable, account, resource, reference and generation; expired and revoked grants; unavailable audit; cancellation; lost outcome acknowledgement; and failed persistence. Verify native byte limits, descriptor cleanup and child termination where promised.",
+      "criterion_origin": "Paper v1.0 proposed acceptance criterion; not adopted by this review",
+      "required_under_paper_proposal": true,
+      "proposed_work_packages": [
+        "W03",
+        "W10"
+      ],
+      "evidence_requirement": "E2 operational native delivery on each promised profile; actual selected provider or accepted test environment where required"
+    },
+    {
+      "criterion_id": "C07.3",
+      "paper_page": 12,
+      "paper_criterion_text": "Publish and test the exact beta account and trust model. Trusted same-user code must not be described as tenant isolation. Distinct-account or headless-provider operation needs its own qualified profile wherever advertised.",
+      "criterion_origin": "Paper v1.0 proposed acceptance criterion; not adopted by this review",
+      "required_under_paper_proposal": true,
+      "proposed_work_packages": [
+        "W03",
+        "W10"
+      ],
+      "evidence_requirement": "E2 operational native delivery on each promised profile; actual selected provider or accepted test environment where required"
+    },
+    {
+      "criterion_id": "C07.4",
+      "paper_page": 12,
+      "paper_criterion_text": "Define revocation and authorization-to-effect semantics per operation and prove the stated boundary. Admission-time authorization may be a deliberate contract; a promise of immediate revocation requires stronger implementation. Record the remaining race explicitly and do not claim atomicity from a final pre-effect check.",
+      "criterion_origin": "Paper v1.0 proposed acceptance criterion; not adopted by this review",
+      "required_under_paper_proposal": true,
+      "proposed_work_packages": [
+        "W03",
+        "W10"
+      ],
+      "evidence_requirement": "E2 operational native delivery on each promised profile; actual selected provider or accepted test environment where required"
+    },
+    {
+      "criterion_id": "C08.1",
+      "paper_page": 12,
+      "paper_criterion_text": "Approve an exact capability manifest and selected immutable packages. Bind source, build recipe, toolchain, dependencies, module versions, interfaces and receipts without flattening independent ownership.",
+      "criterion_origin": "Paper v1.0 proposed acceptance criterion; not adopted by this review",
+      "required_under_paper_proposal": true,
+      "proposed_work_packages": [
+        "W06",
+        "W07",
+        "W08",
+        "W13"
+      ],
+      "evidence_requirement": "E2 final download/trust/payload/host evidence plus publisher decision distinct from testing"
+    },
+    {
+      "criterion_id": "C08.2",
+      "paper_page": 13,
+      "paper_criterion_text": "Close recursive runtime, loader and TLS dependencies plus notices, source correspondence and vendor redistribution conditions for the actual payload. Verify OS trust and signing/notarization behavior where selected or promised.",
+      "criterion_origin": "Paper v1.0 proposed acceptance criterion; not adopted by this review",
+      "required_under_paper_proposal": true,
+      "proposed_work_packages": [
+        "W06",
+        "W07",
+        "W08",
+        "W13"
+      ],
+      "evidence_requirement": "E2 final download/trust/payload/host evidence plus publisher decision distinct from testing"
+    },
+    {
+      "criterion_id": "C08.3",
+      "paper_page": 13,
+      "paper_criterion_text": "Establish production publisher identity and a verification policy obtained independently of the untrusted payload. Verify hashes and signatures; exercise wrong signer, tampering, incompatible profile, unsafe archive and substitution cases.",
+      "criterion_origin": "Paper v1.0 proposed acceptance criterion; not adopted by this review",
+      "required_under_paper_proposal": true,
+      "proposed_work_packages": [
+        "W06",
+        "W07",
+        "W08",
+        "W13"
+      ],
+      "evidence_requirement": "E2 final download/trust/payload/host evidence plus publisher decision distinct from testing"
+    },
+    {
+      "criterion_id": "C08.4",
+      "paper_page": 13,
+      "paper_criterion_text": "Download the actual candidate bytes onto clean hosts for every advertised profile and run installation, functional, external-engine, recovery, upgrade/rollback and removal scenarios. Retain the exact retrieval URL, artifact identity and host inventory. Publication requires the named publisher's explicit decision.",
+      "criterion_origin": "Paper v1.0 proposed acceptance criterion; not adopted by this review",
+      "required_under_paper_proposal": true,
+      "proposed_work_packages": [
+        "W06",
+        "W07",
+        "W08",
+        "W13"
+      ],
+      "evidence_requirement": "E2 final download/trust/payload/host evidence plus publisher decision distinct from testing"
+    },
+    {
+      "criterion_id": "C09.1",
+      "paper_page": 13,
+      "paper_criterion_text": "Declare recovery time, acceptable data loss, backup method and uncertainty handling for each supported state owner and beta topology. Targets must have measured scenarios and explicit limits; do not impose invented universal latency or retention guarantees.",
+      "criterion_origin": "Paper v1.0 proposed acceptance criterion; not adopted by this review",
+      "required_under_paper_proposal": true,
+      "proposed_work_packages": [
+        "W05",
+        "W10",
+        "W11"
+      ],
+      "evidence_requirement": "E2 actual process/storage restore and applicable E3/E4 provider uncertainty evidence"
+    },
+    {
+      "criterion_id": "C09.2",
+      "paper_page": 13,
+      "paper_criterion_text": "Inject worker, controller, adapter and connection failure at the relevant operation boundaries. Include lost acknowledgement, malformed retained evidence, interrupted installation, full storage or bounded-capacity refusal and unavailable authority/audit.",
+      "criterion_origin": "Paper v1.0 proposed acceptance criterion; not adopted by this review",
+      "required_under_paper_proposal": true,
+      "proposed_work_packages": [
+        "W05",
+        "W10",
+        "W11"
+      ],
+      "evidence_requirement": "E2 actual process/storage restore and applicable E3/E4 provider uncertainty evidence"
+    },
+    {
+      "criterion_id": "C09.3",
+      "paper_page": 13,
+      "paper_criterion_text": "Restore actual campaign data to a clean installation through the supported backup procedure and reconcile outstanding work. Quiescent-copy proof is sufficient only for an explicitly quiescent- backup promise; stronger durability or live-snapshot claims need their own tests.",
+      "criterion_origin": "Paper v1.0 proposed acceptance criterion; not adopted by this review",
+      "required_under_paper_proposal": true,
+      "proposed_work_packages": [
+        "W05",
+        "W10",
+        "W11"
+      ],
+      "evidence_requirement": "E2 actual process/storage restore and applicable E3/E4 provider uncertainty evidence"
+    },
+    {
+      "criterion_id": "C09.4",
+      "paper_page": 13,
+      "paper_criterion_text": "Measure recovery against the declared targets and verify that unknown effects do not become successful or safely failed by assumption. Exercise a backup operator's handoff and preserve user data through rollback.",
+      "criterion_origin": "Paper v1.0 proposed acceptance criterion; not adopted by this review",
+      "required_under_paper_proposal": true,
+      "proposed_work_packages": [
+        "W05",
+        "W10",
+        "W11"
+      ],
+      "evidence_requirement": "E2 actual process/storage restore and applicable E3/E4 provider uncertainty evidence"
+    },
+    {
+      "criterion_id": "C10.1",
+      "paper_page": 14,
+      "paper_criterion_text": "Create an exact provider, SDK, operation and target matrix. Complete the native bridges and credential/session paths for all supported cells. Establish the provenance and rights to use required SDK material; fixture substitutes remain clearly separate.",
+      "criterion_origin": "Paper v1.0 proposed acceptance criterion; not adopted by this review",
+      "required_under_paper_proposal": true,
+      "proposed_work_packages": [
+        "W03",
+        "W04",
+        "W10"
+      ],
+      "evidence_requirement": "Relevant E3/E4 under paper proposal; current provider checker requires actual authorized provider evidence"
+    },
+    {
+      "criterion_id": "C10.2",
+      "paper_page": 14,
+      "paper_criterion_text": "For each promised operational path, exercise the actual production adapter against its authorized provider environment or a qualifying protocol endpoint. Prove initialization, session/account admission, bounded data or order operations and safe shutdown as applicable.",
+      "criterion_origin": "Paper v1.0 proposed acceptance criterion; not adopted by this review",
+      "required_under_paper_proposal": true,
+      "proposed_work_packages": [
+        "W03",
+        "W04",
+        "W10"
+      ],
+      "evidence_requirement": "Relevant E3/E4 under paper proposal; current provider checker requires actual authorized provider evidence"
+    },
+    {
+      "criterion_id": "C10.3",
+      "paper_page": 14,
+      "paper_criterion_text": "Test expiry, denial, pacing, cancellation, disconnect/reconnect, delayed and duplicate events, callback gaps and uncertain requests. Verify the actual selected account and environment rather than trusting a correlation label.",
+      "criterion_origin": "Paper v1.0 proposed acceptance criterion; not adopted by this review",
+      "required_under_paper_proposal": true,
+      "proposed_work_packages": [
+        "W03",
+        "W04",
+        "W10"
+      ],
+      "evidence_requirement": "Relevant E3/E4 under paper proposal; current provider checker requires actual authorized provider evidence"
+    },
+    {
+      "criterion_id": "C10.4",
+      "paper_page": 14,
+      "paper_criterion_text": "Compare provider/simulator observations with local request, order and result records. Retain independent endpoint evidence and unresolved limitations. If an advertised SDK path cannot be exercised, that cell remains blocked; a different generic simulator cannot qualify it.",
+      "criterion_origin": "Paper v1.0 proposed acceptance criterion; not adopted by this review",
+      "required_under_paper_proposal": true,
+      "proposed_work_packages": [
+        "W03",
+        "W04",
+        "W10"
+      ],
+      "evidence_requirement": "Relevant E3/E4 under paper proposal; current provider checker requires actual authorized provider evidence"
+    },
+    {
+      "criterion_id": "C11.1",
+      "paper_page": 15,
+      "paper_criterion_text": "Publish the beta workload envelope, correctness oracle and acceptance budgets before testing. Identify input size, event rate, output fidelity, host, compiler, storage state, worker model, resource settings and all excluded work.",
+      "criterion_origin": "Paper v1.0 proposed acceptance criterion; not adopted by this review",
+      "required_under_paper_proposal": true,
+      "proposed_work_packages": [
+        "W09",
+        "W10"
+      ],
+      "evidence_requirement": "E2 final-artifact complete-work measurements and applicable E3/E4 real-time campaign"
+    },
+    {
+      "criterion_id": "C11.2",
+      "paper_page": 15,
+      "paper_criterion_text": "Measure complete research work including loading, decoding, computation, scratch I/O, publication and result verification/export. Use repetitions and explicit warm-up/cache policy, with fresh processes where peak-memory comparison requires them.",
+      "criterion_origin": "Paper v1.0 proposed acceptance criterion; not adopted by this review",
+      "required_under_paper_proposal": true,
+      "proposed_work_packages": [
+        "W09",
+        "W10"
+      ],
+      "evidence_requirement": "E2 final-artifact complete-work measurements and applicable E3/E4 real-time campaign"
+    },
+    {
+      "criterion_id": "C11.3",
+      "paper_page": 15,
+      "paper_criterion_text": "For real-time profiles, measure event-to-decision and submission latency distributions, throughput, backlog, dropped/gapped observations, resource saturation and recovery. Declare clock origin and synchronization limits; avoid combining incomparable clocks.",
+      "criterion_origin": "Paper v1.0 proposed acceptance criterion; not adopted by this review",
+      "required_under_paper_proposal": true,
+      "proposed_work_packages": [
+        "W09",
+        "W10"
+      ],
+      "evidence_requirement": "E2 final-artifact complete-work measurements and applicable E3/E4 real-time campaign"
+    },
+    {
+      "criterion_id": "C11.4",
+      "paper_page": 15,
+      "paper_criterion_text": "Run nominal and burst workloads from final artifacts, including the user-authored engine and the declared administrative-failure case. Meet the predeclared budgets with scientific/result correctness intact; record slow and failed samples rather than reporting only the best result.",
+      "criterion_origin": "Paper v1.0 proposed acceptance criterion; not adopted by this review",
+      "required_under_paper_proposal": true,
+      "proposed_work_packages": [
+        "W09",
+        "W10"
+      ],
+      "evidence_requirement": "E2 final-artifact complete-work measurements and applicable E3/E4 real-time campaign"
+    },
+    {
+      "criterion_id": "C12.1",
+      "paper_page": 15,
+      "paper_criterion_text": "Name the risk and execution-state owners for the acceptance composition, whether supplied, user-built or external. Enforce actual account/environment selection and the chosen economic limits at every supported order route within the declared trust boundary.",
+      "criterion_origin": "Paper v1.0 proposed acceptance criterion; not adopted by this review",
+      "required_under_paper_proposal": true,
+      "proposed_work_packages": [
+        "W04",
+        "W05",
+        "W10"
+      ],
+      "evidence_requirement": "Relevant E3/E4 production-path account/risk/order-state proof under paper proposal"
+    },
+    {
+      "criterion_id": "C12.2",
+      "paper_page": 16,
+      "paper_criterion_text": "Exercise wrong-account attempts, over-limit requests, stale data, conflicting request identities, lost acknowledgements, duplicate/out-of-order executions, partial fills, cancel/replace races, callback gaps and process death. Bound exposure under the selected policy and verify an independent expected-state oracle.",
+      "criterion_origin": "Paper v1.0 proposed acceptance criterion; not adopted by this review",
+      "required_under_paper_proposal": true,
+      "proposed_work_packages": [
+        "W04",
+        "W05",
+        "W10"
+      ],
+      "evidence_requirement": "Relevant E3/E4 production-path account/risk/order-state proof under paper proposal"
+    },
+    {
+      "criterion_id": "C12.3",
+      "paper_page": 16,
+      "paper_criterion_text": "Reconcile authoritative order, execution and position records after every consequential fault. Distinguish unknown submission, accepted order, partial execution, pending cancellation and confirmed terminal state. Never treat SDK return, callback-buffer contents or a local receipt alone as complete provider truth.",
+      "criterion_origin": "Paper v1.0 proposed acceptance criterion; not adopted by this review",
+      "required_under_paper_proposal": true,
+      "proposed_work_packages": [
+        "W04",
+        "W05",
+        "W10"
+      ],
+      "evidence_requirement": "Relevant E3/E4 production-path account/risk/order-state proof under paper proposal"
+    },
+    {
+      "criterion_id": "C12.4",
+      "paper_page": 16,
+      "paper_criterion_text": "Demonstrate separately the controls for inhibiting new submissions, requesting cancellation and optionally flattening under user policy. Verify provider/simulator outcomes and the declared response when reconciliation is unavailable. Stopping a process is never evidence of cancellation or a flat account.",
+      "criterion_origin": "Paper v1.0 proposed acceptance criterion; not adopted by this review",
+      "required_under_paper_proposal": true,
+      "proposed_work_packages": [
+        "W04",
+        "W05",
+        "W10"
+      ],
+      "evidence_requirement": "Relevant E3/E4 production-path account/risk/order-state proof under paper proposal"
+    },
+    {
+      "criterion_id": "C13.1",
+      "paper_page": 16,
+      "paper_criterion_text": "Assign named primary and backup release/rollback owners, component escalation owners, an acceptance reviewer and a security-response owner. Record coverage, handoff and escalation without treating proposed roles as assignments.",
+      "criterion_origin": "Paper v1.0 proposed acceptance criterion; not adopted by this review",
+      "required_under_paper_proposal": true,
+      "proposed_work_packages": [
+        "W01",
+        "W11",
+        "W12"
+      ],
+      "evidence_requirement": "Actual named-person/access/drill evidence; no E5 customer history required"
+    },
+    {
+      "criterion_id": "C13.2",
+      "paper_page": 16,
+      "paper_criterion_text": "Publish supported beta versions and profiles, known limitations, support channels and realistic response expectations. Distinguish privately operated installations and user responsibility from QuanuX's promised support behavior.",
+      "criterion_origin": "Paper v1.0 proposed acceptance criterion; not adopted by this review",
+      "required_under_paper_proposal": true,
+      "proposed_work_packages": [
+        "W01",
+        "W11",
+        "W12"
+      ],
+      "evidence_requirement": "Actual named-person/access/drill evidence; no E5 customer history required"
+    },
+    {
+      "criterion_id": "C13.3",
+      "paper_page": 16,
+      "paper_criterion_text": "Verify support-ticket privacy, access, routing and acknowledgement through an authorized internal drill, including a security report. Check that private payloads and credentials are not requested in public issues or automatically uploaded.",
+      "criterion_origin": "Paper v1.0 proposed acceptance criterion; not adopted by this review",
+      "required_under_paper_proposal": true,
+      "proposed_work_packages": [
+        "W01",
+        "W11",
+        "W12"
+      ],
+      "evidence_requirement": "Actual named-person/access/drill evidence; no E5 customer history required"
+    },
+    {
+      "criterion_id": "C13.4",
+      "paper_page": 17,
+      "paper_criterion_text": "Run an incident and rollback exercise with the backup operator using the shipped procedures. Record detection, decision, communication route, evidence preservation, recovery and closure. No customer case is required to perform this internal exercise.",
+      "criterion_origin": "Paper v1.0 proposed acceptance criterion; not adopted by this review",
+      "required_under_paper_proposal": true,
+      "proposed_work_packages": [
+        "W01",
+        "W11",
+        "W12"
+      ],
+      "evidence_requirement": "Actual named-person/access/drill evidence; no E5 customer history required"
+    }
+  ]
+}

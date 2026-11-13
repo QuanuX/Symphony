@@ -1,0 +1,115 @@
+{
+  "format_version": 1,
+  "source_commit": "887e074780e1d0633bd6e6f57c3d4e07ca3925fc",
+  "assignment_source": ".github/LAUNCH.md",
+  "roles": [
+    {
+      "id": "release_approver",
+      "person": "@quantDIY",
+      "assignment_state": "assigned_existing",
+      "responsibility": "Select scope and issue final release decision; this dossier contains no new approval."
+    },
+    {
+      "id": "rollback_primary",
+      "person": "@quantDIY",
+      "assignment_state": "assigned_existing",
+      "responsibility": "Stop rollout, preserve uncertainty and select a verified compatible rollback."
+    },
+    {
+      "id": "release_coordinator",
+      "person": null,
+      "assignment_state": "proposed_role_unassigned",
+      "responsibility": "Own scope, dependency graph, source/candidate identities and blockers."
+    },
+    {
+      "id": "packaging_engineer",
+      "person": null,
+      "assignment_state": "proposed_role_unassigned",
+      "responsibility": "Build exact per-profile closures and retain receipts/recipes."
+    },
+    {
+      "id": "payload_reviewer",
+      "person": null,
+      "assignment_state": "proposed_role_unassigned",
+      "responsibility": "Review actual runtime/TLS/notices/source/vendor payload closure."
+    },
+    {
+      "id": "signing_custodian",
+      "person": null,
+      "assignment_state": "proposed_role_unassigned",
+      "responsibility": "Provide independently distributed trust policy and authorized signing process; retain keys privately."
+    },
+    {
+      "id": "acceptance_reviewer",
+      "person": null,
+      "assignment_state": "proposed_role_unassigned",
+      "responsibility": "Independently review exact final-byte observations; structural checks are insufficient."
+    },
+    {
+      "id": "platform_operator",
+      "person": null,
+      "assignment_state": "proposed_role_unassigned",
+      "responsibility": "Run fresh-host/lifecycle cells for each selected profile."
+    },
+    {
+      "id": "sdk_research_owner",
+      "person": null,
+      "assignment_state": "proposed_role_unassigned",
+      "responsibility": "Prepare independent user-engine and complete-output research oracles."
+    },
+    {
+      "id": "authority_security_owner",
+      "person": null,
+      "assignment_state": "proposed_role_unassigned",
+      "responsibility": "Review authority, credential and audit boundaries and refusal/recovery evidence."
+    },
+    {
+      "id": "provider_review_owner",
+      "person": null,
+      "assignment_state": "proposed_role_unassigned",
+      "responsibility": "Review user-led selected provider observations and exact account/SDK/operation scope."
+    },
+    {
+      "id": "provider_testers",
+      "person": null,
+      "assignment_state": "user_led_after_packaging_unassigned",
+      "responsibility": "Users run authorized live profiles after packaging; no credentials enter Git."
+    },
+    {
+      "id": "state_recovery_owner",
+      "person": null,
+      "assignment_state": "proposed_role_unassigned",
+      "responsibility": "Select state/risk composition ownership and verify recovery against independent oracle."
+    },
+    {
+      "id": "performance_owner",
+      "person": null,
+      "assignment_state": "proposed_role_unassigned",
+      "responsibility": "Predeclare measurable workloads and budgets; retain all observations."
+    },
+    {
+      "id": "rollback_backup",
+      "person": null,
+      "assignment_state": "proposed_role_unassigned",
+      "responsibility": "Execute independent restore/incident/rollback handoff."
+    },
+    {
+      "id": "security_response_owner",
+      "person": null,
+      "assignment_state": "proposed_role_unassigned",
+      "responsibility": "Own private intake, routing, access, response and escalation."
+    },
+    {
+      "id": "component_maintainers",
+      "person": null,
+      "assignment_state": "proposed_role_unassigned",
+      "responsibility": "Assign named coverage per capability group, including independent Go/Swift/native owners."
+    },
+    {
+      "id": "channel_owner",
+      "person": null,
+      "assignment_state": "proposed_role_unassigned",
+      "responsibility": "Qualify only approved distribution/client channels with exact native/catalogue/package bindings."
+    }
+  ]
+}
