@@ -1,6 +1,7 @@
 // delivery-set binds a complete, explicitly selected multi-artifact delivery.
 // This release tool does not install or execute payloads, access providers, or
-// establish publisher authority, owner qualification, or release acceptance.
+// establish publisher authority or release acceptance. Explicit inspect-owner
+// mode runs an independently selected trusted read-only owner harness.
 package main
 
 import (
@@ -665,7 +666,7 @@ func dsVerifySignature(index, signature, policy []byte, signer string) error {
 	return nil
 }
 
-type dsOptions struct{ mode, root, selection, policy, profile, signer, definition, output string }
+type dsOptions struct{ mode, root, selection, policy, profile, signer, definition, output, artifact, ownerTool, ownerBuild string }
 
 func dsRun(options dsOptions) (dsResult, error) {
 	var result dsResult
@@ -766,9 +767,209 @@ func dsRun(options dsOptions) (dsResult, error) {
 	}
 	return result, nil
 }
+
+// dsOwnerBuild is supplied by the operator independently of the downloaded set.
+// It binds a trusted, reviewed harness build. An artifact cannot select a program.
+type dsOwnerBuild struct {
+	Protocol         string   `json:"protocol"`
+	Adapter          string   `json:"verification_adapter"`
+	Component        string   `json:"component_id"`
+	Version          string   `json:"version"`
+	OS               string   `json:"os"`
+	Architecture     string   `json:"architecture"`
+	Source           dsSource `json:"source"`
+	SourceArchiveSHA string   `json:"source_archive_sha256"`
+	ToolSHA          string   `json:"tool_sha256"`
+	GoVersion        string   `json:"go_version"`
+}
+type dsOwnerInspection struct {
+	Protocol      string `json:"protocol"`
+	Adapter       string `json:"verification_adapter"`
+	Component     string `json:"component_id"`
+	Version       string `json:"version"`
+	OS            string `json:"os"`
+	Architecture  string `json:"architecture"`
+	Binary        dsFile `json:"binary"`
+	Receipt       dsFile `json:"receipt"`
+	ReceiptDigest string `json:"receipt_digest"`
+	Scope         string `json:"scope"`
+	Provider      bool   `json:"provider_qualified"`
+	FreshHost     bool   `json:"fresh_host_qualified"`
+	Release       bool   `json:"release_accepted"`
+	Publication   bool   `json:"publication_authorized"`
+}
+type dsOwnerResult struct {
+	Protocol      string            `json:"protocol"`
+	Scope         string            `json:"scope"`
+	IndexSHA      string            `json:"index_sha256"`
+	ArtifactID    string            `json:"artifact_id"`
+	Source        dsSource          `json:"source"`
+	Profile       dsProfile         `json:"profile"`
+	ToolBuildSHA  string            `json:"tool_build_sha256"`
+	ToolSHA       string            `json:"tool_sha256"`
+	InspectionSHA string            `json:"inspection_sha256"`
+	Inspection    dsOwnerInspection `json:"inspection"`
+	OwnerVerified bool              `json:"selected_artifact_owner_verified"`
+	FreshHost     bool              `json:"fresh_host_verified"`
+	Release       bool              `json:"release_acceptance_complete"`
+	Publication   bool              `json:"publication_authorized"`
+}
+
+func dsOwnerComponent(adapter string) string {
+	switch adapter {
+	case "ssiag-receipt-v2":
+		return "secure-identity-access-governance"
+	case "stav-receipt-v2":
+		return "stav-append-authority"
+	case "accordare-receipt-v2":
+		return "accordare-stav-producer"
+	}
+	return ""
+}
+func dsOwnerBinding(index dsIndex, artifact dsArtifact, inspection dsOwnerInspection) error {
+	component := dsOwnerComponent(artifact.Selection.Adapter)
+	if component == "" || artifact.Selection.Kind != "go" || artifact.Selection.PackageID != component || len(artifact.Receipts) != 1 ||
+		inspection.Protocol != "symphony.release.owner-inspection.v1" || inspection.Adapter != artifact.Selection.Adapter ||
+		inspection.Component != component || inspection.Version != artifact.Selection.Versions[component] ||
+		inspection.OS != index.Profile.OS || inspection.Architecture != index.Profile.Architecture ||
+		inspection.Scope != "read_only_owner_receipt" || inspection.Provider || inspection.FreshHost || inspection.Release || inspection.Publication ||
+		!strings.HasPrefix(inspection.ReceiptDigest, "sha256:") || !dsHex(strings.TrimPrefix(inspection.ReceiptDigest, "sha256:"), 32) {
+		return dsError
+	}
+	files := map[string]dsFile{}
+	for _, f := range index.Files {
+		files[f.Path] = f
+	}
+	// A bundle may contain its owner prefix below a staging directory. Derive only
+	// that prefix from the independently inspected owner's exact relative path.
+	if !dsPath(inspection.Binary.Path) || !dsPath(inspection.Receipt.Path) ||
+		!(artifact.Primary == inspection.Binary.Path || strings.HasSuffix(artifact.Primary, "/"+inspection.Binary.Path)) {
+		return dsError
+	}
+	prefix := strings.TrimSuffix(artifact.Primary, inspection.Binary.Path)
+	if prefix+inspection.Receipt.Path != artifact.Receipts[0] {
+		return dsError
+	}
+	for _, binding := range []struct {
+		name     string
+		observed dsFile
+	}{{artifact.Primary, inspection.Binary}, {artifact.Receipts[0], inspection.Receipt}} {
+		f, ok := files[binding.name]
+		observed := binding.observed
+		observed.Path = binding.name
+		if !ok || f != observed {
+			return dsError
+		}
+	}
+	return nil
+}
+func dsInspectOwner(options dsOptions) (dsOwnerResult, error) {
+	var result dsOwnerResult
+	output := options.output
+	options.output = ""
+	options.mode = "verify"
+	verified, e := dsRun(options)
+	if e != nil {
+		return result, e
+	}
+	root, e := dsRoot(options.root)
+	if e != nil {
+		return result, e
+	}
+	raw, e := dsRead(filepath.Join(root, "delivery-set.json"), dsMetadataLimit)
+	if e != nil || dsHash(raw) != verified.IndexSHA {
+		return result, dsError
+	}
+	var index dsIndex
+	if dsDecode(raw, &index) != nil {
+		return result, dsError
+	}
+	var artifact dsArtifact
+	found := false
+	for _, a := range index.Artifacts {
+		if a.Selection.ID == options.artifact {
+			artifact = a
+			found = true
+		}
+	}
+	component := dsOwnerComponent(artifact.Selection.Adapter)
+	if !found || component == "" {
+		return result, dsError
+	}
+	buildRaw, e := dsIndependent(root, options.ownerBuild)
+	if e != nil {
+		return result, e
+	}
+	var build dsOwnerBuild
+	if dsDecode(buildRaw, &build) != nil || build.Protocol != "symphony.release.owner-tool-build.v1" ||
+		build.Adapter != artifact.Selection.Adapter || build.Component != component ||
+		build.Version != artifact.Selection.Versions[component] || build.OS != index.Profile.OS || build.Architecture != index.Profile.Architecture ||
+		build.Source != index.Source || !dsHex(build.SourceArchiveSHA, 32) || !dsHex(build.ToolSHA, 32) || build.GoVersion != "go1.26.5" {
+		return result, dsError
+	}
+	// Both the trusted executable and build record must be outside the delivery.
+	if !filepath.IsAbs(options.ownerTool) || filepath.Clean(options.ownerTool) != options.ownerTool {
+		return result, dsError
+	}
+	toolParent, e := dsRoot(filepath.Dir(options.ownerTool))
+	if e != nil {
+		return result, e
+	}
+	rel, e := filepath.Rel(root, filepath.Join(toolParent, filepath.Base(options.ownerTool)))
+	if e != nil || (rel != ".." && !strings.HasPrefix(rel, ".."+string(filepath.Separator))) {
+		return result, dsError
+	}
+	tool, e := dsObserve(toolParent, filepath.Base(options.ownerTool))
+	if e != nil || tool.SHA256 != build.ToolSHA || tool.Mode&0111 == 0 {
+		return result, dsError
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
+	defer cancel()
+	command := exec.CommandContext(ctx, filepath.Join(toolParent, filepath.Base(options.ownerTool)), "-binary", filepath.Join(root, filepath.FromSlash(artifact.Primary)))
+	command.Env = []string{"PATH=/usr/bin:/bin", "LANG=C"}
+	var stdout, stderr dsBoundedOutput
+	command.Stdout = &stdout
+	command.Stderr = &stderr
+	if command.Run() != nil {
+		return result, dsError
+	}
+	inspectionRaw := stdout.Bytes()
+	var inspection dsOwnerInspection
+	if dsDecode(inspectionRaw, &inspection) != nil || dsOwnerBinding(index, artifact, inspection) != nil {
+		return result, dsError
+	}
+	after, e := dsObserve(toolParent, filepath.Base(options.ownerTool))
+	if e != nil || after != tool {
+		return result, dsError
+	}
+	afterBuild, e := dsIndependent(root, options.ownerBuild)
+	if e != nil || !bytes.Equal(buildRaw, afterBuild) {
+		return result, dsError
+	}
+	// Reverify the entire signed set after the owner reader; no stale byte proof.
+	again, e := dsRun(options)
+	if e != nil || again.IndexSHA != verified.IndexSHA {
+		return result, dsError
+	}
+	result = dsOwnerResult{Protocol: "symphony.release.delivery-owner-verification.v1", Scope: "selected_owner_receipt_only", IndexSHA: verified.IndexSHA, ArtifactID: artifact.Selection.ID, Source: index.Source, Profile: index.Profile, ToolBuildSHA: dsHash(buildRaw), ToolSHA: tool.SHA256, InspectionSHA: dsHash(inspectionRaw), Inspection: inspection, OwnerVerified: true}
+	if output != "" {
+		if !filepath.IsAbs(output) {
+			return dsOwnerResult{}, dsError
+		}
+		parent, e := dsRoot(filepath.Dir(output))
+		if e != nil {
+			return dsOwnerResult{}, e
+		}
+		rel, e := filepath.Rel(root, filepath.Join(parent, filepath.Base(output)))
+		if e != nil || (rel != ".." && !strings.HasPrefix(rel, ".."+string(filepath.Separator))) || dsWriteNew(output, dsJSON(result)) != nil {
+			return dsOwnerResult{}, dsError
+		}
+	}
+	return result, nil
+}
 func main() {
 	var o dsOptions
-	flag.StringVar(&o.mode, "mode", "verify", "prepare, validate unsigned bytes, or verify signature and bytes")
+	flag.StringVar(&o.mode, "mode", "verify", "prepare, validate, verify, or inspect-owner (trusted read-only harness)")
 	flag.StringVar(&o.root, "root", "", "absolute private delivery-set directory")
 	flag.StringVar(&o.selection, "selection", "", "independent exact artifact selection JSON outside delivery root")
 	flag.StringVar(&o.policy, "allowed-signers", "", "independent allowed-signers policy outside delivery root")
@@ -776,12 +977,25 @@ func main() {
 	flag.StringVar(&o.signer, "signer", "", "expected signer principal for verification")
 	flag.StringVar(&o.definition, "definition", "", "independent preparation definition outside delivery root")
 	flag.StringVar(&o.output, "report", "", "optional new absolute result file, preferably outside delivery root")
+	flag.StringVar(&o.artifact, "artifact", "", "explicit artifact ID for inspect-owner")
+	flag.StringVar(&o.ownerTool, "owner-tool", "", "independent trusted read-only owner harness for inspect-owner")
+	flag.StringVar(&o.ownerBuild, "owner-build", "", "independent exact owner harness build record for inspect-owner")
 	flag.Parse()
 	if flag.NArg() != 0 {
 		fmt.Fprintln(os.Stderr, dsError)
 		os.Exit(1)
 	}
-	r, e := dsRun(o)
+	var r any
+	var e error
+	if o.mode == "inspect-owner" {
+		r, e = dsInspectOwner(o)
+	} else {
+		if o.artifact != "" || o.ownerTool != "" || o.ownerBuild != "" {
+			fmt.Fprintln(os.Stderr, dsError)
+			os.Exit(1)
+		}
+		r, e = dsRun(o)
+	}
 	if e != nil {
 		fmt.Fprintln(os.Stderr, dsError)
 		os.Exit(1)

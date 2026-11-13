@@ -31,7 +31,20 @@ verification, external public-SDK qualification, recovery and acceptance evidenc
 - Added focused race tests to the existing package harness. Local Go 1.26.5
   results and source hashes are in [increment-01.json](increment-01.json).
 
-Next: actual owner-adapter evidence, the v1-compatible multi-artifact acceptance
+## Increment 2 — actual Go owner readers
+
+Three read-only qualification harnesses reuse the SSIAG, STAV and Accordare
+receipt readers. `delivery-set -mode inspect-owner` first verifies the signed
+set, runs the independently selected and digest-bound owner tool, checks exact
+receipt/binary/version/target bindings and verifies bytes again. It covers one
+artifact and preserves all later acceptance boundaries. The clean Go candidate
+recipe also builds source-bound owner tools; no installed product CLI was added.
+
+[Increment 2](increment-02.json) records 157 passing named focused cases and the
+initial cache/fixture refusals. Clean-source recipe and real staged-binary
+integration evidence will be appended as separate records after its commit.
+
+Next: complete owner-adapter evidence, the v1-compatible multi-artifact acceptance
 companion, independent public-SDK engine campaign and remaining staged gates.
 Record completed increments and push them; inspect CI later when needed for an
 actual candidate decision.

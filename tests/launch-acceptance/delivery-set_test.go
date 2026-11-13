@@ -470,3 +470,161 @@ func TestDeliveryCMakeSignerUsesValidatedIndexAndIndependentPolicy(t *testing.T)
 		t.Fatal("existing signature changed")
 	}
 }
+
+func dsOwnerFixture(t *testing.T) (dsOptions, dsIndex, dsOwnerInspection) {
+	t.Helper()
+	o, s, d := dsFixture(t)
+	component := "secure-identity-access-governance"
+	s.Artifacts[0] = dsChoice{ID: "cli", PackageID: component, Kind: "go", Adapter: "ssiag-receipt-v2", Versions: map[string]string{component: "0.1.0-dev"}, Dependencies: []string{}}
+	a := &d.Artifacts[0]
+	a.Selection = s.Artifacts[0]
+	for _, p := range a.Files {
+		if e := os.Remove(filepath.Join(o.root, p)); e != nil {
+			t.Fatal(e)
+		}
+	}
+	a.Primary = "ssiag/libexec/symphony/" + component + "/0.1.0-dev/symphony-ssiag"
+	receipt := "ssiag/share/symphony/receipts/" + component + "/0.1.0-dev/install-receipt.json"
+	a.Inventory = receipt
+	a.Receipts = []string{receipt}
+	a.Files = []string{a.Primary, receipt}
+	dsPut(t, filepath.Join(o.root, a.Primary), []byte("inert owner-binding fixture"))
+	if e := os.Chmod(filepath.Join(o.root, a.Primary), 0700); e != nil {
+		t.Fatal(e)
+	}
+	dsPut(t, filepath.Join(o.root, receipt), []byte("inert receipt-binding fixture"))
+	d.Files = append(append(d.Files[:5:5], a.Files...), d.Artifacts[1].Files...)
+	key := dsKey(t, filepath.Dir(o.root), "owner-fixture-key")
+	pub, e := os.ReadFile(key + ".pub")
+	if e != nil {
+		t.Fatal(e)
+	}
+	dsPut(t, o.policy, append([]byte("fixture namespaces=\"symphony-delivery-set\" "), pub...))
+	dsPut(t, o.selection, dsJSON(s))
+	dsPut(t, o.definition, dsJSON(d))
+	if _, e = dsRun(o); e != nil {
+		t.Fatal(e)
+	}
+	if b, e := exec.Command("ssh-keygen", "-Y", "sign", "-f", key, "-n", dsNamespace, filepath.Join(o.root, "delivery-set.json")).CombinedOutput(); e != nil {
+		t.Fatalf("%s %v", b, e)
+	}
+	raw, e := os.ReadFile(filepath.Join(o.root, "delivery-set.json"))
+	if e != nil {
+		t.Fatal(e)
+	}
+	var index dsIndex
+	if e = dsDecode(raw, &index); e != nil {
+		t.Fatal(e)
+	}
+	binary, _ := dsObserve(o.root, a.Primary)
+	binary.Path = strings.TrimPrefix(binary.Path, "ssiag/")
+	rec, _ := dsObserve(o.root, receipt)
+	rec.Path = strings.TrimPrefix(rec.Path, "ssiag/")
+	inspection := dsOwnerInspection{Protocol: "symphony.release.owner-inspection.v1", Adapter: "ssiag-receipt-v2", Component: component, Version: "0.1.0-dev", OS: index.Profile.OS, Architecture: index.Profile.Architecture, Binary: binary, Receipt: rec, ReceiptDigest: "sha256:" + strings.Repeat("a", 64), Scope: "read_only_owner_receipt"}
+	o.artifact = "cli"
+	o.mode = "inspect-owner"
+	o.ownerTool = filepath.Join(filepath.Dir(o.root), "fixture-inspector")
+	o.ownerBuild = filepath.Join(filepath.Dir(o.root), "tool-build.json")
+	// This inert test double tests dispatch/binding; real owner-reader suites
+	// separately install, inspect and remove via their internal owner APIs.
+	script := "#!/bin/sh\nprintf '%s\\n' '" + strings.TrimSpace(string(dsJSON(inspection))) + "'\n"
+	dsPut(t, o.ownerTool, []byte(script))
+	if e = os.Chmod(o.ownerTool, 0700); e != nil {
+		t.Fatal(e)
+	}
+	tool, _ := dsObserve(filepath.Dir(o.ownerTool), filepath.Base(o.ownerTool))
+	build := dsOwnerBuild{Protocol: "symphony.release.owner-tool-build.v1", Adapter: inspection.Adapter, Component: component, Version: inspection.Version, OS: index.Profile.OS, Architecture: index.Profile.Architecture, Source: index.Source, SourceArchiveSHA: strings.Repeat("f", 64), ToolSHA: tool.SHA256, GoVersion: "go1.26.5"}
+	dsPut(t, o.ownerBuild, dsJSON(build))
+	return o, index, inspection
+}
+func TestDeliveryOwnerBinding(t *testing.T) {
+	o, index, valid := dsOwnerFixture(t)
+	if e := dsOwnerBinding(index, index.Artifacts[0], valid); e != nil {
+		t.Fatal(e)
+	}
+	cases := map[string]func(*dsOwnerInspection){
+		"adapter":                  func(i *dsOwnerInspection) { i.Adapter = "stav-receipt-v2" },
+		"component":                func(i *dsOwnerInspection) { i.Component = "other" },
+		"version":                  func(i *dsOwnerInspection) { i.Version = "other" },
+		"os":                       func(i *dsOwnerInspection) { i.OS = "linux" },
+		"arch":                     func(i *dsOwnerInspection) { i.Architecture = "amd64" },
+		"scope":                    func(i *dsOwnerInspection) { i.Scope = "provider" },
+		"provider-claim":           func(i *dsOwnerInspection) { i.Provider = true },
+		"fresh-host-claim":         func(i *dsOwnerInspection) { i.FreshHost = true },
+		"release-claim":            func(i *dsOwnerInspection) { i.Release = true },
+		"publication-claim":        func(i *dsOwnerInspection) { i.Publication = true },
+		"binary-path":              func(i *dsOwnerInspection) { i.Binary.Path = "../program" },
+		"binary-digest":            func(i *dsOwnerInspection) { i.Binary.SHA256 = strings.Repeat("b", 64) },
+		"binary-mode":              func(i *dsOwnerInspection) { i.Binary.Mode = 0600 },
+		"binary-size":              func(i *dsOwnerInspection) { i.Binary.Size++ },
+		"receipt-path":             func(i *dsOwnerInspection) { i.Receipt.Path = "other/install-receipt.json" },
+		"receipt-digest":           func(i *dsOwnerInspection) { i.Receipt.SHA256 = strings.Repeat("b", 64) },
+		"receipt-mode":             func(i *dsOwnerInspection) { i.Receipt.Mode = 0644 },
+		"receipt-canonical-digest": func(i *dsOwnerInspection) { i.ReceiptDigest = "sha256:bad" },
+	}
+	for name, change := range cases {
+		t.Run(name, func(t *testing.T) {
+			bad := valid
+			change(&bad)
+			if dsOwnerBinding(index, index.Artifacts[0], bad) == nil {
+				t.Fatal("mismatch accepted")
+			}
+		})
+	}
+	r, e := dsInspectOwner(o)
+	if e != nil || !r.OwnerVerified || r.FreshHost || r.Release || r.Publication || r.ArtifactID != "cli" {
+		t.Fatal(r, e)
+	}
+}
+func TestDeliveryOwnerRefusesUntrustedOrChangedInputs(t *testing.T) {
+	for _, name := range []string{"missing-signature", "wrong-tool", "wrong-source", "wrong-toolchain", "wrong-tool-version", "unhandled-adapter", "unknown-artifact", "duplicate-output", "payload-drift", "tool-in-payload", "missing-receipt"} {
+		t.Run(name, func(t *testing.T) {
+			o, index, _ := dsOwnerFixture(t)
+			switch name {
+			case "missing-signature":
+				os.Remove(filepath.Join(o.root, "delivery-set.json.sig"))
+			case "wrong-tool":
+				dsPut(t, o.ownerTool, []byte("#!/bin/sh\nexit 0\n"))
+			case "wrong-source", "wrong-toolchain", "wrong-tool-version":
+				b, _ := os.ReadFile(o.ownerBuild)
+				var build dsOwnerBuild
+				dsDecode(b, &build)
+				if name == "wrong-source" {
+					build.Source.Commit = strings.Repeat("c", 40)
+				}
+				if name == "wrong-toolchain" {
+					build.GoVersion = "go1.27.1"
+				}
+				if name == "wrong-tool-version" {
+					build.Version = "other"
+				}
+				dsPut(t, o.ownerBuild, dsJSON(build))
+			case "unhandled-adapter":
+				o.artifact = "carrier"
+			case "unknown-artifact":
+				o.artifact = "absent"
+			case "duplicate-output":
+				o.output = filepath.Join(filepath.Dir(o.root), "exists.json")
+				dsPut(t, o.output, []byte("preserve"))
+			case "payload-drift":
+				// A successful-looking owner cannot change payloads and retain the old proof.
+				b, _ := os.ReadFile(o.ownerTool)
+				script := append([]byte("#!/bin/sh\nprintf 'changed' > \"$2\"\n"), bytes.TrimPrefix(b, []byte("#!/bin/sh\n"))...)
+				dsPut(t, o.ownerTool, script)
+				os.Chmod(o.ownerTool, 0700)
+				br, _ := os.ReadFile(o.ownerBuild)
+				var build dsOwnerBuild
+				dsDecode(br, &build)
+				build.ToolSHA = dsHash(script)
+				dsPut(t, o.ownerBuild, dsJSON(build))
+			case "tool-in-payload":
+				o.ownerTool = filepath.Join(o.root, index.Artifacts[0].Primary)
+			case "missing-receipt":
+				os.Remove(filepath.Join(o.root, index.Artifacts[0].Receipts[0]))
+			}
+			if _, e := dsInspectOwner(o); e == nil {
+				t.Fatal("untrusted or stale owner proof accepted")
+			}
+		})
+	}
+}

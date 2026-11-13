@@ -7,11 +7,16 @@ independently supplied `symphony-delivery-set` namespace. It does not install or
 execute downloaded programs, provision services or credentials, run providers,
 prove owner semantics, or approve release/publication.
 
-The first implementation reports `unsigned_bytes_only` or `signed_bytes_only`.
+The byte-verification modes report `unsigned_bytes_only` or `signed_bytes_only`.
 It lists every `pending_owner_adapters` entry and leaves owner, fresh-host, release
 and publication flags false. Native verification and the versioned acceptance
 companion remain separate increments. An index signature does not replace an
 artifact's own signer policy or actual owner verification.
+
+The separate `inspect-owner` mode now invokes actual read-only receipt readers
+for SSIAG, STAV and Accordare. Its narrower result covers only the selected
+artifact. Other selected artifacts, native verification and the acceptance
+companion still need their own evidence; one owner pass is not a set-wide pass.
 
 ## Inputs and bounds
 
@@ -115,3 +120,53 @@ bindings, missing secondary artifacts, dependency cycles, unsafe paths/modes,
 hardlinks/symlinks, wrong policy/key/principal/namespace, changed signed bytes,
 immutable output and the real CMake helper. These are local fixture results,
 not Anaconda distribution, actual publisher trust or final acceptance.
+
+## Read-only Go owner qualification
+
+The owning modules contain qualification-only `tests/release-owner` harnesses.
+They call SSIAG `InspectExecutable`, STAV `VerifyExecutable` with user scope,
+and Accordare `Inspect`; they do not add an installed product command. They
+refuse changed, linked, foreign-owned or group/other-writable files and noncanonical
+paths, bound reads, and observe the binary and receipt before and after the owner
+reader. This mode admits private **user-owned prefixes only**; system installation
+qualification remains separate. A quiescent directory is required.
+
+The existing `.github/scripts/build-mvp-go-identities.sh` now also builds these
+harnesses from each clean source archive with the same independent package version,
+exact Go toolchain and public module graph as its product binary. It emits
+`<component>/owner-tool-build.json` beside the build, with source commit/tree,
+source archive digest, tool digest, adapter, version and host target. Retain the
+recipe logs and module verification. Supply that reviewed build record and its
+executable independently of the downloaded payload; the record is an operator
+trust input, not a self-authenticating attestation.
+
+```sh
+"$private_tools/delivery-set" -mode inspect-owner -root "$delivery_root" \
+  -selection "$selection" -allowed-signers "$allowed_signers" \
+  -profile "$profile" -signer "$signer" -artifact "$artifact_id" \
+  -owner-tool "$trusted_owner_tool" -owner-build "$trusted_owner_build_record" \
+  -report "$new_owner_report"
+```
+
+Only three fixed adapter IDs are implemented by this mode:
+`ssiag-receipt-v2`, `stav-receipt-v2`, `accordare-receipt-v2`.
+The payload never selects a program. The caller-selected executable must match
+the independently supplied build record, source, component, package version and
+target. The harness is invoked with only the fixed `-binary` argument after
+signature and complete byte verification, with a minimal environment, one-minute
+deadline and bounded output. Its raw receipt hash, canonical owner receipt digest,
+binary hash/size/mode, paths and identities are checked separately. The entire
+signed set, tool and build record are checked again afterward.
+
+The `symphony.release.delivery-owner-verification.v1` result records the index,
+artifact, source/profile, build record, executable and raw inspection hashes.
+`selected_artifact_owner_verified=true` means that the actual owner reader ran
+against the selected bytes. Fresh-host, provider, release and publication flags
+remain false. Unsupported adapters fail; they never inherit another artifact's
+success. A later consumer must reverify bytes before use and must execute the
+reviewed harness again where its acceptance contract requires it.
+
+Focused tests include real owner install/inspect/removal with unrelated-file
+sentinels and no operational state, plus an explicitly inert subprocess fixture
+for signature, dispatch, identity, omission and post-inspection drift boundaries.
+Those are source/fixture results, not final-host or provider acceptance.

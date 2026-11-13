@@ -25246,15 +25246,39 @@
     },
     {
       "path": "tests/launch-acceptance/DELIVERY-SET.md",
-      "sha256": "ed707ce951e0fe86fb131e3850362ff8dc1152c5094f7384d05d921b63a21289"
+      "sha256": "d28afa474ab8357575b5e0f954e773a315e460c272b7c5750542145950f75f6a"
     },
     {
       "path": "tests/launch-acceptance/delivery-set.go",
-      "sha256": "e0d10ba6274d5cb57c22555d662643030dd83773636ce0f3ecf82eda66f6e653"
+      "sha256": "49c264305427517586b7f610ca8ea67db5488676173eca3c1cdf353cde6f2898"
     },
     {
       "path": "tests/launch-acceptance/delivery-set_test.go",
-      "sha256": "7468b138c584f3a874755730246c51917c2642069dd809d7f9e9e70e435c78ac"
+      "sha256": "745b82e209f27bb0d407c7845af3c09ab4c66a56239a9a532eea8ec403557aa1"
+    },
+    {
+      "path": "modules/secure-identity-access-governance/tests/release-owner/main.go",
+      "sha256": "b6fcab1883003026535ad8010be46de113746846b7e8f5cb35c8e0291b99422e"
+    },
+    {
+      "path": "modules/secure-identity-access-governance/tests/release-owner/main_test.go",
+      "sha256": "cf57684cd70025a3caa83c0e4b2c878ab4d213fd8e947a8ac8c562ef2f25782a"
+    },
+    {
+      "path": "modules/accordare-stav-producer/tests/release-owner/main.go",
+      "sha256": "552f90f8190f78065b46794b8ff6b0701f29f6e0db96a4b24d5ab45f21becd0f"
+    },
+    {
+      "path": "modules/accordare-stav-producer/tests/release-owner/main_test.go",
+      "sha256": "86e60d2bd26abd52a606425c6a2ca5dfe2657747174633181b846c282c263257"
+    },
+    {
+      "path": "modules/stav-append-authority/tests/release-owner/main.go",
+      "sha256": "be9c275d8fde211080a0427e4cefa63405e0706075f08f739e8a9d33f4b21bad"
+    },
+    {
+      "path": "modules/stav-append-authority/tests/release-owner/main_test.go",
+      "sha256": "1afe95fe528c3a79191f0109a6739e2a5d25442308bd7c2a9b0dffd88743b2b8"
     }
   ],
   "platform_profile_catalog": "cmake/mvp-platform-profiles.json",
@@ -25289,7 +25313,24 @@
         "tests/launch-acceptance/delivery-set_test.go",
         "tests/launch-acceptance/DELIVERY-SET.md"
       ],
-      "publication_authorized": false
+      "publication_authorized": false,
+      "owner_inspection": {
+        "adapters": [
+          "ssiag-receipt-v2",
+          "stav-receipt-v2",
+          "accordare-receipt-v2"
+        ],
+        "source_paths": [
+          "modules/secure-identity-access-governance/tests/release-owner/main.go",
+          "modules/secure-identity-access-governance/tests/release-owner/main_test.go",
+          "modules/accordare-stav-producer/tests/release-owner/main.go",
+          "modules/accordare-stav-producer/tests/release-owner/main_test.go",
+          "modules/stav-append-authority/tests/release-owner/main.go",
+          "modules/stav-append-authority/tests/release-owner/main_test.go"
+        ],
+        "build_recipe": "cmake/SymphonyGoCandidateIdentities.cmake",
+        "scope": "Read-only actual owner receipt inspection of one signed artifact in a private user-owned prefix. No set-wide, fresh-host, provider or release acceptance."
+      }
     }
   }
 }
