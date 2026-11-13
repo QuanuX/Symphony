@@ -25375,6 +25375,26 @@
     {
       "path": "tests/external-engine/sdk-client.cpp",
       "sha256": "861b0494dc2b538578582beb424ee69431a55346f35c20d868825c4cab37310b"
+    },
+    {
+      "path": "docs/public-beta/execution/CAMPAIGN-HANDOFF.md",
+      "sha256": "25ba98b987a9a25fb97302bfc6a509b98ef6bf7c650eb206103e45b70c1c8b72"
+    },
+    {
+      "path": "docs/public-beta/execution/W12-REVIEW.md",
+      "sha256": "352c70d28e0312dee4d5eb2322ca9f45ed6d3d022d868c3f076755c8019182e8"
+    },
+    {
+      "path": "tests/beta-readiness/README.md",
+      "sha256": "cf82f7230de1a1d817385afb3824450563a6adcd585dd826ff810caed6b86ccd"
+    },
+    {
+      "path": "tests/beta-readiness/prepare.py",
+      "sha256": "1bdbe8d5fedf6fd3016ee7a7a9ae824882e6d0ab476e82ac05110c239f74d419"
+    },
+    {
+      "path": "tests/beta-readiness/test_prepare.py",
+      "sha256": "f094a4ff2cf442cef1b308fbff8bb24ac9f42689d9ca8b16ab6dbb801e8d3198"
     }
   ],
   "platform_profile_catalog": "cmake/mvp-platform-profiles.json",

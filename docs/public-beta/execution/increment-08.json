@@ -1,0 +1,46 @@
+{
+  "protocol": "symphony.public-beta.execution-increment.v1",
+  "increment": 8,
+  "parent_commit": "0325cdbe5ef09d327fb8f5dcae511ed5f20786a1",
+  "scope": "W06-W12 ordered source construction and final campaign preparation; concrete incomplete engineering assessment",
+  "focused_cases": {
+    "pass": 20,
+    "fail": 0,
+    "skip": 0
+  },
+  "dirty_source_refusal": "Actual CLI refused before output creation; exact clean-source integration follows this commit",
+  "scope_counts": {
+    "core_profiles": 4,
+    "native_units_per_core": 51,
+    "go_commands_per_core": 6,
+    "core_cells": 36,
+    "paper_criteria": 58,
+    "supplemental": 31
+  },
+  "source_paths_sha256": {
+    "tests/beta-readiness/prepare.py": "1bdbe8d5fedf6fd3016ee7a7a9ae824882e6d0ab476e82ac05110c239f74d419",
+    "tests/beta-readiness/test_prepare.py": "f094a4ff2cf442cef1b308fbff8bb24ac9f42689d9ca8b16ab6dbb801e8d3198",
+    "tests/beta-readiness/README.md": "cf82f7230de1a1d817385afb3824450563a6adcd585dd826ff810caed6b86ccd",
+    "docs/public-beta/execution/CAMPAIGN-HANDOFF.md": "25ba98b987a9a25fb97302bfc6a509b98ef6bf7c650eb206103e45b70c1c8b72",
+    "docs/public-beta/execution/W12-REVIEW.md": "352c70d28e0312dee4d5eb2322ca9f45ed6d3d022d868c3f076755c8019182e8",
+    ".github/workflows/release-qualification.yml": "017e35901f8a9a01708b248fc2ad670960572742af27ac5924972bdc19e111fc"
+  },
+  "evidence_files_sha256": {
+    "w12-preparation-tests-final.log": "5198ff341b7ededb4366d1069407db5cb4a2361e208e3070d4894cbd7419dcd1",
+    "w12-dirty-refusal.log": "711607b792c25ecba35e421cdec2fbbb26dbdf5e1aa4a5453d4277d171c0447d",
+    "w12-historical-dossier.log": "0743bb2c62bc154fcc28dc3655a741120c023a2e2cbfd004ffa24571a5d793d5"
+  },
+  "verification": [
+    "Current dependency and release maps passed with 1406 source hashes",
+    "Historical dossier validation passed with current_product_source_verified=false",
+    "Changed workflow parsed; whitespace clean",
+    "Hosted CI not awaited or claimed"
+  ],
+  "final_state": "incomplete_no_go_for_public_beta",
+  "human_release_decision": null,
+  "feature_freeze_in_force": true,
+  "new_product_features_added": false,
+  "production_candidate_built_by_this_increment": false,
+  "release_acceptance_complete": false,
+  "publication_authorized": false
+}

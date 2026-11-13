@@ -15,6 +15,40 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  beta-review-preparation:
+    name: Beta scope and incomplete-review preparation
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6
+        with:
+          go-version-file: tools/qxctl/go.mod
+          cache: false
+      - name: Refuse scope and recipe drift
+        run: python3 tests/beta-readiness/test_prepare.py
+      - name: Prepare explicitly incomplete source-bound review
+        run: |
+          if python3 tests/beta-readiness/prepare.py --repo "$GITHUB_WORKSPACE" \
+            --go "$(command -v go)" --work "$RUNNER_TEMP/beta-review"; then
+            echo 'Expected incomplete exit 2, never release acceptance' >&2
+            exit 1
+          else
+            result=$?
+            test "$result" -eq 2
+          fi
+      - name: Retain incomplete review and construction worklists
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: beta-review-preparation
+          path: |
+            ${{ runner.temp }}/beta-review/*.json
+            ${{ runner.temp }}/beta-review/logs
+          retention-days: 14
+
   standalone-go-tests:
     name: Go module race suites (${{ matrix.os }})
     runs-on: ${{ matrix.os }}

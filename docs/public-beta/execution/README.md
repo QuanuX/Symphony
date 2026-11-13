@@ -128,3 +128,14 @@ SDK workflow now includes this campaign; hosted results have not been awaited.
 [Increment 7](increment-07.json) retains exact example/SDK/log hashes and the first
 development failures. This same-author local fixture does not close the final
 independent author/agent journey, final host/relocation or operational fault gates.
+
+## Increment 8 — source-bound W12 preparation and campaign handoff
+
+The [review helper](../../../tests/beta-readiness/README.md) reconciles the current
+51-unit native DAG and six Go owner recipes for all four profiles, preserves all
+36/58/31 mapped requirements, builds the actual checkers from clean source and
+creates an explicitly incomplete review. Twenty focused drift/refusal tests
+pass. The [W12 assessment](W12-REVIEW.md) and [campaign handoff](CAMPAIGN-HANDOFF.md)
+retain final-candidate, Anaconda/trust, host, provider, recovery and human decisions.
+This is preparation and an incomplete engineering assessment, not full W01–W12
+operational acceptance. The clean-commit CLI integration is recorded separately.
