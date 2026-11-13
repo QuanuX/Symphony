@@ -25246,15 +25246,15 @@
     },
     {
       "path": "tests/launch-acceptance/DELIVERY-SET.md",
-      "sha256": "7f718700aea81bca38da0460e8167f121a7ac227a540448b73d6b5d420633814"
+      "sha256": "fb5b0c2b29e5d0085a5329753e068e7cdfdcc357416c4bbf80804798bd8fb165"
     },
     {
       "path": "tests/launch-acceptance/delivery-set.go",
-      "sha256": "8b69077b64451784ba01f9935371e245f66168efffd4de6774fabd70064a4914"
+      "sha256": "773c52f2521f81bb2cf1092319197b0a8fa04f94ffc7c91938881a3b8e08bfc3"
     },
     {
       "path": "tests/launch-acceptance/delivery-set_test.go",
-      "sha256": "909601d21c4b28620c1702374a257409452ab3c5cdebe65e0028975efe87f291"
+      "sha256": "5ca5121b5508a1399209d478d252427dbc61a76fa40f8c5680dc4dabccf34db7"
     },
     {
       "path": "modules/secure-identity-access-governance/tests/release-owner/main.go",
@@ -25287,6 +25287,14 @@
     {
       "path": "tests/launch-acceptance/qualify-native-delivery.py",
       "sha256": "4a9829c1008a5fcd714534c30e3e6e8600bc7f9e6807f6cd5664af9b174050aa"
+    },
+    {
+      "path": "tests/launch-acceptance/qualify-executable-delivery.py",
+      "sha256": "80a371cad167e215aff15e2685d6b081408743a4fae5fd650e80e3ed8e9168f7"
+    },
+    {
+      "path": "cmake/release/immutable-files-v1.schema.json",
+      "sha256": "8cf28ae912094487eed97cd248cbde94ae3ed69ee2f389cbfc01354627d2717c"
     }
   ],
   "platform_profile_catalog": "cmake/mvp-platform-profiles.json",
@@ -25351,6 +25359,22 @@
           "cmake/SymphonyReceiptV2Support.cmake"
         ],
         "scope": "Existing bounded extraction and receipt verification with exact native/index/source/profile/component/map/policy bindings; no payload execution or fresh-host acceptance."
+      },
+      "executable_identity": {
+        "adapters": [
+          "qxctl-files-v1",
+          "sov-executable-v1"
+        ],
+        "components": [
+          "qxctl",
+          "sov-stdio-adapter",
+          "sov-ssh-adapter"
+        ],
+        "source_paths": [
+          "tests/launch-acceptance/qualify-executable-delivery.py",
+          "cmake/release/immutable-files-v1.schema.json"
+        ],
+        "scope": "Authenticated executable identity and fixed version query only; no invented receipt, protected-profile or installation acceptance."
       }
     }
   }

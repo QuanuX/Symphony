@@ -1,0 +1,107 @@
+{
+  "protocol": "symphony.public-beta.execution-increment.v1",
+  "increment": 4,
+  "parent_commit": "e7f2267045dbbeed24db1da6c7af3cba87841b74",
+  "scope": "Existing qxctl and plain SOV executable identities; immutable file inventory, signed build/source/target bindings, actual Go build info, fixed version query and byte recheck. No invented receipts or protected-profile acceptance.",
+  "toolchain": "go1.26.5",
+  "focused_cases": {
+    "pass": 34,
+    "fail": 0,
+    "skip": 0
+  },
+  "focused_log_sha256": "65bace004d5c4ccdee781efa1f60ae2b09aaed07d3b6f2106ec81d2d02186e53",
+  "actual_executable_campaigns": [
+    {
+      "component": "qxctl",
+      "source": {
+        "commit": "e7f2267045dbbeed24db1da6c7af3cba87841b74",
+        "tree": "4e5db921b577dc2dd1ea46df93f8b00540bc1a3e"
+      },
+      "profile": {
+        "profile_id": "local-executable-macos-amd64",
+        "os": "macos",
+        "architecture": "amd64"
+      },
+      "executable_sha256": "a92df92c1b5f82a24ed28493cad04b8cca8a36c8d8e423f40258cf1ff678c583",
+      "evidence_sha256": "6f36993190c01e3c0a1cf43182ae106e40b2d4d32266b46251ee4f72eaef6213",
+      "final_report_sha256": "5a276a0abf2faf3821b73d0f91e8450ee4d91829a1b15f64c531fc4b05a65ffd",
+      "complete_version_output_retained": true,
+      "fixture_key_destroyed": true
+    },
+    {
+      "component": "sov-stdio-adapter",
+      "source": {
+        "commit": "50f3272242d4223db81927cbd06677d6ca093029",
+        "tree": "abf06123af6c5953dee4405bbd95f330239366a7"
+      },
+      "profile": {
+        "profile_id": "local-executable-macos-amd64",
+        "os": "macos",
+        "architecture": "amd64"
+      },
+      "executable_sha256": "dedd0690a169ce195a7684e8371246c468bb1aedbf772c96e67e1c0ea5a78273",
+      "evidence_sha256": "a35b0372725c1943bb2270cf7d7541338d1eae0d8b876d1fd146b49a53b21386",
+      "final_report_sha256": "b1960ef6468f67c4f884266e14c050a6961bfa7cf8b0d2690ff4edd4b723fc2d",
+      "complete_version_output_retained": true,
+      "fixture_key_destroyed": true
+    },
+    {
+      "component": "sov-ssh-adapter",
+      "source": {
+        "commit": "50f3272242d4223db81927cbd06677d6ca093029",
+        "tree": "abf06123af6c5953dee4405bbd95f330239366a7"
+      },
+      "profile": {
+        "profile_id": "local-executable-macos-amd64",
+        "os": "macos",
+        "architecture": "amd64"
+      },
+      "executable_sha256": "a776d1060a226e0eadf799ebc4c5afb6e49c692cabd7b44a6f0b95a4108268ff",
+      "evidence_sha256": "2ce37108e82a6650add8e0850e53b8096885258db69a8aa3c53a2baeb693f160",
+      "final_report_sha256": "fd88c9ca7fa27e35b626f16bc624e7ab0f83662aa6467d7a761227185b92ccb3",
+      "complete_version_output_retained": true,
+      "fixture_key_destroyed": true
+    }
+  ],
+  "qxctl_two_build_reproducibility": "passed at e7f22670; identical a92df92c1b5f82a24ed28493cad04b8cca8a36c8d8e423f40258cf1ff678c583",
+  "first_unit_attempt": "Wrong-tree negative initially reused the original fixture tree; corrected the test mutation and retained executable-initial-tests.jsonl. No production identity condition was weakened.",
+  "source_paths_sha256": {
+    ".github/workflows/qxctl-standalone.yml": "e13a06a84703a35aadce0f87fd3e91c8b8693a58d7725ef34ebf15d9ecd99575",
+    ".github/workflows/release-qualification.yml": "e5b7edecb4244c2b31256ec6e0462a401b43e37c66e506b2ad84049feb1051f5",
+    "cmake/mvp-dependencies.json": "e9e4aa9e09c88f260c16e6b0dece32b68b70faba50daac6be3f9ff95fdefce29",
+    "tests/launch-acceptance/DELIVERY-SET.md": "fb5b0c2b29e5d0085a5329753e068e7cdfdcc357416c4bbf80804798bd8fb165",
+    "tests/launch-acceptance/delivery-set.go": "773c52f2521f81bb2cf1092319197b0a8fa04f94ffc7c91938881a3b8e08bfc3",
+    "tests/launch-acceptance/delivery-set_test.go": "5ca5121b5508a1399209d478d252427dbc61a76fa40f8c5680dc4dabccf34db7",
+    "cmake/release/immutable-files-v1.schema.json": "8cf28ae912094487eed97cd248cbde94ae3ed69ee2f389cbfc01354627d2717c",
+    "tests/launch-acceptance/qualify-executable-delivery.py": "80a371cad167e215aff15e2685d6b081408743a4fae5fd650e80e3ed8e9168f7"
+  },
+  "feature_freeze": true,
+  "fresh_host_qualified": false,
+  "provider_qualified": false,
+  "release_acceptance_complete": false,
+  "publication_authorized": false,
+  "cross_builds": [
+    {
+      "file": "increment04-delivery-set-darwin-arm64",
+      "sha256": "e0e94bf8120196cdcd0e285cd23ad17f135c18efd509731141f33fc1133c3e35",
+      "scope": "compiled_not_executed"
+    },
+    {
+      "file": "increment04-delivery-set-linux-amd64",
+      "sha256": "5f938cb898fca335b32a96edff6d55756804a7105e517ce979c44715942dc593",
+      "scope": "compiled_not_executed"
+    },
+    {
+      "file": "increment04-delivery-set-linux-arm64",
+      "sha256": "c4c12e901ba10e143114a747d4b3dffa185c7ab2e1a527ee046a0d3c92b4fb24",
+      "scope": "compiled_not_executed"
+    }
+  ],
+  "structural_checks": {
+    "dependency_map": "passed 73 roots, 60 native, 1381 hashes",
+    "release_manifest": "passed",
+    "workflow_syntax": "Ruby Psych parse passed for both changed workflows",
+    "go_vet": "passed",
+    "diff_whitespace": "passed"
+  }
+}

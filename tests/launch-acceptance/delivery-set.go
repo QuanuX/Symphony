@@ -1,13 +1,15 @@
 // delivery-set binds a complete, explicitly selected multi-artifact delivery.
-// This release tool does not install or execute payloads, access providers, or
-// establish publisher authority or release acceptance. Explicit inspect-owner
-// mode runs an independently selected trusted read-only owner harness.
+// This release tool does not install payloads, access providers, or establish
+// publisher authority or release acceptance. Explicit owner modes invoke trusted
+// readers; inspect-executable runs only an authenticated executable's fixed
+// version query in a private empty home after complete signature/byte checks.
 package main
 
 import (
 	"bytes"
 	"context"
 	"crypto/sha256"
+	"debug/buildinfo"
 	"encoding/hex"
 	"encoding/json"
 	"errors"
@@ -19,7 +21,9 @@ import (
 	"path"
 	"path/filepath"
 	"reflect"
+	"runtime"
 	"sort"
+	"strconv"
 	"strings"
 	"syscall"
 	"time"
@@ -1232,9 +1236,273 @@ func dsInspectNative(options dsOptions) (dsNativeResult, error) {
 	}
 	return result, nil
 }
+
+type dsExecutableBuild struct {
+	Protocol        string  `json:"protocol"`
+	Component       string  `json:"component_id"`
+	Version         string  `json:"version"`
+	Binary          string  `json:"binary_name"`
+	Commit          string  `json:"source_commit"`
+	Tree            string  `json:"source_tree"`
+	Epoch           string  `json:"source_date_epoch"`
+	DependencySHA   string  `json:"dependency_map_sha256"`
+	IdentitySHA     string  `json:"release_identity_catalog_sha256"`
+	ModSHA          string  `json:"go_mod_sha256"`
+	SumSHA          *string `json:"go_sum_sha256"`
+	Recipe          string  `json:"build_recipe"`
+	GoVersion       string  `json:"go_version"`
+	GOOS            string  `json:"goos"`
+	GOARCH          string  `json:"goarch"`
+	ExecutableSHA   string  `json:"executable_sha256"`
+	Builds          int     `json:"isolated_builds"`
+	Reproducibility string  `json:"reproducibility"`
+	Publication     bool    `json:"publication_authorized"`
+}
+type dsExecutableInventory struct {
+	Protocol string   `json:"protocol"`
+	Files    []dsFile `json:"files"`
+}
+type dsQxctlInfo struct {
+	Protocol      string  `json:"protocol"`
+	Component     string  `json:"component_id"`
+	Version       string  `json:"version"`
+	SourceState   string  `json:"source_state"`
+	Commit        *string `json:"source_commit"`
+	Tree          *string `json:"source_tree"`
+	Epoch         *string `json:"source_date_epoch"`
+	DependencySHA *string `json:"dependency_map_sha256"`
+	Recipe        *string `json:"build_recipe"`
+	GoVersion     string  `json:"go_version"`
+	GOOS          string  `json:"goos"`
+	GOARCH        string  `json:"goarch"`
+	ExecutableSHA string  `json:"executable_sha256"`
+}
+type dsExecutableResult struct {
+	Protocol         string    `json:"protocol"`
+	Scope            string    `json:"scope"`
+	IndexSHA         string    `json:"index_sha256"`
+	ArtifactID       string    `json:"artifact_id"`
+	Source           dsSource  `json:"source"`
+	Profile          dsProfile `json:"profile"`
+	BuildIdentitySHA string    `json:"build_identity_sha256"`
+	InventorySHA     string    `json:"payload_inventory_sha256"`
+	ExecutableSHA    string    `json:"executable_sha256"`
+	VersionOutputSHA string    `json:"version_output_sha256"`
+	VersionOutput    string    `json:"version_output"`
+	Component        string    `json:"component_id"`
+	Version          string    `json:"version"`
+	OwnerVerified    bool      `json:"selected_artifact_owner_verified"`
+	FreshHost        bool      `json:"fresh_host_verified"`
+	Release          bool      `json:"release_acceptance_complete"`
+	Publication      bool      `json:"publication_authorized"`
+}
+
+func dsExecutableComponent(a dsArtifact) string {
+	component := a.Selection.PackageID
+	if (component == "qxctl" && a.Selection.Adapter == "qxctl-files-v1") ||
+		((component == "sov-stdio-adapter" || component == "sov-ssh-adapter") && a.Selection.Adapter == "sov-executable-v1") {
+		return component
+	}
+	return ""
+}
+func dsExecutableBinding(index dsIndex, a dsArtifact, build dsExecutableBuild, inventory dsExecutableInventory) error {
+	component := dsExecutableComponent(a)
+	osName := index.Profile.OS
+	if osName == "macos" {
+		osName = "darwin"
+	}
+	epoch, e := strconv.ParseInt(build.Epoch, 10, 64)
+	files := map[string]dsFile{}
+	for _, f := range index.Files {
+		files[f.Path] = f
+	}
+	if component == "" || a.Selection.Kind != "go" || len(a.Selection.Versions) != 1 || len(a.Receipts) != 0 ||
+		build.Protocol != "symphony.artifact-build-identity.v1" || build.Component != component || build.Binary != component ||
+		build.Version != a.Selection.Versions[component] || build.Commit != index.Source.Commit || build.Tree != index.Source.Tree ||
+		build.DependencySHA != index.DependencySHA || build.IdentitySHA != index.IdentitySHA ||
+		!dsHex(build.ModSHA, 32) || (build.SumSHA != nil && !dsHex(*build.SumSHA, 32)) ||
+		e != nil || epoch < 0 || strconv.FormatInt(epoch, 10) != build.Epoch || build.GoVersion != "go1.26.5" ||
+		build.GOOS != osName || build.GOARCH != index.Profile.Architecture || build.ExecutableSHA != files[a.Primary].SHA256 || build.Publication {
+		return dsError
+	}
+	if component == "qxctl" {
+		if build.Recipe != "symphony.qxctl.reproducible-build.v1" || build.Builds != 2 || build.Reproducibility != "verified_on_recorded_profile" {
+			return dsError
+		}
+	} else if build.Recipe != "symphony.go.candidate-build.v1" || build.Builds != 1 || build.Reproducibility != "not_assessed" {
+		return dsError
+	}
+	if inventory.Protocol != "symphony.release.immutable-files.v1" || len(inventory.Files) != len(a.Files)-1 || len(inventory.Files) == 0 {
+		return dsError
+	}
+	owned := map[string]bool{}
+	for _, p := range a.Files {
+		if p != a.Inventory {
+			owned[p] = true
+		}
+	}
+	for _, f := range inventory.Files {
+		if !owned[f.Path] || files[f.Path] != f {
+			return dsError
+		}
+		delete(owned, f.Path)
+	}
+	if len(owned) != 0 {
+		return dsError
+	}
+	return nil
+}
+func dsQxctlBinding(build dsExecutableBuild, raw []byte) error {
+	var info dsQxctlInfo
+	if dsDecode(raw, &info) != nil || info.Protocol != "symphony.qxctl.build-info.v1" || info.Component != "qxctl" ||
+		info.Version != build.Version || info.SourceState != "stamped" || info.GoVersion != build.GoVersion ||
+		info.GOOS != build.GOOS || info.GOARCH != build.GOARCH || info.ExecutableSHA != build.ExecutableSHA {
+		return dsError
+	}
+	for _, pair := range []struct {
+		actual   *string
+		expected string
+	}{{info.Commit, build.Commit}, {info.Tree, build.Tree}, {info.Epoch, build.Epoch}, {info.DependencySHA, build.DependencySHA}, {info.Recipe, build.Recipe}} {
+		if pair.actual == nil || *pair.actual != pair.expected {
+			return dsError
+		}
+	}
+	return nil
+}
+func dsInspectExecutable(options dsOptions) (dsExecutableResult, error) {
+	var result dsExecutableResult
+	if options.ownerTool != "" || options.ownerBuild != "" || options.ownerRepository != "" || options.ownerWork != "" || options.nativePolicy != "" || options.nativeSigner != "" {
+		return result, dsError
+	}
+	output := options.output
+	options.output = ""
+	options.mode = "verify"
+	verified, e := dsRun(options)
+	if e != nil {
+		return result, e
+	}
+	root, e := dsRoot(options.root)
+	if e != nil {
+		return result, e
+	}
+	if output != "" {
+		if !dsOutside(root, output) {
+			return result, dsError
+		}
+		if _, e = os.Lstat(output); !os.IsNotExist(e) {
+			return result, dsError
+		}
+	}
+	raw, e := dsRead(filepath.Join(root, "delivery-set.json"), dsMetadataLimit)
+	if e != nil || dsHash(raw) != verified.IndexSHA {
+		return result, dsError
+	}
+	var index dsIndex
+	if dsDecode(raw, &index) != nil {
+		return result, dsError
+	}
+	var a dsArtifact
+	for _, artifact := range index.Artifacts {
+		if artifact.Selection.ID == options.artifact {
+			a = artifact
+		}
+	}
+	component := dsExecutableComponent(a)
+	if component == "" || len(a.BuildEvidence) != 1 {
+		return result, dsError
+	}
+	buildRaw, e := dsRead(filepath.Join(root, a.BuildEvidence[0]), dsMetadataLimit)
+	if e != nil {
+		return result, e
+	}
+	var build dsExecutableBuild
+	if dsDecode(buildRaw, &build) != nil {
+		return result, dsError
+	}
+	inventoryRaw, e := dsRead(filepath.Join(root, a.Inventory), dsMetadataLimit)
+	if e != nil {
+		return result, e
+	}
+	var inventory dsExecutableInventory
+	if dsDecode(inventoryRaw, &inventory) != nil || dsExecutableBinding(index, a, build, inventory) != nil {
+		return result, dsError
+	}
+	if runtime.GOOS != build.GOOS || runtime.GOARCH != build.GOARCH {
+		return result, dsError
+	}
+	binary := filepath.Join(root, a.Primary)
+	observed, e := dsObserve(root, a.Primary)
+	if e != nil || observed.Mode&0111 == 0 {
+		return result, dsError
+	}
+	info, e := buildinfo.ReadFile(binary)
+	expectedPath := "github.com/QuanuX/Symphony/tools/" + component
+	if component == "qxctl" {
+		expectedPath += "/cmd/qxctl"
+	}
+	if e != nil || info.GoVersion != build.GoVersion || info.Path != expectedPath || info.Main.Replace != nil {
+		return result, dsError
+	}
+	settings := map[string]string{}
+	for _, setting := range info.Settings {
+		if _, duplicate := settings[setting.Key]; duplicate {
+			return result, dsError
+		}
+		settings[setting.Key] = setting.Value
+	}
+	if settings["GOOS"] != build.GOOS || settings["GOARCH"] != build.GOARCH || settings["CGO_ENABLED"] != "0" || settings["-trimpath"] != "true" {
+		return result, dsError
+	}
+	for _, dependency := range info.Deps {
+		if dependency.Replace != nil {
+			return result, dsError
+		}
+	}
+	work, e := os.MkdirTemp("", "symphony-version-inspection-")
+	if e != nil {
+		return result, e
+	}
+	defer os.RemoveAll(work)
+	args := []string{"--version"}
+	if component == "qxctl" {
+		args = []string{"version", "--json"}
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	defer cancel()
+	command := exec.CommandContext(ctx, binary, args...)
+	command.Dir = work
+	command.Env = []string{"PATH=/usr/bin:/bin", "LANG=C", "HOME=" + work, "XDG_CONFIG_HOME=" + filepath.Join(work, "config"), "XDG_STATE_HOME=" + filepath.Join(work, "state"), "XDG_RUNTIME_DIR=" + filepath.Join(work, "runtime")}
+	var stdout, stderr dsBoundedOutput
+	command.Stdout = &stdout
+	command.Stderr = &stderr
+	if command.Run() != nil {
+		return result, dsError
+	}
+	if component == "qxctl" {
+		if dsQxctlBinding(build, stdout.Bytes()) != nil {
+			return result, dsError
+		}
+	} else if string(stdout.Bytes()) != component+" version "+build.Version+"\n" {
+		return result, dsError
+	}
+	entries, e := os.ReadDir(work)
+	if e != nil || len(entries) != 0 {
+		return result, dsError
+	}
+	again, e := dsRun(options)
+	if e != nil || again.IndexSHA != verified.IndexSHA {
+		return result, dsError
+	}
+	result = dsExecutableResult{Protocol: "symphony.release.delivery-executable-verification.v1", Scope: "selected_executable_identity_only", IndexSHA: verified.IndexSHA, ArtifactID: a.Selection.ID,
+		Source: index.Source, Profile: index.Profile, BuildIdentitySHA: dsHash(buildRaw), InventorySHA: dsHash(inventoryRaw), ExecutableSHA: build.ExecutableSHA, VersionOutputSHA: dsHash(stdout.Bytes()), VersionOutput: stdout.String(), Component: component, Version: build.Version, OwnerVerified: true}
+	if output != "" && dsWriteNew(output, dsJSON(result)) != nil {
+		return dsExecutableResult{}, dsError
+	}
+	return result, nil
+}
 func main() {
 	var o dsOptions
-	flag.StringVar(&o.mode, "mode", "verify", "prepare, validate, verify, inspect-owner, or inspect-native")
+	flag.StringVar(&o.mode, "mode", "verify", "prepare, validate, verify, inspect-owner, inspect-native, or inspect-executable")
 	flag.StringVar(&o.root, "root", "", "absolute private delivery-set directory")
 	flag.StringVar(&o.selection, "selection", "", "independent exact artifact selection JSON outside delivery root")
 	flag.StringVar(&o.policy, "allowed-signers", "", "independent allowed-signers policy outside delivery root")
@@ -1260,6 +1528,8 @@ func main() {
 		r, e = dsInspectOwner(o)
 	} else if o.mode == "inspect-native" {
 		r, e = dsInspectNative(o)
+	} else if o.mode == "inspect-executable" {
+		r, e = dsInspectExecutable(o)
 	} else {
 		if o.artifact != "" || o.ownerTool != "" || o.ownerBuild != "" || o.ownerRepository != "" || o.ownerWork != "" || o.nativePolicy != "" || o.nativeSigner != "" {
 			fmt.Fprintln(os.Stderr, dsError)

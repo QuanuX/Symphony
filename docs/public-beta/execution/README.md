@@ -64,7 +64,21 @@ in this adapter.
 checks. These are local synthetic packaging results, not final downloads or a
 fresh core-profile acceptance result.
 
-Next: complete owner-adapter evidence, the v1-compatible multi-artifact acceptance
+## Increment 4 — core executable identities
+
+The explicit `inspect-executable` mode verifies qxctl and plain SOV immutable
+inventories, actual Go build info, selected source/target/build evidence and a
+fixed version query after signature verification. qxctl retains its independent
+two-build reproducibility contract and running source stamps. No receipts,
+protected-profile installation or service authority are invented.
+
+[Increment 4](increment-04.json) records 34 focused cases, a real reproducible
+qxctl build and actual signed-set/version/tamper/output-reuse checks for qxctl and
+both SOV executables. These fixture source revisions are separate; combining them
+would violate the single-source candidate rule. Final core construction awaits
+the clean source selected after the remaining engineering increments.
+
+Next: the v1-compatible multi-artifact acceptance
 companion, independent public-SDK engine campaign and remaining staged gates.
 Record completed increments and push them; inspect CI later when needed for an
 actual candidate decision.

@@ -3,9 +3,11 @@
 This standard-library Go release tool binds an explicitly selected set of native,
 Go, Swift, vendor and corresponding-source artifacts. It prepares an immutable
 index, validates the complete file set and verifies an SSH signature under the
-independently supplied `symphony-delivery-set` namespace. It does not install or
-execute downloaded programs, provision services or credentials, run providers,
-prove owner semantics, or approve release/publication.
+independently supplied `symphony-delivery-set` namespace. Byte verification does
+not execute programs. Explicit owner modes provide bounded per-artifact checks;
+`inspect-executable` runs only the authenticated command's version query. No mode
+installs packages, provisions services or credentials, runs providers or approves
+release/publication.
 
 The byte-verification modes report `unsigned_bytes_only` or `signed_bytes_only`.
 It lists every `pending_owner_adapters` entry and leaves owner, fresh-host, release
@@ -225,3 +227,48 @@ Fresh-host/runtime/provider execution, installer/lifecycle qualification, human
 acceptance and publication remain separate. `qualify-native-delivery.py` and the
 existing package-release harness exercise actual signed native extraction,
 independent-policy refusal and immutable work directories using disposable fixtures.
+
+## qxctl and plain SOV executable identities
+
+`inspect-executable` supports only `qxctl-files-v1` for qxctl and
+`sov-executable-v1` for the stdio and SSH adapters. It requires the existing
+`symphony.artifact-build-identity.v1` sidecar as the artifact's sole build-evidence
+reference, plus [immutable-files-v1](../../cmake/release/immutable-files-v1.schema.json)
+as its payload inventory. The inventory lists every artifact-owned file except
+itself, using the same delivery-relative paths, hashes, sizes and modes. The
+signed outer index binds the inventory itself. These executables have no receipt
+invented by this tool.
+
+After complete signature/byte verification, this explicit mode reads the actual
+Go build info and compares source, executable, component/version, profile,
+dependency/identity maps, module-file digests and exact Go 1.26.5 recipe evidence.
+It refuses replacement modules and the wrong runtime/target/build settings.
+qxctl requires the existing two-build reproducibility evidence; SOV retains its
+single-build, reproducibility-not-assessed contract.
+
+**This mode executes authenticated code:** only `qxctl version --json` or the
+selected SOV `--version`, on the matching OS/architecture, with no stdin, a
+30-second deadline, bounded output and a new private empty home/config/state/runtime
+environment. No argument or program comes from a metadata command string.
+qxctl's running source stamps must match the independent build evidence and its
+actual executable digest; a bare display version is insufficient. The private
+home must remain empty and all signed-set bytes must still match afterward.
+
+```sh
+"$private_tools/delivery-set" -mode inspect-executable -root "$delivery_root" \
+  -selection "$selection" -allowed-signers "$index_policy" \
+  -profile "$profile" -signer "$signer" -artifact "$executable_artifact_id" \
+  -report "$new_executable_report"
+```
+
+The result is `selected_executable_identity_only`. It does not qualify a
+protected SSH profile, native endpoint, service, installation/removal workflow,
+provider effect, fresh host or release. Actual build review still matters:
+signed declarations and a matching version query are not proof that arbitrary
+publisher-supplied source is correct.
+
+`qualify-executable-delivery.py` exercises actual locally built binaries using
+disposable signatures, output reuse and byte-tamper refusals. The existing qxctl
+and release-qualification workflows repeat those fixtures after their actual
+build recipes. Different fixture source commits are recorded separately; they
+must not be combined into a mixed-source candidate.

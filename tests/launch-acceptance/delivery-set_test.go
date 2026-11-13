@@ -399,7 +399,7 @@ func TestDeliveryNativeCandidateMustBindEntireCompanionSet(t *testing.T) {
 func TestDeliveryContractSchemasMatchRequiredGoFields(t *testing.T) {
 	_, file, _, _ := runtime.Caller(0)
 	root := filepath.Clean(filepath.Join(filepath.Dir(file), "../.."))
-	for name, kind := range map[string]reflect.Type{"delivery-set-v1": reflect.TypeOf(dsIndex{}), "delivery-selection-v1": reflect.TypeOf(dsSelection{}), "delivery-definition-v1": reflect.TypeOf(dsDefinition{})} {
+	for name, kind := range map[string]reflect.Type{"delivery-set-v1": reflect.TypeOf(dsIndex{}), "delivery-selection-v1": reflect.TypeOf(dsSelection{}), "delivery-definition-v1": reflect.TypeOf(dsDefinition{}), "immutable-files-v1": reflect.TypeOf(dsExecutableInventory{})} {
 		b, e := os.ReadFile(filepath.Join(root, "cmake/release", name+".schema.json"))
 		if e != nil {
 			t.Fatal(e)
@@ -426,6 +426,10 @@ func TestDeliveryContractSchemasMatchRequiredGoFields(t *testing.T) {
 		}
 		check(schema, kind)
 		defs := schema["$defs"].(map[string]any)
+		if name == "immutable-files-v1" {
+			check(defs["file"].(map[string]any), reflect.TypeOf(dsFile{}))
+			continue
+		}
 		for key, typ := range map[string]reflect.Type{"source": reflect.TypeOf(dsSource{}), "profile": reflect.TypeOf(dsProfile{}), "choice": reflect.TypeOf(dsChoice{}), "vendor": reflect.TypeOf(dsVendor{}), "file": reflect.TypeOf(dsFile{}), "artifact": reflect.TypeOf(dsArtifact{})} {
 			check(defs[key].(map[string]any), typ)
 		}
@@ -471,6 +475,101 @@ func TestDeliveryCMakeSignerUsesValidatedIndexAndIndependentPolicy(t *testing.T)
 	}
 }
 
+func TestExecutableIdentityBindings(t *testing.T) {
+	_, index := dsPrepared(t)
+	a := index.Artifacts[0]
+	a.Primary = "qxctl"
+	a.Inventory = "inventory.json"
+	a.Files = []string{a.Primary, a.Inventory}
+	file := dsFile{Path: a.Primary, SHA256: strings.Repeat("1", 64), Size: 2, Mode: 0700}
+	index.Files = []dsFile{file, {Path: a.Inventory, SHA256: strings.Repeat("2", 64), Size: 3, Mode: 0600}}
+	sum := strings.Repeat("a", 64)
+	build := dsExecutableBuild{Protocol: "symphony.artifact-build-identity.v1", Component: "qxctl", Version: a.Selection.Versions["qxctl"], Binary: "qxctl", Commit: index.Source.Commit, Tree: index.Source.Tree, Epoch: "123", DependencySHA: index.DependencySHA, IdentitySHA: index.IdentitySHA, ModSHA: sum, SumSHA: &sum, Recipe: "symphony.qxctl.reproducible-build.v1", GoVersion: "go1.26.5", GOOS: "darwin", GOARCH: index.Profile.Architecture, ExecutableSHA: file.SHA256, Builds: 2, Reproducibility: "verified_on_recorded_profile"}
+	inventory := dsExecutableInventory{Protocol: "symphony.release.immutable-files.v1", Files: []dsFile{file}}
+	if dsExecutableBinding(index, a, build, inventory) != nil {
+		t.Fatal("valid identity rejected")
+	}
+	cases := map[string]func(*dsExecutableBuild){
+		"protocol":        func(b *dsExecutableBuild) { b.Protocol = "other" },
+		"component":       func(b *dsExecutableBuild) { b.Component = "sov-stdio-adapter" },
+		"version":         func(b *dsExecutableBuild) { b.Version = "other" },
+		"binary":          func(b *dsExecutableBuild) { b.Binary = "other" },
+		"commit":          func(b *dsExecutableBuild) { b.Commit = strings.Repeat("b", 40) },
+		"tree":            func(b *dsExecutableBuild) { b.Tree = strings.Repeat("c", 40) },
+		"epoch":           func(b *dsExecutableBuild) { b.Epoch = "00123" },
+		"negative-epoch":  func(b *dsExecutableBuild) { b.Epoch = "-1" },
+		"dependency":      func(b *dsExecutableBuild) { b.DependencySHA = sum },
+		"identities":      func(b *dsExecutableBuild) { b.IdentitySHA = sum },
+		"module":          func(b *dsExecutableBuild) { b.ModSHA = "invalid" },
+		"sum":             func(b *dsExecutableBuild) { bad := "invalid"; b.SumSHA = &bad },
+		"recipe":          func(b *dsExecutableBuild) { b.Recipe = "symphony.go.candidate-build.v1" },
+		"toolchain":       func(b *dsExecutableBuild) { b.GoVersion = "go1.27.1" },
+		"os":              func(b *dsExecutableBuild) { b.GOOS = "linux" },
+		"arch":            func(b *dsExecutableBuild) { b.GOARCH = "amd64" },
+		"executable":      func(b *dsExecutableBuild) { b.ExecutableSHA = sum },
+		"build-count":     func(b *dsExecutableBuild) { b.Builds = 1 },
+		"reproducibility": func(b *dsExecutableBuild) { b.Reproducibility = "not_assessed" },
+		"publication":     func(b *dsExecutableBuild) { b.Publication = true },
+	}
+	for name, change := range cases {
+		t.Run(name, func(t *testing.T) {
+			bad := build
+			change(&bad)
+			if dsExecutableBinding(index, a, bad, inventory) == nil {
+				t.Fatal("mismatch accepted")
+			}
+		})
+	}
+	for _, name := range []string{"missing", "extra", "digest", "size", "mode", "path", "protocol"} {
+		t.Run("inventory-"+name, func(t *testing.T) {
+			bad := dsExecutableInventory{Protocol: inventory.Protocol, Files: append([]dsFile{}, inventory.Files...)}
+			switch name {
+			case "missing":
+				bad.Files = []dsFile{}
+			case "extra":
+				bad.Files = append(bad.Files, file)
+			case "digest":
+				bad.Files[0].SHA256 = sum
+			case "size":
+				bad.Files[0].Size++
+			case "mode":
+				bad.Files[0].Mode = 0600
+			case "path":
+				bad.Files[0].Path = "other"
+			case "protocol":
+				bad.Protocol = "other"
+			}
+			if dsExecutableBinding(index, a, build, bad) == nil {
+				t.Fatal("inventory mismatch accepted")
+			}
+		})
+	}
+	info := dsQxctlInfo{Protocol: "symphony.qxctl.build-info.v1", Component: "qxctl", Version: build.Version, SourceState: "stamped", Commit: &build.Commit, Tree: &build.Tree, Epoch: &build.Epoch, DependencySHA: &build.DependencySHA, Recipe: &build.Recipe, GoVersion: build.GoVersion, GOOS: build.GOOS, GOARCH: build.GOARCH, ExecutableSHA: build.ExecutableSHA}
+	if dsQxctlBinding(build, dsJSON(info)) != nil {
+		t.Fatal("valid running identity rejected")
+	}
+	for _, name := range []string{"unstamped", "missing-commit", "wrong-tree", "wrong-binary", "wrong-toolchain"} {
+		t.Run("running-"+name, func(t *testing.T) {
+			bad := info
+			switch name {
+			case "unstamped":
+				bad.SourceState = "unavailable"
+			case "missing-commit":
+				bad.Commit = nil
+			case "wrong-tree":
+				wrong := strings.Repeat("f", 40)
+				bad.Tree = &wrong
+			case "wrong-binary":
+				bad.ExecutableSHA = sum
+			case "wrong-toolchain":
+				bad.GoVersion = "go1.27.1"
+			}
+			if dsQxctlBinding(build, dsJSON(bad)) == nil {
+				t.Fatal("running identity mismatch accepted")
+			}
+		})
+	}
+}
 func TestNativeDeliveryBindings(t *testing.T) {
 	_, index := dsPrepared(t)
 	manifest := "native/candidate.json"

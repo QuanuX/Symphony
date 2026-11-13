@@ -45,6 +45,12 @@ jobs:
             --build-root "$RUNNER_TEMP/release-go-identities" \
             --work "$RUNNER_TEMP/release-go-owner-qualification" \
             --delivery-tool "$RUNNER_TEMP/delivery-set"
+          for component in sov-stdio-adapter sov-ssh-adapter; do
+            python3 tests/launch-acceptance/qualify-executable-delivery.py \
+              --binary "$RUNNER_TEMP/release-go-identities/$component/bin/$component" \
+              --identity "$RUNNER_TEMP/release-go-identities/identities/$component.json" \
+              --delivery-tool "$RUNNER_TEMP/delivery-set" --work "$RUNNER_TEMP/$component-delivery"
+          done
       - name: Retain executed tests, explicit skips and candidate identities
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
@@ -60,6 +66,12 @@ jobs:
             ${{ runner.temp }}/release-go-owner-qualification/logs
             ${{ runner.temp }}/release-go-owner-qualification/evidence.json
             ${{ runner.temp }}/release-go-owner-qualification/*-owner.json
+            ${{ runner.temp }}/sov-stdio-adapter-delivery/logs
+            ${{ runner.temp }}/sov-stdio-adapter-delivery/evidence.json
+            ${{ runner.temp }}/sov-stdio-adapter-delivery/executable-owner.json
+            ${{ runner.temp }}/sov-ssh-adapter-delivery/logs
+            ${{ runner.temp }}/sov-ssh-adapter-delivery/evidence.json
+            ${{ runner.temp }}/sov-ssh-adapter-delivery/executable-owner.json
           retention-days: 14
       - name: Report evidence boundary
         if: always()
