@@ -204,6 +204,23 @@ run(delivery-set-regressions pass ${host_go_env} "${host_go}" test -race -count=
   "${repository}/tests/launch-acceptance/delivery-set_test.go")
 run(host-extraction-build pass ${host_go_env} "${host_go}" build -trimpath
   -o "${work}/candidate-host" "${repository}/tests/launch-acceptance/candidate-host.go")
+run(delivery-tool-build pass ${host_go_env} "${host_go}" build -trimpath
+  -o "${work}/delivery-set" "${repository}/tests/launch-acceptance/delivery-set.go")
+# Each selected native artifact carries one version of each selected component;
+# side-by-side versions remain independently selectable artifacts.
+file(COPY "${stage}/" DESTINATION "${work}/delivery-stage")
+run(delivery-select-one-version pass "${CMAKE_COMMAND}" "-DINSTALL_PREFIX=${work}/delivery-stage"
+  -P "${work}/build-2.0.0/uninstall.cmake")
+run(delivery-native-prepare pass ${prepare} "-DRELEASE_STAGE=${work}/delivery-stage"
+  "-DRELEASE_OUTPUT=${work}/delivery-native-candidate" -P "${repository}/cmake/release/PrepareCandidate.cmake")
+run(delivery-native-sign pass "${CMAKE_COMMAND}" "-DRELEASE_CANDIDATE=${work}/delivery-native-candidate"
+  "-DRELEASE_SIGN_KEY=${work}/test-key" -P "${repository}/cmake/release/SignCandidate.cmake")
+find_program(fixture_python python3 REQUIRED)
+run(delivery-native-owner pass "${fixture_python}" "${repository}/tests/launch-acceptance/qualify-native-delivery.py"
+  --repository "${repository}" --candidate "${work}/delivery-native-candidate"
+  --candidate-host "${work}/candidate-host" --delivery-tool "${work}/delivery-set"
+  --policy "${work}/allowed-signers" --key "${work}/test-key" --work "${work}/native-delivery-qualification")
+configure_file("${work}/native-delivery-qualification/evidence.json" "${work}/logs/native-delivery-qualification.json" COPYONLY)
 run(host-extraction pass "${work}/candidate-host" -repository "${repository}"
   -candidate "${work}/candidate" -allowed-signers "${work}/allowed-signers"
   -signer fixture-publisher -profile fixture-only -work "${work}/host-preparation")

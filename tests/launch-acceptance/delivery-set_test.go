@@ -372,7 +372,7 @@ func TestDeliveryNativeCandidateMustBindEntireCompanionSet(t *testing.T) {
 	definition.Files = definition.Files[:5]
 	definition.Files = append(definition.Files, definition.Artifacts[1].Files...)
 	a.Files = []string{}
-	for _, name := range []string{"candidate.tar", "candidate.json", "candidate.json.sig", "platform-evidence.json", "build-evidence.json", "dependency-map.json", "identity-catalog.json"} {
+	for _, name := range []string{"candidate.tar", "candidate.json", "candidate.json.sig", "platform-evidence.json", "build-evidence.json", "dependency-map.json", "identity-catalog.json", "SHA256SUMS"} {
 		p := "native/" + name
 		dsPut(t, filepath.Join(o.root, p), []byte("native adapter must independently verify these fixture bytes"))
 		a.Files = append(a.Files, p)
@@ -471,6 +471,123 @@ func TestDeliveryCMakeSignerUsesValidatedIndexAndIndependentPolicy(t *testing.T)
 	}
 }
 
+func TestNativeDeliveryBindings(t *testing.T) {
+	_, index := dsPrepared(t)
+	manifest := "native/candidate.json"
+	policy := strings.Repeat("f", 64)
+	artifact := dsArtifact{Selection: dsChoice{ID: "native", Kind: "native", Adapter: "native-candidate-v1", Versions: map[string]string{"component": "1.0.0"}}, Primary: "native/candidate.tar", Manifest: &manifest, SignerPolicySHA: &policy}
+	index.Files = []dsFile{{Path: artifact.Primary, SHA256: strings.Repeat("1", 64)}, {Path: manifest, SHA256: strings.Repeat("2", 64)}}
+	host := dsNativeHost{Protocol: "symphony.release.host-preparation.v1", Status: "verified_extraction_only", Commit: index.Source.Commit, Tree: index.Source.Tree, ArtifactSHA: index.Files[0].SHA256, ManifestSHA: index.Files[1].SHA256, PolicySHA: policy, Profile: index.Profile.ID, FileCount: 1}
+	if dsNativeBinding(index, artifact, host) != nil {
+		t.Fatal("valid native binding rejected")
+	}
+	for name, change := range map[string]func(*dsNativeHost){
+		"source":        func(h *dsNativeHost) { h.Commit = strings.Repeat("c", 40) },
+		"tree":          func(h *dsNativeHost) { h.Tree = strings.Repeat("c", 40) },
+		"artifact":      func(h *dsNativeHost) { h.ArtifactSHA = strings.Repeat("c", 64) },
+		"manifest":      func(h *dsNativeHost) { h.ManifestSHA = strings.Repeat("c", 64) },
+		"policy":        func(h *dsNativeHost) { h.PolicySHA = strings.Repeat("c", 64) },
+		"profile":       func(h *dsNativeHost) { h.Profile = "other" },
+		"empty-payload": func(h *dsNativeHost) { h.FileCount = 0 },
+		"scope":         func(h *dsNativeHost) { h.Status = "passed" },
+		"fresh-host":    func(h *dsNativeHost) { h.FreshHost = true },
+		"provider":      func(h *dsNativeHost) { h.Provider = true },
+		"release":       func(h *dsNativeHost) { h.Release = true },
+		"publication":   func(h *dsNativeHost) { h.Publication = true },
+	} {
+		t.Run(name, func(t *testing.T) {
+			bad := host
+			change(&bad)
+			if dsNativeBinding(index, artifact, bad) == nil {
+				t.Fatal("wrong native binding accepted")
+			}
+		})
+	}
+	inventory := func() map[string]any {
+		return map[string]any{
+			"protocol": "symphony.release.candidate.v1", "publication_authorized": false,
+			"source":                map[string]any{"commit": index.Source.Commit, "tree": index.Source.Tree},
+			"platform":              map[string]any{"profile_id": index.Profile.ID, "os": index.Profile.OS, "architecture": index.Profile.Architecture},
+			"dependency_map_sha256": index.DependencySHA, "identity_catalog_sha256": index.IdentitySHA,
+			"components": []any{map[string]any{"component_id": "component", "version": "1.0.0"}},
+		}
+	}
+	if dsNativeInventory(index, artifact, dsJSON(inventory())) != nil {
+		t.Fatal("valid native selection rejected")
+	}
+	for _, name := range []string{"os", "architecture", "dependency", "identity", "version", "omitted-component", "extra-component", "duplicate-component"} {
+		t.Run("inventory-"+name, func(t *testing.T) {
+			bad := inventory()
+			switch name {
+			case "os", "architecture":
+				bad["platform"].(map[string]any)[name] = "wrong"
+			case "dependency":
+				bad["dependency_map_sha256"] = strings.Repeat("c", 64)
+			case "identity":
+				bad["identity_catalog_sha256"] = strings.Repeat("c", 64)
+			case "version":
+				bad["components"].([]any)[0].(map[string]any)["version"] = "other"
+			case "omitted-component":
+				bad["components"] = []any{}
+			case "extra-component":
+				bad["components"] = append(bad["components"].([]any), map[string]any{"component_id": "extra", "version": "1.0.0"})
+			case "duplicate-component":
+				bad["components"] = append(bad["components"].([]any), bad["components"].([]any)[0])
+			}
+			if dsNativeInventory(index, artifact, dsJSON(bad)) == nil {
+				t.Fatal("wrong inventory admitted")
+			}
+		})
+	}
+}
+func TestNativeVerifierSourceBinding(t *testing.T) {
+	work := t.TempDir()
+	root := filepath.Join(work, "delivery")
+	repo := filepath.Join(work, "verifier")
+	os.Mkdir(root, 0700)
+	os.Mkdir(repo, 0700)
+	record := dsNativeTool{Protocol: "symphony.release.native-verifier-tool.v1", GoVersion: "go1.26.5", Sources: map[string]string{}}
+	for _, name := range dsNativeSources {
+		data := []byte("fixture trusted source " + name)
+		dsPut(t, filepath.Join(repo, name), data)
+		record.Sources[name] = dsHash(data)
+	}
+	tool := filepath.Join(work, "candidate-host")
+	dsPut(t, tool, []byte("#!/bin/sh\nexit 0\n"))
+	os.Chmod(tool, 0700)
+	data, _ := os.ReadFile(tool)
+	record.ToolSHA = dsHash(data)
+	if dsNativeToolOK(root, repo, tool, record) != nil {
+		t.Fatal("valid independent verifier refused")
+	}
+	for _, name := range []string{"source", "missing-source", "extra-source", "tool", "toolchain", "tool-in-payload", "source-in-payload"} {
+		t.Run(name, func(t *testing.T) {
+			raw := dsJSON(record)
+			var bad dsNativeTool
+			dsDecode(raw, &bad)
+			selectedRepo, selectedTool := repo, tool
+			switch name {
+			case "source":
+				bad.Sources[dsNativeSources[0]] = strings.Repeat("a", 64)
+			case "missing-source":
+				delete(bad.Sources, dsNativeSources[0])
+			case "extra-source":
+				bad.Sources["extra"] = strings.Repeat("a", 64)
+			case "tool":
+				bad.ToolSHA = strings.Repeat("a", 64)
+			case "toolchain":
+				bad.GoVersion = "go1.27.1"
+			case "tool-in-payload":
+				selectedTool = filepath.Join(root, "candidate-host")
+			case "source-in-payload":
+				selectedRepo = root
+			}
+			if dsNativeToolOK(root, selectedRepo, selectedTool, bad) == nil {
+				t.Fatal("unbound verifier admitted")
+			}
+		})
+	}
+}
 func dsOwnerFixture(t *testing.T) (dsOptions, dsIndex, dsOwnerInspection) {
 	t.Helper()
 	o, s, d := dsFixture(t)

@@ -1,0 +1,41 @@
+{
+  "protocol": "symphony.public-beta.execution-increment.v1",
+  "increment": 3,
+  "parent_commit": "eaedd7e6cb115aad5785c506f6d44c0186f52d89",
+  "scope": "Native delivery adapter reuses candidate-host and VerifyCandidate with source/tool/native policy and exact artifact/map/version bindings. No payload program execution.",
+  "toolchain": "go1.26.5",
+  "host": "darwin-amd64",
+  "focused_cases": {
+    "pass": 30,
+    "fail": 0,
+    "skip": 0
+  },
+  "focused_log_sha256": "7a4fdbb5fa95048839192c3bd810a39c12971a1e44c3e4af56ca23aea1b7c7cf",
+  "package_regressions": 114,
+  "package_report_sha256": "e4a83d8c5b1ff5f73740cbc4abf4468ef0da7b8126e7d2fe8cfd04e0f8a8e54c",
+  "native_adapter_evidence_sha256": "895b8dbd8aca8bae637bf4ff0f96e9ddeb6c0c544c46a2827d5a254288385b8a",
+  "first_attempt": {
+    "outcome": "Native integration refused preparation because the original seven-file draft omitted existing SHA256SUMS",
+    "fix": "Bind all eight emitted native candidate files, verify checksum contents, and rerun the actual package harness in a new directory",
+    "evidence": "native-package-01/logs/delivery-native-owner.log"
+  },
+  "checks": {
+    "go_vet": "passed",
+    "dependency_projection": "passed 73 roots, 60 native, 1379 source hashes",
+    "release_manifest": "passed",
+    "diff_whitespace": "passed"
+  },
+  "source_paths_sha256": {
+    "cmake/mvp-dependencies.json": "e9c29b8d0f7880a69a0793dbab79c23f56fef60ab29eed452c5f4cde5c65b76b",
+    "tests/launch-acceptance/DELIVERY-SET.md": "7f718700aea81bca38da0460e8167f121a7ac227a540448b73d6b5d420633814",
+    "tests/launch-acceptance/delivery-set.go": "8b69077b64451784ba01f9935371e245f66168efffd4de6774fabd70064a4914",
+    "tests/launch-acceptance/delivery-set_test.go": "909601d21c4b28620c1702374a257409452ab3c5cdebe65e0028975efe87f291",
+    "tests/package-release/run.cmake": "638072cfcc479563e60decaec1f08380ffd745788b5c5b659592fcfab18c3869",
+    "tests/launch-acceptance/qualify-native-delivery.py": "4a9829c1008a5fcd714534c30e3e6e8600bc7f9e6807f6cd5664af9b174050aa"
+  },
+  "feature_freeze": true,
+  "fresh_host_qualified": false,
+  "provider_qualified": false,
+  "release_acceptance_complete": false,
+  "publication_authorized": false
+}

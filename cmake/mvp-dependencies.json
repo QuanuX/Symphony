@@ -22770,7 +22770,7 @@
     },
     {
       "path": "tests/package-release/run.cmake",
-      "sha256": "9b2d4087959ab390c0c9de5f2165c1ef56b16b6d053ed7fef6e8f61e1107c162"
+      "sha256": "638072cfcc479563e60decaec1f08380ffd745788b5c5b659592fcfab18c3869"
     },
     {
       "path": "tests/sqv-administration/CMakeLists.txt",
@@ -25246,15 +25246,15 @@
     },
     {
       "path": "tests/launch-acceptance/DELIVERY-SET.md",
-      "sha256": "14dba2744d30dab5ddd33e46fe94c4ee8b348e1209d0b01de07ff221b01ab46e"
+      "sha256": "7f718700aea81bca38da0460e8167f121a7ac227a540448b73d6b5d420633814"
     },
     {
       "path": "tests/launch-acceptance/delivery-set.go",
-      "sha256": "49c264305427517586b7f610ca8ea67db5488676173eca3c1cdf353cde6f2898"
+      "sha256": "8b69077b64451784ba01f9935371e245f66168efffd4de6774fabd70064a4914"
     },
     {
       "path": "tests/launch-acceptance/delivery-set_test.go",
-      "sha256": "745b82e209f27bb0d407c7845af3c09ab4c66a56239a9a532eea8ec403557aa1"
+      "sha256": "909601d21c4b28620c1702374a257409452ab3c5cdebe65e0028975efe87f291"
     },
     {
       "path": "modules/secure-identity-access-governance/tests/release-owner/main.go",
@@ -25283,6 +25283,10 @@
     {
       "path": "tests/launch-acceptance/qualify-go-owners.py",
       "sha256": "d6ab3e8bcf8f62e4b0188ce6d98a7d6482e21399f1f43363391f68df9e364a1b"
+    },
+    {
+      "path": "tests/launch-acceptance/qualify-native-delivery.py",
+      "sha256": "4a9829c1008a5fcd714534c30e3e6e8600bc7f9e6807f6cd5664af9b174050aa"
     }
   ],
   "platform_profile_catalog": "cmake/mvp-platform-profiles.json",
@@ -25335,6 +25339,18 @@
         ],
         "build_recipe": "cmake/SymphonyGoCandidateIdentities.cmake",
         "scope": "Read-only actual owner receipt inspection of one signed artifact in a private user-owned prefix. No set-wide, fresh-host, provider or release acceptance."
+      },
+      "native_verification": {
+        "adapter": "native-candidate-v1",
+        "source_paths": [
+          "tests/launch-acceptance/qualify-native-delivery.py",
+          "tests/launch-acceptance/candidate-host.go",
+          "cmake/release/VerifyCandidate.cmake",
+          "cmake/release/Support.cmake",
+          "cmake/release/StrictJSON.cmake",
+          "cmake/SymphonyReceiptV2Support.cmake"
+        ],
+        "scope": "Existing bounded extraction and receipt verification with exact native/index/source/profile/component/map/policy bindings; no payload execution or fresh-host acceptance."
       }
     }
   }

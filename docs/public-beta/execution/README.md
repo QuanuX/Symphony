@@ -49,6 +49,21 @@ and sentinel-preserving removal with no operational state. The separate
 scope. The existing four-profile release workflow now repeats this private
 fixture campaign; its hosted results have not been awaited or claimed.
 
+## Increment 3 — native candidate owner verification
+
+`inspect-native` reuses the existing bounded host extractor and CMake receipt
+verifier. It binds independent native/index policies, archive/manifest/source,
+profile/target, selected component versions and dependency/identity maps. The
+eight emitted candidate files include `SHA256SUMS`; actual integration exposed
+and corrected its omission from the initial delivery contract. Verifier source
+and executable hashes are independent inputs, and extracted programs never run
+in this adapter.
+
+[Increment 3](increment-03.json) records 30 focused native cases and the complete
+114-case package harness, including actual native delivery extraction and refusal
+checks. These are local synthetic packaging results, not final downloads or a
+fresh core-profile acceptance result.
+
 Next: complete owner-adapter evidence, the v1-compatible multi-artifact acceptance
 companion, independent public-SDK engine campaign and remaining staged gates.
 Record completed increments and push them; inspect CI later when needed for an

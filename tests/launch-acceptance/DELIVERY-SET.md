@@ -9,13 +9,14 @@ prove owner semantics, or approve release/publication.
 
 The byte-verification modes report `unsigned_bytes_only` or `signed_bytes_only`.
 It lists every `pending_owner_adapters` entry and leaves owner, fresh-host, release
-and publication flags false. Native verification and the versioned acceptance
-companion remain separate increments. An index signature does not replace an
+and publication flags false. Explicit owner modes supply separate per-artifact
+records; the versioned acceptance companion remains a separate increment.
+An index signature does not replace an
 artifact's own signer policy or actual owner verification.
 
 The separate `inspect-owner` mode now invokes actual read-only receipt readers
 for SSIAG, STAV and Accordare. Its narrower result covers only the selected
-artifact. Other selected artifacts, native verification and the acceptance
+artifact. Other selected artifacts and the acceptance
 companion still need their own evidence; one owner pass is not a set-wide pass.
 
 ## Inputs and bounds
@@ -49,9 +50,9 @@ bytes must be reverified immediately before downstream consumption. The verifier
 uses independent snapshots of policy/index/signature bytes for the SSH operation
 and performs a stable index recheck before issuing its result.
 
-Native records must include exactly the existing seven candidate files:
+Native records must include exactly the existing eight candidate files:
 `candidate.tar`, `candidate.json`, `candidate.json.sig`, `platform-evidence.json`,
-`build-evidence.json`, `dependency-map.json`, and `identity-catalog.json` in the
+`build-evidence.json`, `dependency-map.json`, `identity-catalog.json`, and `SHA256SUMS` in the
 same selected subdirectory. Native archive and artifact-policy hashes remain
 distinct from delivery-index and index-policy hashes. Byte verification alone
 does not parse or attest the native payload.
@@ -180,3 +181,47 @@ The key is destroyed, and safe logs/results remain. The release-qualification
 workflow runs this after candidate identity builds on its four source-test lanes.
 The observed target uses an explicit local-fixture profile and never satisfies a
 core final-host acceptance cell merely because the machine has the same CPU.
+
+## Native candidate adapter
+
+`inspect-native` calls the existing `candidate-host` tool, which invokes the
+reviewed `VerifyCandidate.cmake` before and after bounded extraction. It never
+executes extracted programs. Supply the exact native artifact signer and policy
+separately from the delivery-index signer and policy, even when the approved
+values happen to match.
+
+The independent `symphony.release.native-verifier-tool.v1` record contains
+`protocol`, `tool_sha256`, `go_version` (exactly `go1.26.5`) and
+`source_files_sha256`. Its closed source map includes `candidate-host.go`,
+`cmake/release/VerifyCandidate.cmake`, `Support.cmake`, `StrictJSON.cmake` and
+`cmake/SymphonyReceiptV2Support.cmake`, using repository-relative keys. Build the
+host tool from these reviewed source bytes; keep this record and executable
+outside the delivery. The record binds observed source bytes, not an invented
+clean commit or a publisher attestation. CMake/OpenSSH on the operator's selected
+PATH remain trusted host tooling.
+
+```sh
+"$private_tools/delivery-set" -mode inspect-native -root "$delivery_root" \
+  -selection "$selection" -allowed-signers "$index_policy" \
+  -profile "$profile" -signer "$index_signer" -artifact "$native_artifact_id" \
+  -owner-tool "$trusted_candidate_host" -owner-build "$native_tool_record" \
+  -owner-repository "$reviewed_verifier_source" -owner-work "$new_extraction_work" \
+  -native-allowed-signers "$native_policy" -native-signer "$native_signer" \
+  -report "$new_native_report"
+```
+
+The result binds archive, manifest, independent native policy, exact source/tree,
+profile/OS/architecture, dependency and identity maps, selected component versions,
+actual extracted receipt closure, verifier executable/source hashes and both host
+and unpacked-verification reports. The tool checks all delivery bytes again after
+extraction. Each native artifact selects one version per component; side-by-side
+versions use distinct artifacts. The eight-file candidate includes the existing
+`SHA256SUMS`; its contents must agree with the actual archive and manifest hashes.
+The real package integration test exposed its omission from the initial seven-file
+draft contract, which this increment corrects.
+
+`selected_artifact_owner_verified=true` is extraction/receipt evidence only.
+Fresh-host/runtime/provider execution, installer/lifecycle qualification, human
+acceptance and publication remain separate. `qualify-native-delivery.py` and the
+existing package-release harness exercise actual signed native extraction,
+independent-policy refusal and immutable work directories using disposable fixtures.

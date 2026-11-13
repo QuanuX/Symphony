@@ -492,10 +492,10 @@ func dsValidate(index dsIndex, selection dsSelection, selectionRaw, policy []byt
 				return dsError
 			}
 			directory := path.Dir(a.Primary)
-			if path.Base(a.Primary) != "candidate.tar" || *a.Manifest != path.Join(directory, "candidate.json") || *a.Signature != path.Join(directory, "candidate.json.sig") || len(a.Files) != 7 {
+			if path.Base(a.Primary) != "candidate.tar" || *a.Manifest != path.Join(directory, "candidate.json") || *a.Signature != path.Join(directory, "candidate.json.sig") || len(a.Files) != 8 {
 				return dsError
 			}
-			for _, name := range []string{"candidate.tar", "candidate.json", "candidate.json.sig", "platform-evidence.json", "build-evidence.json", "dependency-map.json", "identity-catalog.json"} {
+			for _, name := range []string{"candidate.tar", "candidate.json", "candidate.json.sig", "platform-evidence.json", "build-evidence.json", "dependency-map.json", "identity-catalog.json", "SHA256SUMS"} {
 				if !local[path.Join(directory, name)] {
 					return dsError
 				}
@@ -666,7 +666,7 @@ func dsVerifySignature(index, signature, policy []byte, signer string) error {
 	return nil
 }
 
-type dsOptions struct{ mode, root, selection, policy, profile, signer, definition, output, artifact, ownerTool, ownerBuild string }
+type dsOptions struct{ mode, root, selection, policy, profile, signer, definition, output, artifact, ownerTool, ownerBuild, ownerRepository, ownerWork, nativePolicy, nativeSigner string }
 
 func dsRun(options dsOptions) (dsResult, error) {
 	var result dsResult
@@ -865,6 +865,9 @@ func dsOwnerBinding(index dsIndex, artifact dsArtifact, inspection dsOwnerInspec
 }
 func dsInspectOwner(options dsOptions) (dsOwnerResult, error) {
 	var result dsOwnerResult
+	if options.ownerRepository != "" || options.ownerWork != "" || options.nativePolicy != "" || options.nativeSigner != "" {
+		return result, dsError
+	}
 	output := options.output
 	options.output = ""
 	options.mode = "verify"
@@ -967,9 +970,271 @@ func dsInspectOwner(options dsOptions) (dsOwnerResult, error) {
 	}
 	return result, nil
 }
+
+var dsNativeSources = []string{
+	"tests/launch-acceptance/candidate-host.go",
+	"cmake/release/VerifyCandidate.cmake",
+	"cmake/release/Support.cmake",
+	"cmake/release/StrictJSON.cmake",
+	"cmake/SymphonyReceiptV2Support.cmake",
+}
+
+type dsNativeTool struct {
+	Protocol  string            `json:"protocol"`
+	ToolSHA   string            `json:"tool_sha256"`
+	GoVersion string            `json:"go_version"`
+	Sources   map[string]string `json:"source_files_sha256"`
+}
+type dsNativeHost struct {
+	Protocol    string `json:"protocol"`
+	Status      string `json:"status"`
+	Publication bool   `json:"publication_authorized"`
+	Release     bool   `json:"release_acceptance_complete"`
+	FreshHost   bool   `json:"fresh_host_verified"`
+	Provider    bool   `json:"provider_qualification_complete"`
+	Commit      string `json:"source_commit"`
+	Tree        string `json:"source_tree"`
+	ArtifactSHA string `json:"artifact_sha256"`
+	ManifestSHA string `json:"inventory_sha256"`
+	PolicySHA   string `json:"allowed_signers_sha256"`
+	Profile     string `json:"profile_id"`
+	HostOS      string `json:"host_os"`
+	HostArch    string `json:"host_arch"`
+	Kernel      string `json:"host_kernel"`
+	PreparedAt  string `json:"prepared_at"`
+	FileCount   int    `json:"payload_file_count"`
+	Remaining   string `json:"remaining"`
+}
+type dsNativeResult struct {
+	Protocol         string            `json:"protocol"`
+	Scope            string            `json:"scope"`
+	IndexSHA         string            `json:"index_sha256"`
+	ArtifactID       string            `json:"artifact_id"`
+	Source           dsSource          `json:"source"`
+	Profile          dsProfile         `json:"profile"`
+	ArtifactSHA      string            `json:"artifact_sha256"`
+	ManifestSHA      string            `json:"manifest_sha256"`
+	PolicySHA        string            `json:"artifact_signer_policy_sha256"`
+	ToolSHA          string            `json:"tool_sha256"`
+	ToolRecordSHA    string            `json:"tool_record_sha256"`
+	ToolSources      map[string]string `json:"tool_source_files_sha256"`
+	HostReportSHA    string            `json:"host_preparation_sha256"`
+	PayloadReportSHA string            `json:"payload_verification_sha256"`
+	PayloadFileCount int               `json:"payload_file_count"`
+	OwnerVerified    bool              `json:"selected_artifact_owner_verified"`
+	FreshHost        bool              `json:"fresh_host_verified"`
+	Release          bool              `json:"release_acceptance_complete"`
+	Publication      bool              `json:"publication_authorized"`
+}
+
+func dsOutside(root, p string) bool {
+	if !filepath.IsAbs(p) || filepath.Clean(p) != p {
+		return false
+	}
+	parent, e := filepath.EvalSymlinks(filepath.Dir(p))
+	if e != nil {
+		return false
+	}
+	rel, e := filepath.Rel(root, filepath.Join(parent, filepath.Base(p)))
+	return e == nil && (rel == ".." || strings.HasPrefix(rel, ".."+string(filepath.Separator)))
+}
+func dsNativeToolOK(root, repository, tool string, record dsNativeTool) error {
+	if record.Protocol != "symphony.release.native-verifier-tool.v1" || record.GoVersion != "go1.26.5" ||
+		!dsHex(record.ToolSHA, 32) || len(record.Sources) != len(dsNativeSources) ||
+		!dsOutside(root, repository) || !dsOutside(root, tool) {
+		return dsError
+	}
+	for _, p := range dsNativeSources {
+		expected, ok := record.Sources[p]
+		observed, e := dsObserve(repository, p)
+		if !ok || !dsHex(expected, 32) || e != nil || observed.SHA256 != expected {
+			return dsError
+		}
+	}
+	observed, e := dsObserve(filepath.Dir(tool), filepath.Base(tool))
+	if e != nil || observed.Mode&0111 == 0 || observed.SHA256 != record.ToolSHA {
+		return dsError
+	}
+	return nil
+}
+func dsNativeInventory(index dsIndex, artifact dsArtifact, raw []byte) error {
+	var manifest map[string]any
+	if dsDecode(raw, &manifest) != nil {
+		return dsError
+	}
+	source, _ := manifest["source"].(map[string]any)
+	platform, _ := manifest["platform"].(map[string]any)
+	if manifest["protocol"] != "symphony.release.candidate.v1" || manifest["publication_authorized"] != false ||
+		source["commit"] != index.Source.Commit || source["tree"] != index.Source.Tree || platform["profile_id"] != index.Profile.ID ||
+		platform["os"] != index.Profile.OS || platform["architecture"] != index.Profile.Architecture ||
+		manifest["dependency_map_sha256"] != index.DependencySHA || manifest["identity_catalog_sha256"] != index.IdentitySHA {
+		return dsError
+	}
+	rows, ok := manifest["components"].([]any)
+	if !ok || len(rows) != len(artifact.Selection.Versions) {
+		return dsError
+	}
+	seen := map[string]bool{}
+	for _, row := range rows {
+		component, ok := row.(map[string]any)
+		if !ok {
+			return dsError
+		}
+		id, ok := component["component_id"].(string)
+		version, versionOK := component["version"].(string)
+		if !ok || !versionOK || seen[id] || artifact.Selection.Versions[id] != version {
+			return dsError
+		}
+		seen[id] = true
+	}
+	return nil
+}
+func dsNativeBinding(index dsIndex, artifact dsArtifact, host dsNativeHost) error {
+	files := map[string]dsFile{}
+	for _, f := range index.Files {
+		files[f.Path] = f
+	}
+	if artifact.Selection.Kind != "native" || artifact.Selection.Adapter != "native-candidate-v1" ||
+		artifact.Manifest == nil || artifact.SignerPolicySHA == nil ||
+		host.Protocol != "symphony.release.host-preparation.v1" || host.Status != "verified_extraction_only" ||
+		host.Publication || host.Release || host.FreshHost || host.Provider || host.FileCount <= 0 || host.FileCount > 65536 ||
+		host.Commit != index.Source.Commit || host.Tree != index.Source.Tree || host.Profile != index.Profile.ID ||
+		host.ArtifactSHA != files[artifact.Primary].SHA256 || host.ManifestSHA != files[*artifact.Manifest].SHA256 || host.PolicySHA != *artifact.SignerPolicySHA {
+		return dsError
+	}
+	return nil
+}
+func dsInspectNative(options dsOptions) (dsNativeResult, error) {
+	var result dsNativeResult
+	options.mode = "verify"
+	output := options.output
+	options.output = ""
+	verified, e := dsRun(options)
+	if e != nil {
+		return result, e
+	}
+	root, e := dsRoot(options.root)
+	if e != nil {
+		return result, e
+	}
+	raw, e := dsRead(filepath.Join(root, "delivery-set.json"), dsMetadataLimit)
+	if e != nil || dsHash(raw) != verified.IndexSHA {
+		return result, dsError
+	}
+	var index dsIndex
+	if dsDecode(raw, &index) != nil {
+		return result, dsError
+	}
+	var artifact dsArtifact
+	for _, a := range index.Artifacts {
+		if a.Selection.ID == options.artifact {
+			artifact = a
+		}
+	}
+	if artifact.Selection.Kind != "native" || artifact.Selection.Adapter != "native-candidate-v1" || artifact.SignerPolicySHA == nil {
+		return result, dsError
+	}
+	policy, e := dsIndependent(root, options.nativePolicy)
+	if e != nil || dsHash(policy) != *artifact.SignerPolicySHA || !dsSigner(options.nativeSigner) {
+		return result, dsError
+	}
+	buildRaw, e := dsIndependent(root, options.ownerBuild)
+	if e != nil {
+		return result, e
+	}
+	var build dsNativeTool
+	if dsDecode(buildRaw, &build) != nil {
+		return result, dsError
+	}
+	repository, e := dsRoot(options.ownerRepository)
+	if e != nil || dsNativeToolOK(root, repository, options.ownerTool, build) != nil {
+		return result, dsError
+	}
+	if !dsOutside(root, options.ownerWork) || !dsOutside(repository, options.ownerWork) {
+		return result, dsError
+	}
+	if _, e = os.Lstat(options.ownerWork); !os.IsNotExist(e) {
+		return result, dsError
+	}
+	if output != "" && (!dsOutside(root, output) || output == options.ownerWork) {
+		return result, dsError
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), 12*time.Minute)
+	defer cancel()
+	// The only program is the independent reviewed candidate-host tool; all script
+	// names are fixed in that tool and hash-bound above. No archive commands run.
+	command := exec.CommandContext(ctx, options.ownerTool, "-repository", repository, "-candidate", filepath.Dir(filepath.Join(root, artifact.Primary)),
+		"-allowed-signers", options.nativePolicy, "-signer", options.nativeSigner, "-profile", options.profile, "-work", options.ownerWork)
+	command.Env = []string{"PATH=" + os.Getenv("PATH"), "LANG=C"}
+	var stdout, stderr dsBoundedOutput
+	command.Stdout = &stdout
+	command.Stderr = &stderr
+	if command.Run() != nil {
+		return result, dsError
+	}
+	hostRaw, e := dsRead(filepath.Join(options.ownerWork, "host-preparation.json"), dsMetadataLimit)
+	if e != nil {
+		return result, e
+	}
+	var host dsNativeHost
+	if dsDecode(hostRaw, &host) != nil || dsNativeBinding(index, artifact, host) != nil {
+		return result, dsError
+	}
+	payloadRaw, e := dsRead(filepath.Join(options.ownerWork, "unpacked.json"), dsMetadataLimit)
+	if e != nil {
+		return result, e
+	}
+	// candidate-host already runs VerifyCandidate against the exact extracted
+	// receipt closure. Bind its output to the same manifest/policy/profile again.
+	var proof map[string]any
+	if dsDecode(payloadRaw, &proof) != nil {
+		return result, dsError
+	}
+	for field, want := range map[string]string{"protocol": "symphony.release.candidate-verification.v1", "scope": "caller_supplied_payload",
+		"source_commit": host.Commit, "source_tree": host.Tree, "profile_id": host.Profile, "artifact_sha256": host.ArtifactSHA,
+		"inventory_sha256": host.ManifestSHA, "allowed_signers_sha256": host.PolicySHA} {
+		if proof[field] != want {
+			return result, dsError
+		}
+	}
+	if proof["publication_authorized"] != false || proof["signature_scheme"] != "sshsig" || proof["namespace"] != "symphony-release" || proof["signer_principal"] != options.nativeSigner {
+		return result, dsError
+	}
+	manifestRaw, e := dsRead(filepath.Join(root, *artifact.Manifest), dsMetadataLimit)
+	if e != nil || dsHash(manifestRaw) != host.ManifestSHA || dsNativeInventory(index, artifact, manifestRaw) != nil {
+		return result, dsError
+	}
+	checksums, e := dsRead(filepath.Join(root, path.Dir(artifact.Primary), "SHA256SUMS"), dsMetadataLimit)
+	if e != nil || string(checksums) != fmt.Sprintf("%s  candidate.tar\n%s  candidate.json\n", host.ArtifactSHA, host.ManifestSHA) {
+		return result, dsError
+	}
+	if dsNativeToolOK(root, repository, options.ownerTool, build) != nil {
+		return result, dsError
+	}
+	afterBuild, e := dsIndependent(root, options.ownerBuild)
+	if e != nil || !bytes.Equal(afterBuild, buildRaw) {
+		return result, dsError
+	}
+	afterPolicy, e := dsIndependent(root, options.nativePolicy)
+	if e != nil || !bytes.Equal(afterPolicy, policy) {
+		return result, dsError
+	}
+	again, e := dsRun(options)
+	if e != nil || again.IndexSHA != verified.IndexSHA {
+		return result, dsError
+	}
+	result = dsNativeResult{Protocol: "symphony.release.delivery-native-verification.v1", Scope: "selected_native_extraction_and_receipts",
+		IndexSHA: verified.IndexSHA, ArtifactID: artifact.Selection.ID, Source: index.Source, Profile: index.Profile, ArtifactSHA: host.ArtifactSHA,
+		ManifestSHA: host.ManifestSHA, PolicySHA: host.PolicySHA, ToolSHA: build.ToolSHA, ToolRecordSHA: dsHash(buildRaw), ToolSources: build.Sources,
+		HostReportSHA: dsHash(hostRaw), PayloadReportSHA: dsHash(payloadRaw), PayloadFileCount: host.FileCount, OwnerVerified: true}
+	if output != "" && dsWriteNew(output, dsJSON(result)) != nil {
+		return dsNativeResult{}, dsError
+	}
+	return result, nil
+}
 func main() {
 	var o dsOptions
-	flag.StringVar(&o.mode, "mode", "verify", "prepare, validate, verify, or inspect-owner (trusted read-only harness)")
+	flag.StringVar(&o.mode, "mode", "verify", "prepare, validate, verify, inspect-owner, or inspect-native")
 	flag.StringVar(&o.root, "root", "", "absolute private delivery-set directory")
 	flag.StringVar(&o.selection, "selection", "", "independent exact artifact selection JSON outside delivery root")
 	flag.StringVar(&o.policy, "allowed-signers", "", "independent allowed-signers policy outside delivery root")
@@ -980,6 +1245,10 @@ func main() {
 	flag.StringVar(&o.artifact, "artifact", "", "explicit artifact ID for inspect-owner")
 	flag.StringVar(&o.ownerTool, "owner-tool", "", "independent trusted read-only owner harness for inspect-owner")
 	flag.StringVar(&o.ownerBuild, "owner-build", "", "independent exact owner harness build record for inspect-owner")
+	flag.StringVar(&o.ownerRepository, "owner-repository", "", "independent reviewed native verifier source checkout")
+	flag.StringVar(&o.ownerWork, "owner-work", "", "new private native extraction directory outside source and delivery")
+	flag.StringVar(&o.nativePolicy, "native-allowed-signers", "", "independent native artifact signer policy")
+	flag.StringVar(&o.nativeSigner, "native-signer", "", "independent native artifact signer principal")
 	flag.Parse()
 	if flag.NArg() != 0 {
 		fmt.Fprintln(os.Stderr, dsError)
@@ -989,8 +1258,10 @@ func main() {
 	var e error
 	if o.mode == "inspect-owner" {
 		r, e = dsInspectOwner(o)
+	} else if o.mode == "inspect-native" {
+		r, e = dsInspectNative(o)
 	} else {
-		if o.artifact != "" || o.ownerTool != "" || o.ownerBuild != "" {
+		if o.artifact != "" || o.ownerTool != "" || o.ownerBuild != "" || o.ownerRepository != "" || o.ownerWork != "" || o.nativePolicy != "" || o.nativeSigner != "" {
 			fmt.Fprintln(os.Stderr, dsError)
 			os.Exit(1)
 		}
