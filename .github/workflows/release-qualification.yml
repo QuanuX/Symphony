@@ -28,10 +28,13 @@ jobs:
           go-version-file: tools/qxctl/go.mod
           cache: false
       - name: Refuse scope and recipe drift
-        run: python3 tests/beta-readiness/test_prepare.py
+        run: |
+          GOWORK=off GOENV=off GOTOOLCHAIN=local go test -count=1 tests/beta-readiness/prepare.go tests/beta-readiness/prepare_test.go
+          GOWORK=off GOENV=off GOTOOLCHAIN=local go test -count=1 tests/public-beta/validate.go tests/public-beta/validate_test.go
       - name: Prepare explicitly incomplete source-bound review
         run: |
-          if python3 tests/beta-readiness/prepare.py --repo "$GITHUB_WORKSPACE" \
+          GOWORK=off GOENV=off GOTOOLCHAIN=local go build -trimpath -o "$RUNNER_TEMP/beta-prepare" tests/beta-readiness/prepare.go
+          if "$RUNNER_TEMP/beta-prepare" --repo "$GITHUB_WORKSPACE" \
             --go "$(command -v go)" --work "$RUNNER_TEMP/beta-review"; then
             echo 'Expected incomplete exit 2, never release acceptance' >&2
             exit 1
@@ -75,12 +78,17 @@ jobs:
         run: |
           GOWORK=off GOENV=off GOTOOLCHAIN=local go build -trimpath \
             -o "$RUNNER_TEMP/delivery-set" tests/launch-acceptance/delivery-set.go tests/launch-acceptance/delivery-set-main.go
-          python3 tests/launch-acceptance/qualify-go-owners.py \
+          GOWORK=off GOENV=off GOTOOLCHAIN=local go test -race -count=1 tests/launch-acceptance/qualification-common.go tests/launch-acceptance/qualification-common_test.go
+          GOWORK=off GOENV=off GOTOOLCHAIN=local go build -trimpath \
+            -o "$RUNNER_TEMP/qualify-go-owners" tests/launch-acceptance/qualification-common.go tests/launch-acceptance/qualify-go-owners.go
+          GOWORK=off GOENV=off GOTOOLCHAIN=local go build -trimpath \
+            -o "$RUNNER_TEMP/qualify-executable-delivery" tests/launch-acceptance/qualification-common.go tests/launch-acceptance/qualify-executable-delivery.go
+          "$RUNNER_TEMP/qualify-go-owners" \
             --build-root "$RUNNER_TEMP/release-go-identities" \
             --work "$RUNNER_TEMP/release-go-owner-qualification" \
             --delivery-tool "$RUNNER_TEMP/delivery-set"
           for component in sov-stdio-adapter sov-ssh-adapter; do
-            python3 tests/launch-acceptance/qualify-executable-delivery.py \
+            "$RUNNER_TEMP/qualify-executable-delivery" \
               --binary "$RUNNER_TEMP/release-go-identities/$component/bin/$component" \
               --identity "$RUNNER_TEMP/release-go-identities/identities/$component.json" \
               --delivery-tool "$RUNNER_TEMP/delivery-set" --work "$RUNNER_TEMP/$component-delivery"

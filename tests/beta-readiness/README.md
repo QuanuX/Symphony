@@ -9,9 +9,16 @@ From a clean committed checkout, choose an exact Go 1.26.5 executable and a new
 absolute private directory outside the checkout:
 
 ```sh
-python3 tests/beta-readiness/prepare.py --repo /absolute/Symphony \
+GOWORK=off GOENV=off GOTOOLCHAIN=local /absolute/go1.26.5/bin/go build \
+  -trimpath -o /absolute/private-tools/beta-readiness tests/beta-readiness/prepare.go
+/absolute/private-tools/beta-readiness --repo /absolute/Symphony \
   --go /absolute/go1.26.5/bin/go --work /absolute/new-w12-review
 ```
+
+The preparation helper and its tests use only Go's standard library. Keep the
+compiled helper outside the checkout so source admission remains clean. The
+private-tools parent directory must already exist. A shell wrapper may handle the
+expected exit 2 explicitly; `go run` does not preserve the program's exit code.
 
 The helper verifies current dependency/release maps, reconciles the approved
 51 native / six Go engineering selection with current owner identities and
@@ -51,18 +58,24 @@ that source/candidate cohort, and rerun the existing checkers to new reports. Do
 not patch hashes inside an old signed payload. Source and fixture records from
 different commits are not one final candidate cohort.
 
-The [campaign handoff](../../docs/public-beta/execution/CAMPAIGN-HANDOFF.md) contains
+The [campaign handoff](../../tests/public-beta/execution/CAMPAIGN-HANDOFF.md) contains
 Anaconda, host, provider, performance, restore and independent review inputs. The
-[W12 status](../../docs/public-beta/execution/W12-REVIEW.md) records remaining
+[W12 status](../../tests/public-beta/execution/W12-REVIEW.md) records remaining
 blockers without waiving retained promises.
 
 Focused selection/scope refusal regressions:
 
 ```sh
-python3 tests/beta-readiness/test_prepare.py
+GOWORK=off GOENV=off GOTOOLCHAIN=local /absolute/go1.26.5/bin/go test -count=1 \
+  tests/beta-readiness/prepare.go tests/beta-readiness/prepare_test.go
 ```
 
 These cover omitted/duplicate units and criteria, version/entrypoint/build-option
 substitution, wrong profile, dependency omission and non-topological order. The
 existing Go suites separately test strict evidence, signatures, owner observations,
 operational scope and coverage. This helper does not replace those verifiers.
+The 20 selection/scope cases are retained; two command-admission cases additionally
+prove dirty-source refusal before output creation and immutable existing-output
+refusal against a clean disposable Git repository.
+An additional parser case preserves the prior source reader's refusal of invalid
+UTF-8, instead of allowing JSON decoding to silently replace malformed bytes.

@@ -109,7 +109,7 @@ Next: independent public-SDK engine campaign and remaining staged gates.
 Record completed increments and push them; inspect CI later when needed for an
 actual candidate decision.
 
-Validate the preserved dossier with `python3 docs/public-beta/validate.py
+Validate the preserved dossier with `GOWORK=off GOENV=off GOTOOLCHAIN=local go run tests/public-beta/validate.go
 --historical`. This verifies its original Git source and explicitly reports that
 current implementation source is not covered. Run current dependency/release-map
 checks separately, and regenerate a new clean source inventory when selecting a
@@ -145,3 +145,12 @@ and produced the [retained W12 JSON packet](w12-review/README.md). Both real
 checkers returned expected incomplete exit 2; output reuse refused exit 1 without
 changing any packet bytes. Full local logs/tools remain digest-bound in the
 retained evidence directory. The report commit adds records only.
+
+## PR 197 CI repair — repository policy
+
+[Repair record](CI-REPAIR-197.md) explains the four shared validator failures,
+Go replacements for the release helpers, and the dossier relocation from the
+reserved publication directory to `tests/public-beta/`. Current external-engine
+qualification uses Go's exact rational arithmetic. Earlier increment records and
+generated packets remain historical evidence at their recorded source revisions.
+The repair preserves the freeze and incomplete acceptance state.

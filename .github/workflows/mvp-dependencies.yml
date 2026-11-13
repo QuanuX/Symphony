@@ -109,7 +109,9 @@ jobs:
         run: sh tests/sbv-launch-boundary/run.sh "$RUNNER_TEMP/mvp-installed/prefix" "$RUNNER_TEMP/sbv-launch-boundary"
       - name: Qualify external example through two installed public SDK routes
         if: matrix.group == 'quantitative'
-        run: python3 tests/external-engine/qualify.py --sdk-prefix "$RUNNER_TEMP/mvp-installed/prefix" --cxx "$(command -v "$CXX")" --work "$RUNNER_TEMP/external-engine"
+        run: |
+          GOWORK=off GOENV=off GOTOOLCHAIN=local go test -race -count=1 tests/external-engine/qualify.go tests/external-engine/qualify_test.go
+          GOWORK=off GOENV=off GOTOOLCHAIN=local go run tests/external-engine/qualify.go --sdk-prefix "$RUNNER_TEMP/mvp-installed/prefix" --cxx "$(command -v "$CXX")" --work "$RUNNER_TEMP/external-engine"
       - name: Qualify installed SNV supplied-record and observer boundary
         if: matrix.group == 'knowledge'
         env:

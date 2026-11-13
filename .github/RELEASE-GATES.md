@@ -13,7 +13,7 @@ promise that needs missing implementation requires an explicit scope/freeze
 decision; the freeze neither completes that work nor silently removes the promise.
 This records project direction, not enforced GitHub branch rules or release approval.
 
-The [source-bound Public Beta dossier](../docs/public-beta/README.md) prepares
+The [source-bound Public Beta dossier](../tests/public-beta/README.md) prepares
 W01/W06 against the PR #196 main revision and supplies the full W01–W12 plan for
 manual review. Its proposed selections, pending trust/owner inputs and acceptance
 mapping do not authorize new features or establish final-candidate acceptance.

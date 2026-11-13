@@ -11,9 +11,10 @@ human author or documentation-only agent acceptance record.
 
 The example accepts 1–64 canonical decimal integer prices in nanos, each between
 -10^15 and 10^15 inclusive. It returns the sorted empirical distribution with
-reduced rational weights and the exact rational mean. Python's standard-library
-Fraction and Counter provide an independently calculated complete numerical
-oracle. No tolerance, market forecast, calibrated price model, fill-probability
+reduced rational weights and the exact rational mean. The Go qualification
+harness uses arbitrary-precision `math/big.Rat` probability accumulation and
+`big.Int` price totals as an independent complete numerical oracle. It does not
+reuse the example's bounded integer arithmetic. No tolerance, market forecast, calibrated price model, fill-probability
 or performance claim follows from this deliberately synthetic calculation.
 
 The provider reads only trades at or before the current signal, using a bounded
@@ -30,13 +31,14 @@ Copy this entire directory to a private directory outside the Symphony checkout.
 Obtain the **complete**, matching public receipt units for foundation
 `knowledge-vector-engine-cpp/0.2.0-dev` and SBV `sbv-engine/0.33.0-dev` plus their
 approved runtime closure. Do not extract selected headers from the receipts.
-Use CMake >=3.31, a C++26 compiler and Python >=3.9. Preserve the C++
+Use CMake >=3.31, a C++26 compiler and Go 1.26.5. Preserve the C++
 driver name (for example `clang++`) when selecting a compiler symlink; resolving
-it to `clang` changes linker driver behavior. Python is qualification tooling, not a product
-runtime dependency. Select absolute paths and a new private work directory:
+it to `clang` changes linker driver behavior. The Go harness is qualification
+tooling, not a product runtime dependency. Select absolute paths and a new private
+work directory:
 
 ```sh
-python3 qualify.py --sdk-prefix /absolute/installed-sdk \
+GOWORK=off GOENV=off GOTOOLCHAIN=local go run qualify.go --sdk-prefix /absolute/installed-sdk \
   --cxx /absolute/clang++ --work /absolute/new-example-campaign
 ```
 
@@ -84,7 +86,7 @@ inputs, and compare complete results and provenance. Restart and verify the
 service through its owner. Do not interrupt a user service or invent an owner
 control command. If no separate service is selected for the tested composition,
 retain that fact for reviewer applicability instead of reporting an injected
-stall. No such service interruption is performed by `qualify.py`.
+stall. No such service interruption is performed by `qualify.go`.
 
 A separately assigned author/agent receives only the final SDKs, this directory
 and shipped documentation. Record first failures, questions, all setup steps,
@@ -96,3 +98,12 @@ pending until that campaign is executed and reviewed.
 `evidence.json` describes private installed-SDK fixture evidence and always leaves
 release acceptance and publication false. No live provider or network is used.
 The attributed synthetic DBN fixture helper is under `fixtures/`.
+
+Focused harness checks exercise exact arithmetic beyond int64 aggregate range,
+receipt tampering and unsafe members, command refusals, and preflighted example
+removal. Invoke the explicit Go files so the adjacent C++ example sources are
+not treated as Go package build inputs:
+
+```sh
+GOWORK=off GOENV=off GOTOOLCHAIN=local go test -race -count=1 qualify.go qualify_test.go
+```

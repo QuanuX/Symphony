@@ -1,6 +1,6 @@
 # Final candidate and campaign handoff
 
-Use the source-bound output of `tests/beta-readiness/prepare.py` and the complete
+Use the source-bound output of `tests/beta-readiness/prepare.go` and the complete
 [acceptance protocol](../../../tests/launch-acceptance/DELIVERY-ACCEPTANCE.md).
 The existing implementation and fixture increments are preparation. Every final
 observation must bind the same candidate source commit/tree, exact delivery index,

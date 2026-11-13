@@ -27,7 +27,7 @@ The reviewed product source is [`887e074780e1d0633bd6e6f57c3d4e07ca3925fc`](http
 | [owners.json](owners.json) | Existing named release/rollback primary and explicit unassigned engineering, review, platform and operational roles. No notifications or GitHub assignments. |
 | [paper-criteria.json](paper-criteria.json) | Preserved 52 category criteria plus UE1–UE6 and their paper provenance. Historical proposed requirements are data, not automatic implementation authority. |
 | [acceptance-mapping.json](acceptance-mapping.json) | All 36 core profile/scenario cells, all 58 paper criteria, 23 Cloudflare operation cells and eight supplemental campaigns, with owners, methods, oracles and pending evidence. |
-| [validate.py](validate.py) | Standard-library consistency/source-binding check for this preparation. Success is not release acceptance. |
+| [validate.go](validate.go) | Standard-library consistency/source-binding check for this preparation. Success is not release acceptance. |
 | [VALIDATION.md](VALIDATION.md) | Focused checks performed for this increment and their limits. |
 
 ## Proposed delivery shape
@@ -48,10 +48,10 @@ No credentials, private keys, licensed SDK bytes or private provider payloads be
 
 ## Reproduction and source drift
 
-Run from the repository root with Python 3 and Git:
+Run from the repository root with exact Go 1.26.5 and Git:
 
 ```sh
-python3 docs/public-beta/validate.py
+GOWORK=off GOENV=off GOTOOLCHAIN=local go run tests/public-beta/validate.go
 ```
 
 The inventory was generated from the clean reviewed source using the existing `prepare-review.cmake` helper. Its command and output digest are recorded in `dossier.json`. Reproducing that inventory requires a clean checkout of the recorded source and a new output file outside that checkout; do not overwrite the committed snapshot or run the clean-source helper while edits are present.

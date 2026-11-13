@@ -39,7 +39,7 @@ func daInputs(t *testing.T) daFixtureData {
 	if e != nil {
 		t.Fatal(e)
 	}
-	mapping, e := os.ReadFile(filepath.Join(root, "../../docs/public-beta/acceptance-mapping.json"))
+	mapping, e := os.ReadFile(filepath.Join(root, "../../tests/public-beta/acceptance-mapping.json"))
 	if e != nil {
 		t.Fatal(e)
 	}

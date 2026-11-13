@@ -43,7 +43,7 @@ GOWORK=off GOENV=off GOTOOLCHAIN=local go build -trimpath \
 ```
 
 The independent requirements map is **a review input, not an observation**. It
-binds the exact original plan and `docs/public-beta/acceptance-mapping.json` bytes.
+binds the exact original plan and `tests/public-beta/acceptance-mapping.json` bytes.
 It retains four core profiles, nine scenarios, 36 cells, 58 paper criteria and 31
 supplemental entries (23 Cloudflare operations and eight further campaigns).
 Templates use explicit nulls. Empty arrays cannot stand in for pending work.

@@ -5,7 +5,7 @@
   "state": "proposal_for_manual_review",
   "publication_authorized": false,
   "capability_selection_approved": false,
-  "source_inventory": "docs/public-beta/source-inventory.json",
+  "source_inventory": "tests/public-beta/source-inventory.json",
   "dependency_map": "cmake/mvp-dependencies.json",
   "dependency_map_sha256": "a39b08f4a6c54d8e73f9b28a8010ac2d0f0ace02df0d65225fee267576c812de",
   "coverage": {
@@ -158,7 +158,7 @@
         "tools/qxctl/internal/invariantregistry/registry.go",
         "tests/native-sdk-distribution/README.md",
         "cmake/mvp-dependencies.json",
-        "docs/public-beta/source-inventory.json"
+        "tests/public-beta/source-inventory.json"
       ],
       "acceptance_scenarios": [
         "verified_download_and_tamper_refusal",
@@ -311,7 +311,7 @@
         "modules/secure-identity-access-governance/CREDENTIAL-ADMISSION.md",
         "modules/secure-identity-access-governance/CREDENTIAL-JOURNAL.md",
         "cmake/mvp-dependencies.json",
-        "docs/public-beta/source-inventory.json"
+        "tests/public-beta/source-inventory.json"
       ],
       "acceptance_scenarios": [
         "verified_download_and_tamper_refusal",
@@ -418,7 +418,7 @@
         "modules/maestro/SPEC.md",
         "modules/maestro/INSTALL.md",
         "cmake/mvp-dependencies.json",
-        "docs/public-beta/source-inventory.json"
+        "tests/public-beta/source-inventory.json"
       ],
       "acceptance_scenarios": [
         "verified_download_and_tamper_refusal",
@@ -588,7 +588,7 @@
         "modules/ssfv-engine/SPEC.md",
         "modules/ssfv-engine/INSTALL.md",
         "cmake/mvp-dependencies.json",
-        "docs/public-beta/source-inventory.json"
+        "tests/public-beta/source-inventory.json"
       ],
       "acceptance_scenarios": [
         "verified_download_and_tamper_refusal",
@@ -690,7 +690,7 @@
         "modules/sev-engine/SPEC.md",
         "modules/sev-engine/INSTALL.md",
         "cmake/mvp-dependencies.json",
-        "docs/public-beta/source-inventory.json"
+        "tests/public-beta/source-inventory.json"
       ],
       "acceptance_scenarios": [
         "verified_download_and_tamper_refusal",
@@ -1050,7 +1050,7 @@
         "knowledge/scv/SOURCE-KNOWLEDGE.md",
         "knowledge/scv/COVERAGE.md",
         "cmake/mvp-dependencies.json",
-        "docs/public-beta/source-inventory.json"
+        "tests/public-beta/source-inventory.json"
       ],
       "acceptance_scenarios": [
         "verified_download_and_tamper_refusal",
@@ -1436,7 +1436,7 @@
         "knowledge/shv/DOCUMENT-INGESTION.md",
         "tests/shv-release-qualification/examples/mvp-hardware/README.md",
         "cmake/mvp-dependencies.json",
-        "docs/public-beta/source-inventory.json"
+        "tests/public-beta/source-inventory.json"
       ],
       "acceptance_scenarios": [
         "verified_download_and_tamper_refusal",
@@ -1546,7 +1546,7 @@
         "knowledge/shv/DOCUMENT-INGESTION.md",
         "cmake/notices/PUBLISHER-REVIEW.md",
         "cmake/mvp-dependencies.json",
-        "docs/public-beta/source-inventory.json"
+        "tests/public-beta/source-inventory.json"
       ],
       "acceptance_scenarios": [
         "verified_download_and_tamper_refusal",
@@ -1692,7 +1692,7 @@
         ".github/workflows/duckdb-connectors.yml",
         "cmake/notices/PUBLISHER-REVIEW.md",
         "cmake/mvp-dependencies.json",
-        "docs/public-beta/source-inventory.json"
+        "tests/public-beta/source-inventory.json"
       ],
       "acceptance_scenarios": [
         "verified_download_and_tamper_refusal",
@@ -2024,7 +2024,7 @@
         "knowledge/snv/VALIDATION.md",
         "tests/snv-qualification/README.md",
         "cmake/mvp-dependencies.json",
-        "docs/public-beta/source-inventory.json"
+        "tests/public-beta/source-inventory.json"
       ],
       "acceptance_scenarios": [
         "verified_download_and_tamper_refusal",
@@ -2129,7 +2129,7 @@
         "modules/snv-local-observer/INSTALL.md",
         "modules/snv-local-observer/OWNER-INTERFACE.json",
         "cmake/mvp-dependencies.json",
-        "docs/public-beta/source-inventory.json"
+        "tests/public-beta/source-inventory.json"
       ],
       "acceptance_scenarios": [
         "verified_download_and_tamper_refusal",
@@ -2381,7 +2381,7 @@
         "tests/native-sdk-distribution/README.md",
         "tests/launch-operations/README.md",
         "cmake/mvp-dependencies.json",
-        "docs/public-beta/source-inventory.json"
+        "tests/public-beta/source-inventory.json"
       ],
       "acceptance_scenarios": [
         "verified_download_and_tamper_refusal",
@@ -2677,7 +2677,7 @@
         "modules/sqdv-checkpoint-engine/INSTALL.md",
         "modules/sqdv-checkpoint-engine/OWNER-INTERFACE.json",
         "cmake/mvp-dependencies.json",
-        "docs/public-beta/source-inventory.json"
+        "tests/public-beta/source-inventory.json"
       ],
       "acceptance_scenarios": [
         "verified_download_and_tamper_refusal",
@@ -3011,7 +3011,7 @@
         "tests/sbv-launch-boundary/README.md",
         "libraries/sbv-go/README.md",
         "cmake/mvp-dependencies.json",
-        "docs/public-beta/source-inventory.json"
+        "tests/public-beta/source-inventory.json"
       ],
       "acceptance_scenarios": [
         "verified_download_and_tamper_refusal",
@@ -3103,7 +3103,7 @@
         "modules/native-source-support-cpp/SPEC.md",
         "modules/native-source-support-cpp/INSTALL.md",
         "cmake/mvp-dependencies.json",
-        "docs/public-beta/source-inventory.json"
+        "tests/public-beta/source-inventory.json"
       ],
       "acceptance_scenarios": [
         "verified_download_and_tamper_refusal",
@@ -3229,7 +3229,7 @@
         "README.md",
         "modules/secure-identity-access-governance/CREDENTIAL-QUALIFICATION.md",
         "cmake/mvp-dependencies.json",
-        "docs/public-beta/source-inventory.json"
+        "tests/public-beta/source-inventory.json"
       ],
       "acceptance_scenarios": [
         "verified_download_and_tamper_refusal",
@@ -3324,7 +3324,7 @@
         "README.md",
         "modules/secure-identity-access-governance/CREDENTIAL-QUALIFICATION.md",
         "cmake/mvp-dependencies.json",
-        "docs/public-beta/source-inventory.json"
+        "tests/public-beta/source-inventory.json"
       ],
       "acceptance_scenarios": [
         "verified_download_and_tamper_refusal",
@@ -3415,7 +3415,7 @@
         "modules/sqav-news-api-cpp/SPEC.md",
         "modules/sqav-news-api-cpp/INSTALL.md",
         "cmake/mvp-dependencies.json",
-        "docs/public-beta/source-inventory.json"
+        "tests/public-beta/source-inventory.json"
       ],
       "acceptance_scenarios": [
         "verified_download_and_tamper_refusal",
@@ -3508,7 +3508,7 @@
         "modules/scabv-ibkr-client-portal-cpp/SPEC.md",
         "modules/scabv-ibkr-client-portal-cpp/INSTALL.md",
         "cmake/mvp-dependencies.json",
-        "docs/public-beta/source-inventory.json"
+        "tests/public-beta/source-inventory.json"
       ],
       "acceptance_scenarios": [
         "verified_download_and_tamper_refusal",
@@ -3600,7 +3600,7 @@
         "modules/scabv-ibkr-tws-cpp/SPEC.md",
         "modules/scabv-ibkr-tws-cpp/INSTALL.md",
         "cmake/mvp-dependencies.json",
-        "docs/public-beta/source-inventory.json"
+        "tests/public-beta/source-inventory.json"
       ],
       "acceptance_scenarios": [
         "verified_download_and_tamper_refusal",
@@ -3748,7 +3748,7 @@
         "modules/srrapiv-runtime-cpp/INSTALL.md",
         "modules/srrapiv-runtime-cpp/OWNER-INTERFACE.json",
         "cmake/mvp-dependencies.json",
-        "docs/public-beta/source-inventory.json"
+        "tests/public-beta/source-inventory.json"
       ],
       "acceptance_scenarios": [
         "verified_download_and_tamper_refusal",
@@ -3872,7 +3872,7 @@
         "knowledge/sov/SSH-CARRIER.md",
         "knowledge/sov/CLOUDFLARE-ACCESS-SESSIONS.md",
         "cmake/mvp-dependencies.json",
-        "docs/public-beta/source-inventory.json"
+        "tests/public-beta/source-inventory.json"
       ],
       "acceptance_scenarios": [
         "verified_download_and_tamper_refusal",
@@ -4205,7 +4205,7 @@
         "tests/cloudflare-release/support-matrix.json",
         "tests/cloudflare-release/README.md",
         "cmake/mvp-dependencies.json",
-        "docs/public-beta/source-inventory.json"
+        "tests/public-beta/source-inventory.json"
       ],
       "acceptance_scenarios": [
         "verified_download_and_tamper_refusal",
@@ -4285,7 +4285,7 @@
         "modules/ssiag-provider-macos-keychain/INSTALL.md",
         "modules/secure-identity-access-governance/CREDENTIAL-QUALIFICATION.md",
         "cmake/mvp-dependencies.json",
-        "docs/public-beta/source-inventory.json"
+        "tests/public-beta/source-inventory.json"
       ],
       "acceptance_scenarios": [
         "verified_download_and_tamper_refusal",
@@ -4390,7 +4390,7 @@
         "tools/shv-interface-codegen/MANIFEST.md",
         "tools/sqv-administration-cpp/MANIFEST.md",
         "cmake/mvp-dependencies.json",
-        "docs/public-beta/source-inventory.json"
+        "tests/public-beta/source-inventory.json"
       ],
       "acceptance_scenarios": [],
       "additional_acceptance_obligations": [
@@ -4453,7 +4453,7 @@
         "modules/hotpath-runtime/INTENT.md",
         "modules/hotpath-runtime/INSTALL.md",
         "cmake/mvp-dependencies.json",
-        "docs/public-beta/source-inventory.json"
+        "tests/public-beta/source-inventory.json"
       ],
       "acceptance_scenarios": [],
       "additional_acceptance_obligations": [
@@ -4607,8 +4607,8 @@
       "state": "unselected_unqualified_not_waived",
       "boundary": "No complete beta risk/state composition is selected by this dossier. Existing SSIAG policy/audit, SBV research and SRRAPIV local admission do not by themselves prove order/position/risk reconciliation. Qualify an explicitly selected existing composition; missing implementation remains frozen pending an explicit decision.",
       "evidence_paths": [
-        "docs/public-beta/paper-criteria.json",
-        "docs/public-beta/acceptance-mapping.json",
+        "tests/public-beta/paper-criteria.json",
+        "tests/public-beta/acceptance-mapping.json",
         "modules/srrapiv-runtime-cpp/SPEC.md"
       ]
     },
@@ -4628,7 +4628,7 @@
       "state": "independent_oracle_and_workload_pending",
       "boundary": "Predeclared workload/latency/resource budgets, actual state restoration and backup-operated rollback remain acceptance work. No performance leadership, physical GPU or universal power-loss durability claim.",
       "evidence_paths": [
-        "docs/public-beta/acceptance-mapping.json",
+        "tests/public-beta/acceptance-mapping.json",
         "tests/launch-operations/README.md"
       ]
     }

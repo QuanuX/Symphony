@@ -44,7 +44,7 @@ item access was inferred. No broad unrelated suite or hosted CI completion was
 awaited; workflow changes carry the new focused checks forward.
 
 The current source-bound review is generated through
-[`tests/beta-readiness/prepare.py`](../../../tests/beta-readiness/README.md), which
+[`tests/beta-readiness/prepare.go`](../../../tests/beta-readiness/README.md), which
 reconciles recipes with current owner maps, builds the actual checkers from clean
 source, and initializes every pending requirement. It returns exit 2 and attaches
 both incomplete checker reports. Use a new output for every revision. A later

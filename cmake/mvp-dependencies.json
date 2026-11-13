@@ -22770,7 +22770,7 @@
     },
     {
       "path": "tests/package-release/run.cmake",
-      "sha256": "c2c2b6dd698e752338353984117ee3f16d326b6c3dd3618d527bee211d43136a"
+      "sha256": "d66038f5a408dc11f0dc2a069ddd4fc342a2457a00cec4f7d33dfce02df23557"
     },
     {
       "path": "tests/sqv-administration/CMakeLists.txt",
@@ -25246,7 +25246,7 @@
     },
     {
       "path": "tests/launch-acceptance/DELIVERY-SET.md",
-      "sha256": "9fb64673c8239bc55da6be9abd3373963945d9667db0740ceee5c67975ba9570"
+      "sha256": "fe3b4d78ceede7a60931437c65ee72518eeb32885716e6ec06b13edcc1b02ee0"
     },
     {
       "path": "tests/launch-acceptance/delivery-set.go",
@@ -25281,18 +25281,6 @@
       "sha256": "1afe95fe528c3a79191f0109a6739e2a5d25442308bd7c2a9b0dffd88743b2b8"
     },
     {
-      "path": "tests/launch-acceptance/qualify-go-owners.py",
-      "sha256": "d6ab3e8bcf8f62e4b0188ce6d98a7d6482e21399f1f43363391f68df9e364a1b"
-    },
-    {
-      "path": "tests/launch-acceptance/qualify-native-delivery.py",
-      "sha256": "4a9829c1008a5fcd714534c30e3e6e8600bc7f9e6807f6cd5664af9b174050aa"
-    },
-    {
-      "path": "tests/launch-acceptance/qualify-executable-delivery.py",
-      "sha256": "80a371cad167e215aff15e2685d6b081408743a4fae5fd650e80e3ed8e9168f7"
-    },
-    {
       "path": "cmake/release/immutable-files-v1.schema.json",
       "sha256": "8cf28ae912094487eed97cd248cbde94ae3ed69ee2f389cbfc01354627d2717c"
     },
@@ -25310,11 +25298,11 @@
     },
     {
       "path": "tests/launch-acceptance/delivery-acceptance_test.go",
-      "sha256": "2ad0d9e906bfbfe2cbc10b45ffe10e7c568955b2aaa361b887cb7fdcd49956e7"
+      "sha256": "fba0ff1f0dcf1cd0befbf4be902c91bf42849229f070b9600c5e48185e6056e7"
     },
     {
       "path": "tests/launch-acceptance/DELIVERY-ACCEPTANCE.md",
-      "sha256": "54c8fab22f3a5553715ff7a07bd7bd78765b682c81ae6c7357a79cadd9e537ee"
+      "sha256": "1b65bef2ddd261b697b4f5aa94d2d137a2e1c7a748fee95e97fecc481c9d7220"
     },
     {
       "path": "cmake/release/delivery-acceptance-v1.schema.json",
@@ -25334,7 +25322,7 @@
     },
     {
       "path": "tests/external-engine/README.md",
-      "sha256": "74b6a78a2fbc9313410da1456b8e26351e18e1d034a5732bfbb2ef44ca7c67e9"
+      "sha256": "18039a2e6e43f1c4cfe50511a48bc1c47ef4c00565e1d8f0adf3cb67958d8948"
     },
     {
       "path": "tests/external-engine/calculation.hpp",
@@ -25369,32 +25357,64 @@
       "sha256": "86e0a2be749bf4929ab590a1acec5c7a476ed44a521e58dba5c64ab0aad82cc9"
     },
     {
-      "path": "tests/external-engine/qualify.py",
-      "sha256": "64394d9169e61bfefbf8a0ddd9ab81b43f74dd96fbbe9656afef845f0f8b9b1f"
-    },
-    {
       "path": "tests/external-engine/sdk-client.cpp",
       "sha256": "861b0494dc2b538578582beb424ee69431a55346f35c20d868825c4cab37310b"
     },
     {
-      "path": "docs/public-beta/execution/CAMPAIGN-HANDOFF.md",
-      "sha256": "25ba98b987a9a25fb97302bfc6a509b98ef6bf7c650eb206103e45b70c1c8b72"
+      "path": "tests/public-beta/execution/CAMPAIGN-HANDOFF.md",
+      "sha256": "a247028db18e953aebb1ebb9e1ca1fb89c087fd13674d488fc5e50f179db2b7a"
     },
     {
-      "path": "docs/public-beta/execution/W12-REVIEW.md",
-      "sha256": "352c70d28e0312dee4d5eb2322ca9f45ed6d3d022d868c3f076755c8019182e8"
+      "path": "tests/public-beta/execution/W12-REVIEW.md",
+      "sha256": "3ea5ccce9ce403e4f5c025fc7e50dcb53a74319a9636e2a2aecec22be25dd79b"
     },
     {
       "path": "tests/beta-readiness/README.md",
-      "sha256": "cf82f7230de1a1d817385afb3824450563a6adcd585dd826ff810caed6b86ccd"
+      "sha256": "70dc47fb788ef6c08b41c1df0d082ed4060cd80e65c1b32eaf735763a65c477f"
     },
     {
-      "path": "tests/beta-readiness/prepare.py",
-      "sha256": "1bdbe8d5fedf6fd3016ee7a7a9ae824882e6d0ab476e82ac05110c239f74d419"
+      "path": "tests/beta-readiness/prepare.go",
+      "sha256": "b70ee2f1daa0f230499fefcf03b9db0c202fa383d849af38476c3052383a4cdc"
     },
     {
-      "path": "tests/beta-readiness/test_prepare.py",
-      "sha256": "f094a4ff2cf442cef1b308fbff8bb24ac9f42689d9ca8b16ab6dbb801e8d3198"
+      "path": "tests/beta-readiness/prepare_test.go",
+      "sha256": "2ea2ee2e0af7a6d3acdc74eff19241b8887b4fa74394f37fff437f1311d9525f"
+    },
+    {
+      "path": "tests/external-engine/qualify.go",
+      "sha256": "473c03d1d60a9c4ce89766fff724e21b34ab7356e96584ec7de929104831f694"
+    },
+    {
+      "path": "tests/external-engine/qualify_test.go",
+      "sha256": "068c387c867834f532065c69f4a03db291afa0635328dc68c0ed3280b652225a"
+    },
+    {
+      "path": "tests/launch-acceptance/qualification-common.go",
+      "sha256": "d91c270d41da9b4502f033b1cf02289823be20bd6df607aa4d00ffe9cf233d99"
+    },
+    {
+      "path": "tests/launch-acceptance/qualification-common_test.go",
+      "sha256": "e55f90fde3069f1361406826e0f8cd30ecda979d11987be7c374db29b3149106"
+    },
+    {
+      "path": "tests/launch-acceptance/qualify-executable-delivery.go",
+      "sha256": "c258ba56eb8f39225dc1632c792a464d078bcf333dba8364660ec785c43d5650"
+    },
+    {
+      "path": "tests/launch-acceptance/qualify-go-owners.go",
+      "sha256": "031b4dec63fbe23fff467b968a696768b7d5d150ac7b74f4018eb82b090b40c7"
+    },
+    {
+      "path": "tests/launch-acceptance/qualify-native-delivery.go",
+      "sha256": "9db094f520b76c837e799701a3e20aa6f79af9d15d4392da67b4799b6e622afd"
+    },
+    {
+      "path": "tests/public-beta/validate.go",
+      "sha256": "a1268b7cedadee606ccce4eb0c90442e4b425e62ad1a26b412b2ab022f0e09fc"
+    },
+    {
+      "path": "tests/public-beta/validate_test.go",
+      "sha256": "d0c7d9ca7842ad2518f698b53a0c5477b0fe5c023d12d7a53a5779c34f3106e4"
     }
   ],
   "platform_profile_catalog": "cmake/mvp-platform-profiles.json",

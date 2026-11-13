@@ -310,12 +310,12 @@ Commands below are **future execution recipes**, not a record that they ran. Pat
 From the repository root:
 
 ```sh
-python3 docs/public-beta/validate.py
+GOWORK=off GOENV=off GOTOOLCHAIN=local go run tests/public-beta/validate.go
 cmake -P tests/mvp-dependencies/verify.cmake
 cmake -P tests/release-qualification/verify.cmake
 ```
 
-`validate.py` checks this preparation dossier, not product readiness. Regenerate the exact-source inventory only when a new clean committed source is selected, using `prepare-review.cmake` and a new output outside the checkout; do not run it against the current dirty preparation tree or overwrite the recorded baseline.
+`validate.go` checks this preparation dossier, not product readiness. Regenerate the exact-source inventory only when a new clean committed source is selected, using `prepare-review.cmake` and a new output outside the checkout; do not run it against the current dirty preparation tree or overwrite the recorded baseline.
 
 ### C2 — Installed SDK and external-engine preparation
 

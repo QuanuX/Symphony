@@ -1,5 +1,10 @@
 # Preparation validation — November 13, 2026
 
+Historical record: the commands below describe the original preparation run.
+PR #197 later exposed that its Python helper violated the first-party repository
+policy. The helper is now `validate.go`; current commands are in [README.md](README.md).
+The original observations and failures are preserved rather than relabeled.
+
 These checks concern the W01/W06 dossier and its reviewed source binding. They do not qualify a product build, final download, signing identity, provider or release. The full W01–W12 implementation and qualification plan remains for the user's manual approval and model switch.
 
 ## Checks performed

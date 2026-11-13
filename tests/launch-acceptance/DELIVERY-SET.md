@@ -174,7 +174,7 @@ sentinels and no operational state, plus an explicitly inert subprocess fixture
 for signature, dispatch, identity, omission and post-inspection drift boundaries.
 Those are source/fixture results, not final-host or provider acceptance.
 
-`qualify-go-owners.py` consumes the clean candidate recipe's actual binaries and
+`qualify-go-owners.go` consumes the clean candidate recipe's actual binaries and
 owner tools, stages all three via their existing install CLIs in a new private
 prefix, signs the set with a disposable fixture key, runs all owner adapters,
 rejects a tampered receipt and removes a disposable copy while preserving a
@@ -224,7 +224,7 @@ draft contract, which this increment corrects.
 
 `selected_artifact_owner_verified=true` is extraction/receipt evidence only.
 Fresh-host/runtime/provider execution, installer/lifecycle qualification, human
-acceptance and publication remain separate. `qualify-native-delivery.py` and the
+acceptance and publication remain separate. `qualify-native-delivery.go` and the
 existing package-release harness exercise actual signed native extraction,
 independent-policy refusal and immutable work directories using disposable fixtures.
 
@@ -267,8 +267,26 @@ provider effect, fresh host or release. Actual build review still matters:
 signed declarations and a matching version query are not proof that arbitrary
 publisher-supplied source is correct.
 
-`qualify-executable-delivery.py` exercises actual locally built binaries using
+`qualify-executable-delivery.go` exercises actual locally built binaries using
 disposable signatures, output reuse and byte-tamper refusals. The existing qxctl
 and release-qualification workflows repeat those fixtures after their actual
 build recipes. Different fixture source commits are recorded separately; they
 must not be combined into a mixed-source candidate.
+
+The three local fixture drivers are Go host tools. Build each with its shared
+support file and exactly one entry point using Go 1.26.5, for example:
+
+```sh
+GOWORK=off GOENV=off GOTOOLCHAIN=local go build -trimpath \
+  -o "$private_tools/qualify-go-owners" \
+  tests/launch-acceptance/qualification-common.go \
+  tests/launch-acceptance/qualify-go-owners.go
+```
+
+Use `qualify-native-delivery.go` or `qualify-executable-delivery.go` as the entry
+file for those drivers. Their explicit input/work arguments and qualification
+boundaries are unchanged. They preserve immutable output refusal, disposal of
+fixture signing keys, exact owner reports, private copies for mutation/removal,
+and false final-host/acceptance/publication flags. Focused helper regressions run
+with `go test -race -count=1 tests/launch-acceptance/qualification-common.go
+tests/launch-acceptance/qualification-common_test.go`.
