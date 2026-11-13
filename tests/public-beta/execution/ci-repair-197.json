@@ -361,10 +361,21 @@
     "release-map-final.log": "159f84e0a0a1cd2e6f6da8b79529e35dc8f30e5da3f9563306738417a700c3c8"
   },
   "integration_scope": "Local source and private fixtures only. Successful SDK/delivery integrations preceded final stricter JSON admission changes, verified by focused follow-up parser tests. Original failure logs retained.",
-  "clean_source_integration": "Recorded separately after repair commit exists",
+  "clean_source_integration": "ci-repair-197-integration.json: actual clean source 8566a33d, expected incomplete exit 2; output reuse refuses without changing existing packet bytes",
   "hosted_repair_results": "not_awaited",
   "feature_freeze_in_force": true,
   "new_features_authorized": false,
   "release_acceptance_complete": false,
-  "publication_authorized": false
+  "publication_authorized": false,
+  "race_instrumentation": {
+    "enabled": [
+      "dossier",
+      "delivery_helpers",
+      "acceptance_companion",
+      "external_helper"
+    ],
+    "not_enabled": [
+      "beta_preparation"
+    ]
+  }
 }

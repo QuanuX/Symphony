@@ -27,7 +27,8 @@ Local evidence:
 - Dossier validation passes 16 named cases; preparation passes 23, delivery helper
   checks pass 20, and the relocated acceptance companion passes 64. The external
   helper passes 18 unique named cases across its initial and focused follow-up
-  runs. Race checking was enabled for these Go suites.
+  runs. Race checking was enabled except for the 23 preparation cases, which ran
+  with `go test -count=1 -v`.
 - The independent installed public-SDK campaign passes all 119 checks. Actual
   staged SSIAG/STAV/Accordare owner inspection, native candidate extraction, qxctl
   and both SOV executable inspections pass with their tamper, output-reuse and
@@ -50,6 +51,11 @@ Passing old jobs are not selectively rerun. The next branch push triggers new
 head checks; their completion is deliberately not awaited.
 
 [Machine-readable repair evidence](ci-repair-197.json) records local evidence
-hashes and the affected jobs. The clean-source preparation integration is recorded
-separately after the repair commit exists. Acceptance and publication remain
-false, and the feature freeze remains in force.
+hashes and the affected jobs. The [clean-source integration](ci-repair-197-integration.json)
+ran the replacement preparation command from repair commit `8566a33d`. It returned
+expected incomplete exit 2, preserving four profiles, 51 native units and six Go
+commands per profile, plus all 36/58/31 mapped requirements. Both actual checkers
+remain incomplete (108 core and 138 companion missing entries, not defect counts).
+Repeating the command refused exit 1 without changing any packet JSON bytes.
+This subsequent record commit changes evidence only. Acceptance and publication
+remain false, and the feature freeze remains in force.
