@@ -1198,6 +1198,214 @@ void test_dependency_criticality_and_component_capabilities() {
             "verified component capability did not release its localized blocker");
 }
 
+void test_satisfied_dependencies_protect_target_transitions() {
+    const auto a_receipt = receipt("protected-a");
+    const auto b_receipt = receipt("protected-b");
+    const auto independent_receipt = receipt("protected-independent");
+    struct Case {
+        std::string condition;
+        std::string transition;
+    };
+    const std::array cases = {
+        Case{"present", "uninstall"}, Case{"installed", "uninstall"},
+        Case{"active", "deactivate"}, Case{"inactive", "activate"},
+        Case{"docked", "undock"}, Case{"undocked", "dock"},
+        Case{"compatible", "uninstall"}, Case{"absent", "install"},
+    };
+    for (const auto& item : cases) {
+        auto target = desired_component("b", b_receipt, "inactive");
+        auto observed_target = observed_component("b", b_receipt);
+        if (item.transition == "uninstall") {
+            target = desired_component("b", b_receipt, "inactive", engine::Json::array(), "absent");
+            observed_target["selected_package_digest"] = nullptr;
+            finalize_observed_component(observed_target);
+        } else if (item.condition == "active") {
+            observed_target = observed_component("b", b_receipt, "active");
+        } else if (item.condition == "inactive") {
+            target["activation"] = "active";
+        } else if (item.condition == "docked") {
+            set_observed_docking(observed_target, "docked", "maestro-primary");
+        } else if (item.condition == "undocked") {
+            set_desired_docking(target, "docked", "maestro-primary");
+        }
+        auto observed_components = engine::Json::array({
+            observed_component("a", a_receipt),
+            observed_component("independent", independent_receipt),
+        });
+        if (item.condition != "absent") observed_components.push_back(observed_target);
+        const auto observed = observation(observed_components);
+        for (const bool critical : {true, false}) {
+            const auto desired = desired_state(engine::Json::array({
+                desired_component("a", a_receipt, "inactive",
+                    engine::Json::array({dependency("b", item.condition, critical)})),
+                target, desired_component("independent", independent_receipt),
+            }));
+            const auto result = plan(desired, observed);
+            const auto& transition = action(result, "b", item.transition);
+            require(result.at("fatal_blockers").empty(),
+                    "dependency contradiction became a global failure: " + item.condition);
+            require(action(result, "independent", "activate").at("disposition") == "ready",
+                    "dependency protection stalled independent progress: " + item.condition);
+            if (critical) {
+                require(transition.at("disposition") == "blocked",
+                        "currently satisfied critical dependency allowed invalidation: " + item.condition);
+                require(action(result, "a", "verify").at("disposition") == "blocked",
+                        "contradictory final dependency did not block its dependent: " + item.condition);
+                if (item.condition == "absent") {
+                    require(transition.at("blockers").size() > 1U,
+                            "absence dependency reused the bypassable staged-package blocker");
+                }
+            } else {
+                require(!result.at("advisories").empty(),
+                        "noncritical final contradiction had no advisory: " + item.condition);
+                require(transition.at("disposition") ==
+                            (item.condition == "absent" ? "blocked" : "ready"),
+                        "noncritical dependency blocked target progress: " + item.condition);
+                if (item.condition == "absent") {
+                    require(transition.at("blockers").size() == 1U,
+                            "noncritical absence dependency prevented exact staged install");
+                }
+            }
+        }
+    }
+}
+
+void test_retained_dependency_rejects_transient_interruption() {
+    const auto a_receipt = receipt("retained-a");
+    const auto old_receipt = receipt("retained-b-old");
+    const auto new_receipt = receipt("retained-b-new");
+    for (const auto& condition : {"active", "docked", "compatible", "installed"}) {
+        auto target = desired_component("b", new_receipt,
+            std::string(condition) == "active" || std::string(condition) == "installed" ? "active" : "inactive");
+        auto observed_target = observed_component("b", old_receipt,
+            std::string(condition) == "active" || std::string(condition) == "installed" ? "active" : "inactive");
+        add_observed_package(observed_target, new_receipt, "2.0.0");
+        if (std::string(condition) == "docked") {
+            set_desired_docking(target, "docked", "maestro-primary");
+            set_observed_docking(observed_target, "docked", "maestro-primary");
+        }
+        const auto result = plan(
+            desired_state(engine::Json::array({
+                desired_component("a", a_receipt, "inactive",
+                    engine::Json::array({dependency("b", condition)})), target,
+            })),
+            observation(engine::Json::array({observed_component("a", a_receipt), observed_target})));
+        const auto kind = std::string(condition) == "docked" ? "undock" :
+            std::string(condition) == "compatible" ? "select" : "deactivate";
+        require(action(result, "b", kind).at("disposition") ==
+                    (std::string(condition) == "installed" ? "ready" : "blocked"),
+                "transient dependency handling confused final convergence with safe execution: " +
+                    std::string(condition));
+    }
+
+    auto target = observed_component("b", old_receipt, "active");
+    add_observed_package(target, new_receipt, "2.0.0");
+    const auto bootstrap_desired = desired_state(engine::Json::array({
+        desired_component("a", a_receipt, "active", engine::Json::array({dependency("b", "active")})),
+        desired_component("b", new_receipt, "active"),
+    }));
+    const auto bootstrap = plan(bootstrap_desired, observation(engine::Json::array({target})));
+    require(action(bootstrap, "b", "deactivate").at("disposition") == "ready",
+            "an uninstalled dependent prevented its target's safe replacement");
+    require(contains_id(action(bootstrap, "a", "install").at("prerequisite_action_ids"),
+                action(bootstrap, "b", "activate").at("action_id")),
+            "new dependent could be installed during target interruption");
+    const auto converged_target = plan(bootstrap_desired,
+        observation(engine::Json::array({observed_component("b", new_receipt, "active", "2.0.0")})));
+    require(action(converged_target, "a", "install").at("prerequisite_action_ids").empty() &&
+                action(converged_target, "a", "install").at("blockers").size() == 1U,
+            "verified target convergence failed to release ordinary staged installation");
+}
+
+void test_dependency_removal_order_and_cycle_isolation() {
+    const auto a_receipt = receipt("remove-a");
+    const auto b_receipt = receipt("remove-b");
+    const auto d_receipt = receipt("remove-independent");
+    auto observed_a = observed_component("a", a_receipt);
+    auto observed_b = observed_component("b", b_receipt);
+    observed_a["selected_package_digest"] = nullptr;
+    observed_b["selected_package_digest"] = nullptr;
+    finalize_observed_component(observed_a);
+    finalize_observed_component(observed_b);
+    const auto absent_a = desired_component("a", a_receipt, "inactive",
+        engine::Json::array({dependency("b", "installed")}), "absent");
+    const auto absent_b = desired_component("b", b_receipt, "inactive", engine::Json::array(), "absent");
+    const auto desired = desired_state(engine::Json::array({absent_a, absent_b}));
+    const auto result = plan(desired, observation(engine::Json::array({observed_a, observed_b})));
+    const auto& remove_a = action(result, "a", "uninstall");
+    const auto& remove_b = action(result, "b", "uninstall");
+    require(remove_a.at("disposition") == "ready", "dependent removal was blocked by its outgoing dependency");
+    require(remove_b.at("disposition") == "waiting" &&
+                contains_id(remove_b.at("prerequisite_action_ids"), remove_a.at("action_id")),
+            "dependency removal did not wait for dependent removal");
+    const auto after_a = plan(desired, observation(engine::Json::array({observed_b})));
+    require(action(after_a, "b", "uninstall").at("disposition") == "ready",
+            "verified dependent removal did not release dependency removal");
+    const auto dependency_already_absent = plan(desired, observation(engine::Json::array({observed_a})));
+    require(action(dependency_already_absent, "a", "uninstall").at("disposition") == "ready",
+            "an already missing dependency prevented dependent cleanup");
+
+    auto cyclic_b = absent_b;
+    cyclic_b["dependencies"] = engine::Json::array({dependency("a", "installed")});
+    const auto cycle = plan(
+        desired_state(engine::Json::array({absent_a, cyclic_b, desired_component("d", d_receipt)})),
+        observation(engine::Json::array({observed_a, observed_b, observed_component("d", d_receipt)})));
+    require(action(cycle, "a", "uninstall").at("disposition") == "blocked" &&
+                action(cycle, "b", "uninstall").at("disposition") == "blocked",
+            "cyclic dependency removal was presented as safe ordering");
+    require(action(cycle, "d", "activate").at("disposition") == "ready",
+            "cyclic removal stalled an independent action");
+}
+
+void test_preserved_dependency_targets_remain_satisfied() {
+    const auto a_receipt = receipt("preserved-a");
+    const auto b_receipt = receipt("preserved-b");
+    for (const auto& condition : {"active", "docked", "installed", "absent"}) {
+        auto target = desired_component("b", b_receipt, "unmanaged");
+        set_desired_docking(target, "unmanaged", nullptr);
+        auto observed_target = observed_component("b", b_receipt,
+            std::string(condition) == "active" ? "active" : "inactive");
+        if (std::string(condition) == "docked") {
+            set_observed_docking(observed_target, "docked", "maestro-primary");
+        }
+        for (const bool explicitly_managed : {true, false}) {
+            if (std::string(condition) == "absent" && explicitly_managed) continue;
+            auto desired_components = engine::Json::array({
+                desired_component("a", a_receipt, "active",
+                    engine::Json::array({dependency("b", condition)})),
+            });
+            if (explicitly_managed) desired_components.push_back(target);
+            auto observed_components = engine::Json::array({observed_component("a", a_receipt)});
+            if (std::string(condition) != "absent") observed_components.push_back(observed_target);
+            const auto result = plan(desired_state(desired_components), observation(observed_components));
+            require(action(result, "a", "activate").at("disposition") == "ready",
+                    "preserved target incorrectly contradicted dependency: " + std::string(condition));
+            require(result.at("blocked_action_ids").empty(), "preserved dependency introduced a blocker");
+        }
+    }
+}
+
+void test_staged_install_cannot_break_retained_absence_dependency() {
+    TemporaryDirectory state;
+    const auto a_receipt = receipt("absence-dependent");
+    const auto b_receipt = receipt("absence-target");
+    const auto desired = desired_state(engine::Json::array({
+        desired_component("a", a_receipt, "inactive",
+            engine::Json::array({dependency("b", "absent")})),
+        desired_component("b", b_receipt, "inactive"),
+    }));
+    const auto observed = observation(engine::Json::array({observed_component("a", a_receipt)}));
+    const auto report = lifecycle_boot(
+        state.path(), desired, observed, "absence-source", "absent", "absence-source", "apply-compatible");
+    const auto planned = plan(desired, observed);
+    require_error([&] {
+        lifecycle_apply_mutation(
+            state.path(), "lifecycle_apply_prepare", desired, observed,
+            report.at("journal_digest"), "absent", "absent", action(planned, "b", "install").at("action_id"),
+            nullptr, nullptr, nullptr, "absence-install-prepare", nullptr, engine::Json::array({b_receipt}));
+    }, "lifecycle_apply.action_not_ready");
+}
+
 void test_two_way_selection_and_determinism() {
     const auto old_receipt = receipt("version-1");
     const auto new_receipt = receipt("version-2");
@@ -1410,6 +1618,11 @@ int main() {
         test_dependency_ready_set_and_replanning();
         test_cycle_isolation();
         test_dependency_criticality_and_component_capabilities();
+        test_satisfied_dependencies_protect_target_transitions();
+        test_retained_dependency_rejects_transient_interruption();
+        test_dependency_removal_order_and_cycle_isolation();
+        test_preserved_dependency_targets_remain_satisfied();
+        test_staged_install_cannot_break_retained_absence_dependency();
         test_two_way_selection_and_determinism();
         test_receptor_switch_and_safe_package_sequence();
         test_compatibility_integrity_and_digest_fail_closed();
