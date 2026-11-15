@@ -74,13 +74,16 @@ type BindingAdapter interface {
 }
 
 type Executor struct {
-	stateRoot   string
-	topsID      string
-	profileID   string
-	sourceRoots []string
-	docking     DockingAdapter
-	binding     BindingAdapter
+	executionScope *ExecutionScope
+	stateRoot      string
+	topsID         string
+	profileID      string
+	sourceRoots    []string
+	docking        DockingAdapter
+	binding        BindingAdapter
 }
+
+func (e *Executor) SetExecutionScope(scope *ExecutionScope) { e.executionScope = scope }
 
 func (e *Executor) SetDockingAdapter(adapter DockingAdapter) {
 	e.docking = adapter
@@ -182,6 +185,14 @@ func (e *Executor) Execute(action PlannedAction, desired DesiredState, observed 
 }
 
 func (e *Executor) execute(result *ExecutionResult, action PlannedAction, desired DesiredState, observed Observation) error {
+	if e.executionScope != nil {
+		if err := e.executionScope.ValidateDesired(e.executionScope.ProfileDigest, desired, e.executionScope.SourceReportJournalDigest); err != nil {
+			return fmt.Errorf("integrity_fatal: %w", err)
+		}
+		if !e.executionScope.AllowsAction(action, desired) {
+			return fmt.Errorf("authorization_denied: action is outside immutable execution scope")
+		}
+	}
 	component, wanted := findDesiredComponent(desired, action.ComponentID)
 	observedComponent, present := findObservedComponent(observed, action.ComponentID)
 	switch action.Kind {
@@ -212,6 +223,7 @@ func (e *Executor) execute(result *ExecutionResult, action PlannedAction, desire
 		if err != nil {
 			return err
 		}
+		owner.executionScope = e.executionScope
 		if err := installReceiptV2(source.root, component.InstallRoot, source.relativePath, receipt, owner); err != nil {
 			return err
 		}
@@ -226,6 +238,9 @@ func (e *Executor) execute(result *ExecutionResult, action PlannedAction, desire
 		matched := false
 		observedTarget := false
 		for _, digest := range action.ExpectedArtifactDigests {
+			if e.executionScope != nil && !e.executionScope.AllowsOwnership(component.InstallRoot, action.ComponentID, digest, "release") {
+				return fmt.Errorf("authorization_denied: receipt release is outside execution scope")
+			}
 			identity := PackageIdentity{ReceiptProtocol: "symphony.knowledge.install-receipt.v2", ReceiptDigest: digest}
 			if present {
 				if installed, ok := findObservedPackage(observedComponent, digest); ok {
@@ -249,6 +264,7 @@ func (e *Executor) execute(result *ExecutionResult, action PlannedAction, desire
 			if err != nil {
 				return err
 			}
+			owner.executionScope = e.executionScope
 			if err := uninstallReceiptV2(component.InstallRoot, source.root, source.relativePath, receipt, owner); err != nil {
 				return err
 			}

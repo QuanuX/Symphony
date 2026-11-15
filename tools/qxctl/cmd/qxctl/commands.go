@@ -6,6 +6,7 @@ import (
 
 	stavprotocol "github.com/QuanuX/Symphony/libraries/stav-protocol-go"
 	"github.com/QuanuX/Symphony/tools/qxctl/internal/commandregistry"
+	"github.com/QuanuX/Symphony/tools/qxctl/internal/knowledgelifecycle"
 	"github.com/QuanuX/Symphony/tools/qxctl/internal/ssiagclient"
 	"github.com/QuanuX/Symphony/tools/qxctl/internal/version"
 	"github.com/spf13/cobra"
@@ -152,6 +153,8 @@ type knowledgeSSFVMaintenanceOptions struct {
 }
 
 type knowledgeLifecycleOptions struct {
+	executionScopePath      string
+	executionScope          *knowledgelifecycle.ExecutionScope
 	topsID                  string
 	scope                   string
 	stateRoot               string
@@ -676,12 +679,13 @@ func newKnowledgeCommand() *cobra.Command {
 	}
 	registeredMutation(apply, "knowledge.lifecycle.apply", featureLifecycle, "apply", "ssiag", "knowledge.lifecycle.apply-recover")
 	addKnowledgeLifecycleCommonFlags(apply, &applyOptions)
+	apply.Flags().StringVar(&applyOptions.executionScopePath, "execution-scope", "", "immutable reviewed execution scope JSON; requires scoped native apply support")
 	apply.Flags().StringVar(&applyOptions.operationID, "operation-id", "", "stable base idempotency token for this apply transaction")
 	apply.Flags().StringVar(&applyOptions.sourceJournalDigest, "source-journal-digest", "", "exact apply-compatible report journal digest")
 	apply.Flags().StringVar(&applyOptions.expectedApplyDigest, "expected-apply-journal-digest", "", "required prior apply journal state: absent or exact tagged SHA-256 digest")
 	apply.Flags().StringVar(&applyOptions.expectedAppliedDigest, "expected-applied-state-digest", "", "required prior applied state: absent or exact tagged SHA-256 digest")
 	apply.Flags().StringSliceVar(&applyOptions.stagedRoots, "source-root", nil, "trusted staged v2 package root; repeat as needed")
-	apply.Flags().Uint64Var(&applyOptions.maxActions, "max-actions", 4096, "bounded actions to converge in this invocation")
+	apply.Flags().Uint64Var(&applyOptions.maxActions, "max-actions", 4096, "bounded actions in this invocation; does not authorize component scope")
 	apply.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
 	lifecycle.AddCommand(apply)
 
@@ -695,6 +699,7 @@ func newKnowledgeCommand() *cobra.Command {
 	}
 	registered(applyStatus, "knowledge.lifecycle.apply-status", featureLifecycle, "query")
 	addKnowledgeLifecycleCommonFlags(applyStatus, &applyStatusOptions)
+	applyStatus.Flags().StringVar(&applyStatusOptions.executionScopePath, "execution-scope", "", "immutable reviewed execution scope JSON; requires scoped native apply support")
 	applyStatus.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
 	lifecycle.AddCommand(applyStatus)
 
@@ -708,6 +713,7 @@ func newKnowledgeCommand() *cobra.Command {
 	}
 	registeredMutation(applyRecover, "knowledge.lifecycle.apply-recover", featureLifecycle, "recover", "ssiag", "knowledge.lifecycle.apply-recover")
 	addKnowledgeLifecycleCommonFlags(applyRecover, &applyRecoverOptions)
+	applyRecover.Flags().StringVar(&applyRecoverOptions.executionScopePath, "execution-scope", "", "immutable reviewed execution scope JSON; requires scoped native apply support")
 	applyRecover.Flags().StringVar(&applyRecoverOptions.operationID, "operation-id", "", "stable idempotency token for apply recovery")
 	applyRecover.Flags().StringVar(&applyRecoverOptions.expectedApplyDigest, "expected-apply-journal-digest", "", "exact recoverable apply journal digest")
 	applyRecover.Flags().BoolVar(&applyRecoverOptions.discover, "discover", false, "recover from uniquely validated digest-linked local apply evidence")

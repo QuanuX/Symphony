@@ -82,6 +82,7 @@ type OwnershipReconciliation struct {
 }
 
 type OwnershipStore struct {
+	executionScope  *ExecutionScope
 	installRoot     string
 	controlDomainID string
 	topsID          string
@@ -147,6 +148,15 @@ func (e *Executor) ReconcileOwnership(desired DesiredState, observed Observation
 			}
 		}
 	}
+	if e.executionScope != nil {
+		if err := e.executionScope.ValidateDesired(e.executionScope.ProfileDigest, desired, e.executionScope.SourceReportJournalDigest); err != nil {
+			return OwnershipReconciliation{}, err
+		}
+		roots = make(map[string]struct{})
+		for _, effect := range e.executionScope.OwnershipEffects {
+			roots[effect.InstallRoot] = struct{}{}
+		}
+	}
 	ordered := make([]string, 0, len(roots))
 	for root := range roots {
 		ordered = append(ordered, root)
@@ -164,6 +174,7 @@ func (e *Executor) ReconcileOwnership(desired DesiredState, observed Observation
 		if err != nil {
 			return OwnershipReconciliation{}, err
 		}
+		store.executionScope = e.executionScope
 		item, err := store.Reconcile(desired, observed)
 		if err != nil {
 			return OwnershipReconciliation{}, fmt.Errorf("reconcile ownership root %s: %w", root, err)
@@ -183,6 +194,9 @@ func (s *OwnershipStore) Reconcile(desired DesiredState, observed Observation) (
 	if desired.TOPSID != s.topsID || desired.ProfileID != s.profileID ||
 		observed.TOPSID != s.topsID || observed.ProfileID != s.profileID {
 		return OwnershipResult{}, fmt.Errorf("ownership reconciliation identity does not match the selected profile")
+	}
+	if s.executionScope != nil {
+		return s.reconcileScoped(desired, observed)
 	}
 	return s.mutateOwnership(true, "reconcile", "", func(registry *OwnershipRegistry, exists bool) (bool, error) {
 		observedByComponent := make(map[string][]string)
@@ -381,7 +395,7 @@ func (s *OwnershipStore) mutateOwnership(
 	mutation func(*OwnershipRegistry, bool) (bool, error),
 ) (OwnershipResult, error) {
 	var result OwnershipResult
-	err := s.withOwnershipLock(create, func(rootFD int, exists bool, registry OwnershipRegistry) error {
+	err := s.withOwnershipLockMode(create, s.executionScope == nil, func(rootFD int, exists bool, registry OwnershipRegistry) error {
 		if expected != "" {
 			if expected != "absent" && !taggedDigest(expected) {
 				return fmt.Errorf("expected ownership registry must be absent or an exact tagged digest")

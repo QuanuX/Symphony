@@ -19,18 +19,26 @@ import (
 )
 
 type validatedLifecycleApplyResult struct {
-	Raw            any
-	JournalPresent bool
-	JournalDigest  string
-	State          string
-	ProfileDigest  string
-	DesiredDigest  string
-	SourceDigest   string
-	ActiveAction   *knowledgelifecycle.PlannedAction
-	AppliedDigest  string
-	Plan           *validatedLifecyclePlan
-	Changed        bool
-	Recovered      bool
+	HasExecutionScope               bool
+	StableInventoryDigest           string
+	PreservedComponentsDigest       string
+	ActionPreservedComponentsDigest string
+	ScopeDigest                     string
+	ScopeComplete                   bool
+	ProfileConverged                bool
+	Scoped                          bool
+	Raw                             any
+	JournalPresent                  bool
+	JournalDigest                   string
+	State                           string
+	ProfileDigest                   string
+	DesiredDigest                   string
+	SourceDigest                    string
+	ActiveAction                    *knowledgelifecycle.PlannedAction
+	AppliedDigest                   string
+	Plan                            *validatedLifecyclePlan
+	Changed                         bool
+	Recovered                       bool
 }
 
 func lifecycleApplyClient() map[string]any {
@@ -42,12 +50,23 @@ func lifecycleApplyClient() map[string]any {
 			"action-attempt-journal-v2", "applied-state-v1", "discovery-recovery-v2",
 			"dynamic-replanning-v1", "expected-state-cas-v1", "external-action-adapter-v1",
 			"forward-inverse-v1", "opaque-extension-preservation-v1", "per-action-authorization-v1",
-			"recovery-forward-v1", "staged-package-v2", "verified-observation-commit-v1",
+			"recovery-forward-v1", "scoped-apply-v1", "staged-package-v2", "verified-observation-commit-v1",
 		},
 	}
 }
 
 func runKnowledgeLifecycleApply(options knowledgeLifecycleOptions) error {
+	if err := loadLifecycleExecutionScope(&options); err != nil {
+		return err
+	}
+	store, err := lifecycleStore(options)
+	if err != nil {
+		return err
+	}
+	return store.WithExecutionLease(func() error { return runKnowledgeLifecycleApplyLocked(options) })
+}
+
+func runKnowledgeLifecycleApplyLocked(options knowledgeLifecycleOptions) error {
 	if options.operationID == "" || options.sourceJournalDigest == "" ||
 		options.expectedApplyDigest == "" || options.expectedAppliedDigest == "" {
 		return fmt.Errorf("--operation-id, --source-journal-digest, --expected-apply-journal-digest, and --expected-applied-state-digest are required")
@@ -63,6 +82,11 @@ func runKnowledgeLifecycleApply(options knowledgeLifecycleOptions) error {
 	observation, profileDigest, profile, err := buildLifecycleObservation(options, false)
 	if err != nil {
 		return err
+	}
+	if options.executionScope != nil {
+		if err := options.executionScope.ValidateDesired(profileDigest, profile.DesiredState, options.sourceJournalDigest); err != nil {
+			return err
+		}
 	}
 	if profile.BootMode != "apply-compatible" {
 		return fmt.Errorf("lifecycle profile %q is not apply-compatible", profile.ProfileID)
@@ -87,6 +111,7 @@ func runKnowledgeLifecycleApply(options knowledgeLifecycleOptions) error {
 	if err != nil {
 		return err
 	}
+	executor.SetExecutionScope(options.executionScope)
 	executor.SetBindingAdapter(bindingAdapter)
 	if options.maestroPrefix != "" || len(options.maestroReceptorIDs) != 0 {
 		adapter, adapterErr := newLifecycleMaestroAdapter(options, repositoryRoot, store.StateRoot())
@@ -127,6 +152,18 @@ func runKnowledgeLifecycleApply(options knowledgeLifecycleOptions) error {
 			prior = ""
 		}
 
+		if active != nil && options.executionScope != nil {
+			resumedPlan, planErr := invokeLifecyclePlan(options, coordinator.Prefix, coordinator.Version, repositoryRoot, profileDigest, profile.DesiredState, observation, prior)
+			if planErr != nil {
+				return planErr
+			}
+			if resumedPlan.FatalCount != 0 {
+				return fmt.Errorf("full profile safety blockers prevent scoped action resume")
+			}
+			if checkpointErr := requireScopeExecutionCheckpoint(options, last, observation); checkpointErr != nil {
+				return checkpointErr
+			}
+		}
 		if active == nil {
 			plan, err := invokeLifecyclePlan(
 				options, coordinator.Prefix, coordinator.Version, repositoryRoot,
@@ -134,10 +171,17 @@ func runKnowledgeLifecycleApply(options knowledgeLifecycleOptions) error {
 			if err != nil {
 				return err
 			}
-			selected := selectExecutableLifecycleActionWithDocking(
-				plan.Actions, available, options.maestroPrefix != "" && len(options.maestroReceptorIDs) != 0)
+			if options.executionScope != nil && plan.FatalCount != 0 {
+				return fmt.Errorf("full profile safety blockers prevent scoped execution")
+			}
+			selected := selectScopedLifecycleAction(plan.Actions, available, options.maestroPrefix != "" && len(options.maestroReceptorIDs) != 0, options.executionScope, profile.DesiredState)
 			if selected == nil {
-				if lifecyclePlanConverged(plan.Actions, plan.FatalCount) {
+				if lifecycleScopeConverged(plan.Actions, plan.FatalCount, options.executionScope, profile.DesiredState, observation) {
+					if options.executionScope != nil {
+						if err := reconcileScopedCloseOwnership(options, store, executor, profileDigest, profile, observation, last, plan, stableDigest, journalDigest, appliedDigest); err != nil {
+							return err
+						}
+					}
 					operationID := applyOperationID(options.operationID, "converged")
 					last, err = invokeLifecycleApplyMutation(
 						options, coordinator.Prefix, coordinator.Version, repositoryRoot,
@@ -173,6 +217,24 @@ func runKnowledgeLifecycleApply(options knowledgeLifecycleOptions) error {
 			last.SourceDigest != options.sourceJournalDigest {
 			return fmt.Errorf("prepared lifecycle action belongs to different profile, desired-state, or source-journal evidence; restore that evidence before resuming")
 		}
+		if options.executionScope != nil {
+			if err := options.executionScope.ValidateDesired(profileDigest, profile.DesiredState, options.sourceJournalDigest); err != nil {
+				return err
+			}
+			if !options.executionScope.AllowsAction(*active, profile.DesiredState) {
+				return fmt.Errorf("prepared or resumed action exceeds immutable execution scope")
+			}
+		}
+		preservedBefore := ""
+		if options.executionScope != nil {
+			preservedBefore, err = options.executionScope.PreservedComponentsDigest(observation)
+			if err != nil {
+				return err
+			}
+		}
+		if err := requireScopeExecutionCheckpoint(options, last, observation); err != nil {
+			return err
+		}
 		coordinatorHandoff := active.ComponentID == "knowledge-session-coordinator" && active.Kind == "select"
 		if coordinatorHandoff {
 			if err := preflightCoordinatorHandoff(
@@ -182,7 +244,7 @@ func runKnowledgeLifecycleApply(options knowledgeLifecycleOptions) error {
 		}
 
 		if err := authorizeKnowledgeLifecycle(options, "ownership.reconcile", lifecycleResource(
-			options.topsID, options.profileID, profileDigest+"\n"+observation.ObservationDigest)); err != nil {
+			options.topsID, options.profileID, lifecycleScopeEvidence(options, profileDigest+"\n"+observation.ObservationDigest))); err != nil {
 			return err
 		}
 		var execution knowledgelifecycle.ExecutionResult
@@ -206,6 +268,15 @@ func runKnowledgeLifecycleApply(options knowledgeLifecycleOptions) error {
 		}
 		if afterProfileDigest != profileDigest || afterProfile.DesiredState.DesiredStateDigest != profile.DesiredState.DesiredStateDigest {
 			return fmt.Errorf("lifecycle desired profile changed during an action; prepared evidence remains resumable")
+		}
+		if options.executionScope != nil {
+			preservedAfter, digestErr := options.executionScope.PreservedComponentsDigest(after)
+			if digestErr != nil {
+				return digestErr
+			}
+			if preservedAfter != preservedBefore {
+				return fmt.Errorf("unscoped component changed during scoped execution; prepared evidence remains for recovery")
+			}
 		}
 		afterStable, err := knowledgelifecycle.StableInventoryDigest(after)
 		if err != nil {
@@ -235,7 +306,7 @@ func runKnowledgeLifecycleApply(options knowledgeLifecycleOptions) error {
 				return fmt.Errorf("coordinator handoff finalized but the selected coordinator cannot be reopened: %w", err)
 			}
 		}
-		if finalized.State == "closed" {
+		if finalized.State == "closed" || options.executionScope != nil && finalized.ScopeDigest == options.executionScope.ScopeDigest && finalized.ScopeComplete {
 			return printLifecycleApplyResult(options, finalized, sequence+1)
 		}
 	}
@@ -286,7 +357,7 @@ func preflightCoordinatorHandoff(
 	if !status.JournalPresent || status.JournalDigest != prepared.JournalDigest ||
 		status.ActiveAction == nil || !sameLifecycleAction(*status.ActiveAction, action) ||
 		status.ProfileDigest != prepared.ProfileDigest || status.DesiredDigest != prepared.DesiredDigest ||
-		status.SourceDigest != prepared.SourceDigest {
+		status.SourceDigest != prepared.SourceDigest || status.ScopeDigest != prepared.ScopeDigest || status.ScopeComplete != prepared.ScopeComplete {
 		return fmt.Errorf("compatibility_blocked: coordinator replacement did not reproduce the exact prepared handoff state")
 	}
 	return nil
@@ -492,6 +563,7 @@ func invokeLifecycleApplyMutation(
 	}
 	evidence := profileDigest + "\n" + desired.DesiredStateDigest + "\n" + stableDigest + "\n" +
 		options.sourceJournalDigest + "\n" + expectedJournal + "\n" + actionEvidence
+	evidence = lifecycleScopeEvidence(options, evidence)
 	permission := "apply." + strings.TrimPrefix(operation, "lifecycle_apply_")
 	decision, err := authorizeKnowledgeLifecycleDecision(
 		options, permission, lifecycleResource(options.topsID, options.profileID, evidence))
@@ -508,7 +580,7 @@ func invokeLifecycleApplyMutation(
 		blockerClass = execution.BlockerClass
 		executionDigest = execution.EvidenceDigest
 	}
-	payload, err := json.Marshal(map[string]any{
+	command := map[string]any{
 		"protocol": "symphony.knowledge.lifecycle-apply-command.v1", "operation": operation,
 		"state_root": stateRoot, "operation_id": operationID,
 		"expected_journal_digest": expectedJournal, "expected_applied_state_digest": expectedApplied,
@@ -519,7 +591,9 @@ func invokeLifecycleApplyMutation(
 		"available_artifact_digests": available, "outcome": outcome, "blocker_class": blockerClass,
 		"execution_evidence_digest": executionDigest, "authorization_decision": decision,
 		"planner_client": lifecyclePlannerClient(), "journal_client": lifecycleApplyClient(),
-	})
+	}
+	bindLifecycleExecutionScope(options, command)
+	payload, err := json.Marshal(command)
 	if err != nil {
 		return validatedLifecycleApplyResult{}, err
 	}
@@ -528,9 +602,11 @@ func invokeLifecycleApplyMutation(
 	if err != nil {
 		return validatedLifecycleApplyResult{}, err
 	}
-	return validateLifecycleApplyResult(
-		response.Result, operation, options.profileID, options.topsID,
-		desired.DesiredStateDigest, observation.ObservationDigest, prior)
+	result, err := validateLifecycleApplyResult(response.Result, operation, options.profileID, options.topsID, desired.DesiredStateDigest, observation.ObservationDigest, prior)
+	if err != nil {
+		return result, err
+	}
+	return requireLifecycleResultScope(options, result, operation)
 }
 
 func invokeLifecycleApplyState(
@@ -548,17 +624,20 @@ func invokeLifecycleApplyState(
 		evidence, permission = expected, "apply.recover"
 		operationValue, expectedValue = operationID, expected
 	}
+	evidence = lifecycleScopeEvidence(options, evidence)
 	decision, err := authorizeKnowledgeLifecycleDecision(
 		options, permission, lifecycleResource(options.topsID, options.profileID, evidence))
 	if err != nil {
 		return validatedLifecycleApplyResult{}, err
 	}
-	payload, err := json.Marshal(map[string]any{
+	command := map[string]any{
 		"protocol": "symphony.knowledge.lifecycle-apply-command.v1", "operation": operation,
 		"state_root": stateRoot, "operation_id": operationValue,
 		"expected_journal_digest": expectedValue, "profile_id": options.profileID, "tops_id": options.topsID,
 		"authorization_decision": decision, "journal_client": lifecycleApplyClient(),
-	})
+	}
+	bindLifecycleExecutionScope(options, command)
+	payload, err := json.Marshal(command)
 	if err != nil {
 		return validatedLifecycleApplyResult{}, err
 	}
@@ -567,10 +646,28 @@ func invokeLifecycleApplyState(
 	if err != nil {
 		return validatedLifecycleApplyResult{}, err
 	}
-	return validateLifecycleApplyResult(response.Result, operation, options.profileID, options.topsID, "", "", "")
+	result, err := validateLifecycleApplyResult(response.Result, operation, options.profileID, options.topsID, "", "", "")
+	if err != nil {
+		return result, err
+	}
+	return requireLifecycleResultScope(options, result, operation)
 }
 
 func runKnowledgeLifecycleApplyState(operation string, options knowledgeLifecycleOptions) error {
+	if err := loadLifecycleExecutionScope(&options); err != nil {
+		return err
+	}
+	if operation == "lifecycle_apply_recover" {
+		store, err := lifecycleStore(options)
+		if err != nil {
+			return err
+		}
+		return store.WithExecutionLease(func() error { return runKnowledgeLifecycleApplyStateLocked(operation, options) })
+	}
+	return runKnowledgeLifecycleApplyStateLocked(operation, options)
+}
+
+func runKnowledgeLifecycleApplyStateLocked(operation string, options knowledgeLifecycleOptions) error {
 	if operation == "lifecycle_apply_recover" {
 		if options.operationID == "" {
 			return fmt.Errorf("--operation-id is required")
@@ -838,6 +935,10 @@ func printLifecycleApplyResult(options knowledgeLifecycleOptions, result validat
 	if options.jsonOutput {
 		return printIndentedJSON(result.Raw)
 	}
+	if result.Scoped {
+		fmt.Printf("Knowledge lifecycle scoped apply: profile=%s state=%s actions=%d scope_digest=%s scope_complete=%t profile_converged=%t journal_digest=%s applied_state_digest=%s canonical=false\n", options.profileID, result.State, actions, result.ScopeDigest, result.ScopeComplete, result.ProfileConverged, nullableDigest(result.JournalDigest), nullableDigest(result.AppliedDigest))
+		return nil
+	}
 	fmt.Printf("Knowledge lifecycle apply: profile=%s state=%s actions=%d journal_digest=%s applied_state_digest=%s canonical=false\n",
 		options.profileID, result.State, actions, nullableDigest(result.JournalDigest), nullableDigest(result.AppliedDigest))
 	return nil
@@ -862,11 +963,16 @@ func validateLifecycleApplyResult(
 	if err := decoder.Decode(&object); err != nil {
 		return validatedLifecycleApplyResult{}, err
 	}
-	if !exactLifecycleFields(object, []string{
+	fields := []string{
 		"protocol", "operation", "compatibility", "journal_present", "journal", "journal_digest",
 		"plan", "action", "applied_state", "changed", "recovered", "repair_actions", "read_only",
 		"apply_authorized", "canonical",
-	}) || object["protocol"] != "symphony.knowledge.lifecycle-apply-result.v1" || object["operation"] != operation ||
+	}
+	scoped := object["protocol"] == "symphony.knowledge.lifecycle-apply-result.v2"
+	if scoped {
+		fields = append(fields, "scope_digest", "scope_complete", "profile_converged")
+	}
+	if !exactLifecycleFields(object, fields) || (!scoped && object["protocol"] != "symphony.knowledge.lifecycle-apply-result.v1") || object["operation"] != operation ||
 		object["canonical"] != false {
 		return validatedLifecycleApplyResult{}, fmt.Errorf("lifecycle apply result identity is invalid")
 	}
@@ -923,7 +1029,16 @@ func validateLifecycleApplyResult(
 		}
 	}
 	result := validatedLifecycleApplyResult{
-		JournalPresent: present, Changed: changed, Recovered: recovered, State: "absent",
+		JournalPresent: present, Changed: changed, Recovered: recovered, State: "absent", Scoped: scoped,
+	}
+	if scoped {
+		var digestOK, completeOK, convergedOK bool
+		result.ScopeDigest, digestOK = object["scope_digest"].(string)
+		result.ScopeComplete, completeOK = object["scope_complete"].(bool)
+		result.ProfileConverged, convergedOK = object["profile_converged"].(bool)
+		if !digestOK || !validTaggedDigest(result.ScopeDigest) || !completeOK || !convergedOK {
+			return result, fmt.Errorf("scoped result completion evidence is invalid")
+		}
 	}
 	if present {
 		journal, ok := object["journal"].(map[string]any)
@@ -950,9 +1065,18 @@ func validateLifecycleApplyResult(
 				copy[key] = value
 			}
 		}
-		encoded, err := json.Marshal(copy)
+		encoded, err := knowledgelifecycle.CanonicalScopeJSON(copy)
 		if err != nil || taggedLifecycleDigest(encoded) != digest {
 			return validatedLifecycleApplyResult{}, fmt.Errorf("lifecycle apply journal digest mismatch")
+		}
+		if !scoped {
+			if extensions, ok := journal["extensions"].([]any); ok {
+				for _, item := range extensions {
+					if extension, ok := item.(map[string]any); ok && extension["critical"] == true {
+						return result, fmt.Errorf("unscoped apply cannot consume a critical scope extension")
+					}
+				}
+			}
 		}
 		result.JournalDigest = digest
 		result.State = journal["state"].(string)

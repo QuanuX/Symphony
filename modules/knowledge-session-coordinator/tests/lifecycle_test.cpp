@@ -7,6 +7,7 @@
 
 #include <algorithm>
 #include <array>
+#include <cstdlib>
 #include <filesystem>
 #include <fstream>
 #include <iostream>
@@ -320,22 +321,22 @@ engine::Json client(bool full = true) {
     };
 }
 
-std::string lifecycle_resource(const std::string& evidence) {
+std::string lifecycle_resource(const std::string& evidence, const std::string& tops = "tops-test") {
     return "symphony.knowledge.lifecycle:" +
-        engine::sha256_hex("tops-test\ndefault\n" + evidence);
+        engine::sha256_hex(tops + "\ndefault\n" + evidence);
 }
 
 engine::Json lifecycle_authorization(
     const std::string& operation,
     const std::string& evidence,
-    const std::string& suffix) {
+    const std::string& suffix, const std::string& tops = "tops-test") {
     const auto request_id = "lifecycle-request-" + suffix;
     const auto correlation_id = "lifecycle-correlation-" + suffix;
     const auto target = engine::Json{
         {"operation", "symphony.knowledge.lifecycle." + operation},
-        {"resource", lifecycle_resource(evidence)},
+        {"resource", lifecycle_resource(evidence, tops)},
         {"audience", "qxctl"},
-        {"scope", "tops:tops-test"},
+        {"scope", "tops:" + tops},
     };
     const auto subject = engine::Json{
         {"id", "owner.primary"}, {"kind", "symphony.identity.owner"},
@@ -343,7 +344,7 @@ engine::Json lifecycle_authorization(
     };
     engine::Json capability{
         {"protocol", "symphony.ssiag.capability.v1"}, {"capability_id", "pending"},
-        {"subject", subject}, {"tops_id", "tops-test"}, {"target", target},
+        {"subject", subject}, {"tops_id", tops}, {"target", target},
         {"authority_basis", "host_owner"}, {"grant_id", "lifecycle-" + suffix},
         {"request_id", request_id}, {"correlation_id", correlation_id},
         {"issued_at", "2020-01-01T00:00:00Z"}, {"expires_at", "2099-01-01T00:00:00Z"},
@@ -353,7 +354,7 @@ engine::Json lifecycle_authorization(
     };
     const auto values = std::array<std::string, 19>{
         capability.at("protocol"), subject.at("id"), subject.at("kind"), subject.at("authority"),
-        "tops-test", target.at("operation"), target.at("resource"), target.at("audience"), target.at("scope"),
+        tops, target.at("operation"), target.at("resource"), target.at("audience"), target.at("scope"),
         capability.at("authority_basis"), capability.at("grant_id"), request_id, correlation_id,
         capability.at("issued_at"), capability.at("expires_at"), capability.at("policy_digest"),
         capability.at("config_digest"), "transferable=false", "canonical_apply=false",
@@ -369,7 +370,7 @@ engine::Json lifecycle_authorization(
     return engine::Json{
         {"schema", "symphony.ssiag.authorization-decision.v1"},
         {"decision_id", "ssiag-decision:" + engine::sha256_hex(operation + suffix)},
-        {"request_id", request_id}, {"correlation_id", correlation_id}, {"tops_id", "tops-test"},
+        {"request_id", request_id}, {"correlation_id", correlation_id}, {"tops_id", tops},
         {"subject", subject}, {"target", target}, {"effect", "allow"},
         {"reason_code", "symphony.ssiag.policy.exact-grant"}, {"authority_basis", "host_owner"},
         {"capability", capability}, {"policy_digest", capability.at("policy_digest")},
@@ -481,7 +482,7 @@ engine::Json apply_client(bool full = true) {
     };
 }
 
-engine::Json lifecycle_apply_mutation(
+engine::Request lifecycle_apply_mutation_request(
     const fs::path& state_root,
     const std::string& operation,
     const engine::Json& desired,
@@ -495,16 +496,18 @@ engine::Json lifecycle_apply_mutation(
     const engine::Json& execution_digest,
     const std::string& suffix,
     engine::Json prior_applied = nullptr,
-    engine::Json available = engine::Json::array()) {
+    engine::Json available = engine::Json::array(),
+    engine::Json execution_scope = nullptr) {
     const auto stable = session::lifecycle_stable_inventory_digest(
         observed, engine::unix_time_ms() + 60000);
     const auto profile_digest = engine::tagged_sha256("profile:" + desired.at("desired_state_digest").get<std::string>());
     const auto phase = operation == "lifecycle_apply_prepare" ? "prepare" :
         (operation == "lifecycle_apply_close" ? "close" : "finalize");
     const auto action_evidence = action_id.is_string() ? action_id.get<std::string>() : "converged";
-    const auto evidence = profile_digest + "\n" + desired.at("desired_state_digest").get<std::string>() +
+    auto evidence = profile_digest + "\n" + desired.at("desired_state_digest").get<std::string>() +
         "\n" + stable + "\n" + source_journal_digest + "\n" + expected_journal + "\n" + action_evidence;
-    return session::handle_request(engine::Request{
+    if (!execution_scope.is_null()) evidence += "\nscope=" + execution_scope.at("scope_digest").get<std::string>();
+    auto request = engine::Request{
         "apply-" + suffix, "apply-correlation-" + suffix, operation, session::engine_id,
         engine::unix_time_ms() + 60000,
         engine::Json{
@@ -521,7 +524,28 @@ engine::Json lifecycle_apply_mutation(
             {"authorization_decision", lifecycle_authorization("apply." + std::string(phase), evidence, suffix)},
             {"planner_client", client()}, {"journal_client", apply_client()},
         },
-    });
+    };
+    if (!execution_scope.is_null()) {
+        request.payload["protocol"] = "symphony.knowledge.lifecycle-apply-command.v2";
+        request.payload["execution_scope"] = std::move(execution_scope);
+        request.payload["journal_client"]["capabilities"].push_back("scoped-apply-v1");
+    }
+    return request;
+}
+
+engine::Json lifecycle_apply_mutation(
+    const fs::path& state_root, const std::string& operation,
+    const engine::Json& desired, const engine::Json& observed,
+    const std::string& source_journal_digest, const std::string& expected_journal,
+    const std::string& expected_applied, const engine::Json& action_id,
+    const engine::Json& outcome, const engine::Json& blocker_class,
+    const engine::Json& execution_digest, const std::string& suffix,
+    engine::Json prior_applied = nullptr, engine::Json available = engine::Json::array(),
+    engine::Json execution_scope = nullptr) {
+    return session::handle_request(lifecycle_apply_mutation_request(
+        state_root, operation, desired, observed, source_journal_digest, expected_journal,
+        expected_applied, action_id, outcome, blocker_class, execution_digest, suffix,
+        std::move(prior_applied), std::move(available), std::move(execution_scope)));
 }
 
 engine::Json lifecycle_apply_state(
@@ -530,21 +554,29 @@ engine::Json lifecycle_apply_state(
     const engine::Json& operation_id,
     const engine::Json& expected,
     const std::string& suffix,
-    bool full = true) {
+    bool full = true, engine::Json execution_scope = nullptr) {
+    const auto tops = execution_scope.is_null() ? std::string("tops-test") : execution_scope.at("tops_id").get<std::string>();
     const auto status = operation == "lifecycle_apply_status";
-    const auto evidence = status ? "status" : expected.get<std::string>();
-    return session::handle_request(engine::Request{
+    auto evidence = status ? "status" : expected.get<std::string>();
+    if (!execution_scope.is_null()) evidence += "\nscope=" + execution_scope.at("scope_digest").get<std::string>();
+    auto request = engine::Request{
         "apply-state-" + suffix, "apply-state-correlation-" + suffix, operation, session::engine_id,
         engine::unix_time_ms() + 60000,
         engine::Json{
             {"protocol", "symphony.knowledge.lifecycle-apply-command.v1"}, {"operation", operation},
             {"state_root", fs::absolute(state_root).lexically_normal().string()}, {"operation_id", operation_id},
-            {"expected_journal_digest", expected}, {"profile_id", "default"}, {"tops_id", "tops-test"},
+            {"expected_journal_digest", expected}, {"profile_id", "default"}, {"tops_id", tops},
             {"authorization_decision", lifecycle_authorization(
-                status ? "apply.status" : "apply.recover", evidence, suffix)},
+                status ? "apply.status" : "apply.recover", evidence, suffix, tops)},
             {"journal_client", apply_client(full)},
         },
-    });
+    };
+    if (!execution_scope.is_null()) {
+        request.payload["protocol"] = "symphony.knowledge.lifecycle-apply-command.v2";
+        request.payload["execution_scope"] = std::move(execution_scope);
+        request.payload["journal_client"]["capabilities"].push_back("scoped-apply-v1");
+    }
+    return session::handle_request(request);
 }
 
 engine::Json read_json(const fs::path& path) {
@@ -574,7 +606,8 @@ void finalize_test_digest(engine::Json& value, const char* field) {
     value[field] = engine::tagged_sha256(value.dump());
 }
 
-engine::Json plan(const engine::Json& desired, const engine::Json& observed, engine::Json caller = client()) {
+engine::Json plan(const engine::Json& desired, const engine::Json& observed, engine::Json caller = client(),
+                  engine::Json prior_applied = nullptr) {
     return session::handle_request(engine::Request{
         "lifecycle-request", "lifecycle-correlation", "lifecycle_plan", session::engine_id,
         engine::unix_time_ms() + 60000,
@@ -583,7 +616,7 @@ engine::Json plan(const engine::Json& desired, const engine::Json& observed, eng
             {"operation", "lifecycle_plan"},
             {"desired_state", desired},
             {"observation", observed},
-            {"prior_applied_state_digest", nullptr},
+            {"prior_applied_state_digest", std::move(prior_applied)},
             {"client", std::move(caller)},
         },
     });
@@ -630,6 +663,382 @@ void test_descriptor() {
             return operation.at("name") == "lifecycle_apply_close";
         });
     require(close != descriptor.at("operations").end(), "descriptor omitted lifecycle_apply_close");
+}
+
+engine::Json execution_scope(
+    const engine::Json& desired, const engine::Json& observed, const engine::Json& planned,
+    const std::string& source, const std::vector<std::string>& components,
+    const std::string& expected = "absent", const std::string& applied = "absent",
+    const std::string& id = "scope-test") {
+    engine::Json effects = engine::Json::array();
+    for (const auto& item : planned.at("actions")) {
+        if (std::find(components.begin(), components.end(), item.at("component_id").get<std::string>()) == components.end() ||
+            item.at("kind") == "preserve" || item.at("kind") == "report" || item.at("kind") == "verify") continue;
+        engine::Json effect;
+        for (const auto* field : {"component_id", "kind", "target_state_digest", "target_receptor_id", "expected_artifact_digests"}) {
+            effect[field] = item.at(field);
+        }
+        for (const auto& component : desired.at("components")) {
+            if (component.at("component_id") == item.at("component_id")) effect["install_root"] = component.at("install_root");
+        }
+        effects.push_back(std::move(effect));
+    }
+    sort_json(effects);
+    const auto stable = session::lifecycle_stable_inventory_digest(observed, engine::unix_time_ms() + 60000);
+    auto reviewed_plan = planned;
+    reviewed_plan.erase("plan_digest");
+    reviewed_plan["observation_digest"] = stable;
+    engine::Json result{
+        {"protocol", "symphony.knowledge.lifecycle-execution-scope.v1"}, {"format_version", 1},
+        {"scope_id", id}, {"tops_id", "tops-test"}, {"profile_id", "default"},
+        {"profile_digest", engine::tagged_sha256("profile:" + desired.at("desired_state_digest").get<std::string>())},
+        {"desired_state_digest", desired.at("desired_state_digest")}, {"source_report_journal_digest", source},
+        {"initial_plan_digest", engine::tagged_sha256(reviewed_plan.dump())},
+        {"initial_stable_inventory_digest", session::lifecycle_stable_inventory_digest(observed, engine::unix_time_ms() + 60000)},
+        {"expected_apply_journal_digest", expected}, {"expected_applied_state_digest", applied},
+        {"components", components}, {"effects", std::move(effects)},
+        {"ownership_effects", engine::Json::array()}, {"canonical", false},
+    };
+    finalize_test_digest(result, "scope_digest");
+    return result;
+}
+
+void test_scoped_apply_fixture_and_validation() {
+    TemporaryDirectory state;
+    auto fixture = read_json(fs::path(__FILE__).parent_path() / "fixtures" / "lifecycle_execution_scope.json");
+    const auto digest = fixture.at("scope_digest");
+    require(digest == "sha256:1c344d49457449df9f9c5e5f687b2874ea4730e1e83933fda513de483d49afe9",
+            "shared scope canonical fixture digest changed");
+    finalize_test_digest(fixture, "scope_digest");
+    require(fixture.at("scope_digest") == digest, "native JSON canonical bytes differ from shared scope fixture");
+    const auto status = lifecycle_apply_state(state.path(), "lifecycle_apply_status", nullptr, nullptr, "scope-fixture", true, fixture);
+    require(status.at("protocol") == "symphony.knowledge.lifecycle-apply-result.v2" &&
+        status.at("scope_digest") == digest && status.at("scope_complete") == false,
+        "native scope validator did not accept the shared canonical fixture");
+    auto duplicate = fixture;
+    duplicate["effects"].push_back(duplicate["effects"][0]);
+    duplicate["effects"][1]["target_state_digest"] = receipt("duplicate-kind-target");
+    sort_json(duplicate["effects"]);
+    finalize_test_digest(duplicate, "scope_digest");
+    require_error([&] { static_cast<void>(lifecycle_apply_state(state.path(), "lifecycle_apply_status", nullptr, nullptr,
+        "scope-duplicate-kind", true, duplicate)); }, "lifecycle_apply.scope_invalid");
+    auto contradictory = fixture;
+    contradictory["effects"].push_back(contradictory["effects"][0]);
+    contradictory["effects"][1]["kind"] = "uninstall";
+    sort_json(contradictory["effects"]);
+    finalize_test_digest(contradictory, "scope_digest");
+    require_error([&] { static_cast<void>(lifecycle_apply_state(state.path(), "lifecycle_apply_status", nullptr, nullptr,
+        "scope-contradictory", true, contradictory)); }, "lifecycle_apply.scope_invalid");
+    fixture["effects"][0]["install_root"] = "/";
+    finalize_test_digest(fixture, "scope_digest");
+    require_error([&] { static_cast<void>(lifecycle_apply_state(state.path(), "lifecycle_apply_status", nullptr, nullptr,
+        "scope-root", true, fixture)); }, "lifecycle_apply.scope_invalid");
+}
+
+void test_scoped_apply_authority_completion_and_recovery() {
+    TemporaryDirectory state;
+    const auto package_a = receipt("scoped-a"), package_b = receipt("scoped-b");
+    const auto desired = desired_state(engine::Json::array({
+        desired_component("scoped-a", package_a, "active"), desired_component("scoped-b", package_b, "active"),
+    }));
+    const auto before = observation(engine::Json::array({
+        observed_component("scoped-a", package_a, "inactive"), observed_component("scoped-b", package_b, "inactive"),
+    }));
+    const auto report = lifecycle_boot(state.path(), desired, before, "scoped-source", "absent", "scoped-source", "apply-compatible");
+    const auto source = report.at("journal_digest").get<std::string>();
+    const auto planned = plan(desired, before);
+    const auto a = action(planned, "scoped-a", "activate").at("action_id");
+    const auto b = action(planned, "scoped-b", "activate").at("action_id");
+    const auto scope = execution_scope(desired, before, planned, source, {"scoped-a"});
+    auto prepare = [&](const engine::Json& candidate, const engine::Json& action_id, const std::string& suffix) {
+        return lifecycle_apply_mutation_request(state.path(), "lifecycle_apply_prepare", desired, before, source,
+            "absent", "absent", action_id, nullptr, nullptr, nullptr, suffix, nullptr, engine::Json::array(), candidate);
+    };
+    auto missing_capability = prepare(scope, a, "scoped-capability");
+    missing_capability.payload["journal_client"]["capabilities"] = apply_capabilities;
+    require_error([&] { static_cast<void>(session::handle_request(missing_capability)); }, "lifecycle_apply.compatibility_required");
+    auto old_authority = prepare(scope, a, "scoped-authority");
+    old_authority.payload["authorization_decision"] = lifecycle_apply_mutation_request(
+        state.path(), "lifecycle_apply_prepare", desired, before, source, "absent", "absent", a,
+        nullptr, nullptr, nullptr, "scoped-authority").payload.at("authorization_decision");
+    require_error([&] { static_cast<void>(session::handle_request(old_authority)); }, "session.authorization_target_mismatch");
+    require_error([&] { static_cast<void>(session::handle_request(prepare(scope, b, "outside-scope"))); }, "lifecycle_apply.out_of_scope");
+    auto altered = scope;
+    altered["effects"][0]["target_state_digest"] = receipt("wrong-target");
+    finalize_test_digest(altered, "scope_digest");
+    require_error([&] { static_cast<void>(session::handle_request(prepare(altered, a, "changed-effect"))); }, "lifecycle_apply.scope_invalid");
+    altered = scope;
+    altered["effects"][0]["expected_artifact_digests"] = engine::Json::array({receipt("unobserved-receipt")});
+    finalize_test_digest(altered, "scope_digest");
+    require_error([&] { static_cast<void>(session::handle_request(prepare(altered, a, "unknown-receipt"))); }, "lifecycle_apply.scope_invalid");
+    altered = scope;
+    altered["effects"][0]["install_root"] = "/opt/other-root";
+    finalize_test_digest(altered, "scope_digest");
+    require_error([&] { static_cast<void>(session::handle_request(prepare(altered, a, "changed-root"))); }, "lifecycle_apply.scope_invalid");
+    altered = scope;
+    altered["initial_stable_inventory_digest"] = receipt("stale-inventory");
+    finalize_test_digest(altered, "scope_digest");
+    require_error([&] { static_cast<void>(session::handle_request(prepare(altered, a, "stale-scope"))); }, "lifecycle_apply.scope_invalid");
+
+    auto refreshed_prepare = prepare(scope, a, "scoped-prepare");
+    auto refreshed_observation = before;
+    refreshed_observation["observed_at"] = "2026-08-04T16:00:01Z";
+    finalize_observation(refreshed_observation);
+    refreshed_prepare.payload["observation"] = refreshed_observation;
+    const auto prepared = session::handle_request(refreshed_prepare);
+    require(prepared.at("scope_digest") == scope.at("scope_digest") && prepared.at("scope_complete") == false &&
+        prepared.at("journal").at("state") == "acting", "scoped prepare lost its immutable scope");
+    const auto directory = lifecycle_apply_stream_path(state.path());
+    const auto head = read_json(directory / "head.json");
+    require_error([&] { static_cast<void>(lifecycle_apply_state(state.path(), "lifecycle_apply_status", nullptr, nullptr,
+        "scope-downgrade")); }, "lifecycle_apply.compatibility_required");
+    auto other_scope = scope;
+    other_scope["scope_id"] = "other-scope";
+    finalize_test_digest(other_scope, "scope_digest");
+    require_error([&] { static_cast<void>(lifecycle_apply_state(state.path(), "lifecycle_apply_status", nullptr, nullptr,
+        "scope-status-mismatch", true, other_scope)); }, "lifecycle_apply.scope_mismatch");
+    write_json(directory / "head.json", engine::Json{{"broken", true}});
+    require_error([&] { static_cast<void>(lifecycle_apply_state(state.path(), "lifecycle_apply_recover", "recover-wrong-scope",
+        "discover", "recover-wrong-scope", true, other_scope)); }, "lifecycle_apply.scope_mismatch");
+    require(read_json(directory / "head.json") == engine::Json{{"broken", true}}, "rejected scoped recovery wrote a head");
+    require_error([&] { static_cast<void>(lifecycle_apply_state(state.path(), "lifecycle_apply_recover", "recover-downgrade",
+        "discover", "recover-downgrade")); }, "lifecycle_apply.compatibility_required");
+    const auto recovered = lifecycle_apply_state(state.path(), "lifecycle_apply_recover", "recover-scope",
+        "discover", "recover-scope", true, scope);
+    require(recovered.at("recovered") == true && recovered.at("scope_digest") == scope.at("scope_digest") &&
+        recovered.at("action").at("action_id") == a, "scoped head recovery lost prepared authority");
+    const auto recovered_digest = recovered.at("journal_digest").get<std::string>();
+    const auto both_active = observation(engine::Json::array({
+        observed_component("scoped-a", package_a, "active"), observed_component("scoped-b", package_b, "active"),
+    }));
+    require_error([&] { static_cast<void>(lifecycle_apply_mutation(state.path(), "lifecycle_apply_finalize", desired, both_active,
+        source, recovered_digest, "absent", a, "committed", nullptr, receipt("scoped-execution"), "outside-drift",
+        nullptr, engine::Json::array(), scope)); }, "lifecycle_apply.scope_drift");
+    const auto after = observation(engine::Json::array({
+        observed_component("scoped-a", package_a, "active"), observed_component("scoped-b", package_b, "inactive"),
+    }));
+    const auto finalized = lifecycle_apply_mutation(state.path(), "lifecycle_apply_finalize", desired, after,
+        source, recovered_digest, "absent", a, "committed", nullptr, receipt("scoped-execution"), "scoped-finalize",
+        nullptr, engine::Json::array(), scope);
+    require(finalized.at("scope_complete") == true && finalized.at("profile_converged") == false &&
+        finalized.at("journal").at("state") == "verified" && finalized.at("journal").at("closed_at").is_null() &&
+        finalized.at("applied_state").is_null(), "partial scope completion masqueraded as global convergence");
+    for (const auto& entry : fs::directory_iterator(directory)) {
+        require(!entry.path().filename().string().starts_with("applied."), "scoped execution published global applied state");
+    }
+    const auto closed = lifecycle_apply_mutation(state.path(), "lifecycle_apply_close", desired, after,
+        source, finalized.at("journal_digest"), "absent", nullptr, nullptr, nullptr, nullptr, "scope-close-replay",
+        nullptr, engine::Json::array(), scope);
+    require(closed.at("changed") == false && closed.at("scope_complete") == true, "scoped close replay churned journal");
+    require_error([&] { static_cast<void>(lifecycle_apply_mutation(state.path(), "lifecycle_apply_prepare", desired, after,
+        source, finalized.at("journal_digest"), "absent", b, nullptr, nullptr, nullptr, "completed-replay",
+        nullptr, engine::Json::array(), scope)); }, "lifecycle_apply.scope_complete");
+
+    const auto next_plan = plan(desired, after);
+    const auto next_scope = execution_scope(desired, after, next_plan, source, {"scoped-b"}, finalized.at("journal_digest"),
+        "absent", "next-scope");
+    const auto prior_status = lifecycle_apply_state(state.path(), "lifecycle_apply_status", nullptr, nullptr,
+        "next-status", true, next_scope);
+    require(prior_status.at("scope_digest") == scope.at("scope_digest"), "status replaced prior terminal scope evidence");
+    require_error([&] { static_cast<void>(lifecycle_apply_state(state.path(), "lifecycle_apply_recover", "recover-next",
+        "discover", "recover-next", true, next_scope)); }, "lifecycle_apply.scope_mismatch");
+    const auto next = lifecycle_apply_mutation(state.path(), "lifecycle_apply_prepare", desired, after,
+        source, finalized.at("journal_digest"), "absent", action(next_plan, "scoped-b", "activate").at("action_id"),
+        nullptr, nullptr, nullptr, "next-scope-prepare", nullptr, engine::Json::array(), next_scope);
+    require(next.at("scope_digest") == next_scope.at("scope_digest") && next.at("scope_complete") == false,
+        "distinct reviewed scope could not advance terminal scoped stream");
+    static_cast<void>(head);
+}
+
+void test_scoped_staged_install_and_included_component_drift() {
+    TemporaryDirectory state;
+    const auto desired = desired_state(engine::Json::array({
+        desired_component("included-a", receipt("included-a"), "active"),
+        desired_component("included-b", receipt("included-b"), "active"),
+    }));
+    const auto before = observation(engine::Json::array({
+        observed_component("included-a", receipt("included-a"), "inactive"),
+        observed_component("included-b", receipt("included-b"), "inactive"),
+    }));
+    const auto report = lifecycle_boot(state.path(), desired, before, "included-source", "absent", "included-source", "apply-compatible");
+    const auto planned = plan(desired, before);
+    const auto scope = execution_scope(desired, before, planned, report.at("journal_digest"), {"included-a", "included-b"});
+    const auto a = action(planned, "included-a", "activate").at("action_id");
+    const auto prepared = lifecycle_apply_mutation(state.path(), "lifecycle_apply_prepare", desired, before,
+        report.at("journal_digest"), "absent", "absent", a, nullptr, nullptr, nullptr, "included-prepare",
+        nullptr, engine::Json::array(), scope);
+    const auto drift = observation(engine::Json::array({
+        observed_component("included-a", receipt("included-a"), "active"),
+        observed_component("included-b", receipt("included-b"), "active"),
+    }));
+    require_error([&] { static_cast<void>(lifecycle_apply_mutation(state.path(), "lifecycle_apply_finalize", desired, drift,
+        report.at("journal_digest"), prepared.at("journal_digest"), "absent", a, "committed", nullptr,
+        receipt("included-execution"), "included-drift", nullptr, engine::Json::array(), scope)); }, "lifecycle_apply.scope_drift");
+
+    auto changed_component = observed_component("included-a", receipt("included-a"), "active");
+    add_observed_package(changed_component, receipt("unreviewed-extra"), "2.0.0");
+    const auto active_drift = observation(engine::Json::array({changed_component,
+        observed_component("included-b", receipt("included-b"), "inactive")}));
+    require_error([&] { static_cast<void>(lifecycle_apply_mutation(state.path(), "lifecycle_apply_finalize", desired, active_drift,
+        report.at("journal_digest"), prepared.at("journal_digest"), "absent", a, "committed", nullptr,
+        receipt("included-execution"), "active-package-drift", nullptr, engine::Json::array(), scope)); }, "lifecycle_apply.scope_drift");
+    const auto after_a = observation(engine::Json::array({
+        observed_component("included-a", receipt("included-a"), "active"),
+        observed_component("included-b", receipt("included-b"), "inactive"),
+    }));
+    for (const auto& field : {"qxctl_identity", "coordinator_identity"}) {
+        auto platform_drift = after_a;
+        platform_drift["platform"][field]["executable_digest"] = receipt("unreviewed-platform-change");
+        finalize_observation(platform_drift);
+        require_error([&] { static_cast<void>(lifecycle_apply_mutation(state.path(), "lifecycle_apply_finalize", desired, platform_drift,
+            report.at("journal_digest"), prepared.at("journal_digest"), "absent", a, "committed", nullptr,
+            receipt("included-execution"), "platform-drift", nullptr, engine::Json::array(), scope)); }, "lifecycle_apply.scope_drift");
+    }
+    auto binding_drift = after_a;
+    binding_drift["binding_registry_digest"] = receipt("unrelated-registry-change");
+    finalize_observation(binding_drift);
+    require_error([&] { static_cast<void>(lifecycle_apply_mutation(state.path(), "lifecycle_apply_finalize", desired, binding_drift,
+        report.at("journal_digest"), prepared.at("journal_digest"), "absent", a, "committed", nullptr,
+        receipt("included-execution"), "binding-drift", nullptr, engine::Json::array(), scope)); }, "lifecycle_apply.scope_drift");
+    const auto first = lifecycle_apply_mutation(state.path(), "lifecycle_apply_finalize", desired, after_a,
+        report.at("journal_digest"), prepared.at("journal_digest"), "absent", a, "committed", nullptr,
+        receipt("included-execution"), "included-finalize", nullptr, engine::Json::array(), scope);
+    require(first.at("scope_complete") == false && first.at("applied_state").is_null(),
+        "one of two scoped components prematurely completed the scope");
+    const auto next_plan = plan(desired, after_a);
+    const auto b = action(next_plan, "included-b", "activate").at("action_id");
+    require_error([&] { static_cast<void>(lifecycle_apply_mutation(state.path(), "lifecycle_apply_prepare", desired, drift,
+        report.at("journal_digest"), first.at("journal_digest"), "absent", b, nullptr, nullptr, nullptr,
+        "between-actions-drift", nullptr, engine::Json::array(), scope)); }, "lifecycle_apply.scope_drift");
+    const auto second = lifecycle_apply_mutation(state.path(), "lifecycle_apply_prepare", desired, after_a,
+        report.at("journal_digest"), first.at("journal_digest"), "absent", b, nullptr, nullptr, nullptr,
+        "second-scoped-prepare", nullptr, engine::Json::array(), scope);
+    const auto complete = lifecycle_apply_mutation(state.path(), "lifecycle_apply_finalize", desired, drift,
+        report.at("journal_digest"), second.at("journal_digest"), "absent", b, "committed", nullptr,
+        receipt("second-execution"), "second-scoped-finalize", nullptr, engine::Json::array(), scope);
+    require(complete.at("scope_complete") == true && complete.at("profile_converged") == true &&
+        complete.at("applied_state").is_null() && complete.at("journal").at("state") == "verified",
+        "even full scoped convergence must retain the separate global evidence boundary");
+
+    TemporaryDirectory staged;
+    const auto absent = observation(engine::Json::array());
+    const auto staged_report = lifecycle_boot(staged.path(), desired, absent, "staged-scope-source", "absent", "staged-scope-source", "apply-compatible");
+    const auto staged_plan = plan(desired, absent);
+    const auto staged_scope = execution_scope(desired, absent, staged_plan, staged_report.at("journal_digest"), {"included-a"});
+    require_error([&] { static_cast<void>(lifecycle_apply_mutation(staged.path(), "lifecycle_apply_prepare", desired, absent,
+        staged_report.at("journal_digest"), "absent", "absent", action(staged_plan, "included-b", "install").at("action_id"),
+        nullptr, nullptr, nullptr, "outside-staged-install", nullptr, engine::Json::array({receipt("included-b")}), staged_scope)); },
+        "lifecycle_apply.out_of_scope");
+    const auto install = action(staged_plan, "included-a", "install").at("action_id");
+    const auto installing = lifecycle_apply_mutation(staged.path(), "lifecycle_apply_prepare", desired, absent,
+        staged_report.at("journal_digest"), "absent", "absent", install, nullptr, nullptr, nullptr,
+        "scoped-install", nullptr, engine::Json::array({receipt("included-a")}), staged_scope);
+    auto installed_component = observed_component("included-a", receipt("included-a"), "active");
+    require_error([&] { static_cast<void>(lifecycle_apply_mutation(staged.path(), "lifecycle_apply_finalize", desired,
+        observation(engine::Json::array({installed_component})), staged_report.at("journal_digest"), installing.at("journal_digest"),
+        "absent", install, "committed", nullptr, receipt("install-execution"), "install-activation-drift", nullptr,
+        engine::Json::array(), staged_scope)); }, "lifecycle_apply.scope_drift");
+    installed_component["activation"] = "inactive";
+    installed_component["selected_package_digest"] = nullptr;
+    finalize_observed_component(installed_component);
+    auto extra_component = installed_component;
+    add_observed_package(extra_component, receipt("extra-installed"), "2.0.0");
+    require_error([&] { static_cast<void>(lifecycle_apply_mutation(staged.path(), "lifecycle_apply_finalize", desired,
+        observation(engine::Json::array({extra_component})), staged_report.at("journal_digest"), installing.at("journal_digest"),
+        "absent", install, "committed", nullptr, receipt("install-execution"), "install-receipt-drift", nullptr,
+        engine::Json::array(), staged_scope)); }, "lifecycle_apply.scope_drift");
+    auto provider_drift = observation(engine::Json::array({installed_component}));
+    provider_drift["platform"]["provider_availability"].push_back(engine::Json{{"provider_id", "unreviewed-provider"}, {"available", true}});
+    finalize_observation(provider_drift);
+    require_error([&] { static_cast<void>(lifecycle_apply_mutation(staged.path(), "lifecycle_apply_finalize", desired,
+        provider_drift, staged_report.at("journal_digest"), installing.at("journal_digest"), "absent", install,
+        "committed", nullptr, receipt("install-execution"), "install-provider-drift", nullptr,
+        engine::Json::array(), staged_scope)); }, "lifecycle_apply.scope_drift");
+    const auto installed = lifecycle_apply_mutation(staged.path(), "lifecycle_apply_finalize", desired,
+        observation(engine::Json::array({installed_component})), staged_report.at("journal_digest"), installing.at("journal_digest"),
+        "absent", install, "committed", nullptr, receipt("install-execution"), "scoped-install-finalize", nullptr,
+        engine::Json::array(), staged_scope);
+    require(installed.at("scope_complete") == true && installed.at("profile_converged") == false && installed.at("applied_state").is_null(),
+        "install-only scope did not complete independently of later selection/activation");
+    TemporaryDirectory noop;
+    const auto already_installed = observation(engine::Json::array({installed_component}));
+    const auto noop_report = lifecycle_boot(noop.path(), desired, already_installed, "noop-source", "absent", "noop-source", "apply-compatible");
+    auto noop_scope = execution_scope(desired, already_installed, plan(desired, already_installed), noop_report.at("journal_digest"), {"included-a"});
+    noop_scope["effects"] = staged_scope.at("effects");
+    finalize_test_digest(noop_scope, "scope_digest");
+    const auto closed = lifecycle_apply_mutation(noop.path(), "lifecycle_apply_close", desired, already_installed,
+        noop_report.at("journal_digest"), "absent", "absent", nullptr, nullptr, nullptr, nullptr,
+        "noop-scope-close", nullptr, engine::Json::array(), noop_scope);
+    require(closed.at("scope_complete") == true && closed.at("profile_converged") == false && closed.at("changed") == true &&
+        closed.at("applied_state").is_null(), "already satisfied install-only scope could not close without whole-profile apply");
+    if (const char* output = std::getenv("SYMPHONY_SCOPED_APPLY_FIXTURE_OUTPUT"); output != nullptr && *output != '\0') {
+        write_json(output, engine::Json{
+            {"protocol", "symphony.knowledge.scoped-apply-native-fixtures.v1"},
+            {"activation", engine::Json{
+                {"scope", scope}, {"desired", desired}, {"observation_before", before}, {"observation_after", after_a},
+                {"prepare_result", prepared}, {"finalize_result", first}, {"source_report_journal_digest", report.at("journal_digest")},
+            }},
+            {"installation", engine::Json{
+                {"scope", staged_scope}, {"desired", desired}, {"observation_before", absent}, {"observation_after", already_installed},
+                {"prepare_result", installing}, {"finalize_result", installed},
+                {"source_report_journal_digest", staged_report.at("journal_digest")},
+            }},
+        });
+    }
+}
+
+void test_scoped_apply_preserves_global_applied_evidence() {
+    TemporaryDirectory state;
+    const auto before = observation(engine::Json::array({
+        observed_component("retained-a", receipt("retained-a"), "inactive"),
+        observed_component("retained-b", receipt("retained-b"), "inactive"),
+    }));
+    const auto prior_desired = desired_state(engine::Json::array({
+        desired_component("retained-a", receipt("retained-a"), "inactive"),
+        desired_component("retained-b", receipt("retained-b"), "inactive"),
+    }));
+    const auto prior_report = lifecycle_boot(state.path(), prior_desired, before, "retained-source", "absent", "retained-source", "apply-compatible");
+    const auto prior = lifecycle_apply_mutation(state.path(), "lifecycle_apply_close", prior_desired, before,
+        prior_report.at("journal_digest"), "absent", "absent", nullptr, nullptr, nullptr, nullptr, "retained-global-close");
+    const auto applied_digest = prior.at("applied_state").at("applied_state_digest").get<std::string>();
+    const auto applied_path = lifecycle_apply_stream_path(state.path()) / ("applied." + applied_digest.substr(7) + ".json");
+    std::ifstream prior_input(applied_path, std::ios::binary);
+    const std::string prior_bytes{std::istreambuf_iterator<char>(prior_input), std::istreambuf_iterator<char>()};
+    const auto desired = desired_state(engine::Json::array({
+        desired_component("retained-a", receipt("retained-a"), "active"),
+        desired_component("retained-b", receipt("retained-b"), "active"),
+    }));
+    const auto report = lifecycle_boot(state.path(), desired, before, "retained-next-source", prior_report.at("journal_digest"),
+        "retained-next-source", "apply-compatible", applied_digest);
+    const auto planned = plan(desired, before, client(), applied_digest);
+    const auto scope = execution_scope(desired, before, planned, report.at("journal_digest"), {"retained-a"},
+        prior.at("journal_digest"), applied_digest, "retained-scope");
+    const auto status = lifecycle_apply_state(state.path(), "lifecycle_apply_status", nullptr, nullptr, "legacy-scoped-status", true, scope);
+    require(status.at("scope_complete") == false && status.at("scope_digest") == scope.at("scope_digest") &&
+        status.at("applied_state") == prior.at("applied_state"), "v2 status promoted prior global closure to scoped completion");
+    const auto a = action(planned, "retained-a", "activate").at("action_id");
+    const auto prepared = lifecycle_apply_mutation(state.path(), "lifecycle_apply_prepare", desired, before,
+        report.at("journal_digest"), prior.at("journal_digest"), applied_digest, a, nullptr, nullptr, nullptr,
+        "retained-prepare", applied_digest, engine::Json::array(), scope);
+    const auto after = observation(engine::Json::array({
+        observed_component("retained-a", receipt("retained-a"), "active"),
+        observed_component("retained-b", receipt("retained-b"), "inactive"),
+    }));
+    const auto finalized = lifecycle_apply_mutation(state.path(), "lifecycle_apply_finalize", desired, after,
+        report.at("journal_digest"), prepared.at("journal_digest"), applied_digest, a, "committed", nullptr,
+        receipt("retained-execution"), "retained-finalize", applied_digest, engine::Json::array(), scope);
+    require(finalized.at("scope_complete") == true && finalized.at("profile_converged") == false &&
+        finalized.at("applied_state") == prior.at("applied_state") &&
+        finalized.at("journal").at("applied_state_digest") == applied_digest,
+        "partial scope replaced the authoritative global applied evidence");
+    std::ifstream after_input(applied_path, std::ios::binary);
+    const std::string after_bytes{std::istreambuf_iterator<char>(after_input), std::istreambuf_iterator<char>()};
+    require(after_bytes == prior_bytes, "partial scope rewrote pre-existing global applied bytes");
+    std::size_t applied_count = 0;
+    for (const auto& entry : fs::directory_iterator(lifecycle_apply_stream_path(state.path()))) {
+        if (entry.path().filename().string().starts_with("applied.")) ++applied_count;
+    }
+    require(applied_count == 1U, "partial scope published additional global applied evidence");
 }
 
 void test_apply_journal_prepare_resume_finalize_close_and_recovery() {
@@ -1611,6 +2020,10 @@ void test_bounded_scale_plan() {
 int main() {
     try {
         test_descriptor();
+        test_scoped_apply_fixture_and_validation();
+        test_scoped_apply_authority_completion_and_recovery();
+        test_scoped_staged_install_and_included_component_drift();
+        test_scoped_apply_preserves_global_applied_evidence();
         test_apply_journal_prepare_resume_finalize_close_and_recovery();
         test_apply_prepare_accepts_only_exact_staged_install_evidence();
         test_apply_serializes_external_maestro_docking();

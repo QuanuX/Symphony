@@ -43,6 +43,10 @@ constexpr const char* head_protocol = "symphony.knowledge.lifecycle-boot-head.v1
 constexpr std::uint64_t format_version = 1U;
 constexpr const char* apply_command_protocol = "symphony.knowledge.lifecycle-apply-command.v1";
 constexpr const char* apply_result_protocol = "symphony.knowledge.lifecycle-apply-result.v1";
+constexpr const char* scoped_apply_command_protocol = "symphony.knowledge.lifecycle-apply-command.v2";
+constexpr const char* scoped_apply_result_protocol = "symphony.knowledge.lifecycle-apply-result.v2";
+constexpr const char* scope_protocol = "symphony.knowledge.lifecycle-execution-scope.v1";
+constexpr const char* scope_extension_id = "scoped-apply-v1";
 constexpr const char* apply_journal_protocol = "symphony.knowledge.lifecycle-boot-journal.v2";
 constexpr const char* apply_head_protocol = "symphony.knowledge.lifecycle-boot-head.v2";
 constexpr std::uint64_t apply_format_version = 2U;
@@ -399,7 +403,300 @@ void validate_blocker(const engine::Json& blocker) {
     }
 }
 
-void validate_extensions(const engine::Json& extensions) {
+bool scoped_request(const engine::Request& request) {
+    return request.payload.value("protocol", "") == scoped_apply_command_protocol;
+}
+
+void scope_invalid(const std::string& detail) {
+    throw engine::Error("lifecycle_apply.scope_invalid", detail, 4);
+}
+
+void validate_scope(const engine::Json& scope) {
+    exact_fields(scope, {
+        "protocol", "format_version", "scope_id", "tops_id", "profile_id", "profile_digest",
+        "desired_state_digest", "source_report_journal_digest", "initial_plan_digest",
+        "initial_stable_inventory_digest", "expected_apply_journal_digest", "expected_applied_state_digest",
+        "components", "effects", "ownership_effects", "canonical", "scope_digest"
+    }, "lifecycle execution scope");
+    if (scope.at("protocol") != scope_protocol || scope.at("format_version") != 1 || scope.at("canonical") != false ||
+        !safe_token(text(scope, "scope_id", 256U)) || !safe_token(text(scope, "tops_id", 256U)) ||
+        !safe_token(text(scope, "profile_id", 256U))) scope_invalid("scope identity is invalid");
+    for (const auto* field : {"profile_digest", "desired_state_digest", "source_report_journal_digest",
+                              "initial_plan_digest", "initial_stable_inventory_digest", "scope_digest"}) {
+        if (!tagged_digest(text(scope, field, 71U))) scope_invalid("scope digest is invalid");
+    }
+    for (const auto* field : {"expected_apply_journal_digest", "expected_applied_state_digest"}) {
+        const auto value = text(scope, field, 71U);
+        if (value != "absent" && !tagged_digest(value)) scope_invalid("scope initial compare-and-swap is invalid");
+    }
+    const auto components = token_array(scope.at("components"), "scope components", 4096U, true);
+    if (!std::is_sorted(components.begin(), components.end())) scope_invalid("scope components are not sorted");
+    static const std::set<std::string> kinds = {
+        "install", "uninstall", "select", "deselect", "activate", "deactivate", "dock", "undock"
+    };
+    std::set<std::string> roots;
+    std::set<std::pair<std::string, std::string>> action_identities;
+    for (const auto* field : {"effects", "ownership_effects"}) {
+        const auto& entries = scope.at(field);
+        if (!entries.is_array() || entries.size() > 4096U ||
+            (std::string_view(field) == "effects" && entries.empty())) scope_invalid("scope effects are invalid");
+        std::string previous;
+        for (const auto& effect : entries) {
+            const bool action = std::string_view(field) == "effects";
+            if (action) {
+                exact_fields(effect, {"component_id", "kind", "target_state_digest", "target_receptor_id",
+                    "expected_artifact_digests", "install_root"}, "scope action effect");
+                if (!kinds.contains(text(effect, "kind", 32U)) || !tagged_digest(text(effect, "target_state_digest", 71U))) {
+                    scope_invalid("scope action effect is invalid");
+                }
+                if (!effect.at("target_receptor_id").is_null() &&
+                    (!effect.at("target_receptor_id").is_string() || effect.at("target_receptor_id").get<std::string>().size() > 256U ||
+                     !safe_token(effect.at("target_receptor_id").get<std::string>()))) scope_invalid("scope receptor is invalid");
+                if ((effect.at("kind") == "dock") != !effect.at("target_receptor_id").is_null()) {
+                    scope_invalid("scope receptor does not match the effect kind");
+                }
+                if (!action_identities.emplace(text(effect, "component_id", 256U), text(effect, "kind", 32U)).second) {
+                    scope_invalid("scope repeats a component effect kind");
+                }
+                const auto& artifacts = effect.at("expected_artifact_digests");
+                if (!artifacts.is_array() || artifacts.size() > 4096U ||
+                    ((effect.at("kind") == "install" || effect.at("kind") == "uninstall") && artifacts.empty())) {
+                    scope_invalid("scope artifact list is invalid");
+                }
+                std::string prior;
+                for (const auto& artifact : artifacts) {
+                    if (!artifact.is_string() || !tagged_digest(artifact.get<std::string>()) ||
+                        (!prior.empty() && artifact.get<std::string>() <= prior)) scope_invalid("scope artifacts are not unique and sorted");
+                    prior = artifact.get<std::string>();
+                }
+            } else {
+                exact_fields(effect, {"component_id", "install_root", "receipt_digest", "disposition"}, "scope ownership effect");
+                if (!tagged_digest(text(effect, "receipt_digest", 71U)) ||
+                    (effect.at("disposition") != "retained" && effect.at("disposition") != "retiring" &&
+                     effect.at("disposition") != "release")) scope_invalid("scope ownership effect is invalid");
+            }
+            if (!contains(components, text(effect, "component_id", 256U)) ||
+                (!safe_absolute_path(text(effect, "install_root", engine::Limits::max_path_bytes)) || effect.at("install_root") == "/")) {
+                scope_invalid("scope effect is outside the selected components or root");
+            }
+            roots.insert(effect.at("install_root").get<std::string>());
+            const auto encoded = effect.dump();
+            if (!previous.empty() && encoded <= previous) scope_invalid("scope effects are not unique and sorted");
+            previous = encoded;
+        }
+    }
+    for (const auto& id : components) {
+        bool install = false, uninstall = false, select = false, deselect = false;
+        for (const auto& effect : scope.at("effects")) {
+            if (effect.at("component_id") != id) continue;
+            install = install || effect.at("kind") == "install";
+            uninstall = uninstall || effect.at("kind") == "uninstall";
+            select = select || effect.at("kind") == "select";
+            deselect = deselect || effect.at("kind") == "deselect";
+        }
+        if ((install && uninstall) || (select && deselect)) scope_invalid("scope contains contradictory terminal effects");
+    }
+    if (roots.size() > 64U) scope_invalid("scope exceeds the root bound");
+    verify_digest(scope, "scope_digest", "lifecycle_apply.scope_invalid");
+}
+
+const engine::Json* journal_scope_payload(const engine::Json& journal) {
+    for (const auto& extension : journal.at("extensions")) {
+        if (extension.at("extension_id") == scope_extension_id) return &extension.at("payload");
+    }
+    return nullptr;
+}
+
+bool apply_terminal(const State& state) {
+    if (!state.present) return false;
+    const auto* scoped = journal_scope_payload(state.journal);
+    return state.journal.at("state") == "closed" || (scoped != nullptr && scoped->at("scope_complete") == true);
+}
+
+engine::Json scope_extension(const engine::Json& scope, bool complete, bool converged,
+                             const std::string& preserved, engine::Json action_preserved = nullptr) {
+    const engine::Json payload{{"scope", scope}, {"scope_complete", complete},
+        {"profile_converged", converged}, {"preserved_components_digest", preserved},
+        {"action_preserved_components_digest", std::move(action_preserved)}};
+    return engine::Json{{"extension_id", scope_extension_id}, {"extension_version", "1.0.0"},
+        {"critical", true}, {"payload", payload}, {"payload_digest", engine::tagged_sha256(payload.dump())}};
+}
+
+void set_scope_extension(engine::Json& journal, const engine::Json& extension) {
+    auto& extensions = journal.at("extensions");
+    extensions.erase(std::remove_if(extensions.begin(), extensions.end(), [](const engine::Json& item) {
+        return item.at("extension_id") == scope_extension_id;
+    }), extensions.end());
+    extensions.push_back(extension);
+    std::sort(extensions.begin(), extensions.end(), [](const engine::Json& a, const engine::Json& b) {
+        return a.dump() < b.dump();
+    });
+}
+
+std::string preserved_components_digest(const engine::Json& scope, const engine::Json& observation) {
+    engine::Json preserved = engine::Json::array();
+    for (const auto& component : observation.at("components")) {
+        if (std::find(scope.at("components").begin(), scope.at("components").end(), component.at("component_id")) ==
+            scope.at("components").end()) preserved.push_back(component);
+    }
+    std::sort(preserved.begin(), preserved.end(), [](const engine::Json& a, const engine::Json& b) {
+        return a.dump() < b.dump();
+    });
+    return engine::tagged_sha256(preserved.dump());
+}
+
+// Preserve every field outside the one exact lifecycle effect. The projection is
+// shared with qxctl for resumed-action checks; it is not a global applied state.
+std::string action_preserved_components_digest(const engine::Json& action, const engine::Json& observation) {
+    engine::Json preserved = engine::Json::array();
+    const auto kind = action.at("kind").get<std::string>();
+    for (auto component : observation.at("components")) {
+        if (component.at("component_id") == action.at("component_id")) {
+            component.erase("observation_digest");
+            if (kind == "activate" || kind == "deactivate") component.erase("activation");
+            else if (kind == "dock" || kind == "undock") {
+                component.erase("docking"); component.erase("receptor_id");
+            } else if (kind == "select" || kind == "deselect") {
+                component.erase("selected_package_digest"); component.erase("capabilities");
+                component.erase("platform_compatibility");
+            } else if (kind == "install" || kind == "uninstall") {
+                auto& packages = component.at("packages");
+                packages.erase(std::remove_if(packages.begin(), packages.end(), [&](const engine::Json& package) {
+                    const auto& digests = action.at("expected_artifact_digests");
+                    return std::find(digests.begin(), digests.end(), package.at("receipt_digest")) != digests.end();
+                }), packages.end());
+                if (packages.empty()) continue;
+            }
+        }
+        for (const auto* field : {"packages", "capabilities"}) {
+            if (component.contains(field)) std::sort(component.at(field).begin(), component.at(field).end(),
+                [](const engine::Json& a, const engine::Json& b) { return a.dump() < b.dump(); });
+        }
+        preserved.push_back(std::move(component));
+    }
+    std::sort(preserved.begin(), preserved.end(), [](const engine::Json& a, const engine::Json& b) { return a.dump() < b.dump(); });
+    auto envelope = observation;
+    envelope.erase("observed_at");
+    envelope.erase("observation_digest");
+    envelope["components"] = std::move(preserved);
+    for (const auto* field : {"configured_roots", "unknown_packages"}) {
+        std::sort(envelope.at(field).begin(), envelope.at(field).end(),
+            [](const engine::Json& a, const engine::Json& b) { return a.dump() < b.dump(); });
+    }
+    auto& platform = envelope.at("platform");
+    std::sort(platform.at("provider_availability").begin(), platform.at("provider_availability").end(),
+        [](const engine::Json& a, const engine::Json& b) { return a.dump() < b.dump(); });
+    if (kind == "select" || kind == "deselect") envelope.erase("binding_registry_digest");
+    if (kind == "select" && action.at("component_id") == "knowledge-session-coordinator") {
+        // Selecting the coordinator is the existing explicit process handoff.
+        // Its derived platform digest changes with that identity as well.
+        platform.erase("coordinator_identity");
+        platform.erase("compatibility_digest");
+    }
+    return engine::tagged_sha256(envelope.dump());
+}
+
+void validate_scoped_package_transition(const engine::Json& action, const engine::Json& desired,
+                                        const engine::Json& observation, bool preparing) {
+    const auto kind = action.at("kind").get<std::string>();
+    if ((kind != "install" || preparing) && (kind != "uninstall" || !preparing)) return;
+    const engine::Json* wanted = nullptr;
+    const engine::Json* observed = nullptr;
+    for (const auto& component : desired.at("components")) {
+        if (component.at("component_id") == action.at("component_id")) wanted = &component;
+    }
+    for (const auto& component : observation.at("components")) {
+        if (component.at("component_id") == action.at("component_id")) observed = &component;
+    }
+    if (wanted == nullptr || observed == nullptr) {
+        throw engine::Error("lifecycle_apply.scope_drift", "scoped package transition lacks exact component evidence", 4);
+    }
+    bool retained = false;
+    for (const auto& package : observed->at("packages")) {
+        const auto& digests = action.at("expected_artifact_digests");
+        const bool affected = std::find(digests.begin(), digests.end(), package.at("receipt_digest")) != digests.end();
+        retained = retained || !affected;
+        if (affected && package.at("install_root") != wanted->at("install_root")) {
+            throw engine::Error("lifecycle_apply.scope_drift", "package transition escaped the pinned install root", 4);
+        }
+    }
+    for (const auto* field : {"component_kind", "module_id", "vector_id", "engine_id"}) {
+        if (observed->at(field) != wanted->at(field)) {
+            throw engine::Error("lifecycle_apply.scope_drift", "package transition changed component identity", 4);
+        }
+    }
+    if ((kind == "uninstall" || !retained) &&
+        (!observed->at("selected_package_digest").is_null() || observed->at("activation") != "inactive" ||
+         observed->at("docking") != "undocked" || !observed->at("receptor_id").is_null())) {
+        throw engine::Error("lifecycle_apply.scope_drift", "package transition includes an unauthorized runtime effect", 4);
+    }
+}
+
+void validate_scope_context(const engine::Json& scope, const engine::Request& request) {
+    if (scope.at("tops_id") != request.payload.at("tops_id") || scope.at("profile_id") != request.payload.at("profile_id")) {
+        scope_invalid("scope belongs to another lifecycle profile");
+    }
+    if (!request.payload.contains("desired_state")) return;
+    if (scope.at("profile_digest") != request.payload.at("profile_digest") ||
+        scope.at("desired_state_digest") != request.payload.at("desired_state").at("desired_state_digest") ||
+        scope.at("source_report_journal_digest") != request.payload.at("source_report_journal_digest")) {
+        scope_invalid("scope does not bind the complete supplied profile and source journal");
+    }
+    for (const auto& id : scope.at("components")) {
+        const auto& desired = request.payload.at("desired_state").at("components");
+        const auto wanted = std::find_if(desired.begin(), desired.end(), [&](const engine::Json& item) {
+            return item.at("component_id") == id;
+        });
+        if (wanted == desired.end()) scope_invalid("scope component is absent from the complete desired profile");
+        auto normalized = *wanted;
+        const auto sort_values = [](engine::Json& entries) {
+            std::sort(entries.begin(), entries.end(), [](const engine::Json& a, const engine::Json& b) { return a.dump() < b.dump(); });
+        };
+        sort_values(normalized.at("dependencies"));
+        sort_values(normalized.at("compatibility").at("required_capabilities"));
+        sort_values(normalized.at("compatibility").at("platform_requirements"));
+        sort_values(normalized.at("extensions"));
+        const auto target_basis = engine::tagged_sha256(normalized.dump());
+        for (const auto* field : {"effects", "ownership_effects"}) {
+            for (const auto& effect : scope.at(field)) {
+                if (effect.at("component_id") != id) continue;
+                if (effect.at("install_root") != wanted->at("install_root")) scope_invalid("scope root differs from the pinned profile");
+                if (std::string_view(field) == "effects") {
+                    const auto kind = effect.at("kind").get<std::string>();
+                    if ((kind == "activate" && wanted->at("activation") != "active") ||
+                        (kind == "install" && (wanted->at("presence") != "present" || wanted->at("selected_package").is_null() ||
+                            effect.at("expected_artifact_digests") != engine::Json::array({wanted->at("selected_package").at("receipt_digest")}))) ||
+                        (kind == "uninstall" && wanted->at("presence") != "absent") ||
+                        (kind == "dock" && (wanted->at("docking").at("disposition") == "undocked" ||
+                            (wanted->at("docking").at("disposition") == "docked" &&
+                             effect.at("target_receptor_id") != wanted->at("docking").at("receptor_id"))))) {
+                        scope_invalid("scope effect contradicts its pinned desired component");
+                    }
+                    const auto receptor = effect.at("target_receptor_id").is_null() ? std::string("absent") :
+                        effect.at("target_receptor_id").get<std::string>();
+                    const auto expected = engine::tagged_sha256(target_basis + "\nkind=" + effect.at("kind").get<std::string>() +
+                        "\nreceptor=" + receptor);
+                    if (effect.at("target_state_digest") != expected) scope_invalid("scope effect target differs from the pinned profile");
+                }
+                // Old receipt references may disappear after an authorized uninstall. Their
+                // initial admission is checked at scope entry; each action still matches exactly.
+            }
+        }
+    }
+}
+
+void require_scope_effect(const engine::Json& scope, const engine::Json& action) {
+    for (const auto& effect : scope.at("effects")) {
+        bool same = true;
+        for (const auto* field : {"component_id", "kind", "target_state_digest", "target_receptor_id", "expected_artifact_digests"}) {
+            same = same && effect.at(field) == action.at(field);
+        }
+        if (same) return;
+    }
+    throw engine::Error("lifecycle_apply.out_of_scope", "requested lifecycle action is outside the reviewed execution scope", 4);
+}
+
+void validate_extensions(const engine::Json& extensions, bool apply = false) {
     if (!extensions.is_array() || extensions.size() > 64U) {
         throw engine::Error("lifecycle_journal.journal_invalid", "journal extensions are invalid", 5);
     }
@@ -416,6 +713,21 @@ void validate_extensions(const engine::Json& extensions) {
                 extension.at("payload_digest").get<std::string>() ||
             !identities.insert(identity).second) {
             throw engine::Error("lifecycle_journal.journal_invalid", "journal extension evidence is invalid", 5);
+        }
+        if (apply && identity == scope_extension_id) {
+            if (extension.at("critical") != true || extension.at("extension_version") != "1.0.0") {
+                scope_invalid("scoped journal extension requires the exact critical version");
+            }
+            const auto& payload = extension.at("payload");
+            exact_fields(payload, {"scope", "scope_complete", "profile_converged", "preserved_components_digest",
+                "action_preserved_components_digest"}, "scope journal payload");
+            validate_scope(payload.at("scope"));
+            if (!payload.at("scope_complete").is_boolean() || !payload.at("profile_converged").is_boolean() ||
+                !tagged_digest(text(payload, "preserved_components_digest", 71U)) ||
+                (!payload.at("action_preserved_components_digest").is_null() &&
+                 (!payload.at("action_preserved_components_digest").is_string() ||
+                  !tagged_digest(payload.at("action_preserved_components_digest").get<std::string>())))) scope_invalid("scope progress is invalid");
+            continue;
         }
         if (extension.at("critical") == true) {
             throw engine::Error(
@@ -1311,7 +1623,21 @@ void validate_apply_journal(const engine::Json& journal) {
                            [](const engine::Json& attempt) { return attempt.at("state") == "started"; })) {
         throw engine::Error("lifecycle_apply.journal_invalid", "non-acting journal contains an unfinished attempt", 5);
     }
-    validate_extensions(journal.at("extensions"));
+    validate_extensions(journal.at("extensions"), true);
+    if (const auto* scoped = journal_scope_payload(journal); scoped != nullptr) {
+        const auto& scope = scoped->at("scope");
+        if (scope.at("tops_id") != journal.at("tops_id") || scope.at("profile_id") != journal.at("profile_id") ||
+            scope.at("profile_digest") != journal.at("profile_digest") ||
+            scope.at("desired_state_digest") != journal.at("desired_state_digest") ||
+            scope.at("source_report_journal_digest") != journal.at("source_report_journal_digest") ||
+            journal.at("state") == "closed" || (scoped->at("scope_complete") == true && journal.at("state") != "verified")) {
+            scope_invalid("scope journal progress is inconsistent");
+        }
+        if (journal.at("active_action").is_null() != scoped->at("action_preserved_components_digest").is_null()) {
+            scope_invalid("scoped action checkpoint is inconsistent");
+        }
+        if (journal.at("active_action").is_object()) require_scope_effect(scope, journal.at("active_action"));
+    }
     for (const auto& blocker : journal.at("blockers")) validate_blocker(blocker);
     std::string previous_checkpoint;
     std::uint64_t expected_checkpoint = 1U;
@@ -1400,7 +1726,8 @@ Candidate read_apply_candidate(int directory, int slot) {
         candidate.valid = true;
     } catch (const engine::Error& error) {
         candidate.incompatible = error.code() == "lifecycle_journal.critical_extension_unknown" ||
-            error.code() == "lifecycle_apply.journal_incompatible";
+            error.code() == "lifecycle_apply.journal_incompatible" || error.code() == "lifecycle_apply.scope_invalid" ||
+            error.code() == "lifecycle_apply.out_of_scope";
     }
     return candidate;
 }
@@ -1746,6 +2073,130 @@ bool plan_is_converged(const engine::Json& plan) {
 }
 
 bool apply_action_observed(const engine::Json& action, const engine::Json& desired,
+                           const engine::Json& observation);
+
+bool scope_is_converged(const engine::Json& scope, const engine::Json& plan,
+                        const engine::Json& desired, const engine::Json& observation) {
+    if (!plan.at("fatal_blockers").empty()) return false;
+    for (const auto& effect : scope.at("effects")) {
+        const auto kind = effect.at("kind").get<std::string>();
+        const auto successor = kind == "deactivate" ? "activate" :
+            (kind == "undock" ? "dock" : (kind == "deselect" ? "select" : ""));
+        if (std::string_view(successor) != "" && std::any_of(scope.at("effects").begin(), scope.at("effects").end(),
+            [&](const engine::Json& candidate) {
+                return candidate.at("component_id") == effect.at("component_id") && candidate.at("kind") == successor;
+            })) continue;
+        if (!apply_action_observed(effect, desired, observation)) return false;
+        if (kind == "install") {
+            for (const auto& digest : effect.at("expected_artifact_digests")) {
+                bool present = false;
+                for (const auto& component : observation.at("components")) {
+                    if (component.at("component_id") != effect.at("component_id")) continue;
+                    for (const auto& package : component.at("packages")) {
+                        present = present || (package.at("receipt_digest") == digest && package.at("integrity") == "valid" &&
+                            package.at("install_root") == effect.at("install_root") && package.at("entry_points_validated") == true);
+                    }
+                }
+                if (!present) return false;
+            }
+        }
+    }
+    return true;
+}
+
+void validate_scope_initial(const engine::Json& scope, const engine::Request& request,
+                            const engine::Json& plan) {
+    auto reviewed_plan = plan;
+    reviewed_plan.erase("plan_digest");
+    reviewed_plan["observation_digest"] = request.payload.at("stable_inventory_digest");
+    if (scope.at("initial_plan_digest") != engine::tagged_sha256(reviewed_plan.dump()) ||
+        scope.at("initial_stable_inventory_digest") != request.payload.at("stable_inventory_digest") ||
+        scope.at("expected_apply_journal_digest") != request.payload.at("expected_journal_digest") ||
+        scope.at("expected_applied_state_digest") != request.payload.at("expected_applied_state_digest")) {
+        scope_invalid("scope initial plan, inventory or compare-and-swap evidence is stale");
+    }
+    for (const auto& id : scope.at("components")) {
+        std::set<std::string> receipts;
+        std::string install_root;
+        for (const auto& desired : request.payload.at("desired_state").at("components")) {
+            if (desired.at("component_id") != id) continue;
+            install_root = desired.at("install_root").get<std::string>();
+            if (!desired.at("selected_package").is_null()) receipts.insert(desired.at("selected_package").at("receipt_digest").get<std::string>());
+        }
+        for (const auto& observed : request.payload.at("observation").at("components")) {
+            if (observed.at("component_id") != id) continue;
+            for (const auto& package : observed.at("packages")) {
+                if (package.at("install_root") == install_root) receipts.insert(package.at("receipt_digest").get<std::string>());
+            }
+        }
+        bool has_effect = false;
+        for (const auto& effect : scope.at("effects")) {
+            if (effect.at("component_id") != id) continue;
+            has_effect = true;
+            if (effect.at("kind") == "dock") {
+                for (const auto& desired : request.payload.at("desired_state").at("components")) {
+                    if (desired.at("component_id") != id || desired.at("docking").at("disposition") != "unmanaged") continue;
+                    bool pinned = false;
+                    for (const auto& observed : request.payload.at("observation").at("components")) {
+                        pinned = pinned || (observed.at("component_id") == id && observed.at("docking") == "docked" &&
+                            observed.at("receptor_id") == effect.at("target_receptor_id"));
+                    }
+                    if (!pinned) scope_invalid("unmanaged receptor restore lacks initial observed authority");
+                }
+            }
+            for (const auto& digest : effect.at("expected_artifact_digests")) {
+                if (!receipts.contains(digest.get<std::string>())) scope_invalid("scope action names an unobserved receipt");
+            }
+        }
+        if (!has_effect) scope_invalid("scope component has no explicit effect");
+        for (const auto& effect : scope.at("ownership_effects")) {
+            if (effect.at("component_id") == id && !receipts.contains(effect.at("receipt_digest").get<std::string>())) {
+                scope_invalid("scope ownership names an unobserved receipt");
+            }
+        }
+    }
+}
+
+void require_scope_journal(const engine::Request& request, const State& state, bool recovering = false) {
+    if (!state.present) return;
+    const auto* stored = journal_scope_payload(state.journal);
+    if (stored != nullptr && !scoped_request(request)) {
+        throw engine::Error("lifecycle_apply.compatibility_required", "scoped journal cannot downgrade to an unscoped command", 4);
+    }
+    if (!scoped_request(request)) return;
+    const bool status = request.operation == "lifecycle_apply_status";
+    const auto& requested = request.payload.at("execution_scope");
+    if (stored == nullptr) {
+        if (recovering || (!status && !apply_terminal(state))) {
+            throw engine::Error("lifecycle_apply.scope_mismatch", "unscoped work must finish before entering a reviewed scope", 4);
+        }
+        return;
+    }
+    if (stored->at("scope") != requested) {
+        if (recovering || !apply_terminal(state)) {
+            throw engine::Error("lifecycle_apply.scope_mismatch", "scoped journal requires its original immutable scope", 4);
+        }
+        if (!status && stored->at("scope").at("scope_id") == requested.at("scope_id")) {
+            throw engine::Error("lifecycle_apply.scope_mismatch", "completed scope identity cannot be reused", 4);
+        }
+    }
+    if (request.payload.contains("observation") && stored->at("scope") == requested) {
+        const auto& observed = request.payload.at("observation");
+        if (stored->at("preserved_components_digest") != preserved_components_digest(requested, observed)) {
+            throw engine::Error("lifecycle_apply.scope_drift", "out-of-scope component evidence changed", 4);
+        }
+        if (request.operation == "lifecycle_apply_finalize" && !state.journal.at("active_action").is_null()) {
+            if (stored->at("action_preserved_components_digest") !=
+                action_preserved_components_digest(state.journal.at("active_action"), observed)) {
+                throw engine::Error("lifecycle_apply.scope_drift", "observation changed beyond the one prepared component", 4);
+            }
+        } else if (state.journal.at("current_stable_inventory_digest") != request.payload.at("stable_inventory_digest")) {
+            throw engine::Error("lifecycle_apply.scope_drift", "inventory changed without a prepared scoped action", 4);
+        }
+    }
+}
+
+bool apply_action_observed(const engine::Json& action, const engine::Json& desired,
                            const engine::Json& observation) {
     const auto& component_id = action.at("component_id");
     const engine::Json* wanted = nullptr;
@@ -1821,7 +2272,7 @@ engine::Json build_apply_plan(const engine::Request& request, const State& curre
         {"client", request.payload.at("planner_client")},
     };
     auto plan = build_lifecycle_plan(payload, request.deadline_unix_ms);
-    if (current.present && current.journal.at("state") != "closed") finalize_plan(plan, current);
+    if (current.present && !apply_terminal(current)) finalize_plan(plan, current);
     return plan;
 }
 
@@ -1833,14 +2284,26 @@ engine::Json validate_apply_command(const engine::Request& request) {
     if (!operations.contains(request.operation)) {
         throw engine::Error("lifecycle_apply.command_invalid", "unsupported lifecycle apply operation", 4);
     }
+    const bool scoped = scoped_request(request);
+    auto command_shape = request.payload;
+    if (scoped) {
+        if (!command_shape.contains("execution_scope")) scope_invalid("scoped command lacks its immutable scope");
+        validate_scope(command_shape.at("execution_scope"));
+        validate_scope_context(command_shape.at("execution_scope"), request);
+        const auto capabilities = token_array(request.payload.at("journal_client").at("capabilities"), "capabilities", 128U);
+        if (!contains(capabilities, scope_extension_id)) {
+            throw engine::Error("lifecycle_apply.compatibility_required", "scoped apply requires scoped-apply-v1 capability", 4);
+        }
+        command_shape.erase("execution_scope");
+    }
     const bool state_only = request.operation == "lifecycle_apply_status" || request.operation == "lifecycle_apply_recover";
     if (state_only) {
-        exact_fields(request.payload, {
+        exact_fields(command_shape, {
             "protocol", "operation", "state_root", "operation_id", "expected_journal_digest",
             "profile_id", "tops_id", "authorization_decision", "journal_client"
         }, "lifecycle apply state command");
     } else {
-        exact_fields(request.payload, {
+        exact_fields(command_shape, {
             "protocol", "operation", "state_root", "operation_id", "expected_journal_digest",
             "expected_applied_state_digest", "source_report_journal_digest", "profile_id", "tops_id",
             "profile_digest", "stable_inventory_digest", "desired_state", "observation",
@@ -1849,7 +2312,7 @@ engine::Json validate_apply_command(const engine::Request& request) {
             "journal_client"
         }, "lifecycle apply mutation command");
     }
-    if (request.payload.at("protocol") != apply_command_protocol || request.payload.at("operation") != request.operation ||
+    if ((request.payload.at("protocol") != apply_command_protocol && !scoped) || request.payload.at("operation") != request.operation ||
         !safe_absolute_path(text(request.payload, "state_root", engine::Limits::max_path_bytes)) ||
         !safe_token(text(request.payload, "profile_id", 256U)) || !safe_token(text(request.payload, "tops_id", 256U))) {
         throw engine::Error("lifecycle_apply.command_invalid", "lifecycle apply command identity is invalid", 4);
@@ -1936,6 +2399,7 @@ engine::Json validate_apply_command(const engine::Request& request) {
             throw engine::Error("lifecycle_apply.command_invalid", "apply recovery expected state is invalid", 4);
         }
     }
+    if (scoped) evidence += "\nscope=" + request.payload.at("execution_scope").at("scope_digest").get<std::string>();
     const auto tops = request.payload.at("tops_id").get<std::string>();
     const auto profile = request.payload.at("profile_id").get<std::string>();
     static_cast<void>(validate_ssiag_authorization(
@@ -1991,6 +2455,7 @@ State recover_apply_state(const engine::Request& request, int directory,
         throw engine::Error("lifecycle_apply.expected_state_mismatch", "apply recovery expected digest is stale", 4);
     }
     State baseline{head.value_or(engine::Json{}), selected->journal, true};
+    require_scope_journal(request, baseline, true);
     const bool healthy = head.has_value() && head->at("journal_digest") == selected->journal.at("journal_digest") &&
         head->at("generation") == selected->journal.at("generation") &&
         head->at("profile_id") == profile_id && head->at("tops_id") == tops_id;
@@ -2022,14 +2487,25 @@ State recover_apply_state(const engine::Request& request, int directory,
 
 engine::Json handle_lifecycle_apply(const engine::Request& request) {
     auto compatibility = validate_apply_command(request);
+    const auto* scope = scoped_request(request) ? &request.payload.at("execution_scope") : nullptr;
+    const auto result = [&](engine::Json value) {
+        if (scope == nullptr) return value;
+        value["protocol"] = scoped_apply_result_protocol;
+        const auto* stored = value.at("journal").is_object() ? journal_scope_payload(value.at("journal")) : nullptr;
+        value["scope_digest"] = stored != nullptr ? stored->at("scope").at("scope_digest") : scope->at("scope_digest");
+        value["scope_complete"] = stored != nullptr && stored->at("scope_complete") == true;
+        value["profile_converged"] = stored != nullptr && stored->at("profile_converged") == true;
+        if (request.operation != "lifecycle_apply_recover") value["repair_actions"] = engine::Json::array();
+        return value;
+    };
     const bool status = request.operation == "lifecycle_apply_status";
     const bool recover = request.operation == "lifecycle_apply_recover";
     auto stream = open_stream(
         request.payload.at("state_root").get<std::string>(), request.payload.at("tops_id").get<std::string>(),
         request.payload.at("profile_id").get<std::string>(), !status, !status, "v2");
     if (!stream.has_value()) {
-        return make_apply_result(request.operation, std::move(compatibility), {}, nullptr, nullptr, nullptr,
-                                 false, false, {}, true);
+        return result(make_apply_result(request.operation, std::move(compatibility), {}, nullptr, nullptr, nullptr,
+                                 false, false, {}, true));
     }
     if (recover) {
         if (compatibility.at("mode") != "full") {
@@ -2041,17 +2517,18 @@ engine::Json handle_lifecycle_apply(const engine::Request& request) {
         auto applied = read_applied_state(stream->directory_fd(), recovered_state);
         compatibility = apply_compatibility_result(
             request.payload.at("journal_client"), recovered_state.present ? &recovered_state.journal : nullptr);
-        return make_apply_result(request.operation, std::move(compatibility), recovered_state, nullptr,
+        return result(make_apply_result(request.operation, std::move(compatibility), recovered_state, nullptr,
                                  recovered_state.present ? recovered_state.journal.at("active_action") : engine::Json(nullptr),
-                                 applied.value_or(engine::Json(nullptr)), changed, changed, actions, false);
+                                 applied.value_or(engine::Json(nullptr)), changed, changed, actions, false));
     }
     auto current = load_apply_state(stream->directory_fd());
+    require_scope_journal(request, current);
     compatibility = apply_compatibility_result(request.payload.at("journal_client"), current.present ? &current.journal : nullptr);
     auto applied = read_applied_state(stream->directory_fd(), current);
     if (status) {
-        return make_apply_result(request.operation, std::move(compatibility), current, nullptr,
+        return result(make_apply_result(request.operation, std::move(compatibility), current, nullptr,
                                  current.present ? current.journal.at("active_action") : engine::Json(nullptr),
-                                 applied.value_or(engine::Json(nullptr)), false, false, {}, true);
+                                 applied.value_or(engine::Json(nullptr)), false, false, {}, true));
     }
     if (compatibility.at("mode") != "full") {
         throw engine::Error("lifecycle_apply.compatibility_required", "apply mutation requires full v2 overlap", 4);
@@ -2090,6 +2567,66 @@ engine::Json handle_lifecycle_apply(const engine::Request& request) {
                 "finalize evidence does not belong to the prepared lifecycle action", 4);
         }
     }
+    if (scope != nullptr && request.operation == "lifecycle_apply_close") {
+        if (current.present && current.journal.at("state") == "acting") {
+            throw engine::Error("lifecycle_apply.action_in_progress", "prepared scoped action must be finalized before close", 4);
+        }
+        const auto* previous_scope = current.present ? journal_scope_payload(current.journal) : nullptr;
+        if (previous_scope != nullptr && previous_scope->at("scope") == *scope && previous_scope->at("scope_complete") == true) {
+            auto plan = build_apply_plan(request, {});
+            if (!scope_is_converged(*scope, plan, request.payload.at("desired_state"), request.payload.at("observation"))) {
+                throw engine::Error("lifecycle_apply.scope_drift", "completed scope is no longer converged", 4);
+            }
+            return result(make_apply_result(request.operation, std::move(compatibility), current, std::move(plan), nullptr,
+                applied.value_or(engine::Json(nullptr)), false, false, {"scoped completion is already recorded"}, false));
+        }
+        auto plan = build_apply_plan(request, current);
+        const bool continuing = current.present && !apply_terminal(current);
+        if (!continuing) validate_scope_initial(*scope, request, plan);
+        if (!scope_is_converged(*scope, plan, request.payload.at("desired_state"), request.payload.at("observation"))) {
+            throw engine::Error("lifecycle_apply.not_converged", "reviewed scope still requires lifecycle work", 4);
+        }
+        const auto observed = utc_now();
+        engine::Json checkpoints = continuing ? current.journal.at("checkpoints") : engine::Json::array();
+        checkpoints.push_back(checkpoint(checkpoints.size() + 1U, "verify", number(plan, "revision"),
+            text(request.payload, "operation_id", 256U), observed, text(plan, "observation_digest", 71U),
+            engine::tagged_sha256(ready_set(plan).dump()),
+            checkpoints.empty() ? engine::Json(nullptr) : checkpoints.back().at("checkpoint_digest")));
+        const auto transaction = continuing ? current.journal.at("transaction_id") : plan.at("transaction_id");
+        engine::Json next{
+            {"protocol", apply_journal_protocol}, {"format_version", apply_format_version},
+            {"journal_id", continuing ? current.journal.at("journal_id") : engine::Json("lifecycle-apply:" + engine::sha256_hex(
+                text(request.payload, "tops_id", 256U) + "|" + text(request.payload, "profile_id", 256U) + "|" +
+                transaction.get<std::string>()))},
+            {"transaction_id", transaction}, {"operation_id", request.payload.at("operation_id")},
+            {"generation", current.present ? number(current.journal, "generation") + 1U : 1U},
+            {"previous_journal_digest", current.present ? current.journal.at("journal_digest") : engine::Json(nullptr)},
+            {"source_report_journal_digest", request.payload.at("source_report_journal_digest")},
+            {"profile_id", request.payload.at("profile_id")}, {"profile_digest", request.payload.at("profile_digest")},
+            {"tops_id", request.payload.at("tops_id")}, {"mode", "apply-compatible"}, {"state", "verified"},
+            {"desired_state_digest", plan.at("desired_state_digest")}, {"observation_key", plan.at("observation_key")},
+            {"current_observation_digest", plan.at("observation_digest")},
+            {"current_stable_inventory_digest", request.payload.at("stable_inventory_digest")},
+            {"prior_applied_state_digest", plan.at("prior_applied_state_digest")},
+            {"current_plan_digest", plan.at("plan_digest")}, {"current_plan_revision", plan.at("revision")},
+            {"replan_count", continuing ? number(current.journal, "replan_count") + 1U : 0U},
+            {"active_action", nullptr}, {"action_attempts", continuing ? current.journal.at("action_attempts") : engine::Json::array()},
+            {"blockers", journal_blockers(plan)}, {"checkpoints", std::move(checkpoints)},
+            {"compatibility", apply_journal_compatibility()},
+            {"extensions", current.present ? current.journal.at("extensions") : engine::Json::array()},
+            {"recovery", engine::Json{{"state", "clean"}, {"disposition", "not_applicable"}, {"recovered_from_digest", nullptr},
+                {"detail", "no apply recovery has been required"}}},
+            {"applied_state_digest", applied.has_value() ? applied->at("applied_state_digest") : engine::Json(nullptr)},
+            {"started_at", continuing ? current.journal.at("started_at") : engine::Json(observed)},
+            {"updated_at", observed}, {"closed_at", nullptr}, {"canonical", false}, {"apply_authorized", true}
+        };
+        set_scope_extension(next, scope_extension(*scope, true, plan_is_converged(plan),
+            preserved_components_digest(*scope, request.payload.at("observation"))));
+        auto committed = commit_apply(stream->directory_fd(), std::move(next),
+            current.present ? std::optional<engine::Json>(current.head) : std::nullopt);
+        return result(make_apply_result(request.operation, std::move(compatibility), committed, std::move(plan), nullptr,
+            applied.value_or(engine::Json(nullptr)), true, false, {"verified scoped completion without global applied-state publication"}, false));
+    }
     if (request.operation == "lifecycle_apply_close") {
         if (current.present && current.journal.at("state") == "acting") {
             throw engine::Error("lifecycle_apply.action_in_progress", "an exact lifecycle action must be finalized before close", 4);
@@ -2103,11 +2640,11 @@ engine::Json handle_lifecycle_apply(const engine::Request& request) {
             current.journal.at("desired_state_digest") == plan.at("desired_state_digest") &&
             current.journal.at("current_stable_inventory_digest") == request.payload.at("stable_inventory_digest") &&
             current.journal.at("source_report_journal_digest") == request.payload.at("source_report_journal_digest")) {
-            return make_apply_result(request.operation, std::move(compatibility), current, std::move(plan), nullptr,
-                                     *applied, false, false, {"converged applied evidence is already committed"}, false);
+            return result(make_apply_result(request.operation, std::move(compatibility), current, std::move(plan), nullptr,
+                                     *applied, false, false, {"converged applied evidence is already committed"}, false));
         }
         const auto observed = utc_now();
-        const bool continuing = current.present && current.journal.at("state") != "closed";
+        const bool continuing = current.present && !apply_terminal(current);
         engine::Json checkpoints = continuing ? current.journal.at("checkpoints") : engine::Json::array();
         const auto previous_checkpoint = checkpoints.empty() ? engine::Json(nullptr) :
             checkpoints.back().at("checkpoint_digest");
@@ -2151,21 +2688,31 @@ engine::Json handle_lifecycle_apply(const engine::Request& request) {
         auto committed = commit_apply(
             stream->directory_fd(), std::move(next),
             current.present ? std::optional<engine::Json>(current.head) : std::nullopt);
-        return make_apply_result(request.operation, std::move(compatibility), committed, std::move(plan), nullptr,
+        return result(make_apply_result(request.operation, std::move(compatibility), committed, std::move(plan), nullptr,
                                  std::move(applied_value), true, false,
-                                 {"verified convergence and committed content-addressed applied evidence"}, false);
+                                 {"verified convergence and committed content-addressed applied evidence"}, false));
     }
     if (request.operation == "lifecycle_apply_prepare") {
+        if (scope != nullptr && apply_terminal(current)) {
+            const auto* stored = journal_scope_payload(current.journal);
+            if (stored != nullptr && stored->at("scope").at("scope_id") == scope->at("scope_id")) {
+                throw engine::Error("lifecycle_apply.scope_complete", "completed scope cannot prepare further actions", 4);
+            }
+        }
         if (current.present && current.journal.at("state") == "acting") {
             if (current.journal.at("active_action").at("action_id") == request.payload.at("action_id") &&
                 current.journal.at("operation_id") == request.payload.at("operation_id")) {
-                return make_apply_result(request.operation, std::move(compatibility), current, nullptr,
+                return result(make_apply_result(request.operation, std::move(compatibility), current, nullptr,
                                          current.journal.at("active_action"), applied.value_or(engine::Json(nullptr)),
-                                         false, false, {"replayed prepared action attempt"}, false);
+                                         false, false, {"replayed prepared action attempt"}, false));
             }
             throw engine::Error("lifecycle_apply.action_in_progress", "another lifecycle action attempt is active", 4);
         }
         auto plan = build_apply_plan(request, current);
+        if (scope != nullptr && (!current.present || apply_terminal(current))) validate_scope_initial(*scope, request, plan);
+        if (scope != nullptr && !plan.at("fatal_blockers").empty()) {
+            throw engine::Error("lifecycle_apply.scope_blocked", "global planner blockers prevent scoped apply", 4);
+        }
         const auto wanted_id = request.payload.at("action_id").get<std::string>();
         const auto* selected = find_plan_action(plan, wanted_id);
         if (selected == nullptr || !apply_action_ready(*selected, request.payload.at("available_artifact_digests"))) {
@@ -2174,8 +2721,12 @@ engine::Json handle_lifecycle_apply(const engine::Request& request) {
         if (selected->at("kind") == "preserve" || selected->at("kind") == "report" || selected->at("kind") == "verify") {
             throw engine::Error("lifecycle_apply.non_mutating_action", "non-mutating report evidence is not an executable action", 4);
         }
+        if (scope != nullptr) {
+            require_scope_effect(*scope, *selected);
+            validate_scoped_package_transition(*selected, request.payload.at("desired_state"), request.payload.at("observation"), true);
+        }
         const auto observed = utc_now();
-        const bool continuing = current.present && current.journal.at("state") != "closed";
+        const bool continuing = current.present && !apply_terminal(current);
         engine::Json attempts = continuing ? current.journal.at("action_attempts") : engine::Json::array();
         attempts.push_back(apply_attempt(*selected, attempts, number(plan, "revision"), observed));
         engine::Json checkpoints = continuing ? current.journal.at("checkpoints") : engine::Json::array();
@@ -2214,11 +2765,16 @@ engine::Json handle_lifecycle_apply(const engine::Request& request) {
             {"started_at", continuing ? current.journal.at("started_at") : engine::Json(observed)},
             {"updated_at", observed}, {"closed_at", nullptr}, {"canonical", false}, {"apply_authorized", true},
         };
+        if (scope != nullptr) {
+            set_scope_extension(next, scope_extension(*scope, false, false,
+                preserved_components_digest(*scope, request.payload.at("observation")),
+                action_preserved_components_digest(*selected, request.payload.at("observation"))));
+        }
         auto committed = commit_apply(stream->directory_fd(), std::move(next),
                                       current.present ? std::optional<engine::Json>(current.head) : std::nullopt);
-        return make_apply_result(request.operation, std::move(compatibility), committed, std::move(plan),
+        return result(make_apply_result(request.operation, std::move(compatibility), committed, std::move(plan),
                                  committed.journal.at("active_action"), applied.value_or(engine::Json(nullptr)),
-                                 true, false, {"durably prepared one exact lifecycle action"}, false);
+                                 true, false, {"durably prepared one exact lifecycle action"}, false));
     }
     if (!current.present || current.journal.at("state") != "acting" ||
         current.journal.at("active_action").at("action_id") != request.payload.at("action_id")) {
@@ -2226,6 +2782,12 @@ engine::Json handle_lifecycle_apply(const engine::Request& request) {
     }
     auto plan = build_apply_plan(request, current);
     const auto& active = current.journal.at("active_action");
+    if (scope != nullptr) {
+        require_scope_effect(*scope, active);
+        if (request.payload.at("outcome") == "committed" || request.payload.at("outcome") == "already_applied") {
+            validate_scoped_package_transition(active, request.payload.at("desired_state"), request.payload.at("observation"), false);
+        }
+    }
     const auto outcome = request.payload.at("outcome").get<std::string>();
     const bool success = outcome == "committed" || outcome == "already_applied";
     if (success) {
@@ -2269,7 +2831,14 @@ engine::Json handle_lifecycle_apply(const engine::Request& request) {
         engine::tagged_sha256(ready_set(plan).dump()), previous));
     next["updated_at"] = observed;
     engine::Json new_applied = nullptr;
-    if (success && plan_is_converged(plan)) {
+    if (scope != nullptr) {
+        const bool complete = success && scope_is_converged(*scope, plan, request.payload.at("desired_state"), request.payload.at("observation"));
+        next["state"] = complete ? "verified" : (success && next.at("blockers").empty() ? "open" : "blocked");
+        next["closed_at"] = nullptr;
+        next["applied_state_digest"] = applied.has_value() ? applied->at("applied_state_digest") : engine::Json(nullptr);
+        set_scope_extension(next, scope_extension(*scope, complete, success && plan_is_converged(plan),
+            preserved_components_digest(*scope, request.payload.at("observation"))));
+    } else if (success && plan_is_converged(plan)) {
         auto applied_value = build_applied_state(
             request.payload.at("desired_state"), request.payload.at("observation"), plan, next, applied);
         write_applied_state(stream->directory_fd(), applied_value);
@@ -2283,10 +2852,10 @@ engine::Json handle_lifecycle_apply(const engine::Request& request) {
         next["applied_state_digest"] = applied.has_value() ? applied->at("applied_state_digest") : engine::Json(nullptr);
     }
     auto committed = commit_apply(stream->directory_fd(), std::move(next), current.head);
-    return make_apply_result(request.operation, std::move(compatibility), committed, std::move(plan), nullptr,
+    return result(make_apply_result(request.operation, std::move(compatibility), committed, std::move(plan), nullptr,
                              new_applied.is_null() ? applied.value_or(engine::Json(nullptr)) : std::move(new_applied),
                              true, false, {success ? "verified and committed lifecycle action evidence" :
-                                                   "recorded blocked lifecycle action evidence"}, false);
+                                                   "recorded blocked lifecycle action evidence"}, false));
 }
 
 engine::Json validate_command(const engine::Request& request) {
@@ -2380,6 +2949,8 @@ engine::Json lifecycle_journal_capabilities() {
         {"required_capabilities", required_capabilities}, {"optional_capabilities", optional_capabilities},
         {"two_way_procedural_compatibility", true}, {"dynamic_replanning", true},
         {"apply_command_protocol", apply_command_protocol}, {"apply_result_protocol", apply_result_protocol},
+        {"scoped_apply_command_protocol", scoped_apply_command_protocol}, {"scoped_apply_result_protocol", scoped_apply_result_protocol},
+        {"scoped_apply_capabilities", engine::Json::array({scope_extension_id})},
         {"apply_journal_protocol", apply_journal_protocol}, {"apply_head_protocol", apply_head_protocol},
         {"apply_required_capabilities", apply_required_capabilities},
         {"persistence_enabled", true}, {"action_execution_enabled", false},

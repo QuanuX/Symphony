@@ -1,0 +1,39 @@
+{
+  "protocol": "symphony.knowledge.lifecycle-execution-scope.v1",
+  "format_version": 1,
+  "scope_id": "scope-fixture",
+  "tops_id": "11111111-1111-4111-8111-111111111111",
+  "profile_id": "default",
+  "profile_digest": "sha256:1900eab6c028483d7126599ee6f50de0d27907b5c65fa90524580b4b0f9852b0",
+  "desired_state_digest": "sha256:b60b935389f7cf68e7877a80a4ded0dfc93e248b8807932536e1de0f771d259b",
+  "source_report_journal_digest": "sha256:41cf6794ba4200b839c53531555f0f3998df4cbb01a4d5cb0b94e3ca5e23947d",
+  "initial_plan_digest": "sha256:64879f7d6b960a01909762d911a32d4582c20010c5641ee90278b644a9e3b525",
+  "initial_stable_inventory_digest": "sha256:b11a85b296a90afc460430434a504e7acb04b064575b7277724688af0e59d189",
+  "expected_apply_journal_digest": "absent",
+  "expected_applied_state_digest": "absent",
+  "components": [
+    "module-a"
+  ],
+  "effects": [
+    {
+      "component_id": "module-a",
+      "kind": "install",
+      "target_state_digest": "sha256:34a04005bcaf206eec990bd9637d9fdb6725e0a0c0d4aebf003f17f4c956eb5c",
+      "target_receptor_id": null,
+      "expected_artifact_digests": [
+        "sha256:6f32860910ca0fb2a20c7fda143666b09dbf8db5238195c90a586fb542ff0cad"
+      ],
+      "install_root": "/opt/symphony space/<fixture>&é"
+    }
+  ],
+  "ownership_effects": [
+    {
+      "install_root": "/opt/symphony space/<fixture>&é",
+      "component_id": "module-a",
+      "receipt_digest": "sha256:6f32860910ca0fb2a20c7fda143666b09dbf8db5238195c90a586fb542ff0cad",
+      "disposition": "retained"
+    }
+  ],
+  "canonical": false,
+  "scope_digest": "sha256:1c344d49457449df9f9c5e5f687b2874ea4730e1e83933fda513de483d49afe9"
+}
