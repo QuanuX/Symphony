@@ -850,7 +850,7 @@ void test_scoped_apply_authority_completion_and_recovery() {
     static_cast<void>(head);
 }
 
-void test_scoped_staged_install_and_included_component_drift() {
+void test_scoped_staged_install_and_included_component_drift(bool emit_fixture = false) {
     TemporaryDirectory state;
     const auto desired = desired_state(engine::Json::array({
         desired_component("included-a", receipt("included-a"), "active"),
@@ -971,8 +971,8 @@ void test_scoped_staged_install_and_included_component_drift() {
         "noop-scope-close", nullptr, engine::Json::array(), noop_scope);
     require(closed.at("scope_complete") == true && closed.at("profile_converged") == false && closed.at("changed") == true &&
         closed.at("applied_state").is_null(), "already satisfied install-only scope could not close without whole-profile apply");
-    if (const char* output = std::getenv("SYMPHONY_SCOPED_APPLY_FIXTURE_OUTPUT"); output != nullptr && *output != '\0') {
-        write_json(output, engine::Json{
+    if (emit_fixture) {
+        std::cout << engine::Json{
             {"protocol", "symphony.knowledge.scoped-apply-native-fixtures.v1"},
             {"activation", engine::Json{
                 {"scope", scope}, {"desired", desired}, {"observation_before", before}, {"observation_after", after_a},
@@ -983,7 +983,8 @@ void test_scoped_staged_install_and_included_component_drift() {
                 {"prepare_result", installing}, {"finalize_result", installed},
                 {"source_report_journal_digest", staged_report.at("journal_digest")},
             }},
-        });
+        }.dump() << '\n';
+        if (!std::cout) throw std::runtime_error("could not emit scoped apply fixture JSON");
     }
 }
 
@@ -2017,8 +2018,15 @@ void test_bounded_scale_plan() {
 
 }
 
-int main() {
+int main(int argc, char** argv) {
     try {
+        // Fixtures are a stream for the invoking test harness to capture. This
+        // binary never accepts a fixture destination or opens an external path.
+        if (argc == 2 && std::string_view(argv[1]) == "--scoped-apply-fixture-json") {
+            test_scoped_staged_install_and_included_component_drift(true);
+            return 0;
+        }
+        if (argc != 1) throw std::runtime_error("unexpected lifecycle test argument");
         test_descriptor();
         test_scoped_apply_fixture_and_validation();
         test_scoped_apply_authority_completion_and_recovery();

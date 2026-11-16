@@ -21317,7 +21317,7 @@
     },
     {
       "path": "modules/knowledge-session-coordinator/CMakeLists.txt",
-      "sha256": "e72c2ed87266cb5845237734af5e8c968fdf085cc6f2fd4d5c13ba4b0283a663"
+      "sha256": "7e0f9b9f4a7d946f94bb2bb0dbf8b1636330fbdc8e0b02761f78289235041500"
     },
     {
       "path": "modules/knowledge-session-coordinator/cmake/install-receipt.json.in",
@@ -25365,7 +25365,7 @@
     },
     {
       "path": "modules/secure-identity-access-governance/tests/release-owner/main_test.go",
-      "sha256": "cf57684cd70025a3caa83c0e4b2c878ab4d213fd8e947a8ac8c562ef2f25782a"
+      "sha256": "5e955de0565ad08c9256b17976a81e6a17c4c349c6ce36a228b3b7a25cdb6efe"
     },
     {
       "path": "modules/accordare-stav-producer/tests/release-owner/main.go",

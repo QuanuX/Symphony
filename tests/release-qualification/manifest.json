@@ -351,6 +351,7 @@
       "ctests": [
         "knowledge-session-coordinator-tests",
         "knowledge-lifecycle-planner-tests",
+        "knowledge-scoped-fixture-output",
         "knowledge-ssfv-maintenance-tests",
         "knowledge-named-version-tests",
         "knowledge-session-process-smoke"
