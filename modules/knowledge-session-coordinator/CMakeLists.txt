@@ -82,6 +82,13 @@ if(BUILD_TESTING)
         $<$<CXX_COMPILER_ID:AppleClang,Clang,GNU>:-Wall;-Wextra;-Wpedantic;-Werror>
     )
     add_test(NAME knowledge-lifecycle-planner-tests COMMAND knowledge-lifecycle-planner-tests)
+    add_test(
+        NAME knowledge-scoped-fixture-output
+        COMMAND ${CMAKE_COMMAND}
+                -DBINARY=$<TARGET_FILE:knowledge-lifecycle-planner-tests>
+                -DTEST_ROOT=${CMAKE_CURRENT_BINARY_DIR}
+                -P ${CMAKE_CURRENT_SOURCE_DIR}/tests/scoped_fixture_output.cmake
+    )
     add_executable(knowledge-ssfv-maintenance-tests
         tests/ssfv_maintenance_test.cpp
         src/coordinator.cpp
