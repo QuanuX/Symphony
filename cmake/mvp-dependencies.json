@@ -5219,7 +5219,7 @@
   ],
   "go_source_protocol_literals": {
     "scope": "Versioned symphony.*.vN literals in non-test Go source, not a new admission registry; includes input/output/discovery identifiers and does not equate protocol generation with module version.",
-    "count": 535,
+    "count": 536,
     "protocols": {
       "symphony.sbv.result-inspect-input.v1": [
         "libraries/sbv-go/examples/roundtrip/main.go:81"
@@ -5310,8 +5310,8 @@
         "modules/accordare-stav-producer/internal/packageinstall/package.go:25",
         "modules/secure-identity-access-governance/internal/packageinstall/package.go:24",
         "modules/secure-identity-access-governance/internal/provider/receipt.go:116",
-        "modules/stav-append-authority/internal/lifecycle/lifecycle.go:164",
-        "modules/stav-append-authority/internal/lifecycle/lifecycle.go:400",
+        "modules/stav-append-authority/internal/lifecycle/lifecycle.go:169",
+        "modules/stav-append-authority/internal/lifecycle/lifecycle.go:410",
         "tools/qxctl/cmd/qxctl/lifecycle_apply.go:340",
         "tools/qxctl/cmd/qxctl/lifecycle_apply.go:465",
         "tools/qxctl/internal/knowledgeengine/client.go:26",
@@ -5324,30 +5324,30 @@
         "tools/qxctl/internal/shvstate/validation.go:93"
       ],
       "symphony.accordare.stav-producer.local.v1": [
-        "modules/accordare-stav-producer/internal/packageinstall/package.go:201",
-        "modules/accordare-stav-producer/internal/packageinstall/package.go:450"
+        "modules/accordare-stav-producer/internal/packageinstall/package.go:207",
+        "modules/accordare-stav-producer/internal/packageinstall/package.go:461"
       ],
       "symphony.accordare.stav-producer.supervisor.v1": [
-        "modules/accordare-stav-producer/internal/packageinstall/package.go:201",
-        "modules/accordare-stav-producer/internal/packageinstall/package.go:450"
+        "modules/accordare-stav-producer/internal/packageinstall/package.go:207",
+        "modules/accordare-stav-producer/internal/packageinstall/package.go:461"
       ],
       "symphony.accordare.stav-producer.v1": [
-        "modules/accordare-stav-producer/internal/packageinstall/package.go:202",
-        "modules/accordare-stav-producer/internal/packageinstall/package.go:448"
+        "modules/accordare-stav-producer/internal/packageinstall/package.go:208",
+        "modules/accordare-stav-producer/internal/packageinstall/package.go:459"
       ],
       "symphony.accordare.stav-producer.native-supervision.v1": [
-        "modules/accordare-stav-producer/internal/packageinstall/package.go:202",
-        "modules/accordare-stav-producer/internal/packageinstall/package.go:448"
+        "modules/accordare-stav-producer/internal/packageinstall/package.go:208",
+        "modules/accordare-stav-producer/internal/packageinstall/package.go:459"
       ],
       "symphony.stav.append-authority.v1": [
-        "modules/accordare-stav-producer/internal/packageinstall/package.go:202",
-        "modules/accordare-stav-producer/internal/packageinstall/package.go:449",
-        "modules/stav-append-authority/internal/lifecycle/lifecycle.go:164",
-        "modules/stav-append-authority/internal/lifecycle/lifecycle.go:408"
+        "modules/accordare-stav-producer/internal/packageinstall/package.go:208",
+        "modules/accordare-stav-producer/internal/packageinstall/package.go:460",
+        "modules/stav-append-authority/internal/lifecycle/lifecycle.go:169",
+        "modules/stav-append-authority/internal/lifecycle/lifecycle.go:418"
       ],
       "symphony.ssiag.authorization.v1": [
-        "modules/accordare-stav-producer/internal/packageinstall/package.go:202",
-        "modules/accordare-stav-producer/internal/packageinstall/package.go:449"
+        "modules/accordare-stav-producer/internal/packageinstall/package.go:208",
+        "modules/accordare-stav-producer/internal/packageinstall/package.go:460"
       ],
       "symphony.accordare.stav-producer.submission.v1": [
         "modules/accordare-stav-producer/internal/protocol/model.go:10"
@@ -5424,20 +5424,20 @@
       ],
       "symphony.foundation.lifecycle-adapter.v1": [
         "modules/secure-identity-access-governance/internal/foundationlifecycle/types.go:4",
-        "modules/secure-identity-access-governance/internal/packageinstall/package.go:441",
-        "modules/secure-identity-access-governance/internal/packageinstall/package.go:479",
+        "modules/secure-identity-access-governance/internal/packageinstall/package.go:451",
+        "modules/secure-identity-access-governance/internal/packageinstall/package.go:489",
         "modules/stav-append-authority/internal/foundation/types.go:11",
-        "modules/stav-append-authority/internal/lifecycle/lifecycle.go:164",
-        "modules/stav-append-authority/internal/lifecycle/lifecycle.go:408",
+        "modules/stav-append-authority/internal/lifecycle/lifecycle.go:169",
+        "modules/stav-append-authority/internal/lifecycle/lifecycle.go:418",
         "tools/qxctl/internal/foundationlifecycle/client.go:25"
       ],
       "symphony.foundation.lifecycle-command.v1": [
         "modules/secure-identity-access-governance/internal/foundationlifecycle/types.go:5",
-        "modules/secure-identity-access-governance/internal/packageinstall/package.go:441",
-        "modules/secure-identity-access-governance/internal/packageinstall/package.go:479",
+        "modules/secure-identity-access-governance/internal/packageinstall/package.go:451",
+        "modules/secure-identity-access-governance/internal/packageinstall/package.go:489",
         "modules/stav-append-authority/internal/foundation/types.go:6",
-        "modules/stav-append-authority/internal/lifecycle/lifecycle.go:164",
-        "modules/stav-append-authority/internal/lifecycle/lifecycle.go:591",
+        "modules/stav-append-authority/internal/lifecycle/lifecycle.go:169",
+        "modules/stav-append-authority/internal/lifecycle/lifecycle.go:601",
         "tools/qxctl/cmd/qxctl/command_specs.go:351",
         "tools/qxctl/internal/foundationlifecycle/client.go:24",
         "tools/qxctl/internal/invariantregistry/registry.go:353",
@@ -5604,11 +5604,11 @@
         "modules/stav-append-authority/internal/lifecycle/enrollment.go:254"
       ],
       "symphony.stav.local.v1": [
-        "modules/stav-append-authority/internal/lifecycle/lifecycle.go:164",
-        "modules/stav-append-authority/internal/lifecycle/lifecycle.go:408"
+        "modules/stav-append-authority/internal/lifecycle/lifecycle.go:169",
+        "modules/stav-append-authority/internal/lifecycle/lifecycle.go:418"
       ],
       "symphony.stav.install.v1": [
-        "modules/stav-append-authority/internal/lifecycle/lifecycle.go:447"
+        "modules/stav-append-authority/internal/lifecycle/lifecycle.go:457"
       ],
       "symphony.sav.current-resolution-input.v1": [
         "tools/qxctl/cmd/qxctl/accordare_host.go:18",
@@ -7163,6 +7163,9 @@
         "tools/qxctl/internal/knowledgelifecycle/host.go:17"
       ],
       "symphony.knowledge.lifecycle-root-ownership.v1": [
+        "modules/accordare-stav-producer/internal/packageretirement/delegation_unix.go:261",
+        "modules/secure-identity-access-governance/internal/packageretirement/delegation_unix.go:261",
+        "modules/stav-append-authority/internal/packageretirement/delegation_unix.go:261",
         "tools/qxctl/internal/knowledgelifecycle/ownership.go:13"
       ],
       "symphony.knowledge.lifecycle-root-ownership-fence.v1": [
@@ -7326,9 +7329,12 @@
       "symphony.package-retirement.v1": [
         "modules/accordare-stav-producer/internal/packageretirement/identity.go:15",
         "modules/secure-identity-access-governance/internal/packageretirement/identity.go:15",
-        "modules/stav-append-authority/internal/lifecycle/lifecycle.go:164",
-        "modules/stav-append-authority/internal/lifecycle/lifecycle.go:408",
         "modules/stav-append-authority/internal/packageretirement/identity.go:15"
+      ],
+      "symphony.package-owner-dispatch.v1": [
+        "modules/accordare-stav-producer/internal/packageretirement/delegation.go:5",
+        "modules/secure-identity-access-governance/internal/packageretirement/delegation.go:5",
+        "modules/stav-append-authority/internal/packageretirement/delegation.go:5"
       ]
     }
   },
@@ -21206,7 +21212,7 @@
     },
     {
       "path": "modules/accordare-stav-producer/cmd/symphony-accordare-stav-producer/main.go",
-      "sha256": "5897d4b1fd40c339481aad7388e381fc445cb5f34ee7fa51f4f60703bfb25aa5"
+      "sha256": "e91b0934d736409caf67e40e9c0e56491eab6a57aa5e9b26f59b1efa96f2cd0b"
     },
     {
       "path": "modules/accordare-stav-producer/go.mod",
@@ -21238,7 +21244,7 @@
     },
     {
       "path": "modules/accordare-stav-producer/internal/packageinstall/package.go",
-      "sha256": "9da89ccf2e205a6e3dbf19c9ebab5b644b26a25e2cf16adc6a70bcf2f6cf3ee7"
+      "sha256": "b18984afc26738fcb8ecb63e58130eed1f301f6a03304b05e512a1dbe1ad43f7"
     },
     {
       "path": "modules/accordare-stav-producer/internal/paths/paths.go",
@@ -21670,7 +21676,7 @@
     },
     {
       "path": "modules/secure-identity-access-governance/cmd/symphony-ssiag/main.go",
-      "sha256": "a1b2a5f620118d24114fb85d01d6778ed194f86c7cf9cdafe99506203bfc81cf"
+      "sha256": "058525d842f165afd6926886fecc45676c838c14d556dbcc249f6fc03efbb800"
     },
     {
       "path": "modules/secure-identity-access-governance/go.mod",
@@ -21742,7 +21748,7 @@
     },
     {
       "path": "modules/secure-identity-access-governance/internal/packageinstall/package.go",
-      "sha256": "310ee4503b0b27f62c4ac1c995869f7356dac3bc303c1441d269ccab61f4241a"
+      "sha256": "a5f410fa9cf0fac29cebd45f092bb1a70ef65f14684a1508fccb16a8a9a56127"
     },
     {
       "path": "modules/secure-identity-access-governance/internal/policy/policy.go",
@@ -22754,7 +22760,7 @@
     },
     {
       "path": "modules/stav-append-authority/cmd/symphony-stav-append-authority/main.go",
-      "sha256": "555dd038acbcfa44494bc804c8d445952714bb793bd6e9e9038b3ef4c3469a71"
+      "sha256": "600b5e7682e15b4b804fd945335f0bfbbf5c03f5f2e6fb12503e76ac642c591a"
     },
     {
       "path": "modules/stav-append-authority/go.mod",
@@ -22786,7 +22792,7 @@
     },
     {
       "path": "modules/stav-append-authority/internal/lifecycle/lifecycle.go",
-      "sha256": "3082e21ce3df78eed120b6171fe00c7b06bdc61e464483cfe4d5013a45dbef75"
+      "sha256": "c982e3b1fefd59850cd07e43789463b3e2ab775e53f095386e6113fcf73d3155"
     },
     {
       "path": "modules/stav-append-authority/internal/paths/paths.go",
@@ -25518,11 +25524,11 @@
     },
     {
       "path": "modules/accordare-stav-producer/internal/packageretirement/guard_unix.go",
-      "sha256": "b374a76b2732f4dc2726f260a4ff4cba5d3bd29b4d33b07ba6e99c4de6e673b0"
+      "sha256": "424cab8505a7a11fcae2a3763cd6526cd902db940a94e948def888603e728703"
     },
     {
       "path": "modules/accordare-stav-producer/internal/packageretirement/guard_unsupported.go",
-      "sha256": "23af1fafac85c228a963cbcc1963f31c7c78b7b83e8f8c0d22797d43f8cfdda7"
+      "sha256": "c855eb82689765c58c0b772c189db75d14e4c39e8468e264e668fb55ff348be3"
     },
     {
       "path": "modules/accordare-stav-producer/internal/packageretirement/identity.go",
@@ -25538,11 +25544,11 @@
     },
     {
       "path": "modules/secure-identity-access-governance/internal/packageretirement/guard_unix.go",
-      "sha256": "b374a76b2732f4dc2726f260a4ff4cba5d3bd29b4d33b07ba6e99c4de6e673b0"
+      "sha256": "424cab8505a7a11fcae2a3763cd6526cd902db940a94e948def888603e728703"
     },
     {
       "path": "modules/secure-identity-access-governance/internal/packageretirement/guard_unsupported.go",
-      "sha256": "23af1fafac85c228a963cbcc1963f31c7c78b7b83e8f8c0d22797d43f8cfdda7"
+      "sha256": "c855eb82689765c58c0b772c189db75d14e4c39e8468e264e668fb55ff348be3"
     },
     {
       "path": "modules/secure-identity-access-governance/internal/packageretirement/identity.go",
@@ -25562,11 +25568,11 @@
     },
     {
       "path": "modules/stav-append-authority/internal/packageretirement/guard_unix.go",
-      "sha256": "b374a76b2732f4dc2726f260a4ff4cba5d3bd29b4d33b07ba6e99c4de6e673b0"
+      "sha256": "424cab8505a7a11fcae2a3763cd6526cd902db940a94e948def888603e728703"
     },
     {
       "path": "modules/stav-append-authority/internal/packageretirement/guard_unsupported.go",
-      "sha256": "23af1fafac85c228a963cbcc1963f31c7c78b7b83e8f8c0d22797d43f8cfdda7"
+      "sha256": "c855eb82689765c58c0b772c189db75d14e4c39e8468e264e668fb55ff348be3"
     },
     {
       "path": "modules/stav-append-authority/internal/packageretirement/identity.go",
@@ -25583,6 +25589,42 @@
     {
       "path": "modules/stav-append-authority/internal/packageuse/use.go",
       "sha256": "f33005437f4b5049ef505c0dd13e2e26a1a7c3d84063abf120786493b747fc5d"
+    },
+    {
+      "path": "modules/accordare-stav-producer/internal/packageretirement/delegation.go",
+      "sha256": "115637c6990f2f46c809bfb3f5d0e316bc2240084bd90664c1e33b8fd0852cc1"
+    },
+    {
+      "path": "modules/accordare-stav-producer/internal/packageretirement/delegation_unix.go",
+      "sha256": "834ce1574114f7c2c028226d2f53b112cd1ec2728b6d6b59a999667f8961e6f7"
+    },
+    {
+      "path": "modules/accordare-stav-producer/internal/packageretirement/delegation_unsupported.go",
+      "sha256": "6d6ab7646a774afee8fdf4b0c14ec866c1273e71613fb3ded94567de3dc17f8c"
+    },
+    {
+      "path": "modules/secure-identity-access-governance/internal/packageretirement/delegation.go",
+      "sha256": "115637c6990f2f46c809bfb3f5d0e316bc2240084bd90664c1e33b8fd0852cc1"
+    },
+    {
+      "path": "modules/secure-identity-access-governance/internal/packageretirement/delegation_unix.go",
+      "sha256": "834ce1574114f7c2c028226d2f53b112cd1ec2728b6d6b59a999667f8961e6f7"
+    },
+    {
+      "path": "modules/secure-identity-access-governance/internal/packageretirement/delegation_unsupported.go",
+      "sha256": "6d6ab7646a774afee8fdf4b0c14ec866c1273e71613fb3ded94567de3dc17f8c"
+    },
+    {
+      "path": "modules/stav-append-authority/internal/packageretirement/delegation.go",
+      "sha256": "115637c6990f2f46c809bfb3f5d0e316bc2240084bd90664c1e33b8fd0852cc1"
+    },
+    {
+      "path": "modules/stav-append-authority/internal/packageretirement/delegation_unix.go",
+      "sha256": "834ce1574114f7c2c028226d2f53b112cd1ec2728b6d6b59a999667f8961e6f7"
+    },
+    {
+      "path": "modules/stav-append-authority/internal/packageretirement/delegation_unsupported.go",
+      "sha256": "6d6ab7646a774afee8fdf4b0c14ec866c1273e71613fb3ded94567de3dc17f8c"
     }
   ],
   "platform_profile_catalog": "cmake/mvp-platform-profiles.json",

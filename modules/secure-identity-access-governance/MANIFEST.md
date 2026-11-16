@@ -59,7 +59,7 @@
 
 ## Install and Enrollment Separation
 
-Package retirement never deletes per-TOPS state. For fresh guarded user-owned installations, it durably closes start admission before checking held process use, retained supervisors, live endpoints and unresolved lifecycle attempts, and preserves bytes on refusal. It requires an exact retained owner executable outside the target installation. System-owned, legacy, uncontrolled-consumer and qxctl-administered shared-root reclamation remain unqualified; these are not inferred safe from an empty process or socket scan. `unenroll` preserves state by default; native-only `unenroll --purge` targets exactly one validated TOPS UUID after descriptor, live-socket, and lifecycle-lock proof. Protected digest-linked attempts reside outside the purge subtree. Display names are configuration metadata and never path components.
+Package retirement never deletes per-TOPS state. For fresh guarded user-owned installations, it durably closes start admission before checking held process use, retained supervisors, live endpoints and unresolved lifecycle attempts, and preserves bytes on refusal. It requires an exact retained owner executable outside the target installation. System-owned, legacy and uncontrolled-consumer reclamation remain unqualified; direct mutations of qxctl-administered shared roots require the checked owner delegation; these are not inferred safe from an empty process or socket scan. `unenroll` preserves state by default; native-only `unenroll --purge` targets exactly one validated TOPS UUID after descriptor, live-socket, and lifecycle-lock proof. Protected digest-linked attempts reside outside the purge subtree. Display names are configuration metadata and never path components.
 
 Ordinary foundational lifecycle apply is implemented fail-closed pending a real STAV receipt path. Explicit `audit_deferred` apply is durable and reports reconciliation required. The typed committed-receipt binding hook is not a completed reconciliation endpoint, and qxctl lifecycle v1 exposes no purge intent.
 
@@ -88,7 +88,8 @@ remaining native bridge, deployment and live-provider acceptance work.
 
 ### Package retirement qualification boundary
 
-New native receipts declare `symphony.package-retirement.v1`. Installation creates
+New native receipts declare `symphony.package-retirement.v1` and
+`symphony.package-owner-dispatch.v1`. Installation creates
 nonportable host-local identity under `.symphony-package-retirement/` within the
 prefix: root and stable lock device/inode identities, an installation epoch, and
 exact receipt/executable evidence. This state is never a shipped payload and must

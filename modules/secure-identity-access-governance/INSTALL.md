@@ -25,7 +25,7 @@ Current package managers install one immutable version and its receipt last:
 ./symphony-ssiag package install --prefix /absolute/prefix --version '<compiled-version>'
 ```
 
-The requested version must exactly match the binary's compiled version. The entry point is `<prefix>/libexec/symphony/secure-identity-access-governance/<version>/symphony-ssiag`; its strict `symphony.knowledge.install-receipt.v2` is under `<prefix>/share/symphony/receipts/secure-identity-access-governance/<version>/install-receipt.json`. The receipt declares adapter ID `ssiag.foundation-lifecycle`, protocol `symphony.foundation.lifecycle-command.v1`, and capabilities `symphony.foundation.lifecycle-adapter.v1` and `symphony.package-retirement.v1`. The owner installer copies only its exact executing binary; arbitrary older source bytes cannot acquire retirement custody.
+The requested version must exactly match the binary's compiled version. The entry point is `<prefix>/libexec/symphony/secure-identity-access-governance/<version>/symphony-ssiag`; its strict `symphony.knowledge.install-receipt.v2` is under `<prefix>/share/symphony/receipts/secure-identity-access-governance/<version>/install-receipt.json`. The receipt declares adapter ID `ssiag.foundation-lifecycle`, protocol `symphony.foundation.lifecycle-command.v1`, and capabilities `symphony.foundation.lifecycle-adapter.v1`, `symphony.package-retirement.v1`, and `symphony.package-owner-dispatch.v1`. The owner installer copies only its exact executing binary; arbitrary older source bytes cannot acquire retirement custody.
 
 The historical fixed-path install remains readable for migration:
 
@@ -176,8 +176,9 @@ receipt last; the protected `.symphony-package-retirement/` tombstone and locks
 remain. Neither form purges TOPS data. Do not delete guard files to recover or
 reuse a retired prefix/version; stage a new immutable installation instead.
 
-System-owned packages, legacy or uncontrolled consumers, and roots carrying qxctl
-ownership metadata remain blocked from this managed reclamation lane. Generic
+System-owned packages and legacy or uncontrolled consumers remain blocked from
+this managed reclamation lane. Direct native mutations of roots carrying qxctl
+ownership metadata require the checked delegation described below. Generic
 package deletion and force flags cannot substitute for native owner evidence.
 Fresh installation state binds the current host's filesystem identities and is
 not transferable to another machine. Package delivery must create it on that
@@ -194,3 +195,26 @@ and service-manager acceptance remain pending.
 User enrollment records the effective UID/GID of the enrolling service process. A new system enrollment requires explicit `--service-uid` and `--service-gid`; it never silently selects root. User trust configuration is `0600`. System trust configuration is administrator-owned `0644`, contains no secrets, and is readable without becoming service-writable. The server verifies its effective identity before changing runtime state, and qxctl/self-client verify the exact connected endpoint before sending HTTP bytes.
 
 The process owns socket creation. It acquires `ssiag.sock.lock` before stale inspection, refuses live/foreign endpoints, drains on SIGTERM, removes `ssiag.sock`, and releases the persistent lock last. launchd retries failed exits no faster than ten seconds. systemd retries after five seconds and stops after five starts in one minute. Both allow ten seconds for graceful shutdown. Neither supervisor grants SSIAG or STAV authority.
+
+
+### Shared-root owner delegation
+
+Current-source receipts also require `symphony.package-owner-dispatch.v1`.
+A qualified qxctl apply retains the shared root lock and explicitly selects a
+retained native owner whose bytes match the reviewed staged receipt. The native
+package command receives three inherited descriptors through
+`--lifecycle-root-fd`, `--lifecycle-lock-fd`, and `--lifecycle-proof-fd`; these are
+an internal handoff, not user-supplied permission switches. All three are required
+together. The owner independently checks the real root and held lock identities,
+registry digest and generation, compatibility fence, and exact retained or
+retiring/released profile claim before touching its package. Foreign retained
+or legacy claims still prevent reclamation. qxctl commits ownership changes only
+after independently verifying the native outcome. Direct native mutation of a
+root carrying qxctl ownership metadata remains refused.
+
+Delegation does not bypass native process-use, supervisor, enrollment, pending
+work, identity or receipt checks. The owner never edits qxctl's registry. The
+parent retains custody through child completion; a lost child result requires
+explicit observation/recovery. System and cross-user reclamation remain outside
+this contract. Host guard state is created locally and is never shipped in a
+portable package.

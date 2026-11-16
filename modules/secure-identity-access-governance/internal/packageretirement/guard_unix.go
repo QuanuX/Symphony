@@ -168,7 +168,7 @@ func (g *Lease) openFile(dir *os.File, name string, create bool) (*os.File, erro
 	return f, nil
 }
 
-func open(prefix, owner, version string, create, mutation bool) (*Lease, error) {
+func open(prefix, owner, version string, create, mutation bool, delegated ...*Delegation) (*Lease, error) {
 	if !validSegment(owner) || !validSegment(version) {
 		return nil, fmt.Errorf("invalid retirement owner or version")
 	}
@@ -181,8 +181,15 @@ func open(prefix, owner, version string, create, mutation bool) (*Lease, error) 
 		_ = g.Close()
 		return nil, fmt.Errorf("package retirement evidence unavailable: %w", err)
 	}
+	if len(delegated) > 1 {
+		return fail(fmt.Errorf("multiple native delegations are invalid"))
+	}
 	if mutation {
-		if err := g.lockMutation(); err != nil {
+		if len(delegated) == 1 && delegated[0] != nil {
+			if err := g.adoptDelegation(delegated[0]); err != nil {
+				return fail(err)
+			}
+		} else if err := g.lockMutation(); err != nil {
 			return fail(err)
 		}
 	}
@@ -384,11 +391,19 @@ func (g *Lease) requireAbsent(relative string) error {
 
 // PrepareInstall must only receive allowCreate when the owner has established
 // that neither payload nor receipt exists. An existing package is never adopted.
-func PrepareInstall(prefix string, id Identity, allowCreate bool) (*Lease, error) {
+func PrepareInstall(prefix string, id Identity, allowCreate bool, delegated ...*Delegation) (*Lease, error) {
 	if !id.valid() {
 		return nil, fmt.Errorf("invalid package retirement identity")
 	}
-	g, err := open(prefix, id.Owner, id.Version, allowCreate, true)
+	if len(delegated) > 1 {
+		return nil, fmt.Errorf("multiple native delegations are invalid")
+	}
+	if len(delegated) == 1 {
+		if err := delegated[0].validateIdentity(prefix, id, "install"); err != nil {
+			return nil, err
+		}
+	}
+	g, err := open(prefix, id.Owner, id.Version, allowCreate, true, delegated...)
 	if err != nil {
 		return nil, err
 	}
@@ -467,11 +482,19 @@ func acquireUse(prefix string, id Identity, recovery bool) (*Lease, error) {
 	return g, nil
 }
 
-func BeginRetirement(prefix string, id Identity) (*Lease, error) {
+func BeginRetirement(prefix string, id Identity, delegated ...*Delegation) (*Lease, error) {
 	if !id.valid() {
 		return nil, fmt.Errorf("invalid package retirement identity")
 	}
-	g, err := open(prefix, id.Owner, id.Version, false, true)
+	if len(delegated) > 1 {
+		return nil, fmt.Errorf("multiple native delegations are invalid")
+	}
+	if len(delegated) == 1 {
+		if err := delegated[0].validateIdentity(prefix, id, "uninstall"); err != nil {
+			return nil, err
+		}
+	}
+	g, err := open(prefix, id.Owner, id.Version, false, true, delegated...)
 	if err != nil {
 		return nil, err
 	}

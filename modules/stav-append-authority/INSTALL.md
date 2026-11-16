@@ -88,3 +88,26 @@ Default per-TOPS unenrollment also preserves data. Destructive one-TOPS removal 
 symphony-stav-append-authority unenroll --scope user --tops-id <UUID> --audit-deferred
 symphony-stav-append-authority unenroll --scope user --tops-id <UUID> --purge
 ```
+
+
+### Shared-root owner delegation
+
+Current-source receipts also require `symphony.package-owner-dispatch.v1`.
+A qualified qxctl apply retains the shared root lock and explicitly selects a
+retained native owner whose bytes match the reviewed staged receipt. The native
+package command receives three inherited descriptors through
+`--lifecycle-root-fd`, `--lifecycle-lock-fd`, and `--lifecycle-proof-fd`; these are
+an internal handoff, not user-supplied permission switches. All three are required
+together. The owner independently checks the real root and held lock identities,
+registry digest and generation, compatibility fence, and exact retained or
+retiring/released profile claim before touching its package. Foreign retained
+or legacy claims still prevent reclamation. qxctl commits ownership changes only
+after independently verifying the native outcome. Direct native mutation of a
+root carrying qxctl ownership metadata remains refused.
+
+Delegation does not bypass native process-use, supervisor, enrollment, pending
+work, identity or receipt checks. The owner never edits qxctl's registry. The
+parent retains custody through child completion; a lost child result requires
+explicit observation/recovery. System and cross-user reclamation remain outside
+this contract. Host guard state is created locally and is never shipped in a
+portable package.

@@ -62,3 +62,10 @@ The published versions are immutable public Go source modules, not GitHub binary
 - ordinary foundational mutation success before a real closed SSIAG/STAV receipt, or completed audit reconciliation without an exact later STAV receipt.
 
 Host uninstall always preserves per-TOPS configuration and ledgers. Purge requires the selected TOPS ID and refuses an active listener.
+
+Current-source package receipts also declare `symphony.package-owner-dispatch.v1`.
+Shared-root install and retirement require the exact inherited-descriptor proof
+described in `INSTALL.md`; direct mutation still refuses qxctl ownership markers.
+The parent owns registry changes, and all native use/reference fences remain in
+force. This source contract does not rewrite published module tags or qualify
+system or cross-user reclamation.

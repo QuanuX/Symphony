@@ -5,6 +5,7 @@ import (
 	"crypto/rand"
 	"flag"
 	"fmt"
+	"github.com/QuanuX/Symphony/modules/accordare-stav-producer/internal/packageretirement"
 	"os"
 	"os/signal"
 	"path/filepath"
@@ -136,9 +137,18 @@ func runPackage(operation string, args []string) error {
 	set := flag.NewFlagSet(operation, flag.ContinueOnError)
 	prefix := set.String("prefix", "", "absolute installation prefix")
 	requestedVersion := set.String("version", version.Version, "exact immutable package version")
+	rootFD := set.Int("lifecycle-root-fd", -1, "inherited lifecycle root descriptor")
+	lockFD := set.Int("lifecycle-lock-fd", -1, "inherited lifecycle root lock descriptor")
+	proofFD := set.Int("lifecycle-proof-fd", -1, "inherited exact native-owner proof descriptor")
 	if err := set.Parse(args); err != nil || set.NArg() != 0 || *prefix == "" {
 		return fmt.Errorf("%s requires --prefix and no positional arguments", operation)
 	}
+	delegation, dispatchErr := packageretirement.ReadDispatch(*rootFD, *lockFD, *proofFD, operation, packageinstall.ComponentID, *requestedVersion, *prefix)
+	if dispatchErr != nil {
+		return dispatchErr
+	}
+	defer delegation.Close()
+
 	var result packageinstall.Result
 	var err error
 	if operation == "install" {
@@ -146,9 +156,9 @@ func runPackage(operation string, args []string) error {
 		if executableErr != nil {
 			return executableErr
 		}
-		result, err = packageinstall.Install(executable, *prefix, *requestedVersion)
+		result, err = packageinstall.InstallWithDelegation(executable, *prefix, *requestedVersion, delegation)
 	} else {
-		result, err = packageinstall.Uninstall(*prefix, *requestedVersion)
+		result, err = packageinstall.UninstallWithDelegation(*prefix, *requestedVersion, delegation)
 	}
 	if err != nil {
 		return err

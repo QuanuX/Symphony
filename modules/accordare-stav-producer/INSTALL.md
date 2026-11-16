@@ -17,12 +17,35 @@ The module generates independent per-TOPS launchd/systemd liveness descriptors f
 
 ## Native retirement boundary
 
-Fresh native installs publish only the executing installer's exact bytes and a receipt with `symphony.package-retirement.v1`. Existing unguarded packages cannot be adopted or removed through this contract. Install publication and final unlink use descriptors pinned to the selected installation root. Admission remains closed until both executable and receipt are durable. `serve`, enrollment, and supervisor installation/start require the exact installed executable and retain package-use ownership for their work. Installed stop/status/recovery controllers also retain use ownership during retiring without reopening startup admission. A service retains ownership until startup reconciliation, requests, and socket cleanup finish.
+Fresh native installs publish only the executing installer's exact bytes and a receipt with `symphony.package-retirement.v1` and `symphony.package-owner-dispatch.v1`. Existing unguarded packages cannot be adopted or removed through this contract. Install publication and final unlink use descriptors pinned to the selected installation root. Admission remains closed until both executable and receipt are durable. `serve`, enrollment, and supervisor installation/start require the exact installed executable and retain package-use ownership for their work. Installed stop/status/recovery controllers also retain use ownership during retiring without reopening startup admission. A service retains ownership until startup reconciliation, requests, and socket cleanup finish.
 
 Removal first refuses known pending audit work. It then durably closes package admission and requires exclusive use ownership; a live process leaves removal blocked and new starts refused. After all participants drain, it rechecks enrollment and orphan intent/outbox state, verifies the exact receipt-owned bytes, removes the executable and receipt in that order, and retains the retirement tombstone. Exact retries can finish an interrupted receipt-last removal. The same retired identity cannot be reopened by install or a force flag.
 
 The `.symphony-package-retirement/<owner>/<version>` state and `.symphony-lifecycle.lock` are local to the installation, bind root and lock identities, and must never enter a portable package, CI staging payload, source/SDK bundle, or installer image. Each recipient's native install creates its own state. Preserve these files during local recovery; copying or deleting them is not migration.
 
-Qualification is limited to the current user's fresh, guarded native installation and participating native entry points. System/root reclamation, complete cross-user reference discovery, arbitrary loaders or legacy consumers, and qxctl-administered shared-root removal remain blocked. Updated receipt validation also requires source-bound Go client releases; published older clients are not claimed to support this contract. Raw development executables can inspect or control an existing service but cannot enroll, serve, or install its supervisor as a qualified package.
+Qualification is limited to the current user's fresh, guarded native installation and participating native entry points. System/root reclamation, complete cross-user reference discovery, arbitrary loaders or legacy consumers, and direct mutation of qxctl-administered shared roots remain blocked. Shared-root dispatch requires the descriptor handoff below. Updated receipt validation also requires source-bound Go client releases; published older clients are not claimed to support this contract. Raw development executables can inspect or control an existing service but cannot enroll, serve, or install its supervisor as a qualified package.
 
 If pending work appears after admission closes and the existing producer subsequently dies, this increment retains configuration, receipt, intent, and outbox evidence but does not provide a qualified restart/offline intent recovery path. Do not delete or reopen its guard to bypass that state. Recovery/migration of that retained work remains a blocker before general distribution removal can be enabled. Native stop, read-only status, and reconciliation of an already-running producer remain available while retiring; no host service activation is implied by these source tests.
+
+
+### Shared-root owner delegation
+
+Current-source receipts also require `symphony.package-owner-dispatch.v1`.
+A qualified qxctl apply retains the shared root lock and explicitly selects a
+retained native owner whose bytes match the reviewed staged receipt. The native
+package command receives three inherited descriptors through
+`--lifecycle-root-fd`, `--lifecycle-lock-fd`, and `--lifecycle-proof-fd`; these are
+an internal handoff, not user-supplied permission switches. All three are required
+together. The owner independently checks the real root and held lock identities,
+registry digest and generation, compatibility fence, and exact retained or
+retiring/released profile claim before touching its package. Foreign retained
+or legacy claims still prevent reclamation. qxctl commits ownership changes only
+after independently verifying the native outcome. Direct native mutation of a
+root carrying qxctl ownership metadata remains refused.
+
+Delegation does not bypass native process-use, supervisor, enrollment, pending
+work, identity or receipt checks. The owner never edits qxctl's registry. The
+parent retains custody through child completion; a lost child result requires
+explicit observation/recovery. System and cross-user reclamation remain outside
+this contract. Host guard state is created locally and is never shipped in a
+portable package.

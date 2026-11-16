@@ -101,6 +101,11 @@ func Install(source string, scope stavpaths.Scope, force bool) (Result, error) {
 }
 
 func InstallAt(source string, scope stavpaths.Scope, prefix, requestedVersion string) (Result, error) {
+	return InstallAtWithDelegation(source, scope, prefix, requestedVersion, nil)
+}
+
+// InstallAtWithDelegation accepts only a checked native-owner descriptor handoff.
+func InstallAtWithDelegation(source string, scope stavpaths.Scope, prefix, requestedVersion string, delegation *packageretirement.Delegation) (Result, error) {
 	layout, err := stavpaths.ResolveInstallAt(scope, prefix, requestedVersion)
 	if err != nil {
 		return Result{}, err
@@ -109,7 +114,7 @@ func InstallAt(source string, scope stavpaths.Scope, prefix, requestedVersion st
 	if err != nil {
 		return Result{}, err
 	}
-	return installAt(source, layout, false, qualifiedDigest)
+	return installAt(source, layout, false, qualifiedDigest, delegation)
 }
 
 // A fresh guard may only describe this retirement-aware owner build. Older or
@@ -130,7 +135,7 @@ func requireInvokingExecutable(source string) (string, error) {
 	return want, nil
 }
 
-func installAt(source string, layout stavpaths.InstallLayout, force bool, qualifiedDigest string) (Result, error) {
+func installAt(source string, layout stavpaths.InstallLayout, force bool, qualifiedDigest string, delegated ...*packageretirement.Delegation) (Result, error) {
 	scope := layout.Scope
 	source, sourceDigest, err := sourceFile(source)
 	if err != nil {
@@ -161,7 +166,7 @@ func installAt(source string, layout stavpaths.InstallLayout, force bool, qualif
 	if platformOS == "darwin" {
 		platformOS = "macos"
 	}
-	receipt := InstallReceipt{Protocol: "symphony.knowledge.install-receipt.v2", FormatVersion: 2, ComponentID: "stav-append-authority", ComponentKind: "service", ModuleID: "stav-append-authority", PackageID: "stav-append-authority", Version: version.Version, InstallScope: "prefix", PrefixMode: "installation_prefix", Files: []ReceiptFile{{Path: filepath.ToSlash(relativeBinary), Kind: "executable", Size: info.Size(), Digest: "sha256:" + sourceDigest}}, EntryPoints: []ReceiptEntryPoint{{EntryPointID: "stav.append-authority", Kind: "executable", Path: filepath.ToSlash(relativeBinary), Protocols: []string{"symphony.stav.local.v1"}}, {EntryPointID: "stav.foundation-lifecycle", Kind: "adapter", Path: filepath.ToSlash(relativeBinary), Protocols: []string{"symphony.foundation.lifecycle-command.v1"}}}, ProvidesCapabilities: []string{"symphony.foundation.lifecycle-adapter.v1", "symphony.stav.append-authority.v1", "symphony.package-retirement.v1"}, RequiresCapabilities: []string{}, CompatibleReceptors: []string{}, PlatformRequirements: []PlatformRequirement{{OS: platformOS, Architecture: runtime.GOARCH, Critical: true}}}
+	receipt := InstallReceipt{Protocol: "symphony.knowledge.install-receipt.v2", FormatVersion: 2, ComponentID: "stav-append-authority", ComponentKind: "service", ModuleID: "stav-append-authority", PackageID: "stav-append-authority", Version: version.Version, InstallScope: "prefix", PrefixMode: "installation_prefix", Files: []ReceiptFile{{Path: filepath.ToSlash(relativeBinary), Kind: "executable", Size: info.Size(), Digest: "sha256:" + sourceDigest}}, EntryPoints: []ReceiptEntryPoint{{EntryPointID: "stav.append-authority", Kind: "executable", Path: filepath.ToSlash(relativeBinary), Protocols: []string{"symphony.stav.local.v1"}}, {EntryPointID: "stav.foundation-lifecycle", Kind: "adapter", Path: filepath.ToSlash(relativeBinary), Protocols: []string{"symphony.foundation.lifecycle-command.v1"}}}, ProvidesCapabilities: []string{"symphony.foundation.lifecycle-adapter.v1", "symphony.stav.append-authority.v1", packageretirement.Capability, packageretirement.DispatchCapability}, RequiresCapabilities: []string{}, CompatibleReceptors: []string{}, PlatformRequirements: []PlatformRequirement{{OS: platformOS, Architecture: runtime.GOARCH, Critical: true}}}
 	receipt.ReceiptDigest, err = canonicalDigestWithout(receipt, "receipt_digest")
 	if err != nil {
 		return Result{}, err
@@ -176,7 +181,7 @@ func installAt(source string, layout stavpaths.InstallLayout, force bool, qualif
 		return Result{}, manifestErr
 	}
 	identity := retirementIdentity(layout, receipt.ReceiptDigest, "sha256:"+sourceDigest, uint64(info.Size()))
-	guard, err := packageretirement.PrepareInstall(layout.Prefix, identity, !exists && os.IsNotExist(manifestErr))
+	guard, err := packageretirement.PrepareInstall(layout.Prefix, identity, !exists && os.IsNotExist(manifestErr), delegated...)
 	if err != nil {
 		return Result{}, err
 	}
@@ -240,11 +245,16 @@ func Uninstall(source string, scope stavpaths.Scope, force bool) (Result, error)
 }
 
 func UninstallAt(source string, scope stavpaths.Scope, prefix, requestedVersion string) (Result, error) {
+	return UninstallAtWithDelegation(source, scope, prefix, requestedVersion, nil)
+}
+
+// UninstallAtWithDelegation accepts only a checked native-owner descriptor handoff.
+func UninstallAtWithDelegation(source string, scope stavpaths.Scope, prefix, requestedVersion string, delegation *packageretirement.Delegation) (Result, error) {
 	layout, err := stavpaths.ResolveInstallAt(scope, prefix, requestedVersion)
 	if err != nil {
 		return Result{}, err
 	}
-	return uninstallAt(source, layout, false)
+	return uninstallAt(source, layout, false, delegation)
 }
 
 func retirementIdentity(layout stavpaths.InstallLayout, receiptDigest, binaryDigest string, size uint64) packageretirement.Identity {
@@ -253,7 +263,7 @@ func retirementIdentity(layout stavpaths.InstallLayout, receiptDigest, binaryDig
 	return packageretirement.Identity{Owner: packageuse.Owner, Version: version.Version, ReceiptDigest: receiptDigest, BinaryDigest: binaryDigest, BinaryRelative: filepath.ToSlash(binary), ReceiptRelative: filepath.ToSlash(receipt), BinarySize: size}
 }
 
-func uninstallAt(source string, layout stavpaths.InstallLayout, force bool) (Result, error) {
+func uninstallAt(source string, layout stavpaths.InstallLayout, force bool, delegated ...*packageretirement.Delegation) (Result, error) {
 	if layout.Scope != stavpaths.ScopeUser {
 		return Result{}, fmt.Errorf("STAV system or cross-user retirement is not qualified")
 	}
@@ -278,7 +288,7 @@ func uninstallAt(source string, layout stavpaths.InstallLayout, force bool) (Res
 	if filepath.Clean(controller) == layout.Binary || (controllerErr == nil && targetErr == nil && os.SameFile(controllerInfo, targetInfo)) {
 		return Result{}, fmt.Errorf("STAV retirement cannot unlink its executing controller; use the retained exact owner from outside the target installation")
 	}
-	guard, err := packageretirement.BeginRetirement(layout.Prefix, identity)
+	guard, err := packageretirement.BeginRetirement(layout.Prefix, identity, delegated...)
 	if err != nil {
 		return Result{}, err
 	}
@@ -405,7 +415,7 @@ func decodeInstallReceipt(layout stavpaths.InstallLayout, data []byte) (InstallR
 		return InstallReceipt{}, fmt.Errorf("STAV receipt does not own the exact executable")
 	}
 	service, adapter := receipt.EntryPoints[0], receipt.EntryPoints[1]
-	if service.EntryPointID != "stav.append-authority" || service.Kind != "executable" || service.Path != receipt.Files[0].Path || len(service.Protocols) != 1 || service.Protocols[0] != "symphony.stav.local.v1" || adapter.EntryPointID != "stav.foundation-lifecycle" || adapter.Kind != "adapter" || adapter.Path != receipt.Files[0].Path || len(adapter.Protocols) != 1 || adapter.Protocols[0] != CommandProtocolName || !exactStrings(receipt.ProvidesCapabilities, []string{"symphony.foundation.lifecycle-adapter.v1", "symphony.stav.append-authority.v1", "symphony.package-retirement.v1"}) {
+	if service.EntryPointID != "stav.append-authority" || service.Kind != "executable" || service.Path != receipt.Files[0].Path || len(service.Protocols) != 1 || service.Protocols[0] != "symphony.stav.local.v1" || adapter.EntryPointID != "stav.foundation-lifecycle" || adapter.Kind != "adapter" || adapter.Path != receipt.Files[0].Path || len(adapter.Protocols) != 1 || adapter.Protocols[0] != CommandProtocolName || !exactStrings(receipt.ProvidesCapabilities, []string{"symphony.foundation.lifecycle-adapter.v1", "symphony.stav.append-authority.v1", packageretirement.Capability, packageretirement.DispatchCapability}) {
 		return InstallReceipt{}, fmt.Errorf("STAV receipt entry points or capabilities are invalid")
 	}
 	wantOS := runtime.GOOS

@@ -6,6 +6,7 @@ import (
 	"errors"
 	"flag"
 	"fmt"
+	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/packageretirement"
 	"os"
 	"os/signal"
 	"strconv"
@@ -647,25 +648,34 @@ func runPackage(args []string) error {
 	set := flag.NewFlagSet("package "+operation, flag.ContinueOnError)
 	prefix := set.String("prefix", "", "exact absolute receipt-v2 installation prefix")
 	packageVersion := set.String("version", version.Version, "exact side-by-side package version")
+	rootFD := set.Int("lifecycle-root-fd", -1, "inherited lifecycle root descriptor")
+	lockFD := set.Int("lifecycle-lock-fd", -1, "inherited lifecycle root lock descriptor")
+	proofFD := set.Int("lifecycle-proof-fd", -1, "inherited exact native-owner proof descriptor")
 	if err := set.Parse(args[1:]); err != nil {
 		return err
 	}
 	if set.NArg() != 0 || *prefix == "" {
 		return fmt.Errorf("package %s requires --prefix and --version", operation)
 	}
+	delegation, dispatchErr := packageretirement.ReadDispatch(*rootFD, *lockFD, *proofFD, operation, packageinstall.ComponentID, *packageVersion, *prefix)
+	if dispatchErr != nil {
+		return dispatchErr
+	}
+	defer delegation.Close()
+
 	if operation == "install" {
 		executable, err := os.Executable()
 		if err != nil {
 			return err
 		}
-		result, err := packageinstall.Install(executable, *prefix, *packageVersion)
+		result, err := packageinstall.InstallWithDelegation(executable, *prefix, *packageVersion, delegation)
 		if err != nil {
 			return err
 		}
 		fmt.Printf("installed SSIAG receipt-v2 package version=%s prefix=%s binary=%s receipt=%s digest=%s changed=%t\n", result.Version, result.Prefix, result.Binary, result.Receipt, result.ReceiptDigest, result.Changed)
 		return nil
 	}
-	result, err := packageinstall.Uninstall(*prefix, *packageVersion)
+	result, err := packageinstall.UninstallWithDelegation(*prefix, *packageVersion, delegation)
 	if err != nil {
 		return err
 	}

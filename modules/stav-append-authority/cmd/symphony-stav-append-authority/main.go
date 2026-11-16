@@ -4,6 +4,7 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	"github.com/QuanuX/Symphony/modules/stav-append-authority/internal/packageretirement"
 	"os"
 	"os/signal"
 	"strconv"
@@ -332,12 +333,21 @@ func runLifecycle(command string, args []string) error {
 	force := set.Bool("force", false, "compatibility flag; never overrides immutable package or retirement checks")
 	prefix := set.String("prefix", "", "explicit installation prefix for an immutable receipt-v2 package")
 	packageVersion := set.String("version", version.Version, "exact package version; must match this compiled binary")
+	rootFD := set.Int("lifecycle-root-fd", -1, "inherited lifecycle root descriptor")
+	lockFD := set.Int("lifecycle-lock-fd", -1, "inherited lifecycle root lock descriptor")
+	proofFD := set.Int("lifecycle-proof-fd", -1, "inherited exact native-owner proof descriptor")
 	if err := set.Parse(args); err != nil {
 		return err
 	}
 	if set.NArg() != 0 {
 		return fmt.Errorf("unexpected positional arguments")
 	}
+	delegation, dispatchErr := packageretirement.ReadDispatch(*rootFD, *lockFD, *proofFD, command, packageuse.Owner, *packageVersion, *prefix)
+	if dispatchErr != nil {
+		return dispatchErr
+	}
+	defer delegation.Close()
+
 	scope, err := stavpaths.ParseScope(*scopeValue)
 	if err != nil {
 		return err
@@ -353,13 +363,13 @@ func runLifecycle(command string, args []string) error {
 		if *prefix == "" {
 			result, err = lifecycle.Install(executable, scope, *force)
 		} else {
-			result, err = lifecycle.InstallAt(executable, scope, *prefix, *packageVersion)
+			result, err = lifecycle.InstallAtWithDelegation(executable, scope, *prefix, *packageVersion, delegation)
 		}
 	case "uninstall":
 		if *prefix == "" {
 			result, err = lifecycle.Uninstall(executable, scope, *force)
 		} else {
-			result, err = lifecycle.UninstallAt(executable, scope, *prefix, *packageVersion)
+			result, err = lifecycle.UninstallAtWithDelegation(executable, scope, *prefix, *packageVersion, delegation)
 		}
 	}
 	if err != nil {

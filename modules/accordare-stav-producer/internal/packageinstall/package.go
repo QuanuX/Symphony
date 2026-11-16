@@ -23,7 +23,8 @@ import (
 
 const (
 	receiptProtocol = "symphony.knowledge.install-receipt.v2"
-	componentID     = "accordare-stav-producer"
+	ComponentID     = "accordare-stav-producer"
+	componentID     = ComponentID
 	binaryName      = "symphony-accordare-stav-producer"
 )
 
@@ -92,6 +93,11 @@ func Inspect(prefix, requestedVersion string) (Result, error) {
 }
 
 func Install(source, prefix, requestedVersion string) (Result, error) {
+	return InstallWithDelegation(source, prefix, requestedVersion, nil)
+}
+
+// InstallWithDelegation retains the parent lifecycle root lock and independently validates its exact ownership claim.
+func InstallWithDelegation(source, prefix, requestedVersion string, delegation *packageretirement.Delegation) (Result, error) {
 	paths, err := resolve(prefix, requestedVersion)
 	if err != nil {
 		return Result{}, err
@@ -146,7 +152,7 @@ func Install(source, prefix, requestedVersion string) (Result, error) {
 	}
 	_, binaryErr := os.Lstat(paths.binary)
 	allowCreate := !present && os.IsNotExist(binaryErr)
-	lease, err := packageretirement.PrepareInstall(paths.prefix, retirementIdentity(paths, record), allowCreate)
+	lease, err := packageretirement.PrepareInstall(paths.prefix, retirementIdentity(paths, record), allowCreate, delegation)
 	if err != nil {
 		return Result{}, err
 	}
@@ -199,7 +205,7 @@ func makeReceipt(paths layout, size uint64, digest string) (receipt, error) {
 		PackageID: componentID, Version: version.Version, InstallScope: "prefix", PrefixMode: "installation_prefix",
 		Files:                []receiptFile{{Path: filepath.ToSlash(relative), Kind: "executable", Size: size, Digest: digest}},
 		EntryPoints:          []entryPoint{{EntryPointID: "accordare.stav-producer", Kind: "executable", Path: filepath.ToSlash(relative), Protocols: []string{"symphony.accordare.stav-producer.local.v1", "symphony.accordare.stav-producer.supervisor.v1"}}},
-		ProvidesCapabilities: []string{"symphony.accordare.stav-producer.v1", "symphony.accordare.stav-producer.native-supervision.v1", packageretirement.Capability}, RequiresCapabilities: []string{"symphony.stav.append-authority.v1", "symphony.ssiag.authorization.v1"},
+		ProvidesCapabilities: []string{"symphony.accordare.stav-producer.v1", "symphony.accordare.stav-producer.native-supervision.v1", packageretirement.Capability, packageretirement.DispatchCapability}, RequiresCapabilities: []string{"symphony.stav.append-authority.v1", "symphony.ssiag.authorization.v1"},
 		CompatibleReceptors: []string{}, PlatformRequirements: []platformRequirement{{OS: osName, Architecture: runtime.GOARCH, Critical: true}},
 	}
 	var err error
@@ -208,6 +214,11 @@ func makeReceipt(paths layout, size uint64, digest string) (receipt, error) {
 }
 
 func Uninstall(prefix, requestedVersion string) (Result, error) {
+	return UninstallWithDelegation(prefix, requestedVersion, nil)
+}
+
+// UninstallWithDelegation preserves all native retirement and reference gates.
+func UninstallWithDelegation(prefix, requestedVersion string, delegation *packageretirement.Delegation) (Result, error) {
 	if os.Geteuid() == 0 {
 		return Result{}, fmt.Errorf("Accordare system and cross-user reclamation remains unqualified; native removal requires a user-owned installation")
 	}
@@ -253,7 +264,7 @@ func Uninstall(prefix, requestedVersion string) (Result, error) {
 			return Result{}, err
 		}
 	}
-	lease, err := packageretirement.BeginRetirement(paths.prefix, identity)
+	lease, err := packageretirement.BeginRetirement(paths.prefix, identity, delegation)
 	if err != nil {
 		return Result{}, err
 	}
@@ -445,7 +456,7 @@ func validateReceiptIdentity(record receipt, paths layout) error {
 	if wantOS == "darwin" {
 		wantOS = "macos"
 	}
-	wantProvides := []string{"symphony.accordare.stav-producer.v1", "symphony.accordare.stav-producer.native-supervision.v1", packageretirement.Capability}
+	wantProvides := []string{"symphony.accordare.stav-producer.v1", "symphony.accordare.stav-producer.native-supervision.v1", packageretirement.Capability, packageretirement.DispatchCapability}
 	wantRequires := []string{"symphony.stav.append-authority.v1", "symphony.ssiag.authorization.v1"}
 	wantProtocols := []string{"symphony.accordare.stav-producer.local.v1", "symphony.accordare.stav-producer.supervisor.v1"}
 	if record.Protocol != receiptProtocol || record.FormatVersion != 2 || record.ComponentID != componentID || record.ComponentKind != "service" || record.ModuleID != componentID || record.VectorID != nil || record.EngineID != nil || record.PackageID != componentID || record.Version != version.Version || record.InstallScope != "prefix" || record.PrefixMode != "installation_prefix" || record.ReceiptDigest != wantDigest || len(record.Files) != 1 || record.Files[0].Path != filepath.ToSlash(relative) || record.Files[0].Kind != "executable" || len(record.EntryPoints) != 1 || record.EntryPoints[0].EntryPointID != "accordare.stav-producer" || record.EntryPoints[0].Kind != "executable" || record.EntryPoints[0].Path != record.Files[0].Path || !slices.Equal(record.EntryPoints[0].Protocols, wantProtocols) || !slices.Equal(record.ProvidesCapabilities, wantProvides) || !slices.Equal(record.RequiresCapabilities, wantRequires) || record.CompatibleReceptors == nil || len(record.CompatibleReceptors) != 0 || len(record.PlatformRequirements) != 1 || record.PlatformRequirements[0].OS != wantOS || record.PlatformRequirements[0].Architecture != runtime.GOARCH || record.PlatformRequirements[0].KernelABI != nil || !record.PlatformRequirements[0].Critical {

@@ -71,6 +71,11 @@ type Result struct {
 type Evidence struct{ Prefix, Version, Binary, BinaryDigest, Receipt, ReceiptDigest string }
 
 func Install(source, prefix, version string) (Result, error) {
+	return InstallWithDelegation(source, prefix, version, nil)
+}
+
+// InstallWithDelegation retains the parent lifecycle root lock and independently validates its exact ownership claim.
+func InstallWithDelegation(source, prefix, version string, delegation *packageretirement.Delegation) (Result, error) {
 	if version != compiledVersion() {
 		return Result{}, fmt.Errorf("SSIAG package version %q does not match compiled binary version %q", version, compiledVersion())
 	}
@@ -103,7 +108,7 @@ func Install(source, prefix, version string) (Result, error) {
 	}
 	_, binaryErr := os.Lstat(layout.binary)
 	_, receiptErr := os.Lstat(layout.receipt)
-	lease, err := packageretirement.PrepareInstall(layout.prefix, retirementIdentity(layout, receipt), os.IsNotExist(binaryErr) && os.IsNotExist(receiptErr))
+	lease, err := packageretirement.PrepareInstall(layout.prefix, retirementIdentity(layout, receipt), os.IsNotExist(binaryErr) && os.IsNotExist(receiptErr), delegation)
 	if err != nil {
 		return Result{}, err
 	}
@@ -163,6 +168,11 @@ func activatePackage(lease *packageretirement.Lease, l layout, receipt Receipt, 
 }
 
 func Uninstall(prefix, version string) (Result, error) {
+	return UninstallWithDelegation(prefix, version, nil)
+}
+
+// UninstallWithDelegation preserves all native retirement and reference gates.
+func UninstallWithDelegation(prefix, version string, delegation *packageretirement.Delegation) (Result, error) {
 	if os.Geteuid() == 0 {
 		return Result{}, fmt.Errorf("system-owned SSIAG reclamation is unqualified; retain bytes for target-host owner maintenance")
 	}
@@ -193,7 +203,7 @@ func Uninstall(prefix, version string) (Result, error) {
 			return Result{}, fmt.Errorf("SSIAG cannot reclaim its executing controller; use a retained exact owner outside this installation")
 		}
 	}
-	lease, err := packageretirement.BeginRetirement(layout.prefix, id)
+	lease, err := packageretirement.BeginRetirement(layout.prefix, id, delegation)
 	if err != nil {
 		return Result{}, err
 	}
@@ -438,7 +448,7 @@ func newReceipt(layout layout, size uint64, digest string) Receipt {
 	if osName == "darwin" {
 		osName = "macos"
 	}
-	return Receipt{Protocol: ReceiptProtocol, FormatVersion: 2, ComponentID: ComponentID, ComponentKind: "service", ModuleID: ComponentID, PackageID: ComponentID, Version: layout.version, InstallScope: "prefix", PrefixMode: "installation_prefix", Files: []File{{Path: layout.binaryRelative, Kind: "executable", Size: size, Digest: digest}}, EntryPoints: []EntryPoint{{EntryPointID: EntryPointID, Kind: "adapter", Path: layout.binaryRelative, Protocols: []string{"symphony.foundation.lifecycle-command.v1"}}}, ProvidesCapabilities: []string{"symphony.foundation.lifecycle-adapter.v1", packageretirement.Capability}, RequiresCapabilities: []string{}, CompatibleReceptors: []string{}, PlatformRequirements: []PlatformRequirement{{OS: osName, Architecture: runtime.GOARCH, Critical: true}}}
+	return Receipt{Protocol: ReceiptProtocol, FormatVersion: 2, ComponentID: ComponentID, ComponentKind: "service", ModuleID: ComponentID, PackageID: ComponentID, Version: layout.version, InstallScope: "prefix", PrefixMode: "installation_prefix", Files: []File{{Path: layout.binaryRelative, Kind: "executable", Size: size, Digest: digest}}, EntryPoints: []EntryPoint{{EntryPointID: EntryPointID, Kind: "adapter", Path: layout.binaryRelative, Protocols: []string{"symphony.foundation.lifecycle-command.v1"}}}, ProvidesCapabilities: []string{"symphony.foundation.lifecycle-adapter.v1", packageretirement.Capability, packageretirement.DispatchCapability}, RequiresCapabilities: []string{}, CompatibleReceptors: []string{}, PlatformRequirements: []PlatformRequirement{{OS: osName, Architecture: runtime.GOARCH, Critical: true}}}
 }
 func validateReceipt(receipt Receipt, layout layout) error {
 	if err := validateReceiptIdentity(receipt, layout); err != nil {
@@ -476,7 +486,7 @@ func validateReceiptIdentity(receipt Receipt, layout layout) error {
 	if wantOS == "darwin" {
 		wantOS = "macos"
 	}
-	if receipt.Protocol != ReceiptProtocol || receipt.FormatVersion != 2 || receipt.ComponentID != ComponentID || receipt.ComponentKind != "service" || receipt.ModuleID != ComponentID || receipt.VectorID != nil || receipt.EngineID != nil || receipt.PackageID != ComponentID || receipt.Version != layout.version || receipt.Version != compiledVersion() || receipt.InstallScope != "prefix" || receipt.PrefixMode != "installation_prefix" || len(receipt.Files) != 1 || receipt.Files[0].Path != layout.binaryRelative || receipt.Files[0].Kind != "executable" || receipt.Files[0].Size == 0 || !validDigest(receipt.Files[0].Digest) || len(receipt.EntryPoints) != 1 || receipt.EntryPoints[0].EntryPointID != EntryPointID || receipt.EntryPoints[0].Kind != "adapter" || receipt.EntryPoints[0].Path != layout.binaryRelative || len(receipt.EntryPoints[0].Protocols) != 1 || receipt.EntryPoints[0].Protocols[0] != "symphony.foundation.lifecycle-command.v1" || len(receipt.ProvidesCapabilities) != 2 || receipt.ProvidesCapabilities[0] != "symphony.foundation.lifecycle-adapter.v1" || receipt.ProvidesCapabilities[1] != packageretirement.Capability || len(receipt.RequiresCapabilities) != 0 || len(receipt.CompatibleReceptors) != 0 || len(receipt.PlatformRequirements) != 1 || receipt.PlatformRequirements[0].OS != wantOS || receipt.PlatformRequirements[0].Architecture != runtime.GOARCH || receipt.PlatformRequirements[0].KernelABI != nil || !receipt.PlatformRequirements[0].Critical {
+	if receipt.Protocol != ReceiptProtocol || receipt.FormatVersion != 2 || receipt.ComponentID != ComponentID || receipt.ComponentKind != "service" || receipt.ModuleID != ComponentID || receipt.VectorID != nil || receipt.EngineID != nil || receipt.PackageID != ComponentID || receipt.Version != layout.version || receipt.Version != compiledVersion() || receipt.InstallScope != "prefix" || receipt.PrefixMode != "installation_prefix" || len(receipt.Files) != 1 || receipt.Files[0].Path != layout.binaryRelative || receipt.Files[0].Kind != "executable" || receipt.Files[0].Size == 0 || !validDigest(receipt.Files[0].Digest) || len(receipt.EntryPoints) != 1 || receipt.EntryPoints[0].EntryPointID != EntryPointID || receipt.EntryPoints[0].Kind != "adapter" || receipt.EntryPoints[0].Path != layout.binaryRelative || len(receipt.EntryPoints[0].Protocols) != 1 || receipt.EntryPoints[0].Protocols[0] != "symphony.foundation.lifecycle-command.v1" || len(receipt.ProvidesCapabilities) != 3 || receipt.ProvidesCapabilities[0] != "symphony.foundation.lifecycle-adapter.v1" || receipt.ProvidesCapabilities[1] != packageretirement.Capability || receipt.ProvidesCapabilities[2] != packageretirement.DispatchCapability || len(receipt.RequiresCapabilities) != 0 || len(receipt.CompatibleReceptors) != 0 || len(receipt.PlatformRequirements) != 1 || receipt.PlatformRequirements[0].OS != wantOS || receipt.PlatformRequirements[0].Architecture != runtime.GOARCH || receipt.PlatformRequirements[0].KernelABI != nil || !receipt.PlatformRequirements[0].Critical {
 		return fmt.Errorf("SSIAG package receipt identity is invalid")
 	}
 	want, err := digestWithoutReceipt(receipt)
