@@ -21295,7 +21295,7 @@
     },
     {
       "path": "modules/knowledge-session-coordinator/CMakeLists.txt",
-      "sha256": "e72c2ed87266cb5845237734af5e8c968fdf085cc6f2fd4d5c13ba4b0283a663"
+      "sha256": "7e0f9b9f4a7d946f94bb2bb0dbf8b1636330fbdc8e0b02761f78289235041500"
     },
     {
       "path": "modules/knowledge-session-coordinator/cmake/install-receipt.json.in",
