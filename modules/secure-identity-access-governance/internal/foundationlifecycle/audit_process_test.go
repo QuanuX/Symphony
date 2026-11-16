@@ -87,6 +87,7 @@ func TestFoundationLifecycleRealSTAVBridgeRestartReconcilesLostReply(t *testing.
 	}
 	start := func() func() {
 		command := exec.Command(binary, "serve", "--tops-id", testTOPSID, "--config", configPath)
+		command.Stderr = os.Stderr
 		if err := command.Start(); err != nil {
 			t.Fatal(err)
 		}

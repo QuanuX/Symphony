@@ -16,6 +16,7 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/packageretirement"
 	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/version"
 )
 
@@ -83,69 +84,88 @@ func Install(source, prefix, version string) (Result, error) {
 	if err := validatePrefixTrust(layout.prefix); err != nil {
 		return Result{}, err
 	}
-	if existing, exists, err := readReceipt(layout.receipt); err != nil {
-		return Result{}, err
-	} else if exists {
-		if err := validateReceipt(existing, layout); err != nil {
-			return Result{}, fmt.Errorf("existing SSIAG receipt-v2 package is invalid: %w", err)
-		}
-		sourceSize, sourceDigest, err := sourceEvidence(source)
-		if err != nil {
-			return Result{}, err
-		}
-		if sourceSize != existing.Files[0].Size || sourceDigest != existing.Files[0].Digest {
-			return Result{}, fmt.Errorf("immutable SSIAG package version already exists with different bytes")
-		}
-		return Result{Prefix: layout.prefix, Version: version, Binary: layout.binary, Receipt: layout.receipt, ReceiptDigest: existing.ReceiptDigest}, nil
-	}
-	if err := ensureDirectory(filepath.Dir(layout.binary)); err != nil {
-		return Result{}, err
-	}
-	if err := ensureDirectory(filepath.Dir(layout.receipt)); err != nil {
-		return Result{}, err
-	}
 	size, digest, err := sourceEvidence(source)
 	if err != nil {
 		return Result{}, err
 	}
-	if info, statErr := os.Lstat(layout.binary); statErr == nil {
-		if !info.Mode().IsRegular() || info.Mode()&os.ModeSymlink != 0 || uint64(info.Size()) != size {
-			return Result{}, fmt.Errorf("refusing unsafe unreceipted SSIAG package executable")
-		}
-		existingDigest, digestErr := digestFile(layout.binary)
-		if digestErr != nil || existingDigest != digest {
-			return Result{}, fmt.Errorf("immutable SSIAG package path contains different unreceipted bytes")
-		}
-	} else if !os.IsNotExist(statErr) {
-		return Result{}, statErr
-	} else {
-		staged, stagedSize, stagedDigest, stageErr := stageExecutable(source, filepath.Dir(layout.binary))
-		if stageErr != nil {
-			return Result{}, stageErr
-		}
-		defer os.Remove(staged)
-		if stagedSize != size || stagedDigest != digest {
-			return Result{}, fmt.Errorf("SSIAG package source changed during installation")
-		}
-		if err := os.Rename(staged, layout.binary); err != nil {
-			return Result{}, err
-		}
-		if err := syncDirectory(filepath.Dir(layout.binary)); err != nil {
-			return Result{}, err
-		}
+	self, err := os.Executable()
+	if err != nil {
+		return Result{}, err
+	}
+	selfSize, selfDigest, err := sourceEvidence(self)
+	if err != nil || selfSize != size || selfDigest != digest {
+		return Result{}, fmt.Errorf("guarded SSIAG installation requires the executing owner binary")
 	}
 	receipt := newReceipt(layout, size, digest)
 	receipt.ReceiptDigest, err = digestWithoutReceipt(receipt)
 	if err != nil {
 		return Result{}, err
 	}
-	if err := writeReceiptLast(layout.receipt, receipt); err != nil {
+	_, binaryErr := os.Lstat(layout.binary)
+	_, receiptErr := os.Lstat(layout.receipt)
+	lease, err := packageretirement.PrepareInstall(layout.prefix, retirementIdentity(layout, receipt), os.IsNotExist(binaryErr) && os.IsNotExist(receiptErr))
+	if err != nil {
+		return Result{}, err
+	}
+	defer lease.Close()
+	if existing, existingBytes, exists, err := readGuardedReceiptBytes(lease, layout); err != nil {
+		return Result{}, err
+	} else if exists {
+		if err := validateReceipt(existing, layout); err != nil {
+			return Result{}, fmt.Errorf("existing SSIAG receipt-v2 package is invalid: %w", err)
+		}
+		if existing.ReceiptDigest != receipt.ReceiptDigest {
+			return Result{}, fmt.Errorf("immutable SSIAG package version already exists with different bytes")
+		}
+		if err := activatePackage(lease, layout, existing, existingBytes); err != nil {
+			return Result{}, err
+		}
+		return Result{Prefix: layout.prefix, Version: version, Binary: layout.binary, Receipt: layout.receipt, ReceiptDigest: receipt.ReceiptDigest}, nil
+	}
+	sourceFile, err := os.Open(source)
+	if err != nil {
+		return Result{}, err
+	}
+	_, publishErr := lease.PublishFile(layout.binaryRelative, sourceFile, digest, size, 0o755)
+	closeErr := sourceFile.Close()
+	if publishErr != nil {
+		return Result{}, publishErr
+	}
+	if closeErr != nil {
+		return Result{}, closeErr
+	}
+	receiptBytes, err := json.MarshalIndent(receipt, "", "  ")
+	if err != nil {
+		return Result{}, err
+	}
+	receiptBytes = append(receiptBytes, '\n')
+	rawDigest := sha256.Sum256(receiptBytes)
+	if _, err := lease.PublishFile(receiptRelative(layout), bytes.NewReader(receiptBytes), "sha256:"+hex.EncodeToString(rawDigest[:]), uint64(len(receiptBytes)), 0o644); err != nil {
+		return Result{}, err
+	}
+	if err := activatePackage(lease, layout, receipt, receiptBytes); err != nil {
 		return Result{}, err
 	}
 	return Result{Prefix: layout.prefix, Version: version, Binary: layout.binary, Receipt: layout.receipt, ReceiptDigest: receipt.ReceiptDigest, Changed: true}, nil
 }
 
+// Activation is conditional on both exact published objects still being present
+// at their pinned package paths, including the receipt bytes validated above.
+func activatePackage(lease *packageretirement.Lease, l layout, receipt Receipt, raw []byte) error {
+	if err := lease.VerifyFile(l.binaryRelative, receipt.Files[0].Digest, receipt.Files[0].Size); err != nil {
+		return err
+	}
+	digest := sha256.Sum256(raw)
+	if err := lease.VerifyFile(receiptRelative(l), "sha256:"+hex.EncodeToString(digest[:]), uint64(len(raw))); err != nil {
+		return err
+	}
+	return lease.Activate()
+}
+
 func Uninstall(prefix, version string) (Result, error) {
+	if os.Geteuid() == 0 {
+		return Result{}, fmt.Errorf("system-owned SSIAG reclamation is unqualified; retain bytes for target-host owner maintenance")
+	}
 	if version != compiledVersion() {
 		return Result{}, fmt.Errorf("SSIAG package version %q does not match compiled binary version %q", version, compiledVersion())
 	}
@@ -153,57 +173,173 @@ func Uninstall(prefix, version string) (Result, error) {
 	if err != nil {
 		return Result{}, err
 	}
-	receipt, exists, err := readReceipt(layout.receipt)
+	id, _, err := packageretirement.Inspect(layout.prefix, ComponentID, version)
+	if err != nil {
+		return Result{}, err
+	}
+	if id.BinaryRelative != layout.binaryRelative || id.ReceiptRelative != receiptRelative(layout) {
+		return Result{}, fmt.Errorf("SSIAG retirement path identity differs")
+	}
+	self, err := os.Executable()
+	if err != nil {
+		return Result{}, err
+	}
+	size, digest, err := sourceEvidence(self)
+	if err != nil || digest != id.BinaryDigest || size != id.BinarySize {
+		return Result{}, fmt.Errorf("SSIAG removal requires the exact retained native owner binary")
+	}
+	if target, err := os.Stat(layout.binary); err == nil {
+		if running, err := os.Stat(self); err == nil && os.SameFile(target, running) {
+			return Result{}, fmt.Errorf("SSIAG cannot reclaim its executing controller; use a retained exact owner outside this installation")
+		}
+	}
+	lease, err := packageretirement.BeginRetirement(layout.prefix, id)
+	if err != nil {
+		return Result{}, err
+	}
+	defer lease.Close()
+	result := Result{Prefix: layout.prefix, Version: version, Binary: layout.binary, Receipt: layout.receipt, ReceiptDigest: id.ReceiptDigest}
+	receipt, receiptBytes, exists, err := readGuardedReceiptBytes(lease, layout)
 	if err != nil {
 		return Result{}, err
 	}
 	if !exists {
-		if _, statErr := os.Lstat(layout.binary); os.IsNotExist(statErr) {
-			return Result{Prefix: layout.prefix, Version: version, Binary: layout.binary, Receipt: layout.receipt}, nil
+		if _, err := os.Lstat(layout.binary); !os.IsNotExist(err) {
+			return Result{}, fmt.Errorf("SSIAG retirement receipt is absent but payload remains or is unsafe")
 		}
-		return Result{}, fmt.Errorf("refusing to remove unreceipted SSIAG package executable")
+		if err := lease.FinishRetirement(); err != nil {
+			return Result{}, err
+		}
+		return result, nil
+	}
+	if lease.State() == "retired" {
+		return Result{}, fmt.Errorf("retired SSIAG installation contains reappeared package files")
 	}
 	if err := validateReceiptIdentity(receipt, layout); err != nil {
 		return Result{}, err
+	}
+	if retirementIdentity(layout, receipt) != id {
+		return Result{}, fmt.Errorf("SSIAG retirement receipt changed")
 	}
 	if references, err := retainedReferences(layout, receipt); err != nil {
 		return Result{}, err
 	} else if len(references) != 0 {
 		return Result{}, fmt.Errorf("refusing to uninstall referenced SSIAG package: %s", strings.Join(references, ", "))
 	}
-	for _, owned := range receipt.Files {
-		path := filepath.Join(layout.prefix, filepath.FromSlash(owned.Path))
-		info, statErr := os.Lstat(path)
-		if os.IsNotExist(statErr) {
-			continue
-		}
-		if statErr != nil || !info.Mode().IsRegular() || info.Mode()&os.ModeSymlink != 0 || uint64(info.Size()) != owned.Size || !trustedOwner(info) {
-			return Result{}, fmt.Errorf("SSIAG receipt-owned file is missing, unsafe, or changed")
-		}
-		receiptInfo, receiptErr := os.Lstat(layout.receipt)
-		if receiptErr != nil || ownerUID(receiptInfo) != ownerUID(info) {
-			return Result{}, fmt.Errorf("SSIAG package receipt and executable owners differ")
-		}
-		digest, digestErr := digestFile(path)
-		if digestErr != nil || digest != owned.Digest {
-			return Result{}, fmt.Errorf("SSIAG receipt-owned file digest changed")
-		}
-	}
-	for _, owned := range receipt.Files {
-		if err := os.Remove(filepath.Join(layout.prefix, filepath.FromSlash(owned.Path))); err != nil && !os.IsNotExist(err) {
-			return Result{}, err
-		}
-	}
-	if err := syncDirectory(filepath.Dir(layout.binary)); err != nil {
+	receiptSize := uint64(len(receiptBytes))
+	rawHash := sha256.Sum256(receiptBytes)
+	receiptHash := "sha256:" + hex.EncodeToString(rawHash[:])
+	if err := lease.VerifyFile(id.ReceiptRelative, receiptHash, receiptSize); err != nil {
 		return Result{}, err
 	}
-	if err := os.Remove(layout.receipt); err != nil {
+	if err := lease.RemoveFile(layout.binaryRelative, id.BinaryDigest, id.BinarySize); err != nil {
 		return Result{}, err
 	}
-	if err := syncDirectory(filepath.Dir(layout.receipt)); err != nil {
+	if err := lease.RemoveFile(id.ReceiptRelative, receiptHash, receiptSize); err != nil {
 		return Result{}, err
 	}
-	return Result{Prefix: layout.prefix, Version: version, Binary: layout.binary, Receipt: layout.receipt, ReceiptDigest: receipt.ReceiptDigest, Changed: true}, nil
+	if err := lease.FinishRetirement(); err != nil {
+		return Result{}, err
+	}
+	result.Changed = true
+	return result, nil
+}
+
+func readGuardedReceipt(lease *packageretirement.Lease, l layout) (Receipt, bool, error) {
+	r, _, exists, err := readGuardedReceiptBytes(lease, l)
+	return r, exists, err
+}
+func readGuardedReceiptBytes(lease *packageretirement.Lease, l layout) (Receipt, []byte, bool, error) {
+	data, err := lease.ReadFile(receiptRelative(l), 1<<20)
+	if os.IsNotExist(err) {
+		return Receipt{}, nil, false, nil
+	}
+	if err != nil {
+		return Receipt{}, nil, false, err
+	}
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	var receipt Receipt
+	if err := decoder.Decode(&receipt); err != nil {
+		return Receipt{}, nil, false, err
+	}
+	if err := decoder.Decode(&struct{}{}); err != io.EOF {
+		return Receipt{}, nil, false, fmt.Errorf("SSIAG receipt contains trailing data")
+	}
+	return receipt, data, true, nil
+}
+
+func receiptRelative(l layout) string {
+	r, _ := filepath.Rel(l.prefix, l.receipt)
+	return filepath.ToSlash(r)
+}
+func retirementIdentity(l layout, r Receipt) packageretirement.Identity {
+	return packageretirement.Identity{Owner: ComponentID, Version: l.version, ReceiptDigest: r.ReceiptDigest, BinaryDigest: r.Files[0].Digest, BinaryRelative: l.binaryRelative, ReceiptRelative: receiptRelative(l), BinarySize: r.Files[0].Size}
+}
+
+// AcquireUseForExecutable covers only immutable packages installed by this
+// participating owner. Other executable layouts retain their legacy contract;
+// a matching package layout without its guard always fails closed.
+func AcquireUseForExecutable(executable string) (*packageretirement.Lease, error) {
+	return acquireExecutable(executable, false)
+}
+
+// AcquireRecoveryForExecutable is for the existing native controller, never
+// service admission; mutation owners still separately reject retired starts.
+func AcquireRecoveryForExecutable(executable string) (*packageretirement.Lease, error) {
+	return acquireExecutable(executable, true)
+}
+func acquireExecutable(executable string, recovery bool) (*packageretirement.Lease, error) {
+	executable = filepath.Clean(executable)
+	parts := strings.Split(filepath.ToSlash(executable), "/")
+	if len(parts) < 6 || parts[len(parts)-5] != "libexec" || parts[len(parts)-4] != "symphony" || parts[len(parts)-3] != ComponentID || parts[len(parts)-1] != "symphony-ssiag" {
+		return nil, nil
+	}
+	prefix := executable
+	for range 5 {
+		prefix = filepath.Dir(prefix)
+	}
+	layout, err := resolve(prefix, parts[len(parts)-2])
+	if err != nil {
+		return nil, err
+	}
+	if layout.version != compiledVersion() {
+		return nil, fmt.Errorf("SSIAG package version differs from executing owner")
+	}
+	id, _, err := packageretirement.Inspect(layout.prefix, ComponentID, layout.version)
+	if err != nil {
+		return nil, err
+	}
+	if id.BinaryRelative != layout.binaryRelative || id.ReceiptRelative != receiptRelative(layout) {
+		return nil, fmt.Errorf("SSIAG package retirement path differs")
+	}
+	var lease *packageretirement.Lease
+	if recovery {
+		lease, err = packageretirement.AcquireRecoveryUse(layout.prefix, id)
+	} else {
+		lease, err = packageretirement.AcquireUse(layout.prefix, id)
+	}
+	if err != nil {
+		return nil, err
+	}
+	fail := func(err error) (*packageretirement.Lease, error) { _ = lease.Close(); return nil, err }
+	receipt, exists, err := readGuardedReceipt(lease, layout)
+	if err != nil {
+		return fail(err)
+	}
+	if !exists {
+		return fail(fmt.Errorf("SSIAG package receipt missing"))
+	}
+	if err := validateReceiptIdentity(receipt, layout); err != nil {
+		return fail(err)
+	}
+	if retirementIdentity(layout, receipt) != id {
+		return fail(fmt.Errorf("SSIAG package receipt differs from admitted generation"))
+	}
+	if err := lease.VerifyFile(layout.binaryRelative, id.BinaryDigest, id.BinarySize); err != nil {
+		return fail(err)
+	}
+	return lease, nil
 }
 
 func InspectExecutable(executable string) (Evidence, bool, error) {
@@ -302,7 +438,7 @@ func newReceipt(layout layout, size uint64, digest string) Receipt {
 	if osName == "darwin" {
 		osName = "macos"
 	}
-	return Receipt{Protocol: ReceiptProtocol, FormatVersion: 2, ComponentID: ComponentID, ComponentKind: "service", ModuleID: ComponentID, PackageID: ComponentID, Version: layout.version, InstallScope: "prefix", PrefixMode: "installation_prefix", Files: []File{{Path: layout.binaryRelative, Kind: "executable", Size: size, Digest: digest}}, EntryPoints: []EntryPoint{{EntryPointID: EntryPointID, Kind: "adapter", Path: layout.binaryRelative, Protocols: []string{"symphony.foundation.lifecycle-command.v1"}}}, ProvidesCapabilities: []string{"symphony.foundation.lifecycle-adapter.v1"}, RequiresCapabilities: []string{}, CompatibleReceptors: []string{}, PlatformRequirements: []PlatformRequirement{{OS: osName, Architecture: runtime.GOARCH, Critical: true}}}
+	return Receipt{Protocol: ReceiptProtocol, FormatVersion: 2, ComponentID: ComponentID, ComponentKind: "service", ModuleID: ComponentID, PackageID: ComponentID, Version: layout.version, InstallScope: "prefix", PrefixMode: "installation_prefix", Files: []File{{Path: layout.binaryRelative, Kind: "executable", Size: size, Digest: digest}}, EntryPoints: []EntryPoint{{EntryPointID: EntryPointID, Kind: "adapter", Path: layout.binaryRelative, Protocols: []string{"symphony.foundation.lifecycle-command.v1"}}}, ProvidesCapabilities: []string{"symphony.foundation.lifecycle-adapter.v1", packageretirement.Capability}, RequiresCapabilities: []string{}, CompatibleReceptors: []string{}, PlatformRequirements: []PlatformRequirement{{OS: osName, Architecture: runtime.GOARCH, Critical: true}}}
 }
 func validateReceipt(receipt Receipt, layout layout) error {
 	if err := validateReceiptIdentity(receipt, layout); err != nil {
@@ -340,7 +476,7 @@ func validateReceiptIdentity(receipt Receipt, layout layout) error {
 	if wantOS == "darwin" {
 		wantOS = "macos"
 	}
-	if receipt.Protocol != ReceiptProtocol || receipt.FormatVersion != 2 || receipt.ComponentID != ComponentID || receipt.ComponentKind != "service" || receipt.ModuleID != ComponentID || receipt.VectorID != nil || receipt.EngineID != nil || receipt.PackageID != ComponentID || receipt.Version != layout.version || receipt.Version != compiledVersion() || receipt.InstallScope != "prefix" || receipt.PrefixMode != "installation_prefix" || len(receipt.Files) != 1 || receipt.Files[0].Path != layout.binaryRelative || receipt.Files[0].Kind != "executable" || receipt.Files[0].Size == 0 || !validDigest(receipt.Files[0].Digest) || len(receipt.EntryPoints) != 1 || receipt.EntryPoints[0].EntryPointID != EntryPointID || receipt.EntryPoints[0].Kind != "adapter" || receipt.EntryPoints[0].Path != layout.binaryRelative || len(receipt.EntryPoints[0].Protocols) != 1 || receipt.EntryPoints[0].Protocols[0] != "symphony.foundation.lifecycle-command.v1" || len(receipt.ProvidesCapabilities) != 1 || receipt.ProvidesCapabilities[0] != "symphony.foundation.lifecycle-adapter.v1" || len(receipt.RequiresCapabilities) != 0 || len(receipt.CompatibleReceptors) != 0 || len(receipt.PlatformRequirements) != 1 || receipt.PlatformRequirements[0].OS != wantOS || receipt.PlatformRequirements[0].Architecture != runtime.GOARCH || receipt.PlatformRequirements[0].KernelABI != nil || !receipt.PlatformRequirements[0].Critical {
+	if receipt.Protocol != ReceiptProtocol || receipt.FormatVersion != 2 || receipt.ComponentID != ComponentID || receipt.ComponentKind != "service" || receipt.ModuleID != ComponentID || receipt.VectorID != nil || receipt.EngineID != nil || receipt.PackageID != ComponentID || receipt.Version != layout.version || receipt.Version != compiledVersion() || receipt.InstallScope != "prefix" || receipt.PrefixMode != "installation_prefix" || len(receipt.Files) != 1 || receipt.Files[0].Path != layout.binaryRelative || receipt.Files[0].Kind != "executable" || receipt.Files[0].Size == 0 || !validDigest(receipt.Files[0].Digest) || len(receipt.EntryPoints) != 1 || receipt.EntryPoints[0].EntryPointID != EntryPointID || receipt.EntryPoints[0].Kind != "adapter" || receipt.EntryPoints[0].Path != layout.binaryRelative || len(receipt.EntryPoints[0].Protocols) != 1 || receipt.EntryPoints[0].Protocols[0] != "symphony.foundation.lifecycle-command.v1" || len(receipt.ProvidesCapabilities) != 2 || receipt.ProvidesCapabilities[0] != "symphony.foundation.lifecycle-adapter.v1" || receipt.ProvidesCapabilities[1] != packageretirement.Capability || len(receipt.RequiresCapabilities) != 0 || len(receipt.CompatibleReceptors) != 0 || len(receipt.PlatformRequirements) != 1 || receipt.PlatformRequirements[0].OS != wantOS || receipt.PlatformRequirements[0].Architecture != runtime.GOARCH || receipt.PlatformRequirements[0].KernelABI != nil || !receipt.PlatformRequirements[0].Critical {
 		return fmt.Errorf("SSIAG package receipt identity is invalid")
 	}
 	want, err := digestWithoutReceipt(receipt)

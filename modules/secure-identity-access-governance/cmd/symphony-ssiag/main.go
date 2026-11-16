@@ -40,6 +40,19 @@ func run(args []string) error {
 		printUsage()
 		return errors.New("command is required")
 	}
+	// Every installed native controller retains its package while observing,
+	// stopping or recovering. New work still crosses the stricter open-only gate.
+	if args[0] != "serve" && args[0] != "help" && args[0] != "--help" && args[0] != "version" && args[0] != "--version" {
+		executable, err := os.Executable()
+		if err != nil {
+			return err
+		}
+		controlUse, err := packageinstall.AcquireRecoveryForExecutable(executable)
+		if err != nil {
+			return err
+		}
+		defer controlUse.Close()
+	}
 	switch args[0] {
 	case "--help", "help":
 		printUsage()
@@ -75,6 +88,15 @@ func run(args []string) error {
 }
 
 func runProviderBindingRecover(args []string) error {
+	executable, err := os.Executable()
+	if err != nil {
+		return err
+	}
+	controlUse, err := packageinstall.AcquireRecoveryForExecutable(executable)
+	if err != nil {
+		return err
+	}
+	defer controlUse.Close()
 	set := flag.NewFlagSet("provider-binding-recover", flag.ContinueOnError)
 	scopeValue := set.String("scope", "user", "installation scope: user or system")
 	topsIDValue := set.String("tops-id", "", "immutable TOPS UUID")
@@ -92,7 +114,7 @@ func runProviderBindingRecover(args []string) error {
 	if err != nil {
 		return err
 	}
-	executable, err := os.Executable()
+	executable, err = os.Executable()
 	if err != nil {
 		return fmt.Errorf("resolve running SSIAG foundation: %w", err)
 	}
@@ -214,6 +236,15 @@ func offlineRecoveryAuthority(scope ssiagpaths.Scope, serviceUID, serviceGID, ef
 }
 
 func runServe(args []string) error {
+	executable, err := os.Executable()
+	if err != nil {
+		return err
+	}
+	packageUse, err := packageinstall.AcquireUseForExecutable(executable)
+	if err != nil {
+		return fmt.Errorf("admit SSIAG package use: %w", err)
+	}
+	defer packageUse.Close()
 	set := flag.NewFlagSet("serve", flag.ContinueOnError)
 	scopeValue := set.String("scope", "user", "installation scope: user or system")
 	topsIDValue := set.String("tops-id", "", "immutable TOPS UUID")
@@ -564,6 +595,15 @@ func runSupervisor(args []string) error {
 }
 
 func runFoundationLifecycle(args []string) error {
+	executable, err := os.Executable()
+	if err != nil {
+		return err
+	}
+	controlUse, err := packageinstall.AcquireRecoveryForExecutable(executable)
+	if err != nil {
+		return err
+	}
+	defer controlUse.Close()
 	engine := foundationlifecycle.New()
 	if len(args) == 2 && args[0] == "describe" && args[1] == "--json" {
 		scope, err := engine.InstalledScope()

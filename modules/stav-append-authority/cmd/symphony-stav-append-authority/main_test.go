@@ -67,12 +67,12 @@ func TestSupervisorForceAndNoStopCannotBypassTransaction(t *testing.T) {
 }
 
 func TestFoundationLifecycleRealProcessBoundary(t *testing.T) {
-	prefix := t.TempDir()
+	prefix := canonicalTempDir(t)
 	installed, err := lifecycle.InstallAt(os.Args[0], stavpaths.ScopeUser, prefix, version.Version)
 	if err != nil {
 		t.Fatalf("install receipt-backed test executable: %v", err)
 	}
-	home := t.TempDir()
+	home := canonicalTempDir(t)
 	environment := []string{
 		"SYMPHONY_STAV_FOUNDATION_PROCESS_HELPER=1",
 		"HOME=" + home,
@@ -152,4 +152,13 @@ func TestFoundationLifecycleProcessHelper(t *testing.T) {
 		os.Exit(1)
 	}
 	os.Exit(0)
+}
+
+func canonicalTempDir(t *testing.T) string {
+	t.Helper()
+	path, err := filepath.EvalSymlinks(t.TempDir())
+	if err != nil {
+		t.Fatal(err)
+	}
+	return path
 }

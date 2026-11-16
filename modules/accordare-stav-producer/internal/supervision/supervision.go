@@ -16,6 +16,7 @@ import (
 	texttemplate "text/template"
 
 	"github.com/QuanuX/Symphony/modules/accordare-stav-producer/internal/config"
+	"github.com/QuanuX/Symphony/modules/accordare-stav-producer/internal/packageinstall"
 	"github.com/QuanuX/Symphony/modules/accordare-stav-producer/internal/paths"
 )
 
@@ -28,10 +29,10 @@ type Spec struct {
 	UID, GID       uint32
 }
 type Record struct {
-	Manager                                  string
-	Scope                                    paths.Scope
-	TOPSID, Name, Descriptor, Digest, Domain string
-	Changed                                  bool
+	Manager                                          string
+	Scope                                            paths.Scope
+	TOPSID, Name, Descriptor, Digest, Domain, Binary string
+	Changed                                          bool
 }
 
 func SpecFromConfig(scope paths.Scope, topsID, binary string, cfg config.Config) (Spec, error) {
@@ -45,6 +46,11 @@ func SpecFromConfig(scope paths.Scope, topsID, binary string, cfg config.Config)
 }
 
 func Install(spec Spec, force, start bool) (Record, error) {
+	packageLease, err := packageinstall.AcquireBinaryUse(spec.Binary)
+	if err != nil {
+		return Record{}, err
+	}
+	defer packageLease.Close()
 	record, content, err := render(spec)
 	if err != nil {
 		return Record{}, err
@@ -117,6 +123,15 @@ func Uninstall(spec Spec, force, stop bool) (Record, error) {
 }
 
 func Start(record Record) error {
+	packageLease, err := packageinstall.AcquireBinaryUse(record.Binary)
+	if err != nil {
+		return err
+	}
+	defer packageLease.Close()
+	return start(record)
+}
+
+func start(record Record) error {
 	if record.Manager == "launchd" {
 		target := record.Domain + "/" + record.Name
 		if exec.Command("launchctl", "print", target).Run() == nil {
@@ -224,6 +239,7 @@ WantedBy={{if .System}}multi-user.target{{else}}default.target{{end}}
 	default:
 		return Record{}, nil, fmt.Errorf("native Accordare supervision is unsupported on %s", runtime.GOOS)
 	}
+	record.Binary = spec.Binary
 	tmpl, err := texttemplate.New("descriptor").Funcs(texttemplate.FuncMap{"xml": func(value string) string {
 		var output bytes.Buffer
 		_ = xml.EscapeText(&output, []byte(value))

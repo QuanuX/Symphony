@@ -13,16 +13,16 @@ import (
 const enrollmentTOPSID = "123e4567-e89b-42d3-a456-426614174000"
 
 func TestEnrollPreserveAndExplicitPurge(t *testing.T) {
-	home := t.TempDir()
+	home := canonicalTempDir(t)
 	t.Setenv("HOME", home)
 	t.Setenv("XDG_CONFIG_HOME", "")
 	t.Setenv("XDG_STATE_HOME", "")
 	t.Setenv("XDG_RUNTIME_DIR", "")
-	source := filepath.Join(t.TempDir(), stavpaths.BinaryName)
+	source := filepath.Join(canonicalTempDir(t), stavpaths.BinaryName)
 	if err := os.WriteFile(source, []byte("test-binary"), 0o755); err != nil {
 		t.Fatal(err)
 	}
-	if _, err := Install(source, stavpaths.ScopeUser, false); err != nil {
+	if _, err := installTestFixture(source, stavpaths.ScopeUser, false); err != nil {
 		t.Fatal(err)
 	}
 	record, err := Enroll(stavpaths.ScopeUser, enrollmentTOPSID, uint64(os.Geteuid()), uint64(os.Getegid()))
@@ -62,16 +62,16 @@ func TestEnrollPreserveAndExplicitPurge(t *testing.T) {
 }
 
 func TestPurgeContendsWithPersistentSocketLifecycleLock(t *testing.T) {
-	home := t.TempDir()
+	home := canonicalTempDir(t)
 	t.Setenv("HOME", home)
 	t.Setenv("XDG_CONFIG_HOME", "")
 	t.Setenv("XDG_STATE_HOME", "")
 	t.Setenv("XDG_RUNTIME_DIR", "")
-	source := filepath.Join(t.TempDir(), stavpaths.BinaryName)
+	source := filepath.Join(canonicalTempDir(t), stavpaths.BinaryName)
 	if err := os.WriteFile(source, []byte("lock-test"), 0o755); err != nil {
 		t.Fatal(err)
 	}
-	if _, err := Install(source, stavpaths.ScopeUser, false); err != nil {
+	if _, err := installTestFixture(source, stavpaths.ScopeUser, false); err != nil {
 		t.Fatal(err)
 	}
 	if _, err := Enroll(stavpaths.ScopeUser, enrollmentTOPSID, uint64(os.Geteuid()), uint64(os.Getegid())); err != nil {

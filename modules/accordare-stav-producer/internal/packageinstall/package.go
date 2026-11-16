@@ -15,6 +15,9 @@ import (
 	"strings"
 
 	stavprotocol "github.com/QuanuX/Symphony/libraries/stav-protocol-go"
+	"github.com/QuanuX/Symphony/modules/accordare-stav-producer/internal/enrollment"
+	"github.com/QuanuX/Symphony/modules/accordare-stav-producer/internal/packageretirement"
+	"github.com/QuanuX/Symphony/modules/accordare-stav-producer/internal/paths"
 	"github.com/QuanuX/Symphony/modules/accordare-stav-producer/internal/version"
 )
 
@@ -93,44 +96,99 @@ func Install(source, prefix, requestedVersion string) (Result, error) {
 	if err != nil {
 		return Result{}, err
 	}
-	size, digest, err := fileEvidence(source)
+	// Only this participating installer may establish fresh custody. Copying an
+	// arbitrary legacy executable would manufacture a lease promise it cannot keep.
+	executable, err := os.Executable()
 	if err != nil {
 		return Result{}, err
 	}
-	if existing, present, err := readReceipt(paths); err != nil {
+	sourceInfo, sourceErr := os.Stat(source)
+	executableInfo, executableErr := os.Stat(executable)
+	if sourceErr != nil || executableErr != nil || !os.SameFile(sourceInfo, executableInfo) {
+		return Result{}, fmt.Errorf("Accordare installer must copy its own participating executable")
+	}
+	input, err := openInstallerSource(source)
+	if err != nil {
 		return Result{}, err
-	} else if present {
-		if err := validateReceipt(existing, paths); err != nil {
+	}
+	defer input.Close()
+	opened, err := input.Stat()
+	if err != nil || !os.SameFile(opened, executableInfo) {
+		return Result{}, fmt.Errorf("installer source identity changed")
+	}
+	size := uint64(opened.Size())
+	hash := sha256.New()
+	if _, err := io.Copy(hash, input); err != nil {
+		return Result{}, err
+	}
+	digest := "sha256:" + hex.EncodeToString(hash.Sum(nil))
+	if _, err := input.Seek(0, io.SeekStart); err != nil {
+		return Result{}, err
+	}
+	record, err := makeReceipt(paths, size, digest)
+	if err != nil {
+		return Result{}, err
+	}
+	existing, present, err := readReceipt(paths)
+	if err != nil {
+		return Result{}, err
+	}
+	if present {
+		if err := validateReceiptIdentity(existing, paths); err != nil {
 			return Result{}, err
 		}
-		if existing.Files[0].Size != size || existing.Files[0].Digest != digest {
+		if existing.ReceiptDigest != record.ReceiptDigest {
 			return Result{}, fmt.Errorf("immutable Accordare producer version already contains different bytes")
 		}
-		return result(paths, existing.ReceiptDigest, false), nil
 	}
-	if err := ensureDirectory(filepath.Dir(paths.binary)); err != nil {
+	if err := ensureDirectory(paths.prefix); err != nil {
 		return Result{}, err
 	}
-	if err := ensureDirectory(filepath.Dir(paths.receipt)); err != nil {
+	_, binaryErr := os.Lstat(paths.binary)
+	allowCreate := !present && os.IsNotExist(binaryErr)
+	lease, err := packageretirement.PrepareInstall(paths.prefix, retirementIdentity(paths, record), allowCreate)
+	if err != nil {
 		return Result{}, err
 	}
-	if info, err := os.Lstat(paths.binary); err == nil {
-		if !info.Mode().IsRegular() || info.Mode()&os.ModeSymlink != 0 {
-			return Result{}, fmt.Errorf("unreceipted package path is unsafe")
-		}
-		existingSize, existingDigest, evidenceErr := fileEvidence(paths.binary)
-		if evidenceErr != nil || existingSize != size || existingDigest != digest {
-			return Result{}, fmt.Errorf("unreceipted package path contains different bytes")
-		}
-	} else if !os.IsNotExist(err) {
-		return Result{}, err
-	} else if err := copyAtomic(source, paths.binary); err != nil {
+	defer lease.Close()
+	if lease.State() == "open" && !present {
+		return Result{}, fmt.Errorf("open installation receipt is absent")
+	}
+	id := retirementIdentity(paths, record)
+	binaryChanged, err := lease.PublishFile(id.BinaryRelative, input, digest, size, 0o755)
+	if err != nil {
 		return Result{}, err
 	}
-	installedSize, installedDigest, err := fileEvidence(paths.binary)
-	if err != nil || installedSize != size || installedDigest != digest {
-		return Result{}, fmt.Errorf("installed Accordare producer bytes differ from the verified package source")
+	data, err := json.MarshalIndent(record, "", "  ")
+	if err != nil {
+		return Result{}, err
 	}
+	data = append(data, '\n')
+	receiptChanged, err := lease.PublishFile(id.ReceiptRelative, bytes.NewReader(data), bytesDigest(data), uint64(len(data)), 0o644)
+	if err != nil {
+		return Result{}, err
+	}
+	changed := binaryChanged || receiptChanged || lease.State() == "installing"
+	if err := activateInstallation(lease, id, data); err != nil {
+		return Result{}, err
+	}
+	return result(paths, record.ReceiptDigest, changed), nil
+}
+
+// Receipt publication can outlive a replacement of the executable's parent.
+// Verify both final files against this pinned root immediately before opening
+// admission, including an existing installation or interrupted-install retry.
+func activateInstallation(lease *packageretirement.Lease, id packageretirement.Identity, receiptBytes []byte) error {
+	if err := lease.VerifyFile(id.BinaryRelative, id.BinaryDigest, id.BinarySize); err != nil {
+		return err
+	}
+	if err := lease.VerifyFile(id.ReceiptRelative, bytesDigest(receiptBytes), uint64(len(receiptBytes))); err != nil {
+		return err
+	}
+	return lease.Activate()
+}
+
+func makeReceipt(paths layout, size uint64, digest string) (receipt, error) {
 	osName := runtime.GOOS
 	if osName == "darwin" {
 		osName = "macos"
@@ -141,24 +199,18 @@ func Install(source, prefix, requestedVersion string) (Result, error) {
 		PackageID: componentID, Version: version.Version, InstallScope: "prefix", PrefixMode: "installation_prefix",
 		Files:                []receiptFile{{Path: filepath.ToSlash(relative), Kind: "executable", Size: size, Digest: digest}},
 		EntryPoints:          []entryPoint{{EntryPointID: "accordare.stav-producer", Kind: "executable", Path: filepath.ToSlash(relative), Protocols: []string{"symphony.accordare.stav-producer.local.v1", "symphony.accordare.stav-producer.supervisor.v1"}}},
-		ProvidesCapabilities: []string{"symphony.accordare.stav-producer.v1", "symphony.accordare.stav-producer.native-supervision.v1"}, RequiresCapabilities: []string{"symphony.stav.append-authority.v1", "symphony.ssiag.authorization.v1"},
+		ProvidesCapabilities: []string{"symphony.accordare.stav-producer.v1", "symphony.accordare.stav-producer.native-supervision.v1", packageretirement.Capability}, RequiresCapabilities: []string{"symphony.stav.append-authority.v1", "symphony.ssiag.authorization.v1"},
 		CompatibleReceptors: []string{}, PlatformRequirements: []platformRequirement{{OS: osName, Architecture: runtime.GOARCH, Critical: true}},
 	}
+	var err error
 	record.ReceiptDigest, err = receiptDigest(record)
-	if err != nil {
-		return Result{}, err
-	}
-	data, err := json.MarshalIndent(record, "", "  ")
-	if err != nil {
-		return Result{}, err
-	}
-	if err := writeAtomic(paths.receipt, append(data, '\n'), 0o600); err != nil {
-		return Result{}, err
-	}
-	return result(paths, record.ReceiptDigest, true), nil
+	return record, err
 }
 
 func Uninstall(prefix, requestedVersion string) (Result, error) {
+	if os.Geteuid() == 0 {
+		return Result{}, fmt.Errorf("Accordare system and cross-user reclamation remains unqualified; native removal requires a user-owned installation")
+	}
 	paths, err := resolve(prefix, requestedVersion)
 	if err != nil {
 		return Result{}, err
@@ -167,11 +219,67 @@ func Uninstall(prefix, requestedVersion string) (Result, error) {
 	if err != nil {
 		return Result{}, err
 	}
-	if !present {
-		return result(paths, "", false), nil
+	identity, phase, err := packageretirement.Inspect(paths.prefix, componentID, requestedVersion)
+	if err != nil {
+		return Result{}, fmt.Errorf("Accordare removal requires established native custody: %w", err)
 	}
-	if err := validateReceipt(record, paths); err != nil {
+	self, err := os.Executable()
+	if err != nil {
 		return Result{}, err
+	}
+	selfSize, selfDigest, err := fileEvidence(self)
+	if err != nil || selfSize != identity.BinarySize || selfDigest != identity.BinaryDigest {
+		return Result{}, fmt.Errorf("Accordare removal requires the exact retained native owner executable")
+	}
+	if target, err := os.Stat(paths.binary); err == nil {
+		if running, err := os.Stat(self); err == nil && os.SameFile(target, running) {
+			return Result{}, fmt.Errorf("Accordare cannot reclaim its executing controller; use the exact retained owner outside this installation")
+		}
+	}
+	if present {
+		if err := validateReceiptIdentity(record, paths); err != nil {
+			return Result{}, err
+		}
+		if retirementIdentity(paths, record) != identity {
+			return Result{}, fmt.Errorf("Accordare receipt differs from retirement identity")
+		}
+	} else if phase != "retiring" && phase != "retired" {
+		return Result{}, fmt.Errorf("Accordare receipt is absent without closed retirement evidence")
+	}
+	// Preserve the existing recovery endpoint when work is already known to be
+	// pending. Repeat under exclusive ownership before any reclamation below.
+	if phase == "open" {
+		if err := requireNoOrphanPending(); err != nil {
+			return Result{}, err
+		}
+	}
+	lease, err := packageretirement.BeginRetirement(paths.prefix, identity)
+	if err != nil {
+		return Result{}, err
+	}
+	defer lease.Close()
+	// Re-read after exclusive use ownership; inspection before admission is not
+	// authority to reclaim bytes after another lifecycle operation has run.
+	record, present, err = readGuardedReceipt(lease, identity.ReceiptRelative)
+	if err != nil {
+		return Result{}, err
+	}
+	if present {
+		if err := validateReceiptIdentity(record, paths); err != nil {
+			return Result{}, err
+		}
+		if retirementIdentity(paths, record) != identity {
+			return Result{}, fmt.Errorf("Accordare receipt changed during retirement")
+		}
+	}
+	if lease.State() == "retired" {
+		if present {
+			return Result{}, fmt.Errorf("retired Accordare installation unexpectedly contains a receipt")
+		}
+		if _, err := os.Lstat(paths.binary); !os.IsNotExist(err) {
+			return Result{}, fmt.Errorf("retired Accordare installation unexpectedly contains package bytes")
+		}
+		return result(paths, identity.ReceiptDigest, false), nil
 	}
 	references, err := enrollmentReferences()
 	if err != nil {
@@ -180,19 +288,46 @@ func Uninstall(prefix, requestedVersion string) (Result, error) {
 	if len(references) != 0 {
 		return Result{}, fmt.Errorf("refusing to uninstall an enrolled Accordare producer package: %s", strings.Join(references, ", "))
 	}
-	if err := os.Remove(paths.binary); err != nil {
+	if err := requireNoOrphanPending(); err != nil {
 		return Result{}, err
 	}
-	if err := syncDirectory(filepath.Dir(paths.binary)); err != nil {
+	if !present {
+		// Receipt-last cleanup can crash after unlinking the receipt. Never use a
+		// tombstone as permission to remove an unreceipted surviving executable.
+		if _, err := os.Lstat(paths.binary); !os.IsNotExist(err) {
+			return Result{}, fmt.Errorf("receiptless Accordare retirement has surviving or unavailable bytes")
+		}
+	} else {
+		receiptBytes, err := lease.ReadFile(identity.ReceiptRelative, 1<<20)
+		if err != nil {
+			return Result{}, err
+		}
+		snapshot, _, err := decodeReceipt(receiptBytes)
+		if err != nil {
+			return Result{}, err
+		}
+		if err := validateReceiptIdentity(snapshot, paths); err != nil {
+			return Result{}, err
+		}
+		if retirementIdentity(paths, snapshot) != identity {
+			return Result{}, fmt.Errorf("Accordare retirement receipt changed before reclamation")
+		}
+		receiptSize := uint64(len(receiptBytes))
+		receiptHash := bytesDigest(receiptBytes)
+		if err := lease.VerifyFile(identity.ReceiptRelative, receiptHash, receiptSize); err != nil {
+			return Result{}, err
+		}
+		if err := lease.RemoveFile(identity.BinaryRelative, identity.BinaryDigest, identity.BinarySize); err != nil {
+			return Result{}, err
+		}
+		if err := lease.RemoveFile(identity.ReceiptRelative, receiptHash, receiptSize); err != nil {
+			return Result{}, err
+		}
+	}
+	if err := lease.FinishRetirement(); err != nil {
 		return Result{}, err
 	}
-	if err := os.Remove(paths.receipt); err != nil {
-		return Result{}, err
-	}
-	if err := syncDirectory(filepath.Dir(paths.receipt)); err != nil {
-		return Result{}, err
-	}
-	return result(paths, record.ReceiptDigest, true), nil
+	return result(paths, identity.ReceiptDigest, true), nil
 }
 
 func enrollmentReferences() ([]string, error) {
@@ -260,6 +395,10 @@ func readReceipt(paths layout) (receipt, bool, error) {
 	if err != nil {
 		return receipt{}, false, err
 	}
+	return decodeReceipt(data)
+}
+
+func decodeReceipt(data []byte) (receipt, bool, error) {
 	decoder := json.NewDecoder(bytes.NewReader(data))
 	decoder.DisallowUnknownFields()
 	var record receipt
@@ -269,7 +408,34 @@ func readReceipt(paths layout) (receipt, bool, error) {
 	return record, true, nil
 }
 
+func readGuardedReceipt(lease *packageretirement.Lease, relative string) (receipt, bool, error) {
+	data, err := lease.ReadFile(relative, 1<<20)
+	if os.IsNotExist(err) {
+		return receipt{}, false, nil
+	}
+	if err != nil {
+		return receipt{}, false, err
+	}
+	return decodeReceipt(data)
+}
+
+func bytesDigest(data []byte) string {
+	sum := sha256.Sum256(data)
+	return "sha256:" + hex.EncodeToString(sum[:])
+}
+
 func validateReceipt(record receipt, paths layout) error {
+	if err := validateReceiptIdentity(record, paths); err != nil {
+		return err
+	}
+	size, digest, err := fileEvidence(paths.binary)
+	if err != nil || size != record.Files[0].Size || digest != record.Files[0].Digest {
+		return fmt.Errorf("Accordare producer binary differs from its receipt")
+	}
+	return nil
+}
+
+func validateReceiptIdentity(record receipt, paths layout) error {
 	wantDigest, err := receiptDigest(record)
 	if err != nil {
 		return err
@@ -279,15 +445,194 @@ func validateReceipt(record receipt, paths layout) error {
 	if wantOS == "darwin" {
 		wantOS = "macos"
 	}
-	wantProvides := []string{"symphony.accordare.stav-producer.v1", "symphony.accordare.stav-producer.native-supervision.v1"}
+	wantProvides := []string{"symphony.accordare.stav-producer.v1", "symphony.accordare.stav-producer.native-supervision.v1", packageretirement.Capability}
 	wantRequires := []string{"symphony.stav.append-authority.v1", "symphony.ssiag.authorization.v1"}
 	wantProtocols := []string{"symphony.accordare.stav-producer.local.v1", "symphony.accordare.stav-producer.supervisor.v1"}
 	if record.Protocol != receiptProtocol || record.FormatVersion != 2 || record.ComponentID != componentID || record.ComponentKind != "service" || record.ModuleID != componentID || record.VectorID != nil || record.EngineID != nil || record.PackageID != componentID || record.Version != version.Version || record.InstallScope != "prefix" || record.PrefixMode != "installation_prefix" || record.ReceiptDigest != wantDigest || len(record.Files) != 1 || record.Files[0].Path != filepath.ToSlash(relative) || record.Files[0].Kind != "executable" || len(record.EntryPoints) != 1 || record.EntryPoints[0].EntryPointID != "accordare.stav-producer" || record.EntryPoints[0].Kind != "executable" || record.EntryPoints[0].Path != record.Files[0].Path || !slices.Equal(record.EntryPoints[0].Protocols, wantProtocols) || !slices.Equal(record.ProvidesCapabilities, wantProvides) || !slices.Equal(record.RequiresCapabilities, wantRequires) || record.CompatibleReceptors == nil || len(record.CompatibleReceptors) != 0 || len(record.PlatformRequirements) != 1 || record.PlatformRequirements[0].OS != wantOS || record.PlatformRequirements[0].Architecture != runtime.GOARCH || record.PlatformRequirements[0].KernelABI != nil || !record.PlatformRequirements[0].Critical {
 		return fmt.Errorf("Accordare producer receipt identity is invalid")
 	}
-	size, digest, err := fileEvidence(paths.binary)
-	if err != nil || size != record.Files[0].Size || digest != record.Files[0].Digest {
-		return fmt.Errorf("Accordare producer binary differs from its receipt")
+	return nil
+}
+
+func retirementIdentity(p layout, record receipt) packageretirement.Identity {
+	receiptRelative, _ := filepath.Rel(p.prefix, p.receipt)
+	return packageretirement.Identity{Owner: componentID, Version: version.Version, ReceiptDigest: record.ReceiptDigest, BinaryRelative: record.Files[0].Path, BinaryDigest: record.Files[0].Digest, BinarySize: record.Files[0].Size, ReceiptRelative: filepath.ToSlash(receiptRelative)}
+}
+
+// AcquireBinaryUse is the native owner's launch admission boundary. It accepts
+// only the exact versioned executable and fresh, locally established custody.
+func AcquireBinaryUse(binary string) (*packageretirement.Lease, error) {
+	return acquireBinaryUse(binary, false)
+}
+
+func acquireBinaryUse(binary string, recovery bool) (*packageretirement.Lease, error) {
+	p, record, err := installedBinary(binary)
+	if err != nil {
+		return nil, err
+	}
+	var lease *packageretirement.Lease
+	if recovery {
+		lease, err = packageretirement.AcquireRecoveryUse(p.prefix, retirementIdentity(p, record))
+	} else {
+		lease, err = packageretirement.AcquireUse(p.prefix, retirementIdentity(p, record))
+	}
+	if err != nil {
+		return nil, err
+	}
+	if err := verifyGuardedReceipt(lease, p, record); err != nil {
+		lease.Close()
+		return nil, err
+	}
+	if err := lease.VerifyFile(record.Files[0].Path, record.Files[0].Digest, record.Files[0].Size); err != nil {
+		lease.Close()
+		return nil, err
+	}
+	return lease, nil
+}
+
+func AcquireCurrentUse() (*packageretirement.Lease, error) {
+	binary, err := os.Executable()
+	if err != nil {
+		return nil, err
+	}
+	return AcquireBinaryUse(binary)
+}
+
+// An installed controller remains a consumer during stop/status/recovery.
+// External retained controllers do not consume this installation's executable.
+func AcquireCurrentControllerUse() (*packageretirement.Lease, error) {
+	binary, err := os.Executable()
+	if err != nil {
+		return nil, err
+	}
+	parts := strings.Split(filepath.ToSlash(binary), "/")
+	if len(parts) < 6 || parts[len(parts)-5] != "libexec" || parts[len(parts)-4] != "symphony" || parts[len(parts)-3] != componentID || parts[len(parts)-1] != binaryName {
+		return nil, nil
+	}
+	return acquireBinaryUse(binary, true)
+}
+
+// AcquireCurrentMaintenance serializes unenrollment with the full service
+// lifetime and startup admission. Retiring packages remain closed throughout
+// maintenance; open packages are not irreversibly retired by unenrollment.
+func AcquireCurrentMaintenance() (*packageretirement.Lease, error) {
+	binary, err := os.Executable()
+	if err != nil {
+		return nil, err
+	}
+	return acquireBinaryMaintenance(binary)
+}
+
+func acquireBinaryMaintenance(binary string) (*packageretirement.Lease, error) {
+	p, record, err := installedBinary(binary)
+	if err != nil {
+		return nil, err
+	}
+	id := retirementIdentity(p, record)
+	guardID, phase, err := packageretirement.Inspect(p.prefix, componentID, version.Version)
+	if err != nil || guardID != id {
+		return nil, fmt.Errorf("Accordare maintenance requires matching package custody: %v", err)
+	}
+	var lease *packageretirement.Lease
+	if phase == "open" {
+		lease, err = packageretirement.PrepareInstall(p.prefix, id, false)
+	} else if phase == "retiring" {
+		lease, err = packageretirement.BeginRetirement(p.prefix, id)
+	} else {
+		return nil, fmt.Errorf("Accordare package is not available for maintenance")
+	}
+	if err != nil {
+		return nil, err
+	}
+	if err := verifyGuardedReceipt(lease, p, record); err != nil {
+		lease.Close()
+		return nil, err
+	}
+	if err := lease.VerifyFile(id.BinaryRelative, id.BinaryDigest, id.BinarySize); err != nil {
+		lease.Close()
+		return nil, err
+	}
+	return lease, nil
+}
+
+func verifyGuardedReceipt(lease *packageretirement.Lease, p layout, expected receipt) error {
+	id := retirementIdentity(p, expected)
+	actual, present, err := readGuardedReceipt(lease, id.ReceiptRelative)
+	if err != nil {
+		return err
+	}
+	if !present {
+		return fmt.Errorf("Accordare installation receipt disappeared")
+	}
+	if err := validateReceiptIdentity(actual, p); err != nil {
+		return err
+	}
+	if retirementIdentity(p, actual) != id {
+		return fmt.Errorf("Accordare installation receipt changed")
+	}
+	return nil
+}
+
+func installedBinary(binary string) (layout, receipt, error) {
+	if !filepath.IsAbs(binary) || filepath.Clean(binary) != binary {
+		return layout{}, receipt{}, fmt.Errorf("Accordare executable must have an exact installed path")
+	}
+	prefix := binary
+	for i := 0; i < 5; i++ {
+		prefix = filepath.Dir(prefix)
+	}
+	p, err := resolve(prefix, version.Version)
+	if err != nil || p.binary != binary {
+		return layout{}, receipt{}, fmt.Errorf("Accordare executable is not a qualified native installation")
+	}
+	record, present, err := readReceipt(p)
+	if err != nil {
+		return layout{}, receipt{}, err
+	}
+	if !present {
+		return layout{}, receipt{}, fmt.Errorf("Accordare installation receipt is absent")
+	}
+	if err := validateReceiptIdentity(record, p); err != nil {
+		return layout{}, receipt{}, err
+	}
+	return p, record, nil
+}
+
+// Unenrollment can predate a crash. Inspect the owner's known state roots as
+// well as retained configurations, so orphaned audit work cannot be discarded.
+func requireNoOrphanPending() error {
+	home, err := os.UserHomeDir()
+	if err != nil {
+		return err
+	}
+	base := os.Getenv("XDG_STATE_HOME")
+	if base == "" {
+		base = filepath.Join(home, ".local", "state")
+	}
+	roots := []string{filepath.Join(base, "symphony")}
+	if os.Geteuid() == 0 {
+		roots = append(roots, "/var/lib/symphony")
+	}
+	for _, root := range roots {
+		entries, err := os.ReadDir(root)
+		if os.IsNotExist(err) {
+			continue
+		}
+		if err != nil {
+			return fmt.Errorf("inspect Accordare state root: %w", err)
+		}
+		for _, entry := range entries {
+			if stavprotocol.ValidateTOPSID(entry.Name()) != nil {
+				continue
+			}
+			if entry.Type()&os.ModeSymlink != 0 || !entry.IsDir() {
+				return fmt.Errorf("Accordare state root contains an unsafe TOPS entry")
+			}
+			stateDir := filepath.Join(root, entry.Name(), componentID)
+			if err := enrollment.RequireNoPending(paths.Layout{IntentDir: filepath.Join(stateDir, "intents-v1"), OutboxDir: filepath.Join(stateDir, "outbox-v1")}); err != nil {
+				return err
+			}
+		}
 	}
 	return nil
 }
@@ -330,39 +675,6 @@ func fileEvidence(path string) (uint64, string, error) {
 	return uint64(info.Size()), "sha256:" + hex.EncodeToString(hash.Sum(nil)), nil
 }
 
-func copyAtomic(source, target string) error {
-	input, err := os.Open(source)
-	if err != nil {
-		return err
-	}
-	defer input.Close()
-	temporary, err := os.CreateTemp(filepath.Dir(target), ".accordare-package-*")
-	if err != nil {
-		return err
-	}
-	name := temporary.Name()
-	defer os.Remove(name)
-	if err := temporary.Chmod(0o755); err != nil {
-		temporary.Close()
-		return err
-	}
-	if _, err := io.Copy(temporary, input); err != nil {
-		temporary.Close()
-		return err
-	}
-	if err := temporary.Sync(); err != nil {
-		temporary.Close()
-		return err
-	}
-	if err := temporary.Close(); err != nil {
-		return err
-	}
-	if err := os.Rename(name, target); err != nil {
-		return err
-	}
-	return syncDirectory(filepath.Dir(target))
-}
-
 func ensureDirectory(path string) error {
 	if err := os.MkdirAll(path, 0o755); err != nil {
 		return err
@@ -374,42 +686,6 @@ func ensureDirectory(path string) error {
 	return nil
 }
 
-func writeAtomic(path string, data []byte, mode os.FileMode) error {
-	temporary, err := os.CreateTemp(filepath.Dir(path), ".accordare-receipt-*")
-	if err != nil {
-		return err
-	}
-	name := temporary.Name()
-	defer os.Remove(name)
-	if err := temporary.Chmod(mode); err != nil {
-		temporary.Close()
-		return err
-	}
-	if _, err := temporary.Write(data); err != nil {
-		temporary.Close()
-		return err
-	}
-	if err := temporary.Sync(); err != nil {
-		temporary.Close()
-		return err
-	}
-	if err := temporary.Close(); err != nil {
-		return err
-	}
-	if err := os.Rename(name, path); err != nil {
-		return err
-	}
-	return syncDirectory(filepath.Dir(path))
-}
-
-func syncDirectory(path string) error {
-	directory, err := os.Open(path)
-	if err != nil {
-		return err
-	}
-	defer directory.Close()
-	return directory.Sync()
-}
 func result(paths layout, digest string, changed bool) Result {
 	return Result{Prefix: paths.prefix, Version: version.Version, Binary: paths.binary, Receipt: paths.receipt, ReceiptDigest: digest, Changed: changed}
 }

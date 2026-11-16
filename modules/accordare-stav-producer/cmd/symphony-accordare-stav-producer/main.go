@@ -39,6 +39,16 @@ func run(args []string) error {
 		usage()
 		return fmt.Errorf("command is required")
 	}
+	// These commands own a stronger or open-only lease at their mutation/start
+	// boundary. Other installed controller invocations still pin their executable
+	// while permitting stop and recovery during closed admission.
+	if args[0] != "serve" && args[0] != "enroll" && args[0] != "unenroll" {
+		packageLease, err := packageinstall.AcquireCurrentControllerUse()
+		if err != nil {
+			return err
+		}
+		defer packageLease.Close()
+	}
 	switch args[0] {
 	case "help", "--help":
 		usage()
@@ -165,6 +175,11 @@ func runEnroll(args []string) error {
 	if set.NArg() != 0 || *topsID == "" || *stavConfig == "" {
 		return fmt.Errorf("enroll requires --tops-id, --stav-config, and no positional arguments")
 	}
+	packageLease, err := packageinstall.AcquireCurrentUse()
+	if err != nil {
+		return err
+	}
+	defer packageLease.Close()
 	scope, err := paths.ParseScope(*scopeValue)
 	if err != nil {
 		return err
@@ -211,6 +226,11 @@ func runUnenroll(args []string) error {
 	if err := set.Parse(args); err != nil || set.NArg() != 0 || *topsID == "" {
 		return fmt.Errorf("unenroll requires --tops-id and no positional arguments")
 	}
+	packageLease, err := packageinstall.AcquireCurrentMaintenance()
+	if err != nil {
+		return err
+	}
+	defer packageLease.Close()
 	scope, err := paths.ParseScope(*scopeValue)
 	if err != nil {
 		return err
@@ -236,6 +256,11 @@ func runServe(args []string) error {
 	if err := set.Parse(args); err != nil || set.NArg() != 0 || *topsID == "" {
 		return fmt.Errorf("serve requires --tops-id and no positional arguments")
 	}
+	packageLease, err := packageinstall.AcquireCurrentUse()
+	if err != nil {
+		return err
+	}
+	defer packageLease.Close()
 	scope, err := paths.ParseScope(*scopeValue)
 	if err != nil {
 		return err

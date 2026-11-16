@@ -14,7 +14,7 @@ func TestReceiptV2InstallReplayAndUninstall(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	prefix := filepath.Join(t.TempDir(), "prefix")
+	prefix := filepath.Join(canonicalTempDir(t), "prefix")
 	installed, err := Install(source, prefix, version.Version)
 	if err != nil || !installed.Changed {
 		t.Fatalf("install failed: result=%+v err=%v", installed, err)
@@ -36,7 +36,7 @@ func TestReceiptV2InstallReplayAndUninstall(t *testing.T) {
 }
 
 func TestUninstallRefusesEnrollmentReference(t *testing.T) {
-	root := t.TempDir()
+	root := canonicalTempDir(t)
 	configRoot := filepath.Join(root, "config")
 	t.Setenv("XDG_CONFIG_HOME", configRoot)
 	source, err := os.Executable()
@@ -57,4 +57,13 @@ func TestUninstallRefusesEnrollmentReference(t *testing.T) {
 	if _, err := Uninstall(prefix, version.Version); err == nil {
 		t.Fatal("uninstall accepted a retained per-TOPS enrollment")
 	}
+}
+
+func canonicalTempDir(t *testing.T) string {
+	t.Helper()
+	root, err := filepath.EvalSymlinks(t.TempDir())
+	if err != nil {
+		t.Fatal(err)
+	}
+	return root
 }

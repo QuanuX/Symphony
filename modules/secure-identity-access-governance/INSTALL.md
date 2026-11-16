@@ -25,7 +25,7 @@ Current package managers install one immutable version and its receipt last:
 ./symphony-ssiag package install --prefix /absolute/prefix --version '<compiled-version>'
 ```
 
-The requested version must exactly match the binary's compiled version. The entry point is `<prefix>/libexec/symphony/secure-identity-access-governance/<version>/symphony-ssiag`; its strict `symphony.knowledge.install-receipt.v2` is under `<prefix>/share/symphony/receipts/secure-identity-access-governance/<version>/install-receipt.json`. The receipt declares adapter ID `ssiag.foundation-lifecycle`, protocol `symphony.foundation.lifecycle-command.v1`, and capability `symphony.foundation.lifecycle-adapter.v1`.
+The requested version must exactly match the binary's compiled version. The entry point is `<prefix>/libexec/symphony/secure-identity-access-governance/<version>/symphony-ssiag`; its strict `symphony.knowledge.install-receipt.v2` is under `<prefix>/share/symphony/receipts/secure-identity-access-governance/<version>/install-receipt.json`. The receipt declares adapter ID `ssiag.foundation-lifecycle`, protocol `symphony.foundation.lifecycle-command.v1`, and capabilities `symphony.foundation.lifecycle-adapter.v1` and `symphony.package-retirement.v1`. The owner installer copies only its exact executing binary; arbitrary older source bytes cannot acquire retirement custody.
 
 The historical fixed-path install remains readable for migration:
 
@@ -160,13 +160,30 @@ Purge is intentionally native-only in lifecycle v1. It refuses a present supervi
 symphony-ssiag uninstall --scope user
 ```
 
-Legacy uninstall validates the binary digest and refuses while any TOPS enrollment or descriptor still references it. Receipt-v2 uninstall is explicit and versioned:
+Legacy uninstall remains a separate fixed-path compatibility operation and does not prove safe concurrent live removal. Existing installations without a retirement guard cannot be adopted from an empty process scan. For a fresh guarded user-owned package, retain an exact copy of its native owner executable outside the target prefix, stop and remove its known supervisor through the existing owner, then request explicit versioned retirement:
 
 ```bash
-symphony-ssiag package uninstall --prefix /absolute/prefix --version '<compiled-version>'
+./retained-owner/symphony-ssiag package uninstall --prefix /absolute/prefix --version '<compiled-version>'
 ```
 
-It validates the exact receipt-owned bytes and refuses a matching supervisor descriptor, live SSIAG endpoint, or unresolved digest-bound lifecycle attempt. Neither form purges TOPS data.
+Retirement durably closes admission before attempting exclusive package use. A live
+participating process, retained descriptor, reachable endpoint, unresolved attempt,
+changed identity or unsafe file leaves bytes intact and admission closed. Stop the
+exact instance through its existing native owner, then retry the same retained
+owner command. A controller crash never reopens admission. Reclamation verifies
+exact bytes through pinned, no-follow directory descriptors and removes the
+receipt last; the protected `.symphony-package-retirement/` tombstone and locks
+remain. Neither form purges TOPS data. Do not delete guard files to recover or
+reuse a retired prefix/version; stage a new immutable installation instead.
+
+System-owned packages, legacy or uncontrolled consumers, and roots carrying qxctl
+ownership metadata remain blocked from this managed reclamation lane. Generic
+package deletion and force flags cannot substitute for native owner evidence.
+Fresh installation state binds the current host's filesystem identities and is
+not transferable to another machine. Package delivery must create it on that
+user's host. Current source support does not imply distribution activation:
+older published qxctl owner clients require S05 version closure, and physical-host
+and service-manager acceptance remain pending.
 
 ## Foundation Lifecycle Machine Adapter
 

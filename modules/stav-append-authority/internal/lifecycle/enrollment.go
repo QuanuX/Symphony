@@ -13,6 +13,7 @@ import (
 	"time"
 
 	"github.com/QuanuX/Symphony/modules/stav-append-authority/internal/config"
+	"github.com/QuanuX/Symphony/modules/stav-append-authority/internal/packageuse"
 	stavpaths "github.com/QuanuX/Symphony/modules/stav-append-authority/internal/paths"
 )
 
@@ -100,6 +101,11 @@ func EnrollWithExecutable(scope stavpaths.Scope, topsID string, authorityUID, au
 	if scope == stavpaths.ScopeSystem && os.Geteuid() != 0 {
 		return EnrollmentRecord{}, fmt.Errorf("system enrollment requires administrator privileges")
 	}
+	release, err := packageuse.Acquire(executable)
+	if err != nil {
+		return EnrollmentRecord{}, err
+	}
+	defer release()
 	install, installRecord, _, err := VerifyExecutable(executable, scope)
 	if err != nil {
 		return EnrollmentRecord{}, fmt.Errorf("STAV append authority must have verified installation evidence before enrollment: %w", err)

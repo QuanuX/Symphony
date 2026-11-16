@@ -64,6 +64,10 @@ qxctl stav query --scope user --tops-id <UUID> --limit 100
 
 ## Remove
 
+Current-source managed installations use a persistent retirement guard bound to the exact prefix, receipt and executable. Their service holds a shared use lease through ledger close; native enrollment and supervisor start also acquire admission. Uninstall closes admission durably before testing for outstanding use. A busy process or retained reference leaves all package bytes in place and the package retiring. Stop the selected native service, remove its descriptor and unenroll the selected TOPS, then retry from a retained copy of the same exact owner executable outside the target installation. An executing uninstaller cannot unlink its own controller. A pending retirement never reopens automatically; no process-name killing or force bypass is used.
+
+Only same-owner user-scope managed retirement is qualified by this source increment. System or cross-user removal, unguarded legacy installations, arbitrary detached consumers and older public owner clients remain unsupported. The published `v0.2.1` commands above predate this guard; they are not evidence of S04 retirement support. Use distinct installation prefixes for builds with the same compiled version. The retirement metadata is deliberately retained after removal as an exact tombstone; package data and unrelated files are preserved.
+
 Host uninstall preserves all TOPS data:
 
 ```text

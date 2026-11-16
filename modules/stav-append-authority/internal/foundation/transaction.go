@@ -10,6 +10,7 @@ import (
 	"github.com/QuanuX/Symphony/modules/stav-append-authority/internal/config"
 	"github.com/QuanuX/Symphony/modules/stav-append-authority/internal/foundationaudit"
 	"github.com/QuanuX/Symphony/modules/stav-append-authority/internal/lifecycle"
+	"github.com/QuanuX/Symphony/modules/stav-append-authority/internal/packageuse"
 	stavpaths "github.com/QuanuX/Symphony/modules/stav-append-authority/internal/paths"
 	"github.com/QuanuX/Symphony/modules/stav-append-authority/internal/supervision"
 )
@@ -533,6 +534,16 @@ func PreflightNativePurge(scope stavpaths.Scope, topsID string) error {
 }
 
 func NativePurge(scope stavpaths.Scope, topsID string) (lifecycle.EnrollmentRecord, error) {
+	install, _, _, err := currentInstall(scope)
+	if err != nil {
+		return lifecycle.EnrollmentRecord{}, err
+	}
+	release, err := packageuse.AcquireMaintenance(install.Binary)
+	if err != nil {
+		return lifecycle.EnrollmentRecord{}, err
+	}
+	defer release()
+
 	layout, err := stavpaths.ResolveInstance(scope, topsID)
 	if err != nil {
 		return lifecycle.EnrollmentRecord{}, err
