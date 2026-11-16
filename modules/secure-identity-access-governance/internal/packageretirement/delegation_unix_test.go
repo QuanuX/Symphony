@@ -329,3 +329,26 @@ func TestDelegatedDescriptorsCrossExec(t *testing.T) {
 		t.Fatalf("child did not prepare exact install: %s %v", phase, err)
 	}
 }
+
+func TestDelegationRequiresExactTypedFields(t *testing.T) {
+	f := newDispatchFixture(t, "install")
+	registryRaw, _ := json.Marshal(f.registry)
+	proofRaw, _ := json.Marshal(f.proof)
+	for _, test := range []struct {
+		name string
+		raw  []byte
+		out  any
+	}{
+		{"null canonical", bytes.Replace(registryRaw, []byte(`"canonical":false`), []byte(`"canonical":null`), 1), &dispatchRegistry{}},
+		{"null root device", bytes.Replace(proofRaw, []byte(`"root_device":`), []byte(`"root_device":null,"ignored_device":`), 1), &DispatchProof{}},
+		{"case aliased field", bytes.Replace(proofRaw, []byte(`"protocol":`), []byte(`"Protocol":"ignored","protocol":`), 1), &DispatchProof{}},
+		{"case aliased claim", bytes.Replace(registryRaw, []byte(`"claim_id":`), []byte(`"Claim_ID":"ignored","claim_id":`), 1), &dispatchRegistry{}},
+		{"missing claim key", bytes.Replace(registryRaw, []byte(`"claim_kind":"profile",`), nil, 1), &dispatchRegistry{}},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			if err := strictDispatchDecode(test.raw, test.out); err == nil {
+				t.Fatal("ambiguous typed fields accepted")
+			}
+		})
+	}
+}

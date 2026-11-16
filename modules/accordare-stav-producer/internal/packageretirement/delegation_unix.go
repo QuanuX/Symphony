@@ -391,9 +391,34 @@ func strictDispatchDecode(raw []byte, out any) error {
 	case *dispatchRegistry:
 		required = []string{"protocol", "format_version", "install_root", "enforcement_state", "generation", "previous_ownership_registry_digest", "claims", "observed_receipt_digests", "released_receipt_digests", "updated_at", "canonical", "ownership_registry_digest"}
 	}
+	if len(fields) != len(required) {
+		return fmt.Errorf("ownership evidence has unexpected fields")
+	}
+	if _, registry := out.(*dispatchRegistry); registry {
+		var claims []map[string]json.RawMessage
+		if err := json.Unmarshal(fields["claims"], &claims); err != nil {
+			return err
+		}
+		claimKeys := []string{"claim_id", "claim_kind", "control_domain_id", "tops_id", "profile_id", "component_id", "receipt_digest", "disposition"}
+		for _, claim := range claims {
+			if len(claim) != len(claimKeys) {
+				return fmt.Errorf("ownership claim has unexpected fields")
+			}
+			for _, key := range claimKeys {
+				value, ok := claim[key]
+				if !ok || bytes.Equal(bytes.TrimSpace(value), []byte("null")) {
+					return fmt.Errorf("ownership claim lacks non-null %s", key)
+				}
+			}
+		}
+	}
 	for _, key := range required {
-		if _, ok := fields[key]; !ok {
+		value, ok := fields[key]
+		if !ok {
 			return fmt.Errorf("ownership evidence lacks %s", key)
+		}
+		if key != "previous_ownership_registry_digest" && bytes.Equal(bytes.TrimSpace(value), []byte("null")) {
+			return fmt.Errorf("ownership evidence has null %s", key)
 		}
 	}
 	typed := json.NewDecoder(bytes.NewReader(raw))
