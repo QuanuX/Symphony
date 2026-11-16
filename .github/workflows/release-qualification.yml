@@ -81,6 +81,7 @@ jobs:
           GOWORK=off GOENV=off GOTOOLCHAIN=local go build -trimpath \
             -o "$RUNNER_TEMP/delivery-set" tests/launch-acceptance/delivery-set.go tests/launch-acceptance/delivery-set-main.go
           GOWORK=off GOENV=off GOTOOLCHAIN=local go test -race -count=1 tests/launch-acceptance/qualification-common.go tests/launch-acceptance/qualification-common_test.go
+          GOWORK=off GOENV=off GOTOOLCHAIN=local go test -race -count=1 tests/launch-acceptance/qualification-common.go tests/launch-acceptance/qualify-go-owners.go tests/launch-acceptance/qualify-go-owners_test.go
           GOWORK=off GOENV=off GOTOOLCHAIN=local go build -trimpath \
             -o "$RUNNER_TEMP/qualify-go-owners" tests/launch-acceptance/qualification-common.go tests/launch-acceptance/qualify-go-owners.go
           GOWORK=off GOENV=off GOTOOLCHAIN=local go build -trimpath \

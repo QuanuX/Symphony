@@ -5219,7 +5219,7 @@
   ],
   "go_source_protocol_literals": {
     "scope": "Versioned symphony.*.vN literals in non-test Go source, not a new admission registry; includes input/output/discovery identifiers and does not equate protocol generation with module version.",
-    "count": 535,
+    "count": 537,
     "protocols": {
       "symphony.sbv.result-inspect-input.v1": [
         "libraries/sbv-go/examples/roundtrip/main.go:81"
@@ -5312,6 +5312,7 @@
         "modules/secure-identity-access-governance/internal/provider/receipt.go:116",
         "modules/stav-append-authority/internal/lifecycle/lifecycle.go:164",
         "modules/stav-append-authority/internal/lifecycle/lifecycle.go:400",
+        "tests/launch-acceptance/qualify-go-owners.go:151",
         "tools/qxctl/cmd/qxctl/lifecycle_apply.go:340",
         "tools/qxctl/cmd/qxctl/lifecycle_apply.go:465",
         "tools/qxctl/internal/knowledgeengine/client.go:26",
@@ -7321,14 +7322,22 @@
       "symphony.package-retirement-state.v1": [
         "modules/accordare-stav-producer/internal/packageretirement/guard_unix.go:20",
         "modules/secure-identity-access-governance/internal/packageretirement/guard_unix.go:20",
-        "modules/stav-append-authority/internal/packageretirement/guard_unix.go:20"
+        "modules/stav-append-authority/internal/packageretirement/guard_unix.go:20",
+        "tests/launch-acceptance/qualify-go-owners.go:183"
       ],
       "symphony.package-retirement.v1": [
         "modules/accordare-stav-producer/internal/packageretirement/identity.go:15",
         "modules/secure-identity-access-governance/internal/packageretirement/identity.go:15",
         "modules/stav-append-authority/internal/lifecycle/lifecycle.go:164",
         "modules/stav-append-authority/internal/lifecycle/lifecycle.go:408",
-        "modules/stav-append-authority/internal/packageretirement/identity.go:15"
+        "modules/stav-append-authority/internal/packageretirement/identity.go:15",
+        "tests/launch-acceptance/qualify-go-owners.go:165"
+      ],
+      "symphony.release.delivery-selection.v1": [
+        "tests/launch-acceptance/qualify-go-owners.go:94"
+      ],
+      "symphony.release.go-owner-qualification.v1": [
+        "tests/launch-acceptance/qualify-go-owners.go:137"
       ]
     }
   },
@@ -25334,7 +25343,7 @@
     },
     {
       "path": "modules/secure-identity-access-governance/tests/release-owner/main_test.go",
-      "sha256": "cf57684cd70025a3caa83c0e4b2c878ab4d213fd8e947a8ac8c562ef2f25782a"
+      "sha256": "5e955de0565ad08c9256b17976a81e6a17c4c349c6ce36a228b3b7a25cdb6efe"
     },
     {
       "path": "modules/accordare-stav-producer/tests/release-owner/main.go",
@@ -25474,7 +25483,7 @@
     },
     {
       "path": "tests/launch-acceptance/qualify-go-owners.go",
-      "sha256": "031b4dec63fbe23fff467b968a696768b7d5d150ac7b74f4018eb82b090b40c7"
+      "sha256": "fbe6eef7daedceec925038f8d1da610408afb1d55296fc510eda4693393f7191"
     },
     {
       "path": "tests/launch-acceptance/qualify-native-delivery.go",
