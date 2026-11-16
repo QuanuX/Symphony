@@ -87,7 +87,7 @@ Receipt v1 packages remain valid and are inspected through their existing exact 
 
 New qxctl versions must dual-read supported v1 and v2 evidence. They must not rewrite a v1 receipt into v2 or infer missing v2 facts. An established binding still requires the exact component/module/engine/vector identity, component kind, process entry point, receptor compatibility, and critical host platform declared for that role; forward file-set extensibility never weakens those checks. Generic package mutation is limited to an exact receipt-v2 package copied from an explicit trusted staged root. A package may own neither a root-level `.symphony-*` control path nor any path beneath `share/symphony/receipts/`; those namespaces are reserved for serialization, ownership, compatibility, and immutable receipt commit evidence. No package is downloaded. Install publishes the immutable receipt only after every owned file is durable. The generic executor refuses uninstall with `compatibility_blocked`: receipt ownership, staged rollback bytes, inactive selection and scoped authorization do not prove that running processes or direct SDK consumers have released the package. Destructive dispatch must use a separately qualified native retirement owner; no generic file-deletion fallback is available. Receipt v1 remains observation-only until an exact per-package mutation adapter is separately reviewed.
 
-The root-local `symphony.knowledge.lifecycle-root-ownership.v1` registry is the serialized cross-control-domain package-mutation authority for receipt-v2 packages. Each participating TOPS/profile/state-root control domain contributes content-addressed `retained` or `retiring` claims beneath the same package-root lock. An install requires an enforced registry, exact fence, and the calling profile's exact retained claim. An uninstall requires an enforced registry, exact fence, the calling profile's exact retiring claim or exact legacy release, and every other claim for that receipt to be retiring. Any retained or legacy-preserve claim blocks reclamation. All claims retiring is necessary but insufficient for removal: a qualified process-retirement owner must also prevent new admissions and prove use release. That dispatch is not yet integrated with the generic executor. The registry is operational evidence, not canonical knowledge or permission; every operation still requires exact SSIAG authorization and the prepared lifecycle action.
+The root-local `symphony.knowledge.lifecycle-root-ownership.v1` registry is the serialized cross-control-domain package-mutation authority for receipt-v2 packages. Each participating TOPS/profile/state-root control domain contributes content-addressed `retained` or `retiring` claims beneath the same package-root lock. An install requires an enforced registry, exact fence, and the calling profile's exact retained claim. An uninstall requires an enforced registry, exact fence, the calling profile's exact retiring claim or exact legacy release, and every other claim for that receipt to be retiring. Any retained or legacy-preserve claim blocks reclamation. All claims retiring is necessary but insufficient for removal: a qualified process-retirement owner must also prevent new admissions and prove use release. The closed native dispatch described below is integrated for fresh qualified SSIAG, STAV append-authority and Accordare packages; every other generic removal remains blocked. The registry is operational evidence, not canonical knowledge or permission; every operation still requires exact SSIAG authorization and the prepared lifecycle action.
 
 A newly created empty root enters enforced state immediately. Before the first registry commit, qxctl durably publishes the static `symphony.knowledge.lifecycle-root-ownership-fence.v1` document at `share/symphony/receipts/symphony-root-ownership/1/install-receipt.json`. Ownership-aware observation consumes only its exact bytes; ownership-unaware lifecycle clients see an unsupported preserved receipt, and the existing coordinator therefore emits a global critical blocker without actions. This turns their already-ratified unknown-package behavior into a two-way compatibility fence rather than assuming that an older executable can interpret new hidden state. If the first registry commit is interrupted, status reports the orphaned fence and explicit reconciliation reconstructs the registry without removing the fence.
 
@@ -224,7 +224,7 @@ The newer coordinator continues accepting the older command contract. New option
 
 ### Module is dropped from desired state
 
-The package becomes a retirement candidate. Apply must first verify that no selected binding, open transaction, active receptor, or dependent desired component still requires it. Generic apply currently refuses physical removal until qualified native retirement dispatch is integrated. A native owner must close new admissions, retain files while any managed process is using them, recheck references under exclusive reclamation, and remove only its receipt-owned files. Journals, audit evidence, canonical knowledge, pending user work and unrelated administrator files remain preserved.
+The package becomes a retirement candidate. Apply must first verify that no selected binding, open transaction, active receptor, or dependent desired component still requires it. Generic apply refuses physical removal except through the closed, explicitly selected native owners described below. A native owner must close new admissions, retain files while any managed process is using them, recheck references under exclusive reclamation, and remove only its receipt-owned files. Journals, audit evidence, canonical knowledge, pending user work and unrelated administrator files remain preserved.
 
 ### Upgrade or rollback is interrupted
 
@@ -257,3 +257,50 @@ Each step must preserve older supported operation surfaces and pass upgrade-orde
 The explicit Linux systemd receptor is freezing-path dispatch to report-only qxctl administration and grants no apply, component-execution, remote, hot-path, or canonical authority.
 
 These contracts do not authorize implicit or unattended apply, receipt-v1 package mutation, implicit latest-version selection, package download, arbitrary executable discovery or entry-point execution, receipt rewriting, live process/service activation, in-place coordinator self-replacement, unconstrained engine-binding rewrite, Maestro engine invocation or supervision, remote lifecycle APIs, canonical knowledge mutation, hot/warm participation, native Windows engines, or hidden host integration. Established-role binding changes occur only as prepared lifecycle actions with exact receipt-v2 evidence and binding-registry compare-and-swap. Coordinator selection additionally requires the candidate executable to reopen and reproduce the exact prepared journal before the old coordinator yields the binding; the old coordinator finalizes the attempt, and a crash retry through the new binding observes the same durable active action. Superseded packages remain installed by default so rollback and bespoke multi-version designs remain possible. The implemented generic activation state is protected administrative eligibility only, and Maestro docking is presence rather than execution. A canonical schema is not evidence that any broader adapter or runtime behavior exists.
+
+
+## Exact native package owner dispatch
+
+Scoped `knowledge lifecycle apply` accepts repeated
+`--native-owner COMPONENT=/absolute/retained/executable` bindings for
+`secure-identity-access-governance`, `stav-append-authority`, and
+`accordare-stav-producer`. This closes the existing package lifecycle boundary;
+it adds no service activation, download, latest-version selection or general
+executable adapter. Both `symphony.package-retirement.v1` and
+`symphony.package-owner-dispatch.v1` are mandatory in the exact staged receipt.
+A receipt from an older contract remains unsupported for this mutation path.
+
+The complete desired profile, reviewed execution scope, exact receipt digests,
+source roots, calling control domain and existing SSIAG authorization still
+apply. Each native controller is explicitly supplied and must match that
+receipt's executable hash and size. qxctl retains an independent private copy
+before running fixed owner arguments; it never trusts argv or executable paths
+found in a receipt. Staged rollback sources and supplied controllers must remain
+outside every installation root in the reviewed execution scope. These checks bind already trusted artifacts; they do not
+establish publisher trust. Conda carrier preparation and artifact verification
+remain separate from native activation and package mutation.
+
+qxctl holds the exact root lock while the child receives inherited root, lock
+and proof descriptors. The native owner independently validates the real held
+lock, registry digest/generation, compatibility fence and exact claims. It
+continues to enforce its own process-use, admission, supervisor, enrollment and
+pending-work checks. The actual caller HOME/XDG environment is retained during
+maintenance so local references cannot be concealed by a staging environment.
+System, cross-user, unmanaged and arbitrary loader use remain unqualified.
+
+After a successful child exit, qxctl independently checks the installed receipt
+and executable, or their absence plus the exact inode-bound retired tombstone.
+It verifies that the named root lock still matches its held descriptor before
+committing the calling profile's reviewed ownership changes. Another profile's
+retiring claim is preserved for its owner to reconcile. A foreign retained or
+legacy claim blocks physical removal. A failed or lost child result preserves
+the attempt as uncertain; no blind automatic retry is permitted. Exact retired
+state can support explicit recovery after re-observation; missing files alone
+cannot. Unrelated files, host guard state and user work are preserved.
+
+Raw qxctl, SSH/stdio adapters and the optional transport-profile administrator
+remain independently retained executable carriers. They have no fabricated
+native service receipt or qualified live-deletion route. A retained admin copy
+is inert until separately provisioned through its existing protected path and
+privilege policy. The source/dependency closure and portable owner fixture are
+documented in `tests/launch-acceptance/GO-CANDIDATE-CLOSURE.md`.

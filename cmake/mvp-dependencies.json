@@ -3645,7 +3645,7 @@
         "module": "github.com/QuanuX/Symphony/tools/sov-ssh-adapter",
         "version": "v0.1.0-dev",
         "local_path": "./tools/sov-ssh-adapter",
-        "evidence": "go.work:15"
+        "evidence": "go.work:18"
       },
       {
         "module": "github.com/QuanuX/Symphony/libraries/stav-protocol-go",
@@ -3655,15 +3655,15 @@
       },
       {
         "module": "github.com/QuanuX/Symphony/modules/accordare-stav-producer",
-        "version": "v0.1.0-dev",
+        "version": "v0.1.0-dev.0.20261116054240-71bbb60d870a",
         "local_path": "./modules/accordare-stav-producer",
-        "evidence": "go.work:17"
+        "evidence": "go.work:21"
       },
       {
         "module": "github.com/QuanuX/Symphony/modules/stav-append-authority",
         "version": "v0.2.1",
         "local_path": "./modules/stav-append-authority",
-        "evidence": "go.work:18"
+        "evidence": "go.work:17"
       }
     ],
     "independent_build_requirement": "GOWORK=off, GOTOOLCHAIN=local, exact public module pins, no replace directives; a workspace build does not establish independence."
@@ -4138,7 +4138,7 @@
         },
         {
           "module": "github.com/QuanuX/Symphony/modules/accordare-stav-producer",
-          "version": "v0.1.0-dev",
+          "version": "v0.1.0-dev.0.20261116054240-71bbb60d870a",
           "indirect": false,
           "internal": true,
           "evidence": "tools/qxctl/go.mod:7"
@@ -4286,16 +4286,15 @@
         },
         {
           "Path": "github.com/QuanuX/Symphony/modules/accordare-stav-producer",
-          "Version": "v0.1.0-dev",
+          "Version": "v0.1.0-dev.0.20261116054240-71bbb60d870a",
           "GoVersion": "1.26.5",
-          "Sum": "h1:dz82Zv62zy4nX0/iDhMI0PJF50bIb00icIlKXQT+VaY=",
+          "Sum": "h1:NWYhZIkqW9h+sSEOqI6jS9AeSNO/QYV5VPoXRmxps6A=",
           "GoModSum": "h1:922EvrCQ21+/WziKvvrJhoEdff7K4MLECsrcZ8RXSK4=",
           "Origin": {
             "VCS": "git",
             "URL": "https://github.com/QuanuX/Symphony",
             "Subdir": "modules/accordare-stav-producer",
-            "Hash": "f36c3372ee5fb2ab9d1eb059eac30b543185db2d",
-            "Ref": "refs/tags/modules/accordare-stav-producer/v0.1.0-dev"
+            "Hash": "71bbb60d870ab1da205b1b82d62adec38dca9a68"
           }
         },
         {
@@ -4703,13 +4702,12 @@
         },
         {
           "module": "github.com/QuanuX/Symphony/modules/accordare-stav-producer",
-          "version": "v0.1.0-dev",
+          "version": "v0.1.0-dev.0.20261116054240-71bbb60d870a",
           "origin": {
             "VCS": "git",
             "URL": "https://github.com/QuanuX/Symphony",
             "Subdir": "modules/accordare-stav-producer",
-            "Hash": "f36c3372ee5fb2ab9d1eb059eac30b543185db2d",
-            "Ref": "refs/tags/modules/accordare-stav-producer/v0.1.0-dev"
+            "Hash": "71bbb60d870ab1da205b1b82d62adec38dca9a68"
           }
         },
         {
@@ -5219,7 +5217,7 @@
   ],
   "go_source_protocol_literals": {
     "scope": "Versioned symphony.*.vN literals in non-test Go source, not a new admission registry; includes input/output/discovery identifiers and does not equate protocol generation with module version.",
-    "count": 536,
+    "count": 542,
     "protocols": {
       "symphony.sbv.result-inspect-input.v1": [
         "libraries/sbv-go/examples/roundtrip/main.go:81"
@@ -5312,11 +5310,13 @@
         "modules/secure-identity-access-governance/internal/provider/receipt.go:116",
         "modules/stav-append-authority/internal/lifecycle/lifecycle.go:169",
         "modules/stav-append-authority/internal/lifecycle/lifecycle.go:410",
-        "tools/qxctl/cmd/qxctl/lifecycle_apply.go:340",
-        "tools/qxctl/cmd/qxctl/lifecycle_apply.go:465",
+        "tests/launch-acceptance/qualify-go-owners.go:151",
+        "tools/qxctl/cmd/qxctl/lifecycle_apply.go:349",
+        "tools/qxctl/cmd/qxctl/lifecycle_apply.go:474",
         "tools/qxctl/internal/knowledgeengine/client.go:26",
-        "tools/qxctl/internal/knowledgelifecycle/executor.go:144",
-        "tools/qxctl/internal/knowledgelifecycle/executor.go:452",
+        "tools/qxctl/internal/knowledgelifecycle/executor.go:145",
+        "tools/qxctl/internal/knowledgelifecycle/executor.go:459",
+        "tools/qxctl/internal/knowledgelifecycle/native_owner_unix.go:60",
         "tools/qxctl/internal/knowledgelifecycle/observation.go:341",
         "tools/qxctl/internal/knowledgelifecycle/observation.go:571",
         "tools/qxctl/internal/knowledgelifecycle/profile.go:563",
@@ -5403,13 +5403,13 @@
       "symphony.ssiag.status.v1": [
         "modules/secure-identity-access-governance/internal/client/client.go:113",
         "modules/secure-identity-access-governance/internal/server/server.go:966",
-        "tools/qxctl/cmd/qxctl/commands.go:1423",
+        "tools/qxctl/cmd/qxctl/commands.go:1425",
         "tools/qxctl/internal/ssiagclient/client.go:587"
       ],
       "symphony.ssiag.providers.v1": [
         "modules/secure-identity-access-governance/internal/client/client.go:124",
         "modules/secure-identity-access-governance/internal/server/server.go:985",
-        "tools/qxctl/cmd/qxctl/commands.go:1423",
+        "tools/qxctl/cmd/qxctl/commands.go:1425",
         "tools/qxctl/internal/ssiagclient/client.go:598"
       ],
       "symphony.ssiag.config.v1": [
@@ -5561,7 +5561,7 @@
       ],
       "symphony.ssiag.provider-trust-result.v1": [
         "modules/secure-identity-access-governance/internal/provider/trust.go:26",
-        "tools/qxctl/cmd/qxctl/commands.go:1302",
+        "tools/qxctl/cmd/qxctl/commands.go:1304",
         "tools/qxctl/internal/ssiagclient/client.go:718"
       ],
       "symphony.ssiag.provider-control-request.v1": [
@@ -5592,7 +5592,7 @@
       ],
       "symphony.ssiag.provider-trust-verification-request.v1": [
         "modules/secure-identity-access-governance/internal/server/server.go:485",
-        "tools/qxctl/cmd/qxctl/commands.go:1312",
+        "tools/qxctl/cmd/qxctl/commands.go:1314",
         "tools/qxctl/cmd/qxctl/main.go:3083",
         "tools/qxctl/internal/ssiagclient/client.go:647"
       ],
@@ -5612,7 +5612,7 @@
       ],
       "symphony.sav.current-resolution-input.v1": [
         "tools/qxctl/cmd/qxctl/accordare_host.go:18",
-        "tools/qxctl/cmd/qxctl/commands.go:857"
+        "tools/qxctl/cmd/qxctl/commands.go:859"
       ],
       "symphony.maestro.receptor-inventory-result.v1": [
         "tools/qxctl/cmd/qxctl/accordare_host.go:118",
@@ -5648,167 +5648,167 @@
       ],
       "symphony.sav.named-version-validation-input.v1": [
         "tools/qxctl/cmd/qxctl/command_specs.go:288",
-        "tools/qxctl/cmd/qxctl/commands.go:862"
+        "tools/qxctl/cmd/qxctl/commands.go:864"
       ],
       "symphony.knowledge.administration-coverage-input.v1": [
-        "tools/qxctl/cmd/qxctl/commands.go:786"
+        "tools/qxctl/cmd/qxctl/commands.go:788"
       ],
       "symphony.knowledge.administration-coverage-result.v1": [
-        "tools/qxctl/cmd/qxctl/commands.go:787",
-        "tools/qxctl/cmd/qxctl/commands.go:788",
+        "tools/qxctl/cmd/qxctl/commands.go:789",
+        "tools/qxctl/cmd/qxctl/commands.go:790",
         "tools/qxctl/cmd/qxctl/ssfv.go:402"
       ],
       "symphony.sav.inspect-result.v1": [
-        "tools/qxctl/cmd/qxctl/commands.go:855",
+        "tools/qxctl/cmd/qxctl/commands.go:857",
         "tools/qxctl/cmd/qxctl/main.go:1891"
       ],
       "symphony.sav.reference-check-result.v1": [
-        "tools/qxctl/cmd/qxctl/commands.go:856",
+        "tools/qxctl/cmd/qxctl/commands.go:858",
         "tools/qxctl/cmd/qxctl/main.go:1891"
       ],
       "symphony.sav.current-snapshot.v1": [
-        "tools/qxctl/cmd/qxctl/commands.go:857",
+        "tools/qxctl/cmd/qxctl/commands.go:859",
         "tools/qxctl/cmd/qxctl/main.go:1892"
       ],
       "symphony.sav.evaluation-input.v1": [
-        "tools/qxctl/cmd/qxctl/commands.go:858"
+        "tools/qxctl/cmd/qxctl/commands.go:860"
       ],
       "symphony.sav.evaluation-result.v1": [
-        "tools/qxctl/cmd/qxctl/commands.go:858",
+        "tools/qxctl/cmd/qxctl/commands.go:860",
         "tools/qxctl/cmd/qxctl/main.go:1892"
       ],
       "symphony.sav.diff-result.v1": [
-        "tools/qxctl/cmd/qxctl/commands.go:859",
+        "tools/qxctl/cmd/qxctl/commands.go:861",
         "tools/qxctl/cmd/qxctl/main.go:1893"
       ],
       "symphony.sav.explain-result.v1": [
-        "tools/qxctl/cmd/qxctl/commands.go:860",
+        "tools/qxctl/cmd/qxctl/commands.go:862",
         "tools/qxctl/cmd/qxctl/main.go:1893"
       ],
       "symphony.sav.graph-projection.v1": [
-        "tools/qxctl/cmd/qxctl/commands.go:861",
+        "tools/qxctl/cmd/qxctl/commands.go:863",
         "tools/qxctl/cmd/qxctl/main.go:1894"
       ],
       "symphony.sav.named-version-validation-result.v1": [
-        "tools/qxctl/cmd/qxctl/commands.go:862",
+        "tools/qxctl/cmd/qxctl/commands.go:864",
         "tools/qxctl/cmd/qxctl/main.go:1895"
       ],
       "symphony.sav.named-version-diff-input.v1": [
-        "tools/qxctl/cmd/qxctl/commands.go:863"
+        "tools/qxctl/cmd/qxctl/commands.go:865"
       ],
       "symphony.sav.named-version-diff-result.v1": [
-        "tools/qxctl/cmd/qxctl/commands.go:863",
+        "tools/qxctl/cmd/qxctl/commands.go:865",
         "tools/qxctl/cmd/qxctl/main.go:1895"
       ],
       "symphony.sav.extension-capsule-check-input.v1": [
-        "tools/qxctl/cmd/qxctl/commands.go:864"
+        "tools/qxctl/cmd/qxctl/commands.go:866"
       ],
       "symphony.sav.extension-capsule-check-result.v1": [
-        "tools/qxctl/cmd/qxctl/commands.go:864",
+        "tools/qxctl/cmd/qxctl/commands.go:866",
         "tools/qxctl/cmd/qxctl/main.go:1896"
       ],
       "symphony.sav.installation-blueprint-plan-input.v1": [
-        "tools/qxctl/cmd/qxctl/commands.go:865"
+        "tools/qxctl/cmd/qxctl/commands.go:867"
       ],
       "symphony.sav.installation-blueprint-plan-result.v1": [
-        "tools/qxctl/cmd/qxctl/commands.go:865",
+        "tools/qxctl/cmd/qxctl/commands.go:867",
         "tools/qxctl/cmd/qxctl/main.go:1896"
       ],
       "symphony.sav.compatibility-result.v1": [
-        "tools/qxctl/cmd/qxctl/commands.go:866",
+        "tools/qxctl/cmd/qxctl/commands.go:868",
         "tools/qxctl/cmd/qxctl/main.go:1894"
       ],
       "symphony.sev.inspect-result.v1": [
-        "tools/qxctl/cmd/qxctl/commands.go:966",
+        "tools/qxctl/cmd/qxctl/commands.go:968",
         "tools/qxctl/cmd/qxctl/main.go:1899"
       ],
       "symphony.sev.case-open-input.v1": [
-        "tools/qxctl/cmd/qxctl/commands.go:967"
+        "tools/qxctl/cmd/qxctl/commands.go:969"
       ],
       "symphony.sev.evolution-case.v1": [
-        "tools/qxctl/cmd/qxctl/commands.go:967",
-        "tools/qxctl/cmd/qxctl/commands.go:971",
+        "tools/qxctl/cmd/qxctl/commands.go:969",
+        "tools/qxctl/cmd/qxctl/commands.go:973",
         "tools/qxctl/cmd/qxctl/main.go:1899",
         "tools/qxctl/cmd/qxctl/main.go:1901"
       ],
       "symphony.sev.impact-result.v1": [
-        "tools/qxctl/cmd/qxctl/commands.go:968",
+        "tools/qxctl/cmd/qxctl/commands.go:970",
         "tools/qxctl/cmd/qxctl/main.go:1900"
       ],
       "symphony.sev.disposition-plan.v1": [
-        "tools/qxctl/cmd/qxctl/commands.go:969",
+        "tools/qxctl/cmd/qxctl/commands.go:971",
         "tools/qxctl/cmd/qxctl/main.go:1900"
       ],
       "symphony.sev.transition-verification-input.v1": [
-        "tools/qxctl/cmd/qxctl/commands.go:970"
+        "tools/qxctl/cmd/qxctl/commands.go:972"
       ],
       "symphony.sev.transition-verification-result.v1": [
-        "tools/qxctl/cmd/qxctl/commands.go:970",
+        "tools/qxctl/cmd/qxctl/commands.go:972",
         "tools/qxctl/cmd/qxctl/main.go:1901"
       ],
       "symphony.sev.case-status-result.v1": [
-        "tools/qxctl/cmd/qxctl/commands.go:972",
+        "tools/qxctl/cmd/qxctl/commands.go:974",
         "tools/qxctl/cmd/qxctl/main.go:1902"
       ],
       "symphony.sev.case-recovery-advice.v1": [
-        "tools/qxctl/cmd/qxctl/commands.go:973",
+        "tools/qxctl/cmd/qxctl/commands.go:975",
         "tools/qxctl/cmd/qxctl/main.go:1902"
       ],
       "symphony.sev.case-close-proposal.v1": [
-        "tools/qxctl/cmd/qxctl/commands.go:974",
+        "tools/qxctl/cmd/qxctl/commands.go:976",
         "tools/qxctl/cmd/qxctl/main.go:1903"
       ],
       "symphony.sev.command-surface-assessment.v1": [
-        "tools/qxctl/cmd/qxctl/commands.go:975",
+        "tools/qxctl/cmd/qxctl/commands.go:977",
         "tools/qxctl/cmd/qxctl/main.go:1903"
       ],
       "symphony.sev.novelty-bundle-check-input.v1": [
-        "tools/qxctl/cmd/qxctl/commands.go:976"
+        "tools/qxctl/cmd/qxctl/commands.go:978"
       ],
       "symphony.sev.novelty-bundle-check-result.v1": [
-        "tools/qxctl/cmd/qxctl/commands.go:976",
+        "tools/qxctl/cmd/qxctl/commands.go:978",
         "tools/qxctl/cmd/qxctl/main.go:1905"
       ],
       "symphony.sev.watch-policy-check-input.v1": [
-        "tools/qxctl/cmd/qxctl/commands.go:977"
+        "tools/qxctl/cmd/qxctl/commands.go:979"
       ],
       "symphony.sev.watch-policy-check-result.v1": [
-        "tools/qxctl/cmd/qxctl/commands.go:977",
+        "tools/qxctl/cmd/qxctl/commands.go:979",
         "tools/qxctl/cmd/qxctl/main.go:1905"
       ],
       "symphony.sev.trigger-coalescing-input.v1": [
-        "tools/qxctl/cmd/qxctl/commands.go:978"
+        "tools/qxctl/cmd/qxctl/commands.go:980"
       ],
       "symphony.sev.trigger-coalescing-result.v1": [
-        "tools/qxctl/cmd/qxctl/commands.go:978",
+        "tools/qxctl/cmd/qxctl/commands.go:980",
         "tools/qxctl/cmd/qxctl/main.go:1906"
       ],
       "symphony.sev.evolution-session-binding-input.v1": [
-        "tools/qxctl/cmd/qxctl/commands.go:979"
+        "tools/qxctl/cmd/qxctl/commands.go:981"
       ],
       "symphony.sev.evolution-session-binding.v1": [
-        "tools/qxctl/cmd/qxctl/commands.go:979",
+        "tools/qxctl/cmd/qxctl/commands.go:981",
         "tools/qxctl/cmd/qxctl/main.go:1907"
       ],
       "symphony.sev.graph-projection.v1": [
-        "tools/qxctl/cmd/qxctl/commands.go:980",
+        "tools/qxctl/cmd/qxctl/commands.go:982",
         "tools/qxctl/cmd/qxctl/main.go:1904"
       ],
       "symphony.sev.compatibility-result.v1": [
-        "tools/qxctl/cmd/qxctl/commands.go:981",
+        "tools/qxctl/cmd/qxctl/commands.go:983",
         "tools/qxctl/cmd/qxctl/main.go:1904"
       ],
       "symphony.knowledge.lifecycle-plan-command.v1": [
         "tools/qxctl/cmd/qxctl/lifecycle.go:361",
-        "tools/qxctl/cmd/qxctl/lifecycle_apply.go:528"
+        "tools/qxctl/cmd/qxctl/lifecycle_apply.go:537"
       ],
       "symphony.knowledge.engine-process.v1": [
         "tools/qxctl/cmd/qxctl/lifecycle.go:397",
         "tools/qxctl/cmd/qxctl/lifecycle.go:412",
         "tools/qxctl/cmd/qxctl/lifecycle.go:922",
         "tools/qxctl/cmd/qxctl/lifecycle_apply.go:47",
-        "tools/qxctl/cmd/qxctl/lifecycle_apply.go:1003",
-        "tools/qxctl/cmd/qxctl/lifecycle_apply.go:1015",
+        "tools/qxctl/cmd/qxctl/lifecycle_apply.go:1012",
+        "tools/qxctl/cmd/qxctl/lifecycle_apply.go:1024",
         "tools/qxctl/cmd/qxctl/main.go:299",
         "tools/qxctl/cmd/qxctl/main.go:502",
         "tools/qxctl/cmd/qxctl/main.go:1132",
@@ -5817,7 +5817,7 @@
         "tools/qxctl/internal/invariantregistry/registry.go:324",
         "tools/qxctl/internal/invariantregistry/registry.go:338",
         "tools/qxctl/internal/knowledgeengine/client.go:23",
-        "tools/qxctl/internal/knowledgelifecycle/executor.go:362",
+        "tools/qxctl/internal/knowledgelifecycle/executor.go:369",
         "tools/qxctl/internal/maestroclient/client.go:231",
         "tools/qxctl/internal/maestroclient/client.go:367",
         "tools/qxctl/internal/maestroclient/client.go:443"
@@ -5837,17 +5837,17 @@
         "tools/qxctl/internal/knowledgelifecycle/execution_scope.go:577"
       ],
       "symphony.knowledge.lifecycle-apply-command.v1": [
-        "tools/qxctl/cmd/qxctl/lifecycle_apply.go:584",
-        "tools/qxctl/cmd/qxctl/lifecycle_apply.go:634"
+        "tools/qxctl/cmd/qxctl/lifecycle_apply.go:593",
+        "tools/qxctl/cmd/qxctl/lifecycle_apply.go:643"
       ],
       "symphony.knowledge.lifecycle-apply-result.v1": [
-        "tools/qxctl/cmd/qxctl/lifecycle_apply.go:975"
+        "tools/qxctl/cmd/qxctl/lifecycle_apply.go:984"
       ],
       "symphony.knowledge.lifecycle-boot-journal.v2": [
-        "tools/qxctl/cmd/qxctl/lifecycle_apply.go:1055"
+        "tools/qxctl/cmd/qxctl/lifecycle_apply.go:1064"
       ],
       "symphony.knowledge.lifecycle-applied-state.v1": [
-        "tools/qxctl/cmd/qxctl/lifecycle_apply.go:1113"
+        "tools/qxctl/cmd/qxctl/lifecycle_apply.go:1122"
       ],
       "symphony.knowledge.lifecycle-host-boot-result.v1": [
         "tools/qxctl/cmd/qxctl/lifecycle_host.go:150",
@@ -6531,7 +6531,7 @@
         "tools/qxctl/internal/knowledgeengine/client.go:109",
         "tools/qxctl/internal/knowledgeengine/client.go:115",
         "tools/qxctl/internal/knowledgeengine/scv.go:21",
-        "tools/qxctl/internal/knowledgelifecycle/executor.go:357",
+        "tools/qxctl/internal/knowledgelifecycle/executor.go:364",
         "tools/qxctl/internal/maestroclient/client.go:21"
       ],
       "symphony.sbv.partitioned-result.v1": [
@@ -7154,7 +7154,7 @@
         "tools/qxctl/internal/knowledgeengine/sqv_administration.go:31"
       ],
       "symphony.knowledge.lifecycle-execution-evidence.v1": [
-        "tools/qxctl/internal/knowledgelifecycle/executor.go:163"
+        "tools/qxctl/internal/knowledgelifecycle/executor.go:164"
       ],
       "symphony.knowledge.lifecycle-host-integration.v1": [
         "tools/qxctl/internal/knowledgelifecycle/host.go:16"
@@ -7307,6 +7307,7 @@
         "tools/qxctl/internal/version/build_info.go:11"
       ],
       "symphony.qxctl.reproducible-build.v1": [
+        "tests/launch-acceptance/go-candidate-closure.go:351",
         "tools/qxctl/internal/version/build_info.go:12"
       ],
       "symphony.sov.ssh-carrier-result.v1": [
@@ -7316,7 +7317,7 @@
         "tools/qxctl/cmd/qxctl/lifecycle_execution_scope.go:31"
       ],
       "symphony.knowledge.lifecycle-apply-result.v2": [
-        "tools/qxctl/cmd/qxctl/lifecycle_apply.go:971"
+        "tools/qxctl/cmd/qxctl/lifecycle_apply.go:980"
       ],
       "symphony.knowledge.lifecycle-execution-scope.v1": [
         "tools/qxctl/internal/knowledgelifecycle/execution_scope.go:15"
@@ -7324,17 +7325,41 @@
       "symphony.package-retirement-state.v1": [
         "modules/accordare-stav-producer/internal/packageretirement/guard_unix.go:20",
         "modules/secure-identity-access-governance/internal/packageretirement/guard_unix.go:20",
-        "modules/stav-append-authority/internal/packageretirement/guard_unix.go:20"
+        "modules/stav-append-authority/internal/packageretirement/guard_unix.go:20",
+        "tests/launch-acceptance/qualify-go-owners.go:183",
+        "tools/qxctl/internal/knowledgelifecycle/native_owner_unix.go:399"
       ],
       "symphony.package-retirement.v1": [
         "modules/accordare-stav-producer/internal/packageretirement/identity.go:15",
         "modules/secure-identity-access-governance/internal/packageretirement/identity.go:15",
-        "modules/stav-append-authority/internal/packageretirement/identity.go:15"
+        "modules/stav-append-authority/internal/packageretirement/identity.go:15",
+        "tests/launch-acceptance/qualify-go-owners.go:165",
+        "tools/qxctl/internal/knowledgelifecycle/native_owner_unix.go:137"
       ],
       "symphony.package-owner-dispatch.v1": [
         "modules/accordare-stav-producer/internal/packageretirement/delegation.go:5",
         "modules/secure-identity-access-governance/internal/packageretirement/delegation.go:5",
-        "modules/stav-append-authority/internal/packageretirement/delegation.go:5"
+        "modules/stav-append-authority/internal/packageretirement/delegation.go:5",
+        "tests/launch-acceptance/qualify-go-owners.go:165",
+        "tools/qxctl/internal/knowledgelifecycle/native_owner.go:8"
+      ],
+      "symphony.artifact-build-identity.v1": [
+        "tests/launch-acceptance/go-candidate-closure.go:353"
+      ],
+      "symphony.go.candidate-build.v1": [
+        "tests/launch-acceptance/go-candidate-closure.go:349"
+      ],
+      "symphony.release.delivery-selection.v1": [
+        "tests/launch-acceptance/qualify-go-owners.go:94"
+      ],
+      "symphony.release.go-candidate-closure.v1": [
+        "tests/launch-acceptance/go-candidate-closure.go:328"
+      ],
+      "symphony.release.go-owner-qualification.v1": [
+        "tests/launch-acceptance/qualify-go-owners.go:137"
+      ],
+      "symphony.release.go-owner-source.v1": [
+        "tests/launch-acceptance/go-candidate-closure.go:198"
       ]
     }
   },
@@ -20044,7 +20069,7 @@
     },
     {
       "path": "go.work",
-      "sha256": "a80bde0ddc46cbbbb13c8ed2546c6a6ab8a06ac6ceda5b984a613abb748e4c23"
+      "sha256": "8c0868f8a8969974d2e944522bed4a780723da07a285d6be08fa3b3b0f6b6a77"
     },
     {
       "path": "knowledge/FEATURE-ADMINISTRATION-PROFILE.json",
@@ -22872,7 +22897,7 @@
     },
     {
       "path": "tools/qxctl/COMMANDS.json",
-      "sha256": "072480271a9ad71d914559a4100d26067f91917e97f639f9aaefc78d9b562fe6"
+      "sha256": "d8d150e575671de25aade6b497abc1841ec4b34258b4c182674e0bdbf2573cf4"
     },
     {
       "path": "tools/qxctl/cmd/qxctl/accordare_host.go",
@@ -22892,7 +22917,7 @@
     },
     {
       "path": "tools/qxctl/cmd/qxctl/commands.go",
-      "sha256": "ab58e43a48353cb1ca3a0a84b8a5855cbddb1cc746eda8f11f3f5ea1427655e7"
+      "sha256": "f4f43c87da795ef84bd93c2359c26e259d5cc6a9a8115e52ad919c355cf802d3"
     },
     {
       "path": "tools/qxctl/cmd/qxctl/lifecycle.go",
@@ -22900,7 +22925,7 @@
     },
     {
       "path": "tools/qxctl/cmd/qxctl/lifecycle_apply.go",
-      "sha256": "ca0ec901e224615fa12f4d8833441283456ee2e8aeee0e6e40c5291adc7a0012"
+      "sha256": "b04f83d791ba9dac9aaee55138cd3c6feb2a1db50936891977e73f6df6491786"
     },
     {
       "path": "tools/qxctl/cmd/qxctl/lifecycle_host.go",
@@ -23144,11 +23169,11 @@
     },
     {
       "path": "tools/qxctl/go.mod",
-      "sha256": "a8eb928ed51572ad7d1d7818cc380720c77c64f3a36e520eebc757d4ecc59917"
+      "sha256": "486a66c8931a6f14f7486ca586121331f077590ff0821c0a376c923abea54da1"
     },
     {
       "path": "tools/qxctl/go.sum",
-      "sha256": "e484f5a3f22bf164f56488e3e2300d3926d5c8318eed5eb0b495442650f51568"
+      "sha256": "8784e92ba07718b5c9dec5f15b4ccc0f8e979deb8289917ae866628d0f920551"
     },
     {
       "path": "tools/qxctl/internal/commandregistry/registry.go",
@@ -23428,7 +23453,7 @@
     },
     {
       "path": "tools/qxctl/internal/knowledgelifecycle/executor.go",
-      "sha256": "8864a2d5e7331099d0f07c8fbcff7382c469bbc88fbac1bb099bf87ece88889b"
+      "sha256": "c83e9cc8c436a06ffef4c2f2c5fc52ef34473ba09795289bb5fad048f816239e"
     },
     {
       "path": "tools/qxctl/internal/knowledgelifecycle/host.go",
@@ -25480,7 +25505,7 @@
     },
     {
       "path": "tests/launch-acceptance/qualify-go-owners.go",
-      "sha256": "031b4dec63fbe23fff467b968a696768b7d5d150ac7b74f4018eb82b090b40c7"
+      "sha256": "46116259db1644169b0d3183c95998e2f2b3db5893e15ce7ffb79eed090505e5"
     },
     {
       "path": "tests/launch-acceptance/qualify-native-delivery.go",
@@ -25625,6 +25650,38 @@
     {
       "path": "modules/stav-append-authority/internal/packageretirement/delegation_unsupported.go",
       "sha256": "6d6ab7646a774afee8fdf4b0c14ec866c1273e71613fb3ded94567de3dc17f8c"
+    },
+    {
+      "path": "cmake/mvp-go-owner-closure.json",
+      "sha256": "3be692d3a8e3a2b2a03cc87956f2ca35cba605c4782cf28e7a9afc8d9b70f9e7"
+    },
+    {
+      "path": "tests/launch-acceptance/GO-CANDIDATE-CLOSURE.md",
+      "sha256": "bc1958cc49c18eba08a257f6db142567c314a6f338a4460d1017b0891eca7782"
+    },
+    {
+      "path": "tests/launch-acceptance/check-go-candidate-closure.sh",
+      "sha256": "6a7cefa5f237e17801de38d2c619abc3dc685c1baf41c967d65936ed162fea99"
+    },
+    {
+      "path": "tests/launch-acceptance/go-candidate-closure-main.go",
+      "sha256": "5d7ff1e71d45a69ae2d8cbd29b9a0db4a123ac736b14e5f384f9e2d5b65a2b62"
+    },
+    {
+      "path": "tests/launch-acceptance/go-candidate-closure.go",
+      "sha256": "49614655decc43902f97da935997734cd806d16ac152f024ec1b8e5c617a7a20"
+    },
+    {
+      "path": "tools/qxctl/internal/knowledgelifecycle/native_owner.go",
+      "sha256": "994612b88f95c6388659c3e0b114c771d3565d3349473ae4ad294407bb0bc27c"
+    },
+    {
+      "path": "tools/qxctl/internal/knowledgelifecycle/native_owner_unix.go",
+      "sha256": "6221d6d1329eae9f8d6c3dde47e87d3ced3f530e21e9f08f27e44b56d2a1929d"
+    },
+    {
+      "path": "tools/qxctl/internal/knowledgelifecycle/native_owner_unsupported.go",
+      "sha256": "73640657e36c42ea780d08db4b801a213f2ca7f0bf3d8b4c25c31c034a2e99b7"
     }
   ],
   "platform_profile_catalog": "cmake/mvp-platform-profiles.json",

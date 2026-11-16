@@ -43,6 +43,20 @@ func TestLifecycleApplyRejectsInvalidArgumentsBeforeStateMutation(t *testing.T) 
 			options.maxActions = 0
 			return runKnowledgeLifecycleApply(options)
 		}, "--max-actions must be between"},
+		{"apply unknown native owner", func(options knowledgeLifecycleOptions) error {
+			options.operationID = "reviewed-operation"
+			options.sourceJournalDigest = "sha256:" + strings.Repeat("1", 64)
+			options.expectedApplyDigest, options.expectedAppliedDigest = "absent", "absent"
+			options.nativeOwners = []string{"arbitrary-owner=/tmp/owner"}
+			return runKnowledgeLifecycleApply(options)
+		}, "native owner must be a known component"},
+		{"apply native owner without scope", func(options knowledgeLifecycleOptions) error {
+			options.operationID = "reviewed-operation"
+			options.sourceJournalDigest = "sha256:" + strings.Repeat("1", 64)
+			options.expectedApplyDigest, options.expectedAppliedDigest = "absent", "absent"
+			options.nativeOwners = []string{"stav-append-authority=/tmp/owner"}
+			return runKnowledgeLifecycleApply(options)
+		}, "--native-owner requires an exact --execution-scope"},
 		{"recover missing operation", func(options knowledgeLifecycleOptions) error {
 			return runKnowledgeLifecycleApplyState("lifecycle_apply_recover", options)
 		}, "--operation-id is required"},
@@ -119,6 +133,9 @@ func TestScopedApplyFlagsAndAuthorizationBinding(t *testing.T) {
 		command, _, err := root.Find([]string{"knowledge", "lifecycle", name})
 		if err != nil || command.Flags().Lookup("execution-scope") == nil {
 			t.Fatalf("scope flag missing on %s: %v", name, err)
+		}
+		if (command.Flags().Lookup("native-owner") != nil) != (name == "apply") {
+			t.Fatalf("native executable dispatch flag must be limited to apply: %s", name)
 		}
 	}
 	scope := cliScopeFixture(t)

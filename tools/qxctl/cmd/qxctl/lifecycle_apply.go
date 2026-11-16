@@ -68,6 +68,12 @@ func runKnowledgeLifecycleApply(options knowledgeLifecycleOptions) error {
 	if options.maxActions == 0 || options.maxActions > 4096 {
 		return fmt.Errorf("--max-actions must be between 1 and 4096")
 	}
+	if err := knowledgelifecycle.ValidateNativeOwners(options.nativeOwners); err != nil {
+		return err
+	}
+	if len(options.nativeOwners) != 0 && options.executionScopePath == "" {
+		return fmt.Errorf("--native-owner requires an exact --execution-scope")
+	}
 	if err := loadLifecycleExecutionScope(&options); err != nil {
 		return err
 	}
@@ -112,6 +118,9 @@ func runKnowledgeLifecycleApplyLocked(options knowledgeLifecycleOptions) error {
 		return err
 	}
 	executor.SetExecutionScope(options.executionScope)
+	if err := executor.SetNativeOwners(options.nativeOwners); err != nil {
+		return err
+	}
 	executor.SetBindingAdapter(bindingAdapter)
 	if options.maestroPrefix != "" || len(options.maestroReceptorIDs) != 0 {
 		adapter, adapterErr := newLifecycleMaestroAdapter(options, repositoryRoot, store.StateRoot())

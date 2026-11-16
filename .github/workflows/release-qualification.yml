@@ -66,6 +66,7 @@ jobs:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           persist-credentials: false
+          fetch-depth: 0 # Verify the exact dependency owner remains an ancestor.
       - uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6
         with:
           go-version-file: tools/qxctl/go.mod
@@ -81,6 +82,8 @@ jobs:
           GOWORK=off GOENV=off GOTOOLCHAIN=local go build -trimpath \
             -o "$RUNNER_TEMP/delivery-set" tests/launch-acceptance/delivery-set.go tests/launch-acceptance/delivery-set-main.go
           GOWORK=off GOENV=off GOTOOLCHAIN=local go test -race -count=1 tests/launch-acceptance/qualification-common.go tests/launch-acceptance/qualification-common_test.go
+          GOWORK=off GOENV=off GOTOOLCHAIN=local go test -race -count=1 tests/launch-acceptance/qualification-common.go tests/launch-acceptance/qualify-go-owners.go tests/launch-acceptance/qualify-go-owners_test.go
+          GOWORK=off GOENV=off GOTOOLCHAIN=local go test -race -count=1 tests/launch-acceptance/go-candidate-closure.go tests/launch-acceptance/go-candidate-closure_test.go
           GOWORK=off GOENV=off GOTOOLCHAIN=local go build -trimpath \
             -o "$RUNNER_TEMP/qualify-go-owners" tests/launch-acceptance/qualification-common.go tests/launch-acceptance/qualify-go-owners.go
           GOWORK=off GOENV=off GOTOOLCHAIN=local go build -trimpath \
@@ -95,6 +98,23 @@ jobs:
               --identity "$RUNNER_TEMP/release-go-identities/identities/$component.json" \
               --delivery-tool "$RUNNER_TEMP/delivery-set" --work "$RUNNER_TEMP/$component-delivery"
           done
+      - name: Verify all seven Go candidates and the exact public owner dependency
+        shell: bash
+        run: |
+          set -euo pipefail
+          sh tools/qxctl/tests/reproducible_build.sh "$RUNNER_TEMP/release-qxctl-closure"
+          owner_commit=$(jq -er '.source_commit' cmake/mvp-go-owner-closure.json)
+          owner_version=$(jq -er '.version' cmake/mvp-go-owner-closure.json)
+          GOWORK=off GOENV=off GOTOOLCHAIN=local GOPROXY=https://proxy.golang.org GOSUMDB=sum.golang.org \
+            GOPRIVATE= GONOPROXY= GONOSUMDB= GOINSECURE= GOAUTH=off GOVCS='*:off' \
+            go mod download -json "github.com/QuanuX/Symphony/modules/accordare-stav-producer@$owner_version" \
+            > "$RUNNER_TEMP/release-accordare-download.json"
+          sh tests/launch-acceptance/check-go-candidate-closure.sh \
+            -repository "$GITHUB_WORKSPACE" -build-root "$RUNNER_TEMP/release-go-identities" \
+            -qxctl-build-root "$RUNNER_TEMP/release-qxctl-closure" \
+            -accordare-download "$RUNNER_TEMP/release-accordare-download.json" \
+            -accordare-source-commit "$owner_commit" \
+            -output "$RUNNER_TEMP/release-go-candidate-closure.json"
       - name: Retain executed tests, explicit skips and candidate identities
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
@@ -107,6 +127,10 @@ jobs:
             ${{ runner.temp }}/release-go-identities/identities
             ${{ runner.temp }}/release-go-identities/*.json
             ${{ runner.temp }}/release-go-identities/*/owner-tool-build.json
+            ${{ runner.temp }}/release-qxctl-closure/*.json
+            ${{ runner.temp }}/release-qxctl-closure/logs
+            ${{ runner.temp }}/release-go-candidate-closure.json
+            ${{ runner.temp }}/release-accordare-download.json
             ${{ runner.temp }}/release-go-owner-qualification/logs
             ${{ runner.temp }}/release-go-owner-qualification/evidence.json
             ${{ runner.temp }}/release-go-owner-qualification/*-owner.json

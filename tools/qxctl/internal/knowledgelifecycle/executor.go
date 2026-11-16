@@ -81,6 +81,7 @@ type Executor struct {
 	sourceRoots    []string
 	docking        DockingAdapter
 	binding        BindingAdapter
+	nativeOwners   map[string][]string
 }
 
 func (e *Executor) SetExecutionScope(scope *ExecutionScope) { e.executionScope = scope }
@@ -197,6 +198,9 @@ func (e *Executor) execute(result *ExecutionResult, action PlannedAction, desire
 	observedComponent, present := findObservedComponent(observed, action.ComponentID)
 	switch action.Kind {
 	case "install":
+		if isNativeServiceOwner(action.ComponentID) {
+			return e.executeNativeOwner(result, action, component, wanted, observedComponent, present)
+		}
 		if !wanted || component.SelectedPackage == nil {
 			return fmt.Errorf("integrity_fatal: install action lacks exact desired package identity")
 		}
@@ -229,6 +233,9 @@ func (e *Executor) execute(result *ExecutionResult, action PlannedAction, desire
 		}
 		result.AfterEvidenceDigests = append(result.AfterEvidenceDigests, receipt.ReceiptDigest)
 	case "uninstall":
+		if isNativeServiceOwner(action.ComponentID) {
+			return e.executeNativeOwner(result, action, component, wanted, observedComponent, present)
+		}
 		// Receipt ownership and a prepared plan do not prove that a running
 		// process (including a direct SDK consumer) has released this package.
 		// Destructive dispatch requires the exact native owner's retirement

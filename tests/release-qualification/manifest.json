@@ -2764,6 +2764,21 @@
         "TestInvokeDeadlineTerminatesDescendantsHoldingOutput",
         "TestInvokeLeaderExitBoundsPipesAndCleansDescendants"
       ]
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./internal/knowledgelifecycle",
+      "tests": [
+        "TestNativeOwnersSharedRootDispatch",
+        "TestNativeRecoveryRejectsReplacedRootLock"
+      ]
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./cmd/qxctl",
+      "tests": [
+        "TestAccordareOwnerDependencyClosure"
+      ]
     }
   ],
   "swift": {

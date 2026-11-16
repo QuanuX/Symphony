@@ -170,6 +170,7 @@ type knowledgeLifecycleOptions struct {
 	expectedAppliedDigest   string
 	sourceJournalDigest     string
 	stagedRoots             []string
+	nativeOwners            []string
 	ownershipRoot           string
 	expectedOwnershipDigest string
 	receiptDigest           string
@@ -685,6 +686,7 @@ func newKnowledgeCommand() *cobra.Command {
 	apply.Flags().StringVar(&applyOptions.expectedApplyDigest, "expected-apply-journal-digest", "", "required prior apply journal state: absent or exact tagged SHA-256 digest")
 	apply.Flags().StringVar(&applyOptions.expectedAppliedDigest, "expected-applied-state-digest", "", "required prior applied state: absent or exact tagged SHA-256 digest")
 	apply.Flags().StringSliceVar(&applyOptions.stagedRoots, "source-root", nil, "trusted staged v2 package root; repeat as needed")
+	apply.Flags().StringArrayVar(&applyOptions.nativeOwners, "native-owner", nil, "exact native owner component=/absolute/retained/executable; repeat for each reviewed receipt")
 	apply.Flags().Uint64Var(&applyOptions.maxActions, "max-actions", 4096, "bounded actions in this invocation; does not authorize component scope")
 	apply.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
 	lifecycle.AddCommand(apply)
