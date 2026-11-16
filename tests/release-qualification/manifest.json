@@ -1621,6 +1621,17 @@
   ],
   "optional_go_tests": [
     {
+      "module": "tools/qxctl",
+      "package": "./cmd/qxctl",
+      "test": "TestScopedNativeProducedResults",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "set SYMPHONY_SCOPED_APPLY_FIXTURE to exact native-produced scoped apply qualification evidence"
+      ],
+      "source": "tools/qxctl/cmd/qxctl/lifecycle_execution_scope_test.go",
+      "line": 264
+    },
+    {
       "module": "modules/accordare-stav-producer",
       "package": "./internal/producer",
       "test": "TestInstalledSTAVAcceptance",

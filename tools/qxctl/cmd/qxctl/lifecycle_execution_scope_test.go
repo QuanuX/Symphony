@@ -4,8 +4,10 @@ import (
 	"encoding/json"
 	"github.com/QuanuX/Symphony/tools/qxctl/internal/knowledgelifecycle"
 	"os"
+	"path/filepath"
 	"strings"
 	"testing"
+	"time"
 )
 
 func cliScopeFixture(t *testing.T) knowledgelifecycle.ExecutionScope {
@@ -19,6 +21,94 @@ func cliScopeFixture(t *testing.T) knowledgelifecycle.ExecutionScope {
 		t.Fatal(err)
 	}
 	return scope
+}
+
+func TestLifecycleApplyRejectsInvalidArgumentsBeforeStateMutation(t *testing.T) {
+	for _, test := range []struct {
+		name string
+		run  func(knowledgeLifecycleOptions) error
+		want string
+	}{
+		{"apply missing identity", runKnowledgeLifecycleApply, "--operation-id, --source-journal-digest"},
+		{"apply invalid identity", func(options knowledgeLifecycleOptions) error {
+			options.operationID = "invalid identity"
+			options.sourceJournalDigest = "sha256:" + strings.Repeat("1", 64)
+			options.expectedApplyDigest, options.expectedAppliedDigest = "absent", "absent"
+			return runKnowledgeLifecycleApply(options)
+		}, "mutation identities must be exact tokens"},
+		{"apply invalid bound", func(options knowledgeLifecycleOptions) error {
+			options.operationID = "reviewed-operation"
+			options.sourceJournalDigest = "sha256:" + strings.Repeat("1", 64)
+			options.expectedApplyDigest, options.expectedAppliedDigest = "absent", "absent"
+			options.maxActions = 0
+			return runKnowledgeLifecycleApply(options)
+		}, "--max-actions must be between"},
+		{"recover missing operation", func(options knowledgeLifecycleOptions) error {
+			return runKnowledgeLifecycleApplyState("lifecycle_apply_recover", options)
+		}, "--operation-id is required"},
+		{"recover conflicting expectation", func(options knowledgeLifecycleOptions) error {
+			options.operationID, options.discover = "reviewed-operation", true
+			options.expectedApplyDigest = "sha256:" + strings.Repeat("1", 64)
+			return runKnowledgeLifecycleApplyState("lifecycle_apply_recover", options)
+		}, "mutually exclusive"},
+		{"recover missing expectation", func(options knowledgeLifecycleOptions) error {
+			options.operationID = "reviewed-operation"
+			return runKnowledgeLifecycleApplyState("lifecycle_apply_recover", options)
+		}, "--expected-apply-journal-digest or --discover is required"},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			root, err := filepath.EvalSymlinks(t.TempDir())
+			if err != nil {
+				t.Fatal(err)
+			}
+			options := knowledgeLifecycleOptions{
+				stateRoot: root, topsID: "11111111-1111-4111-8111-111111111111",
+				profileID: "default", scope: "user", ttl: time.Minute, maxActions: 4096,
+			}
+			if err := test.run(options); err == nil || !strings.Contains(err.Error(), test.want) {
+				t.Fatalf("invalid request returned %v; expected %s", err, test.want)
+			}
+			entries, err := os.ReadDir(root)
+			if err != nil || len(entries) != 0 {
+				t.Fatalf("invalid request created lifecycle state before validation: entries=%v err=%v", entries, err)
+			}
+		})
+	}
+}
+
+func TestLifecycleApplyAndRecoverKeepExecutionLease(t *testing.T) {
+	root, err := filepath.EvalSymlinks(t.TempDir())
+	if err != nil {
+		t.Fatal(err)
+	}
+	options := knowledgeLifecycleOptions{
+		stateRoot: root, topsID: "11111111-1111-4111-8111-111111111111",
+		profileID: "default", scope: "user", ttl: time.Minute, maxActions: 4096,
+		operationID: "reviewed-operation", sourceJournalDigest: "sha256:" + strings.Repeat("1", 64),
+		expectedApplyDigest: "sha256:" + strings.Repeat("2", 64), expectedAppliedDigest: "absent",
+	}
+	store, err := lifecycleStore(options)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := store.WithExecutionLease(func() error {
+		for _, test := range []struct {
+			name string
+			run  func() error
+		}{
+			{"apply", func() error { return runKnowledgeLifecycleApply(options) }},
+			{"recover", func() error { return runKnowledgeLifecycleApplyState("lifecycle_apply_recover", options) }},
+		} {
+			t.Run(test.name, func(t *testing.T) {
+				if err := test.run(); err == nil || !strings.Contains(err.Error(), "lifecycle execution is busy") {
+					t.Fatalf("validated operation bypassed the held execution lease: %v", err)
+				}
+			})
+		}
+		return nil
+	}); err != nil {
+		t.Fatal(err)
+	}
 }
 func TestScopedApplyFlagsAndAuthorizationBinding(t *testing.T) {
 	root, err := newRootCommand()

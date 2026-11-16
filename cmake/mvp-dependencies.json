@@ -20143,7 +20143,7 @@
     },
     {
       "path": "knowledge/schemas/v1/MANIFEST.md",
-      "sha256": "0d3ffb081a491cfeec94f7166d950202db19ec7ff2ad0614c4ed24ed7e12b954"
+      "sha256": "e8fdf5b2ebe254ee6e1cc44031bbdc2ff72000b878c8f915cd9333969c5aa8b7"
     },
     {
       "path": "knowledge/schemas/v1/administration-coverage-input.schema.json",
@@ -20439,7 +20439,7 @@
     },
     {
       "path": "knowledge/schemas/v2/MANIFEST.md",
-      "sha256": "c147be9e547ebd1b8ca515a81af302f45fa6c2b1ec4745704387190793eed4aa"
+      "sha256": "d6bc10d621ea00ec43107c5af5e9132e78eb4538988958065092044239a7b364"
     },
     {
       "path": "knowledge/schemas/v2/engine-binding-registry.schema.json",
@@ -22855,7 +22855,7 @@
     },
     {
       "path": "tools/qxctl/COMMANDS.json",
-      "sha256": "e0e7cfa62ac852f517bc567188297facc92fa312abe698c937145aa00c4bd37e"
+      "sha256": "072480271a9ad71d914559a4100d26067f91917e97f639f9aaefc78d9b562fe6"
     },
     {
       "path": "tools/qxctl/cmd/qxctl/accordare_host.go",
@@ -22883,7 +22883,7 @@
     },
     {
       "path": "tools/qxctl/cmd/qxctl/lifecycle_apply.go",
-      "sha256": "fe08382191e7028327e222c3d181904a845db6f1f0ff84b49a97b49246dd085e"
+      "sha256": "ca0ec901e224615fa12f4d8833441283456ee2e8aeee0e6e40c5291adc7a0012"
     },
     {
       "path": "tools/qxctl/cmd/qxctl/lifecycle_host.go",

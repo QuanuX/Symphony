@@ -56,17 +56,6 @@ func lifecycleApplyClient() map[string]any {
 }
 
 func runKnowledgeLifecycleApply(options knowledgeLifecycleOptions) error {
-	if err := loadLifecycleExecutionScope(&options); err != nil {
-		return err
-	}
-	store, err := lifecycleStore(options)
-	if err != nil {
-		return err
-	}
-	return store.WithExecutionLease(func() error { return runKnowledgeLifecycleApplyLocked(options) })
-}
-
-func runKnowledgeLifecycleApplyLocked(options knowledgeLifecycleOptions) error {
 	if options.operationID == "" || options.sourceJournalDigest == "" ||
 		options.expectedApplyDigest == "" || options.expectedAppliedDigest == "" {
 		return fmt.Errorf("--operation-id, --source-journal-digest, --expected-apply-journal-digest, and --expected-applied-state-digest are required")
@@ -79,6 +68,17 @@ func runKnowledgeLifecycleApplyLocked(options knowledgeLifecycleOptions) error {
 	if options.maxActions == 0 || options.maxActions > 4096 {
 		return fmt.Errorf("--max-actions must be between 1 and 4096")
 	}
+	if err := loadLifecycleExecutionScope(&options); err != nil {
+		return err
+	}
+	store, err := lifecycleStore(options)
+	if err != nil {
+		return err
+	}
+	return store.WithExecutionLease(func() error { return runKnowledgeLifecycleApplyLocked(options) })
+}
+
+func runKnowledgeLifecycleApplyLocked(options knowledgeLifecycleOptions) error {
 	observation, profileDigest, profile, err := buildLifecycleObservation(options, false)
 	if err != nil {
 		return err
@@ -654,20 +654,6 @@ func invokeLifecycleApplyState(
 }
 
 func runKnowledgeLifecycleApplyState(operation string, options knowledgeLifecycleOptions) error {
-	if err := loadLifecycleExecutionScope(&options); err != nil {
-		return err
-	}
-	if operation == "lifecycle_apply_recover" {
-		store, err := lifecycleStore(options)
-		if err != nil {
-			return err
-		}
-		return store.WithExecutionLease(func() error { return runKnowledgeLifecycleApplyStateLocked(operation, options) })
-	}
-	return runKnowledgeLifecycleApplyStateLocked(operation, options)
-}
-
-func runKnowledgeLifecycleApplyStateLocked(operation string, options knowledgeLifecycleOptions) error {
 	if operation == "lifecycle_apply_recover" {
 		if options.operationID == "" {
 			return fmt.Errorf("--operation-id is required")
@@ -683,6 +669,20 @@ func runKnowledgeLifecycleApplyStateLocked(operation string, options knowledgeLi
 			return fmt.Errorf("--expected-apply-journal-digest or --discover is required")
 		}
 	}
+	if err := loadLifecycleExecutionScope(&options); err != nil {
+		return err
+	}
+	if operation == "lifecycle_apply_recover" {
+		store, err := lifecycleStore(options)
+		if err != nil {
+			return err
+		}
+		return store.WithExecutionLease(func() error { return runKnowledgeLifecycleApplyStateLocked(operation, options) })
+	}
+	return runKnowledgeLifecycleApplyStateLocked(operation, options)
+}
+
+func runKnowledgeLifecycleApplyStateLocked(operation string, options knowledgeLifecycleOptions) error {
 	if _, err := lifecycleStore(options); err != nil {
 		return err
 	}
