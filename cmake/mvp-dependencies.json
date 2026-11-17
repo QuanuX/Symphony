@@ -21237,7 +21237,7 @@
     },
     {
       "path": "modules/accordare-stav-producer/cmd/symphony-accordare-stav-producer/main.go",
-      "sha256": "e91b0934d736409caf67e40e9c0e56491eab6a57aa5e9b26f59b1efa96f2cd0b"
+      "sha256": "13b69e974c83115732cd467d5629953b63de2ee18a313412feb82cfea983d44a"
     },
     {
       "path": "modules/accordare-stav-producer/go.mod",
@@ -21269,7 +21269,7 @@
     },
     {
       "path": "modules/accordare-stav-producer/internal/packageinstall/package.go",
-      "sha256": "b18984afc26738fcb8ecb63e58130eed1f301f6a03304b05e512a1dbe1ad43f7"
+      "sha256": "e8a8516696db2c18efe6bec629d3f2c5c214e49674bd812dbf78f6752a85a339"
     },
     {
       "path": "modules/accordare-stav-producer/internal/paths/paths.go",
@@ -21701,7 +21701,7 @@
     },
     {
       "path": "modules/secure-identity-access-governance/cmd/symphony-ssiag/main.go",
-      "sha256": "058525d842f165afd6926886fecc45676c838c14d556dbcc249f6fc03efbb800"
+      "sha256": "b1b0492e3dbed5afddbdf4c1d14bf81e7e22dd0cf0c1ddbbfe994de68d60dbfd"
     },
     {
       "path": "modules/secure-identity-access-governance/go.mod",
@@ -21773,7 +21773,7 @@
     },
     {
       "path": "modules/secure-identity-access-governance/internal/packageinstall/package.go",
-      "sha256": "a5f410fa9cf0fac29cebd45f092bb1a70ef65f14684a1508fccb16a8a9a56127"
+      "sha256": "09ed70ec652062ea829eea63994034edd12e3395d65137888c3532ca2cc8a1ee"
     },
     {
       "path": "modules/secure-identity-access-governance/internal/policy/policy.go",
@@ -22925,7 +22925,7 @@
     },
     {
       "path": "tools/qxctl/cmd/qxctl/lifecycle_apply.go",
-      "sha256": "b04f83d791ba9dac9aaee55138cd3c6feb2a1db50936891977e73f6df6491786"
+      "sha256": "1dcfe56a237e7ce9f2538f000a940efb2637753079dbe79d0e1ceafd94990942"
     },
     {
       "path": "tools/qxctl/cmd/qxctl/lifecycle_host.go",
@@ -25473,7 +25473,7 @@
     },
     {
       "path": "tests/beta-readiness/README.md",
-      "sha256": "70dc47fb788ef6c08b41c1df0d082ed4060cd80e65c1b32eaf735763a65c477f"
+      "sha256": "6e7711d20cded8b85e6ea0d89471ea757a4074df0c0b1fd6a5289ca5a8e94a23"
     },
     {
       "path": "tests/beta-readiness/prepare.go",
