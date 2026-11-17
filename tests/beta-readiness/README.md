@@ -1,5 +1,7 @@
 # Source-bound W12 preparation
 
+For the published Public Beta, use the [0.2.0-beta.1 release](https://github.com/QuanuX/symphony-distribution/releases/tag/v0.2.0-beta.1) and its [bound publication record](https://github.com/QuanuX/symphony-distribution/blob/v0.2.0-beta.1/evidence/d14-publication.json). This README documents the reusable W12 preparation helper. Its intentionally incomplete output is a preparation result, not the current status of the published beta.
+
 This release-only helper prepares reviewable construction and campaign worklists
 and runs the existing core and delivery acceptance checkers. It does not build
 product candidates, execute providers, sign, upload, configure Anaconda, assign

@@ -1,5 +1,7 @@
 # Final-download MVP acceptance
 
+**Current Public Beta:** [0.2.0-beta.1](https://github.com/QuanuX/symphony-distribution/releases/tag/v0.2.0-beta.1) has a separate [bound publication record](https://github.com/QuanuX/symphony-distribution/blob/v0.2.0-beta.1/evidence/d14-publication.json) and [installation/verification guide](https://downloads.quanux.org/symphony/0.2.0-beta.1/docs/BETA-INSTALL.md). The procedures and increment notes below describe the core candidate/evidence tools and their historical preparation state. They do not replace the published beta's artifact selection, publisher-pinned trust policy or recorded acceptance scope. Live-provider operations and distinct native-version transitions remain separately qualified work.
+
 The [multi-artifact delivery index](DELIVERY-SET.md) separately binds selected
 native/Go/Swift/vendor/source artifacts and independent signer policy. Its first
 increment verifies bytes and index signatures only; existing native candidate
