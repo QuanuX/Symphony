@@ -10,6 +10,23 @@ Build the environment your work needs. Keep your strategy logic, provider choice
 
 > **Public Beta available:** [Symphony 0.2.0-beta.1](https://github.com/QuanuX/symphony-distribution/releases/tag/v0.2.0-beta.1) supplies clean CI-built binaries, independently maintainable packages, SDK exports and optional corresponding source on four profiles. The feature freeze remains in force: current work covers defects, hardening, packaging, qualification, documentation and release operations. Native credential/provider limits remain explicit below; installing the beta does not activate a provider or qualify a user's live deployment.
 
+## Published beta maintenance notes
+
+The published **0.2.0-beta.1** downloads retain their original qualified bytes.
+The source now includes three later lifecycle repairs; those repairs require a
+newly built and qualified release before they are included in downloads:
+
+- Complete a dependency's replacement before introducing a new dependent.
+- If retrying a completed scoped apply reports a validation error, inspect its
+  durable status; preserve its journal and do not blindly repeat effects.
+- For SSIAG or Accordare reinstall maintenance, use the exact retained owner
+  binary outside the installation. Running the installed binary against its own
+  prefix may report that the package is busy. Existing ownership and active-use
+  checks still apply.
+
+The feature freeze covers these defect repairs. Source integration does not
+replace the signed beta artifacts or expand their qualification claims.
+
 ## Identity
 
 QuanuX is the ecosystem and steward of official source truth. Symphony is its open-source platform. A user’s private Symphony/TOPS installation retains its own declared and observed state; that state does not become official QuanuX source truth.
