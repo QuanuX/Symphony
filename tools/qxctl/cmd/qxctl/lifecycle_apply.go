@@ -611,11 +611,59 @@ func invokeLifecycleApplyMutation(
 	if err != nil {
 		return validatedLifecycleApplyResult{}, err
 	}
-	result, err := validateLifecycleApplyResult(response.Result, operation, options.profileID, options.topsID, desired.DesiredStateDigest, observation.ObservationDigest, prior)
+	return validateLifecycleApplyMutationResult(response.Result, options, operation, expectedJournal, expectedApplied,
+		profileDigest, stableDigest, desired, observation, prior)
+}
+
+func validateLifecycleApplyMutationResult(
+	raw json.RawMessage, options knowledgeLifecycleOptions,
+	operation, expectedJournal, expectedApplied, profileDigest, stableDigest string,
+	desired knowledgelifecycle.DesiredState, observation knowledgelifecycle.Observation, prior string,
+) (validatedLifecycleApplyResult, error) {
+	result, err := validateLifecycleApplyResultWithReplay(raw, operation, options.profileID, options.topsID,
+		desired.DesiredStateDigest, observation.ObservationDigest, prior, true)
 	if err != nil {
 		return result, err
 	}
-	return requireLifecycleResultScope(options, result, operation)
+	result, err = requireLifecycleResultScope(options, result, operation)
+	if err != nil || !completedScopedCloseReplay(result, operation) {
+		return result, err
+	}
+	// A completed close keeps the original durable observation. Only a fresh
+	// report of the exact same scope and stable inventory may replay that state.
+	if err := requireApplyCAS(result, expectedJournal, expectedApplied); err != nil {
+		return result, err
+	}
+	if result.ProfileDigest != profileDigest || result.DesiredDigest != desired.DesiredStateDigest ||
+		result.SourceDigest != options.sourceJournalDigest || result.StableInventoryDigest != stableDigest {
+		return result, fmt.Errorf("completed scoped close does not bind the requested durable evidence")
+	}
+	scope := options.executionScope
+	if scope == nil || result.Plan == nil {
+		return result, fmt.Errorf("completed scoped close lacks exact scope and fresh plan evidence")
+	}
+	if err := scope.ValidateDesired(profileDigest, desired, options.sourceJournalDigest); err != nil {
+		return result, err
+	}
+	stable, err := knowledgelifecycle.StableInventoryDigest(observation)
+	if err != nil {
+		return result, err
+	}
+	preserved, err := scope.PreservedComponentsDigest(observation)
+	if err != nil {
+		return result, err
+	}
+	if stable != stableDigest || preserved != result.PreservedComponentsDigest ||
+		!scope.EffectsComplete(desired, observation, result.Plan.FatalCount) ||
+		lifecyclePlanConverged(result.Plan.Actions, result.Plan.FatalCount) != result.ProfileConverged {
+		return result, fmt.Errorf("completed scoped close observation changed since its durable checkpoint")
+	}
+	return result, nil
+}
+
+func completedScopedCloseReplay(result validatedLifecycleApplyResult, operation string) bool {
+	return operation == "lifecycle_apply_close" && result.Scoped && result.JournalPresent &&
+		result.ScopeComplete && result.State == "verified" && !result.Changed && !result.Recovered
 }
 
 func invokeLifecycleApplyState(
@@ -963,6 +1011,13 @@ func nullableDigest(value string) string {
 func validateLifecycleApplyResult(
 	raw json.RawMessage, operation, profileID, topsID, desiredDigest, observationDigest, priorDigest string,
 ) (validatedLifecycleApplyResult, error) {
+	return validateLifecycleApplyResultWithReplay(raw, operation, profileID, topsID, desiredDigest, observationDigest, priorDigest, false)
+}
+
+func validateLifecycleApplyResultWithReplay(
+	raw json.RawMessage, operation, profileID, topsID, desiredDigest, observationDigest, priorDigest string,
+	allowCompletedScopedReplay bool,
+) (validatedLifecycleApplyResult, error) {
 	if err := knowledgeengine.ValidateJSONObject(raw, 4*1024*1024); err != nil {
 		return validatedLifecycleApplyResult{}, fmt.Errorf("invalid lifecycle apply result JSON: %w", err)
 	}
@@ -1092,8 +1147,9 @@ func validateLifecycleApplyResult(
 		result.ProfileDigest = profileDigest
 		result.DesiredDigest = desiredStateDigest
 		result.SourceDigest = sourceDigest
+		completedReplay := allowCompletedScopedReplay && completedScopedCloseReplay(result, operation) && object["plan"] != nil
 		if desiredDigest != "" && desiredDigest != desiredStateDigest ||
-			observationDigest != "" && observationDigest != observationValue {
+			observationDigest != "" && observationDigest != observationValue && !completedReplay {
 			return validatedLifecycleApplyResult{}, fmt.Errorf("lifecycle apply journal does not bind the requested evidence")
 		}
 		journalAction := journal["active_action"]
