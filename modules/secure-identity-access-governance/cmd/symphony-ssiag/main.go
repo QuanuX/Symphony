@@ -41,9 +41,11 @@ func run(args []string) error {
 		printUsage()
 		return errors.New("command is required")
 	}
-	// Every installed native controller retains its package while observing,
+	// Installation owns its target's exclusive lease and pins a distinct source
+	// package itself. Other controllers retain their package while observing,
 	// stopping or recovering. New work still crosses the stricter open-only gate.
-	if args[0] != "serve" && args[0] != "help" && args[0] != "--help" && args[0] != "version" && args[0] != "--version" {
+	packageInstall := args[0] == "package" && len(args) > 1 && args[1] == "install"
+	if !packageInstall && args[0] != "serve" && args[0] != "help" && args[0] != "--help" && args[0] != "version" && args[0] != "--version" {
 		executable, err := os.Executable()
 		if err != nil {
 			return err

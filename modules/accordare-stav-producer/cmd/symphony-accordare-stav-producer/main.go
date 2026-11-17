@@ -41,9 +41,9 @@ func run(args []string) error {
 		return fmt.Errorf("command is required")
 	}
 	// These commands own a stronger or open-only lease at their mutation/start
-	// boundary. Other installed controller invocations still pin their executable
-	// while permitting stop and recovery during closed admission.
-	if args[0] != "serve" && args[0] != "enroll" && args[0] != "unenroll" {
+	// boundary. Installation also pins a distinct source package itself. Other
+	// controllers retain their executable during stop and recovery.
+	if args[0] != "serve" && args[0] != "enroll" && args[0] != "unenroll" && args[0] != "install" {
 		packageLease, err := packageinstall.AcquireCurrentControllerUse()
 		if err != nil {
 			return err

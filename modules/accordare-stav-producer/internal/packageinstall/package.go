@@ -108,6 +108,11 @@ func InstallWithDelegation(source, prefix, requestedVersion string, delegation *
 	if err != nil {
 		return Result{}, err
 	}
+	sourceUse, err := acquireInstallSourceUse(executable, paths.binary)
+	if err != nil {
+		return Result{}, err
+	}
+	defer sourceUse.Close()
 	sourceInfo, sourceErr := os.Stat(source)
 	executableInfo, executableErr := os.Stat(executable)
 	if sourceErr != nil || executableErr != nil || !os.SameFile(sourceInfo, executableInfo) {
@@ -179,6 +184,16 @@ func InstallWithDelegation(source, prefix, requestedVersion string, delegation *
 		return Result{}, err
 	}
 	return result(paths, record.ReceiptDigest, changed), nil
+}
+
+// A same-package reinstall acquires exclusive target custody in PrepareInstall.
+// Taking a shared source lease first would conflict with that lock. A different
+// installed source still remains pinned throughout the target installation.
+func acquireInstallSourceUse(executable, target string) (*packageretirement.Lease, error) {
+	if filepath.Clean(executable) == target {
+		return nil, nil
+	}
+	return acquireControllerUse(executable)
 }
 
 // Receipt publication can outlive a replacement of the executable's parent.
@@ -516,6 +531,11 @@ func AcquireCurrentControllerUse() (*packageretirement.Lease, error) {
 	if err != nil {
 		return nil, err
 	}
+	return acquireControllerUse(binary)
+}
+
+func acquireControllerUse(binary string) (*packageretirement.Lease, error) {
+	binary = filepath.Clean(binary)
 	parts := strings.Split(filepath.ToSlash(binary), "/")
 	if len(parts) < 6 || parts[len(parts)-5] != "libexec" || parts[len(parts)-4] != "symphony" || parts[len(parts)-3] != componentID || parts[len(parts)-1] != binaryName {
 		return nil, nil

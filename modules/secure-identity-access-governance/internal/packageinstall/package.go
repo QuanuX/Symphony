@@ -83,6 +83,15 @@ func InstallWithDelegation(source, prefix, version string, delegation *packagere
 	if err != nil {
 		return Result{}, err
 	}
+	self, err := os.Executable()
+	if err != nil {
+		return Result{}, err
+	}
+	sourceUse, err := acquireInstallSourceUse(self, layout.binary)
+	if err != nil {
+		return Result{}, err
+	}
+	defer sourceUse.Close()
 	if err := ensurePrefix(layout.prefix); err != nil {
 		return Result{}, err
 	}
@@ -90,10 +99,6 @@ func InstallWithDelegation(source, prefix, version string, delegation *packagere
 		return Result{}, err
 	}
 	size, digest, err := sourceEvidence(source)
-	if err != nil {
-		return Result{}, err
-	}
-	self, err := os.Executable()
 	if err != nil {
 		return Result{}, err
 	}
@@ -152,6 +157,16 @@ func InstallWithDelegation(source, prefix, version string, delegation *packagere
 		return Result{}, err
 	}
 	return Result{Prefix: layout.prefix, Version: version, Binary: layout.binary, Receipt: layout.receipt, ReceiptDigest: receipt.ReceiptDigest, Changed: true}, nil
+}
+
+// A same-package reinstall acquires exclusive target custody in PrepareInstall.
+// Taking a shared source lease first would conflict with that lock. A different
+// installed source still remains pinned throughout the target installation.
+func acquireInstallSourceUse(executable, target string) (*packageretirement.Lease, error) {
+	if filepath.Clean(executable) == target {
+		return nil, nil
+	}
+	return AcquireRecoveryForExecutable(executable)
 }
 
 // Activation is conditional on both exact published objects still being present
