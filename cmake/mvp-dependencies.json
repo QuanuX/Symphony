@@ -3655,7 +3655,7 @@
       },
       {
         "module": "github.com/QuanuX/Symphony/modules/accordare-stav-producer",
-        "version": "v0.1.0-dev.0.20261116054240-71bbb60d870a",
+        "version": "v0.1.0-dev.0.20261117050342-2c435a52ff7a",
         "local_path": "./modules/accordare-stav-producer",
         "evidence": "go.work:21"
       },
@@ -4138,7 +4138,7 @@
         },
         {
           "module": "github.com/QuanuX/Symphony/modules/accordare-stav-producer",
-          "version": "v0.1.0-dev.0.20261116054240-71bbb60d870a",
+          "version": "v0.1.0-dev.0.20261117050342-2c435a52ff7a",
           "indirect": false,
           "internal": true,
           "evidence": "tools/qxctl/go.mod:7"
@@ -4286,15 +4286,15 @@
         },
         {
           "Path": "github.com/QuanuX/Symphony/modules/accordare-stav-producer",
-          "Version": "v0.1.0-dev.0.20261116054240-71bbb60d870a",
+          "Version": "v0.1.0-dev.0.20261117050342-2c435a52ff7a",
           "GoVersion": "1.26.5",
-          "Sum": "h1:NWYhZIkqW9h+sSEOqI6jS9AeSNO/QYV5VPoXRmxps6A=",
+          "Sum": "h1:6xdR8V+WatHG8dkNU1Ar8rHSf5Ty0Yf2t0lxq3Ai4cs=",
           "GoModSum": "h1:922EvrCQ21+/WziKvvrJhoEdff7K4MLECsrcZ8RXSK4=",
           "Origin": {
             "VCS": "git",
             "URL": "https://github.com/QuanuX/Symphony",
             "Subdir": "modules/accordare-stav-producer",
-            "Hash": "71bbb60d870ab1da205b1b82d62adec38dca9a68"
+            "Hash": "2c435a52ff7a35c5d03d845c76b6bfeec00ea3c5"
           }
         },
         {
@@ -4702,12 +4702,12 @@
         },
         {
           "module": "github.com/QuanuX/Symphony/modules/accordare-stav-producer",
-          "version": "v0.1.0-dev.0.20261116054240-71bbb60d870a",
+          "version": "v0.1.0-dev.0.20261117050342-2c435a52ff7a",
           "origin": {
             "VCS": "git",
             "URL": "https://github.com/QuanuX/Symphony",
             "Subdir": "modules/accordare-stav-producer",
-            "Hash": "71bbb60d870ab1da205b1b82d62adec38dca9a68"
+            "Hash": "2c435a52ff7a35c5d03d845c76b6bfeec00ea3c5"
           }
         },
         {
@@ -20069,7 +20069,7 @@
     },
     {
       "path": "go.work",
-      "sha256": "8c0868f8a8969974d2e944522bed4a780723da07a285d6be08fa3b3b0f6b6a77"
+      "sha256": "689e432d17c8103bbf6c5f17381506f6d91858710f6fdb8829cd96264a474f99"
     },
     {
       "path": "knowledge/FEATURE-ADMINISTRATION-PROFILE.json",
@@ -23169,11 +23169,11 @@
     },
     {
       "path": "tools/qxctl/go.mod",
-      "sha256": "486a66c8931a6f14f7486ca586121331f077590ff0821c0a376c923abea54da1"
+      "sha256": "4db420c0b03d8bbe6bb0f41b54a9e0b6cac525228bc3d172936ae9430c3c3b5b"
     },
     {
       "path": "tools/qxctl/go.sum",
-      "sha256": "8784e92ba07718b5c9dec5f15b4ccc0f8e979deb8289917ae866628d0f920551"
+      "sha256": "704dceb1987747f181494efb8aa4a861e7326f9d0eae54c95d9538be717dd31f"
     },
     {
       "path": "tools/qxctl/internal/commandregistry/registry.go",
@@ -25653,11 +25653,11 @@
     },
     {
       "path": "cmake/mvp-go-owner-closure.json",
-      "sha256": "3be692d3a8e3a2b2a03cc87956f2ca35cba605c4782cf28e7a9afc8d9b70f9e7"
+      "sha256": "8b4ee336fe9de518093806a168c7f4ff74d994960c21da3375ea9468b1095bfa"
     },
     {
       "path": "tests/launch-acceptance/GO-CANDIDATE-CLOSURE.md",
-      "sha256": "bc1958cc49c18eba08a257f6db142567c314a6f338a4460d1017b0891eca7782"
+      "sha256": "f83b62831c9518107c125ac56793ae0ef3c80dd491747e0a50640bbbeaf66d25"
     },
     {
       "path": "tests/launch-acceptance/check-go-candidate-closure.sh",

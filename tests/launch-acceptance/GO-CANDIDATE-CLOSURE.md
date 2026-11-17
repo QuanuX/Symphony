@@ -31,8 +31,8 @@ coordinates, not a new canonical release ledger entry.
 
 The selected owner source is recorded without local paths in
 `cmake/mvp-go-owner-closure.json`: commit
-`71bbb60d870ab1da205b1b82d62adec38dca9a68`, resolved by Go to
-`v0.1.0-dev.0.20261116054240-71bbb60d870a`. The record retains the actual public
+`2c435a52ff7a35c5d03d845c76b6bfeec00ea3c5`, resolved by Go to
+`v0.1.0-dev.0.20261117050342-2c435a52ff7a`. The record retains the actual public
 module and go.mod checksums and exact Git origin; the gate compares fresh resolver
 evidence to that committed selection. Historical published versions and ledger
 entries remain unchanged.
