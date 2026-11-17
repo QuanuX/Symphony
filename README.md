@@ -171,7 +171,7 @@ Symphony's checks cover distinct questions:
 | [Dependency notice inventory](tests/dependency-notices/README.md) | Collected identities and notice material; publisher review and recursive runtime closure remain separate. |
 | [CodeQL](.github/codeql/README.md) | Static-analysis baseline. C++ uses source-only analysis with documented C++26 coverage limits; a clean scan is not complete security or runtime qualification. |
 | [Published beta acceptance](https://github.com/QuanuX/symphony-distribution/blob/v0.2.0-beta.1/evidence/d14-publication.json) | Exact published bytes, publisher-pinned signature, four-profile installation/client/maintenance evidence and publisher legal approval/acceptance within the initial-beta scope. Apple notarization, separate human-reviewer independence and live-provider acceptance are not claimed. |
-| [Core acceptance procedures](tests/launch-acceptance/README.md) | Reusable candidate and evidence checkers. Their historical preparation packets and fixture results remain distinct from the published beta's selected artifacts and approval. |
+| [Release acceptance procedures](tests/launch-acceptance/README.md) | Reusable candidate and evidence checkers. Their historical preparation packets and fixture results remain distinct from the published beta's selected artifacts and approval. |
 
 Run the source checks with CMake from the repository root:
 
@@ -192,7 +192,7 @@ When changing a component, start with its owning contracts and installation guid
 
 ## Python Doctrine
 
-This core repository's first-party source, generators, schema authoring, tests and acceptance helpers have no Python implementation or dependency. The separate [distribution repository](https://github.com/QuanuX/symphony-distribution) documents its Python-based packaging and setup tools. User-authored programs and explicitly selected isolated Habitats are not restricted by this core repository policy.
+This Symphony repository's first-party source, generators, schema authoring, tests and acceptance helpers have no Python implementation or dependency. The separate [distribution repository](https://github.com/QuanuX/symphony-distribution) documents its Python-based packaging and setup tools. User-authored programs and explicitly selected isolated Habitats are not restricted by this repository policy.
 
 ## License
 
