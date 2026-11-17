@@ -18,4 +18,4 @@ replace (
 	github.com/QuanuX/Symphony/tools/sov-ssh-adapter v0.1.0-dev => ./tools/sov-ssh-adapter
 )
 
-replace github.com/QuanuX/Symphony/modules/accordare-stav-producer v0.1.0-dev.0.20261116054240-71bbb60d870a => ./modules/accordare-stav-producer
+replace github.com/QuanuX/Symphony/modules/accordare-stav-producer v0.1.0-dev.0.20261117050342-2c435a52ff7a => ./modules/accordare-stav-producer

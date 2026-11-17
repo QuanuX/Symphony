@@ -4,7 +4,7 @@ go 1.26.5
 
 require (
 	github.com/QuanuX/Symphony/libraries/stav-protocol-go v0.2.0
-	github.com/QuanuX/Symphony/modules/accordare-stav-producer v0.1.0-dev.0.20261116054240-71bbb60d870a
+	github.com/QuanuX/Symphony/modules/accordare-stav-producer v0.1.0-dev.0.20261117050342-2c435a52ff7a
 	github.com/QuanuX/Symphony/modules/stav-append-authority v0.2.1
 	github.com/QuanuX/Symphony/tools/sov-ssh-adapter v0.1.0-dev
 	github.com/spf13/cobra v1.10.2
