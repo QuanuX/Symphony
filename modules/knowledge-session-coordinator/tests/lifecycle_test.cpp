@@ -971,9 +971,41 @@ void test_scoped_staged_install_and_included_component_drift(bool emit_fixture =
         "noop-scope-close", nullptr, engine::Json::array(), noop_scope);
     require(closed.at("scope_complete") == true && closed.at("profile_converged") == false && closed.at("changed") == true &&
         closed.at("applied_state").is_null(), "already satisfied install-only scope could not close without whole-profile apply");
+    auto replay_observation = already_installed;
+    replay_observation["observed_at"] = "2026-08-04T16:00:02Z";
+    finalize_observation(replay_observation);
+    require(replay_observation.at("observation_digest") != already_installed.at("observation_digest"),
+        "scoped close replay did not refresh the observation timestamp");
+    const auto replay_head = read_json(lifecycle_apply_stream_path(noop.path()) / "head.json");
+    require_error([&] { static_cast<void>(lifecycle_apply_mutation(noop.path(), "lifecycle_apply_close", desired, replay_observation,
+        noop_report.at("journal_digest"), receipt("stale-replay-journal"), "absent", nullptr, nullptr, nullptr, nullptr,
+        "noop-scope-stale-journal", nullptr, engine::Json::array(), noop_scope)); }, "lifecycle_apply.expected_state_mismatch");
+    require_error([&] { static_cast<void>(lifecycle_apply_mutation(noop.path(), "lifecycle_apply_close", desired, replay_observation,
+        noop_report.at("journal_digest"), closed.at("journal_digest"), receipt("stale-replay-applied"), nullptr, nullptr, nullptr, nullptr,
+        "noop-scope-stale-applied", receipt("stale-replay-applied"), engine::Json::array(), noop_scope)); }, "lifecycle_apply.applied_state_mismatch");
+    auto replay_drift = replay_observation;
+    replay_drift["binding_registry_digest"] = receipt("replay-inventory-drift");
+    finalize_observation(replay_drift);
+    require_error([&] { static_cast<void>(lifecycle_apply_mutation(noop.path(), "lifecycle_apply_close", desired, replay_drift,
+        noop_report.at("journal_digest"), closed.at("journal_digest"), "absent", nullptr, nullptr, nullptr, nullptr,
+        "noop-scope-inventory-drift", nullptr, engine::Json::array(), noop_scope)); }, "lifecycle_apply.scope_drift");
+    const auto replayed = lifecycle_apply_mutation(noop.path(), "lifecycle_apply_close", desired, replay_observation,
+        noop_report.at("journal_digest"), closed.at("journal_digest"), "absent", nullptr, nullptr, nullptr, nullptr,
+        "noop-scope-close-replay", nullptr, engine::Json::array(), noop_scope);
+    require(replayed.at("changed") == false && replayed.at("recovered") == false &&
+        replayed.at("repair_actions").empty() && replayed.at("scope_complete") == true &&
+        replayed.at("journal") == closed.at("journal") && replayed.at("applied_state") == closed.at("applied_state") &&
+        replayed.at("plan").at("observation_digest") == replay_observation.at("observation_digest") &&
+        read_json(lifecycle_apply_stream_path(noop.path()) / "head.json") == replay_head,
+        "timestamp-only scoped close replay changed durable evidence or lost its fresh plan");
     if (emit_fixture) {
         std::cout << engine::Json{
             {"protocol", "symphony.knowledge.scoped-apply-native-fixtures.v1"},
+            {"close_replay", engine::Json{
+                {"scope", noop_scope}, {"desired", desired}, {"observation_before", already_installed},
+                {"observation_after", replay_observation}, {"prior_result", closed}, {"result", replayed},
+                {"source_report_journal_digest", noop_report.at("journal_digest")},
+            }},
             {"activation", engine::Json{
                 {"scope", scope}, {"desired", desired}, {"observation_before", before}, {"observation_after", after_a},
                 {"prepare_result", prepared}, {"finalize_result", first}, {"source_report_journal_digest", report.at("journal_digest")},

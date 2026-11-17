@@ -2578,7 +2578,7 @@ engine::Json handle_lifecycle_apply(const engine::Request& request) {
                 throw engine::Error("lifecycle_apply.scope_drift", "completed scope is no longer converged", 4);
             }
             return result(make_apply_result(request.operation, std::move(compatibility), current, std::move(plan), nullptr,
-                applied.value_or(engine::Json(nullptr)), false, false, {"scoped completion is already recorded"}, false));
+                applied.value_or(engine::Json(nullptr)), false, false, {}, false));
         }
         auto plan = build_apply_plan(request, current);
         const bool continuing = current.present && !apply_terminal(current);
