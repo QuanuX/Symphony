@@ -1,5 +1,7 @@
 # Approved W01–W12 execution
 
+**Current release:** the later distribution work published [Symphony 0.2.0-beta.1](https://github.com/QuanuX/symphony-distribution/releases/tag/v0.2.0-beta.1). Its [publication record](https://github.com/QuanuX/symphony-distribution/blob/v0.2.0-beta.1/evidence/d14-publication.json) supplies the current selected-artifact results and publisher approval. The W01–W12 entries below are preserved execution history, including inputs that were pending at the time. They do not substitute for the final beta record or extend its trust, provider or native-version scope.
+
 The user approved the plan at dossier commit `d44307bb` and directed execution in
 Astra Extra High, with the feature freeze, focused tests and incremental pushes
 without waiting for CI. [authorization.json](authorization.json) preserves the
