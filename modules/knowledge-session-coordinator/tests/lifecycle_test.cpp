@@ -1727,6 +1727,62 @@ void test_retained_dependency_rejects_transient_interruption() {
             "verified target convergence failed to release ordinary staged installation");
 }
 
+void test_new_dependency_waits_for_unstaged_target_replacement() {
+    const auto a_receipt = receipt("unstaged-dependent");
+    const auto old_receipt = receipt("unstaged-target-old");
+    const auto new_receipt = receipt("unstaged-target-new");
+    const auto independent_receipt = receipt("unstaged-independent");
+    for (const auto& condition : {"active", "docked", "compatible", "installed", "inactive", "undocked"}) {
+        const std::string requirement = condition;
+        const bool interrupted = requirement == "active" || requirement == "docked" || requirement == "compatible";
+        const auto activation = requirement == "active" ? "active" : "inactive";
+        auto desired_target = desired_component("b", new_receipt, activation);
+        auto observed_target = observed_component("b", old_receipt, activation);
+        auto converged_target = observed_component("b", new_receipt, activation, "2.0.0");
+        if (requirement == "docked") {
+            set_desired_docking(desired_target, "docked", "maestro-primary");
+            set_observed_docking(observed_target, "docked", "maestro-primary");
+            set_observed_docking(converged_target, "docked", "maestro-primary");
+        }
+        const auto desired = desired_state(engine::Json::array({
+            desired_component("a", a_receipt, "active", engine::Json::array({dependency("b", requirement)})),
+            desired_target, desired_component("independent", independent_receipt),
+        }));
+        const auto unstaged = plan(desired, observation(engine::Json::array({
+            observed_target, observed_component("independent", independent_receipt),
+        })));
+        const auto& install_target = action(unstaged, "b", "install");
+        const auto& install_dependent = action(unstaged, "a", "install");
+        require(contains_id(install_dependent.at("prerequisite_action_ids"), install_target.at("action_id")) == interrupted,
+                "new dependent ignored a future target interruption or blocked a preserved condition: " + requirement);
+        require(install_target.at("blockers").size() == 1U &&
+                    install_target.at("prerequisite_action_ids").empty(),
+                "unstaged target was blocked before its new dependent exists: " + requirement);
+        require(action(unstaged, "independent", "activate").at("disposition") == "ready",
+                "unstaged replacement stalled independent progress: " + requirement);
+
+        add_observed_package(observed_target, new_receipt, "2.0.0");
+        const auto staged = plan(desired, observation(engine::Json::array({
+            observed_target, observed_component("independent", independent_receipt),
+        })));
+        if (interrupted) {
+            const auto final_kind = requirement == "active" ? "activate" : requirement == "docked" ? "dock" : "select";
+            require(contains_id(action(staged, "a", "install").at("prerequisite_action_ids"),
+                        action(staged, "b", final_kind).at("action_id")),
+                    "staged replacement did not keep the dependent waiting until its requirement is restored: " + requirement);
+            const auto first_kind = requirement == "active" ? "deactivate" : requirement == "docked" ? "undock" : "select";
+            require(action(staged, "b", first_kind).at("disposition") == "ready",
+                    "new dependent prevented staged target replacement: " + requirement);
+        }
+        const auto converged = plan(desired, observation(engine::Json::array({
+            converged_target, observed_component("independent", independent_receipt),
+        })));
+        require(action(converged, "a", "install").at("prerequisite_action_ids").empty() &&
+                    action(converged, "a", "install").at("blockers").size() == 1U,
+                "converged replacement failed to release the new dependent: " + requirement);
+    }
+}
+
 void test_dependency_removal_order_and_cycle_isolation() {
     const auto a_receipt = receipt("remove-a");
     const auto b_receipt = receipt("remove-b");
@@ -2041,6 +2097,7 @@ int main(int argc, char** argv) {
         test_dependency_criticality_and_component_capabilities();
         test_satisfied_dependencies_protect_target_transitions();
         test_retained_dependency_rejects_transient_interruption();
+        test_new_dependency_waits_for_unstaged_target_replacement();
         test_dependency_removal_order_and_cycle_isolation();
         test_preserved_dependency_targets_remain_satisfied();
         test_staged_install_cannot_break_retained_absence_dependency();

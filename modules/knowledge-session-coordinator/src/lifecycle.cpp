@@ -1207,7 +1207,20 @@ engine::Json build_plan(
                     }
                     continue;
                 }
-                if (satisfied && can_satisfy && invalidating_actions.empty()) continue;
+                // Installing a missing target receipt is only the first phase of
+                // replacement. Do not retain a new dependent before a later
+                // replan must interrupt its requirement to select that receipt.
+                const auto desired_target = desired.components.find(dependency.target);
+                const auto observed_target = observation.components.find(dependency.target);
+                const bool pending_selection_interrupts = !retained &&
+                    desired_target != desired.components.end() &&
+                    observed_target != observation.components.end() &&
+                    desired_target->second.presence == "present" &&
+                    desired_target->second.selected_receipt != observed_target->second.selected_receipt &&
+                    find_package(observed_target->second, *desired_target->second.selected_receipt) == nullptr &&
+                    (dependency.condition == "active" || dependency.condition == "docked" ||
+                     dependency.condition == "compatible");
+                if (satisfied && can_satisfy && invalidating_actions.empty() && !pending_selection_interrupts) continue;
                 if (!dependency.critical) {
                     advisories.push_back(engine::Json{
                         {"class", "noncritical_dependency_unsatisfied"},
