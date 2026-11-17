@@ -69,7 +69,7 @@ func TestRuntimeStoreCASAndSemanticRetry(t *testing.T) {
 	}
 }
 
-func TestExecutorInstallsAndUninstallsV2WithRollbackProof(t *testing.T) {
+func TestExecutorInstallsButRefusesRemovalWithoutProcessOwner(t *testing.T) {
 	stateRoot := resolvedTempDir(t)
 	stagedRoot := resolvedTempDir(t)
 	targetRoot := filepath.Join(resolvedTempDir(t), "installed")
@@ -160,17 +160,21 @@ func TestExecutorInstallsAndUninstallsV2WithRollbackProof(t *testing.T) {
 		ExpectedEvidence: []string{}, PrerequisiteActionIDs: []string{}, Disposition: "ready", Blockers: []Blocker{},
 	}
 	removed := executor.Execute(uninstall, absent, observed)
-	if removed.Outcome != "committed" {
-		t.Fatalf("uninstall failed: %+v", removed)
+	if removed.Outcome != "failed" || removed.BlockerClass == nil || *removed.BlockerClass != "compatibility_blocked" {
+		t.Fatalf("generic removal bypassed the missing retirement owner: %+v", removed)
 	}
-	if _, err := os.Stat(filepath.Join(targetRoot, ownedPath)); !os.IsNotExist(err) {
-		t.Fatalf("receipt-owned file survived uninstall: %v", err)
+	for _, relative := range []string{ownedPath, receiptRelative} {
+		before, err := os.ReadFile(filepath.Join(stagedRoot, relative))
+		if err != nil {
+			t.Fatal(err)
+		}
+		after, err := os.ReadFile(filepath.Join(targetRoot, relative))
+		if err != nil || string(before) != string(after) {
+			t.Fatalf("blocked retirement changed owned bytes %s: %v", relative, err)
+		}
 	}
-	if _, err := os.Stat(filepath.Join(targetRoot, receiptRelative)); !os.IsNotExist(err) {
-		t.Fatalf("receipt commit marker survived uninstall: %v", err)
-	}
-	if retried := executor.Execute(uninstall, absent, Observation{}); retried.Outcome != "already_applied" {
-		t.Fatalf("interrupted/uninstalled retry failed: %+v", retried)
+	if retried := executor.Execute(uninstall, absent, Observation{}); retried.Outcome != "failed" {
+		t.Fatalf("missing observation was inferred as successful retirement: %+v", retried)
 	}
 }
 
@@ -388,5 +392,20 @@ func TestExecutorUndocksObservedPackageBeforeReplacementOrRemoval(t *testing.T) 
 	retried := executor.Execute(action, desired, observed)
 	if retried.Outcome != "already_applied" || adapter.calls != 1 {
 		t.Fatalf("post-crash undock retry did not self-heal from authenticated observation: %+v", retried)
+	}
+}
+
+func TestExecutorNeverFallsBackToGenericRemoval(t *testing.T) {
+	for _, component := range []string{"secure-identity-access-governance", "stav-append-authority", "accordare-stav-producer", "external-sdk-consumer"} {
+		t.Run(component, func(t *testing.T) {
+			executor, err := NewExecutor(resolvedTempDir(t), testTOPSID, "default", nil)
+			if err != nil {
+				t.Fatal(err)
+			}
+			result := executor.Execute(PlannedAction{ActionID: "remove", ComponentID: component, Kind: "uninstall"}, DesiredState{}, Observation{})
+			if result.Outcome != "failed" || result.BlockerClass == nil || *result.BlockerClass != "compatibility_blocked" {
+				t.Fatalf("missing native retirement owner admitted removal: %+v", result)
+			}
+		})
 	}
 }

@@ -121,7 +121,11 @@ Parsing closes every governed object, bounds components to 4,096, packages and d
 
 Compatibility is capability-based rather than release-order based. A v1-only caller remains fully operational when all supplied evidence uses receipt v1 and it advertises the v1 adapter. Receipt v2 becomes required only when desired or observed evidence actually contains v2. Missing common protocol, schema-reader, receipt-reader, or planner capabilities returns a compatibility-blocked plan with no actions; it never silently downgrades or infers compatibility from semantic versions.
 
-The planner emits a deterministic dependency-ready-set graph. Action IDs derive from component/action semantics, exact pre-state, target-state digest, target receptor, artifacts, evidence, and prerequisite semantics—not input array position. Unsatisfied critical dependencies block only their dependent actions; unsatisfied noncritical dependencies produce explicit non-blocking advisories. A critical dependency that contradicts the target's desired disposition remains blocked instead of being misrepresented as a healable ordering edge. Missing required component capabilities are localized compatibility blockers. Strongly connected critical-dependency cycles are isolated while unrelated acyclic actions remain eligible. Repeating the operation with changed verified observations recomputes readiness, permitting a previously blocked component to heal without changing the fixed safety-phase order.
+The planner emits a deterministic dependency-ready-set graph. Action IDs derive from component/action semantics, exact pre-state, target-state digest, target receptor, artifacts, evidence, and prerequisite semantics—not input array position. Critical dependencies are checked against current evidence, effective desired disposition, and intervening target actions. The planner blocks actions that would invalidate a retained dependent's satisfied critical requirement, even when that dependent needs no action itself. A critical dependency that contradicts the target's desired disposition blocks both dependent readiness and the invalidating target actions. Omitted targets and unmanaged activation/docking preserve their observed conditions. Noncritical dependencies produce explicit non-blocking advisories when unsatisfied or threatened by planned actions.
+
+When removing both a dependent and its dependency, an action that breaks a still-satisfied requirement waits for the dependent's terminal uninstall. Removal never requires restoring an already missing dependency. A newly installed dependent waits for the target's transition to complete; an existing dependent cannot silently lose its requirement during a temporary deactivate, undock, or reselection. `compatible` evidence belongs to the currently selected component and does not prove compatibility of another staged receipt. `present`/`installed` requirements permit selection changes that preserve installed packages. These rules protect the supplied profile's declared dependencies; they do not prove process quiescence, global ownership, or undeclared cross-profile requirements.
+
+Missing required component capabilities are localized compatibility blockers. Strongly connected critical-dependency cycles are isolated while unrelated acyclic actions remain eligible. Repeating the operation with changed verified observations recomputes readiness, permitting a previously blocked component to heal without changing the fixed safety-phase order.
 
 Package selection while active or docked is sequenced as `undock`, `deactivate`, `select`, restore desired activation, and `dock`. Receptor replacement is sequenced as exact old-receptor undock followed by exact desired-receptor dock. Dock actions carry a required `target_receptor_id`; every action carries a digest-bound target state and explicit inverse identity when an inverse exists. Desired upgrade and rollback are equally ordinary forward convergence toward the exact selected receipt; “newest” is never inferred.
 
@@ -158,6 +162,77 @@ The current external action vocabulary is intentionally narrower than the planne
 ## Descriptor Truth
 
 `inspect`, `check`, reconciliation `compatibility|begin|status|checkpoint|close|recover`, authenticated-session `session_begin|session_status|session_checkpoint|session_close|session_recover`, persistent `ssfv_maintenance_begin|ssfv_maintenance_status|ssfv_maintenance_checkpoint|ssfv_maintenance_close|ssfv_maintenance_recover`, SAV Named Version `named_version_prepare|named_version_seal|named_version_alias|named_version_lookup|named_version_status|named_version_recover`, report-only `lifecycle_plan`, durable report-only `lifecycle_boot|lifecycle_boot_status|lifecycle_boot_recover`, and apply coordination `lifecycle_apply_prepare|lifecycle_apply_finalize|lifecycle_apply_close|lifecycle_apply_status|lifecycle_apply_recover` are implemented. Canonical `apply` remains disabled. The descriptor declares user-scope process invocation, C++26, freezing-path placement, `installed_undocked`, no default receptor, and no network listener. Its apply capability flags describe protocol availability only and never caller authority.
+
+## Scoped Lifecycle Apply
+
+Apply command/result v2 restrict the existing action vocabulary through an explicit
+`symphony.knowledge.lifecycle-execution-scope.v1` document and the
+`scoped-apply-v1` capability. They use the same protected v2 journal stream as
+legacy whole-profile apply. A scope is a restriction on effects, not permission:
+each SSIAG resource binding includes the exact scope digest in addition to the
+current operation, action and compare-and-swap evidence.
+
+The scope pins the full profile, desired state, source report, initial plan and
+inventory, initial apply/applied-state expectations, component identities, exact
+action effects and ownership claim effects. Action effects bind component, kind,
+target-state digest, receptor, complete artifact set and install root. Ownership
+effects bind root, component, receipt and retained/retiring/release disposition.
+Wildcard identities, duplicate effects, unknown fields and unsupported versions
+fail closed. The digest uses canonical JSON without `scope_digest`; the complete
+desired profile and observations remain the safety input.
+`initial_plan_digest` is the reviewed semantic plan digest: remove `plan_digest`,
+replace `observation_digest` with the stable inventory digest, and hash canonical
+JSON. The original plan remains review evidence. This permits a fresh observation
+timestamp without admitting a changed inventory, action set or prerequisite.
+
+The coordinator validates the scope at prepare, finalize, close and recovery.
+qxctl also checks resumed actions, ownership reconciliation and executor effects.
+Discovery of a prerequisite does not add it to the authorized scope. Fresh action
+IDs may change after verified progress; only the exact permitted semantic effects
+remain eligible. The staged-install exception still requires its single ordinary
+package-absence blocker and cannot bypass a scope or dependency restriction.
+Out-of-scope observed components remain digest-bound during the operation.
+Each prepared action also checkpoints all other observed components, including
+other members of the scope, and the active component's fields outside that exact
+effect. Finalization cannot absorb unexplained selection, activation or retained
+package changes. That checkpoint also includes normalized observation context:
+configured roots, unknown-package evidence and platform/controller identities.
+Only selection changes may change the binding-registry digest; an explicitly
+reviewed coordinator selection may also change that coordinator's identity and
+derived compatibility digest. Other context changes require a new review.
+
+A recognized critical `scoped-apply-v1` extension retains the immutable scope and
+its completion evidence, `preserved_components_digest`, and the nullable
+`action_preserved_components_digest` for an active attempt. Older clients cannot mutate or recover this journal as
+an unscoped stream. A subsequent scope requires explicit new identity and exact
+prior terminal state. Scoped completion proves the reviewed effect goals, not
+every desired-profile action on the included component. An install-only scope can
+finish with exact verified bytes installed and application selection still
+pending. Completion remains blocked by fatal full-profile safety findings.
+Whole-profile convergence is reported separately; scoped completion never
+publishes or replaces global applied-state evidence.
+Effect goals must be unambiguous: at most one effect per component/action kind,
+no install/uninstall or select/deselect pair for the same component. A reviewed
+deactivate/activate or undock/dock sequence finishes at its explicit final forward
+goal. The complete desired profile constrains these goals; a later prerequisite
+or an incompatible goal is not silently added to the scope.
+Legacy unscoped commands retain whole-profile semantics; an action-count bound is
+not a module authorization boundary.
+
+Scoped ownership reconciliation preserves unrelated component/profile claims and
+does not silently adopt unknown receipts or prune unrelated stale claims. Required
+broader ownership repair remains a separate reviewed operation. Apply execution
+is serialized independently of the short native journal calls; profile snapshots,
+root ownership and expected-state checks remain in force. Uncertain effects retain
+their original scope and exact prepared attempt for inspection/recovery.
+
+Scope enforcement does not prove process quiescence. Logical deactivation and
+Maestro undocking do not stop arbitrary programs. Distribution live-removal gates
+remain separate. SSIAG, STAV append authority and Accordare have their own package
+owners and specialized reference checks. Distribution removal through the generic
+receipt executor remains unqualified pending owner dispatch and retirement
+enforcement. Raw qxctl/SOV command delivery and
+protected administrator provisioning retain their distinct owner contracts.
 
 ## Install and Uninstall
 

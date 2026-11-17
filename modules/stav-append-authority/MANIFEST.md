@@ -36,7 +36,7 @@ The published versions are immutable public Go source modules, not GitHub binary
 
 ## Implemented Capabilities
 
-- immutable side-by-side receipt-v2 user/system executable install and receipt-last conservative uninstall, with read-only legacy install-v1 inspection;
+- immutable side-by-side receipt-v2 user/system executable install; current-source managed user-owner retirement closes admission, retains live uses and references, and removes exact owned bytes receipt-last; legacy, system and cross-user removal remain unsupported;
 - bounded common foundational-lifecycle JSON adapter, offline observation, exact plans and CAS, protected digest-linked attempts, explicit audit-deferred recovery, and stable machine results;
 - per-TOPS enroll, preserve-by-default unenroll, and explicit one-TOPS purge;
 - strict configuration/status/local-envelope contracts;
@@ -62,3 +62,10 @@ The published versions are immutable public Go source modules, not GitHub binary
 - ordinary foundational mutation success before a real closed SSIAG/STAV receipt, or completed audit reconciliation without an exact later STAV receipt.
 
 Host uninstall always preserves per-TOPS configuration and ledgers. Purge requires the selected TOPS ID and refuses an active listener.
+
+Current-source package receipts also declare `symphony.package-owner-dispatch.v1`.
+Shared-root install and retirement require the exact inherited-descriptor proof
+described in `INSTALL.md`; direct mutation still refuses qxctl ownership markers.
+The parent owns registry changes, and all native use/reference fences remain in
+force. This source contract does not rewrite published module tags or qualify
+system or cross-user reclamation.

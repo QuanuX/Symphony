@@ -7,6 +7,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/packageinstall"
 	ssiagpaths "github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/paths"
 )
 
@@ -16,7 +17,15 @@ func TestUserDescriptorIsBoundedAndIndependent(t *testing.T) {
 	home := t.TempDir()
 	t.Setenv("HOME", home)
 	t.Setenv("XDG_CONFIG_HOME", filepath.Join(home, "config"))
-	spec := Spec{Scope: ssiagpaths.ScopeUser, TOPSID: testTOPSID, Binary: filepath.Join(home, "prefix", "libexec", "symphony", "secure-identity-access-governance", "dev", "symphony-ssiag"), UID: uint32(os.Geteuid()), GID: uint32(os.Getegid())}
+	source, err := os.Executable()
+	if err != nil {
+		t.Fatal(err)
+	}
+	pkg, err := packageinstall.Install(source, filepath.Join(home, "prefix"), "dev")
+	if err != nil {
+		t.Fatal(err)
+	}
+	spec := Spec{Scope: ssiagpaths.ScopeUser, TOPSID: testTOPSID, Binary: pkg.Binary, UID: uint32(os.Geteuid()), GID: uint32(os.Getegid())}
 	record, content, err := render(spec)
 	if err != nil {
 		t.Fatal(err)
@@ -62,5 +71,45 @@ func TestSystemdDescriptorUsesConfiguredIdentityAndNoSTAVCoupling(t *testing.T) 
 	}
 	if strings.Contains(strings.ToLower(text), "stav") || strings.Contains(text, "Requires=") || strings.Contains(text, "Wants=") {
 		t.Fatalf("systemd SSIAG descriptor gained bootstrap coupling:\n%s", text)
+	}
+}
+
+func TestRetirementFencesSupervisorInstallAndStart(t *testing.T) {
+	home := t.TempDir()
+	t.Setenv("HOME", home)
+	t.Setenv("XDG_CONFIG_HOME", filepath.Join(home, "config"))
+	t.Setenv("XDG_STATE_HOME", filepath.Join(home, "state"))
+	source, err := os.Executable()
+	if err != nil {
+		t.Fatal(err)
+	}
+	pkg, err := packageinstall.Install(source, filepath.Join(home, "prefix"), "dev")
+	if err != nil {
+		t.Fatal(err)
+	}
+	spec := Spec{Scope: ssiagpaths.ScopeUser, TOPSID: testTOPSID, Binary: pkg.Binary, UID: uint32(os.Geteuid()), GID: uint32(os.Getegid())}
+	record, err := Install(spec, false)
+	if err != nil {
+		t.Fatal(err)
+	}
+	before, err := os.ReadFile(record.Descriptor)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err := packageinstall.Uninstall(pkg.Prefix, "dev"); err == nil {
+		t.Fatal("descriptor retention did not block package reclamation")
+	}
+	if _, err := Install(spec, true); err == nil {
+		t.Fatal("retirement admitted supervisor descriptor mutation")
+	}
+	if err := Start(record); err == nil || !strings.Contains(err.Error(), "admission is closed") {
+		t.Fatalf("retirement reached native start: %v", err)
+	}
+	after, err := os.ReadFile(record.Descriptor)
+	if err != nil || string(before) != string(after) {
+		t.Fatal("blocked start changed descriptor")
+	}
+	if _, err := Uninstall(spec, false, false); err != nil {
+		t.Fatalf("retirement blocked native descriptor cleanup: %v", err)
 	}
 }

@@ -784,19 +784,40 @@ bool condition_satisfied(
 
 bool desired_condition_can_satisfy(
     const std::map<std::string, DesiredComponent>& desired,
+    const std::map<std::string, ObservedComponent>& observed,
     const Dependency& dependency) {
     const auto found = desired.find(dependency.target);
+    if (found == desired.end()) return condition_satisfied(observed, dependency);
     if (dependency.condition == "absent") {
-        return found != desired.end() && found->second.presence == "absent";
+        return found->second.presence == "absent";
     }
-    if (found == desired.end() || found->second.presence != "present") return false;
+    if (found->second.presence != "present") return false;
     const auto& component = found->second;
     if (dependency.condition == "present" || dependency.condition == "installed") return true;
+    if ((dependency.condition == "active" || dependency.condition == "inactive") &&
+        component.activation == "unmanaged") return condition_satisfied(observed, dependency);
+    if ((dependency.condition == "docked" || dependency.condition == "undocked") &&
+        component.docking == "unmanaged") return condition_satisfied(observed, dependency);
     if (dependency.condition == "active") return component.activation == "active";
     if (dependency.condition == "inactive") return component.activation == "inactive";
     if (dependency.condition == "docked") return component.docking == "docked";
     if (dependency.condition == "undocked") return component.docking == "undocked";
     if (dependency.condition == "compatible") return true;
+    return false;
+}
+
+bool action_invalidates_condition(const DraftAction& action, const Dependency& dependency) {
+    const auto& kind = action.kind;
+    const auto& condition = dependency.condition;
+    if (condition == "absent") return kind == "install";
+    // Absence is distinct from an observed inactive, undocked or compatible component.
+    if (kind == "uninstall") return true;
+    if (condition == "active") return kind == "deactivate" || kind == "deselect";
+    if (condition == "inactive") return kind == "activate";
+    if (condition == "docked") return kind == "undock" || kind == "deselect";
+    if (condition == "undocked") return kind == "dock";
+    // Compatibility describes the currently selected component, not another staged receipt.
+    if (condition == "compatible") return kind == "select" || kind == "deselect";
     return false;
 }
 
@@ -1163,28 +1184,71 @@ engine::Json build_plan(
         }
         for (const auto& [component_id, component] : desired.components) {
             for (const auto& dependency : component.dependencies) {
-                if (condition_satisfied(observation.components, dependency)) continue;
+                const bool satisfied = condition_satisfied(observation.components, dependency);
+                const bool can_satisfy = desired_condition_can_satisfy(
+                    desired.components, observation.components, dependency);
+                const auto observed = observation.components.find(component_id);
+                const bool retained = observed != observation.components.end() && !observed->second.packages.empty();
+                const auto target = component_action_range.find(dependency.target);
+                std::vector<std::size_t> invalidating_actions;
+                if (target != component_action_range.end()) {
+                    for (auto index = target->second.first; index <= target->second.second; ++index) {
+                        if (action_invalidates_condition(actions[index], dependency)) invalidating_actions.push_back(index);
+                    }
+                }
+                if (component.presence == "absent") {
+                    // Remove a dependent before breaking its still-satisfied requirements.
+                    // Never require a missing dependency to be restored just to remove it.
+                    const auto range = component_action_range.find(component_id);
+                    if (dependency.critical && retained && satisfied && range != component_action_range.end()) {
+                        for (const auto index : invalidating_actions) {
+                            add_prerequisite(actions[index], range->second.second);
+                        }
+                    }
+                    continue;
+                }
+                // Installing a missing target receipt is only the first phase of
+                // replacement. Do not retain a new dependent before a later
+                // replan must interrupt its requirement to select that receipt.
+                const auto desired_target = desired.components.find(dependency.target);
+                const auto observed_target = observation.components.find(dependency.target);
+                const bool pending_selection_interrupts = !retained &&
+                    desired_target != desired.components.end() &&
+                    observed_target != observation.components.end() &&
+                    desired_target->second.presence == "present" &&
+                    desired_target->second.selected_receipt != observed_target->second.selected_receipt &&
+                    find_package(observed_target->second, *desired_target->second.selected_receipt) == nullptr &&
+                    (dependency.condition == "active" || dependency.condition == "docked" ||
+                     dependency.condition == "compatible");
+                if (satisfied && can_satisfy && invalidating_actions.empty() && !pending_selection_interrupts) continue;
                 if (!dependency.critical) {
                     advisories.push_back(engine::Json{
                         {"class", "noncritical_dependency_unsatisfied"},
                         {"component_id", component_id},
                         {"target_component_id", dependency.target},
                         {"condition", dependency.condition},
-                        {"detail", "noncritical dependency is not satisfied by the current observation"},
+                        {"detail", "noncritical dependency is unsatisfied or would be invalidated by planned actions"},
                     });
                     continue;
                 }
+                // Protect the target action as well as the dependent's own readiness. A
+                // converged dependent may have no actions, so blocking it alone is unsafe.
+                if ((retained && satisfied) || !can_satisfy) {
+                    for (const auto index : invalidating_actions) {
+                        actions[index].blockers.push_back(blocker(
+                            "dependency_wait", dependency.target, std::nullopt, true,
+                            "action would invalidate critical dependency " + component_id + " requires " +
+                                dependency.target + " " + dependency.condition));
+                    }
+                }
                 auto range = component_action_range.find(component_id);
                 if (range == component_action_range.end()) {
-                    const auto observed = observation.components.find(component_id);
                     const auto index = add_action(actions, component_id, "verify",
                         observed == observation.components.end() ? std::nullopt : std::optional<std::string>(observed->second.observation_digest),
                         component.target_state_digest, {}, {"dependency_state"});
                     range = component_action_range.emplace(component_id, std::make_pair(index, index)).first;
                 }
-                const auto target = component_action_range.find(dependency.target);
-                if (target == component_action_range.end() ||
-                    !desired_condition_can_satisfy(desired.components, dependency)) {
+                if (target == component_action_range.end() || !can_satisfy) {
                     actions[range->second.first].blockers.push_back(blocker(
                         "dependency_wait", component_id, std::nullopt, true,
                         "dependency " + dependency.target + " does not satisfy " + dependency.condition));

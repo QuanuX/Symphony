@@ -1,0 +1,207 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:knowledge:lifecycle-execution-scope:v1",
+  "title": "Symphony lifecycle execution scope v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "protocol",
+    "format_version",
+    "scope_id",
+    "tops_id",
+    "profile_id",
+    "profile_digest",
+    "desired_state_digest",
+    "source_report_journal_digest",
+    "initial_plan_digest",
+    "initial_stable_inventory_digest",
+    "expected_apply_journal_digest",
+    "expected_applied_state_digest",
+    "components",
+    "effects",
+    "ownership_effects",
+    "canonical",
+    "scope_digest"
+  ],
+  "properties": {
+    "protocol": {
+      "const": "symphony.knowledge.lifecycle-execution-scope.v1"
+    },
+    "format_version": {
+      "const": 1
+    },
+    "scope_id": {
+      "$ref": "#/$defs/token"
+    },
+    "tops_id": {
+      "$ref": "#/$defs/token"
+    },
+    "profile_id": {
+      "$ref": "#/$defs/token"
+    },
+    "profile_digest": {
+      "$ref": "#/$defs/digest"
+    },
+    "desired_state_digest": {
+      "$ref": "#/$defs/digest"
+    },
+    "source_report_journal_digest": {
+      "$ref": "#/$defs/digest"
+    },
+    "initial_plan_digest": {
+      "$ref": "#/$defs/digest",
+      "description": "Reviewed semantic plan digest: omit plan_digest, replace observation_digest with initial_stable_inventory_digest, then hash canonical JSON. Retain the original plan as separate review evidence."
+    },
+    "initial_stable_inventory_digest": {
+      "$ref": "#/$defs/digest"
+    },
+    "expected_apply_journal_digest": {
+      "$ref": "#/$defs/cas"
+    },
+    "expected_applied_state_digest": {
+      "$ref": "#/$defs/cas"
+    },
+    "components": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 4096,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/token"
+      }
+    },
+    "effects": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 4096,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/effect"
+      }
+    },
+    "ownership_effects": {
+      "type": "array",
+      "maxItems": 4096,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/ownershipEffect"
+      }
+    },
+    "canonical": {
+      "const": false
+    },
+    "scope_digest": {
+      "$ref": "#/$defs/digest"
+    }
+  },
+  "$defs": {
+    "token": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256,
+      "pattern": "^[A-Za-z0-9._:-]+$"
+    },
+    "digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "path": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 4096,
+      "pattern": "^/"
+    },
+    "cas": {
+      "oneOf": [
+        {
+          "const": "absent"
+        },
+        {
+          "$ref": "#/$defs/digest"
+        }
+      ]
+    },
+    "effect": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "component_id",
+        "kind",
+        "target_state_digest",
+        "target_receptor_id",
+        "expected_artifact_digests",
+        "install_root"
+      ],
+      "properties": {
+        "component_id": {
+          "$ref": "#/$defs/token"
+        },
+        "kind": {
+          "enum": [
+            "install",
+            "uninstall",
+            "select",
+            "deselect",
+            "activate",
+            "deactivate",
+            "dock",
+            "undock"
+          ]
+        },
+        "target_state_digest": {
+          "$ref": "#/$defs/digest"
+        },
+        "target_receptor_id": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/token"
+            }
+          ]
+        },
+        "expected_artifact_digests": {
+          "type": "array",
+          "maxItems": 4096,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/digest"
+          }
+        },
+        "install_root": {
+          "$ref": "#/$defs/path"
+        }
+      }
+    },
+    "ownershipEffect": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "install_root",
+        "component_id",
+        "receipt_digest",
+        "disposition"
+      ],
+      "properties": {
+        "install_root": {
+          "$ref": "#/$defs/path"
+        },
+        "component_id": {
+          "$ref": "#/$defs/token"
+        },
+        "receipt_digest": {
+          "$ref": "#/$defs/digest"
+        },
+        "disposition": {
+          "enum": [
+            "retained",
+            "retiring",
+            "release"
+          ]
+        }
+      }
+    }
+  },
+  "$comment": "Semantic validation binds roots/effects to the complete desired profile; exact digest and normalized array ordering are checked by native/Go readers. A scope restricts effects and is not authorization."
+}

@@ -77,7 +77,14 @@ func (server *Server) Run(ctx context.Context) error {
 
 	// Reconciliation never prevents the submission endpoint from becoming
 	// available. Pending evidence remains durable and visible if STAV is down.
-	go func() { _, _, _ = server.producer.Reconcile(ctx) }()
+	// Package-use ownership lasts until every admitted worker has drained,
+	// including startup reconciliation, not merely until the listener closes.
+	var workers sync.WaitGroup
+	workers.Add(1)
+	go func() {
+		defer workers.Done()
+		_, _, _ = server.producer.Reconcile(ctx)
+	}()
 
 	done := make(chan struct{})
 	go func() {
@@ -90,7 +97,6 @@ func (server *Server) Run(ctx context.Context) error {
 	defer close(done)
 
 	semaphore := make(chan struct{}, maxConnections)
-	var workers sync.WaitGroup
 	defer workers.Wait()
 	for {
 		conn, err := listener.Accept()

@@ -39,8 +39,8 @@
 
 ## Implemented Surfaces
 
-- `package install|uninstall --prefix --version`: immutable compiled-version entry point and receipt-last `symphony.knowledge.install-receipt.v2`, with reference-safe removal;
-- legacy `install` / `uninstall`: verified fixed-path dual-read migration layout;
+- `package install|uninstall --prefix --version`: immutable compiled-version entry point and receipt-last `symphony.knowledge.install-receipt.v2`, with owner-local admission and retirement fences for freshly installed user-owned packages;
+- legacy `install` / `uninstall`: fixed-path compatibility layout, outside qualified live reclamation;
 - `enroll` / `unenroll`: isolated per-TOPS configuration and state;
 - `foundation-lifecycle`: bounded stdin/stdout `describe`, `observe`, `plan`, `apply`, `apply_status`, and `recover` for enrollment and supervisor surfaces;
 - `serve`: one protected Unix-socket API for one TOPS;
@@ -59,7 +59,7 @@
 
 ## Install and Enrollment Separation
 
-Host uninstall never deletes per-TOPS state and refuses retained supervisor, live endpoint, or unresolved lifecycle-attempt references. `unenroll` preserves state by default; native-only `unenroll --purge` targets exactly one validated TOPS UUID after descriptor, live-socket, and lifecycle-lock proof. Protected digest-linked attempts reside outside the purge subtree. Display names are configuration metadata and never path components.
+Package retirement never deletes per-TOPS state. For fresh guarded user-owned installations, it durably closes start admission before checking held process use, retained supervisors, live endpoints and unresolved lifecycle attempts, and preserves bytes on refusal. It requires an exact retained owner executable outside the target installation. System-owned, legacy and uncontrolled-consumer reclamation remain unqualified; direct mutations of qxctl-administered shared roots require the checked owner delegation; these are not inferred safe from an empty process or socket scan. `unenroll` preserves state by default; native-only `unenroll --purge` targets exactly one validated TOPS UUID after descriptor, live-socket, and lifecycle-lock proof. Protected digest-linked attempts reside outside the purge subtree. Display names are configuration metadata and never path components.
 
 Ordinary foundational lifecycle apply is implemented fail-closed pending a real STAV receipt path. Explicit `audit_deferred` apply is durable and reports reconciliation required. The typed committed-receipt binding hook is not a completed reconciliation endpoint, and qxctl lifecycle v1 exposes no purge intent.
 
@@ -85,3 +85,27 @@ replay and verified receipt persistence; `outcome_test.go` and
 `outcome_process_test.go` cover migration, audit failure, lost acknowledgement
 and actual append-authority restart. `CREDENTIAL-QUALIFICATION.md` records the
 remaining native bridge, deployment and live-provider acceptance work.
+
+### Package retirement qualification boundary
+
+New native receipts declare `symphony.package-retirement.v1` and
+`symphony.package-owner-dispatch.v1`. Installation creates
+nonportable host-local identity under `.symphony-package-retirement/` within the
+prefix: root and stable lock device/inode identities, an installation epoch, and
+exact receipt/executable evidence. This state is never a shipped payload and must
+not be deleted or copied to adopt an existing installation. Closed admission
+survives controller crashes; repeated removal reconciles the same identity and
+retains a tombstone. A retired prefix/version is never implicitly reopened.
+
+The participating domain covers this owner's immutable-package serve entry point,
+enrollment creation and native supervisor install/start. The serve lease outlives
+owned state and server shutdown. Existing stop and recovery paths remain available;
+there is no new service manager, arbitrary process discovery, or process killing.
+Old direct launches, copied SDK consumers and fixed-path installations remain
+outside this proof. Real service-manager/platform acceptance remains a separate
+release gate.
+
+The source receipt change is not a published module-version update. qxctl clients
+using older published owner validators require the S05 source/version closure
+before this guarded lane is available through distribution dispatch. Published
+tags and checksums have not been changed.

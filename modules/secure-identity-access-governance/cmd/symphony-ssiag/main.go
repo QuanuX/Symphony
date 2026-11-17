@@ -6,6 +6,7 @@ import (
 	"errors"
 	"flag"
 	"fmt"
+	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/packageretirement"
 	"os"
 	"os/signal"
 	"strconv"
@@ -39,6 +40,21 @@ func run(args []string) error {
 	if len(args) == 0 {
 		printUsage()
 		return errors.New("command is required")
+	}
+	// Installation owns its target's exclusive lease and pins a distinct source
+	// package itself. Other controllers retain their package while observing,
+	// stopping or recovering. New work still crosses the stricter open-only gate.
+	packageInstall := args[0] == "package" && len(args) > 1 && args[1] == "install"
+	if !packageInstall && args[0] != "serve" && args[0] != "help" && args[0] != "--help" && args[0] != "version" && args[0] != "--version" {
+		executable, err := os.Executable()
+		if err != nil {
+			return err
+		}
+		controlUse, err := packageinstall.AcquireRecoveryForExecutable(executable)
+		if err != nil {
+			return err
+		}
+		defer controlUse.Close()
 	}
 	switch args[0] {
 	case "--help", "help":
@@ -75,6 +91,15 @@ func run(args []string) error {
 }
 
 func runProviderBindingRecover(args []string) error {
+	executable, err := os.Executable()
+	if err != nil {
+		return err
+	}
+	controlUse, err := packageinstall.AcquireRecoveryForExecutable(executable)
+	if err != nil {
+		return err
+	}
+	defer controlUse.Close()
 	set := flag.NewFlagSet("provider-binding-recover", flag.ContinueOnError)
 	scopeValue := set.String("scope", "user", "installation scope: user or system")
 	topsIDValue := set.String("tops-id", "", "immutable TOPS UUID")
@@ -92,7 +117,7 @@ func runProviderBindingRecover(args []string) error {
 	if err != nil {
 		return err
 	}
-	executable, err := os.Executable()
+	executable, err = os.Executable()
 	if err != nil {
 		return fmt.Errorf("resolve running SSIAG foundation: %w", err)
 	}
@@ -214,6 +239,15 @@ func offlineRecoveryAuthority(scope ssiagpaths.Scope, serviceUID, serviceGID, ef
 }
 
 func runServe(args []string) error {
+	executable, err := os.Executable()
+	if err != nil {
+		return err
+	}
+	packageUse, err := packageinstall.AcquireUseForExecutable(executable)
+	if err != nil {
+		return fmt.Errorf("admit SSIAG package use: %w", err)
+	}
+	defer packageUse.Close()
 	set := flag.NewFlagSet("serve", flag.ContinueOnError)
 	scopeValue := set.String("scope", "user", "installation scope: user or system")
 	topsIDValue := set.String("tops-id", "", "immutable TOPS UUID")
@@ -564,6 +598,15 @@ func runSupervisor(args []string) error {
 }
 
 func runFoundationLifecycle(args []string) error {
+	executable, err := os.Executable()
+	if err != nil {
+		return err
+	}
+	controlUse, err := packageinstall.AcquireRecoveryForExecutable(executable)
+	if err != nil {
+		return err
+	}
+	defer controlUse.Close()
 	engine := foundationlifecycle.New()
 	if len(args) == 2 && args[0] == "describe" && args[1] == "--json" {
 		scope, err := engine.InstalledScope()
@@ -607,25 +650,34 @@ func runPackage(args []string) error {
 	set := flag.NewFlagSet("package "+operation, flag.ContinueOnError)
 	prefix := set.String("prefix", "", "exact absolute receipt-v2 installation prefix")
 	packageVersion := set.String("version", version.Version, "exact side-by-side package version")
+	rootFD := set.Int("lifecycle-root-fd", -1, "inherited lifecycle root descriptor")
+	lockFD := set.Int("lifecycle-lock-fd", -1, "inherited lifecycle root lock descriptor")
+	proofFD := set.Int("lifecycle-proof-fd", -1, "inherited exact native-owner proof descriptor")
 	if err := set.Parse(args[1:]); err != nil {
 		return err
 	}
 	if set.NArg() != 0 || *prefix == "" {
 		return fmt.Errorf("package %s requires --prefix and --version", operation)
 	}
+	delegation, dispatchErr := packageretirement.ReadDispatch(*rootFD, *lockFD, *proofFD, operation, packageinstall.ComponentID, *packageVersion, *prefix)
+	if dispatchErr != nil {
+		return dispatchErr
+	}
+	defer delegation.Close()
+
 	if operation == "install" {
 		executable, err := os.Executable()
 		if err != nil {
 			return err
 		}
-		result, err := packageinstall.Install(executable, *prefix, *packageVersion)
+		result, err := packageinstall.InstallWithDelegation(executable, *prefix, *packageVersion, delegation)
 		if err != nil {
 			return err
 		}
 		fmt.Printf("installed SSIAG receipt-v2 package version=%s prefix=%s binary=%s receipt=%s digest=%s changed=%t\n", result.Version, result.Prefix, result.Binary, result.Receipt, result.ReceiptDigest, result.Changed)
 		return nil
 	}
-	result, err := packageinstall.Uninstall(*prefix, *packageVersion)
+	result, err := packageinstall.UninstallWithDelegation(*prefix, *packageVersion, delegation)
 	if err != nil {
 		return err
 	}

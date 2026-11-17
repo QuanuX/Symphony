@@ -17,6 +17,7 @@ import (
 	"time"
 
 	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/config"
+	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/packageinstall"
 	ssiagpaths "github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/paths"
 	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/supervision"
 	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/version"
@@ -136,6 +137,14 @@ func Enroll(scope ssiagpaths.Scope, topsID, topsName string, serviceUID, service
 // independently rechecking the exact binary bytes. It exists so current
 // package installs do not need a second, legacy fixed-path installation.
 func EnrollVerifiedPackage(scope ssiagpaths.Scope, topsID, topsName string, serviceUID, serviceGID *uint32, binary, binaryDigest string) (EnrollmentRecord, error) {
+	lease, err := packageinstall.AcquireUseForExecutable(binary)
+	if err != nil {
+		return EnrollmentRecord{}, err
+	}
+	if lease == nil {
+		return EnrollmentRecord{}, fmt.Errorf("verified SSIAG enrollment requires a guarded native package")
+	}
+	defer lease.Close()
 	if !filepath.IsAbs(binary) || !strings.HasPrefix(binaryDigest, "sha256:") {
 		return EnrollmentRecord{}, fmt.Errorf("verified SSIAG package evidence is invalid")
 	}

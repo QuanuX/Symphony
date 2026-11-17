@@ -3339,6 +3339,45 @@ Future validator increments may add separately ratified deterministic checks wit
 - notes: Status is read-only; mutation authorization is exact-operation evidence and never canonical apply authority.
 - status: canonical
 
+##### Lifecycle Execution Scope v1 Schema
+- path: `knowledge/schemas/v1/lifecycle-execution-scope.schema.json`
+- title: Symphony Lifecycle Execution Scope v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical scoped lifecycle coordination contract
+- owner: Symphony Knowledge Vector maintainers
+- scope: Exact reviewed installation identities, ownership claims, allowed effects and global maintenance opt-in; the scope grants no authority.
+- relationships: governed_by -> `knowledge/LIFECYCLE.md`; implemented_by -> `tools/qxctl/cmd/qxctl/lifecycle_apply.go`; implemented_by -> `modules/knowledge-session-coordinator/src/lifecycle_journal.cpp`
+- consumers: qxctl lifecycle client, C++ coordinator, conformance tests, validator, reviewers
+- deferred_projections: rendered protocol documentation
+- notes: Scope constrains an independently authorized operation; it does not grant canonical mutation authority.
+- status: canonical
+
+##### Lifecycle Apply Command v2 Schema
+- path: `knowledge/schemas/v2/lifecycle-apply-command.schema.json`
+- title: Symphony Lifecycle Apply Command v2
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical scoped lifecycle coordination contract
+- owner: Symphony Knowledge Vector maintainers
+- scope: Exact apply request bound to reviewed execution scope and full-profile planning context.
+- relationships: governed_by -> `knowledge/LIFECYCLE.md`; implemented_by -> `tools/qxctl/cmd/qxctl/lifecycle_apply.go`; implemented_by -> `modules/knowledge-session-coordinator/src/lifecycle_journal.cpp`
+- consumers: qxctl lifecycle client, C++ coordinator, conformance tests, validator, reviewers
+- deferred_projections: rendered protocol documentation
+- notes: Scope constrains an independently authorized operation; it does not grant canonical mutation authority.
+- status: canonical
+
+##### Lifecycle Apply Result v2 Schema
+- path: `knowledge/schemas/v2/lifecycle-apply-result.schema.json`
+- title: Symphony Lifecycle Apply Result v2
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical scoped lifecycle coordination contract
+- owner: Symphony Knowledge Vector maintainers
+- scope: Scoped apply outcome preserving full-profile dependency evidence and limiting effects to reviewed bounds.
+- relationships: governed_by -> `knowledge/LIFECYCLE.md`; implemented_by -> `tools/qxctl/cmd/qxctl/lifecycle_apply.go`; implemented_by -> `modules/knowledge-session-coordinator/src/lifecycle_journal.cpp`
+- consumers: qxctl lifecycle client, C++ coordinator, conformance tests, validator, reviewers
+- deferred_projections: rendered protocol documentation
+- notes: Scope constrains an independently authorized operation; it does not grant canonical mutation authority.
+- status: canonical
+
 ##### Lifecycle Host Integration Schema
 - path: `knowledge/schemas/v1/lifecycle-host-integration.schema.json`
 - title: Symphony Linux Lifecycle Host Integration v1

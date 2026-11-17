@@ -28,6 +28,7 @@
 - `knowledge/schemas/v1/lifecycle-boot-journal.schema.json`
 - `knowledge/schemas/v1/lifecycle-boot-result.schema.json`
 - `knowledge/schemas/v1/lifecycle-desired-state.schema.json`
+- `knowledge/schemas/v1/lifecycle-execution-scope.schema.json`
 - `knowledge/schemas/v1/lifecycle-host-boot-result.schema.json`
 - `knowledge/schemas/v1/lifecycle-host-integration-result.schema.json`
 - `knowledge/schemas/v1/lifecycle-host-integration.schema.json`
@@ -117,6 +118,7 @@ These exact JSON Schema files are canonical common process, lifecycle, and execu
 - `proposal.schema.json`: provider-neutral immutable proposal envelope and vector-neutral authority boundary. Its explicit `engine_decided_domain_truth: false` assertion prevents any engine from converting validation into ownership, membership, ratification, publication, or other semantic authority.
 - `provider-evidence.schema.json`: bounded provider-neutral revision, change-request, and ratification evidence normalized by separately discoverable adapters.
 - `lifecycle-profile-input.schema.json`: bounded declarative profile intent accepted by qxctl without caller-authored generations, predecessor links, or generated digests.
+- `lifecycle-execution-scope.schema.json`: immutable reviewed effect and ownership bounds for scoped apply v2, with full-profile/source binding and semantic initial-plan evidence; the document grants no authority.
 - `lifecycle-profile.schema.json`: protected per-TOPS selected-root and desired-state profile with exact generation, predecessor, canonical-false, and content-digest evidence.
 - `lifecycle-desired-state.schema.json`: protected noncanonical exact component intent, dependency, compatibility, activation, and docking selection.
 - `lifecycle-observation.schema.json`: disposable bounded inventory of configured roots, platforms, packages, component state, integrity, capabilities, and unknown preserved receipts without executable discovery.

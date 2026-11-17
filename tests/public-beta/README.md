@@ -1,5 +1,7 @@
 # Source-bound Public Beta dossier
 
+**Current release:** [Symphony 0.2.0-beta.1 is published](https://github.com/QuanuX/symphony-distribution/releases/tag/v0.2.0-beta.1). Use its [installation guide](https://downloads.quanux.org/symphony/0.2.0-beta.1/docs/BETA-INSTALL.md) and [bound publication record](https://github.com/QuanuX/symphony-distribution/blob/v0.2.0-beta.1/evidence/d14-publication.json) for current artifact, platform, trust and acceptance scope. This directory preserves the earlier preparation snapshot and subsequent execution history; its original pending results are not rewritten into release passes. The feature freeze remains in place.
+
 **Execution update:** the user approved W01–W12 continuation and selected Anaconda,
 with final signing/host/reviewer inputs deferred to the end of W12. See the
 [execution record](execution/README.md). The preparation snapshot below remains

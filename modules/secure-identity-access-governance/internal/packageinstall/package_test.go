@@ -1,7 +1,11 @@
 package packageinstall
 
 import (
+	"bytes"
+	"crypto/sha256"
+	"encoding/hex"
 	"encoding/json"
+	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/packageretirement"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -104,5 +108,130 @@ func TestUninstallRefusesSupervisorReference(t *testing.T) {
 	}
 	if _, err := os.Stat(installed.Binary); err != nil {
 		t.Fatalf("refused uninstall removed executable: %v", err)
+	}
+}
+
+func TestRetirementRetainsLivePackageAndRecoversExactAttempt(t *testing.T) {
+	source, prefix := setupPackageTest(t)
+	installed, err := Install(source, prefix, compiledVersion())
+	if err != nil {
+		t.Fatal(err)
+	}
+	use, err := AcquireUseForExecutable(installed.Binary)
+	if err != nil || use == nil {
+		t.Fatalf("admit installed use: %v", err)
+	}
+	if _, err := Uninstall(prefix, compiledVersion()); err == nil {
+		use.Close()
+		t.Fatal("live package removed")
+	}
+	if _, err := os.Stat(installed.Binary); err != nil {
+		t.Fatal(err)
+	}
+	if retry, err := AcquireUseForExecutable(installed.Binary); err == nil {
+		retry.Close()
+		t.Fatal("retiring package admitted another use")
+	}
+	if err := use.Close(); err != nil {
+		t.Fatal(err)
+	}
+	if result, err := Uninstall(prefix, compiledVersion()); err != nil || !result.Changed {
+		t.Fatalf("retirement did not recover after terminal use: %+v %v", result, err)
+	}
+	if result, err := Uninstall(prefix, compiledVersion()); err != nil || result.Changed {
+		t.Fatalf("exact tombstone retry: %+v %v", result, err)
+	}
+	if _, err := Install(source, prefix, compiledVersion()); err == nil {
+		t.Fatal("retired installation epoch reopened")
+	}
+}
+func TestMissingGuardRefusesLegacyAdoptionAndRemoval(t *testing.T) {
+	source, prefix := setupPackageTest(t)
+	installed, err := Install(source, prefix, compiledVersion())
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := os.RemoveAll(filepath.Join(installed.Prefix, ".symphony-package-retirement")); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := Uninstall(prefix, compiledVersion()); err == nil {
+		t.Fatal("missing guard inferred quiescence")
+	}
+	if _, err := Install(source, prefix, compiledVersion()); err == nil {
+		t.Fatal("legacy package silently adopted")
+	}
+	if _, err := os.Stat(installed.Binary); err != nil {
+		t.Fatal(err)
+	}
+}
+func TestInstallRefusesUncontrolledSourceBytes(t *testing.T) {
+	_, prefix := setupPackageTest(t)
+	source := filepath.Join(filepath.Dir(prefix), "uncontrolled")
+	if err := os.WriteFile(source, []byte("uncontrolled older program"), 0o755); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := Install(source, prefix, compiledVersion()); err == nil || !strings.Contains(err.Error(), "executing owner binary") {
+		t.Fatalf("uncontrolled source admitted: %v", err)
+	}
+	if _, err := os.Stat(filepath.Join(prefix, ".symphony-package-retirement")); !os.IsNotExist(err) {
+		t.Fatal("uncontrolled source created custody")
+	}
+}
+
+func TestActivationRequiresExactReceiptAtPublishedPath(t *testing.T) {
+	for _, change := range []string{"move_parent", "change_bytes"} {
+		t.Run(change, func(t *testing.T) {
+			_, prefix := setupPackageTest(t)
+			l, err := resolve(prefix, compiledVersion())
+			if err != nil {
+				t.Fatal(err)
+			}
+			if err := ensurePrefix(l.prefix); err != nil {
+				t.Fatal(err)
+			}
+			binary := []byte("bounded activation fixture")
+			hash := sha256.Sum256(binary)
+			receipt := newReceipt(l, uint64(len(binary)), "sha256:"+hex.EncodeToString(hash[:]))
+			receipt.ReceiptDigest, err = digestWithoutReceipt(receipt)
+			if err != nil {
+				t.Fatal(err)
+			}
+			raw, err := json.MarshalIndent(receipt, "", "  ")
+			if err != nil {
+				t.Fatal(err)
+			}
+			raw = append(raw, '\n')
+			rawHash := sha256.Sum256(raw)
+			lease, err := packageretirement.PrepareInstall(l.prefix, retirementIdentity(l, receipt), true)
+			if err != nil {
+				t.Fatal(err)
+			}
+			defer lease.Close()
+			if _, err := lease.PublishFile(l.binaryRelative, bytes.NewReader(binary), receipt.Files[0].Digest, uint64(len(binary)), 0o755); err != nil {
+				t.Fatal(err)
+			}
+			if _, err := lease.PublishFile(receiptRelative(l), bytes.NewReader(raw), "sha256:"+hex.EncodeToString(rawHash[:]), uint64(len(raw)), 0o644); err != nil {
+				t.Fatal(err)
+			}
+			if change == "move_parent" {
+				if err := os.Rename(filepath.Dir(l.receipt), filepath.Dir(l.receipt)+"-moved"); err != nil {
+					t.Fatal(err)
+				}
+			} else {
+				if err := os.WriteFile(l.receipt, append(append([]byte{}, raw...), byte(' ')), 0o644); err != nil {
+					t.Fatal(err)
+				}
+			}
+			if err := activatePackage(lease, l, receipt, raw); err == nil {
+				t.Fatal("activation accepted missing or changed published receipt")
+			}
+			if lease.State() != "installing" {
+				t.Fatalf("failed activation opened admission: %s", lease.State())
+			}
+			if admitted, err := packageretirement.AcquireUse(l.prefix, retirementIdentity(l, receipt)); err == nil {
+				admitted.Close()
+				t.Fatal("failed activation admitted service use")
+			}
+		})
 	}
 }

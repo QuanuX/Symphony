@@ -727,7 +727,7 @@
       "introduced_in": "0.1.0-dev",
       "deprecated_in": null,
       "replacement_ids": [],
-      "grammar": "qxctl knowledge lifecycle apply [--expected-applied-state-digest VALUE] [--expected-apply-journal-digest VALUE] [--json] [--maestro-prefix VALUE] [--maestro-receptor-id VALUE...] [--maestro-version VALUE] [--max-actions UINT64] [--operation-id VALUE] [--profile-id VALUE] [--repo VALUE] [--scope VALUE] [--source-journal-digest VALUE] [--source-root VALUE...] [--state-root VALUE] [--tops-id VALUE] [--ttl DURATION]",
+      "grammar": "qxctl knowledge lifecycle apply [--execution-scope VALUE] [--expected-applied-state-digest VALUE] [--expected-apply-journal-digest VALUE] [--json] [--maestro-prefix VALUE] [--maestro-receptor-id VALUE...] [--maestro-version VALUE] [--max-actions UINT64] [--native-owner VALUE...] [--operation-id VALUE] [--profile-id VALUE] [--repo VALUE] [--scope VALUE] [--source-journal-digest VALUE] [--source-root VALUE...] [--state-root VALUE] [--tops-id VALUE] [--ttl DURATION]",
       "aliases": [],
       "visibility": "public",
       "feature_bindings": [
@@ -762,7 +762,7 @@
       "introduced_in": "0.1.0-dev",
       "deprecated_in": null,
       "replacement_ids": [],
-      "grammar": "qxctl knowledge lifecycle apply-recover [--discover] [--expected-apply-journal-digest VALUE] [--json] [--maestro-prefix VALUE] [--maestro-receptor-id VALUE...] [--maestro-version VALUE] [--operation-id VALUE] [--profile-id VALUE] [--repo VALUE] [--scope VALUE] [--state-root VALUE] [--tops-id VALUE] [--ttl DURATION]",
+      "grammar": "qxctl knowledge lifecycle apply-recover [--discover] [--execution-scope VALUE] [--expected-apply-journal-digest VALUE] [--json] [--maestro-prefix VALUE] [--maestro-receptor-id VALUE...] [--maestro-version VALUE] [--operation-id VALUE] [--profile-id VALUE] [--repo VALUE] [--scope VALUE] [--state-root VALUE] [--tops-id VALUE] [--ttl DURATION]",
       "aliases": [],
       "visibility": "public",
       "feature_bindings": [
@@ -793,7 +793,7 @@
       "introduced_in": "0.1.0-dev",
       "deprecated_in": null,
       "replacement_ids": [],
-      "grammar": "qxctl knowledge lifecycle apply-status [--json] [--maestro-prefix VALUE] [--maestro-receptor-id VALUE...] [--maestro-version VALUE] [--profile-id VALUE] [--repo VALUE] [--scope VALUE] [--state-root VALUE] [--tops-id VALUE] [--ttl DURATION]",
+      "grammar": "qxctl knowledge lifecycle apply-status [--execution-scope VALUE] [--json] [--maestro-prefix VALUE] [--maestro-receptor-id VALUE...] [--maestro-version VALUE] [--profile-id VALUE] [--repo VALUE] [--scope VALUE] [--state-root VALUE] [--tops-id VALUE] [--ttl DURATION]",
       "aliases": [],
       "visibility": "public",
       "feature_bindings": [
@@ -24028,5 +24028,5 @@
       "json_output": true
     }
   ],
-  "registry_digest": "sha256:1d06a5e60b406652452ffd27a29ba8c1e3a742e28427ffcce1ea4b3ee78f6713"
+  "registry_digest": "sha256:941e55e70ab9e66a3cc53da31d0e114101f609ceb0a908e1c153ce116af4bb8d"
 }

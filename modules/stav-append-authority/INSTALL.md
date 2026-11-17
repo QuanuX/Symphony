@@ -64,6 +64,10 @@ qxctl stav query --scope user --tops-id <UUID> --limit 100
 
 ## Remove
 
+Current-source managed installations use a persistent retirement guard bound to the exact prefix, receipt and executable. Their service holds a shared use lease through ledger close; native enrollment and supervisor start also acquire admission. Uninstall closes admission durably before testing for outstanding use. A busy process or retained reference leaves all package bytes in place and the package retiring. Stop the selected native service, remove its descriptor and unenroll the selected TOPS, then retry from a retained copy of the same exact owner executable outside the target installation. An executing uninstaller cannot unlink its own controller. A pending retirement never reopens automatically; no process-name killing or force bypass is used.
+
+Only same-owner user-scope managed retirement is qualified by this source increment. System or cross-user removal, unguarded legacy installations, arbitrary detached consumers and older public owner clients remain unsupported. The published `v0.2.1` commands above predate this guard; they are not evidence of S04 retirement support. Use distinct installation prefixes for builds with the same compiled version. The retirement metadata is deliberately retained after removal as an exact tombstone; package data and unrelated files are preserved.
+
 Host uninstall preserves all TOPS data:
 
 ```text
@@ -84,3 +88,26 @@ Default per-TOPS unenrollment also preserves data. Destructive one-TOPS removal 
 symphony-stav-append-authority unenroll --scope user --tops-id <UUID> --audit-deferred
 symphony-stav-append-authority unenroll --scope user --tops-id <UUID> --purge
 ```
+
+
+### Shared-root owner delegation
+
+Current-source receipts also require `symphony.package-owner-dispatch.v1`.
+A qualified qxctl apply retains the shared root lock and explicitly selects a
+retained native owner whose bytes match the reviewed staged receipt. The native
+package command receives three inherited descriptors through
+`--lifecycle-root-fd`, `--lifecycle-lock-fd`, and `--lifecycle-proof-fd`; these are
+an internal handoff, not user-supplied permission switches. All three are required
+together. The owner independently checks the real root and held lock identities,
+registry digest and generation, compatibility fence, and exact retained or
+retiring/released profile claim before touching its package. Foreign retained
+or legacy claims still prevent reclamation. qxctl commits ownership changes only
+after independently verifying the native outcome. Direct native mutation of a
+root carrying qxctl ownership metadata remains refused.
+
+Delegation does not bypass native process-use, supervisor, enrollment, pending
+work, identity or receipt checks. The owner never edits qxctl's registry. The
+parent retains custody through child completion; a lost child result requires
+explicit observation/recovery. System and cross-user reclamation remain outside
+this contract. Host guard state is created locally and is never shipped in a
+portable package.

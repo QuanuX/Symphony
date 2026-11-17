@@ -4,6 +4,7 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	"github.com/QuanuX/Symphony/modules/stav-append-authority/internal/packageretirement"
 	"os"
 	"os/signal"
 	"strconv"
@@ -12,6 +13,7 @@ import (
 	"github.com/QuanuX/Symphony/modules/stav-append-authority/internal/config"
 	"github.com/QuanuX/Symphony/modules/stav-append-authority/internal/foundation"
 	"github.com/QuanuX/Symphony/modules/stav-append-authority/internal/lifecycle"
+	"github.com/QuanuX/Symphony/modules/stav-append-authority/internal/packageuse"
 	stavpaths "github.com/QuanuX/Symphony/modules/stav-append-authority/internal/paths"
 	"github.com/QuanuX/Symphony/modules/stav-append-authority/internal/server"
 	"github.com/QuanuX/Symphony/modules/stav-append-authority/internal/supervision"
@@ -94,6 +96,11 @@ func runEnroll(args []string) error {
 	if err := config.ValidateAuthorityOwnership(authorityUID, authorityGID); err != nil {
 		return err
 	}
+	releaseControl, err := acquireCurrentRecovery()
+	if err != nil {
+		return err
+	}
+	defer releaseControl()
 	uid, gid := uint32(authorityUID), uint32(authorityGID)
 	var uidInput, gidInput *uint32
 	if scope == stavpaths.ScopeSystem {
@@ -131,6 +138,11 @@ func runUnenroll(args []string) error {
 		fmt.Printf("unenrolled STAV append authority tops_id=%s scope=%s purge=true\n", record.TOPSID, record.Scope)
 		return nil
 	}
+	releaseControl, err := acquireCurrentRecovery()
+	if err != nil {
+		return err
+	}
+	defer releaseControl()
 	result, err := foundation.DirectApply("enrollment", scope, *topsID, "unenrolled_preserved", nil, nil, *auditDeferred)
 	if err != nil {
 		return err
@@ -161,6 +173,15 @@ func runServe(args []string) error {
 	if scope == stavpaths.ScopeUser && !*supervised {
 		fmt.Fprintln(os.Stderr, "symphony-stav-append-authority: direct user-scope serve is a development/diagnostic mode; production uses supervisor install")
 	}
+	executable, err := os.Executable()
+	if err != nil {
+		return err
+	}
+	release, err := packageuse.Acquire(executable)
+	if err != nil {
+		return err
+	}
+	defer release()
 	layout, err := stavpaths.ResolveInstance(scope, *topsID)
 	if err != nil {
 		return err
@@ -226,6 +247,11 @@ func runSupervisor(args []string) error {
 	if err != nil {
 		return err
 	}
+	releaseControl, err := acquireCurrentRecovery()
+	if err != nil {
+		return err
+	}
+	defer releaseControl()
 	layout, err := stavpaths.ResolveInstance(scope, *topsID)
 	if err != nil {
 		return err
@@ -272,6 +298,12 @@ func runSupervisor(args []string) error {
 }
 
 func runFoundationLifecycle(args []string) error {
+	releaseControl, err := acquireCurrentRecovery()
+	if err != nil {
+		return err
+	}
+	defer releaseControl()
+
 	if len(args) == 2 && args[0] == "describe" && args[1] == "--json" {
 		descriptor, err := foundation.Describe()
 		if err != nil {
@@ -298,15 +330,24 @@ func runFoundationLifecycle(args []string) error {
 func runLifecycle(command string, args []string) error {
 	set := flag.NewFlagSet(command, flag.ContinueOnError)
 	scopeValue := set.String("scope", "user", "installation scope: user or system")
-	force := set.Bool("force", false, "replace or remove a differing installed binary")
+	force := set.Bool("force", false, "compatibility flag; never overrides immutable package or retirement checks")
 	prefix := set.String("prefix", "", "explicit installation prefix for an immutable receipt-v2 package")
 	packageVersion := set.String("version", version.Version, "exact package version; must match this compiled binary")
+	rootFD := set.Int("lifecycle-root-fd", -1, "inherited lifecycle root descriptor")
+	lockFD := set.Int("lifecycle-lock-fd", -1, "inherited lifecycle root lock descriptor")
+	proofFD := set.Int("lifecycle-proof-fd", -1, "inherited exact native-owner proof descriptor")
 	if err := set.Parse(args); err != nil {
 		return err
 	}
 	if set.NArg() != 0 {
 		return fmt.Errorf("unexpected positional arguments")
 	}
+	delegation, dispatchErr := packageretirement.ReadDispatch(*rootFD, *lockFD, *proofFD, command, packageuse.Owner, *packageVersion, *prefix)
+	if dispatchErr != nil {
+		return dispatchErr
+	}
+	defer delegation.Close()
+
 	scope, err := stavpaths.ParseScope(*scopeValue)
 	if err != nil {
 		return err
@@ -322,13 +363,13 @@ func runLifecycle(command string, args []string) error {
 		if *prefix == "" {
 			result, err = lifecycle.Install(executable, scope, *force)
 		} else {
-			result, err = lifecycle.InstallAt(executable, scope, *prefix, *packageVersion)
+			result, err = lifecycle.InstallAtWithDelegation(executable, scope, *prefix, *packageVersion, delegation)
 		}
 	case "uninstall":
 		if *prefix == "" {
 			result, err = lifecycle.Uninstall(executable, scope, *force)
 		} else {
-			result, err = lifecycle.UninstallAt(executable, scope, *prefix, *packageVersion)
+			result, err = lifecycle.UninstallAtWithDelegation(executable, scope, *prefix, *packageVersion, delegation)
 		}
 	}
 	if err != nil {
@@ -365,4 +406,12 @@ func printUsage() {
 	fmt.Println("  symphony-stav-append-authority foundation-lifecycle describe --json")
 	fmt.Println()
 	fmt.Println("Enrollment creates no producer or reader grant; configure each exact UID/GID grant before use.")
+}
+
+func acquireCurrentRecovery() (func(), error) {
+	executable, err := os.Executable()
+	if err != nil {
+		return nil, err
+	}
+	return packageuse.AcquireRecovery(executable)
 }

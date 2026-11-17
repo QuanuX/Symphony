@@ -13,9 +13,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/QuanuX/Symphony/modules/stav-append-authority/internal/config"
+	"github.com/QuanuX/Symphony/modules/stav-append-authority/internal/packageretirement"
+	"github.com/QuanuX/Symphony/modules/stav-append-authority/internal/packageuse"
 	stavpaths "github.com/QuanuX/Symphony/modules/stav-append-authority/internal/paths"
-	"github.com/QuanuX/Symphony/modules/stav-append-authority/internal/supervision"
 	"github.com/QuanuX/Symphony/modules/stav-append-authority/internal/version"
 )
 
@@ -93,60 +93,68 @@ func Install(source string, scope stavpaths.Scope, force bool) (Result, error) {
 	if err != nil {
 		return Result{}, err
 	}
-	return installAt(source, layout, force)
+	qualifiedDigest, err := requireInvokingExecutable(source)
+	if err != nil {
+		return Result{}, err
+	}
+	return installAt(source, layout, force, qualifiedDigest)
 }
 
 func InstallAt(source string, scope stavpaths.Scope, prefix, requestedVersion string) (Result, error) {
+	return InstallAtWithDelegation(source, scope, prefix, requestedVersion, nil)
+}
+
+// InstallAtWithDelegation accepts only a checked native-owner descriptor handoff.
+func InstallAtWithDelegation(source string, scope stavpaths.Scope, prefix, requestedVersion string, delegation *packageretirement.Delegation) (Result, error) {
 	layout, err := stavpaths.ResolveInstallAt(scope, prefix, requestedVersion)
 	if err != nil {
 		return Result{}, err
 	}
-	return installAt(source, layout, false)
+	qualifiedDigest, err := requireInvokingExecutable(source)
+	if err != nil {
+		return Result{}, err
+	}
+	return installAt(source, layout, false, qualifiedDigest, delegation)
 }
 
-func installAt(source string, layout stavpaths.InstallLayout, force bool) (Result, error) {
-	scope := layout.Scope
-	source, _, err := sourceFile(source)
+// A fresh guard may only describe this retirement-aware owner build. Older or
+// arbitrary copied binaries cannot acquire managed capability through adoption.
+func requireInvokingExecutable(source string) (string, error) {
+	self, err := os.Executable()
 	if err != nil {
-		return Result{}, err
+		return "", err
 	}
-	if err := ensureDirectory(filepath.Dir(layout.Binary)); err != nil {
-		return Result{}, err
-	}
-	if err := ensureDirectory(filepath.Dir(layout.Manifest)); err != nil {
-		return Result{}, err
-	}
-	staged, sourceDigest, err := stageExecutable(source, layout.Binary, 0755)
+	_, want, err := sourceFile(self)
 	if err != nil {
-		return Result{}, err
+		return "", err
 	}
-	defer os.Remove(staged)
+	_, got, err := sourceFile(source)
+	if err != nil || got != want {
+		return "", fmt.Errorf("STAV managed install requires the invoking retirement-aware executable")
+	}
+	return want, nil
+}
 
+func installAt(source string, layout stavpaths.InstallLayout, force bool, qualifiedDigest string, delegated ...*packageretirement.Delegation) (Result, error) {
+	scope := layout.Scope
+	source, sourceDigest, err := sourceFile(source)
+	if err != nil {
+		return Result{}, err
+	}
+	if qualifiedDigest != "" && sourceDigest != qualifiedDigest {
+		return Result{}, fmt.Errorf("STAV bytes differ from the invoking retirement-aware executable")
+	}
+	if err := ensureDirectory(layout.Prefix); err != nil {
+		return Result{}, err
+	}
 	existingDigest, exists, err := regularFileDigest(layout.Binary)
 	if err != nil {
 		return Result{}, fmt.Errorf("inspect installed binary: %w", err)
 	}
-	repairReceipt := false
-	if exists && existingDigest == sourceDigest {
-		record, evidenceDigest, recordErr := verifyInstallLayout(layout)
-		if recordErr == nil {
-			return installResult(layout, record, evidenceDigest, false), nil
-		}
-		if _, manifestErr := os.Lstat(layout.Manifest); os.IsNotExist(manifestErr) {
-			repairReceipt = true
-		} else if !force {
-			return Result{}, fmt.Errorf("installed binary lacks matching installation evidence; use --force to repair it: %w", recordErr)
-		}
-	}
-	if exists && !repairReceipt {
+	if exists && existingDigest != sourceDigest {
 		return Result{}, fmt.Errorf("immutable STAV package version already exists with different bytes; install a distinct version")
 	}
-	if !exists {
-		if err := activateExecutable(staged, layout.Binary); err != nil {
-			return Result{}, err
-		}
-	}
-	info, err := os.Stat(layout.Binary)
+	info, err := os.Stat(source)
 	if err != nil {
 		return Result{}, err
 	}
@@ -158,7 +166,7 @@ func installAt(source string, layout stavpaths.InstallLayout, force bool) (Resul
 	if platformOS == "darwin" {
 		platformOS = "macos"
 	}
-	receipt := InstallReceipt{Protocol: "symphony.knowledge.install-receipt.v2", FormatVersion: 2, ComponentID: "stav-append-authority", ComponentKind: "service", ModuleID: "stav-append-authority", PackageID: "stav-append-authority", Version: version.Version, InstallScope: "prefix", PrefixMode: "installation_prefix", Files: []ReceiptFile{{Path: filepath.ToSlash(relativeBinary), Kind: "executable", Size: info.Size(), Digest: "sha256:" + sourceDigest}}, EntryPoints: []ReceiptEntryPoint{{EntryPointID: "stav.append-authority", Kind: "executable", Path: filepath.ToSlash(relativeBinary), Protocols: []string{"symphony.stav.local.v1"}}, {EntryPointID: "stav.foundation-lifecycle", Kind: "adapter", Path: filepath.ToSlash(relativeBinary), Protocols: []string{"symphony.foundation.lifecycle-command.v1"}}}, ProvidesCapabilities: []string{"symphony.foundation.lifecycle-adapter.v1", "symphony.stav.append-authority.v1"}, RequiresCapabilities: []string{}, CompatibleReceptors: []string{}, PlatformRequirements: []PlatformRequirement{{OS: platformOS, Architecture: runtime.GOARCH, Critical: true}}}
+	receipt := InstallReceipt{Protocol: "symphony.knowledge.install-receipt.v2", FormatVersion: 2, ComponentID: "stav-append-authority", ComponentKind: "service", ModuleID: "stav-append-authority", PackageID: "stav-append-authority", Version: version.Version, InstallScope: "prefix", PrefixMode: "installation_prefix", Files: []ReceiptFile{{Path: filepath.ToSlash(relativeBinary), Kind: "executable", Size: info.Size(), Digest: "sha256:" + sourceDigest}}, EntryPoints: []ReceiptEntryPoint{{EntryPointID: "stav.append-authority", Kind: "executable", Path: filepath.ToSlash(relativeBinary), Protocols: []string{"symphony.stav.local.v1"}}, {EntryPointID: "stav.foundation-lifecycle", Kind: "adapter", Path: filepath.ToSlash(relativeBinary), Protocols: []string{"symphony.foundation.lifecycle-command.v1"}}}, ProvidesCapabilities: []string{"symphony.foundation.lifecycle-adapter.v1", "symphony.stav.append-authority.v1", packageretirement.Capability, packageretirement.DispatchCapability}, RequiresCapabilities: []string{}, CompatibleReceptors: []string{}, PlatformRequirements: []PlatformRequirement{{OS: platformOS, Architecture: runtime.GOARCH, Critical: true}}}
 	receipt.ReceiptDigest, err = canonicalDigestWithout(receipt, "receipt_digest")
 	if err != nil {
 		return Result{}, err
@@ -167,7 +175,46 @@ func installAt(source string, layout stavpaths.InstallLayout, force bool) (Resul
 	if err != nil {
 		return Result{}, err
 	}
-	if err := writeInstallEvidence(layout.Manifest, append(data, '\n')); err != nil {
+	receiptBytes := append(data, '\n')
+	_, manifestErr := os.Lstat(layout.Manifest)
+	if manifestErr != nil && !os.IsNotExist(manifestErr) {
+		return Result{}, manifestErr
+	}
+	identity := retirementIdentity(layout, receipt.ReceiptDigest, "sha256:"+sourceDigest, uint64(info.Size()))
+	guard, err := packageretirement.PrepareInstall(layout.Prefix, identity, !exists && os.IsNotExist(manifestErr), delegated...)
+	if err != nil {
+		return Result{}, err
+	}
+	defer guard.Close()
+	if guard.State() == "open" {
+		record, evidenceDigest, err := verifyInstallLayout(layout)
+		if err != nil {
+			return Result{}, err
+		}
+		if err := guard.VerifyFile(identity.BinaryRelative, identity.BinaryDigest, identity.BinarySize); err != nil {
+			return Result{}, err
+		}
+		if err := guard.VerifyFile(identity.ReceiptRelative, digestBytes(receiptBytes), uint64(len(receiptBytes))); err != nil {
+			return Result{}, err
+		}
+		return installResult(layout, record, evidenceDigest, false), nil
+	}
+	payload, err := os.Open(source)
+	if err != nil {
+		return Result{}, err
+	}
+	_, publishErr := guard.PublishFile(identity.BinaryRelative, payload, identity.BinaryDigest, identity.BinarySize, 0755)
+	closeErr := payload.Close()
+	if publishErr != nil {
+		return Result{}, publishErr
+	}
+	if closeErr != nil {
+		return Result{}, closeErr
+	}
+	if _, err := guard.PublishFile(identity.ReceiptRelative, bytes.NewReader(receiptBytes), digestBytes(receiptBytes), uint64(len(receiptBytes)), 0644); err != nil {
+		return Result{}, err
+	}
+	if err := activateManagedPackage(guard, identity, receiptBytes); err != nil {
 		return Result{}, err
 	}
 	evidenceDigest := receipt.ReceiptDigest
@@ -175,8 +222,20 @@ func installAt(source string, layout stavpaths.InstallLayout, force bool) (Resul
 	return installResult(layout, record, evidenceDigest, true), nil
 }
 
-// Uninstall removes only the executable. A differing installed digest fails
-// closed unless the operator explicitly supplies --force.
+// Activation must re-observe both live paths after publication. A directory or
+// file replacement between the two commits leaves installation closed.
+func activateManagedPackage(guard *packageretirement.Lease, identity packageretirement.Identity, receiptBytes []byte) error {
+	if err := guard.VerifyFile(identity.BinaryRelative, identity.BinaryDigest, identity.BinarySize); err != nil {
+		return err
+	}
+	if err := guard.VerifyFile(identity.ReceiptRelative, digestBytes(receiptBytes), uint64(len(receiptBytes))); err != nil {
+		return err
+	}
+	return guard.Activate()
+}
+
+// Uninstall closes managed start admission, proves process quiescence, and removes
+// only exact receipt-owned bytes. Force never bypasses ownership or retirement.
 func Uninstall(source string, scope stavpaths.Scope, force bool) (Result, error) {
 	layout, err := stavpaths.ResolveInstall(scope)
 	if err != nil {
@@ -186,47 +245,94 @@ func Uninstall(source string, scope stavpaths.Scope, force bool) (Result, error)
 }
 
 func UninstallAt(source string, scope stavpaths.Scope, prefix, requestedVersion string) (Result, error) {
+	return UninstallAtWithDelegation(source, scope, prefix, requestedVersion, nil)
+}
+
+// UninstallAtWithDelegation accepts only a checked native-owner descriptor handoff.
+func UninstallAtWithDelegation(source string, scope stavpaths.Scope, prefix, requestedVersion string, delegation *packageretirement.Delegation) (Result, error) {
 	layout, err := stavpaths.ResolveInstallAt(scope, prefix, requestedVersion)
 	if err != nil {
 		return Result{}, err
 	}
-	return uninstallAt(source, layout, false)
+	return uninstallAt(source, layout, false, delegation)
 }
 
-func uninstallAt(source string, layout stavpaths.InstallLayout, force bool) (Result, error) {
-	scope := layout.Scope
-	if reference, referenceErr := FindInstallReference(scope, layout.Binary); referenceErr != nil {
-		return Result{}, referenceErr
-	} else if reference != "" {
-		return Result{}, fmt.Errorf("installed STAV package is still referenced by %s", reference)
+func retirementIdentity(layout stavpaths.InstallLayout, receiptDigest, binaryDigest string, size uint64) packageretirement.Identity {
+	binary, _ := filepath.Rel(layout.Prefix, layout.Binary)
+	receipt, _ := filepath.Rel(layout.Prefix, layout.Manifest)
+	return packageretirement.Identity{Owner: packageuse.Owner, Version: version.Version, ReceiptDigest: receiptDigest, BinaryDigest: binaryDigest, BinaryRelative: filepath.ToSlash(binary), ReceiptRelative: filepath.ToSlash(receipt), BinarySize: size}
+}
+
+func uninstallAt(source string, layout stavpaths.InstallLayout, force bool, delegated ...*packageretirement.Delegation) (Result, error) {
+	if layout.Scope != stavpaths.ScopeUser {
+		return Result{}, fmt.Errorf("STAV system or cross-user retirement is not qualified")
 	}
-	_, sourceDigest, sourceErr := sourceFile(source)
-	existingDigest, exists, err := regularFileDigest(layout.Binary)
+	identity, state, err := packageretirement.Inspect(layout.Prefix, packageuse.Owner, version.Version)
 	if err != nil {
-		return Result{}, fmt.Errorf("inspect installed binary: %w", err)
+		return Result{}, fmt.Errorf("STAV removal requires a managed retirement guard; --force cannot bypass it: %w", err)
 	}
-	if !exists {
-		if err := os.Remove(layout.Manifest); err != nil && !os.IsNotExist(err) {
-			return Result{}, fmt.Errorf("remove orphaned STAV installation evidence: %w", err)
-		}
-		return Result{Scope: scope, Binary: layout.Binary, InstallEvidence: layout.Manifest, Changed: false}, nil
+	want := retirementIdentity(layout, identity.ReceiptDigest, identity.BinaryDigest, identity.BinarySize)
+	if identity != want {
+		return Result{}, fmt.Errorf("STAV retirement guard does not own the selected installation")
 	}
-	if sourceErr != nil && !force {
-		return Result{}, fmt.Errorf("verify invoking executable: %w", sourceErr)
+	_, sourceDigest, err := sourceFile(source)
+	if err != nil || "sha256:"+sourceDigest != identity.BinaryDigest {
+		return Result{}, fmt.Errorf("STAV removal requires the exact invoking executable; --force cannot bypass it")
 	}
-	if sourceErr == nil && existingDigest != sourceDigest && !force {
-		return Result{}, fmt.Errorf("installed binary differs from invoking executable; use --force to remove it")
-	}
-	if err := os.Remove(layout.Binary); err != nil {
-		return Result{}, fmt.Errorf("remove installed binary: %w", err)
-	}
-	if err := os.Remove(layout.Manifest); err != nil && !os.IsNotExist(err) {
-		return Result{}, fmt.Errorf("remove STAV installation evidence: %w", err)
-	}
-	if err := syncDirectory(filepath.Dir(layout.Binary)); err != nil {
+	controller, err := os.Executable()
+	if err != nil {
 		return Result{}, err
 	}
-	return Result{Scope: scope, Binary: layout.Binary, BinaryDigest: "sha256:" + existingDigest, InstallEvidence: layout.Manifest, Changed: true}, nil
+	controllerInfo, controllerErr := os.Stat(controller)
+	targetInfo, targetErr := os.Stat(layout.Binary)
+	if filepath.Clean(controller) == layout.Binary || (controllerErr == nil && targetErr == nil && os.SameFile(controllerInfo, targetInfo)) {
+		return Result{}, fmt.Errorf("STAV retirement cannot unlink its executing controller; use the retained exact owner from outside the target installation")
+	}
+	guard, err := packageretirement.BeginRetirement(layout.Prefix, identity, delegated...)
+	if err != nil {
+		return Result{}, err
+	}
+	defer guard.Close()
+	if reference, err := FindInstallReference(layout.Scope, layout.Binary); err != nil {
+		return Result{}, err
+	} else if reference != "" {
+		return Result{}, fmt.Errorf("installed STAV package is still referenced by %s; retirement remains pending", reference)
+	}
+	state = guard.State()
+	data, receiptErr := guard.ReadFile(identity.ReceiptRelative, 1024*1024)
+	if receiptErr != nil && !os.IsNotExist(receiptErr) {
+		return Result{}, receiptErr
+	}
+	if state == "retired" {
+		if _, err := os.Lstat(layout.Binary); !os.IsNotExist(err) || !os.IsNotExist(receiptErr) {
+			return Result{}, fmt.Errorf("retired STAV package contains unexpected payload")
+		}
+		return Result{Scope: layout.Scope, Binary: layout.Binary, InstallEvidence: layout.Manifest}, nil
+	}
+	if receiptErr == nil {
+		receipt, err := decodeInstallReceipt(layout, data)
+		if err != nil {
+			return Result{}, err
+		}
+		if retirementIdentity(layout, receipt.ReceiptDigest, receipt.Files[0].Digest, uint64(receipt.Files[0].Size)) != identity {
+			return Result{}, fmt.Errorf("STAV receipt differs from retirement identity")
+		}
+		if err := guard.VerifyFile(identity.ReceiptRelative, digestBytes(data), uint64(len(data))); err != nil {
+			return Result{}, err
+		}
+		if err := guard.RemoveFile(identity.BinaryRelative, identity.BinaryDigest, identity.BinarySize); err != nil {
+			return Result{}, err
+		}
+		if err := guard.RemoveFile(identity.ReceiptRelative, digestBytes(data), uint64(len(data))); err != nil {
+			return Result{}, err
+		}
+	} else if _, err := os.Lstat(layout.Binary); !os.IsNotExist(err) {
+		return Result{}, fmt.Errorf("STAV receipt absent but payload still exists; recovery requires review")
+	}
+	if err := guard.FinishRetirement(); err != nil {
+		return Result{}, err
+	}
+	return Result{Scope: layout.Scope, Binary: layout.Binary, BinaryDigest: identity.BinaryDigest, InstallEvidence: layout.Manifest, Changed: true}, nil
 }
 
 func installResult(layout stavpaths.InstallLayout, record InstallRecord, evidenceDigest string, changed bool) Result {
@@ -270,42 +376,11 @@ func verifyInstallLayout(layout stavpaths.InstallLayout) (InstallRecord, string,
 	if err != nil || !info.Mode().IsRegular() || info.Mode()&os.ModeSymlink != 0 {
 		return InstallRecord{}, "", fmt.Errorf("STAV installation evidence is unsafe")
 	}
-	var receipt InstallReceipt
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	if err := decoder.Decode(&receipt); err != nil {
-		return InstallRecord{}, "", fmt.Errorf("decode STAV installation evidence: %w", err)
-	}
-	if decoder.Decode(&struct{}{}) != io.EOF {
-		return InstallRecord{}, "", fmt.Errorf("STAV installation evidence has trailing JSON")
-	}
-	wantReceiptDigest, err := canonicalDigestWithout(receipt, "receipt_digest")
+	receipt, err := decodeInstallReceipt(layout, data)
 	if err != nil {
-		return InstallRecord{}, "", fmt.Errorf("canonicalize STAV installation evidence: %w", err)
+		return InstallRecord{}, "", err
 	}
-	if receipt.Protocol != "symphony.knowledge.install-receipt.v2" || receipt.FormatVersion != 2 || receipt.ComponentID != "stav-append-authority" || receipt.ComponentKind != "service" || receipt.ModuleID != "stav-append-authority" || receipt.VectorID != nil || receipt.EngineID != nil || receipt.PackageID != "stav-append-authority" || receipt.Version != version.Version || receipt.InstallScope != "prefix" || receipt.PrefixMode != "installation_prefix" || receipt.ReceiptDigest != wantReceiptDigest || len(receipt.Files) != 1 || len(receipt.EntryPoints) != 2 || len(receipt.RequiresCapabilities) != 0 || len(receipt.CompatibleReceptors) != 0 || len(receipt.PlatformRequirements) != 1 {
-		return InstallRecord{}, "", fmt.Errorf("STAV installation evidence does not match selected scope")
-	}
-	relativeBinary, err := filepath.Rel(layout.Prefix, layout.Binary)
-	if err != nil || receipt.Files[0].Path != filepath.ToSlash(relativeBinary) || receipt.Files[0].Kind != "executable" || len(receipt.Files[0].Digest) != len("sha256:")+sha256.Size*2 {
-		return InstallRecord{}, "", fmt.Errorf("STAV receipt does not own the exact executable")
-	}
-	service, adapter := receipt.EntryPoints[0], receipt.EntryPoints[1]
-	if service.EntryPointID != "stav.append-authority" || service.Kind != "executable" || service.Path != receipt.Files[0].Path || len(service.Protocols) != 1 || service.Protocols[0] != "symphony.stav.local.v1" || adapter.EntryPointID != "stav.foundation-lifecycle" || adapter.Kind != "adapter" || adapter.Path != receipt.Files[0].Path || len(adapter.Protocols) != 1 || adapter.Protocols[0] != CommandProtocolName || !exactStrings(receipt.ProvidesCapabilities, []string{"symphony.foundation.lifecycle-adapter.v1", "symphony.stav.append-authority.v1"}) {
-		return InstallRecord{}, "", fmt.Errorf("STAV receipt entry points or capabilities are invalid")
-	}
-	wantOS := runtime.GOOS
-	if wantOS == "darwin" {
-		wantOS = "macos"
-	}
-	platform := receipt.PlatformRequirements[0]
-	if platform.OS != wantOS || platform.Architecture != runtime.GOARCH || platform.KernelABI != nil || !platform.Critical {
-		return InstallRecord{}, "", fmt.Errorf("STAV receipt platform requirement does not match this adapter")
-	}
-	binarySHA := receipt.Files[0].Digest[len("sha256:"):]
-	if _, err := hex.DecodeString(binarySHA); err != nil {
-		return InstallRecord{}, "", fmt.Errorf("STAV installation evidence has invalid binary digest")
-	}
+	binarySHA := strings.TrimPrefix(receipt.Files[0].Digest, "sha256:")
 	digest, exists, err := regularFileDigest(layout.Binary)
 	if err != nil || !exists || digest != binarySHA {
 		return InstallRecord{}, "", fmt.Errorf("installed STAV binary is missing or differs from its evidence")
@@ -316,6 +391,46 @@ func verifyInstallLayout(layout stavpaths.InstallLayout) (InstallRecord, string,
 	}
 	record := InstallRecord{Schema: receipt.Protocol, Scope: scope, Binary: layout.Binary, BinarySHA256: binarySHA, ReceiptDigest: receipt.ReceiptDigest}
 	return record, receipt.ReceiptDigest, nil
+}
+
+func decodeInstallReceipt(layout stavpaths.InstallLayout, data []byte) (InstallReceipt, error) {
+	var receipt InstallReceipt
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	if err := decoder.Decode(&receipt); err != nil {
+		return InstallReceipt{}, fmt.Errorf("decode STAV installation evidence: %w", err)
+	}
+	if decoder.Decode(&struct{}{}) != io.EOF {
+		return InstallReceipt{}, fmt.Errorf("STAV installation evidence has trailing JSON")
+	}
+	wantReceiptDigest, err := canonicalDigestWithout(receipt, "receipt_digest")
+	if err != nil {
+		return InstallReceipt{}, fmt.Errorf("canonicalize STAV installation evidence: %w", err)
+	}
+	if receipt.Protocol != "symphony.knowledge.install-receipt.v2" || receipt.FormatVersion != 2 || receipt.ComponentID != "stav-append-authority" || receipt.ComponentKind != "service" || receipt.ModuleID != "stav-append-authority" || receipt.VectorID != nil || receipt.EngineID != nil || receipt.PackageID != "stav-append-authority" || receipt.Version != version.Version || receipt.InstallScope != "prefix" || receipt.PrefixMode != "installation_prefix" || receipt.ReceiptDigest != wantReceiptDigest || len(receipt.Files) != 1 || len(receipt.EntryPoints) != 2 || len(receipt.RequiresCapabilities) != 0 || len(receipt.CompatibleReceptors) != 0 || len(receipt.PlatformRequirements) != 1 {
+		return InstallReceipt{}, fmt.Errorf("STAV installation evidence does not match selected scope")
+	}
+	relativeBinary, err := filepath.Rel(layout.Prefix, layout.Binary)
+	if err != nil || receipt.Files[0].Path != filepath.ToSlash(relativeBinary) || receipt.Files[0].Kind != "executable" || receipt.Files[0].Size < 0 || len(receipt.Files[0].Digest) != len("sha256:")+sha256.Size*2 {
+		return InstallReceipt{}, fmt.Errorf("STAV receipt does not own the exact executable")
+	}
+	service, adapter := receipt.EntryPoints[0], receipt.EntryPoints[1]
+	if service.EntryPointID != "stav.append-authority" || service.Kind != "executable" || service.Path != receipt.Files[0].Path || len(service.Protocols) != 1 || service.Protocols[0] != "symphony.stav.local.v1" || adapter.EntryPointID != "stav.foundation-lifecycle" || adapter.Kind != "adapter" || adapter.Path != receipt.Files[0].Path || len(adapter.Protocols) != 1 || adapter.Protocols[0] != CommandProtocolName || !exactStrings(receipt.ProvidesCapabilities, []string{"symphony.foundation.lifecycle-adapter.v1", "symphony.stav.append-authority.v1", packageretirement.Capability, packageretirement.DispatchCapability}) {
+		return InstallReceipt{}, fmt.Errorf("STAV receipt entry points or capabilities are invalid")
+	}
+	wantOS := runtime.GOOS
+	if wantOS == "darwin" {
+		wantOS = "macos"
+	}
+	platform := receipt.PlatformRequirements[0]
+	if platform.OS != wantOS || platform.Architecture != runtime.GOARCH || platform.KernelABI != nil || !platform.Critical {
+		return InstallReceipt{}, fmt.Errorf("STAV receipt platform requirement does not match this adapter")
+	}
+	binarySHA := receipt.Files[0].Digest[len("sha256:"):]
+	if _, err := hex.DecodeString(binarySHA); err != nil {
+		return InstallReceipt{}, fmt.Errorf("STAV installation evidence has invalid binary digest")
+	}
+	return receipt, nil
 }
 
 // InspectLegacyInstalled dual-reads historical install-v1 evidence without
@@ -357,36 +472,33 @@ func FindInstallReference(scope stavpaths.Scope, packageBinary string) (string, 
 		return "", err
 	}
 	entries, err := os.ReadDir(base)
-	if os.IsNotExist(err) {
-		return "", nil
-	}
-	if err != nil {
+	if err != nil && !os.IsNotExist(err) {
 		return "", fmt.Errorf("inspect STAV enrollment references: %w", err)
 	}
 	for _, entry := range entries {
-		if !entry.IsDir() || stavpaths.ValidateTOPSID(entry.Name()) != nil {
+		if stavpaths.ValidateTOPSID(entry.Name()) != nil {
 			continue
+		}
+		if !entry.IsDir() {
+			return "", fmt.Errorf("unsafe STAV reference namespace %s", entry.Name())
 		}
 		layout, layoutErr := stavpaths.ResolveInstance(scope, entry.Name())
 		if layoutErr != nil {
 			continue
 		}
-		if info, statErr := os.Lstat(layout.ActiveAttempt); statErr == nil && info.Mode().IsRegular() {
+		if _, statErr := os.Lstat(layout.ActiveAttempt); statErr == nil {
 			return layout.ActiveAttempt, nil
+		} else if !os.IsNotExist(statErr) {
+			return "", statErr
 		}
-		cfg, configErr := config.Load(layout.ConfigFile)
-		if configErr == nil && config.ValidateLayout(cfg, layout) == nil {
-			spec, specErr := supervision.SpecFromConfig(scope, entry.Name(), packageBinary, cfg)
-			if specErr == nil {
-				referenced, descriptor, referenceErr := supervision.ReferencesExecutable(spec, packageBinary)
-				if referenceErr != nil {
-					return "", referenceErr
-				}
-				if referenced {
-					return descriptor, nil
-				}
+		for _, retained := range []string{layout.EnrollmentFile} {
+			if _, err := os.Lstat(retained); err == nil {
+				return retained, nil
+			} else if !os.IsNotExist(err) {
+				return "", err
 			}
 		}
+
 	}
 	stateBase, err := instanceStateBase(scope)
 	if err != nil {
@@ -397,15 +509,56 @@ func FindInstallReference(scope stavpaths.Scope, packageBinary string) (string, 
 		return "", fmt.Errorf("inspect STAV lifecycle references: %w", stateErr)
 	}
 	for _, entry := range stateEntries {
-		if !entry.IsDir() || stavpaths.ValidateTOPSID(entry.Name()) != nil {
+		if stavpaths.ValidateTOPSID(entry.Name()) != nil {
 			continue
+		}
+		if !entry.IsDir() {
+			return "", fmt.Errorf("unsafe STAV reference namespace %s", entry.Name())
 		}
 		layout, layoutErr := stavpaths.ResolveInstance(scope, entry.Name())
 		if layoutErr != nil {
 			continue
 		}
-		if info, statErr := os.Lstat(layout.ActiveAttempt); statErr == nil && info.Mode().IsRegular() {
+		if _, statErr := os.Lstat(layout.ActiveAttempt); statErr == nil {
 			return layout.ActiveAttempt, nil
+		} else if !os.IsNotExist(statErr) {
+			return "", statErr
+		}
+	}
+	return findSupervisorReference(packageBinary)
+}
+
+func findSupervisorReference(binary string) (string, error) {
+	home, err := os.UserHomeDir()
+	if err != nil {
+		return "", err
+	}
+	configBase := os.Getenv("XDG_CONFIG_HOME")
+	if configBase == "" {
+		configBase = filepath.Join(home, ".config")
+	}
+	for _, directory := range []string{filepath.Join(home, "Library", "LaunchAgents"), filepath.Join(configBase, "systemd", "user")} {
+		entries, err := os.ReadDir(directory)
+		if err != nil && !os.IsNotExist(err) {
+			return "", err
+		}
+		for _, entry := range entries {
+			if !strings.HasPrefix(entry.Name(), "io.github.quanux.symphony.stav.") && !strings.HasPrefix(entry.Name(), "symphony-stav@") {
+				continue
+			}
+			path := filepath.Join(directory, entry.Name())
+			info, err := os.Lstat(path)
+			if err != nil || !info.Mode().IsRegular() {
+				return "", fmt.Errorf("unsafe STAV supervisor reference %s", path)
+			}
+			data, err := os.ReadFile(path)
+			if err != nil {
+				return "", err
+			}
+			escaped := strings.NewReplacer("&", "&amp;", "<", "&lt;", ">", "&gt;", "\"", "&#34;", "'", "&#39;").Replace(binary)
+			if bytes.Contains(data, []byte(binary)) || bytes.Contains(data, []byte(escaped)) {
+				return path, nil
+			}
 		}
 	}
 	return "", nil
@@ -439,39 +592,6 @@ func instanceStateBase(scope stavpaths.Scope) (string, error) {
 		base = filepath.Join(home, ".local", "state")
 	}
 	return filepath.Join(base, "symphony"), nil
-}
-
-func writeInstallEvidence(path string, data []byte) error {
-	if info, err := os.Lstat(path); err == nil && (!info.Mode().IsRegular() || info.Mode()&os.ModeSymlink != 0) {
-		return fmt.Errorf("refusing unsafe STAV installation evidence")
-	} else if err != nil && !os.IsNotExist(err) {
-		return err
-	}
-	temp, err := os.CreateTemp(filepath.Dir(path), ".symphony-stav-install-*")
-	if err != nil {
-		return err
-	}
-	name := temp.Name()
-	defer os.Remove(name)
-	if err := temp.Chmod(0o600); err != nil {
-		_ = temp.Close()
-		return err
-	}
-	if _, err := temp.Write(data); err != nil {
-		_ = temp.Close()
-		return err
-	}
-	if err := temp.Sync(); err != nil {
-		_ = temp.Close()
-		return err
-	}
-	if err := temp.Close(); err != nil {
-		return err
-	}
-	if err := os.Rename(name, path); err != nil {
-		return err
-	}
-	return syncDirectory(filepath.Dir(path))
 }
 
 func canonicalNow() string {
@@ -601,56 +721,6 @@ func ensureDirectory(path string) error {
 		}
 	}
 	return nil
-}
-
-// stageExecutable hashes the same bytes it stages so the comparison and the
-// activated executable cannot diverge if the source path changes mid-install.
-func stageExecutable(source, target string, mode os.FileMode) (staged string, digest string, err error) {
-	in, err := os.Open(source)
-	if err != nil {
-		return "", "", fmt.Errorf("open source executable: %w", err)
-	}
-	defer in.Close()
-	info, err := in.Stat()
-	if err != nil {
-		return "", "", fmt.Errorf("inspect open source executable: %w", err)
-	}
-	if !info.Mode().IsRegular() {
-		return "", "", fmt.Errorf("source executable is not a regular file")
-	}
-
-	temp, err := os.CreateTemp(filepath.Dir(target), ".symphony-stav-append-authority-*")
-	if err != nil {
-		return "", "", fmt.Errorf("create temporary executable: %w", err)
-	}
-	tempName := temp.Name()
-	defer func() {
-		_ = temp.Close()
-		if err != nil {
-			_ = os.Remove(tempName)
-		}
-	}()
-	if err = temp.Chmod(mode); err != nil {
-		return "", "", fmt.Errorf("set executable permissions: %w", err)
-	}
-	hash := sha256.New()
-	if _, err = io.Copy(io.MultiWriter(temp, hash), in); err != nil {
-		return "", "", fmt.Errorf("copy executable: %w", err)
-	}
-	if err = temp.Sync(); err != nil {
-		return "", "", fmt.Errorf("sync executable: %w", err)
-	}
-	if err = temp.Close(); err != nil {
-		return "", "", fmt.Errorf("close executable: %w", err)
-	}
-	return tempName, hex.EncodeToString(hash.Sum(nil)), nil
-}
-
-func activateExecutable(staged, target string) error {
-	if err := os.Rename(staged, target); err != nil {
-		return fmt.Errorf("activate executable: %w", err)
-	}
-	return syncDirectory(filepath.Dir(target))
 }
 
 func syncDirectory(path string) error {

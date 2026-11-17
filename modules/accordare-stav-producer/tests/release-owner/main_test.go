@@ -30,8 +30,10 @@ func fixture(t *testing.T) (string, string, string, string) {
 	if err = os.Mkdir(prefix, 0700); err != nil {
 		t.Fatal(err)
 	}
-	source := filepath.Join(root, "fixture")
-	if err = os.WriteFile(source, []byte("fixture bytes; never executed\n"), 0700); err != nil {
+	// A fresh retirement contract can only be established by the participating
+	// installer itself, never by assigning custody to arbitrary legacy bytes.
+	source, err := os.Executable()
+	if err != nil {
 		t.Fatal(err)
 	}
 	binary, receipt, err := installFixture(source, prefix)

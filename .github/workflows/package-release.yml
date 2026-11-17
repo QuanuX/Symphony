@@ -72,7 +72,7 @@ jobs:
           test "$(go env GOVERSION)" = go1.26.5
           cd tools/qxctl
           go test -mod=readonly -race -count=1 -v \
-            -run '^(TestRuntimeStoreCASAndSemanticRetry|TestExecutorInstallsAndUninstallsV2WithRollbackProof|TestOwnership.*|TestReceiptV2CannotOwnLifecycleControlOrReceiptPaths|TestInspectInstallationSupportsImmutableReceiptV2AndDetectsTampering|TestGenericReceiptV2EntryPointUsesSameCompletePackageVerifier|TestReceiptV2SupportsForwardFileGrowthAndRejectsSemanticDrift)$' \
+            -run '^(TestRuntimeStoreCASAndSemanticRetry|TestExecutorInstallsButRefusesRemovalWithoutProcessOwner|TestOwnership.*|TestReceiptV2CannotOwnLifecycleControlOrReceiptPaths|TestInspectInstallationSupportsImmutableReceiptV2AndDetectsTampering|TestGenericReceiptV2EntryPointUsesSameCompletePackageVerifier|TestReceiptV2SupportsForwardFileGrowthAndRejectsSemanticDrift)$' \
             ./internal/knowledgelifecycle ./internal/knowledgeengine \
             2>&1 | tee "$RUNNER_TEMP/package-evidence/qxctl-focused.log"
           if grep -Eq '^[[:space:]]*--- SKIP:' "$RUNNER_TEMP/package-evidence/qxctl-focused.log"; then

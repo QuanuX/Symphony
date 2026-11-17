@@ -11,14 +11,14 @@ import (
 )
 
 func TestInstallAndUninstallUserBinary(t *testing.T) {
-	home := t.TempDir()
+	home := canonicalTempDir(t)
 	t.Setenv("HOME", home)
-	source := filepath.Join(t.TempDir(), stavpaths.BinaryName)
+	source := filepath.Join(canonicalTempDir(t), stavpaths.BinaryName)
 	if err := os.WriteFile(source, []byte("version-one"), 0755); err != nil {
 		t.Fatal(err)
 	}
 
-	result, err := Install(source, stavpaths.ScopeUser, false)
+	result, err := installTestFixture(source, stavpaths.ScopeUser, false)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -38,7 +38,7 @@ func TestInstallAndUninstallUserBinary(t *testing.T) {
 		t.Fatalf("invalid receipt-v2 install evidence: record=%+v digest=%s error=%v", record, receiptDigest, err)
 	}
 
-	result, err = Install(source, stavpaths.ScopeUser, false)
+	result, err = installTestFixture(source, stavpaths.ScopeUser, false)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -49,10 +49,10 @@ func TestInstallAndUninstallUserBinary(t *testing.T) {
 	if err := os.WriteFile(source, []byte("version-two"), 0755); err != nil {
 		t.Fatal(err)
 	}
-	if _, err := Install(source, stavpaths.ScopeUser, false); err == nil {
+	if _, err := installTestFixture(source, stavpaths.ScopeUser, false); err == nil {
 		t.Fatal("differing install should require force")
 	}
-	if _, err := Install(source, stavpaths.ScopeUser, true); err == nil {
+	if _, err := installTestFixture(source, stavpaths.ScopeUser, true); err == nil {
 		t.Fatal("immutable same-version package was replaced")
 	}
 	if err := os.WriteFile(source, []byte("version-one"), 0755); err != nil {
@@ -80,16 +80,16 @@ func TestInstallAndUninstallUserBinary(t *testing.T) {
 }
 
 func TestUninstallRefusesReferencedPackage(t *testing.T) {
-	home := t.TempDir()
+	home := canonicalTempDir(t)
 	t.Setenv("HOME", home)
 	t.Setenv("XDG_CONFIG_HOME", "")
 	t.Setenv("XDG_STATE_HOME", "")
 	t.Setenv("XDG_RUNTIME_DIR", "")
-	source := filepath.Join(t.TempDir(), stavpaths.BinaryName)
+	source := filepath.Join(canonicalTempDir(t), stavpaths.BinaryName)
 	if err := os.WriteFile(source, []byte("referenced"), 0o755); err != nil {
 		t.Fatal(err)
 	}
-	if _, err := Install(source, stavpaths.ScopeUser, false); err != nil {
+	if _, err := installTestFixture(source, stavpaths.ScopeUser, false); err != nil {
 		t.Fatal(err)
 	}
 	if _, err := Enroll(stavpaths.ScopeUser, enrollmentTOPSID, uint64(os.Geteuid()), uint64(os.Getegid())); err != nil {
@@ -114,13 +114,13 @@ func TestUninstallRefusesReferencedPackage(t *testing.T) {
 }
 
 func TestCustomPrefixReceiptAndCompiledVersionBinding(t *testing.T) {
-	t.Setenv("HOME", t.TempDir())
-	source := filepath.Join(t.TempDir(), stavpaths.BinaryName)
+	t.Setenv("HOME", canonicalTempDir(t))
+	source := filepath.Join(canonicalTempDir(t), stavpaths.BinaryName)
 	if err := os.WriteFile(source, []byte("custom-prefix"), 0o755); err != nil {
 		t.Fatal(err)
 	}
-	prefix := filepath.Join(t.TempDir(), "opt", "symphony")
-	result, err := InstallAt(source, stavpaths.ScopeUser, prefix, "dev")
+	prefix := filepath.Join(canonicalTempDir(t), "opt", "symphony")
+	result, err := installTestFixtureAt(source, stavpaths.ScopeUser, prefix, "dev")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -128,7 +128,7 @@ func TestCustomPrefixReceiptAndCompiledVersionBinding(t *testing.T) {
 	if result.Binary != want {
 		t.Fatalf("binary=%q want=%q", result.Binary, want)
 	}
-	if _, err := InstallAt(source, stavpaths.ScopeUser, prefix, "other"); err == nil {
+	if _, err := installTestFixtureAt(source, stavpaths.ScopeUser, prefix, "other"); err == nil {
 		t.Fatal("binary self-labeled a non-compiled version")
 	}
 	if _, _, _, err := VerifyExecutable(want, stavpaths.ScopeUser); err != nil {
@@ -136,14 +136,14 @@ func TestCustomPrefixReceiptAndCompiledVersionBinding(t *testing.T) {
 	}
 }
 
-func TestUninstallRejectsChangedBinaryWithoutForce(t *testing.T) {
-	home := t.TempDir()
+func TestUninstallRejectsChangedBinaryEvenWithForce(t *testing.T) {
+	home := canonicalTempDir(t)
 	t.Setenv("HOME", home)
-	source := filepath.Join(t.TempDir(), stavpaths.BinaryName)
+	source := filepath.Join(canonicalTempDir(t), stavpaths.BinaryName)
 	if err := os.WriteFile(source, []byte("expected"), 0755); err != nil {
 		t.Fatal(err)
 	}
-	installed, err := Install(source, stavpaths.ScopeUser, false)
+	installed, err := installTestFixture(source, stavpaths.ScopeUser, false)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -153,15 +153,18 @@ func TestUninstallRejectsChangedBinaryWithoutForce(t *testing.T) {
 	if _, err := Uninstall(source, stavpaths.ScopeUser, false); err == nil {
 		t.Fatal("changed binary should require force")
 	}
-	if _, err := Uninstall(source, stavpaths.ScopeUser, true); err != nil {
-		t.Fatal(err)
+	if _, err := Uninstall(source, stavpaths.ScopeUser, true); err == nil {
+		t.Fatal("force bypassed exact receipt-owned binary verification")
+	}
+	if data, err := os.ReadFile(installed.Binary); err != nil || string(data) != "tampered" {
+		t.Fatalf("refused removal changed payload: %q %v", data, err)
 	}
 }
 
 func TestInstallRejectsSymlinkTarget(t *testing.T) {
-	home := t.TempDir()
+	home := canonicalTempDir(t)
 	t.Setenv("HOME", home)
-	source := filepath.Join(t.TempDir(), stavpaths.BinaryName)
+	source := filepath.Join(canonicalTempDir(t), stavpaths.BinaryName)
 	if err := os.WriteFile(source, []byte("expected"), 0755); err != nil {
 		t.Fatal(err)
 	}
@@ -172,7 +175,42 @@ func TestInstallRejectsSymlinkTarget(t *testing.T) {
 	if err := os.Symlink(source, filepath.Join(targetDir, stavpaths.BinaryName)); err != nil {
 		t.Fatal(err)
 	}
-	if _, err := Install(source, stavpaths.ScopeUser, true); err == nil {
+	if _, err := installTestFixture(source, stavpaths.ScopeUser, true); err == nil {
 		t.Fatal("symlink target unexpectedly accepted")
 	}
+}
+
+// Synthetic payloads exercise storage contracts only, never service qualification.
+func installTestFixture(source string, scope stavpaths.Scope, force bool) (Result, error) {
+	layout, err := stavpaths.ResolveInstall(scope)
+	if err != nil {
+		return Result{}, err
+	}
+	return installAt(source, layout, force, "")
+}
+func installTestFixtureAt(source string, scope stavpaths.Scope, prefix, v string) (Result, error) {
+	layout, err := stavpaths.ResolveInstallAt(scope, prefix, v)
+	if err != nil {
+		return Result{}, err
+	}
+	return installAt(source, layout, false, "")
+}
+func TestManagedInstallRefusesUnqualifiedSource(t *testing.T) {
+	t.Setenv("HOME", canonicalTempDir(t))
+	source := filepath.Join(canonicalTempDir(t), "legacy")
+	if err := os.WriteFile(source, []byte("legacy"), 0755); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := Install(source, stavpaths.ScopeUser, true); err == nil {
+		t.Fatal("arbitrary copied bytes acquired retirement capability")
+	}
+}
+
+func canonicalTempDir(t *testing.T) string {
+	t.Helper()
+	path, err := filepath.EvalSymlinks(t.TempDir())
+	if err != nil {
+		t.Fatal(err)
+	}
+	return path
 }

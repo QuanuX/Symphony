@@ -102,6 +102,7 @@ jobs:
           go build -a -o "$RUNNER_TEMP/codeql-delivery-set" tests/launch-acceptance/delivery-set.go tests/launch-acceptance/delivery-set-main.go
           go build -a -o "$RUNNER_TEMP/codeql-acceptance-gates" tests/launch-acceptance/acceptance-gates.go tests/launch-acceptance/acceptance-gates-main.go
           go build -a -o "$RUNNER_TEMP/codeql-delivery-acceptance" tests/launch-acceptance/delivery-set.go tests/launch-acceptance/acceptance-gates.go tests/launch-acceptance/delivery-acceptance.go
+          go build -a -o "$RUNNER_TEMP/codeql-go-candidate-closure" tests/launch-acceptance/go-candidate-closure.go tests/launch-acceptance/go-candidate-closure-main.go
           for driver in go-owners native-delivery executable-delivery; do
             go build -a -o "$RUNNER_TEMP/codeql-qualify-$driver" tests/launch-acceptance/qualification-common.go "tests/launch-acceptance/qualify-$driver.go"
           done

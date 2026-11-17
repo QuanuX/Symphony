@@ -17,6 +17,7 @@ import (
 
 	stavprotocol "github.com/QuanuX/Symphony/libraries/stav-protocol-go"
 	"github.com/QuanuX/Symphony/modules/stav-append-authority/internal/config"
+	"github.com/QuanuX/Symphony/modules/stav-append-authority/internal/packageuse"
 	stavpaths "github.com/QuanuX/Symphony/modules/stav-append-authority/internal/paths"
 )
 
@@ -34,6 +35,7 @@ type Spec struct {
 }
 
 type Record struct {
+	Binary         string
 	Manager        string
 	Scope          stavpaths.Scope
 	TOPSID         string
@@ -87,6 +89,11 @@ func Install(spec Spec, force bool) (Record, error) {
 // InstallCAS replaces a descriptor only when its exact current digest matches.
 // An empty expected value preserves the legacy no-drift replacement behavior.
 func InstallCAS(spec Spec, expected string) (Record, error) {
+	release, err := packageuse.Acquire(spec.Binary)
+	if err != nil {
+		return Record{}, err
+	}
+	defer release()
 	record, content, err := render(spec)
 	if err != nil {
 		return Record{}, err
@@ -250,6 +257,12 @@ func digestContent(content []byte) string {
 }
 
 func Start(record Record) error {
+	release, err := packageuse.Acquire(record.Binary)
+	if err != nil {
+		return err
+	}
+	// Only a shared lifetime lease is held while the child acquires its own.
+	defer release()
 	if record.Manager == "launchd" {
 		target := record.Domain + "/" + record.Name
 		if exec.Command("launchctl", "print", target).Run() == nil {
@@ -311,7 +324,7 @@ func render(spec Spec) (Record, []byte, error) {
 		if data.System {
 			directory, domain = "/Library/LaunchDaemons", "system"
 		}
-		record = Record{Manager: "launchd", Scope: spec.Scope, TOPSID: spec.TOPSID, Name: data.Label, Descriptor: filepath.Join(directory, data.Label+".plist"), Domain: domain}
+		record = Record{Binary: spec.Binary, Manager: "launchd", Scope: spec.Scope, TOPSID: spec.TOPSID, Name: data.Label, Descriptor: filepath.Join(directory, data.Label+".plist"), Domain: domain}
 		content, err = renderLaunchd(data)
 	case "linux":
 		data.Unit = systemdPrefix + spec.TOPSID + ".service"
@@ -327,7 +340,7 @@ func render(spec Spec) (Record, []byte, error) {
 			}
 			directory = filepath.Join(base, "systemd", "user")
 		}
-		record = Record{Manager: "systemd", Scope: spec.Scope, TOPSID: spec.TOPSID, Name: data.Unit, Descriptor: filepath.Join(directory, data.Unit)}
+		record = Record{Binary: spec.Binary, Manager: "systemd", Scope: spec.Scope, TOPSID: spec.TOPSID, Name: data.Unit, Descriptor: filepath.Join(directory, data.Unit)}
 		content, err = renderSystemd(data)
 	default:
 		return Record{}, nil, fmt.Errorf("native STAV supervision is unsupported on %s", runtime.GOOS)

@@ -91,68 +91,6 @@ func installReceiptV2(sourceRoot, targetRoot, receiptPath string, receipt receip
 	return nil
 }
 
-func uninstallReceiptV2(targetRoot, sourceRoot, receiptPath string, receipt receiptV2, owner *OwnershipStore) error {
-	if sourceRoot == targetRoot || !safeAbsolutePath(sourceRoot) || !safeAbsolutePath(targetRoot) ||
-		!safeRelativePath(receiptPath) {
-		return fmt.Errorf("integrity_fatal: staged rollback and target package roots are invalid")
-	}
-	if err := validateStagedPackage(sourceRoot, receipt); err != nil {
-		return err
-	}
-	locked, err := lockInstallRoot(targetRoot, false)
-	if errors.Is(err, os.ErrNotExist) {
-		return nil
-	}
-	if err != nil {
-		return fmt.Errorf("integrity_fatal: lock package target: %w", err)
-	}
-	defer locked.close()
-
-	// Validate every remaining owned file before deleting any of them. Missing
-	// files are accepted only as forward-resumable evidence from an interrupted
-	// prior attempt; a conflicting file always stops the operation.
-	remaining := false
-	for _, owned := range receipt.Files {
-		matches, exists, err := relativeFileMatches(int(locked.root.Fd()), owned.Path, owned.Size, owned.Digest)
-		if err != nil || exists && !matches {
-			return fmt.Errorf("integrity_fatal: installed file %s no longer matches its rollback proof", owned.Path)
-		}
-		remaining = remaining || exists
-	}
-	receiptMatches, receiptExists, err := relativeBytesMatch(
-		int(locked.root.Fd()), receiptPath, mustJSON(receipt), receipt.ReceiptDigest, true)
-	if err != nil || receiptExists && !receiptMatches {
-		return fmt.Errorf("integrity_fatal: installed receipt no longer matches rollback proof")
-	}
-	remaining = remaining || receiptExists
-	if !remaining {
-		return nil
-	}
-	registry, err := ownershipReclaimAllowedAt(
-		int(locked.root.Fd()), targetRoot, owner, receipt.ComponentID, receipt.ReceiptDigest)
-	if err != nil {
-		return err
-	}
-
-	for _, owned := range receipt.Files {
-		if err := unlinkRelative(int(locked.root.Fd()), owned.Path); err != nil && !errors.Is(err, os.ErrNotExist) {
-			return fmt.Errorf("integrity_fatal: remove owned file %s: %w", owned.Path, err)
-		}
-	}
-	// The receipt is the commit marker: it is removed only after all owned files.
-	if err := unlinkRelative(int(locked.root.Fd()), receiptPath); err != nil && !errors.Is(err, os.ErrNotExist) {
-		return fmt.Errorf("integrity_fatal: remove immutable receipt: %w", err)
-	}
-	if err := unix.Fsync(int(locked.root.Fd())); err != nil {
-		return fmt.Errorf("integrity_fatal: synchronize package root: %w", err)
-	}
-	if err := commitOwnershipReclaimedAt(
-		int(locked.root.Fd()), registry, owner, receipt.ReceiptDigest); err != nil {
-		return fmt.Errorf("observation_retryable: package was reclaimed but ownership state needs recovery: %w", err)
-	}
-	return nil
-}
-
 func validateStagedPackage(root string, receipt receiptV2) error {
 	for _, owned := range receipt.Files {
 		digest, size, err := hashTrustedRelative(root, owned.Path, maxObservedFileBytes(owned.Kind))

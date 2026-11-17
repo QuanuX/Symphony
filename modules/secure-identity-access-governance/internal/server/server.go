@@ -904,8 +904,9 @@ func (s *Server) Run(ctx context.Context) error {
 		return fmt.Errorf("restrict SSIAG socket permissions: %w", err)
 	}
 
+	handlers := &drainingHandler{next: s.Handler()}
 	httpServer := &http.Server{
-		Handler: s.Handler(),
+		Handler: handlers,
 		ConnContext: func(ctx context.Context, conn net.Conn) context.Context {
 			return peerauth.ContextWithConnection(ctx, conn, s.resolver)
 		},
@@ -918,6 +919,8 @@ func (s *Server) Run(ctx context.Context) error {
 		IdleTimeout:    30 * time.Second,
 		MaxHeaderBytes: maxHeaderBytes,
 	}
+
+	defer func() { _ = httpServer.Close(); handlers.drain() }()
 
 	done := make(chan error, 1)
 	go func() {

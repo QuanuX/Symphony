@@ -30,6 +30,10 @@ func (s *OwnershipStore) withOwnershipLock(
 	create bool,
 	operation func(rootFD int, exists bool, registry OwnershipRegistry) error,
 ) error {
+	return s.withOwnershipLockMode(create, true, operation)
+}
+
+func (s *OwnershipStore) withOwnershipLockMode(create, repair bool, operation func(int, bool, OwnershipRegistry) error) error {
 	locked, err := lockInstallRoot(s.installRoot, create)
 	if errors.Is(err, os.ErrNotExist) || errors.Is(err, syscall.ENOENT) {
 		return operation(-1, false, OwnershipRegistry{})
@@ -43,14 +47,14 @@ func (s *OwnershipStore) withOwnershipLock(
 		return err
 	}
 	if exists {
-		if create {
+		if create && repair {
 			if err := ensureOwnershipFenceAt(int(locked.root.Fd())); err != nil {
 				return fmt.Errorf("repair ownership compatibility fence: %w", err)
 			}
 		} else if err := validateOwnershipFenceAt(int(locked.root.Fd())); err != nil {
 			return fmt.Errorf("validate ownership compatibility fence: %w", err)
 		}
-	} else if !create {
+	} else if !create || !repair {
 		fenced, err := ownershipFenceStateAt(int(locked.root.Fd()))
 		if err != nil {
 			return fmt.Errorf("validate orphaned ownership compatibility fence: %w", err)
@@ -244,7 +248,7 @@ func ownershipReclaimAllowedAt(rootFD int, installRoot string, owner *OwnershipS
 func commitOwnershipReclaimedAt(rootFD int, registry OwnershipRegistry, owner *OwnershipStore, receiptDigest string) error {
 	next := make([]OwnershipClaim, 0, len(registry.Claims))
 	for _, claim := range registry.Claims {
-		if claim.ReceiptDigest == receiptDigest && claim.ClaimKind == "profile" && claim.Disposition == "retiring" {
+		if claim.ReceiptDigest == receiptDigest && claim.ClaimKind == "profile" && claim.Disposition == "retiring" && (owner.executionScope == nil || owner.ownsClaim(claim) && owner.executionScope.AllowsOwnership(owner.installRoot, claim.ComponentID, receiptDigest, "release")) {
 			continue
 		}
 		next = append(next, claim)

@@ -5,6 +5,7 @@ import (
 	"crypto/rand"
 	"flag"
 	"fmt"
+	"github.com/QuanuX/Symphony/modules/accordare-stav-producer/internal/packageretirement"
 	"os"
 	"os/signal"
 	"path/filepath"
@@ -38,6 +39,16 @@ func run(args []string) error {
 	if len(args) == 0 {
 		usage()
 		return fmt.Errorf("command is required")
+	}
+	// These commands own a stronger or open-only lease at their mutation/start
+	// boundary. Installation also pins a distinct source package itself. Other
+	// controllers retain their executable during stop and recovery.
+	if args[0] != "serve" && args[0] != "enroll" && args[0] != "unenroll" && args[0] != "install" {
+		packageLease, err := packageinstall.AcquireCurrentControllerUse()
+		if err != nil {
+			return err
+		}
+		defer packageLease.Close()
 	}
 	switch args[0] {
 	case "help", "--help":
@@ -126,9 +137,18 @@ func runPackage(operation string, args []string) error {
 	set := flag.NewFlagSet(operation, flag.ContinueOnError)
 	prefix := set.String("prefix", "", "absolute installation prefix")
 	requestedVersion := set.String("version", version.Version, "exact immutable package version")
+	rootFD := set.Int("lifecycle-root-fd", -1, "inherited lifecycle root descriptor")
+	lockFD := set.Int("lifecycle-lock-fd", -1, "inherited lifecycle root lock descriptor")
+	proofFD := set.Int("lifecycle-proof-fd", -1, "inherited exact native-owner proof descriptor")
 	if err := set.Parse(args); err != nil || set.NArg() != 0 || *prefix == "" {
 		return fmt.Errorf("%s requires --prefix and no positional arguments", operation)
 	}
+	delegation, dispatchErr := packageretirement.ReadDispatch(*rootFD, *lockFD, *proofFD, operation, packageinstall.ComponentID, *requestedVersion, *prefix)
+	if dispatchErr != nil {
+		return dispatchErr
+	}
+	defer delegation.Close()
+
 	var result packageinstall.Result
 	var err error
 	if operation == "install" {
@@ -136,9 +156,9 @@ func runPackage(operation string, args []string) error {
 		if executableErr != nil {
 			return executableErr
 		}
-		result, err = packageinstall.Install(executable, *prefix, *requestedVersion)
+		result, err = packageinstall.InstallWithDelegation(executable, *prefix, *requestedVersion, delegation)
 	} else {
-		result, err = packageinstall.Uninstall(*prefix, *requestedVersion)
+		result, err = packageinstall.UninstallWithDelegation(*prefix, *requestedVersion, delegation)
 	}
 	if err != nil {
 		return err
@@ -165,6 +185,11 @@ func runEnroll(args []string) error {
 	if set.NArg() != 0 || *topsID == "" || *stavConfig == "" {
 		return fmt.Errorf("enroll requires --tops-id, --stav-config, and no positional arguments")
 	}
+	packageLease, err := packageinstall.AcquireCurrentUse()
+	if err != nil {
+		return err
+	}
+	defer packageLease.Close()
 	scope, err := paths.ParseScope(*scopeValue)
 	if err != nil {
 		return err
@@ -211,6 +236,11 @@ func runUnenroll(args []string) error {
 	if err := set.Parse(args); err != nil || set.NArg() != 0 || *topsID == "" {
 		return fmt.Errorf("unenroll requires --tops-id and no positional arguments")
 	}
+	packageLease, err := packageinstall.AcquireCurrentMaintenance()
+	if err != nil {
+		return err
+	}
+	defer packageLease.Close()
 	scope, err := paths.ParseScope(*scopeValue)
 	if err != nil {
 		return err
@@ -236,6 +266,11 @@ func runServe(args []string) error {
 	if err := set.Parse(args); err != nil || set.NArg() != 0 || *topsID == "" {
 		return fmt.Errorf("serve requires --tops-id and no positional arguments")
 	}
+	packageLease, err := packageinstall.AcquireCurrentUse()
+	if err != nil {
+		return err
+	}
+	defer packageLease.Close()
 	scope, err := paths.ParseScope(*scopeValue)
 	if err != nil {
 		return err

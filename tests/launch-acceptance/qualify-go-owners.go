@@ -6,6 +6,8 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"sort"
+	"strings"
 	"time"
 )
 
@@ -60,17 +62,20 @@ func qualifyOwners(buildRoot, destination, deliveryTool string) {
 	choices := []qObject{}
 	artifacts := []qObject{}
 	files := []string{}
-	for _, row := range [][2]string{{"install.txt", "Fixture: existing explicit-prefix package install; no enrollment."}, {"remove.txt", "Fixture: owner uninstall on a disposable copy; preserve sentinel."}, {"notices.txt", "Local qualification only; actual redistribution notice review remains pending."}} {
+	for _, row := range [][2]string{{"install.txt", "Fixture: existing explicit-prefix package install; no enrollment."}, {"remove.txt", "Fixture: fresh owner installation and native retirement; preserve sentinel and nonportable tombstone."}, {"notices.txt", "Local qualification only; actual redistribution notice review remains pending."}} {
 		relative := "metadata/" + row[0]
 		qwrite(qjoin(root, relative), []byte(row[1]))
 		files = append(files, relative)
 	}
 	prefix := qjoin(root, "payload")
 	qerr(os.Mkdir(prefix, 0700))
+	nativePrefix := qjoin(work, "native-install")
+	qerr(os.Mkdir(nativePrefix, 0700))
 	for _, o := range owners {
 		version := qs(o.record["version"])
 		command := qappend([]string{o.executable}, o.leading...)
-		r.run(o.component+"-install", qappend(command, "install", "--prefix", prefix, "--version", version), 0)
+		r.run(o.component+"-install", qappend(command, "install", "--prefix", nativePrefix, "--version", version), 0)
+		qExportOwnerPayload(o, nativePrefix, prefix)
 		primary := "payload/libexec/symphony/" + o.component + "/" + version + "/" + o.binary
 		receipt := "payload/share/symphony/receipts/" + o.component + "/" + version + "/install-receipt.json"
 		build := "metadata/" + o.component + "-build.json"
@@ -111,8 +116,12 @@ func qualifyOwners(buildRoot, destination, deliveryTool string) {
 		qreplace(receipt, original)
 		r.run("restored-set", qappend(common, "-mode", "verify"), 0)
 	}()
-	disposable := qjoin(work, "removal-copy")
-	qcopytree(prefix, disposable)
+	disposable := qjoin(work, "removal-install")
+	qerr(os.Mkdir(disposable, 0700))
+	for _, o := range owners {
+		command := qappend([]string{o.executable}, o.leading...)
+		r.run(o.component+"-removal-install", qappend(command, "install", "--prefix", disposable, "--version", qs(o.record["version"])), 0)
+	}
 	sentinel := qjoin(disposable, "user-sentinel")
 	qwrite(sentinel, []byte("preserve unrelated user data"))
 	before := qdigest(sentinel)
@@ -123,10 +132,56 @@ func qualifyOwners(buildRoot, destination, deliveryTool string) {
 	}
 	entries, e := os.ReadDir(home)
 	qerr(e)
-	qneed(qequal(qfiles(disposable), []string{"user-sentinel"}) && qdigest(sentinel) == before && len(entries) == 0, "removal or no-activation boundary failed")
-	result := qObject{"protocol": "symphony.release.go-owner-qualification.v1", "status": "passed_local_source_qualification", "source": source, "profile": profile, "delivery_index_sha256": qdigest(qjoin(root, "delivery-set.json")), "delivery_tool_sha256": qdigest(deliveryTool), "owner_reports": reports, "commands": r.commands, "sentinel_preserved": true, "operational_state_created": false, "fixture_signing_key_destroyed": true, "skips": 0, "fresh_host_qualified": false, "provider_qualified": false, "notice_review_complete": false, "release_acceptance_complete": false, "publication_authorized": false}
+	qVerifyRetiredOwners(disposable, owners)
+	qneed(qdigest(sentinel) == before && len(entries) == 0, "removal or no-activation boundary failed")
+	result := qObject{"protocol": "symphony.release.go-owner-qualification.v1", "status": "passed_local_source_qualification", "source": source, "profile": profile, "delivery_index_sha256": qdigest(qjoin(root, "delivery-set.json")), "delivery_tool_sha256": qdigest(deliveryTool), "owner_reports": reports, "commands": r.commands, "sentinel_preserved": true, "portable_payload_excludes_host_custody": true, "removal_target_freshly_installed": true, "retirement_tombstones_retained": true, "operational_state_created": false, "fixture_signing_key_destroyed": true, "skips": 0, "fresh_host_qualified": false, "provider_qualified": false, "notice_review_complete": false, "release_acceptance_complete": false, "publication_authorized": false}
 	qwrite(qjoin(work, "evidence.json"), result)
 	b, e := json.Marshal(qObject{"status": result["status"], "owner_reports": len(reports), "release_acceptance_complete": false, "publication_authorized": false})
 	qerr(e)
 	fmt.Println(string(b))
+}
+
+// Delivery carries portable package bytes, never the installation's host-local
+// guard identities. A target must invoke the exact native owner to create them.
+func qExportOwnerPayload(o qOwner, nativePrefix, portablePrefix string) {
+	version := qs(o.record["version"])
+	binary := "libexec/symphony/" + o.component + "/" + version + "/" + o.binary
+	receipt := "share/symphony/receipts/" + o.component + "/" + version + "/install-receipt.json"
+	record := qread(qjoin(nativePrefix, receipt))
+	qneed(record["protocol"] == "symphony.knowledge.install-receipt.v2" && record["component_id"] == o.component && record["version"] == version, "owner export receipt identity differs")
+	owned := qa(record["files"])
+	qneed(len(owned) == 1, "owner export requires exact executable-only receipt")
+	file := qo(owned[0])
+	qneed(file["path"] == binary && file["kind"] == "executable" && file["digest"] == "sha256:"+qdigest(qjoin(nativePrefix, binary)), "owner export executable differs")
+	info, err := os.Lstat(qjoin(nativePrefix, binary))
+	qerr(err)
+	size, err := file["size"].(json.Number).Int64()
+	qerr(err)
+	qneed(info.Mode().IsRegular() && size > 0 && info.Size() == size, "owner export executable size or file kind differs")
+	capabilities := map[string]bool{}
+	for _, value := range qa(record["provides_capabilities"]) {
+		capabilities[qs(value)] = true
+	}
+	qneed(capabilities["symphony.package-retirement.v1"] && capabilities["symphony.package-owner-dispatch.v1"], "owner export lacks qualified native maintenance capabilities")
+	qcopy(qjoin(nativePrefix, binary), qjoin(portablePrefix, binary), 0o700, false)
+	qcopy(qjoin(nativePrefix, receipt), qjoin(portablePrefix, receipt), 0o600, false)
+	qneed(qdigest(qjoin(nativePrefix, binary)) == qdigest(qjoin(portablePrefix, binary)) && qdigest(qjoin(nativePrefix, receipt)) == qdigest(qjoin(portablePrefix, receipt)), "portable owner export changed bytes")
+	for _, path := range qfiles(portablePrefix) {
+		qneed(!strings.HasPrefix(path, ".symphony-"), "host-local custody entered portable payload")
+	}
+}
+func qVerifyRetiredOwners(prefix string, owners []qOwner) {
+	expected := []string{"user-sentinel", ".symphony-lifecycle.lock"}
+	for _, o := range owners {
+		version := qs(o.record["version"])
+		base := ".symphony-package-retirement/" + o.component + "/" + version + "/"
+		for _, name := range []string{"admission.lock", "use.lock", "state.json"} {
+			expected = append(expected, base+name)
+		}
+		state := qread(qjoin(prefix, base, "state.json"))
+		id := qo(state["identity"])
+		qneed(state["protocol"] == "symphony.package-retirement-state.v1" && state["phase"] == "retired" && id["owner"] == o.component && id["version"] == version, "native owner retirement tombstone missing or changed")
+	}
+	sort.Strings(expected)
+	qneed(qequal(qfiles(prefix), expected), "native retirement removed custody or retained unexpected payload")
 }

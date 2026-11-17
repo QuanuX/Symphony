@@ -7,6 +7,8 @@
 - `knowledge/schemas/v2/engine-descriptor.schema.json`
 - `knowledge/schemas/v2/install-receipt.schema.json`
 - `knowledge/schemas/v2/invariant-ownership-registry.schema.json`
+- `knowledge/schemas/v2/lifecycle-apply-command.schema.json`
+- `knowledge/schemas/v2/lifecycle-apply-result.schema.json`
 - `knowledge/schemas/v2/lifecycle-boot-head.schema.json`
 - `knowledge/schemas/v2/lifecycle-boot-journal.schema.json`
 
@@ -21,6 +23,8 @@ These exact JSON Schema files are canonical common lifecycle contract truth owne
 - `install-receipt.schema.json`: immutable content-addressed package ownership, entry-point, capability, receptor-compatibility, and platform-requirement evidence. Root-level `.symphony-*` control files and the complete `share/symphony/receipts/` namespace are reserved and cannot be package-owned. Activation, docking, selected-version, and mutable installation state are deliberately excluded.
 - `lifecycle-boot-journal.schema.json`: apply-capable dual-slot transaction evidence that links one exact report-only source journal to prepared and finalized action attempts, dynamic plan revisions, recovery, and content-addressed applied-state commitment.
 - `lifecycle-boot-head.schema.json`: atomic selector for the active member of the apply-capable dual-slot journal without replacing or rewriting report-only v1 evidence.
+- `lifecycle-apply-command.schema.json`: exact scoped apply requests requiring immutable execution-scope evidence and explicit scoped capability negotiation through the existing v2 journal owner.
+- `lifecycle-apply-result.schema.json`: scoped completion evidence reported separately from full-profile convergence, without replacing global applied-state evidence.
 
 ## Compatibility Boundary
 

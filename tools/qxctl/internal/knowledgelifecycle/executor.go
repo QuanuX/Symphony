@@ -74,13 +74,17 @@ type BindingAdapter interface {
 }
 
 type Executor struct {
-	stateRoot   string
-	topsID      string
-	profileID   string
-	sourceRoots []string
-	docking     DockingAdapter
-	binding     BindingAdapter
+	executionScope *ExecutionScope
+	stateRoot      string
+	topsID         string
+	profileID      string
+	sourceRoots    []string
+	docking        DockingAdapter
+	binding        BindingAdapter
+	nativeOwners   map[string][]string
 }
+
+func (e *Executor) SetExecutionScope(scope *ExecutionScope) { e.executionScope = scope }
 
 func (e *Executor) SetDockingAdapter(adapter DockingAdapter) {
 	e.docking = adapter
@@ -182,10 +186,21 @@ func (e *Executor) Execute(action PlannedAction, desired DesiredState, observed 
 }
 
 func (e *Executor) execute(result *ExecutionResult, action PlannedAction, desired DesiredState, observed Observation) error {
+	if e.executionScope != nil {
+		if err := e.executionScope.ValidateDesired(e.executionScope.ProfileDigest, desired, e.executionScope.SourceReportJournalDigest); err != nil {
+			return fmt.Errorf("integrity_fatal: %w", err)
+		}
+		if !e.executionScope.AllowsAction(action, desired) {
+			return fmt.Errorf("authorization_denied: action is outside immutable execution scope")
+		}
+	}
 	component, wanted := findDesiredComponent(desired, action.ComponentID)
 	observedComponent, present := findObservedComponent(observed, action.ComponentID)
 	switch action.Kind {
 	case "install":
+		if isNativeServiceOwner(action.ComponentID) {
+			return e.executeNativeOwner(result, action, component, wanted, observedComponent, present)
+		}
 		if !wanted || component.SelectedPackage == nil {
 			return fmt.Errorf("integrity_fatal: install action lacks exact desired package identity")
 		}
@@ -212,55 +227,20 @@ func (e *Executor) execute(result *ExecutionResult, action PlannedAction, desire
 		if err != nil {
 			return err
 		}
+		owner.executionScope = e.executionScope
 		if err := installReceiptV2(source.root, component.InstallRoot, source.relativePath, receipt, owner); err != nil {
 			return err
 		}
 		result.AfterEvidenceDigests = append(result.AfterEvidenceDigests, receipt.ReceiptDigest)
 	case "uninstall":
-		if !wanted || component.InstallRoot == "" {
-			return fmt.Errorf("integrity_fatal: uninstall action lacks an exact desired install root")
+		if isNativeServiceOwner(action.ComponentID) {
+			return e.executeNativeOwner(result, action, component, wanted, observedComponent, present)
 		}
-		if len(action.ExpectedArtifactDigests) == 0 {
-			return fmt.Errorf("integrity_fatal: uninstall action lacks exact receipt evidence")
-		}
-		matched := false
-		observedTarget := false
-		for _, digest := range action.ExpectedArtifactDigests {
-			identity := PackageIdentity{ReceiptProtocol: "symphony.knowledge.install-receipt.v2", ReceiptDigest: digest}
-			if present {
-				if installed, ok := findObservedPackage(observedComponent, digest); ok {
-					observedTarget = true
-					identity.PackageID = installed.PackageID
-					identity.Version = installed.Version
-				}
-			}
-			source, receipt, err := e.stagedReceipt(identity)
-			if err != nil {
-				return fmt.Errorf("rollback proof unavailable for %s: %w", digest, err)
-			}
-			if receipt.ComponentID != action.ComponentID {
-				continue
-			}
-			matched = true
-			if source.root == component.InstallRoot {
-				return fmt.Errorf("integrity_fatal: rollback source must be separate from the installed package root")
-			}
-			owner, err := NewOwnershipStore(component.InstallRoot, e.stateRoot, e.topsID, e.profileID)
-			if err != nil {
-				return err
-			}
-			if err := uninstallReceiptV2(component.InstallRoot, source.root, source.relativePath, receipt, owner); err != nil {
-				return err
-			}
-			result.AfterEvidenceDigests = append(result.AfterEvidenceDigests, digest)
-		}
-		if !matched {
-			return fmt.Errorf("dependency_wait: exact staged rollback proof is unavailable")
-		}
-		if !observedTarget {
-			result.Outcome = "already_applied"
-			result.Detail = "all receipt-v2 package targets are already absent"
-		}
+		// Receipt ownership and a prepared plan do not prove that a running
+		// process (including a direct SDK consumer) has released this package.
+		// Destructive dispatch requires the exact native owner's retirement
+		// contract; no generic file-deletion fallback is safe.
+		return fmt.Errorf("compatibility_blocked: package removal requires a qualified native process-retirement owner; generic receipt deletion is unavailable")
 	case "select", "deselect", "activate", "deactivate":
 		if action.ComponentID == "knowledge-session-coordinator" && action.Kind == "deselect" {
 			return fmt.Errorf("compatibility_blocked: the active coordinator cannot be deselected without an exact replacement")

@@ -17,6 +17,7 @@ import (
 	texttemplate "text/template"
 
 	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/config"
+	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/packageinstall"
 	ssiagpaths "github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/paths"
 )
 
@@ -34,6 +35,7 @@ type Spec struct {
 }
 
 type Record struct {
+	Binary         string
 	Manager        string
 	Scope          ssiagpaths.Scope
 	TOPSID         string
@@ -74,6 +76,11 @@ type renderData struct {
 }
 
 func Install(spec Spec, force bool) (Record, error) {
+	lease, err := packageinstall.AcquireUseForExecutable(spec.Binary)
+	if err != nil {
+		return Record{}, err
+	}
+	defer lease.Close()
 	record, content, err := render(spec)
 	if err != nil {
 		return Record{}, err
@@ -149,6 +156,14 @@ func Uninstall(spec Spec, force, stop bool) (Record, error) {
 }
 
 func Start(record Record) error {
+	if record.Binary == "" {
+		return fmt.Errorf("supervisor start requires its exact owner binary")
+	}
+	lease, err := packageinstall.AcquireUseForExecutable(record.Binary)
+	if err != nil {
+		return err
+	}
+	defer lease.Close()
 	switch record.Manager {
 	case "launchd":
 		target := record.Domain + "/" + record.Name
@@ -390,6 +405,7 @@ func render(spec Spec) (Record, []byte, error) {
 	}
 	digest := sha256.Sum256(content)
 	record.DescriptorHash = hex.EncodeToString(digest[:])
+	record.Binary = spec.Binary
 	return record, content, nil
 }
 

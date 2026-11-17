@@ -83,6 +83,7 @@ The v1 identifier family is:
 | `symphony.knowledge.provider-evidence.v1` | normalized provider evidence |
 | `symphony.knowledge.install-receipt.v1` | legacy installed-file and lifecycle receipt, read-only compatibility |
 | `symphony.knowledge.install-receipt.v2` | immutable content-addressed install receipt |
+| `symphony.knowledge.lifecycle-execution-scope.v1` | immutable reviewed effect and ownership bounds; grants no authority |
 | `symphony.knowledge.lifecycle-desired-state.v1` | protected noncanonical exact component intent |
 | `symphony.knowledge.lifecycle-observation.v1` | bounded disposable installation and platform evidence |
 | `symphony.knowledge.lifecycle-plan-command.v1` | exact report-only planner request and compatibility declaration |
@@ -95,6 +96,8 @@ The v1 identifier family is:
 | `symphony.knowledge.lifecycle-boot-result.v1` | report-only durable lifecycle state and recovery result |
 | `symphony.knowledge.lifecycle-apply-command.v1` | exact apply prepare/finalize/close/status/recovery request |
 | `symphony.knowledge.lifecycle-apply-result.v1` | protected noncanonical apply coordination result |
+| `symphony.knowledge.lifecycle-apply-command.v2` | exact apply request bound to reviewed execution scope |
+| `symphony.knowledge.lifecycle-apply-result.v2` | scoped apply result with full-profile context and bounded effects |
 | `symphony.knowledge.engine-binding-registry.v1` | protected noncanonical user-scope exact-version selection |
 | `symphony.knowledge.engine-binding-registry.v2` | bounded extensible protected selection with explicit version lineage |
 | `symphony.knowledge.install-receipt.v2` | immutable content-addressed package ownership and capability evidence |
@@ -154,6 +157,7 @@ The initial exact schemas are:
 - `knowledge/schemas/v1/ssfv-maintenance-journal.schema.json`;
 - `knowledge/schemas/v1/ssfv-maintenance-head.schema.json`;
 - `knowledge/schemas/v1/ssfv-maintenance-result.schema.json`;
+- `knowledge/schemas/v1/lifecycle-execution-scope.schema.json`;
 - `knowledge/schemas/v1/lifecycle-desired-state.schema.json`;
 - `knowledge/schemas/v1/lifecycle-observation.schema.json`;
 - `knowledge/schemas/v1/lifecycle-plan-command.schema.json`;
@@ -166,6 +170,8 @@ The initial exact schemas are:
 - `knowledge/schemas/v1/lifecycle-boot-result.schema.json`;
 - `knowledge/schemas/v1/lifecycle-apply-command.schema.json`;
 - `knowledge/schemas/v1/lifecycle-apply-result.schema.json`;
+- `knowledge/schemas/v2/lifecycle-apply-command.schema.json`;
+- `knowledge/schemas/v2/lifecycle-apply-result.schema.json`;
 - `knowledge/schemas/v1/foundation-lifecycle-adapter.schema.json`;
 - `knowledge/schemas/v1/foundation-lifecycle-command.schema.json`;
 - `knowledge/schemas/v1/foundation-lifecycle-observation.schema.json`;

@@ -46,3 +46,10 @@
 - inferred terminal outcomes or raw error text; failed/unavailable production requires the closed typed evidence contract;
 - Windows-native implementation; Windows users require WSL or a remote TOPS node;
 - hot-path, warm-path, trading-runtime, CUDA, or accelerator involvement.
+
+Current-source package receipts also declare `symphony.package-owner-dispatch.v1`.
+Shared-root install and retirement require the exact inherited-descriptor proof
+described in `INSTALL.md`; direct mutation still refuses qxctl ownership markers.
+The parent owns registry changes, and all native use/reference fences remain in
+force. This source contract does not rewrite published module tags or qualify
+system or cross-user reclamation.

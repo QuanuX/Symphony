@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/QuanuX/Symphony/modules/stav-append-authority/internal/lifecycle"
+	"github.com/QuanuX/Symphony/modules/stav-append-authority/internal/packageuse"
 	stavpaths "github.com/QuanuX/Symphony/modules/stav-append-authority/internal/paths"
 )
 
@@ -17,13 +18,13 @@ const foundationTOPSID = "123e4567-e89b-42d3-a456-426614174000"
 
 func setupInstalled(t *testing.T) {
 	t.Helper()
-	home := t.TempDir()
+	home := canonicalTempDir(t)
 	t.Setenv("HOME", home)
 	t.Setenv("XDG_CONFIG_HOME", "")
 	t.Setenv("XDG_STATE_HOME", "")
 	t.Setenv("XDG_RUNTIME_DIR", "")
-	source := filepath.Join(t.TempDir(), stavpaths.BinaryName)
-	if err := os.WriteFile(source, []byte("foundation-test-binary"), 0o755); err != nil {
+	source, err := os.Executable()
+	if err != nil {
 		t.Fatal(err)
 	}
 	installed, err := lifecycle.Install(source, stavpaths.ScopeUser, false)
@@ -295,5 +296,37 @@ func TestDescriptorBindsExactReceiptAndOperations(t *testing.T) {
 	}
 	if descriptor.DescriptorDigest != digestWithout(descriptor, "descriptor_digest") {
 		t.Fatal("adapter descriptor digest is not canonical")
+	}
+}
+
+func canonicalTempDir(t *testing.T) string {
+	t.Helper()
+	path, err := filepath.EvalSymlinks(t.TempDir())
+	if err != nil {
+		t.Fatal(err)
+	}
+	return path
+}
+
+func TestNativePurgeRefusesLiveManagedUseBeforeStateMutation(t *testing.T) {
+	setupInstalled(t)
+	install, _, _, err := currentInstall(stavpaths.ScopeUser)
+	if err != nil {
+		t.Fatal(err)
+	}
+	release, err := packageuse.Acquire(install.Binary)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer release()
+	if _, err := NativePurge(stavpaths.ScopeUser, foundationTOPSID); err == nil || !strings.Contains(err.Error(), "in use") {
+		t.Fatalf("live purge was not fenced: %v", err)
+	}
+	layout, err := stavpaths.ResolveInstance(stavpaths.ScopeUser, foundationTOPSID)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err := os.Lstat(layout.LifecycleDir); !os.IsNotExist(err) {
+		t.Fatalf("refused purge mutated lifecycle state: %v", err)
 	}
 }
