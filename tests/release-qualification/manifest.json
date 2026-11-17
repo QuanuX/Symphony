@@ -1624,6 +1624,17 @@
     {
       "module": "tools/qxctl",
       "package": "./cmd/qxctl",
+      "test": "TestScopedNativeProducedCloseReplay",
+      "classification": "explicit_installed_or_retained_fixture",
+      "reasons": [
+        "set SYMPHONY_SCOPED_APPLY_FIXTURE to exact native-produced completed scoped-close replay evidence"
+      ],
+      "source": "tools/qxctl/cmd/qxctl/lifecycle_apply_replay_test.go",
+      "line": 13
+    },
+    {
+      "module": "tools/qxctl",
+      "package": "./cmd/qxctl",
       "test": "TestScopedNativeProducedResults",
       "classification": "explicit_installed_or_retained_fixture",
       "reasons": [

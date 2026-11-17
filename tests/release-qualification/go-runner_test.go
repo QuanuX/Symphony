@@ -172,3 +172,49 @@ func TestInstalledQualificationIsRequired(t *testing.T) {
 		}
 	}
 }
+
+func TestNativeScopedFixturesRemainExplicitWithoutMaskingFailure(t *testing.T) {
+	_, source, _, ok := runtime.Caller(0)
+	if !ok {
+		t.Fatal("test source unavailable")
+	}
+	raw, err := os.ReadFile(filepath.Join(filepath.Dir(source), "manifest.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	var m manifest
+	if err := json.Unmarshal(raw, &m); err != nil {
+		t.Fatal(err)
+	}
+	const moduleID = "github.com/QuanuX/Symphony/tools/qxctl"
+	const pkg = moduleID + "/cmd/qxctl"
+	for _, name := range []string{"TestScopedNativeProducedResults", "TestScopedNativeProducedCloseReplay"} {
+		t.Run(name, func(t *testing.T) {
+			events := []event{{Action: "pass", Package: pkg, Test: "TestUnit"}, {Action: "skip", Package: pkg, Test: name}}
+			s, err := evaluate("tools/qxctl", moduleID, "full", events, m.Optional, nil)
+			if err != nil || s.Passed != 1 || s.Skipped != 1 || s.Results[1].Classification != "explicit_installed_or_retained_fixture" {
+				t.Fatalf("native fixture absence was not separately classified: %+v err=%v", s, err)
+			}
+			required := []suite{{Module: "tools/qxctl", Package: "./cmd/qxctl", Tests: []string{name}}}
+			if _, err := evaluate("tools/qxctl", moduleID, "installed", events, m.Optional, required); err == nil {
+				t.Fatal("selected native fixture skip was accepted")
+			}
+			if _, err := evaluate("tools/qxctl", moduleID, "full", events, m.Optional, required); err == nil {
+				t.Fatal("required native fixture skip was accepted")
+			}
+			events[1].Action = "fail"
+			if _, err := evaluate("tools/qxctl", moduleID, "full", events, m.Optional, nil); err == nil {
+				t.Fatal("native fixture failure was hidden by optional classification")
+			}
+			events[1].Action = "pass"
+			s, err = evaluate("tools/qxctl", moduleID, "installed", events, m.Optional, required)
+			if err != nil || s.Passed != 2 || s.Skipped != 0 {
+				t.Fatalf("executed native fixture was not counted as coverage: %+v err=%v", s, err)
+			}
+			events[1] = event{Action: "skip", Package: pkg, Test: name + "Unknown"}
+			if _, err := evaluate("tools/qxctl", moduleID, "full", events, m.Optional, nil); err == nil {
+				t.Fatal("unknown test inherited another fixture's classification")
+			}
+		})
+	}
+}
