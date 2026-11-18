@@ -1,35 +1,37 @@
 # QuanuX Symphony
 
-**A modular workbench for quantitative research and system administration.**
+**A quantOS for quantitative research, trading systems and infrastructure.**
 
-Symphony brings quantitative data, replay, hardware and infrastructure knowledge, and explicit administrative control into one inspectable platform. Its native engines and SDKs do the domain work; `qxctl` gives people and agents a common way to inspect, validate, and administer separately installed components.
+Symphony is developed through **VGAA — Vector-Graph Application Architecture**. Its vectors organize quantitative data, replay, hardware and infrastructure knowledge, and explicit administrative control, with independently installed modules implementing those capabilities. Native engines and SDKs perform the domain work; `qxctl` gives people and agents a common way to inspect, validate and administer the components they select.
 
-Build the environment your work needs. Keep your strategy logic, provider choices, hardware, and deployment topology under your control.
+Build the environment your work needs. Users can compose programs, introduce modules and integrate approaches beyond those anticipated here. Published tools retain their specific operating contracts; your strategy logic, provider choices, hardware and deployment topology remain under your control.
 
 [Install the Public Beta](#install-the-public-beta) · [Start from source](.github/FIRST-RUN.md) · [Explore the components](#architecture) · [Platform targets](#platform-targets) · [Report a problem](#support-and-contributing)
 
-> **Public Beta available:** [Symphony 0.2.0-beta.1](https://github.com/QuanuX/symphony-distribution/releases/tag/v0.2.0-beta.1) supplies clean CI-built binaries, independently maintainable packages, SDK exports and optional corresponding source on four profiles. The feature freeze remains in force: current work covers defects, hardening, packaging, qualification, documentation and release operations. Native credential/provider limits remain explicit below; installing the beta does not activate a provider or qualify a user's live deployment.
+> **Public Beta available:** [Symphony 0.2.0-beta.2](https://github.com/QuanuX/symphony-distribution/releases/tag/v0.2.0-beta.2) supplies clean CI-built binaries, independently maintainable packages, SDK exports and optional corresponding source on four profiles. The feature freeze remains in force: current work covers defects, hardening, packaging, qualification, documentation and release operations. Native credential/provider limits remain explicit below; installing the beta does not activate a provider or qualify a user's live deployment.
 
 ## Published beta maintenance notes
 
-The published **0.2.0-beta.1** downloads retain their original qualified bytes.
-The source now includes three later lifecycle repairs; those repairs require a
-newly built and qualified release before they are included in downloads:
+The **0.2.0-beta.2** downloads include three lifecycle repairs:
 
-- Complete a dependency's replacement before introducing a new dependent.
-- If retrying a completed scoped apply reports a validation error, inspect its
-  durable status; preserve its journal and do not blindly repeat effects.
-- For SSIAG or Accordare reinstall maintenance, use the exact retained owner
-  binary outside the installation. Running the installed binary against its own
-  prefix may report that the package is busy. Existing ownership and active-use
-  checks still apply.
+- Dependency replacement is scheduled before a new dependent is introduced.
+- A verified completed scoped-close retry returns its recorded completion
+  without rewriting durable state.
+- Installed SSIAG and Accordare owner binaries can reinstall under exclusive
+  target custody. Existing ownership and active-use refusals still apply.
 
-The feature freeze covers these defect repairs. Source integration does not
-replace the signed beta artifacts or expand their qualification claims.
+The feature freeze covers these defect repairs. The earlier **0.2.0-beta.1**
+release retains its original artifacts and verification record.
+
+The immutable [Symphony beta.2 source checkpoint](https://github.com/QuanuX/Symphony/tree/v0.2.0-beta.2)
+records the merged source at `8a6889597eef3d2713f48bf6962456f989188e18`.
+The distributed native binaries retain their actual build source,
+[`bae2e817120467561ae051c1b08cf61be3436bac`](https://github.com/QuanuX/Symphony/commit/bae2e817120467561ae051c1b08cf61be3436bac);
+the intervening documentation and merge commits do not rebuild or relabel them.
 
 ## Identity
 
-QuanuX is the ecosystem and steward of official source truth. Symphony is its open-source platform. A user’s private Symphony/TOPS installation retains its own declared and observed state; that state does not become official QuanuX source truth.
+QuanuX is the ecosystem and steward of official source truth. Symphony is its open-source quantOS. A user’s private Symphony/TOPS installation retains its own declared and observed state; that state does not become official QuanuX source truth.
 
 ## What you can do today
 
@@ -57,17 +59,17 @@ The Public Beta profiles are:
 | Ubuntu 24.04 LTS | ARM64 / aarch64 | The same selected Linux qualification on the supported ARM Linux profile. |
 | Ubuntu 26.04 LTS | x86_64 / amd64 | Native installed SDKs, Go modules, retained inspection, package lifecycle, and DuckDB connectors. |
 
-The [published beta record](https://github.com/QuanuX/symphony-distribution/blob/v0.2.0-beta.1/evidence/d14-publication.json) binds the selected artifacts to four-platform installer, first-use, Codex client and maintenance qualification, including native Mac PKG installation/removal. Earlier source/build campaigns, such as [PR #184](https://github.com/QuanuX/Symphony/pull/184), remain historical evidence for their own revisions. The published release record identifies the qualified bytes; a later source build or CI run does not silently replace them.
+The [published beta record](https://github.com/QuanuX/symphony-distribution/blob/v0.2.0-beta.2/evidence/beta2-publication.json) binds the selected artifacts to four-platform installer, first-use, Codex client and maintenance qualification, including native Mac PKG installation/removal. Earlier source/build campaigns, such as [PR #184](https://github.com/QuanuX/Symphony/pull/184), remain historical evidence for their own revisions. The published release record identifies the qualified bytes; a later source build or CI run does not silently replace them.
 
 **DGX Spark:** Ubuntu ARM64 is the current qualification substitute. Physical DGX Spark, its DGX OS image, NVIDIA drivers, and GPU behavior are not yet qualified. Intel macOS checks provide supplemental development evidence. Native Windows is unsupported, and no native Windows port is planned; WSL and remote Linux access are separate Linux environments.
 
 ## Install the Public Beta
 
-Start with the [release downloads](https://github.com/QuanuX/symphony-distribution/releases/tag/v0.2.0-beta.1) and [installation and verification guide](https://downloads.quanux.org/symphony/0.2.0-beta.1/docs/BETA-INSTALL.md). Conda packages are published under **QuanuX/beta on Anaconda**. Downloadable `.sh` installers for all four profiles and a macOS Apple Silicon `.pkg` are hosted on Cloudflare. Choose the exact profile and its verified package list, including the correct Ubuntu version.
+Start with the [release downloads](https://github.com/QuanuX/symphony-distribution/releases/tag/v0.2.0-beta.2) and [installation and verification guide](https://downloads.quanux.org/symphony/0.2.0-beta.2/docs/BETA-INSTALL.md). Conda packages are published under **QuanuX/beta on Anaconda**. Downloadable `.sh` installers for all four profiles and a macOS Apple Silicon `.pkg` are hosted on Cloudflare. Choose the exact profile and its verified package list, including the correct Ubuntu version.
 
 Each profile has 59 independently maintainable default packages plus optional corresponding source. SDK headers, libraries and CMake exports remain with their module owners. Standard installation uses clean CI binaries; compiling the repository is optional. User profiles, credentials and hardware/workflow state are created on the user's system rather than copied from the publisher's machine. Codex is the primary qualified client; the existing Claude, Antigravity and generic adapters remain available with their own documented boundaries.
 
-Modules can be installed, changed, swapped and removed independently through the documented owner flows. Conda manages delivered package files; application selection, retained runtime files and service lifecycle remain explicit owner operations. The beta qualifies packaging revision upgrade/rollback and same-candidate recovery. Transitions between distinct native software versions remain outside this initial release's qualified scope.
+Modules can be installed, changed, swapped and removed independently through the documented owner flows. Conda manages delivered package files; application selection, retained runtime files and service lifecycle remain explicit owner operations. The beta qualifies packaging revision upgrade/rollback and same-candidate recovery. Install beta.2 into a new private prefix and retain an existing beta.1 environment separately. Upgrade or rollback between distinct native releases is not yet qualified; installing a package does not migrate existing retained runtimes or active profiles.
 
 Verify the detached publisher signature before installation. This beta uses a pinned self-signed publisher key; the Mac PKG has no Apple Developer ID signature or notarization. The guide explains verification and the separately available Mac shell installer. No system trust changes or automatic live-service activation are part of installation.
 
@@ -99,7 +101,7 @@ Next, choose the path you need:
 
 Full native qualification uses CMake **3.31+**, a profile-selected C++26 compiler and platform SDK, and exact external dependencies. The installed CI recipe selects Xcode 26.3’s Apple compiler on macOS, Clang 18 on Ubuntu 24.04, and Clang 21 on Ubuntu 26.04; exact compiler/runtime versions are recorded per run. Individual projects may have lower CMake minimums. Go, native package, SDK, schema, and owner-interface versions are independent; the [dependency map](cmake/mvp-dependencies.json) records their exact relationships.
 
-Modules install independently into explicit prefixes with owned-file receipts and guarded removal. Keep old and new versions side by side until compatibility is verified. Installation does not activate a provider or authorize an operation. For the published binary packages and their exact maintenance scope, use the [Public Beta installation guide](https://downloads.quanux.org/symphony/0.2.0-beta.1/docs/BETA-INSTALL.md).
+Modules install independently into explicit prefixes with owned-file receipts and guarded removal. Keep old and new versions side by side until compatibility is verified. Installation does not activate a provider or authorize an operation. For the published binary packages and their exact maintenance scope, use the [Public Beta installation guide](https://downloads.quanux.org/symphony/0.2.0-beta.2/docs/BETA-INSTALL.md).
 
 ## Provider and credential status
 
@@ -121,7 +123,7 @@ The [credential integration handoff](modules/secure-identity-access-governance/C
 
 ## Architecture
 
-Symphony is a monorepo for inspectability, with independently versioned and installable runtime components. A user can select, update, diagnose and remove engines individually. Shared native mechanics do not make the system a single resident process.
+The Symphony source is organized as a monorepo for inspectability, with independently versioned and installable runtime components. A user can select, update, diagnose and remove engines individually. Shared native mechanics do not make the system a single resident process.
 
 | Area | Components and responsibility |
 | --- | --- |
@@ -143,7 +145,7 @@ The machine-readable [component/version map](cmake/mvp-dependencies.json) and [f
 - **Explicit ownership:** domain vectors own meaning; qxctl presents their operations. Derived views retain provenance to their source owners.
 - **Evidence before action:** exact versions, receipt identities, expected state, bounded requests, and explicit authority constrain supported mutations. An uncertain outcome is reconciled rather than silently retried.
 - **Independent deployment:** modules retain their own configuration, state, installation, update and removal boundaries. There is no implicit newest-version selection.
-- **User-controlled composition:** strategy logic, provider selection, bus topology and supported adapters remain the user's choices. Human or agent identity alone grants no authority.
+- **User-controlled composition:** users choose their programs, modules, provider integrations and bus topology, including new approaches beyond the supplied components. Published operations retain their explicit authority contracts; human or agent identity alone grants no authority.
 - **A protected hot path:** administration and knowledge work are cold or freezing-path capabilities. qxctl is not a mandatory resident trading-loop dependency. Explicitly installed SSIAG/STAV services retain their documented supervision roles.
 
 A **Node** identifies physical computer resources. A **Habitat** is the exact OS/package conditioning selected for a Node. A **Nest** serves the user's chosen purpose; it is not constrained to one strategy, file, process or broker interface. Multiple buses may coexist, and their choice remains explicit. See the [architecture](knowledge/ARCHITECTURE.md), [terminology](knowledge/SLANG.md), [identity namespaces](knowledge/NAMESPACES.md), and [platform governance](knowledge/platform/INTENT.md) for precise definitions.
@@ -170,7 +172,7 @@ Symphony's checks cover distinct questions:
 | [SDK distribution and removal](tests/native-sdk-distribution/README.md) | Receipt-owned headers/exports, installed consumers, refusal and resumable removal preserving unrelated files. |
 | [Dependency notice inventory](tests/dependency-notices/README.md) | Collected identities and notice material; publisher review and recursive runtime closure remain separate. |
 | [CodeQL](.github/codeql/README.md) | Static-analysis baseline. C++ uses source-only analysis with documented C++26 coverage limits; a clean scan is not complete security or runtime qualification. |
-| [Published beta acceptance](https://github.com/QuanuX/symphony-distribution/blob/v0.2.0-beta.1/evidence/d14-publication.json) | Exact published bytes, publisher-pinned signature, four-profile installation/client/maintenance evidence and publisher legal approval/acceptance within the initial-beta scope. Apple notarization, separate human-reviewer independence and live-provider acceptance are not claimed. |
+| [Published beta acceptance](https://github.com/QuanuX/symphony-distribution/blob/v0.2.0-beta.2/evidence/beta2-publication.json) | Exact published bytes, publisher-pinned signature, four-profile installation/client/maintenance evidence and publisher legal approval/acceptance within the initial-beta scope. Apple notarization, separate human-reviewer independence and live-provider acceptance are not claimed. |
 | [Release acceptance procedures](tests/launch-acceptance/README.md) | Reusable candidate and evidence checkers. Their historical preparation packets and fixture results remain distinct from the published beta's selected artifacts and approval. |
 
 Run the source checks with CMake from the repository root:
@@ -180,7 +182,7 @@ cmake -P tests/mvp-dependencies/verify.cmake
 cmake -P tests/release-qualification/verify.cmake
 ```
 
-The [published distribution dossier](https://github.com/QuanuX/symphony-distribution/blob/v0.2.0-beta.1/evidence/d14-publication.json) records the current release outcome and scope. The earlier [gate checklist](.github/RELEASE-GATES.md) and [Public Beta preparation dossier](tests/public-beta/README.md) retain their original planning and implementation boundaries; pending inputs in those historical records are not the current published release status. [Launch ownership](.github/LAUNCH.md) names @quantDIY as release approver and rollback primary. Completing source tasks does not itself authorize another publication.
+The [published distribution dossier](https://github.com/QuanuX/symphony-distribution/blob/v0.2.0-beta.2/evidence/beta2-publication.json) records the current release outcome and scope. The earlier [gate checklist](.github/RELEASE-GATES.md) and [Public Beta preparation dossier](tests/public-beta/README.md) retain their original planning and implementation boundaries; pending inputs in those historical records are not the current published release status. [Launch ownership](.github/LAUNCH.md) names @quantDIY as release approver and rollback primary. Completing source tasks does not itself authorize another publication.
 
 Symphony releases module by module. Existing SODV source publications below are public Go source-module versions, not a platform binary launch. Independent versions and compatibility boundaries remain visible through release preparation.
 
