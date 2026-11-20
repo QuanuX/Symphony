@@ -1,0 +1,35 @@
+name: Linux node keyring
+on:
+  pull_request:
+    paths:
+      - 'modules/secure-identity-access-governance/platform/linux-*/**'
+      - '.github/workflows/linux-node-keyring.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'modules/secure-identity-access-governance/platform/linux-*/**'
+      - '.github/workflows/linux-node-keyring.yml'
+  workflow_dispatch:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  installed-node:
+    strategy:
+      fail-fast: false
+      matrix:
+        runner: [ubuntu-24.04, ubuntu-24.04-arm]
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - name: Build Ubuntu qualification environment
+        run: docker build -t node-keyring-qa modules/secure-identity-access-governance/platform/linux-node-keyring/tests
+      - name: Exercise import, offline fetch and cold restart
+        run: |
+          docker run --rm --network none --mount "type=bind,src=$GITHUB_WORKSPACE,dst=/source,readonly" \
+            node-keyring-qa bash /source/modules/secure-identity-access-governance/platform/linux-node-keyring/tests/qualify-installed.sh

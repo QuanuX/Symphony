@@ -8,12 +8,18 @@ on:
   schedule:
     - cron: '23 8 * * 2'
   workflow_dispatch:
+    inputs:
+      focus:
+        description: Select analysis categories
+        type: choice
+        default: all
+        options: [all, linux-node-keyring, fixture-only]
 
 permissions:
   contents: read
 
 concurrency:
-  group: codeql-${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
+  group: codeql-${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}${{ inputs.focus && inputs.focus != 'all' && format('-{0}', inputs.focus) || '' }}
   cancel-in-progress: true
 
 jobs:
@@ -26,30 +32,33 @@ jobs:
       contents: read
       actions: read
       security-events: write
+    env:
+      # C/C++ uses the source-only baseline across independently built C++26
+      # modules. See ../codeql/README.md for extraction limitations.
+      CODEQL_BUILD_MODE: ${{ (matrix.language == 'go' || matrix.language == 'swift') && 'manual' || 'none' }}
     strategy:
       fail-fast: false
       matrix:
-        include:
-          # Source-only baseline across independently built C++26 modules.
-          # See ../codeql/README.md for extraction and platform limitations.
-          - language: c-cpp
-            os: ubuntu-24.04
-            build-mode: none
-          - language: c-cpp
-            os: macos-15-intel
-            build-mode: none
-          - language: go
-            os: ubuntu-24.04
-            build-mode: manual
-          - language: go
-            os: macos-15-intel
-            build-mode: manual
+        language: [c-cpp, go, swift, actions]
+        os: [ubuntu-24.04, macos-15-intel]
+        focus: ["${{ inputs.focus || 'all' }}"]
+        exclude:
           - language: swift
-            os: macos-15-intel
-            build-mode: manual
-          - language: actions
             os: ubuntu-24.04
-            build-mode: none
+          - language: actions
+            os: macos-15-intel
+          - language: swift
+            focus: linux-node-keyring
+          - language: go
+            os: macos-15-intel
+            focus: linux-node-keyring
+          - language: c-cpp
+            focus: fixture-only
+          - language: swift
+            focus: fixture-only
+          - language: go
+            os: macos-15-intel
+            focus: fixture-only
     steps:
       - name: Check out source
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
@@ -66,7 +75,7 @@ jobs:
         uses: github/codeql-action/init@9b3254085494b55a0f7c4c2b3d2d52cc712ce370 # v4.39.1
         with:
           languages: ${{ matrix.language }}
-          build-mode: ${{ matrix.build-mode }}
+          build-mode: ${{ env.CODEQL_BUILD_MODE }}
           queries: security-extended
 
       - name: Build every Go workspace module for extraction
@@ -84,6 +93,17 @@ jobs:
           # This standalone repository tool is outside the workspace modules.
           GOWORK=off GOTOOLCHAIN=local GOPROXY=off go build -a \
             -o "$RUNNER_TEMP/codeql-evidence-collector" .github/codeql/collect_evidence.go
+
+      - name: Extract the Linux-only node keyring qualification fixture
+        if: matrix.language == 'go' && runner.os == 'Linux'
+        shell: bash
+        env:
+          GOCACHE: ${{ runner.temp }}/codeql-go-cache
+          GOPROXY: 'off'
+          GOTOOLCHAIN: local
+        run: |
+          go build -a -tags symphony_node_keyring_fixture -o "$RUNNER_TEMP/codeql-node-keyring-fixture" \
+            ./modules/secure-identity-access-governance/platform/linux-node-keyring/tests/fixture
 
       - name: Build standalone release and qualification tools for extraction
         if: matrix.language == 'go'
@@ -132,7 +152,7 @@ jobs:
           ANALYSIS_CATEGORY: /language:${{ matrix.language }}/os:${{ matrix.os }}
           ANALYSIS_LANGUAGE: ${{ matrix.language }}
           ANALYSIS_RUNNER: ${{ matrix.os }}
-          ANALYSIS_BUILD_MODE: ${{ matrix.build-mode }}
+          ANALYSIS_BUILD_MODE: ${{ env.CODEQL_BUILD_MODE }}
           GOTOOLCHAIN: local
           GOWORK: 'off'
           GOENV: 'off'

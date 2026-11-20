@@ -6,7 +6,7 @@ The current foundation installs immutable receipt-v2 packages, enrolls isolated 
 
 ## Quick Start
 
-To test native credential storage with disposable data, use the [Linux Secret Service SDK](platform/linux-secret-service/) or the [macOS Keychain qualification app](../ssiag-provider-macos-keychain/Development/). The [credential integration handoff](CREDENTIAL-QUALIFICATION.md) tracks the remaining work to authorize and deliver an item to a Symphony consumer.
+To provision a Linux node and authenticate a dedicated service offline, use the [Linux node keyring package](platform/linux-node-keyring/). For platform storage tests, use the [Linux Secret Service SDK](platform/linux-secret-service/) or the [macOS Keychain qualification app](../ssiag-provider-macos-keychain/Development/). The [credential integration handoff](CREDENTIAL-QUALIFICATION.md) tracks the shared authorization and delivery work for the general SSIAG provider.
 
 Use a canonical lowercase UUID as the immutable TOPS ID. Keep the mutable display name separate.
 

@@ -6,16 +6,27 @@ on:
   pull_request:
     branches: [main, 'codex/**']
   workflow_dispatch:
+    inputs:
+      focus:
+        description: Select the dependency groups to qualify
+        type: choice
+        default: all
+        options: [all, node-keyring, fixture-only]
 
 permissions:
   contents: read
 
 concurrency:
-  group: mvp-dependencies-${{ github.ref }}
+  group: mvp-dependencies-${{ github.ref }}${{ inputs.focus && inputs.focus != 'all' && format('-{0}', inputs.focus) || '' }}
   cancel-in-progress: true
 
 jobs:
+  node-keyring:
+    if: github.event_name == 'workflow_dispatch' && (inputs.focus == 'node-keyring' || inputs.focus == 'fixture-only')
+    uses: ./.github/workflows/linux-node-keyring.yml
+
   go-dependency-graphs:
+    if: github.event_name != 'workflow_dispatch' || (inputs.focus != 'node-keyring' && inputs.focus != 'fixture-only')
     name: Standalone Go graph and build (${{ matrix.os }})
     runs-on: ${{ matrix.os }}
     timeout-minutes: 20
@@ -54,13 +65,14 @@ jobs:
           retention-days: 14
 
   installed-dependencies:
+    if: github.event_name != 'workflow_dispatch' || inputs.focus != 'fixture-only'
     name: Installed SDKs (${{ matrix.group }}, ${{ matrix.os }})
     runs-on: ${{ matrix.os }}
     timeout-minutes: 60
     strategy:
       fail-fast: false
       matrix:
-        group: [knowledge, cloud, quantitative]
+        group: ${{ fromJSON(inputs.focus == 'node-keyring' && '["knowledge"]' || '["knowledge","cloud","quantitative"]') }}
         os: [ubuntu-24.04, ubuntu-26.04, ubuntu-24.04-arm, macos-15]
         include:
           - os: ubuntu-24.04

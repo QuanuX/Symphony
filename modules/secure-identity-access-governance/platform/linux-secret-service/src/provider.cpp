@@ -96,11 +96,18 @@ bool explicit_bus(const std::string& address) {
 struct Session {
     Object<SecretService> service;
     Object<SecretCollection> collection;
-    Status open(const Scope& scope, GCancellable* cancel) {
+    Status open(const Scope& scope, GCancellable* cancel, const std::string* socket_path = nullptr) {
         if (!valid(scope) || !cancel) return Status::invalid;
         if (g_cancellable_is_cancelled(cancel)) return Status::cancelled;
-        const char* selected = g_getenv("DBUS_SESSION_BUS_ADDRESS");
-        const std::string address = selected ? selected : "";
+        std::string address;
+        if (socket_path) {
+            if (socket_path->empty() || socket_path->front() != '/' ||
+                socket_path->find('\0') != std::string::npos) return Status::invalid;
+            std::unique_ptr<gchar, decltype(&g_free)> escaped(g_dbus_address_escape_value(socket_path->c_str()), g_free);
+            address = "unix:path=" + std::string(escaped.get());
+        } else if (const char* selected = g_getenv("DBUS_SESSION_BUS_ADDRESS")) {
+            address = selected;
+        }
         if (!explicit_bus(address)) return Status::unavailable;
         Error error;
         Object<GDBusConnection> bus(g_dbus_connection_new_for_address_sync(address.c_str(),
@@ -108,6 +115,14 @@ struct Session {
                                               G_DBUS_CONNECTION_FLAGS_MESSAGE_BUS_CONNECTION),
             nullptr, cancel, &error.value));
         if (!bus) return failure(error);
+        // Authenticate the bus itself using the local socket, before trusting
+        // the bus's answer about the Secret Service owner's UID.
+        auto* stream = g_dbus_connection_get_stream(bus.get());
+        if (!G_IS_SOCKET_CONNECTION(stream)) return Status::unavailable;
+        auto* socket = g_socket_connection_get_socket(G_SOCKET_CONNECTION(stream));
+        Object<GCredentials> peer(g_socket_get_credentials(socket, &error.value));
+        if (!peer || g_credentials_get_unix_user(peer.get(), &error.value) != geteuid() || error.value)
+            return Status::unavailable;
         auto bus_query = [&](const char* method, const char* name, const GVariantType* type) {
             return Variant(g_dbus_connection_call_sync(bus.get(), "org.freedesktop.DBus", "/org/freedesktop/DBus",
                       "org.freedesktop.DBus", method, g_variant_new("(s)", name), type, G_DBUS_CALL_FLAGS_NO_AUTO_START,
@@ -140,9 +155,9 @@ struct Session {
         }
         return Status::unavailable;
     }
-    Status find(const Item& item, GCancellable* cancel, Object<SecretItem>& result) {
+    Status find(const Item& item, GCancellable* cancel, Object<SecretItem>& result, const std::string* socket_path = nullptr) {
         if (!uuid(item.generation)) return Status::invalid;
-        auto status = open(item.scope, cancel);
+        auto status = open(item.scope, cancel, socket_path);
         if (status != Status::ok) return status;
         auto attrs = attributes(item);
         Error error;
@@ -175,11 +190,12 @@ ProvisionResult provision(const Scope& scope, Bytes data, GCancellable* cancel) 
     return result;
 }
 
-Status use(const Item& item, std::size_t byte_ceiling, GCancellable* cancel, const Consumer& consumer) {
+static Status use_selected(const std::string* socket_path, const Item& item, std::size_t byte_ceiling,
+                           GCancellable* cancel, const Consumer& consumer) {
     if (byte_ceiling == 0 || byte_ceiling > maximum_size || !consumer) return Status::invalid;
     Session session;
     Object<SecretItem> match;
-    const auto status = session.find(item, cancel, match);
+    const auto status = session.find(item, cancel, match, socket_path);
     if (status != Status::ok) return status;
     Error error;
     if (!secret_item_load_secret_sync(match.get(), cancel, &error.value)) return failure(error);
@@ -194,6 +210,15 @@ Status use(const Item& item, std::size_t byte_ceiling, GCancellable* cancel, con
     try { consumer(Bytes(reinterpret_cast<const std::byte*>(bytes), length)); }
     catch (...) { return Status::indeterminate; }
     return Status::ok;
+}
+
+Status use(const Item& item, std::size_t byte_ceiling, GCancellable* cancel, const Consumer& consumer) {
+    return use_selected(nullptr, item, byte_ceiling, cancel, consumer);
+}
+
+Status use_on_bus(const std::string& socket_path, const Item& item, std::size_t byte_ceiling,
+                  GCancellable* cancel, const Consumer& consumer) {
+    return use_selected(&socket_path, item, byte_ceiling, cancel, consumer);
 }
 
 Status retire(const Item& item, GCancellable* cancel) {
