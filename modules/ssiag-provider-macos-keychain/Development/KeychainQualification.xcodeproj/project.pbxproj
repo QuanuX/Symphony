@@ -1,0 +1,74 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A10000000000000000000001 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000001; };
+		A10000000000000000000002 /* DevelopmentQualification.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000002; };
+		A10000000000000000000003 /* DisposableKeychainItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000003; };
+		A10000000000000000000004 /* CurrentUserKeychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000006; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		A20000000000000000000001 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Qualification/Sources/SymphonyKeychainQualification/main.swift; sourceTree = "<group>"; };
+		A20000000000000000000002 /* DevelopmentQualification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Qualification/Sources/DisposableKeychainQualificationSupport/DevelopmentQualification.swift; sourceTree = "<group>"; };
+		A20000000000000000000003 /* DisposableKeychainItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Qualification/Sources/DisposableKeychainQualificationSupport/DisposableKeychainItem.swift; sourceTree = "<group>"; };
+		A20000000000000000000004 /* KeychainQualification.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KeychainQualification.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A20000000000000000000005 /* Development.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Development.entitlements; sourceTree = "<group>"; };
+		A20000000000000000000006 /* CurrentUserKeychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Qualification/Sources/DisposableKeychainQualificationSupport/CurrentUserKeychain.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+		A30000000000000000000001 = {isa = PBXGroup; children = (A20000000000000000000001, A20000000000000000000002, A20000000000000000000003, A20000000000000000000006, A20000000000000000000005, A30000000000000000000002); sourceTree = "<group>"; };
+		A30000000000000000000002 = {isa = PBXGroup; children = (A20000000000000000000004); name = Products; sourceTree = "<group>"; };
+		A40000000000000000000001 /* Sources */ = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (A10000000000000000000001, A10000000000000000000002, A10000000000000000000003, A10000000000000000000004); runOnlyForDeploymentPostprocessing = 0; };
+
+		A50000000000000000000001 /* KeychainQualification */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A70000000000000000000002;
+			buildPhases = (A40000000000000000000001);
+			buildRules = ();
+			dependencies = ();
+			name = KeychainQualification;
+			productName = KeychainQualification;
+			productReference = A20000000000000000000004;
+			productType = "com.apple.product-type.application";
+		};
+		A60000000000000000000001 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {LastUpgradeCheck = 2630;};
+			buildConfigurationList = A70000000000000000000001;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (en, Base);
+			mainGroup = A30000000000000000000001;
+			productRefGroup = A30000000000000000000002;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (A50000000000000000000001);
+		};
+		A70000000000000000000001 = {isa = XCConfigurationList; buildConfigurations = (A80000000000000000000001); defaultConfigurationIsVisible = 0; defaultConfigurationName = Debug; };
+		A70000000000000000000002 = {isa = XCConfigurationList; buildConfigurations = (A80000000000000000000002); defaultConfigurationIsVisible = 0; defaultConfigurationName = Debug; };
+		A80000000000000000000001 = {isa = XCBuildConfiguration; buildSettings = {ALWAYS_SEARCH_USER_PATHS = NO; SDKROOT = macosx; MACOSX_DEPLOYMENT_TARGET = 13.0; SWIFT_VERSION = 6.0; }; name = Debug; };
+		A80000000000000000000002 = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_ENTITLEMENTS = Development.entitlements;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSBackgroundOnly = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "local.symphony-keychain-check";
+				PRODUCT_NAME = KeychainQualification;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+	};
+	rootObject = A60000000000000000000001;
+}
