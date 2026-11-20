@@ -1,0 +1,114 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 1160" width="100%" height="100%">
+  <defs>
+    <linearGradient id="dividerRule2" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#1e2227"/>
+      <stop offset="20%" stop-color="#72f6ff"/>
+      <stop offset="40%" stop-color="#8f7cff"/>
+      <stop offset="60%" stop-color="#ff69c6"/>
+      <stop offset="80%" stop-color="#d7ff69"/>
+      <stop offset="100%" stop-color="#1e2227"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Outer Frame -->
+  <rect width="960" height="1160" fill="#050607" stroke="#1e2227" stroke-width="2"/>
+
+  <!-- SECTION 01: VGAA ARCHITECTURAL FOUNDATION -->
+  <text x="40" y="48" fill="#858b92" font-family="'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace" font-size="11" letter-spacing="2">01 // VECTOR-GRAPH APPLICATION ARCHITECTURE (VGAA)</text>
+  <text x="40" y="88" fill="#f6f7f8" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="31" font-weight="700" letter-spacing="-1">Compose Your Environment with <tspan fill="#72f6ff">Modular Sovereignty.</tspan></text>
+
+  <text x="40" y="124" fill="#b6bbc0" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="14.5">Symphony is organized as an inspectable monorepo of independently versioned and installable runtime components.</text>
+  <text x="40" y="147" fill="#f6f7f8" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="14.5" font-weight="600">Domain vectors own meaning; native engines and SDKs perform domain work; qxctl presents structured operations</text>
+  <text x="40" y="170" fill="#b6bbc0" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="14.5">without making Symphony a single resident process. Select, update, diagnose, and remove engines individually across</text>
+  <text x="40" y="193" fill="#b6bbc0" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="14.5"><tspan fill="#f6f7f8" font-weight="700">Nodes</tspan> (resources), <tspan fill="#f6f7f8" font-weight="700">Habitats</tspan> (OS/package conditioning), and <tspan fill="#f6f7f8" font-weight="700">Nests</tspan> (user-purpose workloads).</text>
+
+  <!-- SECTION 02: THE 6 CAPABILITY PILLARS -->
+  <text x="40" y="242" fill="#858b92" font-family="'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace" font-size="11" letter-spacing="2">02 // WHAT YOU CAN DO TODAY &amp; DOMAIN ARCHITECTURE</text>
+
+  <!-- 2x3 Grid Container -->
+  <rect x="40" y="262" width="880" height="585" fill="#080a0b" stroke="#1e2227" stroke-width="1"/>
+  <line x1="480" y1="262" x2="480" y2="847" stroke="#1e2227" stroke-width="1"/>
+  <line x1="40" y1="457" x2="920" y2="457" stroke="#1e2227" stroke-width="1"/>
+  <line x1="40" y1="652" x2="920" y2="652" stroke="#1e2227" stroke-width="1"/>
+
+  <!-- PILLAR 01 -->
+  <text x="64" y="292" fill="#858b92" font-family="'SFMono-Regular', Consolas, monospace" font-size="10.5">PILLAR 01</text>
+  <text x="456" y="292" fill="#72f6ff" font-family="'SFMono-Regular', Consolas, monospace" font-size="10.5" text-anchor="end">QXCTL // GO 1.26.5</text>
+  <text x="64" y="320" fill="#72f6ff" font-family="'SFMono-Regular', Consolas, monospace" font-size="10.5" letter-spacing="1.4">ADMINISTRATIVE INTERFACE</text>
+  <text x="64" y="346" fill="#f6f7f8" font-family="Inter, -apple-system, sans-serif" font-size="18.5" font-weight="700">Inspect &amp; Administer Installations</text>
+  <text x="64" y="374" fill="#989ea4" font-family="Inter, -apple-system, sans-serif" font-size="13">Query contracts, versions, <tspan fill="#f6f7f8" font-weight="600">525 stable command identities</tspan>,</text>
+  <text x="64" y="394" fill="#989ea4" font-family="Inter, -apple-system, sans-serif" font-size="13">installed engines, lifecycle state, and protected selections via</text>
+  <text x="64" y="414" fill="#989ea4" font-family="Inter, -apple-system, sans-serif" font-size="13"><tspan fill="#f6f7f8" font-family="'SFMono-Regular', Consolas, monospace">qxctl</tspan> with structured JSON output while preserving exact</text>
+  <text x="64" y="434" fill="#989ea4" font-family="Inter, -apple-system, sans-serif" font-size="13">owner response and authorization boundaries.</text>
+
+  <!-- PILLAR 02 -->
+  <text x="504" y="292" fill="#858b92" font-family="'SFMono-Regular', Consolas, monospace" font-size="10.5">PILLAR 02</text>
+  <text x="896" y="292" fill="#d7ff69" font-family="'SFMono-Regular', Consolas, monospace" font-size="10.5" text-anchor="end">SQV · SBV · SRRAPIV</text>
+  <text x="504" y="320" fill="#d7ff69" font-family="'SFMono-Regular', Consolas, monospace" font-size="10.5" letter-spacing="1.4">QUANTITATIVE DATA &amp; BACKTEST RESEARCH</text>
+  <text x="504" y="346" fill="#f6f7f8" font-family="Inter, -apple-system, sans-serif" font-size="18.5" font-weight="700">C++ SDKs, Replay &amp; Dedicated Rithmic</text>
+  <text x="504" y="374" fill="#989ea4" font-family="Inter, -apple-system, sans-serif" font-size="13">Use C++ SDKs for capture, metadata, flow, integer conversion,</text>
+  <text x="504" y="394" fill="#989ea4" font-family="Inter, -apple-system, sans-serif" font-size="13">retained stores, replay, and checkpoints; run bounded <tspan fill="#f6f7f8" font-weight="600">SBV</tspan></text>
+  <text x="504" y="414" fill="#989ea4" font-family="Inter, -apple-system, sans-serif" font-size="13">evaluations with cancellation/recovery; and build dedicated</text>
+  <text x="504" y="434" fill="#989ea4" font-family="Inter, -apple-system, sans-serif" font-size="13">non-Windows native <tspan fill="#f6f7f8" font-weight="600">SRRAPIV</tspan> R API+ integrations.</text>
+
+  <!-- PILLAR 03 -->
+  <text x="64" y="487" fill="#858b92" font-family="'SFMono-Regular', Consolas, monospace" font-size="10.5">PILLAR 03</text>
+  <text x="456" y="487" fill="#ffb45f" font-family="'SFMono-Regular', Consolas, monospace" font-size="10.5" text-anchor="end">SCV · SHV · SNV</text>
+  <text x="64" y="515" fill="#ffb45f" font-family="'SFMono-Regular', Consolas, monospace" font-size="10.5" letter-spacing="1.4">CLOUD, HARDWARE &amp; NODE EVIDENCE</text>
+  <text x="64" y="541" fill="#f6f7f8" font-family="Inter, -apple-system, sans-serif" font-size="18.5" font-weight="700">Traceable Catalogues &amp; DuckDB Graphs</text>
+  <text x="64" y="569" fill="#989ea4" font-family="Inter, -apple-system, sans-serif" font-size="13">Retain source captures, replay selected hardware catalogues,</text>
+  <text x="64" y="589" fill="#989ea4" font-family="Inter, -apple-system, sans-serif" font-size="13">inspect cloud/provider knowledge and <tspan fill="#f6f7f8" font-weight="600">five Node engines</tspan>, and</text>
+  <text x="64" y="609" fill="#989ea4" font-family="Inter, -apple-system, sans-serif" font-size="13">attach optional native <tspan fill="#f6f7f8" font-weight="600">DuckDB connectors</tspan> qualified across</text>
+  <text x="64" y="629" fill="#989ea4" font-family="Inter, -apple-system, sans-serif" font-size="13">all four Public Beta target profiles.</text>
+
+  <!-- PILLAR 04 -->
+  <text x="504" y="487" fill="#858b92" font-family="'SFMono-Regular', Consolas, monospace" font-size="10.5">PILLAR 04</text>
+  <text x="896" y="487" fill="#ff69c6" font-family="'SFMono-Regular', Consolas, monospace" font-size="10.5" text-anchor="end">SSIAG · STAV · SOV</text>
+  <text x="504" y="515" fill="#ff69c6" font-family="'SFMono-Regular', Consolas, monospace" font-size="10.5" letter-spacing="1.4">IDENTITY, AUDIT &amp; BOUNDED OPERATIONS</text>
+  <text x="504" y="541" fill="#f6f7f8" font-family="Inter, -apple-system, sans-serif" font-size="18.5" font-weight="700">Policy Dispatch &amp; Append-Only Audit</text>
+  <text x="504" y="569" fill="#989ea4" font-family="Inter, -apple-system, sans-serif" font-size="13">Apply exact <tspan fill="#f6f7f8" font-weight="600">SSIAG</tspan> authorization policy and provider bindings,</text>
+  <text x="504" y="589" fill="#989ea4" font-family="Inter, -apple-system, sans-serif" font-size="13">commit append-only <tspan fill="#f6f7f8" font-weight="600">STAV</tspan> audit evidence via <tspan fill="#f6f7f8" font-weight="600">Accordare</tspan>, and</text>
+  <text x="504" y="609" fill="#989ea4" font-family="Inter, -apple-system, sans-serif" font-size="13">execute bounded local handoff or scoped SSH carrier flows</text>
+  <text x="504" y="629" fill="#989ea4" font-family="Inter, -apple-system, sans-serif" font-size="13">through <tspan fill="#f6f7f8" font-weight="600">SOV</tspan> with explicit recovery paths.</text>
+
+  <!-- PILLAR 05 -->
+  <text x="64" y="682" fill="#858b92" font-family="'SFMono-Regular', Consolas, monospace" font-size="10.5">PILLAR 05</text>
+  <text x="456" y="682" fill="#8f7cff" font-family="'SFMono-Regular', Consolas, monospace" font-size="10.5" text-anchor="end">SKVI · SCLV · SACV · SODV · SSFV</text>
+  <text x="64" y="710" fill="#8f7cff" font-family="'SFMono-Regular', Consolas, monospace" font-size="10.5" letter-spacing="1.4">KNOWLEDGE GOVERNANCE &amp; EVOLUTION</text>
+  <text x="64" y="736" fill="#f6f7f8" font-family="Inter, -apple-system, sans-serif" font-size="18.5" font-weight="700">Deterministic Read-Only Assurance</text>
+  <text x="64" y="764" fill="#989ea4" font-family="Inter, -apple-system, sans-serif" font-size="13">Each module's Contract Quad (<tspan fill="#f6f7f8" font-family="'SFMono-Regular', Consolas, monospace">INTENT</tspan>, <tspan fill="#f6f7f8" font-family="'SFMono-Regular', Consolas, monospace">MANIFEST</tspan>, <tspan fill="#f6f7f8" font-family="'SFMono-Regular', Consolas, monospace">SKILL</tspan>, <tspan fill="#f6f7f8" font-family="'SFMono-Regular', Consolas, monospace">SPEC</tspan>)</text>
+  <text x="64" y="784" fill="#989ea4" font-family="Inter, -apple-system, sans-serif" font-size="13">delimits its boundary. <tspan fill="#f6f7f8" font-weight="600">SAV / Accordare</tspan>, <tspan fill="#f6f7f8" font-weight="600">SEV</tspan>, <tspan fill="#f6f7f8" font-weight="600">Maestro</tspan>, and</text>
+  <text x="64" y="804" fill="#989ea4" font-family="Inter, -apple-system, sans-serif" font-size="13"><tspan fill="#f6f7f8" font-weight="600">Knowledge Session Coordinator</tspan> evaluate plans and presence</text>
+  <text x="64" y="824" fill="#989ea4" font-family="Inter, -apple-system, sans-serif" font-size="13">without silently mutating canonical state.</text>
+
+  <!-- PILLAR 06 -->
+  <text x="504" y="682" fill="#858b92" font-family="'SFMono-Regular', Consolas, monospace" font-size="10.5">PILLAR 06</text>
+  <text x="896" y="682" fill="#72f6ff" font-family="'SFMono-Regular', Consolas, monospace" font-size="10.5" text-anchor="end">COLD-PATH // CALLER-NEUTRAL</text>
+  <text x="504" y="710" fill="#72f6ff" font-family="'SFMono-Regular', Consolas, monospace" font-size="10.5" letter-spacing="1.4">SYMPHONY ARCHITECTURAL DOCTRINE</text>
+  <text x="504" y="736" fill="#f6f7f8" font-family="Inter, -apple-system, sans-serif" font-size="18.5" font-weight="700">Evidence Before Action &amp; Protected Hot Path</text>
+  <text x="504" y="764" fill="#989ea4" font-family="Inter, -apple-system, sans-serif" font-size="13">Exact versions, owned-file receipts, expected state, and</text>
+  <text x="504" y="784" fill="#989ea4" font-family="Inter, -apple-system, sans-serif" font-size="13">explicit authority gate mutations. Uncertain outcomes are</text>
+  <text x="504" y="804" fill="#989ea4" font-family="Inter, -apple-system, sans-serif" font-size="13">reconciled rather than retried; caller identity alone grants</text>
+  <text x="504" y="824" fill="#989ea4" font-family="Inter, -apple-system, sans-serif" font-size="13">no authority and <tspan fill="#f6f7f8" font-family="'SFMono-Regular', Consolas, monospace">qxctl</tspan> stays off the trading loop.</text>
+
+  <!-- SECTION 03: PUBLIC BETA PLATFORM MATRIX -->
+  <rect x="40" y="876" width="880" height="248" fill="#080a0b" stroke="#1e2227" stroke-width="1"/>
+  <text x="64" y="908" fill="#d7ff69" font-family="'SFMono-Regular', Consolas, monospace" font-size="11" letter-spacing="1.8">03 // PUBLIC BETA 0.2.0-BETA.2 PLATFORM PROFILES &amp; TOOLCHAINS</text>
+  <text x="64" y="936" fill="#f6f7f8" font-family="Inter, -apple-system, sans-serif" font-size="20" font-weight="700" letter-spacing="-0.4">Four Qualified Operating-System Targets · 59 Default Packages per Profile</text>
+
+  <line x1="64" y1="954" x2="896" y2="954" stroke="#1e2227" stroke-width="1"/>
+  <line x1="64" y1="1008" x2="896" y2="1008" stroke="#1e2227" stroke-width="1"/>
+  <line x1="64" y1="1062" x2="896" y2="1062" stroke="#1e2227" stroke-width="1"/>
+
+  <text x="64" y="985" fill="#72f6ff" font-family="'SFMono-Regular', Consolas, monospace" font-size="11" letter-spacing="1">APPLE SILICON</text>
+  <text x="255" y="985" fill="#d8dcdf" font-family="Inter, -apple-system, sans-serif" font-size="13"><tspan fill="#f6f7f8" font-weight="700">macOS 15 (ARM64)</tspan> · Xcode 26.3 · Native SDKs, Go modules, DuckDB connectors, <tspan fill="#f6f7f8" font-family="'SFMono-Regular', Consolas, monospace">.pkg</tspan> &amp; <tspan fill="#f6f7f8" font-family="'SFMono-Regular', Consolas, monospace">.sh</tspan> installers</text>
+
+  <text x="64" y="1039" fill="#8f7cff" font-family="'SFMono-Regular', Consolas, monospace" font-size="11" letter-spacing="1">LINUX PROFILES</text>
+  <text x="255" y="1039" fill="#d8dcdf" font-family="Inter, -apple-system, sans-serif" font-size="13"><tspan fill="#f6f7f8" font-weight="700">Ubuntu 24.04 LTS</tspan> (<tspan fill="#f6f7f8" font-family="'SFMono-Regular', Consolas, monospace">amd64</tspan> &amp; <tspan fill="#f6f7f8" font-family="'SFMono-Regular', Consolas, monospace">arm64</tspan> · Clang 18) · <tspan fill="#f6f7f8" font-weight="700">Ubuntu 26.04 LTS</tspan> (<tspan fill="#f6f7f8" font-family="'SFMono-Regular', Consolas, monospace">amd64</tspan> · Clang 21) · <tspan fill="#f6f7f8" font-family="'SFMono-Regular', Consolas, monospace">.sh</tspan> &amp; Conda</text>
+
+  <text x="64" y="1093" fill="#ff69c6" font-family="'SFMono-Regular', Consolas, monospace" font-size="11" letter-spacing="1">BUILD &amp; SOURCE</text>
+  <text x="255" y="1093" fill="#d8dcdf" font-family="Inter, -apple-system, sans-serif" font-size="13"><tspan fill="#f6f7f8" font-weight="700">CMake 3.31+</tspan> · <tspan fill="#f6f7f8" font-weight="700">C++26</tspan> · <tspan fill="#f6f7f8" font-weight="700">Go 1.26.5</tspan> · Checkpoint <tspan fill="#f6f7f8" font-family="'SFMono-Regular', Consolas, monospace">8a688959</tspan> · Native build <tspan fill="#f6f7f8" font-family="'SFMono-Regular', Consolas, monospace">bae2e817</tspan></text>
+
+  <!-- Bottom Spectral Divider -->
+  <rect x="40" y="1144" width="880" height="1.5" fill="url(#dividerRule2)"/>
+</svg>

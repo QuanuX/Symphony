@@ -1,0 +1,143 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 920" width="100%" height="100%">
+  <defs>
+    <linearGradient id="spectralBar" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#72f6ff"/>
+      <stop offset="25%" stop-color="#8f7cff"/>
+      <stop offset="50%" stop-color="#ff69c6"/>
+      <stop offset="75%" stop-color="#ffb45f"/>
+      <stop offset="100%" stop-color="#d7ff69"/>
+    </linearGradient>
+    <linearGradient id="spectralWord" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#fbfbfb"/>
+      <stop offset="28%" stop-color="#72f6ff"/>
+      <stop offset="52%" stop-color="#8f7cff"/>
+      <stop offset="76%" stop-color="#ff69c6"/>
+      <stop offset="100%" stop-color="#d7ff69"/>
+    </linearGradient>
+    <linearGradient id="dividerRule" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#1e2227"/>
+      <stop offset="20%" stop-color="#72f6ff"/>
+      <stop offset="40%" stop-color="#8f7cff"/>
+      <stop offset="60%" stop-color="#ff69c6"/>
+      <stop offset="80%" stop-color="#d7ff69"/>
+      <stop offset="100%" stop-color="#1e2227"/>
+    </linearGradient>
+    <radialGradient id="heroGlow" cx="78%" cy="14%" r="45%">
+      <stop offset="0%" stop-color="#72f6ff" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#050607" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Outer Frame -->
+  <rect width="960" height="920" fill="#050607" stroke="#1e2227" stroke-width="2"/>
+  <rect width="960" height="920" fill="url(#heroGlow)"/>
+
+  <!-- Top Spectral Bar -->
+  <rect x="1" y="1" width="958" height="4" fill="url(#spectralBar)"/>
+
+  <!-- Topbar Header -->
+  <line x1="1" y1="84" x2="959" y2="84" stroke="#1e2227" stroke-width="1"/>
+
+  <!-- BrandMark Q -->
+  <rect x="40" y="24" width="38" height="38" rx="9" fill="#080a0b" stroke="#72f6ff" stroke-width="1.2"/>
+  <text x="59" y="49" fill="#f6f7f8" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="17" font-weight="900" text-anchor="middle">Q</text>
+  <text x="90" y="41" fill="#f6f7f8" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="19" font-weight="800" letter-spacing="-0.5">QuanuX</text>
+  <text x="90" y="57" fill="#858b92" font-family="'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace" font-size="10" letter-spacing="3">VENTURES</text>
+
+  <!-- Status Pill -->
+  <rect x="614" y="26" width="306" height="34" rx="17" fill="#0b0d0f" stroke="#262b31" stroke-width="1"/>
+  <circle cx="634" cy="43" r="4" fill="#d7ff69"/>
+  <text x="648" y="47" fill="#dfe4e8" font-family="'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace" font-size="10.5" letter-spacing="1.1">PUBLIC BETA // v0.2.0-beta.2</text>
+
+  <!-- Hero Eyebrow -->
+  <text x="40" y="132" fill="#72f6ff" font-family="'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace" font-size="11.5" letter-spacing="2">VECTOR-GRAPH APPLICATION ARCHITECTURE // OPEN-SOURCE QUANTOS</text>
+  <text x="40" y="160" fill="#858b92" font-family="'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace" font-size="12" letter-spacing="2.4">QUANUX FLAGSHIP OPERATING SYSTEM</text>
+
+  <!-- Hero Title -->
+  <text x="40" y="222" fill="url(#spectralWord)" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="64" font-weight="800" letter-spacing="-2.5">Symphony.</text>
+
+  <!-- Hero Kicker -->
+  <text x="40" y="266" fill="#f6f7f8" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="22" font-weight="600" letter-spacing="-0.4">A quantOS for quantitative research, trading systems,</text>
+  <text x="40" y="295" fill="#f6f7f8" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="22" font-weight="600" letter-spacing="-0.4">and user-owned sovereign infrastructure.</text>
+
+  <!-- Hero Description -->
+  <text x="40" y="340" fill="#b6bbc0" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="14.5">Developed through <tspan fill="#f6f7f8" font-weight="700">VGAA — Vector-Graph Application Architecture</tspan>, <tspan fill="#72f6ff">QuanuX Symphony</tspan> organizes</text>
+  <text x="40" y="363" fill="#b6bbc0" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="14.5">quantitative data, replay, hardware and infrastructure knowledge, and explicit governance across</text>
+  <text x="40" y="386" fill="#b6bbc0" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="14.5">independently installed <tspan fill="#f6f7f8" font-weight="700">C++26</tspan>, <tspan fill="#f6f7f8" font-weight="700">Go 1.26.5</tspan>, and <tspan fill="#f6f7f8" font-weight="700">Swift</tspan> modules administered through <tspan fill="#d7ff69" font-family="'SFMono-Regular', Consolas, monospace">qxctl</tspan>.</text>
+  <text x="40" y="409" fill="#b6bbc0" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="14.5">Your strategy logic, provider choices, hardware, and deployment topology remain under your control.</text>
+
+  <!-- 4-Column Telemetry Strip -->
+  <rect x="40" y="436" width="880" height="76" fill="#080a0b" stroke="#1e2227" stroke-width="1"/>
+  <line x1="260" y1="436" x2="260" y2="512" stroke="#1e2227" stroke-width="1"/>
+  <line x1="480" y1="436" x2="480" y2="512" stroke="#1e2227" stroke-width="1"/>
+  <line x1="700" y1="436" x2="700" y2="512" stroke="#1e2227" stroke-width="1"/>
+
+  <text x="56" y="462" fill="#858b92" font-family="'SFMono-Regular', Consolas, monospace" font-size="10" letter-spacing="1.2">PUBLIC BETA RELEASE</text>
+  <text x="56" y="483" fill="#f6f7f8" font-family="'SFMono-Regular', Consolas, monospace" font-size="11.5" font-weight="700">v0.2.0-beta.2</text>
+  <text x="56" y="500" fill="#f6f7f8" font-family="'SFMono-Regular', Consolas, monospace" font-size="11.5" font-weight="700">4 Qualified OS Profiles</text>
+
+  <text x="276" y="462" fill="#858b92" font-family="'SFMono-Regular', Consolas, monospace" font-size="10" letter-spacing="1.2">COMMAND REGISTRY</text>
+  <text x="276" y="483" fill="#d7ff69" font-family="'SFMono-Regular', Consolas, monospace" font-size="11.5" font-weight="700">525 Stable Commands</text>
+  <text x="276" y="500" fill="#d7ff69" font-family="'SFMono-Regular', Consolas, monospace" font-size="11.5" font-weight="700">qxctl · Go 1.26.5 CLI</text>
+
+  <text x="496" y="462" fill="#858b92" font-family="'SFMono-Regular', Consolas, monospace" font-size="10" letter-spacing="1.2">SSFV SNAPSHOT</text>
+  <text x="496" y="483" fill="#72f6ff" font-family="'SFMono-Regular', Consolas, monospace" font-size="11.5" font-weight="700">154 Registered Features</text>
+  <text x="496" y="500" fill="#72f6ff" font-family="'SFMono-Regular', Consolas, monospace" font-size="11.5" font-weight="700">69 Owner Scopes · 427 Gates</text>
+
+  <text x="716" y="462" fill="#858b92" font-family="'SFMono-Regular', Consolas, monospace" font-size="10" letter-spacing="1.2">HOT-PATH DOCTRINE</text>
+  <text x="716" y="483" fill="#ff69c6" font-family="'SFMono-Regular', Consolas, monospace" font-size="11.5" font-weight="700">Cold-Path Control Plane</text>
+  <text x="716" y="500" fill="#ff69c6" font-family="'SFMono-Regular', Consolas, monospace" font-size="11.5" font-weight="700">Zero First-Party Python</text>
+
+  <!-- Terminal Window -->
+  <rect x="40" y="544" width="880" height="330" rx="10" fill="#080a0b" stroke="#262b31" stroke-width="1.2"/>
+  <rect x="41" y="545" width="878" height="42" rx="9" fill="#0b0d0f"/>
+  <line x1="40" y1="587" x2="920" y2="587" stroke="#1e2227" stroke-width="1"/>
+
+  <!-- Traffic Lights -->
+  <circle cx="62" cy="566" r="4.5" fill="#ff6d71"/>
+  <circle cx="76" cy="566" r="4.5" fill="#ffd35f"/>
+  <circle cx="90" cy="566" r="4.5" fill="#6fe787"/>
+
+  <text x="480" y="570" fill="#858b92" font-family="'SFMono-Regular', Consolas, monospace" font-size="11" letter-spacing="1" text-anchor="middle">qxctl // vgaa domain vectors &amp; source smoke check</text>
+  <text x="900" y="570" fill="#d7ff69" font-family="'SFMono-Regular', Consolas, monospace" font-size="11" letter-spacing="1.2" text-anchor="end">● FEATURE FREEZE</text>
+
+  <!-- Terminal Command -->
+  <text x="64" y="618" fill="#72f6ff" font-family="'SFMono-Regular', Consolas, monospace" font-size="12.5">$</text>
+  <text x="80" y="618" fill="#f6f7f8" font-family="'SFMono-Regular', Consolas, monospace" font-size="12.5">sh tests/launch-acceptance/source-smoke.sh "$work/qxctl" "$repo" "$work/evidence"</text>
+  <text x="64" y="640" fill="#858b92" font-family="'SFMono-Regular', Consolas, monospace" font-size="11"># Reporting executable identity, invariant registry, and independently installed C++26 / Go / Swift boundaries</text>
+
+  <!-- Terminal Table -->
+  <rect x="64" y="658" width="832" height="192" fill="#080a0b" stroke="#1e2227" stroke-width="1"/>
+  <rect x="65" y="659" width="830" height="36" fill="#0b0d0f"/>
+  <line x1="64" y1="695" x2="896" y2="695" stroke="#1e2227" stroke-width="1"/>
+  <line x1="64" y1="734" x2="896" y2="734" stroke="#181c20" stroke-width="1"/>
+  <line x1="64" y1="773" x2="896" y2="773" stroke="#181c20" stroke-width="1"/>
+  <line x1="64" y1="812" x2="896" y2="812" stroke="#181c20" stroke-width="1"/>
+
+  <text x="80" y="681" fill="#858b92" font-family="'SFMono-Regular', Consolas, monospace" font-size="10.5" letter-spacing="0.8">VECTOR // DOMAIN</text>
+  <text x="272" y="681" fill="#858b92" font-family="'SFMono-Regular', Consolas, monospace" font-size="10.5" letter-spacing="0.8">AVAILABLE REPOSITORY CAPABILITY</text>
+  <text x="880" y="681" fill="#858b92" font-family="'SFMono-Regular', Consolas, monospace" font-size="10.5" letter-spacing="0.8" text-anchor="end">BOUNDARY</text>
+
+  <!-- Row 1 -->
+  <text x="80" y="719" fill="#72f6ff" font-family="'SFMono-Regular', Consolas, monospace" font-size="11.5">SQV · SBV · SRRAPIV</text>
+  <text x="272" y="719" fill="#d8dcdf" font-family="'SFMono-Regular', Consolas, monospace" font-size="11.5">Capture, metadata, flow, replay, bounded backtest &amp; R API+ runtime</text>
+  <text x="880" y="719" fill="#d7ff69" font-family="'SFMono-Regular', Consolas, monospace" font-size="11" letter-spacing="1.2" text-anchor="end">NATIVE C++</text>
+
+  <!-- Row 2 -->
+  <text x="80" y="758" fill="#8f7cff" font-family="'SFMono-Regular', Consolas, monospace" font-size="11.5">SCV · SHV · SNV</text>
+  <text x="272" y="758" fill="#d8dcdf" font-family="'SFMono-Regular', Consolas, monospace" font-size="11.5">Cloud &amp; traceable hardware catalogues, 5 Node engines &amp; DuckDB</text>
+  <text x="880" y="758" fill="#d7ff69" font-family="'SFMono-Regular', Consolas, monospace" font-size="11" letter-spacing="1.2" text-anchor="end">PROVENANCE</text>
+
+  <!-- Row 3 -->
+  <text x="80" y="797" fill="#ff69c6" font-family="'SFMono-Regular', Consolas, monospace" font-size="11.5">SSIAG · STAV</text>
+  <text x="272" y="797" fill="#d8dcdf" font-family="'SFMono-Regular', Consolas, monospace" font-size="11.5">Authorization policy, provider bindings &amp; append-only audit ledger</text>
+  <text x="880" y="797" fill="#d7ff69" font-family="'SFMono-Regular', Consolas, monospace" font-size="11" letter-spacing="1.2" text-anchor="end">GOVERNED</text>
+
+  <!-- Row 4 -->
+  <text x="80" y="836" fill="#ffb45f" font-family="'SFMono-Regular', Consolas, monospace" font-size="11.5">SKV · SAV · Maestro</text>
+  <text x="272" y="836" fill="#d8dcdf" font-family="'SFMono-Regular', Consolas, monospace" font-size="11.5">Contract Quad, C++26 validator, Accordare &amp; engine presence</text>
+  <text x="880" y="836" fill="#d7ff69" font-family="'SFMono-Regular', Consolas, monospace" font-size="11" letter-spacing="1.2" text-anchor="end">EXPLICIT</text>
+
+  <!-- Bottom Spectral Divider -->
+  <rect x="40" y="902" width="880" height="1.5" fill="url(#dividerRule)"/>
+</svg>
