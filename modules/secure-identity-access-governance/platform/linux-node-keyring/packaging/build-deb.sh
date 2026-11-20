@@ -35,7 +35,7 @@ cleanup() {
 trap cleanup EXIT
 
 pkg=symphony-node-keyring
-version='0.1.1~dev1'
+version='0.1.1~dev2'
 prefix=/opt/symphony
 stage="$temp_dir/stage"
 build_options=(-DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_COMPILER=clang++-21

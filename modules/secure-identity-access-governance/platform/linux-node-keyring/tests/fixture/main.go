@@ -89,9 +89,9 @@ func disposableNode() {
 	require(len(strings.Split(strings.TrimSpace(string(routes)), "\n")) == 1, "unexpected IPv4 routes")
 }
 
-func addAccount(name string) account {
-	nothing := process{}
-	nothing.success(nil, "useradd", "--create-home", "--shell", "/bin/sh", "--password", "*", name)
+func addAccount(name string, options ...string) account {
+	args := append([]string{"useradd", "--create-home", "--shell", "/bin/sh", "--password", "*"}, options...)
+	process{}.success(nil, append(args, name)...)
 	u := checked(user.Lookup(name))
 	return account{checked(parseFixtureID(u.Uid)), checked(parseFixtureID(u.Gid)), name, u.HomeDir}
 }

@@ -78,12 +78,27 @@ bool private_credential(int fd, const struct stat& s, uid_t uid) {
     return true;
 }
 
-Descriptor open_unlock(uid_t uid) {
+Descriptor open_unlock(std::string_view mode) {
+    const uid_t uid = geteuid();
+    const std::string instance = std::to_string(uid) + ".service";
+    const std::string enroll_unit = "symphony-node-keyring-enroll@" + instance;
+    const std::string serve_unit = "symphony-node-keyring@" + instance;
     const char* location = getenv("CREDENTIALS_DIRECTORY");
     require(location != nullptr);
-    const fs::path path(location);
-    require(path.is_absolute() && fs::canonical(path) == path);
-    Descriptor dir(open(path.c_str(), O_RDONLY | O_DIRECTORY | O_NOFOLLOW | O_CLOEXEC));
+    const bool enroll = mode == "enroll" ||
+                        (mode == "check-unlock" && location == "/run/credentials/" + enroll_unit);
+    const auto& unit = enroll ? enroll_unit : serve_unit;
+    // The manager's environment confirms the unit. Only the verified service
+    // UID and the installed unit names select a filesystem entry.
+    require(location == "/run/credentials/" + unit);
+    constexpr int directory_flags = O_PATH | O_DIRECTORY | O_NOFOLLOW | O_CLOEXEC;
+    Descriptor runtime(open("/run", directory_flags));
+    auto root = runtime.metadata();
+    require(root.st_uid == 0 && (root.st_mode & 0022) == 0);
+    Descriptor credentials(openat(runtime.get(), "credentials", directory_flags));
+    root = credentials.metadata();
+    require(root.st_uid == 0 && (root.st_mode & 0022) == 0);
+    Descriptor dir(openat(credentials.get(), unit.c_str(), directory_flags));
     const auto owner = dir.metadata();
     require((owner.st_uid == 0 || owner.st_uid == uid) && (owner.st_mode & 0022) == 0);
     Descriptor file(openat(dir.get(), "vault-unlock", O_RDONLY | O_NONBLOCK | O_NOFOLLOW | O_CLOEXEC));
@@ -135,11 +150,9 @@ void notify_ready() {
 void run(std::string_view mode, uid_t uid) {
     verify_identity(uid);
     protect_process();
-    if (mode == "check-unlock") {
-        (void)open_unlock(uid);
-        return;
-    }
-    require(mode == "enroll" || mode == "serve");
+    require(mode == "enroll" || mode == "serve" || mode == "check-unlock");
+    auto unlock = open_unlock(mode);
+    if (mode == "check-unlock") return;
     const auto runtime = fs::path("/run/symphony-node-keyring-" + std::to_string(uid));
     require(fs::canonical(runtime) == runtime);
     private_dir(runtime, uid);
@@ -164,7 +177,6 @@ void run(std::string_view mode, uid_t uid) {
                  "</listen><auth>EXTERNAL</auth><policy context=\"default\"><allow send_destination=\"*\"/>"
                  "<allow receive_sender=\"*\"/><allow own=\"*\"/></policy></busconfig>");
     }
-    auto unlock = open_unlock(uid);
     Child daemon({"/usr/bin/dbus-daemon", "--nofork", "--config-file=" + config.string()}, env, -1, -1);
     auto cutoff = Clock::now() + 8s;
     while (!fs::is_socket(bus)) {

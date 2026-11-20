@@ -30,6 +30,11 @@ jobs:
       - name: Build Ubuntu qualification environment
         run: docker build -t node-keyring-qa modules/secure-identity-access-governance/platform/linux-node-keyring/tests
       - name: Exercise import, offline fetch and cold restart
+        env:
+          SYMPHONY_RESTART_FIXTURE_UID: '60123'
         run: |
-          docker run --rm --network none --mount "type=bind,src=$GITHUB_WORKSPACE,dst=/source,readonly" \
+          docker run --rm --network none --env SYMPHONY_RESTART_FIXTURE_UID \
+            --tmpfs "/run/credentials/symphony-node-keyring-enroll@${SYMPHONY_RESTART_FIXTURE_UID}.service:size=1m,mode=0700,nosuid,nodev,noexec" \
+            --tmpfs "/run/credentials/symphony-node-keyring@${SYMPHONY_RESTART_FIXTURE_UID}.service:size=1m,mode=0700,nosuid,nodev,noexec" \
+            --mount "type=bind,src=$GITHUB_WORKSPACE,dst=/source,readonly" \
             node-keyring-qa bash /source/modules/secure-identity-access-governance/platform/linux-node-keyring/tests/qualify-installed.sh
