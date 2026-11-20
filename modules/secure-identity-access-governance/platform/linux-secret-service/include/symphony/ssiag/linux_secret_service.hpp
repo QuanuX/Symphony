@@ -33,6 +33,10 @@ ProvisionResult provision(const Scope&, Bytes, GCancellable*);
 // The callback borrows bytes only until it returns and is called at most once
 // for this invocation. Durable one-shot issuance belongs to the SSIAG caller.
 Status use(const Item&, std::size_t byte_ceiling, GCancellable*, const Consumer&);
+// Select an exact local Unix socket path independently of process environment.
+// This is a connection selector. The caller still owns service and peer trust.
+Status use_on_bus(const std::string& socket_path, const Item&, std::size_t byte_ceiling,
+                  GCancellable*, const Consumer&);
 Status retire(const Item&, GCancellable*);
 
 } // namespace symphony::ssiag::linux_secret_service

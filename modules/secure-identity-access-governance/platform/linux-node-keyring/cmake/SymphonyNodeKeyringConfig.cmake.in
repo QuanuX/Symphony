@@ -1,0 +1,4 @@
+include(CMakeFindDependencyMacro)
+find_dependency(SymphonySSIAGLinuxSecretService 0.1.1 EXACT CONFIG)
+find_dependency(Threads)
+include("${CMAKE_CURRENT_LIST_DIR}/SymphonyNodeKeyringTargets.cmake")

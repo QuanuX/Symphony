@@ -1,0 +1,35 @@
+[Unit]
+Description=Local Symphony node keyring for service UID %i
+After=local-fs.target
+RequiresMountsFor=/etc/credstore.encrypted
+StartLimitIntervalSec=60s
+StartLimitBurst=5
+
+[Service]
+Type=notify
+NotifyAccess=main
+User=%i
+UMask=0077
+LoadCredentialEncrypted=vault-unlock:/etc/credstore.encrypted/symphony-node-keyring-%i.cred
+RuntimeDirectory=symphony-node-keyring-%i
+RuntimeDirectoryMode=0700
+ExecStart=/opt/symphony/libexec/symphony/ssiag-node-keyring/0.1.0-dev/keyring_session.py serve %i
+TimeoutStartSec=25s
+TimeoutStopSec=10s
+Restart=on-failure
+RestartSec=5s
+KillMode=mixed
+LimitCORE=0
+NoNewPrivileges=yes
+CapabilityBoundingSet=
+PrivateDevices=yes
+PrivateNetwork=yes
+PrivateTmp=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+RestrictAddressFamilies=AF_UNIX
+RestrictSUIDSGID=yes
+
+[Install]
+WantedBy=multi-user.target

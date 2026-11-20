@@ -1,0 +1,5 @@
+cmake_minimum_required(VERSION 3.30)
+project(NodeKeyringInstalledConsumer LANGUAGES CXX)
+find_package(SymphonyNodeKeyring 0.1.0 EXACT REQUIRED CONFIG)
+add_executable(node-keyring-installed-consumer ../bootstrap_test.cpp)
+target_link_libraries(node-keyring-installed-consumer PRIVATE Symphony::NodeKeyring)

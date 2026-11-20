@@ -1,0 +1,12 @@
+[Unit]
+Description=Verify the FIDO2-enrolled Symphony keyring volume for UID %i
+BindsTo=var-lib-symphony-nodevault.mount
+After=var-lib-symphony-nodevault.mount
+StopWhenUnneeded=yes
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/bin/python3 -I -B /etc/symphony/node-keyring/fido2_volume.py %i
+TimeoutStartSec=15
+NoNewPrivileges=yes

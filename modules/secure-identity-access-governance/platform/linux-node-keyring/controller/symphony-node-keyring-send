@@ -1,0 +1,166 @@
+#!/usr/bin/python3 -I
+"""Feed one opaque item to the node's forced import command over pinned OpenSSH."""
+import argparse
+import os
+import re
+import resource
+import selectors
+import stat
+import subprocess
+import sys
+import time
+import uuid
+
+
+def identifier(value):
+    try:
+        if str(uuid.UUID(value)) == value:
+            return value
+    except ValueError:
+        pass
+    raise argparse.ArgumentTypeError("expected a canonical lowercase UUID")
+
+
+def trusted_file(path):
+    # OpenSSH expands tokens, variables, tilde and quoted words in some options.
+    parts = path.split("/")[1:]
+    if not re.fullmatch(r"/[a-zA-Z0-9_./-]+", path) or any(p in ("", ".", "..") for p in parts):
+        raise argparse.ArgumentTypeError("expected a literal absolute file path")
+    try:
+        current = "/"
+        for component in parts[:-1]:
+            current = os.path.join(current, component)
+            parent = os.stat(current, follow_symlinks=False)
+            if (not stat.S_ISDIR(parent.st_mode) or parent.st_uid not in (0, os.geteuid()) or
+                    parent.st_mode & 0o022):
+                raise argparse.ArgumentTypeError("untrusted key or host-pin directory")
+        info = os.stat(path, follow_symlinks=False)
+    except OSError as exc:
+        raise argparse.ArgumentTypeError("file unavailable") from exc
+    if not stat.S_ISREG(info.st_mode) or info.st_uid not in (0, os.geteuid()) or info.st_mode & 0o022:
+        raise argparse.ArgumentTypeError("expected an owner-controlled regular file")
+    return path
+
+
+def readable_source(size):
+    mode = os.fstat(0).st_mode
+    if not (stat.S_ISFIFO(mode) or stat.S_ISSOCK(mode)):
+        raise ValueError("provide a protected pipe or socket on stdin")
+    data = bytearray(size + 1)
+    view = memoryview(data)
+    received = 0
+    deadline = time.monotonic() + 15
+    try:
+        with selectors.DefaultSelector() as poll:
+            poll.register(0, selectors.EVENT_READ)
+            while received <= size:
+                if not poll.select(max(0, deadline - time.monotonic())):
+                    raise ValueError("input deadline expired")
+                count = os.readv(0, [view[received:]])
+                if count == 0:
+                    if received != size:
+                        raise ValueError("input length mismatch")
+                    return data
+                received += count
+        raise ValueError("input exceeds declared length")
+    except BaseException:
+        data[:] = bytes(len(data))
+        raise
+
+
+def ssh_command(args):
+    return ["/usr/bin/ssh", "-F", "/dev/null", "-T", "-a", "-x",
+            "-oBatchMode=yes", "-oStrictHostKeyChecking=yes", "-oGlobalKnownHostsFile=/dev/null",
+            "-oUserKnownHostsFile=" + args.known_hosts, "-oUpdateHostKeys=no",
+            "-oIdentitiesOnly=yes", "-oIdentityAgent=none", "-oPreferredAuthentications=publickey",
+            "-oClearAllForwardings=yes", "-oControlMaster=no", "-oControlPath=none",
+            "-oConnectTimeout=8", "-oConnectionAttempts=1", "-i", args.identity,
+            "-p", str(args.port), "-l", args.user, "--", args.host, "symphony-keyring-import-v1"]
+
+
+def exchange(args, payload):
+    header = f"SNKI1 {args.request} {args.tops} {args.reference} {args.length}\n".encode("ascii")
+    reply = bytearray()
+    with subprocess.Popen(ssh_command(args), stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+                          stderr=subprocess.DEVNULL, bufsize=0, env={"LC_ALL": "C", "PATH": "/usr/bin:/bin"}) as child:
+        try:
+            # Two bounded writes; use nonblocking I/O to enforce one deadline even on a stalled SSH peer.
+            pending = [memoryview(header), memoryview(payload)[:args.length]]
+            deadline = time.monotonic() + 30
+            with selectors.DefaultSelector() as poll:
+                for stream, event in ((child.stdin, selectors.EVENT_WRITE), (child.stdout, selectors.EVENT_READ)):
+                    os.set_blocking(stream.fileno(), False)
+                    poll.register(stream, event)
+                while poll.get_map():
+                    ready = poll.select(max(0, deadline - time.monotonic()))
+                    if not ready or time.monotonic() >= deadline:
+                        raise TimeoutError
+                    for key, _ in ready:
+                        if key.fileobj is child.stdin:
+                            count = os.write(key.fd, pending[0])
+                            pending[0] = pending[0][count:]
+                            if not pending[0]:
+                                pending.pop(0)
+                            if not pending:
+                                poll.unregister(child.stdin)
+                                child.stdin.close()
+                        else:
+                            block = os.read(key.fd, 161 - len(reply))
+                            if block:
+                                reply.extend(block)
+                                if len(reply) > 160:
+                                    raise ValueError("invalid receipt")
+                            else:
+                                poll.unregister(child.stdout)
+            rc = child.wait(timeout=max(0, deadline - time.monotonic()))
+        finally:
+            if child.poll() is None:
+                child.kill()
+                child.wait()
+    # Never relay arbitrary remote output, including stderr or exception messages.
+    fields = reply.removesuffix(b"\n").split(b" ")
+    if not reply.endswith(b"\n") or len(fields) not in (2, 3) or fields[1] != args.request.encode():
+        raise ValueError("missing receipt")
+    tag = fields[0]
+    if (tag, rc, len(fields)) not in ((b"STORED", 0, 3), (b"ALREADY_STORED", 3, 3),
+                                      (b"REFUSED", 1, 2), (b"ALREADY_REFUSED", 3, 2),
+                                      (b"UNCERTAIN", 2, 2), (b"UNCERTAIN", 2, 3)):
+        raise ValueError("invalid receipt")
+    if len(fields) == 3:
+        identifier(fields[2].decode("ascii"))
+    print(reply.decode("ascii"), end="")
+    return rc
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    for name in ("request", "tops", "reference"):
+        parser.add_argument("--" + name, required=True, type=identifier)
+    for name in ("known-hosts", "identity"):
+        parser.add_argument("--" + name, required=True, type=trusted_file)
+    parser.add_argument("--host", required=True)
+    parser.add_argument("--user", required=True)
+    parser.add_argument("--port", type=int, default=22)
+    parser.add_argument("--length", type=int, required=True)
+    args = parser.parse_args()
+    if not (1 <= args.port <= 65535 and 1 <= args.length <= 4096 and
+            re.fullmatch(r"[a-zA-Z0-9][a-zA-Z0-9.:-]{0,252}", args.host) and
+            re.fullmatch(r"[a-z_][a-z0-9_-]{0,31}", args.user)):
+        parser.error("invalid endpoint, login or expected length")
+    resource.setrlimit(resource.RLIMIT_CORE, (0, 0))
+    try:
+        data = readable_source(args.length)
+    except (OSError, ValueError) as exc:
+        print("Source refused before transfer:", str(exc), file=sys.stderr)
+        return 1
+    try:
+        return exchange(args, data)
+    except (OSError, ValueError, argparse.ArgumentTypeError, subprocess.TimeoutExpired):
+        print("UNCONFIRMED " + args.request, file=sys.stderr)
+        return 2
+    finally:
+        data[:] = bytes(len(data))
+
+
+if __name__ == "__main__":
+    sys.exit(main())
