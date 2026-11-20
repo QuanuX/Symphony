@@ -1,6 +1,7 @@
 """Qualify unattended GNOME Keyring restart in a fresh Linux --network none container."""
 
 import contextlib
+import errno
 import os
 from pathlib import Path
 import pwd
@@ -123,8 +124,36 @@ def main():
         # exercised the alternate service-owner-only 0400 representation.
         undefined = 0xffffffff
         acl = [(1, 4, undefined), (2, 4, uid), (4, 0, undefined), (16, 4, undefined), (32, 0, undefined)]
-        os.setxattr(credential, "system.posix_acl_access",
-                    struct.pack("<I", 2) + b"".join(struct.pack("<HHI", *entry) for entry in acl))
+        encoded_acl = struct.pack("<I", 2) + b"".join(struct.pack("<HHI", *entry) for entry in acl)
+        try:
+            os.setxattr(credential, "system.posix_acl_access", encoded_acl)
+        except OSError as exc:
+            if exc.errno != errno.ENOTSUP:
+                raise
+            # Some tmpfs kernels (including LinuxKit) lack POSIX ACLs.
+            # systemd's fallback is a service-owned file in a read-only mount.
+            os.chown(credential, uid, gid)
+            print("Fixture tmpfs uses the service-owner credential representation")
+
+        # Test the actual kernel ACL on a filesystem with ACL support even
+        # when the runner's tmpfs lacks ACLs. This public marker never opens
+        # any vault; the real fixture's unlock remains exclusively in tmpfs.
+        with tempfile.TemporaryDirectory(dir="/var/tmp") as sample:
+            os.chmod(sample, 0o755)
+            marker = Path(sample) / "vault-unlock"
+            marker.write_bytes(b"x" * 64)
+            marker.chmod(0o400)
+            os.setxattr(marker, "system.posix_acl_access", encoded_acl)
+            inspect = [*identity, sys.executable, "-I", "-B", "-c",
+                       "import os,runpy,sys; h=runpy.run_path(sys.argv[1]); "
+                       "h['open_unlock'](os.getuid()).close()", launcher]
+            assert call(inspect, extra={"CREDENTIALS_DIRECTORY": sample}).returncode == 0
+            # The service UID can still read the file, but a second group
+            # can now read it as well, so the bootstrap must refuse.
+            acl[2] = (4, 4, undefined)
+            unsafe = struct.pack("<I", 2) + b"".join(struct.pack("<HHI", *entry) for entry in acl)
+            os.setxattr(marker, "system.posix_acl_access", unsafe)
+            assert call(inspect, extra={"CREDENTIALS_DIRECTORY": sample}).returncode != 0
 
         binding = work / "binding"
         binding.write_text(f"SYMPHONY-NODE-KEYRING-1\nuid={uid}\nbus_socket={bus}\ncollection={collection}\n"
