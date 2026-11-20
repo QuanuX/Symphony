@@ -13,13 +13,13 @@ on:
         description: Select analysis categories
         type: choice
         default: all
-        options: [all, linux-node-keyring]
+        options: [all, linux-node-keyring, fixture-only]
 
 permissions:
   contents: read
 
 concurrency:
-  group: codeql-${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}${{ inputs.focus == 'linux-node-keyring' && '-linux-node-keyring' || '' }}
+  group: codeql-${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}${{ inputs.focus && inputs.focus != 'all' && format('-{0}', inputs.focus) || '' }}
   cancel-in-progress: true
 
 jobs:
@@ -52,6 +52,13 @@ jobs:
           - language: go
             os: macos-15-intel
             focus: linux-node-keyring
+          - language: c-cpp
+            focus: fixture-only
+          - language: swift
+            focus: fixture-only
+          - language: go
+            os: macos-15-intel
+            focus: fixture-only
     steps:
       - name: Check out source
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2

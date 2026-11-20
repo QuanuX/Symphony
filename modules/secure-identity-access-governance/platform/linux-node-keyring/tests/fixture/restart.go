@@ -9,7 +9,6 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"strconv"
 	"strings"
 	"syscall"
 )
@@ -17,7 +16,7 @@ import (
 // Build the Linux POSIX ACL xattr for a file owned by root with read
 // permission for the named service user. The negative test grants the
 // owning group read permission as well.
-func credentialACL(uid int, groupPerm uint16) []byte {
+func credentialACL(uid uint32, groupPerm uint16) []byte {
 	const undefined = ^uint32(0)
 	var acl bytes.Buffer
 	must(binary.Write(&acl, binary.LittleEndian, uint32(2)))
@@ -25,7 +24,7 @@ func credentialACL(uid int, groupPerm uint16) []byte {
 		Tag, Perm uint16
 		ID        uint32
 	}{
-		{1, 4, undefined}, {2, 4, uint32(uid)}, {4, groupPerm, undefined}, {16, 4, undefined}, {32, 0, undefined},
+		{1, 4, undefined}, {2, 4, uid}, {4, groupPerm, undefined}, {16, 4, undefined}, {32, 0, undefined},
 	} {
 		must(binary.Write(&acl, binary.LittleEndian, entry))
 	}
@@ -38,7 +37,7 @@ func restartChecks(launcher, importer, consumer string) {
 	must(syscall.Statfs("/dev/shm", &filesystem))
 	require(filesystem.Type == 0x01021994, "a private tmpfs is required for unlock input")
 	a := addAccount("symphonybootqa")
-	uid := strconv.Itoa(a.uid)
+	uid := fmt.Sprint(a.uid)
 	must(os.Chmod(a.home, 0700))
 	runtime := filepath.Join("/run", "symphony-node-keyring-"+uid)
 	a.mkdir(runtime)
@@ -46,7 +45,7 @@ func restartChecks(launcher, importer, consumer string) {
 	bus := filepath.Join(runtime, "bus")
 	cdir := checked(os.MkdirTemp("/dev/shm", "symphony-unlock-"))
 	defer os.RemoveAll(cdir)
-	must(os.Chown(cdir, a.uid, a.gid))
+	a.chown(cdir)
 	work := checked(os.MkdirTemp("/run", "symphony-restart-"))
 	defer os.RemoveAll(work)
 	must(os.Chmod(work, 0755))
@@ -57,7 +56,7 @@ func restartChecks(launcher, importer, consumer string) {
 	unlock := fmt.Appendf(nil, "%x", randomBytes(32))
 	credential := filepath.Join(cdir, "vault-unlock")
 	must(os.WriteFile(credential, unlock, 0400))
-	must(os.Chown(credential, a.uid, a.gid))
+	a.chown(credential)
 	p := process{env: append(a.environment(), "CREDENTIALS_DIRECTORY="+cdir), identity: a.credentials(), protected: [][]byte{value, unlock}}
 	refuse := func(mode string) {
 		r := p.run(nil, launcher, mode, uid)
@@ -106,7 +105,7 @@ func restartChecks(launcher, importer, consumer string) {
 	if errors.Is(err, syscall.ENOTSUP) {
 		// systemd falls back to a service-owned, read-only credential on
 		// kernels where tmpfs does not support POSIX ACLs.
-		must(os.Chown(credential, a.uid, a.gid))
+		a.chown(credential)
 	} else {
 		must(err)
 	}

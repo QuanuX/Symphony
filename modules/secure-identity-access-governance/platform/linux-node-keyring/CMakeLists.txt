@@ -99,6 +99,9 @@ if(BUILD_TESTING)
       "${GO_EXECUTABLE}" build -tags symphony_node_keyring_fixture -trimpath -o "${fixture}" ${fixture_sources}
     DEPENDS ${fixture_sources} VERBATIM)
   add_custom_target(build-node-keyring-fixture ALL DEPENDS "${fixture}")
+  add_test(NAME node-keyring-fixture-ownership
+    COMMAND ${CMAKE_COMMAND} -E env GOWORK=off GO111MODULE=off GOPROXY=off GOTOOLCHAIN=local CGO_ENABLED=0
+      "${GO_EXECUTABLE}" test -tags symphony_node_keyring_fixture ${fixture_sources} "${CMAKE_CURRENT_SOURCE_DIR}/tests/fixture/ownership_test.go")
   add_executable(node-keyring-import-fixture src/import.cpp tests/import_fake.cpp)
   target_link_libraries(node-keyring-import-fixture PRIVATE Symphony::SSIAGLinuxSecretService)
   add_test(NAME node-keyring-import-refusals

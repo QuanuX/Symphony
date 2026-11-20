@@ -9,6 +9,7 @@ import (
 	"context"
 	"crypto/rand"
 	"fmt"
+	"math"
 	"net"
 	"os"
 	"os/exec"
@@ -56,8 +57,21 @@ func uuid() string {
 }
 
 type account struct {
-	uid, gid   int
+	uid, gid   uint32
 	name, home string
+}
+
+func parseFixtureID(raw string) (uint32, error) {
+	id, err := strconv.ParseUint(raw, 10, 32)
+	if err != nil {
+		return 0, err
+	}
+	// The fixture drops privileges to a disposable account. Exclude root,
+	// chown's leave-unchanged sentinel, and IDs that os.Chown cannot represent.
+	if id == 0 || id >= math.MaxUint32 || id > math.MaxInt || strconv.FormatUint(id, 10) != raw {
+		return 0, fmt.Errorf("invalid disposable account ID %q", raw)
+	}
+	return uint32(id), nil
 }
 
 func disposableNode() {
@@ -79,18 +93,22 @@ func addAccount(name string) account {
 	nothing := process{}
 	nothing.success(nil, "useradd", "--create-home", "--shell", "/bin/sh", "--password", "*", name)
 	u := checked(user.Lookup(name))
-	return account{checked(strconv.Atoi(u.Uid)), checked(strconv.Atoi(u.Gid)), name, u.HomeDir}
+	return account{checked(parseFixtureID(u.Uid)), checked(parseFixtureID(u.Gid)), name, u.HomeDir}
 }
 
 func (a account) credentials() *syscall.SysProcAttr {
 	return &syscall.SysProcAttr{Credential: &syscall.Credential{
-		Uid: uint32(a.uid), Gid: uint32(a.gid), Groups: []uint32{uint32(a.gid)},
+		Uid: a.uid, Gid: a.gid, Groups: []uint32{a.gid},
 	}}
 }
 
 func (a account) mkdir(path string) {
 	must(os.Mkdir(path, 0700))
-	must(os.Chown(path, a.uid, a.gid))
+	a.chown(path)
+}
+
+func (a account) chown(path string) {
+	must(os.Chown(path, int(a.uid), int(a.gid)))
 }
 
 func (a account) environment() []string {
