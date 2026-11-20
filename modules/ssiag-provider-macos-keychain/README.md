@@ -15,3 +15,5 @@ implemented; operational dispatch and protected delivery remain disabled.
 [Native message gate](NATIVE-MESSAGE-GATE.md) adds actual XPC message-code
 validation for one-way nonsecret metadata. Principal continuity and operational
 credential delivery remain explicit integration requirements.
+
+Run the [macOS development exercises](Development/README.md) to test a disposable file-based keychain as the logged-in user or an app's private data-protection Keychain with development signing.

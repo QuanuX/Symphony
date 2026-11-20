@@ -1,0 +1,44 @@
+name: Apple Keychain development checks
+
+on:
+  pull_request:
+    paths:
+      - 'modules/ssiag-provider-macos-keychain/Development/**'
+      - '.github/workflows/apple-keychain-development.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'modules/ssiag-provider-macos-keychain/Development/**'
+      - '.github/workflows/apple-keychain-development.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualification:
+    runs-on: macos-15
+    timeout-minutes: 12
+    defaults:
+      run:
+        working-directory: modules/ssiag-provider-macos-keychain/Development
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - name: Select the Apple toolchain
+        run: echo 'DEVELOPER_DIR=/Applications/Xcode_26.3.app/Contents/Developer' >> "$GITHUB_ENV"
+      - name: Check scoped item lifecycle and refusal handling
+        run: swift test --package-path Qualification --scratch-path "$RUNNER_TEMP/keychain-swift"
+      - name: Exercise a disposable file-based Keychain as the runner user
+        run: swift run --package-path Qualification --scratch-path "$RUNNER_TEMP/keychain-swift" symphony-keychain-qualification user-keychain
+      - name: Build the qualification app without a development identity
+        run: |
+          xcodebuild -project KeychainQualification.xcodeproj -scheme KeychainQualification \
+            -configuration Debug -derivedDataPath "$RUNNER_TEMP/keychain-build" CODE_SIGNING_ALLOWED=NO build
+          app="$RUNNER_TEMP/keychain-build/Build/Products/Debug/KeychainQualification.app"
+          if result=$("$app/Contents/MacOS/KeychainQualification" preflight ABCDE12345 local.symphony-keychain-check); then
+            echo "Unsigned preflight unexpectedly passed" >&2
+            exit 1
+          fi
+          test "$result" = "REFUSED signatureRejected"
