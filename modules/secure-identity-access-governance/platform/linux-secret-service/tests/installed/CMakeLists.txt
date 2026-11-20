@@ -1,0 +1,5 @@
+cmake_minimum_required(VERSION 3.30)
+project(InstalledSecretServiceConsumer LANGUAGES CXX)
+find_package(SymphonySSIAGLinuxSecretService 0.1.0 EXACT REQUIRED CONFIG)
+add_executable(installed-consumer ../provider_test.cpp)
+target_link_libraries(installed-consumer PRIVATE Symphony::SSIAGLinuxSecretService)
