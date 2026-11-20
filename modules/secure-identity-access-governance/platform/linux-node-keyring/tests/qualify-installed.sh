@@ -22,10 +22,10 @@ install -d -o ubuntu -g ubuntu "$build/node/Testing" "$build/node/Testing/Tempor
 runuser -u ubuntu -- ctest --test-dir "$build/node" --output-on-failure
 cmake -S "$source_dir/tests/installed" -B "$build/consumer" -DCMAKE_PREFIX_PATH="$stage"
 cmake --build "$build/consumer" --parallel 2
-bin="$stage/libexec/symphony/ssiag-node-keyring/0.1.0-dev"
-python3 -I -B "$source_dir/tests/activate-test.py" "$bin/symphony-node-keyring-activate"
-python3 -I -B "$source_dir/tests/disposable-ssh-node.py" "$stage" "$build/consumer/node-keyring-installed-consumer"
-python3 -I -B "$source_dir/headless/test_restart.py" "$bin/keyring_session.py" \
+bin="$stage/libexec/symphony/ssiag-node-keyring/0.1.1-dev"
+bash "$source_dir/tests/activate-test.sh" "$bin/symphony-node-keyring-activate"
+"$build/node/node-keyring-fixture" ssh "$stage" "$build/consumer/node-keyring-installed-consumer"
+"$build/node/node-keyring-fixture" restart "$bin/symphony-node-keyring-session" \
     "$bin/symphony-node-keyring-import" "$build/consumer/node-keyring-installed-consumer"
 cmake --build "$build/node" --target uninstall-ssiag-node-keyring
 cmake --build "$build/backend" --target uninstall-ssiag-linux-secret-service

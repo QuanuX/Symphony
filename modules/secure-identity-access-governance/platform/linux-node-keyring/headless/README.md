@@ -16,12 +16,12 @@ The TPM mode uses explicit `systemd-creds encrypt --with-key=tpm2 --tpm2-device=
 
 ## Enroll an empty node vault
 
-1. Install the verified node package under `/opt/symphony` and the operating system packages for systemd credentials, Python 3, D-Bus, gdbus and GNOME Keyring. Use a dedicated non-root numeric UID with its own primary GID, no supplementary groups and a private 0700 real home directory. The UID's passwd entry identifies the home. Keep other desktop sessions, keyring daemons, PAM keyring unlocks and unrestricted logins out of that account.
+1. Install the verified node package under `/opt/symphony` and the operating system packages for systemd credentials, D-Bus, gdbus and GNOME Keyring. Use a dedicated non-root numeric UID with its own primary GID, no supplementary groups and a private 0700 real home directory. The UID's passwd entry identifies the home. Keep other desktop sessions, keyring daemons, PAM keyring unlocks and unrestricted logins out of that account.
 2. Install the two templates in this directory as root-owned system units in `/etc/systemd/system/` and run `systemctl daemon-reload`. Set `uid` below to the selected numeric service UID. Only the node administrator performs enrollment.
 3. Generate the local vault password and seal it using one explicitly selected mode. This example selects a TPM. To select the host-key mode, use `host` as the last argument.
 
    ```sh
-   /opt/symphony/libexec/symphony/ssiag-node-keyring/0.1.0-dev/seal_unlock.py "$uid" tpm2
+   /opt/symphony/libexec/symphony/ssiag-node-keyring/0.1.1-dev/symphony-node-keyring-seal "$uid" tpm2
    systemctl start "symphony-node-keyring-enroll@$uid.service"
    systemctl enable --now "symphony-node-keyring@$uid.service"
    ```
@@ -34,4 +34,4 @@ The service manager decrypts `vault-unlock` into its protected credentials direc
 
 ## Qualification
 
-`test_restart.py` runs in a disposable Ubuntu container with networking disabled. It starts the actual D-Bus and GNOME daemons under a test UID, provisions a binary fixture through the installed importer, stops the daemons, checks missing and incorrect unlock refusals, then starts fresh daemons and exercises the installed C++ consumer on the original generation. It simulates the systemd credentials directory using private tmpfs. No physical TPM, production venue or actual machine reboot is part of that test.
+The [installed-package qualification](../tests/qualify-installed.sh) runs the native restart fixture in a disposable Ubuntu container with networking disabled. It starts the actual D-Bus and GNOME daemons under a test UID, provisions a binary fixture through the installed importer, stops the daemons, checks missing and incorrect unlock refusals, then starts fresh daemons and exercises the installed C++ consumer on the original generation. It simulates the systemd credentials directory using private tmpfs. No physical TPM, production venue or actual machine reboot is part of that test.

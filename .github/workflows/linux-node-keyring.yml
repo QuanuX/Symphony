@@ -10,6 +10,7 @@ on:
       - 'modules/secure-identity-access-governance/platform/linux-*/**'
       - '.github/workflows/linux-node-keyring.yml'
   workflow_dispatch:
+  workflow_call:
 
 permissions:
   contents: read

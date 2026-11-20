@@ -35,7 +35,7 @@ cleanup() {
 trap cleanup EXIT
 
 pkg=symphony-node-keyring
-version='0.1.0~dev1'
+version='0.1.1~dev1'
 prefix=/opt/symphony
 stage="$temp_dir/stage"
 build_options=(-DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_COMPILER=clang++-21
@@ -51,7 +51,7 @@ for component in linux-secret-service linux-node-keyring; do
 done
 
 # Resolve the minimum runtime versions from the packages providing the symbols
-# actually used by the importer. Both SDKs are static and included in the deb.
+# used by all native executables. Both SDKs are static and included in the deb.
 mkdir -p "$temp_dir/debian" "$stage/DEBIAN"
 cat > "$temp_dir/debian/control" <<CONTROL
 Source: $pkg
@@ -67,8 +67,8 @@ CONTROL
 # The SDK specifically requires libsecret's supported 0.21.2 behavior.
 # The symbols used on Ubuntu also exist in releases as old as 0.7.
 echo 'libsecret-1 0 libsecret-1-0 (>= 0.21.2)' > "$temp_dir/debian/shlibs.local"
-importer="$stage$prefix/libexec/symphony/ssiag-node-keyring/0.1.0-dev/symphony-node-keyring-import"
-depends=$(cd "$temp_dir" && dpkg-shlibdeps -O -e"$importer")
+executables=("$stage$prefix"/libexec/symphony/ssiag-node-keyring/0.1.1-dev/symphony-node-keyring-*)
+depends=$(cd "$temp_dir" && dpkg-shlibdeps -O "${executables[@]/#/-e}")
 [[ $depends == shlibs:Depends=?* ]] || { echo 'Could not determine runtime dependencies' >&2; exit 1; }
 cat > "$stage/DEBIAN/control" <<CONTROL
 Package: $pkg
@@ -78,7 +78,7 @@ Priority: optional
 Architecture: $arch
 Maintainer: Local Symphony package builder <builder@localhost>
 Homepage: https://github.com/QuanuX/Symphony
-Depends: ${depends#shlibs:Depends=}, python3 (>= 3.9), openssh-client, dbus-daemon, gnome-keyring, libglib2.0-bin, systemd (>= 250)
+Depends: ${depends#shlibs:Depends=}, openssh-client, dbus-daemon, gnome-keyring, libglib2.0-bin, systemd (>= 250)
 Suggests: openssh-server, libsecret-1-dev, pkg-config, cryptsetup-bin, systemd-cryptsetup, libtss2-esys-3.0.2-0t64
 Description: Symphony Linux node keyring runtime and native SDKs
  Contains the scoped Linux Secret Service SDK, node bootstrap SDK, OpenSSH

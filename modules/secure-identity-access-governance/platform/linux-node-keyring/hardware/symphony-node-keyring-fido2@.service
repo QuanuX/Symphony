@@ -7,6 +7,6 @@ StopWhenUnneeded=yes
 [Service]
 Type=oneshot
 RemainAfterExit=yes
-ExecStart=/usr/bin/python3 -I -B /etc/symphony/node-keyring/fido2_volume.py %i
+ExecStart=/opt/symphony/libexec/symphony/ssiag-node-keyring/0.1.1-dev/symphony-node-keyring-fido2 %i
 TimeoutStartSec=15
 NoNewPrivileges=yes

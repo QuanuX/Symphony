@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.30)
-project(SymphonyNodeKeyring VERSION 0.1.0 LANGUAGES CXX)
+project(SymphonyNodeKeyring VERSION 0.1.1 LANGUAGES CXX)
 if(NOT CMAKE_SYSTEM_NAME STREQUAL "Linux" OR CMAKE_CONFIGURATION_TYPES)
   message(FATAL_ERROR "A single-configuration Linux build is required")
 endif()
@@ -11,9 +11,11 @@ include(CMakePackageConfigHelpers)
 include("${CMAKE_CURRENT_SOURCE_DIR}/../../../../cmake/SymphonyInstallReceiptV2.cmake")
 find_package(SymphonySSIAGLinuxSecretService 0.1.1 EXACT REQUIRED CONFIG)
 find_package(Threads REQUIRED)
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(JsonC REQUIRED IMPORTED_TARGET json-c>=0.15)
 
 set(component ssiag-node-keyring)
-set(release 0.1.0-dev)
+set(release 0.1.1-dev)
 set(runtime libexec/symphony/${component}/${release})
 set(inc include/symphony/${component}/${release})
 set(lib lib/symphony/${component}/${release})
@@ -31,15 +33,21 @@ target_include_directories(node-keyring PUBLIC
 target_link_libraries(node-keyring PUBLIC Symphony::SSIAGLinuxSecretService Threads::Threads)
 add_executable(symphony-node-keyring-import src/import.cpp)
 target_link_libraries(symphony-node-keyring-import PRIVATE Symphony::SSIAGLinuxSecretService)
-foreach(target node-keyring symphony-node-keyring-import)
+add_executable(symphony-node-keyring-send src/send.cpp)
+add_executable(symphony-node-keyring-activate src/activate.cpp)
+add_executable(symphony-node-keyring-session headless/keyring_session.cpp)
+add_executable(symphony-node-keyring-seal headless/seal_unlock.cpp)
+add_executable(symphony-node-keyring-fido2 hardware/fido2_volume.cpp)
+target_link_libraries(symphony-node-keyring-fido2 PRIVATE PkgConfig::JsonC)
+set(tools symphony-node-keyring-import symphony-node-keyring-send symphony-node-keyring-activate
+  symphony-node-keyring-session symphony-node-keyring-seal symphony-node-keyring-fido2)
+foreach(target node-keyring ${tools})
+  target_compile_features(${target} PRIVATE cxx_std_26)
   target_compile_options(${target} PRIVATE -Wall -Wextra -Wpedantic -Werror)
 endforeach()
 
 install(TARGETS node-keyring EXPORT ${PROJECT_NAME}Targets ARCHIVE DESTINATION "${lib}")
-install(TARGETS symphony-node-keyring-import RUNTIME DESTINATION "${runtime}")
-install(PROGRAMS controller/symphony-node-keyring-send DESTINATION "${runtime}")
-install(PROGRAMS admin/symphony-node-keyring-activate DESTINATION "${runtime}")
-install(PROGRAMS headless/keyring_session.py headless/seal_unlock.py DESTINATION "${runtime}")
+install(TARGETS ${tools} RUNTIME DESTINATION "${runtime}")
 install(DIRECTORY include/ DESTINATION "${inc}")
 install(EXPORT ${PROJECT_NAME}Targets DESTINATION "${config}" NAMESPACE Symphony::)
 configure_file(cmake/SymphonyNodeKeyringConfig.cmake.in "${PROJECT_NAME}Config.cmake" @ONLY)
@@ -49,13 +57,13 @@ install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
 install(FILES README.md DESTINATION "${share}")
 set(license_dir share/licenses/symphony-${component}/${release})
 install(FILES ../../../../LICENSE DESTINATION "${license_dir}" RENAME LICENSE-AGPL-3.0)
-set(owned "${runtime}/symphony-node-keyring-import|executable" "${runtime}/symphony-node-keyring-send|executable"
-  "${runtime}/symphony-node-keyring-activate|executable"
-  "${runtime}/keyring_session.py|executable" "${runtime}/seal_unlock.py|executable"
-  "${inc}/symphony/ssiag/node_keyring_bootstrap.hpp|regular" "${lib}/libnode-keyring.a|regular"
+set(owned "${inc}/symphony/ssiag/node_keyring_bootstrap.hpp|regular" "${lib}/libnode-keyring.a|regular"
   "${share}/README.md|regular" "${license_dir}/LICENSE-AGPL-3.0|regular")
+foreach(tool IN LISTS tools)
+  list(APPEND owned "${runtime}/${tool}|executable")
+endforeach()
 # Hardware files are shipped as inactive deployment examples. Installation starts no service.
-set(hardware README.md fido2_volume.py symphony-node-keyring-fido2@.service user-manager.conf keyring-daemon.conf)
+set(hardware README.md symphony-node-keyring-fido2@.service user-manager.conf keyring-daemon.conf)
 foreach(file IN LISTS hardware)
   install(FILES "hardware/${file}" DESTINATION "${share}/hardware")
   list(APPEND owned "${share}/hardware/${file}|regular")
@@ -82,11 +90,22 @@ add_custom_target(uninstall-ssiag-node-keyring
   COMMAND ${CMAKE_COMMAND} -DINSTALL_PREFIX=${CMAKE_INSTALL_PREFIX} -P "${CMAKE_CURRENT_BINARY_DIR}/uninstall.cmake")
 
 if(BUILD_TESTING)
-  find_package(Python3 REQUIRED COMPONENTS Interpreter)
+  find_program(GO_EXECUTABLE go REQUIRED)
+  set(fixture "${CMAKE_CURRENT_BINARY_DIR}/node-keyring-fixture")
+  set(fixture_sources main.go import.go ssh.go restart.go)
+  list(TRANSFORM fixture_sources PREPEND "${CMAKE_CURRENT_SOURCE_DIR}/tests/fixture/")
+  add_custom_command(OUTPUT "${fixture}"
+    COMMAND ${CMAKE_COMMAND} -E env GOWORK=off GO111MODULE=off GOPROXY=off GOTOOLCHAIN=local CGO_ENABLED=0
+      "${GO_EXECUTABLE}" build -tags symphony_node_keyring_fixture -trimpath -o "${fixture}" ${fixture_sources}
+    DEPENDS ${fixture_sources} VERBATIM)
+  add_custom_target(build-node-keyring-fixture ALL DEPENDS "${fixture}")
   add_executable(node-keyring-import-fixture src/import.cpp tests/import_fake.cpp)
   target_link_libraries(node-keyring-import-fixture PRIVATE Symphony::SSIAGLinuxSecretService)
   add_test(NAME node-keyring-import-refusals
-    COMMAND ${Python3_EXECUTABLE} -I "${CMAKE_CURRENT_SOURCE_DIR}/tests/import-test.py" "$<TARGET_FILE:node-keyring-import-fixture>")
+    COMMAND "${fixture}" import "$<TARGET_FILE:node-keyring-import-fixture>")
+  add_executable(node-keyring-volume-policy-test hardware/test_fido2_volume.cpp)
+  target_link_libraries(node-keyring-volume-policy-test PRIVATE PkgConfig::JsonC)
+  target_compile_features(node-keyring-volume-policy-test PRIVATE cxx_std_26)
   add_test(NAME node-keyring-hardware-policy
-    COMMAND ${Python3_EXECUTABLE} -I -B "${CMAKE_CURRENT_SOURCE_DIR}/hardware/test_fido2_volume.py")
+    COMMAND node-keyring-volume-policy-test)
 endif()
