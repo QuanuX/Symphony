@@ -47,7 +47,7 @@
   <!-- Status Pill -->
   <rect x="614" y="26" width="306" height="34" rx="17" fill="#0b0d0f" stroke="#262b31" stroke-width="1"/>
   <circle cx="634" cy="43" r="4" fill="#d7ff69"/>
-  <text x="648" y="47" fill="#dfe4e8" font-family="'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace" font-size="10.5" letter-spacing="1.1">PUBLIC BETA // v0.2.0-beta.2</text>
+  <text x="648" y="47" fill="#dfe4e8" font-family="'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace" font-size="10.5" letter-spacing="1.1">PUBLIC BETA // v0.2.0-beta.2.1</text>
 
   <!-- Hero Eyebrow -->
   <text x="40" y="132" fill="#72f6ff" font-family="'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace" font-size="11.5" letter-spacing="2">VECTOR-GRAPH APPLICATION ARCHITECTURE // OPEN-SOURCE QUANTOS</text>
@@ -73,7 +73,7 @@
   <line x1="700" y1="436" x2="700" y2="512" stroke="#1e2227" stroke-width="1"/>
 
   <text x="56" y="462" fill="#858b92" font-family="'SFMono-Regular', Consolas, monospace" font-size="10" letter-spacing="1.2">PUBLIC BETA RELEASE</text>
-  <text x="56" y="483" fill="#f6f7f8" font-family="'SFMono-Regular', Consolas, monospace" font-size="11.5" font-weight="700">v0.2.0-beta.2</text>
+  <text x="56" y="483" fill="#f6f7f8" font-family="'SFMono-Regular', Consolas, monospace" font-size="11.5" font-weight="700">v0.2.0-beta.2.1</text>
   <text x="56" y="500" fill="#f6f7f8" font-family="'SFMono-Regular', Consolas, monospace" font-size="11.5" font-weight="700">4 Qualified OS Profiles</text>
 
   <text x="276" y="462" fill="#858b92" font-family="'SFMono-Regular', Consolas, monospace" font-size="10" letter-spacing="1.2">COMMAND REGISTRY</text>
