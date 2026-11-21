@@ -12,7 +12,7 @@
 
 **A quantOS for quantitative research, trading systems and infrastructure.**
 
-[**Install the Public Beta**](#install-the-public-beta) · [**Start from source**](.github/FIRST-RUN.md) · [**Explore the components**](#architecture) · [**Platform targets**](#platform-targets) · [**Report a problem**](#support-and-contributing)
+[**Install the Public Beta**](https://quanux.org/downloads) · [**Start from source**](.github/FIRST-RUN.md) · [**Explore the components**](#architecture) · [**Platform targets**](#platform-targets) · [**Report a problem**](#support-and-contributing)
 
 </div>
 
@@ -133,7 +133,9 @@ The [published beta record](https://github.com/QuanuX/symphony-distribution/blob
 `05 // BINARY PACKAGES & INSTALLER CHANNELS`
 ## Install the Public Beta
 
-Start with the [release downloads](https://github.com/QuanuX/symphony-distribution/releases/tag/v0.2.0-beta.2.1) and [installation and verification guide](https://downloads.quanux.org/symphony/0.2.0-beta.2.1/docs/BETA-INSTALL.md). Conda packages are published under **QuanuX/beta on Anaconda**. Downloadable `.sh` installers for all four profiles and a macOS Apple Silicon `.pkg` are hosted on Cloudflare. Choose the exact profile and its verified package list, including the correct Ubuntu version. The [optional Linux node keyring](https://quanux.org/downloads#node-keyring) has separate Ubuntu 26.04 downloads for AMD64 and ARM64.
+Open [Symphony Downloads](https://quanux.org/downloads), choose **Copy install command**, and paste it into your terminal. The command detects your platform, verifies the signed release, installs all 59 default packages for your account, and runs `qxctl version`.
+
+For a custom setup, the [installation and verification guide](https://downloads.quanux.org/symphony/0.2.0-beta.2.1/docs/BETA-INSTALL.md) covers **QuanuX/beta on Anaconda**, standalone `.sh` installers for all four profiles, and the macOS Apple Silicon `.pkg`. The [optional Linux node keyring](https://quanux.org/downloads#node-keyring) has separate Ubuntu 26.04 downloads for AMD64 and ARM64.
 
 Each profile has 59 independently maintainable default packages plus optional corresponding source. SDK headers, libraries and CMake exports remain with their module owners. Standard installation uses clean CI binaries; compiling the repository is optional. User profiles, credentials and hardware/workflow state are created on the user's system rather than copied from the publisher's machine. Codex is the primary qualified client; the existing Claude, Antigravity and generic adapters remain available with their own documented boundaries.
 
