@@ -76,9 +76,9 @@
   <text x="295" y="623" fill="#d8dcdf" font-family="'SFMono-Regular', Consolas, monospace" font-size="11.5">Static-analysis baseline &amp; collected dependency notice inventory</text>
   <text x="900" y="623" fill="#d7ff69" font-family="'SFMono-Regular', Consolas, monospace" font-size="11" text-anchor="end">.github/codeql</text>
 
-  <text x="60" y="662" fill="#d7ff69" font-family="'SFMono-Regular', Consolas, monospace" font-size="11.5">06 · BETA.2 ACCEPTANCE</text>
+  <text x="60" y="662" fill="#d7ff69" font-family="'SFMono-Regular', Consolas, monospace" font-size="11.5">06 · BETA.2.1 ACCEPTANCE</text>
   <text x="295" y="662" fill="#d8dcdf" font-family="'SFMono-Regular', Consolas, monospace" font-size="11.5">Exact published bytes, pinned signature &amp; 4-profile qualification</text>
-  <text x="900" y="662" fill="#d7ff69" font-family="'SFMono-Regular', Consolas, monospace" font-size="11" text-anchor="end">beta2-publication</text>
+  <text x="900" y="662" fill="#d7ff69" font-family="'SFMono-Regular', Consolas, monospace" font-size="11" text-anchor="end">beta21-publication</text>
 
   <!-- SECTION 06: REPOSITORY VERIFICATION SUMMARY -->
   <rect x="40" y="710" width="880" height="184" fill="#080a0b" stroke="#262b31" stroke-width="1"/>
