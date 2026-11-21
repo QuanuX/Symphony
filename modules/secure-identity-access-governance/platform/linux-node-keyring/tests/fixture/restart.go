@@ -31,21 +31,41 @@ func credentialACL(uid uint32, groupPerm uint16) []byte {
 	return acl.Bytes()
 }
 
+func credentialACLChecks(launcher string) {
+	// This unit directory uses the container filesystem, which supports
+	// POSIX ACLs even on kernels where tmpfs does not. It holds only a marker.
+	a := addAccount("symphonyaclqa")
+	uid := fmt.Sprint(a.uid)
+	dir := filepath.Join("/run/credentials", "symphony-node-keyring@"+uid+".service")
+	a.mkdir(dir)
+	defer os.RemoveAll(dir)
+	misplaced := filepath.Join(dir, "unassigned")
+	a.mkdir(misplaced)
+	marker := filepath.Join(misplaced, "vault-unlock")
+	must(os.WriteFile(marker, bytes.Repeat([]byte("x"), 64), 0400))
+	const attr = "system.posix_acl_access"
+	must(syscall.Setxattr(marker, attr, credentialACL(a.uid, 0), 0))
+	p := process{env: append(a.environment(), "CREDENTIALS_DIRECTORY="+misplaced), identity: a.credentials()}
+	require(p.run(nil, launcher, "check-unlock", uid).code != 0, "unassigned credential directory accepted")
+	installed := filepath.Join(dir, "vault-unlock")
+	must(os.Rename(marker, installed))
+	p.env = append(a.environment(), "CREDENTIALS_DIRECTORY="+dir)
+	p.success(nil, launcher, "check-unlock", uid)
+	must(syscall.Setxattr(installed, attr, credentialACL(a.uid, 4), 0))
+	require(p.run(nil, launcher, "check-unlock", uid).code != 0, "broad credential ACL accepted")
+}
+
 func restartChecks(launcher, importer, consumer string) {
 	disposableNode()
-	var filesystem syscall.Statfs_t
-	must(syscall.Statfs("/dev/shm", &filesystem))
-	require(filesystem.Type == 0x01021994, "a private tmpfs is required for unlock input")
-	a := addAccount("symphonybootqa")
-	uid := fmt.Sprint(a.uid)
+	expectedUID := checked(parseFixtureID(os.Getenv("SYMPHONY_RESTART_FIXTURE_UID")))
+	uid := fmt.Sprint(expectedUID)
+	a := addAccount("symphonybootqa", "--uid", uid)
+	require(a.uid == expectedUID, "unexpected restart account")
 	must(os.Chmod(a.home, 0700))
 	runtime := filepath.Join("/run", "symphony-node-keyring-"+uid)
 	a.mkdir(runtime)
 	defer os.RemoveAll(runtime)
 	bus := filepath.Join(runtime, "bus")
-	cdir := checked(os.MkdirTemp("/dev/shm", "symphony-unlock-"))
-	defer os.RemoveAll(cdir)
-	a.chown(cdir)
 	work := checked(os.MkdirTemp("/run", "symphony-restart-"))
 	defer os.RemoveAll(work)
 	must(os.Chmod(work, 0755))
@@ -54,12 +74,26 @@ func restartChecks(launcher, importer, consumer string) {
 	tops, ref, request := uuid(), uuid(), uuid()
 	value := append([]byte{0, 255}, randomBytes(42)...)
 	unlock := fmt.Appendf(nil, "%x", randomBytes(32))
-	credential := filepath.Join(cdir, "vault-unlock")
-	must(os.WriteFile(credential, unlock, 0400))
-	a.chown(credential)
-	p := process{env: append(a.environment(), "CREDENTIALS_DIRECTORY="+cdir), identity: a.credentials(), protected: [][]byte{value, unlock}}
-	refuse := func(mode string) {
-		r := p.run(nil, launcher, mode, uid)
+	enrollDir := filepath.Join("/run/credentials", "symphony-node-keyring-enroll@"+uid+".service")
+	serveDir := filepath.Join("/run/credentials", "symphony-node-keyring@"+uid+".service")
+	for _, dir := range []string{enrollDir, serveDir} {
+		var filesystem syscall.Statfs_t
+		must(syscall.Statfs(dir, &filesystem))
+		require(filesystem.Type == 0x01021994, "each unit requires a private tmpfs for unlock input")
+		a.chown(dir)
+		must(os.Chmod(dir, 0500))
+		file := filepath.Join(dir, "vault-unlock")
+		must(os.WriteFile(file, unlock, 0400))
+		a.chown(file)
+		defer os.Remove(file)
+	}
+	bare := process{env: a.environment(), identity: a.credentials(), protected: [][]byte{value, unlock}}
+	enroller := bare
+	enroller.env = append(a.environment(), "CREDENTIALS_DIRECTORY="+enrollDir)
+	p := bare
+	p.env = append(a.environment(), "CREDENTIALS_DIRECTORY="+serveDir)
+	refuse := func(proc process, mode string) {
+		r := proc.run(nil, launcher, mode, uid)
 		require(r.code != 0, "unexpected "+mode+" success")
 		_, err := os.Lstat(bus)
 		require(os.IsNotExist(err), "private bus remained after refusal")
@@ -82,9 +116,14 @@ func restartChecks(launcher, importer, consumer string) {
 		_, err := os.Lstat(bus)
 		require(os.IsNotExist(err), "private bus remained after shutdown")
 	}
-	refuse("serve")
-	p.success(nil, launcher, "enroll", uid)
-	refuse("enroll")
+	refuse(bare, "check-unlock")
+	enroller.success(nil, launcher, "check-unlock", uid)
+	p.success(nil, launcher, "check-unlock", uid)
+	refuse(p, "enroll") // The serve unit cannot enroll a vault.
+	refuse(p, "serve")  // No vault exists yet.
+	enroller.success(nil, launcher, "enroll", uid)
+	refuse(enroller, "enroll")
+	refuse(enroller, "serve") // The enroll unit cannot start the service.
 	var gen string
 	withService(func() {
 		in := p
@@ -95,10 +134,11 @@ func restartChecks(launcher, importer, consumer string) {
 	vault := checked(os.ReadFile(filepath.Join(a.home, ".local/share/keyrings/login.keyring")))
 	require(len(vault) > 0 && !bytes.Contains(vault, value), "unsafe persistent credential")
 
+	credential := filepath.Join(serveDir, "vault-unlock")
 	must(os.WriteFile(credential, fmt.Appendf(nil, "%x", randomBytes(32)), 0400))
-	refuse("serve")
+	refuse(p, "serve")
 	must(os.Remove(credential))
-	refuse("serve")
+	refuse(p, "serve")
 	must(os.WriteFile(credential, unlock, 0400)) // root-owned after recreation
 	const attr = "system.posix_acl_access"
 	err := syscall.Setxattr(credential, attr, credentialACL(a.uid, 0), 0)
@@ -110,19 +150,7 @@ func restartChecks(launcher, importer, consumer string) {
 		must(err)
 	}
 
-	// Use a public dummy marker on a filesystem with ACL support. Only
-	// the real unlock input, held on private tmpfs, can unlock the vault.
-	sample := checked(os.MkdirTemp("/var/tmp", "symphony-acl-"))
-	defer os.RemoveAll(sample)
-	must(os.Chmod(sample, 0755))
-	marker := filepath.Join(sample, "vault-unlock")
-	must(os.WriteFile(marker, bytes.Repeat([]byte("x"), 64), 0400))
-	must(syscall.Setxattr(marker, attr, credentialACL(a.uid, 0), 0))
-	check := p
-	check.env = append(a.environment(), "CREDENTIALS_DIRECTORY="+sample)
-	check.success(nil, launcher, "check-unlock", uid)
-	must(syscall.Setxattr(marker, attr, credentialACL(a.uid, 4), 0))
-	require(check.run(nil, launcher, "check-unlock", uid).code != 0, "broad credential ACL accepted")
+	credentialACLChecks(launcher)
 
 	selection := filepath.Join(work, "binding")
 	binding(selection, a, bus, tops, ref, gen)
