@@ -76,12 +76,19 @@ inline void directory(const std::string &s, bool create = false) {
 inline std::string read(const std::string &s, std::size_t limit = 1048576) {
   path(s);
   auto p=std::filesystem::path(s);auto parent=open_directory(p.parent_path().string());
-  Fd fd(::openat(parent.value,p.filename().c_str(), O_RDONLY | O_NOFOLLOW | O_CLOEXEC));
-  struct stat st{};
-  require(fd.value >= 0 && ::fstat(fd.value, &st) == 0 && S_ISREG(st.st_mode) &&
-          st.st_uid == ::getuid() && (st.st_mode & 0077) == 0 && st.st_nlink == 1 &&
-          st.st_size >= 0 && static_cast<std::uint64_t>(st.st_size) <= limit,
-          "srrapiv.path.unsafe");
+  Fd fd(-1);
+  constexpr unsigned max_reopens = 3;
+  for (unsigned attempt = 0; ; ++attempt) {
+    fd = Fd(::openat(parent.value, p.filename().c_str(), O_RDONLY | O_NOFOLLOW | O_CLOEXEC));
+    struct stat st{};
+    require(fd.value >= 0 && ::fstat(fd.value, &st) == 0 && S_ISREG(st.st_mode) &&
+            st.st_uid == ::getuid() && (st.st_mode & 0077) == 0 && st.st_size >= 0 &&
+            static_cast<std::uint64_t>(st.st_size) <= limit, "srrapiv.path.unsafe");
+    if (st.st_nlink == 1) break;
+    // An atomic record update can unlink the opened inode before fstat.
+    // Validate a newly opened descriptor before reading any bytes.
+    require(st.st_nlink == 0 && attempt < max_reopens, "srrapiv.path.unsafe");
+  }
   std::string out; char b[8192];
   for (;;) {
     auto n = ::read(fd.value, b, sizeof b);
