@@ -404,28 +404,36 @@ func run(wiki, repo, input, ref string) error {
 	if err := r.countLines(repo, contents); err != nil {
 		return err
 	}
+	homeURL := repository + "/wiki/Home"
 	var nav strings.Builder
-	for _, t := range topics {
+	for i, t := range topics {
 		href := repository + "/wiki/" + t.slug
+		if i == 0 {
+			href = homeURL
+		}
 		r.numbers[t.number] = href
 		indent := strings.Repeat("  ", strings.Count(t.number, "."))
 		fmt.Fprintf(&nav, "%s- [%s %s](%s)\n", indent, t.number, t.title, href)
 	}
 	pages := make(map[string]string)
-	for _, t := range topics {
+	var landingBody string
+	for i, t := range topics {
 		body, err := r.page(t.body)
 		if err != nil {
 			return fmt.Errorf("%s: %w", t.title, err)
 		}
 		pages[t.slug+".md"] = owned + "\n\n" + body + "\n"
+		if i == 0 {
+			landingBody = body
+		}
 	}
 	marker := fmt.Sprintf("<!-- DeepWiki snapshot %s citation-commit %s -->", hash, commit)
-	homeBlock := beginIndex + "\n" + marker + "\n## Symphony documentation\n\nExplore Symphony’s architecture, tools, and release process. These pages are synchronized from [DeepWiki](" + deepWiki + ").\n\n" + nav.String() + endIndex
+	homeBlock := beginIndex + "\n" + marker + "\n\n" + landingBody + "\n\n" + endIndex
 	pages["Home.md"], err = indexBlock(home, homeBlock)
 	if err != nil {
 		return err
 	}
-	sidebarBlock := beginIndex + "\n[Symphony Wiki home](" + repository + "/wiki/Home)\n\n" + nav.String() + endIndex
+	sidebarBlock := beginIndex + "\n[Symphony Wiki home](" + homeURL + ")\n\n" + nav.String() + "\n[View on DeepWiki](" + deepWiki + ")\n" + endIndex
 	pages["_Sidebar.md"], err = indexBlock(sidebar, sidebarBlock)
 	if err != nil {
 		return err
