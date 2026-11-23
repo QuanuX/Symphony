@@ -93,6 +93,8 @@ jobs:
           # This standalone repository tool is outside the workspace modules.
           GOWORK=off GOTOOLCHAIN=local GOPROXY=off go build -a \
             -o "$RUNNER_TEMP/codeql-evidence-collector" .github/codeql/collect_evidence.go
+          GO111MODULE=off GOWORK=off GOTOOLCHAIN=local GOPROXY=off go build -a \
+            -o "$RUNNER_TEMP/codeql-deepwiki-sync" ./.github/scripts/sync-deepwiki
 
       - name: Extract the Linux-only node keyring qualification fixture
         if: matrix.language == 'go' && runner.os == 'Linux'

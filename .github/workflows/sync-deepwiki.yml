@@ -1,0 +1,72 @@
+name: Sync DeepWiki to GitHub Wiki
+
+on:
+  workflow_dispatch:
+    inputs:
+      source_ref:
+        description: 'Optional full Symphony commit SHA shown by DeepWiki for this index'
+        required: false
+        type: string
+  schedule:
+    - cron: '17 6 * * 1'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-deepwiki
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    if: github.repository == 'QuanuX/Symphony' && github.ref_name == github.event.repository.default_branch
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
+          filter: blob:none
+          persist-credentials: false
+
+      - uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6
+        with:
+          go-version-file: go.work
+          cache: false
+
+      - name: Clone the public wiki
+        run: git clone --depth 1 "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}.wiki.git" "$RUNNER_TEMP/wiki"
+
+      - name: Import the latest DeepWiki pages
+        env:
+          GO111MODULE: 'off'
+          GOWORK: 'off'
+          GOTOOLCHAIN: local
+          WIKI_SOURCE_REF: ${{ inputs.source_ref }}
+        run: |
+          go test ./.github/scripts/sync-deepwiki
+          go build -o "$RUNNER_TEMP/sync-deepwiki" ./.github/scripts/sync-deepwiki
+          args=(--wiki-dir "$RUNNER_TEMP/wiki")
+          if [[ -n "$WIKI_SOURCE_REF" ]]; then
+            [[ "$WIKI_SOURCE_REF" =~ ^[[:xdigit:]]{40}$ ]] || { echo 'Expected a full commit SHA.' >&2; exit 1; }
+            args+=(--source-ref "$WIKI_SOURCE_REF")
+          fi
+          "$RUNNER_TEMP/sync-deepwiki" "${args[@]}"
+
+      - name: Publish changed wiki pages
+        working-directory: ${{ runner.temp }}/wiki
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git add -A
+          if git diff --cached --quiet; then
+            echo "The wiki is up to date."
+            exit 0
+          fi
+
+          git -c user.name='github-actions[bot]' \
+              -c user.email='41898282+github-actions[bot]@users.noreply.github.com' \
+              commit -m 'Sync Symphony documentation from DeepWiki'
+          git -c credential.helper= \
+              -c 'credential.https://github.com.helper=!gh auth git-credential' \
+              push origin HEAD
