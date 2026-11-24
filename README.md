@@ -135,6 +135,10 @@ The [published beta record](https://github.com/QuanuX/symphony-distribution/blob
 
 Open [Symphony Downloads](https://quanux.org/downloads), choose **Copy install command**, and paste it into your terminal. The command detects your platform, verifies the signed release, installs all 59 default packages for your account, and runs `qxctl version`.
 
+**Use Codex to administer Symphony locally.** Open Codex on the machine where you want to run Symphony, then paste the setup prompt from [Symphony for Codex](https://quanux.org/downloads#codex). Ask Codex to install or reuse Symphony beta.2.1, install the matching local plugin, connect it to that installation’s `qxctl`, and verify a read-only operation. For a first experiment, ask “Which Symphony installation am I connected to, and what does its local target configuration template contain?”
+
+The downloads page also offers the [Symphony plugin for Antigravity](https://quanux.org/downloads#antigravity) and [NemoSymphTron for either client](https://quanux.org/downloads#nemosymphtron).
+
 For a custom setup, the [installation and verification guide](https://downloads.quanux.org/symphony/0.2.0-beta.2.1/docs/BETA-INSTALL.md) covers **QuanuX/beta on Anaconda**, standalone `.sh` installers for all four profiles, and the macOS Apple Silicon `.pkg`. The [optional Linux node keyring](https://quanux.org/downloads#node-keyring) has separate Ubuntu 26.04 downloads for AMD64 and ARM64.
 
 Each profile has 59 independently maintainable default packages plus optional corresponding source. SDK headers, libraries and CMake exports remain with their module owners. Standard installation uses clean CI binaries; compiling the repository is optional. User profiles, credentials and hardware/workflow state are created on the user's system rather than copied from the publisher's machine. Codex is the primary qualified client; the existing Claude, Antigravity and generic adapters remain available with their own documented boundaries.
